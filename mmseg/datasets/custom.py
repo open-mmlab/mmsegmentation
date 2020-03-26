@@ -1,0 +1,172 @@
+import glob
+import os.path as osp
+from functools import reduce
+
+import mmcv
+import numpy as np
+from PIL import Image
+from torch.utils.data import Dataset
+
+from mmseg.core import mean_iou
+from .pipelines import Compose
+from .registry import DATASETS
+
+
+@DATASETS.register_module
+class CustomDataset(Dataset):
+    """Custom dataset for semantic segmentation
+
+    Annotation format:
+    [
+        {
+            'filename': 'a.jpg',
+            'width': 2048,
+            'height': 1024,
+            'ann': {
+                'seg_map': 'a.png'
+            }
+        },
+        ...
+    ]
+
+    """
+
+    CLASSES = None
+
+    def __init__(self,
+                 pipeline,
+                 img_dir,
+                 img_suffix='.png',
+                 ann_dir=None,
+                 seg_map_suffix='.png',
+                 data_root=None,
+                 test_mode=False):
+        self.pipeline = Compose(pipeline)
+        self.img_dir = img_dir
+        self.img_suffix = img_suffix
+        self.ann_dir = ann_dir
+        self.seg_map_suffix = seg_map_suffix
+        self.data_root = data_root
+        self.test_mode = test_mode
+
+        # join paths if data_root is specified
+        if self.data_root is not None:
+            if not osp.isabs(self.img_dir):
+                self.img_dir = osp.join(self.data_root, self.img_dir)
+            if not (self.ann_dir is None or osp.isabs(self.ann_dir)):
+                self.ann_dir = osp.join(self.data_root, self.ann_dir)
+
+        # load annotations
+        self.img_infos = self.load_annotations(self.img_dir, self.img_suffix,
+                                               self.ann_dir,
+                                               self.seg_map_suffix)
+
+        # set group flag for the sampler
+        if not self.test_mode:
+            self._set_group_flag()
+
+    def __len__(self):
+        return len(self.img_infos)
+
+    def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix):
+        img_infos = []
+        for img in glob.glob(
+                osp.join(img_dir, '**/*' + img_suffix), recursive=True):
+            # get image shape by read
+            width, height = Image.open(img).size
+            img_info = dict(filename=img, height=height, width=width)
+            if ann_dir is not None:
+                seg_map = img.replace(img_dir,
+                                      ann_dir).replace(img_suffix,
+                                                       seg_map_suffix)
+                img_info['ann'] = dict(seg_map=seg_map)
+            img_infos.append(img_info)
+
+        print('Loaded {} images'.format(len(img_infos)))
+        return img_infos
+
+    def get_ann_info(self, idx):
+        return self.img_infos[idx]['ann']
+
+    def pre_pipeline(self, results):
+        results['seg_fields'] = []
+
+    def __getitem__(self, idx):
+        if self.test_mode:
+            return self.prepare_test_img(idx)
+        while True:
+            data = self.prepare_train_img(idx)
+            if data is None:
+                idx = self._rand_another(idx)
+                continue
+            return data
+
+    def _set_group_flag(self):
+        """Set flag according to image aspect ratio.
+
+        Images with aspect ratio greater than 1 will be set as group 1,
+        otherwise group 0.
+        """
+        self.flag = np.zeros(len(self), dtype=np.uint8)
+        for i in range(len(self)):
+            img_info = self.img_infos[i]
+            if img_info['width'] / img_info['height'] > 1:
+                self.flag[i] = 1
+
+    def prepare_train_img(self, idx):
+        img_info = self.img_infos[idx]
+        ann_info = self.get_ann_info(idx)
+        results = dict(img_info=img_info, ann_info=ann_info)
+        self.pre_pipeline(results)
+        return self.pipeline(results)
+
+    def prepare_test_img(self, idx):
+        img_info = self.img_infos[idx]
+        results = dict(img_info=img_info)
+        self.pre_pipeline(results)
+        return self.pipeline(results)
+
+    def format_results(self, results, **kwargs):
+        pass
+
+    def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
+        """Evaluate the dataset.
+
+        Args:
+            results (list): Testing results of the dataset.
+            metric (str | list[str]): Metrics to be evaluated.
+            logger (logging.Logger | None | str): Logger used for printing
+                related information during evaluation. Default: None.
+        """
+        if not isinstance(metric, str):
+            assert len(metric) == 1
+            metric = metric[0]
+        allowed_metrics = ['mIoU']
+        if metric not in allowed_metrics:
+            raise KeyError('metric {} is not supported'.format(metric))
+
+        eval_results = {}
+        gt_seg_maps = [
+            mmcv.imread(img_info['ann']['seg_map']).astype(np.uint8)
+            for img_info in self.img_infos
+        ]
+        if self.CLASSES is None:
+            num_classes = len(
+                reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
+        else:
+            num_classes = len(self.CLASSES)
+
+        eval_results['mIoU'] = mean_iou(results, gt_seg_maps, num_classes)
+
+        return eval_results
+
+    @staticmethod
+    def convert_to_color(seg):
+        color_seg = np.zeros((seg.shape[0], seg.shape[1], 3))
+        label2color = {
+            l: np.random.randint(0, 255, size=(3, ))
+            for l in np.unique(seg)
+        }
+        for label, color in label2color.items():
+            color_seg[seg == label, :] = color
+        return color_seg
