@@ -311,7 +311,7 @@ class ResNet(nn.Module):
                  frozen_stages=-1,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN', requires_grad=True),
-                 norm_eval=True,
+                 norm_eval=False,
                  dcn=None,
                  stage_with_dcn=(False, False, False, False),
                  plugins=dict(),
@@ -415,7 +415,6 @@ class ResNet(nn.Module):
                 base_channels // 2,
                 base_channels // 2,
                 kernel_size=3,
-                stride=2,
                 padding=1,
                 bias=False)
             self.norm2_name, norm2 = build_norm_layer(
@@ -426,7 +425,6 @@ class ResNet(nn.Module):
                 base_channels // 2,
                 base_channels,
                 kernel_size=3,
-                stride=2,
                 padding=1,
                 bias=False)
             self.norm3_name, norm3 = build_norm_layer(

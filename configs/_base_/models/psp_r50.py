@@ -13,6 +13,7 @@ model = dict(
         strides=(1, 2, 1, 1),
         deep_stem=True,
         norm_cfg=norm_cfg,
+        norm_eval=False,
         style='pytorch'),
     decode_head=dict(
         type='PSPHead',

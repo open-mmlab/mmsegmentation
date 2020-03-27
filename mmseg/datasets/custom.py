@@ -177,7 +177,6 @@ class CustomDataset(Dataset):
         summary_str += line_format.format('mean', iou_str)
         print_log(summary_str, logger)
 
-        eval_results['IoU'] = iou
         eval_results['mIoU'] = np.nanmean(iou)
 
         return eval_results
