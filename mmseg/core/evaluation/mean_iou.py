@@ -22,15 +22,15 @@ def intersect_over_union(pred_label, label, num_classes, ignore_index):
     return mat
 
 
-def mean_iou(results, gt_seg_maps, num_classes):
+def mean_iou(results, gt_seg_maps, num_classes, ignore_index):
     num_imgs = len(results)
+    assert len(gt_seg_maps) == num_imgs
     total_mat = np.zeros((num_classes, num_classes), dtype=np.float)
     for i in range(num_imgs):
-        pred_label = results[i]
         mat = intersect_over_union(
-            pred_label, gt_seg_maps[i], num_classes, ignore_index=255)
+            results[i], gt_seg_maps[i], num_classes, ignore_index=ignore_index)
         total_mat += mat
     iou = np.diag(total_mat) / (
         total_mat.sum(axis=1) + total_mat.sum(axis=0) - np.diag(total_mat))
 
-    return iou.mean()
+    return iou

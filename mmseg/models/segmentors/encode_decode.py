@@ -126,6 +126,8 @@ class EncodeDecode(BaseSegmentor):
         seg_logit = self.whole_inference(img, img_meta, rescale)
         seg_pred = seg_logit.argmax(dim=1)
         seg_pred = seg_pred.cpu().numpy()
+        # unravel batch dim
+        seg_pred = list(seg_pred)
         return seg_pred
 
     def aug_test(self, imgs, img_metas, rescale=False):

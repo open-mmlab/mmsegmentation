@@ -10,6 +10,7 @@ from torch.utils.data import Dataset
 from mmseg.core import mean_iou
 from .pipelines import Compose
 from .registry import DATASETS
+from mmseg.utils import print_log
 
 
 @DATASETS.register_module
@@ -40,7 +41,8 @@ class CustomDataset(Dataset):
                  ann_dir=None,
                  seg_map_suffix='.png',
                  data_root=None,
-                 test_mode=False):
+                 test_mode=False,
+                 ignore_index=255):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
         self.img_suffix = img_suffix
@@ -48,6 +50,7 @@ class CustomDataset(Dataset):
         self.seg_map_suffix = seg_map_suffix
         self.data_root = data_root
         self.test_mode = test_mode
+        self.ignore_index = ignore_index
 
         # join paths if data_root is specified
         if self.data_root is not None:
@@ -147,7 +150,8 @@ class CustomDataset(Dataset):
 
         eval_results = {}
         gt_seg_maps = [
-            mmcv.imread(img_info['ann']['seg_map']).astype(np.uint8)
+            mmcv.imread(img_info['ann']['seg_map'],
+                        flag='unchanged').squeeze().astype(np.uint8)
             for img_info in self.img_infos
         ]
         if self.CLASSES is None:
@@ -156,7 +160,25 @@ class CustomDataset(Dataset):
         else:
             num_classes = len(self.CLASSES)
 
-        eval_results['mIoU'] = mean_iou(results, gt_seg_maps, num_classes)
+        iou = mean_iou(results, gt_seg_maps, num_classes,
+                        ignore_index=self.ignore_index)
+        summary_str = ""
+        summary_str += "per class results:\n"
+
+        line_format = '{:<15} {:>10}\n'
+        if self.CLASSES is None:
+            class_names = tuple(range(num_classes))
+        else:
+            class_names = self.CLASSES
+        for i in range(num_classes):
+            iou_str = '{:.2f}'.format(iou[i] * 100)
+            summary_str += line_format.format(class_names[i], iou_str)
+        iou_str = '{:.2f}'.format(np.nanmean(iou) * 100)
+        summary_str += line_format.format('mean', iou_str)
+        print_log(summary_str, logger)
+
+        eval_results['IoU'] = iou
+        eval_results['mIoU'] = np.nanmean(iou)
 
         return eval_results
 

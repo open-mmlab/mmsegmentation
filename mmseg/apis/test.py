@@ -17,7 +17,10 @@ def single_gpu_test(model, data_loader, show=False):
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=not show, **data)
-        results.append(result)
+        if isinstance(results, list):
+            results.extend(result)
+        else:
+            results.append(result)
 
         if show:
             model.module.show_result(data, result)
@@ -56,7 +59,10 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
-        results.append(result)
+        if isinstance(results, list):
+            results.extend(result)
+        else:
+            results.append(result)
 
         if rank == 0:
             batch_size = data['img'][0].size(0)

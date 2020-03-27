@@ -2,6 +2,7 @@ _base_ = [
     '../_base_/models/psp_r50.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py'
 ]
+cudnn_benchmark = True
 # model training and testing settings
 train_cfg = dict(sampler=None)
 test_cfg = dict(
@@ -19,3 +20,4 @@ lr_config = dict(
 )
 # runtime settings
 total_epochs = 20
+evaluation = dict(interval=1, metric='mIoU')

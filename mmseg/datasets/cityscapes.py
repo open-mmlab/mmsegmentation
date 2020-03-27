@@ -43,9 +43,10 @@ class CityscapesDataset(CustomDataset):
         print('Loaded {} images'.format(len(img_infos)))
         return img_infos
 
-    def _convert_to_label_id(self, result):
+    @staticmethod
+    def _convert_to_label_id(result):
         result_copy = result.copy()
-        for trainId, label in CSLabels.trainId2label:
+        for trainId, label in CSLabels.trainId2label.items():
             result_copy[result == trainId] = label.id
 
         return result_copy
@@ -83,7 +84,7 @@ class CityscapesDataset(CustomDataset):
 
         return result_files
 
-    def format_results(self, results, imgfile_prefix=None, to_label_id=False):
+    def format_results(self, results, imgfile_prefix=None, to_label_id=True):
         """Format the results into dir (standard format for Cityscapes
         evaluation).
 
@@ -148,9 +149,9 @@ class CityscapesDataset(CustomDataset):
         result_files, tmp_dir = self.format_results(resutls, imgfile_prefix)
 
         if tmp_dir is None:
-            result_dir = osp.join(imgfile_prefix, 'results')
+            result_dir = imgfile_prefix
         else:
-            result_dir = osp.join(tmp_dir.name, 'results')
+            result_dir = tmp_dir.name
 
         eval_results = dict()
         print_log(
@@ -165,7 +166,7 @@ class CityscapesDataset(CustomDataset):
         seg_map_list = []
         pred_list = []
         for seg_map in glob.glob(
-                osp.join(self.ann_dir, '*' + self.seg_map_suffix),
+                osp.join(self.ann_dir, '**/*gtFine_labelIds.png'),
                 recursive=True):
             seg_map_list.append(seg_map)
             pred_list.append(CSEval.getPrediction(CSEval.args, seg_map))
@@ -173,11 +174,19 @@ class CityscapesDataset(CustomDataset):
         eval_results.update(
             CSEval.evaluateImgLists(pred_list, seg_map_list, CSEval.args))
 
+        if tmp_dir is not None:
+            tmp_dir.cleanup()
+
         return eval_results
 
     @staticmethod
-    def convert_to_color(seg):
+    def convert_to_color(seg, to_label_id):
         color_seg = np.zeros((seg.shape[0], seg.shape[1], 3))
-        for trainId, label in CSLabels.trainId2label.items():
-            color_seg[seg == trainId, :] = label.color
+        if to_label_id:
+            seg = CityscapesDataset._convert_to_label_id(seg)
+            for id, label in CSLabels.id2label.items():
+                color_seg[seg == id, :] = label.color
+        else:
+            for trainId, label in CSLabels.trainId2label.items():
+                color_seg[seg == trainId, :] = label.color
         return color_seg
