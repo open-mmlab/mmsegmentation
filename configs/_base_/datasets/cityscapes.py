@@ -9,7 +9,8 @@ train_pipeline = [
     dict(
         type='Resize', img_scale=[(1024, 512), (4096, 2048)], keep_ratio=True),
     dict(type='RandomCrop', crop_size=(713, 713)),
-    # dict(type='RandomRotate', rotate_range=(-10, 10)),
+    dict(type='Pad', size=(713, 713)),
+    dict(type='RandomRotate', rotate_range=(-10, 10)),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='Normalize', **img_norm_cfg),
     # dict(type='Pad', size_divisor=8),
@@ -20,7 +21,10 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
+        # img_scale=[(1024, 512), (1536, 768), (2048, 1024),
+        #            (2560, 1280), (3072, 1536), (4096, 2048)],
         img_scale=(2048, 1024),
+        # flip=True,
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),

@@ -389,47 +389,78 @@ class ResNet(nn.Module):
     def norm1(self):
         return getattr(self, self.norm1_name)
 
-    @property
-    def norm2(self):
-        return getattr(self, self.norm2_name)
-
-    @property
-    def norm3(self):
-        return getattr(self, self.norm3_name)
+    # @property
+    # def norm2(self):
+    #     return getattr(self, self.norm2_name)
+    #
+    # @property
+    # def norm3(self):
+    #     return getattr(self, self.norm3_name)
 
     def _make_stem_layer(self, in_channels, base_channels):
         if self.deep_stem:
-            self.conv1 = build_conv_layer(
-                self.conv_cfg,
-                in_channels,
-                base_channels // 2,
-                kernel_size=3,
-                stride=2,
-                padding=1,
-                bias=False)
-            self.norm1_name, norm1 = build_norm_layer(
-                self.norm_cfg, base_channels // 2, postfix=1)
-            self.add_module(self.norm1_name, norm1)
-            self.conv2 = build_conv_layer(
-                self.conv_cfg,
-                base_channels // 2,
-                base_channels // 2,
-                kernel_size=3,
-                padding=1,
-                bias=False)
-            self.norm2_name, norm2 = build_norm_layer(
-                self.norm_cfg, base_channels // 2, postfix=2)
-            self.add_module(self.norm2_name, norm2)
-            self.conv3 = build_conv_layer(
-                self.conv_cfg,
-                base_channels // 2,
-                base_channels,
-                kernel_size=3,
-                padding=1,
-                bias=False)
-            self.norm3_name, norm3 = build_norm_layer(
-                self.norm_cfg, base_channels, postfix=3)
-            self.add_module(self.norm3_name, norm3)
+            # self.conv1 = build_conv_layer(
+            #     self.conv_cfg,
+            #     in_channels,
+            #     base_channels // 2,
+            #     kernel_size=3,
+            #     stride=2,
+            #     padding=1,
+            #     bias=False)
+            # self.norm1_name, norm1 = build_norm_layer(
+            #     self.norm_cfg, base_channels // 2, postfix=1)
+            # self.add_module(self.norm1_name, norm1)
+            # self.conv2 = build_conv_layer(
+            #     self.conv_cfg,
+            #     base_channels // 2,
+            #     base_channels // 2,
+            #     kernel_size=3,
+            #     padding=1,
+            #     bias=False)
+            # self.norm2_name, norm2 = build_norm_layer(
+            #     self.norm_cfg, base_channels // 2, postfix=2)
+            # self.add_module(self.norm2_name, norm2)
+            # self.conv3 = build_conv_layer(
+            #     self.conv_cfg,
+            #     base_channels // 2,
+            #     base_channels,
+            #     kernel_size=3,
+            #     padding=1,
+            #     bias=False)
+            # self.norm3_name, norm3 = build_norm_layer(
+            #     self.norm_cfg, base_channels, postfix=3)
+            # self.add_module(self.norm3_name, norm3)
+            self.stem = nn.Sequential(
+                build_conv_layer(
+                    self.conv_cfg,
+                    in_channels,
+                    base_channels // 2,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
+                    bias=False),
+                build_norm_layer(self.norm_cfg, base_channels // 2)[1],
+                nn.ReLU(inplace=True),
+                build_conv_layer(
+                    self.conv_cfg,
+                    base_channels // 2,
+                    base_channels // 2,
+                    kernel_size=3,
+                    stride=1,
+                    padding=1,
+                    bias=False),
+                build_norm_layer(self.norm_cfg, base_channels // 2)[1],
+                nn.ReLU(inplace=True),
+                build_conv_layer(
+                    self.conv_cfg,
+                    base_channels // 2,
+                    base_channels,
+                    kernel_size=3,
+                    stride=1,
+                    padding=1,
+                    bias=False),
+                build_norm_layer(self.norm_cfg, base_channels)[1],
+                nn.ReLU(inplace=True))
         else:
             self.conv1 = build_conv_layer(
                 self.conv_cfg,
@@ -492,15 +523,16 @@ class ResNet(nn.Module):
 
     def forward(self, x):
         if self.deep_stem:
-            x = self.conv1(x)
-            x = self.norm1(x)
-            x = self.relu(x)
-            x = self.conv2(x)
-            x = self.norm2(x)
-            x = self.relu(x)
-            x = self.conv3(x)
-            x = self.norm3(x)
-            x = self.relu(x)
+            # x = self.conv1(x)
+            # x = self.norm1(x)
+            # x = self.relu(x)
+            # x = self.conv2(x)
+            # x = self.norm2(x)
+            # x = self.relu(x)
+            # x = self.conv3(x)
+            # x = self.norm3(x)
+            # x = self.relu(x)
+            x = self.stem(x)
         else:
             x = self.conv1(x)
             x = self.norm1(x)

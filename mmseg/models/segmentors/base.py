@@ -73,7 +73,6 @@ class BaseSegmentor(nn.Module):
             assert all(shape == pad_shapes[0] for shape in pad_shapes)
 
         if num_augs == 1:
-            # TODO support batch_size > 2
             return self.simple_test(imgs[0], img_metas[0], **kwargs)
         else:
             return self.aug_test(imgs, img_metas, **kwargs)

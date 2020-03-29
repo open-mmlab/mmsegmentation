@@ -6,8 +6,9 @@ cudnn_benchmark = True
 # model training and testing settings
 train_cfg = dict(sampler=None)
 test_cfg = dict(
-    crop_scale=713,
-    stride=513,
+    mode='slide',
+    crop_size=713,
+    stride=476,
 )
 # optimizer
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)

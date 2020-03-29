@@ -167,7 +167,7 @@ def _dist_train(model,
         val_dataset = build_dataset(cfg.data.val, dict(test_mode=True))
         val_dataloader = build_dataloader(
             val_dataset,
-            imgs_per_gpu=1,
+            imgs_per_gpu=cfg.data.imgs_per_gpu,
             workers_per_gpu=cfg.data.workers_per_gpu,
             dist=True,
             shuffle=False)

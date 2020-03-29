@@ -203,10 +203,15 @@ class Pad(object):
         pad_val (float, optional): Padding value, 0 by default.
     """
 
-    def __init__(self, size=None, size_divisor=None, pad_val=0):
+    def __init__(self,
+                 size=None,
+                 size_divisor=None,
+                 pad_val=0,
+                 seg_pad_val=255):
         self.size = size
         self.size_divisor = size_divisor
         self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
         # only one of size and size_divisor should be valid
         assert size is not None or size_divisor is not None
         assert size is None or size_divisor is None
@@ -224,7 +229,10 @@ class Pad(object):
 
     def _pad_seg(self, results):
         for key in results.get('seg_fields', []):
-            results[key] = mmcv.impad(results[key], results['pad_shape'][:2])
+            results[key] = mmcv.impad(
+                results[key],
+                results['pad_shape'][:2],
+                pad_val=self.seg_pad_val)
 
     def __call__(self, results):
         self._pad_img(results)
@@ -321,12 +329,63 @@ class RandomRotate(object):
         angle = np.random.uniform(*self.rotate_range)
         results['img'] = mmcv.imrotate(img, angle)
 
-        # crop semantic seg
+        # rotate semantic seg
         for key in results.get('seg_fields', []):
-            # TODO: interpolate and padding
-            results[key] = mmcv.imrotate(results[key], angle)
+            # TODO mmcv doesn't have interpolate option, use cv2 for now
+            # TODO: interpolate in mmcv.rotate
+            results[key] = self.imrotate(results[key], angle)
 
         return results
+
+    @staticmethod
+    def imrotate(img,
+                 angle,
+                 center=None,
+                 scale=1.0,
+                 border_value=0,
+                 auto_bound=False,
+                 interpolation='nearest'):
+        """Rotate an image.
+
+        Args:
+            img (ndarray): Image to be rotated.
+            angle (float): Rotation angle in degrees, positive values mean
+                clockwise rotation.
+            center (tuple): Center of the rotation in the source image, by
+                default it is the center of the image.
+            scale (float): Isotropic scale factor.
+            border_value (int): Border value.
+            auto_bound (bool): Whether to adjust the image size to cover the
+                whole rotated image.
+
+        Returns:
+            ndarray: The rotated image.
+        """
+        from mmcv.image.resize import interp_codes
+        import cv2
+        if center is not None and auto_bound:
+            raise ValueError('`auto_bound` conflicts with `center`')
+        h, w = img.shape[:2]
+        if center is None:
+            center = ((w - 1) * 0.5, (h - 1) * 0.5)
+        assert isinstance(center, tuple)
+
+        matrix = cv2.getRotationMatrix2D(center, -angle, scale)
+        if auto_bound:
+            cos = np.abs(matrix[0, 0])
+            sin = np.abs(matrix[0, 1])
+            new_w = h * sin + w * cos
+            new_h = h * cos + w * sin
+            matrix[0, 2] += (new_w - w) * 0.5
+            matrix[1, 2] += (new_h - h) * 0.5
+            w = int(np.round(new_w))
+            h = int(np.round(new_h))
+        rotated = cv2.warpAffine(
+            img,
+            matrix, (w, h),
+            borderValue=border_value,
+            flags=interp_codes[interpolation])
+        return rotated
 
     def __repr__(self):
         return self.__class__.__name__ + '(angle_range={})'.format(

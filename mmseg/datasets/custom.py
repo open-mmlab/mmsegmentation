@@ -8,9 +8,9 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 from mmseg.core import mean_iou
+from mmseg.utils import print_log
 from .pipelines import Compose
 from .registry import DATASETS
-from mmseg.utils import print_log
 
 
 @DATASETS.register_module
@@ -151,7 +151,7 @@ class CustomDataset(Dataset):
         eval_results = {}
         gt_seg_maps = [
             mmcv.imread(img_info['ann']['seg_map'],
-                        flag='unchanged').squeeze().astype(np.uint8)
+                        flag='unchanged').squeeze().astype(np.int)
             for img_info in self.img_infos
         ]
         if self.CLASSES is None:
@@ -160,10 +160,10 @@ class CustomDataset(Dataset):
         else:
             num_classes = len(self.CLASSES)
 
-        iou = mean_iou(results, gt_seg_maps, num_classes,
-                        ignore_index=self.ignore_index)
-        summary_str = ""
-        summary_str += "per class results:\n"
+        iou = mean_iou(
+            results, gt_seg_maps, num_classes, ignore_index=self.ignore_index)
+        summary_str = ''
+        summary_str += 'per class results:\n'
 
         line_format = '{:<15} {:>10}\n'
         if self.CLASSES is None:
