@@ -3,7 +3,7 @@ import random
 from functools import partial
 
 import numpy as np
-from mmcv.parallel import collate
+from mmcv.parallel import collate as _collate
 from mmcv.runner import get_dist_info
 from torch.utils.data import DataLoader
 
@@ -16,6 +16,13 @@ if platform.system() != 'Windows':
     hard_limit = rlimit[1]
     soft_limit = min(4096, hard_limit)
     resource.setrlimit(resource.RLIMIT_NOFILE, (soft_limit, hard_limit))
+
+
+# TODO: make a PR in mmcv
+def collate(batch, samples_per_gpu=1):
+    if len(batch) % samples_per_gpu != 0:
+        samples_per_gpu = 1
+    return _collate(batch, samples_per_gpu)
 
 
 def build_dataloader(dataset,
@@ -73,7 +80,7 @@ def build_dataloader(dataset,
         sampler=sampler,
         num_workers=num_workers,
         collate_fn=partial(collate, samples_per_gpu=imgs_per_gpu),
-        pin_memory=False,
+        pin_memory=True,
         worker_init_fn=init_fn,
         **kwargs)
 

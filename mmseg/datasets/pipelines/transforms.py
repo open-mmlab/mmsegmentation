@@ -181,8 +181,9 @@ class RandomFlip(object):
 
             # flip segs
             for key in results.get('seg_fields', []):
+                # use copy() to make numpy stride positive
                 results[key] = mmcv.imflip(
-                    results[key], direction=results['flip_direction'])
+                    results[key], direction=results['flip_direction']).copy()
         return results
 
     def __repr__(self):
