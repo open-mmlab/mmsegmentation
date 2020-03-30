@@ -160,24 +160,34 @@ class CustomDataset(Dataset):
         else:
             num_classes = len(self.CLASSES)
 
-        iou = mean_iou(
+        all_acc, acc, iou = mean_iou(
             results, gt_seg_maps, num_classes, ignore_index=self.ignore_index)
         summary_str = ''
         summary_str += 'per class results:\n'
 
-        line_format = '{:<15} {:>10}\n'
+        line_format = '{:<15} {:>10} {:>10}\n'
+        summary_str += line_format.format('Class', 'IoU', 'Acc')
         if self.CLASSES is None:
             class_names = tuple(range(num_classes))
         else:
             class_names = self.CLASSES
         for i in range(num_classes):
             iou_str = '{:.2f}'.format(iou[i] * 100)
-            summary_str += line_format.format(class_names[i], iou_str)
+            acc_str = '{:.2f}'.format(acc[i] * 100)
+            summary_str += line_format.format(class_names[i], iou_str, acc_str)
+        summary_str += 'per class results:\n'
+        line_format = '{:<15} {:>10} {:>10} {:>10}\n'
+        summary_str += line_format.format('Scope', 'mIoU', 'mAcc', 'aAcc')
+
         iou_str = '{:.2f}'.format(np.nanmean(iou) * 100)
-        summary_str += line_format.format('mean', iou_str)
+        acc_str = '{:.2f}'.format(np.nanmean(acc) * 100)
+        all_acc_str = '{:.2f}'.format(all_acc * 100)
+        summary_str += line_format.format('global', iou_str, acc_str,
+                                          all_acc_str)
         print_log(summary_str, logger)
 
         eval_results['mIoU'] = np.nanmean(iou)
+        eval_results['mAcc'] = np.nanmean(acc)
 
         return eval_results
 

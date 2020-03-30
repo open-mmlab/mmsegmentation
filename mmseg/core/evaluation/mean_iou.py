@@ -30,7 +30,9 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index):
         mat = intersect_over_union(
             results[i], gt_seg_maps[i], num_classes, ignore_index=ignore_index)
         total_mat += mat
+    all_acc = np.diag(total_mat).sum() / total_mat.sum()
+    acc = np.diag(total_mat) / total_mat.sum(axis=1)
     iou = np.diag(total_mat) / (
         total_mat.sum(axis=1) + total_mat.sum(axis=0) - np.diag(total_mat))
 
-    return iou
+    return all_acc, acc, iou
