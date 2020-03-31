@@ -1,4 +1,5 @@
 # dataset settings
+crop_size = (713, 713)
 dataset_type = 'CityscapesDataset'
 data_root = 'data/cityscapes/'
 img_norm_cfg = dict(
@@ -12,9 +13,9 @@ train_pipeline = [
         multiscale_mode='range',
         keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
-    dict(type='RandomCrop', crop_size=(713, 713)),
+    dict(type='RandomCrop', crop_size=crop_size),
     dict(type='Normalize', **img_norm_cfg),
-    dict(type='Pad', size=(713, 713)),
+    dict(type='Pad', size=crop_size),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg']),
 ]

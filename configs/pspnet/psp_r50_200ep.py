@@ -2,13 +2,14 @@ _base_ = [
     '../_base_/models/psp_r50.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py'
 ]
+crop_size = (713, 713)
 cudnn_benchmark = True
 # model training and testing settings
 train_cfg = dict(sampler=None)
 test_cfg = dict(
     mode='slide',
-    crop_size=713,
-    stride=476,
+    crop_size=crop_size,
+    stride=(476, 476),
 )
 
 img_norm_cfg = dict(
@@ -24,9 +25,9 @@ train_pipeline = [
     dict(type='RandomRotate', rotate_range=(-10, 10), rotate_ratio=0.5),
     dict(type='RandomGaussianBlur', blur_ratio=0.5),
     dict(type='RandomFlip', flip_ratio=0.5),
-    dict(type='RandomCrop', crop_size=(713, 713)),
+    dict(type='RandomCrop', crop_size=crop_size),
     dict(type='Normalize', **img_norm_cfg),
-    dict(type='Pad', size=(713, 713)),
+    dict(type='Pad', size=crop_size),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg']),
 ]

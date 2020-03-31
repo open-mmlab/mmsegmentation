@@ -188,6 +188,7 @@ class CustomDataset(Dataset):
 
         eval_results['mIoU'] = np.nanmean(iou)
         eval_results['mAcc'] = np.nanmean(acc)
+        eval_results['aAcc'] = all_acc
 
         return eval_results
 

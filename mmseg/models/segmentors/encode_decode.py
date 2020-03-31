@@ -65,32 +65,32 @@ class EncodeDecode(BaseSegmentor):
 
     # TODO refactor
     def slide_inference(self, img, img_meta, rescale):
-        stride = self.test_cfg.stride
-        crop_size = self.test_cfg.crop_size
-        batch_size, _, img_height, img_width = img.size()
+        h_stride, w_stride = self.test_cfg.stride
+        h_crop, w_crop = self.test_cfg.crop_size
+        batch_size, _, h_img, w_img = img.size()
         num_classes = len(self.CLASSES)
-        height_grids = (img_height - crop_size + stride - 1) // stride + 1
-        width_grids = (img_width - crop_size + stride - 1) // stride + 1
+        h_grids = (h_img - h_crop + h_stride - 1) // h_stride + 1
+        w_grids = (w_img - w_crop + w_stride - 1) // w_stride + 1
         # TODO should not padding zero
-        preds = img.new_zeros((batch_size, num_classes, img_height, img_width))
-        count_mat = img.new_zeros((batch_size, 1, img_height, img_width))
-        for h_idx in range(height_grids):
-            for w_idx in range(width_grids):
-                y1 = h_idx * stride
-                x1 = w_idx * stride
-                y2 = min(y1 + crop_size, img_height)
-                x2 = min(x1 + crop_size, img_width)
-                y1 = max(y2 - crop_size, 0)
-                x1 = max(x2 - crop_size, 0)
+        preds = img.new_zeros((batch_size, num_classes, h_img, w_img))
+        count_mat = img.new_zeros((batch_size, 1, h_img, w_img))
+        for h_idx in range(h_grids):
+            for w_idx in range(w_grids):
+                y1 = h_idx * h_stride
+                x1 = w_idx * w_stride
+                y2 = min(y1 + h_crop, h_img)
+                x2 = min(x1 + w_crop, w_img)
+                y1 = max(y2 - h_crop, 0)
+                x1 = max(x2 - w_crop, 0)
                 crop_img = img[:, :, y1:y2, x1:x2]
                 pad_img = crop_img.new_zeros(
-                    (crop_img.size(0), crop_img.size(1), crop_size, crop_size))
+                    (crop_img.size(0), crop_img.size(1), h_crop, w_crop))
                 pad_img[:, :, :y2 - y1, :x2 - x1] = crop_img
                 pad_x = self.extract_feat(pad_img)
                 pad_seg_logit = self.decode_head(pad_x)
                 pad_seg_logit = F.interpolate(
                     input=pad_seg_logit,
-                    size=(crop_size, crop_size),
+                    size=pad_img.shape[2:],
                     mode='bilinear',
                     align_corners=True)
                 # TODO DANET use exp here
