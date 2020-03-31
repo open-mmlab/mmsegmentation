@@ -9,12 +9,14 @@ train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', with_seg=True),
     dict(
-        type='Resize', img_scale=[(1024, 512), (4096, 2048)], keep_ratio=True),
-    dict(type='RandomCrop', crop_size=(769, 769)),
-    dict(type='RandomRotate', rotate_range=(-10, 10)),
+        type='Resize',
+        img_scale=[(1024, 512), (4096, 2048)],
+        multiscale_mode='range',
+        keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
+    dict(type='RandomCrop', crop_size=(713, 713)),
     dict(type='Normalize', **img_norm_cfg),
-    dict(type='Pad', size=(769, 769)),
+    dict(type='Pad', size=(713, 713)),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg']),
 ]

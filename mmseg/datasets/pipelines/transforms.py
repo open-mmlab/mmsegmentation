@@ -320,21 +320,34 @@ class RandomRotate(object):
 
     Args:
         rotate_range (tuple): Expected range for rotation (min, max).
+        rotate_ratio (float, optional): The rotation probability.
     """
 
-    def __init__(self, rotate_range):
+    def __init__(self,
+                 rotate_range,
+                 pad_val=0,
+                 seg_pad_val=255,
+                 rotate_ratio=None):
         self.rotate_range = rotate_range
+        self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
+        if rotate_ratio is not None:
+            assert rotate_ratio >= 0 and rotate_ratio <= 1
+        self.rotate_ratio = rotate_ratio
 
     def __call__(self, results):
-        img = results['img']
-        angle = np.random.uniform(*self.rotate_range)
-        results['img'] = mmcv.imrotate(img, angle)
+        if np.random.rand() < self.rotate_ratio:
+            img = results['img']
+            angle = np.random.uniform(*self.rotate_range)
+            results['img'] = mmcv.imrotate(
+                img, angle, border_value=self.pad_val)
 
-        # rotate semantic seg
-        for key in results.get('seg_fields', []):
-            # TODO mmcv doesn't have interpolate option, use cv2 for now
-            # TODO: interpolate in mmcv.rotate
-            results[key] = self.imrotate(results[key], angle)
+            # rotate semantic seg
+            for key in results.get('seg_fields', []):
+                # TODO mmcv doesn't have interpolate option, use cv2 for now
+                # TODO: interpolate in mmcv.rotate
+                results[key] = self.imrotate(
+                    results[key], angle, border_value=self.seg_pad_val)
 
         return results
 
@@ -505,6 +518,22 @@ class PhotoMetricDistortion(object):
                          (self.saturation_lower, self.saturation_upper),
                          self.hue_delta)
         return repr_str
+
+
+@PIPELINES.register_module
+class RandomGaussianBlur(object):
+
+    def __init__(self, blur_ratio, radius=5):
+        self.blur_ratio = blur_ratio
+        self.radius = radius
+
+    def __call__(self, results):
+        if random.random() < self.blur_ratio:
+            import cv2
+            img = results['img']
+            results['img'] = cv2.GaussianBlur(img, (self.radius, self.radius),
+                                              0)
+        return results
 
 
 @PIPELINES.register_module

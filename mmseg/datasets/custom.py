@@ -175,7 +175,7 @@ class CustomDataset(Dataset):
             iou_str = '{:.2f}'.format(iou[i] * 100)
             acc_str = '{:.2f}'.format(acc[i] * 100)
             summary_str += line_format.format(class_names[i], iou_str, acc_str)
-        summary_str += 'per class results:\n'
+        summary_str += 'Summary:\n'
         line_format = '{:<15} {:>10} {:>10} {:>10}\n'
         summary_str += line_format.format('Scope', 'mIoU', 'mAcc', 'aAcc')
 
