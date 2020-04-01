@@ -1,5 +1,5 @@
 # model settings
-norm_cfg = dict(type='SyncBN', requires_grad=True)
+norm_cfg = dict(type='NaiveSyncBN', requires_grad=True)
 model = dict(
     type='EncodeDecode',
     pretrained='torchvision://resnet50',

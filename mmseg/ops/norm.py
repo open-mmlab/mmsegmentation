@@ -1,10 +1,24 @@
 import torch.nn as nn
 
+from .naive_sync_bn import NaiveSyncBatchNorm
+
+try:
+    import apex
+except ImportError:
+    print('apex is not installed')
+try:
+    import pape
+except ImportError:
+    print('pape is not installed')
+
 norm_cfg = {
     # format: layer_type: (abbreviation, module)
     'BN': ('bn', nn.BatchNorm2d),
     'SyncBN': ('bn', nn.SyncBatchNorm),
     'GN': ('gn', nn.GroupNorm),
+    'NaiveSyncBN': ('bn', NaiveSyncBatchNorm),
+    'ApexSyncBN': ('bn', apex.parallel.SyncBatchNorm),
+    'PapeSyncBN': ('bn', pape.op.SyncBatchNorm2d)
     # and potentially 'SN'
 }
 

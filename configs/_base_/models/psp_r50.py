@@ -1,17 +1,15 @@
 # model settings
-norm_cfg = dict(type='SyncBN', requires_grad=True)
+norm_cfg = dict(type='NaiveSyncBN', requires_grad=True)
 model = dict(
     type='EncodeDecode',
-    pretrained='./pretrain_model/resnet50_hszhao.pth',
+    pretrained='torchvision://resnet50',
     backbone=dict(
         type='ResNet',
         depth=50,
-        base_channels=128,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
         dilations=(1, 1, 2, 4),
         strides=(1, 2, 1, 1),
-        deep_stem=True,
         norm_cfg=norm_cfg,
         norm_eval=False,
         style='pytorch'),
