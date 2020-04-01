@@ -318,7 +318,7 @@ class ResNet(nn.Module):
             in resblocks to let them behave as identity.
 
     Example:
-        >>> from mmdet.models import ResNet
+        >>> from mmseg.models import ResNet
         >>> import torch
         >>> self = ResNet(depth=18)
         >>> self.eval()

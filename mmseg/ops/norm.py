@@ -18,6 +18,8 @@ except ImportError:
     print('apex is not installed')
 try:
     import pape
+    # init pape distributed first before import pape.op.SyncBN
+    pape.distributed.init()
     norm_cfg['PapeSyncBN'] = ('bn', pape.op.SyncBatchNorm2d)
 except ImportError:
     print('pape is not installed')
