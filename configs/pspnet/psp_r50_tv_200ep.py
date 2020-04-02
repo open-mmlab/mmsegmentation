@@ -25,9 +25,8 @@ train_pipeline = [
     dict(type='RandomRotate', rotate_range=(-10, 10), rotate_ratio=0.5),
     dict(type='RandomGaussianBlur', blur_ratio=0.5),
     dict(type='RandomFlip', flip_ratio=0.5),
-    dict(type='RandomCrop', crop_size=crop_size),
     dict(type='Normalize', **img_norm_cfg),
-    dict(type='Pad', size=crop_size),
+    dict(type='RandomCrop', crop_size=crop_size),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg']),
 ]

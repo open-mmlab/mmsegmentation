@@ -285,8 +285,10 @@ class RandomCrop(object):
         crop_size (tuple): Expected size after cropping, (h, w).
     """
 
-    def __init__(self, crop_size):
+    def __init__(self, crop_size, pad_val=0, seg_pad_val=255):
         self.crop_size = crop_size
+        self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
 
     def __call__(self, results):
         img = results['img']
@@ -294,18 +296,21 @@ class RandomCrop(object):
         margin_w = max(img.shape[1] - self.crop_size[1], 0)
         offset_h = np.random.randint(0, margin_h + 1)
         offset_w = np.random.randint(0, margin_w + 1)
-        crop_y1, crop_y2 = offset_h, offset_h + self.crop_size[0]
-        crop_x1, crop_x2 = offset_w, offset_w + self.crop_size[1]
+        # mmcv.imcrop +1 in calculate height and width
+        crop_y1, crop_y2 = offset_h, offset_h + self.crop_size[0] - 1
+        crop_x1, crop_x2 = offset_w, offset_w + self.crop_size[1] - 1
+        crop_bbox = np.array([crop_x1, crop_y1, crop_x2, crop_y2])
 
         # crop the image
-        img = img[crop_y1:crop_y2, crop_x1:crop_x2, ...]
+        img = mmcv.imcrop(img, crop_bbox, pad_fill=self.pad_val)
         img_shape = img.shape
         results['img'] = img
         results['img_shape'] = img_shape
 
         # crop semantic seg
         for key in results.get('seg_fields', []):
-            results[key] = results[key][crop_y1:crop_y2, crop_x1:crop_x2]
+            results[key] = mmcv.imcrop(
+                results[key], crop_bbox, pad_fill=self.seg_pad_val)
 
         return results
 
