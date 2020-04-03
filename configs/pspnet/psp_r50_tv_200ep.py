@@ -17,11 +17,7 @@ img_norm_cfg = dict(
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', with_seg=True),
-    dict(
-        type='Resize',
-        img_scale=[(1024, 512), (4096, 2048)],
-        multiscale_mode='range',
-        keep_ratio=True),
+    dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
     dict(type='RandomRotate', rotate_range=(-10, 10), rotate_ratio=0.5),
     dict(type='RandomGaussianBlur', blur_ratio=0.5),
     dict(type='RandomFlip', flip_ratio=0.5),
@@ -52,7 +48,12 @@ data = dict(
     test=dict(pipeline=test_pipeline))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(
+    type='SGD',
+    lr=0.01,
+    momentum=0.9,
+    weight_decay=0.0001,
+    paramwise_options=dict(norm_decay_mult=0))
 optimizer_config = dict()
 # learning policy
 lr_config = dict(
