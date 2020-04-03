@@ -25,10 +25,11 @@ model = dict(
     auxiliary_head=dict(
         type='FCNHead',
         in_channels=1024,
-        channels=512,
+        channels=256,
         num_convs=1,
         num_classes=19,
         in_index=-2,
         norm_cfg=norm_cfg,
+        concat_input=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)))

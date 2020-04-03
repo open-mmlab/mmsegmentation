@@ -18,11 +18,14 @@ def build_optimizer(model, optimizer_cfg):
             Optional fields are:
                 - any arguments of the corresponding optimizer type, e.g.,
                   weight_decay, momentum, etc.
-                - paramwise_options: a dict with 4 accepted fileds
-                  (bias_lr_mult, bias_decay_mult, norm_decay_mult,
-                  dwconv_decay_mult).
+                - paramwise_options: a dict with 5 accepted fileds
+                  (bias_lr_mult, name_lr_mult, bias_decay_mult,
+                  norm_decay_mult, dwconv_decay_mult).
                   `bias_lr_mult` and `bias_decay_mult` will be multiplied to
                   the lr and weight decay respectively for all bias parameters
+                  `name_lr_mult` is list[dict], each dict contains key
+                  `name`, and `lr_mult`, any parameter that has `name` will
+                  be multiplied to the lr
                   (except for the normalization layers), and
                   `norm_decay_mult` will be multiplied to the weight decay
                   for all weight and bias parameters of normalization layers.
@@ -62,6 +65,8 @@ def build_optimizer(model, optimizer_cfg):
         bias_decay_mult = paramwise_options.get('bias_decay_mult', 1.)
         norm_decay_mult = paramwise_options.get('norm_decay_mult', 1.)
         dwconv_decay_mult = paramwise_options.get('dwconv_decay_mult', 1.)
+        name_lr_mult = paramwise_options.get('name_lr_mult', [])
+        assert isinstance(name_lr_mult, list)
         named_modules = dict(model.named_modules())
         # set param-wise lr and weight decay
         params = []
@@ -84,6 +89,12 @@ def build_optimizer(model, optimizer_cfg):
                 param_group['lr'] = base_lr * bias_lr_mult
                 if base_wd is not None:
                     param_group['weight_decay'] = base_wd * bias_decay_mult
+
+            for n_l in name_lr_mult:
+                assert isinstance(n_l, dict)
+                if n_l['name'] in name:
+                    param_group['lr'] = base_lr * n_l['lr_mult']
+                    print(name, n_l['lr_mult'])
 
             module_name = name.replace('.weight', '').replace('.bias', '')
             if module_name in named_modules and base_wd is not None:
