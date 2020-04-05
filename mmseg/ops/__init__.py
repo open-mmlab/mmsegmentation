@@ -1,3 +1,4 @@
+from .cc_attention import CrissCrossAttention
 from .context_block import ContextBlock
 from .conv import build_conv_layer
 from .conv_module import ConvModule
@@ -18,5 +19,5 @@ __all__ = [
     'ContextBlock', 'GeneralizedAttention', 'NonLocal2D',
     'get_compiler_version', 'get_compiling_cuda_version', 'build_conv_layer',
     'ConvModule', 'ConvWS2d', 'conv_ws_2d', 'build_norm_layer', 'Scale',
-    'build_upsample_layer', 'build_plugin_layer'
+    'build_upsample_layer', 'build_plugin_layer', 'CrissCrossAttention'
 ]

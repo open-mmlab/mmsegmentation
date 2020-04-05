@@ -14,8 +14,8 @@ class FCNHead(DecodeHead):
         self.num_convs = num_convs
         self.concat_input = concat_input
         super(FCNHead, self).__init__(**kwargs)
-        convs = []
-        convs.append(
+        self.convs = nn.ModuleList()
+        self.convs.append(
             ConvModule(
                 self.in_channels,
                 self.channels,
@@ -25,7 +25,7 @@ class FCNHead(DecodeHead):
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg))
         for i in range(num_convs - 1):
-            convs.append(
+            self.convs.append(
                 ConvModule(
                     self.channels,
                     self.channels,
@@ -34,7 +34,6 @@ class FCNHead(DecodeHead):
                     conv_cfg=self.conv_cfg,
                     norm_cfg=self.norm_cfg,
                     act_cfg=self.act_cfg))
-        self.convs = nn.Sequential(*convs)
         if self.concat_input:
             self.conv_cat = ConvModule(
                 self.in_channels + self.channels,
@@ -47,7 +46,9 @@ class FCNHead(DecodeHead):
 
     def forward(self, inputs):
         x = inputs[self.in_index]
-        output = self.convs(x)
+        output = x
+        for conv in self.convs:
+            output = conv(output)
         if self.concat_input:
             output = self.conv_cat(torch.cat([x, output], dim=1))
         output = self.cls_seg(output)
