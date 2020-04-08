@@ -341,7 +341,7 @@ class RandomRotate(object):
         self.rotate_ratio = rotate_ratio
 
     def __call__(self, results):
-        if np.random.rand() < self.rotate_ratio:
+        if self.rotate_ratio is None or np.random.rand() < self.rotate_ratio:
             img = results['img']
             angle = np.random.uniform(*self.rotate_range)
             results['img'] = mmcv.imrotate(
