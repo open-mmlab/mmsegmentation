@@ -4,7 +4,7 @@ _base_ = [
 ]
 model = dict(
     pretrained='pretrain_model/resnet101c128_csail-159f67a3.pth',
-    backbone=dict(depth=101, deep_stem=True, base_channels=128))
+    backbone=dict(depth=101))
 crop_size = (769, 769)
 cudnn_benchmark = True
 # model training and testing settings
@@ -48,7 +48,7 @@ data = dict(
     test=dict(pipeline=test_pipeline))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 optimizer_config = dict()
 # learning policy
 lr_config = dict(
@@ -59,4 +59,3 @@ lr_config = dict(
 # runtime settings
 total_epochs = 16
 evaluation = dict(interval=1, metric='mIoU')
-find_unused_parameters = True

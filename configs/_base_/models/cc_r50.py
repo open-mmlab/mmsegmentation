@@ -1,8 +1,8 @@
 # model settings
-norm_cfg = dict(type='NaiveSyncBN', requires_grad=True)
+norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncodeDecode',
-    pretrained='torchvision://resnet50',
+    pretrained='pretrain_model/resnet50c128_csail-0a46e9a7.pth',
     backbone=dict(
         type='ResNet',
         depth=50,
@@ -10,6 +10,8 @@ model = dict(
         out_indices=(0, 1, 2, 3),
         dilations=(1, 1, 2, 4),
         strides=(1, 2, 1, 1),
+        deep_stem=True,
+        base_channels=128,
         norm_cfg=norm_cfg,
         norm_eval=False,
         style='pytorch'),
