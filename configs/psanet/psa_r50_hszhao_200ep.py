@@ -48,11 +48,12 @@ data = dict(
 
 # optimizer
 optimizer = dict(
+    constructor='HeadOptimizerConstructor',
+    paramwise_cfg=dict(decode_head_lr_mult=10.),
     type='SGD',
     lr=0.01,
     momentum=0.9,
-    weight_decay=0.0001,
-    paramwise_options=dict(name_lr_mult=[dict(name='head', lr_mult=10)]))
+    weight_decay=0.0001)
 optimizer_config = dict()
 # learning policy
 lr_config = dict(
