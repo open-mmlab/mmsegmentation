@@ -8,6 +8,7 @@ from .generalized_attention import GeneralizedAttention
 from .non_local import NonLocal2D
 from .norm import build_norm_layer
 from .plugin import build_plugin_layer
+from .psa import PSAMask
 from .scale import Scale
 from .upsample import build_upsample_layer
 from .utils import get_compiler_version, get_compiling_cuda_version
@@ -18,5 +19,5 @@ __all__ = [
     'ContextBlock', 'GeneralizedAttention', 'NonLocal2D',
     'get_compiler_version', 'get_compiling_cuda_version', 'build_conv_layer',
     'ConvModule', 'ConvWS2d', 'conv_ws_2d', 'build_norm_layer', 'Scale',
-    'build_upsample_layer', 'build_plugin_layer'
+    'build_upsample_layer', 'build_plugin_layer', 'PSAMask'
 ]

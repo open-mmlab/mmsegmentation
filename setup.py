@@ -266,7 +266,12 @@ if __name__ == '__main__':
                 sources_cuda=[
                     'src/cuda/carafe_naive_cuda.cpp',
                     'src/cuda/carafe_naive_cuda_kernel.cu'
-                ])
+                ]),
+            make_cuda_ext(
+                name='psamask_ext',
+                module='mmseg.ops.psa',
+                sources=['src/psamask_ext.cpp', 'src/cpu/psamask_cpu.cpp'],
+                sources_cuda=['src/cuda/psamask_cuda.cu'])
         ],
         cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
