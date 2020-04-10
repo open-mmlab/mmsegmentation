@@ -2,9 +2,6 @@ _base_ = [
     '../_base_/models/cc_r50.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py'
 ]
-model = dict(
-    pretrained='pretrain_model/resnet101c128_csail-159f67a3.pth',
-    backbone=dict(depth=101))
 crop_size = (769, 769)
 cudnn_benchmark = True
 # model training and testing settings
