@@ -26,7 +26,7 @@ class PSAMaskFunction(Function):
 
     @staticmethod
     def backward(ctx, grad_output):
-        input = ctx.saved_tensors
+        input = ctx.saved_tensors[0]
         psa_type = ctx.psa_type
         h_mask, w_mask = ctx.mask_size
         batch_size, channels, h_feature, w_feature = input.size()
