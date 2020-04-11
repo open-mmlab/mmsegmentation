@@ -13,10 +13,22 @@ class NLHead(FCNHead):
         - Nonlocal block in (https://arxiv.org/abs/1711.07971)
     """
 
-    def __init__(self, reduction=2, **kwargs):
+    def __init__(self,
+                 reduction=2,
+                 use_scale=True,
+                 mode='embedded_gaussian',
+                 **kwargs):
         super(NLHead, self).__init__(num_convs=2, **kwargs)
         self.reduction = reduction
-        self.nl_block = NonLocal2D(self.channels, reduction)
+        self.use_scale = use_scale
+        self.mode = mode
+        self.nl_block = NonLocal2D(
+            in_channels=self.channels,
+            reduction=self.reduction,
+            use_scale=self.use_scale,
+            conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
+            mode=self.mode)
 
     def forward(self, inputs):
         x = inputs[self.in_index]
