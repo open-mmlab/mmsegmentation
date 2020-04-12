@@ -23,7 +23,7 @@ class HRModule(nn.Module):
                  multiscale_output=True,
                  with_cp=False,
                  conv_cfg=None,
-                 norm_cfg=dict(type='BN')):
+                 norm_cfg=dict(type='BN', requires_grad=True)):
         super(HRModule, self).__init__()
         self._check_branches(num_branches, num_blocks, in_channels,
                              num_channels)
@@ -257,8 +257,8 @@ class HRNet(nn.Module):
                  extra,
                  in_channels=3,
                  conv_cfg=None,
-                 norm_cfg=dict(type='BN'),
-                 norm_eval=True,
+                 norm_cfg=dict(type='BN', requires_grad=True),
+                 norm_eval=False,
                  with_cp=False,
                  zero_init_residual=False):
         super(HRNet, self).__init__()

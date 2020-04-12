@@ -109,7 +109,6 @@ class EncodeDecode(BaseSegmentor):
         return preds
 
     def whole_inference(self, img, img_meta, rescale):
-        # TODO scale
         x = self.extract_feat(img)
         seg_logit = self.decode_head(x)
         if rescale:
