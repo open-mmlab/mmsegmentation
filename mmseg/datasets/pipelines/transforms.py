@@ -407,8 +407,9 @@ class RandomRotate(object):
         return rotated
 
     def __repr__(self):
-        return self.__class__.__name__ + '(angle_range={})'.format(
-            self.angle_range)
+        return self.__class__.__name__ + \
+               '(rotate_range={}, rotate_ratio={})'.format(
+                   self.rotate_range, self.rotate_ratio)
 
 
 @PIPELINES.register_module
