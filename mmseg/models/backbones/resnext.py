@@ -127,6 +127,6 @@ class ResNeXt(ResNet):
         self.base_width = base_width
         super(ResNeXt, self).__init__(**kwargs)
 
-    def _make_res_layer(self, **kwargs):
+    def make_res_layer(self, **kwargs):
         return ResLayer(
             groups=self.groups, base_width=self.base_width, **kwargs)
