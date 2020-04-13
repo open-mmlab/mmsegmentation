@@ -26,7 +26,7 @@ before_script:
   script:
     - echo "Start building..."
     - conda install av -c conda-forge -y
-    - pip install -v -e . all
+    - pip install -v -e .[all]
     - python -c "import mmseg; print(mmseg.__version__)"
     - echo "Start testing..."
     - coverage run --branch --source mmseg -m pytest tests/
