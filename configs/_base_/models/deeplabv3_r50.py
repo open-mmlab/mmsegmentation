@@ -1,7 +1,7 @@
 # model settings
 norm_cfg = dict(type='NaiveSyncBN', requires_grad=True)
 model = dict(
-    type='EncodeDecode',
+    type='EncoderDecoder',
     pretrained='torchvision://resnet50',
     backbone=dict(
         type='ResNet',
