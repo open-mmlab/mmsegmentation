@@ -358,6 +358,8 @@ class ResNet(nn.Module):
                  dcn=None,
                  stage_with_dcn=(False, False, False, False),
                  plugins=None,
+                 multi_grid=None,
+                 contract_dilation=False,
                  with_cp=False,
                  zero_init_residual=True):
         super(ResNet, self).__init__()
@@ -385,6 +387,8 @@ class ResNet(nn.Module):
         if dcn is not None:
             assert len(stage_with_dcn) == num_stages
         self.plugins = plugins
+        self.multi_grid = multi_grid
+        self.contract_dilation = contract_dilation
         self.zero_init_residual = zero_init_residual
         self.block, stage_blocks = self.arch_settings[depth]
         self.stage_blocks = stage_blocks[:num_stages]
@@ -401,6 +405,9 @@ class ResNet(nn.Module):
                 stage_plugins = self.make_stage_plugins(plugins, i)
             else:
                 stage_plugins = None
+            # multi grid is applied to last layer only
+            stage_multi_grid = multi_grid if i == len(
+                self.stage_blocks) - 1 else None
             planes = 64 * 2**i
             res_layer = self.make_res_layer(
                 block=self.block,
@@ -415,7 +422,9 @@ class ResNet(nn.Module):
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 dcn=dcn,
-                plugins=stage_plugins)
+                plugins=stage_plugins,
+                multi_grid=stage_multi_grid,
+                contract_dilation=contract_dilation)
             self.inplanes = planes * self.block.expansion
             layer_name = 'layer{}'.format(i + 1)
             self.add_module(layer_name, res_layer)

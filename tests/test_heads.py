@@ -2,9 +2,20 @@ import pytest
 import torch
 from torch import nn
 
-from mmseg.models.decode_heads import FCNHead, PSPHead
+from mmseg.models.decode_heads import ASPPHead, FCNHead, PSPHead
 from mmseg.models.decode_heads.decode_head import DecodeHead
 from mmseg.ops import ConvModule
+
+
+def _conv_has_norm(module, sync_bn):
+    for m in module.modules():
+        if isinstance(m, ConvModule):
+            if not m.with_norm:
+                return False
+            if sync_bn:
+                if not isinstance(m.bn, nn.SyncBatchNorm):
+                    return False
+    return True
 
 
 def test_decode_head():
@@ -133,18 +144,39 @@ def test_psp_head():
 
     # test no norm_cfg
     head = PSPHead(in_channels=32, channels=16)
-    for m in head.modules():
-        if isinstance(m, ConvModule):
-            assert not m.with_norm
+    assert not _conv_has_norm(head, sync_bn=False)
 
     # test with norm_cfg
     head = PSPHead(in_channels=32, channels=16, norm_cfg=dict(type='SyncBN'))
-    for m in head.modules():
-        if isinstance(m, ConvModule):
-            assert m.with_norm and isinstance(m.bn, nn.SyncBatchNorm)
+    assert _conv_has_norm(head, sync_bn=True)
 
     inputs = [torch.randn(1, 32, 40, 40)]
     head = PSPHead(in_channels=32, channels=16, pool_scales=(1, 2, 3))
-    assert head.pool_scales == (1, 2, 3)
+    assert head.psp_modules[0][0].output_size == 1
+    assert head.psp_modules[1][0].output_size == 2
+    assert head.psp_modules[2][0].output_size == 3
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 40, 40)
+
+
+def test_aspp_head():
+
+    with pytest.raises(AssertionError):
+        # pool_scales must be list|tuple
+        ASPPHead(in_channels=32, channels=16, dilations=1)
+
+    # test no norm_cfg
+    head = ASPPHead(in_channels=32, channels=16)
+    assert not _conv_has_norm(head, sync_bn=False)
+
+    # test with norm_cfg
+    head = ASPPHead(in_channels=32, channels=16, norm_cfg=dict(type='SyncBN'))
+    assert _conv_has_norm(head, sync_bn=True)
+
+    inputs = [torch.randn(1, 32, 40, 40)]
+    head = ASPPHead(in_channels=32, channels=16, dilations=(1, 12, 24))
+    assert head.aspp_modules[0].conv.dilation == (1, 1)
+    assert head.aspp_modules[1].conv.dilation == (12, 12)
+    assert head.aspp_modules[2].conv.dilation == (24, 24)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 40, 40)
