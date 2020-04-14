@@ -1,4 +1,3 @@
-import glob
 import os.path as osp
 import tempfile
 
@@ -26,17 +25,17 @@ class CityscapesDataset(CustomDataset):
     def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix):
         img_infos = []
         assert osp.exists(img_dir)
-        for img in glob.glob(
-                osp.join(img_dir, '**/*' + img_suffix), recursive=True):
-            json_file = img.replace(img_dir,
-                                    ann_dir).replace(img_suffix,
-                                                     'gtFine_polygons.json')
+        for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
+            img_file = osp.join(img_dir, img)
+            # cityscapes dataset has *_gtFine_polygons.json files
+            json_file = osp.join(
+                ann_dir, img.replace(img_suffix, 'gtFine_polygons.json'))
             polygon_json = mmcv.load(json_file)
             height = polygon_json['imgHeight']
             width = polygon_json['imgWidth']
-            img_info = dict(filename=img, height=height, width=width)
-            seg_map = img.replace(img_dir,
-                                  ann_dir).replace(img_suffix, seg_map_suffix)
+            img_info = dict(filename=img_file, height=height, width=width)
+            seg_map = osp.join(ann_dir, img.replace(img_suffix,
+                                                    seg_map_suffix))
             img_info['ann'] = dict(seg_map=seg_map)
             img_infos.append(img_info)
 
@@ -165,10 +164,12 @@ class CityscapesDataset(CustomDataset):
 
         seg_map_list = []
         pred_list = []
-        for seg_map in glob.glob(
-                osp.join(self.ann_dir, '**/*gtFine_labelIds.png'),
-                recursive=True):
-            seg_map_list.append(seg_map)
+
+        # when evaluating with official cityscapesscripts,
+        # **_gtFine_labelIds.png is used
+        for seg_map in mmcv.scandir(
+                self.ann_dir, 'gtFine_labelIds.png', recursive=True):
+            seg_map_list.append(osp.join(self.ann_dir, seg_map))
             pred_list.append(CSEval.getPrediction(CSEval.args, seg_map))
 
         eval_results.update(
