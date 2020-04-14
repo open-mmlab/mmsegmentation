@@ -1,4 +1,3 @@
-import glob
 import os.path as osp
 from functools import reduce
 
@@ -73,15 +72,14 @@ class CustomDataset(Dataset):
 
     def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix):
         img_infos = []
-        for img in glob.glob(
-                osp.join(img_dir, '**/*' + img_suffix), recursive=True):
+        for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
+            img_file = osp.join(img_dir, img)
             # get image shape by read
-            width, height = Image.open(img).size
-            img_info = dict(filename=img, height=height, width=width)
+            width, height = Image.open(img_file).size
+            img_info = dict(filename=img_file, height=height, width=width)
             if ann_dir is not None:
-                seg_map = img.replace(img_dir,
-                                      ann_dir).replace(img_suffix,
-                                                       seg_map_suffix)
+                seg_map = osp.join(ann_dir,
+                                   img.replace(img_suffix, seg_map_suffix))
                 img_info['ann'] = dict(seg_map=seg_map)
             img_infos.append(img_info)
 
