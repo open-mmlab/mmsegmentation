@@ -407,8 +407,9 @@ class RandomRotate(object):
         return rotated
 
     def __repr__(self):
-        return self.__class__.__name__ + '(angle_range={})'.format(
-            self.angle_range)
+        return self.__class__.__name__ + \
+               '(rotate_range={}, rotate_ratio={})'.format(
+                   self.rotate_range, self.rotate_ratio)
 
 
 @PIPELINES.register_module
@@ -538,6 +539,26 @@ class RandomGaussianBlur(object):
             img = results['img']
             results['img'] = cv2.GaussianBlur(img, (self.radius, self.radius),
                                               0)
+        return results
+
+
+@PIPELINES.register_module
+class RandomBrightness(object):
+
+    def __init__(self, shift_value=30, ratio=0.5):
+        self.shift_value = shift_value
+        self.ratio = ratio
+
+    def __call__(self, results):
+        img = results['img']
+        assert isinstance(img, np.ndarray)
+        if random.random() < self.ratio:
+            img = img.astype(np.float32)
+            shift = random.randint(-self.shift_value, self.shift_value)
+            img[:, :, :] += shift
+            img = np.around(img)
+            img = np.clip(img, 0, 255).astype(np.uint8)
+            results['img'] = img
         return results
 
 

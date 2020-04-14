@@ -1,3 +1,6 @@
+from abc import ABCMeta, abstractmethod
+
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -6,6 +9,9 @@ from ..losses import accuracy
 
 
 class DecodeHead(nn.Module):
+    """Base class for DecodeHead"""
+
+    __metaclass__ = ABCMeta
 
     def __init__(self,
                  in_channels,
@@ -16,13 +22,14 @@ class DecodeHead(nn.Module):
                  act_cfg=dict(type='ReLU'),
                  num_classes=19,
                  in_index=-1,
+                 input_transform=None,
                  loss_decode=dict(
                      type='CrossEntropyLoss',
                      use_sigmoid=False,
                      loss_weight=1.0),
                  ignore_index=255):
         super(DecodeHead, self).__init__()
-        self.in_channels = in_channels
+        self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
@@ -38,15 +45,44 @@ class DecodeHead(nn.Module):
         else:
             self.dropout = None
 
+    def _init_inputs(self, in_channels, in_index, input_transform):
+        if input_transform is not None:
+            assert input_transform in ['resize_concat']
+        self.input_transform = input_transform
+        self.in_index = in_index
+        if input_transform == 'resize_concat':
+            assert isinstance(in_channels, (list, tuple))
+            assert isinstance(in_index, (list, tuple))
+            assert len(in_channels) == len(in_index)
+            self.in_channels = sum(in_channels)
+        else:
+            assert isinstance(in_channels, int)
+            assert isinstance(in_index, int)
+            self.in_channels = in_channels
+
     def init_weights(self):
         nn.init.normal_(self.conv_seg.weight, 0, 0.01)
         nn.init.constant_(self.conv_seg.bias, 0)
 
-    def forward(self, inputs):
-        x = inputs[self.in_index]
-        output = self.cls_seg(x)
+    def _transform_inputs(self, inputs):
+        if self.input_transform == 'resize_concat':
+            inputs = [inputs[i] for i in self.in_index]
+            upsampled_inputs = [
+                F.interpolate(
+                    input=x,
+                    size=inputs[0].shape[2:],
+                    mode='bilinear',
+                    align_corners=False) for x in inputs
+            ]
+            inputs = torch.cat(upsampled_inputs, dim=1)
+        else:
+            inputs = inputs[self.in_index]
 
-        return output
+        return inputs
+
+    @abstractmethod
+    def forward(self, inputs):
+        pass
 
     def cls_seg(self, feat):
         if self.dropout is not None:
@@ -60,13 +96,13 @@ class DecodeHead(nn.Module):
             input=seg_logit,
             size=seg_label.shape[2:],
             mode='bilinear',
-            align_corners=True)
+            align_corners=False)
         if seg_weight is not None:
             seg_weight = F.interpolate(
                 input=seg_weight,
                 size=seg_label.shape[2:],
                 mode='nearest',
-                align_corners=True)
+                align_corners=False)
         seg_label = seg_label.squeeze(1).long()
         loss['loss_seg_{}'.format(suffix)] = self.loss_decode(
             seg_logit,
