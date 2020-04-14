@@ -72,7 +72,7 @@ class DecodeHead(nn.Module):
                     input=x,
                     size=inputs[0].shape[2:],
                     mode='bilinear',
-                    align_corners=True) for x in inputs
+                    align_corners=False) for x in inputs
             ]
             inputs = torch.cat(upsampled_inputs, dim=1)
         else:
@@ -96,13 +96,13 @@ class DecodeHead(nn.Module):
             input=seg_logit,
             size=seg_label.shape[2:],
             mode='bilinear',
-            align_corners=True)
+            align_corners=False)
         if seg_weight is not None:
             seg_weight = F.interpolate(
                 input=seg_weight,
                 size=seg_label.shape[2:],
                 mode='nearest',
-                align_corners=True)
+                align_corners=False)
         seg_label = seg_label.squeeze(1).long()
         loss['loss_seg_{}'.format(suffix)] = self.loss_decode(
             seg_logit,
