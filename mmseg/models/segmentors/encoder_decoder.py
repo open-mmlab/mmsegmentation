@@ -52,13 +52,18 @@ class EncoderDecoder(BaseSegmentor):
 
         losses = dict()
 
+        class_weight = self.train_cfg.get('class_weight', None)
         seg_logit = self.decode_head(x)
-        loss_decode = self.decode_head.losses(seg_logit, gt_semantic_seg)
+        loss_decode = self.decode_head.losses(
+            seg_logit, gt_semantic_seg, class_weight=class_weight)
         losses.update(loss_decode)
         if self.with_auxiliary_head:
             auxiliary_seg_logit = self.auxiliary_head(x)
             loss_aux = self.auxiliary_head.losses(
-                auxiliary_seg_logit, gt_semantic_seg, suffix='aux')
+                auxiliary_seg_logit,
+                gt_semantic_seg,
+                class_weight=class_weight,
+                suffix='aux')
             losses.update(loss_aux)
 
         return losses

@@ -90,7 +90,12 @@ class DecodeHead(nn.Module):
         output = self.conv_seg(feat)
         return output
 
-    def losses(self, seg_logit, seg_label, seg_weight=None, suffix='decode'):
+    def losses(self,
+               seg_logit,
+               seg_label,
+               seg_weight=None,
+               class_weight=None,
+               suffix='decode'):
         loss = dict()
         seg_logit = F.interpolate(
             input=seg_logit,
@@ -103,11 +108,14 @@ class DecodeHead(nn.Module):
                 size=seg_label.shape[2:],
                 mode='nearest',
                 align_corners=False)
+        if class_weight is not None:
+            class_weight = seg_logit.new_tensor(class_weight)
         seg_label = seg_label.squeeze(1).long()
         loss['loss_seg_{}'.format(suffix)] = self.loss_decode(
             seg_logit,
             seg_label,
             weight=seg_weight,
+            class_weight=class_weight,
             ignore_index=self.ignore_index)
         loss['acc_seg_{}'.format(suffix)] = accuracy(seg_logit, seg_label)
         return loss

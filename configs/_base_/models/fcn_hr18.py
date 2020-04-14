@@ -1,7 +1,7 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.01)
 model = dict(
-    type='EncodeDecode',
+    type='EncoderDecoder',
     pretrained='open-mmlab://msra/hrnetv2_w18',
     backbone=dict(
         type='HRNet',
@@ -33,11 +33,16 @@ model = dict(
                 num_blocks=(4, 4, 4, 4),
                 num_channels=(18, 36, 72, 144)))),
     decode_head=dict(
-        type='ConcatHead',
+        type='FCNHead',
         in_channels=[18, 36, 72, 144],
-        channels=[18, 36, 72, 144],
+        channels=sum([18, 36, 72, 144]),
+        input_transform='resize_concat',
+        in_index=(0, 1, 2, 3),
+        kernel_size=1,
+        num_convs=1,
         norm_cfg=norm_cfg,
+        concat_input=False,
+        drop_out_ratio=-1,
         num_classes=19,
-        in_index=-1,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)))
