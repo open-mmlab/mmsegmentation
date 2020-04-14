@@ -543,6 +543,26 @@ class RandomGaussianBlur(object):
 
 
 @PIPELINES.register_module
+class RandomBrightness(object):
+
+    def __init__(self, shift_value=30, ratio=0.5):
+        self.shift_value = shift_value
+        self.ratio = ratio
+
+    def __call__(self, results):
+        img = results['img']
+        assert isinstance(img, np.ndarray)
+        if random.random() < self.ratio:
+            img = img.astype(np.float32)
+            shift = random.randint(-self.shift_value, self.shift_value)
+            img[:, :, :] += shift
+            img = np.around(img)
+            img = np.clip(img, 0, 255).astype(np.uint8)
+            results['img'] = img
+        return results
+
+
+@PIPELINES.register_module
 class Expand(object):
     """Random expand the image & seg.
 

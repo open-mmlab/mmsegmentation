@@ -273,6 +273,32 @@ def test_resnet_res_layer():
     x_out = layer(x)
     assert x_out.shape == torch.Size([1, 256, 28, 28])
 
+    # Test ResLayer of 3 Bottleneck with dilation=2
+    layer = ResLayer(Bottleneck, 64, 16, 3, dilation=2)
+    for i in range(len(layer)):
+        assert layer[i].conv2.dilation == (2, 2)
+    x = torch.randn(1, 64, 56, 56)
+    x_out = layer(x)
+    assert x_out.shape == torch.Size([1, 64, 56, 56])
+
+    # Test ResLayer of 3 Bottleneck with dilation=2, contract_dilation=True
+    layer = ResLayer(Bottleneck, 64, 16, 3, dilation=2, contract_dilation=True)
+    assert layer[0].conv2.dilation == (1, 1)
+    for i in range(1, len(layer)):
+        assert layer[i].conv2.dilation == (2, 2)
+    x = torch.randn(1, 64, 56, 56)
+    x_out = layer(x)
+    assert x_out.shape == torch.Size([1, 64, 56, 56])
+
+    # Test ResLayer of 3 Bottleneck with dilation=2, multi_grid
+    layer = ResLayer(Bottleneck, 64, 16, 3, dilation=2, multi_grid=(1, 2, 4))
+    assert layer[0].conv2.dilation == (1, 1)
+    assert layer[1].conv2.dilation == (2, 2)
+    assert layer[2].conv2.dilation == (4, 4)
+    x = torch.randn(1, 64, 56, 56)
+    x_out = layer(x)
+    assert x_out.shape == torch.Size([1, 64, 56, 56])
+
 
 def test_resnet_backbone():
     """Test resnet backbone"""
