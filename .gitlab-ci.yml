@@ -1,0 +1,41 @@
+variables:
+  PYTORCH_IMAGE: registry.sensetime.com/eig-research/pytorch:pytorch1.3.1-cuda10.1-devel
+
+stages:
+    - linting
+    - test
+
+before_script:
+  - echo $PATH
+  - gcc --version
+  - nvcc --version
+  - python --version
+  - pip --version
+  - python -c "import torch; print(torch.__version__)"
+
+.linting_template: &linting_template_def
+  stage: linting
+  script:
+    - pip install flake8 yapf isort
+    - flake8 .
+    - isort -rc --check-only --diff mmseg/ tools/ tests/
+    - yapf -r -d mmseg/ tools/ tests/ configs
+
+.test_template: &test_template_def
+  stage: test
+  script:
+    - echo "Start building..."
+    - conda install av -c conda-forge -y
+    - pip install -v -e .[all]
+    - python -c "import mmseg; print(mmseg.__version__)"
+    - echo "Start testing..."
+    - coverage run --branch --source mmseg -m pytest tests/
+    - coverage report -m
+
+linting:pytorch1.3-cuda10:
+  image: $PYTORCH_IMAGE
+  <<: *linting_template_def
+
+test:pytorch1.3-cuda10:
+  image: $PYTORCH_IMAGE
+  <<: *test_template_def

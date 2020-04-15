@@ -105,7 +105,7 @@ def make_cuda_ext(name, module, sources, sources_cuda=[]):
     else:
         print('Compiling {} without CUDA'.format(name))
         extension = CppExtension
-        # raise EnvironmentError('CUDA is required to compile MMDetection!')
+        # raise EnvironmentError('CUDA is required to compile MMSegmentation!')
 
     return extension(
         name='{}.{}'.format(module, name),
@@ -201,9 +201,9 @@ if __name__ == '__main__':
         description='Open MMLab Detection Toolbox and Benchmark',
         long_description=readme(),
         author='OpenMMLab',
-        author_email='chenkaidev@gmail.com',
-        keywords='computer vision, object detection',
-        url='https://github.com/open-mmlab/mmdetection',
+        author_email='xvjiarui0826@gmail.com',
+        keywords='computer vision, semantic segmentation',
+        url='http://gitlab.sz.sensetime.com/EIG-Research/mmsegmentation',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
         package_data={'mmseg.ops': ['*/*.so']},
         classifiers=[

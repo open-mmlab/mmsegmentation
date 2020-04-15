@@ -7,7 +7,7 @@ from .base import BaseSegmentor
 
 
 @SEGMENTORS.register_module
-class EncodeDecode(BaseSegmentor):
+class EncoderDecoder(BaseSegmentor):
 
     def __init__(self,
                  backbone,
@@ -16,7 +16,7 @@ class EncodeDecode(BaseSegmentor):
                  train_cfg=None,
                  test_cfg=None,
                  pretrained=None):
-        super(EncodeDecode, self).__init__()
+        super(EncoderDecoder, self).__init__()
         self.backbone = builder.build_backbone(backbone)
         self.decode_head = builder.build_head(decode_head)
         if auxiliary_head is not None:
@@ -30,7 +30,7 @@ class EncodeDecode(BaseSegmentor):
         self.init_weights(pretrained=pretrained)
 
     def init_weights(self, pretrained=None):
-        super(EncodeDecode, self).init_weights(pretrained)
+        super(EncoderDecoder, self).init_weights(pretrained)
         self.backbone.init_weights(pretrained=pretrained)
         self.decode_head.init_weights()
         if self.with_auxiliary_head:
@@ -68,7 +68,7 @@ class EncodeDecode(BaseSegmentor):
         h_stride, w_stride = self.test_cfg.stride
         h_crop, w_crop = self.test_cfg.crop_size
         batch_size, _, h_img, w_img = img.size()
-        num_classes = len(self.CLASSES)
+        num_classes = self.decode_head.num_classes
         h_grids = (h_img - h_crop + h_stride - 1) // h_stride + 1
         w_grids = (w_img - w_crop + w_stride - 1) // w_stride + 1
         # TODO should not padding zero
@@ -92,7 +92,7 @@ class EncodeDecode(BaseSegmentor):
                     input=pad_seg_logit,
                     size=pad_img.shape[2:],
                     mode='bilinear',
-                    align_corners=True)
+                    align_corners=False)
                 # TODO DANET use exp here
                 preds[:, :, y1:y2,
                       x1:x2] += pad_seg_logit[:, :, :y2 - y1, :x2 - x1]
@@ -104,7 +104,7 @@ class EncodeDecode(BaseSegmentor):
                 preds,
                 size=img_meta[0]['ori_shape'][:2],
                 mode='bilinear',
-                align_corners=True)
+                align_corners=False)
 
         return preds
 
@@ -112,12 +112,17 @@ class EncodeDecode(BaseSegmentor):
         # TODO scale
         x = self.extract_feat(img)
         seg_logit = self.decode_head(x)
+        seg_logit = F.interpolate(
+            input=seg_logit,
+            size=img.shape[2:],
+            mode='bilinear',
+            align_corners=False)
         if rescale:
             seg_logit = F.interpolate(
                 seg_logit,
                 size=img_meta[0]['ori_shape'][:2],
                 mode='bilinear',
-                align_corners=True)
+                align_corners=False)
 
         return seg_logit
 

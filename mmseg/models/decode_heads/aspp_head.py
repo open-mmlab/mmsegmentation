@@ -9,9 +9,16 @@ from .decode_head import DecodeHead
 
 @HEADS.register_module
 class ASPPHead(DecodeHead):
+    """Rethinking Atrous Convolution for Semantic Image Segmentation
+
+        This head is the implementation of ASPP Head
+        in (https://arxiv.org/abs/1706.05587)
+    """
 
     def __init__(self, dilations=(1, 12, 24, 36), **kwargs):
         super(ASPPHead, self).__init__(**kwargs)
+        assert isinstance(dilations, (list, tuple))
+        self.dilations = dilations
         self.image_pool = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             ConvModule(
@@ -43,13 +50,13 @@ class ASPPHead(DecodeHead):
             act_cfg=self.act_cfg)
 
     def forward(self, inputs):
-        x = inputs[self.in_index]
+        x = self._transform_inputs(inputs)
         aspp_outs = [
             F.interpolate(
                 self.image_pool(x),
                 size=x.size()[2:],
                 mode='bilinear',
-                align_corners=True)
+                align_corners=False)
         ]
         for aspp_module in self.aspp_modules:
             aspp_out = aspp_module(x)
