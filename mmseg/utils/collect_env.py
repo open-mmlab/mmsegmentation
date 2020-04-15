@@ -51,10 +51,10 @@ def collect_env():
     env_info['OpenCV'] = cv2.__version__
 
     env_info['MMCV'] = mmcv.__version__
-    env_info['MMDetection'] = mmseg.__version__
+    env_info['MMSegmentation'] = mmseg.__version__
     from mmseg.ops import get_compiler_version, get_compiling_cuda_version
-    env_info['MMDetection Compiler'] = get_compiler_version()
-    env_info['MMDetection CUDA Compiler'] = get_compiling_cuda_version()
+    env_info['MMSegmentation Compiler'] = get_compiler_version()
+    env_info['MMSegmentation CUDA Compiler'] = get_compiling_cuda_version()
     return env_info
 
 

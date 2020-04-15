@@ -19,7 +19,7 @@ class UPerHead(PSPHead):
     def __init__(self, fpn_in_channels, **kwargs):
         assert isinstance(fpn_in_channels, (list, tuple))
         super(UPerHead, self).__init__(
-            in_channels=fpn_in_channels[-1], **kwargs)
+            in_channels=fpn_in_channels[-1], input_transform=None, **kwargs)
         self.fpn_in_channels = fpn_in_channels
         # FPN Module
         self.lateral_convs = nn.ModuleList()
@@ -37,6 +37,7 @@ class UPerHead(PSPHead):
                 self.channels,
                 self.channels,
                 3,
+                padding=1,
                 conv_cfg=self.conv_cfg,
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg,

@@ -60,6 +60,8 @@ class HeadOptimizerConstructor(DefaultOptimizerConstructor):
                         'weight_decay'] = self.base_wd * bias_decay_mult
             if prefix.startswith('decode_head') and param.requires_grad:
                 param_group['lr'] = self.base_lr * decode_head_lr_mult
+            if prefix.startswith('auxiliary_head') and param.requires_grad:
+                param_group['lr'] = self.base_lr * decode_head_lr_mult
             params.append(param_group)
 
         for child_name, child_mod in module.named_children():
