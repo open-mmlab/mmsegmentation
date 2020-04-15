@@ -31,7 +31,7 @@ class NLHead(FCNHead):
             mode=self.mode)
 
     def forward(self, inputs):
-        x = inputs[self.in_index]
+        x = self._transform_inputs(inputs)
         output = self.convs[0](x)
         output = self.nl_block(output)
         output = self.convs[1](output)

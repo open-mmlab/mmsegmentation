@@ -2,7 +2,8 @@ import pytest
 import torch
 from torch import nn
 
-from mmseg.models.decode_heads import ASPPHead, FCNHead, PSPHead
+from mmseg.models.decode_heads import (ASPPHead, FCNHead, GCHead, NLHead,
+                                       PSPHead)
 from mmseg.models.decode_heads.decode_head import DecodeHead
 from mmseg.ops import ConvModule
 
@@ -178,5 +179,23 @@ def test_aspp_head():
     assert head.aspp_modules[0].conv.dilation == (1, 1)
     assert head.aspp_modules[1].conv.dilation == (12, 12)
     assert head.aspp_modules[2].conv.dilation == (24, 24)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 40, 40)
+
+
+def test_gc_head():
+    head = GCHead(in_channels=32, channels=16)
+    assert len(head.convs) == 2
+    assert hasattr(head, 'gc_block')
+    inputs = [torch.randn(1, 32, 40, 40)]
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 40, 40)
+
+
+def test_nl_head():
+    head = NLHead(in_channels=32, channels=16)
+    assert len(head.convs) == 2
+    assert hasattr(head, 'nl_block')
+    inputs = [torch.randn(1, 32, 40, 40)]
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 40, 40)

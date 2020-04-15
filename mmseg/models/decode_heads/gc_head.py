@@ -29,7 +29,7 @@ class GCHead(FCNHead):
             fusion_types=self.fusion_types)
 
     def forward(self, inputs):
-        x = inputs[self.in_index]
+        x = self._transform_inputs(inputs)
         output = self.convs[0](x)
         output = self.gc_block(output)
         output = self.convs[1](output)

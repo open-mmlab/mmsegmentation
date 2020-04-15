@@ -40,7 +40,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    train=dict(dataset=dict(pipeline=train_pipeline)),
+    train=dict(pipeline=train_pipeline),
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
 
@@ -54,5 +54,4 @@ lr_config = dict(
     by_epoch=False,
 )
 # runtime settings
-total_epochs = 16
-evaluation = dict(interval=1, metric='mIoU')
+total_epochs = 160
