@@ -87,7 +87,7 @@ class PSAHead(DecodeHead):
             act_cfg=self.act_cfg)
 
     def forward(self, inputs):
-        x = inputs[self.in_index]
+        x = self._transform_inputs(inputs)
         identity = x
         if self.psa_type in ['collect', 'distribute']:
             out = self.reduce(x)

@@ -31,12 +31,13 @@ void psamask_collect_forward(const int num_, const int h_feature,
         // feature-indexed
         for (int hidx = hstart; hidx < hend; hidx++) {
           for (int widx = wstart; widx < wend; widx++) {
-            buffer_data[(n * h_feature * w_feature +
-                         (hidx + h - half_h_mask) * w_feature +
-                         (widx + w - half_w_mask)) *
-                            h_feature * w_feature +
-                        h * w_feature + w] =
-                mask_data[((n * h_mask * w_mask + hidx * w_mask + widx) *
+            buffer_data.view({-1})[(n * h_feature * w_feature +
+                                    (hidx + h - half_h_mask) * w_feature +
+                                    (widx + w - half_w_mask)) *
+                                       h_feature * w_feature +
+                                   h * w_feature + w] =
+                mask_data.view(
+                    {-1})[((n * h_mask * w_mask + hidx * w_mask + widx) *
                                h_feature +
                            h) *
                               w_feature +
@@ -68,11 +69,13 @@ void psamask_distribute_forward(const int num_, const int h_feature,
         // feature-indexed
         for (int hidx = hstart; hidx < hend; hidx++) {
           for (int widx = wstart; widx < wend; widx++) {
-            buffer_data[(n * h_feature * w_feature + h * w_feature + w) *
-                            h_feature * w_feature +
-                        (hidx + h - half_h_mask) * w_feature +
-                        (widx + w - half_w_mask)] =
-                mask_data[((n * h_mask * w_mask + hidx * w_mask + widx) *
+            buffer_data.view(
+                {-1})[(n * h_feature * w_feature + h * w_feature + w) *
+                          h_feature * w_feature +
+                      (hidx + h - half_h_mask) * w_feature +
+                      (widx + w - half_w_mask)] =
+                mask_data.view(
+                    {-1})[((n * h_mask * w_mask + hidx * w_mask + widx) *
                                h_feature +
                            h) *
                               w_feature +
@@ -104,11 +107,12 @@ void psamask_collect_backward(const int num_, const int h_feature,
         // feature-indexed
         for (int hidx = hstart; hidx < hend; hidx++) {
           for (int widx = wstart; widx < wend; widx++) {
-            mask_diff[((n * h_mask * w_mask + hidx * w_mask + widx) *
-                           h_feature +
-                       h) *
-                          w_feature +
-                      w] = buffer_diff[(n * h_feature * w_feature +
+            mask_diff.view({-1})[((n * h_mask * w_mask + hidx * w_mask + widx) *
+                                      h_feature +
+                                  h) *
+                                     w_feature +
+                                 w] =
+                buffer_diff.view({-1})[(n * h_feature * w_feature +
                                         (hidx + h - half_h_mask) * w_feature +
                                         (widx + w - half_w_mask)) *
                                            h_feature * w_feature +
@@ -140,15 +144,16 @@ void psamask_distribute_backward(const int num_, const int h_feature,
         // feature-indexed
         for (int hidx = hstart; hidx < hend; hidx++) {
           for (int widx = wstart; widx < wend; widx++) {
-            mask_diff[((n * h_mask * w_mask + hidx * w_mask + widx) *
-                           h_feature +
-                       h) *
-                          w_feature +
-                      w] =
-                buffer_diff[(n * h_feature * w_feature + h * w_feature + w) *
-                                h_feature * w_feature +
-                            (hidx + h - half_h_mask) * w_feature +
-                            (widx + w - half_w_mask)];
+            mask_diff.view({-1})[((n * h_mask * w_mask + hidx * w_mask + widx) *
+                                      h_feature +
+                                  h) *
+                                     w_feature +
+                                 w] =
+                buffer_diff.view(
+                    {-1})[(n * h_feature * w_feature + h * w_feature + w) *
+                              h_feature * w_feature +
+                          (hidx + h - half_h_mask) * w_feature +
+                          (widx + w - half_w_mask)];
           }
         }
       }

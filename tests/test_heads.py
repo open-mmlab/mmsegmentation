@@ -2,7 +2,7 @@ import pytest
 import torch
 from torch import nn
 
-from mmseg.models.decode_heads import ASPPHead, FCNHead, PSPHead
+from mmseg.models.decode_heads import ASPPHead, FCNHead, PSAHead, PSPHead
 from mmseg.models.decode_heads.decode_head import DecodeHead
 from mmseg.ops import ConvModule
 
@@ -180,3 +180,23 @@ def test_aspp_head():
     assert head.aspp_modules[2].conv.dilation == (24, 24)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 40, 40)
+
+
+def test_psa_head():
+
+    with pytest.raises(AssertionError):
+        # psa_type must be in 'bi-direction', 'collect', 'distribute'
+        PSAHead(in_channels=32, channels=16, psa_type='gather')
+
+    # test no norm_cfg
+    head = PSAHead(in_channels=32, channels=16)
+    assert not _conv_has_norm(head, sync_bn=False)
+
+    # test with norm_cfg
+    head = PSAHead(in_channels=32, channels=16, norm_cfg=dict(type='SyncBN'))
+    assert _conv_has_norm(head, sync_bn=True)
+
+    inputs = [torch.randn(1, 32, 39, 39)]
+    head = PSAHead(in_channels=32, channels=16, mask_size=(39, 39))
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 39, 39)
