@@ -47,6 +47,7 @@ def test_config_build_segmentor():
         if 'pretrained' in config_mod.model:
             config_mod.model['pretrained'] = None
 
+        print('building {}'.format(config_fname))
         segmentor = build_segmentor(
             config_mod.model,
             train_cfg=config_mod.train_cfg,

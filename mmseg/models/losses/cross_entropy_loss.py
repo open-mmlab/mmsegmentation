@@ -9,12 +9,19 @@ from .utils import weight_reduce_loss
 def cross_entropy(pred,
                   label,
                   weight=None,
+                  class_weight=None,
                   reduction='mean',
                   avg_factor=None,
                   ignore_index=-100):
+    # class_weight is a manual rescaling weight given to each class.
+    # If given, has to be a Tensor of size C
     # element-wise losses
     loss = F.cross_entropy(
-        pred, label, reduction='none', ignore_index=ignore_index)
+        pred,
+        label,
+        weight=class_weight,
+        reduction='none',
+        ignore_index=ignore_index)
 
     # apply weights and do the reduction
     if weight is not None:
