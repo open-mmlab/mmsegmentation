@@ -56,7 +56,7 @@ class ASPPHead(DecodeHead):
                 self.image_pool(x),
                 size=x.size()[2:],
                 mode='bilinear',
-                align_corners=False)
+                align_corners=self.align_corners)
         ]
         for aspp_module in self.aspp_modules:
             aspp_out = aspp_module(x)

@@ -97,7 +97,7 @@ class EncoderDecoder(BaseSegmentor):
                     input=pad_seg_logit,
                     size=pad_img.shape[2:],
                     mode='bilinear',
-                    align_corners=False)
+                    align_corners=self.decode_head.align_corners)
                 # TODO DANET use exp here
                 preds[:, :, y1:y2,
                       x1:x2] += pad_seg_logit[:, :, :y2 - y1, :x2 - x1]
@@ -109,7 +109,7 @@ class EncoderDecoder(BaseSegmentor):
                 preds,
                 size=img_meta[0]['ori_shape'][:2],
                 mode='bilinear',
-                align_corners=False)
+                align_corners=self.decode_head.align_corners)
 
         return preds
 
@@ -120,13 +120,13 @@ class EncoderDecoder(BaseSegmentor):
             input=seg_logit,
             size=img.shape[2:],
             mode='bilinear',
-            align_corners=False)
+            align_corners=self.decode_head.align_corners)
         if rescale:
             seg_logit = F.interpolate(
                 seg_logit,
                 size=img_meta[0]['ori_shape'][:2],
                 mode='bilinear',
-                align_corners=False)
+                align_corners=self.decode_head.align_corners)
 
         return seg_logit
 

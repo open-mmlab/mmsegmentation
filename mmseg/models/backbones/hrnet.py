@@ -133,8 +133,11 @@ class HRModule(nn.Module):
                                 padding=0,
                                 bias=False),
                             build_norm_layer(self.norm_cfg, in_channels[i])[1],
+                            # we set align_corners=False for HRNet
                             nn.Upsample(
-                                scale_factor=2**(j - i), mode='nearest')))
+                                scale_factor=2**(j - i),
+                                mode='bilinear',
+                                align_corners=False)))
                 elif j == i:
                     fuse_layer.append(None)
                 else:

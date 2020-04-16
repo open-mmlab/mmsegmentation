@@ -67,12 +67,12 @@ class UPerHead(PSPHead):
         used_backbone_levels = len(laterals)
         for i in range(used_backbone_levels - 1, 0, -1):
             prev_shape = laterals[i - 1].shape[2:]
-            # note: CSAIL used align_corners=False
+            # note: CSAIL ADE20K used align_corners=False
             laterals[i - 1] += F.interpolate(
                 laterals[i],
                 size=prev_shape,
                 mode='bilinear',
-                align_corners=True)
+                align_corners=self.align_corners)
 
         # build outputs
         fpn_outs = [
@@ -87,7 +87,7 @@ class UPerHead(PSPHead):
                 fpn_outs[i],
                 size=fpn_outs[0].shape[2:],
                 mode='bilinear',
-                align_corners=True)
+                align_corners=self.align_corners)
         fpn_outs = torch.cat(fpn_outs, dim=1)
         output = self.fpn_bottleneck(fpn_outs)
         output = self.cls_seg(output)

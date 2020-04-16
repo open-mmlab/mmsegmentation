@@ -95,6 +95,7 @@ class PSAHead(DecodeHead):
             if self.shrink_factor != 1:
                 h = (h - 1) // self.shrink_factor + 1
                 w = (w - 1) // self.shrink_factor + 1
+                # we set align_corners=True for psa
                 out = F.interpolate(
                     out, size=(h, w), mode='bilinear', align_corners=True)
             y = self.attention(out)
@@ -116,6 +117,7 @@ class PSAHead(DecodeHead):
             if self.shrink_factor != 1:
                 h = (h - 1) // self.shrink_factor + 1
                 w = (w - 1) // self.shrink_factor + 1
+                # we set align_corners=True for psa
                 x_col = F.interpolate(
                     x_col, size=(h, w), mode='bilinear', align_corners=True)
                 x_dis = F.interpolate(

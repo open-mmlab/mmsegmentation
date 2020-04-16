@@ -27,7 +27,8 @@ class DecodeHead(nn.Module):
                      type='CrossEntropyLoss',
                      use_sigmoid=False,
                      loss_weight=1.0),
-                 ignore_index=255):
+                 ignore_index=255,
+                 align_corners=True):
         super(DecodeHead, self).__init__()
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
@@ -38,12 +39,18 @@ class DecodeHead(nn.Module):
         self.in_index = in_index
         self.loss_decode = build_loss(loss_decode)
         self.ignore_index = ignore_index
+        self.align_corners = align_corners
 
         self.conv_seg = nn.Conv2d(channels, num_classes, kernel_size=1)
         if drop_out_ratio > 0:
             self.dropout = nn.Dropout2d(drop_out_ratio)
         else:
             self.dropout = None
+
+    def extra_repr(self):
+        s = 'input_transform={}, ignore_index={}, align_corners={}'.format(
+            self.input_transform, self.ignore_index, self.align_corners)
+        return s
 
     def _init_inputs(self, in_channels, in_index, input_transform):
         if input_transform is not None:
@@ -72,7 +79,7 @@ class DecodeHead(nn.Module):
                     input=x,
                     size=inputs[0].shape[2:],
                     mode='bilinear',
-                    align_corners=False) for x in inputs
+                    align_corners=self.align_corners) for x in inputs
             ]
             inputs = torch.cat(upsampled_inputs, dim=1)
         else:
@@ -101,13 +108,10 @@ class DecodeHead(nn.Module):
             input=seg_logit,
             size=seg_label.shape[2:],
             mode='bilinear',
-            align_corners=False)
+            align_corners=self.align_corners)
         if seg_weight is not None:
             seg_weight = F.interpolate(
-                input=seg_weight,
-                size=seg_label.shape[2:],
-                mode='nearest',
-                align_corners=False)
+                input=seg_weight, size=seg_label.shape[2:], mode='nearest')
         if class_weight is not None:
             class_weight = seg_logit.new_tensor(class_weight)
         seg_label = seg_label.squeeze(1).long()

@@ -49,7 +49,7 @@ class PSPHead(DecodeHead):
                 psp_out,
                 size=x.size()[2:],
                 mode='bilinear',
-                align_corners=False)
+                align_corners=self.align_corners)
             psp_outs.append(upsampled_psp_out)
         psp_outs = torch.cat(psp_outs, dim=1)
         output = self.bottleneck(psp_outs)
