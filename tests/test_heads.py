@@ -2,8 +2,8 @@ import pytest
 import torch
 from torch import nn
 
-from mmseg.models.decode_heads import (ASPPHead, FCNHead, GCHead, NLHead,
-                                       PSAHead, PSPHead)
+from mmseg.models.decode_heads import (ASPPHead, CCHead, FCNHead, GCHead,
+                                       NLHead, PSAHead, PSPHead)
 from mmseg.models.decode_heads.decode_head import DecodeHead
 from mmseg.ops import ConvModule
 
@@ -219,3 +219,13 @@ def test_nl_head():
     inputs = [torch.randn(1, 32, 40, 40)]
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 40, 40)
+
+
+def test_cc_head():
+    head = CCHead(in_channels=32, channels=16)
+    assert len(head.convs) == 2
+    assert hasattr(head, 'cca')
+    # skip for now
+    # inputs = [torch.randn(1, 32, 40, 40)]
+    # outputs = head(inputs)
+    # assert outputs.shape == (1, head.num_classes, 40, 40)

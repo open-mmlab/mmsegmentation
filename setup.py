@@ -271,7 +271,12 @@ if __name__ == '__main__':
                 name='psamask_ext',
                 module='mmseg.ops.psa',
                 sources=['src/psamask_ext.cpp', 'src/cpu/psamask_cpu.cpp'],
-                sources_cuda=['src/cuda/psamask_cuda.cu'])
+                sources_cuda=['src/cuda/psamask_cuda.cu']),
+            make_cuda_ext(
+                name='ca_ext',
+                module='mmseg.ops.cc_attention',
+                sources=['src/ca_ext.cpp'],
+                sources_cuda=['src/cuda/ca_cuda_kernel.cu'])
         ],
         cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
