@@ -5,7 +5,9 @@ from .gc_head import GCHead
 from .nl_head import NLHead
 from .psa_head import PSAHead
 from .psp_head import PSPHead
+from .uper_head import UPerHead
 
 __all__ = [
-    'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead'
+    'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
+    'UPerHead'
 ]

@@ -124,15 +124,21 @@ def _check_decode_head(decode_head_cfg, decode_head):
     assert decode_head_cfg['type'] == decode_head.__class__.__name__
 
     assert decode_head_cfg['type'] == decode_head.__class__.__name__
-    in_channels = decode_head_cfg.in_channels
-    if decode_head_cfg.get('input_transform', None) == 'resize_concat':
-        assert isinstance(in_channels, (list, tuple))
-        assert isinstance(decode_head.in_index, (list, tuple))
-        assert len(in_channels) == len(decode_head.in_index)
-        assert sum(in_channels) == decode_head.in_channels
-    else:
-        assert isinstance(in_channels, int)
-        assert in_channels == decode_head_cfg.in_channels
-        assert isinstance(decode_head.in_index, int)
+    if hasattr(decode_head_cfg, 'in_channels'):
+        in_channels = decode_head_cfg.in_channels
+        if decode_head_cfg.get('input_transform', None) == 'resize_concat':
+            assert isinstance(in_channels, (list, tuple))
+            assert isinstance(decode_head.in_index, (list, tuple))
+            assert len(in_channels) == len(decode_head.in_index)
+            assert sum(in_channels) == decode_head.in_channels
+        else:
+            assert isinstance(in_channels, int)
+            assert in_channels == decode_head.in_channels
+            assert isinstance(decode_head.in_index, int)
+    if hasattr(decode_head_cfg, 'fpn_in_channels'):
+        fpn_in_channels = decode_head_cfg.fpn_in_channels
+        assert isinstance(fpn_in_channels, (list, tuple))
+        assert fpn_in_channels[-1] == decode_head.in_channels
+
     assert decode_head_cfg.channels == decode_head.conv_seg.in_channels
     assert decode_head.conv_seg.out_channels == decode_head_cfg.num_classes

@@ -3,7 +3,7 @@ import torch
 from torch import nn
 
 from mmseg.models.decode_heads import (ASPPHead, CCHead, FCNHead, GCHead,
-                                       NLHead, PSAHead, PSPHead)
+                                       NLHead, PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import DecodeHead
 from mmseg.ops import ConvModule
 
@@ -229,3 +229,24 @@ def test_cc_head():
     # inputs = [torch.randn(1, 32, 40, 40)]
     # outputs = head(inputs)
     # assert outputs.shape == (1, head.num_classes, 40, 40)
+
+
+def test_uper_head():
+
+    with pytest.raises(AssertionError):
+        # fpn_in_channels must be list|tuple
+        UPerHead(fpn_in_channels=32, channels=16)
+
+    # test no norm_cfg
+    head = UPerHead(fpn_in_channels=[32, 16], channels=16)
+    assert not _conv_has_norm(head, sync_bn=False)
+
+    # test with norm_cfg
+    head = UPerHead(
+        fpn_in_channels=[32, 16], channels=16, norm_cfg=dict(type='SyncBN'))
+    assert _conv_has_norm(head, sync_bn=True)
+
+    inputs = [torch.randn(1, 32, 40, 40), torch.randn(1, 16, 20, 20)]
+    head = UPerHead(fpn_in_channels=[32, 16], channels=16)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 40, 40)

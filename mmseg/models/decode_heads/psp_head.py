@@ -29,7 +29,8 @@ class PSPHead(DecodeHead):
                         self.channels,
                         1,
                         conv_cfg=self.conv_cfg,
-                        norm_cfg=self.norm_cfg)))
+                        norm_cfg=self.norm_cfg,
+                        act_cfg=self.act_cfg)))
         self.bottleneck = ConvModule(
             self.in_channels + len(pool_scales) * self.channels,
             self.channels,
@@ -39,7 +40,7 @@ class PSPHead(DecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
-    def forward(self, inputs):
+    def psp_forward(self, inputs):
         x = self._transform_inputs(inputs)
         psp_outs = [x]
         for psp_module in self.psp_modules:
@@ -52,5 +53,9 @@ class PSPHead(DecodeHead):
             psp_outs.append(upsampled_psp_out)
         psp_outs = torch.cat(psp_outs, dim=1)
         output = self.bottleneck(psp_outs)
+        return output
+
+    def forward(self, inputs):
+        output = self.psp_forward(inputs)
         output = self.cls_seg(output)
         return output
