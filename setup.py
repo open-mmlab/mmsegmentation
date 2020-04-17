@@ -239,35 +239,6 @@ if __name__ == '__main__':
                     'src/cuda/deform_conv_cuda_kernel.cu'
                 ]),
             make_cuda_ext(
-                name='affine_grid_ext',
-                module='mmseg.ops.affine_grid',
-                sources=[
-                    'src/affine_grid_ext.cpp', 'src/cpu/affine_grid_cpu.cpp'
-                ]),
-            make_cuda_ext(
-                name='grid_sampler_ext',
-                module='mmseg.ops.grid_sampler',
-                sources=[
-                    'src/grid_sampler_ext.cpp', 'src/cpu/grid_sampler_cpu.cpp'
-                ],
-                sources_cuda=['src/cuda/grid_sampler_cuda.cu']),
-            make_cuda_ext(
-                name='carafe_ext',
-                module='mmseg.ops.carafe',
-                sources=['src/carafe_ext.cpp'],
-                sources_cuda=[
-                    'src/cuda/carafe_cuda.cpp',
-                    'src/cuda/carafe_cuda_kernel.cu'
-                ]),
-            make_cuda_ext(
-                name='carafe_naive_ext',
-                module='mmseg.ops.carafe',
-                sources=['src/carafe_naive_ext.cpp'],
-                sources_cuda=[
-                    'src/cuda/carafe_naive_cuda.cpp',
-                    'src/cuda/carafe_naive_cuda_kernel.cu'
-                ]),
-            make_cuda_ext(
                 name='psamask_ext',
                 module='mmseg.ops.psa',
                 sources=['src/psamask_ext.cpp', 'src/cpu/psamask_cpu.cpp'],
