@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from mmseg.ops import ConvModule
 from ..registry import HEADS
+from ..utils import resize
 from .decode_head import DecodeHead
 
 
@@ -52,7 +52,7 @@ class ASPPHead(DecodeHead):
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
         aspp_outs = [
-            F.interpolate(
+            resize(
                 self.image_pool(x),
                 size=x.size()[2:],
                 mode='bilinear',

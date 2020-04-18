@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from mmseg.ops import ConvModule
 from ..registry import HEADS
+from ..utils import resize
 from .psp_head import PSPHead
 
 
@@ -68,7 +68,7 @@ class UPerHead(PSPHead):
         for i in range(used_backbone_levels - 1, 0, -1):
             prev_shape = laterals[i - 1].shape[2:]
             # note: CSAIL ADE20K used align_corners=False
-            laterals[i - 1] += F.interpolate(
+            laterals[i - 1] += resize(
                 laterals[i],
                 size=prev_shape,
                 mode='bilinear',
@@ -83,7 +83,7 @@ class UPerHead(PSPHead):
         fpn_outs.append(laterals[-1])
 
         for i in range(used_backbone_levels - 1, 0, -1):
-            fpn_outs[i] = F.interpolate(
+            fpn_outs[i] = resize(
                 fpn_outs[i],
                 size=fpn_outs[0].shape[2:],
                 mode='bilinear',

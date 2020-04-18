@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from mmseg.ops import ConvModule
 from ..registry import HEADS
+from ..utils import resize
 from .decode_head import DecodeHead
 
 
@@ -45,7 +45,7 @@ class PSPHead(DecodeHead):
         psp_outs = [x]
         for psp_module in self.psp_modules:
             psp_out = psp_module(x)
-            upsampled_psp_out = F.interpolate(
+            upsampled_psp_out = resize(
                 psp_out,
                 size=x.size()[2:],
                 mode='bilinear',

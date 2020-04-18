@@ -2,10 +2,10 @@ from abc import ABCMeta, abstractmethod
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from ..builder import build_loss
 from ..losses import accuracy
+from ..utils import resize
 
 
 class DecodeHead(nn.Module):
@@ -75,7 +75,7 @@ class DecodeHead(nn.Module):
         if self.input_transform == 'resize_concat':
             inputs = [inputs[i] for i in self.in_index]
             upsampled_inputs = [
-                F.interpolate(
+                resize(
                     input=x,
                     size=inputs[0].shape[2:],
                     mode='bilinear',
@@ -104,13 +104,13 @@ class DecodeHead(nn.Module):
                class_weight=None,
                suffix='decode'):
         loss = dict()
-        seg_logit = F.interpolate(
+        seg_logit = resize(
             input=seg_logit,
             size=seg_label.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
         if seg_weight is not None:
-            seg_weight = F.interpolate(
+            seg_weight = resize(
                 input=seg_weight, size=seg_label.shape[2:], mode='nearest')
         if class_weight is not None:
             class_weight = seg_logit.new_tensor(class_weight)

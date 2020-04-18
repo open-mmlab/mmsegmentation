@@ -4,6 +4,7 @@ import torch.nn.functional as F
 
 from mmseg.ops import ConvModule, PSAMask
 from ..registry import HEADS
+from ..utils import resize
 from .decode_head import DecodeHead
 
 
@@ -96,7 +97,7 @@ class PSAHead(DecodeHead):
                 h = (h - 1) // self.shrink_factor + 1
                 w = (w - 1) // self.shrink_factor + 1
                 # we set align_corners=True for psa
-                out = F.interpolate(
+                out = resize(
                     out, size=(h, w), mode='bilinear', align_corners=True)
             y = self.attention(out)
             if self.compact:
@@ -118,9 +119,9 @@ class PSAHead(DecodeHead):
                 h = (h - 1) // self.shrink_factor + 1
                 w = (w - 1) // self.shrink_factor + 1
                 # we set align_corners=True for psa
-                x_col = F.interpolate(
+                x_col = resize(
                     x_col, size=(h, w), mode='bilinear', align_corners=True)
-                x_dis = F.interpolate(
+                x_dis = resize(
                     x_dis, size=(h, w), mode='bilinear', align_corners=True)
             y_col = self.attention(x_col)
             y_dis = self.attention_p(x_dis)
@@ -144,8 +145,7 @@ class PSAHead(DecodeHead):
         if self.shrink_factor != 1:
             h = (h - 1) * self.shrink_factor + 1
             w = (w - 1) * self.shrink_factor + 1
-            out = F.interpolate(
-                out, size=(h, w), mode='bilinear', align_corners=True)
+            out = resize(out, size=(h, w), mode='bilinear', align_corners=True)
         out = self.bottleneck(torch.cat((identity, out), dim=1))
         out = self.cls_seg(out)
         return out

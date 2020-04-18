@@ -3,6 +3,7 @@ import torch.nn.functional as F
 
 from .. import builder
 from ..registry import SEGMENTORS
+from ..utils import resize
 from .base import BaseSegmentor
 
 
@@ -93,7 +94,7 @@ class EncoderDecoder(BaseSegmentor):
                 pad_img[:, :, :y2 - y1, :x2 - x1] = crop_img
                 pad_x = self.extract_feat(pad_img)
                 pad_seg_logit = self.decode_head(pad_x)
-                pad_seg_logit = F.interpolate(
+                pad_seg_logit = resize(
                     input=pad_seg_logit,
                     size=pad_img.shape[2:],
                     mode='bilinear',
@@ -105,28 +106,30 @@ class EncoderDecoder(BaseSegmentor):
         assert (count_mat == 0).sum() == 0
         preds = preds / count_mat
         if rescale:
-            preds = F.interpolate(
+            preds = resize(
                 preds,
                 size=img_meta[0]['ori_shape'][:2],
                 mode='bilinear',
-                align_corners=self.decode_head.align_corners)
+                align_corners=self.decode_head.align_corners,
+                warning=False)
 
         return preds
 
     def whole_inference(self, img, img_meta, rescale):
         x = self.extract_feat(img)
         seg_logit = self.decode_head(x)
-        seg_logit = F.interpolate(
+        seg_logit = resize(
             input=seg_logit,
             size=img.shape[2:],
             mode='bilinear',
             align_corners=self.decode_head.align_corners)
         if rescale:
-            seg_logit = F.interpolate(
+            seg_logit = resize(
                 seg_logit,
                 size=img_meta[0]['ori_shape'][:2],
                 mode='bilinear',
-                align_corners=self.decode_head.align_corners)
+                align_corners=self.decode_head.align_corners,
+                warning=False)
 
         return seg_logit
 
