@@ -57,15 +57,15 @@ def test_decode_head():
     assert hasattr(head, 'dropout') and head.dropout.p == 0.2
 
     # test no input_transform
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     head = DecodeHead(32, 16)
     assert head.in_channels == 32
     assert head.input_transform is None
     transformed_inputs = head._transform_inputs(inputs)
-    assert transformed_inputs.shape == (1, 32, 40, 40)
+    assert transformed_inputs.shape == (1, 32, 45, 45)
 
     # test input_transform = resize_concat
-    inputs = [torch.randn(1, 32, 40, 40), torch.randn(1, 16, 20, 20)]
+    inputs = [torch.randn(1, 32, 45, 45), torch.randn(1, 16, 21, 21)]
     head = DecodeHead([32, 16],
                       16,
                       in_index=[0, 1],
@@ -73,7 +73,7 @@ def test_decode_head():
     assert head.in_channels == 48
     assert head.input_transform == 'resize_concat'
     transformed_inputs = head._transform_inputs(inputs)
-    assert transformed_inputs.shape == (1, 48, 40, 40)
+    assert transformed_inputs.shape == (1, 48, 45, 45)
 
 
 def test_fcn_head():
@@ -95,46 +95,46 @@ def test_fcn_head():
             assert m.with_norm and isinstance(m.bn, nn.SyncBatchNorm)
 
     # test concat_input=False
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     head = FCNHead(in_channels=32, channels=16, concat_input=False)
     assert len(head.convs) == 2
     assert not head.concat_input and not hasattr(head, 'conv_cat')
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
     # test concat_input=True
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     head = FCNHead(in_channels=32, channels=16, concat_input=True)
     assert len(head.convs) == 2
     assert head.concat_input
     assert head.conv_cat.in_channels == 48
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
     # test kernel_size=3
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     head = FCNHead(in_channels=32, channels=16)
     for i in range(len(head.convs)):
         assert head.convs[i].kernel_size == (3, 3)
         assert head.convs[i].padding == (1, 1)
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
     # test kernel_size=1
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     head = FCNHead(in_channels=32, channels=16, kernel_size=1)
     for i in range(len(head.convs)):
         assert head.convs[i].kernel_size == (1, 1)
         assert head.convs[i].padding == (0, 0)
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
     # test num_conv
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     head = FCNHead(in_channels=32, channels=16, num_convs=1)
     assert len(head.convs) == 1
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
 
 def test_psp_head():
@@ -151,13 +151,13 @@ def test_psp_head():
     head = PSPHead(in_channels=32, channels=16, norm_cfg=dict(type='SyncBN'))
     assert _conv_has_norm(head, sync_bn=True)
 
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     head = PSPHead(in_channels=32, channels=16, pool_scales=(1, 2, 3))
     assert head.psp_modules[0][0].output_size == 1
     assert head.psp_modules[1][0].output_size == 2
     assert head.psp_modules[2][0].output_size == 3
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
 
 def test_aspp_head():
@@ -174,13 +174,13 @@ def test_aspp_head():
     head = ASPPHead(in_channels=32, channels=16, norm_cfg=dict(type='SyncBN'))
     assert _conv_has_norm(head, sync_bn=True)
 
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     head = ASPPHead(in_channels=32, channels=16, dilations=(1, 12, 24))
     assert head.aspp_modules[0].conv.dilation == (1, 1)
     assert head.aspp_modules[1].conv.dilation == (12, 12)
     assert head.aspp_modules[2].conv.dilation == (24, 24)
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
 
 def test_psa_head():
@@ -207,18 +207,18 @@ def test_gc_head():
     head = GCHead(in_channels=32, channels=16)
     assert len(head.convs) == 2
     assert hasattr(head, 'gc_block')
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
 
 def test_nl_head():
     head = NLHead(in_channels=32, channels=16)
     assert len(head.convs) == 2
     assert hasattr(head, 'nl_block')
-    inputs = [torch.randn(1, 32, 40, 40)]
+    inputs = [torch.randn(1, 32, 45, 45)]
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
 
 def test_cc_head():
@@ -226,9 +226,9 @@ def test_cc_head():
     assert len(head.convs) == 2
     assert hasattr(head, 'cca')
     # skip for now
-    # inputs = [torch.randn(1, 32, 40, 40)]
+    # inputs = [torch.randn(1, 32, 45, 45)]
     # outputs = head(inputs)
-    # assert outputs.shape == (1, head.num_classes, 40, 40)
+    # assert outputs.shape == (1, head.num_classes, 45, 45)
 
 
 def test_uper_head():
@@ -246,7 +246,7 @@ def test_uper_head():
         fpn_in_channels=[32, 16], channels=16, norm_cfg=dict(type='SyncBN'))
     assert _conv_has_norm(head, sync_bn=True)
 
-    inputs = [torch.randn(1, 32, 40, 40), torch.randn(1, 16, 20, 20)]
+    inputs = [torch.randn(1, 32, 45, 45), torch.randn(1, 16, 21, 21)]
     head = UPerHead(fpn_in_channels=[32, 16], channels=16)
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 40, 40)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
