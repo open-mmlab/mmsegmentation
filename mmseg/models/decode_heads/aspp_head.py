@@ -7,6 +7,37 @@ from ..utils import resize
 from .decode_head import DecodeHead
 
 
+class ASPPModule(nn.ModuleList):
+
+    def __init__(self, dilations, in_channels, channels, conv_cfg, norm_cfg,
+                 act_cfg):
+        super(ASPPModule, self).__init__()
+        self.dilations = dilations
+        self.in_channels = in_channels
+        self.channels = channels
+        self.conv_cfg = conv_cfg
+        self.norm_cfg = norm_cfg
+        self.act_cfg = act_cfg
+        for dilation in dilations:
+            self.append(
+                ConvModule(
+                    self.in_channels,
+                    self.channels,
+                    1 if dilation == 1 else 3,
+                    dilation=dilation,
+                    padding=0 if dilation == 1 else dilation,
+                    conv_cfg=self.conv_cfg,
+                    norm_cfg=self.norm_cfg,
+                    act_cfg=self.act_cfg))
+
+    def forward(self, x):
+        aspp_outs = []
+        for aspp_module in self:
+            aspp_outs.append(aspp_module(x))
+
+        return aspp_outs
+
+
 @HEADS.register_module
 class ASPPHead(DecodeHead):
     """Rethinking Atrous Convolution for Semantic Image Segmentation
@@ -28,18 +59,13 @@ class ASPPHead(DecodeHead):
                 conv_cfg=self.conv_cfg,
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg))
-        self.aspp_modules = nn.ModuleList()
-        for dilation in dilations:
-            self.aspp_modules.append(
-                ConvModule(
-                    self.in_channels,
-                    self.channels,
-                    1 if dilation == 1 else 3,
-                    dilation=dilation,
-                    padding=0 if dilation == 1 else dilation,
-                    conv_cfg=self.conv_cfg,
-                    norm_cfg=self.norm_cfg,
-                    act_cfg=self.act_cfg))
+        self.aspp_modules = ASPPModule(
+            dilations,
+            self.in_channels,
+            self.channels,
+            conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg)
         self.bottleneck = ConvModule(
             (len(dilations) + 1) * self.channels,
             self.channels,
@@ -58,9 +84,7 @@ class ASPPHead(DecodeHead):
                 mode='bilinear',
                 align_corners=self.align_corners)
         ]
-        for aspp_module in self.aspp_modules:
-            aspp_out = aspp_module(x)
-            aspp_outs.append(aspp_out)
+        aspp_outs.extend(self.aspp_modules(x))
         aspp_outs = torch.cat(aspp_outs, dim=1)
         output = self.bottleneck(aspp_outs)
         output = self.cls_seg(output)

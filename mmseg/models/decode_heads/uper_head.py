@@ -4,11 +4,12 @@ import torch.nn as nn
 from mmseg.ops import ConvModule
 from ..registry import HEADS
 from ..utils import resize
-from .psp_head import PSPHead
+from .decode_head import DecodeHead
+from .psp_head import PSPModule
 
 
 @HEADS.register_module
-class UPerHead(PSPHead):
+class UPerHead(DecodeHead):
     """Unified Perceptual Parsing for Scene Understanding
 
         This head is the implementation of:
@@ -16,11 +17,28 @@ class UPerHead(PSPHead):
 
     """
 
-    def __init__(self, fpn_in_channels, **kwargs):
+    def __init__(self, fpn_in_channels, pool_scales=(1, 2, 3, 6), **kwargs):
         assert isinstance(fpn_in_channels, (list, tuple))
         super(UPerHead, self).__init__(
             in_channels=fpn_in_channels[-1], input_transform=None, **kwargs)
         self.fpn_in_channels = fpn_in_channels
+        # PSP Module
+        self.psp_modules = PSPModule(
+            pool_scales,
+            self.in_channels,
+            self.channels,
+            conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg,
+            align_corners=self.align_corners)
+        self.bottleneck = ConvModule(
+            self.in_channels + len(pool_scales) * self.channels,
+            self.channels,
+            3,
+            padding=1,
+            conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg)
         # FPN Module
         self.lateral_convs = nn.ModuleList()
         self.fpn_convs = nn.ModuleList()
@@ -54,6 +72,15 @@ class UPerHead(PSPHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
+    def psp_forward(self, inputs):
+        x = self._transform_inputs(inputs)
+        psp_outs = [x]
+        psp_outs.extend(self.psp_modules(x))
+        psp_outs = torch.cat(psp_outs, dim=1)
+        output = self.bottleneck(psp_outs)
+
+        return output
+
     def forward(self, inputs):
 
         # build laterals
@@ -61,6 +88,7 @@ class UPerHead(PSPHead):
             lateral_conv(inputs[i])
             for i, lateral_conv in enumerate(self.lateral_convs)
         ]
+
         laterals.append(self.psp_forward(inputs))
 
         # build top-down path
