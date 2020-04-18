@@ -9,11 +9,7 @@ crop_size = (769, 769)
 cudnn_benchmark = True
 # model training and testing settings
 train_cfg = dict(sampler=None)
-test_cfg = dict(
-    mode='slide',
-    crop_size=crop_size,
-    stride=(513, 513),
-)
+test_cfg = dict(mode='whole')
 # img_norm_cfg = dict(
 #     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 img_norm_cfg = dict(
@@ -33,7 +29,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(2048, 1024),
+        img_scale=(2049, 1025),
         # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
