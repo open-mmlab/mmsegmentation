@@ -3,9 +3,10 @@ from abc import ABCMeta, abstractmethod
 import torch
 import torch.nn as nn
 
+from mmseg.core import build_seg_sampler
+from mmseg.ops import resize
 from ..builder import build_loss
 from ..losses import accuracy
-from ..utils import resize
 
 
 class DecodeHead(nn.Module):
@@ -21,6 +22,7 @@ class DecodeHead(nn.Module):
                  norm_cfg=None,
                  act_cfg=dict(type='ReLU'),
                  num_classes=19,
+                 classes_weight=None,
                  in_index=-1,
                  input_transform=None,
                  loss_decode=dict(
@@ -28,6 +30,7 @@ class DecodeHead(nn.Module):
                      use_sigmoid=False,
                      loss_weight=1.0),
                  ignore_index=255,
+                 sampler=None,
                  align_corners=True):
         super(DecodeHead, self).__init__()
         self._init_inputs(in_channels, in_index, input_transform)
@@ -36,10 +39,17 @@ class DecodeHead(nn.Module):
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
         self.num_classes = num_classes
+        if classes_weight is not None:
+            assert len(classes_weight) == num_classes
+        self.classes_weight = classes_weight
         self.in_index = in_index
         self.loss_decode = build_loss(loss_decode)
         self.ignore_index = ignore_index
         self.align_corners = align_corners
+        if sampler is not None:
+            self.sampler = build_seg_sampler(sampler)
+        else:
+            self.sampler = None
 
         self.conv_seg = nn.Conv2d(channels, num_classes, kernel_size=1)
         if drop_out_ratio > 0:
@@ -97,29 +107,27 @@ class DecodeHead(nn.Module):
         output = self.conv_seg(feat)
         return output
 
-    def losses(self,
-               seg_logit,
-               seg_label,
-               seg_weight=None,
-               class_weight=None,
-               suffix='decode'):
+    def losses(self, seg_logit, seg_label, suffix='decode'):
         loss = dict()
         seg_logit = resize(
             input=seg_logit,
             size=seg_label.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
-        if seg_weight is not None:
-            seg_weight = resize(
-                input=seg_weight, size=seg_label.shape[2:], mode='nearest')
-        if class_weight is not None:
-            class_weight = seg_logit.new_tensor(class_weight)
+        if self.sampler is not None:
+            seg_weight = self.sampler.sample(seg_logit, seg_label)
+        else:
+            seg_weight = None
+        if self.classes_weight is not None:
+            classes_weight = seg_logit.new_tensor(self.classes_weight)
+        else:
+            classes_weight = None
         seg_label = seg_label.squeeze(1).long()
         loss['loss_seg_{}'.format(suffix)] = self.loss_decode(
             seg_logit,
             seg_label,
             weight=seg_weight,
-            class_weight=class_weight,
+            classes_weight=classes_weight,
             ignore_index=self.ignore_index)
         loss['acc_seg_{}'.format(suffix)] = accuracy(seg_logit, seg_label)
         return loss

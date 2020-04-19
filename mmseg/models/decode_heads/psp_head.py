@@ -1,9 +1,8 @@
 import torch
 import torch.nn as nn
 
-from mmseg.ops import ConvModule
+from mmseg.ops import ConvModule, resize
 from ..registry import HEADS
-from ..utils import resize
 from .decode_head import DecodeHead
 
 
