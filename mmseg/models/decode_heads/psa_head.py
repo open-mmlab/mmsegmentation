@@ -2,9 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from mmseg.ops import ConvModule, PSAMask
+from mmseg.ops import ConvModule, PSAMask, resize
 from ..registry import HEADS
-from ..utils import resize
 from .decode_head import DecodeHead
 
 

@@ -1,9 +1,9 @@
 import torch
 import torch.nn.functional as F
 
+from mmseg.ops import resize
 from .. import builder
 from ..registry import SEGMENTORS
-from ..utils import resize
 from .base import BaseSegmentor
 
 
@@ -22,8 +22,6 @@ class EncoderDecoder(BaseSegmentor):
         self.decode_head = builder.build_head(decode_head)
         if auxiliary_head is not None:
             self.auxiliary_head = builder.build_head(auxiliary_head)
-
-        # TODO: implement sampler
 
         self.train_cfg = train_cfg
         self.test_cfg = test_cfg
@@ -53,18 +51,13 @@ class EncoderDecoder(BaseSegmentor):
 
         losses = dict()
 
-        class_weight = self.train_cfg.get('class_weight', None)
         seg_logit = self.decode_head(x)
-        loss_decode = self.decode_head.losses(
-            seg_logit, gt_semantic_seg, class_weight=class_weight)
+        loss_decode = self.decode_head.losses(seg_logit, gt_semantic_seg)
         losses.update(loss_decode)
         if self.with_auxiliary_head:
             auxiliary_seg_logit = self.auxiliary_head(x)
             loss_aux = self.auxiliary_head.losses(
-                auxiliary_seg_logit,
-                gt_semantic_seg,
-                class_weight=class_weight,
-                suffix='aux')
+                auxiliary_seg_logit, gt_semantic_seg, suffix='aux')
             losses.update(loss_aux)
 
         return losses
