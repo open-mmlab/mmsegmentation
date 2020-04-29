@@ -19,14 +19,21 @@ class EncoderDecoder(BaseSegmentor):
                  pretrained=None):
         super(EncoderDecoder, self).__init__()
         self.backbone = builder.build_backbone(backbone)
-        self.decode_head = builder.build_head(decode_head)
-        if auxiliary_head is not None:
-            self.auxiliary_head = builder.build_head(auxiliary_head)
+        self._init_decode_head(decode_head)
+        self._init_auxiliary_head(auxiliary_head)
 
         self.train_cfg = train_cfg
         self.test_cfg = test_cfg
 
         self.init_weights(pretrained=pretrained)
+
+    def _init_decode_head(self, decode_head):
+        self.decode_head = builder.build_head(decode_head)
+        self.align_corners = self.decode_head.align_corners
+
+    def _init_auxiliary_head(self, auxiliary_head):
+        if auxiliary_head is not None:
+            self.auxiliary_head = builder.build_head(auxiliary_head)
 
     def init_weights(self, pretrained=None):
         super(EncoderDecoder, self).init_weights(pretrained)
@@ -39,10 +46,13 @@ class EncoderDecoder(BaseSegmentor):
         x = self.backbone(img)
         return x
 
+    def decode_seg(self, x):
+        return self.decode_head.get_seg(x)
+
     def forward_dummy(self, img):
         x = self.extract_feat(img)
 
-        seg_logit = self.decode_head(x)
+        seg_logit = self.decode_seg(x)
 
         return seg_logit
 
@@ -86,12 +96,12 @@ class EncoderDecoder(BaseSegmentor):
                     (crop_img.size(0), crop_img.size(1), h_crop, w_crop))
                 pad_img[:, :, :y2 - y1, :x2 - x1] = crop_img
                 pad_x = self.extract_feat(pad_img)
-                pad_seg_logit = self.decode_head(pad_x)
+                pad_seg_logit = self.decode_seg(pad_x)
                 pad_seg_logit = resize(
                     input=pad_seg_logit,
                     size=pad_img.shape[2:],
                     mode='bilinear',
-                    align_corners=self.decode_head.align_corners)
+                    align_corners=self.align_corners)
                 # TODO DANET use exp here
                 preds[:, :, y1:y2,
                       x1:x2] += pad_seg_logit[:, :, :y2 - y1, :x2 - x1]
@@ -103,25 +113,25 @@ class EncoderDecoder(BaseSegmentor):
                 preds,
                 size=img_meta[0]['ori_shape'][:2],
                 mode='bilinear',
-                align_corners=self.decode_head.align_corners,
+                align_corners=self.align_corners,
                 warning=False)
 
         return preds
 
     def whole_inference(self, img, img_meta, rescale):
         x = self.extract_feat(img)
-        seg_logit = self.decode_head(x)
+        seg_logit = self.decode_seg(x)
         seg_logit = resize(
             input=seg_logit,
             size=img.shape[2:],
             mode='bilinear',
-            align_corners=self.decode_head.align_corners)
+            align_corners=self.align_corners)
         if rescale:
             seg_logit = resize(
                 seg_logit,
                 size=img_meta[0]['ori_shape'][:2],
                 mode='bilinear',
-                align_corners=self.decode_head.align_corners,
+                align_corners=self.align_corners,
                 warning=False)
 
         return seg_logit

@@ -64,14 +64,17 @@ class DecodeHead(nn.Module):
 
     def _init_inputs(self, in_channels, in_index, input_transform):
         if input_transform is not None:
-            assert input_transform in ['resize_concat']
+            assert input_transform in ['resize_concat', 'multiple_select']
         self.input_transform = input_transform
         self.in_index = in_index
-        if input_transform == 'resize_concat':
+        if input_transform is not None:
             assert isinstance(in_channels, (list, tuple))
             assert isinstance(in_index, (list, tuple))
             assert len(in_channels) == len(in_index)
-            self.in_channels = sum(in_channels)
+            if input_transform == 'resize_concat':
+                self.in_channels = sum(in_channels)
+            else:
+                self.in_channels = in_channels
         else:
             assert isinstance(in_channels, int)
             assert isinstance(in_index, int)
@@ -92,6 +95,8 @@ class DecodeHead(nn.Module):
                     align_corners=self.align_corners) for x in inputs
             ]
             inputs = torch.cat(upsampled_inputs, dim=1)
+        elif self.input_transform == 'multiple_select':
+            inputs = [inputs[i] for i in self.in_index]
         else:
             inputs = inputs[self.in_index]
 
@@ -100,6 +105,9 @@ class DecodeHead(nn.Module):
     @abstractmethod
     def forward(self, inputs):
         pass
+
+    def get_seg(self, *args, **kwargs):
+        return self.forward(*args, **kwargs)
 
     def cls_seg(self, feat):
         if self.dropout is not None:
