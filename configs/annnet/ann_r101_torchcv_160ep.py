@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/deeplabv3_r50.py', '../_base_/datasets/cityscapes.py',
+    '../_base_/models/ann_r50.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py'
 ]
 model = dict(
@@ -46,6 +46,8 @@ test_pipeline = [
         ])
 ]
 data = dict(
+    imgs_per_gpu=1,
+    workers_per_gpu=1,
     train=dict(pipeline=train_pipeline),
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
@@ -59,4 +61,4 @@ lr_config = dict(
     by_epoch=False,
 )
 # runtime settings
-total_epochs = 110
+total_epochs = 160

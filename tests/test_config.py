@@ -1,5 +1,7 @@
 from os.path import dirname, exists, join, relpath
 
+from torch import nn
+
 
 def _get_config_directory():
     """ Find the predefined segmentor config directory """
@@ -120,25 +122,31 @@ def test_config_data_pipeline():
 
 
 def _check_decode_head(decode_head_cfg, decode_head):
+    if isinstance(decode_head_cfg, list):
+        assert isinstance(decode_head, nn.ModuleList)
+        assert len(decode_head_cfg) == len(decode_head)
+        num_heads = len(decode_head)
+        for i in range(num_heads):
+            _check_decode_head(decode_head_cfg[i], decode_head[i])
+        return
     # check consistency between head_config and roi_head
     assert decode_head_cfg['type'] == decode_head.__class__.__name__
 
     assert decode_head_cfg['type'] == decode_head.__class__.__name__
-    if hasattr(decode_head_cfg, 'in_channels'):
-        in_channels = decode_head_cfg.in_channels
-        if decode_head_cfg.get('input_transform', None) == 'resize_concat':
-            assert isinstance(in_channels, (list, tuple))
-            assert isinstance(decode_head.in_index, (list, tuple))
-            assert len(in_channels) == len(decode_head.in_index)
-            assert sum(in_channels) == decode_head.in_channels
-        else:
-            assert isinstance(in_channels, int)
-            assert in_channels == decode_head.in_channels
-            assert isinstance(decode_head.in_index, int)
-    if hasattr(decode_head_cfg, 'fpn_in_channels'):
-        fpn_in_channels = decode_head_cfg.fpn_in_channels
-        assert isinstance(fpn_in_channels, (list, tuple))
-        assert fpn_in_channels[-1] == decode_head.in_channels
+
+    in_channels = decode_head_cfg.in_channels
+    input_transform = decode_head.input_transform
+    assert input_transform in ['resize_concat', 'multiple_select', None]
+    if input_transform is not None:
+        assert isinstance(in_channels, (list, tuple))
+        assert isinstance(decode_head.in_index, (list, tuple))
+        assert len(in_channels) == len(decode_head.in_index)
+    elif input_transform == 'resize_concat':
+        assert sum(in_channels) == decode_head.in_channels
+    else:
+        assert isinstance(in_channels, int)
+        assert in_channels == decode_head.in_channels
+        assert isinstance(decode_head.in_index, int)
 
     assert decode_head_cfg.channels == decode_head.conv_seg.in_channels
     assert decode_head.conv_seg.out_channels == decode_head_cfg.num_classes

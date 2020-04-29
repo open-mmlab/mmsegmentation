@@ -98,7 +98,8 @@ class NonLocal2D(nn.Module):
         # y: [N, HxW, C]
         y = torch.matmul(pairwise_weight, g_x)
         # y: [N, C, H, W]
-        y = y.permute(0, 2, 1).reshape(n, self.inter_channels, h, w)
+        y = y.permute(0, 2, 1).contiguous().reshape(n, self.inter_channels, h,
+                                                    w)
 
         output = x + self.conv_out(y)
 

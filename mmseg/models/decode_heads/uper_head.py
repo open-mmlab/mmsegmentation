@@ -16,22 +16,20 @@ class UPerHead(DecodeHead):
 
     """
 
-    def __init__(self, fpn_in_channels, pool_scales=(1, 2, 3, 6), **kwargs):
-        assert isinstance(fpn_in_channels, (list, tuple))
+    def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
         super(UPerHead, self).__init__(
-            in_channels=fpn_in_channels[-1], input_transform=None, **kwargs)
-        self.fpn_in_channels = fpn_in_channels
+            input_transform='multiple_select', **kwargs)
         # PSP Module
         self.psp_modules = PSPModule(
             pool_scales,
-            self.in_channels,
+            self.in_channels[-1],
             self.channels,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
             align_corners=self.align_corners)
         self.bottleneck = ConvModule(
-            self.in_channels + len(pool_scales) * self.channels,
+            self.in_channels[-1] + len(pool_scales) * self.channels,
             self.channels,
             3,
             padding=1,
@@ -41,7 +39,7 @@ class UPerHead(DecodeHead):
         # FPN Module
         self.lateral_convs = nn.ModuleList()
         self.fpn_convs = nn.ModuleList()
-        for in_channels in fpn_in_channels[:-1]:  # skip the top layer
+        for in_channels in self.in_channels[:-1]:  # skip the top layer
             l_conv = ConvModule(
                 in_channels,
                 self.channels,
@@ -63,7 +61,7 @@ class UPerHead(DecodeHead):
             self.fpn_convs.append(fpn_conv)
 
         self.fpn_bottleneck = ConvModule(
-            len(fpn_in_channels) * self.channels,
+            len(self.in_channels) * self.channels,
             self.channels,
             3,
             padding=1,
@@ -72,7 +70,7 @@ class UPerHead(DecodeHead):
             act_cfg=self.act_cfg)
 
     def psp_forward(self, inputs):
-        x = self._transform_inputs(inputs)
+        x = inputs[-1]
         psp_outs = [x]
         psp_outs.extend(self.psp_modules(x))
         psp_outs = torch.cat(psp_outs, dim=1)
@@ -81,6 +79,8 @@ class UPerHead(DecodeHead):
         return output
 
     def forward(self, inputs):
+
+        inputs = self._transform_inputs(inputs)
 
         # build laterals
         laterals = [

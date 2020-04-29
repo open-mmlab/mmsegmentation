@@ -2,8 +2,9 @@ import pytest
 import torch
 from torch import nn
 
-from mmseg.models.decode_heads import (ASPPHead, CCHead, FCNHead, GCHead,
-                                       NLHead, PSAHead, PSPHead, UPerHead)
+from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
+                                       FCNHead, GCHead, NLHead, OCRHead,
+                                       PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import DecodeHead
 from mmseg.ops import ConvModule
 
@@ -235,18 +236,52 @@ def test_uper_head():
 
     with pytest.raises(AssertionError):
         # fpn_in_channels must be list|tuple
-        UPerHead(fpn_in_channels=32, channels=16)
+        UPerHead(in_channels=32, channels=16)
 
     # test no norm_cfg
-    head = UPerHead(fpn_in_channels=[32, 16], channels=16)
+    head = UPerHead(in_channels=[32, 16], channels=16, in_index=[-2, -1])
     assert not _conv_has_norm(head, sync_bn=False)
 
     # test with norm_cfg
     head = UPerHead(
-        fpn_in_channels=[32, 16], channels=16, norm_cfg=dict(type='SyncBN'))
+        in_channels=[32, 16],
+        channels=16,
+        norm_cfg=dict(type='SyncBN'),
+        in_index=[-2, -1])
     assert _conv_has_norm(head, sync_bn=True)
 
     inputs = [torch.randn(1, 32, 45, 45), torch.randn(1, 16, 21, 21)]
-    head = UPerHead(fpn_in_channels=[32, 16], channels=16)
+    head = UPerHead(in_channels=[32, 16], channels=16, in_index=[-2, -1])
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_ann_head():
+
+    inputs = [torch.randn(1, 16, 45, 45), torch.randn(1, 32, 21, 21)]
+    head = ANNHead(
+        in_channels=[16, 32],
+        channels=16,
+        in_index=[-2, -1],
+        project_channels=8)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 21, 21)
+
+
+def test_da_head():
+
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head = DAHead(in_channels=32, channels=16, pam_channels=8)
+    outputs = head(inputs)
+    for output in outputs:
+        assert output.shape == (1, head.num_classes, 45, 45)
+
+
+def test_ocr_head():
+
+    inputs = [torch.randn(1, 32, 45, 45)]
+    ocr_head = OCRHead(in_channels=32, channels=16, ocr_channels=8)
+    fcn_head = FCNHead(in_channels=32, channels=16)
+    prev_output = fcn_head(inputs)
+    output = ocr_head(inputs, prev_output)
+    assert output.shape == (1, ocr_head.num_classes, 45, 45)
