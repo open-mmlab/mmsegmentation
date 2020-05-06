@@ -11,6 +11,7 @@ from .norm import build_norm_layer
 from .plugin import build_plugin_layer
 from .psa import PSAMask
 from .scale import Scale
+from .separable_conv_module import SeparableConvModule
 from .upsample import build_upsample_layer
 from .utils import get_compiler_version, get_compiling_cuda_version
 from .wrappers import resize
@@ -22,5 +23,5 @@ __all__ = [
     'get_compiler_version', 'get_compiling_cuda_version', 'build_conv_layer',
     'ConvModule', 'ConvWS2d', 'conv_ws_2d', 'build_norm_layer', 'Scale',
     'build_upsample_layer', 'build_plugin_layer', 'PSAMask',
-    'CrissCrossAttention', 'resize'
+    'CrissCrossAttention', 'resize', 'SeparableConvModule'
 ]
