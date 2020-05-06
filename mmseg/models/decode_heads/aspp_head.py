@@ -45,7 +45,7 @@ class ASPPHead(DecodeHead):
         in (https://arxiv.org/abs/1706.05587)
     """
 
-    def __init__(self, dilations=(1, 12, 24, 36), **kwargs):
+    def __init__(self, dilations=(1, 6, 12, 18), **kwargs):
         super(ASPPHead, self).__init__(**kwargs)
         assert isinstance(dilations, (list, tuple))
         self.dilations = dilations

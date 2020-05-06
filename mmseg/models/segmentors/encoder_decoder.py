@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 
 from mmseg.ops import resize
@@ -33,14 +34,23 @@ class EncoderDecoder(BaseSegmentor):
 
     def _init_auxiliary_head(self, auxiliary_head):
         if auxiliary_head is not None:
-            self.auxiliary_head = builder.build_head(auxiliary_head)
+            if isinstance(auxiliary_head, list):
+                self.auxiliary_head = nn.ModuleList()
+                for head_cfg in auxiliary_head:
+                    self.auxiliary_head.append(builder.build_head(head_cfg))
+            else:
+                self.auxiliary_head = builder.build_head(auxiliary_head)
 
     def init_weights(self, pretrained=None):
         super(EncoderDecoder, self).init_weights(pretrained)
         self.backbone.init_weights(pretrained=pretrained)
         self.decode_head.init_weights()
         if self.with_auxiliary_head:
-            self.auxiliary_head.init_weights()
+            if isinstance(self.auxiliary_head, nn.ModuleList):
+                for aux_head in self.auxiliary_head:
+                    aux_head.init_weights()
+            else:
+                self.auxiliary_head.init_weights()
 
     def extract_feat(self, img):
         x = self.backbone(img)
@@ -65,10 +75,19 @@ class EncoderDecoder(BaseSegmentor):
         loss_decode = self.decode_head.losses(seg_logit, gt_semantic_seg)
         losses.update(loss_decode)
         if self.with_auxiliary_head:
-            auxiliary_seg_logit = self.auxiliary_head(x)
-            loss_aux = self.auxiliary_head.losses(
-                auxiliary_seg_logit, gt_semantic_seg, suffix='aux')
-            losses.update(loss_aux)
+            if isinstance(self.auxiliary_head, nn.ModuleList):
+                for idx, aux_head in enumerate(self.auxiliary_head):
+                    auxiliary_seg_logit = aux_head(x)
+                    loss_aux = aux_head.losses(
+                        auxiliary_seg_logit,
+                        gt_semantic_seg,
+                        suffix='aux_{}'.format(idx))
+                    losses.update(loss_aux)
+            else:
+                auxiliary_seg_logit = self.auxiliary_head(x)
+                loss_aux = self.auxiliary_head.losses(
+                    auxiliary_seg_logit, gt_semantic_seg, suffix='aux')
+                losses.update(loss_aux)
 
         return losses
 

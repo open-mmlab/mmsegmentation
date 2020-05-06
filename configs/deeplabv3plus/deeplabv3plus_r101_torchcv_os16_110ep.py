@@ -1,17 +1,11 @@
 _base_ = [
-    '../_base_/models/deeplabv3_r50.py', '../_base_/datasets/cityscapes.py',
-    '../_base_/default_runtime.py'
+    '../_base_/models/deeplabv3plus_r50.py',
+    '../_base_/datasets/cityscapes.py', '../_base_/default_runtime.py'
 ]
 model = dict(
     pretrained='pretrain_model/resnet101c128_torchcv-4ae0b989.pth',
     backbone=dict(depth=101),
-    decode_head=dict(
-        dilations=(1, 6, 12, 18),
-        classes_weight=[
-            0.8373, 0.918, 0.866, 1.0345, 1.0166, 0.9969, 0.9754, 1.0489,
-            0.8786, 1.0023, 0.9539, 0.9843, 1.1116, 0.9037, 1.0865, 1.0955,
-            1.0865, 1.1529, 1.0507
-        ]))
+    decode_head=dict(dilations=(1, 6, 12, 18)))
 crop_size = (769, 769)
 cudnn_benchmark = True
 # model training and testing settings
