@@ -36,7 +36,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    imgs_per_gpu=3,
+    samples_per_gpu=3,
     workers_per_gpu=3,
     train=dict(pipeline=train_pipeline),
     val=dict(pipeline=test_pipeline),
