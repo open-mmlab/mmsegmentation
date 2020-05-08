@@ -1,9 +1,9 @@
 import torch
 import torch.nn.functional as F
+from mmcv.cnn import ConvModule, Scale
 from torch import nn
 
-from mmseg.ops import ConvModule, Scale
-from ..registry import HEADS
+from ..builder import HEADS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import DecodeHead
 
@@ -63,7 +63,7 @@ class CAM(nn.Module):
         return out
 
 
-@HEADS.register_module
+@HEADS.register_module()
 class DAHead(DecodeHead):
     """Dual Attention Network for Scene Segmentation
 

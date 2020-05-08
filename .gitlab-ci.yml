@@ -1,5 +1,5 @@
 variables:
-  PYTORCH_IMAGE: registry.sensetime.com/eig-research/pytorch:pytorch1.3.1-cuda10.1-devel
+  PYTORCH_IMAGE: registry.sensetime.com/eig-research/pytorch:1.3.1-cuda10.1-cudnn7-devel
 
 stages:
     - linting

@@ -53,19 +53,18 @@ class BaseSegmentor(nn.Module):
     def init_weights(self, pretrained=None):
         if pretrained is not None:
             logger = logging.getLogger()
-            logger.info('load model from: {}'.format(pretrained))
+            logger.info(f'load model from: {pretrained}')
 
     def forward_test(self, imgs, img_metas, **kwargs):
         for var, name in [(imgs, 'imgs'), (img_metas, 'img_metas')]:
             if not isinstance(var, list):
-                raise TypeError('{} must be a list, but got {}'.format(
-                    name, type(var)))
+                raise TypeError(f'{name} must be a list, but got '
+                                f'{type(var)}')
 
         num_augs = len(imgs)
         if num_augs != len(img_metas):
-            raise ValueError(
-                'num of augmentations ({}) != num of image meta ({})'.format(
-                    len(imgs), len(img_metas)))
+            raise ValueError(f'num of augmentations ({len(imgs)}) != '
+                             f'num of image meta ({len(img_metas)})')
         # all images in the same aug batch all of the same ori_shape and pad
         # shape
         for img_meta in img_metas:

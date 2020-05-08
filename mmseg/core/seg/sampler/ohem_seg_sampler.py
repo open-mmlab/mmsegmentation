@@ -1,11 +1,11 @@
 import torch
 import torch.nn.functional as F
 
-from ..registry import SEG_SAMPLERS
+from ..builder import SEG_SAMPLERS
 from .base_seg_sampler import BasSegSampler
 
 
-@SEG_SAMPLERS.register_module
+@SEG_SAMPLERS.register_module()
 class OHEMSegSampler(BasSegSampler):
 
     def __init__(self, thresh=0.7, min_kept=100000, ignore_index=255):

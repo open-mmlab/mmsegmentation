@@ -1,8 +1,9 @@
 import torch
 import torch.nn as nn
+from mmcv.cnn import ConvModule
 
-from mmseg.ops import ConvModule, SeparableConvModule, resize
-from ..registry import HEADS
+from mmseg.ops import SeparableConvModule, resize
+from ..builder import HEADS
 from .aspp_head import ASPPHead, ASPPModule
 
 
@@ -20,7 +21,7 @@ class SepASPPModule(ASPPModule):
                     relu_first=False)
 
 
-@HEADS.register_module
+@HEADS.register_module()
 class SepASPPHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
     Segmentation

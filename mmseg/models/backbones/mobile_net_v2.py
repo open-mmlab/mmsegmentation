@@ -1,11 +1,11 @@
-from mmcv.cnn import constant_init, kaiming_init, normal_init
+from mmcv.cnn import (ConvModule, build_norm_layer, constant_init,
+                      kaiming_init, normal_init)
 from mmcv.runner import load_checkpoint
 from torch import nn
 from torch.nn.modules.batchnorm import _BatchNorm
 
-from mmseg.ops import ConvModule, build_norm_layer
 from mmseg.utils import get_root_logger
-from ..registry import BACKBONES
+from ..builder import BACKBONES
 
 
 class InvertedResidual(nn.Module):
@@ -63,7 +63,7 @@ class InvertedResidual(nn.Module):
             return self.conv(x)
 
 
-@BACKBONES.register_module
+@BACKBONES.register_module()
 class MobileNetV2(nn.Module):
     arch_settings = (
         InvertedResidual,

@@ -3,16 +3,16 @@ from functools import reduce
 
 import mmcv
 import numpy as np
+from mmcv.utils import print_log
 from PIL import Image
 from torch.utils.data import Dataset
 
 from mmseg.core import mean_iou
-from mmseg.utils import print_log
+from .builder import DATASETS
 from .pipelines import Compose
-from .registry import DATASETS
 
 
-@DATASETS.register_module
+@DATASETS.register_module()
 class CustomDataset(Dataset):
     """Custom dataset for semantic segmentation
 
@@ -83,7 +83,7 @@ class CustomDataset(Dataset):
                 img_info['ann'] = dict(seg_map=seg_map)
             img_infos.append(img_info)
 
-        print('Loaded {} images'.format(len(img_infos)))
+        print(f'Loaded {len(img_infos)} images')
         return img_infos
 
     def get_ann_info(self, idx):

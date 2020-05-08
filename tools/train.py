@@ -7,14 +7,14 @@ import time
 
 import mmcv
 import torch
-from mmcv import Config
 from mmcv.runner import init_dist
+from mmcv.utils import Config, DictAction
 
 from mmseg import __version__
 from mmseg.apis import set_random_seed, train_segmentor
 from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
-from mmseg.utils import MultipleKVAction, collect_env, get_root_logger
+from mmseg.utils import collect_env, get_root_logger
 
 
 def parse_args():
@@ -39,7 +39,7 @@ def parse_args():
         action='store_true',
         help='whether to set deterministic options for CUDNN backend.')
     parser.add_argument(
-        '--options', nargs='+', action=MultipleKVAction, help='custom options')
+        '--options', nargs='+', action=DictAction, help='custom options')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
@@ -94,7 +94,7 @@ def main():
     mmcv.mkdir_or_exist(osp.abspath(cfg.work_dir))
     # init the logger before other steps
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-    log_file = osp.join(cfg.work_dir, '{}.log'.format(timestamp))
+    log_file = osp.join(cfg.work_dir, f'{timestamp}.log')
     logger = get_root_logger(log_file=log_file, log_level=cfg.log_level)
 
     # init the meta dict to record some important information such as
@@ -102,21 +102,20 @@ def main():
     meta = dict()
     # log env info
     env_info_dict = collect_env()
-    env_info = '\n'.join([('{}: {}'.format(k, v))
-                          for k, v in env_info_dict.items()])
+    env_info = '\n'.join([f'{k}: {v}' for k, v in env_info_dict.items()])
     dash_line = '-' * 60 + '\n'
     logger.info('Environment info:\n' + dash_line + env_info + '\n' +
                 dash_line)
     meta['env_info'] = env_info
 
     # log some basic info
-    logger.info('Distributed training: {}'.format(distributed))
-    logger.info('Config:\n{}'.format(cfg.pretty_text))
+    logger.info(f'Distributed training: {distributed}')
+    logger.info(f'Config:\n{cfg.pretty_text}')
 
     # set random seeds
     if args.seed is not None:
-        logger.info('Set random seed to {}, deterministic: {}'.format(
-            args.seed, args.deterministic))
+        logger.info(f'Set random seed to {args.seed}, deterministic: '
+                    f'{args.deterministic}')
         set_random_seed(args.seed, deterministic=args.deterministic)
     cfg.seed = args.seed
     meta['seed'] = args.seed

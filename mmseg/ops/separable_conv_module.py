@@ -1,6 +1,5 @@
+from mmcv.cnn import build_norm_layer
 from torch import nn
-
-from . import build_norm_layer
 
 
 class SeparableConvModule(nn.Module):

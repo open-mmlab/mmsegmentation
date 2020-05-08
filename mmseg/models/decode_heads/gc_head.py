@@ -1,11 +1,11 @@
 import torch
 
 from mmseg.ops import ContextBlock
-from ..registry import HEADS
+from ..builder import HEADS
 from .fcn_head import FCNHead
 
 
-@HEADS.register_module
+@HEADS.register_module()
 class GCHead(FCNHead):
     """GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond.
 

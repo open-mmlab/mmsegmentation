@@ -85,7 +85,8 @@ def test_config_data_pipeline():
         config_mod = Config.fromfile(config_fpath)
 
         # remove loading pipeline
-        config_mod.train_pipeline.pop(0)
+        load_img_pipeline = config_mod.train_pipeline.pop(0)
+        to_float32 = load_img_pipeline.get('to_float32', False)
         config_mod.train_pipeline.pop(0)
         config_mod.test_pipeline.pop(0)
 
@@ -96,6 +97,8 @@ def test_config_data_pipeline():
             'Building data pipeline, config_fpath = {!r}'.format(config_fpath))
 
         img = np.random.randint(0, 255, size=(1024, 2048, 3), dtype=np.uint8)
+        if to_float32:
+            img = img.astype(np.float32)
         seg = np.random.randint(0, 255, size=(1024, 2048, 1), dtype=np.uint8)
 
         results = dict(

@@ -1,8 +1,9 @@
 import torch
 import torch.nn as nn
+from mmcv.cnn import ConvModule
 
-from mmseg.ops import ConvModule, resize
-from ..registry import HEADS
+from mmseg.ops import resize
+from ..builder import HEADS
 from .decode_head import DecodeHead
 
 
@@ -43,7 +44,7 @@ class PSPModule(nn.ModuleList):
         return psp_outs
 
 
-@HEADS.register_module
+@HEADS.register_module()
 class PSPHead(DecodeHead):
     """Pyramid Scene Parsing Network
 

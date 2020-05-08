@@ -1,11 +1,11 @@
 import torch
 
 from mmseg.ops import CrissCrossAttention
-from ..registry import HEADS
+from ..builder import HEADS
 from .fcn_head import FCNHead
 
 
-@HEADS.register_module
+@HEADS.register_module()
 class CCHead(FCNHead):
     """CCNet: Criss-Cross Attention for Semantic Segmentation.
 

@@ -2,8 +2,8 @@
 dataset_type = 'CityscapesDataset'
 data_root = 'data/cityscapes/'
 data = dict(
-    imgs_per_gpu=2,
-    workers_per_gpu=2,
+    imgs_per_gpu=1,
+    workers_per_gpu=1,
     train=dict(
         type=dataset_type,
         data_root=data_root,

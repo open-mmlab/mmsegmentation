@@ -58,8 +58,9 @@ class DecodeHead(nn.Module):
             self.dropout = None
 
     def extra_repr(self):
-        s = 'input_transform={}, ignore_index={}, align_corners={}'.format(
-            self.input_transform, self.ignore_index, self.align_corners)
+        s = f'input_transform={self.input_transform}, ' \
+            f'ignore_index={self.ignore_index}, ' \
+            f'align_corners={self.align_corners}'
         return s
 
     def _init_inputs(self, in_channels, in_index, input_transform):
@@ -131,11 +132,11 @@ class DecodeHead(nn.Module):
         else:
             classes_weight = None
         seg_label = seg_label.squeeze(1).long()
-        loss['loss_seg_{}'.format(suffix)] = self.loss_decode(
+        loss[f'loss_seg_{suffix}'] = self.loss_decode(
             seg_logit,
             seg_label,
             weight=seg_weight,
             classes_weight=classes_weight,
             ignore_index=self.ignore_index)
-        loss['acc_seg_{}'.format(suffix)] = accuracy(seg_logit, seg_label)
+        loss[f'acc_seg_{suffix}'] = accuracy(seg_logit, seg_label)
         return loss

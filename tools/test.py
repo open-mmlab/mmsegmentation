@@ -5,12 +5,12 @@ import mmcv
 import torch
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import get_dist_info, init_dist, load_checkpoint
+from mmcv.utils import DictAction
 
 from mmseg.apis import multi_gpu_test, single_gpu_test
 from mmseg.core import wrap_fp16_model
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
-from mmseg.utils import MultipleKVAction
 
 
 def parse_args():
@@ -41,7 +41,7 @@ def parse_args():
         help='tmp directory used for collecting results from multiple '
         'workers, available when gpu_collect is not specified')
     parser.add_argument(
-        '--options', nargs='+', action=MultipleKVAction, help='custom options')
+        '--options', nargs='+', action=DictAction, help='custom options')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
@@ -119,7 +119,7 @@ def main():
     rank, _ = get_dist_info()
     if rank == 0:
         if args.out:
-            print('\nwriting results to {}'.format(args.out))
+            print(f'\nwriting results to {args.out}')
             mmcv.dump(outputs, args.out)
         kwargs = {} if args.options is None else args.options
         if args.format_only:

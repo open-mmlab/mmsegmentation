@@ -185,8 +185,8 @@ __global__ void ca_map_backward_kernel_g(const T *dout, const T *weight,
 namespace mmsegmentation {
 
 at::Tensor ca_forward_cuda(const at::Tensor &t, const at::Tensor &f) {
-  AT_ASSERTM(t.type().is_cuda(), "input must be a CUDA tensor");
-  AT_ASSERTM(f.type().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(t.device().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(f.device().is_cuda(), "input must be a CUDA tensor");
 
   auto n = t.size(0);
   auto c = t.size(1);
@@ -203,10 +203,10 @@ at::Tensor ca_forward_cuda(const at::Tensor &t, const at::Tensor &f) {
   int d3 = h + w;
   dim3 blocks(d1, d2, d3);
 
-  AT_DISPATCH_FLOATING_TYPES(t.type(), "ca_forward", [&] {
+  AT_DISPATCH_FLOATING_TYPES(t.scalar_type(), "ca_forward", [&] {
     ca_forward_kernel<scalar_t><<<blocks, threads, 0, stream>>>(
-        t.contiguous().data<scalar_t>(), f.contiguous().data<scalar_t>(),
-        weight.contiguous().data<scalar_t>(), n, c, h, w);
+        t.contiguous().data_ptr<scalar_t>(), f.contiguous().data_ptr<scalar_t>(),
+        weight.contiguous().data_ptr<scalar_t>(), n, c, h, w);
   });
   THCudaCheck(cudaGetLastError());
   return weight;
@@ -215,9 +215,9 @@ at::Tensor ca_forward_cuda(const at::Tensor &t, const at::Tensor &f) {
 std::tuple<at::Tensor, at::Tensor> ca_backward_cuda(const at::Tensor &dw,
                                                     const at::Tensor &t,
                                                     const at::Tensor &f) {
-  AT_ASSERTM(dw.type().is_cuda(), "input must be a CUDA tensor");
-  AT_ASSERTM(t.type().is_cuda(), "input must be a CUDA tensor");
-  AT_ASSERTM(f.type().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(dw.device().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(t.device().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(f.device().is_cuda(), "input must be a CUDA tensor");
 
   auto n = t.size(0);
   auto c = t.size(1);
@@ -235,17 +235,17 @@ std::tuple<at::Tensor, at::Tensor> ca_backward_cuda(const at::Tensor &dw,
   int d3 = c;
   dim3 blocks(d1, d2, d3);
 
-  AT_DISPATCH_FLOATING_TYPES(t.type(), "ca_backward_kernel_t", [&] {
+  AT_DISPATCH_FLOATING_TYPES(t.scalar_type(), "ca_backward_kernel_t", [&] {
     ca_backward_kernel_t<scalar_t><<<blocks, threads, 0, stream>>>(
-        dw.contiguous().data<scalar_t>(), t.contiguous().data<scalar_t>(),
-        f.contiguous().data<scalar_t>(), dt.contiguous().data<scalar_t>(), n, c,
+        dw.contiguous().data_ptr<scalar_t>(), t.contiguous().data_ptr<scalar_t>(),
+        f.contiguous().data_ptr<scalar_t>(), dt.contiguous().data_ptr<scalar_t>(), n, c,
         h, w);
   });
 
-  AT_DISPATCH_FLOATING_TYPES(f.type(), "ca_backward_kernel_f", [&] {
+  AT_DISPATCH_FLOATING_TYPES(f.scalar_type(), "ca_backward_kernel_f", [&] {
     ca_backward_kernel_f<scalar_t><<<blocks, threads, 0, stream>>>(
-        dw.contiguous().data<scalar_t>(), t.contiguous().data<scalar_t>(),
-        f.contiguous().data<scalar_t>(), df.contiguous().data<scalar_t>(), n, c,
+        dw.contiguous().data_ptr<scalar_t>(), t.contiguous().data_ptr<scalar_t>(),
+        f.contiguous().data_ptr<scalar_t>(), df.contiguous().data_ptr<scalar_t>(), n, c,
         h, w);
   });
   THCudaCheck(cudaGetLastError());
@@ -253,8 +253,8 @@ std::tuple<at::Tensor, at::Tensor> ca_backward_cuda(const at::Tensor &dw,
 }
 
 at::Tensor ca_map_forward_cuda(const at::Tensor &weight, const at::Tensor &g) {
-  AT_ASSERTM(weight.type().is_cuda(), "input must be a CUDA tensor");
-  AT_ASSERTM(g.type().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(weight.device().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(g.device().is_cuda(), "input must be a CUDA tensor");
 
   auto n = g.size(0);
   auto c = g.size(1);
@@ -271,10 +271,10 @@ at::Tensor ca_map_forward_cuda(const at::Tensor &weight, const at::Tensor &g) {
   int d3 = c;
   dim3 blocks(d1, d2, d3);
 
-  AT_DISPATCH_FLOATING_TYPES(g.type(), "ca_map_forward", [&] {
+  AT_DISPATCH_FLOATING_TYPES(g.scalar_type(), "ca_map_forward", [&] {
     ca_map_forward_kernel<scalar_t><<<blocks, threads, 0, stream>>>(
-        weight.contiguous().data<scalar_t>(), g.contiguous().data<scalar_t>(),
-        out.contiguous().data<scalar_t>(), n, c, h, w);
+        weight.contiguous().data_ptr<scalar_t>(), g.contiguous().data_ptr<scalar_t>(),
+        out.contiguous().data_ptr<scalar_t>(), n, c, h, w);
   });
   THCudaCheck(cudaGetLastError());
   return out;
@@ -282,9 +282,9 @@ at::Tensor ca_map_forward_cuda(const at::Tensor &weight, const at::Tensor &g) {
 
 std::tuple<at::Tensor, at::Tensor> ca_map_backward_cuda(
     const at::Tensor &dout, const at::Tensor &weight, const at::Tensor &g) {
-  AT_ASSERTM(dout.type().is_cuda(), "input must be a CUDA tensor");
-  AT_ASSERTM(weight.type().is_cuda(), "input must be a CUDA tensor");
-  AT_ASSERTM(g.type().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(dout.device().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(weight.device().is_cuda(), "input must be a CUDA tensor");
+  AT_ASSERTM(g.device().is_cuda(), "input must be a CUDA tensor");
 
   auto n = dout.size(0);
   auto c = dout.size(1);
@@ -302,18 +302,18 @@ std::tuple<at::Tensor, at::Tensor> ca_map_backward_cuda(
   int d3 = h + w;
   dim3 blocks(d1, d2, d3);
 
-  AT_DISPATCH_FLOATING_TYPES(weight.type(), "ca_map_backward_kernel_w", [&] {
+  AT_DISPATCH_FLOATING_TYPES(weight.scalar_type(), "ca_map_backward_kernel_w", [&] {
     ca_map_backward_kernel_w<scalar_t><<<blocks, threads, 0, stream>>>(
-        dout.contiguous().data<scalar_t>(),
-        weight.contiguous().data<scalar_t>(), g.contiguous().data<scalar_t>(),
-        dw.contiguous().data<scalar_t>(), n, c, h, w);
+        dout.contiguous().data_ptr<scalar_t>(),
+        weight.contiguous().data_ptr<scalar_t>(), g.contiguous().data_ptr<scalar_t>(),
+        dw.contiguous().data_ptr<scalar_t>(), n, c, h, w);
   });
 
-  AT_DISPATCH_FLOATING_TYPES(g.type(), "ca_map_backward_kernel_g", [&] {
+  AT_DISPATCH_FLOATING_TYPES(g.scalar_type(), "ca_map_backward_kernel_g", [&] {
     ca_map_backward_kernel_g<scalar_t><<<blocks, threads, 0, stream>>>(
-        dout.contiguous().data<scalar_t>(),
-        weight.contiguous().data<scalar_t>(), g.contiguous().data<scalar_t>(),
-        dg.contiguous().data<scalar_t>(), n, c, h, w);
+        dout.contiguous().data_ptr<scalar_t>(),
+        weight.contiguous().data_ptr<scalar_t>(), g.contiguous().data_ptr<scalar_t>(),
+        dg.contiguous().data_ptr<scalar_t>(), n, c, h, w);
   });
   THCudaCheck(cudaGetLastError());
   return std::make_tuple(dw, dg);
