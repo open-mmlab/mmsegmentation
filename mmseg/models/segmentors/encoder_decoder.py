@@ -97,8 +97,8 @@ class EncoderDecoder(BaseSegmentor):
         h_crop, w_crop = self.test_cfg.crop_size
         batch_size, _, h_img, w_img = img.size()
         num_classes = self.decode_head.num_classes
-        h_grids = (h_img - h_crop + h_stride - 1) // h_stride + 1
-        w_grids = (w_img - w_crop + w_stride - 1) // w_stride + 1
+        h_grids = max(h_img - h_crop + h_stride - 1, 0) // h_stride + 1
+        w_grids = max(w_img - w_crop + w_stride - 1, 0) // w_stride + 1
         # TODO should not padding zero
         preds = img.new_zeros((batch_size, num_classes, h_img, w_img))
         count_mat = img.new_zeros((batch_size, 1, h_img, w_img))

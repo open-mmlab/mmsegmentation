@@ -39,17 +39,21 @@ class CustomDataset(Dataset):
                  img_suffix='.png',
                  ann_dir=None,
                  seg_map_suffix='.png',
+                 split=None,
                  data_root=None,
                  test_mode=False,
-                 ignore_index=255):
+                 ignore_index=255,
+                 reduce_zero_label=False):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
         self.img_suffix = img_suffix
         self.ann_dir = ann_dir
         self.seg_map_suffix = seg_map_suffix
+        self.split = split
         self.data_root = data_root
         self.test_mode = test_mode
         self.ignore_index = ignore_index
+        self.reduce_zero_label = reduce_zero_label
 
         # join paths if data_root is specified
         if self.data_root is not None:
@@ -57,11 +61,13 @@ class CustomDataset(Dataset):
                 self.img_dir = osp.join(self.data_root, self.img_dir)
             if not (self.ann_dir is None or osp.isabs(self.ann_dir)):
                 self.ann_dir = osp.join(self.data_root, self.ann_dir)
+            if not (self.split is None or osp.isabs(self.split)):
+                self.split = osp.join(self.data_root, self.split)
 
         # load annotations
         self.img_infos = self.load_annotations(self.img_dir, self.img_suffix,
                                                self.ann_dir,
-                                               self.seg_map_suffix)
+                                               self.seg_map_suffix, self.split)
 
         # set group flag for the sampler
         if not self.test_mode:
@@ -70,18 +76,33 @@ class CustomDataset(Dataset):
     def __len__(self):
         return len(self.img_infos)
 
-    def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix):
+    def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix,
+                         split):
         img_infos = []
-        for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
-            img_file = osp.join(img_dir, img)
-            # get image shape by read
-            width, height = Image.open(img_file).size
-            img_info = dict(filename=img_file, height=height, width=width)
-            if ann_dir is not None:
-                seg_map = osp.join(ann_dir,
-                                   img.replace(img_suffix, seg_map_suffix))
-                img_info['ann'] = dict(seg_map=seg_map)
-            img_infos.append(img_info)
+        if split is not None:
+            with open(split) as f:
+                for line in f:
+                    img_name = line.strip()
+                    img_file = osp.join(img_dir, img_name + img_suffix)
+                    # get image shape by read
+                    width, height = Image.open(img_file).size
+                    img_info = dict(
+                        filename=img_file, height=height, width=width)
+                    if ann_dir is not None:
+                        seg_map = osp.join(ann_dir, img_name + seg_map_suffix)
+                        img_info['ann'] = dict(seg_map=seg_map)
+                    img_infos.append(img_info)
+        else:
+            for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
+                img_file = osp.join(img_dir, img)
+                # get image shape by read
+                width, height = Image.open(img_file).size
+                img_info = dict(filename=img_file, height=height, width=width)
+                if ann_dir is not None:
+                    seg_map = osp.join(ann_dir,
+                                       img.replace(img_suffix, seg_map_suffix))
+                    img_info['ann'] = dict(seg_map=seg_map)
+                img_infos.append(img_info)
 
         print(f'Loaded {len(img_infos)} images')
         return img_infos
@@ -130,6 +151,17 @@ class CustomDataset(Dataset):
     def format_results(self, results, **kwargs):
         pass
 
+    def get_gt_seg_maps(self):
+        gt_seg_maps = []
+        for img_info in self.img_infos:
+            gt_seg_map = np.array(
+                Image.open(img_info['ann']['seg_map']), dtype=np.uint8)
+            if self.reduce_zero_label:
+                gt_seg_map = gt_seg_map - 1
+            gt_seg_maps.append(gt_seg_map)
+
+        return gt_seg_maps
+
     def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
 
@@ -147,11 +179,7 @@ class CustomDataset(Dataset):
             raise KeyError('metric {} is not supported'.format(metric))
 
         eval_results = {}
-        gt_seg_maps = [
-            mmcv.imread(img_info['ann']['seg_map'],
-                        flag='unchanged').squeeze().astype(np.int)
-            for img_info in self.img_infos
-        ]
+        gt_seg_maps = self.get_gt_seg_maps()
         if self.CLASSES is None:
             num_classes = len(
                 reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))

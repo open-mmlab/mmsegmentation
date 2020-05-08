@@ -22,9 +22,10 @@ class CityscapesDataset(CustomDataset):
             seg_map_suffix='gtFine_labelTrainIds.png',
             **kwargs)
 
-    def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix):
+    def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix,
+                         split):
         img_infos = []
-        assert osp.exists(img_dir)
+        assert osp.exists(img_dir) and split is None
         for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
             img_file = osp.join(img_dir, img)
             # cityscapes dataset has *_gtFine_polygons.json files
@@ -180,7 +181,7 @@ class CityscapesDataset(CustomDataset):
         return eval_results
 
     @staticmethod
-    def convert_to_color(seg, to_label_id):
+    def convert_to_color(seg, to_label_id=False):
         import cityscapesscripts.helpers.labels as CSLabels
         color_seg = np.zeros((seg.shape[0], seg.shape[1], 3))
         if to_label_id:
