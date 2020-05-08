@@ -1,11 +1,11 @@
 from torch import nn
 
 from .. import builder
-from ..registry import SEGMENTORS
+from ..builder import SEGMENTORS
 from .encoder_decoder import EncoderDecoder
 
 
-@SEGMENTORS.register_module
+@SEGMENTORS.register_module()
 class CascadeEncoderDecoder(EncoderDecoder):
 
     def __init__(self,
@@ -58,7 +58,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
         for i in range(1, self.num_stages):
             seg_logit = self.decode_head[i](x, seg_logit)
             loss_decode = self.decode_head[i].losses(
-                seg_logit, gt_semantic_seg, suffix='decode_{}'.format(i))
+                seg_logit, gt_semantic_seg, suffix=f'decode_{i}')
             losses.update(loss_decode)
 
         if self.with_auxiliary_head:

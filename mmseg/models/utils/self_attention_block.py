@@ -1,9 +1,7 @@
 import torch
-from mmcv.cnn import constant_init
+from mmcv.cnn import ConvModule, constant_init
 from torch import nn as nn
 from torch.nn import functional as F
-
-from mmseg.ops import ConvModule
 
 
 class SelfAttentionBlock(nn.Module):

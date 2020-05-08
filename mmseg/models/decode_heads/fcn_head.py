@@ -1,12 +1,12 @@
 import torch
 import torch.nn as nn
+from mmcv.cnn import ConvModule
 
-from mmseg.ops import ConvModule
-from ..registry import HEADS
+from ..builder import HEADS
 from .decode_head import DecodeHead
 
 
-@HEADS.register_module
+@HEADS.register_module()
 class FCNHead(DecodeHead):
 
     def __init__(self,

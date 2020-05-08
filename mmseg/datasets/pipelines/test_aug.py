@@ -1,10 +1,10 @@
 import mmcv
 
-from ..registry import PIPELINES
+from ..builder import PIPELINES
 from .compose import Compose
 
 
-@PIPELINES.register_module
+@PIPELINES.register_module()
 class MultiScaleFlipAug(object):
 
     def __init__(self, transforms, img_scale, img_ratios=None, flip=False):
@@ -44,6 +44,6 @@ class MultiScaleFlipAug(object):
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += '(transforms={}, img_scale={}, flip={})'.format(
-            self.transforms, self.img_scale, self.flip)
+        repr_str += f'(transforms={self.transforms}, ' \
+                    f'img_scale={self.img_scale}, flip={self.flip})'
         return repr_str

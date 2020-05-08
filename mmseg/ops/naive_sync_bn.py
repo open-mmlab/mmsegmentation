@@ -1,6 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 import torch
 import torch.distributed as dist
+from mmcv.cnn import NORM_LAYERS
 from mmcv.runner import get_dist_info
 from torch import nn
 from torch.autograd.function import Function
@@ -25,6 +26,7 @@ class AllReduce(Function):
         return grad_output
 
 
+@NORM_LAYERS.register_module('NaiveSyncBN')
 class NaiveSyncBatchNorm(nn.BatchNorm2d):
     """
     `torch.nn.SyncBatchNorm` has known unknown bugs.

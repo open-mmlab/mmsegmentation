@@ -1,12 +1,12 @@
 import pytest
 import torch
+from mmcv.cnn import ConvModule
 from torch import nn
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
                                        FCNHead, GCHead, NLHead, OCRHead,
                                        PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import DecodeHead
-from mmseg.ops import ConvModule
 
 
 def _conv_has_norm(module, sync_bn):
@@ -117,7 +117,7 @@ def test_fcn_head():
     head = FCNHead(in_channels=32, channels=16)
     for i in range(len(head.convs)):
         assert head.convs[i].kernel_size == (3, 3)
-        assert head.convs[i].padding == (1, 1)
+        assert head.convs[i].padding == 1
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
 
@@ -126,7 +126,7 @@ def test_fcn_head():
     head = FCNHead(in_channels=32, channels=16, kernel_size=1)
     for i in range(len(head.convs)):
         assert head.convs[i].kernel_size == (1, 1)
-        assert head.convs[i].padding == (0, 0)
+        assert head.convs[i].padding == 0
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
 

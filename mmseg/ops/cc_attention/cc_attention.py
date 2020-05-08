@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from mmcv.cnn import Scale
 from torch.autograd.function import once_differentiable
 
-from ..scale import Scale
 from . import ca_ext
 
 

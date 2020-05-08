@@ -1,12 +1,12 @@
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-from mmcv.cnn import constant_init, kaiming_init
+from mmcv.cnn import build_norm_layer, constant_init, kaiming_init
 from mmcv.runner import load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 
-from mmseg.ops import SeparableConvModule, build_norm_layer
+from mmseg.ops import SeparableConvModule
 from mmseg.utils import get_root_logger
-from ..registry import BACKBONES
+from ..builder import BACKBONES
 
 
 class XceptionBlock(nn.Module):
@@ -94,7 +94,7 @@ class XceptionBlock(nn.Module):
             return outputs
 
 
-@BACKBONES.register_module
+@BACKBONES.register_module()
 class Xception65(nn.Module):
 
     def __init__(self, output_stride, with_cp=False, norm_cfg=dict(type='BN')):
@@ -382,7 +382,7 @@ class FCAttention(nn.Module):
         return x * att.expand_as(x)
 
 
-@BACKBONES.register_module
+@BACKBONES.register_module()
 class XceptionA(nn.Module):
 
     def __init__(self, num_classes=1000, norm_cfg=dict(type='BN')):

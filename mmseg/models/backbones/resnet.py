@@ -1,12 +1,13 @@
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-from mmcv.cnn import constant_init, kaiming_init
+from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
+                      kaiming_init)
 from mmcv.runner import load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 
-from mmseg.ops import build_conv_layer, build_norm_layer, build_plugin_layer
+from mmseg.ops import build_plugin_layer
 from mmseg.utils import get_root_logger
-from ..registry import BACKBONES
+from ..builder import BACKBONES
 from ..utils import ResLayer
 
 
@@ -228,7 +229,7 @@ class Bottleneck(nn.Module):
                 plugin,
                 in_channels=in_channels,
                 postfix=plugin.pop('postfix', ''))
-            assert not hasattr(self, name), 'duplicate plugin {}'.format(name)
+            assert not hasattr(self, name), f'duplicate plugin {name}'
             self.add_module(name, layer)
             plugin_names.append(name)
         return plugin_names
@@ -293,7 +294,7 @@ class Bottleneck(nn.Module):
         return out
 
 
-@BACKBONES.register_module
+@BACKBONES.register_module()
 class ResNet(nn.Module):
     """ResNet backbone.
 
@@ -374,7 +375,7 @@ class ResNet(nn.Module):
                  zero_init_residual=True):
         super(ResNet, self).__init__()
         if depth not in self.arch_settings:
-            raise KeyError('invalid depth {} for resnet'.format(depth))
+            raise KeyError(f'invalid depth {depth} for resnet')
         self.depth = depth
         self.base_channels = base_channels
         self.num_stages = num_stages
@@ -436,7 +437,7 @@ class ResNet(nn.Module):
                 multi_grid=stage_multi_grid,
                 contract_dilation=contract_dilation)
             self.inplanes = planes * self.block.expansion
-            layer_name = 'layer{}'.format(i + 1)
+            layer_name = f'layer{i+1}'
             self.add_module(layer_name, res_layer)
             self.res_layers.append(layer_name)
 
@@ -567,7 +568,7 @@ class ResNet(nn.Module):
                         param.requires_grad = False
 
         for i in range(1, self.frozen_stages + 1):
-            m = getattr(self, 'layer{}'.format(i))
+            m = getattr(self, f'layer{i}')
             m.eval()
             for param in m.parameters():
                 param.requires_grad = False
@@ -624,7 +625,7 @@ class ResNet(nn.Module):
                     m.eval()
 
 
-@BACKBONES.register_module
+@BACKBONES.register_module()
 class ResNetV1d(ResNet):
     """ResNetV1d variant described in [1]_.
 

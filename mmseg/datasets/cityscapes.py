@@ -1,20 +1,20 @@
 import os.path as osp
 import tempfile
 
-import cityscapesscripts.evaluation.evalPixelLevelSemanticLabeling as CSEval
-import cityscapesscripts.helpers.labels as CSLabels
 import mmcv
 import numpy as np
+from mmcv.utils import print_log
 
-from mmseg.utils import print_log
+from .builder import DATASETS
 from .custom import CustomDataset
-from .registry import DATASETS
 
 
-@DATASETS.register_module
+@DATASETS.register_module()
 class CityscapesDataset(CustomDataset):
-
-    CLASSES = tuple(l.name for l in CSLabels.labels if 0 <= l.trainId < 255)
+    CLASSES = ('road', 'sidewalk', 'building', 'wall', 'fence', 'pole',
+               'traffic light', 'traffic sign', 'vegetation', 'terrain', 'sky',
+               'person', 'rider', 'car', 'truck', 'bus', 'train', 'motorcycle',
+               'bicycle')
 
     def __init__(self, **kwargs):
         super(CityscapesDataset, self).__init__(
@@ -39,11 +39,12 @@ class CityscapesDataset(CustomDataset):
             img_info['ann'] = dict(seg_map=seg_map)
             img_infos.append(img_info)
 
-        print('Loaded {} images'.format(len(img_infos)))
+        print_log(f'Loaded {len(img_infos)} images')
         return img_infos
 
     @staticmethod
     def _convert_to_label_id(result):
+        import cityscapesscripts.helpers.labels as CSLabels
         result_copy = result.copy()
         for trainId, label in CSLabels.trainId2label.items():
             result_copy[result == trainId] = label.id
@@ -75,7 +76,7 @@ class CityscapesDataset(CustomDataset):
             filename = self.img_infos[idx]['filename']
             basename = osp.splitext(osp.basename(filename))[0]
 
-            png_filename = osp.join(imgfile_prefix, '{}.png'.format(basename))
+            png_filename = osp.join(imgfile_prefix, f'{basename}.png')
 
             mmcv.imwrite(result, png_filename)
             result_files.append(png_filename)
@@ -104,13 +105,8 @@ class CityscapesDataset(CustomDataset):
 
         assert isinstance(results, list), 'results must be a list'
         assert len(results) == len(self), (
-            'The length of results is not equal to the dataset len: {} != {}'.
-            format(len(results), len(self)))
-
-        assert isinstance(results, list), 'results must be a list'
-        assert len(results) == len(self), (
-            'The length of results is not equal to the dataset len: {} != {}'.
-            format(len(results), len(self)))
+            'The length of results is not equal to the dataset len: '
+            f'{len(results)} != {len(self)}')
 
         if imgfile_prefix is None:
             tmp_dir = tempfile.TemporaryDirectory()
@@ -140,6 +136,11 @@ class CityscapesDataset(CustomDataset):
         return eval_results
 
     def _evaluate_cityscapes(self, resutls, logger, imgfile_prefix):
+        try:
+            import cityscapesscripts.evaluation.evalInstanceLevelSemanticLabeling as CSEval  # noqa
+        except ImportError:
+            raise ImportError('Please run "pip install citscapesscripts" to '
+                              'install cityscapesscripts first.')
         msg = 'Evaluating in Cityscapes style'
         if logger is None:
             msg = '\n' + msg
@@ -153,9 +154,7 @@ class CityscapesDataset(CustomDataset):
             result_dir = tmp_dir.name
 
         eval_results = dict()
-        print_log(
-            'Evaluating results under {} ...'.format(result_dir),
-            logger=logger)
+        print_log(f'Evaluating results under {result_dir} ...', logger=logger)
 
         CSEval.args.evalInstLevelScore = True
         CSEval.args.predictionPath = osp.abspath(result_dir)
@@ -182,6 +181,7 @@ class CityscapesDataset(CustomDataset):
 
     @staticmethod
     def convert_to_color(seg, to_label_id):
+        import cityscapesscripts.helpers.labels as CSLabels
         color_seg = np.zeros((seg.shape[0], seg.shape[1], 3))
         if to_label_id:
             seg = CityscapesDataset._convert_to_label_id(seg)

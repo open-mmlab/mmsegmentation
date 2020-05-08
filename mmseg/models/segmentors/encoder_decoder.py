@@ -4,11 +4,11 @@ import torch.nn.functional as F
 
 from mmseg.ops import resize
 from .. import builder
-from ..registry import SEGMENTORS
+from ..builder import SEGMENTORS
 from .base import BaseSegmentor
 
 
-@SEGMENTORS.register_module
+@SEGMENTORS.register_module()
 class EncoderDecoder(BaseSegmentor):
 
     def __init__(self,
@@ -81,7 +81,7 @@ class EncoderDecoder(BaseSegmentor):
                     loss_aux = aux_head.losses(
                         auxiliary_seg_logit,
                         gt_semantic_seg,
-                        suffix='aux_{}'.format(idx))
+                        suffix=f'aux_{idx}')
                     losses.update(loss_aux)
             else:
                 auxiliary_seg_logit = self.auxiliary_head(x)

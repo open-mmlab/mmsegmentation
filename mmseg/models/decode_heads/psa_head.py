@@ -1,13 +1,14 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from mmcv.cnn import ConvModule
 
-from mmseg.ops import ConvModule, PSAMask, resize
-from ..registry import HEADS
+from mmseg.ops import PSAMask, resize
+from ..builder import HEADS
 from .decode_head import DecodeHead
 
 
-@HEADS.register_module
+@HEADS.register_module()
 class PSAHead(DecodeHead):
 
     def __init__(self,

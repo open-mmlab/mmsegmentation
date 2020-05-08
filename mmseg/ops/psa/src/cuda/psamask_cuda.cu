@@ -151,18 +151,18 @@ void psamask_forward_cuda(const int psa_type, const at::Tensor& input,
   cudaStream_t stream = at::cuda::getCurrentCUDAStream();
   if (psa_type == 0)
     AT_DISPATCH_FLOATING_TYPES(
-        input.type(), "psamask_collect_forward_cuda", [&] {
+        input.scalar_type(), "psamask_collect_forward_cuda", [&] {
           psamask_collect_forward_cuda<scalar_t><<<nthreads, 512, 0, stream>>>(
               nthreads, h_feature, w_feature, h_mask, w_mask, half_h_mask,
-              half_w_mask, input.data<scalar_t>(), output.data<scalar_t>());
+              half_w_mask, input.data_ptr<scalar_t>(), output.data_ptr<scalar_t>());
         });
   else
     AT_DISPATCH_FLOATING_TYPES(
-        input.type(), "psamask_distribute_forward_cuda", [&] {
+        input.scalar_type(), "psamask_distribute_forward_cuda", [&] {
           psamask_distribute_forward_cuda<scalar_t>
               <<<nthreads, 512, 0, stream>>>(
                   nthreads, h_feature, w_feature, h_mask, w_mask, half_h_mask,
-                  half_w_mask, input.data<scalar_t>(), output.data<scalar_t>());
+                  half_w_mask, input.data_ptr<scalar_t>(), output.data_ptr<scalar_t>());
         });
 }
 
@@ -175,20 +175,20 @@ void psamask_backward_cuda(const int psa_type, const at::Tensor& grad_output,
   cudaStream_t stream = at::cuda::getCurrentCUDAStream();
   if (psa_type == 0)
     AT_DISPATCH_FLOATING_TYPES(
-        grad_input.type(), "psamask_collect_backward_cuda", [&] {
+        grad_input.scalar_type(), "psamask_collect_backward_cuda", [&] {
           psamask_collect_backward_cuda<scalar_t><<<nthreads, 512, 0, stream>>>(
               nthreads, h_feature, w_feature, h_mask, w_mask, half_h_mask,
-              half_w_mask, grad_output.data<scalar_t>(),
-              grad_input.data<scalar_t>());
+              half_w_mask, grad_output.data_ptr<scalar_t>(),
+              grad_input.data_ptr<scalar_t>());
         });
   else
     AT_DISPATCH_FLOATING_TYPES(
-        grad_input.type(), "psamask_distribute_backward_cuda", [&] {
+        grad_input.scalar_type(), "psamask_distribute_backward_cuda", [&] {
           psamask_distribute_backward_cuda<scalar_t>
               <<<nthreads, 512, 0, stream>>>(
                   nthreads, h_feature, w_feature, h_mask, w_mask, half_h_mask,
-                  half_w_mask, grad_output.data<scalar_t>(),
-                  grad_input.data<scalar_t>());
+                  half_w_mask, grad_output.data_ptr<scalar_t>(),
+                  grad_input.data_ptr<scalar_t>());
         });
 }
 }  // namespace mmsegmentation

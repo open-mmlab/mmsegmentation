@@ -1,9 +1,9 @@
 from mmseg.ops import SeparableConvModule
-from ..registry import HEADS
+from ..builder import HEADS
 from .fcn_head import FCNHead
 
 
-@HEADS.register_module
+@HEADS.register_module()
 class SepFCNHead(FCNHead):
 
     def __init__(self, **kwargs):
