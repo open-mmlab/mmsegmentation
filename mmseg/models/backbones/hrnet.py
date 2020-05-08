@@ -4,6 +4,7 @@ from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
 from mmcv.runner import load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 
+from mmseg.ops import resize
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from .resnet import BasicBlock, Bottleneck
@@ -188,6 +189,12 @@ class HRModule(nn.Module):
             for j in range(self.num_branches):
                 if i == j:
                     y += x[j]
+                elif j > i:
+                    y = y + resize(
+                        self.fuse_layers[i][j](x[j]),
+                        size=x[i].shape[2:],
+                        mode='bilinear',
+                        align_corners=False)
                 else:
                     y += self.fuse_layers[i][j](x[j])
             x_fuse.append(self.relu(y))

@@ -2,6 +2,7 @@ import os.path as osp
 
 import mmcv
 import numpy as np
+from PIL import Image
 
 from ..builder import PIPELINES
 
@@ -85,8 +86,10 @@ class LoadMultiChannelImageFromFiles(object):
 @PIPELINES.register_module()
 class LoadAnnotations(object):
 
-    def __init__(self, with_seg=True):
+    def __init__(self, with_seg=True, use_pil=False, reduce_zero_label=False):
         self.with_seg = with_seg
+        self.use_pil = use_pil
+        self.reduce_zero_label = reduce_zero_label
 
     def _load_semantic_seg(self, results):
         if results.get('seg_prefix', None) is not None:
@@ -94,8 +97,15 @@ class LoadAnnotations(object):
                                 results['ann_info']['seg_map'])
         else:
             filename = results['ann_info']['seg_map']
-        results['gt_semantic_seg'] = mmcv.imread(
-            filename, flag='unchanged').squeeze().astype(np.uint8)
+        if self.use_pil:
+            gt_semantic_seg = np.array(Image.open(filename), dtype=np.uint8)
+        else:
+            gt_semantic_seg = mmcv.imread(
+                filename, flag='unchanged').squeeze().astype(np.uint8)
+        # reduce zero_label
+        if self.reduce_zero_label:
+            gt_semantic_seg = gt_semantic_seg - 1
+        results['gt_semantic_seg'] = gt_semantic_seg
         results['seg_fields'].append('gt_semantic_seg')
         return results
 
