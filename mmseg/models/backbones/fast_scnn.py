@@ -4,7 +4,7 @@ from mmcv.cnn import ConvModule, constant_init, kaiming_init
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.models.backbones.mobile_net_v2 import InvertedResidual
-from mmseg.models.decode_heads.psp_head import PSPModule
+from mmseg.models.decode_heads.psp_head import PPM
 from mmseg.ops import SeparableConvModule, resize
 from ..builder import BACKBONES
 
@@ -79,7 +79,7 @@ class GlobalFeatureExtractor(nn.Module):
         self.bottleneck3 = self._make_layer(block_channels[1],
                                             block_channels[2], num_blocks[2],
                                             t, 1)
-        self.ppm = PSPModule(
+        self.ppm = PPM(
             pool_scales,
             block_channels[2],
             block_channels[2] // 4,

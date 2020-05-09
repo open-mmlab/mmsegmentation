@@ -7,11 +7,11 @@ from ..builder import HEADS
 from .decode_head import DecodeHead
 
 
-class PSPModule(nn.ModuleList):
+class PPM(nn.ModuleList):
 
     def __init__(self, pool_scales, in_channels, channels, conv_cfg, norm_cfg,
                  act_cfg, align_corners):
-        super(PSPModule, self).__init__()
+        super(PPM, self).__init__()
         self.pool_scales = pool_scales
         self.align_corners = align_corners
         self.in_channels = in_channels
@@ -32,16 +32,16 @@ class PSPModule(nn.ModuleList):
                         act_cfg=self.act_cfg)))
 
     def forward(self, x):
-        psp_outs = []
-        for psp_module in self:
-            psp_out = psp_module(x)
-            upsampled_psp_out = resize(
-                psp_out,
+        ppm_outs = []
+        for ppm in self:
+            ppm_out = ppm(x)
+            upsampled_ppm_out = resize(
+                ppm_out,
                 size=x.size()[2:],
                 mode='bilinear',
                 align_corners=self.align_corners)
-            psp_outs.append(upsampled_psp_out)
-        return psp_outs
+            ppm_outs.append(upsampled_ppm_out)
+        return ppm_outs
 
 
 @HEADS.register_module()
@@ -54,10 +54,9 @@ class PSPHead(DecodeHead):
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
         super(PSPHead, self).__init__(**kwargs)
-        self.psp_modules = nn.ModuleList()
         assert isinstance(pool_scales, (list, tuple))
         self.pool_scales = pool_scales
-        self.psp_modules = PSPModule(
+        self.psp_modules = PPM(
             self.pool_scales,
             self.in_channels,
             self.channels,

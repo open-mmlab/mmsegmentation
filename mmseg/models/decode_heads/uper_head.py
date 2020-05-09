@@ -5,7 +5,7 @@ from mmcv.cnn import ConvModule
 from mmseg.ops import resize
 from ..builder import HEADS
 from .decode_head import DecodeHead
-from .psp_head import PSPModule
+from .psp_head import PPM
 
 
 @HEADS.register_module()
@@ -21,7 +21,7 @@ class UPerHead(DecodeHead):
         super(UPerHead, self).__init__(
             input_transform='multiple_select', **kwargs)
         # PSP Module
-        self.psp_modules = PSPModule(
+        self.psp_modules = PPM(
             pool_scales,
             self.in_channels[-1],
             self.channels,

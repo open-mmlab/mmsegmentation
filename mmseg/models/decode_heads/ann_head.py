@@ -7,18 +7,18 @@ from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import DecodeHead
 
 
-class PSPConcat(nn.ModuleList):
+class PPMConcat(nn.ModuleList):
 
     def __init__(self, pool_scales=(1, 3, 6, 8)):
-        super(PSPConcat, self).__init__(
+        super(PPMConcat, self).__init__(
             [nn.AdaptiveAvgPool2d(pool_scale) for pool_scale in pool_scales])
 
     def forward(self, feats):
-        psp_outs = []
-        for psp_module in self:
-            psp_out = psp_module(feats)
-            psp_outs.append(psp_out.view(*feats.shape[:2], -1))
-        concat_outs = torch.cat(psp_outs, dim=2)
+        ppm_outs = []
+        for ppm in self:
+            ppm_out = ppm(feats)
+            ppm_outs.append(ppm_out.view(*feats.shape[:2], -1))
+        concat_outs = torch.cat(ppm_outs, dim=2)
         return concat_outs
 
 
@@ -27,7 +27,7 @@ class SelfAttentionBlock(_SelfAttentionBlock):
     def __init__(self, low_in_channels, high_in_channels, channels,
                  out_channels, share_key_query, query_scale, key_pool_scales,
                  conv_cfg, norm_cfg, act_cfg):
-        key_psp = PSPConcat(key_pool_scales)
+        key_psp = PPMConcat(key_pool_scales)
         if query_scale > 1:
             query_downsample = nn.MaxPool2d(kernel_size=query_scale)
         else:
