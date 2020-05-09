@@ -35,7 +35,7 @@ class BaseSegmentor(nn.Module):
             yield self.extract_feat(img)
 
     @abstractmethod
-    def decode_seg(self, feats):
+    def encode_decode(self, feats):
         pass
 
     @abstractmethod

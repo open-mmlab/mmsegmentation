@@ -56,13 +56,18 @@ class EncoderDecoder(BaseSegmentor):
         x = self.backbone(img)
         return x
 
-    def decode_seg(self, x):
-        return self.decode_head.get_seg(x)
+    def encode_decode(self, img):
+        x = self.extract_feat(img)
+        out = self.decode_head.get_seg(x)
+        out = resize(
+            input=out,
+            size=img.shape[2:],
+            mode='bilinear',
+            align_corners=self.align_corners)
+        return out
 
     def forward_dummy(self, img):
-        x = self.extract_feat(img)
-
-        seg_logit = self.decode_seg(x)
+        seg_logit = self.encode_decode(img)
 
         return seg_logit
 
@@ -99,7 +104,6 @@ class EncoderDecoder(BaseSegmentor):
         num_classes = self.decode_head.num_classes
         h_grids = max(h_img - h_crop + h_stride - 1, 0) // h_stride + 1
         w_grids = max(w_img - w_crop + w_stride - 1, 0) // w_stride + 1
-        # TODO should not padding zero
         preds = img.new_zeros((batch_size, num_classes, h_img, w_img))
         count_mat = img.new_zeros((batch_size, 1, h_img, w_img))
         for h_idx in range(h_grids):
@@ -114,14 +118,7 @@ class EncoderDecoder(BaseSegmentor):
                 pad_img = crop_img.new_zeros(
                     (crop_img.size(0), crop_img.size(1), h_crop, w_crop))
                 pad_img[:, :, :y2 - y1, :x2 - x1] = crop_img
-                pad_x = self.extract_feat(pad_img)
-                pad_seg_logit = self.decode_seg(pad_x)
-                pad_seg_logit = resize(
-                    input=pad_seg_logit,
-                    size=pad_img.shape[2:],
-                    mode='bilinear',
-                    align_corners=self.align_corners)
-                # TODO DANET use exp here
+                pad_seg_logit = self.encode_decode(pad_img)
                 preds[:, :, y1:y2,
                       x1:x2] += pad_seg_logit[:, :, :y2 - y1, :x2 - x1]
                 count_mat[:, :, y1:y2, x1:x2] += 1
@@ -138,8 +135,7 @@ class EncoderDecoder(BaseSegmentor):
         return preds
 
     def whole_inference(self, img, img_meta, rescale):
-        x = self.extract_feat(img)
-        seg_logit = self.decode_seg(x)
+        seg_logit = self.encode_decode(img)
         seg_logit = resize(
             input=seg_logit,
             size=img.shape[2:],
