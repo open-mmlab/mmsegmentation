@@ -354,6 +354,7 @@ class ResNet(nn.Module):
     def __init__(self,
                  depth,
                  in_channels=3,
+                 stem_channels=64,
                  base_channels=64,
                  num_stages=4,
                  strides=(1, 2, 2, 2),
@@ -377,6 +378,7 @@ class ResNet(nn.Module):
         if depth not in self.arch_settings:
             raise KeyError(f'invalid depth {depth} for resnet')
         self.depth = depth
+        self.stem_channels = stem_channels
         self.base_channels = base_channels
         self.num_stages = num_stages
         assert num_stages >= 1 and num_stages <= 4
@@ -403,9 +405,9 @@ class ResNet(nn.Module):
         self.zero_init_residual = zero_init_residual
         self.block, stage_blocks = self.arch_settings[depth]
         self.stage_blocks = stage_blocks[:num_stages]
-        self.inplanes = base_channels
+        self.inplanes = stem_channels
 
-        self._make_stem_layer(in_channels, base_channels)
+        self._make_stem_layer(in_channels, stem_channels)
 
         self.res_layers = []
         for i, num_blocks in enumerate(self.stage_blocks):
@@ -419,7 +421,7 @@ class ResNet(nn.Module):
             # multi grid is applied to last layer only
             stage_multi_grid = multi_grid if i == len(
                 self.stage_blocks) - 1 else None
-            planes = 64 * 2**i
+            planes = base_channels * 2**i
             res_layer = self.make_res_layer(
                 block=self.block,
                 inplanes=self.inplanes,
@@ -443,7 +445,7 @@ class ResNet(nn.Module):
 
         self._freeze_stages()
 
-        self.feat_dim = self.block.expansion * 64 * 2**(
+        self.feat_dim = self.block.expansion * base_channels * 2**(
             len(self.stage_blocks) - 1)
 
     def make_stage_plugins(self, plugins, stage_idx):
@@ -507,50 +509,50 @@ class ResNet(nn.Module):
     def norm1(self):
         return getattr(self, self.norm1_name)
 
-    def _make_stem_layer(self, in_channels, base_channels):
+    def _make_stem_layer(self, in_channels, stem_channels):
         if self.deep_stem:
             self.stem = nn.Sequential(
                 build_conv_layer(
                     self.conv_cfg,
                     in_channels,
-                    base_channels // 2,
+                    stem_channels // 2,
                     kernel_size=3,
                     stride=2,
                     padding=1,
                     bias=False),
-                build_norm_layer(self.norm_cfg, base_channels // 2)[1],
+                build_norm_layer(self.norm_cfg, stem_channels // 2)[1],
                 nn.ReLU(inplace=True),
                 build_conv_layer(
                     self.conv_cfg,
-                    base_channels // 2,
-                    base_channels // 2,
+                    stem_channels // 2,
+                    stem_channels // 2,
                     kernel_size=3,
                     stride=1,
                     padding=1,
                     bias=False),
-                build_norm_layer(self.norm_cfg, base_channels // 2)[1],
+                build_norm_layer(self.norm_cfg, stem_channels // 2)[1],
                 nn.ReLU(inplace=True),
                 build_conv_layer(
                     self.conv_cfg,
-                    base_channels // 2,
-                    base_channels,
+                    stem_channels // 2,
+                    stem_channels,
                     kernel_size=3,
                     stride=1,
                     padding=1,
                     bias=False),
-                build_norm_layer(self.norm_cfg, base_channels)[1],
+                build_norm_layer(self.norm_cfg, stem_channels)[1],
                 nn.ReLU(inplace=True))
         else:
             self.conv1 = build_conv_layer(
                 self.conv_cfg,
                 in_channels,
-                base_channels,
+                stem_channels,
                 kernel_size=7,
                 stride=2,
                 padding=3,
                 bias=False)
             self.norm1_name, norm1 = build_norm_layer(
-                self.norm_cfg, base_channels, postfix=1)
+                self.norm_cfg, stem_channels, postfix=1)
             self.add_module(self.norm1_name, norm1)
             self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
@@ -623,6 +625,22 @@ class ResNet(nn.Module):
                 # trick: eval have effect on BatchNorm only
                 if isinstance(m, _BatchNorm):
                     m.eval()
+
+
+@BACKBONES.register_module()
+class ResNetV1c(ResNet):
+    """ResNetV1c variant described in [1]_.
+
+    Compared with default ResNet(ResNetV1b), ResNetV1c replaces the 7x7 conv
+    in the input stem with three 3x3 convs.
+
+    References:
+        .. [1] https://arxiv.org/pdf/1812.01187.pdf
+    """
+
+    def __init__(self, **kwargs):
+        super(ResNetV1c, self).__init__(
+            deep_stem=True, avg_down=False, **kwargs)
 
 
 @BACKBONES.register_module()

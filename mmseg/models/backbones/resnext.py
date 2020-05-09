@@ -10,7 +10,13 @@ from .resnet import ResNet
 
 class Bottleneck(_Bottleneck):
 
-    def __init__(self, inplanes, planes, groups=1, base_width=4, **kwargs):
+    def __init__(self,
+                 inplanes,
+                 planes,
+                 groups=1,
+                 base_width=4,
+                 base_channels=64,
+                 **kwargs):
         """Bottleneck block for ResNeXt.
         If style is "pytorch", the stride-two layer is the 3x3 conv layer,
         if it is "caffe", the stride-two layer is the first 1x1 conv layer.
@@ -20,7 +26,8 @@ class Bottleneck(_Bottleneck):
         if groups == 1:
             width = self.planes
         else:
-            width = math.floor(self.planes * (base_width / 64)) * groups
+            width = math.floor(self.planes *
+                               (base_width / base_channels)) * groups
 
         self.norm1_name, norm1 = build_norm_layer(
             self.norm_cfg, width, postfix=1)
@@ -130,4 +137,7 @@ class ResNeXt(ResNet):
 
     def make_res_layer(self, **kwargs):
         return ResLayer(
-            groups=self.groups, base_width=self.base_width, **kwargs)
+            groups=self.groups,
+            base_width=self.base_width,
+            base_channels=self.base_channels,
+            **kwargs)
