@@ -9,4 +9,5 @@ lr_config = dict(
 )
 # runtime settings
 total_epochs = 220
+checkpoint_config = dict(interval=20)
 runner_type = 'epoch'

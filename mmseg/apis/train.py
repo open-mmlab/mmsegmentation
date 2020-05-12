@@ -8,8 +8,9 @@ from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import (DistSamplerSeedHook, EpochBasedRunner,
                          IterBasedRunner, Runner)
 
-from mmseg.core import (DistEvalHook, DistOptimizerHook, EvalHook,
-                        Fp16OptimizerHook, build_optimizer)
+from mmseg.core import (DistEvalHook, DistEvalIterHook, DistOptimizerHook,
+                        EvalHook, EvalIterHook, Fp16OptimizerHook,
+                        build_optimizer)
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import get_root_logger
 
@@ -176,7 +177,10 @@ def train_segmentor(model,
             dist=distributed,
             shuffle=False)
         eval_cfg = cfg.get('evaluation', {})
-        eval_hook = DistEvalHook if distributed else EvalHook
+        if runner_type == 'iter':
+            eval_hook = DistEvalIterHook if distributed else EvalIterHook
+        else:
+            eval_hook = DistEvalHook if distributed else EvalHook
         runner.register_hook(eval_hook(val_dataloader, **eval_cfg))
 
     if cfg.resume_from:
