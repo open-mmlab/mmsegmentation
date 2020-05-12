@@ -69,7 +69,7 @@ def main():
     with open(
             osp.join(devkit_path, 'VOC2012/ImageSets/Segmentation',
                      'trainaug.txt'), 'w') as f:
-        f.writelines(l + '\n' for l in aug_train_list)
+        f.writelines(line + '\n' for line in aug_train_list)
 
     aug_list = generate_aug_list(full_aug_list, ori_train_list + val_list)
     assert len(aug_list) == AUG_LEN - len(
@@ -78,7 +78,7 @@ def main():
     with open(
             osp.join(devkit_path, 'VOC2012/ImageSets/Segmentation', 'aug.txt'),
             'w') as f:
-        f.writelines(l + '\n' for l in aug_list)
+        f.writelines(line + '\n' for line in aug_list)
 
     print('Done!')
 

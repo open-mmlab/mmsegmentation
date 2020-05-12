@@ -222,8 +222,8 @@ class CustomDataset(Dataset):
     def convert_to_color(seg):
         color_seg = np.zeros((seg.shape[0], seg.shape[1], 3))
         label2color = {
-            l: np.random.randint(0, 255, size=(3, ))
-            for l in np.unique(seg)
+            label: np.random.randint(0, 255, size=(3, ))
+            for label in np.unique(seg)
         }
         for label, color in label2color.items():
             color_seg[seg == label, :] = color
