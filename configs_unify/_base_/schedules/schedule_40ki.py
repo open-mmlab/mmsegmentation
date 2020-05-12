@@ -8,5 +8,5 @@ lr_config = dict(
     by_epoch=False,
 )
 # runtime settings
-total_epochs = 220
-runner_type = 'epoch'
+total_iters = 40000
+runner_type = 'iter'

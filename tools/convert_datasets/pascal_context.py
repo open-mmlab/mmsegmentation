@@ -58,8 +58,6 @@ def main():
 
     train_detail = Detail(json_path, img_dir, 'train')
     train_ids = train_detail.getImgs()
-    import pdb
-    pdb.set_trace()
 
     val_detail = Detail(json_path, img_dir, 'val')
     val_ids = val_detail.getImgs()

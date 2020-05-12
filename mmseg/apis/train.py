@@ -5,7 +5,8 @@ import numpy as np
 import torch
 import torch.distributed as dist
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
-from mmcv.runner import DistSamplerSeedHook, Runner
+from mmcv.runner import (DistSamplerSeedHook, EpochBasedRunner,
+                         IterBasedRunner, Runner)
 
 from mmseg.core import (DistEvalHook, DistOptimizerHook, EvalHook,
                         Fp16OptimizerHook, build_optimizer)
@@ -118,32 +119,52 @@ def train_segmentor(model,
 
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
-    runner = Runner(
-        model,
-        batch_processor,
-        optimizer,
-        cfg.work_dir,
-        logger=logger,
-        meta=meta)
+
+    runner_type = cfg.get('runner_type', 'default')
+    assert runner_type in ['default', 'epoch', 'iter']
+    if runner_type == 'epoch':
+        runner = EpochBasedRunner(
+            model, optimizer, cfg.work_dir, logger=logger, meta=meta)
+        # register hooks
+        runner.register_training_hooks(cfg.lr_config, cfg.checkpoint_config,
+                                       cfg.log_config)
+        if distributed:
+            runner.register_hook(DistSamplerSeedHook())
+
+    elif runner_type == 'iter':
+        runner = IterBasedRunner(
+            model, optimizer, cfg.work_dir, logger=logger, meta=meta)
+        # register hooks
+        runner.register_training_hooks(cfg.lr_config, cfg.checkpoint_config,
+                                       cfg.log_config)
+    else:
+        runner = Runner(
+            model,
+            batch_processor,
+            optimizer,
+            cfg.work_dir,
+            logger=logger,
+            meta=meta)
+
+        # fp16 setting
+        fp16_cfg = cfg.get('fp16', None)
+        if fp16_cfg is not None:
+            optimizer_config = Fp16OptimizerHook(
+                **cfg.optimizer_config, **fp16_cfg, distributed=distributed)
+        elif distributed and 'type' not in cfg.optimizer_config:
+            optimizer_config = DistOptimizerHook(**cfg.optimizer_config)
+        else:
+            optimizer_config = cfg.optimizer_config
+
+        # register hooks
+        runner.register_training_hooks(cfg.lr_config, optimizer_config,
+                                       cfg.checkpoint_config, cfg.log_config,
+                                       cfg.get('momentum_config', None))
+        if distributed:
+            runner.register_hook(DistSamplerSeedHook())
+
     # an ugly walkaround to make the .log and .log.json filenames the same
     runner.timestamp = timestamp
-
-    # fp16 setting
-    fp16_cfg = cfg.get('fp16', None)
-    if fp16_cfg is not None:
-        optimizer_config = Fp16OptimizerHook(
-            **cfg.optimizer_config, **fp16_cfg, distributed=distributed)
-    elif distributed and 'type' not in cfg.optimizer_config:
-        optimizer_config = DistOptimizerHook(**cfg.optimizer_config)
-    else:
-        optimizer_config = cfg.optimizer_config
-
-    # register hooks
-    runner.register_training_hooks(cfg.lr_config, optimizer_config,
-                                   cfg.checkpoint_config, cfg.log_config,
-                                   cfg.get('momentum_config', None))
-    if distributed:
-        runner.register_hook(DistSamplerSeedHook())
 
     # register eval hooks
     if validate:
@@ -162,4 +183,7 @@ def train_segmentor(model,
         runner.resume(cfg.resume_from)
     elif cfg.load_from:
         runner.load_checkpoint(cfg.load_from)
-    runner.run(data_loaders, cfg.workflow, cfg.total_epochs)
+    if runner_type == 'iter':
+        runner.run(data_loaders, cfg.workflow, cfg.total_iters)
+    else:
+        runner.run(data_loaders, cfg.workflow, cfg.total_epochs)
