@@ -73,14 +73,14 @@ def main():
     with open(
             osp.join(devkit_path, 'VOC2010/ImageSets/SegmentationContext',
                      'train.txt'), 'w') as f:
-        f.writelines(l + '\n' for l in sorted(train_list))
+        f.writelines(line + '\n' for line in sorted(train_list))
 
     val_list = mmcv.track_progress(
         partial(generate_labels, detail=val_detail, out_dir=out_dir), val_ids)
     with open(
             osp.join(devkit_path, 'VOC2010/ImageSets/SegmentationContext',
                      'val.txt'), 'w') as f:
-        f.writelines(l + '\n' for l in sorted(val_list))
+        f.writelines(line + '\n' for line in sorted(val_list))
 
     print('Done!')
 
