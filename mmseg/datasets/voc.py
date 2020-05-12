@@ -7,7 +7,7 @@ from .custom import CustomDataset
 
 
 @DATASETS.register_module
-class VOCDataset(CustomDataset):
+class PascalVOCDataset(CustomDataset):
 
     CLASSES = ('background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
                'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',
@@ -15,7 +15,7 @@ class VOCDataset(CustomDataset):
                'train', 'tvmonitor')
 
     def __init__(self, split, **kwargs):
-        super(VOCDataset, self).__init__(
+        super(PascalVOCDataset, self).__init__(
             img_suffix='.jpg', seg_map_suffix='.png', split=split, **kwargs)
         assert osp.exists(self.img_dir) and self.split is not None
 

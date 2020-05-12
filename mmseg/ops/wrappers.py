@@ -10,19 +10,16 @@ def resize(input,
            align_corners=None,
            warning=True):
     if warning:
-        if size is not None:
+        if size is not None and align_corners:
             input_h, input_w = input.shape[2:]
-            out_h, out_w = size
-            if input_h % 2 and input_w % 2 and out_h % 2 and out_w % 2:
-                if align_corners is False:
+            output_h, output_w = size
+            if output_h > input_h or output_w > output_h:
+                if ((output_h > 1 and output_w > 1 and input_h > 1
+                     and input_w > 1) and (output_h - 1) % (input_h - 1)
+                        and (output_w - 1) % (input_w - 1)):
                     warnings.warn(
-                        'When align_corners=False, the output '
-                        'would more aligned if input/out size is `2x`')
-            else:
-                if align_corners is True:
-                    warnings.warn(
-                        'When align_corners=True, the output '
-                        'would more aligned if input size {} and out '
-                        'size {} is `2x+1`'.format((input_h, input_w),
-                                                   (out_h, out_w)))
+                        f'When align_corners={align_corners}, '
+                        'the output would more aligned if '
+                        f'input size {(input_h, input_w)} is `x+1` and '
+                        f'out size {(output_h, output_w)} is `nx+1`')
     return F.interpolate(input, size, scale_factor, mode, align_corners)

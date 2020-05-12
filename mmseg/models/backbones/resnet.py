@@ -323,6 +323,10 @@ class ResNet(nn.Module):
                 options: 'after_conv1', 'after_conv2', 'after_conv3'.
             stages (tuple[bool], optional): Stages to apply plugin, length
                 should be same as 'num_stages'
+        multi_grid (Sequence[int]|None): Multi grid dilation rates of last
+            stage. Default: None
+        contract_dilation (bool): Whether contract first dilation of each layer
+            Default: False
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
             memory while slowing down the training speed.
         zero_init_residual (bool): Whether to use zero init for last norm layer

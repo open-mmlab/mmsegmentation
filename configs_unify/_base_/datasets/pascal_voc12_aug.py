@@ -1,4 +1,4 @@
-_base_ = './voc12.py'
+_base_ = './pascal_voc12.py'
 # dataset settings
 data = dict(
     train=dict(

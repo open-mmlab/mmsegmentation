@@ -12,10 +12,10 @@ from .decode_head import DecodeHead
 class PSAHead(DecodeHead):
 
     def __init__(self,
+                 mask_size,
                  psa_type='bi-direction',
                  compact=False,
                  shrink_factor=2,
-                 mask_size=(89, 89),
                  normalization_factor=1.0,
                  psa_softmax=True,
                  **kwargs):
