@@ -9,5 +9,6 @@ lr_config = dict(
 )
 # runtime settings
 total_iters = 40000
-checkpoint_config = dict(by_epoch=False, interval=5000)
+checkpoint_config = dict(by_epoch=False, interval=4000)
+evaluation = dict(interval=4000, metric='mIoU')
 runner_type = 'iter'

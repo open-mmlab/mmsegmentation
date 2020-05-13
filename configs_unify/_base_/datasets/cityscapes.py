@@ -50,5 +50,3 @@ data = dict(
         img_dir='leftImg8bit/val',
         ann_dir='gtFine/val',
         pipeline=test_pipeline))
-# For fast evaluation during training
-evaluation = dict(interval=20, metric='mIoU')

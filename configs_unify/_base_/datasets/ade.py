@@ -50,5 +50,3 @@ data = dict(
         img_dir='images/validation',
         ann_dir='annotations/validation',
         test_pipeline=test_pipeline))
-# For fast evaluation during training
-evaluation = dict(interval=10, metric='mIoU')

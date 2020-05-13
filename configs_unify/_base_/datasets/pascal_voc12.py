@@ -53,5 +53,3 @@ data = dict(
         ann_dir='SegmentationClass',
         split='ImageSets/Segmentation/val.txt',
         pipeline=test_pipeline))
-# For fast evaluation during training
-evaluation = dict(interval=10, metric='mIoU')
