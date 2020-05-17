@@ -10,6 +10,10 @@ from .base import BaseSegmentor
 
 @SEGMENTORS.register_module()
 class EncoderDecoder(BaseSegmentor):
+    """Base class for Encoder Decoder segmentors
+
+    EncoderDecoder typically consists of backbone, decode_head, auxiliary_head.
+    """
 
     def __init__(self,
                  backbone,
