@@ -26,6 +26,7 @@ before_script:
   script:
     - echo "Start building..."
     - conda install av -c conda-forge -y
+    - pip install "git+https://github.com/open-mmlab/mmcv.git"
     - pip install -v -e .[all]
     - python -c "import mmseg; print(mmseg.__version__)"
     - echo "Start testing..."
