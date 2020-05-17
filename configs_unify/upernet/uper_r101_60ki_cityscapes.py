@@ -1,2 +1,2 @@
-_base_ = './uper_r50_8x2_220e_cityscapes.py'
+_base_ = './uper_r50_60ki_cityscapes.py'
 model = dict(pretrained=None, backbone=dict(depth=101))
