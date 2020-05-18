@@ -13,7 +13,7 @@ img_norm_cfg = dict(
     mean=[127.5, 127.5, 127.5], std=[127.5, 127.5, 127.5], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations', with_seg=True),
+    dict(type='LoadAnnotations'),
     dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='RandomBrightness', shift_value=10, ratio=1.),

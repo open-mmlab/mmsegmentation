@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import pytest
 import torch
 from mmcv.cnn import ConvModule
@@ -20,6 +22,7 @@ def _conv_has_norm(module, sync_bn):
     return True
 
 
+@patch.multiple(DecodeHead, __abstractmethods__=set())
 def test_decode_head():
 
     with pytest.raises(AssertionError):

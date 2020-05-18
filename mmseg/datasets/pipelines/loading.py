@@ -86,8 +86,7 @@ class LoadMultiChannelImageFromFiles(object):
 @PIPELINES.register_module()
 class LoadAnnotations(object):
 
-    def __init__(self, with_seg=True, use_pil=False, reduce_zero_label=False):
-        self.with_seg = with_seg
+    def __init__(self, use_pil=True, reduce_zero_label=False):
         self.use_pil = use_pil
         self.reduce_zero_label = reduce_zero_label
 
@@ -98,20 +97,23 @@ class LoadAnnotations(object):
         else:
             filename = results['ann_info']['seg_map']
         if self.use_pil:
-            gt_semantic_seg = np.array(Image.open(filename), dtype=np.uint8)
+            gt_semantic_seg = np.array(
+                Image.open(filename).convert('P'), dtype=np.uint8)
         else:
             gt_semantic_seg = mmcv.imread(
                 filename, flag='unchanged').squeeze().astype(np.uint8)
         # reduce zero_label
         if self.reduce_zero_label:
+            # avoid using underflow conversion
+            gt_semantic_seg[gt_semantic_seg == 0] = 255
             gt_semantic_seg = gt_semantic_seg - 1
+            gt_semantic_seg[gt_semantic_seg == 254] = 255
         results['gt_semantic_seg'] = gt_semantic_seg
         results['seg_fields'].append('gt_semantic_seg')
         return results
 
     def __call__(self, results):
-        if self.with_seg:
-            results = self._load_semantic_seg(results)
+        results = self._load_semantic_seg(results)
         return results
 
     def __repr__(self):

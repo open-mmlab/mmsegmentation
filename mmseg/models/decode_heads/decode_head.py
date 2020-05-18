@@ -9,7 +9,7 @@ from ..builder import build_loss
 from ..losses import accuracy
 
 
-class DecodeHead(nn.Module):
+class DecodeHead(nn.Module, metaclass=ABCMeta):
     """Base class for DecodeHead
 
         Args:
@@ -35,8 +35,6 @@ class DecodeHead(nn.Module):
             align_corners (bool): align_corners argument of F.interpolate.
                 Default: False.
     """
-
-    __metaclass__ = ABCMeta
 
     def __init__(self,
                  in_channels,
@@ -155,7 +153,7 @@ class DecodeHead(nn.Module):
             classes_weight = seg_logit.new_tensor(self.classes_weight)
         else:
             classes_weight = None
-        seg_label = seg_label.squeeze(1).long()
+        seg_label = seg_label.squeeze(1)
         loss[f'loss_seg_{suffix}'] = self.loss_decode(
             seg_logit,
             seg_label,

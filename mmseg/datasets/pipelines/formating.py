@@ -117,8 +117,11 @@ class DefaultFormatBundle(object):
             img = np.ascontiguousarray(img.transpose(2, 0, 1))
             results['img'] = DC(to_tensor(img), stack=True)
         if 'gt_semantic_seg' in results:
+            # convert to long
             results['gt_semantic_seg'] = DC(
-                to_tensor(results['gt_semantic_seg'][None, ...]), stack=True)
+                to_tensor(results['gt_semantic_seg'][None,
+                                                     ...].astype(np.int64)),
+                stack=True)
         return results
 
     def __repr__(self):
