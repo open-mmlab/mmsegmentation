@@ -11,7 +11,7 @@ train_pipeline = [
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='RandomBrightness', shift_value=10, ratio=1.),
     dict(type='Normalize', **img_norm_cfg),
-    dict(type='RandomCrop', crop_size=crop_size),
+    dict(type='RandomCrop', crop_size=crop_size, use_pad=False),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg']),
 ]

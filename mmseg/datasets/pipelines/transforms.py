@@ -283,20 +283,25 @@ class RandomCrop(object):
         crop_size (tuple): Expected size after cropping, (h, w).
     """
 
-    def __init__(self, crop_size, pad_val=0, seg_pad_val=255):
+    def __init__(self, crop_size, use_pad=True, pad_val=0, seg_pad_val=255):
         self.crop_size = crop_size
+        self.use_pad = use_pad
         self.pad_val = pad_val
         self.seg_pad_val = seg_pad_val
 
     def __call__(self, results):
         img = results['img']
-        margin_h = max(img.shape[0] - self.crop_size[0], 0)
-        margin_w = max(img.shape[1] - self.crop_size[1], 0)
+        crop_size = self.crop_size
+        if not self.use_pad:
+            crop_size = (min(img.shape[0],
+                             crop_size[0]), min(img.shape[1], crop_size[1]))
+        margin_h = max(img.shape[0] - crop_size[0], 0)
+        margin_w = max(img.shape[1] - crop_size[1], 0)
         offset_h = np.random.randint(0, margin_h + 1)
         offset_w = np.random.randint(0, margin_w + 1)
         # mmcv.imcrop +1 in calculate height and width
-        crop_y1, crop_y2 = offset_h, offset_h + self.crop_size[0] - 1
-        crop_x1, crop_x2 = offset_w, offset_w + self.crop_size[1] - 1
+        crop_y1, crop_y2 = offset_h, offset_h + crop_size[0] - 1
+        crop_x1, crop_x2 = offset_w, offset_w + crop_size[1] - 1
         crop_bbox = np.array([crop_x1, crop_y1, crop_x2, crop_y2])
 
         # crop the image

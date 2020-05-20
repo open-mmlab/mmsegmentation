@@ -101,6 +101,8 @@ def build_dataloader(dataset,
     """
     rank, world_size = get_dist_info()
     if dist:
+        # TODO GroupSampler is not necessary since we crop to different size
+        #  in transforms
         # DistributedGroupSampler will definitely shuffle the data to satisfy
         # that images on each GPU are in the same group
         if shuffle:
