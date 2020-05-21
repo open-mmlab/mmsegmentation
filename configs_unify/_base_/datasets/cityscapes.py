@@ -8,10 +8,10 @@ train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
     dict(type='Resize', img_scale=(2049, 1025), ratio_range=(0.5, 2.0)),
-    dict(type='RandomCrop', crop_size=crop_size, use_pad=False),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='RandomBrightness', shift_value=10, ratio=1.),
     dict(type='Normalize', **img_norm_cfg),
+    dict(type='RandomCrop', crop_size=crop_size),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg']),
 ]
