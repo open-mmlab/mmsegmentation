@@ -283,14 +283,19 @@ class RandomCrop(object):
         crop_size (tuple): Expected size after cropping, (h, w).
     """
 
-    def __init__(self, crop_size, use_pad=True, pad_val=0, seg_pad_val=255):
+    def __init__(self,
+                 crop_size,
+                 use_pad=True,
+                 pad_val=0,
+                 seg_pad_val=255,
+                 cat_max_ratio=1.):
         self.crop_size = crop_size
         self.use_pad = use_pad
         self.pad_val = pad_val
         self.seg_pad_val = seg_pad_val
+        self.cat_max_ratio = cat_max_ratio
 
-    def __call__(self, results):
-        img = results['img']
+    def get_crop_bbox(self, img):
         crop_size = self.crop_size
         if not self.use_pad:
             crop_size = (min(img.shape[0],
@@ -303,6 +308,24 @@ class RandomCrop(object):
         crop_y1, crop_y2 = offset_h, offset_h + crop_size[0] - 1
         crop_x1, crop_x2 = offset_w, offset_w + crop_size[1] - 1
         crop_bbox = np.array([crop_x1, crop_y1, crop_x2, crop_y2])
+
+        return crop_bbox
+
+    def __call__(self, results):
+        img = results['img']
+        crop_bbox = self.get_crop_bbox(img)
+        if self.cat_max_ratio <= 1.:
+            for _ in range(10):
+                seg_temp = mmcv.imcrop(
+                    results['gt_semantic_seg'],
+                    crop_bbox,
+                    pad_fill=self.seg_pad_val)
+                labels, cnt = np.unique(seg_temp, return_counts=True)
+                cnt = cnt[labels != self.seg_pad_val]
+                if len(cnt) > 1 and np.max(cnt) / np.sum(
+                        cnt) < self.cat_max_ratio:
+                    break
+                crop_bbox = self.get_crop_bbox(img)
 
         # crop the image
         img = mmcv.imcrop(img, crop_bbox, pad_fill=self.pad_val)
