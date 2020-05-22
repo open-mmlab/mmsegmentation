@@ -26,6 +26,11 @@ def parse_args():
         '--no-validate',
         action='store_true',
         help='whether not to evaluate the checkpoint during training')
+    parser.add_argument(
+        '--petrel',
+        nargs='+',
+        action=DictAction,
+        help='if specified, use Petrel as file client')
     group_gpus = parser.add_mutually_exclusive_group()
     group_gpus.add_argument(
         '--gpus',
@@ -115,6 +120,16 @@ def main():
     logger.info('Environment info:\n' + dash_line + env_info + '\n' +
                 dash_line)
     meta['env_info'] = env_info
+
+    if args.petrel is not None:
+        logger.info(f'Use Petrel with args: {args.petrel}')
+        file_client_args = dict(
+            backend='petrel', path_mapping=dict(**args.petrel))
+        # hard code index
+        cfg.data.train.pipeline[0].file_client_args = file_client_args
+        cfg.data.train.pipeline[1].file_client_args = file_client_args
+        cfg.data.val.pipeline[0].file_client_args = file_client_args
+        cfg.data.test.pipeline[0].file_client_args = file_client_args
 
     # log some basic info
     logger.info(f'Distributed training: {distributed}')
