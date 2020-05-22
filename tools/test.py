@@ -18,6 +18,8 @@ def parse_args():
         description='mmseg test (and eval) a model')
     parser.add_argument('config', help='test config file path')
     parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument(
+        '--aug_test', action='store_true', help='Use Flip and Multi scale aug')
     parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
         '--format_only',
@@ -79,6 +81,12 @@ def main():
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
+    if args.aug_test:
+        # hard code index
+        cfg.data.test.pipeline[1].img_ratios = [
+            0.5, 0.75, 1.0, 1.25, 1.5, 1.75
+        ]
+        cfg.data.test.pipeline[1].flip = False
     cfg.model.pretrained = None
     cfg.data.test.test_mode = True
 
