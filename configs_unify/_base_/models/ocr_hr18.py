@@ -63,3 +63,6 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     ])
+# model training and testing settings
+train_cfg = dict()
+test_cfg = dict(mode='whole')
