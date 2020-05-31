@@ -158,6 +158,11 @@ class CustomDataset(Dataset):
                 Image.open(img_info['ann']['seg_map']), dtype=np.uint8)
             if self.reduce_zero_label:
                 gt_seg_map = gt_seg_map - 1
+                # avoid using underflow conversion
+                gt_seg_map[gt_seg_map == 0] = 255
+                gt_seg_map = gt_seg_map - 1
+                gt_seg_map[gt_seg_map == 254] = 255
+
             gt_seg_maps.append(gt_seg_map)
 
         return gt_seg_maps

@@ -6,11 +6,11 @@ img_norm_cfg = dict(
 crop_size = (521, 521)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations', with_seg=True),
+    dict(type='LoadAnnotations', reduce_zero_label=True),
     dict(type='Resize', img_scale=(2049, 521), ratio_range=(0.5, 2.0)),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='Normalize', **img_norm_cfg),
-    dict(type='RandomCrop', crop_size=crop_size),
+    dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg']),
 ]
@@ -37,16 +37,16 @@ data = dict(
         data_root=data_root,
         img_dir='images/training',
         ann_dir='annotations/training',
-        train_pipeline=train_pipeline),
+        pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
         data_root=data_root,
         img_dir='images/validation',
         ann_dir='annotations/validation',
-        test_pipeline=test_pipeline),
+        pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
         data_root=data_root,
         img_dir='images/validation',
         ann_dir='annotations/validation',
-        test_pipeline=test_pipeline))
+        pipeline=test_pipeline))
