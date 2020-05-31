@@ -41,13 +41,14 @@ class CascadeEncoderDecoder(EncoderDecoder):
         if self.with_auxiliary_head:
             self.auxiliary_head.init_weights()
 
-    def encode_decode(self, x):
+    def encode_decode(self, img):
+        x = self.extract_feat(img)
         out = self.decode_head[0].get_seg(x)
         for i in range(1, self.num_stages):
             out = self.decode_head[i].get_seg(x, out)
         out = resize(
             input=out,
-            size=x.shape[2:],
+            size=img.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
         return out
