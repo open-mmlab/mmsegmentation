@@ -1,5 +1,5 @@
-_base_ = './ocr_hr18_4x3_484e_cityscapes.py'
-norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.01)
+_base_ = './ocr_hr18_60ki_cityscapes.py'
+norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     pretrained='pretrain_model/hrnetv2_w48-d2186c55.pth',
     backbone=dict(

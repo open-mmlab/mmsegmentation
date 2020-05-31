@@ -1,4 +1,4 @@
-_base_ = './fcn_hr18_4x3_484e_cityscapes.py'
+_base_ = './fcn_hr18_80ki_cityscapes.py'
 model = dict(
     pretrained='pretrain_model/hrnetv2_w48-d2186c55.pth',
     backbone=dict(

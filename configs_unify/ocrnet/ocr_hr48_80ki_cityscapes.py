@@ -1,5 +1,5 @@
-_base_ = './ocr_hr18_4x3_484e_cityscapes.py'
-norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.01)
+_base_ = './ocr_hr18_80ki_cityscapes.py'
+norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     pretrained='pretrain_model/hrnetv2_w48-d2186c55.pth',
     backbone=dict(
@@ -35,6 +35,5 @@ model = dict(
             num_classes=19,
             align_corners=False,
             loss_decode=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
-            sampler=dict(type='OHEMSegSampler', thresh=0.9, min_kept=131072))
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
     ])
