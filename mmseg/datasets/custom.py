@@ -155,9 +155,9 @@ class CustomDataset(Dataset):
         gt_seg_maps = []
         for img_info in self.img_infos:
             gt_seg_map = np.array(
-                Image.open(img_info['ann']['seg_map']), dtype=np.uint8)
+                Image.open(img_info['ann']['seg_map']).convert('P'),
+                dtype=np.uint8)
             if self.reduce_zero_label:
-                gt_seg_map = gt_seg_map - 1
                 # avoid using underflow conversion
                 gt_seg_map[gt_seg_map == 0] = 255
                 gt_seg_map = gt_seg_map - 1
