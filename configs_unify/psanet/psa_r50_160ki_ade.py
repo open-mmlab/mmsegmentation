@@ -3,6 +3,6 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160ki.py'
 ]
 model = dict(
-    decode_head=dict(mask_size=(65, 65), num_classes=150),
+    decode_head=dict(mask_size=(66, 66), num_classes=150),
     auxiliary_head=dict(num_classes=150))
 test_cfg = dict(mode='whole')

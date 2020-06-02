@@ -142,10 +142,8 @@ class PSAHead(DecodeHead):
                     n, c, h, w) * (1.0 / self.normalization_factor)
             out = torch.cat([x_col, x_dis], 1)
         out = self.proj(out)
-        if self.shrink_factor != 1:
-            h = (h - 1) * self.shrink_factor + 1
-            w = (w - 1) * self.shrink_factor + 1
-            out = resize(out, size=(h, w), mode='bilinear', align_corners=True)
+        out = resize(
+            out, size=identity.shape[2:], mode='bilinear', align_corners=True)
         out = self.bottleneck(torch.cat((identity, out), dim=1))
         out = self.cls_seg(out)
         return out
