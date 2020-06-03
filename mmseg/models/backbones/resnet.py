@@ -3,7 +3,7 @@ import torch.utils.checkpoint as cp
 from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
                       kaiming_init)
 from mmcv.runner import load_checkpoint
-from torch.nn.modules.batchnorm import _BatchNorm
+from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.ops import build_plugin_layer
 from mmseg.utils import get_root_logger

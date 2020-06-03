@@ -357,9 +357,10 @@ def test_default_optimizer_constructor():
 
 
 def test_torch_optimizers():
+    # TODO(parrots): support AdamW
     torch_optimizers = [
-        'ASGD', 'Adadelta', 'Adagrad', 'Adam', 'AdamW', 'Adamax', 'LBFGS',
-        'Optimizer', 'RMSprop', 'Rprop', 'SGD', 'SparseAdam'
+        'ASGD', 'Adadelta', 'Adagrad', 'Adam', 'Adamax', 'LBFGS', 'Optimizer',
+        'RMSprop', 'Rprop', 'SGD', 'SparseAdam'
     ]
     assert set(torch_optimizers).issubset(set(TORCH_OPTIMIZERS))
 

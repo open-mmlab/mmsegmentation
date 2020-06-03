@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, constant_init, kaiming_init
-from torch.nn.modules.batchnorm import _BatchNorm
+from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.models.backbones.mobile_net_v2 import InvertedResidual
 from mmseg.models.decode_heads.psp_head import PSPModule

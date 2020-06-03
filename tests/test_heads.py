@@ -1,7 +1,7 @@
 import pytest
 import torch
 from mmcv.cnn import ConvModule
-from torch import nn
+from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
                                        FCNHead, GCHead, NLHead, OCRHead,
@@ -15,7 +15,7 @@ def _conv_has_norm(module, sync_bn):
             if not m.with_norm:
                 return False
             if sync_bn:
-                if not isinstance(m.bn, nn.SyncBatchNorm):
+                if not isinstance(m.bn, SyncBatchNorm):
                     return False
     return True
 
@@ -93,7 +93,7 @@ def test_fcn_head():
     head = FCNHead(in_channels=32, channels=16, norm_cfg=dict(type='SyncBN'))
     for m in head.modules():
         if isinstance(m, ConvModule):
-            assert m.with_norm and isinstance(m.bn, nn.SyncBatchNorm)
+            assert m.with_norm and isinstance(m.bn, SyncBatchNorm)
 
     # test concat_input=False
     inputs = [torch.randn(1, 32, 45, 45)]
