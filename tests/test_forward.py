@@ -49,21 +49,21 @@ def _get_segmentor_cfg(fname):
 
 
 def test_pspnet_forward():
-    _test_encoder_decoder_forward('pspnet/psp_r50_8x2_200e_cityscapes.py')
+    _test_encoder_decoder_forward('pspnet/psp_r50_769x769_40ki_cityscapes.py')
 
 
 def test_fcnnet_forward():
-    _test_encoder_decoder_forward('fcnnet/fcn_r50_8x1_160e_cityscapes.py')
+    _test_encoder_decoder_forward('fcnnet/fcn_r50_769x769_40ki_cityscapes.py')
 
 
 def test_deeplabv3_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3/deeplabv3_r101_8x1_os8_110e_cityscapes.py')
+        'deeplabv3/deeplabv3_r50_769x769_40ki_cityscapes.py')
 
 
 def test_deeplabv3plus_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3plus/deeplabv3plus_r101_os8_8x1_110e_cityscapes.py')
+        'deeplabv3plus/deeplabv3plus_r50_769x769_40ki_cityscapes.py')
 
 
 def _convert_batchnorm(module):
