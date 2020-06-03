@@ -34,16 +34,6 @@ def test_config_build_segmentor():
     config_fpaths = [p for p in config_fpaths if p.find('_base_') == -1]
     config_names = [relpath(p, config_dpath) for p in config_fpaths]
 
-    # TODO: for unify temporary
-    import glob
-    config_fpaths = list(
-        glob.glob(
-            join(
-                config_dpath.replace('configs', 'configs_unify'), '**',
-                '*.py')))
-    config_fpaths = [p for p in config_fpaths if p.find('_base_') == -1]
-    config_names.extend([relpath(p, config_dpath) for p in config_fpaths])
-
     print('Using {} config files'.format(len(config_names)))
 
     for config_fname in config_names:

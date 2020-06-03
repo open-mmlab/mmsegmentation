@@ -116,8 +116,12 @@ class PSAHead(DecodeHead):
             x_dis = self.reduce_p(x)
             n, c, h, w = x_col.size()
             if self.shrink_factor != 1:
-                h = (h - 1) // self.shrink_factor + 1
-                w = (w - 1) // self.shrink_factor + 1
+                if h % self.shrink_factor:
+                    h = (h - 1) // self.shrink_factor + 1
+                    w = (w - 1) // self.shrink_factor + 1
+                else:
+                    h = h // self.shrink_factor
+                    w = w // self.shrink_factor
                 # we set align_corners=True for psa
                 x_col = resize(
                     x_col, size=(h, w), mode='bilinear', align_corners=True)

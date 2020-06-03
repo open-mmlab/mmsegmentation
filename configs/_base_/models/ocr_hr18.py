@@ -1,5 +1,5 @@
 # model settings
-norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.01)
+norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='CascadeEncoderDecoder',
     num_stages=2,
@@ -38,38 +38,31 @@ model = dict(
             type='FCNHead',
             in_channels=[18, 36, 72, 144],
             channels=sum([18, 36, 72, 144]),
-            input_transform='resize_concat',
             in_index=(0, 1, 2, 3),
+            input_transform='resize_concat',
             kernel_size=1,
             num_convs=1,
-            norm_cfg=norm_cfg,
             concat_input=False,
-            drop_out_ratio=0.05,
+            drop_out_ratio=-1,
             num_classes=19,
+            norm_cfg=norm_cfg,
             align_corners=False,
             loss_decode=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4),
-            classes_weight=[
-                0.8373, 0.918, 0.866, 1.0345, 1.0166, 0.9969, 0.9754, 1.0489,
-                0.8786, 1.0023, 0.9539, 0.9843, 1.1116, 0.9037, 1.0865, 1.0955,
-                1.0865, 1.1529, 1.0507
-            ]),
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
             type='OCRHead',
             in_channels=[18, 36, 72, 144],
+            in_index=(0, 1, 2, 3),
+            input_transform='resize_concat',
             channels=512,
             ocr_channels=256,
-            input_transform='resize_concat',
-            in_index=(0, 1, 2, 3),
-            norm_cfg=norm_cfg,
             drop_out_ratio=-1,
             num_classes=19,
+            norm_cfg=norm_cfg,
             align_corners=False,
             loss_decode=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
-            classes_weight=[
-                0.8373, 0.918, 0.866, 1.0345, 1.0166, 0.9969, 0.9754, 1.0489,
-                0.8786, 1.0023, 0.9539, 0.9843, 1.1116, 0.9037, 1.0865, 1.0955,
-                1.0865, 1.1529, 1.0507
-            ]),
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     ])
+# model training and testing settings
+train_cfg = dict()
+test_cfg = dict(mode='whole')

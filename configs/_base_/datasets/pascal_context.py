@@ -22,5 +22,3 @@ data = dict(
         img_dir='JPEGImages',
         ann_dir='SegmentationClassContext',
         split='ImageSets/SegmentationContext/val.txt'))
-# For fast evaluation during training
-evaluation = dict(interval=10, metric='mIoU')

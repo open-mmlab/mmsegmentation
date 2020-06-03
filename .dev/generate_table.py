@@ -1,0 +1,124 @@
+import argparse
+import csv
+import glob
+import json
+import os.path as osp
+from collections import OrderedDict
+
+import mmcv
+
+# build schedule look-up table to automatically find the final model
+SCHEDULES_LUT = {'40ki': 40000, '60ki': 60000, '80ki': 80000, '160ki': 160000}
+RESULTS_LUT = ['mIoU', 'mAcc', 'aAcc']
+
+
+def get_final_iter(config):
+    for schedule_name, iter_num in SCHEDULES_LUT.items():
+        if config.find(schedule_name) != -1:
+            return iter_num
+
+
+def get_final_results(log_json_path, iter):
+    result_dict = dict()
+    with open(log_json_path, 'r') as f:
+        for line in f.readlines():
+            log_line = json.loads(line)
+            if 'mode' not in log_line.keys():
+                continue
+
+            if log_line['mode'] == 'train' and log_line['iter'] == iter:
+                result_dict['memory'] = log_line['memory']
+
+            if log_line['mode'] == 'val' and log_line['iter'] == iter:
+                result_dict.update({
+                    key: log_line[key]
+                    for key in RESULTS_LUT if key in log_line
+                })
+                return result_dict
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Gather benchmarked models')
+    parser.add_argument(
+        'root',
+        type=str,
+        help='root path of benchmarked models to be gathered')
+    parser.add_argument(
+        'config',
+        type=str,
+        help='root path of benchmarked configs to be gathered')
+    parser.add_argument(
+        'out', type=str, help='output path of gathered models to be stored')
+
+    args = parser.parse_args()
+    return args
+
+
+def main():
+    args = parse_args()
+    models_root = args.root
+    models_out = args.out
+    config_name = args.config
+    mmcv.mkdir_or_exist(models_out)
+
+    # find all models in the root directory to be gathered
+    raw_configs = list(mmcv.scandir(config_name, '.py', recursive=True))
+
+    # filter configs that is not trained in the experiments dir
+    exp_dirs = []
+    for raw_config in raw_configs:
+        work_dir = osp.splitext(osp.basename(raw_config))[0]
+        if osp.exists(osp.join(models_root, work_dir)):
+            exp_dirs.append(work_dir)
+    print(f'Find {len(exp_dirs)} models to be gathered')
+
+    # find final_ckpt and log file for trained each config
+    # and parse the best performance
+    model_infos = []
+    for work_dir in exp_dirs:
+        exp_dir = osp.join(models_root, work_dir)
+        # check whether the exps is finished
+        final_iter = get_final_iter(work_dir)
+        final_model = 'iter_{}.pth'.format(final_iter)
+        model_path = osp.join(exp_dir, final_model)
+
+        # skip if the model is still training
+        if not osp.exists(model_path):
+            continue
+
+        # get logs
+        log_json_path = glob.glob(osp.join(exp_dir, '*.log.json'))[0]
+        model_performance = get_final_results(log_json_path, final_iter)
+
+        if model_performance is None:
+            continue
+
+        head = work_dir.split('_')[0]
+        backbone = work_dir.split('_')[1]
+        dataset = work_dir.split('_')[-1]
+        if '1024' in config_name:
+            crop_size = '512*1024'
+        else:
+            crop_size = '769*769'
+        model_info = OrderedDict(
+            head=head,
+            backbone=backbone,
+            crop_size=crop_size,
+            dataset=dataset,
+            iters=final_iter)
+        model_info.update(model_performance)
+        model_info['config'] = work_dir
+        model_infos.append(model_info)
+
+    with open(
+            osp.join(models_out, 'models_table.csv'), 'w',
+            newline='') as csvfile:
+        writer = csv.writer(
+            csvfile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(model_infos[0].keys())
+        for model_info in model_infos:
+            writer.writerow(model_info.values())
+
+
+if __name__ == '__main__':
+    main()

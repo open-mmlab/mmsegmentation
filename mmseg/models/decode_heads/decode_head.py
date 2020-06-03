@@ -53,7 +53,7 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
                      loss_weight=1.0),
                  ignore_index=255,
                  sampler=None,
-                 align_corners=True):
+                 align_corners=False):
         super(DecodeHead, self).__init__()
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
