@@ -1,8 +1,8 @@
 from mmcv.cnn import (ConvModule, build_norm_layer, constant_init,
                       kaiming_init, normal_init)
 from mmcv.runner import load_checkpoint
+from mmcv.utils.parrots_wrapper import _BatchNorm
 from torch import nn
-from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
