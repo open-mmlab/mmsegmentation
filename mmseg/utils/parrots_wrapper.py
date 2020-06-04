@@ -7,7 +7,4 @@ def get_dataloader():
     else:
         from torch.utils.data import DataLoader
         PoolDataLoader = DataLoader
-    return {
-            "DataLoader": DataLoader,
-            "PoolDataLoader": PoolDataLoader
-        }
+    return {"DataLoader": DataLoader, "PoolDataLoader": PoolDataLoader}
