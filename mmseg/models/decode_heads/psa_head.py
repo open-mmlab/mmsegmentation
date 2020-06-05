@@ -90,15 +90,24 @@ class PSAHead(DecodeHead):
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
         identity = x
+        align_corners = self.align_corners
         if self.psa_type in ['collect', 'distribute']:
             out = self.reduce(x)
             n, c, h, w = out.size()
             if self.shrink_factor != 1:
-                h = (h - 1) // self.shrink_factor + 1
-                w = (w - 1) // self.shrink_factor + 1
-                # we set align_corners=True for psa
+                if h % self.shrink_factor and w % self.shrink_factor:
+                    h = (h - 1) // self.shrink_factor + 1
+                    w = (w - 1) // self.shrink_factor + 1
+                    align_corners = True
+                else:
+                    h = h // self.shrink_factor
+                    w = w // self.shrink_factor
+                    align_corners = False
                 out = resize(
-                    out, size=(h, w), mode='bilinear', align_corners=True)
+                    out,
+                    size=(h, w),
+                    mode='bilinear',
+                    align_corners=align_corners)
             y = self.attention(out)
             if self.compact:
                 if self.psa_type == 'collect':
@@ -116,17 +125,24 @@ class PSAHead(DecodeHead):
             x_dis = self.reduce_p(x)
             n, c, h, w = x_col.size()
             if self.shrink_factor != 1:
-                if h % self.shrink_factor:
+                if h % self.shrink_factor and w % self.shrink_factor:
                     h = (h - 1) // self.shrink_factor + 1
                     w = (w - 1) // self.shrink_factor + 1
+                    align_corners = True
                 else:
                     h = h // self.shrink_factor
                     w = w // self.shrink_factor
-                # we set align_corners=True for psa
+                    align_corners = False
                 x_col = resize(
-                    x_col, size=(h, w), mode='bilinear', align_corners=True)
+                    x_col,
+                    size=(h, w),
+                    mode='bilinear',
+                    align_corners=align_corners)
                 x_dis = resize(
-                    x_dis, size=(h, w), mode='bilinear', align_corners=True)
+                    x_dis,
+                    size=(h, w),
+                    mode='bilinear',
+                    align_corners=align_corners)
             y_col = self.attention(x_col)
             y_dis = self.attention_p(x_dis)
             if self.compact:
@@ -147,7 +163,10 @@ class PSAHead(DecodeHead):
             out = torch.cat([x_col, x_dis], 1)
         out = self.proj(out)
         out = resize(
-            out, size=identity.shape[2:], mode='bilinear', align_corners=True)
+            out,
+            size=identity.shape[2:],
+            mode='bilinear',
+            align_corners=align_corners)
         out = self.bottleneck(torch.cat((identity, out), dim=1))
         out = self.cls_seg(out)
         return out
