@@ -1,4 +1,4 @@
-_base_ = './ocr_hr18_512x512_80ki_ade.py'
+_base_ = './ocr_hr18_512x512_160ki_ade.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     pretrained='pretrain_model/hrnetv2_w48-d2186c55.pth',

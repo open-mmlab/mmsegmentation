@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/models/ocr_hr18.py', '../_base_/datasets/ade.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_80ki.py'
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160ki.py'
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(decode_head=[

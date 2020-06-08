@@ -111,7 +111,7 @@ class SelfAttentionBlock(nn.Module):
         if self.query_downsample is not None:
             query = self.query_downsample(query)
         query = query.reshape(*query.shape[:2], -1)
-        query = query.permute(0, 2, 1)
+        query = query.permute(0, 2, 1).contiguous()
 
         key = self.key_project(key_feats)
         value = self.value_project(key_feats)
@@ -120,7 +120,7 @@ class SelfAttentionBlock(nn.Module):
             value = self.key_downsample(value)
         key = key.reshape(*key.shape[:2], -1)
         value = value.reshape(*value.shape[:2], -1)
-        value = value.permute(0, 2, 1)
+        value = value.permute(0, 2, 1).contiguous()
 
         sim_map = torch.matmul(query, key)
         if self.matmul_norm:
@@ -129,7 +129,7 @@ class SelfAttentionBlock(nn.Module):
 
         context = torch.matmul(sim_map, value)
         context = context.permute(0, 2, 1).contiguous()
-        context = context.view(batch_size, -1, *query_feats.shape[2:])
+        context = context.reshape(batch_size, -1, *query_feats.shape[2:])
         if self.out_project is not None:
             context = self.out_project(context)
         return context
