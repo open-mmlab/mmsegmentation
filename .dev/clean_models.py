@@ -7,7 +7,13 @@ import os.path as osp
 import mmcv
 
 # build schedule look-up table to automatically find the final model
-SCHEDULES_LUT = {'40ki': 40000, '60ki': 60000, '80ki': 80000, '160ki': 160000}
+SCHEDULES_LUT = {
+    '20ki': 20000,
+    '40ki': 40000,
+    '60ki': 60000,
+    '80ki': 80000,
+    '160ki': 160000
+}
 RESULTS_LUT = ['mIoU', 'mAcc', 'aAcc']
 
 
