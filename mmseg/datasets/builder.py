@@ -78,7 +78,7 @@ def build_dataloader(dataset,
                      dist=True,
                      shuffle=True,
                      seed=None,
-                     dtype='PoolDataLoader',
+                     dataloader_type='PoolDataLoader',
                      **kwargs):
     """Build PyTorch DataLoader.
 
@@ -95,7 +95,7 @@ def build_dataloader(dataset,
         dist (bool): Distributed training/test or not. Default: True.
         shuffle (bool): Whether to shuffle the data at every epoch.
             Default: True.
-        dtype (str): Type of dataloader. Default: 'PoolDataLoader'
+        dataloader_type (str): Type of dataloader. Default: 'PoolDataLoader'
         kwargs: any keyword argument to be used to initialize DataLoader
 
     Returns:
@@ -122,12 +122,13 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    assert dtype in ("DataLoader",
-                     "PoolDataLoader"), f"unsupported dataloader {dtype}"
+    assert dataloader_type in (
+        "DataLoader",
+        "PoolDataLoader"), f"unsupported dataloader {dataloader_type}"
 
-    if dtype == 'PoolDataLoader':
+    if dataloader_type == 'PoolDataLoader':
         dataloader = PoolDataLoader
-    elif dtype == 'DataLoader':
+    elif dataloader_type == 'DataLoader':
         dataloader = DataLoader
 
     data_loader = dataloader(
