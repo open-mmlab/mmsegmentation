@@ -8,17 +8,16 @@ from collections import OrderedDict
 import mmcv
 
 # build schedule look-up table to automatically find the final model
-SCHEDULES_LUT = {'40ki': 40000, '60ki': 60000, '80ki': 80000, '160ki': 160000}
 RESULTS_LUT = ['mIoU', 'mAcc', 'aAcc']
 
 
 def get_final_iter(config):
-    for schedule_name, iter_num in SCHEDULES_LUT.items():
-        if config.find(schedule_name) != -1:
-            return iter_num
+    iter_num = config.split('_')[-2]
+    assert iter_num.endswith('ki')
+    return int(iter_num[:-2]) * 1000
 
 
-def get_final_results(log_json_path, iter):
+def get_final_results(log_json_path, iter_num):
     result_dict = dict()
     with open(log_json_path, 'r') as f:
         for line in f.readlines():
@@ -26,15 +25,44 @@ def get_final_results(log_json_path, iter):
             if 'mode' not in log_line.keys():
                 continue
 
-            if log_line['mode'] == 'train' and log_line['iter'] == iter:
+            if log_line['mode'] == 'train' and log_line[
+                    'iter'] == iter_num - 50:
                 result_dict['memory'] = log_line['memory']
 
-            if log_line['mode'] == 'val' and log_line['iter'] == iter:
+            if log_line['mode'] == 'val' and log_line['iter'] == iter_num:
                 result_dict.update({
-                    key: log_line[key]
+                    key: log_line[key] * 100
                     for key in RESULTS_LUT if key in log_line
                 })
                 return result_dict
+
+
+def get_total_time(log_json_path, iter_num):
+
+    def convert(seconds):
+        hour = seconds // 3600
+        seconds %= 3600
+        minutes = seconds // 60
+        seconds %= 60
+
+        return f'{hour:d}:{minutes:2d}:{seconds:2d}'
+
+    time_dict = dict()
+    with open(log_json_path, 'r') as f:
+        last_iter = 0
+        total_sec = 0
+        for line in f.readlines():
+            log_line = json.loads(line)
+            if 'mode' not in log_line.keys():
+                continue
+
+            if log_line['mode'] == 'train':
+                cur_iter = log_line['iter']
+                total_sec += (cur_iter - last_iter) * log_line['time']
+                last_iter = cur_iter
+        time_dict['time'] = convert(int(total_sec))
+
+        return time_dict
 
 
 def parse_args():
@@ -84,6 +112,7 @@ def main():
 
         # skip if the model is still training
         if not osp.exists(model_path):
+            print(f'{model_path} not finished yet')
             continue
 
         # get logs
@@ -95,18 +124,17 @@ def main():
 
         head = work_dir.split('_')[0]
         backbone = work_dir.split('_')[1]
+        crop_size = work_dir.split('_')[-3]
         dataset = work_dir.split('_')[-1]
-        if '1024' in config_name:
-            crop_size = '512*1024'
-        else:
-            crop_size = '769*769'
         model_info = OrderedDict(
             head=head,
             backbone=backbone,
             crop_size=crop_size,
             dataset=dataset,
-            iters=final_iter)
+            iters=f'{final_iter//1000}ki')
         model_info.update(model_performance)
+        model_time = get_total_time(log_json_path, final_iter)
+        model_info.update(model_time)
         model_info['config'] = work_dir
         model_infos.append(model_info)
 
