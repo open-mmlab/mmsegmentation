@@ -7,7 +7,7 @@ import numpy as np
 from mmcv.parallel import collate
 from mmcv.runner import get_dist_info
 from mmcv.utils import Registry, build_from_cfg
-from torch.utils.data import DataLoader
+from mmcv.utils.parrots_wrapper import DataLoader, PoolDataLoader
 
 from .samplers import DistributedGroupSampler, DistributedSampler, GroupSampler
 
@@ -78,6 +78,7 @@ def build_dataloader(dataset,
                      dist=True,
                      shuffle=True,
                      seed=None,
+                     dataloader_type='PoolDataLoader',
                      **kwargs):
     """Build PyTorch DataLoader.
 
@@ -94,6 +95,7 @@ def build_dataloader(dataset,
         dist (bool): Distributed training/test or not. Default: True.
         shuffle (bool): Whether to shuffle the data at every epoch.
             Default: True.
+        dataloader_type (str): Type of dataloader. Default: 'PoolDataLoader'
         kwargs: any keyword argument to be used to initialize DataLoader
 
     Returns:
@@ -120,7 +122,16 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    data_loader = DataLoader(
+    assert dataloader_type in (
+        "DataLoader",
+        "PoolDataLoader"), f"unsupported dataloader {dataloader_type}"
+
+    if dataloader_type == 'PoolDataLoader':
+        dataloader = PoolDataLoader
+    elif dataloader_type == 'DataLoader':
+        dataloader = DataLoader
+
+    data_loader = dataloader(
         dataset,
         batch_size=batch_size,
         sampler=sampler,
