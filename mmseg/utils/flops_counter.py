@@ -28,10 +28,9 @@ import sys
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.nn.modules.batchnorm import _BatchNorm
-from torch.nn.modules.conv import _ConvNd, _ConvTransposeMixin
-from torch.nn.modules.pooling import (_AdaptiveAvgPoolNd, _AdaptiveMaxPoolNd,
-                                      _AvgPoolNd, _MaxPoolNd)
+from mmcv.utils.parrots_wrapper import (_AdaptiveAvgPoolNd, _AdaptiveMaxPoolNd,
+                                        _AvgPoolNd, _BatchNorm, _ConvNd,
+                                        _ConvTransposeMixin, _MaxPoolNd)
 
 
 def get_model_complexity_info(model,
