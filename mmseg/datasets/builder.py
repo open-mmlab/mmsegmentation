@@ -122,7 +122,9 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    assert dtype in ("DataLoader", "PoolDataLoader"), f"unsupported dataloader {dtype}"
+    assert dtype in ("DataLoader",
+                     "PoolDataLoader"), f"unsupported dataloader {dtype}"
+
     if dtype == 'PoolDataLoader':
         dataloader = PoolDataLoader
     elif dtype == 'DataLoader':
