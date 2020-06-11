@@ -78,7 +78,7 @@ def build_dataloader(dataset,
                      dist=True,
                      shuffle=True,
                      seed=None,
-                     dtype='PoolDataLoader',
+                     dataloader_type='PoolDataLoader',
                      **kwargs):
     """Build PyTorch DataLoader.
 
