@@ -198,7 +198,7 @@ if __name__ == '__main__':
     setup(
         name='mmseg',
         version=get_version(),
-        description='Open MMLab Detection Toolbox and Benchmark',
+        description='Open MMLab Segmentation Toolbox and Benchmark',
         long_description=readme(),
         author='OpenMMLab',
         author_email='xvjiarui0826@gmail.com',

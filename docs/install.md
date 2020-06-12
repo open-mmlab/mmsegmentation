@@ -59,35 +59,6 @@ you can install it before installing MMCV.
 
 4. Some dependencies are optional. Simply running `pip install -v -e .` will only install the minimum runtime requirements. To use optional dependencies like `albumentations` and `imagecorruptions` either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -v -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
 
-### Prepare datasets
-
-It is recommended to symlink the dataset root to `$MMSEGMENTATION/data`.
-If your folder structure is different, you may need to change the corresponding paths in config files.
-
-```
-mmsegmentation
-├── mmseg
-├── tools
-├── configs
-├── data
-│   ├── cityscapes
-│   │   ├── leftImg8bit
-│   │   │   ├── train
-│   │   │   ├── val
-│   │   ├── gtFine
-│   │   │   ├── train
-│   │   │   ├── val
-│   ├── VOCdevkit
-│   │   ├── VOC2007
-│   │   ├── VOC2012
-
-```
-labelTrainIds.png are created by cityscapesscripts/preparation/createTrainIdLabelImgs.py.
-```shell
-git clone https://github.com/mcordts/cityscapesScripts.git
-cd cityscapesscripts
-CITYSCAPES_DATASET = $CS_ROOT python preparation/createTrainIdLabelImgs.py
-```
 
 ### A from-scratch setup script
 
