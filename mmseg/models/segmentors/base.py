@@ -97,11 +97,6 @@ class BaseSegmentor(nn.Module):
             log_vars=log_vars,
             num_samples=len(data_batch['img'].data))
 
-        # optimize
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
         return outputs
 
     def val_step(self, data_batch, **kwargs):

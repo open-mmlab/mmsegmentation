@@ -5,12 +5,9 @@ import numpy as np
 import torch
 import torch.distributed as dist
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
-from mmcv.runner import (DistSamplerSeedHook, EpochBasedRunner,
-                         IterBasedRunner, Runner)
+from mmcv.runner import IterBasedRunner
 
-from mmseg.core import (DistEvalHook, DistEvalIterHook, DistOptimizerHook,
-                        EvalHook, EvalIterHook, Fp16OptimizerHook,
-                        build_optimizer)
+from mmseg.core import DistEvalHook, EvalHook, build_optimizer
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import get_root_logger
 
@@ -57,31 +54,6 @@ def parse_losses(losses):
     return loss, log_vars
 
 
-def batch_processor(model, data, train_mode):
-    """Process a data batch.
-
-    This method is required as an argument of Runner, which defines how to
-    process a data batch and obtain proper outputs. The first 3 arguments of
-    batch_processor are fixed.
-
-    Args:
-        model (nn.Module): A PyTorch model.
-        data (dict): The data batch in a dict.
-        train_mode (bool): Training mode or not. It may be useless for some
-            models.
-
-    Returns:
-        dict: A dict containing losses and log vars.
-    """
-    losses = model(**data)
-    loss, log_vars = parse_losses(losses)
-
-    outputs = dict(
-        loss=loss, log_vars=log_vars, num_samples=len(data['img'].data))
-
-    return outputs
-
-
 def train_segmentor(model,
                     dataset,
                     cfg,
@@ -121,48 +93,18 @@ def train_segmentor(model,
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
 
-    runner_type = cfg.get('runner_type', 'default')
-    assert runner_type in ['default', 'epoch', 'iter']
-    if runner_type == 'epoch':
-        runner = EpochBasedRunner(
-            model, optimizer, cfg.work_dir, logger=logger, meta=meta)
-        # register hooks
-        runner.register_training_hooks(cfg.lr_config, cfg.checkpoint_config,
-                                       cfg.log_config)
-        if distributed:
-            runner.register_hook(DistSamplerSeedHook())
+    runner = IterBasedRunner(
+        model=model,
+        batch_processor=None,
+        optimizer=optimizer,
+        work_dir=cfg.work_dir,
+        logger=logger,
+        meta=meta)
 
-    elif runner_type == 'iter':
-        runner = IterBasedRunner(
-            model, optimizer, cfg.work_dir, logger=logger, meta=meta)
-        # register hooks
-        runner.register_training_hooks(cfg.lr_config, cfg.checkpoint_config,
-                                       cfg.log_config)
-    else:
-        runner = Runner(
-            model,
-            batch_processor,
-            optimizer,
-            cfg.work_dir,
-            logger=logger,
-            meta=meta)
-
-        # fp16 setting
-        fp16_cfg = cfg.get('fp16', None)
-        if fp16_cfg is not None:
-            optimizer_config = Fp16OptimizerHook(
-                **cfg.optimizer_config, **fp16_cfg, distributed=distributed)
-        elif distributed and 'type' not in cfg.optimizer_config:
-            optimizer_config = DistOptimizerHook(**cfg.optimizer_config)
-        else:
-            optimizer_config = cfg.optimizer_config
-
-        # register hooks
-        runner.register_training_hooks(cfg.lr_config, optimizer_config,
-                                       cfg.checkpoint_config, cfg.log_config,
-                                       cfg.get('momentum_config', None))
-        if distributed:
-            runner.register_hook(DistSamplerSeedHook())
+    # register hooks
+    runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
+                                   cfg.checkpoint_config, cfg.log_config,
+                                   cfg.get('momentum_config', None))
 
     # an ugly walkaround to make the .log and .log.json filenames the same
     runner.timestamp = timestamp
@@ -177,17 +119,11 @@ def train_segmentor(model,
             dist=distributed,
             shuffle=False)
         eval_cfg = cfg.get('evaluation', {})
-        if runner_type == 'iter':
-            eval_hook = DistEvalIterHook if distributed else EvalIterHook
-        else:
-            eval_hook = DistEvalHook if distributed else EvalHook
+        eval_hook = DistEvalHook if distributed else EvalHook
         runner.register_hook(eval_hook(val_dataloader, **eval_cfg))
 
     if cfg.resume_from:
         runner.resume(cfg.resume_from)
     elif cfg.load_from:
         runner.load_checkpoint(cfg.load_from)
-    if runner_type == 'iter':
-        runner.run(data_loaders, cfg.workflow, cfg.total_iters)
-    else:
-        runner.run(data_loaders, cfg.workflow, cfg.total_epochs)
+    runner.run(data_loaders, cfg.workflow, cfg.total_iters)

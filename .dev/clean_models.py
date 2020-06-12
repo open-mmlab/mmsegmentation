@@ -18,9 +18,8 @@ RESULTS_LUT = ['mIoU', 'mAcc', 'aAcc']
 
 
 def get_final_iter(config):
-    for schedule_name, iter_num in SCHEDULES_LUT.items():
-        if config.find(schedule_name) != -1:
-            return iter_num
+    iter_num = SCHEDULES_LUT[config.split('_')[-2]]
+    return iter_num
 
 
 def get_final_results(log_json_path, iter):
