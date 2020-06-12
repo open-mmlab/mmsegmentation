@@ -5,9 +5,9 @@ import numpy as np
 import torch
 import torch.distributed as dist
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
-from mmcv.runner import IterBasedRunner
+from mmcv.runner import IterBasedRunner, build_optimizer
 
-from mmseg.core import DistEvalHook, EvalHook, build_optimizer
+from mmseg.core import DistEvalHook, EvalHook
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import get_root_logger
 
