@@ -24,6 +24,7 @@ class LoadImageFromFile(object):
         if self.to_float32:
             img = img.astype(np.float32)
         results['filename'] = filename
+        results['ori_filename'] = results['img_info']['filename']
         results['img'] = img
         results['img_shape'] = img.shape
         results['ori_shape'] = img.shape
@@ -65,6 +66,7 @@ class LoadMultiChannelImageFromFiles(object):
         if self.to_float32:
             img = img.astype(np.float32)
         results['filename'] = filename
+        results['ori_filename'] = results['img_info']['filename']
         results['img'] = img
         results['img_shape'] = img.shape
         results['ori_shape'] = img.shape

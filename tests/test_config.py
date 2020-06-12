@@ -103,6 +103,7 @@ def test_config_data_pipeline():
 
         results = dict(
             filename='test_img.png',
+            ori_filename='test_img.png',
             img=img,
             img_shape=img.shape,
             ori_shape=img.shape,
@@ -115,6 +116,7 @@ def test_config_data_pipeline():
 
         results = dict(
             filename='test_img.png',
+            ori_filename='test_img.png',
             img=img,
             img_shape=img.shape,
             ori_shape=img.shape,

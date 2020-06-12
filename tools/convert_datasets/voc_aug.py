@@ -23,7 +23,7 @@ def generate_aug_list(merged_list, excluded_list):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Convert PASCAL VOC annotations to mmdetection format')
+        description='Convert PASCAL VOC annotations to mmsegmentation format')
     parser.add_argument('devkit_path', help='pascal voc devkit path')
     parser.add_argument('aug_path', help='pascal voc aug path')
     parser.add_argument('-o', '--out_dir', help='output path')
