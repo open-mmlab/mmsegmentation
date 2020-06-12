@@ -1,14 +1,13 @@
 import logging
+import warnings
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
 
-import matplotlib.pyplot as plt
+import mmcv
 import numpy as np
 import torch
 import torch.distributed as dist
 import torch.nn as nn
-
-from mmseg.core import tensor2imgs
 
 
 class BaseSegmentor(nn.Module):
@@ -134,15 +133,62 @@ class BaseSegmentor(nn.Module):
 
         return loss, log_vars
 
-    @staticmethod
-    def show_results(data, result, dataset):
-        img_norm_cfg = dataset.img_norm_cfg
-        img_tensor = data['img'][0]
-        imgs = tensor2imgs(img_tensor, **img_norm_cfg)
+    def show_result(self,
+                    img,
+                    result,
+                    palette=None,
+                    win_name='',
+                    show=False,
+                    wait_time=0,
+                    out_file=None):
+        """Draw `result` over `img`.
 
-        for img, seg in zip(imgs, result):
-            color_seg = dataset.convert_to_color(seg)
-            plt.imshow(img.astype(np.float) / 255)
-            plt.show()
-            plt.imshow(color_seg.astype(np.float) / 255)
-            plt.show()
+        Args:
+            img (str or Tensor): The image to be displayed.
+            result (Tensor or tuple): The results to draw over `img`
+                bbox_result or (bbox_result, segm_result).
+            palette (list[list[int]]] | np.ndarray | None): The palette of
+                segmentation map. If None is given, random palette will be
+                generated. Default: None
+            win_name (str): The window name.
+            wait_time (int): Value of waitKey param.
+                Default: 0.
+            show (bool): Whether to show the image.
+                Default: False.
+            out_file (str or None): The filename to write the image.
+                Default: None.
+
+        Returns:
+            img (Tensor): Only if not `show` or `out_file`
+        """
+        img = mmcv.imread(img)
+        img = img.copy()
+        seg = result[0]
+        if palette is None:
+            palette = np.random.randint(0, 255, size=(len(self.CLASSES), 3))
+        else:
+            palette = np.array(palette)
+        assert palette.shape[0] == len(self.CLASSES)
+        assert palette.shape[1] == 3
+        assert len(palette.shape) == 2
+        color_seg = np.zeros((seg.shape[0], seg.shape[1], 3), dtype=np.uint8)
+        for label, color in enumerate(palette):
+            color_seg[seg == label, :] = color
+        # convert to BGR
+        color_seg = color_seg[..., ::-1]
+
+        img = img * 0.5 + color_seg * 0.5
+        img = img.astype(np.uint8)
+        # if out_file specified, do not show image in window
+        if out_file is not None:
+            show = False
+
+        if show:
+            mmcv.imshow(img, win_name, wait_time)
+        if out_file is not None:
+            mmcv.imwrite(img, out_file)
+
+        if not (show or out_file):
+            warnings.warn('show==False and out_file is not specified, only '
+                          'result image will be returned')
+            return img

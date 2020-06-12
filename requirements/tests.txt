@@ -3,7 +3,7 @@ codecov
 flake8
 isort
 # Note: used for kwarray.group_items, this may be ported to mmcv in the future.
-kwarray
+# kwarray
 pytest
 pytest-cov
 pytest-runner

@@ -6,6 +6,7 @@ from os.path import dirname, exists, join
 
 import numpy as np
 import torch
+from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 
 def _get_config_directory():
@@ -68,7 +69,7 @@ def test_deeplabv3plus_forward():
 
 def _convert_batchnorm(module):
     module_output = module
-    if isinstance(module, torch.nn.SyncBatchNorm):
+    if isinstance(module, SyncBatchNorm):
         module_output = torch.nn.BatchNorm2d(module.num_features, module.eps,
                                              module.momentum, module.affine,
                                              module.track_running_stats)

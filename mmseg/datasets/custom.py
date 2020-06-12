@@ -33,6 +33,8 @@ class CustomDataset(Dataset):
 
     CLASSES = None
 
+    PALETTE = None
+
     def __init__(self,
                  pipeline,
                  img_dir,
@@ -225,11 +227,18 @@ class CustomDataset(Dataset):
 
     @staticmethod
     def convert_to_color(seg):
-        color_seg = np.zeros((seg.shape[0], seg.shape[1], 3))
-        label2color = {
-            label: np.random.randint(0, 255, size=(3, ))
-            for label in np.unique(seg)
-        }
-        for label, color in label2color.items():
+        num_classes = len(CustomDataset.CLASSES)
+        palette = CustomDataset.PALETTE
+        if palette is None:
+            palette = np.random.randint(0, 255, size=(num_classes, 3))
+        else:
+            palette = np.array(palette)
+        assert palette.shape[0] == num_classes
+        assert palette.shape[1] == 3
+        assert len(palette.shape) == 2
+        color_seg = np.zeros((seg.shape[0], seg.shape[1], 3), dtype=np.uint8)
+        for label, color in enumerate(palette):
             color_seg[seg == label, :] = color
+        # convert to BGR
+        color_seg = color_seg[..., ::-1]
         return color_seg

@@ -1,4 +1,5 @@
 variables:
+  PARROTS_IMAGE: registry.sensetime.com/platform/product:pat0.6.0rc0
   PYTORCH_IMAGE: registry.sensetime.com/eig-research/pytorch:1.3.1-cuda10.1-cudnn7-devel
 
 stages:
@@ -25,9 +26,8 @@ before_script:
   stage: test
   script:
     - echo "Start building..."
-    - conda install av -c conda-forge -y
-    - pip install "git+https://github.com/open-mmlab/mmcv.git"
-    - pip install -v -e .[all]
+    - pip install mmcv-nightly
+    - pip install -e .[all]
     - python -c "import mmseg; print(mmseg.__version__)"
     - echo "Start testing..."
     - coverage run --branch --source mmseg -m pytest tests/
@@ -37,6 +37,14 @@ linting:pytorch1.3-cuda10:
   image: $PYTORCH_IMAGE
   <<: *linting_template_def
 
+linting:pat0.6.0dev-cuda9:
+  image: $PARROTS_IMAGE
+  <<: *linting_template_def
+
 test:pytorch1.3-cuda10:
   image: $PYTORCH_IMAGE
   <<: *test_template_def
+
+# test:pat0.6.0dev-cuda9:
+#   image: $PARROTS_IMAGE
+#   <<: *test_template_def
