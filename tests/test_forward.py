@@ -50,21 +50,59 @@ def _get_segmentor_cfg(fname):
 
 
 def test_pspnet_forward():
-    _test_encoder_decoder_forward('pspnet/psp_r50_769x769_40ki_cityscapes.py')
+    _test_encoder_decoder_forward('pspnet/psp_r50_512x1024_40ki_cityscapes.py')
 
 
 def test_fcnnet_forward():
-    _test_encoder_decoder_forward('fcnnet/fcn_r50_769x769_40ki_cityscapes.py')
+    _test_encoder_decoder_forward('fcnnet/fcn_r50_512x1024_40ki_cityscapes.py')
 
 
 def test_deeplabv3_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3/deeplabv3_r50_769x769_40ki_cityscapes.py')
+        'deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py')
 
 
 def test_deeplabv3plus_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3plus/deeplabv3plus_r50_769x769_40ki_cityscapes.py')
+        'deeplabv3plus/deeplabv3plus_r50_512x1024_40ki_cityscapes.py')
+
+
+def test_gcnet_forward():
+    _test_encoder_decoder_forward('gcnet/gc_r50_512x1024_40ki_cityscapes.py')
+
+
+def test_annet_forward():
+    _test_encoder_decoder_forward('annnet/ann_r50_512x1024_40ki_cityscapes.py')
+
+
+def test_ccnet_forward():
+    if torch.cuda.is_available():
+        _test_encoder_decoder_forward(
+            'ccnet/cc_r50_512x1024_40ki_cityscapes.py')
+
+
+def test_danet_forward():
+    _test_encoder_decoder_forward('danet/da_r50_512x1024_40ki_cityscapes.py')
+
+
+def test_nlnet_forward():
+    _test_encoder_decoder_forward('nlnet/nl_r50_512x1024_40ki_cityscapes.py')
+
+
+def test_upernet_forward():
+    _test_encoder_decoder_forward(
+        'upernet/uper_r50_512x1024_40ki_cityscapes.py')
+
+
+def test_hrnet_forward():
+    _test_encoder_decoder_forward(
+        'hrnet/fcn_hr18s_512x1024_40ki_cityscapes.py')
+
+
+def test_psanet_forward():
+    if torch.cuda.is_available():
+        _test_encoder_decoder_forward(
+            'psanet/psa_r50_512x1024_40ki_cityscapes.py')
 
 
 def _convert_batchnorm(module):
@@ -100,14 +138,20 @@ def _test_encoder_decoder_forward(cfg_file):
 
     num_classes = segmentor.decode_head.num_classes
     # batch_size=2 for BatchNorm
-    input_shape = (2, 3, 713, 713)
+    input_shape = (2, 3, 256, 512)
     mm_inputs = _demo_mm_inputs(input_shape, num_classes=num_classes)
 
     imgs = mm_inputs.pop('imgs')
     img_metas = mm_inputs.pop('img_metas')
+    gt_semantic_seg = mm_inputs['gt_semantic_seg']
+
+    # convert to cuda Tensor if applicable
+    if torch.cuda.is_available():
+        segmentor = segmentor.cuda()
+        imgs = imgs.cuda()
+        gt_semantic_seg = gt_semantic_seg.cuda()
 
     # Test forward train
-    gt_semantic_seg = mm_inputs['gt_semantic_seg']
     losses = segmentor.forward(
         imgs, img_metas, gt_semantic_seg=gt_semantic_seg, return_loss=True)
     assert isinstance(losses, dict)
