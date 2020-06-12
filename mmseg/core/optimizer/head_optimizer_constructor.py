@@ -1,13 +1,12 @@
 import torch
+from mmcv.runner import OPTIMIZER_BUILDERS, DefaultOptimizerConstructor
 from mmcv.utils.parrots_wrapper import _BatchNorm, _InstanceNorm
 from torch.nn import GroupNorm, LayerNorm
-
-from .builder import OPTIMIZER_BUILDERS
-from .default_constructor import DefaultOptimizerConstructor
 
 
 @OPTIMIZER_BUILDERS.register_module()
 class HeadOptimizerConstructor(DefaultOptimizerConstructor):
+    """ Decode Head LR multiplier Optimizer Constructor """
 
     def add_params(self, params, module, prefix=''):
         """Add all parameters of module to the params list.
@@ -26,7 +25,7 @@ class HeadOptimizerConstructor(DefaultOptimizerConstructor):
         bias_decay_mult = self.paramwise_cfg.get('bias_decay_mult', 1.)
         norm_decay_mult = self.paramwise_cfg.get('norm_decay_mult', 1.)
         dwconv_decay_mult = self.paramwise_cfg.get('dwconv_decay_mult', 1.)
-        decode_head_lr_mult = self.paramwise_cfg.get('decode_head_lr_mult', 1.)
+        head_lr_mult = self.paramwise_cfg.get('head_lr_mult', 1.)
 
         # special rules for norm layers and depth-wise conv layers
         is_norm = isinstance(module,
@@ -57,10 +56,12 @@ class HeadOptimizerConstructor(DefaultOptimizerConstructor):
                 elif name.endswith('bias'):
                     param_group[
                         'weight_decay'] = self.base_wd * bias_decay_mult
-            if prefix.startswith('decode_head') and param.requires_grad:
-                param_group['lr'] = self.base_lr * decode_head_lr_mult
-            if prefix.startswith('auxiliary_head') and param.requires_grad:
-                param_group['lr'] = self.base_lr * decode_head_lr_mult
+
+            # multiply_decode_head and auxiliary_head lr
+            if (prefix.startswith(('decode_head', 'auxiliary_head'))
+                    and param.requires_grad):
+                param_group['lr'] = param_group.get(
+                    'lr', self.base_lr) * head_lr_mult
             params.append(param_group)
 
         for child_name, child_mod in module.named_children():
