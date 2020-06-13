@@ -3,7 +3,7 @@ import os.path as osp
 
 import numpy as np
 
-from mmseg.datasets.pipelines import LoadImageFromFile
+from mmseg.datasets.pipelines import LoadAnnotations, LoadImageFromFile
 
 
 class TestLoading(object):
@@ -58,3 +58,43 @@ class TestLoading(object):
         assert results['img'].dtype == np.uint8
         np.testing.assert_equal(results['img_norm_cfg']['mean'],
                                 np.zeros(1, dtype=np.float32))
+
+    def test_load_seg(self):
+        results = dict(
+            seg_prefix=self.data_prefix,
+            ann_info=dict(seg_map='seg.png'),
+            seg_fields=[])
+        transform = LoadAnnotations()
+        results = transform(copy.deepcopy(results))
+        assert results['seg_fields'] == ['gt_semantic_seg']
+        assert results['gt_semantic_seg'].shape == (288, 512)
+        assert results['gt_semantic_seg'].dtype == np.uint8
+        assert repr(transform) == transform.__class__.__name__ + \
+            '(use_pil=True), (reduce_zero_label=False)'
+
+        # no img_prefix
+        results = dict(
+            seg_prefix=None,
+            ann_info=dict(seg_map='tests/data/seg.png'),
+            seg_fields=[])
+        transform = LoadAnnotations()
+        results = transform(copy.deepcopy(results))
+        assert results['gt_semantic_seg'].shape == (288, 512)
+        assert results['gt_semantic_seg'].dtype == np.uint8
+
+        # reduce_zero_label
+        transform = LoadAnnotations(reduce_zero_label=True)
+        results = transform(copy.deepcopy(results))
+        assert results['gt_semantic_seg'].shape == (288, 512)
+        assert results['gt_semantic_seg'].dtype == np.uint8
+
+        # mmcv backend
+        results = dict(
+            seg_prefix=self.data_prefix,
+            ann_info=dict(seg_map='seg.png'),
+            seg_fields=[])
+        transform = LoadAnnotations(use_pil=False)
+        results = transform(copy.deepcopy(results))
+        # this image is saved by PIL
+        assert results['gt_semantic_seg'].shape == (288, 512, 3)
+        assert results['gt_semantic_seg'].dtype == np.uint8

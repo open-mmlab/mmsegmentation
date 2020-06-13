@@ -95,5 +95,6 @@ class LoadAnnotations(object):
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += f'(with_seg={self.with_seg})'
+        repr_str += f'(use_pil={self.use_pil}), '
+        repr_str += f'(reduce_zero_label={self.reduce_zero_label})'
         return repr_str
