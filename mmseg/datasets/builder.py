@@ -37,8 +37,11 @@ def _concat_dataset(cfg, default_args=None):
         num_split = len(split) if isinstance(split, (list, tuple)) else 1
     else:
         num_split = 0
-    assert (num_img_dir == num_ann_dir or num_ann_dir == num_split
-            or num_img_dir == num_split)
+    if num_img_dir > 1:
+        assert num_img_dir == num_ann_dir or num_ann_dir == 0
+        assert num_img_dir == num_split or num_split == 0
+    else:
+        assert num_split == num_ann_dir or num_ann_dir <= 1
     num_dset = max(num_split, num_img_dir)
 
     datasets = []
@@ -103,7 +106,7 @@ def build_dataloader(dataset,
     """
     rank, world_size = get_dist_info()
     if dist:
-        # TODO GroupSampler is not necessary since we crop to different size
+        # TODO: GroupSampler is not necessary when we crop to different size
         #  in transforms
         # DistributedGroupSampler will definitely shuffle the data to satisfy
         # that images on each GPU are in the same group

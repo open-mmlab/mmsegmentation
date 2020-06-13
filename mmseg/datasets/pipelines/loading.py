@@ -55,60 +55,6 @@ class LoadImageFromFile(object):
 
 
 @PIPELINES.register_module()
-class LoadMultiChannelImageFromFiles(object):
-    """ Load multi channel images from a list of separate channel files.
-    Expects results['filename'] to be a list of filenames
-    """
-
-    def __init__(self,
-                 to_float32=False,
-                 color_type='unchanged',
-                 file_client_args=dict(backend='disk')):
-        self.to_float32 = to_float32
-        self.color_type = color_type
-        self.file_client_args = file_client_args.copy()
-        self.file_client = None
-
-    def __call__(self, results):
-        if self.file_client is None:
-            self.file_client = mmcv.FileClient(**self.file_client_args)
-
-        if results['img_prefix'] is not None:
-            filename = [
-                osp.join(results['img_prefix'], fname)
-                for fname in results['img_info']['filename']
-            ]
-        else:
-            filename = results['img_info']['filename']
-        img = []
-        for name in filename:
-            img_bytes = self.file_client.get(name)
-            img.append(mmcv.imfrombytes(img_bytes, flag=self.color_type))
-        img = np.stack(img, axis=-1)
-        if self.to_float32:
-            img = img.astype(np.float32)
-
-        results['filename'] = filename
-        results['ori_filename'] = results['img_info']['filename']
-        results['img'] = img
-        results['img_shape'] = img.shape
-        results['ori_shape'] = img.shape
-        # Set initial values for default meta_keys
-        results['pad_shape'] = img.shape
-        results['scale_factor'] = 1.0
-        num_channels = 1 if len(img.shape) < 3 else img.shape[2]
-        results['img_norm_cfg'] = dict(
-            mean=np.zeros(num_channels, dtype=np.float32),
-            std=np.ones(num_channels, dtype=np.float32),
-            to_rgb=False)
-        return results
-
-    def __repr__(self):
-        return f'{self.__class__.__name__}(to_float32={self.to_float32}, ' \
-               f"color_type='{self.color_type}')"
-
-
-@PIPELINES.register_module()
 class LoadAnnotations(object):
 
     def __init__(self,

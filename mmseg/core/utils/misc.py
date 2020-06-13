@@ -1,8 +1,12 @@
 import mmcv
 import numpy as np
+import torch
 
 
 def tensor2imgs(tensor, mean=(0, 0, 0), std=(1, 1, 1), to_rgb=True):
+
+    assert torch.is_tensor(tensor) and tensor.ndim == 4
+
     num_imgs = tensor.size(0)
     mean = np.array(mean, dtype=np.float32)
     std = np.array(std, dtype=np.float32)
