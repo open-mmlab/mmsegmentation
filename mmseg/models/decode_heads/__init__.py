@@ -8,11 +8,10 @@ from .nl_head import NLHead
 from .ocr_head import OCRHead
 from .psa_head import PSAHead
 from .psp_head import PSPHead
-from .sep_aspp_head import SepASPPHead
-from .sep_fcn_head import SepFCNHead
+from .sep_aspp_head import DepthwiseSeparableASPPHead
 from .uper_head import UPerHead
 
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
-    'UPerHead', 'SepASPPHead', 'SepFCNHead', 'ANNHead', 'DAHead', 'OCRHead'
+    'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead'
 ]

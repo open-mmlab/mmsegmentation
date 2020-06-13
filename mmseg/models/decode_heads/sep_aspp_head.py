@@ -2,27 +2,29 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import SeparableConvModule, resize
+from mmseg.ops import DepthwiseSeparableConvModule, resize
 from ..builder import HEADS
 from .aspp_head import ASPPHead, ASPPModule
 
 
-class SepASPPModule(ASPPModule):
+class DepthwiseSeparableASPPModule(ASPPModule):
 
     def __init__(self, **kwargs):
-        super(SepASPPModule, self).__init__(**kwargs)
+        super(DepthwiseSeparableASPPModule, self).__init__(**kwargs)
         for i, dilation in enumerate(self.dilations):
             if dilation > 1:
-                self[i] = SeparableConvModule(
+                self[i] = DepthwiseSeparableConvModule(
                     self.in_channels,
                     self.channels,
+                    3,
                     dilation=dilation,
+                    padding=dilation,
                     norm_cfg=self.norm_cfg,
-                    relu_first=False)
+                    act_cfg=self.act_cfg)
 
 
 @HEADS.register_module()
-class SepASPPHead(ASPPHead):
+class DepthwiseSeparableASPPHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
     Segmentation
 
@@ -31,9 +33,9 @@ class SepASPPHead(ASPPHead):
     """
 
     def __init__(self, c1_in_channels, c1_channels, **kwargs):
-        super(SepASPPHead, self).__init__(**kwargs)
+        super(DepthwiseSeparableASPPHead, self).__init__(**kwargs)
         assert c1_in_channels >= 0
-        self.aspp_modules = SepASPPModule(
+        self.aspp_modules = DepthwiseSeparableASPPModule(
             dilations=self.dilations,
             in_channels=self.in_channels,
             channels=self.channels,
@@ -51,16 +53,20 @@ class SepASPPHead(ASPPHead):
         else:
             self.c1_bottleneck = None
         self.sep_bottleneck = nn.Sequential(
-            SeparableConvModule(
+            DepthwiseSeparableConvModule(
                 self.channels + c1_channels,
                 self.channels,
+                3,
+                padding=1,
                 norm_cfg=self.norm_cfg,
-                relu_first=False),
-            SeparableConvModule(
+                act_cfg=self.act_cfg),
+            DepthwiseSeparableConvModule(
                 self.channels,
                 self.channels,
+                3,
+                padding=1,
                 norm_cfg=self.norm_cfg,
-                relu_first=False))
+                act_cfg=self.act_cfg))
 
     def forward(self, inputs, prev_out=None):
         if prev_out is not None:

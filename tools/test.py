@@ -8,7 +8,6 @@ from mmcv.runner import get_dist_info, init_dist, load_checkpoint
 from mmcv.utils import DictAction
 
 from mmseg.apis import multi_gpu_test, single_gpu_test
-from mmseg.core import wrap_fp16_model
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
 
@@ -112,9 +111,6 @@ def main():
 
     # build the model and load checkpoint
     model = build_segmentor(cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
-    fp16_cfg = cfg.get('fp16', None)
-    if fp16_cfg is not None:
-        wrap_fp16_model(model)
     checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
     # old versions did not save class info in checkpoints, this walkaround is
     # for backward compatibility
