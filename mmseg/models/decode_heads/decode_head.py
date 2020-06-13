@@ -21,7 +21,6 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
             act_cfg (dict): Config of activation layers.
                 Default: dict(type='ReLU')
             num_classes (int): Number of classes. Default: 19.
-            class_weight (Sequence[float]): Different weight of classes.
                 Default: None.
             in_index (int|Sequence[int]): Input feature index. Default: -1
             input_transform (str|None): Transformation type of input features.

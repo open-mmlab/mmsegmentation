@@ -37,6 +37,8 @@ def weight_reduce_loss(loss, weight=None, reduction='mean', avg_factor=None):
     """
     # if weight is specified, apply element-wise weight
     if weight is not None:
+        assert weight.dim() == loss.dim()
+        assert weight.size(1) == 1 or weight.size(1) == loss.size(1)
         loss = loss * weight
 
     # if avg_factor is not specified, just reduce the loss

@@ -31,7 +31,7 @@ before_script:
     - python -c "import mmseg; print(mmseg.__version__)"
     - echo "Start testing..."
     - coverage run --branch --source mmseg -m pytest tests/
-    - coverage report -m
+    - coverage report -m --omit="mmseg/utils/*","mmseg/ops/*","mmseg/apis/*","mmseg/datasets/samplers/*"
 
 linting:pytorch1.3-cuda10:
   image: $PYTORCH_IMAGE

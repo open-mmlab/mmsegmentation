@@ -70,6 +70,28 @@ class EncoderDecoder(BaseSegmentor):
             align_corners=self.align_corners)
         return out
 
+    def _decode_head_forward_train(self, x, img_metas, gt_semantic_seg):
+        seg_logit = self.decode_head(x)
+        losses = self.decode_head.losses(seg_logit, gt_semantic_seg)
+
+        return losses
+
+    def _auxiliary_head_forward_train(self, x, img_metas, gt_semantic_seg):
+        losses = dict()
+        if isinstance(self.auxiliary_head, nn.ModuleList):
+            for idx, aux_head in enumerate(self.auxiliary_head):
+                auxiliary_seg_logit = aux_head(x)
+                loss_aux = aux_head.losses(
+                    auxiliary_seg_logit, gt_semantic_seg, suffix=f'aux_{idx}')
+                losses.update(loss_aux)
+        else:
+            auxiliary_seg_logit = self.auxiliary_head(x)
+            loss_aux = self.auxiliary_head.losses(
+                auxiliary_seg_logit, gt_semantic_seg, suffix='aux')
+            losses.update(loss_aux)
+
+        return losses
+
     def forward_dummy(self, img):
         seg_logit = self.encode_decode(img)
 
@@ -80,23 +102,14 @@ class EncoderDecoder(BaseSegmentor):
 
         losses = dict()
 
-        seg_logit = self.decode_head(x)
-        loss_decode = self.decode_head.losses(seg_logit, gt_semantic_seg)
+        loss_decode = self._decode_head_forward_train(x, img_metas,
+                                                      gt_semantic_seg)
         losses.update(loss_decode)
+
         if self.with_auxiliary_head:
-            if isinstance(self.auxiliary_head, nn.ModuleList):
-                for idx, aux_head in enumerate(self.auxiliary_head):
-                    auxiliary_seg_logit = aux_head(x)
-                    loss_aux = aux_head.losses(
-                        auxiliary_seg_logit,
-                        gt_semantic_seg,
-                        suffix=f'aux_{idx}')
-                    losses.update(loss_aux)
-            else:
-                auxiliary_seg_logit = self.auxiliary_head(x)
-                loss_aux = self.auxiliary_head.losses(
-                    auxiliary_seg_logit, gt_semantic_seg, suffix='aux')
-                losses.update(loss_aux)
+            loss_aux = self._auxiliary_head_forward_train(
+                x, img_metas, gt_semantic_seg)
+            losses.update(loss_aux)
 
         return losses
 

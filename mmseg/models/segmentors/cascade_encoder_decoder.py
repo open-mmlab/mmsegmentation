@@ -39,7 +39,11 @@ class CascadeEncoderDecoder(EncoderDecoder):
         for i in range(self.num_stages):
             self.decode_head[i].init_weights()
         if self.with_auxiliary_head:
-            self.auxiliary_head.init_weights()
+            if isinstance(self.auxiliary_head, nn.ModuleList):
+                for aux_head in self.auxiliary_head:
+                    aux_head.init_weights()
+            else:
+                self.auxiliary_head.init_weights()
 
     def encode_decode(self, img):
         x = self.extract_feat(img)
@@ -53,9 +57,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
             align_corners=self.align_corners)
         return out
 
-    def forward_train(self, img, img_metas, gt_semantic_seg):
-        x = self.extract_feat(img)
-
+    def _decode_head_forward_train(self, x, img_metas, gt_semantic_seg):
         losses = dict()
 
         seg_logit = self.decode_head[0](x)
@@ -67,11 +69,5 @@ class CascadeEncoderDecoder(EncoderDecoder):
             loss_decode = self.decode_head[i].losses(
                 seg_logit, gt_semantic_seg, suffix=f'decode_{i}')
             losses.update(loss_decode)
-
-        if self.with_auxiliary_head:
-            auxiliary_seg_logit = self.auxiliary_head(x)
-            loss_aux = self.auxiliary_head.losses(
-                auxiliary_seg_logit, gt_semantic_seg, suffix='aux')
-            losses.update(loss_aux)
 
         return losses

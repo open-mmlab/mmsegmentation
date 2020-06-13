@@ -6,6 +6,7 @@ from os.path import dirname, exists, join
 
 import numpy as np
 import torch
+import torch.nn as nn
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 
@@ -99,6 +100,11 @@ def test_hrnet_forward():
         'hrnet/fcn_hr18s_512x1024_40ki_cityscapes.py')
 
 
+def test_ocrnet_forward():
+    _test_encoder_decoder_forward(
+        'ocrnet/ocr_hr18s_512x1024_40ki_cityscapes.py')
+
+
 def test_psanet_forward():
     _test_encoder_decoder_forward('psanet/psa_r50_512x1024_40ki_cityscapes.py')
 
@@ -134,7 +140,10 @@ def _test_encoder_decoder_forward(cfg_file):
     # convert SyncBN to BN
     segmentor = _convert_batchnorm(segmentor)
 
-    num_classes = segmentor.decode_head.num_classes
+    if isinstance(segmentor.decode_head, nn.ModuleList):
+        num_classes = segmentor.decode_head[-1].num_classes
+    else:
+        num_classes = segmentor.decode_head.num_classes
     # batch_size=2 for BatchNorm
     input_shape = (2, 3, 256, 512)
     mm_inputs = _demo_mm_inputs(input_shape, num_classes=num_classes)

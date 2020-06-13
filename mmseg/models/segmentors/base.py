@@ -31,11 +31,6 @@ class BaseSegmentor(nn.Module):
     def extract_feat(self, imgs):
         pass
 
-    def extract_feats(self, imgs):
-        assert isinstance(imgs, list)
-        for img in imgs:
-            yield self.extract_feat(img)
-
     @abstractmethod
     def encode_decode(self, feats):
         pass
