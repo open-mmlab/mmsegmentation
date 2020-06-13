@@ -100,9 +100,7 @@ def test_hrnet_forward():
 
 
 def test_psanet_forward():
-    if torch.cuda.is_available():
-        _test_encoder_decoder_forward(
-            'psanet/psa_r50_512x1024_40ki_cityscapes.py')
+    _test_encoder_decoder_forward('psanet/psa_r50_512x1024_40ki_cityscapes.py')
 
 
 def _convert_batchnorm(module):
@@ -192,6 +190,7 @@ def _demo_mm_inputs(input_shape=(1, 3, 256, 512),
         'filename': '<demo>.png',
         'scale_factor': 1.0,
         'flip': False,
+        'flip_direction': 'horizontal'
     } for _ in range(N)]
 
     mm_inputs = {

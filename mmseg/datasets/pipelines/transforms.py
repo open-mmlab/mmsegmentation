@@ -199,7 +199,9 @@ class Pad(object):
     Args:
         size (tuple, optional): Fixed padding size.
         size_divisor (int, optional): The divisor of padded size.
-        pad_val (float, optional): Padding value, 0 by default.
+        pad_val (float, optional): Padding value. Default: 0.
+        seg_pad_val (float, optional): Padding value of segmentation map.
+            Default: 255.
     """
 
     def __init__(self,
@@ -281,166 +283,58 @@ class RandomCrop(object):
 
     Args:
         crop_size (tuple): Expected size after cropping, (h, w).
+        cat_max_ratio (float): The maximum ratio that single category could
+            occupy.
     """
 
-    def __init__(self,
-                 crop_size,
-                 use_pad=True,
-                 pad_val=0,
-                 seg_pad_val=255,
-                 cat_max_ratio=1.):
+    def __init__(self, crop_size, cat_max_ratio=1., ignore_index=255):
+        assert crop_size[0] > 0 and crop_size[1] > 0
         self.crop_size = crop_size
-        self.use_pad = use_pad
-        self.pad_val = pad_val
-        self.seg_pad_val = seg_pad_val
         self.cat_max_ratio = cat_max_ratio
+        self.ignore_index = ignore_index
 
     def get_crop_bbox(self, img):
-        crop_size = self.crop_size
-        if not self.use_pad:
-            crop_size = (min(img.shape[0],
-                             crop_size[0]), min(img.shape[1], crop_size[1]))
-        margin_h = max(img.shape[0] - crop_size[0], 0)
-        margin_w = max(img.shape[1] - crop_size[1], 0)
+        margin_h = max(img.shape[0] - self.crop_size[0], 0)
+        margin_w = max(img.shape[1] - self.crop_size[1], 0)
         offset_h = np.random.randint(0, margin_h + 1)
         offset_w = np.random.randint(0, margin_w + 1)
-        # mmcv.imcrop +1 in calculate height and width
-        crop_y1, crop_y2 = offset_h, offset_h + crop_size[0] - 1
-        crop_x1, crop_x2 = offset_w, offset_w + crop_size[1] - 1
-        crop_bbox = np.array([crop_x1, crop_y1, crop_x2, crop_y2])
+        crop_y1, crop_y2 = offset_h, offset_h + self.crop_size[0]
+        crop_x1, crop_x2 = offset_w, offset_w + self.crop_size[1]
 
-        return crop_bbox
+        return crop_y1, crop_y2, crop_x1, crop_x2
+
+    def crop(self, img, crop_bbox):
+        crop_y1, crop_y2, crop_x1, crop_x2 = crop_bbox
+        img = img[crop_y1:crop_y2, crop_x1:crop_x2, ...]
+        return img
 
     def __call__(self, results):
         img = results['img']
         crop_bbox = self.get_crop_bbox(img)
-        if self.cat_max_ratio <= 1.:
+        if self.cat_max_ratio < 1.:
             for _ in range(10):
-                seg_temp = mmcv.imcrop(
-                    results['gt_semantic_seg'],
-                    crop_bbox,
-                    pad_fill=self.seg_pad_val)
+                seg_temp = self.crop(results['gt_semantic_seg'], crop_bbox)
                 labels, cnt = np.unique(seg_temp, return_counts=True)
-                cnt = cnt[labels != self.seg_pad_val]
+                cnt = cnt[labels != self.ignore_index]
                 if len(cnt) > 1 and np.max(cnt) / np.sum(
                         cnt) < self.cat_max_ratio:
                     break
                 crop_bbox = self.get_crop_bbox(img)
 
         # crop the image
-        img = mmcv.imcrop(img, crop_bbox, pad_fill=self.pad_val)
+        img = self.crop(img, crop_bbox)
         img_shape = img.shape
         results['img'] = img
         results['img_shape'] = img_shape
 
         # crop semantic seg
         for key in results.get('seg_fields', []):
-            results[key] = mmcv.imcrop(
-                results[key], crop_bbox, pad_fill=self.seg_pad_val)
+            results[key] = self.crop(results[key], crop_bbox)
 
         return results
 
     def __repr__(self):
         return self.__class__.__name__ + f'(crop_size={self.crop_size})'
-
-
-@PIPELINES.register_module()
-class RandomRotate(object):
-    """Random rotate the image & seg.
-
-    Args:
-        rotate_range (tuple): Expected range for rotation (min, max).
-        rotate_ratio (float, optional): The rotation probability.
-    """
-
-    def __init__(self,
-                 rotate_range,
-                 pad_val=0,
-                 seg_pad_val=255,
-                 rotate_ratio=None):
-        self.rotate_range = rotate_range
-        self.pad_val = pad_val
-        self.seg_pad_val = seg_pad_val
-        if rotate_ratio is not None:
-            assert rotate_ratio >= 0 and rotate_ratio <= 1
-        self.rotate_ratio = rotate_ratio
-
-    def __call__(self, results):
-        if self.rotate_ratio is None or np.random.rand() < self.rotate_ratio:
-            img = results['img']
-            angle = np.random.uniform(*self.rotate_range)
-            results['img'] = mmcv.imrotate(
-                img, angle, border_value=self.pad_val)
-
-            # rotate semantic seg
-            for key in results.get('seg_fields', []):
-                # TODO mmcv doesn't have interpolate option, use cv2 for now
-                # TODO: interpolate in mmcv.rotate
-                results[key] = self.imrotate(
-                    results[key], angle, border_value=self.seg_pad_val)
-
-        return results
-
-    @staticmethod
-    def imrotate(img,
-                 angle,
-                 center=None,
-                 scale=1.0,
-                 border_value=0,
-                 auto_bound=False,
-                 interpolation='nearest'):
-        """Rotate an image.
-
-        Args:
-            img (ndarray): Image to be rotated.
-            angle (float): Rotation angle in degrees, positive values mean
-                clockwise rotation.
-            center (tuple): Center of the rotation in the source image, by
-                default it is the center of the image.
-            scale (float): Isotropic scale factor.
-            border_value (int): Border value.
-            auto_bound (bool): Whether to adjust the image size to cover the
-                whole rotated image.
-
-        Returns:
-            ndarray: The rotated image.
-        """
-        import cv2
-        interp_codes = {
-            'nearest': cv2.INTER_NEAREST,
-            'bilinear': cv2.INTER_LINEAR,
-            'bicubic': cv2.INTER_CUBIC,
-            'area': cv2.INTER_AREA,
-            'lanczos': cv2.INTER_LANCZOS4
-        }
-        if center is not None and auto_bound:
-            raise ValueError('`auto_bound` conflicts with `center`')
-        h, w = img.shape[:2]
-        if center is None:
-            center = ((w - 1) * 0.5, (h - 1) * 0.5)
-        assert isinstance(center, tuple)
-
-        matrix = cv2.getRotationMatrix2D(center, -angle, scale)
-        if auto_bound:
-            cos = np.abs(matrix[0, 0])
-            sin = np.abs(matrix[0, 1])
-            new_w = h * sin + w * cos
-            new_h = h * cos + w * sin
-            matrix[0, 2] += (new_w - w) * 0.5
-            matrix[1, 2] += (new_h - h) * 0.5
-            w = int(np.round(new_w))
-            h = int(np.round(new_h))
-        rotated = cv2.warpAffine(
-            img,
-            matrix, (w, h),
-            borderValue=border_value,
-            flags=interp_codes[interpolation])
-        return rotated
-
-    def __repr__(self):
-        return self.__class__.__name__ + \
-               f'(rotate_range={self.rotate_range}, rotate_ratio=' \
-               f'{self.rotate_ratio})'
 
 
 @PIPELINES.register_module()
@@ -568,104 +462,4 @@ class PhotoMetricDistortion(object):
                      f'saturation_range=({self.saturation_lower}, '
                      f'{self.saturation_upper}), '
                      f'hue_delta={self.hue_delta})')
-        return repr_str
-
-
-@PIPELINES.register_module()
-class RandomGaussianBlur(object):
-
-    def __init__(self, blur_ratio, radius=5):
-        self.blur_ratio = blur_ratio
-        self.radius = radius
-
-    def __call__(self, results):
-        if random.random() < self.blur_ratio:
-            import cv2
-            img = results['img']
-            results['img'] = cv2.GaussianBlur(img, (self.radius, self.radius),
-                                              0)
-        return results
-
-
-@PIPELINES.register_module()
-class RandomBrightness(object):
-
-    def __init__(self, shift_value=30, ratio=0.5):
-        self.shift_value = shift_value
-        self.ratio = ratio
-
-    def __call__(self, results):
-        img = results['img']
-        assert isinstance(img, np.ndarray)
-        if random.random() < self.ratio:
-            img = img.astype(np.float32)
-            shift = random.randint(-self.shift_value, self.shift_value)
-            img[:, :, :] += shift
-            img = np.around(img)
-            img = np.clip(img, 0, 255).astype(np.uint8)
-            results['img'] = img
-        return results
-
-
-@PIPELINES.register_module()
-class Expand(object):
-    """Random expand the image & seg.
-
-    Randomly place the original image on a canvas of 'ratio' x original image
-    size filled with mean values. The ratio is in the range of ratio_range.
-
-    Args:
-        mean (tuple): mean value of dataset.
-        to_rgb (bool): if need to convert the order of mean to align with RGB.
-        ratio_range (tuple): range of expand ratio.
-        prob (float): probability of applying this transformation
-    """
-
-    def __init__(self,
-                 mean=(0, 0, 0),
-                 to_rgb=True,
-                 ratio_range=(1, 4),
-                 seg_ignore_label=None,
-                 prob=0.5):
-        self.to_rgb = to_rgb
-        self.ratio_range = ratio_range
-        if to_rgb:
-            self.mean = mean[::-1]
-        else:
-            self.mean = mean
-        self.min_ratio, self.max_ratio = ratio_range
-        self.seg_ignore_label = seg_ignore_label
-        self.prob = prob
-
-    def __call__(self, results):
-        if random.uniform(0, 1) > self.prob:
-            return results
-
-        img = results['img']
-
-        h, w, c = img.shape
-        ratio = random.uniform(self.min_ratio, self.max_ratio)
-        expand_img = np.full((int(h * ratio), int(w * ratio), c),
-                             self.mean).astype(img.dtype)
-        left = int(random.uniform(0, w * ratio - w))
-        top = int(random.uniform(0, h * ratio - h))
-        expand_img[top:top + h, left:left + w] = img
-
-        results['img'] = expand_img
-
-        # not tested
-        assert self.seg_ignore_label is not None
-        gt_seg = results['gt_semantic_seg']
-        expand_gt_seg = np.full((int(h * ratio), int(w * ratio)),
-                                self.seg_ignore_label).astype(gt_seg.dtype)
-        expand_gt_seg[top:top + h, left:left + w] = gt_seg
-        results['gt_semantic_seg'] = expand_gt_seg
-
-        return results
-
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += f'(mean={self.mean}, to_rgb={self.to_rgb}, ratio_range=' \
-                    f'{self.ratio_range}, ' \
-                    f'seg_ignore_label={self.seg_ignore_label})'
         return repr_str

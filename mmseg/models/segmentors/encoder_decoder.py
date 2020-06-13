@@ -170,7 +170,7 @@ class EncoderDecoder(BaseSegmentor):
             assert flip_direction in ['horizontal', 'vertical']
             if flip_direction == 'horizontal':
                 output = output.flip(dims=(3, ))
-            else:
+            elif flip_direction == 'vertical':
                 output = output.flip(dims=(2, ))
 
         return output
