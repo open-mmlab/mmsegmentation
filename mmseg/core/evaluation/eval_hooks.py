@@ -24,6 +24,7 @@ class EvalHook(Hook):
         if not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
+        runner.log_buffer.clear()
         results = single_gpu_test(runner.model, self.dataloader, show=False)
         self.evaluate(runner, results)
 
@@ -65,6 +66,7 @@ class DistEvalHook(EvalHook):
         if not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import multi_gpu_test
+        runner.log_buffer.clear()
         results = multi_gpu_test(
             runner.model,
             self.dataloader,

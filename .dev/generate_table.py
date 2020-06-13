@@ -29,7 +29,7 @@ def get_final_results(log_json_path, iter_num):
                     'iter'] == iter_num - 50:
                 result_dict['memory'] = log_line['memory']
 
-            if log_line['mode'] == 'val' and log_line['iter'] == iter_num:
+            if log_line['iter'] == iter_num:
                 result_dict.update({
                     key: log_line[key] * 100
                     for key in RESULTS_LUT if key in log_line

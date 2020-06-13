@@ -22,7 +22,7 @@ def get_final_iter(config):
     return iter_num
 
 
-def get_final_results(log_json_path, iter):
+def get_final_results(log_json_path, iter_num):
     result_dict = dict()
     with open(log_json_path, 'r') as f:
         for line in f.readlines():
@@ -30,10 +30,10 @@ def get_final_results(log_json_path, iter):
             if 'mode' not in log_line.keys():
                 continue
 
-            if log_line['mode'] == 'train' and log_line['iter'] == iter:
+            if log_line['mode'] == 'train' and log_line['iter'] == iter_num:
                 result_dict['memory'] = log_line['memory']
 
-            if log_line['mode'] == 'val' and log_line['iter'] == iter:
+            if log_line['iter'] == iter_num:
                 result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
@@ -84,6 +84,7 @@ def main():
 
         # skip if the model is still training
         if not osp.exists(model_path):
+            print(f'{used_config} not finished yet')
             continue
 
         # get logs
@@ -92,6 +93,7 @@ def main():
         model_performance = get_final_results(log_json_path, final_iter)
 
         if model_performance is None:
+            print(f'{used_config} does not have performance')
             continue
 
         model_time = osp.split(log_txt_path)[-1].split('.')[0]
