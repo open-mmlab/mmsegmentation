@@ -21,7 +21,7 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
             act_cfg (dict): Config of activation layers.
                 Default: dict(type='ReLU')
             num_classes (int): Number of classes. Default: 19.
-            classes_weight (Sequence[float]): Different weight of classes.
+            class_weight (Sequence[float]): Different weight of classes.
                 Default: None.
             in_index (int|Sequence[int]): Input feature index. Default: -1
             input_transform (str|None): Transformation type of input features.
@@ -44,7 +44,6 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
                  norm_cfg=None,
                  act_cfg=dict(type='ReLU'),
                  num_classes=19,
-                 classes_weight=None,
                  in_index=-1,
                  input_transform=None,
                  loss_decode=dict(
@@ -61,9 +60,6 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
         self.num_classes = num_classes
-        if classes_weight is not None:
-            assert len(classes_weight) == num_classes
-        self.classes_weight = classes_weight
         self.in_index = in_index
         self.loss_decode = build_loss(loss_decode)
         self.ignore_index = ignore_index
@@ -149,16 +145,11 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
             seg_weight = self.sampler.sample(seg_logit, seg_label)
         else:
             seg_weight = None
-        if self.classes_weight is not None:
-            classes_weight = seg_logit.new_tensor(self.classes_weight)
-        else:
-            classes_weight = None
         seg_label = seg_label.squeeze(1)
         loss[f'loss_seg_{suffix}'] = self.loss_decode(
             seg_logit,
             seg_label,
             weight=seg_weight,
-            classes_weight=classes_weight,
             ignore_index=self.ignore_index)
         loss[f'acc_seg_{suffix}'] = accuracy(seg_logit, seg_label)
         return loss

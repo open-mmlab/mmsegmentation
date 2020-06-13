@@ -9,17 +9,17 @@ from .utils import weight_reduce_loss
 def cross_entropy(pred,
                   label,
                   weight=None,
-                  classes_weight=None,
+                  class_weight=None,
                   reduction='mean',
                   avg_factor=None,
                   ignore_index=-100):
-    # classes_weight is a manual rescaling weight given to each class.
+    # class_weight is a manual rescaling weight given to each class.
     # If given, has to be a Tensor of size C
     # element-wise losses
     loss = F.cross_entropy(
         pred,
         label,
-        weight=classes_weight,
+        weight=class_weight,
         reduction='none',
         ignore_index=ignore_index)
 
@@ -81,6 +81,7 @@ class CrossEntropyLoss(nn.Module):
                  use_sigmoid=False,
                  use_mask=False,
                  reduction='mean',
+                 class_weight=None,
                  loss_weight=1.0):
         super(CrossEntropyLoss, self).__init__()
         assert (use_sigmoid is False) or (use_mask is False)
@@ -88,6 +89,7 @@ class CrossEntropyLoss(nn.Module):
         self.use_mask = use_mask
         self.reduction = reduction
         self.loss_weight = loss_weight
+        self.class_weight = class_weight
 
         if self.use_sigmoid:
             self.cls_criterion = binary_cross_entropy
@@ -106,10 +108,15 @@ class CrossEntropyLoss(nn.Module):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
+        if self.class_weight is not None:
+            class_weight = cls_score.new_tensor(self.class_weight)
+        else:
+            class_weight = None
         loss_cls = self.loss_weight * self.cls_criterion(
             cls_score,
             label,
             weight,
+            class_weight=class_weight,
             reduction=reduction,
             avg_factor=avg_factor,
             **kwargs)

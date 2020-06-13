@@ -79,11 +79,12 @@ def test_flip():
     img = mmcv.imread(
         osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
     original_img = copy.deepcopy(img)
-    seg = Image.open(osp.join(osp.dirname(__file__), '../data/seg.png'))
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
     original_seg = copy.deepcopy(seg)
     results['img'] = img
     results['gt_semantic_seg'] = seg
-    results['seg_fields'] = [results['gt_semantic_seg']]
+    results['seg_fields'] = ['gt_semantic_seg']
     results['img_shape'] = img.shape
     results['ori_shape'] = img.shape
     # Set initial values for default meta_keys
@@ -107,11 +108,11 @@ def test_random_crop():
     results = dict()
     img = mmcv.imread(
         osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
-    seg = Image.open(osp.join(osp.dirname(__file__), '../data/seg.png'))
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
     results['img'] = img
     results['gt_semantic_seg'] = seg
-    results['seg_fields'] = [results['gt_semantic_seg']]
-
+    results['seg_fields'] = ['gt_semantic_seg']
     results['img_shape'] = img.shape
     results['ori_shape'] = img.shape
     # Set initial values for default meta_keys
