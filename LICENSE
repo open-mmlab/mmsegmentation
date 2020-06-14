@@ -1,4 +1,4 @@
-Copyright 2018-2019 Open-MMLab. All rights reserved.
+Copyright 2020 The MMSegmentation Authors. All rights reserved.
 
                                  Apache License
                            Version 2.0, January 2004
@@ -188,7 +188,11 @@ Copyright 2018-2019 Open-MMLab. All rights reserved.
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
+<<<<<<< HEAD
    Copyright 2018-2019 Open-MMLab.
+=======
+   Copyright 2020 The MMSegmentation Authors.
+>>>>>>> 0032f0b4ed47ec1b6d2d9db1fd6e812c34766987
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -200,4 +204,8 @@ Copyright 2018-2019 Open-MMLab. All rights reserved.
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
+<<<<<<< HEAD
    limitations under the License.
+=======
+   limitations under the License.
+>>>>>>> 0032f0b4ed47ec1b6d2d9db1fd6e812c34766987

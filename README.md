@@ -10,3 +10,4 @@ TODO:
 * Update pretrain link
 * This teaser page.
 * Rename: r50->r50d, r101->r101d.
+* Tools instruction.
