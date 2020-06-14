@@ -12,9 +12,9 @@ RUN apt-get update && apt-get install -y libglib2.0-0 libsm6 libxrender-dev libx
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-# Install mmdetection
+# Install mmsegmentation
 RUN conda clean --all
-RUN git clone https://github.com/open-mmlab/mmdetection.git /mmdetection
-WORKDIR /mmdetection
+RUN git clone https://github.com/open-mmlab/mmdetection.git /mmsegmentation
+WORKDIR /mmsegmentation
 ENV FORCE_CUDA="1"
 RUN pip install --no-cache-dir -e .
