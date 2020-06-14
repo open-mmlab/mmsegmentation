@@ -30,8 +30,8 @@ class DepthwiseSeparableASPPHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
     Segmentation
 
-    This head is the implementation of Separable ASPP Head
-    in (https://arxiv.org/abs/1802.02611).
+    This head is the implementation of `DeepLabV3+
+    <https://arxiv.org/abs/1802.02611>`_.
 
     Args:
         c1_in_channels (int): The input channels of c1 decoder. If is 0,

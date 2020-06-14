@@ -128,8 +128,8 @@ class APNB(nn.Module):
 class ANNHead(DecodeHead):
     """Asymmetric Non-local Neural Networks for Semantic Segmentation
 
-    This head is the implementation of:
-    - ANNHead in (https://arxiv.org/abs/1908.07678)
+    This head is the implementation of `ANNNet
+    <https://arxiv.org/abs/1908.07678>`_.
 
     Args:
         project_channels (int): Projection channels for Nonlocal.

@@ -9,8 +9,8 @@ from .fcn_head import FCNHead
 class NLHead(FCNHead):
     """Non-local Neural Networks.
 
-    This head is the implementation of:
-    - Nonlocal block in (https://arxiv.org/abs/1711.07971)
+    This head is the implementation of `NLNet
+    <https://arxiv.org/abs/1711.07971>`_.
 
     Args:
         reduction (int): Reduction factor of projection transform. Default: 2.

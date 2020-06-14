@@ -9,8 +9,8 @@ from .fcn_head import FCNHead
 class GCHead(FCNHead):
     """GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond.
 
-    This head is the implementation of:
-    - Global Context block in (https://arxiv.org/abs/1904.11492)
+    This head is the implementation of `GCNet
+    <https://arxiv.org/abs/1904.11492>`_.
 
     Args:
         ratio (float): Multiplier of channels ratio. Default: 1/4.

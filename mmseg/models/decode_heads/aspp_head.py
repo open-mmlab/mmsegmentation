@@ -52,8 +52,8 @@ class ASPPModule(nn.ModuleList):
 class ASPPHead(DecodeHead):
     """Rethinking Atrous Convolution for Semantic Image Segmentation
 
-    This head is the implementation of:
-    - ASPP Head in (https://arxiv.org/abs/1706.05587)
+    This head is the implementation of `DeepLabV3
+    <https://arxiv.org/abs/1706.05587>`_.
 
     Args:
         dilations (tuple[int]): Dilation rates for ASPP module.

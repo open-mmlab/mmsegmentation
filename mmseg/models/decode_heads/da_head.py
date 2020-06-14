@@ -67,8 +67,8 @@ class CAM(nn.Module):
 class DAHead(DecodeHead):
     """Dual Attention Network for Scene Segmentation
 
-    This head is the implementation of:
-    - DAHead in (https://arxiv.org/abs/1809.02983)
+    This head is the implementation of `DANet
+    <https://arxiv.org/abs/1809.02983>`_.
 
     Args:
         pam_channels (int): The channels of Position Attention Module(PAM).

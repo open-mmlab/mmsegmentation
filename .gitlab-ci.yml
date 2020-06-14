@@ -5,6 +5,7 @@ variables:
 stages:
     - linting
     - test
+    - deploy
 
 before_script:
   - echo $PATH
@@ -48,3 +49,20 @@ test:pytorch1.3-cuda10:
 # test:pat0.6.0dev-cuda9:
 #   image: $PARROTS_IMAGE
 #   <<: *test_template_def
+
+pages:
+  image: $PYTORCH_IMAGE
+  stage: deploy
+  script:
+    - pip install sphinx sphinx_rtd_theme recommonmark
+    - cd docs
+    - make html
+    - cd ..
+    - mkdir -p ./public
+    - cp -r docs/_build/html/* ./public
+    - ls ./public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master

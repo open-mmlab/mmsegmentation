@@ -10,8 +10,7 @@ from .decode_head import DecodeHead
 class FCNHead(DecodeHead):
     """Fully Convolution Networks for Semantic Segmentation.
 
-    This head is implemented of :
-    - FCN in (https://arxiv.org/abs/1411.4038).
+    This head is implemented of `FCNNet <https://arxiv.org/abs/1411.4038>`_.
 
     Args:
         num_convs (int): Number of convs in the head. Default: 2.

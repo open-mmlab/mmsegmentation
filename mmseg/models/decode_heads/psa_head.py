@@ -12,8 +12,8 @@ from .decode_head import DecodeHead
 class PSAHead(DecodeHead):
     """Point-wise Spatial Attention Network for Scene Parsing
 
-    This head is the implementation of:
-    - PSAHead in (https://hszhao.github.io/papers/eccv18_psanet.pdf)
+    This head is the implementation of `PSANet
+    <https://hszhao.github.io/papers/eccv18_psanet.pdf>`_.
 
     Args:
         mask_size (tuple[int]): The PSA mask size. It usually equals input

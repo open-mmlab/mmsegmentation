@@ -83,8 +83,8 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
 class OCRHead(DecodeHead):
     """Object-Contextual Representations for Semantic Segmentation
 
-    This head is the implementation of:
-    - OCRHead in (https://arxiv.org/abs/1909.11065)
+    This head is the implementation of `OCRNet
+    <https://arxiv.org/abs/1909.11065>`_.
 
     Args:
         ocr_channels (int): The intermediate channels of OCR block.

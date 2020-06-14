@@ -16,19 +16,27 @@ from .pipelines import Compose
 class CustomDataset(Dataset):
     """Custom dataset for semantic segmentation
 
+    The img/gt_semantic_seg pair of CustomDataset should be of the same
+    except suffix. A valid img/gt_semantic_seg filename pair should be like
+    `xxx{img_suffix}` and `xxx{seg_map_suffix}`. If split is given,
+    then `xxx` is specified in txt file. Otherwise, all files in
+    img_dir/and ann_dir will be loaded. Please refer to
+    `docs/tutorials/new_dataset.md` for more details.
+
     Args:
         pipeline (list[dict]): Processing pipeline
         img_dir (str): Path to image directory
         img_suffix (str): Suffix of images. Default: '.png'
-        ann_dir (str): Path to annotation directory. Default: None
+        ann_dir (str|None): Path to annotation directory. Default: None
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'
-        split (str): Split txt file. Default: None
-        data_root (str): Data root for img_dir/ann_dir. Default: None
+        split (str|None): Split txt file. If split is specified, only file with
+            suffix in the splits will be loaded. Otherwise, all images in
+            img_dir/ann_dir will be loaded. Default: None
+        data_root (str|None): Data root for img_dir/ann_dir. Default: None
         test_mode (str): If test_mode=True, gt wouldn't be loaded.
         ignore_index (int): The label index to be ignored. Default: 255
-        reduce_zero_label (int): Whether to mark label zero as ignored.
+        reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default: False
-
     """
 
     CLASSES = None

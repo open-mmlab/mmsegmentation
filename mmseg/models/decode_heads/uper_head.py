@@ -12,8 +12,8 @@ from .psp_head import PPM
 class UPerHead(DecodeHead):
     """Unified Perceptual Parsing for Scene Understanding
 
-    This head is the implementation of:
-    - UPerHead in (https://arxiv.org/abs/1807.10221)
+    This head is the implementation of `UPerNet
+    <https://arxiv.org/abs/1807.10221>`_.
 
     """
 

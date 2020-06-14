@@ -60,8 +60,8 @@ class PPM(nn.ModuleList):
 class PSPHead(DecodeHead):
     """Pyramid Scene Parsing Network
 
-    This head is the implementation of:
-    - PSPHead in (https://arxiv.org/abs/1612.01105)
+    This head is the implementation of
+    `PSPNet <https://arxiv.org/abs/1612.01105>`_.
 
     Args:
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
