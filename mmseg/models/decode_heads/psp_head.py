@@ -8,6 +8,18 @@ from .decode_head import DecodeHead
 
 
 class PPM(nn.ModuleList):
+    """Pooling Pyramid Module used in PSPNet.
+
+    Args:
+        pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
+            Module.
+        in_channels (int): Input channels.
+        channels (int): Channels after modules, before conv_seg.
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+        align_corners (bool): align_corners argument of F.interpolate.
+    """
 
     def __init__(self, pool_scales, in_channels, channels, conv_cfg, norm_cfg,
                  act_cfg, align_corners):
@@ -48,8 +60,12 @@ class PPM(nn.ModuleList):
 class PSPHead(DecodeHead):
     """Pyramid Scene Parsing Network
 
-        This head is the implementation of PSPHead
-        in (https://arxiv.org/abs/1612.01105)
+    This head is the implementation of:
+    - PSPHead in (https://arxiv.org/abs/1612.01105)
+
+    Args:
+        pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
+            Module.
     """
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):

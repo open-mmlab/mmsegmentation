@@ -8,6 +8,12 @@ from .encoder_decoder import EncoderDecoder
 
 @SEGMENTORS.register_module()
 class CascadeEncoderDecoder(EncoderDecoder):
+    """Cascade Encoder Decoder segmentors
+
+    CascadeEncoderDecoder almost the same as EncoderDecoder, while decoders
+    of CascadeEncoderDecoder are cascaded. The output of previous decoder_head
+    will be the input of next decoder_head.
+    """
 
     def __init__(self,
                  num_stages,

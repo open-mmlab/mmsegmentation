@@ -10,9 +10,11 @@ from .base import BaseSegmentor
 
 @SEGMENTORS.register_module()
 class EncoderDecoder(BaseSegmentor):
-    """Base class for Encoder Decoder segmentors
+    """Encoder Decoder segmentors
 
     EncoderDecoder typically consists of backbone, decode_head, auxiliary_head.
+    Note that auxiliary_head is only used for deep supervision during
+    training, which could be dumped during inference.
     """
 
     def __init__(self,
@@ -153,11 +155,6 @@ class EncoderDecoder(BaseSegmentor):
 
     def whole_inference(self, img, img_meta, rescale):
         seg_logit = self.encode_decode(img)
-        seg_logit = resize(
-            input=seg_logit,
-            size=img.shape[2:],
-            mode='bilinear',
-            align_corners=self.align_corners)
         if rescale:
             seg_logit = resize(
                 seg_logit,

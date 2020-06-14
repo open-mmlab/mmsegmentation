@@ -8,6 +8,8 @@ from .aspp_head import ASPPHead, ASPPModule
 
 
 class DepthwiseSeparableASPPModule(ASPPModule):
+    """Atrous Spatial Pyramid Pooling (ASPP) Module
+    with depthwise separable conv"""
 
     def __init__(self, **kwargs):
         super(DepthwiseSeparableASPPModule, self).__init__(**kwargs)
@@ -28,8 +30,13 @@ class DepthwiseSeparableASPPHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
     Segmentation
 
-        This head is the implementation of Separable ASPP Head
-        in (https://arxiv.org/abs/1802.02611)
+    This head is the implementation of Separable ASPP Head
+    in (https://arxiv.org/abs/1802.02611).
+
+    Args:
+        c1_in_channels (int): The input channels of c1 decoder. If is 0,
+            the no decoder will be used.
+        c1_channels (int): The intermediate channels of c1 decoder.
     """
 
     def __init__(self, c1_in_channels, c1_channels, **kwargs):

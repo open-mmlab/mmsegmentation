@@ -12,8 +12,8 @@ from .psp_head import PPM
 class UPerHead(DecodeHead):
     """Unified Perceptual Parsing for Scene Understanding
 
-        This head is the implementation of:
-        - UPerHead in (https://arxiv.org/abs/1807.10221)
+    This head is the implementation of:
+    - UPerHead in (https://arxiv.org/abs/1807.10221)
 
     """
 
@@ -95,7 +95,6 @@ class UPerHead(DecodeHead):
         used_backbone_levels = len(laterals)
         for i in range(used_backbone_levels - 1, 0, -1):
             prev_shape = laterals[i - 1].shape[2:]
-            # note: CSAIL ADE20K used align_corners=False
             laterals[i - 1] += resize(
                 laterals[i],
                 size=prev_shape,

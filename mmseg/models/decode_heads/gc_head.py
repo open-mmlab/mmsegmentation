@@ -9,8 +9,15 @@ from .fcn_head import FCNHead
 class GCHead(FCNHead):
     """GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond.
 
-        This head is the implementation of:
-        - Global Context block in (https://arxiv.org/abs/1904.11492)
+    This head is the implementation of:
+    - Global Context block in (https://arxiv.org/abs/1904.11492)
+
+    Args:
+        ratio (float): Multiplier of channels ratio. Default: 1/4.
+        pooling_type (str): The pooling type of context aggregation.
+            Options are 'att', 'avg'. Default: 'avg'.
+        fusion_types (tuple[str]): The fusion type for feature fusion.
+            Options are 'channel_add', 'channel_mul'. Defautl: ('channel_add',)
     """
 
     def __init__(self,

@@ -8,6 +8,18 @@ from .decode_head import DecodeHead
 
 @HEADS.register_module()
 class FCNHead(DecodeHead):
+    """Fully Convolution Networks for Semantic Segmentation.
+
+    This head is implemented of :
+    - FCN in (https://arxiv.org/abs/1411.4038).
+
+    Args:
+        num_convs (int): Number of convs in the head. Default: 2.
+        kernel_size (int): The kernel size for convs in the head. Default: 3.
+        concat_input (bool): Whether concat the input and output of convs
+            before classification layer.
+
+    """
 
     def __init__(self,
                  num_convs=2,

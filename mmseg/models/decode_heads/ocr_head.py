@@ -36,6 +36,7 @@ class SpatialGatherModule(nn.Module):
 
 
 class ObjectAttentionBlock(_SelfAttentionBlock):
+    """Make a OCR used SelfAttentionBlock"""
 
     def __init__(self, in_channels, channels, scale, conv_cfg, norm_cfg,
                  act_cfg):
@@ -82,9 +83,13 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
 class OCRHead(DecodeHead):
     """Object-Contextual Representations for Semantic Segmentation
 
-        This head is the implementation of:
-        - OCRHead in (https://arxiv.org/abs/1909.11065)
+    This head is the implementation of:
+    - OCRHead in (https://arxiv.org/abs/1909.11065)
 
+    Args:
+        ocr_channels (int): The intermediate channels of OCR block.
+        scale (int): The scale of probability map in SpatialGatherModule in
+            Default: 1.
     """
 
     def __init__(self, ocr_channels, scale=1, **kwargs):

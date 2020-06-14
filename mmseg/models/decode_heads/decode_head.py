@@ -12,27 +12,33 @@ from ..losses import accuracy
 class DecodeHead(nn.Module, metaclass=ABCMeta):
     """Base class for DecodeHead
 
-        Args:
-            in_channels (int): Input channels.
-            channels (int): Channels after modules, before conv_seg.
-            drop_out_ratio (float): Ratio of dropout layer. Default: 0.1.
-            conv_cfg (dict|None): Config of conv layers. Default: None.
-            norm_cfg (dict|None): Config of norm layers. Default: None.
-            act_cfg (dict): Config of activation layers.
-                Default: dict(type='ReLU')
-            num_classes (int): Number of classes. Default: 19.
-                Default: None.
-            in_index (int|Sequence[int]): Input feature index. Default: -1
-            input_transform (str|None): Transformation type of input features.
-                Options: 'resize_concat', 'multiple_select', None.
-                Default: None.
-            loss_decode (dict): Config of decode loss.
-                Default: dict(type='CrossEntropyLoss').
-            ignore_index (int): The label index to be ignored. Default: 255
-            sampler (dict|None): The config of segmentation map sampler.
-                Default: None.
-            align_corners (bool): align_corners argument of F.interpolate.
-                Default: False.
+    Args:
+        in_channels (int): Input channels.
+        channels (int): Channels after modules, before conv_seg.
+        drop_out_ratio (float): Ratio of dropout layer. Default: 0.1.
+        conv_cfg (dict|None): Config of conv layers. Default: None.
+        norm_cfg (dict|None): Config of norm layers. Default: None.
+        act_cfg (dict): Config of activation layers.
+            Default: dict(type='ReLU')
+        num_classes (int): Number of classes. Default: 19.
+            Default: None.
+        in_index (int|Sequence[int]): Input feature index. Default: -1
+        input_transform (str|None): Transformation type of input features.
+            Options: 'resize_concat', 'multiple_select', None.
+            'resize_concat': Multiple feature maps will be resize to the
+                same size as first one and than concat together.
+                Usually used in FCN head of HRNet.
+            'multiple_select': Multiple feature maps will be bundle into
+                a list and passed into decode head.
+            None: Only one select feature map is allowed.
+            Default: None.
+        loss_decode (dict): Config of decode loss.
+            Default: dict(type='CrossEntropyLoss').
+        ignore_index (int): The label index to be ignored. Default: 255
+        sampler (dict|None): The config of segmentation map sampler.
+            Default: None.
+        align_corners (bool): align_corners argument of F.interpolate.
+            Default: False.
     """
 
     def __init__(self,

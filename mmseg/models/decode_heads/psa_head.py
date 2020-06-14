@@ -10,6 +10,22 @@ from .decode_head import DecodeHead
 
 @HEADS.register_module()
 class PSAHead(DecodeHead):
+    """Point-wise Spatial Attention Network for Scene Parsing
+
+    This head is the implementation of:
+    - PSAHead in (https://hszhao.github.io/papers/eccv18_psanet.pdf)
+
+    Args:
+        mask_size (tuple[int]): The PSA mask size. It usually equals input
+            size.
+        psa_type (str): The type of psa module. Options are 'collect',
+            'distribute', 'bi-direction'. Default: 'bi-direction'
+        compact (bool): Whether use compact map for 'collect' mode.
+            Default: True.
+        shrink_factor (int): The downsample factors of psa mask. Default: 2.
+        normalization_factor (float): The normalize factor of attention.
+        psa_softmax (bool): Whether use softmax for attention.
+    """
 
     def __init__(self,
                  mask_size,

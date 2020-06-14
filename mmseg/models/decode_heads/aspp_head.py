@@ -8,6 +8,16 @@ from .decode_head import DecodeHead
 
 
 class ASPPModule(nn.ModuleList):
+    """Atrous Spatial Pyramid Pooling (ASPP) Module
+
+    Args:
+        dilations (tuple[int]): Dilation rate of each layer.
+        in_channels (int): Input channels.
+        channels (int): Channels after modules, before conv_seg.
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+    """
 
     def __init__(self, dilations, in_channels, channels, conv_cfg, norm_cfg,
                  act_cfg):
@@ -42,8 +52,12 @@ class ASPPModule(nn.ModuleList):
 class ASPPHead(DecodeHead):
     """Rethinking Atrous Convolution for Semantic Image Segmentation
 
-        This head is the implementation of ASPP Head
-        in (https://arxiv.org/abs/1706.05587)
+    This head is the implementation of:
+    - ASPP Head in (https://arxiv.org/abs/1706.05587)
+
+    Args:
+        dilations (tuple[int]): Dilation rates for ASPP module.
+            Default: (1, 6, 12, 18).
     """
 
     def __init__(self, dilations=(1, 6, 12, 18), **kwargs):

@@ -9,7 +9,7 @@ from .decode_head import DecodeHead
 
 
 class PAM(_SelfAttentionBlock):
-    """ Position attention module"""
+    """Position Attention Module (PAM)"""
 
     def __init__(self, in_channels, channels):
         super(PAM, self).__init__(
@@ -40,7 +40,7 @@ class PAM(_SelfAttentionBlock):
 
 
 class CAM(nn.Module):
-    """ Channel attention module"""
+    """Channel Attention Module (CAM)"""
 
     def __init__(self):
         super(CAM, self).__init__()
@@ -67,8 +67,11 @@ class CAM(nn.Module):
 class DAHead(DecodeHead):
     """Dual Attention Network for Scene Segmentation
 
-        This head is the implementation of DAHead
-        in (https://arxiv.org/abs/1809.02983)
+    This head is the implementation of:
+    - DAHead in (https://arxiv.org/abs/1809.02983)
+
+    Args:
+        pam_channels (int): The channels of Position Attention Module(PAM).
     """
 
     def __init__(self, pam_channels, **kwargs):

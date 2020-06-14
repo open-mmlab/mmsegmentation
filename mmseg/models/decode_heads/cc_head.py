@@ -9,8 +9,12 @@ from .fcn_head import FCNHead
 class CCHead(FCNHead):
     """CCNet: Criss-Cross Attention for Semantic Segmentation.
 
-        This head is the implementation of:
-        - CCHead in (https://arxiv.org/abs/1811.11721)
+    This head is the implementation of:
+    - CCHead in (https://arxiv.org/abs/1811.11721)
+
+    Args:
+        recurrence (int): Number of recurrence of Criss Cross Attention
+            module. Default: 2.
     """
 
     def __init__(self, recurrence=2, **kwargs):

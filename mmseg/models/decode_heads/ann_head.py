@@ -8,6 +8,7 @@ from .decode_head import DecodeHead
 
 
 class PPMConcat(nn.ModuleList):
+    """Pyramid Pooling Module that only concat the features of each layer"""
 
     def __init__(self, pool_scales=(1, 3, 6, 8)):
         super(PPMConcat, self).__init__(
@@ -23,6 +24,7 @@ class PPMConcat(nn.ModuleList):
 
 
 class SelfAttentionBlock(_SelfAttentionBlock):
+    """Make a ANN used SelfAttentionBlock"""
 
     def __init__(self, low_in_channels, high_in_channels, channels,
                  out_channels, share_key_query, query_scale, key_pool_scales,
@@ -52,6 +54,7 @@ class SelfAttentionBlock(_SelfAttentionBlock):
 
 
 class AFNB(nn.Module):
+    """Asymmetric Fusion Non-local Block(AFNB)"""
 
     def __init__(self, low_in_channels, high_in_channels, channels,
                  out_channels, query_scales, key_pool_scales, conv_cfg,
@@ -87,6 +90,7 @@ class AFNB(nn.Module):
 
 
 class APNB(nn.Module):
+    """Asymmetric Pyramid Non-local Block (APNB)"""
 
     def __init__(self, in_channels, channels, out_channels, query_scales,
                  key_pool_scales, conv_cfg, norm_cfg, act_cfg):
@@ -124,8 +128,15 @@ class APNB(nn.Module):
 class ANNHead(DecodeHead):
     """Asymmetric Non-local Neural Networks for Semantic Segmentation
 
-        This head is the implementation of ANNHead
-        in (https://arxiv.org/abs/1908.07678)
+    This head is the implementation of:
+    - ANNHead in (https://arxiv.org/abs/1908.07678)
+
+    Args:
+        project_channels (int): Projection channels for Nonlocal.
+        query_scales (tuple[int]): The scales of query feature map.
+            Default: (1,)
+        key_pool_scales (tuple[int]): The pooling scales of key feature map.
+            Default: (1, 3, 6, 8).
     """
 
     def __init__(self,

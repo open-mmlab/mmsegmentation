@@ -7,6 +7,16 @@ from .base_seg_sampler import BasSegSampler
 
 @SEG_SAMPLERS.register_module()
 class OHEMSegSampler(BasSegSampler):
+    """Online Hard Example Mining Sampler for segmentation.
+
+    Args:
+        thresh (float): The threshold for hard example selection. Below
+            which, are prediction with low confidence. Default: 0.7.
+        min_kept (int): The minimum number of predictions to keep.
+            Default: 100000.
+        ignore_index (int): The ignore index for training. Default: 255.
+
+    """
 
     def __init__(self, thresh=0.7, min_kept=100000, ignore_index=255):
         super(OHEMSegSampler, self).__init__()
