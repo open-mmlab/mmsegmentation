@@ -9,7 +9,6 @@ import mmcv
 import torch
 
 # build schedule look-up table to automatically find the final model
-SCHEDULES_LUT = {'40ki': 40000, '60ki': 60000, '80ki': 80000, '160ki': 160000}
 RESULTS_LUT = ['mIoU', 'mAcc', 'aAcc']
 
 
@@ -28,12 +27,12 @@ def process_checkpoint(in_file, out_file):
 
 
 def get_final_iter(config):
-    for schedule_name, iter_num in SCHEDULES_LUT.items():
-        if config.find(schedule_name) != -1:
-            return iter_num
+    iter_num = config.split('_')[-2]
+    assert iter_num.endswith('ki')
+    return int(iter_num[:-2]) * 1000
 
 
-def get_final_results(log_json_path, iter):
+def get_final_results(log_json_path, iter_num):
     result_dict = dict()
     with open(log_json_path, 'r') as f:
         for line in f.readlines():
@@ -41,10 +40,10 @@ def get_final_results(log_json_path, iter):
             if 'mode' not in log_line.keys():
                 continue
 
-            if log_line['mode'] == 'train' and log_line['iter'] == iter:
+            if log_line['mode'] == 'train' and log_line['iter'] == iter_num:
                 result_dict['memory'] = log_line['memory']
 
-            if log_line['mode'] == 'val' and log_line['iter'] == iter:
+            if log_line['mode'] == 'val' and log_line['iter'] == iter_num:
                 result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
@@ -84,13 +83,16 @@ def main():
     for raw_config in raw_configs:
         work_dir = osp.splitext(osp.basename(raw_config))[0]
         if osp.exists(osp.join(models_root, work_dir)):
-            used_configs.append(work_dir)
+            used_configs.append((work_dir, raw_config))
     print(f'Find {len(used_configs)} models to be gathered')
 
     # find final_ckpt and log file for trained each config
     # and parse the best performance
     model_infos = []
-    for used_config in used_configs:
+    for used_config, raw_config in used_configs:
+        if not ('cityscapes' in used_config and
+                ('_40ki_' in used_config or '_80ki_' in used_config)):
+            continue
         exp_dir = osp.join(models_root, used_config)
         # check whether the exps is finished
         final_iter = get_final_iter(used_config)
@@ -99,20 +101,28 @@ def main():
 
         # skip if the model is still training
         if not osp.exists(model_path):
+            print(f'{used_config} train not finished yet')
             continue
 
         # get logs
-        log_json_path = glob.glob(osp.join(exp_dir, '*.log.json'))[0]
-        log_txt_path = glob.glob(osp.join(exp_dir, '*.log'))[0]
-        model_performance = get_final_results(log_json_path, final_iter)
+        log_json_paths = glob.glob(osp.join(exp_dir, '*.log.json'))
+        log_json_path = log_json_paths[0]
+        model_performance = None
+        for idx, _log_json_path in enumerate(log_json_paths):
+            model_performance = get_final_results(_log_json_path, final_iter)
+            if model_performance is not None:
+                log_json_path = _log_json_path
+                break
 
         if model_performance is None:
+            print(f'{used_config}model_performance is None')
             continue
 
-        model_time = osp.split(log_txt_path)[-1].split('.')[0]
+        model_time = osp.split(log_json_path)[-1].split('.')[0]
         model_infos.append(
             dict(
                 config=used_config,
+                raw_config=raw_config,
                 results=model_performance,
                 iters=final_iter,
                 model_time=model_time,
@@ -121,13 +131,17 @@ def main():
     # publish model for each checkpoint
     publish_model_infos = []
     for model in model_infos:
-        model_publish_dir = osp.join(models_out, model['config'].rstrip('.py'))
+        model_publish_dir = osp.join(models_out,
+                                     model['raw_config'].rstrip('.py'))
+        if osp.exists(model_publish_dir):
+            print(f'{model_publish_dir} exists.')
+            continue
         mmcv.mkdir_or_exist(model_publish_dir)
 
         model_name = osp.split(model['config'])[-1].split('.')[0]
 
-        model_name += '_' + model['model_time']
-        publish_model_path = osp.join(model_publish_dir, model_name)
+        publish_model_path = osp.join(model_publish_dir,
+                                      model_name + '_' + model['model_time'])
         trained_model_path = osp.join(models_root, model['config'],
                                       'iter_{}.pth'.format(model['iters']))
 
@@ -135,23 +149,21 @@ def main():
         final_model_path = process_checkpoint(trained_model_path,
                                               publish_model_path)
 
+        new_json_path = f'{model_name}-{model["log_json_path"]}'
+        new_txt_paht = new_json_path.rstrip('.json')
         # copy log
         shutil.copy(
             osp.join(models_root, model['config'], model['log_json_path']),
-            osp.join(model_publish_dir, f'{model_name}.log.json'))
+            osp.join(model_publish_dir, new_json_path))
         shutil.copy(
             osp.join(models_root, model['config'],
                      model['log_json_path'].rstrip('.json')),
-            osp.join(model_publish_dir, f'{model_name}.log'))
+            osp.join(model_publish_dir, new_txt_paht))
 
         # copy config to guarantee reproducibility
-        config_path = model['config']
-        config_path = osp.join(
-            config_name,
-            config_path) if config_name not in config_path else config_path
-        target_cconfig_path = osp.split(config_path)[-1]
-        shutil.copy(config_path,
-                    osp.join(model_publish_dir, target_cconfig_path))
+        raw_config = osp.join(config_name, model['raw_config'])
+        shutil.copy(raw_config,
+                    osp.join(model_publish_dir, osp.basename(raw_config)))
 
         model['model_path'] = final_model_path
         publish_model_infos.append(model)

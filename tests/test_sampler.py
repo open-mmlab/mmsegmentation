@@ -1,19 +1,19 @@
 import pytest
 import torch
 
-from mmseg.core import OHEMSegSampler
+from mmseg.core import OHEMPixelSampler
 
 
 def test_ohem_sampler():
 
     with pytest.raises(AssertionError):
         # seg_logit and seg_label must be of the same size
-        sampler = OHEMSegSampler()
+        sampler = OHEMPixelSampler()
         seg_logit = torch.randn(1, 19, 45, 45)
         seg_label = torch.randint(0, 19, size=(1, 1, 89, 89))
         sampler.sample(seg_logit, seg_label)
 
-    sampler = OHEMSegSampler()
+    sampler = OHEMPixelSampler()
     seg_logit = torch.randn(1, 19, 45, 45)
     seg_label = torch.randint(0, 19, size=(1, 1, 45, 45))
     seg_weight = sampler.sample(seg_logit, seg_label)

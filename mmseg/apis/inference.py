@@ -44,7 +44,7 @@ def init_segmentor(config, checkpoint=None, device='cuda:0'):
     return model
 
 
-class LoadImage(object):
+class LoadImage:
 
     def __call__(self, results):
         if isinstance(results['img'], str):
@@ -69,8 +69,7 @@ def inference_segmentor(model, img):
             images.
 
     Returns:
-        If imgs is a str, a generator will be returned, otherwise return the
-        segmentation results directly.
+        (list[Tensor]): The segmentation result.
     """
     cfg = model.cfg
     device = next(model.parameters()).device  # model device

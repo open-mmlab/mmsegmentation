@@ -6,7 +6,13 @@ from torch.nn import GroupNorm, LayerNorm
 
 @OPTIMIZER_BUILDERS.register_module()
 class HeadOptimizerConstructor(DefaultOptimizerConstructor):
-    """ Decode Head LR multiplier Optimizer Constructor """
+    """Decode Head LR multiplier Optimizer Constructor
+
+    Besides the paramwise_cfg fields in DefaultOptimizerConstructor,
+    a new field `head_lr_mult` is added. The learning rate of parameters in
+    starts with `decode_head` and `auxiliary_head` will be multiplied by
+    `head_lr_mult`.
+    """
 
     def add_params(self, params, module, prefix=''):
         """Add all parameters of module to the params list.

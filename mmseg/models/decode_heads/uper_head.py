@@ -4,12 +4,12 @@ from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
 from ..builder import HEADS
-from .decode_head import DecodeHead
+from .decode_head import BaseDecodeHead
 from .psp_head import PPM
 
 
 @HEADS.register_module()
-class UPerHead(DecodeHead):
+class UPerHead(BaseDecodeHead):
     """Unified Perceptual Parsing for Scene Understanding
 
     This head is the implementation of `UPerNet

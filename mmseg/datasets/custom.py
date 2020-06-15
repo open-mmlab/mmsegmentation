@@ -8,6 +8,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 from mmseg.core import mean_iou
+from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
 
@@ -16,12 +17,29 @@ from .pipelines import Compose
 class CustomDataset(Dataset):
     """Custom dataset for semantic segmentation
 
+    An example of file structure is as followed.
+    ├── data
+    │   ├── my_dataset
+    │   │   ├── img_dir
+    │   │   │   ├── train
+    │   │   │   │   ├── xxx{img_suffix}.png
+    │   │   │   │   ├── yyy{img_suffix}.png
+    │   │   │   │   ├── zzz{img_suffix}.png
+    │   │   │   ├── val
+    │   │   ├── ann_dir
+    │   │   │   ├── train
+    │   │   │   │   ├── xxx{seg_map_suffix}.png
+    │   │   │   │   ├── yyy{seg_map_suffix}.png
+    │   │   │   │   ├── zzz{seg_map_suffix}.png
+    │   │   │   ├── val
+
     The img/gt_semantic_seg pair of CustomDataset should be of the same
     except suffix. A valid img/gt_semantic_seg filename pair should be like
     `xxx{img_suffix}` and `xxx{seg_map_suffix}`. If split is given,
     then `xxx` is specified in txt file. Otherwise, all files in
     img_dir/and ann_dir will be loaded. Please refer to
     `docs/tutorials/new_dataset.md` for more details.
+
 
     Args:
         pipeline (list[dict]): Processing pipeline
@@ -114,7 +132,7 @@ class CustomDataset(Dataset):
                     img_info['ann'] = dict(seg_map=seg_map)
                 img_infos.append(img_info)
 
-        print(f'Loaded {len(img_infos)} images')
+        print_log(f'Loaded {len(img_infos)} images', logger=get_root_logger())
         return img_infos
 
     def get_ann_info(self, idx):
@@ -235,6 +253,15 @@ class CustomDataset(Dataset):
 
     @staticmethod
     def convert_to_color(seg):
+        """Convert the segmentation map to color. `self.PALETTE` will be
+        used as palette if given.
+
+        Args:
+            seg (ndarray): The segmentation map to be colored, shape (H, W).
+
+        Returns:
+            ndarray: The colored segmentation map in BGR order, shape (H, W, 3)
+        """
         num_classes = len(CustomDataset.CLASSES)
         palette = CustomDataset.PALETTE
         if palette is None:

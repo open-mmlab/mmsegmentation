@@ -8,7 +8,7 @@ from mmcv.utils.parrots_wrapper import SyncBatchNorm
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
                                        FCNHead, GCHead, NLHead, OCRHead,
                                        PSAHead, PSPHead, UPerHead)
-from mmseg.models.decode_heads.decode_head import DecodeHead
+from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
 def _conv_has_norm(module, sync_bn):
@@ -30,47 +30,47 @@ def to_cuda(module, data):
     return module, data
 
 
-@patch.multiple(DecodeHead, __abstractmethods__=set())
+@patch.multiple(BaseDecodeHead, __abstractmethods__=set())
 def test_decode_head():
 
     with pytest.raises(AssertionError):
         # default input_transform doesn't accept multiple inputs
-        DecodeHead([32, 16], 16)
+        BaseDecodeHead([32, 16], 16)
 
     with pytest.raises(AssertionError):
         # default input_transform doesn't accept multiple inputs
-        DecodeHead(32, 16, in_index=[-1, -2])
+        BaseDecodeHead(32, 16, in_index=[-1, -2])
 
     with pytest.raises(AssertionError):
         # supported mode is resize_concat only
-        DecodeHead(32, 16, input_transform='concat')
+        BaseDecodeHead(32, 16, input_transform='concat')
 
     with pytest.raises(AssertionError):
         # in_channels should be list|tuple
-        DecodeHead(32, 16, input_transform='resize_concat')
+        BaseDecodeHead(32, 16, input_transform='resize_concat')
 
     with pytest.raises(AssertionError):
         # in_index should be list|tuple
-        DecodeHead([32], 16, in_index=-1, input_transform='resize_concat')
+        BaseDecodeHead([32], 16, in_index=-1, input_transform='resize_concat')
 
     with pytest.raises(AssertionError):
         # len(in_index) should equal len(in_channels)
-        DecodeHead([32, 16],
-                   16,
-                   in_index=[-1],
-                   input_transform='resize_concat')
+        BaseDecodeHead([32, 16],
+                       16,
+                       in_index=[-1],
+                       input_transform='resize_concat')
 
     # test default dropout
-    head = DecodeHead(32, 16)
+    head = BaseDecodeHead(32, 16)
     assert hasattr(head, 'dropout') and head.dropout.p == 0.1
 
     # test set dropout
-    head = DecodeHead(32, 16, drop_out_ratio=0.2)
+    head = BaseDecodeHead(32, 16, drop_out_ratio=0.2)
     assert hasattr(head, 'dropout') and head.dropout.p == 0.2
 
     # test no input_transform
     inputs = [torch.randn(1, 32, 45, 45)]
-    head = DecodeHead(32, 16)
+    head = BaseDecodeHead(32, 16)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
     assert head.in_channels == 32
@@ -80,10 +80,10 @@ def test_decode_head():
 
     # test input_transform = resize_concat
     inputs = [torch.randn(1, 32, 45, 45), torch.randn(1, 16, 21, 21)]
-    head = DecodeHead([32, 16],
-                      16,
-                      in_index=[0, 1],
-                      input_transform='resize_concat')
+    head = BaseDecodeHead([32, 16],
+                          16,
+                          in_index=[0, 1],
+                          input_transform='resize_concat')
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
     assert head.in_channels == 48

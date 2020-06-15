@@ -5,11 +5,16 @@ from torch import nn
 
 from ..builder import HEADS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
-from .decode_head import DecodeHead
+from .decode_head import BaseDecodeHead
 
 
 class PAM(_SelfAttentionBlock):
-    """Position Attention Module (PAM)"""
+    """Position Attention Module (PAM)
+
+    Args:
+        in_channels (int): Input channels of key/query feature.
+        channels (int): Output channels of key/query transform.
+    """
 
     def __init__(self, in_channels, channels):
         super(PAM, self).__init__(
@@ -64,7 +69,7 @@ class CAM(nn.Module):
 
 
 @HEADS.register_module()
-class DAHead(DecodeHead):
+class DAHead(BaseDecodeHead):
     """Dual Attention Network for Scene Segmentation
 
     This head is the implementation of `DANet

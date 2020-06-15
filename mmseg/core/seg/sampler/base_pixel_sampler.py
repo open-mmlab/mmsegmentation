@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 
-class BasSegSampler(metaclass=ABCMeta):
+class BasePixelSampler(metaclass=ABCMeta):
 
     def __init__(self, **kwargs):
         pass

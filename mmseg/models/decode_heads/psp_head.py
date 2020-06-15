@@ -4,7 +4,7 @@ from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
 from ..builder import HEADS
-from .decode_head import DecodeHead
+from .decode_head import BaseDecodeHead
 
 
 class PPM(nn.ModuleList):
@@ -57,7 +57,7 @@ class PPM(nn.ModuleList):
 
 
 @HEADS.register_module()
-class PSPHead(DecodeHead):
+class PSPHead(BaseDecodeHead):
     """Pyramid Scene Parsing Network
 
     This head is the implementation of

@@ -119,7 +119,7 @@ model = dict(
 
 ### Add new heads
 
-In MMSegmentation, we provide a base [DecodeHead](../../mmseg/models/decode_heads/decode_head.py) for all segmentation head.
+In MMSegmentation, we provide a base [BaseDecodeHead](../../mmseg/models/decode_heads/decode_head.py) for all segmentation head.
 All newly implemented decode heads should be derived from it.
 Here we show how to develop a new head with the example of [PSPNet](https://arxiv.org/abs/1612.01105) as the following.
 
@@ -129,7 +129,7 @@ To implement a decode head, basically we need to implement three functions of th
 
 ```python
 @HEADS.register_module()
-class PSPHead(DecodeHead):
+class PSPHead(BaseDecodeHead):
     """Pyramid Scene Parsing Network
 
     This head is the implementation of PSPHead

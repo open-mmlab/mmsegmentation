@@ -1,4 +1,4 @@
-from .base_seg_sampler import BasSegSampler
-from .ohem_seg_sampler import OHEMSegSampler
+from .base_pixel_sampler import BasePixelSampler
+from .ohem_pixel_sampler import OHEMPixelSampler
 
-__all__ = ['BasSegSampler', 'OHEMSegSampler']
+__all__ = ['BasePixelSampler', 'OHEMPixelSampler']

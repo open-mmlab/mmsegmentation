@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 from mmseg.models import BACKBONES, HEADS, build_segmentor
-from mmseg.models.decode_heads.decode_head import DecodeHead
+from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
 @BACKBONES.register_module()
@@ -22,7 +22,7 @@ class ExampleBackbone(nn.Module):
 
 
 @HEADS.register_module()
-class ExampleDecodeHead(DecodeHead):
+class ExampleDecodeHead(BaseDecodeHead):
 
     def __init__(self):
         super(ExampleDecodeHead, self).__init__(3, 3)
@@ -32,7 +32,7 @@ class ExampleDecodeHead(DecodeHead):
 
 
 @HEADS.register_module()
-class ExampleCascadeDecodeHead(DecodeHead):
+class ExampleCascadeDecodeHead(BaseDecodeHead):
 
     def __init__(self):
         super(ExampleCascadeDecodeHead, self).__init__(3, 3)

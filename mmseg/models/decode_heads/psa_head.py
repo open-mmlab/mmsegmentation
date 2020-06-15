@@ -5,11 +5,11 @@ from mmcv.cnn import ConvModule
 
 from mmseg.ops import PSAMask, resize
 from ..builder import HEADS
-from .decode_head import DecodeHead
+from .decode_head import BaseDecodeHead
 
 
 @HEADS.register_module()
-class PSAHead(DecodeHead):
+class PSAHead(BaseDecodeHead):
     """Point-wise Spatial Attention Network for Scene Parsing
 
     This head is the implementation of `PSANet

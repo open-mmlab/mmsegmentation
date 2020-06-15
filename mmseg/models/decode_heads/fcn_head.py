@@ -3,11 +3,11 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule
 
 from ..builder import HEADS
-from .decode_head import DecodeHead
+from .decode_head import BaseDecodeHead
 
 
 @HEADS.register_module()
-class FCNHead(DecodeHead):
+class FCNHead(BaseDecodeHead):
     """Fully Convolution Networks for Semantic Segmentation.
 
     This head is implemented of `FCNNet <https://arxiv.org/abs/1411.4038>`_.

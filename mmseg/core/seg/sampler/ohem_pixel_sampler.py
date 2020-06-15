@@ -2,11 +2,11 @@ import torch
 import torch.nn.functional as F
 
 from ..builder import SEG_SAMPLERS
-from .base_seg_sampler import BasSegSampler
+from .base_pixel_sampler import BasePixelSampler
 
 
 @SEG_SAMPLERS.register_module()
-class OHEMSegSampler(BasSegSampler):
+class OHEMPixelSampler(BasePixelSampler):
     """Online Hard Example Mining Sampler for segmentation.
 
     Args:
@@ -19,7 +19,7 @@ class OHEMSegSampler(BasSegSampler):
     """
 
     def __init__(self, thresh=0.7, min_kept=100000, ignore_index=255):
-        super(OHEMSegSampler, self).__init__()
+        super(OHEMPixelSampler, self).__init__()
         assert min_kept > 1
         self.thresh = thresh
         self.min_kept = min_kept

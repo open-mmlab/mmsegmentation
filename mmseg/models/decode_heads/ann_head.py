@@ -4,11 +4,16 @@ from mmcv.cnn import ConvModule
 
 from ..builder import HEADS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
-from .decode_head import DecodeHead
+from .decode_head import BaseDecodeHead
 
 
 class PPMConcat(nn.ModuleList):
-    """Pyramid Pooling Module that only concat the features of each layer"""
+    """Pyramid Pooling Module that only concat the features of each layer
+
+    Args:
+        pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
+            Module.
+    """
 
     def __init__(self, pool_scales=(1, 3, 6, 8)):
         super(PPMConcat, self).__init__(
@@ -24,7 +29,24 @@ class PPMConcat(nn.ModuleList):
 
 
 class SelfAttentionBlock(_SelfAttentionBlock):
-    """Make a ANN used SelfAttentionBlock"""
+    """Make a ANN used SelfAttentionBlock
+
+    Args:
+        low_in_channels (int): Input channels of lower level feature,
+            which is the key feature for self-attention.
+        high_in_channels (int): Input channels of higher level feature,
+            which is the query feature for self-attention.
+        channels (int): Output channels of key/query transform.
+        out_channels (int): Output channels.
+        share_key_query (bool): Whether share projection weight between key
+            and query projection.
+        query_scale (int): The scale of query feature map.
+        key_pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
+            Module of key feature.
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict|None): Config of activation layers.
+    """
 
     def __init__(self, low_in_channels, high_in_channels, channels,
                  out_channels, share_key_query, query_scale, key_pool_scales,
@@ -54,7 +76,24 @@ class SelfAttentionBlock(_SelfAttentionBlock):
 
 
 class AFNB(nn.Module):
-    """Asymmetric Fusion Non-local Block(AFNB)"""
+    """Asymmetric Fusion Non-local Block(AFNB)
+
+    Args:
+        low_in_channels (int): Input channels of lower level feature,
+            which is the key feature for self-attention.
+        high_in_channels (int): Input channels of higher level feature,
+            which is the query feature for self-attention.
+        channels (int): Output channels of key/query transform.
+        out_channels (int): Output channels.
+            and query projection.
+        query_scales (tuple[int]): The scales of query feature map.
+            Default: (1,)
+        key_pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
+            Module of key feature.
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict|None): Config of activation layers.
+    """
 
     def __init__(self, low_in_channels, high_in_channels, channels,
                  out_channels, query_scales, key_pool_scales, conv_cfg,
@@ -90,7 +129,21 @@ class AFNB(nn.Module):
 
 
 class APNB(nn.Module):
-    """Asymmetric Pyramid Non-local Block (APNB)"""
+    """Asymmetric Pyramid Non-local Block (APNB)
+
+    Args:
+        in_channels (int): Input channels of key/query feature,
+            which is the key feature for self-attention.
+        channels (int): Output channels of key/query transform.
+        out_channels (int): Output channels.
+        query_scales (tuple[int]): The scales of query feature map.
+            Default: (1,)
+        key_pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
+            Module of key feature.
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict|None): Config of activation layers.
+    """
 
     def __init__(self, in_channels, channels, out_channels, query_scales,
                  key_pool_scales, conv_cfg, norm_cfg, act_cfg):
@@ -125,7 +178,7 @@ class APNB(nn.Module):
 
 
 @HEADS.register_module()
-class ANNHead(DecodeHead):
+class ANNHead(BaseDecodeHead):
     """Asymmetric Non-local Neural Networks for Semantic Segmentation
 
     This head is the implementation of `ANNNet

@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 import torch
 import torch.nn as nn
+from mmcv.cnn import normal_init
 
 from mmseg.core import build_seg_sampler
 from mmseg.ops import resize
@@ -9,19 +10,18 @@ from ..builder import build_loss
 from ..losses import accuracy
 
 
-class DecodeHead(nn.Module, metaclass=ABCMeta):
-    """Base class for DecodeHead
+class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
+    """Base class for BaseDecodeHead
 
     Args:
-        in_channels (int): Input channels.
+        in_channels (int|Sequence[int]): Input channels.
         channels (int): Channels after modules, before conv_seg.
+        num_classes (int): Number of classes.
         drop_out_ratio (float): Ratio of dropout layer. Default: 0.1.
         conv_cfg (dict|None): Config of conv layers. Default: None.
         norm_cfg (dict|None): Config of norm layers. Default: None.
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU')
-        num_classes (int): Number of classes. Default: 19.
-            Default: None.
         in_index (int|Sequence[int]): Input feature index. Default: -1
         input_transform (str|None): Transformation type of input features.
             Options: 'resize_concat', 'multiple_select', None.
@@ -44,11 +44,12 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
     def __init__(self,
                  in_channels,
                  channels,
+                 *,
+                 num_classes,
                  drop_out_ratio=0.1,
                  conv_cfg=None,
                  norm_cfg=None,
                  act_cfg=dict(type='ReLU'),
-                 num_classes=19,
                  in_index=-1,
                  input_transform=None,
                  loss_decode=dict(
@@ -58,7 +59,7 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
                  ignore_index=255,
                  sampler=None,
                  align_corners=False):
-        super(DecodeHead, self).__init__()
+        super(BaseDecodeHead, self).__init__()
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
         self.conv_cfg = conv_cfg
@@ -87,6 +88,26 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
         return s
 
     def _init_inputs(self, in_channels, in_index, input_transform):
+        """Check and initialize input transforms
+
+        The in_channels, in_index and input_transform must match.
+        Specifically, when input_transform is None, only single feature map
+        will be selected. So in_channels and in_index must be of type int.
+        When input_transform
+
+        Args:
+            in_channels (int|Sequence[int]): Input channels.
+            in_index (int|Sequence[int]): Input feature index.
+            input_transform (str|None): Transformation type of input features.
+                Options: 'resize_concat', 'multiple_select', None.
+                'resize_concat': Multiple feature maps will be resize to the
+                    same size as first one and than concat together.
+                    Usually used in FCN head of HRNet.
+                'multiple_select': Multiple feature maps will be bundle into
+                    a list and passed into decode head.
+                None: Only one select feature map is allowed.
+        """
+
         if input_transform is not None:
             assert input_transform in ['resize_concat', 'multiple_select']
         self.input_transform = input_transform
@@ -105,8 +126,7 @@ class DecodeHead(nn.Module, metaclass=ABCMeta):
             self.in_channels = in_channels
 
     def init_weights(self):
-        nn.init.normal_(self.conv_seg.weight, 0, 0.01)
-        nn.init.constant_(self.conv_seg.bias, 0)
+        normal_init(self.conv_seg, mean=0, std=0.01)
 
     def _transform_inputs(self, inputs):
         if self.input_transform == 'resize_concat':

@@ -6,7 +6,7 @@ from mmcv.cnn import ConvModule
 from mmseg.ops import resize
 from ..builder import HEADS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
-from .decode_head import DecodeHead
+from .decode_head import BaseDecodeHead
 
 
 class SpatialGatherModule(nn.Module):
@@ -80,7 +80,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
 
 
 @HEADS.register_module()
-class OCRHead(DecodeHead):
+class OCRHead(BaseDecodeHead):
     """Object-Contextual Representations for Semantic Segmentation
 
     This head is the implementation of `OCRNet
