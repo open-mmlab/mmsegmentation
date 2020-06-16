@@ -25,7 +25,7 @@ class ExampleBackbone(nn.Module):
 class ExampleDecodeHead(BaseDecodeHead):
 
     def __init__(self):
-        super(ExampleDecodeHead, self).__init__(3, 3)
+        super(ExampleDecodeHead, self).__init__(3, 3, num_classes=19)
 
     def forward(self, inputs):
         return self.cls_seg(inputs[0])
@@ -35,7 +35,7 @@ class ExampleDecodeHead(BaseDecodeHead):
 class ExampleCascadeDecodeHead(BaseDecodeHead):
 
     def __init__(self):
-        super(ExampleCascadeDecodeHead, self).__init__(3, 3)
+        super(ExampleCascadeDecodeHead, self).__init__(3, 3, num_classes=19)
 
     def forward(self, inputs, prev_out):
         return self.cls_seg(inputs[0])

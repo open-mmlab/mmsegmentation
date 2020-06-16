@@ -49,7 +49,7 @@ jobs:
         export LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${CUDA_HOME}/include:${LD_LIBRARY_PATH}
         export PATH=${CUDA_HOME}/bin:${PATH}
         sudo apt-get install -y ninja-build
-    - name: Install PyTorch and mmseg dependencies
+    - name: Install PyTorch
       run: |
         pip install Pillow==6.2.2  # remove this line when torchvision>=0.5
         pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}}
