@@ -145,8 +145,6 @@ def main():
     for model in model_infos:
         model_publish_dir = osp.join(models_out,
                                      model['raw_config'].rstrip('.py'))
-        mmcv.mkdir_or_exist(model_publish_dir)
-
         model_name = osp.split(model['config'])[-1].split('.')[0]
 
         publish_model_path = osp.join(model_publish_dir,
@@ -162,6 +160,8 @@ def main():
                     break
 
         else:
+            mmcv.mkdir_or_exist(model_publish_dir)
+
             # convert model
             final_model_path = process_checkpoint(trained_model_path,
                                                   publish_model_path)
