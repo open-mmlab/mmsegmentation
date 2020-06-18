@@ -7,11 +7,10 @@ You can replace `https://s3.ap-northeast-2.amazonaws.com/open-mmlab` with `https
 
 ## Common settings
 
-- All models were trained on `coco_2017_train`, and tested on the `coco_2017_val`.
 - We use distributed training.
-- All pytorch-style pretrained backbones on ImageNet are from PyTorch model zoo, caffe-style pretrained backbones are converted from the newly released model from detectron2.
+- All pytorch-style pretrained backbones on ImageNet are by ourselves, with the same procedure in the [paper](https://arxiv.org/pdf/1812.01187.pdf).
 - For fair comparison with other codebases, we report the GPU memory as the maximum value of `torch.cuda.max_memory_allocated()` for all 8 GPUs. Note that this value is usually less than what `nvidia-smi` shows.
-- We report the inference time as the total time of network forwarding and post-processing, excluding the data loading time. Results are obtained with the script [benchmark.py](https://github.com/open-mmlab/mmdetection/blob/master/tools/benchmark.py) which computes the average time on 2000 images.
+- We report the inference time as the total time of network forwarding and post-processing, excluding the data loading time. Results are obtained with the script [benchmark.py](../tools/benchmark.py) which computes the average time on 200 images.
 
 
 ## Baselines
@@ -27,10 +26,6 @@ Please refer to [PSPNet](../configs/pspnet/README.md) for details.
 ### PSANet
 
 Please refer to [PSANet](../configs/psanet/README.md) for details.
-
-### DeepLabV3
-
-Please refer to [DeepLabV3](../configs/deeplabv3/README.md) for details.
 
 ### DeepLabV3
 

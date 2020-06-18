@@ -63,6 +63,8 @@ def parse_args():
         help='root path of benchmarked configs to be gathered')
     parser.add_argument(
         'out', type=str, help='output path of gathered models to be stored')
+    parser.add_argument(
+        '--filter', type=str, nargs='+', default=[], help='config filter')
 
     args = parser.parse_args()
     return args
@@ -90,8 +92,12 @@ def main():
     # and parse the best performance
     model_infos = []
     for used_config, raw_config in used_configs:
-        if not ('cityscapes' in used_config and
-                ('_40ki_' in used_config or '_80ki_' in used_config)):
+        bypass = True
+        for p in args.filter:
+            if p in used_config:
+                bypass = False
+                break
+        if bypass:
             continue
         exp_dir = osp.join(models_root, used_config)
         # check whether the exps is finished

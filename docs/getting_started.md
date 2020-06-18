@@ -26,11 +26,9 @@ mmsegmentation
 │   │   ├── VOC2012
 
 ```
-labelTrainIds.png are created by cityscapesscripts/preparation/createTrainIdLabelImgs.py.
+labelTrainIds.png are created by `tools/convert_datasets/cityscapes.py`.
 ```shell
-git clone https://github.com/mcordts/cityscapesScripts.git
-cd cityscapesscripts
-CITYSCAPES_DATASET = $CS_ROOT python preparation/createTrainIdLabelImgs.py
+python tools/convert_datasets/cityscapes.py data/cityscapes
 ```
 
 ## Inference with pretrained models
@@ -68,40 +66,40 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
 1. Test PSPNet and visualize the results. Press any key for the next image.
 
 ```shell
-python tools/test.py configs/pspnet/psp_r50_8x2_200e_cityscapes.py \
-    checkpoints/psp_r50_hszhao_200ep-8cb6a4f5.pth \
+python tools/test.py configs/pspnet/psp_r50_512x1024_40ki_cityscapes.py \
+    checkpoints/psp_r50_512x1024_40ki_cityscapes_20200605_003338-c57ef100.pth \
     --show
 ```
 
 2. Test PSPNet and save the painted images for latter visualization.
 
 ```shell
-python tools/test.py configs/pspnet/psp_r50_8x2_200e_cityscapes.py \
-    checkpoints/psp_r50_hszhao_200ep-8cb6a4f5.pth \
-    --show-dir psp_r50_8x2_200e_cityscapes_results
+python tools/test.py configs/pspnet/psp_r50_512x1024_40ki_cityscapes.py \
+    checkpoints/psp_r50_512x1024_40ki_cityscapes_20200605_003338-c57ef100.pth \
+    --show-dir psp_r50_512x1024_40ki_cityscapes_results
 ```
 
 3. Test PSPNet on PASCAL VOC (without saving the test results) and evaluate the mIoU.
 
 ```shell
-python tools/test.py configs/pspnet/psp_r50_8x2_50e__voc12aug.py \
-    checkpoints/SOME_CHECKPOINT.pth \
+python tools/test.py configs/pspnet/psp_r50_512x1024_20ki_voc12aug.py \
+    checkpoints/psp_r50_512x1024_20ki_voc12aug_20200605_003338-c57ef100.pth \
     --eval mAP
 ```
 
 4. Test PSPNet with 8 GPUs, and evaluate the standard mIoU and cityscapes metric.
 
 ```shell
-./tools/dist_test.sh configs/pspnet/psp_r50_8x2_200e_cityscapes.py \
-    checkpoints/psp_r50_hszhao_200ep-8cb6a4f5.pth \
-    8 --out results.pkl --eval mIoU cityscapes
+./tools/dist_test.sh configs/pspnet/psp_r50_512x1024_40ki_cityscapes.py \
+    checkpoints/psp_r50_512x1024_40ki_cityscapes_20200605_003338-c57ef100.pth \
+    8 --out results.pkl --eval mIoU
 ```
 
 6. Test PSPNet on cityscapes test split with 8 GPUs, and generate the png files to be submit to the official evaluation server.
 
 ```shell
-./tools/dist_test.sh configs/pspnet/psp_r50_8x2_200e_cityscapes.py \
-    checkpoints/psp_r50_hszhao_200ep-8cb6a4f5.pth \
+./tools/dist_test.sh configs/pspnet/psp_r50_512x1024_40ki_cityscapes.py \
+    checkpoints/psp_r50_512x1024_40ki_cityscapes_20200605_003338-c57ef100.pth \
     8 --format-only --options "imgfile_prefix=./pspnet_test_results"
 ```
 
@@ -119,8 +117,8 @@ python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--dev
 Examples:
 
 ```shell
-python demo/image_demo.py demo/demo.jpg configs/psp_r50_8x2_200e_cityscapes.py \
-    checkpoints/psp_r50_8x2_200e_cityscapes_20181010-3d1b3351.pth --device cuda:0
+python demo/image_demo.py demo/demo.jpg configs/pspnet/psp_r50_512x1024_40ki_cityscapes.py \
+    checkpoints/psp_r50_512x1024_40ki_cityscapes_20200605_003338-c57ef100.pth --device cuda:0 --palette cityscapes
 ```
 
 
@@ -132,8 +130,8 @@ Here is an example of building the model and test given images.
 from mmseg.apis import inference_segmentor, init_segmentor
 import mmcv
 
-config_file = 'configs/psp_r50_8x2_200e_cityscapes.py'
-checkpoint_file = 'checkpoints/psp_r50_8x2_200e_cityscapes_20181010-3d1b3351.pth'
+config_file = 'configs/pspnet/psp_r50_512x1024_40ki_cityscapes.py'
+checkpoint_file = 'checkpoints/psp_r50_512x1024_40ki_cityscapes_20200605_003338-c57ef100.pth'
 
 # build the model from a config file and a checkpoint file
 model = init_segmentor(config_file, checkpoint_file, device='cuda:0')
@@ -158,7 +156,7 @@ A notebook demo can be found in [demo/inference_demo.ipynb](../demo/inference_de
 
 ## Train a model
 
-MMDetection implements distributed training and non-distributed training,
+MMSegmentation implements distributed training and non-distributed training,
 which uses `MMDistributedDataParallel` and `MMDataParallel` respectively.
 
 All outputs (log files and checkpoints) will be saved to the working directory,
@@ -170,7 +168,7 @@ evaluation = dict(interval=12)  # This evaluate the model per 12 epoch.
 ```
 
 **\*Important\***: The default learning rate in config files is for 8 GPUs and 1 img/gpu (batch size = 8x1 = 8).
-Equivalently, You may also use 4 GPUs and 2 imgs/gpu.
+Equivalently, you may also use 4 GPUs and 2 imgs/gpu since all models using cross-GPU SyncBN.
 
 ### Train with a single GPU
 
@@ -198,7 +196,7 @@ Difference between `resume-from` and `load-from`:
 
 ### Train with multiple machines
 
-If you run MMDetection on a cluster managed with [slurm](https://slurm.schedmd.com/), you can use the script `slurm_train.sh`. (This script also supports single machine training.)
+If you run MMSegmentation on a cluster managed with [slurm](https://slurm.schedmd.com/), you can use the script `slurm_train.sh`. (This script also supports single machine training.)
 
 ```shell
 [GPUS=${GPUS}] ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} ${WORK_DIR}
@@ -207,10 +205,10 @@ If you run MMDetection on a cluster managed with [slurm](https://slurm.schedmd.c
 Here is an example of using 16 GPUs to train PSPNet on the dev partition.
 
 ```shell
-GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/psp_r50_8x2_200e_cityscapes.py /nfs/xxxx/psp_r50_8x2_200e_cityscapes
+GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/psp_r50_512x1024_40ki_cityscapes.py /nfs/xxxx/psp_r50_512x1024_40ki_cityscapes
 ```
 
-You can check [slurm_train.sh](https://github.com/open-mmlab/mmdetection/blob/master/tools/slurm_train.sh) for full arguments and environment variables.
+You can check [slurm_train.sh](../tools/slurm_train.sh) for full arguments and environment variables.
 
 If you have just multiple machines connected with ethernet, you can refer to
 PyTorch [launch utility](https://pytorch.org/docs/stable/distributed_deprecated.html#launch-utility).
@@ -247,6 +245,8 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 ./tools/slurm_train.sh ${PARTITION} ${JOB_NA
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py ${WORK_DIR}
 ```
 
+Or you could specify port by `---options dist_params.port=29501`
+
 ## Useful tools
 
 We provide lots of useful tools under `tools/` directory.
@@ -263,9 +263,9 @@ You will get the result like this.
 
 ```
 ==============================
-Input shape: (3, 1280, 800)
-Flops: 239.32 GMac
-Params: 37.74 M
+Input shape: (3, 2048, 1024)
+Flops: 1429.68 GMac
+Params: 48.98 M
 ==============================
 ```
 
@@ -273,7 +273,7 @@ Params: 37.74 M
 
 (1) FLOPs are related to the input shape while parameters are not. The default input shape is (1, 3, 1280, 800).
 (2) Some operators are not counted into FLOPs like GN and custom operators.
-You can add support for new operators by modifying [`mmdet/utils/flops_counter.py`](https://github.com/open-mmlab/mmdetection/blob/master/mmdet/utils/flops_counter.py).
+You can add support for new operators by modifying [`mmseg/utils/flops_counter.py`](../mmseg/utils/flops_counter.py).
 (3) The FLOPs of two-stage detectors is dependent on the number of proposals.
 
 ### Publish a model
@@ -292,4 +292,4 @@ E.g.,
 python tools/publish_model.py work_dirs/pspnet/latest.pth psp_r50_hszhao_200ep.pth
 ```
 
-The final output filename will be `psp_r50_hszhao_200ep-{hash id}.pth`.
+The final output filename will be `psp_r50_512x1024_40ki_cityscapes-{hash id}.pth`.
