@@ -1,6 +1,7 @@
 import argparse
 import glob
 import json
+import os
 import os.path as osp
 import shutil
 import subprocess
@@ -62,9 +63,14 @@ def parse_args():
         type=str,
         help='root path of benchmarked configs to be gathered')
     parser.add_argument(
-        'out', type=str, help='output path of gathered models to be stored')
+        'out_dir',
+        type=str,
+        help='output path of gathered models to be stored')
+    parser.add_argument('out_file', type=str, help='the output json file name')
     parser.add_argument(
         '--filter', type=str, nargs='+', default=[], help='config filter')
+    parser.add_argument(
+        '--all', action='store_true', help='whether include .py and .log')
 
     args = parser.parse_args()
     return args
@@ -73,7 +79,7 @@ def parse_args():
 def main():
     args = parse_args()
     models_root = args.root
-    models_out = args.out
+    models_out = args.out_dir
     config_name = args.config
     mmcv.mkdir_or_exist(models_out)
 
@@ -121,7 +127,7 @@ def main():
                 break
 
         if model_performance is None:
-            print(f'{used_config}model_performance is None')
+            print(f'{used_config} model_performance is None')
             continue
 
         model_time = osp.split(log_json_path)[-1].split('.')[0]
@@ -139,9 +145,6 @@ def main():
     for model in model_infos:
         model_publish_dir = osp.join(models_out,
                                      model['raw_config'].rstrip('.py'))
-        if osp.exists(model_publish_dir):
-            print(f'{model_publish_dir} exists.')
-            continue
         mmcv.mkdir_or_exist(model_publish_dir)
 
         model_name = osp.split(model['config'])[-1].split('.')[0]
@@ -150,32 +153,42 @@ def main():
                                       model_name + '_' + model['model_time'])
         trained_model_path = osp.join(models_root, model['config'],
                                       'iter_{}.pth'.format(model['iters']))
+        if osp.exists(model_publish_dir):
+            for file in os.listdir(model_publish_dir):
+                if file.endswith('.pth'):
+                    print(f'model {file} found')
+                    model['model_path'] = osp.abspath(
+                        osp.join(model_publish_dir, file))
+                    break
 
-        # convert model
-        final_model_path = process_checkpoint(trained_model_path,
-                                              publish_model_path)
+        else:
+            # convert model
+            final_model_path = process_checkpoint(trained_model_path,
+                                                  publish_model_path)
+            model['model_path'] = final_model_path
 
         new_json_path = f'{model_name}-{model["log_json_path"]}'
-        new_txt_paht = new_json_path.rstrip('.json')
         # copy log
         shutil.copy(
             osp.join(models_root, model['config'], model['log_json_path']),
             osp.join(model_publish_dir, new_json_path))
-        shutil.copy(
-            osp.join(models_root, model['config'],
-                     model['log_json_path'].rstrip('.json')),
-            osp.join(model_publish_dir, new_txt_paht))
+        if args.all:
+            new_txt_path = new_json_path.rstrip('.json')
+            shutil.copy(
+                osp.join(models_root, model['config'],
+                         model['log_json_path'].rstrip('.json')),
+                osp.join(model_publish_dir, new_txt_path))
 
-        # copy config to guarantee reproducibility
-        raw_config = osp.join(config_name, model['raw_config'])
-        shutil.copy(raw_config,
-                    osp.join(model_publish_dir, osp.basename(raw_config)))
+        if args.all:
+            # copy config to guarantee reproducibility
+            raw_config = osp.join(config_name, model['raw_config'])
+            mmcv.Config.fromfile(raw_config).dump(
+                osp.join(model_publish_dir, osp.basename(raw_config)))
 
-        model['model_path'] = final_model_path
         publish_model_infos.append(model)
 
     models = dict(models=publish_model_infos)
-    mmcv.dump(models, osp.join(models_out, 'model_info.json'))
+    mmcv.dump(models, osp.join(models_out, args.out_file))
 
 
 if __name__ == '__main__':
