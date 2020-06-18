@@ -52,46 +52,46 @@ def _get_segmentor_cfg(fname):
 
 def test_pspnet_forward():
     _test_encoder_decoder_forward(
-        'pspnet/pspnet_r50d8_512x1024_40k_cityscapes.py')
+        'pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_fcn_forward():
-    _test_encoder_decoder_forward('fcn/fcn_r50d8_512x1024_40k_cityscapes.py')
+    _test_encoder_decoder_forward('fcn/fcn_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_deeplabv3_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3/deeplabv3_r50d8_512x1024_40k_cityscapes.py')
+        'deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_deeplabv3plus_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3plus/deeplabv3plus_r50d8_512x1024_40k_cityscapes.py')
+        'deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_gcnet_forward():
     _test_encoder_decoder_forward(
-        'gcnet/gcnet_r50d8_512x1024_40k_cityscapes.py')
+        'gcnet/gcnet_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_ann_forward():
-    _test_encoder_decoder_forward('ann/ann_r50d8_512x1024_40k_cityscapes.py')
+    _test_encoder_decoder_forward('ann/ann_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_ccnet_forward():
     if torch.cuda.is_available():
         _test_encoder_decoder_forward(
-            'ccnet/ccnet_r50d8_512x1024_40k_cityscapes.py')
+            'ccnet/ccnet_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_danet_forward():
     _test_encoder_decoder_forward(
-        'danet/danet_r50d8_512x1024_40k_cityscapes.py')
+        'danet/danet_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_nonlocal_net_forward():
     _test_encoder_decoder_forward(
-        'nonlocal_net/nonlocal_r50d8_512x1024_40k_cityscapes.py')
+        'nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_upernet_forward():
@@ -110,7 +110,7 @@ def test_ocrnet_forward():
 
 def test_psanet_forward():
     _test_encoder_decoder_forward(
-        'psanet/psanet_r50d8_512x1024_40k_cityscapes.py')
+        'psanet/psanet_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def _convert_batchnorm(module):

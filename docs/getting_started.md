@@ -66,40 +66,40 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
 1. Test PSPNet and visualize the results. Press any key for the next image.
 
 ```shell
-python tools/test.py configs/pspnet/pspnet_r50d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
+python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
     --show
 ```
 
 2. Test PSPNet and save the painted images for latter visualization.
 
 ```shell
-python tools/test.py configs/pspnet/pspnet_r50d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
+python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
     --show-dir psp_r50_512x1024_40ki_cityscapes_results
 ```
 
 3. Test PSPNet on PASCAL VOC (without saving the test results) and evaluate the mIoU.
 
 ```shell
-python tools/test.py configs/pspnet/pspnet_r50d8_512x1024_20k_voc12aug.py \
-    checkpoints/pspnet_r50d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth \
+python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
+    checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth \
     --eval mAP
 ```
 
 4. Test PSPNet with 8 GPUs, and evaluate the standard mIoU and cityscapes metric.
 
 ```shell
-./tools/dist_test.sh configs/pspnet/pspnet_r50d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
+./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
     8 --out results.pkl --eval mIoU cityscapes
 ```
 
 6. Test PSPNet on cityscapes test split with 8 GPUs, and generate the png files to be submit to the official evaluation server.
 
 ```shell
-./tools/dist_test.sh configs/pspnet/pspnet_r50d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
+./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
     8 --format-only --options "imgfile_prefix=./pspnet_test_results"
 ```
 
@@ -117,8 +117,8 @@ python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--dev
 Examples:
 
 ```shell
-python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth --device cuda:0 --palette cityscapes
+python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth --device cuda:0 --palette cityscapes
 ```
 
 
@@ -130,8 +130,8 @@ Here is an example of building the model and test given images.
 from mmseg.apis import inference_segmentor, init_segmentor
 import mmcv
 
-config_file = 'configs/pspnet/pspnet_r50d8_512x1024_40k_cityscapes.py'
-checkpoint_file = 'checkpoints/pspnet_r50d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth'
+config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
+checkpoint_file = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth'
 
 # build the model from a config file and a checkpoint file
 model = init_segmentor(config_file, checkpoint_file, device='cuda:0')
@@ -205,7 +205,7 @@ If you run MMSegmentation on a cluster managed with [slurm](https://slurm.schedm
 Here is an example of using 16 GPUs to train PSPNet on the dev partition.
 
 ```shell
-GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50d8_512x1024_40k_cityscapes.py /nfs/xxxx/psp_r50_512x1024_40ki_cityscapes
+GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py /nfs/xxxx/psp_r50_512x1024_40ki_cityscapes
 ```
 
 You can check [slurm_train.sh](../tools/slurm_train.sh) for full arguments and environment variables.
