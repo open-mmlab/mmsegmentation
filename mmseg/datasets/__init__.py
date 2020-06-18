@@ -1,4 +1,4 @@
-from .ade import ADEDataset
+from .ade import ADE20KDataset
 from .builder import DATASETS, PIPELINES, build_dataloader, build_dataset
 from .cityscapes import CityscapesDataset
 from .custom import CustomDataset
@@ -10,5 +10,5 @@ __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
     'DATASETS', 'build_dataset', 'PIPELINES', 'DistributedGroupSampler',
     'DistributedSampler', 'GroupSampler', 'CityscapesDataset',
-    'PascalVOCDataset', 'ADEDataset'
+    'PascalVOCDataset', 'ADE20KDataset'
 ]

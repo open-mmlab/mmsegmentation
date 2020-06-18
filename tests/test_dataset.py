@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 
 from mmseg.core.evaluation import get_classes, get_palette
-from mmseg.datasets import (ADEDataset, CityscapesDataset, ConcatDataset,
+from mmseg.datasets import (ADE20KDataset, CityscapesDataset, ConcatDataset,
                             CustomDataset, PascalVOCDataset, RepeatDataset)
 
 
@@ -10,14 +10,14 @@ def test_classes():
     assert list(PascalVOCDataset.CLASSES) == get_classes('voc') == get_classes(
         'pascal_voc')
     assert list(
-        ADEDataset.CLASSES) == get_classes('ade') == get_classes('ade20k')
+        ADE20KDataset.CLASSES) == get_classes('ade') == get_classes('ade20k')
 
 
 def test_palette():
     assert CityscapesDataset.PALETTE == get_palette('cityscapes')
     assert PascalVOCDataset.PALETTE == get_palette('voc') == get_palette(
         'pascal_voc')
-    assert ADEDataset.PALETTE == get_palette('ade') == get_palette('ade20k')
+    assert ADE20KDataset.PALETTE == get_palette('ade') == get_palette('ade20k')
 
 
 def test_dataset_wrapper():

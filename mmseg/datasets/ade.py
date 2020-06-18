@@ -3,7 +3,7 @@ from .custom import CustomDataset
 
 
 @DATASETS.register_module
-class ADEDataset(CustomDataset):
+class ADE20KDataset(CustomDataset):
     CLASSES = (
         'wall', 'building', 'sky', 'floor', 'tree', 'ceiling', 'road', 'bed ',
         'windowpane', 'grass', 'cabinet', 'sidewalk', 'person', 'earth',
@@ -70,7 +70,7 @@ class ADEDataset(CustomDataset):
                [102, 255, 0], [92, 0, 255]]
 
     def __init__(self, **kwargs):
-        super(ADEDataset, self).__init__(
+        super(ADE20KDataset, self).__init__(
             img_suffix='.jpg',
             seg_map_suffix='.png',
             reduce_zero_label=True,
