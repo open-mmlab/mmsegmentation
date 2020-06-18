@@ -112,12 +112,8 @@ def main():
     # build the model and load checkpoint
     model = build_segmentor(cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
     checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
-    # old versions did not save class info in checkpoints, this walkaround is
-    # for backward compatibility
-    if 'CLASSES' in checkpoint['meta']:
-        model.CLASSES = checkpoint['meta']['CLASSES']
-    else:
-        model.CLASSES = dataset.CLASSES
+    model.CLASSES = checkpoint['meta']['CLASSES']
+    model.PALETTE = checkpoint['meta']['PALETTE']
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])

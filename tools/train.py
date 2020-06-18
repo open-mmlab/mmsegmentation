@@ -154,7 +154,8 @@ def main():
         cfg.checkpoint_config.meta = dict(
             mmseg_version=__version__,
             config=cfg.pretty_text,
-            CLASSES=datasets[0].CLASSES)
+            CLASSES=datasets[0].CLASSES,
+            PALETTE=datasets[0].PALETTE)
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
     train_segmentor(

@@ -155,7 +155,11 @@ class BaseSegmentor(nn.Module):
         img = img.copy()
         seg = result[0]
         if palette is None:
-            palette = np.random.randint(0, 255, size=(len(self.CLASSES), 3))
+            if self.PALETTE is None:
+                palette = np.random.randint(
+                    0, 255, size=(len(self.CLASSES), 3))
+            else:
+                palette = self.PALETTE
         else:
             palette = np.array(palette)
         assert palette.shape[0] == len(self.CLASSES)
