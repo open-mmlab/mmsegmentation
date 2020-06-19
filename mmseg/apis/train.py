@@ -73,7 +73,8 @@ def train_segmentor(model,
             # cfg.gpus will be ignored if distributed
             len(cfg.gpu_ids),
             dist=distributed,
-            seed=cfg.seed) for ds in dataset
+            seed=cfg.seed,
+            drop_last=True) for ds in dataset
     ]
 
     # put model on gpus
