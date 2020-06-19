@@ -79,7 +79,7 @@ jobs:
       run: |
         coverage run --branch --source mmseg -m pytest tests/
         coverage xml
-        coverage report -m --omit="mmseg/utils/*","mmseg/ops/*","mmseg/apis/*","mmseg/datasets/samplers/*"
+        coverage report -m --omit="mmseg/utils/*","mmseg/ops/*","mmseg/apis/*"
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@master
       with:

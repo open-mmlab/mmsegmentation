@@ -1,27 +1,16 @@
 import math
 
-import mmcv
-import numpy as np
-import pytest
-from torch.utils.data import SequentialSampler
+from torch.utils.data import (DistributedSampler, RandomSampler,
+                              SequentialSampler)
 
-from mmseg.datasets import (DATASETS, ConcatDataset, build_dataloader,
-                            build_dataset)
-from mmseg.datasets.samplers import (DistributedGroupSampler,
-                                     DistributedSampler, GroupSampler)
+from mmseg.datasets import DATASETS, build_dataloader, build_dataset
 
 
-@DATASETS.register_module
+@DATASETS.register_module()
 class ToyDataset(object):
 
-    CLASSES = None
-
-    def __init__(self, img_dir=None, ann_dir=None, split=None, cnt=0):
-        self.img_dir = img_dir
-        self.ann_dir = ann_dir
-        self.split = split
+    def __init__(self, cnt=0):
         self.cnt = cnt
-        self.flag = np.zeros(len(self), dtype=np.uint8)
 
     def __item__(self, idx):
         return idx
@@ -40,31 +29,6 @@ def test_build_dataset():
     assert dataset.cnt == 1
 
 
-def test_build_concat_dataset():
-    cfg = dict(type='ToyDataset', img_dir=['a', 'b'])
-    dataset = build_dataset(cfg)
-    assert isinstance(dataset, ConcatDataset)
-    assert mmcv.is_list_of(dataset.datasets, ToyDataset)
-
-    cfg = dict(type='ToyDataset', img_dir='a', ann_dir='b', split=['a', 'b'])
-    dataset = build_dataset(cfg)
-    assert isinstance(dataset, ConcatDataset)
-    assert mmcv.is_list_of(dataset.datasets, ToyDataset)
-
-    with pytest.raises(AssertionError):
-        cfg = dict(type='ToyDataset', img_dir='a', ann_dir=['a', 'b'])
-        dataset = build_dataset(cfg)
-        assert isinstance(dataset, ConcatDataset)
-        assert mmcv.is_list_of(dataset.datasets, ToyDataset)
-
-    with pytest.raises(AssertionError):
-        cfg = dict(
-            type='ToyDataset', img_dir=['a', 'b'], split=['a', 'b', 'c'])
-        dataset = build_dataset(cfg)
-        assert isinstance(dataset, ConcatDataset)
-        assert mmcv.is_list_of(dataset.datasets, ToyDataset)
-
-
 def test_build_dataloader():
     dataset = ToyDataset()
     samples_per_gpu = 3
@@ -73,7 +37,8 @@ def test_build_dataloader():
         dataset, samples_per_gpu=samples_per_gpu, workers_per_gpu=2)
     assert dataloader.batch_size == samples_per_gpu
     assert len(dataloader) == int(math.ceil(len(dataset) / samples_per_gpu))
-    assert isinstance(dataloader.sampler, DistributedGroupSampler)
+    assert isinstance(dataloader.sampler, DistributedSampler)
+    assert dataloader.sampler.shuffle
 
     # dist=True, shuffle=False, 1GPU
     dataloader = build_dataloader(
@@ -104,7 +69,7 @@ def test_build_dataloader():
         dist=False)
     assert dataloader.batch_size == samples_per_gpu
     assert len(dataloader) == int(math.ceil(len(dataset) / samples_per_gpu))
-    assert isinstance(dataloader.sampler, GroupSampler)
+    assert isinstance(dataloader.sampler, RandomSampler)
     assert dataloader.num_workers == 2
 
     # dist=False, shuffle=False, 1GPU
@@ -125,5 +90,5 @@ def test_build_dataloader():
     assert dataloader.batch_size == samples_per_gpu * 8
     assert len(dataloader) == int(
         math.ceil(len(dataset) / samples_per_gpu / 8))
-    assert isinstance(dataloader.sampler, GroupSampler)
+    assert isinstance(dataloader.sampler, RandomSampler)
     assert dataloader.num_workers == 16
