@@ -13,13 +13,13 @@ class Resize(object):
     contains the key "scale", then the scale in the input dict is used,
     otherwise the specified scale in the init method is used.
 
-    `img_scale` can either be a tuple (single-scale) or a list of tuple
+    ``img_scale`` can either be a tuple (single-scale) or a list of tuple
     (multi-scale). There are 3 multiscale modes:
-    - `ratio_range` is not None: randomly sample a ratio from the ratio range
+    - ``ratio_range is not None``: randomly sample a ratio from the ratio range
         and multiply it with the image scale.
-    - `ratio_range` is None and `multiscale_mode` == "range": randomly sample a
+    - ``ratio_range is None and multiscale_mode == "range"``: randomly sample a
         scale from the a range.
-    - `ratio_range` is None and `multiscale_mode` == "value": randomly sample a
+    - ``ratio_range is None and multiscale_mode == "value"``: randomly sample a
         scale from multiple scales.
 
     Args:

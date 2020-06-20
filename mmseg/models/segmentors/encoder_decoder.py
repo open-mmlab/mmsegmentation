@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -201,11 +200,12 @@ class EncoderDecoder(BaseSegmentor):
         """
         # aug_test rescale all imgs back to ori_shape for now
         assert rescale
-        seg_logit_list = []
-        for i in range(len(imgs)):
-            seg_logit_list.append(
-                self.inference(imgs[i], img_metas[i], rescale))
-        seg_logit = torch.stack(seg_logit_list).mean(dim=0)
+        # to save memory, we get augmented seg logit inplace
+        seg_logit = self.inference(imgs[0], img_metas[0], rescale)
+        for i in range(1, len(imgs)):
+            cur_seg_logit = self.inference(imgs[i], img_metas[i], rescale)
+            seg_logit += cur_seg_logit
+        seg_logit /= len(imgs)
         seg_pred = seg_logit.argmax(dim=1)
         seg_pred = seg_pred.cpu().numpy()
         # unravel batch dim

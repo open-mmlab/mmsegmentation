@@ -18,27 +18,30 @@ class CustomDataset(Dataset):
     """Custom dataset for semantic segmentation
 
     An example of file structure is as followed.
-    ├── data
-    │   ├── my_dataset
-    │   │   ├── img_dir
-    │   │   │   ├── train
-    │   │   │   │   ├── xxx{img_suffix}.png
-    │   │   │   │   ├── yyy{img_suffix}.png
-    │   │   │   │   ├── zzz{img_suffix}.png
-    │   │   │   ├── val
-    │   │   ├── ann_dir
-    │   │   │   ├── train
-    │   │   │   │   ├── xxx{seg_map_suffix}.png
-    │   │   │   │   ├── yyy{seg_map_suffix}.png
-    │   │   │   │   ├── zzz{seg_map_suffix}.png
-    │   │   │   ├── val
+
+    .. code-block:: none
+
+        ├── data
+        │   ├── my_dataset
+        │   │   ├── img_dir
+        │   │   │   ├── train
+        │   │   │   │   ├── xxx{img_suffix}
+        │   │   │   │   ├── yyy{img_suffix}
+        │   │   │   │   ├── zzz{img_suffix}
+        │   │   │   ├── val
+        │   │   ├── ann_dir
+        │   │   │   ├── train
+        │   │   │   │   ├── xxx{seg_map_suffix}
+        │   │   │   │   ├── yyy{seg_map_suffix}
+        │   │   │   │   ├── zzz{seg_map_suffix}
+        │   │   │   ├── val
 
     The img/gt_semantic_seg pair of CustomDataset should be of the same
     except suffix. A valid img/gt_semantic_seg filename pair should be like
-    `xxx{img_suffix}` and `xxx{seg_map_suffix}`. If split is given,
-    then `xxx` is specified in txt file. Otherwise, all files in
-    img_dir/and ann_dir will be loaded. Please refer to
-    `docs/tutorials/new_dataset.md` for more details.
+    ``xxx{img_suffix}`` and ``xxx{seg_map_suffix}`` (extension is also included
+    in the suffix). If split is given, then ``xxx`` is specified in txt file.
+    Otherwise, all files in ``img_dir/``and ``ann_dir`` will be loaded.
+    Please refer to ``docs/tutorials/new_dataset.md`` for more details.
 
 
     Args:
@@ -97,10 +100,6 @@ class CustomDataset(Dataset):
                                                self.ann_dir,
                                                self.seg_map_suffix, self.split)
 
-        # set group flag for the sampler
-        if not self.test_mode:
-            self._set_group_flag()
-
     def __len__(self):
         return len(self.img_infos)
 
@@ -112,10 +111,7 @@ class CustomDataset(Dataset):
                 for line in f:
                     img_name = line.strip()
                     img_file = osp.join(img_dir, img_name + img_suffix)
-                    # get image shape by read
-                    width, height = Image.open(img_file).size
-                    img_info = dict(
-                        filename=img_file, height=height, width=width)
+                    img_info = dict(filename=img_file)
                     if ann_dir is not None:
                         seg_map = osp.join(ann_dir, img_name + seg_map_suffix)
                         img_info['ann'] = dict(seg_map=seg_map)
@@ -123,9 +119,7 @@ class CustomDataset(Dataset):
         else:
             for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
                 img_file = osp.join(img_dir, img)
-                # get image shape by read
-                width, height = Image.open(img_file).size
-                img_info = dict(filename=img_file, height=height, width=width)
+                img_info = dict(filename=img_file)
                 if ann_dir is not None:
                     seg_map = osp.join(ann_dir,
                                        img.replace(img_suffix, seg_map_suffix))
@@ -150,18 +144,6 @@ class CustomDataset(Dataset):
                 idx = self._rand_another(idx)
                 continue
             return data
-
-    def _set_group_flag(self):
-        """Set flag according to image aspect ratio.
-
-        Images with aspect ratio greater than 1 will be set as group 1,
-        otherwise group 0.
-        """
-        self.flag = np.zeros(len(self), dtype=np.uint8)
-        for i in range(len(self)):
-            img_info = self.img_infos[i]
-            if img_info['width'] / img_info['height'] > 1:
-                self.flag[i] = 1
 
     def prepare_train_img(self, idx):
         img_info = self.img_infos[idx]

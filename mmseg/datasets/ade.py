@@ -2,7 +2,7 @@ from .builder import DATASETS
 from .custom import CustomDataset
 
 
-@DATASETS.register_module
+@DATASETS.register_module()
 class ADE20KDataset(CustomDataset):
     CLASSES = (
         'wall', 'building', 'sky', 'floor', 'tree', 'ceiling', 'road', 'bed ',

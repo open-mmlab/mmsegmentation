@@ -30,43 +30,6 @@ class CityscapesDataset(CustomDataset):
             seg_map_suffix='_gtFine_labelTrainIds.png',
             **kwargs)
 
-    def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix,
-                         split):
-        img_infos = []
-        if split is not None:
-            with open(split) as f:
-                for line in f:
-                    img_name = line.strip()
-                    img_file = osp.join(img_dir, img_name + img_suffix)
-                    # cityscapes dataset has *_gtFine_polygons.json files
-                    json_file = osp.join(ann_dir,
-                                         img_name + '_gtFine_polygons.json')
-                    polygon_json = mmcv.load(json_file)
-                    height = polygon_json['imgHeight']
-                    width = polygon_json['imgWidth']
-                    img_info = dict(
-                        filename=img_file, height=height, width=width)
-                    seg_map = osp.join(ann_dir, img_name + seg_map_suffix)
-                    img_info['ann'] = dict(seg_map=seg_map)
-                    img_infos.append(img_info)
-        else:
-            for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
-                img_file = osp.join(img_dir, img)
-                # cityscapes dataset has *_gtFine_polygons.json files
-                json_file = osp.join(
-                    ann_dir, img.replace(img_suffix, '_gtFine_polygons.json'))
-                polygon_json = mmcv.load(json_file)
-                height = polygon_json['imgHeight']
-                width = polygon_json['imgWidth']
-                img_info = dict(filename=img_file, height=height, width=width)
-                seg_map = osp.join(ann_dir,
-                                   img.replace(img_suffix, seg_map_suffix))
-                img_info['ann'] = dict(seg_map=seg_map)
-                img_infos.append(img_info)
-
-        print_log(f'Loaded {len(img_infos)} images')
-        return img_infos
-
     @staticmethod
     def _convert_to_label_id(result):
         import cityscapesscripts.helpers.labels as CSLabels

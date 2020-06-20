@@ -4,7 +4,7 @@ from .builder import DATASETS
 from .custom import CustomDataset
 
 
-@DATASETS.register_module
+@DATASETS.register_module()
 class PascalVOCDataset(CustomDataset):
 
     CLASSES = ('background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
