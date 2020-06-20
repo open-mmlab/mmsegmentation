@@ -25,8 +25,7 @@ def main():
 
     cfg = Config.fromfile(args.config)
     # set cudnn_benchmark
-    if cfg.get('cudnn_benchmark', False):
-        torch.backends.cudnn.benchmark = True
+    torch.backends.cudnn.benchmark = False
     cfg.model.pretrained = None
     cfg.data.test.test_mode = True
 

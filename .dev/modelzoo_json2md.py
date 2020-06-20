@@ -37,6 +37,9 @@ def main():
             table = table_cache[directory][dataset][0]
             writer.table_name = dataset_maps[dataset]
             writer.value_matrix = table
+            for i in range(len(table)):
+                if table[i][-4] != '-':
+                    table[i][-4] = f'{table[i][-4]:.2f}'
             mmcv.mkdir_or_exist(osp.join(output_dir, directory))
             writer.dump(
                 osp.join(output_dir, directory, f'README_{dataset}.md'))
