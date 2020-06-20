@@ -1,6 +1,6 @@
 _base_ = './fcn_hr18_512x1024_40k_cityscapes.py'
 model = dict(
-    pretrained='pretrain_model/hrnetv2_w18_small-b5a04e21.pth',
+    pretrained='open-mmlab://msra/hrnetv2_w18_small',
     backbone=dict(
         extra=dict(
             stage1=dict(num_blocks=(2, )),

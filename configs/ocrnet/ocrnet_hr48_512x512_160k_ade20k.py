@@ -1,7 +1,7 @@
 _base_ = './ocrnet_hr18_512x512_160k_ade20k.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
-    pretrained='pretrain_model/hrnetv2_w48-d2186c55.pth',
+    pretrained='open-mmlab://msra/hrnetv2_w48',
     backbone=dict(
         extra=dict(
             stage2=dict(num_channels=(48, 96)),

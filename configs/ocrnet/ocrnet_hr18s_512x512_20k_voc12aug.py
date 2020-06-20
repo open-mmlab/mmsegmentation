@@ -1,6 +1,6 @@
 _base_ = './ocrnet_hr18_512x512_20k_voc12aug.py'
 model = dict(
-    pretrained='pretrain_model/hrnetv2_w18_small-b5a04e21.pth',
+    pretrained='open-mmlab://msra/hrnetv2_w18_small',
     backbone=dict(
         extra=dict(
             stage1=dict(num_blocks=(2, )),
