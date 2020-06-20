@@ -105,7 +105,7 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
 
 ```shell
 python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
     --show
 ```
 
@@ -113,7 +113,7 @@ python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
 
 ```shell
 python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
     --show-dir psp_r50_512x1024_40ki_cityscapes_results
 ```
 
@@ -129,7 +129,7 @@ python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
 
 ```shell
 ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
     8 --out results.pkl --eval mIoU cityscapes
 ```
 
@@ -137,7 +137,7 @@ python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
 
 ```shell
 ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
     8 --format-only --options "imgfile_prefix=./pspnet_test_results"
 ```
 
@@ -156,7 +156,7 @@ Examples:
 
 ```shell
 python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth --device cuda:0 --palette cityscapes
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --palette cityscapes
 ```
 
 
@@ -169,7 +169,7 @@ from mmseg.apis import inference_segmentor, init_segmentor
 import mmcv
 
 config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
-checkpoint_file = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-c57ef100.pth'
+checkpoint_file = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
 # build the model from a config file and a checkpoint file
 model = init_segmentor(config_file, checkpoint_file, device='cuda:0')

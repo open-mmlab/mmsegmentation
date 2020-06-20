@@ -11,20 +11,9 @@ from .utils import get_compiler_version, get_compiling_cuda_version
 from .wrappers import resize
 
 __all__ = [
-    'DeformConv',
-    'DeformConvPack',
-    'ModulatedDeformConv',
-    'ModulatedDeformConvPack',
-    'deform_conv',
-    'modulated_deform_conv',
-    'ContextBlock',
-    'GeneralizedAttention',
-    'NonLocal2D',
-    'get_compiler_version',
-    'get_compiling_cuda_version',
-    'build_plugin_layer',
-    'PSAMask',
-    'CrissCrossAttention',
-    'resize',
-    'DepthwiseSeparableConvModule',
+    'DeformConv', 'DeformConvPack', 'ModulatedDeformConv',
+    'ModulatedDeformConvPack', 'deform_conv', 'modulated_deform_conv',
+    'ContextBlock', 'GeneralizedAttention', 'NonLocal2D',
+    'get_compiler_version', 'get_compiling_cuda_version', 'build_plugin_layer',
+    'PSAMask', 'CrissCrossAttention', 'resize', 'DepthwiseSeparableConvModule'
 ]
