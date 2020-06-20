@@ -35,7 +35,7 @@ We follow the below style to name config files. Contributors are advised to foll
 - `{schedule}`: training schedule, `20ki` means 20k iterations.
 - `{dataset}`: dataset like `cityscapes`, `voc12aug`, `ade`.
 
-## An Example of Mask R-CNN
+## An Example of PSPNet
 
 To help the users have a basic idea of a complete config and the modules in a modern detection system,
 we make brief comments on the config of Mask R-CNN using ResNet50 and FPN as the following.

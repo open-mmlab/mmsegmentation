@@ -10,15 +10,15 @@ An example of file structure is as followed.
 │   ├── my_dataset
 │   │   ├── img_dir
 │   │   │   ├── train
-│   │   │   │   ├── xxx{img_suffix}.png
-│   │   │   │   ├── yyy{img_suffix}.png
-│   │   │   │   ├── zzz{img_suffix}.png
+│   │   │   │   ├── xxx{img_suffix}
+│   │   │   │   ├── yyy{img_suffix}
+│   │   │   │   ├── zzz{img_suffix}
 │   │   │   ├── val
 │   │   ├── ann_dir
 │   │   │   ├── train
-│   │   │   │   ├── xxx{seg_map_suffix}.png
-│   │   │   │   ├── yyy{seg_map_suffix}.png
-│   │   │   │   ├── zzz{seg_map_suffix}.png
+│   │   │   │   ├── xxx{seg_map_suffix}
+│   │   │   │   ├── yyy{seg_map_suffix}
+│   │   │   │   ├── zzz{seg_map_suffix}
 │   │   │   ├── val
 
 ```

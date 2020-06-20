@@ -3,7 +3,7 @@
 This page provides basic tutorials about the usage of MMSegmentation.
 For installation instructions, please see [install.md](install.md).
 
-### Prepare datasets
+## Prepare datasets
 
 It is recommended to symlink the dataset root to `$MMSEGMENTATION/data`.
 If your folder structure is different, you may need to change the corresponding paths in config files.
@@ -22,14 +22,52 @@ mmsegmentation
 │   │   │   ├── train
 │   │   │   ├── val
 │   ├── VOCdevkit
-│   │   ├── VOC2007
 │   │   ├── VOC2012
+│   │   │   ├── JPEGImages
+│   │   │   ├── SegmentationClass
+│   │   │   ├── ImageSets
+│   │   │   │   ├── Segmentation
+│   │   ├── VOCaug
+│   │   │   ├── dataset
+│   │   │   │   ├── cls
+│   ├── ade
+│   │   ├── ADEChallengeData2016
+│   │   │   ├── annotations
+│   │   │   │   ├── training
+│   │   │   │   ├── validation
+│   │   │   ├── images
+│   │   │   │   ├── training
+│   │   │   │   ├── validation
 
 ```
-labelTrainIds.png are created by `tools/convert_datasets/cityscapes.py`.
+
+### Cityscapes
+The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
+
+By convention, `**labelTrainIds.png` are used for cityscapes training.
+We provided a [scripts](../tools/convert_datasets/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
+to generate `**labelTrainIds.png`.
 ```shell
-python tools/convert_datasets/cityscapes.py data/cityscapes
+# --nproc means 8 process for conversion, which could be omitted as well.
+python tools/convert_datasets/cityscapes.py data/cityscapes --nproc 8
 ```
+
+### Pascal VOC
+Pascal VOC 2012 could be downloaded from [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar).
+Beside, most recent works on Pascal VOC dataset usually exploit extra augmentation data, which could be found [here](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz).
+
+If you would like to use augmented VOC dataset, please run following command to convert augmentation annotations into proper format.
+```shell
+# --nproc means 8 process for conversion, which could be omitted as well.
+python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
+```
+
+Please refer to [concat dataset](tutorials/new_dataset.md#concatenate-dataset) for details about how to concatenate them and train them together.
+
+
+### ADE20K
+The training and validation set of ADE20K could be download from this [link](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
+We may also download test set from [here](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
 
 ## Inference with pretrained models
 

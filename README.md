@@ -15,13 +15,13 @@ It is a part of the OpenMMLab project developed by [Multimedia Laboratory, CUHK]
 
   We decompose the detection framework into different components and one can easily construct a customized object detection framework by combining different modules.
 
-- **Support of multiple frameworks out of box**
+- **Support of multiple methods out of box**
 
   The toolbox directly supports popular and contemporary semantic segmentation frameworks, *e.g.* PSPNet, DeepLabV3, PSANet, DeepLabV3+, etc.
 
 - **High efficiency**
 
-  All basic bbox and mask operations run on GPUs. The training speed is faster than or comparable to other codebases, including [xxx]().
+  The training speed is faster than or comparable to other codebases, including [xxx]().
 
 Apart from MMSegmentation, we also released a library [mmcv](https://github.com/open-mmlab/mmcv) for computer vision research, which is heavily depended on by this toolbox.
 
@@ -35,7 +35,10 @@ Please refer to [INSTALL.md](docs/install.md) for installation and dataset prepa
 
 ## Get Started
 
-Please see [getting_started.md](docs/getting_started.md) for the basic usage of MMSegmentation. There are also tutorials for [finetuning models](docs/tutorials/finetune.md), [adding new dataset](docs/tutorials/new_dataset.md), [designing data pipeline](docs/tutorials/data_pipeline.md), and [adding new modules](docs/tutorials/new_modules.md).
+Please see [getting_started.md](docs/getting_started.md) for the basic usage of MMSegmentation.
+There are also tutorials for [adding new dataset](docs/tutorials/new_dataset.md), [designing data pipeline](docs/tutorials/data_pipeline.md), and [adding new modules](docs/tutorials/new_modules.md).
+
+A CoLab demo could be found [here](https://colab.research.google.com/drive/1mgtoSGBYjck8ipC5pOri7dRtzRLmfEVX#scrollTo=QS8YHrEhbpas).
 
 ## Contributing
 

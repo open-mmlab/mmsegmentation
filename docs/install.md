@@ -35,7 +35,7 @@ conda install pytorch torchvision -c pytorch
 c. Clone the mmsegmentation repository.
 
 ```shell
-git clone http://gitlab.sz.sensetime.com/EIG-Research/mmsegmentation
+git clone http://github.com/open-mmlab/mmsegmentation
 cd mmsegmentation
 ```
 
@@ -69,7 +69,7 @@ conda create -n open-mmlab python=3.7 -y
 conda activate open-mmlab
 
 conda install -c pytorch pytorch torchvision -y
-git clone http://gitlab.sz.sensetime.com/EIG-Research/mmsegmentation
+git clone http://github.com/open-mmlab/mmsegmentation
 cd mmsegmentation
 pip install -r requirements/build.txt
 pip install cityscapesscripts
