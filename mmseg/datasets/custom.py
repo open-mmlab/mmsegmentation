@@ -4,7 +4,6 @@ from functools import reduce
 import mmcv
 import numpy as np
 from mmcv.utils import print_log
-from PIL import Image
 from torch.utils.data import Dataset
 
 from mmseg.core import mean_iou
@@ -164,9 +163,8 @@ class CustomDataset(Dataset):
     def get_gt_seg_maps(self):
         gt_seg_maps = []
         for img_info in self.img_infos:
-            gt_seg_map = np.array(
-                Image.open(img_info['ann']['seg_map']).convert('P'),
-                dtype=np.uint8)
+            gt_seg_map = mmcv.imread(
+                img_info['ann']['seg_map'], flag='unchanged', backend='pillow')
             if self.reduce_zero_label:
                 # avoid using underflow conversion
                 gt_seg_map[gt_seg_map == 0] = 255

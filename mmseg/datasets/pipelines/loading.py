@@ -1,9 +1,7 @@
-import io
 import os.path as osp
 
 import mmcv
 import numpy as np
-from PIL import Image
 
 from ..builder import PIPELINES
 
@@ -14,11 +12,13 @@ class LoadImageFromFile(object):
     def __init__(self,
                  to_float32=False,
                  color_type='color',
-                 file_client_args=dict(backend='disk')):
+                 file_client_args=dict(backend='disk'),
+                 imdecode_backend='cv2'):
         self.to_float32 = to_float32
         self.color_type = color_type
         self.file_client_args = file_client_args.copy()
         self.file_client = None
+        self.imdecode_backend = imdecode_backend
 
     def __call__(self, results):
         if self.file_client is None:
@@ -30,7 +30,8 @@ class LoadImageFromFile(object):
         else:
             filename = results['img_info']['filename']
         img_bytes = self.file_client.get(filename)
-        img = mmcv.imfrombytes(img_bytes, flag=self.color_type)
+        img = mmcv.imfrombytes(
+            img_bytes, flag=self.color_type, backend=self.imdecode_backend)
         if self.to_float32:
             img = img.astype(np.float32)
 
@@ -50,22 +51,24 @@ class LoadImageFromFile(object):
         return results
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(to_float32={self.to_float32}, ' \
-               f"color_type='{self.color_type}')"
+        repr_str = self.__class__.__name__
+        repr_str += f'(to_float32={self.to_float32},'
+        repr_str += f"color_type='{self.color_type}',"
+        repr_str += f"imdecode_backend='{self.imdecode_backend}')"
+        return repr_str
 
 
 @PIPELINES.register_module()
 class LoadAnnotations(object):
 
     def __init__(self,
-                 use_pil=True,
                  reduce_zero_label=False,
-                 file_client_args=dict(backend='disk')):
-        # use PIL P mode to read annotations
-        self.use_pil = use_pil
+                 file_client_args=dict(backend='disk'),
+                 imdecode_backend='pillow'):
         self.reduce_zero_label = reduce_zero_label
         self.file_client_args = file_client_args.copy()
         self.file_client = None
+        self.imdecode_backend = imdecode_backend
 
     def __call__(self, results):
         if self.file_client is None:
@@ -77,12 +80,9 @@ class LoadAnnotations(object):
         else:
             filename = results['ann_info']['seg_map']
         img_bytes = self.file_client.get(filename)
-        if self.use_pil:
-            gt_semantic_seg = np.array(
-                Image.open(io.BytesIO(img_bytes)).convert('P'), dtype=np.uint8)
-        else:
-            gt_semantic_seg = mmcv.imfrombytes(
-                img_bytes, flag='unchanged').squeeze().astype(np.uint8)
+        gt_semantic_seg = mmcv.imfrombytes(
+            img_bytes, flag='unchanged',
+            backend=self.imdecode_backend).squeeze().astype(np.uint8)
         # reduce zero_label
         if self.reduce_zero_label:
             # avoid using underflow conversion
@@ -95,6 +95,6 @@ class LoadAnnotations(object):
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += f'(use_pil={self.use_pil}), '
-        repr_str += f'(reduce_zero_label={self.reduce_zero_label})'
+        repr_str += f'(reduce_zero_label={self.reduce_zero_label},'
+        repr_str += f"imdecode_backend='{self.imdecode_backend}')"
         return repr_str
