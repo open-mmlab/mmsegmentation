@@ -2,6 +2,7 @@ from .cc_attention import CrissCrossAttention
 from .context_block import ContextBlock
 from .dcn import (DeformConv, DeformConvPack, ModulatedDeformConv,
                   ModulatedDeformConvPack, deform_conv, modulated_deform_conv)
+from .encoding import Encoding
 from .generalized_attention import GeneralizedAttention
 from .non_local import NonLocal2D
 from .plugin import build_plugin_layer
@@ -15,5 +16,6 @@ __all__ = [
     'ModulatedDeformConvPack', 'deform_conv', 'modulated_deform_conv',
     'ContextBlock', 'GeneralizedAttention', 'NonLocal2D',
     'get_compiler_version', 'get_compiling_cuda_version', 'build_plugin_layer',
-    'PSAMask', 'CrissCrossAttention', 'resize', 'DepthwiseSeparableConvModule'
+    'PSAMask', 'CrissCrossAttention', 'resize', 'DepthwiseSeparableConvModule',
+    'Encoding'
 ]
