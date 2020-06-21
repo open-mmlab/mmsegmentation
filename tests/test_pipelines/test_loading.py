@@ -28,7 +28,7 @@ class TestLoading(object):
         np.testing.assert_equal(results['img_norm_cfg']['mean'],
                                 np.zeros(3, dtype=np.float32))
         assert repr(transform) == transform.__class__.__name__ + \
-            "(to_float32=False, color_type='color')"
+            "(to_float32=False,color_type='color',imdecode_backend='cv2')"
 
         # no img_prefix
         results = dict(
@@ -70,7 +70,7 @@ class TestLoading(object):
         assert results['gt_semantic_seg'].shape == (288, 512)
         assert results['gt_semantic_seg'].dtype == np.uint8
         assert repr(transform) == transform.__class__.__name__ + \
-            '(use_pil=True), (reduce_zero_label=False)'
+            "(reduce_zero_label=False,imdecode_backend='pillow')"
 
         # no img_prefix
         results = dict(
@@ -93,8 +93,8 @@ class TestLoading(object):
             seg_prefix=self.data_prefix,
             ann_info=dict(seg_map='seg.png'),
             seg_fields=[])
-        transform = LoadAnnotations(use_pil=False)
+        transform = LoadAnnotations(imdecode_backend='pillow')
         results = transform(copy.deepcopy(results))
         # this image is saved by PIL
-        assert results['gt_semantic_seg'].shape == (288, 512, 3)
+        assert results['gt_semantic_seg'].shape == (288, 512)
         assert results['gt_semantic_seg'].dtype == np.uint8

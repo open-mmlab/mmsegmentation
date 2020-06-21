@@ -75,9 +75,7 @@ class DepthwiseSeparableASPPHead(ASPPHead):
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg))
 
-    def forward(self, inputs, prev_out=None):
-        if prev_out is not None:
-            assert prev_out.size(1) == self.prev_channels
+    def forward(self, inputs):
         x = self._transform_inputs(inputs)
         aspp_outs = [
             resize(
