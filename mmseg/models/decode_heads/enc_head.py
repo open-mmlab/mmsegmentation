@@ -28,9 +28,18 @@ class EncModule(nn.Module):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
+        # TODO: resolve this hack
+        # change to 1d
+        encoding_norm_cfg = norm_cfg.copy()
+        if encoding_norm_cfg['type'] in ['BN', 'IN']:
+            encoding_norm_cfg['type'] += '1d'
+        else:
+            encoding_norm_cfg['type'] = encoding_norm_cfg['type'].replace(
+                '2d', '1d')
         self.encoding = nn.Sequential(
             Encoding(channels=in_channels, num_codes=num_codes),
-            build_norm_layer(norm_cfg, num_codes)[1], nn.ReLU(inplace=True))
+            build_norm_layer(encoding_norm_cfg, num_codes)[1],
+            nn.ReLU(inplace=True))
         self.fc = nn.Sequential(
             nn.Linear(in_channels, in_channels), nn.Sigmoid())
 
