@@ -1,6 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+from mmseg.core import add_prefix
 from mmseg.ops import resize
 from .. import builder
 from ..builder import SEGMENTORS
@@ -61,9 +62,9 @@ class EncoderDecoder(BaseSegmentor):
         x = self.backbone(img)
         return x
 
-    def encode_decode(self, img):
+    def encode_decode(self, img, img_metas):
         x = self.extract_feat(img)
-        out = self.decode_head.get_seg(x)
+        out = self._decode_head_forward_test(x, img_metas)
         out = resize(
             input=out,
             size=img.shape[2:],
@@ -72,29 +73,35 @@ class EncoderDecoder(BaseSegmentor):
         return out
 
     def _decode_head_forward_train(self, x, img_metas, gt_semantic_seg):
-        seg_logit = self.decode_head(x)
-        losses = self.decode_head.losses(seg_logit, gt_semantic_seg)
+        losses = dict()
+        loss_decode = self.decode_head.forward_train(x, img_metas,
+                                                     gt_semantic_seg,
+                                                     self.train_cfg)
 
+        losses.update(add_prefix(loss_decode, 'decode'))
         return losses
+
+    def _decode_head_forward_test(self, x, img_metas):
+        seg_logits = self.decode_head.forward_test(x, img_metas, self.test_cfg)
+        return seg_logits
 
     def _auxiliary_head_forward_train(self, x, img_metas, gt_semantic_seg):
         losses = dict()
         if isinstance(self.auxiliary_head, nn.ModuleList):
             for idx, aux_head in enumerate(self.auxiliary_head):
-                auxiliary_seg_logit = aux_head(x)
-                loss_aux = aux_head.losses(
-                    auxiliary_seg_logit, gt_semantic_seg, suffix=f'aux_{idx}')
-                losses.update(loss_aux)
+                loss_aux = aux_head.forward_train(x, img_metas,
+                                                  gt_semantic_seg,
+                                                  self.train_cfg)
+                losses.update(add_prefix(loss_aux, f'aux_{idx}'))
         else:
-            auxiliary_seg_logit = self.auxiliary_head(x)
-            loss_aux = self.auxiliary_head.losses(
-                auxiliary_seg_logit, gt_semantic_seg, suffix='aux')
-            losses.update(loss_aux)
+            loss_aux = self.auxiliary_head.forward_train(
+                x, img_metas, gt_semantic_seg, self.train_cfg)
+            losses.update(add_prefix(loss_aux, 'aux'))
 
         return losses
 
     def forward_dummy(self, img):
-        seg_logit = self.encode_decode(img)
+        seg_logit = self.encode_decode(img, None)
 
         return seg_logit
 
@@ -136,7 +143,7 @@ class EncoderDecoder(BaseSegmentor):
                 pad_img = crop_img.new_zeros(
                     (crop_img.size(0), crop_img.size(1), h_crop, w_crop))
                 pad_img[:, :, :y2 - y1, :x2 - x1] = crop_img
-                pad_seg_logit = self.encode_decode(pad_img)
+                pad_seg_logit = self.encode_decode(pad_img, img_meta)
                 preds[:, :, y1:y2,
                       x1:x2] += pad_seg_logit[:, :, :y2 - y1, :x2 - x1]
                 count_mat[:, :, y1:y2, x1:x2] += 1
@@ -153,7 +160,7 @@ class EncoderDecoder(BaseSegmentor):
         return preds
 
     def whole_inference(self, img, img_meta, rescale):
-        seg_logit = self.encode_decode(img)
+        seg_logit = self.encode_decode(img, img_meta)
         if rescale:
             seg_logit = resize(
                 seg_logit,

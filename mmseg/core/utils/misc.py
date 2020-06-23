@@ -17,3 +17,11 @@ def tensor2imgs(tensor, mean=(0, 0, 0), std=(1, 1, 1), to_rgb=True):
             img, mean, std, to_bgr=to_rgb).astype(np.uint8)
         imgs.append(np.ascontiguousarray(img))
     return imgs
+
+
+def add_prefix(inputs, prefix):
+    outputs = dict()
+    for name, value in inputs.items():
+        outputs[f'{prefix}.{name}'] = value
+
+    return outputs

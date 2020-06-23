@@ -4,6 +4,7 @@ import torch
 from torch import nn
 
 from mmseg.models import BACKBONES, HEADS, build_segmentor
+from mmseg.models.decode_heads.cascade_decode_head import BaseCascadeDecodeHead
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -32,7 +33,7 @@ class ExampleDecodeHead(BaseDecodeHead):
 
 
 @HEADS.register_module()
-class ExampleCascadeDecodeHead(BaseDecodeHead):
+class ExampleCascadeDecodeHead(BaseCascadeDecodeHead):
 
     def __init__(self):
         super(ExampleCascadeDecodeHead, self).__init__(3, 3, num_classes=19)

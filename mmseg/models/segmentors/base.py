@@ -32,7 +32,7 @@ class BaseSegmentor(nn.Module):
         pass
 
     @abstractmethod
-    def encode_decode(self, feats):
+    def encode_decode(self, img, img_metas):
         pass
 
     @abstractmethod
