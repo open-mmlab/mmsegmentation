@@ -153,5 +153,10 @@ def _check_decode_head(decode_head_cfg, decode_head):
         assert in_channels == decode_head.in_channels
         assert isinstance(decode_head.in_index, int)
 
-    assert decode_head_cfg.channels == decode_head.conv_seg.in_channels
-    assert decode_head.conv_seg.out_channels == decode_head_cfg.num_classes
+    if decode_head_cfg['type'] == 'PointHead':
+        assert decode_head_cfg.channels+decode_head_cfg.num_classes == \
+               decode_head.fc_seg.in_channels
+        assert decode_head.fc_seg.out_channels == decode_head_cfg.num_classes
+    else:
+        assert decode_head_cfg.channels == decode_head.conv_seg.in_channels
+        assert decode_head.conv_seg.out_channels == decode_head_cfg.num_classes

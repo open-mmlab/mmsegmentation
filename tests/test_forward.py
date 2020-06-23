@@ -113,6 +113,15 @@ def test_psanet_forward():
         'psanet/psanet_r50-d8_512x1024_40k_cityscapes.py')
 
 
+def test_seg_fpn_forward():
+    _test_encoder_decoder_forward('sem_fpn/fpn_r50_512x1024_40k_cityscapes.py')
+
+
+def test_point_rend_forward():
+    _test_encoder_decoder_forward(
+        'point_rend/pointrend_r50_512x1024_40k_cityscapes.py')
+
+
 def _convert_batchnorm(module):
     module_output = module
     if isinstance(module, SyncBatchNorm):
