@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/pointrend_r50-d8.py', '../_base_/datasets/ade20k.py',
+    '../_base_/models/pointrend_r50.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -8,10 +8,8 @@ model = dict(decode_head=[
         type='FPNHead',
         in_channels=[256, 512, 1024, 2048],
         in_index=[0, 1, 2, 3],
-        channels=512,
-        start_level=0,
-        end_level=-1,
-        concat_all_levels=False,
+        feature_strides=[4, 8, 16, 32],
+        channels=128,
         drop_out_ratio=0.1,
         num_classes=150,
         norm_cfg=norm_cfg,
@@ -22,7 +20,7 @@ model = dict(decode_head=[
         type='PointHead',
         in_channels=[256],
         in_index=[0],
-        channels=512,
+        channels=256,
         num_fcs=3,
         coarse_pred_each_layer=True,
         num_classes=150,

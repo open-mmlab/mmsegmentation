@@ -159,8 +159,9 @@ class PointHead(BaseCascadeDecodeHead):
     def forward_train(self, inputs, prev_output, img_metas, gt_semantic_seg,
                       train_cfg):
         x = self._transform_inputs(inputs)
-        points = self.get_points_train(
-            prev_output, calculate_uncertainty, cfg=train_cfg)
+        with torch.no_grad():
+            points = self.get_points_train(
+                prev_output, calculate_uncertainty, cfg=train_cfg)
         fine_grained_point_feats = self._get_fine_grained_point_feats(
             x, points)
         coarse_point_feats = self._get_coarse_point_feats(prev_output, points)
@@ -186,7 +187,7 @@ class PointHead(BaseCascadeDecodeHead):
                 refined_seg_logits,
                 scale_factor=test_cfg.scale_factor,
                 mode='bilinear',
-                align_corners=False)
+                align_corners=self.align_corners)
             batch_size, channels, height, width = refined_seg_logits.shape
             point_indices, points = self.get_points_test(
                 refined_seg_logits, calculate_uncertainty, cfg=test_cfg)
@@ -267,33 +268,31 @@ class PointHead(BaseCascadeDecodeHead):
         return point_coords
 
     def get_points_test(self, seg_logits, uncertainty_func, cfg):
-        """
-        Find `num_points` most uncertain points from `uncertainty_map` grid.
+        """Find `num_points` most uncertain points from `uncertainty_map` grid.
 
         Args:
-            seg_logits (Tensor): A tensor of shape (N, C, mask_height,
-                mask_width) for class-specific or class-agnostic prediction.
+            seg_logits (Tensor): A tensor of shape (N, C, height,
+                width) for class-specific or class-agnostic prediction.
             uncertainty_func (func): uncertainty calculation function.
             cfg (dict): Testing config of point head.
 
         Returns:
             point_indices (Tensor): A tensor of shape (N, P) that contains
-                indices from [0, mask_height x mask_width) of the most
+                indices from [0, height x width) of the most
                 uncertain points.
             point_coords (Tensor): A tensor of shape (N, P, 2) that contains
                 [0, 1] x [0, 1] normalized coordinates of the most uncertain
-                points from the mask_height x mask_width grid .
+                points from the ``height x width`` grid .
         """
 
         num_points = cfg.subdivision_num_points
         uncertainty_map = uncertainty_func(seg_logits)
-        batch_size, _, mask_height, mask_width = uncertainty_map.shape
-        h_step = 1.0 / mask_height
-        w_step = 1.0 / mask_width
+        batch_size, _, height, width = uncertainty_map.shape
+        h_step = 1.0 / height
+        w_step = 1.0 / width
 
-        uncertainty_map = uncertainty_map.view(batch_size,
-                                               mask_height * mask_width)
-        num_points = min(mask_height * mask_width, num_points)
+        uncertainty_map = uncertainty_map.view(batch_size, height * width)
+        num_points = min(height * width, num_points)
         point_indices = uncertainty_map.topk(num_points, dim=1)[1]
         point_coords = torch.zeros(
             batch_size,
@@ -302,7 +301,7 @@ class PointHead(BaseCascadeDecodeHead):
             dtype=torch.float,
             device=seg_logits.device)
         point_coords[:, :, 0] = w_step / 2.0 + (point_indices %
-                                                mask_width).float() * w_step
+                                                width).float() * w_step
         point_coords[:, :, 1] = h_step / 2.0 + (point_indices //
-                                                mask_width).float() * h_step
+                                                width).float() * h_step
         return point_indices, point_coords

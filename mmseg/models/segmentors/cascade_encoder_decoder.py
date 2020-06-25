@@ -20,6 +20,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
                  num_stages,
                  backbone,
                  decode_head,
+                 neck=None,
                  auxiliary_head=None,
                  train_cfg=None,
                  test_cfg=None,
@@ -28,6 +29,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
         super(CascadeEncoderDecoder, self).__init__(
             backbone=backbone,
             decode_head=decode_head,
+            neck=neck,
             auxiliary_head=auxiliary_head,
             train_cfg=train_cfg,
             test_cfg=test_cfg,
@@ -40,6 +42,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
         for i in range(self.num_stages):
             self.decode_head.append(builder.build_head(decode_head[i]))
         self.align_corners = self.decode_head[-1].align_corners
+        self.num_classes = self.decode_head[-1].num_classes
 
     def init_weights(self, pretrained=None):
         self.backbone.init_weights(pretrained=pretrained)

@@ -20,12 +20,15 @@ class EncoderDecoder(BaseSegmentor):
     def __init__(self,
                  backbone,
                  decode_head,
+                 neck=None,
                  auxiliary_head=None,
                  train_cfg=None,
                  test_cfg=None,
                  pretrained=None):
         super(EncoderDecoder, self).__init__()
         self.backbone = builder.build_backbone(backbone)
+        if neck is not None:
+            self.neck = builder.build_neck(neck)
         self._init_decode_head(decode_head)
         self._init_auxiliary_head(auxiliary_head)
 
@@ -37,6 +40,7 @@ class EncoderDecoder(BaseSegmentor):
     def _init_decode_head(self, decode_head):
         self.decode_head = builder.build_head(decode_head)
         self.align_corners = self.decode_head.align_corners
+        self.num_classes = self.decode_head.num_classes
 
     def _init_auxiliary_head(self, auxiliary_head):
         if auxiliary_head is not None:
@@ -60,6 +64,8 @@ class EncoderDecoder(BaseSegmentor):
 
     def extract_feat(self, img):
         x = self.backbone(img)
+        if self.with_neck:
+            x = self.neck(x)
         return x
 
     def encode_decode(self, img, img_metas):
@@ -126,7 +132,7 @@ class EncoderDecoder(BaseSegmentor):
         h_stride, w_stride = self.test_cfg.stride
         h_crop, w_crop = self.test_cfg.crop_size
         batch_size, _, h_img, w_img = img.size()
-        num_classes = self.decode_head.num_classes
+        num_classes = self.num_classes
         h_grids = max(h_img - h_crop + h_stride - 1, 0) // h_stride + 1
         w_grids = max(w_img - w_crop + w_stride - 1, 0) // w_stride + 1
         preds = img.new_zeros((batch_size, num_classes, h_img, w_img))
