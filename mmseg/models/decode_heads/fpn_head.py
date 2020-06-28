@@ -41,7 +41,7 @@ class FPNHead(BaseDecodeHead):
                         3,
                         padding=1,
                         conv_cfg=self.conv_cfg,
-                        norm_cfg=dict(type='GN', num_groups=32),
+                        norm_cfg=self.norm_cfg,
                         act_cfg=self.act_cfg))
                 if feature_strides[i] != feature_strides[0]:
                     scale_head.append(
@@ -57,7 +57,8 @@ class FPNHead(BaseDecodeHead):
 
         output = self.scale_heads[0](x[0])
         for i in range(1, len(self.feature_strides)):
-            output += resize(
+            # non inplace
+            output = output + resize(
                 self.scale_heads[i](x[i]),
                 size=output.shape[2:],
                 mode='bilinear',
