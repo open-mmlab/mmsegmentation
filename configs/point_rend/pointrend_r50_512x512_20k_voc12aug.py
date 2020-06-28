@@ -11,7 +11,7 @@ model = dict(decode_head=[
         in_index=[0, 1, 2, 3],
         feature_strides=[4, 8, 16, 32],
         channels=128,
-        drop_out_ratio=0.1,
+        drop_out_ratio=-1,
         num_classes=21,
         norm_cfg=norm_cfg,
         align_corners=False,
