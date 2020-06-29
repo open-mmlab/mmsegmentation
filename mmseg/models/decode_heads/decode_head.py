@@ -62,10 +62,11 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         super(BaseDecodeHead, self).__init__()
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
+        self.num_classes = num_classes
+        self.drop_out_ratio = drop_out_ratio
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
-        self.num_classes = num_classes
         self.in_index = in_index
         self.loss_decode = build_loss(loss_decode)
         self.ignore_index = ignore_index

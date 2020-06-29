@@ -125,10 +125,18 @@ class PointHead(BaseCascadeDecodeHead):
             kernel_size=1,
             stride=1,
             padding=0)
+        if self.drop_out_ratio > 0:
+            self.dropout = nn.Dropout(self.drop_out_ratio)
         delattr(self, 'conv_seg')
 
     def init_weights(self):
         normal_init(self.fc_seg, std=0.001)
+
+    def cls_seg(self, feat):
+        if self.dropout is not None:
+            feat = self.dropout(feat)
+        output = self.conv_seg(feat)
+        return output
 
     def forward(self, fine_grained_point_feats, coarse_point_feats):
         x = torch.cat([fine_grained_point_feats, coarse_point_feats], dim=1)
@@ -136,7 +144,7 @@ class PointHead(BaseCascadeDecodeHead):
             x = fc(x)
             if self.coarse_pred_each_layer:
                 x = torch.cat((x, coarse_point_feats), dim=1)
-        return self.fc_seg(x)
+        return self.cls_seg(x)
 
     def _get_fine_grained_point_feats(self, x, points):
         fine_grained_feats_list = [
