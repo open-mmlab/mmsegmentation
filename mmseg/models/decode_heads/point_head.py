@@ -96,7 +96,6 @@ class PointHead(BaseCascadeDecodeHead):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg,
-            drop_out_ratio=-1,  # disable dropout
             **kwargs)
 
         self.num_fcs = num_fcs
