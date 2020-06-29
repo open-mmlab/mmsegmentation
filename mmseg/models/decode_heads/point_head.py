@@ -134,7 +134,7 @@ class PointHead(BaseCascadeDecodeHead):
     def cls_seg(self, feat):
         if self.dropout is not None:
             feat = self.dropout(feat)
-        output = self.conv_seg(feat)
+        output = self.fc_seg(feat)
         return output
 
     def forward(self, fine_grained_point_feats, coarse_point_feats):
