@@ -32,3 +32,4 @@ model = dict(decode_head=[
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
 ])
 test_cfg = dict(mode='slide', crop_size=(769, 769), stride=(513, 513))
+optimizer = dict(paramwise_cfg=dict(norm_decay_mult=0))
