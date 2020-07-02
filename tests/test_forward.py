@@ -3,11 +3,11 @@ pytest tests/test_forward.py
 """
 import copy
 from os.path import dirname, exists, join
+from unittest.mock import patch
 
 import numpy as np
 import torch
 import torch.nn as nn
-from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 
 def _get_config_directory():
@@ -113,27 +113,17 @@ def test_psanet_forward():
         'psanet/psanet_r50-d8_512x1024_40k_cityscapes.py')
 
 
-def _convert_batchnorm(module):
-    module_output = module
-    if isinstance(module, SyncBatchNorm):
-        module_output = torch.nn.BatchNorm2d(module.num_features, module.eps,
-                                             module.momentum, module.affine,
-                                             module.track_running_stats)
-        if module.affine:
-            module_output.weight.data = module.weight.data.clone().detach()
-            module_output.bias.data = module.bias.data.clone().detach()
-            # keep requires_grad unchanged
-            module_output.weight.requires_grad = module.weight.requires_grad
-            module_output.bias.requires_grad = module.bias.requires_grad
-        module_output.running_mean = module.running_mean
-        module_output.running_var = module.running_var
-        module_output.num_batches_tracked = module.num_batches_tracked
-    for name, child in module.named_children():
-        module_output.add_module(name, _convert_batchnorm(child))
-    del module
-    return module_output
+def test_encnet_forward():
+    _test_encoder_decoder_forward(
+        'encnet/encnet_r50-d8_512x1024_40k_cityscapes.py')
 
 
+def get_world_size(process_group):
+
+    return 1
+
+
+@patch('torch.distributed.get_world_size', get_world_size)
 def _test_encoder_decoder_forward(cfg_file):
     model, train_cfg, test_cfg = _get_segmentor_cfg(cfg_file)
     model['pretrained'] = None
@@ -141,8 +131,6 @@ def _test_encoder_decoder_forward(cfg_file):
 
     from mmseg.models import build_segmentor
     segmentor = build_segmentor(model, train_cfg=train_cfg, test_cfg=test_cfg)
-    # convert SyncBN to BN
-    segmentor = _convert_batchnorm(segmentor)
 
     if isinstance(segmentor.decode_head, nn.ModuleList):
         num_classes = segmentor.decode_head[-1].num_classes
