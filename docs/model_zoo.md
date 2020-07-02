@@ -10,8 +10,16 @@
 * We report the inference time as the total time of network forwarding and post-processing, excluding the data loading time.
 Results are obtained with the script `tools/benchmark.py` which computes the average time on 200 images with `torch.backends.cudnn.benchmark=False`.
 * There are two inference mode in this framework.
-    * `mode=='slide'`: The `test_cfg` will be like `dict(mode='slide', crop_size=(769, 769), stride=(513, 513))`.
-    * `mode=='whole'`
+    * `slide` mode: The `test_cfg` will be like `dict(mode='slide', crop_size=(769, 769), stride=(513, 513))`.
+
+        In this mode, multiple patches will be cropped from input image, passed into network individually.
+        The crop size and stride between patches are specified by `crop_size` and `stride`.
+        The overlapping area will be merged by average
+    * `whole` mode: The `test_cfg` will be like `dict(mode='whole')`.
+
+        In this mode, the whole imaged will be passed into network directly.
+* For input size of 8x+1 (e.g. 769), `align_corner=True` is adopted as a traditional practice.
+Otherwise, for input size of 8x (e.g. 512, 1024), `align_corner=False` is adopted.
 
 
 ## Baselines

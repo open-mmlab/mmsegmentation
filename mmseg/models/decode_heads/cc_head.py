@@ -1,6 +1,6 @@
 import torch
+from mmcv.ops import CrissCrossAttention
 
-from mmseg.ops import CrissCrossAttention
 from ..builder import HEADS
 from .fcn_head import FCNHead
 

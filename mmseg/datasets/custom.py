@@ -230,30 +230,3 @@ class CustomDataset(Dataset):
         eval_results['aAcc'] = all_acc
 
         return eval_results
-
-    @staticmethod
-    def convert_to_color(seg):
-        """Convert the segmentation map to color. `self.PALETTE` will be
-        used as palette if given.
-
-        Args:
-            seg (ndarray): The segmentation map to be colored, shape (H, W).
-
-        Returns:
-            ndarray: The colored segmentation map in BGR order, shape (H, W, 3)
-        """
-        num_classes = len(CustomDataset.CLASSES)
-        palette = CustomDataset.PALETTE
-        if palette is None:
-            palette = np.random.randint(0, 255, size=(num_classes, 3))
-        else:
-            palette = np.array(palette)
-        assert palette.shape[0] == num_classes
-        assert palette.shape[1] == 3
-        assert len(palette.shape) == 2
-        color_seg = np.zeros((seg.shape[0], seg.shape[1], 3), dtype=np.uint8)
-        for label, color in enumerate(palette):
-            color_seg[seg == label, :] = color
-        # convert to BGR
-        color_seg = color_seg[..., ::-1]
-        return color_seg

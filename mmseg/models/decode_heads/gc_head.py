@@ -1,6 +1,6 @@
 import torch
+from mmcv.cnn import ContextBlock
 
-from mmseg.ops import ContextBlock
 from ..builder import HEADS
 from .fcn_head import FCNHead
 
