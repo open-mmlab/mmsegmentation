@@ -29,8 +29,8 @@ def process_checkpoint(in_file, out_file):
 
 def get_final_iter(config):
     iter_num = config.split('_')[-2]
-    assert iter_num.endswith('ki')
-    return int(iter_num[:-2]) * 1000
+    assert iter_num.endswith('k')
+    return int(iter_num[:-1]) * 1000
 
 
 def get_final_results(log_json_path, iter_num):
@@ -44,7 +44,7 @@ def get_final_results(log_json_path, iter_num):
             if log_line['mode'] == 'train' and log_line['iter'] == iter_num:
                 result_dict['memory'] = log_line['memory']
 
-            if log_line['mode'] == 'val' and log_line['iter'] == iter_num:
+            if log_line['iter'] == iter_num:
                 result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
@@ -158,6 +158,8 @@ def main():
                     model['model_path'] = osp.abspath(
                         osp.join(model_publish_dir, file))
                     break
+            if 'model_path' not in model:
+                print(f'dir {model_publish_dir} exists, no model found')
 
         else:
             mmcv.mkdir_or_exist(model_publish_dir)

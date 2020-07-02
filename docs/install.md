@@ -43,7 +43,7 @@ d. Install build requirements and then install mmsegmentation.
 
 ```shell
 pip install -r requirements/build.txt
-pip install cityscapesscripts
+pip install "git+https://github.com/open-mmlab/mmcv.git"
 pip install -v -e .  # or "python setup.py develop"
 ```
 
@@ -72,7 +72,7 @@ conda install -c pytorch pytorch torchvision -y
 git clone http://github.com/open-mmlab/mmsegmentation
 cd mmsegmentation
 pip install -r requirements/build.txt
-pip install cityscapesscripts
+pip install "git+https://github.com/open-mmlab/mmcv.git"
 pip install -v -e .
 
 mkdir data
