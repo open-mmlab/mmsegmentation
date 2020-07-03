@@ -6,9 +6,8 @@ import tempfile
 import mmcv
 import torch
 import torch.distributed as dist
+from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
-
-from mmseg.core import tensor2imgs
 
 
 def single_gpu_test(model, data_loader, show=False, out_dir=None):

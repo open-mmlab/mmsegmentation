@@ -1,6 +1,6 @@
 import torch
+from mmcv.cnn import NonLocal2d
 
-from mmseg.ops import NonLocal2D
 from ..builder import HEADS
 from .fcn_head import FCNHead
 
@@ -29,7 +29,7 @@ class NLHead(FCNHead):
         self.reduction = reduction
         self.use_scale = use_scale
         self.mode = mode
-        self.nl_block = NonLocal2D(
+        self.nl_block = NonLocal2d(
             in_channels=self.channels,
             reduction=self.reduction,
             use_scale=self.use_scale,

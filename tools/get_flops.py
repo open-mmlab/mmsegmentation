@@ -1,9 +1,9 @@
 import argparse
 
 from mmcv import Config
+from mmcv.cnn import get_model_complexity_info
 
 from mmseg.models import build_segmentor
-from mmseg.utils import get_model_complexity_info
 
 
 def parse_args():
