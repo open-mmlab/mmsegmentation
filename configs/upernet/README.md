@@ -1,3 +1,16 @@
+# Unified Perceptual Parsing for Scene Understanding
+
+## Introduction
+```
+@inproceedings{xiao2018unified,
+  title={Unified perceptual parsing for scene understanding},
+  author={Xiao, Tete and Liu, Yingcheng and Zhou, Bolei and Jiang, Yuning and Sun, Jian},
+  booktitle={Proceedings of the European Conference on Computer Vision (ECCV)},
+  pages={418--434},
+  year={2018}
+}
+```
+
 # Cityscapes
 | Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                              download                                                                                                                                                                                              |
 |---------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -1,3 +1,15 @@
+# Pyramid Scene Parsing Network
+
+## Introduction
+```
+@inproceedings{zhao2017pspnet,
+  title={Pyramid Scene Parsing Network},
+  author={Zhao, Hengshuang and Shi, Jianping and Qi, Xiaojuan and Wang, Xiaogang and Jia, Jiaya},
+  booktitle={CVPR},
+  year={2017}
+}
+```
+
 # Cityscapes
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                 download                                                                                                                                                                                                 |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

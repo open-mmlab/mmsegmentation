@@ -1,3 +1,19 @@
+# Fully Convolutional Networks for Semantic Segmentation
+
+## Introduction
+```
+@article{shelhamer2017fully,
+  title={Fully convolutional networks for semantic segmentation},
+  author={Shelhamer, Evan and Long, Jonathan and Darrell, Trevor},
+  journal={IEEE transactions on pattern analysis and machine intelligence},
+  volume={39},
+  number={4},
+  pages={640--651},
+  year={2017},
+  publisher={IEEE Trans Pattern Anal Mach Intell}
+}
+```
+
 # Cityscapes
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                        download                                                                                                                                                                                        |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

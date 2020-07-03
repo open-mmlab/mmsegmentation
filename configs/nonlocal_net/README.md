@@ -1,3 +1,16 @@
+# Non-local Neural Networks
+
+## Introduction
+```
+@inproceedings{wang2018non,
+  title={Non-local neural networks},
+  author={Wang, Xiaolong and Girshick, Ross and Gupta, Abhinav and He, Kaiming},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={7794--7803},
+  year={2018}
+}
+```
+
 # Cityscapes
 |  Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                           download                                                                                                                                                                                                           |
 |----------|----------|-----------|--------:|----------|----------------|------:|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

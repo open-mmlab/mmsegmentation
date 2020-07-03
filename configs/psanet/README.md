@@ -1,3 +1,16 @@
+# PSANet: Point-wise Spatial Attention Network for Scene Parsing
+
+## Introduction
+```
+@inproceedings{zhao2018psanet,
+  title={Psanet: Point-wise spatial attention network for scene parsing},
+  author={Zhao, Hengshuang and Zhang, Yi and Liu, Shu and Shi, Jianping and Change Loy, Chen and Lin, Dahua and Jia, Jiaya},
+  booktitle={Proceedings of the European Conference on Computer Vision (ECCV)},
+  pages={267--283},
+  year={2018}
+}
+```
+
 # Cityscapes
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                 download                                                                                                                                                                                                 |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -1,3 +1,16 @@
+# GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond
+
+## Introduction
+```
+@inproceedings{cao2019gcnet,
+  title={Gcnet: Non-local networks meet squeeze-excitation networks and beyond},
+  author={Cao, Yue and Xu, Jiarui and Lin, Stephen and Wei, Fangyun and Hu, Han},
+  booktitle={Proceedings of the IEEE International Conference on Computer Vision Workshops},
+  pages={0--0},
+  year={2019}
+}
+```
+
 # Cityscapes
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                              download                                                                                                                                                                                              |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

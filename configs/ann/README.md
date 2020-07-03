@@ -1,3 +1,20 @@
+# Asymmetric Non-local Neural Networks for Semantic Segmentation
+
+## Introduction
+```
+@inproceedings{annn,
+  author    = {Zhen Zhu and
+               Mengde Xu and
+               Song Bai and
+               Tengteng Huang and
+               Xiang Bai},
+  title     = {Asymmetric Non-local Neural Networks for Semantic Segmentation},
+  booktitle={International Conference on Computer Vision},
+  year      = {2019},
+  url       = {http://arxiv.org/abs/1908.07678},
+}
+```
+
 # Cityscapes
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                        download                                                                                                                                                                                        |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

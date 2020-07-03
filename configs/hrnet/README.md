@@ -1,3 +1,15 @@
+# Deep High-Resolution Representation Learning for Human Pose Estimation
+
+## Introduction
+```
+@inproceedings{SunXLW19,
+  title={Deep High-Resolution Representation Learning for Human Pose Estimation},
+  author={Ke Sun and Bin Xiao and Dong Liu and Jingdong Wang},
+  booktitle={CVPR},
+  year={2019}
+}
+```
+
 # Cityscapes
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                        download                                                                                                                                                                                        |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

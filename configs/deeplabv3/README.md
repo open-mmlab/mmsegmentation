@@ -1,3 +1,15 @@
+# Rethinking atrous convolution for semantic image segmentation
+
+## Introduction
+```
+@article{chen2017rethinking,
+  title={Rethinking atrous convolution for semantic image segmentation},
+  author={Chen, Liang-Chieh and Papandreou, George and Schroff, Florian and Adam, Hartwig},
+  journal={arXiv preprint arXiv:1706.05587},
+  year={2017}
+}
+```
+
 # Cityscapes
 |  Method   | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                          download                                                                                                                                                                                                          |
 |-----------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

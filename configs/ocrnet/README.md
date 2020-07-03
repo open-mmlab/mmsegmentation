@@ -1,3 +1,15 @@
+# Object-Contextual Representations for Semantic Segmentation
+
+## Introduction
+```
+@article{yuan2019ocr,
+  title={Object-Contextual Representations for Semantic Segmentation},
+  author={Yuan Yuhui and Chen Xilin and Wang Jingdong},
+  journal={arXiv preprint arXiv:1909.11065},
+  year={2019}
+}
+```
+
 # Cityscapes
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                               download                                                                                                                                                                                               |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -1,3 +1,15 @@
+# CCNet: Criss-Cross Attention for Semantic Segmentation
+
+## Introduction
+```
+@article{huang2018ccnet,
+    title={CCNet: Criss-Cross Attention for Semantic Segmentation},
+    author={Huang, Zilong and Wang, Xinggang and Huang, Lichao and Huang, Chang and Wei, Yunchao and Liu, Wenyu},
+    booktitle={ICCV},
+    year={2019}
+}
+```
+
 # Cityscapes
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                              download                                                                                                                                                                                              |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
