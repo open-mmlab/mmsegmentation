@@ -27,6 +27,7 @@ before_script:
   stage: test
   script:
     - echo "Start building..."
+    - export MMCV_CUDA_ARGS="-gencode=arch=compute_61,code=sm_61"
     - pip install "git+https://github.com/open-mmlab/mmcv.git"
     - pip install -e .[all]
     - python -c "import mmseg; print(mmseg.__version__)"
