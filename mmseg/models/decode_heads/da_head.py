@@ -3,6 +3,7 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule, Scale
 from torch import nn
 
+from mmseg.core import add_prefix
 from ..builder import HEADS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import BaseDecodeHead
@@ -151,19 +152,20 @@ class DAHead(BaseDecodeHead):
 
         return pam_cam_out, pam_out, cam_out
 
-    def get_seg(self, inputs):
+    def forward_test(self, inputs, img_metas, test_cfg):
         return self.forward(inputs)[0]
 
-    def losses(self, seg_logit, seg_label, suffix='decode'):
+    def losses(self, seg_logit, seg_label):
         pam_cam_seg_logit, pam_seg_logit, cam_seg_logit = seg_logit
         loss = dict()
         loss.update(
-            super(DAHead, self).losses(
-                pam_cam_seg_logit, seg_label, suffix=f'pam_cam_{suffix}'))
+            add_prefix(
+                super(DAHead, self).losses(pam_cam_seg_logit, seg_label),
+                'pam_cam'))
         loss.update(
-            super(DAHead, self).losses(
-                pam_seg_logit, seg_label, suffix=f'pam_{suffix}'))
+            add_prefix(
+                super(DAHead, self).losses(pam_seg_logit, seg_label), 'pam'))
         loss.update(
-            super(DAHead, self).losses(
-                cam_seg_logit, seg_label, suffix=f'cam_{suffix}'))
+            add_prefix(
+                super(DAHead, self).losses(cam_seg_logit, seg_label), 'cam'))
         return loss

@@ -65,7 +65,7 @@ class PSPHead(BaseDecodeHead):
 
     Args:
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
-            Module.
+            Module. Default: (1, 2, 3, 6).
     """
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):

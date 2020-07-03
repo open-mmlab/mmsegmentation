@@ -27,12 +27,12 @@ before_script:
   stage: test
   script:
     - echo "Start building..."
-    - pip install mmcv-nightly
+    - pip install "git+https://github.com/open-mmlab/mmcv.git"
     - pip install -e .[all]
     - python -c "import mmseg; print(mmseg.__version__)"
     - echo "Start testing..."
     - coverage run --branch --source mmseg -m pytest tests/
-    - coverage report -m --omit="mmseg/utils/*","mmseg/ops/*","mmseg/apis/*","mmseg/datasets/samplers/*"
+    - coverage report -m --omit="mmseg/utils/*","mmseg/apis/*","mmseg/datasets/samplers/*"
 
 linting:pytorch1.3-cuda10:
   image: $PYTORCH_IMAGE

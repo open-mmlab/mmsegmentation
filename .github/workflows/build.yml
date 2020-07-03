@@ -34,6 +34,7 @@ jobs:
       CUDA_SHORT: 10.1
       UBUNTU_VERSION: ubuntu1804
       FORCE_CUDA: 1
+      MMCV_CUDA_ARGS: -gencode=arch=compute_61,code=sm_61
     runs-on: ubuntu-latest
     strategy:
       matrix:

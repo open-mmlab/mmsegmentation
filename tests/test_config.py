@@ -82,6 +82,8 @@ def test_config_data_pipeline():
 
     for config_fname in config_names:
         config_fpath = join(config_dpath, config_fname)
+        print(
+            'Building data pipeline, config_fpath = {!r}'.format(config_fpath))
         config_mod = Config.fromfile(config_fpath)
 
         # remove loading pipeline
@@ -92,9 +94,6 @@ def test_config_data_pipeline():
 
         train_pipeline = Compose(config_mod.train_pipeline)
         test_pipeline = Compose(config_mod.test_pipeline)
-
-        print(
-            'Building data pipeline, config_fpath = {!r}'.format(config_fpath))
 
         img = np.random.randint(0, 255, size=(1024, 2048, 3), dtype=np.uint8)
         if to_float32:
@@ -153,5 +152,10 @@ def _check_decode_head(decode_head_cfg, decode_head):
         assert in_channels == decode_head.in_channels
         assert isinstance(decode_head.in_index, int)
 
-    assert decode_head_cfg.channels == decode_head.conv_seg.in_channels
-    assert decode_head.conv_seg.out_channels == decode_head_cfg.num_classes
+    if decode_head_cfg['type'] == 'PointHead':
+        assert decode_head_cfg.channels+decode_head_cfg.num_classes == \
+               decode_head.fc_seg.in_channels
+        assert decode_head.fc_seg.out_channels == decode_head_cfg.num_classes
+    else:
+        assert decode_head_cfg.channels == decode_head.conv_seg.in_channels
+        assert decode_head.conv_seg.out_channels == decode_head_cfg.num_classes

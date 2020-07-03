@@ -62,10 +62,11 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         super(BaseDecodeHead, self).__init__()
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
+        self.num_classes = num_classes
+        self.drop_out_ratio = drop_out_ratio
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
-        self.num_classes = num_classes
         self.in_index = in_index
         self.loss_decode = build_loss(loss_decode)
         self.ignore_index = ignore_index
@@ -150,8 +151,13 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
     def forward(self, inputs):
         pass
 
-    def get_seg(self, *args, **kwargs):
-        return self.forward(*args, **kwargs)
+    def forward_train(self, inputs, img_metas, gt_semantic_seg, train_cfg):
+        seg_logits = self.forward(inputs)
+        losses = self.losses(seg_logits, gt_semantic_seg)
+        return losses
+
+    def forward_test(self, inputs, img_metas, test_cfg):
+        return self.forward(inputs)
 
     def cls_seg(self, feat):
         if self.dropout is not None:
@@ -159,7 +165,7 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         output = self.conv_seg(feat)
         return output
 
-    def losses(self, seg_logit, seg_label, suffix='decode'):
+    def losses(self, seg_logit, seg_label):
         loss = dict()
         seg_logit = resize(
             input=seg_logit,
@@ -171,10 +177,10 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
-        loss[f'loss_seg_{suffix}'] = self.loss_decode(
+        loss['loss_seg'] = self.loss_decode(
             seg_logit,
             seg_label,
             weight=seg_weight,
             ignore_index=self.ignore_index)
-        loss[f'acc_seg_{suffix}'] = accuracy(seg_logit, seg_label)
+        loss['acc_seg'] = accuracy(seg_logit, seg_label)
         return loss

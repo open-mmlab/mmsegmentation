@@ -15,6 +15,9 @@ class UPerHead(BaseDecodeHead):
     This head is the implementation of `UPerNet
     <https://arxiv.org/abs/1807.10221>`_.
 
+    Args:
+        pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
+            Module applied on the last feature. Default: (1, 2, 3, 6).
     """
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):

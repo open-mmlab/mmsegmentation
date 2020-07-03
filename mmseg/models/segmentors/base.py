@@ -19,6 +19,10 @@ class BaseSegmentor(nn.Module):
         super(BaseSegmentor, self).__init__()
 
     @property
+    def with_neck(self):
+        return hasattr(self, 'neck') and self.neck is not None
+
+    @property
     def with_auxiliary_head(self):
         return hasattr(self,
                        'auxiliary_head') and self.auxiliary_head is not None
@@ -32,7 +36,7 @@ class BaseSegmentor(nn.Module):
         pass
 
     @abstractmethod
-    def encode_decode(self, feats):
+    def encode_decode(self, img, img_metas):
         pass
 
     @abstractmethod

@@ -138,7 +138,7 @@ class EncHead(BaseDecodeHead):
         else:
             return output
 
-    def get_seg(self, inputs):
+    def forward_test(self, inputs, img_metas, test_cfg):
         if self.use_se_loss:
             return self.forward(inputs)[0]
         else:
@@ -154,11 +154,10 @@ class EncHead(BaseDecodeHead):
             onehot_labels[i] = hist > 0
         return onehot_labels
 
-    def losses(self, seg_logit, seg_label, suffix='decode'):
+    def losses(self, seg_logit, seg_label):
         seg_logit, se_seg_logit = seg_logit
         loss = dict()
-        loss.update(
-            super(EncHead, self).losses(seg_logit, seg_label, suffix=suffix))
+        loss.update(super(EncHead, self).losses(seg_logit, seg_label))
         se_loss = self.loss_se_decode(
             se_seg_logit,
             self._convert_to_onehot_labels(seg_label, self.num_classes))

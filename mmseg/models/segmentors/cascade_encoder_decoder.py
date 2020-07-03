@@ -1,5 +1,6 @@
 from torch import nn
 
+from mmseg.core import add_prefix
 from mmseg.ops import resize
 from .. import builder
 from ..builder import SEGMENTORS
@@ -19,6 +20,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
                  num_stages,
                  backbone,
                  decode_head,
+                 neck=None,
                  auxiliary_head=None,
                  train_cfg=None,
                  test_cfg=None,
@@ -27,6 +29,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
         super(CascadeEncoderDecoder, self).__init__(
             backbone=backbone,
             decode_head=decode_head,
+            neck=neck,
             auxiliary_head=auxiliary_head,
             train_cfg=train_cfg,
             test_cfg=test_cfg,
@@ -39,6 +42,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
         for i in range(self.num_stages):
             self.decode_head.append(builder.build_head(decode_head[i]))
         self.align_corners = self.decode_head[-1].align_corners
+        self.num_classes = self.decode_head[-1].num_classes
 
     def init_weights(self, pretrained=None):
         self.backbone.init_weights(pretrained=pretrained)
@@ -51,11 +55,12 @@ class CascadeEncoderDecoder(EncoderDecoder):
             else:
                 self.auxiliary_head.init_weights()
 
-    def encode_decode(self, img):
+    def encode_decode(self, img, img_metas):
         x = self.extract_feat(img)
-        out = self.decode_head[0].get_seg(x)
+        out = self.decode_head[0].forward_test(x, img_metas, self.test_cfg)
         for i in range(1, self.num_stages):
-            out = self.decode_head[i].get_seg(x, out)
+            out = self.decode_head[i].forward_test(x, out, img_metas,
+                                                   self.test_cfg)
         out = resize(
             input=out,
             size=img.shape[2:],
@@ -66,14 +71,17 @@ class CascadeEncoderDecoder(EncoderDecoder):
     def _decode_head_forward_train(self, x, img_metas, gt_semantic_seg):
         losses = dict()
 
-        seg_logit = self.decode_head[0](x)
-        loss_decode = self.decode_head[0].losses(
-            seg_logit, gt_semantic_seg, suffix='decode_0')
-        losses.update(loss_decode)
+        loss_decode = self.decode_head[0].forward_train(
+            x, img_metas, gt_semantic_seg, self.train_cfg)
+
+        losses.update(add_prefix(loss_decode, 'decode_0'))
+
         for i in range(1, self.num_stages):
-            seg_logit = self.decode_head[i](x, seg_logit)
-            loss_decode = self.decode_head[i].losses(
-                seg_logit, gt_semantic_seg, suffix=f'decode_{i}')
-            losses.update(loss_decode)
+            # forward test again, maybe unnecessary for most methods.
+            prev_outputs = self.decode_head[i - 1].forward_test(
+                x, img_metas, self.test_cfg)
+            loss_decode = self.decode_head[i].forward_train(
+                x, prev_outputs, img_metas, gt_semantic_seg, self.train_cfg)
+            losses.update(add_prefix(loss_decode, f'decode_{i}'))
 
         return losses
