@@ -225,29 +225,6 @@ if __name__ == '__main__':
             'build': parse_requirements('requirements/build.txt'),
             'optional': parse_requirements('requirements/optional.txt'),
         },
-        ext_modules=[
-            make_cuda_ext(
-                name='compiling_info',
-                module='mmseg.ops.utils',
-                sources=['src/compiling_info.cpp']),
-            make_cuda_ext(
-                name='deform_conv_ext',
-                module='mmseg.ops.dcn',
-                sources=['src/deform_conv_ext.cpp'],
-                sources_cuda=[
-                    'src/cuda/deform_conv_cuda.cpp',
-                    'src/cuda/deform_conv_cuda_kernel.cu'
-                ]),
-            make_cuda_ext(
-                name='psamask_ext',
-                module='mmseg.ops.psa',
-                sources=['src/psamask_ext.cpp', 'src/cpu/psamask_cpu.cpp'],
-                sources_cuda=['src/cuda/psamask_cuda.cu']),
-            make_cuda_ext(
-                name='ca_ext',
-                module='mmseg.ops.cc_attention',
-                sources=['src/ca_ext.cpp'],
-                sources_cuda=['src/cuda/ca_cuda_kernel.cu'])
-        ],
+        ext_modules=[],
         cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
