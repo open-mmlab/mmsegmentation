@@ -1,7 +1,7 @@
 """pytest tests/test_forward.py."""
 import copy
 from os.path import dirname, exists, join
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import numpy as np
 import torch
@@ -9,15 +9,51 @@ import torch.nn as nn
 from mmcv.utils.parrots_wrapper import SyncBatchNorm, _BatchNorm
 
 
+def _demo_mm_inputs(input_shape=(2, 3, 8, 16), num_classes=10):
+    """Create a superset of inputs needed to run test or train batches.
+
+    Args:
+        input_shape (tuple):
+            input batch dimensions
+
+        num_classes (int):
+            number of semantic classes
+    """
+    (N, C, H, W) = input_shape
+
+    rng = np.random.RandomState(0)
+
+    imgs = rng.rand(*input_shape)
+    segs = rng.randint(
+        low=0, high=num_classes - 1, size=(N, 1, H, W)).astype(np.uint8)
+
+    img_metas = [{
+        'img_shape': (H, W, C),
+        'ori_shape': (H, W, C),
+        'pad_shape': (H, W, C),
+        'filename': '<demo>.png',
+        'scale_factor': 1.0,
+        'flip': False,
+        'flip_direction': 'horizontal'
+    } for _ in range(N)]
+
+    mm_inputs = {
+        'imgs': torch.FloatTensor(imgs),
+        'img_metas': img_metas,
+        'gt_semantic_seg': torch.LongTensor(segs)
+    }
+    return mm_inputs
+
+
 def _get_config_directory():
     """Find the predefined segmentor config directory."""
     try:
         # Assume we are running in the source mmsegmentation repo
-        repo_dpath = dirname(dirname(__file__))
+        repo_dpath = dirname(dirname(dirname(__file__)))
     except NameError:
         # For IPython development when this __file__ is not defined
         import mmseg
-        repo_dpath = dirname(dirname(mmseg.__file__))
+        repo_dpath = dirname(dirname(dirname(mmseg.__file__)))
     config_dpath = join(repo_dpath, 'configs')
     if not exists(config_dpath):
         raise Exception('Cannot find config path')
@@ -120,11 +156,14 @@ def get_world_size(process_group):
     return 1
 
 
+def _check_input_dim(self, inputs):
+    pass
+
+
 def _convert_batchnorm(module):
     module_output = module
     if isinstance(module, SyncBatchNorm):
         # to be consistent with SyncBN, we hack dim check function in BN
-        _BatchNorm._check_input_dim = MagicMock()
         module_output = _BatchNorm(module.num_features, module.eps,
                                    module.momentum, module.affine,
                                    module.track_running_stats)
@@ -143,6 +182,7 @@ def _convert_batchnorm(module):
     return module_output
 
 
+@patch('torch.nn.modules.batchnorm._BatchNorm._check_input_dim', _check_input_dim)
 @patch('torch.distributed.get_world_size', get_world_size)
 def _test_encoder_decoder_forward(cfg_file):
     model, train_cfg, test_cfg = _get_segmentor_cfg(cfg_file)
@@ -157,7 +197,7 @@ def _test_encoder_decoder_forward(cfg_file):
     else:
         num_classes = segmentor.decode_head.num_classes
     # batch_size=2 for BatchNorm
-    input_shape = (2, 3, 256, 512)
+    input_shape = (2, 3, 32, 32)
     mm_inputs = _demo_mm_inputs(input_shape, num_classes=num_classes)
 
     imgs = mm_inputs.pop('imgs')
@@ -186,38 +226,3 @@ def _test_encoder_decoder_forward(cfg_file):
         segmentor.forward(img_list, img_meta_list, return_loss=False)
 
 
-def _demo_mm_inputs(input_shape=(1, 3, 256, 512),
-                    num_classes=10):  # yapf: disable
-    """Create a superset of inputs needed to run test or train batches.
-
-    Args:
-        input_shape (tuple):
-            input batch dimensions
-
-        num_classes (int):
-            number of semantic classes
-    """
-    (N, C, H, W) = input_shape
-
-    rng = np.random.RandomState(0)
-
-    imgs = rng.rand(*input_shape)
-    segs = rng.randint(
-        low=0, high=num_classes - 1, size=(N, 1, H, W)).astype(np.uint8)
-
-    img_metas = [{
-        'img_shape': (H, W, C),
-        'ori_shape': (H, W, C),
-        'pad_shape': (H, W, C),
-        'filename': '<demo>.png',
-        'scale_factor': 1.0,
-        'flip': False,
-        'flip_direction': 'horizontal'
-    } for _ in range(N)]
-
-    mm_inputs = {
-        'imgs': torch.FloatTensor(imgs).requires_grad_(True),
-        'img_metas': img_metas,
-        'gt_semantic_seg': torch.LongTensor(segs)
-    }
-    return mm_inputs

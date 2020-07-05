@@ -22,7 +22,7 @@ jobs:
       - name: Lint with flake8
         run: flake8 .
       - name: Lint with isort
-        run: isort -recursive --check-only --diff mmseg/ tests/ examples/
+        run: isort -rc --check-only --diff mmseg/ tests/ examples/
       - name: Format python codes with yapf
         run: yapf -r -d mmseg/ tests/ examples/
 #      - name: Check docstring
