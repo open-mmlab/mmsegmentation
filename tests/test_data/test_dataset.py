@@ -22,7 +22,8 @@ def test_palette():
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
-@patch('mmseg.datasets.CustomDataset.__getitem__', MagicMock(side_effect=lambda idx: idx))
+@patch('mmseg.datasets.CustomDataset.__getitem__',
+       MagicMock(side_effect=lambda idx: idx))
 def test_dataset_wrapper():
     # CustomDataset.load_annotations = MagicMock()
     # CustomDataset.__getitem__ = MagicMock(side_effect=lambda idx: idx)
@@ -49,7 +50,8 @@ def test_dataset_wrapper():
 
 def test_custom_dataset():
     img_norm_cfg = dict(
-        mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375],
+        mean=[123.675, 116.28, 103.53],
+        std=[58.395, 57.12, 57.375],
         to_rgb=True)
     crop_size = (512, 1024)
     train_pipeline = [
@@ -81,28 +83,28 @@ def test_custom_dataset():
     ]
 
     # train dataset
-    train_dataset = CustomDataset(train_pipeline,
-                                  data_root=osp.join(osp.dirname(__file__),
-                                                     '../data/pseudo_dataset'),
-                                  img_dir='imgs/', ann_dir='gts/',
-                                  img_suffix='img.jpg',
-                                  seg_map_suffix='gt.png')
+    train_dataset = CustomDataset(
+        train_pipeline,
+        data_root=osp.join(osp.dirname(__file__), '../data/pseudo_dataset'),
+        img_dir='imgs/',
+        ann_dir='gts/',
+        img_suffix='img.jpg',
+        seg_map_suffix='gt.png')
     assert len(train_dataset) == 5
 
     # no data_root
-    train_dataset = CustomDataset(train_pipeline,
-                                  img_dir=osp.join(osp.dirname(__file__),
-                                                   '../data/pseudo_dataset/imgs'),
-                                  ann_dir=osp.join(osp.dirname(__file__),
-                                                   '../data/pseudo_dataset/gts'),
-                                  img_suffix='img.jpg',
-                                  seg_map_suffix='gt.png')
+    train_dataset = CustomDataset(
+        train_pipeline,
+        img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'),
+        ann_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/gts'),
+        img_suffix='img.jpg',
+        seg_map_suffix='gt.png')
     assert len(train_dataset) == 5
 
     # test dataset
-    test_dataset = CustomDataset(test_pipeline,
-                                 img_dir=osp.join(osp.dirname(__file__),
-                                                  '../data/pseudo_dataset/imgs'),
-                                 img_suffix='img.jpg',
-                                 test_mode=True)
+    test_dataset = CustomDataset(
+        test_pipeline,
+        img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'),
+        img_suffix='img.jpg',
+        test_mode=True)
     assert len(test_dataset) == 5

@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 import torch
 
-from mmseg.models.losses import reduce_loss, weight_reduce_loss, Accuracy
+from mmseg.models.losses import Accuracy, reduce_loss, weight_reduce_loss
 
 
 def test_utils():
@@ -33,11 +33,11 @@ def test_utils():
 
     with pytest.raises(AssertionError):
         weight_wrong = weight[0, 0, ...]
-        _ = weight_reduce_loss(loss, weight=weight_wrong, reduction='mean')
+        weight_reduce_loss(loss, weight=weight_wrong, reduction='mean')
 
     with pytest.raises(AssertionError):
         weight_wrong = weight[:, 0:2, ...]
-        _ = weight_reduce_loss(loss, weight=weight_wrong, reduction='mean')
+        weight_reduce_loss(loss, weight=weight_wrong, reduction='mean')
 
 
 def test_ce_loss():

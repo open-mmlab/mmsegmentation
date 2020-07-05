@@ -182,7 +182,8 @@ def _convert_batchnorm(module):
     return module_output
 
 
-@patch('torch.nn.modules.batchnorm._BatchNorm._check_input_dim', _check_input_dim)
+@patch('torch.nn.modules.batchnorm._BatchNorm._check_input_dim',
+       _check_input_dim)
 @patch('torch.distributed.get_world_size', get_world_size)
 def _test_encoder_decoder_forward(cfg_file):
     model, train_cfg, test_cfg = _get_segmentor_cfg(cfg_file)
@@ -224,5 +225,3 @@ def _test_encoder_decoder_forward(cfg_file):
         img_list = [img[None, :] for img in imgs]
         img_meta_list = [[img_meta] for img_meta in img_metas]
         segmentor.forward(img_list, img_meta_list, return_loss=False)
-
-
