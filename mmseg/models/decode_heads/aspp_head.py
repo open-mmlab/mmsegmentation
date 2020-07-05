@@ -8,7 +8,7 @@ from .decode_head import BaseDecodeHead
 
 
 class ASPPModule(nn.ModuleList):
-    """Atrous Spatial Pyramid Pooling (ASPP) Module
+    """Atrous Spatial Pyramid Pooling (ASPP) Module.
 
     Args:
         dilations (tuple[int]): Dilation rate of each layer.
@@ -50,7 +50,7 @@ class ASPPModule(nn.ModuleList):
 
 @HEADS.register_module()
 class ASPPHead(BaseDecodeHead):
-    """Rethinking Atrous Convolution for Semantic Image Segmentation
+    """Rethinking Atrous Convolution for Semantic Image Segmentation.
 
     This head is the implementation of `DeepLabV3
     <https://arxiv.org/abs/1706.05587>`_.

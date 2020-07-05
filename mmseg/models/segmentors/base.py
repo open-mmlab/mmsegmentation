@@ -11,7 +11,7 @@ import torch.nn as nn
 
 
 class BaseSegmentor(nn.Module):
-    """Base class for segmentors"""
+    """Base class for segmentors."""
 
     __metaclass__ = ABCMeta
 

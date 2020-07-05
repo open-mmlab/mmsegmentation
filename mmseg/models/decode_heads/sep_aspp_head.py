@@ -8,8 +8,8 @@ from .aspp_head import ASPPHead, ASPPModule
 
 
 class DepthwiseSeparableASPPModule(ASPPModule):
-    """Atrous Spatial Pyramid Pooling (ASPP) Module
-    with depthwise separable conv"""
+    """Atrous Spatial Pyramid Pooling (ASPP) Module with depthwise separable
+    conv."""
 
     def __init__(self, **kwargs):
         super(DepthwiseSeparableASPPModule, self).__init__(**kwargs)
@@ -28,7 +28,7 @@ class DepthwiseSeparableASPPModule(ASPPModule):
 @HEADS.register_module()
 class DepthwiseSeparableASPPHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
-    Segmentation
+    Segmentation.
 
     This head is the implementation of `DeepLabV3+
     <https://arxiv.org/abs/1802.02611>`_.

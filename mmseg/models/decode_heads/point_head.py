@@ -39,7 +39,7 @@ def point_sample(input, points, align_corners=False, **kwargs):
 
 
 def calculate_uncertainty(seg_logits):
-    """Estimate uncertainty based on seg logits
+    """Estimate uncertainty based on seg logits.
 
     For each location of the prediction ``seg_logits`` we estimate
     uncertainty as the difference between top first and top second
@@ -223,8 +223,7 @@ class PointHead(BaseCascadeDecodeHead):
         return loss
 
     def get_points_train(self, seg_logits, uncertainty_func, cfg):
-        """
-        Sample points in [0, 1] x [0, 1] coordinate space based on their
+        """Sample points in [0, 1] x [0, 1] coordinate space based on their
         uncertainty. The uncertainties are calculated for each point using
         'uncertainty_func' function that takes point's logit prediction as
         input.

@@ -55,7 +55,7 @@ class EncModule(nn.Module):
 
 @HEADS.register_module()
 class EncHead(BaseDecodeHead):
-    """Context Encoding for Semantic Segmentation
+    """Context Encoding for Semantic Segmentation.
 
     This head is the implementation of `EncNet
     <https://arxiv.org/abs/1803.08904>`_.

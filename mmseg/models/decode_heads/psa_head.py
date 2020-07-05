@@ -11,7 +11,7 @@ from .decode_head import BaseDecodeHead
 
 @HEADS.register_module()
 class PSAHead(BaseDecodeHead):
-    """Point-wise Spatial Attention Network for Scene Parsing
+    """Point-wise Spatial Attention Network for Scene Parsing.
 
     This head is the implementation of `PSANet
     <https://hszhao.github.io/papers/eccv18_psanet.pdf>`_.

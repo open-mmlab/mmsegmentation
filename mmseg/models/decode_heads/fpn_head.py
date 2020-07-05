@@ -9,7 +9,7 @@ from .decode_head import BaseDecodeHead
 
 @HEADS.register_module()
 class FPNHead(BaseDecodeHead):
-    """Panoptic Feature Pyramid Networks
+    """Panoptic Feature Pyramid Networks.
 
     This head is the implementation of `Semantic FPN
     <https://arxiv.org/abs/1901.02446>`_.

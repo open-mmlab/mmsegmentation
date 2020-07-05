@@ -10,11 +10,11 @@ from .base import BaseSegmentor
 
 @SEGMENTORS.register_module()
 class EncoderDecoder(BaseSegmentor):
-    """Encoder Decoder segmentors
+    """Encoder Decoder segmentors.
 
     EncoderDecoder typically consists of backbone, decode_head, auxiliary_head.
-    Note that auxiliary_head is only used for deep supervision during
-    training, which could be dumped during inference.
+    Note that auxiliary_head is only used for deep supervision during training,
+    which could be dumped during inference.
     """
 
     def __init__(self,

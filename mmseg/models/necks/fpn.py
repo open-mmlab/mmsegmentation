@@ -7,8 +7,7 @@ from ..builder import NECKS
 
 @NECKS.register_module()
 class FPN(nn.Module):
-    """
-    Feature Pyramid Network.
+    """Feature Pyramid Network.
 
     This is an implementation of - Feature Pyramid Networks for Object
     Detection (https://arxiv.org/abs/1612.03144)

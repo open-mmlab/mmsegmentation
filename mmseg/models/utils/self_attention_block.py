@@ -27,7 +27,6 @@ class SelfAttentionBlock(nn.Module):
         conv_cfg (dict|None): Config of conv layers.
         norm_cfg (dict|None): Config of norm layers.
         act_cfg (dict|None): Config of activation layers.
-
     """
 
     def __init__(self, key_in_channels, query_in_channels, channels,

@@ -14,7 +14,7 @@ from .pipelines import Compose
 
 @DATASETS.register_module()
 class CustomDataset(Dataset):
-    """Custom dataset for semantic segmentation
+    """Custom dataset for semantic segmentation.
 
     An example of file structure is as followed.
 

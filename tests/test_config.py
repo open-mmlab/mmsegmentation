@@ -9,7 +9,7 @@ from mmseg.models import build_segmentor
 
 
 def _get_config_directory():
-    """ Find the predefined segmentor config directory """
+    """Find the predefined segmentor config directory."""
     try:
         # Assume we are running in the source mmsegmentation repo
         repo_dpath = dirname(dirname(__file__))
@@ -24,10 +24,8 @@ def _get_config_directory():
 
 
 def test_config_build_segmentor():
-    """
-    Test that all segmentation models defined in the configs can be
-        initialized.
-    """
+    """Test that all segmentation models defined in the configs can be
+    initialized."""
     config_dpath = _get_config_directory()
     print('Found config_dpath = {!r}'.format(config_dpath))
 
@@ -67,8 +65,8 @@ def test_config_build_segmentor():
 
 
 def test_config_data_pipeline():
-    """
-    Test whether the data pipeline is valid and can process corner cases.
+    """Test whether the data pipeline is valid and can process corner cases.
+
     CommandLine:
         xdoctest -m tests/test_config.py test_config_build_data_pipeline
     """

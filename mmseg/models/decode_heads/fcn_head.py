@@ -17,7 +17,6 @@ class FCNHead(BaseDecodeHead):
         kernel_size (int): The kernel size for convs in the head. Default: 3.
         concat_input (bool): Whether concat the input and output of convs
             before classification layer.
-
     """
 
     def __init__(self,

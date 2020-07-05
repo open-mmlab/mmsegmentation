@@ -8,7 +8,7 @@ from .decode_head import BaseDecodeHead
 
 
 class PPMConcat(nn.ModuleList):
-    """Pyramid Pooling Module that only concat the features of each layer
+    """Pyramid Pooling Module that only concat the features of each layer.
 
     Args:
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
@@ -29,7 +29,7 @@ class PPMConcat(nn.ModuleList):
 
 
 class SelfAttentionBlock(_SelfAttentionBlock):
-    """Make a ANN used SelfAttentionBlock
+    """Make a ANN used SelfAttentionBlock.
 
     Args:
         low_in_channels (int): Input channels of lower level feature,
@@ -179,7 +179,7 @@ class APNB(nn.Module):
 
 @HEADS.register_module()
 class ANNHead(BaseDecodeHead):
-    """Asymmetric Non-local Neural Networks for Semantic Segmentation
+    """Asymmetric Non-local Neural Networks for Semantic Segmentation.
 
     This head is the implementation of `ANNNet
     <https://arxiv.org/abs/1908.07678>`_.

@@ -44,8 +44,7 @@ class ExampleCascadeDecodeHead(BaseCascadeDecodeHead):
 
 def _demo_mm_inputs(input_shape=(1, 3, 8, 16),
                     num_classes=10):  # yapf: disable
-    """
-    Create a superset of inputs needed to run test or train batches.
+    """Create a superset of inputs needed to run test or train batches.
 
     Args:
         input_shape (tuple):

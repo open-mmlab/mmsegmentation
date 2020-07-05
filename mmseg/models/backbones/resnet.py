@@ -105,8 +105,9 @@ class Bottleneck(nn.Module):
                  dcn=None,
                  plugins=None):
         """Bottleneck block for ResNet.
-        If style is "pytorch", the stride-two layer is the 3x3 conv layer,
-        if it is "caffe", the stride-two layer is the first 1x1 conv layer.
+
+        If style is "pytorch", the stride-two layer is the 3x3 conv layer, if
+        it is "caffe", the stride-two layer is the first 1x1 conv layer.
         """
         super(Bottleneck, self).__init__()
         assert style in ['pytorch', 'caffe']
@@ -210,7 +211,7 @@ class Bottleneck(nn.Module):
                 planes * self.expansion, self.after_conv3_plugins)
 
     def make_block_plugins(self, in_channels, plugins):
-        """ make plugins for block
+        """make plugins for block.
 
         Args:
             in_channels (int): Input channels of plugin.
@@ -218,7 +219,6 @@ class Bottleneck(nn.Module):
 
         Returns:
             list[str]: List of the names of plugin.
-
         """
         assert isinstance(plugins, list)
         plugin_names = []
@@ -454,7 +454,7 @@ class ResNet(nn.Module):
             len(self.stage_blocks) - 1)
 
     def make_stage_plugins(self, plugins, stage_idx):
-        """ make plugins for ResNet 'stage_idx'th stage .
+        """make plugins for ResNet 'stage_idx'th stage .
 
         Currently we support to insert 'context_block',
         'empirical_attention_block', 'nonlocal_block' into the backbone like
@@ -494,7 +494,6 @@ class ResNet(nn.Module):
 
         Returns:
             list[dict]: Plugins for current stage
-
         """
         stage_plugins = []
         for plugin in plugins:

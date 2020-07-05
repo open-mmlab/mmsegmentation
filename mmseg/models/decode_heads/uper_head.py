@@ -10,7 +10,7 @@ from .psp_head import PPM
 
 @HEADS.register_module()
 class UPerHead(BaseDecodeHead):
-    """Unified Perceptual Parsing for Scene Understanding
+    """Unified Perceptual Parsing for Scene Understanding.
 
     This head is the implementation of `UPerNet
     <https://arxiv.org/abs/1807.10221>`_.

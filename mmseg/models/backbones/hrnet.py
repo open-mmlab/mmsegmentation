@@ -11,8 +11,10 @@ from .resnet import BasicBlock, Bottleneck
 
 
 class HRModule(nn.Module):
-    """ High-Resolution Module for HRNet. In this module, every branch
-    has 4 BasicBlocks/Bottlenecks. Fusion/Exchange is in this module.
+    """High-Resolution Module for HRNet.
+
+    In this module, every branch has 4 BasicBlocks/Bottlenecks. Fusion/Exchange
+    is in this module.
     """
 
     def __init__(self,

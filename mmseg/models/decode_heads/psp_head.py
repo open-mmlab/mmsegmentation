@@ -58,7 +58,7 @@ class PPM(nn.ModuleList):
 
 @HEADS.register_module()
 class PSPHead(BaseDecodeHead):
-    """Pyramid Scene Parsing Network
+    """Pyramid Scene Parsing Network.
 
     This head is the implementation of
     `PSPNet <https://arxiv.org/abs/1612.01105>`_.

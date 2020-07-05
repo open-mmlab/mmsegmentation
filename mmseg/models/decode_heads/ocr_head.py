@@ -10,10 +10,10 @@ from .cascade_decode_head import BaseCascadeDecodeHead
 
 
 class SpatialGatherModule(nn.Module):
-    """
-        Aggregate the context features according to the initial
-        predicted probability distribution.
-        Employ the soft-weighted method to aggregate the context.
+    """Aggregate the context features according to the initial predicted
+    probability distribution.
+
+    Employ the soft-weighted method to aggregate the context.
     """
 
     def __init__(self, scale):
@@ -36,7 +36,7 @@ class SpatialGatherModule(nn.Module):
 
 
 class ObjectAttentionBlock(_SelfAttentionBlock):
-    """Make a OCR used SelfAttentionBlock"""
+    """Make a OCR used SelfAttentionBlock."""
 
     def __init__(self, in_channels, channels, scale, conv_cfg, norm_cfg,
                  act_cfg):
@@ -81,7 +81,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
 
 @HEADS.register_module()
 class OCRHead(BaseCascadeDecodeHead):
-    """Object-Contextual Representations for Semantic Segmentation
+    """Object-Contextual Representations for Semantic Segmentation.
 
     This head is the implementation of `OCRNet
     <https://arxiv.org/abs/1909.11065>`_.

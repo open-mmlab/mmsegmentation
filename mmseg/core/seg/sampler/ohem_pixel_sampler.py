@@ -15,7 +15,6 @@ class OHEMPixelSampler(BasePixelSampler):
         min_kept (int): The minimum number of predictions to keep.
             Default: 100000.
         ignore_index (int): The ignore index for training. Default: 255.
-
     """
 
     def __init__(self, thresh=0.7, min_kept=100000, ignore_index=255):

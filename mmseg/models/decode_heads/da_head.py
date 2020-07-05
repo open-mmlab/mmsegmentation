@@ -71,7 +71,7 @@ class CAM(nn.Module):
 
 @HEADS.register_module()
 class DAHead(BaseDecodeHead):
-    """Dual Attention Network for Scene Segmentation
+    """Dual Attention Network for Scene Segmentation.
 
     This head is the implementation of `DANet
     <https://arxiv.org/abs/1809.02983>`_.
