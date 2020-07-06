@@ -132,6 +132,15 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         normal_init(self.conv_seg, mean=0, std=0.01)
 
     def _transform_inputs(self, inputs):
+        """Transform inputs for decoder.
+
+        Args:
+            inputs (list[Tensor]): List of multi-level img features.
+
+        Returns:
+            Tensor: The transformed inputs
+        """
+
         if self.input_transform == 'resize_concat':
             inputs = [inputs[i] for i in self.in_index]
             upsampled_inputs = [

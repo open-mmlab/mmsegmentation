@@ -18,10 +18,10 @@ def parse_args():
     parser.add_argument('config', help='test config file path')
     parser.add_argument('checkpoint', help='checkpoint file')
     parser.add_argument(
-        '--aug_test', action='store_true', help='Use Flip and Multi scale aug')
+        '--aug-test', action='store_true', help='Use Flip and Multi scale aug')
     parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
-        '--format_only',
+        '--format-only',
         action='store_true',
         help='Format the output results without perform evaluation. It is'
         'useful when you want to format the result to a specific format and '
@@ -34,9 +34,9 @@ def parse_args():
         ' for generic datasets, and "cityscapes" for Cityscapes')
     parser.add_argument('--show', action='store_true', help='show results')
     parser.add_argument(
-        '--show_dir', help='directory where painted images will be saved')
+        '--show-dir', help='directory where painted images will be saved')
     parser.add_argument(
-        '--gpu_collect',
+        '--gpu-collect',
         action='store_true',
         help='whether to use gpu to collect results.')
     parser.add_argument(
@@ -46,7 +46,7 @@ def parse_args():
     parser.add_argument(
         '--options', nargs='+', action=DictAction, help='custom options')
     parser.add_argument(
-        '--eval_options',
+        '--eval-options',
         nargs='+',
         action=DictAction,
         help='custom options for evaluation')

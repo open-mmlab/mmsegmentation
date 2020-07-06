@@ -39,6 +39,7 @@ class PAM(_SelfAttentionBlock):
         self.gamma = Scale(0)
 
     def forward(self, x):
+        """Forward function."""
         out = super(PAM, self).forward(x, x)
 
         out = self.gamma(out) + x
@@ -53,6 +54,7 @@ class CAM(nn.Module):
         self.gamma = Scale(0)
 
     def forward(self, x):
+        """Forward function."""
         batch_size, channels, height, width = x.size()
         proj_query = x.view(batch_size, channels, -1)
         proj_key = x.view(batch_size, channels, -1).permute(0, 2, 1)
@@ -160,6 +162,7 @@ class DAHead(BaseDecodeHead):
         return self.forward(inputs)[0]
 
     def losses(self, seg_logit, seg_label):
+        """Compute ``pam_cam``, ``pam``, ``cam`` loss."""
         pam_cam_seg_logit, pam_seg_logit, cam_seg_logit = seg_logit
         loss = dict()
         loss.update(
