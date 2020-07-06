@@ -38,11 +38,13 @@ class EncoderDecoder(BaseSegmentor):
         self.init_weights(pretrained=pretrained)
 
     def _init_decode_head(self, decode_head):
+        """Initialize ``decode_head``"""
         self.decode_head = builder.build_head(decode_head)
         self.align_corners = self.decode_head.align_corners
         self.num_classes = self.decode_head.num_classes
 
     def _init_auxiliary_head(self, auxiliary_head):
+        """Initialize ``auxiliary_head``"""
         if auxiliary_head is not None:
             if isinstance(auxiliary_head, list):
                 self.auxiliary_head = nn.ModuleList()
@@ -52,6 +54,13 @@ class EncoderDecoder(BaseSegmentor):
                 self.auxiliary_head = builder.build_head(auxiliary_head)
 
     def init_weights(self, pretrained=None):
+        """Initialize the weights in backbone and heads.
+
+        Args:
+            pretrained (str, optional): Path to pre-trained weights.
+                Defaults to None.
+        """
+
         super(EncoderDecoder, self).init_weights(pretrained)
         self.backbone.init_weights(pretrained=pretrained)
         self.decode_head.init_weights()
@@ -63,12 +72,15 @@ class EncoderDecoder(BaseSegmentor):
                 self.auxiliary_head.init_weights()
 
     def extract_feat(self, img):
+        """Extract features from images."""
         x = self.backbone(img)
         if self.with_neck:
             x = self.neck(x)
         return x
 
     def encode_decode(self, img, img_metas):
+        """Encode images with backbone and decode into a semantic segmentation
+        map of the same size as input."""
         x = self.extract_feat(img)
         out = self._decode_head_forward_test(x, img_metas)
         out = resize(
@@ -79,6 +91,8 @@ class EncoderDecoder(BaseSegmentor):
         return out
 
     def _decode_head_forward_train(self, x, img_metas, gt_semantic_seg):
+        """Run forward function and calculate loss for decode head in
+        training."""
         losses = dict()
         loss_decode = self.decode_head.forward_train(x, img_metas,
                                                      gt_semantic_seg,
@@ -88,10 +102,14 @@ class EncoderDecoder(BaseSegmentor):
         return losses
 
     def _decode_head_forward_test(self, x, img_metas):
+        """Run forward function and calculate loss for decode head in
+        inference."""
         seg_logits = self.decode_head.forward_test(x, img_metas, self.test_cfg)
         return seg_logits
 
     def _auxiliary_head_forward_train(self, x, img_metas, gt_semantic_seg):
+        """Run forward function and calculate loss for auxiliary head in
+        training."""
         losses = dict()
         if isinstance(self.auxiliary_head, nn.ModuleList):
             for idx, aux_head in enumerate(self.auxiliary_head):
@@ -107,11 +125,28 @@ class EncoderDecoder(BaseSegmentor):
         return losses
 
     def forward_dummy(self, img):
+        """Dummy forward function."""
         seg_logit = self.encode_decode(img, None)
 
         return seg_logit
 
     def forward_train(self, img, img_metas, gt_semantic_seg):
+        """Forward function for training.
+
+        Args:
+            img (Tensor): Input images.
+            img_metas (list[dict]): List of image info dict where each dict
+                has: 'img_shape', 'scale_factor', 'flip', and may also contain
+                'filename', 'ori_shape', 'pad_shape', and 'img_norm_cfg'.
+                For details on the values of these keys see
+                `mmseg/datasets/pipelines/formatting.py:Collect`.
+            gt_semantic_seg (Tensor): Semantic segmentation masks
+                used if the architecture supports semantic segmentation task.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components
+        """
+
         x = self.extract_feat(img)
 
         losses = dict()
@@ -129,6 +164,8 @@ class EncoderDecoder(BaseSegmentor):
 
     # TODO refactor
     def slide_inference(self, img, img_meta, rescale):
+        """Inference by sliding-window with overlap."""
+
         h_stride, w_stride = self.test_cfg.stride
         h_crop, w_crop = self.test_cfg.crop_size
         batch_size, _, h_img, w_img = img.size()
@@ -166,6 +203,8 @@ class EncoderDecoder(BaseSegmentor):
         return preds
 
     def whole_inference(self, img, img_meta, rescale):
+        """Inference with full image."""
+
         seg_logit = self.encode_decode(img, img_meta)
         if rescale:
             seg_logit = resize(
@@ -178,6 +217,21 @@ class EncoderDecoder(BaseSegmentor):
         return seg_logit
 
     def inference(self, img, img_meta, rescale):
+        """Inference with slide/whole style.
+
+        Args:
+            img (Tensor): The input image of shape (N, 3, H, W).
+            img_meta (dict): Image info dict where each dict has: 'img_shape',
+                'scale_factor', 'flip', and may also contain
+                'filename', 'ori_shape', 'pad_shape', and 'img_norm_cfg'.
+                For details on the values of these keys see
+                `mmseg/datasets/pipelines/formatting.py:Collect`.
+            rescale (bool): Whether rescale back to original shape.
+
+        Returns:
+            Tensor: The output segmentation map.
+        """
+
         assert self.test_cfg.mode in ['slide', 'whole']
         ori_shape = img_meta[0]['ori_shape']
         assert all(_['ori_shape'] == ori_shape for _ in img_meta)
@@ -198,6 +252,7 @@ class EncoderDecoder(BaseSegmentor):
         return output
 
     def simple_test(self, img, img_meta, rescale=True):
+        """Simple test with single image."""
         seg_logit = self.inference(img, img_meta, rescale)
         seg_pred = seg_logit.argmax(dim=1)
         seg_pred = seg_pred.cpu().numpy()

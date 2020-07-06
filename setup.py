@@ -15,15 +15,6 @@ def readme():
     return content
 
 
-MAJOR = 1
-MINOR = 1
-PATCH = 0
-SUFFIX = ''
-if PATCH != '':
-    SHORT_VERSION = '{}.{}.{}{}'.format(MAJOR, MINOR, PATCH, SUFFIX)
-else:
-    SHORT_VERSION = '{}.{}{}'.format(MAJOR, MINOR, SUFFIX)
-
 version_file = 'mmseg/version.py'
 
 
@@ -74,12 +65,18 @@ def write_version_py():
 
 __version__ = '{}'
 short_version = '{}'
+version_info = ({})
 """
     sha = get_hash()
+    with open('mmseg/VERSION', 'r') as f:
+        SHORT_VERSION = f.read().strip()
+    VERSION_INFO = ', '.join(SHORT_VERSION.split('.'))
     VERSION = SHORT_VERSION + '+' + sha
 
+    version_file_str = content.format(time.asctime(), VERSION, SHORT_VERSION,
+                                      VERSION_INFO)
     with open(version_file, 'w') as f:
-        f.write(content.format(time.asctime(), VERSION, SHORT_VERSION))
+        f.write(version_file_str)
 
 
 def get_version():
@@ -195,22 +192,21 @@ if __name__ == '__main__':
     setup(
         name='mmseg',
         version=get_version(),
-        description='Open MMLab Segmentation Toolbox and Benchmark',
+        description='Open MMLab Semantic Segmentation Toolbox and Benchmark',
         long_description=readme(),
-        author='OpenMMLab',
-        author_email='xvjiarui0826@gmail.com',
+        author='MMSegmentation Authors',
+        author_email='openmmlab@gmail.com',
         keywords='computer vision, semantic segmentation',
-        url='http://gitlab.sz.sensetime.com/EIG-Research/mmsegmentation',
+        url='http://github.com/open-mmlab/mmsegmentation',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
         package_data={'mmseg.ops': ['*/*.so']},
         classifiers=[
             'Development Status :: 4 - Beta',
             'License :: OSI Approved :: Apache Software License',
             'Operating System :: OS Independent',
-            'Programming Language :: Python :: 3',
-            'Programming Language :: Python :: 3.5',
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
+            'Programming Language :: Python :: 3.8',
         ],
         license='Apache License 2.0',
         setup_requires=parse_requirements('requirements/build.txt'),

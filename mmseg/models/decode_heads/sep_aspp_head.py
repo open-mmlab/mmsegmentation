@@ -76,6 +76,7 @@ class DepthwiseSeparableASPPHead(ASPPHead):
                 act_cfg=self.act_cfg))
 
     def forward(self, inputs):
+        """Forward function."""
         x = self._transform_inputs(inputs)
         aspp_outs = [
             resize(

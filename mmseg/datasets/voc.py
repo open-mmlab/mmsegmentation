@@ -6,6 +6,11 @@ from .custom import CustomDataset
 
 @DATASETS.register_module()
 class PascalVOCDataset(CustomDataset):
+    """Pascal VOC dataset.
+
+    Args:
+        split (str): Split txt file for Pascal VOC.
+    """
 
     CLASSES = ('background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
                'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',

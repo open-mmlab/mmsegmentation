@@ -20,6 +20,7 @@ class PPMConcat(nn.ModuleList):
             [nn.AdaptiveAvgPool2d(pool_scale) for pool_scale in pool_scales])
 
     def forward(self, feats):
+        """Forward function."""
         ppm_outs = []
         for ppm in self:
             ppm_out = ppm(feats)
@@ -122,6 +123,7 @@ class AFNB(nn.Module):
             act_cfg=None)
 
     def forward(self, low_feats, high_feats):
+        """Forward function."""
         priors = [stage(high_feats, low_feats) for stage in self.stages]
         context = torch.stack(priors, dim=0).sum(dim=0)
         output = self.bottleneck(torch.cat([context, high_feats], 1))
@@ -171,6 +173,7 @@ class APNB(nn.Module):
             act_cfg=act_cfg)
 
     def forward(self, feats):
+        """Forward function."""
         priors = [stage(feats, feats) for stage in self.stages]
         context = torch.stack(priors, dim=0).sum(dim=0)
         output = self.bottleneck(torch.cat([context, feats], 1))
@@ -231,6 +234,7 @@ class ANNHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward(self, inputs):
+        """Forward function."""
         low_feats, high_feats = self._transform_inputs(inputs)
         output = self.fusion(low_feats, high_feats)
         output = self.dropout(output)

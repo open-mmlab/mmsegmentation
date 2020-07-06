@@ -23,6 +23,7 @@ class CCHead(FCNHead):
         self.cca = CrissCrossAttention(self.channels)
 
     def forward(self, inputs):
+        """Forward function."""
         x = self._transform_inputs(inputs)
         output = self.convs[0](x)
         for _ in range(self.recurrence):

@@ -1,11 +1,11 @@
 import torch
 import torch.nn.functional as F
 
-from ..builder import SEG_SAMPLERS
+from ..builder import PIXEL_SAMPLERS
 from .base_pixel_sampler import BasePixelSampler
 
 
-@SEG_SAMPLERS.register_module()
+@PIXEL_SAMPLERS.register_module()
 class OHEMPixelSampler(BasePixelSampler):
     """Online Hard Example Mining Sampler for segmentation.
 

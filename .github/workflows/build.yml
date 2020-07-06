@@ -25,8 +25,8 @@ jobs:
         run: isort --recursive --check-only --diff mmseg/ tests/ examples/
       - name: Format python codes with yapf
         run: yapf -r -d mmseg/ tests/ examples/
-#      - name: Check docstring
-#        run: interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --exclude mmseg/ops --ignore-regex "__repr__" --fail-under 80 mmseg
+      - name: Check docstring
+        run: interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --exclude mmseg/ops --ignore-regex "__repr__" --fail-under 80 mmseg
 
   build:
     env:

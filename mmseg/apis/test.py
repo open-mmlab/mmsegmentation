@@ -11,6 +11,19 @@ from mmcv.runner import get_dist_info
 
 
 def single_gpu_test(model, data_loader, show=False, out_dir=None):
+    """Test with single GPU.
+
+    Args:
+        model (nn.Module): Model to be tested.
+        data_loader (nn.Dataloader): Pytorch data loader.
+        show (bool): Whether show results during infernece. Default: False.
+        out_dir (str, optional): If specified, the results will be dumped
+        into the directory to save output results.
+
+    Returns:
+        list: The prediction results.
+    """
+
     model.eval()
     results = []
     dataset = data_loader.dataset
@@ -73,6 +86,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     Returns:
         list: The prediction results.
     """
+
     model.eval()
     results = []
     dataset = data_loader.dataset
@@ -101,6 +115,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
 
 
 def collect_results_cpu(result_part, size, tmpdir=None):
+    """Collect results with CPU."""
     rank, world_size = get_dist_info()
     # create a tmp dir if it is not specified
     if tmpdir is None:
@@ -143,6 +158,7 @@ def collect_results_cpu(result_part, size, tmpdir=None):
 
 
 def collect_results_gpu(result_part, size):
+    """Collect results with GPU."""
     rank, world_size = get_dist_info()
     # dump result part to tensor with pickle
     part_tensor = torch.tensor(

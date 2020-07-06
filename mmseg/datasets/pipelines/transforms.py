@@ -57,6 +57,17 @@ class Resize(object):
 
     @staticmethod
     def random_select(img_scales):
+        """Randomly select an img_scale from given candidates.
+
+        Args:
+            img_scales (list[tuple]): Images scales for selection.
+
+        Returns:
+            (tuple, int): Returns a tuple ``(img_scale, scale_dix)``,
+                where ``img_scale`` is the selected image scale and
+                ``scale_idx`` is the selected index in the given candidates.
+        """
+
         assert mmcv.is_list_of(img_scales, tuple)
         scale_idx = np.random.randint(len(img_scales))
         img_scale = img_scales[scale_idx]
@@ -64,6 +75,19 @@ class Resize(object):
 
     @staticmethod
     def random_sample(img_scales):
+        """Randomly sample an img_scale when ``multiscale_mode=='range'``.
+
+        Args:
+            img_scales (list[tuple]): Images scale range for sampling.
+                There must be two tuples in img_scales, which specify the lower
+                and uper bound of image scales.
+
+        Returns:
+            (tuple, None): Returns a tuple ``(img_scale, None)``, where
+                ``img_scale`` is sampled scale and None is just a placeholder
+                to be consistent with :func:`random_select`.
+        """
+
         assert mmcv.is_list_of(img_scales, tuple) and len(img_scales) == 2
         img_scale_long = [max(s) for s in img_scales]
         img_scale_short = [min(s) for s in img_scales]
@@ -78,6 +102,24 @@ class Resize(object):
 
     @staticmethod
     def random_sample_ratio(img_scale, ratio_range):
+        """Randomly sample an img_scale when ``ratio_range`` is specified.
+
+        A ratio will be randomly sampled from the range specified by
+        ``ratio_range``. Then it would be multiplied with ``img_scale`` to
+        generate sampled scale.
+
+        Args:
+            img_scale (tuple): Images scale base to multiply with ratio.
+            ratio_range (tuple[float]): The minimum and maximum ratio to scale
+                the ``img_scale``.
+
+        Returns:
+            (tuple, None): Returns a tuple ``(scale, None)``, where
+                ``scale`` is sampled ratio multiplied with ``img_scale`` and
+                None is just a placeholder to be consistent with
+                :func:`random_select`.
+        """
+
         assert isinstance(img_scale, tuple) and len(img_scale) == 2
         min_ratio, max_ratio = ratio_range
         assert min_ratio <= max_ratio
@@ -86,6 +128,23 @@ class Resize(object):
         return scale, None
 
     def _random_scale(self, results):
+        """Randomly sample an img_scale according to ``ratio_range`` and
+        ``multiscale_mode``.
+
+        If ``ratio_range`` is specified, a ratio will be sampled and be
+        multiplied with ``img_scale``.
+        If multiple scales are specified by ``img_scale``, a scale will be
+        sampled according to ``multiscale_mode``.
+        Otherwise, single scale will be used.
+
+        Args:
+            results (dict): Result dict from :obj:`dataset`.
+
+        Returns:
+            dict: Two new keys 'scale` and 'scale_idx` are added into
+                ``results``, which would be used by subsequent pipelines.
+        """
+
         if self.ratio_range is not None:
             scale, scale_idx = self.random_sample_ratio(
                 self.img_scale[0], self.ratio_range)
@@ -102,6 +161,7 @@ class Resize(object):
         results['scale_idx'] = scale_idx
 
     def _resize_img(self, results):
+        """Resize images with ``results['scale']``."""
         if self.keep_ratio:
             img, scale_factor = mmcv.imrescale(
                 results['img'], results['scale'], return_scale=True)
@@ -123,6 +183,7 @@ class Resize(object):
         results['keep_ratio'] = self.keep_ratio
 
     def _resize_seg(self, results):
+        """Resize semantic segmentation map with ``results['scale']``."""
         for key in results.get('seg_fields', []):
             if self.keep_ratio:
                 gt_seg = mmcv.imrescale(
@@ -133,6 +194,17 @@ class Resize(object):
             results['gt_semantic_seg'] = gt_seg
 
     def __call__(self, results):
+        """Call function to resize images, bounding boxes, masks, semantic
+        segmentation map.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Resized results, 'img_shape', 'pad_shape', 'scale_factor',
+                'keep_ratio' keys are added into result dict.
+        """
+
         if 'scale' not in results:
             self._random_scale(results)
         self._resize_img(results)
@@ -157,7 +229,9 @@ class RandomFlip(object):
     method.
 
     Args:
-        flip_ratio (float, optional): The flipping probability.
+        flip_ratio (float, optional): The flipping probability. Default: None.
+        direction(str, optional): The flipping direction. Options are
+            'horizontal' and 'vertical'. Default: 'horizontal'.
     """
 
     def __init__(self, flip_ratio=None, direction='horizontal'):
@@ -168,6 +242,17 @@ class RandomFlip(object):
         assert direction in ['horizontal', 'vertical']
 
     def __call__(self, results):
+        """Call function to flip bounding boxes, masks, semantic segmentation
+        maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Flipped results, 'flip', 'flip_direction' keys are added into
+                result dict.
+        """
+
         if 'flip' not in results:
             flip = True if np.random.rand() < self.flip_ratio else False
             results['flip'] = flip
@@ -195,6 +280,7 @@ class Pad(object):
 
     There are two padding modes: (1) pad to a fixed size and (2) pad to the
     minimum size that is divisible by some number.
+    Added keys are "pad_shape", "pad_fixed_size", "pad_size_divisor",
 
     Args:
         size (tuple, optional): Fixed padding size.
@@ -218,6 +304,7 @@ class Pad(object):
         assert size is None or size_divisor is None
 
     def _pad_img(self, results):
+        """Pad images according to ``self.size``."""
         if self.size is not None:
             padded_img = mmcv.impad(
                 results['img'], shape=self.size, pad_val=self.pad_val)
@@ -230,6 +317,7 @@ class Pad(object):
         results['pad_size_divisor'] = self.size_divisor
 
     def _pad_seg(self, results):
+        """Pad masks according to ``results['pad_shape']``."""
         for key in results.get('seg_fields', []):
             results[key] = mmcv.impad(
                 results[key],
@@ -237,6 +325,15 @@ class Pad(object):
                 pad_val=self.seg_pad_val)
 
     def __call__(self, results):
+        """Call function to pad images, masks, semantic segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Updated result dict.
+        """
+
         self._pad_img(results)
         self._pad_seg(results)
         return results
@@ -252,6 +349,8 @@ class Pad(object):
 class Normalize(object):
     """Normalize the image.
 
+    Added key is "img_norm_cfg".
+
     Args:
         mean (sequence): Mean values of 3 channels.
         std (sequence): Std values of 3 channels.
@@ -265,6 +364,16 @@ class Normalize(object):
         self.to_rgb = to_rgb
 
     def __call__(self, results):
+        """Call function to normalize images.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Normalized results, 'img_norm_cfg' key is added into
+                result dict.
+        """
+
         results['img'] = mmcv.imnormalize(results['img'], self.mean, self.std,
                                           self.to_rgb)
         results['img_norm_cfg'] = dict(
@@ -295,6 +404,7 @@ class RandomCrop(object):
         self.ignore_index = ignore_index
 
     def get_crop_bbox(self, img):
+        """Randomly get a crop bounding box."""
         margin_h = max(img.shape[0] - self.crop_size[0], 0)
         margin_w = max(img.shape[1] - self.crop_size[1], 0)
         offset_h = np.random.randint(0, margin_h + 1)
@@ -305,11 +415,22 @@ class RandomCrop(object):
         return crop_y1, crop_y2, crop_x1, crop_x2
 
     def crop(self, img, crop_bbox):
+        """Crop from ``img``"""
         crop_y1, crop_y2, crop_x1, crop_x2 = crop_bbox
         img = img[crop_y1:crop_y2, crop_x1:crop_x2, ...]
         return img
 
     def __call__(self, results):
+        """Call function to randomly crop images, semantic segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Randomly cropped results, 'img_shape' key in result dict is
+                updated according to crop size.
+        """
+
         img = results['img']
         crop_bbox = self.get_crop_bbox(img)
         if self.cat_max_ratio < 1.:
@@ -351,6 +472,14 @@ class SegRescale(object):
         self.scale_factor = scale_factor
 
     def __call__(self, results):
+        """Call function to scale the semantic segmentation map.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with semantic segmentation map scaled.
+        """
         for key in results.get('seg_fields', []):
             if self.scale_factor != 1:
                 results[key] = mmcv.imrescale(
@@ -394,11 +523,13 @@ class PhotoMetricDistortion(object):
         self.hue_delta = hue_delta
 
     def convert(self, img, alpha=1, beta=0):
+        """Multiple with alpha and add beat with clip."""
         img = img.astype(np.float32) * alpha + beta
         img = np.clip(img, 0, 255)
         return img.astype(np.uint8)
 
     def brightness(self, img):
+        """Brightness distortion."""
         if random.randint(2):
             return self.convert(
                 img,
@@ -407,6 +538,7 @@ class PhotoMetricDistortion(object):
         return img
 
     def contrast(self, img):
+        """Contrast distortion."""
         if random.randint(2):
             return self.convert(
                 img,
@@ -414,6 +546,7 @@ class PhotoMetricDistortion(object):
         return img
 
     def saturation(self, img):
+        """Saturation distortion."""
         if random.randint(2):
             img = mmcv.bgr2hsv(img)
             img[:, :, 1] = self.convert(
@@ -424,6 +557,7 @@ class PhotoMetricDistortion(object):
         return img
 
     def hue(self, img):
+        """Hue distortion."""
         if random.randint(2):
             img = mmcv.bgr2hsv(img)
             img[:, :,
@@ -433,6 +567,15 @@ class PhotoMetricDistortion(object):
         return img
 
     def __call__(self, results):
+        """Call function to perform photometric distortion on images.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with images distorted.
+        """
+
         img = results['img']
         # random brightness
         img = self.brightness(img)

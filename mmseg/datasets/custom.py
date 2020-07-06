@@ -47,12 +47,13 @@ class CustomDataset(Dataset):
         pipeline (list[dict]): Processing pipeline
         img_dir (str): Path to image directory
         img_suffix (str): Suffix of images. Default: '.png'
-        ann_dir (str|None): Path to annotation directory. Default: None
+        ann_dir (str, optional): Path to annotation directory. Default: None
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'
-        split (str|None): Split txt file. If split is specified, only file with
-            suffix in the splits will be loaded. Otherwise, all images in
-            img_dir/ann_dir will be loaded. Default: None
-        data_root (str|None): Data root for img_dir/ann_dir. Default: None
+        split (str, optional): Split txt file. If split is specified, only
+            file with suffix in the splits will be loaded. Otherwise, all
+            images in img_dir/ann_dir will be loaded. Default: None
+        data_root (str, optional): Data root for img_dir/ann_dir. Default:
+            None.
         test_mode (str): If test_mode=True, gt wouldn't be loaded.
         ignore_index (int): The label index to be ignored. Default: 255
         reduce_zero_label (bool): Whether to mark label zero as ignored.
@@ -100,10 +101,26 @@ class CustomDataset(Dataset):
                                                self.seg_map_suffix, self.split)
 
     def __len__(self):
+        """Total number of samples of data."""
         return len(self.img_infos)
 
     def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix,
                          split):
+        """Load annotation from directory.
+
+        Args:
+            img_dir (str): Path to image directory
+            img_suffix (str): Suffix of images.
+            ann_dir (str|None): Path to annotation directory.
+            seg_map_suffix (str|None): Suffix of segmentation maps.
+            split (str|None): Split txt file. If split is specified, only file
+                with suffix in the splits will be loaded. Otherwise, all images
+                in img_dir/ann_dir will be loaded. Default: None
+
+        Returns:
+            list[dict]: All image info of dataset.
+        """
+
         img_infos = []
         if split is not None:
             with open(split) as f:
@@ -129,22 +146,48 @@ class CustomDataset(Dataset):
         return img_infos
 
     def get_ann_info(self, idx):
+        """Get annotation by index.
+
+        Args:
+            idx (int): Index of data.
+
+        Returns:
+            dict: Annotation info of specified index.
+        """
+
         return self.img_infos[idx]['ann']
 
     def pre_pipeline(self, results):
+        """Prepare results dict for pipeline."""
         results['seg_fields'] = []
 
     def __getitem__(self, idx):
+        """Get training/test data after pipeline.
+
+        Args:
+            idx (int): Index of data.
+
+        Returns:
+            dict: Training/test data (with annotation if `test_mode` is set
+                False).
+        """
+
         if self.test_mode:
             return self.prepare_test_img(idx)
-        while True:
-            data = self.prepare_train_img(idx)
-            if data is None:
-                idx = self._rand_another(idx)
-                continue
-            return data
+        else:
+            return self.prepare_train_img(idx)
 
     def prepare_train_img(self, idx):
+        """Get training data and annotations after pipeline.
+
+        Args:
+            idx (int): Index of data.
+
+        Returns:
+            dict: Training data and annotation after pipeline with new keys
+                introduced by pipeline.
+        """
+
         img_info = self.img_infos[idx]
         ann_info = self.get_ann_info(idx)
         results = dict(img_info=img_info, ann_info=ann_info)
@@ -152,15 +195,27 @@ class CustomDataset(Dataset):
         return self.pipeline(results)
 
     def prepare_test_img(self, idx):
+        """Get testing data after pipeline.
+
+        Args:
+            idx (int): Index of data.
+
+        Returns:
+            dict: Testing data after pipeline with new keys intorduced by
+                piepline.
+        """
+
         img_info = self.img_infos[idx]
         results = dict(img_info=img_info)
         self.pre_pipeline(results)
         return self.pipeline(results)
 
     def format_results(self, results, **kwargs):
+        """Place holder to format result to dataset specific output."""
         pass
 
     def get_gt_seg_maps(self):
+        """Get ground truth segmentation maps for evaluation."""
         gt_seg_maps = []
         for img_info in self.img_infos:
             gt_seg_map = mmcv.imread(
@@ -183,7 +238,11 @@ class CustomDataset(Dataset):
             metric (str | list[str]): Metrics to be evaluated.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
+
+        Returns:
+            dict[str, float]: Default metrics.
         """
+
         if not isinstance(metric, str):
             assert len(metric) == 1
             metric = metric[0]

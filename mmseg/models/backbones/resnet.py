@@ -11,6 +11,8 @@ from ..utils import ResLayer
 
 
 class BasicBlock(nn.Module):
+    """Basic block for ResNet."""
+
     expansion = 1
 
     def __init__(self,
@@ -54,13 +56,16 @@ class BasicBlock(nn.Module):
 
     @property
     def norm1(self):
+        """nn.Module: normalization layer after the first convolution layer"""
         return getattr(self, self.norm1_name)
 
     @property
     def norm2(self):
+        """nn.Module: normalization layer after the second convolution layer"""
         return getattr(self, self.norm2_name)
 
     def forward(self, x):
+        """Forward function."""
 
         def _inner_forward(x):
             identity = x
@@ -90,6 +95,12 @@ class BasicBlock(nn.Module):
 
 
 class Bottleneck(nn.Module):
+    """Bottleneck block for ResNet.
+
+    If style is "pytorch", the stride-two layer is the 3x3 conv layer, if it is
+    "caffe", the stride-two layer is the first 1x1 conv layer.
+    """
+
     expansion = 4
 
     def __init__(self,
@@ -104,11 +115,6 @@ class Bottleneck(nn.Module):
                  norm_cfg=dict(type='BN'),
                  dcn=None,
                  plugins=None):
-        """Bottleneck block for ResNet.
-
-        If style is "pytorch", the stride-two layer is the 3x3 conv layer, if
-        it is "caffe", the stride-two layer is the first 1x1 conv layer.
-        """
         super(Bottleneck, self).__init__()
         assert style in ['pytorch', 'caffe']
         assert dcn is None or isinstance(dcn, dict)
@@ -234,6 +240,7 @@ class Bottleneck(nn.Module):
         return plugin_names
 
     def forward_plugin(self, x, plugin_names):
+        """Forward function for plugins."""
         out = x
         for name in plugin_names:
             out = getattr(self, name)(x)
@@ -241,17 +248,21 @@ class Bottleneck(nn.Module):
 
     @property
     def norm1(self):
+        """nn.Module: normalization layer after the first convolution layer"""
         return getattr(self, self.norm1_name)
 
     @property
     def norm2(self):
+        """nn.Module: normalization layer after the second convolution layer"""
         return getattr(self, self.norm2_name)
 
     @property
     def norm3(self):
+        """nn.Module: normalization layer after the third convolution layer"""
         return getattr(self, self.norm3_name)
 
     def forward(self, x):
+        """Forward function."""
 
         def _inner_forward(x):
             identity = x
@@ -507,13 +518,16 @@ class ResNet(nn.Module):
         return stage_plugins
 
     def make_res_layer(self, **kwargs):
+        """Pack all blocks in a stage into a ``ResLayer``."""
         return ResLayer(**kwargs)
 
     @property
     def norm1(self):
+        """nn.Module: the normalization layer named "norm1" """
         return getattr(self, self.norm1_name)
 
     def _make_stem_layer(self, in_channels, stem_channels):
+        """Make stem layer for ResNet."""
         if self.deep_stem:
             self.stem = nn.Sequential(
                 build_conv_layer(
@@ -562,6 +576,7 @@ class ResNet(nn.Module):
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
     def _freeze_stages(self):
+        """Freeze stages param and norm stats."""
         if self.frozen_stages >= 0:
             if self.deep_stem:
                 self.stem.eval()
@@ -580,6 +595,12 @@ class ResNet(nn.Module):
                 param.requires_grad = False
 
     def init_weights(self, pretrained=None):
+        """Initialize the weights in backbone.
+
+        Args:
+            pretrained (str, optional): Path to pre-trained weights.
+                Defaults to None.
+        """
         if isinstance(pretrained, str):
             logger = get_root_logger()
             load_checkpoint(self, pretrained, strict=False, logger=logger)
@@ -606,6 +627,7 @@ class ResNet(nn.Module):
             raise TypeError('pretrained must be a str or None')
 
     def forward(self, x):
+        """Forward function."""
         if self.deep_stem:
             x = self.stem(x)
         else:
@@ -622,6 +644,8 @@ class ResNet(nn.Module):
         return tuple(outs)
 
     def train(self, mode=True):
+        """Convert the model into training mode while keep normalization layer
+        freezed."""
         super(ResNet, self).train(mode)
         self._freeze_stages()
         if mode and self.norm_eval:

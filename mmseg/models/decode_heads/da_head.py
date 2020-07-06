@@ -124,18 +124,21 @@ class DAHead(BaseDecodeHead):
             self.channels, self.num_classes, kernel_size=1)
 
     def pam_cls_seg(self, feat):
+        """PAM feature classification."""
         if self.dropout is not None:
             feat = self.dropout(feat)
         output = self.pam_conv_seg(feat)
         return output
 
     def cam_cls_seg(self, feat):
+        """CAM feature classification."""
         if self.dropout is not None:
             feat = self.dropout(feat)
         output = self.cam_conv_seg(feat)
         return output
 
     def forward(self, inputs):
+        """Forward function."""
         x = self._transform_inputs(inputs)
         pam_feat = self.pam_in_conv(x)
         pam_feat = self.pam(pam_feat)
@@ -153,6 +156,7 @@ class DAHead(BaseDecodeHead):
         return pam_cam_out, pam_out, cam_out
 
     def forward_test(self, inputs, img_metas, test_cfg):
+        """Forward function for testing, only ``pam_cam`` is used."""
         return self.forward(inputs)[0]
 
     def losses(self, seg_logit, seg_label):

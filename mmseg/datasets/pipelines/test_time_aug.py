@@ -10,6 +10,35 @@ from .compose import Compose
 class MultiScaleFlipAug(object):
     """Test-time augmentation with multiple scales and flipping.
 
+    An example configuration is as followed:
+
+    .. code-block::
+
+        img_scale=(2048, 1024),
+        img_ratios=[0.5, 1.0],
+        flip=True,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(type='Normalize', **img_norm_cfg),
+            dict(type='Pad', size_divisor=32),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img']),
+        ]
+
+    After MultiScaleFLipAug with above configuration, the results are wrapped
+    into lists of the same length as followed:
+
+    .. code-block::
+
+        dict(
+            img=[...],
+            img_shape=[...],
+            scale=[(1024, 512), (1024, 512), (2048, 1024), (2048, 1024)]
+            flip=[False, True, False, True]
+            ...
+        )
+
     Args:
         transforms (list[dict]): Transforms to apply in each augmentation.
         img_scale (tuple | list[tuple]): Images scales for resizing.
@@ -55,6 +84,16 @@ class MultiScaleFlipAug(object):
                 'flip has no effect when RandomFlip is not in transforms')
 
     def __call__(self, results):
+        """Call function to apply test time augment transforms on results.
+
+        Args:
+            results (dict): Result dict contains the data to transform.
+
+        Returns:
+           dict[str: list]: The augmented data, where each value is wrapped
+               into a list.
+        """
+
         aug_data = []
         flip_aug = [False, True] if self.flip else [False]
         for scale in self.img_scale:

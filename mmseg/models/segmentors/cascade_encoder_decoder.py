@@ -36,6 +36,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
             pretrained=pretrained)
 
     def _init_decode_head(self, decode_head):
+        """Initialize ``decode_head``"""
         assert isinstance(decode_head, list)
         assert len(decode_head) == self.num_stages
         self.decode_head = nn.ModuleList()
@@ -45,6 +46,12 @@ class CascadeEncoderDecoder(EncoderDecoder):
         self.num_classes = self.decode_head[-1].num_classes
 
     def init_weights(self, pretrained=None):
+        """Initialize the weights in backbone and heads.
+
+        Args:
+            pretrained (str, optional): Path to pre-trained weights.
+                Defaults to None.
+        """
         self.backbone.init_weights(pretrained=pretrained)
         for i in range(self.num_stages):
             self.decode_head[i].init_weights()
@@ -56,6 +63,8 @@ class CascadeEncoderDecoder(EncoderDecoder):
                 self.auxiliary_head.init_weights()
 
     def encode_decode(self, img, img_metas):
+        """Encode images with backbone and decode into a semantic segmentation
+        map of the same size as input."""
         x = self.extract_feat(img)
         out = self.decode_head[0].forward_test(x, img_metas, self.test_cfg)
         for i in range(1, self.num_stages):
@@ -69,6 +78,8 @@ class CascadeEncoderDecoder(EncoderDecoder):
         return out
 
     def _decode_head_forward_train(self, x, img_metas, gt_semantic_seg):
+        """Run forward function and calculate loss for decode head in
+        training."""
         losses = dict()
 
         loss_decode = self.decode_head[0].forward_train(

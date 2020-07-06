@@ -32,6 +32,7 @@ def cross_entropy(pred,
 
 
 def _expand_binary_labels(labels, label_weights, label_channels):
+    """Expand binary labels to match the size of prediction."""
     bin_labels = labels.new_full((labels.size(0), label_channels), 0)
     inds = torch.nonzero(labels >= 1, as_tuple=False).squeeze()
     if inds.numel() > 0:
@@ -50,6 +51,21 @@ def binary_cross_entropy(pred,
                          reduction='mean',
                          avg_factor=None,
                          class_weight=None):
+    """Calculate the binary CrossEntropy loss.
+
+    Args:
+        pred (torch.Tensor): The prediction with shape (N, 1).
+        label (torch.Tensor): The learning label of the prediction.
+        weight (torch.Tensor, optional): Sample-wise loss weight.
+        reduction (str, optional): The method used to reduce the loss.
+            Options are "none", "mean" and "sum".
+        avg_factor (int, optional): Average factor that is used to average
+            the loss. Defaults to None.
+        class_weight (list[float], optional): The weight for each class.
+
+    Returns:
+        torch.Tensor: The calculated loss
+    """
     if pred.dim() != label.dim():
         label, weight = _expand_binary_labels(label, weight, pred.size(-1))
 
@@ -71,6 +87,25 @@ def mask_cross_entropy(pred,
                        reduction='mean',
                        avg_factor=None,
                        class_weight=None):
+    """Calculate the CrossEntropy loss for masks.
+
+    Args:
+        pred (torch.Tensor): The prediction with shape (N, C), C is the number
+            of classes.
+        target (torch.Tensor): The learning label of the prediction.
+        label (torch.Tensor): ``label`` indicates the class label of the mask'
+            corresponding object. This will be used to select the mask in the
+            of the class which the object belongs to when the mask prediction
+            if not class-agnostic.
+        reduction (str, optional): The method used to reduce the loss.
+            Options are "none", "mean" and "sum".
+        avg_factor (int, optional): Average factor that is used to average
+            the loss. Defaults to None.
+        class_weight (list[float], optional): The weight for each class.
+
+    Returns:
+        torch.Tensor: The calculated loss
+    """
     # TODO: handle these two reserved arguments
     assert reduction == 'mean' and avg_factor is None
     num_rois = pred.size()[0]
@@ -82,6 +117,19 @@ def mask_cross_entropy(pred,
 
 @LOSSES.register_module()
 class CrossEntropyLoss(nn.Module):
+    """CrossEntropyLoss.
+
+    Args:
+        use_sigmoid (bool, optional): Whether the prediction uses sigmoid
+            of softmax. Defaults to False.
+        use_mask (bool, optional): Whether to use mask cross entropy loss.
+            Defaults to False.
+        reduction (str, optional): . Defaults to 'mean'.
+            Options are "none", "mean" and "sum".
+        class_weight (list[float], optional): Weight of each class.
+            Defaults to None.
+        loss_weight (float, optional): Weight of the loss. Defaults to 1.0.
+    """
 
     def __init__(self,
                  use_sigmoid=False,
@@ -111,6 +159,7 @@ class CrossEntropyLoss(nn.Module):
                 avg_factor=None,
                 reduction_override=None,
                 **kwargs):
+        """Forward function."""
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)

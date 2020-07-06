@@ -44,6 +44,7 @@ class EncModule(nn.Module):
             nn.Linear(in_channels, in_channels), nn.Sigmoid())
 
     def forward(self, x):
+        """Forward function."""
         encoding_projection = self.encoding_project(x)
         encoding_feat = self.encoding(encoding_projection).mean(dim=1)
         batch_size, channels, _, _ = x.size()
@@ -122,6 +123,7 @@ class EncHead(BaseDecodeHead):
             self.se_layer = nn.Linear(self.channels, self.num_classes)
 
     def forward(self, inputs):
+        """Forward function."""
         inputs = self._transform_inputs(inputs)
         feat = self.bottleneck(inputs[-1])
         if self.add_lateral:
@@ -139,6 +141,7 @@ class EncHead(BaseDecodeHead):
             return output
 
     def forward_test(self, inputs, img_metas, test_cfg):
+        """Forward function for testing, ignore se_loss."""
         if self.use_se_loss:
             return self.forward(inputs)[0]
         else:
@@ -146,6 +149,16 @@ class EncHead(BaseDecodeHead):
 
     @staticmethod
     def _convert_to_onehot_labels(seg_label, num_classes):
+        """Convert segmentation label to onehot.
+
+        Args:
+            seg_label (Tensor): Segmentation label of shape (N, H, W).
+            num_classes (int): Number of classes.
+
+        Returns:
+            Tensor: Onehot labels of shape (N, num_classes).
+        """
+
         batch_size = seg_label.size(0)
         onehot_labels = seg_label.new_zeros((batch_size, num_classes))
         for i in range(batch_size):
@@ -155,6 +168,7 @@ class EncHead(BaseDecodeHead):
         return onehot_labels
 
     def losses(self, seg_logit, seg_label):
+        """Compute segmentation and semantic encoding loss."""
         seg_logit, se_seg_logit = seg_logit
         loss = dict()
         loss.update(super(EncHead, self).losses(seg_logit, seg_label))

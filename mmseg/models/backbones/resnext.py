@@ -9,6 +9,11 @@ from .resnet import ResNet
 
 
 class Bottleneck(_Bottleneck):
+    """Bottleneck block for ResNeXt.
+
+    If style is "pytorch", the stride-two layer is the 3x3 conv layer, if it is
+    "caffe", the stride-two layer is the first 1x1 conv layer.
+    """
 
     def __init__(self,
                  inplanes,
@@ -17,11 +22,6 @@ class Bottleneck(_Bottleneck):
                  base_width=4,
                  base_channels=64,
                  **kwargs):
-        """Bottleneck block for ResNeXt.
-
-        If style is "pytorch", the stride-two layer is the 3x3 conv layer, if
-        it is "caffe", the stride-two layer is the first 1x1 conv layer.
-        """
         super(Bottleneck, self).__init__(inplanes, planes, **kwargs)
 
         if groups == 1:
@@ -137,6 +137,7 @@ class ResNeXt(ResNet):
         super(ResNeXt, self).__init__(**kwargs)
 
     def make_res_layer(self, **kwargs):
+        """Pack all blocks in a stage into a ``ResLayer``"""
         return ResLayer(
             groups=self.groups,
             base_width=self.base_width,

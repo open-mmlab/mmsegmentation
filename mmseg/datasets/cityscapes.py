@@ -12,6 +12,11 @@ from .custom import CustomDataset
 
 @DATASETS.register_module()
 class CityscapesDataset(CustomDataset):
+    """Cityscapes dataset.
+
+    The ``img_suffix`` is fixed to '_leftImg8bit.png' and ``seg_map_suffix`` is
+    fixed to '_gtFine_labelTrainIds.png' for Cityscapes dataset.
+    """
 
     CLASSES = ('road', 'sidewalk', 'building', 'wall', 'fence', 'pole',
                'traffic light', 'traffic sign', 'vegetation', 'terrain', 'sky',
@@ -32,6 +37,7 @@ class CityscapesDataset(CustomDataset):
 
     @staticmethod
     def _convert_to_label_id(result):
+        """Convert trainId to id for cityscapes."""
         import cityscapesscripts.helpers.labels as CSLabels
         result_copy = result.copy()
         for trainId, label in CSLabels.trainId2label.items():
@@ -117,6 +123,27 @@ class CityscapesDataset(CustomDataset):
                  metric='mIoU',
                  logger=None,
                  imgfile_prefix=None):
+        """Evaluation in Cityscapes/default protocol.
+
+        Args:
+            results (list): Testing results of the dataset.
+            metric (str | list[str]): Metrics to be evaluated.
+            logger (logging.Logger | None | str): Logger used for printing
+                related information during evaluation. Default: None.
+            imgfile_prefix (str | None): The prefix of output image file,
+                for cityscapes evaluation only. It includes the file path and
+                the prefix of filename, e.g., "a/b/prefix".
+                If results are evaluated with cityscapes protocol, it would be
+                the prefix of output png files. The output files would be
+                png images under folder "a/b/prefix/xxx/", where "xxx" is the
+                video name of cityscapes. If not specified, a temp file will
+                be created.
+                Default: None.
+
+        Returns:
+            dict[str, float]: Cityscapes/default metrics.
+        """
+
         eval_results = dict()
         metrics = metric.copy() if isinstance(metric, list) else [metric]
         if 'cityscapes' in metrics:
@@ -130,7 +157,18 @@ class CityscapesDataset(CustomDataset):
 
         return eval_results
 
-    def _evaluate_cityscapes(self, resutls, logger, imgfile_prefix):
+    def _evaluate_cityscapes(self, results, logger, imgfile_prefix):
+        """Evaluation in Cityscapes protocol.
+
+        Args:
+            results (list): Testing results of the dataset.
+            logger (logging.Logger | str | None): Logger used for printing
+                related information during evaluation. Default: None.
+            imgfile_prefix (str | None): The prefix of output image file
+
+        Returns:
+            dict[str: float]: Cityscapes evaluation results.
+        """
         try:
             import cityscapesscripts.evaluation.evalPixelLevelSemanticLabeling as CSEval  # noqa
         except ImportError:
@@ -141,7 +179,7 @@ class CityscapesDataset(CustomDataset):
             msg = '\n' + msg
         print_log(msg, logger=logger)
 
-        result_files, tmp_dir = self.format_results(resutls, imgfile_prefix)
+        result_files, tmp_dir = self.format_results(results, imgfile_prefix)
 
         if tmp_dir is None:
             result_dir = imgfile_prefix

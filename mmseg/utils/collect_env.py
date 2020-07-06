@@ -13,6 +13,7 @@ import mmseg
 
 
 def collect_env():
+    """Collect the information of the running environments."""
     env_info = {}
     env_info['sys.platform'] = sys.platform
     env_info['Python'] = sys.version.replace('\n', '')

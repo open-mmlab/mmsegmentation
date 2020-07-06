@@ -2,6 +2,7 @@ import mmcv
 
 
 def cityscapes_classes():
+    """Cityscapes class names for external use."""
     return [
         'road', 'sidewalk', 'building', 'wall', 'fence', 'pole',
         'traffic light', 'traffic sign', 'vegetation', 'terrain', 'sky',
@@ -11,6 +12,7 @@ def cityscapes_classes():
 
 
 def ade_classes():
+    """ADE20K class names for external use."""
     return [
         'wall', 'building', 'sky', 'floor', 'tree', 'ceiling', 'road', 'bed ',
         'windowpane', 'grass', 'cabinet', 'sidewalk', 'person', 'earth',
@@ -40,6 +42,7 @@ def ade_classes():
 
 
 def voc_classes():
+    """Pascal VOC class names for external use."""
     return [
         'background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus',
         'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
@@ -49,6 +52,7 @@ def voc_classes():
 
 
 def cityscapes_palette():
+    """Cityscapes palette for external use."""
     return [[128, 64, 128], [244, 35, 232], [70, 70, 70], [102, 102, 156],
             [190, 153, 153], [153, 153, 153], [250, 170, 30], [220, 220, 0],
             [107, 142, 35], [152, 251, 152], [70, 130, 180], [220, 20, 60],
@@ -57,6 +61,7 @@ def cityscapes_palette():
 
 
 def ade_palette():
+    """ADE20K palette for external use."""
     return [[120, 120, 120], [180, 120, 120], [6, 230, 230], [80, 50, 50],
             [4, 200, 3], [120, 120, 80], [140, 140, 140], [204, 5, 255],
             [230, 230, 230], [4, 250, 7], [224, 5, 255], [235, 255, 7],
@@ -98,6 +103,7 @@ def ade_palette():
 
 
 def voc_palette():
+    """Pascal VOC palette for external use."""
     return [[0, 0, 0], [128, 0, 0], [0, 128, 0], [128, 128, 0], [0, 0, 128],
             [128, 0, 128], [0, 128, 128], [128, 128, 128], [64, 0, 0],
             [192, 0, 0], [64, 128, 0], [192, 128, 0], [64, 0, 128],

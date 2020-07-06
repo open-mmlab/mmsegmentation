@@ -91,12 +91,14 @@ class SelfAttentionBlock(nn.Module):
         self.init_weights()
 
     def init_weights(self):
+        """Initialize weight of later layer."""
         if self.out_project is not None:
             if not isinstance(self.out_project, ConvModule):
                 constant_init(self.out_project, 0)
 
     def build_project(self, in_channels, channels, num_convs, use_conv_module,
                       conv_cfg, norm_cfg, act_cfg):
+        """Build projection layer for key/query/value/out."""
         if use_conv_module:
             convs = [
                 ConvModule(
@@ -127,6 +129,7 @@ class SelfAttentionBlock(nn.Module):
         return convs
 
     def forward(self, query_feats, key_feats):
+        """Forward function."""
         batch_size = query_feats.size(0)
         query = self.query_project(query_feats)
         if self.query_downsample is not None:

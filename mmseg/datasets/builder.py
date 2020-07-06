@@ -23,6 +23,7 @@ PIPELINES = Registry('pipeline')
 
 
 def _concat_dataset(cfg, default_args=None):
+    """Build :obj:`ConcatDataset by."""
     from .dataset_wrappers import ConcatDataset
     img_dir = cfg['img_dir']
     ann_dir = cfg.get('ann_dir', None)
@@ -58,6 +59,7 @@ def _concat_dataset(cfg, default_args=None):
 
 
 def build_dataset(cfg, default_args=None):
+    """Build datasets."""
     from .dataset_wrappers import ConcatDataset, RepeatDataset
     if isinstance(cfg, (list, tuple)):
         dataset = ConcatDataset([build_dataset(c, default_args) for c in cfg])
@@ -151,8 +153,17 @@ def build_dataloader(dataset,
 
 
 def worker_init_fn(worker_id, num_workers, rank, seed):
-    # The seed of each worker equals to
-    # num_worker * rank + worker_id + user_seed
+    """Worker init func for dataloader.
+
+    The seed of each worker equals to num_worker * rank + worker_id + user_seed
+
+    Args:
+        worker_id (int): Worker id.
+        num_workers (int): Number of workers.
+        rank (int): The rank of current process.
+        seed (int): The random seed to use.
+    """
+
     worker_seed = num_workers * rank + worker_id + seed
     np.random.seed(worker_seed)
     random.seed(worker_seed)

@@ -41,6 +41,7 @@ class ASPPModule(nn.ModuleList):
                     act_cfg=self.act_cfg))
 
     def forward(self, x):
+        """Forward function."""
         aspp_outs = []
         for aspp_module in self:
             aspp_outs.append(aspp_module(x))
@@ -90,6 +91,7 @@ class ASPPHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward(self, inputs):
+        """Forward function."""
         x = self._transform_inputs(inputs)
         aspp_outs = [
             resize(

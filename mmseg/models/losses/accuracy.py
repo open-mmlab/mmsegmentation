@@ -50,6 +50,7 @@ def accuracy(pred, target, topk=1, thresh=None):
 
 
 class Accuracy(nn.Module):
+    """Accuracy calculation module."""
 
     def __init__(self, topk=(1, ), thresh=None):
         """Module to calculate the accuracy.

@@ -74,6 +74,7 @@ class UPerHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def psp_forward(self, inputs):
+        """Forward function of PSP module."""
         x = inputs[-1]
         psp_outs = [x]
         psp_outs.extend(self.psp_modules(x))
@@ -83,6 +84,7 @@ class UPerHead(BaseDecodeHead):
         return output
 
     def forward(self, inputs):
+        """Forward function."""
 
         inputs = self._transform_inputs(inputs)
 

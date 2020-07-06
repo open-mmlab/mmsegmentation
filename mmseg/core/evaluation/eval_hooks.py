@@ -21,6 +21,7 @@ class EvalHook(Hook):
         self.eval_kwargs = eval_kwargs
 
     def after_train_iter(self, runner):
+        """After train epoch hook."""
         if not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
@@ -29,6 +30,7 @@ class EvalHook(Hook):
         self.evaluate(runner, results)
 
     def evaluate(self, runner, results):
+        """Call evaluate function of dataset."""
         eval_res = self.dataloader.dataset.evaluate(
             results, logger=runner.logger, **self.eval_kwargs)
         for name, val in eval_res.items():
@@ -63,6 +65,7 @@ class DistEvalHook(EvalHook):
         self.eval_kwargs = eval_kwargs
 
     def after_train_iter(self, runner):
+        """After train epoch hook."""
         if not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import multi_gpu_test

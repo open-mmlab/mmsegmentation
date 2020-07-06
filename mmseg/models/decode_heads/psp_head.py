@@ -44,6 +44,7 @@ class PPM(nn.ModuleList):
                         act_cfg=self.act_cfg)))
 
     def forward(self, x):
+        """Forward function."""
         ppm_outs = []
         for ppm in self:
             ppm_out = ppm(x)
@@ -90,6 +91,7 @@ class PSPHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward(self, inputs):
+        """Forward function."""
         x = self._transform_inputs(inputs)
         psp_outs = [x]
         psp_outs.extend(self.psp_modules(x))

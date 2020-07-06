@@ -45,6 +45,7 @@ class HRModule(nn.Module):
 
     def _check_branches(self, num_branches, num_blocks, in_channels,
                         num_channels):
+        """Check branches configuration."""
         if num_branches != len(num_blocks):
             error_msg = f'NUM_BRANCHES({num_branches}) <> NUM_BLOCKS(' \
                         f'{len(num_blocks)})'
@@ -66,6 +67,7 @@ class HRModule(nn.Module):
                          num_blocks,
                          num_channels,
                          stride=1):
+        """Build one branch."""
         downsample = None
         if stride != 1 or \
                 self.in_channels[branch_index] != \
@@ -105,6 +107,7 @@ class HRModule(nn.Module):
         return nn.Sequential(*layers)
 
     def _make_branches(self, num_branches, block, num_blocks, num_channels):
+        """Build multiple branch."""
         branches = []
 
         for i in range(num_branches):
@@ -114,6 +117,7 @@ class HRModule(nn.Module):
         return nn.ModuleList(branches)
 
     def _make_fuse_layers(self):
+        """Build fuse layer."""
         if self.num_branches == 1:
             return None
 
@@ -179,6 +183,7 @@ class HRModule(nn.Module):
         return nn.ModuleList(fuse_layers)
 
     def forward(self, x):
+        """Forward function."""
         if self.num_branches == 1:
             return [self.branches[0](x[0])]
 
@@ -355,14 +360,17 @@ class HRNet(nn.Module):
 
     @property
     def norm1(self):
+        """nn.Module: the normalization layer named "norm1" """
         return getattr(self, self.norm1_name)
 
     @property
     def norm2(self):
+        """nn.Module: the normalization layer named "norm2" """
         return getattr(self, self.norm2_name)
 
     def _make_transition_layer(self, num_channels_pre_layer,
                                num_channels_cur_layer):
+        """Make transition layer."""
         num_branches_cur = len(num_channels_cur_layer)
         num_branches_pre = len(num_channels_pre_layer)
 
@@ -408,6 +416,7 @@ class HRNet(nn.Module):
         return nn.ModuleList(transition_layers)
 
     def _make_layer(self, block, inplanes, planes, blocks, stride=1):
+        """Make each layer."""
         downsample = None
         if stride != 1 or inplanes != planes * block.expansion:
             downsample = nn.Sequential(
@@ -443,6 +452,7 @@ class HRNet(nn.Module):
         return nn.Sequential(*layers)
 
     def _make_stage(self, layer_config, in_channels, multiscale_output=True):
+        """Make each stage."""
         num_modules = layer_config['num_modules']
         num_branches = layer_config['num_branches']
         num_blocks = layer_config['num_blocks']
@@ -472,6 +482,12 @@ class HRNet(nn.Module):
         return nn.Sequential(*hr_modules), in_channels
 
     def init_weights(self, pretrained=None):
+        """Initialize the weights in backbone.
+
+        Args:
+            pretrained (str, optional): Path to pre-trained weights.
+                Defaults to None.
+        """
         if isinstance(pretrained, str):
             logger = get_root_logger()
             load_checkpoint(self, pretrained, strict=False, logger=logger)
@@ -492,6 +508,7 @@ class HRNet(nn.Module):
             raise TypeError('pretrained must be a str or None')
 
     def forward(self, x):
+        """Forward function."""
 
         x = self.conv1(x)
         x = self.norm1(x)
@@ -528,6 +545,8 @@ class HRNet(nn.Module):
         return y_list
 
     def train(self, mode=True):
+        """Convert the model into training mode whill keeping the normalization
+        layer freezed."""
         super(HRNet, self).train(mode)
         if mode and self.norm_eval:
             for m in self.modules():

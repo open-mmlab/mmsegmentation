@@ -60,6 +60,7 @@ class FCNHead(BaseDecodeHead):
                 act_cfg=self.act_cfg)
 
     def forward(self, inputs):
+        """Forward function."""
         x = self._transform_inputs(inputs)
         output = self.convs(x)
         if self.concat_input:

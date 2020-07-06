@@ -1,4 +1,4 @@
-from .builder import build_seg_sampler
+from .builder import build_pixel_sampler
 from .sampler import BasePixelSampler, OHEMPixelSampler
 
-__all__ = ['build_seg_sampler', 'BasePixelSampler', 'OHEMPixelSampler']
+__all__ = ['build_pixel_sampler', 'BasePixelSampler', 'OHEMPixelSampler']

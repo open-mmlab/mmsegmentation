@@ -38,8 +38,19 @@ def init_segmentor(config, checkpoint=None, device='cuda:0'):
 
 
 class LoadImage:
+    """A simple pipeline to load image."""
 
     def __call__(self, results):
+        """Call function to load images into results.
+
+        Args:
+            results (dict): A result dict contains the file name
+                of the image to be read.
+
+        Returns:
+            dict: ``results`` will be returned containing loaded image.
+        """
+
         if isinstance(results['img'], str):
             results['filename'] = results['img']
             results['ori_filename'] = results['img']
@@ -89,7 +100,7 @@ def show_result_pyplot(model, img, result, palette=None, fig_size=(15, 10)):
     """Visualize the segmentation results on the image.
 
     Args:
-        model (nn.Module): The loaded detector.
+        model (nn.Module): The loaded segmentor.
         img (str or np.ndarray): Image filename or loaded image.
         result (list): The segmentation result.
         palette (list[list[int]]] | None): The palette of segmentation

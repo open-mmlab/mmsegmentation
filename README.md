@@ -11,9 +11,13 @@ It is a part of the OpenMMLab project developed by [Multimedia Laboratory, CUHK]
 
 ### Major features
 
+- **Unified Benchmark**
+
+  We provide a unified benchmark toolbox for various semantic segmentation methods.
+
 - **Modular Design**
 
-  We decompose the detection framework into different components and one can easily construct a customized object detection framework by combining different modules.
+  We decompose the semantic segmentation framework into different components and one can easily construct a customized semantic segmentation framework by combining different modules.
 
 - **Support of multiple methods out of box**
 
@@ -21,9 +25,8 @@ It is a part of the OpenMMLab project developed by [Multimedia Laboratory, CUHK]
 
 - **High efficiency**
 
-  The training speed is faster than or comparable to other codebases, including [xxx]().
+  The training speed is faster than or comparable to other codebases.
 
-Apart from MMSegmentation, we also released a library [mmcv](https://github.com/open-mmlab/mmcv) for computer vision research, which is heavily depended on by this toolbox.
 
 ## License
 
@@ -47,7 +50,7 @@ We appreciate all contributions to improve MMSegmentation. Please refer to [CONT
 ## Acknowledgement
 
 MMSegmentation is an open source project that is contributed by researchers and engineers from various colleges and companies. We appreciate all the contributors who implement their methods or add new features, as well as users who give valuable feedbacks.
-We wish that the toolbox and benchmark could serve the growing research community by providing a flexible toolkit to reimplement existing methods and develop their own new detectors.
+We wish that the toolbox and benchmark could serve the growing research community by providing a flexible toolkit to reimplement existing methods and develop their own new segmentor.
 
 
 ## Citation
@@ -56,8 +59,8 @@ If you use this toolbox or benchmark in your research, please cite this project.
 
 ```
 @misc{mmseg2019,
-  author={Xu, Jiarui and Chen Kai},
-  title={semseg},
+  author={Xu, Jiarui and Chen, Kai and Lin, Dahua},
+  title={{MMSegmenation}},
   howpublished={\url{https://github.com/open-mmlab/mmsegmentation}},
   year={2020}
 }
@@ -66,4 +69,4 @@ If you use this toolbox or benchmark in your research, please cite this project.
 
 ## Contact
 
-This repo is currently maintained by Kai Chen ([@hellock](http://github.com/hellock)), Jiarui Xu ([@xvjiarui](https://github.com/xvjiarui)).
+This repo is currently maintained by Jiarui Xu ([@xvjiarui](https://github.com/xvjiarui)), Kai Chen ([@hellock](http://github.com/hellock)).

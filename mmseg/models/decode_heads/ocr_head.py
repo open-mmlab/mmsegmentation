@@ -21,6 +21,7 @@ class SpatialGatherModule(nn.Module):
         self.scale = scale
 
     def forward(self, feats, probs):
+        """Forward function."""
         batch_size, num_classes, height, width = probs.size()
         channels = feats.size(1)
         probs = probs.view(batch_size, num_classes, -1)
@@ -70,6 +71,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
             act_cfg=self.act_cfg)
 
     def forward(self, query_feats, key_feats):
+        """Forward function."""
         context = super(ObjectAttentionBlock,
                         self).forward(query_feats, key_feats)
         output = self.bottleneck(torch.cat([context, query_feats], dim=1))
@@ -115,6 +117,7 @@ class OCRHead(BaseCascadeDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward(self, inputs, prev_output):
+        """Forward function."""
         x = self._transform_inputs(inputs)
         feats = self.bottleneck(x)
         context = self.spatial_gather_module(feats, prev_output)
