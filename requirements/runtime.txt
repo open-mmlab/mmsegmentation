@@ -1,0 +1,6 @@
+matplotlib
+numpy
+six
+terminaltables
+# torch
+# torchvision

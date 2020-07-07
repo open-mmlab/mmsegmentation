@@ -1,0 +1,2724 @@
+{
+  "ccnet": {
+    "voc12aug": [
+      [
+        [
+          "CCNet",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "6.0",
+          20.446969644812683,
+          76.168,
+          77.51245728562927,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x512_20k_voc12aug/ccnet_r50-d8_512x512_20k_voc12aug_20200617_193212-fad81784.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x512_20k_voc12aug/ccnet_r50-d8_512x512_20k_voc12aug_20200617_193212.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "9.5",
+          13.637111132708073,
+          77.274,
+          79.02193536016937,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x512_20k_voc12aug/ccnet_r101-d8_512x512_20k_voc12aug_20200617_193212-0007b61d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x512_20k_voc12aug/ccnet_r101-d8_512x512_20k_voc12aug_20200617_193212.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          75.96300000000001,
+          77.03666314173265,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x512_40k_voc12aug/ccnet_r50-d8_512x512_40k_voc12aug_20200613_232127-c2a15f02.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x512_40k_voc12aug/ccnet_r50-d8_512x512_40k_voc12aug_20200613_232127.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          77.86800000000001,
+          78.90226783309761,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x512_40k_voc12aug/ccnet_r101-d8_512x512_40k_voc12aug_20200613_232127-c30da577.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x512_40k_voc12aug/ccnet_r101-d8_512x512_40k_voc12aug_20200613_232127.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "CCNet",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "6.0",
+          3.321448861645321,
+          77.757,
+          78.87281569371032,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes/ccnet_r50-d8_512x1024_40k_cityscapes_20200616_142517-4123f401.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes/ccnet_r50-d8_512x1024_40k_cityscapes_20200616_142517.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "9.5",
+          2.3057084889880533,
+          76.346,
+          78.19477535704155,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes/ccnet_r101-d8_512x1024_40k_cityscapes_20200616_142540-a3b84ba6.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes/ccnet_r101-d8_512x1024_40k_cityscapes_20200616_142540.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "6.8",
+          1.4297640908184566,
+          78.461,
+          79.9288478571096,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_769x769_40k_cityscapes/ccnet_r50-d8_769x769_40k_cityscapes_20200616_145125-76d11884.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_769x769_40k_cityscapes/ccnet_r50-d8_769x769_40k_cityscapes_20200616_145125.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "10.7",
+          1.0054480750692631,
+          76.941,
+          78.62346948358564,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_769x769_40k_cityscapes/ccnet_r101-d8_769x769_40k_cityscapes_20200617_101428-4f57c8d0.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_769x769_40k_cityscapes/ccnet_r101-d8_769x769_40k_cityscapes_20200617_101428.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          79.035,
+          80.1605485551008,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes/ccnet_r50-d8_512x1024_80k_cityscapes_20200617_010421-869a3423.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes/ccnet_r50-d8_512x1024_80k_cityscapes_20200617_010421.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.86800000000001,
+          79.89770560760813,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes/ccnet_r101-d8_512x1024_80k_cityscapes_20200617_203935-ffae8917.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes/ccnet_r101-d8_512x1024_80k_cityscapes_20200617_203935.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.295,
+          81.07581708289482,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_769x769_80k_cityscapes/ccnet_r50-d8_769x769_80k_cityscapes_20200617_010421-73eed8ca.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_769x769_80k_cityscapes/ccnet_r50-d8_769x769_80k_cityscapes_20200617_010421.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.449,
+          80.65765062513057,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_769x769_80k_cityscapes/ccnet_r101-d8_769x769_80k_cityscapes_20200618_011502-ad3cd481.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_769x769_80k_cityscapes/ccnet_r101-d8_769x769_80k_cityscapes_20200618_011502.log.json)"
+        ]
+      ]
+    ],
+    "ade20k": [
+      [
+        [
+          "CCNet",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "8.8",
+          20.889847025344185,
+          41.776,
+          42.980388602332184,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x512_80k_ade20k/ccnet_r50-d8_512x512_80k_ade20k_20200615_014848-aa37f61e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x512_80k_ade20k/ccnet_r50-d8_512x512_80k_ade20k_20200615_014848.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "12.2",
+          14.108705519350595,
+          43.972,
+          45.13437368692854,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x512_80k_ade20k/ccnet_r101-d8_512x512_80k_ade20k_20200615_014848-1f4929a3.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x512_80k_ade20k/ccnet_r101-d8_512x512_80k_ade20k_20200615_014848.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.079,
+          43.131354987778764,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x512_160k_ade20k/ccnet_r50-d8_512x512_160k_ade20k_20200616_084435-7c97193b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r50-d8_512x512_160k_ade20k/ccnet_r50-d8_512x512_160k_ade20k_20200616_084435.log.json)"
+        ],
+        [
+          "CCNet",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          43.706,
+          45.043400185988624,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x512_160k_ade20k/ccnet_r101-d8_512x512_160k_ade20k_20200616_000644-e849e007.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ccnet/ccnet_r101-d8_512x512_160k_ade20k/ccnet_r101-d8_512x512_160k_ade20k_20200616_000644.log.json)"
+        ]
+      ]
+    ]
+  },
+  "ocrnet": {
+    "cityscapes": [
+      [
+        [
+          "OCRNet",
+          "HRNetV2p-W18-Small",
+          "512x1024",
+          40000,
+          "3.5",
+          10.452887853499684,
+          74.30099999999999,
+          75.94532264911325,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes/ocrnet_hr18s_512x1024_40k_cityscapes_20200601_033304-fa2436c2.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes/ocrnet_hr18s_512x1024_40k_cityscapes_20200601_033304.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18",
+          "512x1024",
+          40000,
+          "4.7",
+          7.504321415510909,
+          77.71900000000001,
+          79.49233034088692,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x1024_40k_cityscapes/ocrnet_hr18_512x1024_40k_cityscapes_20200601_033320-401c5bdd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x1024_40k_cityscapes/ocrnet_hr18_512x1024_40k_cityscapes_20200601_033320.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W48",
+          "512x1024",
+          40000,
+          "8.0",
+          4.215373853142414,
+          80.58,
+          81.79213277409706,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x1024_40k_cityscapes/ocrnet_hr48_512x1024_40k_cityscapes_20200601_033336-55b32491.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x1024_40k_cityscapes/ocrnet_hr48_512x1024_40k_cityscapes_20200601_033336.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18-Small",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          77.157,
+          78.66157171766707,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x1024_80k_cityscapes/ocrnet_hr18s_512x1024_80k_cityscapes_20200601_222735-55979e63.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x1024_80k_cityscapes/ocrnet_hr18s_512x1024_80k_cityscapes_20200601_222735.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.568,
+          80.45534029123633,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x1024_80k_cityscapes/ocrnet_hr18_512x1024_80k_cityscapes_20200614_230521-c2e1dd4a.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x1024_80k_cityscapes/ocrnet_hr18_512x1024_80k_cityscapes_20200614_230521.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W48",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          80.704,
+          81.87462053536443,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x1024_80k_cityscapes/ocrnet_hr48_512x1024_80k_cityscapes_20200601_222752-9076bcdf.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x1024_80k_cityscapes/ocrnet_hr48_512x1024_80k_cityscapes_20200601_222752.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18-Small",
+          "512x1024",
+          160000,
+          "-",
+          "-",
+          78.448,
+          79.9684406563932,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes/ocrnet_hr18s_512x1024_160k_cityscapes_20200602_191005-f4a7af28.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes/ocrnet_hr18s_512x1024_160k_cityscapes_20200602_191005.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18",
+          "512x1024",
+          160000,
+          "-",
+          "-",
+          79.473,
+          80.91408916940453,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001-b9172d0c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W48",
+          "512x1024",
+          160000,
+          "-",
+          "-",
+          81.34599999999999,
+          82.69728960882979,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037-dfbf1b0c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037.log.json)"
+        ]
+      ]
+    ],
+    "voc12aug": [
+      [
+        [
+          "OCRNet",
+          "HRNetV2p-W18-Small",
+          "512x512",
+          20000,
+          "3.5",
+          31.554844022107428,
+          71.7,
+          73.83921653423745,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x512_20k_voc12aug/ocrnet_hr18s_512x512_20k_voc12aug_20200617_233913-02b04fcb.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x512_20k_voc12aug/ocrnet_hr18s_512x512_20k_voc12aug_20200617_233913.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18",
+          "512x512",
+          20000,
+          "4.7",
+          19.90720967998522,
+          74.749,
+          77.1105042314631,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x512_20k_voc12aug/ocrnet_hr18_512x512_20k_voc12aug_20200617_233932-8954cbb7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x512_20k_voc12aug/ocrnet_hr18_512x512_20k_voc12aug_20200617_233932.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W48",
+          "512x512",
+          20000,
+          "8.1",
+          17.82942134961672,
+          77.72,
+          79.87183377075576,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x512_20k_voc12aug/ocrnet_hr48_512x512_20k_voc12aug_20200617_233932-9e82080a.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x512_20k_voc12aug/ocrnet_hr48_512x512_20k_voc12aug_20200617_233932.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18-Small",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          72.761,
+          74.6014601681293,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug/ocrnet_hr18s_512x512_40k_voc12aug_20200614_002025-42b587ac.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug/ocrnet_hr18s_512x512_40k_voc12aug_20200614_002025.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          74.982,
+          77.39817842813225,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x512_40k_voc12aug/ocrnet_hr18_512x512_40k_voc12aug_20200614_015958-714302be.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x512_40k_voc12aug/ocrnet_hr18_512x512_40k_voc12aug_20200614_015958.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W48",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          77.143,
+          79.70754598517257,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x512_40k_voc12aug/ocrnet_hr48_512x512_40k_voc12aug_20200614_015958-255bc5ce.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x512_40k_voc12aug/ocrnet_hr48_512x512_40k_voc12aug_20200614_015958.log.json)"
+        ]
+      ]
+    ],
+    "ade20k": [
+      [
+        [
+          "OCRNet",
+          "HRNetV2p-W18-Small",
+          "512x512",
+          80000,
+          "6.7",
+          28.980094398974657,
+          35.056,
+          35.797050387137105,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x512_80k_ade20k/ocrnet_hr18s_512x512_80k_ade20k_20200615_055600-e80b62af.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x512_80k_ade20k/ocrnet_hr18s_512x512_80k_ade20k_20200615_055600.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18",
+          "512x512",
+          80000,
+          "7.9",
+          18.928971854245283,
+          37.789,
+          39.155377232744,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x512_80k_ade20k/ocrnet_hr18_512x512_80k_ade20k_20200615_053157-d173d83b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x512_80k_ade20k/ocrnet_hr18_512x512_80k_ade20k_20200615_053157.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W48",
+          "512x512",
+          80000,
+          "11.2",
+          16.991178423144667,
+          43.0,
+          44.299600723103225,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x512_80k_ade20k/ocrnet_hr48_512x512_80k_ade20k_20200615_021518-d168c2d1.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x512_80k_ade20k/ocrnet_hr48_512x512_80k_ade20k_20200615_021518.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18-Small",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          37.191,
+          38.40331034259458,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x512_160k_ade20k/ocrnet_hr18s_512x512_160k_ade20k_20200615_184505-8e913058.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18s_512x512_160k_ade20k/ocrnet_hr18s_512x512_160k_ade20k_20200615_184505.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W18",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          39.322,
+          40.80220494656125,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x512_160k_ade20k/ocrnet_hr18_512x512_160k_ade20k_20200615_200940-d8fcd9d1.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr18_512x512_160k_ade20k/ocrnet_hr18_512x512_160k_ade20k_20200615_200940.log.json)"
+        ],
+        [
+          "OCRNet",
+          "HRNetV2p-W48",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          43.254,
+          44.87655360616251,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x512_160k_ade20k/ocrnet_hr48_512x512_160k_ade20k_20200615_184705-a073726d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ocrnet/ocrnet_hr48_512x512_160k_ade20k/ocrnet_hr48_512x512_160k_ade20k_20200615_184705.log.json)"
+        ]
+      ]
+    ]
+  },
+  "fcn": {
+    "ade20k": [
+      [
+        [
+          "FCN",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "8.5",
+          23.4864501408415,
+          35.94,
+          37.93716647334422,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016.log.json)"
+        ],
+        [
+          "FCN",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "12.0",
+          14.780950192500319,
+          39.614,
+          40.827367113582405,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x512_80k_ade20k/fcn_r101-d8_512x512_80k_ade20k_20200615_014143-bc1809f7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x512_80k_ade20k/fcn_r101-d8_512x512_80k_ade20k_20200615_014143.log.json)"
+        ],
+        [
+          "FCN",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          36.105,
+          38.078772436420934,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x512_160k_ade20k/fcn_r50-d8_512x512_160k_ade20k_20200615_100713-4edbc3b4.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x512_160k_ade20k/fcn_r50-d8_512x512_160k_ade20k_20200615_100713.log.json)"
+        ],
+        [
+          "FCN",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          39.914,
+          41.39843118160508,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816-fd192bd5.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "FCN",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "5.7",
+          4.169686275718568,
+          72.246,
+          73.35990418338677,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608.log.json)"
+        ],
+        [
+          "FCN",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "9.2",
+          2.6579467518998623,
+          75.44999999999999,
+          76.58052712300109,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x1024_40k_cityscapes/fcn_r101-d8_512x1024_40k_cityscapes_20200604_181852-a883d3a1.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x1024_40k_cityscapes/fcn_r101-d8_512x1024_40k_cityscapes_20200604_181852.log.json)"
+        ],
+        [
+          "FCN",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "6.5",
+          1.796476680257555,
+          71.47099999999999,
+          72.53595679063739,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_769x769_40k_cityscapes/fcn_r50-d8_769x769_40k_cityscapes_20200606_113104-977b5d02.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_769x769_40k_cityscapes/fcn_r50-d8_769x769_40k_cityscapes_20200606_113104.log.json)"
+        ],
+        [
+          "FCN",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "10.4",
+          1.1858280952855258,
+          73.929,
+          75.13723386002961,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_769x769_40k_cityscapes/fcn_r101-d8_769x769_40k_cityscapes_20200606_113208-7d4ab69c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_769x769_40k_cityscapes/fcn_r101-d8_769x769_40k_cityscapes_20200606_113208.log.json)"
+        ],
+        [
+          "FCN",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          73.61,
+          74.23620409061135,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019-03aa804d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019.log.json)"
+        ],
+        [
+          "FCN",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          75.13300000000001,
+          75.93619310604196,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038-3fb937eb.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038.log.json)"
+        ],
+        [
+          "FCN",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          72.643,
+          73.31626041581089,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749-f5caeabc.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749.log.json)"
+        ],
+        [
+          "FCN",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          75.519,
+          76.60857360886911,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354-45cbac68.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354.log.json)"
+        ]
+      ]
+    ],
+    "voc12aug": [
+      [
+        [
+          "FCN",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "5.7",
+          23.28063707693325,
+          67.085,
+          69.9383574378687,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715-52dc5306.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715.log.json)"
+        ],
+        [
+          "FCN",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "9.2",
+          14.80917380811037,
+          71.16,
+          73.56633022724682,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x512_20k_voc12aug/fcn_r101-d8_512x512_20k_voc12aug_20200617_010842-0bb4e798.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x512_20k_voc12aug/fcn_r101-d8_512x512_20k_voc12aug_20200617_010842.log.json)"
+        ],
+        [
+          "FCN",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          66.971,
+          69.03918575643368,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x512_40k_voc12aug/fcn_r50-d8_512x512_40k_voc12aug_20200613_161222-5e2dbf40.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r50-d8_512x512_40k_voc12aug/fcn_r50-d8_512x512_40k_voc12aug_20200613_161222.log.json)"
+        ],
+        [
+          "FCN",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          69.90899999999999,
+          72.3822015171163,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240-4c8bcefd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240.log.json)"
+        ]
+      ]
+    ]
+  },
+  "upernet": {
+    "cityscapes": [
+      [
+        [
+          "UPerNet",
+          "R-50",
+          "512x1024",
+          40000,
+          "6.4",
+          4.250181636943019,
+          77.096,
+          78.3708722046974,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827-aa54cb54.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-101",
+          "512x1024",
+          40000,
+          "7.4",
+          3.7930291329191848,
+          78.689,
+          80.10934950511658,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x1024_40k_cityscapes/upernet_r101_512x1024_40k_cityscapes_20200605_094933-ebce3b10.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x1024_40k_cityscapes/upernet_r101_512x1024_40k_cityscapes_20200605_094933.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-50",
+          "769x769",
+          40000,
+          "7.2",
+          1.7640659185483825,
+          77.97699999999999,
+          79.70262909350413,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_769x769_40k_cityscapes/upernet_r50_769x769_40k_cityscapes_20200530_033048-92d21539.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_769x769_40k_cityscapes/upernet_r50_769x769_40k_cityscapes_20200530_033048.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-101",
+          "769x769",
+          40000,
+          "8.4",
+          1.5620856953198976,
+          79.03099999999999,
+          80.76684306267266,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819-83c95d01.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-50",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.193,
+          79.18874361591651,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x1024_80k_cityscapes/upernet_r50_512x1024_80k_cityscapes_20200607_052207-848beca8.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x1024_80k_cityscapes/upernet_r50_512x1024_80k_cityscapes_20200607_052207.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-101",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          79.396,
+          80.45737464738971,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x1024_80k_cityscapes/upernet_r101_512x1024_80k_cityscapes_20200607_002403-f05f2345.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x1024_80k_cityscapes/upernet_r101_512x1024_80k_cityscapes_20200607_002403.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-50",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.389,
+          80.91628431360874,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_769x769_80k_cityscapes/upernet_r50_769x769_80k_cityscapes_20200607_005107-82ae7d15.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_769x769_80k_cityscapes/upernet_r50_769x769_80k_cityscapes_20200607_005107.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-101",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          80.096,
+          81.49282902181865,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014-082fc334.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014.log.json)"
+        ]
+      ]
+    ],
+    "voc12aug": [
+      [
+        [
+          "UPerNet",
+          "R-50",
+          "512x512",
+          20000,
+          "6.4",
+          23.173912855179744,
+          74.823,
+          76.3452508971145,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330-5b5890a7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-101",
+          "512x512",
+          20000,
+          "7.5",
+          19.980025806149488,
+          77.096,
+          78.28805607216208,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629-f14e7f27.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-50",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          75.921,
+          77.43852589851066,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x512_40k_voc12aug/upernet_r50_512x512_40k_voc12aug_20200613_162257-ca9bcc6b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x512_40k_voc12aug/upernet_r50_512x512_40k_voc12aug_20200613_162257.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-101",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          77.432,
+          78.55592324577675,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x512_40k_voc12aug/upernet_r101_512x512_40k_voc12aug_20200613_163549-e26476ac.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x512_40k_voc12aug/upernet_r101_512x512_40k_voc12aug_20200613_163549.log.json)"
+        ]
+      ]
+    ],
+    "ade20k": [
+      [
+        [
+          "UPerNet",
+          "R-50",
+          "512x512",
+          80000,
+          "8.1",
+          23.404934213597443,
+          40.704,
+          41.80915610272295,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127-ecc8377b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-101",
+          "512x512",
+          80000,
+          "9.1",
+          20.336544682582634,
+          42.91,
+          43.95794963214672,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117-32e4db94.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-50",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.05,
+          42.784926632807014,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x512_160k_ade20k/upernet_r50_512x512_160k_ade20k_20200615_184328-8534de8d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r50_512x512_160k_ade20k/upernet_r50_512x512_160k_ade20k_20200615_184328.log.json)"
+        ],
+        [
+          "UPerNet",
+          "R-101",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          43.824999999999996,
+          44.84822175137515,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951-91b32684.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951.log.json)"
+        ]
+      ]
+    ]
+  },
+  "encnet": {
+    "ade20k": [
+      [
+        [
+          "encnet",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "10.1",
+          22.81234693333879,
+          39.53,
+          41.174465044693534,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_512x512_80k_ade20k/encnet_r50-d8_512x512_80k_ade20k_20200622_042412-44b46b04.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_512x512_80k_ade20k/encnet_r50-d8_512x512_80k_ade20k-20200622_042412.log.json)"
+        ],
+        [
+          "encnet",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "13.6",
+          14.8713593833497,
+          42.108000000000004,
+          43.60970109562513,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_512x512_80k_ade20k/encnet_r101-d8_512x512_80k_ade20k_20200622_101128-dd35e237.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_512x512_80k_ade20k/encnet_r101-d8_512x512_80k_ade20k-20200622_101128.log.json)"
+        ],
+        [
+          "encnet",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          40.096,
+          41.71317203062112,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_512x512_160k_ade20k/encnet_r50-d8_512x512_160k_ade20k_20200622_101059-b2db95e0.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_512x512_160k_ade20k/encnet_r50-d8_512x512_160k_ade20k-20200622_101059.log.json)"
+        ],
+        [
+          "encnet",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.61,
+          44.01125617918497,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_512x512_160k_ade20k/encnet_r101-d8_512x512_160k_ade20k_20200622_073348-7989641f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_512x512_160k_ade20k/encnet_r101-d8_512x512_160k_ade20k-20200622_073348.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "encnet",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "8.6",
+          4.579766763724604,
+          75.672,
+          77.08129779577173,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_512x1024_40k_cityscapes/encnet_r50-d8_512x1024_40k_cityscapes_20200621_220958-68638a47.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_512x1024_40k_cityscapes/encnet_r50-d8_512x1024_40k_cityscapes-20200621_220958.log.json)"
+        ],
+        [
+          "encnet",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "12.1",
+          2.6579084094229293,
+          75.81099999999999,
+          77.20722229497062,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_512x1024_40k_cityscapes/encnet_r101-d8_512x1024_40k_cityscapes_20200621_220933-35e0a3e8.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_512x1024_40k_cityscapes/encnet_r101-d8_512x1024_40k_cityscapes-20200621_220933.log.json)"
+        ],
+        [
+          "encnet",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "9.8",
+          1.815523577456311,
+          76.244,
+          77.8544931191627,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_769x769_40k_cityscapes/encnet_r50-d8_769x769_40k_cityscapes_20200621_220958-3bcd2884.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_769x769_40k_cityscapes/encnet_r50-d8_769x769_40k_cityscapes-20200621_220958.log.json)"
+        ],
+        [
+          "encnet",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "13.7",
+          1.2586694727171592,
+          74.248,
+          76.2517491915298,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_769x769_40k_cityscapes/encnet_r101-d8_769x769_40k_cityscapes_20200621_220933-2fafed55.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_769x769_40k_cityscapes/encnet_r101-d8_769x769_40k_cityscapes-20200621_220933.log.json)"
+        ],
+        [
+          "encnet",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          77.93900000000001,
+          79.12604738206694,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_512x1024_80k_cityscapes/encnet_r50-d8_512x1024_80k_cityscapes_20200622_003554-fc5c5624.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_512x1024_80k_cityscapes/encnet_r50-d8_512x1024_80k_cityscapes-20200622_003554.log.json)"
+        ],
+        [
+          "encnet",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.55499999999999,
+          79.46808306901366,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_512x1024_80k_cityscapes/encnet_r101-d8_512x1024_80k_cityscapes_20200622_003555-1de64bec.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_512x1024_80k_cityscapes/encnet_r101-d8_512x1024_80k_cityscapes-20200622_003555.log.json)"
+        ],
+        [
+          "encnet",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          77.444,
+          78.71857972971966,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_769x769_80k_cityscapes/encnet_r50-d8_769x769_80k_cityscapes_20200622_003554-55096dcb.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r50-d8_769x769_80k_cityscapes/encnet_r50-d8_769x769_80k_cityscapes-20200622_003554.log.json)"
+        ],
+        [
+          "encnet",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          76.099,
+          76.97183988185541,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_769x769_80k_cityscapes/encnet_r101-d8_769x769_80k_cityscapes_20200622_003555-470ef79d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/encnet/encnet_r101-d8_769x769_80k_cityscapes/encnet_r101-d8_769x769_80k_cityscapes-20200622_003555.log.json)"
+        ]
+      ]
+    ]
+  },
+  "psanet": {
+    "voc12aug": [
+      [
+        [
+          "PSANet",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "6.9",
+          18.243332440478824,
+          76.393,
+          77.3406686160825,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x512_20k_voc12aug/psanet_r50-d8_512x512_20k_voc12aug_20200617_102413-2f1bbaa1.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x512_20k_voc12aug/psanet_r50-d8_512x512_20k_voc12aug_20200617_102413.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "10.4",
+          12.62519076615176,
+          77.90700000000001,
+          79.30352112599553,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x512_20k_voc12aug/psanet_r101-d8_512x512_20k_voc12aug_20200617_110624-946fef11.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x512_20k_voc12aug/psanet_r101-d8_512x512_20k_voc12aug_20200617_110624.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.305,
+          77.35064085992029,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x512_40k_voc12aug/psanet_r50-d8_512x512_40k_voc12aug_20200613_161946-f596afb5.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x512_40k_voc12aug/psanet_r50-d8_512x512_40k_voc12aug_20200613_161946.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          77.73400000000001,
+          79.0523901742458,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x512_40k_voc12aug/psanet_r101-d8_512x512_40k_voc12aug_20200613_161946-1f560f9e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x512_40k_voc12aug/psanet_r101-d8_512x512_40k_voc12aug_20200613_161946.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "PSANet",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "7.0",
+          3.1667705694500796,
+          77.628,
+          79.0422496865149,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x1024_40k_cityscapes/psanet_r50-d8_512x1024_40k_cityscapes_20200606_103117-99fac37c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x1024_40k_cityscapes/psanet_r50-d8_512x1024_40k_cityscapes_20200606_103117.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "10.5",
+          2.2037021448307477,
+          79.13900000000001,
+          80.19378817152979,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x1024_40k_cityscapes/psanet_r101-d8_512x1024_40k_cityscapes_20200606_001418-27b9cfa7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x1024_40k_cityscapes/psanet_r101-d8_512x1024_40k_cityscapes_20200606_001418.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "7.9",
+          1.4027260879051224,
+          77.991,
+          79.63690034167004,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_769x769_40k_cityscapes/psanet_r50-d8_769x769_40k_cityscapes_20200530_033717-d5365506.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_769x769_40k_cityscapes/psanet_r50-d8_769x769_40k_cityscapes_20200530_033717.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "11.9",
+          0.9842023985382289,
+          78.432,
+          80.26050149532226,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_769x769_40k_cityscapes/psanet_r101-d8_769x769_40k_cityscapes_20200530_035107-997da1e6.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_769x769_40k_cityscapes/psanet_r101-d8_769x769_40k_cityscapes_20200530_035107.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          77.239,
+          78.69336591221833,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x1024_80k_cityscapes/psanet_r50-d8_512x1024_80k_cityscapes_20200606_161842-ab60a24f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x1024_80k_cityscapes/psanet_r50-d8_512x1024_80k_cityscapes_20200606_161842.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          79.315,
+          80.53461181920574,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x1024_80k_cityscapes/psanet_r101-d8_512x1024_80k_cityscapes_20200606_161823-0f73a169.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x1024_80k_cityscapes/psanet_r101-d8_512x1024_80k_cityscapes_20200606_161823.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.315,
+          80.91271206157141,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_769x769_80k_cityscapes/psanet_r50-d8_769x769_80k_cityscapes_20200606_225134-fe42f49e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_769x769_80k_cityscapes/psanet_r50-d8_769x769_80k_cityscapes_20200606_225134.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.687,
+          80.88962393764702,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_769x769_80k_cityscapes/psanet_r101-d8_769x769_80k_cityscapes_20200606_214550-7665827b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_769x769_80k_cityscapes/psanet_r101-d8_769x769_80k_cityscapes_20200606_214550.log.json)"
+        ]
+      ]
+    ],
+    "ade20k": [
+      [
+        [
+          "PSANet",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "9.0",
+          18.906812073042055,
+          41.141,
+          41.91306881085375,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x512_80k_ade20k/psanet_r50-d8_512x512_80k_ade20k_20200614_144141-835e4b97.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x512_80k_ade20k/psanet_r50-d8_512x512_80k_ade20k_20200614_144141.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "12.5",
+          13.12564520230877,
+          43.797999999999995,
+          44.751736929040355,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x512_80k_ade20k/psanet_r101-d8_512x512_80k_ade20k_20200614_185117-1fab60d4.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x512_80k_ade20k/psanet_r101-d8_512x512_80k_ade20k_20200614_185117.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          41.668,
+          42.950020936188984,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x512_160k_ade20k/psanet_r50-d8_512x512_160k_ade20k_20200615_161258-148077dd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r50-d8_512x512_160k_ade20k/psanet_r50-d8_512x512_160k_ade20k_20200615_161258.log.json)"
+        ],
+        [
+          "PSANet",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          43.742999999999995,
+          45.37610124877713,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x512_160k_ade20k/psanet_r101-d8_512x512_160k_ade20k_20200615_161537-dbfa564c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/psanet/psanet_r101-d8_512x512_160k_ade20k/psanet_r101-d8_512x512_160k_ade20k_20200615_161537.log.json)"
+        ]
+      ]
+    ]
+  },
+  "danet": {
+    "voc12aug": [
+      [
+        [
+          "DANet",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "6.5",
+          20.943311686542472,
+          74.455,
+          75.68810367906634,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x512_20k_voc12aug/danet_r50-d8_512x512_20k_voc12aug_20200618_070026-9e9e3ab3.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x512_20k_voc12aug/danet_r50-d8_512x512_20k_voc12aug_20200618_070026.log.json)"
+        ],
+        [
+          "DANet",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "9.9",
+          13.758801929101844,
+          76.024,
+          77.22605579984322,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x512_20k_voc12aug/danet_r101-d8_512x512_20k_voc12aug_20200618_070026-d48d23b2.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x512_20k_voc12aug/danet_r101-d8_512x512_20k_voc12aug_20200618_070026.log.json)"
+        ],
+        [
+          "DANet",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.371,
+          77.29119104649632,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x512_40k_voc12aug/danet_r50-d8_512x512_40k_voc12aug_20200613_235526-426e3a64.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x512_40k_voc12aug/danet_r50-d8_512x512_40k_voc12aug_20200613_235526.log.json)"
+        ],
+        [
+          "DANet",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.508,
+          77.31718399039389,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x512_40k_voc12aug/danet_r101-d8_512x512_40k_voc12aug_20200613_223031-788e232a.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x512_40k_voc12aug/danet_r101-d8_512x512_40k_voc12aug_20200613_223031.log.json)"
+        ]
+      ]
+    ],
+    "ade20k": [
+      [
+        [
+          "DANet",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "11.5",
+          21.197953173726543,
+          41.662,
+          42.90219783063448,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x512_80k_ade20k/danet_r50-d8_512x512_80k_ade20k_20200615_015125-edb18e08.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x512_80k_ade20k/danet_r50-d8_512x512_80k_ade20k_20200615_015125.log.json)"
+        ],
+        [
+          "DANet",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "15.0",
+          14.176784169645225,
+          43.645,
+          45.19098849554861,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x512_80k_ade20k/danet_r101-d8_512x512_80k_ade20k_20200615_015126-d0357c73.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x512_80k_ade20k/danet_r101-d8_512x512_80k_ade20k_20200615_015126.log.json)"
+        ],
+        [
+          "DANet",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.449999999999996,
+          43.251880532863545,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x512_160k_ade20k/danet_r50-d8_512x512_160k_ade20k_20200616_082340-9cb35dcd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x512_160k_ade20k/danet_r50-d8_512x512_160k_ade20k_20200616_082340.log.json)"
+        ],
+        [
+          "DANet",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          44.171,
+          45.016860694179314,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x512_160k_ade20k/danet_r101-d8_512x512_160k_ade20k_20200616_082348-23bf12f9.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x512_160k_ade20k/danet_r101-d8_512x512_160k_ade20k_20200616_082348.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "DANet",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "7.4",
+          2.655504792992914,
+          78.741,
+          "-",
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x1024_40k_cityscapes/danet_r50-d8_512x1024_40k_cityscapes_20200605_191324-c0dbfa5f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x1024_40k_cityscapes/danet_r50-d8_512x1024_40k_cityscapes_20200605_191324.log.json)"
+        ],
+        [
+          "DANet",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "10.9",
+          1.9939886829099438,
+          80.521,
+          "-",
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x1024_40k_cityscapes/danet_r101-d8_512x1024_40k_cityscapes_20200605_200831-c57a7157.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x1024_40k_cityscapes/danet_r101-d8_512x1024_40k_cityscapes_20200605_200831.log.json)"
+        ],
+        [
+          "DANet",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "8.8",
+          1.5557926799730137,
+          78.88,
+          80.61866776927825,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_769x769_40k_cityscapes/danet_r50-d8_769x769_40k_cityscapes_20200530_025703-76681c60.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_769x769_40k_cityscapes/danet_r50-d8_769x769_40k_cityscapes_20200530_025703.log.json)"
+        ],
+        [
+          "DANet",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "12.8",
+          1.0655867297959223,
+          79.88199999999999,
+          81.46525733416875,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_769x769_40k_cityscapes/danet_r101-d8_769x769_40k_cityscapes_20200530_025717-dcb7fd4e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_769x769_40k_cityscapes/danet_r101-d8_769x769_40k_cityscapes_20200530_025717.log.json)"
+        ],
+        [
+          "DANet",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          79.336,
+          "-",
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x1024_80k_cityscapes/danet_r50-d8_512x1024_80k_cityscapes_20200607_133029-2bfa2293.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_512x1024_80k_cityscapes/danet_r50-d8_512x1024_80k_cityscapes_20200607_133029.log.json)"
+        ],
+        [
+          "DANet",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          80.413,
+          "-",
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x1024_80k_cityscapes/danet_r101-d8_512x1024_80k_cityscapes_20200607_132918-955e6350.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_512x1024_80k_cityscapes/danet_r101-d8_512x1024_80k_cityscapes_20200607_132918.log.json)"
+        ],
+        [
+          "DANet",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.274,
+          80.96441839831498,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_769x769_80k_cityscapes/danet_r50-d8_769x769_80k_cityscapes_20200607_132954-495689b4.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r50-d8_769x769_80k_cityscapes/danet_r50-d8_769x769_80k_cityscapes_20200607_132954.log.json)"
+        ],
+        [
+          "DANet",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          80.471,
+          82.020171090948,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_769x769_80k_cityscapes/danet_r101-d8_769x769_80k_cityscapes_20200607_132918-f3a929e7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/danet/danet_r101-d8_769x769_80k_cityscapes/danet_r101-d8_769x769_80k_cityscapes_20200607_132918.log.json)"
+        ]
+      ]
+    ]
+  },
+  "hrnet": {
+    "voc12aug": [
+      [
+        [
+          "FCN",
+          "HRNetV2p-W18-Small",
+          "512x512",
+          20000,
+          "1.8",
+          43.364505532130885,
+          65.201,
+          68.55284135943813,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20200617_224503-56e36088.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20200617_224503.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18",
+          "512x512",
+          20000,
+          "2.9",
+          23.482760884011036,
+          72.303,
+          74.70589725240711,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x512_20k_voc12aug/fcn_hr18_512x512_20k_voc12aug_20200617_224503-488d45f7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x512_20k_voc12aug/fcn_hr18_512x512_20k_voc12aug_20200617_224503.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W48",
+          "512x512",
+          20000,
+          "6.2",
+          22.047745500601465,
+          75.87,
+          78.57597654496765,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x512_20k_voc12aug/fcn_hr48_512x512_20k_voc12aug_20200617_224419-89de05cd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x512_20k_voc12aug/fcn_hr48_512x512_20k_voc12aug_20200617_224419.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18-Small",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          66.61200000000001,
+          70.0031319918366,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x512_40k_voc12aug/fcn_hr18s_512x512_40k_voc12aug_20200614_000648-4f8d6e7f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x512_40k_voc12aug/fcn_hr18s_512x512_40k_voc12aug_20200614_000648.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          72.904,
+          75.58601750093821,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x512_40k_voc12aug/fcn_hr18_512x512_40k_voc12aug_20200613_224401-1b4b76cd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x512_40k_voc12aug/fcn_hr18_512x512_40k_voc12aug_20200613_224401.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W48",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.237,
+          78.48754167864209,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x512_40k_voc12aug/fcn_hr48_512x512_40k_voc12aug_20200613_222111-1b0f18bc.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x512_40k_voc12aug/fcn_hr48_512x512_40k_voc12aug_20200613_222111.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "FCN",
+          "HRNetV2p-W18-Small",
+          "512x1024",
+          40000,
+          "1.7",
+          23.74297838183743,
+          73.859,
+          75.90997145624684,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x1024_40k_cityscapes/fcn_hr18s_512x1024_40k_cityscapes_20200601_014216-93db27d0.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x1024_40k_cityscapes/fcn_hr18s_512x1024_40k_cityscapes_20200601_014216.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18",
+          "512x1024",
+          40000,
+          "2.9",
+          12.96853348364565,
+          77.188,
+          78.91665724639267,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x1024_40k_cityscapes/fcn_hr18_512x1024_40k_cityscapes_20200601_014216-f196fb4e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x1024_40k_cityscapes/fcn_hr18_512x1024_40k_cityscapes_20200601_014216.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W48",
+          "512x1024",
+          40000,
+          "6.2",
+          6.421700443191522,
+          78.483,
+          79.69458922303686,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x1024_40k_cityscapes/fcn_hr48_512x1024_40k_cityscapes_20200601_014240-a989b146.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x1024_40k_cityscapes/fcn_hr48_512x1024_40k_cityscapes_20200601_014240.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18-Small",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          75.306,
+          77.47890927385332,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x1024_80k_cityscapes/fcn_hr18s_512x1024_80k_cityscapes_20200601_202700-1462b75d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x1024_80k_cityscapes/fcn_hr18s_512x1024_80k_cityscapes_20200601_202700.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.64999999999999,
+          80.35059171130018,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x1024_80k_cityscapes/fcn_hr18_512x1024_80k_cityscapes_20200601_223255-4e7b345e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x1024_80k_cityscapes/fcn_hr18_512x1024_80k_cityscapes_20200601_223255.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W48",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          79.928,
+          80.71977327982115,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x1024_80k_cityscapes/fcn_hr48_512x1024_80k_cityscapes_20200601_202606-58ea95d6.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x1024_80k_cityscapes/fcn_hr48_512x1024_80k_cityscapes_20200601_202606.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18-Small",
+          "512x1024",
+          160000,
+          "-",
+          "-",
+          76.312,
+          78.31118288010825,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x1024_160k_cityscapes/fcn_hr18s_512x1024_160k_cityscapes_20200602_190901-4a0797ea.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x1024_160k_cityscapes/fcn_hr18s_512x1024_160k_cityscapes_20200602_190901.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18",
+          "512x1024",
+          160000,
+          "-",
+          "-",
+          78.797,
+          80.74329822797024,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x1024_160k_cityscapes/fcn_hr18_512x1024_160k_cityscapes_20200602_190822-221e4a4f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x1024_160k_cityscapes/fcn_hr18_512x1024_160k_cityscapes_20200602_190822.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W48",
+          "512x1024",
+          160000,
+          "-",
+          "-",
+          80.651,
+          81.92482068666172,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x1024_160k_cityscapes/fcn_hr48_512x1024_160k_cityscapes_20200602_190946-59b7973e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x1024_160k_cityscapes/fcn_hr48_512x1024_160k_cityscapes_20200602_190946.log.json)"
+        ]
+      ]
+    ],
+    "ade20k": [
+      [
+        [
+          "FCN",
+          "HRNetV2p-W18-Small",
+          "512x512",
+          80000,
+          "3.8",
+          38.65539699852906,
+          31.384,
+          32.452806656988855,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x512_80k_ade20k/fcn_hr18s_512x512_80k_ade20k_20200614_144345-77fc814a.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x512_80k_ade20k/fcn_hr18s_512x512_80k_ade20k_20200614_144345.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18",
+          "512x512",
+          80000,
+          "4.9",
+          22.569194335083992,
+          35.515,
+          36.804822066348805,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20200614_185145-66f20cb7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20200614_185145.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W48",
+          "512x512",
+          80000,
+          "8.2",
+          21.234892591194093,
+          41.897,
+          43.26888294374513,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x512_80k_ade20k/fcn_hr48_512x512_80k_ade20k_20200614_193946-7ba5258d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x512_80k_ade20k/fcn_hr48_512x512_80k_ade20k_20200614_193946.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18-Small",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          32.995000000000005,
+          34.547964211800654,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x512_160k_ade20k/fcn_hr18s_512x512_160k_ade20k_20200614_214413-870f65ac.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18s_512x512_160k_ade20k/fcn_hr18s_512x512_160k_ade20k_20200614_214413.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W18",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          36.786,
+          38.58485577782462,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x512_160k_ade20k/fcn_hr18_512x512_160k_ade20k_20200614_214426-ca961836.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr18_512x512_160k_ade20k/fcn_hr18_512x512_160k_ade20k_20200614_214426.log.json)"
+        ],
+        [
+          "FCN",
+          "HRNetV2p-W48",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.018,
+          43.86047333076445,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x512_160k_ade20k/fcn_hr48_512x512_160k_ade20k_20200614_214407-a52fc02c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/hrnet/fcn_hr48_512x512_160k_ade20k/fcn_hr48_512x512_160k_ade20k_20200614_214407.log.json)"
+        ]
+      ]
+    ]
+  },
+  "ann": {
+    "ade20k": [
+      [
+        [
+          "ANN",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "9.1",
+          21.01150654479224,
+          41.008,
+          42.299370248011755,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818-26f75e11.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818.log.json)"
+        ],
+        [
+          "ANN",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "12.5",
+          14.116439500308603,
+          42.939,
+          44.180116688803125,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818-c0153543.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818.log.json)"
+        ],
+        [
+          "ANN",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          41.744,
+          42.61939537832803,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733-892247bc.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733.log.json)"
+        ],
+        [
+          "ANN",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.936,
+          44.05749393457835,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733-955eb1ec.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "ANN",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "6.0",
+          3.7066015347562153,
+          77.402,
+          78.56666466963291,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211.log.json)"
+        ],
+        [
+          "ANN",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "9.5",
+          2.5468121299522504,
+          76.553,
+          78.85000230335912,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243-adf6eece.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243.log.json)"
+        ],
+        [
+          "ANN",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "6.8",
+          1.6951337367703907,
+          78.89399999999999,
+          80.45833256780746,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712-2b46b04d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712.log.json)"
+        ],
+        [
+          "ANN",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "10.7",
+          1.1484480822281227,
+          79.325,
+          80.94411938511638,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720-059bff28.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720.log.json)"
+        ],
+        [
+          "ANN",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          77.345,
+          78.65222072634322,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911-5a9ad545.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911.log.json)"
+        ],
+        [
+          "ANN",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          77.137,
+          78.81361594500169,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728-aceccc6e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728.log.json)"
+        ],
+        [
+          "ANN",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          78.879,
+          80.5665089108356,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426-cc7ff323.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426.log.json)"
+        ],
+        [
+          "ANN",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          78.803,
+          80.34287446616453,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713-a9d4be8d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713.log.json)"
+        ]
+      ]
+    ],
+    "voc12aug": [
+      [
+        [
+          "ANN",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "6.0",
+          20.919551932584206,
+          74.86,
+          76.12674212435266,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246-dfcb1c62.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246.log.json)"
+        ],
+        [
+          "ANN",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "9.5",
+          13.944150769190673,
+          77.47,
+          78.69711736662727,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246-2fad0042.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246.log.json)"
+        ],
+        [
+          "ANN",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.556,
+          77.5139251733015,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314-b5dac322.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314.log.json)"
+        ],
+        [
+          "ANN",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.69500000000001,
+          78.05579776330663,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314-bd205bbe.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314.log.json)"
+        ]
+      ]
+    ]
+  },
+  "pspnet": {
+    "ade20k": [
+      [
+        [
+          "PSPNet",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "8.5",
+          23.526579373672153,
+          41.134,
+          41.941132390638955,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x512_80k_ade20k/pspnet_r50-d8_512x512_80k_ade20k_20200615_014128-15a8b914.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x512_80k_ade20k/pspnet_r50-d8_512x512_80k_ade20k_20200615_014128.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "12.0",
+          15.301938618847755,
+          43.57,
+          44.354975719492394,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x512_80k_ade20k/pspnet_r101-d8_512x512_80k_ade20k_20200614_031423-b6e782f0.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x512_80k_ade20k/pspnet_r101-d8_512x512_80k_ade20k_20200614_031423.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.477,
+          43.441892719742064,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x512_160k_ade20k/pspnet_r50-d8_512x512_160k_ade20k_20200615_184358-1890b0bd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x512_160k_ade20k/pspnet_r50-d8_512x512_160k_ade20k_20200615_184358.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          44.39,
+          45.34825070704653,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x512_160k_ade20k/pspnet_r101-d8_512x512_160k_ade20k_20200615_100650-967c316f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x512_160k_ade20k/pspnet_r101-d8_512x512_160k_ade20k_20200615_100650.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "PSPNet",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "6.1",
+          4.072768293326251,
+          77.848,
+          79.18377782829393,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "9.6",
+          2.6817753401497195,
+          78.34,
+          79.74414521564499,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x1024_40k_cityscapes/pspnet_r101-d8_512x1024_40k_cityscapes_20200604_232751-467e7cf4.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x1024_40k_cityscapes/pspnet_r101-d8_512x1024_40k_cityscapes_20200604_232751.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "6.9",
+          1.7590560538055864,
+          78.262,
+          79.88301952959716,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_769x769_40k_cityscapes/pspnet_r50-d8_769x769_40k_cityscapes_20200606_112725-86638686.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_769x769_40k_cityscapes/pspnet_r50-d8_769x769_40k_cityscapes_20200606_112725.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "10.9",
+          1.1539857289832562,
+          79.082,
+          80.2847015735947,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_769x769_40k_cityscapes/pspnet_r101-d8_769x769_40k_cityscapes_20200606_112753-61c6f5be.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_769x769_40k_cityscapes/pspnet_r101-d8_769x769_40k_cityscapes_20200606_112753.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.55199999999999,
+          79.79089188640063,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_512x1024_80k_cityscapes_20200606_112131-2376f12b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_512x1024_80k_cityscapes_20200606_112131.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          79.756,
+          81.01164255858869,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes/pspnet_r101-d8_512x1024_80k_cityscapes_20200606_112211-e1e1100f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes/pspnet_r101-d8_512x1024_80k_cityscapes_20200606_112211.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.58800000000001,
+          80.68588581173638,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_769x769_80k_cityscapes/pspnet_r50-d8_769x769_80k_cityscapes_20200606_210121-5ccf03dd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_769x769_80k_cityscapes/pspnet_r50-d8_769x769_80k_cityscapes_20200606_210121.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.77499999999999,
+          81.05734239329955,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_769x769_80k_cityscapes/pspnet_r101-d8_769x769_80k_cityscapes_20200606_225055-dba412fa.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_769x769_80k_cityscapes/pspnet_r101-d8_769x769_80k_cityscapes_20200606_225055.log.json)"
+        ]
+      ]
+    ],
+    "voc12aug": [
+      [
+        [
+          "PSPNet",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "6.1",
+          23.594295286990285,
+          76.778,
+          77.61449930304435,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x512_20k_voc12aug/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958-ed5dfbd9.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x512_20k_voc12aug/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "9.6",
+          15.016859227435978,
+          78.472,
+          79.24767235924098,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x512_20k_voc12aug/pspnet_r101-d8_512x512_20k_voc12aug_20200617_102003-4aef3c9a.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x512_20k_voc12aug/pspnet_r101-d8_512x512_20k_voc12aug_20200617_102003.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          77.294,
+          78.48376581837772,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x512_40k_voc12aug/pspnet_r50-d8_512x512_40k_voc12aug_20200613_161222-ae9c1b8c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r50-d8_512x512_40k_voc12aug/pspnet_r50-d8_512x512_40k_voc12aug_20200613_161222.log.json)"
+        ],
+        [
+          "PSPNet",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          78.524,
+          79.56722327765866,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x512_40k_voc12aug/pspnet_r101-d8_512x512_40k_voc12aug_20200613_161222-bc933b18.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/pspnet/pspnet_r101-d8_512x512_40k_voc12aug/pspnet_r101-d8_512x512_40k_voc12aug_20200613_161222.log.json)"
+        ]
+      ]
+    ]
+  },
+  "deeplabv3": {
+    "voc12aug": [
+      [
+        [
+          "DeepLabV3",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "6.1",
+          13.882586968538902,
+          76.17,
+          77.42428903363798,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug/deeplabv3_r50-d8_512x512_20k_voc12aug_20200617_010906-596905ef.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug/deeplabv3_r50-d8_512x512_20k_voc12aug_20200617_010906.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "9.6",
+          9.81331369081087,
+          78.704,
+          79.9523799897917,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x512_20k_voc12aug/deeplabv3_r101-d8_512x512_20k_voc12aug_20200617_010932-8d13832f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x512_20k_voc12aug/deeplabv3_r101-d8_512x512_20k_voc12aug_20200617_010932.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          77.676,
+          78.78389817782097,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x512_40k_voc12aug/deeplabv3_r50-d8_512x512_40k_voc12aug_20200613_161546-2ae96e7e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x512_40k_voc12aug/deeplabv3_r50-d8_512x512_40k_voc12aug_20200613_161546.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          77.923,
+          79.17787250140825,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug/deeplabv3_r101-d8_512x512_40k_voc12aug_20200613_161432-0017d784.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug/deeplabv3_r101-d8_512x512_40k_voc12aug_20200613_161432.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "DeepLabV3",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "6.1",
+          2.57047659861635,
+          79.091,
+          80.4506523590434,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes/deeplabv3_r50-d8_512x1024_40k_cityscapes_20200605_022449-acadc2f8.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes/deeplabv3_r50-d8_512x1024_40k_cityscapes_20200605_022449.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "9.6",
+          1.9222440928636317,
+          77.121,
+          79.61407891260694,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x1024_40k_cityscapes/deeplabv3_r101-d8_512x1024_40k_cityscapes_20200605_012241-7fd3f799.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x1024_40k_cityscapes/deeplabv3_r101-d8_512x1024_40k_cityscapes_20200605_012241.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "6.9",
+          1.1119590479409436,
+          78.581,
+          79.89433614719104,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_769x769_40k_cityscapes/deeplabv3_r50-d8_769x769_40k_cityscapes_20200606_113723-7eda553c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_769x769_40k_cityscapes/deeplabv3_r50-d8_769x769_40k_cityscapes_20200606_113723.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "10.9",
+          0.832582701195375,
+          79.27300000000001,
+          80.11177730128428,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_769x769_40k_cityscapes/deeplabv3_r101-d8_769x769_40k_cityscapes_20200606_113809-c64f889f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_769x769_40k_cityscapes/deeplabv3_r101-d8_769x769_40k_cityscapes_20200606_113809.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          79.31700000000001,
+          80.56867900987751,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes/deeplabv3_r50-d8_512x1024_80k_cityscapes_20200606_113404-b92cfdd4.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes/deeplabv3_r50-d8_512x1024_80k_cityscapes_20200606_113404.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          80.19500000000001,
+          81.21365141510776,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503-9e428899.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.893,
+          81.0599984851973,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes/deeplabv3_r50-d8_769x769_80k_cityscapes_20200606_221338-788d6228.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes/deeplabv3_r50-d8_769x769_80k_cityscapes_20200606_221338.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.668,
+          80.81226045958836,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes/deeplabv3_r101-d8_769x769_80k_cityscapes_20200607_013353-60e95418.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes/deeplabv3_r101-d8_769x769_80k_cityscapes_20200607_013353.log.json)"
+        ]
+      ]
+    ],
+    "ade20k": [
+      [
+        [
+          "DeepLabV3",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "8.9",
+          14.763588319372595,
+          42.422,
+          43.27846378978279,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k/deeplabv3_r50-d8_512x512_80k_ade20k_20200614_185028-0bb3f844.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k/deeplabv3_r50-d8_512x512_80k_ade20k_20200614_185028.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "12.4",
+          10.144087811258307,
+          44.080999999999996,
+          45.19313139034226,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x512_80k_ade20k/deeplabv3_r101-d8_512x512_80k_ade20k_20200615_021256-d89c7fa4.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x512_80k_ade20k/deeplabv3_r101-d8_512x512_80k_ade20k_20200615_021256.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.657000000000004,
+          44.08872105809725,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x512_160k_ade20k/deeplabv3_r50-d8_512x512_160k_ade20k_20200615_123227-5d0ee427.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r50-d8_512x512_160k_ade20k/deeplabv3_r50-d8_512x512_160k_ade20k_20200615_123227.log.json)"
+        ],
+        [
+          "DeepLabV3",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          44.999,
+          46.65804362786369,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k/deeplabv3_r101-d8_512x512_160k_ade20k_20200615_105816-b1f72b3b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k/deeplabv3_r101-d8_512x512_160k_ade20k_20200615_105816.log.json)"
+        ]
+      ]
+    ]
+  },
+  "nonlocal_net": {
+    "ade20k": [
+      [
+        [
+          "NonLocal",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "9.1",
+          21.37048896225747,
+          40.752,
+          42.053557458158075,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k/nonlocal_r50-d8_512x512_80k_ade20k_20200615_015801-5ae0aa33.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k/nonlocal_r50-d8_512x512_80k_ade20k_20200615_015801.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "12.6",
+          13.965079302337752,
+          42.896,
+          44.26894963193766,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k/nonlocal_r101-d8_512x512_80k_ade20k_20200615_015758-24105919.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k/nonlocal_r101-d8_512x512_80k_ade20k_20200615_015758.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.028,
+          43.03561642742581,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k/nonlocal_r50-d8_512x512_160k_ade20k_20200616_005410-baef45e3.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k/nonlocal_r50-d8_512x512_160k_ade20k_20200616_005410.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          43.361,
+          44.82970596168541,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20200616_003422-affd0f8d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20200616_003422.log.json)"
+        ]
+      ]
+    ],
+    "voc12aug": [
+      [
+        [
+          "NonLocal",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "6.4",
+          21.213895119736144,
+          76.199,
+          77.11520756528137,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug/nonlocal_r50-d8_512x512_20k_voc12aug_20200617_222613-07f2a57c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug/nonlocal_r50-d8_512x512_20k_voc12aug_20200617_222613.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "9.8",
+          14.009331593316489,
+          78.146,
+          78.86433067761453,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug/nonlocal_r101-d8_512x512_20k_voc12aug_20200617_222615-948c68ab.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug/nonlocal_r101-d8_512x512_20k_voc12aug_20200617_222615.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.646,
+          77.47020448125416,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug/nonlocal_r50-d8_512x512_40k_voc12aug_20200614_000028-0139d4a9.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug/nonlocal_r50-d8_512x512_40k_voc12aug_20200614_000028.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          78.27300000000001,
+          79.11788410243086,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x512_40k_voc12aug/nonlocal_r101-d8_512x512_40k_voc12aug_20200614_000028-7e5ff470.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x512_40k_voc12aug/nonlocal_r101-d8_512x512_40k_voc12aug_20200614_000028.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "NonLocal",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "7.4",
+          2.7236662742933437,
+          78.237,
+          "-",
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes/nonlocal_r50-d8_512x1024_40k_cityscapes_20200605_210748-c75e81e3.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes/nonlocal_r50-d8_512x1024_40k_cityscapes_20200605_210748.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "10.9",
+          1.9480966751075284,
+          78.657,
+          "-",
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes/nonlocal_r101-d8_512x1024_40k_cityscapes_20200605_210748-d63729fa.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes/nonlocal_r101-d8_512x1024_40k_cityscapes_20200605_210748.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "8.9",
+          1.5246259413816563,
+          78.327,
+          79.92096670245425,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes/nonlocal_r50-d8_769x769_40k_cityscapes_20200530_045243-82ef6749.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes/nonlocal_r50-d8_769x769_40k_cityscapes_20200530_045243.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "12.8",
+          1.0477751460724616,
+          78.569,
+          80.29003703614515,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes/nonlocal_r101-d8_769x769_40k_cityscapes_20200530_045348-8fe9a9dc.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes/nonlocal_r101-d8_769x769_40k_cityscapes_20200530_045348.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.009,
+          "-",
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes/nonlocal_r50-d8_512x1024_80k_cityscapes_20200607_193518-d6839fae.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes/nonlocal_r50-d8_512x1024_80k_cityscapes_20200607_193518.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.93,
+          "-",
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes/nonlocal_r101-d8_512x1024_80k_cityscapes_20200607_183411-32700183.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes/nonlocal_r101-d8_512x1024_80k_cityscapes_20200607_183411.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.052,
+          80.67913947439877,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes/nonlocal_r50-d8_769x769_80k_cityscapes_20200607_193506-1f9792f6.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes/nonlocal_r50-d8_769x769_80k_cityscapes_20200607_193506.log.json)"
+        ],
+        [
+          "NonLocal",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.4,
+          80.85278857807543,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes/nonlocal_r101-d8_769x769_80k_cityscapes_20200607_183428-0e1fa4f9.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes/nonlocal_r101-d8_769x769_80k_cityscapes_20200607_183428.log.json)"
+        ]
+      ]
+    ]
+  },
+  "gcnet": {
+    "voc12aug": [
+      [
+        [
+          "GCNet",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "5.8",
+          23.350259534912006,
+          76.42099999999999,
+          77.50740243914798,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x512_20k_voc12aug/gcnet_r50-d8_512x512_20k_voc12aug_20200617_165701-3cbfdab1.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x512_20k_voc12aug/gcnet_r50-d8_512x512_20k_voc12aug_20200617_165701.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "9.2",
+          14.799942609024914,
+          77.40700000000001,
+          78.56005567821165,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x512_20k_voc12aug/gcnet_r101-d8_512x512_20k_voc12aug_20200617_165713-6c720aa9.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x512_20k_voc12aug/gcnet_r101-d8_512x512_20k_voc12aug_20200617_165713.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.238,
+          77.63464439678829,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x512_40k_voc12aug/gcnet_r50-d8_512x512_40k_voc12aug_20200613_195105-9797336d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x512_40k_voc12aug/gcnet_r50-d8_512x512_40k_voc12aug_20200613_195105.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          77.84299999999999,
+          78.59489046439079,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x512_40k_voc12aug/gcnet_r101-d8_512x512_40k_voc12aug_20200613_185806-1e38208d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x512_40k_voc12aug/gcnet_r101-d8_512x512_40k_voc12aug_20200613_185806.log.json)"
+        ]
+      ]
+    ],
+    "ade20k": [
+      [
+        [
+          "GCNet",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "8.5",
+          23.37990361060126,
+          41.465999999999994,
+          42.853494172834885,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x512_80k_ade20k/gcnet_r50-d8_512x512_80k_ade20k_20200614_185146-91a6da41.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x512_80k_ade20k/gcnet_r50-d8_512x512_80k_ade20k_20200614_185146.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "12.0",
+          15.198333955746829,
+          42.824,
+          44.54431618918491,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x512_80k_ade20k/gcnet_r101-d8_512x512_80k_ade20k_20200615_020811-c3fcb6dd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x512_80k_ade20k/gcnet_r101-d8_512x512_80k_ade20k_20200615_020811.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          42.367,
+          43.51941132800723,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x512_160k_ade20k/gcnet_r50-d8_512x512_160k_ade20k_20200615_224122-d95f3e1f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x512_160k_ade20k/gcnet_r50-d8_512x512_160k_ade20k_20200615_224122.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          43.686,
+          45.21077897100608,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x512_160k_ade20k/gcnet_r101-d8_512x512_160k_ade20k_20200615_225406-615528d7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x512_160k_ade20k/gcnet_r101-d8_512x512_160k_ade20k_20200615_225406.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "GCNet",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "5.8",
+          3.9294375140356674,
+          77.691,
+          78.55901060780846,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x1024_40k_cityscapes/gcnet_r50-d8_512x1024_40k_cityscapes_20200618_074436-4b0fd17b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x1024_40k_cityscapes/gcnet_r50-d8_512x1024_40k_cityscapes_20200618_074436.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "9.2",
+          2.613929250881175,
+          78.276,
+          79.34154953801408,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x1024_40k_cityscapes/gcnet_r101-d8_512x1024_40k_cityscapes_20200618_074436-5e62567f.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x1024_40k_cityscapes/gcnet_r101-d8_512x1024_40k_cityscapes_20200618_074436.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "6.5",
+          1.6665314351879814,
+          78.117,
+          80.08636386919896,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_769x769_40k_cityscapes/gcnet_r50-d8_769x769_40k_cityscapes_20200618_182814-a26f4471.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_769x769_40k_cityscapes/gcnet_r50-d8_769x769_40k_cityscapes_20200618_182814.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "10.5",
+          1.130548704280006,
+          78.949,
+          80.70740508232963,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_769x769_40k_cityscapes/gcnet_r101-d8_769x769_40k_cityscapes_20200619_092550-ca4f0a84.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_769x769_40k_cityscapes/gcnet_r101-d8_769x769_40k_cityscapes_20200619_092550.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          78.481,
+          80.00715692663934,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x1024_80k_cityscapes/gcnet_r50-d8_512x1024_80k_cityscapes_20200618_074450-ef8f069b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_512x1024_80k_cityscapes/gcnet_r50-d8_512x1024_80k_cityscapes_20200618_074450.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          79.02900000000001,
+          79.8389342161561,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x1024_80k_cityscapes/gcnet_r101-d8_512x1024_80k_cityscapes_20200618_074450-778ebf69.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_512x1024_80k_cityscapes/gcnet_r101-d8_512x1024_80k_cityscapes_20200618_074450.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          78.682,
+          80.66434566958863,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_769x769_80k_cityscapes/gcnet_r50-d8_769x769_80k_cityscapes_20200619_092516-4839565b.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r50-d8_769x769_80k_cityscapes/gcnet_r50-d8_769x769_80k_cityscapes_20200619_092516.log.json)"
+        ],
+        [
+          "GCNet",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.184,
+          80.70740508232963,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_769x769_80k_cityscapes/gcnet_r101-d8_769x769_80k_cityscapes_20200619_092628-8e043423.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/gcnet/gcnet_r101-d8_769x769_80k_cityscapes/gcnet_r101-d8_769x769_80k_cityscapes_20200619_092628.log.json)"
+        ]
+      ]
+    ]
+  },
+  "deeplabv3plus": {
+    "ade20k": [
+      [
+        [
+          "DeepLabV3+",
+          "R-50-D8",
+          "512x512",
+          80000,
+          "10.6",
+          21.009967570414005,
+          42.725,
+          43.750872665309245,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028-bf1400d8.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-101-D8",
+          "512x512",
+          80000,
+          "14.1",
+          14.156578683381744,
+          44.604,
+          46.057602920856496,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k/deeplabv3plus_r101-d8_512x512_80k_ade20k_20200615_014139-d5730af7.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k/deeplabv3plus_r101-d8_512x512_80k_ade20k_20200615_014139.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-50-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          43.952999999999996,
+          44.9257356479825,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k/deeplabv3plus_r50-d8_512x512_160k_ade20k_20200615_124504-6135c7e0.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k/deeplabv3plus_r50-d8_512x512_160k_ade20k_20200615_124504.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-101-D8",
+          "512x512",
+          160000,
+          "-",
+          "-",
+          45.467999999999996,
+          46.35142741219229,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k/deeplabv3plus_r101-d8_512x512_160k_ade20k_20200615_123232-38ed86bb.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k/deeplabv3plus_r101-d8_512x512_160k_ade20k_20200615_123232.log.json)"
+        ]
+      ]
+    ],
+    "voc12aug": [
+      [
+        [
+          "DeepLabV3+",
+          "R-50-D8",
+          "512x512",
+          20000,
+          "7.6",
+          20.995826216517777,
+          75.932,
+          77.49501357998696,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug/deeplabv3plus_r50-d8_512x512_20k_voc12aug_20200617_102323-aad58ef1.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug/deeplabv3plus_r50-d8_512x512_20k_voc12aug_20200617_102323.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-101-D8",
+          "512x512",
+          20000,
+          "11.0",
+          13.877644753051397,
+          77.216,
+          78.59404066425819,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug/deeplabv3plus_r101-d8_512x512_20k_voc12aug_20200617_102345-c7ff3d56.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug/deeplabv3plus_r101-d8_512x512_20k_voc12aug_20200617_102345.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-50-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          76.80799999999999,
+          77.56956435172417,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug/deeplabv3plus_r50-d8_512x512_40k_voc12aug_20200613_161759-e1b43aa9.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug/deeplabv3plus_r50-d8_512x512_40k_voc12aug_20200613_161759.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-101-D8",
+          "512x512",
+          40000,
+          "-",
+          "-",
+          78.618,
+          79.5312727643948,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug/deeplabv3plus_r101-d8_512x512_40k_voc12aug_20200613_205333-faf03387.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug/deeplabv3plus_r101-d8_512x512_40k_voc12aug_20200613_205333.log.json)"
+        ]
+      ]
+    ],
+    "cityscapes": [
+      [
+        [
+          "DeepLabV3+",
+          "R-50-D8",
+          "512x1024",
+          40000,
+          "7.5",
+          3.937852781596224,
+          79.606,
+          81.0126987140963,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes/deeplabv3plus_r50-d8_512x1024_40k_cityscapes_20200605_094610-d222ffcd.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes/deeplabv3plus_r50-d8_512x1024_40k_cityscapes_20200605_094610.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-101-D8",
+          "512x1024",
+          40000,
+          "11.0",
+          2.6029196398088135,
+          80.208,
+          81.81580429286755,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes/deeplabv3plus_r101-d8_512x1024_40k_cityscapes_20200605_094614-3769eecf.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes/deeplabv3plus_r101-d8_512x1024_40k_cityscapes_20200605_094614.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-50-D8",
+          "769x769",
+          40000,
+          "8.5",
+          1.7219797309503193,
+          78.972,
+          80.46092552803746,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes/deeplabv3plus_r50-d8_769x769_40k_cityscapes_20200606_114143-1dcb0e3c.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes/deeplabv3plus_r50-d8_769x769_40k_cityscapes_20200606_114143.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-101-D8",
+          "769x769",
+          40000,
+          "12.5",
+          1.1546806682489152,
+          79.461,
+          80.5005593465169,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes/deeplabv3plus_r101-d8_769x769_40k_cityscapes_20200606_114304-ff414b9e.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes/deeplabv3plus_r101-d8_769x769_40k_cityscapes_20200606_114304.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-50-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          80.08800000000001,
+          81.13450865498024,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes/deeplabv3plus_r50-d8_512x1024_80k_cityscapes_20200606_114049-f9fb496d.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes/deeplabv3plus_r50-d8_512x1024_80k_cityscapes_20200606_114049.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-101-D8",
+          "512x1024",
+          80000,
+          "-",
+          "-",
+          80.972,
+          82.02915734982798,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_20200606_114143-068fcfe9.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_20200606_114143.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-50-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          79.827,
+          81.47591334418544,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes/deeplabv3plus_r50-d8_769x769_80k_cityscapes_20200606_210233-0e9dfdc4.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes/deeplabv3plus_r50-d8_769x769_80k_cityscapes_20200606_210233.log.json)"
+        ],
+        [
+          "DeepLabV3+",
+          "R-101-D8",
+          "769x769",
+          80000,
+          "-",
+          "-",
+          80.97999999999999,
+          82.17610990719812,
+          "[model](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20200607_000405-a7573d20.pth) &#124; [log](https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmsegmentation/models/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20200607_000405.log.json)"
+        ]
+      ]
+    ]
+  }
+}
