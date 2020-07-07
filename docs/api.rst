@@ -1,5 +1,5 @@
-API Documentation
-=================
+API Reference
+==============
 
 mmseg.apis
 --------------
@@ -17,11 +17,6 @@ seg
 evaluation
 ^^^^^^^^^^
 .. automodule:: mmseg.core.evaluation
-    :members:
-
-optimizer
-^^^^^^^^^^
-.. automodule:: mmseg.core.optimizer
     :members:
 
 utils

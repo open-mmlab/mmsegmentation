@@ -3,19 +3,9 @@
 ### Requirements
 
 - Linux (Windows is not officially supported)
-- Python 3.5+
+- Python 3.6+
 - PyTorch 1.3 or higher
-- CUDA 9.2 or higher
-- NCCL 2
-- GCC 4.9 or higher
 - [mmcv](https://github.com/open-mmlab/mmcv)
-
-We have tested the following versions of OS and softwares:
-
-- OS: Ubuntu 16.04/18.04 and CentOS 7.2
-- CUDA: 9.2/10.0/10.1
-- NCCL: 2.1.15/2.2.13/2.3.7/2.4.2
-- GCC(G++): 4.9/5.3/5.4/7.3
 
 ### Install mmsegmentation
 
@@ -47,7 +37,7 @@ Please refer to [MMCV](https://mmcv.readthedocs.io/en/latest/) for other version
 ```shell
 pip install mmcv==1.0rc0+torch1.5.0+cu101 -f http://8.210.27.39:9000/ --trusted-host 8.210.27.39
 pip install -r requirements/build.txt
-pip install -v -e .  # or "python setup.py develop"
+pip install -e .  # or "python setup.py develop"
 ```
 
 Note:
@@ -60,8 +50,8 @@ It is recommended that you run step *d* each time you pull some updates from git
 3. If you would like to use `opencv-python-headless` instead of `opencv-python`,
 you can install it before installing MMCV.
 
-4. Some dependencies are optional. Simply running `pip install -v -e .` will only install the minimum runtime requirements.
-To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -v -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
+4. Some dependencies are optional. Simply running `pip install -e .` will only install the minimum runtime requirements.
+To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
 
 
 ### A from-scratch setup script
@@ -77,7 +67,7 @@ git clone http://github.com/open-mmlab/mmsegmentation
 cd mmsegmentation
 pip install mmcv==1.0rc0+torch1.5.0+cu101 -f http://8.210.27.39:9000/ --trusted-host 8.210.27.39
 pip install -r requirements/build.txt
-pip install -v -e .
+pip install -e .
 
 mkdir data
 ln -s $DATA_ROOT data

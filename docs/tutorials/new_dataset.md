@@ -1,4 +1,4 @@
-# Tutorial 1: Adding New Dataset
+# 1. Adding New Dataset
 
 ## Customize datasets by reorganizing data
 
