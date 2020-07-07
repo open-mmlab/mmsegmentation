@@ -29,6 +29,12 @@ jobs:
         run: interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --exclude mmseg/ops --ignore-regex "__repr__" --fail-under 80 mmseg
 
   build:
+    env:
+      CUDA: 10.1.105-1
+      CUDA_SHORT: 10.1
+      UBUNTU_VERSION: ubuntu1804
+      FORCE_CUDA: 1
+      MMCV_CUDA_ARGS: -gencode=arch=compute_61,code=sm_61
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -49,6 +55,20 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install CUDA
+      run: |
+        export INSTALLER=cuda-repo-${UBUNTU_VERSION}_${CUDA}_amd64.deb
+        wget http://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${INSTALLER}
+        sudo dpkg -i ${INSTALLER}
+        wget https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/7fa2af80.pub
+        sudo apt-key add 7fa2af80.pub
+        sudo apt update -qq
+        sudo apt install -y cuda-${CUDA_SHORT/./-} cuda-cufft-dev-${CUDA_SHORT/./-}
+        sudo apt clean
+        export CUDA_HOME=/usr/local/cuda-${CUDA_SHORT}
+        export LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${CUDA_HOME}/include:${LD_LIBRARY_PATH}
+        export PATH=${CUDA_HOME}/bin:${PATH}
+        sudo apt-get install -y ninja-build
     - name: Install Pillow
       run: pip install Pillow==6.2.2
       if: ${{matrix.torchvision == '0.4.2'}}
