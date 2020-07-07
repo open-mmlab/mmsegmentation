@@ -1,0 +1,332 @@
+# Getting Started
+
+This page provides basic tutorials about the usage of MMSegmentation.
+For installation instructions, please see [install.md](install.md).
+
+## Prepare datasets
+
+It is recommended to symlink the dataset root to `$MMSEGMENTATION/data`.
+If your folder structure is different, you may need to change the corresponding paths in config files.
+
+```
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
+│   ├── cityscapes
+│   │   ├── leftImg8bit
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   ├── gtFine
+│   │   │   ├── train
+│   │   │   ├── val
+│   ├── VOCdevkit
+│   │   ├── VOC2012
+│   │   │   ├── JPEGImages
+│   │   │   ├── SegmentationClass
+│   │   │   ├── ImageSets
+│   │   │   │   ├── Segmentation
+│   │   ├── VOCaug
+│   │   │   ├── dataset
+│   │   │   │   ├── cls
+│   ├── ade
+│   │   ├── ADEChallengeData2016
+│   │   │   ├── annotations
+│   │   │   │   ├── training
+│   │   │   │   ├── validation
+│   │   │   ├── images
+│   │   │   │   ├── training
+│   │   │   │   ├── validation
+
+```
+
+### Cityscapes
+The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
+
+By convention, `**labelTrainIds.png` are used for cityscapes training.
+We provided a [scripts](../tools/convert_datasets/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
+to generate `**labelTrainIds.png`.
+```shell
+# --nproc means 8 process for conversion, which could be omitted as well.
+python tools/convert_datasets/cityscapes.py data/cityscapes --nproc 8
+```
+
+### Pascal VOC
+Pascal VOC 2012 could be downloaded from [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar).
+Beside, most recent works on Pascal VOC dataset usually exploit extra augmentation data, which could be found [here](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz).
+
+If you would like to use augmented VOC dataset, please run following command to convert augmentation annotations into proper format.
+```shell
+# --nproc means 8 process for conversion, which could be omitted as well.
+python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
+```
+
+Please refer to [concat dataset](tutorials/new_dataset.md#concatenate-dataset) for details about how to concatenate them and train them together.
+
+
+### ADE20K
+The training and validation set of ADE20K could be download from this [link](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
+We may also download test set from [here](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
+
+## Inference with pretrained models
+
+We provide testing scripts to evaluate a whole dataset (Cityscapes, PASCAL VOC, ADE20k, etc.),
+and also some high-level apis for easier integration to other projects.
+
+### Test a dataset
+
+- single GPU
+- single node multiple GPU
+- multiple node
+
+You can use the following commands to test a dataset.
+
+```shell
+# single-gpu testing
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${RESULT_FILE}] [--eval ${EVAL_METRICS}] [--show]
+
+# multi-gpu testing
+./tools/dist_test.sh ${CONFIG_FILE} ${CHECKPOINT_FILE} ${GPU_NUM} [--out ${RESULT_FILE}] [--eval ${EVAL_METRICS}]
+```
+
+Optional arguments:
+- `RESULT_FILE`: Filename of the output results in pickle format. If not specified, the results will not be saved to a file.
+- `EVAL_METRICS`: Items to be evaluated on the results. Allowed values depend on the dataset, e.g., `mIoU` is available for all dataset. Cityscapes could be evaluated by `cityscapes` as well as standard `mIoU` metrics.
+- `--show`: If specified, segmentation results will be plotted on the images and shown in a new window. It is only applicable to single GPU testing and used for debugging and visualization. Please make sure that GUI is available in your environment, otherwise you may encounter the error like `cannot connect to X server`.
+- `--show-dir`: If specified, segmentation results will be plotted on the images and saved to the specified directory. It is only applicable to single GPU testing and used for debugging and visualization. You do NOT need a GUI available in your environment for using this option.
+
+
+Examples:
+
+Assume that you have already downloaded the checkpoints to the directory `checkpoints/`.
+
+1. Test PSPNet and visualize the results. Press any key for the next image.
+
+    ```shell
+    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+        --show
+    ```
+
+2. Test PSPNet and save the painted images for latter visualization.
+
+    ```shell
+    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+        --show-dir psp_r50_512x1024_40ki_cityscapes_results
+    ```
+
+3. Test PSPNet on PASCAL VOC (without saving the test results) and evaluate the mIoU.
+
+    ```shell
+    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
+        checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth \
+        --eval mAP
+    ```
+
+4. Test PSPNet with 8 GPUs, and evaluate the standard mIoU and cityscapes metric.
+
+    ```shell
+    ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+        8 --out results.pkl --eval mIoU cityscapes
+    ```
+
+5. Test PSPNet on cityscapes test split with 8 GPUs, and generate the png files to be submit to the official evaluation server.
+
+    ```shell
+    ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+        8 --format-only --options "imgfile_prefix=./pspnet_test_results"
+    ```
+
+You will get png files under `./pspnet_test_results` directory.
+
+
+### Image demo
+
+We provide a demo script to test a single image.
+
+```shell
+python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}]
+```
+
+Examples:
+
+```shell
+python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --palette cityscapes
+```
+
+
+### High-level APIs for testing images
+
+Here is an example of building the model and test given images.
+
+```python
+from mmseg.apis import inference_segmentor, init_segmentor
+import mmcv
+
+config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
+checkpoint_file = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
+
+# build the model from a config file and a checkpoint file
+model = init_segmentor(config_file, checkpoint_file, device='cuda:0')
+
+# test a single image and show the results
+img = 'test.jpg'  # or img = mmcv.imread(img), which will only load it once
+result = inference_segmentor(model, img)
+# visualize the results in a new window
+model.show_result(img, result, show=True)
+# or save the visualization results to image files
+model.show_result(img, result, out_file='result.jpg')
+
+# test a video and show the results
+video = mmcv.VideoReader('video.mp4')
+for frame in video:
+    result = inference_segmentor(model, frame)
+    model.show_result(frame, result, wait_time=1)
+```
+
+A notebook demo can be found in [demo/inference_demo.ipynb](../demo/inference_demo.ipynb).
+
+
+## Train a model
+
+MMSegmentation implements distributed training and non-distributed training,
+which uses `MMDistributedDataParallel` and `MMDataParallel` respectively.
+
+All outputs (log files and checkpoints) will be saved to the working directory,
+which is specified by `work_dir` in the config file.
+
+By default we evaluate the model on the validation set after some iterations, you can change the evaluation interval by adding the interval argument in the training config.
+```python
+evaluation = dict(interval=4000)  # This evaluate the model per 4000 iterations.
+```
+
+**\*Important\***: The default learning rate in config files is for 8 GPUs and 1 img/gpu (batch size = 8x1 = 8).
+Equivalently, you may also use 4 GPUs and 2 imgs/gpu since all models using cross-GPU SyncBN.
+
+### Train with a single GPU
+
+```shell
+python tools/train.py ${CONFIG_FILE} [optional arguments]
+```
+
+If you want to specify the working directory in the command, you can add an argument `--work_dir ${YOUR_WORK_DIR}`.
+
+### Train with multiple GPUs
+
+```shell
+./tools/dist_train.sh ${CONFIG_FILE} ${GPU_NUM} [optional arguments]
+```
+
+Optional arguments are:
+
+- `--no-validate` (**not suggested**): By default, the codebase will perform evaluation at every k iterations during the training. To disable this behavior, use `--no-validate`.
+- `--work-dir ${WORK_DIR}`: Override the working directory specified in the config file.
+- `--resume-from ${CHECKPOINT_FILE}`: Resume from a previous checkpoint file.
+
+Difference between `resume-from` and `load-from`:
+`resume-from` loads both the model weights and optimizer status, and the iteration number is also inherited from the specified checkpoint. It is usually used for resuming the training process that is interrupted accidentally.
+`load-from` only loads the model weights and the training iteration starts from 0. It is usually used for finetuning.
+
+### Train with multiple machines
+
+If you run MMSegmentation on a cluster managed with [slurm](https://slurm.schedmd.com/), you can use the script `slurm_train.sh`. (This script also supports single machine training.)
+
+```shell
+[GPUS=${GPUS}] ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} ${WORK_DIR}
+```
+
+Here is an example of using 16 GPUs to train PSPNet on the dev partition.
+
+```shell
+GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py /nfs/xxxx/psp_r50_512x1024_40ki_cityscapes
+```
+
+You can check [slurm_train.sh](../tools/slurm_train.sh) for full arguments and environment variables.
+
+If you have just multiple machines connected with ethernet, you can refer to
+PyTorch [launch utility](https://pytorch.org/docs/stable/distributed_deprecated.html#launch-utility).
+Usually it is slow if you do not have high speed networking like InfiniBand.
+
+### Launch multiple jobs on a single machine
+
+If you launch multiple jobs on a single machine, e.g., 2 jobs of 4-GPU training on a machine with 8 GPUs,
+you need to specify different ports (29500 by default) for each job to avoid communication conflict.
+
+If you use `dist_train.sh` to launch training jobs, you can set the port in commands.
+
+```shell
+CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 ./tools/dist_train.sh ${CONFIG_FILE} 4
+CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 ./tools/dist_train.sh ${CONFIG_FILE} 4
+```
+
+If you use launch training jobs with Slurm, you need to modify the config files (usually the 6th line from the bottom in config files) to set different communication ports.
+
+In `config1.py`,
+```python
+dist_params = dict(backend='nccl', port=29500)
+```
+
+In `config2.py`,
+```python
+dist_params = dict(backend='nccl', port=29501)
+```
+
+Then you can launch two jobs with `config1.py` ang `config2.py`.
+
+```shell
+CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py ${WORK_DIR}
+CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py ${WORK_DIR}
+```
+
+Or you could specify port by `---options dist_params.port=29501`
+
+## Useful tools
+
+We provide lots of useful tools under `tools/` directory.
+
+### Get the FLOPs and params (experimental)
+
+We provide a script adapted from [flops-counter.pytorch](https://github.com/sovrasov/flops-counter.pytorch) to compute the FLOPs and params of a given model.
+
+```shell
+python tools/get_flops.py ${CONFIG_FILE} [--shape ${INPUT_SHAPE}]
+```
+
+You will get the result like this.
+
+```
+==============================
+Input shape: (3, 2048, 1024)
+Flops: 1429.68 GMac
+Params: 48.98 M
+==============================
+```
+
+**Note**: This tool is still experimental and we do not guarantee that the number is correct. You may well use the result for simple comparisons, but double check it before you adopt it in technical reports or papers.
+
+(1) FLOPs are related to the input shape while parameters are not. The default input shape is (1, 3, 1280, 800).
+(2) Some operators are not counted into FLOPs like GN and custom operators.
+You can add support for new operators by modifying [`mmseg/utils/flops_counter.py`](../mmseg/utils/flops_counter.py).
+
+### Publish a model
+
+Before you upload a model to AWS, you may want to
+(1) convert model weights to CPU tensors, (2) delete the optimizer states and
+(3) compute the hash of the checkpoint file and append the hash id to the filename.
+
+```shell
+python tools/publish_model.py ${INPUT_FILENAME} ${OUTPUT_FILENAME}
+```
+
+E.g.,
+
+```shell
+python tools/publish_model.py work_dirs/pspnet/latest.pth psp_r50_hszhao_200ep.pth
+```
+
+The final output filename will be `psp_r50_512x1024_40ki_cityscapes-{hash id}.pth`.
