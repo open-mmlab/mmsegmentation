@@ -76,12 +76,6 @@ Please refer to [ANN](../configs/ann/README.md) for details.
 
 Please refer to [OCRNet](../configs/ocrnet/README.md) for details.
 
-## Speed benchmark
-
-| Implementation       | Throughput (img/s) |
-|----------------------|--------------------|
-| [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) | - |
-
 ### Hardware
 
 - 8 NVIDIA Tesla V100 (32G) GPUs
@@ -94,3 +88,19 @@ Please refer to [OCRNet](../configs/ocrnet/README.md) for details.
 - CUDA 10.1
 - CUDNN 7.6.03
 - NCCL 2.4.08
+
+## Training speed
+
+For fair comparison, we benchmark all implementations with ResNet-101V1c.
+The input size is fixed to 1024x512 with batch size 2.
+
+The training speed is reported as followed, in terms of second per iter (s/iter). The lower, the better.
+
+| Implementation                                                              | PSPNet         | DeepLabV3+ |
+|-----------------------------------------------------------------------------|----------------|------------|
+| [MMSegmentation](https://github.com/open-mmlab/mmsegmentation)              | **0.83**       | **0.85**   |
+| [SegmenTron](https://github.com/LikeLy-Journey/SegmenTron)                  | 0.84           | 0.85       |
+| [CASILVision](https://github.com/CSAILVision/semantic-segmentation-pytorch) | 1.15           | -          |
+| [vedaseg](https://github.com/Media-Smart/vedaseg)                           | 0.95           | 1.25       |
+
+Note: The output stride of DeepLabV3+ is 8.

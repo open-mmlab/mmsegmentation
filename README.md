@@ -1,4 +1,4 @@
-# MMSegmentation
+<img src=".github/logo.PNG" alt="MMSegmentation" width="350"/>
 
 ## Introduction
 
@@ -40,8 +40,6 @@ Please refer to [INSTALL.md](docs/install.md) for installation and dataset prepa
 
 Please see [getting_started.md](docs/getting_started.md) for the basic usage of MMSegmentation.
 There are also tutorials for [adding new dataset](docs/tutorials/new_dataset.md), [designing data pipeline](docs/tutorials/data_pipeline.md), and [adding new modules](docs/tutorials/new_modules.md).
-
-A CoLab demo could be found [here](https://colab.research.google.com/drive/1mgtoSGBYjck8ipC5pOri7dRtzRLmfEVX#scrollTo=QS8YHrEhbpas).
 
 ## Contributing
 
