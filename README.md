@@ -47,9 +47,12 @@ We appreciate all contributions to improve MMSegmentation. Please refer to [CONT
 
 ## Acknowledgement
 
-MMSegmentation is an open source project that is contributed by researchers and engineers from various colleges and companies. We appreciate all the contributors who implement their methods or add new features, as well as users who give valuable feedbacks.
-We wish that the toolbox and benchmark could serve the growing research community by providing a flexible toolkit to reimplement existing methods and develop their own new segmentor.
+MMSegmentation is an open source project that welcome any contribution and feedback.
+We wish that the toolbox and benchmark could serve the growing research
+community by providing a flexible as well as standardized toolkit to reimplement existing methods
+and develop their own new semantic segmentation methods.
 
+Many thanks to Ruobing Han ([@drcut](https://github.com/drcut)), Xiaoming Ma([@aishangmaxiaoming](https://github.com/aishangmaxiaoming)), Shiguang Wang ([@sunnyxiaohu](https://github.com/aishangmaxiaoming)) for deployment support.
 
 ## Citation
 
