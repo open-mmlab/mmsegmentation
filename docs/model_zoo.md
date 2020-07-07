@@ -31,13 +31,13 @@ Please refer to [FCN](https://github.com/open-mmlab/mmsegmentation/tree/master/c
 
 Please refer to [PSPNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/pspnet) for details.
 
-### PSANet
-
-Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/psanet) for details.
-
 ### DeepLabV3
 
 Please refer to [DeepLabV3](https://github.com/open-mmlab/mmsegmentatio/tree/master/configs/deeplabv3) for details.
+
+### PSANet
+
+Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/psanet) for details.
 
 ### DeepLabV3+
 
@@ -46,14 +46,6 @@ Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentatio/tree/ma
 ### UperNet
 
 Please refer to [UperNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/upernet) for details.
-
-### HRNet
-
-Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/hrnet) for details.
-
-### GCNet
-
-Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/gcnet) for details.
 
 ### NonLocal Net
 
@@ -66,6 +58,14 @@ Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/tree/master
 ### DANet
 
 Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/danet) for details.
+
+### HRNet
+
+Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/hrnet) for details.
+
+### GCNet
+
+Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/gcnet) for details.
 
 ### ANN
 

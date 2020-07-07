@@ -103,43 +103,43 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
 
 1. Test PSPNet and visualize the results. Press any key for the next image.
 
-```shell
-python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-    --show
-```
+    ```shell
+    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+        --show
+    ```
 
 2. Test PSPNet and save the painted images for latter visualization.
 
-```shell
-python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-    --show-dir psp_r50_512x1024_40ki_cityscapes_results
-```
+    ```shell
+    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+        --show-dir psp_r50_512x1024_40ki_cityscapes_results
+    ```
 
 3. Test PSPNet on PASCAL VOC (without saving the test results) and evaluate the mIoU.
 
-```shell
-python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
-    checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth \
-    --eval mAP
-```
+    ```shell
+    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
+        checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth \
+        --eval mAP
+    ```
 
 4. Test PSPNet with 8 GPUs, and evaluate the standard mIoU and cityscapes metric.
 
-```shell
-./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-    8 --out results.pkl --eval mIoU cityscapes
-```
+    ```shell
+    ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+        8 --out results.pkl --eval mIoU cityscapes
+    ```
 
-6. Test PSPNet on cityscapes test split with 8 GPUs, and generate the png files to be submit to the official evaluation server.
+5. Test PSPNet on cityscapes test split with 8 GPUs, and generate the png files to be submit to the official evaluation server.
 
-```shell
-./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-    8 --format-only --options "imgfile_prefix=./pspnet_test_results"
-```
+    ```shell
+    ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+        8 --format-only --options "imgfile_prefix=./pspnet_test_results"
+    ```
 
 You will get png files under `./pspnet_test_results` directory.
 

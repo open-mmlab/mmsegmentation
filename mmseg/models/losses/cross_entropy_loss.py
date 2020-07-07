@@ -32,8 +32,8 @@ def cross_entropy(pred,
     return loss
 
 
-def _expand_binary_labels(labels, label_weights, label_channels):
-    """Expand binary labels to match the size of prediction."""
+def _expand_onehot_labels(labels, label_weights, label_channels):
+    """Expand onehot labels to match the size of prediction."""
     bin_labels = labels.new_full((labels.size(0), label_channels), 0)
     inds = torch.nonzero(labels >= 1, as_tuple=False).squeeze()
     if inds.numel() > 0:
@@ -68,7 +68,7 @@ def binary_cross_entropy(pred,
         torch.Tensor: The calculated loss
     """
     if pred.dim() != label.dim():
-        label, weight = _expand_binary_labels(label, weight, pred.size(-1))
+        label, weight = _expand_onehot_labels(label, weight, pred.size(-1))
 
     # weighted element-wise losses
     if weight is not None:
