@@ -35,7 +35,7 @@ d. Install build requirements and then install mmsegmentation.
 Please refer to [MMCV](https://mmcv.readthedocs.io/en/latest/) for other versions.
 
 ```shell
-pip install mmcv==1.0rc0+torch1.5.0+cu101 -f http://8.210.27.39:9000/ --trusted-host 8.210.27.39
+pip install mmcv==1.0rc0+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
 pip install -r requirements/build.txt
 pip install -e .  # or "python setup.py develop"
 ```
@@ -65,7 +65,7 @@ conda activate open-mmlab
 conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
 git clone http://github.com/open-mmlab/mmsegmentation
 cd mmsegmentation
-pip install mmcv==1.0rc0+torch1.5.0+cu101 -f http://8.210.27.39:9000/ --trusted-host 8.210.27.39
+pip install mmcv==1.0rc0+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
 pip install -r requirements/build.txt
 pip install -e .
 
