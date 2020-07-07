@@ -73,10 +73,10 @@ jobs:
       run: pip install Pillow==6.2.2
       if: ${{matrix.torchvision == '0.4.2'}}
     - name: Install PyTorch
-      run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}}
+      run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
     - name: Install mmseg dependencies
       run: |
-        pip install "git+https://github.com/open-mmlab/mmcv.git"
+        pip install mmcv==1.0rc0+torch1.5.0+cu101 -f http://8.210.27.39:9000/ --trusted-host 8.210.27.39
         pip install -r requirements.txt
     - name: Build and install
       run: rm -rf .eggs && pip install -e .
