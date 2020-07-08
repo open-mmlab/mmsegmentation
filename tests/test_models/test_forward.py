@@ -4,6 +4,7 @@ from os.path import dirname, exists, join
 from unittest.mock import patch
 
 import numpy as np
+import pytest
 import torch
 import torch.nn as nn
 from mmcv.utils.parrots_wrapper import SyncBatchNorm, _BatchNorm
@@ -112,9 +113,10 @@ def test_ann_forward():
 
 
 def test_ccnet_forward():
-    if torch.cuda.is_available():
-        _test_encoder_decoder_forward(
-            'ccnet/ccnet_r50-d8_512x1024_40k_cityscapes.py')
+    if not torch.cuda.is_available():
+        pytest.skip('CCNet requires CUDA')
+    _test_encoder_decoder_forward(
+        'ccnet/ccnet_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def test_danet_forward():

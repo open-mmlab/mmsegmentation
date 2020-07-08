@@ -37,6 +37,8 @@ class EncoderDecoder(BaseSegmentor):
 
         self.init_weights(pretrained=pretrained)
 
+        assert self.with_decode_head
+
     def _init_decode_head(self, decode_head):
         """Initialize ``decode_head``"""
         self.decode_head = builder.build_head(decode_head)

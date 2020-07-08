@@ -1,6 +1,9 @@
 import os.path as osp
 from unittest.mock import MagicMock, patch
 
+import numpy as np
+import pytest
+
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (ADE20KDataset, CityscapesDataset, ConcatDataset,
                             CustomDataset, PascalVOCDataset, RepeatDataset)
@@ -13,12 +16,18 @@ def test_classes():
     assert list(
         ADE20KDataset.CLASSES) == get_classes('ade') == get_classes('ade20k')
 
+    with pytest.raises(ValueError):
+        get_classes('unsupported')
+
 
 def test_palette():
     assert CityscapesDataset.PALETTE == get_palette('cityscapes')
     assert PascalVOCDataset.PALETTE == get_palette('voc') == get_palette(
         'pascal_voc')
     assert ADE20KDataset.PALETTE == get_palette('ade') == get_palette('ade20k')
+
+    with pytest.raises(ValueError):
+        get_palette('unsupported')
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
@@ -82,7 +91,7 @@ def test_custom_dataset():
             ])
     ]
 
-    # train dataset
+    # with img_dir and ann_dir
     train_dataset = CustomDataset(
         train_pipeline,
         data_root=osp.join(osp.dirname(__file__), '../data/pseudo_dataset'),
@@ -91,6 +100,17 @@ def test_custom_dataset():
         img_suffix='img.jpg',
         seg_map_suffix='gt.png')
     assert len(train_dataset) == 5
+
+    # with img_dir, ann_dir, split
+    train_dataset = CustomDataset(
+        train_pipeline,
+        data_root=osp.join(osp.dirname(__file__), '../data/pseudo_dataset'),
+        img_dir='imgs/',
+        ann_dir='gts/',
+        img_suffix='img.jpg',
+        seg_map_suffix='gt.png',
+        split='splits/train.txt')
+    assert len(train_dataset) == 4
 
     # no data_root
     train_dataset = CustomDataset(
@@ -101,10 +121,53 @@ def test_custom_dataset():
         seg_map_suffix='gt.png')
     assert len(train_dataset) == 5
 
-    # test dataset
+    # with data_root but img_dir/ann_dir are abs path
+    train_dataset = CustomDataset(
+        train_pipeline,
+        data_root=osp.join(osp.dirname(__file__), '../data/pseudo_dataset'),
+        img_dir=osp.abspath(
+            osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs')),
+        ann_dir=osp.abspath(
+            osp.join(osp.dirname(__file__), '../data/pseudo_dataset/gts')),
+        img_suffix='img.jpg',
+        seg_map_suffix='gt.png')
+    assert len(train_dataset) == 5
+
+    # test_mode=True
     test_dataset = CustomDataset(
         test_pipeline,
         img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'),
         img_suffix='img.jpg',
         test_mode=True)
     assert len(test_dataset) == 5
+
+    # training data get
+    train_data = train_dataset[0]
+    assert isinstance(train_data, dict)
+
+    # test data get
+    test_data = test_dataset[0]
+    assert isinstance(test_data, dict)
+
+    # get gt seg map
+    gt_seg_maps = train_dataset.get_gt_seg_maps()
+    assert len(gt_seg_maps) == 5
+
+    # evaluation
+    pseudo_results = []
+    for gt_seg_map in gt_seg_maps:
+        h, w = gt_seg_map.shape
+        pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
+    eval_results = train_dataset.evaluate(pseudo_results)
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    # evaluation with CLASSES
+    train_dataset.CLASSES = tuple(['a'] * 7)
+    eval_results = train_dataset.evaluate(pseudo_results)
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results

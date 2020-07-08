@@ -4,7 +4,7 @@ MMSegmentation support following training tricks out of box.
 
 ## Different Learning Rate(LR) for Backbone and Heads
 
-In semantic segmentation, some methods make the LR of heads larger than backbone to achieve better performance.
+In semantic segmentation, some methods make the LR of heads larger than backbone to achieve better performance or faster convergence.
 
 In MMSegmentation, you may add following lines to config to make the LR of heads 10 times of backbone.
 ```python
@@ -13,6 +13,7 @@ optimizer_config=dict(
         custom_keys={
             'head': dict(lr_mult=10.)}))
 ```
+With this modification, the LR of any parameter group with `'head'` in name will be multiplied by 10.
 You may refer to [MMCV doc](https://mmcv.readthedocs.io/en/latest/api.html#mmcv.runner.DefaultOptimizerConstructor) for further details.
 
 ## Online Hard Example Mining (OHEM)

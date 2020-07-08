@@ -33,10 +33,10 @@ xxx
 zzz
 ```
 Only
-`data/my_dataset/img_dir/train/xxx{img_suffix}.png`,
-`data/my_dataset/img_dir/train/zzz{img_suffix}.png`,
-`data/my_dataset/ann_dir/train/xxx{seg_map_suffix}.png`,
-`data/my_dataset/ann_dir/train/zzz{seg_map_suffix}.png` will be loaded.
+`data/my_dataset/img_dir/train/xxx{img_suffix}`,
+`data/my_dataset/img_dir/train/zzz{img_suffix}`,
+`data/my_dataset/ann_dir/train/xxx{seg_map_suffix}`,
+`data/my_dataset/ann_dir/train/zzz{seg_map_suffix}` will be loaded.
 
 ## Customize datasets by mixing dataset
 

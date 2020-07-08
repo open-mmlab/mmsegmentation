@@ -46,7 +46,7 @@ class CustomDataset(Dataset):
     Args:
         pipeline (list[dict]): Processing pipeline
         img_dir (str): Path to image directory
-        img_suffix (str): Suffix of images. Default: '.png'
+        img_suffix (str): Suffix of images. Default: '.jpg'
         ann_dir (str, optional): Path to annotation directory. Default: None
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'
         split (str, optional): Split txt file. If split is specified, only
@@ -54,7 +54,7 @@ class CustomDataset(Dataset):
             images in img_dir/ann_dir will be loaded. Default: None
         data_root (str, optional): Data root for img_dir/ann_dir. Default:
             None.
-        test_mode (str): If test_mode=True, gt wouldn't be loaded.
+        test_mode (bool): If test_mode=True, gt wouldn't be loaded.
         ignore_index (int): The label index to be ignored. Default: 255
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default: False
@@ -67,7 +67,7 @@ class CustomDataset(Dataset):
     def __init__(self,
                  pipeline,
                  img_dir,
-                 img_suffix='.png',
+                 img_suffix='.jpg',
                  ann_dir=None,
                  seg_map_suffix='.png',
                  split=None,
