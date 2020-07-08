@@ -91,8 +91,6 @@ def test_resize():
     resize_module = build_from_cfg(transform, PIPELINES)
     resized_results = resize_module(results.copy())
     assert max(resized_results['img_shape'][:2]) <= 1333 * 1.1
-    assert min(resized_results['img_shape'][:2]) >= 800 * 0.9
-    assert min(resized_results['img_shape'][:2]) <= 800 * 1.1
 
 
 def test_flip():
