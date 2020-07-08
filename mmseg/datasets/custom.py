@@ -95,9 +95,6 @@ class CustomDataset(Dataset):
             if not (self.split is None or osp.isabs(self.split)):
                 self.split = osp.join(self.data_root, self.split)
 
-        print('loadding ann')
-        print(self.img_dir)
-        print(self.ann_dir)
         # load annotations
         self.img_infos = self.load_annotations(self.img_dir, self.img_suffix,
                                                self.ann_dir,
