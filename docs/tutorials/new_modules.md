@@ -1,4 +1,4 @@
-# Tutorial 3: Adding New Modules
+# 3. Adding New Modules
 
 ## Customize optimizer
 
@@ -26,19 +26,24 @@ from .my_optimizer import MyOptimizer
 
 Then you can use `MyOptimizer` in `optimizer` field of config files.
 In the configs, the optimizers are defined by the field `optimizer` like the following:
+
 ```python
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 ```
+
 To use your own optimizer, the field can be changed as
+
 ```python
 optimizer = dict(type='MyOptimizer', a=a_value, b=b_value, c=c_value)
 ```
 
 We already support to use all the optimizers implemented by PyTorch, and the only modification is to change the `optimizer` field of config files.
 For example, if you want to use `ADAM`, though the performance will drop a lot, the modification could be as the following.
+
 ```python
 optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 ```
+
 The users can directly set arguments following the [API doc](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim) of PyTorch.
 
 ## Customize optimizer constructor
@@ -63,7 +68,6 @@ class CocktailOptimizerConstructor(object):
         return my_optimizer
 
 ```
-
 
 ## Develop new components
 
@@ -227,6 +231,7 @@ class MyLoss(nn.Module):
 ```
 
 Then the users need to add it in the `mmdet/models/losses/__init__.py`.
+
 ```python
 from .my_loss import MyLoss, my_loss
 
@@ -234,6 +239,7 @@ from .my_loss import MyLoss, my_loss
 
 To use it, modify the `loss_xxx` field.
 Then you need to modify the `loss_bbox` field in the head.
+
 ```python
 loss_decode=dict(type='MyLoss', loss_weight=1.0))
 ```

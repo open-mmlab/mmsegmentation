@@ -1,5 +1,5 @@
 Welcome to MMSegmenation's documentation!
-=======================================
+=========================================
 
 .. toctree::
    :maxdepth: 2
@@ -8,9 +8,16 @@ Welcome to MMSegmenation's documentation!
    getting_started.md
    config.md
    model_zoo.md
-   tutorials/new_dataset.md
-   tutorials/data_pipeline.md
-   tutorials/new_modules.md
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorials
+
+   tutorials/index.rst
+
+.. toctree::
+   :caption: API Reference
+
    api.rst
 
 

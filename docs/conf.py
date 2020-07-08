@@ -38,10 +38,7 @@ extensions = [
     'sphinx_markdown_tables',
 ]
 
-autodoc_mock_imports = [
-    'matplotlib', 'pycocotools', 'terminaltables', 'mmseg.version',
-    'mmseg.ops.dcn', 'mmseg.ops.utils'
-]
+autodoc_mock_imports = ['matplotlib', 'pycocotools', 'mmseg.version']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
