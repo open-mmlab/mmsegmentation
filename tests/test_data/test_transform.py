@@ -47,17 +47,52 @@ def test_resize():
     results['pad_shape'] = img.shape
     results['scale_factor'] = 1.0
 
-    results = resize_module(results)
+    resized_results = resize_module(results.copy())
+    assert resized_results['img_shape'] == (750, 1333, 3)
 
-    results.pop('scale')
+    # test keep_ratio=False
     transform = dict(
         type='Resize',
         img_scale=(1280, 800),
         multiscale_mode='value',
         keep_ratio=False)
     resize_module = build_from_cfg(transform, PIPELINES)
-    results = resize_module(results)
-    assert results['img_shape'] == (800, 1280, 3)
+    resized_results = resize_module(results.copy())
+    assert resized_results['img_shape'] == (800, 1280, 3)
+
+    # test multiscale_mode='range'
+    transform = dict(
+        type='Resize',
+        img_scale=[(1333, 400), (1333, 1200)],
+        multiscale_mode='range',
+        keep_ratio=True)
+    resize_module = build_from_cfg(transform, PIPELINES)
+    resized_results = resize_module(results.copy())
+    assert max(resized_results['img_shape'][:2]) <= 1333
+    assert min(resized_results['img_shape'][:2]) >= 400
+    assert min(resized_results['img_shape'][:2]) <= 1200
+
+    # test multiscale_mode='value'
+    transform = dict(
+        type='Resize',
+        img_scale=[(1333, 800), (1333, 400)],
+        multiscale_mode='value',
+        keep_ratio=True)
+    resize_module = build_from_cfg(transform, PIPELINES)
+    resized_results = resize_module(results.copy())
+    assert resized_results['img_shape'] in [(750, 1333, 3), (400, 711, 3)]
+
+    # test multiscale_mode='range'
+    transform = dict(
+        type='Resize',
+        img_scale=(1333, 800),
+        ratio_range=(0.9, 1.1),
+        keep_ratio=True)
+    resize_module = build_from_cfg(transform, PIPELINES)
+    resized_results = resize_module(results.copy())
+    assert max(resized_results['img_shape'][:2]) <= 1333 * 1.1
+    assert min(resized_results['img_shape'][:2]) >= 800 * 0.9
+    assert min(resized_results['img_shape'][:2]) <= 800 * 1.1
 
 
 def test_flip():
@@ -188,3 +223,22 @@ def test_normalize():
     std = np.array(img_norm_cfg['std'])
     converted_img = (original_img[..., ::-1] - mean) / std
     assert np.allclose(results['img'], converted_img)
+
+
+def test_seg_rescale():
+    results = dict()
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    h, w = seg.shape
+
+    transform = dict(type='SegRescale', scale_factor=1. / 2)
+    rescale_module = build_from_cfg(transform, PIPELINES)
+    rescale_results = rescale_module(results.copy())
+    assert rescale_results['gt_semantic_seg'].shape == (h // 2, w // 2)
+
+    transform = dict(type='SegRescale', scale_factor=1)
+    rescale_module = build_from_cfg(transform, PIPELINES)
+    rescale_results = rescale_module(results.copy())
+    assert rescale_results['gt_semantic_seg'].shape == (h, w)

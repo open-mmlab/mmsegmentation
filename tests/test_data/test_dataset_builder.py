@@ -1,9 +1,12 @@
 import math
+import os.path as osp
 
+import pytest
 from torch.utils.data import (DistributedSampler, RandomSampler,
                               SequentialSampler)
 
-from mmseg.datasets import DATASETS, build_dataloader, build_dataset
+from mmseg.datasets import (DATASETS, ConcatDataset, build_dataloader,
+                            build_dataset)
 
 
 @DATASETS.register_module()
@@ -27,6 +30,101 @@ def test_build_dataset():
     dataset = build_dataset(cfg, default_args=dict(cnt=1))
     assert isinstance(dataset, ToyDataset)
     assert dataset.cnt == 1
+
+    data_root = osp.join(osp.dirname(__file__), '../data/pseudo_dataset')
+    img_dir = 'imgs/'
+    ann_dir = 'gts/'
+
+    # We use same dir twice for simplicity
+    # with ann_dir
+    cfg = dict(
+        type='CustomDataset',
+        pipeline=[],
+        data_root=data_root,
+        img_dir=[img_dir, img_dir],
+        ann_dir=[ann_dir, ann_dir])
+    dataset = build_dataset(cfg)
+    assert isinstance(dataset, ConcatDataset)
+    assert len(dataset) == 10
+
+    # with ann_dir, split
+    cfg = dict(
+        type='CustomDataset',
+        pipeline=[],
+        data_root=data_root,
+        img_dir=img_dir,
+        ann_dir=ann_dir,
+        split=['splits/train.txt', 'splits/val.txt'])
+    dataset = build_dataset(cfg)
+    assert isinstance(dataset, ConcatDataset)
+    assert len(dataset) == 5
+
+    # with ann_dir, split
+    cfg = dict(
+        type='CustomDataset',
+        pipeline=[],
+        data_root=data_root,
+        img_dir=img_dir,
+        ann_dir=[ann_dir, ann_dir],
+        split=['splits/train.txt', 'splits/val.txt'])
+    dataset = build_dataset(cfg)
+    assert isinstance(dataset, ConcatDataset)
+    assert len(dataset) == 5
+
+    # test mode
+    cfg = dict(
+        type='CustomDataset',
+        pipeline=[],
+        data_root=data_root,
+        img_dir=[img_dir, img_dir],
+        test_mode=True)
+    dataset = build_dataset(cfg)
+    assert isinstance(dataset, ConcatDataset)
+    assert len(dataset) == 10
+
+    # test mode with splits
+    cfg = dict(
+        type='CustomDataset',
+        pipeline=[],
+        data_root=data_root,
+        img_dir=[img_dir, img_dir],
+        split=['splits/val.txt', 'splits/val.txt'],
+        test_mode=True)
+    dataset = build_dataset(cfg)
+    assert isinstance(dataset, ConcatDataset)
+    assert len(dataset) == 2
+
+    # len(ann_dir) should be zero or len(img_dir) when len(img_dir) > 1
+    with pytest.raises(AssertionError):
+        cfg = dict(
+            type='CustomDataset',
+            pipeline=[],
+            data_root=data_root,
+            img_dir=[img_dir, img_dir],
+            ann_dir=[ann_dir, ann_dir, ann_dir])
+        build_dataset(cfg)
+
+    # len(splits) should be zero or len(img_dir) when len(img_dir) > 1
+    with pytest.raises(AssertionError):
+        cfg = dict(
+            type='CustomDataset',
+            pipeline=[],
+            data_root=data_root,
+            img_dir=[img_dir, img_dir],
+            split=['splits/val.txt', 'splits/val.txt', 'splits/val.txt'])
+        build_dataset(cfg)
+
+    # len(splits) == len(ann_dir) when only len(img_dir) == 1 and len(
+    # ann_dir) > 1
+    with pytest.raises(AssertionError):
+        cfg = dict(
+            type='CustomDataset',
+            pipeline=[],
+            data_root=data_root,
+            img_dir=img_dir,
+            ann_dir=[ann_dir, ann_dir],
+            split=['splits/val.txt', 'splits/val.txt', 'splits/val.txt'])
+        build_dataset(cfg)
 
 
 def test_build_dataloader():

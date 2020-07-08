@@ -39,15 +39,17 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7]
-        torch: [1.3.0, 1.5.0]
+        torch: [1.3.0+cpu, 1.5.0+cpu]
         include:
-          - torch: 1.3.0
-            torchvision: 0.4.2
-          - torch: 1.5.0
-            torchvision: 0.6.0
+          - torch: 1.3.0+cpu
+            torchvision: 0.4.2+cpu
+          - torch: 1.5.0+cpu
+            torchvision: 0.6.0+cpu
           - python-version: 3.8
-            torch: 1.5.0
-            torchvision: 0.6.0
+            torch: 1.5.0+cpu
+            torchvision: 0.6.0+cpu
+          - torch: 1.5.0+cu101
+            torchvision: 0.6.0+cu101
 
     steps:
     - uses: actions/checkout@v2
@@ -69,14 +71,15 @@ jobs:
         export LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${CUDA_HOME}/include:${LD_LIBRARY_PATH}
         export PATH=${CUDA_HOME}/bin:${PATH}
         sudo apt-get install -y ninja-build
+    - if: ${{matrix.torch == '1.5.0+cu101'}}
     - name: Install Pillow
       run: pip install Pillow==6.2.2
-      if: ${{matrix.torchvision == '0.4.2'}}
+      if: ${{matrix.torchvision == '0.4.2+cpu'}}
     - name: Install PyTorch
       run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
     - name: Install mmseg dependencies
       run: |
-        pip install mmcv==1.0rc0+torch${{matrix.torch}}+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
+        pip install mmcv==1.0rc0+torch${{matrix.torch}} -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
         pip install -r requirements.txt
     - name: Build and install
       run: rm -rf .eggs && pip install -e .
@@ -87,7 +90,7 @@ jobs:
         coverage report -m --omit="mmseg/utils/*","mmseg/apis/*"
     # Only upload coverage report for python3.7 && pytorch1.5
     - name: Upload coverage to Codecov
-      if: ${{matrix.torch == '1.5.0' && matrix.python-version == '3.7'}}
+      if: ${{matrix.torch == '1.5.0+cu101' && matrix.python-version == '3.7'}}
       uses: codecov/codecov-action@v1.0.10
       with:
         file: ./coverage.xml

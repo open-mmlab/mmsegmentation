@@ -6,6 +6,7 @@ from mmcv.cnn import ConvModule
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
+                                       DepthwiseSeparableASPPHead, EncHead,
                                        FCNHead, GCHead, NLHead, OCRHead,
                                        PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
@@ -260,9 +261,91 @@ def test_psa_head():
         norm_cfg=dict(type='SyncBN'))
     assert _conv_has_norm(head, sync_bn=True)
 
+    # test 'bi-direction' psa_type
     inputs = [torch.randn(1, 32, 39, 39)]
     head = PSAHead(
         in_channels=32, channels=16, num_classes=19, mask_size=(39, 39))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 39, 39)
+
+    # test 'bi-direction' psa_type, shrink_factor=1
+    inputs = [torch.randn(1, 32, 39, 39)]
+    head = PSAHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        mask_size=(39, 39),
+        shrink_factor=1)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 39, 39)
+
+    # test 'bi-direction' psa_type with soft_max
+    inputs = [torch.randn(1, 32, 39, 39)]
+    head = PSAHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        mask_size=(39, 39),
+        psa_softmax=True)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 39, 39)
+
+    # test 'collect' psa_type
+    inputs = [torch.randn(1, 32, 39, 39)]
+    head = PSAHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        mask_size=(39, 39),
+        psa_type='collect')
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 39, 39)
+
+    # test 'collect' psa_type, shrink_factor=1
+    inputs = [torch.randn(1, 32, 39, 39)]
+    head = PSAHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        mask_size=(39, 39),
+        shrink_factor=1,
+        psa_type='collect')
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 39, 39)
+
+    # test 'collect' psa_type, shrink_factor=1, compact=True
+    inputs = [torch.randn(1, 32, 39, 39)]
+    head = PSAHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        mask_size=(39, 39),
+        psa_type='collect',
+        shrink_factor=1,
+        compact=True)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 39, 39)
+
+    # test 'distribute' psa_type
+    inputs = [torch.randn(1, 32, 39, 39)]
+    head = PSAHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        mask_size=(39, 39),
+        psa_type='distribute')
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
     outputs = head(inputs)
@@ -295,11 +378,12 @@ def test_cc_head():
     head = CCHead(in_channels=32, channels=16, num_classes=19)
     assert len(head.convs) == 2
     assert hasattr(head, 'cca')
-    if torch.cuda.is_available():
-        inputs = [torch.randn(1, 32, 45, 45)]
-        head, inputs = to_cuda(head, inputs)
-        outputs = head(inputs)
-        assert outputs.shape == (1, head.num_classes, 45, 45)
+    if not torch.cuda.is_available():
+        pytest.skip('CCHead requires CUDA')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
 
 
 def test_uper_head():
@@ -353,8 +437,11 @@ def test_da_head():
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
     outputs = head(inputs)
+    assert isinstance(outputs, tuple) and len(outputs) == 3
     for output in outputs:
         assert output.shape == (1, head.num_classes, 45, 45)
+    test_output = head.forward_test(inputs, None, None)
+    assert test_output.shape == (1, head.num_classes, 45, 45)
 
 
 def test_ocr_head():
@@ -369,3 +456,86 @@ def test_ocr_head():
     prev_output = fcn_head(inputs)
     output = ocr_head(inputs, prev_output)
     assert output.shape == (1, ocr_head.num_classes, 45, 45)
+
+
+def test_enc_head():
+    # with se_loss, w.o. lateral
+    inputs = [torch.randn(1, 32, 21, 21)]
+    head = EncHead(
+        in_channels=[32], channels=16, num_classes=19, in_index=[-1])
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert isinstance(outputs, tuple) and len(outputs) == 2
+    assert outputs[0].shape == (1, head.num_classes, 21, 21)
+    assert outputs[1].shape == (1, head.num_classes)
+
+    # w.o se_loss, w.o. lateral
+    inputs = [torch.randn(1, 32, 21, 21)]
+    head = EncHead(
+        in_channels=[32],
+        channels=16,
+        use_se_loss=False,
+        num_classes=19,
+        in_index=[-1])
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 21, 21)
+
+    # with se_loss, with lateral
+    inputs = [torch.randn(1, 16, 45, 45), torch.randn(1, 32, 21, 21)]
+    head = EncHead(
+        in_channels=[16, 32],
+        channels=16,
+        add_lateral=True,
+        num_classes=19,
+        in_index=[-2, -1])
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert isinstance(outputs, tuple) and len(outputs) == 2
+    assert outputs[0].shape == (1, head.num_classes, 21, 21)
+    assert outputs[1].shape == (1, head.num_classes)
+    test_output = head.forward_test(inputs, None, None)
+    assert test_output.shape == (1, head.num_classes, 21, 21)
+
+
+def test_dw_aspp_head():
+
+    # test w.o. c1
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head = DepthwiseSeparableASPPHead(
+        c1_in_channels=0,
+        c1_channels=0,
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        dilations=(1, 12, 24))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    assert head.c1_bottleneck is None
+    assert head.aspp_modules[0].conv.dilation == (1, 1)
+    assert head.aspp_modules[1].depthwise_conv.dilation == (12, 12)
+    assert head.aspp_modules[2].depthwise_conv.dilation == (24, 24)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # test with c1
+    inputs = [torch.randn(1, 8, 45, 45), torch.randn(1, 32, 21, 21)]
+    head = DepthwiseSeparableASPPHead(
+        c1_in_channels=8,
+        c1_channels=4,
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        dilations=(1, 12, 24))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    assert head.c1_bottleneck.in_channels == 8
+    assert head.c1_bottleneck.out_channels == 4
+    assert head.aspp_modules[0].conv.dilation == (1, 1)
+    assert head.aspp_modules[1].depthwise_conv.dilation == (12, 12)
+    assert head.aspp_modules[2].depthwise_conv.dilation == (24, 24)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)

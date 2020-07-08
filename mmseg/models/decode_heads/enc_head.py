@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule, build_norm_layer
 
-from mmseg.ops import Encoding
+from mmseg.ops import Encoding, resize
 from ..builder import HEADS, build_loss
 from .decode_head import BaseDecodeHead
 
@@ -30,12 +30,16 @@ class EncModule(nn.Module):
             act_cfg=act_cfg)
         # TODO: resolve this hack
         # change to 1d
-        encoding_norm_cfg = norm_cfg.copy()
-        if encoding_norm_cfg['type'] in ['BN', 'IN']:
-            encoding_norm_cfg['type'] += '1d'
+        if norm_cfg is not None:
+            encoding_norm_cfg = norm_cfg.copy()
+            if encoding_norm_cfg['type'] in ['BN', 'IN']:
+                encoding_norm_cfg['type'] += '1d'
+            else:
+                encoding_norm_cfg['type'] = encoding_norm_cfg['type'].replace(
+                    '2d', '1d')
         else:
-            encoding_norm_cfg['type'] = encoding_norm_cfg['type'].replace(
-                '2d', '1d')
+            # fallback to BN1d
+            encoding_norm_cfg = dict(type='BN1d')
         self.encoding = nn.Sequential(
             Encoding(channels=in_channels, num_codes=num_codes),
             build_norm_layer(encoding_norm_cfg, num_codes)[1],
@@ -128,7 +132,11 @@ class EncHead(BaseDecodeHead):
         feat = self.bottleneck(inputs[-1])
         if self.add_lateral:
             laterals = [
-                lateral_conv(inputs[i])
+                resize(
+                    lateral_conv(inputs[i]),
+                    size=feat.shape[2:],
+                    mode='bilinear',
+                    align_corners=self.align_corners)
                 for i, lateral_conv in enumerate(self.lateral_convs)
             ]
             feat = self.fusion(torch.cat([feat, *laterals], 1))
