@@ -45,11 +45,12 @@ jobs:
             torchvision: 0.4.2+cpu
           - torch: 1.5.0+cpu
             torchvision: 0.6.0+cpu
-          - python-version: 3.8
-            torch: 1.5.0+cpu
+          - torch: 1.5.0+cpu
             torchvision: 0.6.0+cpu
+            python-version: 3.8
           - torch: 1.5.0+cu101
             torchvision: 0.6.0+cu101
+            python-version: 3.7
 
     steps:
     - uses: actions/checkout@v2
