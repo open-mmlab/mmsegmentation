@@ -7,6 +7,8 @@
 [![codecov](https://codecov.io/gh/open-mmlab/mmsegmentation/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmsegmentation)
 [![license](https://img.shields.io/github/license/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/blob/master/LICENSE)
 
+Documentation: https://mmsegmentation.readthedocs.io/
+
 ## Introduction
 
 MMSegmentation is an open source semantic segmentation toolbox based on PyTorch.
