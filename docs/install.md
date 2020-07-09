@@ -31,19 +31,34 @@ git clone http://github.com/open-mmlab/mmsegmentation
 cd mmsegmentation
 ```
 
-d. Install build requirements and then install mmsegmentation.
-Please refer to [MMCV](https://mmcv.readthedocs.io/en/latest/) for other versions.
+d. Install [MMCV](https://mmcv.readthedocs.io/en/latest/).
+Either *mmcv* or *mmcv-full* is compatible with MMSegmentation, but for methods like CCNet and PSANet, CUDA ops in *mmcv-full* is required
+
+The pre-build *mmcv-full* could be installed by running: (available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
+```
+pip install mmcv==1.0.0torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
+```
+
+Optionally, you could also install lite version by running:
+```
+pip install mmcv
+```
+or build full version from source:
+```
+pip install mmcv-nightly
+```
+
+e. Install build requirements and then install MMSegmentation.
 
 ```shell
-pip install mmcv==1.0.0torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
-pip install -r requirements/build.txt
+pip install -r requirements/build.txt  # or "pip install -r requirements.txt" for everything.
 pip install -e .  # or "python setup.py develop"
 ```
 
 Note:
 
-1. The git commit id will be written to the version number with step *d*, e.g. 0.6.0+2e7045c. The version will also be saved in trained models.
-It is recommended that you run step *d* each time you pull some updates from github. If C++/CUDA codes are modified, then this step is compulsory.
+1. The git commit id will be written to the version number with step *e*, e.g. 0.5.0+c415a2e. The version will also be saved in trained models.
+It is recommended that you run step *e* each time you pull some updates from github. If C++/CUDA codes are modified, then this step is compulsory.
 
 2. Following the above instructions, mmsegmentation is installed on `dev` mode, any local modifications made to the code will take effect without the need to reinstall it (unless you submit some commits and want to update the version number).
 

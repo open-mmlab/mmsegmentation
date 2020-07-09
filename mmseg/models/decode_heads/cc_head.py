@@ -5,7 +5,7 @@ from .fcn_head import FCNHead
 
 try:
     from mmcv.ops import CrissCrossAttention
-except ImportError:
+except ModuleNotFoundError:
     CrissCrossAttention = None
 
 

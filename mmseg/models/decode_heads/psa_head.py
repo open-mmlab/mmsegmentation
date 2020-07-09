@@ -9,7 +9,7 @@ from .decode_head import BaseDecodeHead
 
 try:
     from mmcv.ops import PSAMask
-except ImportError:
+except ModuleNotFoundError:
     PSAMask = None
 
 
