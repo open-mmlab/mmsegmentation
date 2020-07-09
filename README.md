@@ -4,8 +4,8 @@
 
 ## Introduction
 
-MMSegmentation is an open source object semantic segmentation toolbox based on PyTorch.
-It is a part of the OpenMMLab project developed by [Multimedia Laboratory, CUHK](http://mmlab.ie.cuhk.edu.hk/).
+MMSegmentation is an open source semantic segmentation toolbox based on PyTorch.
+It is a part of the OpenMMLab project.
 
 The master branch works with **PyTorch 1.3 to 1.5**.
 

@@ -37,15 +37,15 @@ We follow the below style to name config files. Contributors are advised to foll
 
 ## An Example of PSPNet
 
-To help the users have a basic idea of a complete config and the modules in a modern detection system,
-we make brief comments on the config of Mask R-CNN using ResNet50 and FPN as the following.
+To help the users have a basic idea of a complete config and the modules in a modern semantic segmentation system,
+we make brief comments on the config of PSPNet using ResNet50V1c as the following.
 For more detailed usage and the corresponding alternative for each modules, please refer to the API documentation.
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)  # Segmentation usually uses SyncBN
 model = dict(
     type='EncoderDecoder',  # Name of segmentor
-    pretrained='pretrain_model/resnet50_v1c_trick-2cccc1ad.pth',  # The ImageNet pretrained backbone to be loaded
+    pretrained='open-mmlab://resnet50_v1c',  # The ImageNet pretrained backbone to be loaded
     backbone=dict(
         type='ResNetV1c',  # The type of backbone. Please refer to mmseg/backbone/resnet.py for details.
         depth=50,  # Depth of backbone. Normally 50, 101 are used.
@@ -109,7 +109,7 @@ train_pipeline = [  # Training pipeline.
     dict(
         type='RandomFlip',  # Augmentation pipeline that flip the images and their annotations
         flip_ratio=0.5),  # The ratio or probability to flip
-    dict(type='PhotoMetricDistortion'),  # Augmentation pipeline that distort current image with several photo metric method.
+    dict(type='PhotoMetricDistortion'),  # Augmentation pipeline that distort current image with several photo metric methods.
     dict(
         type='Normalize',  # Augmentation pipeline that normalize the input images
         mean=[123.675, 116.28, 103.53],  # These keys are the same of img_norm_cfg since the
@@ -226,25 +226,25 @@ log_level = 'INFO'  # The level of logging.
 load_from = None  # load models as a pre-trained model from a given path. This will not resume training.
 resume_from = None  # Resume checkpoints from a given path, the training will be resumed from the epoch when the checkpoint's is saved.
 workflow = [('train', 1)]  # Workflow for runner. [('train', 1)] means there is only one workflow and the workflow named 'train' is executed once. The workflow trains the model by 12 epochs according to the total_epochs.
-cudnn_benchmark = True  # Whether use cudnn_benchmark to speed up.
+cudnn_benchmark = True  # Whether use cudnn_benchmark to speed up, which is fast for fixed input size.
 optimizer = dict(  # Config used to build optimizer, support all the optimizers in PyTorch whose arguments are also the same as those in PyTorch
     type='SGD',  # Type of optimizers, refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/optimizer/default_constructor.py#L13 for more details
-    lr=0.01,  # Learning rate of optimizers, see detail usages of the parameters in the documentaion of PyTorch
+    lr=0.01,  # Learning rate of optimizers, see detail usages of the parameters in the documentation of PyTorch
     momentum=0.9,  # Momentum
     weight_decay=0.0005)  # Weight decay of SGD
 optimizer_config = dict()  # Config used to build the optimizer hook, refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/optimizer.py#L8 for implementation details.
 lr_config = dict(
-    policy='poly',  # The policy of scheduler, also support Step, CosineAnealing, Cyclic, etc. Refer to details of supported LrUpdater from https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/lr_updater.py#L9.
+    policy='poly',  # The policy of scheduler, also support Step, CosineAnnealing, Cyclic, etc. Refer to details of supported LrUpdater from https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/lr_updater.py#L9.
     power=0.9,  # The power of polynomial decay.
     min_lr=0.0001,  # The minimum learning rate to stable the training.
     by_epoch=False)  # Whethe count by epoch or not.
 total_iters = 40000  # Total number of iterations.
 checkpoint_config = dict(  # Config to set the checkpoint hook, Refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py for implementation.
     by_epoch=False,  # Whethe count by epoch or not.
-    interval=4000)  # The save inerval.
+    interval=4000)  # The save interval.
 evaluation = dict(  # The config to build the evaluation hook. Please refer to mmseg/core/evaulation/eval_hook.py for details.
-    interval=4000,  # The inerval of evaluation.
-    metric='mIoU')  # The evaludation metric.
+    interval=4000,  # The interval of evaluation.
+    metric='mIoU')  # The evaluation metric.
 
 
 ```

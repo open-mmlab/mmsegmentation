@@ -71,12 +71,10 @@ class CocktailOptimizerConstructor(object):
 
 ## Develop new components
 
-We basically categorize model components into 4 types.
+There are mainly 2 types of components in MMSegmentation.
 
-- backbone: usually an FCN network to extract feature maps, e.g., ResNet, MobileNet.
-- neck: the component between backbones and heads, e.g., FPN, PAFPN.
-- head: the component for specific tasks, e.g., bbox prediction and mask prediction.
-- roi extractor: the part for extracting RoI features from feature maps, e.g., RoI Align.
+- backbone: usually stacks of convolutional network to extract feature maps, e.g., ResNet, HRNet.
+- head: the component for semantic segmentation map decoding.
 
 ### Add new backbones
 
@@ -134,21 +132,11 @@ To implement a decode head, basically we need to implement three functions of th
 ```python
 @HEADS.register_module()
 class PSPHead(BaseDecodeHead):
-    """Pyramid Scene Parsing Network
-
-    This head is the implementation of PSPHead
-    in (https://arxiv.org/abs/1612.01105)
-
-    Args:
-        pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
-            Module.
-    """
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
         super(PSPHead, self).__init__(**kwargs)
 
     def init_weights(self):
-        # conv layers are already initialized by ConvModule
 
     def forward(self, inputs):
 
@@ -191,7 +179,7 @@ model = dict(
 
 ### Add new loss
 
-Assume you want to add a new loss as `MyLoss`, for segmentation decode.
+Assume you want to add a new loss as `MyLoss` for segmentation decode.
 To add a new loss function, the users need implement it in `mmseg/models/losses/my_loss.py`.
 The decorator `weighted_loss` enable the loss to be weighted for each element.
 
@@ -225,12 +213,12 @@ class MyLoss(nn.Module):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
-        loss_bbox = self.loss_weight * my_loss(
+        loss = self.loss_weight * my_loss(
             pred, target, weight, reduction=reduction, avg_factor=avg_factor)
-        return loss_bbox
+        return loss
 ```
 
-Then the users need to add it in the `mmdet/models/losses/__init__.py`.
+Then the users need to add it in the `mmseg/models/losses/__init__.py`.
 
 ```python
 from .my_loss import MyLoss, my_loss
@@ -238,7 +226,8 @@ from .my_loss import MyLoss, my_loss
 ```
 
 To use it, modify the `loss_xxx` field.
-Then you need to modify the `loss_bbox` field in the head.
+Then you need to modify the `loss_decode` field in the head.
+`loss_weight` could be used to balance multiple losses.
 
 ```python
 loss_decode=dict(type='MyLoss', loss_weight=1.0))

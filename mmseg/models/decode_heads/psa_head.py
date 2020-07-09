@@ -2,11 +2,15 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
-from mmcv.ops import PSAMask
 
 from mmseg.ops import resize
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
+
+try:
+    from mmcv.ops import PSAMask
+except ModuleNotFoundError:
+    PSAMask = None
 
 
 @HEADS.register_module()
@@ -36,6 +40,8 @@ class PSAHead(BaseDecodeHead):
                  normalization_factor=1.0,
                  psa_softmax=True,
                  **kwargs):
+        if PSAMask is None:
+            raise RuntimeError('Please install mmcv-full for PSAMask ops')
         super(PSAHead, self).__init__(**kwargs)
         assert psa_type in ['collect', 'distribute', 'bi-direction']
         self.psa_type = psa_type

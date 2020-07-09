@@ -92,9 +92,9 @@ python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${RESULT_FILE}] [-
 
 Optional arguments:
 - `RESULT_FILE`: Filename of the output results in pickle format. If not specified, the results will not be saved to a file.
-- `EVAL_METRICS`: Items to be evaluated on the results. Allowed values depend on the dataset, e.g., `proposal_fast`, `proposal`, `bbox`, `segm` are available for COCO, `mAP`, `recall` for PASCAL VOC. Cityscapes could be evaluated by `cityscapes` as well as all COCO metrics.
-- `--show`: If specified, detection results will be plotted on the images and shown in a new window. It is only applicable to single GPU testing and used for debugging and visualization. Please make sure that GUI is available in your environment, otherwise you may encounter the error like `cannot connect to X server`.
-- `--show-dir`: If specified, detection results will be plotted on the images and saved to the specified directory. It is only applicable to single GPU testing and used for debugging and visualization. You do NOT need a GUI available in your environment for using this option.
+- `EVAL_METRICS`: Items to be evaluated on the results. Allowed values depend on the dataset, e.g., `mIoU` is available for all dataset. Cityscapes could be evaluated by `cityscapes` as well as standard `mIoU` metrics.
+- `--show`: If specified, segmentation results will be plotted on the images and shown in a new window. It is only applicable to single GPU testing and used for debugging and visualization. Please make sure that GUI is available in your environment, otherwise you may encounter the error like `cannot connect to X server`.
+- `--show-dir`: If specified, segmentation results will be plotted on the images and saved to the specified directory. It is only applicable to single GPU testing and used for debugging and visualization. You do NOT need a GUI available in your environment for using this option.
 
 
 Examples:
@@ -200,9 +200,9 @@ which uses `MMDistributedDataParallel` and `MMDataParallel` respectively.
 All outputs (log files and checkpoints) will be saved to the working directory,
 which is specified by `work_dir` in the config file.
 
-By default we evaluate the model on the validation set after each epoch, you can change the evaluation interval by adding the interval argument in the training config.
+By default we evaluate the model on the validation set after some iterations, you can change the evaluation interval by adding the interval argument in the training config.
 ```python
-evaluation = dict(interval=12)  # This evaluate the model per 12 epoch.
+evaluation = dict(interval=4000)  # This evaluate the model per 4000 iterations.
 ```
 
 **\*Important\***: The default learning rate in config files is for 8 GPUs and 1 img/gpu (batch size = 8x1 = 8).
@@ -224,13 +224,13 @@ If you want to specify the working directory in the command, you can add an argu
 
 Optional arguments are:
 
-- `--no-validate` (**not suggested**): By default, the codebase will perform evaluation at every k (default value is 1, which can be modified like [this]() epochs during the training. To disable this behavior, use `--no-validate`.
+- `--no-validate` (**not suggested**): By default, the codebase will perform evaluation at every k iterations during the training. To disable this behavior, use `--no-validate`.
 - `--work-dir ${WORK_DIR}`: Override the working directory specified in the config file.
 - `--resume-from ${CHECKPOINT_FILE}`: Resume from a previous checkpoint file.
 
 Difference between `resume-from` and `load-from`:
-`resume-from` loads both the model weights and optimizer status, and the epoch is also inherited from the specified checkpoint. It is usually used for resuming the training process that is interrupted accidentally.
-`load-from` only loads the model weights and the training epoch starts from 0. It is usually used for finetuning.
+`resume-from` loads both the model weights and optimizer status, and the iteration number is also inherited from the specified checkpoint. It is usually used for resuming the training process that is interrupted accidentally.
+`load-from` only loads the model weights and the training iteration starts from 0. It is usually used for finetuning.
 
 ### Train with multiple machines
 
@@ -312,7 +312,6 @@ Params: 48.98 M
 (1) FLOPs are related to the input shape while parameters are not. The default input shape is (1, 3, 1280, 800).
 (2) Some operators are not counted into FLOPs like GN and custom operators.
 You can add support for new operators by modifying [`mmseg/utils/flops_counter.py`](../mmseg/utils/flops_counter.py).
-(3) The FLOPs of two-stage detectors is dependent on the number of proposals.
 
 ### Publish a model
 

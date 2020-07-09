@@ -11,7 +11,7 @@ from mmseg.models import build_segmentor
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='MMDet benchmark a model')
+    parser = argparse.ArgumentParser(description='MMSeg benchmark a model')
     parser.add_argument('config', help='test config file path')
     parser.add_argument('checkpoint', help='checkpoint file')
     parser.add_argument(

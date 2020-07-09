@@ -214,8 +214,8 @@ class BaseSegmentor(nn.Module):
 
         Args:
             img (str or Tensor): The image to be displayed.
-            result (Tensor or tuple): The results to draw over `img`
-                bbox_result or (bbox_result, segm_result).
+            result (Tensor): The semantic segmentation results to draw over
+                `img`.
             palette (list[list[int]]] | np.ndarray | None): The palette of
                 segmentation map. If None is given, random palette will be
                 generated. Default: None
