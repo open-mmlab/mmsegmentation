@@ -73,10 +73,8 @@ class CocktailOptimizerConstructor(object):
 
 We basically categorize model components into 4 types.
 
-- backbone: usually an FCN network to extract feature maps, e.g., ResNet, MobileNet.
-- neck: the component between backbones and heads, e.g., FPN, PAFPN.
-- head: the component for specific tasks, e.g., bbox prediction and mask prediction.
-- roi extractor: the part for extracting RoI features from feature maps, e.g., RoI Align.
+- backbone: usually stacks of convolutional network to extract feature maps, e.g., ResNet, MobileNet.
+- head: the component for semantic segmentation map decoding.
 
 ### Add new backbones
 
@@ -225,12 +223,12 @@ class MyLoss(nn.Module):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
-        loss_bbox = self.loss_weight * my_loss(
+        loss = self.loss_weight * my_loss(
             pred, target, weight, reduction=reduction, avg_factor=avg_factor)
-        return loss_bbox
+        return loss
 ```
 
-Then the users need to add it in the `mmdet/models/losses/__init__.py`.
+Then the users need to add it in the `mmseg/models/losses/__init__.py`.
 
 ```python
 from .my_loss import MyLoss, my_loss
@@ -238,7 +236,7 @@ from .my_loss import MyLoss, my_loss
 ```
 
 To use it, modify the `loss_xxx` field.
-Then you need to modify the `loss_bbox` field in the head.
+Then you need to modify the `loss_decode` field in the head.
 
 ```python
 loss_decode=dict(type='MyLoss', loss_weight=1.0))

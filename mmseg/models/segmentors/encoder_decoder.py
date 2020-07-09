@@ -265,8 +265,7 @@ class EncoderDecoder(BaseSegmentor):
     def aug_test(self, imgs, img_metas, rescale=True):
         """Test with augmentations.
 
-        If rescale is False, then returned bboxes and masks will fit the scale
-        of imgs[0].
+        Only rescale=True is supported.
         """
         # aug_test rescale all imgs back to ori_shape for now
         assert rescale

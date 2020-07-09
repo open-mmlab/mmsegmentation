@@ -5,7 +5,7 @@
 Following typical conventions, we use `Dataset` and `DataLoader` for data loading
 with multiple workers. `Dataset` returns a dict of data items corresponding
 the arguments of models' forward method.
-Since the data in object detection may not be the same size (image size, gt bbox size, etc.),
+Since the data in semantic segmentation may not be the same size,
 we introduce a new `DataContainer` type in MMCV to help collect and distribute
 data of different size.
 See [here](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) for more details.
