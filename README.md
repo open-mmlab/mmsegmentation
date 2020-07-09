@@ -33,6 +33,29 @@ The master branch works with **PyTorch 1.3 to 1.5**.
 
 This project is released under the [Apache 2.0 license](LICENSE).
 
+## Benchmark and model zoo
+
+Results and models are available in the [model zoo](docs/model_zoo.md).
+
+Supported backbones:
+- [x] ResNet
+- [x] ResNeXt
+- [x] HRNet
+
+Supported methods:
+- [x] [FCN](configs/fcn)
+- [x] [PSPNet](configs/pspnet)
+- [x] [DeepLabV3](configs/deeplabv3)
+- [x] [PSANet](configs/psanet)
+- [x] [DeepLabV3+](configs/deeplabv3plus)
+- [x] [UPerNet](configs/upernet)
+- [x] [NonLocal Net](configs/nonlocal_net)
+- [x] [CCNet](configs/ccnet)
+- [x] [DANet](configs/danet)
+- [x] [GCNet](configs/gcnet)
+- [x] [ANN](configs/ann)
+- [x] [OCRNet](configs/ocrnet)
+
 ## Installation
 
 Please refer to [INSTALL.md](docs/install.md) for installation and dataset preparation.

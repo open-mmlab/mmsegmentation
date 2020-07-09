@@ -43,9 +43,9 @@ Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/tree/maste
 
 Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentatio/tree/master/configs/deeplabv3plus) for details.
 
-### UperNet
+### UPerNet
 
-Please refer to [UperNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/upernet) for details.
+Please refer to [UPerNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/upernet) for details.
 
 ### NonLocal Net
 
