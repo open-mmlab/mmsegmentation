@@ -54,9 +54,14 @@ def collect_env():
 
     env_info['MMCV'] = mmcv.__version__
     env_info['MMSegmentation'] = mmseg.__version__
-    from mmcv.ops import get_compiler_version, get_compiling_cuda_version
-    env_info['MMSegmentation Compiler'] = get_compiler_version()
-    env_info['MMSegmentation CUDA Compiler'] = get_compiling_cuda_version()
+    try:
+        from mmcv.ops import get_compiler_version, get_compiling_cuda_version
+        env_info['MMCV Compiler'] = get_compiler_version()
+        env_info['MMCV CUDA Compiler'] = get_compiling_cuda_version()
+    except ImportError:
+        env_info['MMCV Compiler'] = 'n/a'
+        env_info['MMCV CUDA Compiler'] = 'n/a'
+
     return env_info
 
 
