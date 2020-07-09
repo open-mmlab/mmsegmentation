@@ -36,7 +36,7 @@ Either *mmcv* or *mmcv-full* is compatible with MMSegmentation, but for methods 
 
 The pre-build *mmcv-full* could be installed by running: (available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
 ```
-pip install mmcv==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
+pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
 ```
 
 Optionally, you could also install lite version by running:
@@ -45,7 +45,7 @@ pip install mmcv
 ```
 or build full version from source:
 ```
-pip install mmcv-nightly
+pip install mmcv-full
 ```
 
 e. Install build requirements and then install MMSegmentation.
@@ -80,7 +80,7 @@ conda activate open-mmlab
 conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
 git clone http://github.com/open-mmlab/mmsegmentation
 cd mmsegmentation
-pip install mmcv==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
+pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
 pip install -r requirements/build.txt
 pip install -e .
 
