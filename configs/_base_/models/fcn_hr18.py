@@ -41,10 +41,10 @@ model = dict(
         kernel_size=1,
         num_convs=1,
         concat_input=False,
-        drop_out_ratio=-1,
+        drop_out_ratio=0.1,
         num_classes=19,
         norm_cfg=norm_cfg,
-        align_corners=False,
+        align_corners=True,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)))
 # model training and testing settings
