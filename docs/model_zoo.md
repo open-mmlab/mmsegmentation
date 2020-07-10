@@ -18,6 +18,8 @@ Results are obtained with the script `tools/benchmark.py` which computes the ave
     * `whole` mode: The `test_cfg` will be like `dict(mode='whole')`.
 
         In this mode, the whole imaged will be passed into network directly.
+
+    By default, we use `slide` inference for 769x769 trained model, `whole` inference for the rest.
 * For input size of 8x+1 (e.g. 769), `align_corner=True` is adopted as a traditional practice.
 Otherwise, for input size of 8x (e.g. 512, 1024), `align_corner=False` is adopted.
 
