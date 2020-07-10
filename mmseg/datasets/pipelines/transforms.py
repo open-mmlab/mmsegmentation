@@ -15,12 +15,15 @@ class Resize(object):
 
     ``img_scale`` can either be a tuple (single-scale) or a list of tuple
     (multi-scale). There are 3 multiscale modes:
+
     - ``ratio_range is not None``: randomly sample a ratio from the ratio range
-        and multiply it with the image scale.
+    and multiply it with the image scale.
+
     - ``ratio_range is None and multiscale_mode == "range"``: randomly sample a
-        scale from the a range.
+    scale from the a range.
+
     - ``ratio_range is None and multiscale_mode == "value"``: randomly sample a
-        scale from multiple scales.
+    scale from multiple scales.
 
     Args:
         img_scale (tuple or list[tuple]): Images scales for resizing.

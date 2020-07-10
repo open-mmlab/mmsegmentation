@@ -330,11 +330,14 @@ class ResNet(nn.Module):
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only.
         plugins (list[dict]): List of plugins for stages, each dict contains:
-            cfg (dict, required): Cfg dict to build plugin.
-            position (str, required): Position inside block to insert plugin,
-                options: 'after_conv1', 'after_conv2', 'after_conv3'.
-            stages (tuple[bool], optional): Stages to apply plugin, length
-                should be same as 'num_stages'
+
+            - cfg (dict, required): Cfg dict to build plugin.
+
+            - position (str, required): Position inside block to insert plugin,
+            options: 'after_conv1', 'after_conv2', 'after_conv3'.
+
+            - stages (tuple[bool], optional): Stages to apply plugin, length
+            should be same as 'num_stages'
         multi_grid (Sequence[int]|None): Multi grid dilation rates of last
             stage. Default: None
         contract_dilation (bool): Whether contract first dilation of each layer
@@ -675,13 +678,9 @@ class ResNetV1c(ResNet):
 class ResNetV1d(ResNet):
     """ResNetV1d variant described in [1]_.
 
-    Compared with default ResNet(ResNetV1b), ResNetV1d replaces the 7x7 conv
-    in the input stem with three 3x3 convs. And in the downsampling block,
-    a 2x2 avg_pool with stride 2 is added before conv, whose stride is
-    changed to 1.
-
-    References:
-        .. [1] https://arxiv.org/pdf/1812.01187.pdf
+    Compared with default ResNet(ResNetV1b), ResNetV1d replaces the 7x7 conv in
+    the input stem with three 3x3 convs. And in the downsampling block, a 2x2
+    avg_pool with stride 2 is added before conv, whose stride is changed to 1.
     """
 
     def __init__(self, **kwargs):
