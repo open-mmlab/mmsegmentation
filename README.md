@@ -1,7 +1,7 @@
 <div align="center">
   <img src="resources/mmseg-logo.png" width="600"/>
-  <br>
 </div>
+<br />
 
 [![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/en/latest/)
 [![badge](https://github.com/open-mmlab/mmsegmentation/workflows/build/badge.svg)](https://github.com/open-mmlab/mmsegmentation/actions)
