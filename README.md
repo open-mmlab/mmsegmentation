@@ -1,5 +1,6 @@
 <div align="center">
   <img src="resources/mmseg-logo.png" width="600"/>
+  <br>
 </div>
 
 [![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/en/latest/)
