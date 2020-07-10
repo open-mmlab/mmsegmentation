@@ -1,6 +1,14 @@
 <div align="center">
   <img src="resources/mmseg-logo.png" width="600"/>
 </div>
+<br />
+
+[![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/en/latest/)
+[![badge](https://github.com/open-mmlab/mmsegmentation/workflows/build/badge.svg)](https://github.com/open-mmlab/mmsegmentation/actions)
+[![codecov](https://codecov.io/gh/open-mmlab/mmsegmentation/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmsegmentation)
+[![license](https://img.shields.io/github/license/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/blob/master/LICENSE)
+
+Documentation: https://mmsegmentation.readthedocs.io/
 
 ## Introduction
 
@@ -50,6 +58,7 @@ Supported methods:
 - [x] [DeepLabV3+](configs/deeplabv3plus)
 - [x] [UPerNet](configs/upernet)
 - [x] [NonLocal Net](configs/nonlocal_net)
+- [x] [EncNet](configs/encnet)
 - [x] [CCNet](configs/ccnet)
 - [x] [DANet](configs/danet)
 - [x] [GCNet](configs/gcnet)
@@ -64,6 +73,8 @@ Please refer to [INSTALL.md](docs/install.md) for installation and dataset prepa
 
 Please see [getting_started.md](docs/getting_started.md) for the basic usage of MMSegmentation.
 There are also tutorials for [adding new dataset](docs/tutorials/new_dataset.md), [designing data pipeline](docs/tutorials/data_pipeline.md), and [adding new modules](docs/tutorials/new_modules.md).
+
+A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 
 ## Contributing
 

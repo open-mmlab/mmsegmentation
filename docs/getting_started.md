@@ -45,7 +45,7 @@ mmsegmentation
 The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
 
 By convention, `**labelTrainIds.png` are used for cityscapes training.
-We provided a [scripts](../tools/convert_datasets/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
+We provided a [scripts](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/convert_datasets/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
 to generate `**labelTrainIds.png`.
 ```shell
 # --nproc means 8 process for conversion, which could be omitted as well.
@@ -62,7 +62,7 @@ If you would like to use augmented VOC dataset, please run following command to 
 python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-Please refer to [concat dataset](tutorials/new_dataset.md#concatenate-dataset) for details about how to concatenate them and train them together.
+Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/tutorials/new_dataset.md#concatenate-dataset) for details about how to concatenate them and train them together.
 
 
 ### ADE20K
@@ -311,7 +311,6 @@ Params: 48.98 M
 
 (1) FLOPs are related to the input shape while parameters are not. The default input shape is (1, 3, 1280, 800).
 (2) Some operators are not counted into FLOPs like GN and custom operators.
-You can add support for new operators by modifying [`mmseg/utils/flops_counter.py`](../mmseg/utils/flops_counter.py).
 
 ### Publish a model
 

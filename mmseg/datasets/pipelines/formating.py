@@ -144,7 +144,7 @@ class ToDataContainer(object):
             ``dict(key='xxx', **kwargs)``. The ``key`` in result will
             be converted to :obj:`mmcv.DataContainer` with ``**kwargs``.
             Default: ``(dict(key='img', stack=True),
-                dict(key='gt_semantic_seg'))``.
+            dict(key='gt_semantic_seg'))``.
     """
 
     def __init__(self,
