@@ -51,6 +51,10 @@ Please refer to [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/mast
 
 Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/nlnet) for details.
 
+### EncNet
+
+Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/encnet) for details.
+
 ### CCNet
 
 Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ccnet) for details.

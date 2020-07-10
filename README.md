@@ -57,6 +57,7 @@ Supported methods:
 - [x] [DeepLabV3+](configs/deeplabv3plus)
 - [x] [UPerNet](configs/upernet)
 - [x] [NonLocal Net](configs/nonlocal_net)
+- [x] [EncNet](configs/encnet)
 - [x] [CCNet](configs/ccnet)
 - [x] [DANet](configs/danet)
 - [x] [GCNet](configs/gcnet)
