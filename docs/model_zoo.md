@@ -18,6 +18,8 @@ Results are obtained with the script `tools/benchmark.py` which computes the ave
     * `whole` mode: The `test_cfg` will be like `dict(mode='whole')`.
 
         In this mode, the whole imaged will be passed into network directly.
+
+    By default, we use `slide` inference for 769x769 trained model, `whole` inference for the rest.
 * For input size of 8x+1 (e.g. 769), `align_corner=True` is adopted as a traditional practice.
 Otherwise, for input size of 8x (e.g. 512, 1024), `align_corner=False` is adopted.
 
@@ -25,55 +27,59 @@ Otherwise, for input size of 8x (e.g. 512, 1024), `align_corner=False` is adopte
 
 ### FCN
 
-Please refer to [FCN](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/fcn) for details.
+Please refer to [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) for details.
 
 ### PSPNet
 
-Please refer to [PSPNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/pspnet) for details.
+Please refer to [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) for details.
 
 ### DeepLabV3
 
-Please refer to [DeepLabV3](https://github.com/open-mmlab/mmsegmentatio/tree/master/configs/deeplabv3) for details.
+Please refer to [DeepLabV3](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/deeplabv3) for details.
 
 ### PSANet
 
-Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/psanet) for details.
+Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/psanet) for details.
 
 ### DeepLabV3+
 
-Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentatio/tree/master/configs/deeplabv3plus) for details.
+Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/deeplabv3plus) for details.
 
 ### UPerNet
 
-Please refer to [UPerNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/upernet) for details.
+Please refer to [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/upernet) for details.
 
 ### NonLocal Net
 
-Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentatio/tree/master/configs/nlnet) for details.
+Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/nlnet) for details.
+
+### EncNet
+
+Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/encnet) for details.
 
 ### CCNet
 
-Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/ccnet) for details.
+Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ccnet) for details.
 
 ### DANet
 
-Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/danet) for details.
+Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) for details.
 
 ### HRNet
 
-Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/hrnet) for details.
+Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet) for details.
 
 ### GCNet
 
-Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/gcnet) for details.
+Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/gcnet) for details.
 
 ### ANN
 
-Please refer to [ANN](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/ann) for details.
+Please refer to [ANN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ann) for details.
 
 ### OCRNet
 
-Please refer to [OCRNet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/ocrnet) for details.
+Please refer to [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet) for details.
 
 ## Speed benchmark
 

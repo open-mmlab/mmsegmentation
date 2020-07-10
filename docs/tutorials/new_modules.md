@@ -121,7 +121,7 @@ model = dict(
 
 ### Add new heads
 
-In MMSegmentation, we provide a base [BaseDecodeHead](../../mmseg/models/decode_heads/decode_head.py) for all segmentation head.
+In MMSegmentation, we provide a base [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py) for all segmentation head.
 All newly implemented decode heads should be derived from it.
 Here we show how to develop a new head with the example of [PSPNet](https://arxiv.org/abs/1612.01105) as the following.
 
