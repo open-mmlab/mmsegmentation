@@ -16,24 +16,6 @@ model = dict(
         style='pytorch',
         contract_dilation=True),
     decode_head=[
-        dict(# model settings
-norm_cfg = dict(type='SyncBN', requires_grad=True)
-model = dict(
-    type='CascadeEncoderDecoder',
-    num_stages=2,
-    pretrained='open-mmlab://resnet50_v1c',
-    backbone=dict(
-        type='ResNetV1c',
-        depth=50,
-        num_stages=4,
-        out_indices=(0, 1, 2, 3),
-        dilations=(1, 1, 2, 4),
-        strides=(1, 2, 1, 1),
-        norm_cfg=norm_cfg,
-        norm_eval=False,
-        style='pytorch',
-        contract_dilation=True),
-    decode_head=[
         dict(
             type='FCNHead',
             in_channels=1024,
@@ -48,11 +30,13 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
-            type='OCRHead',
+            type='OCRPlusHead',
             in_channels=2048,
             in_index=3,
             channels=512,
             ocr_channels=256,
+            c1_in_channels=256,
+            c1_channels=48,
             drop_out_ratio=0.1,
             num_classes=19,
             norm_cfg=norm_cfg,

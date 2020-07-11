@@ -1,6 +1,5 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
-act_cfg = dict(type='LeakyReLU', inplace=True)
 model = dict(
     type='CascadeEncoderDecoder',
     num_stages=2,
@@ -24,10 +23,9 @@ model = dict(
             channels=256,
             num_convs=1,
             concat_input=False,
-            drop_out_ratio=0.1,
+            drop_out_ratio=-1,
             num_classes=19,
             norm_cfg=norm_cfg,
-            act_cfg=act_cfg,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -40,7 +38,6 @@ model = dict(
             drop_out_ratio=0.1,
             num_classes=19,
             norm_cfg=norm_cfg,
-            act_cfg=act_cfg,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))

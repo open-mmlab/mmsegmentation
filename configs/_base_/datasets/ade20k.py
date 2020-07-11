@@ -49,6 +49,6 @@ data = dict(
     test=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='val/image', # test dir
+        img_dir='val/image',
         ann_dir='val/label',
         pipeline=test_pipeline))

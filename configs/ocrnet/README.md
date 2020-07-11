@@ -23,17 +23,21 @@
 | OCRNet | HRNetV2p-W18-Small | 512x1024  |   80000 | -        | -              | 77.16 |         78.66 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_80k_cityscapes/ocrnet_hr18s_512x1024_80k_cityscapes_20200601_222735-55979e63.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_80k_cityscapes/ocrnet_hr18s_512x1024_80k_cityscapes_20200601_222735.log.json)     |
 | OCRNet | HRNetV2p-W18       | 512x1024  |   80000 | -        | -              | 78.57 |         80.46 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_80k_cityscapes/ocrnet_hr18_512x1024_80k_cityscapes_20200614_230521-c2e1dd4a.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_80k_cityscapes/ocrnet_hr18_512x1024_80k_cityscapes_20200614_230521.log.json)         |
 | OCRNet | HRNetV2p-W48       | 512x1024  |   80000 | -        | -              | 80.70 |         81.87 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_80k_cityscapes/ocrnet_hr48_512x1024_80k_cityscapes_20200601_222752-9076bcdf.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_80k_cityscapes/ocrnet_hr48_512x1024_80k_cityscapes_20200601_222752.log.json)         |
+| OCRNet (w/ dropout) | HRNetV2p-W48       | 512x1024  |   80000 | -        | -              | 81.15 |         - | |
 | OCRNet | HRNetV2p-W18-Small | 512x1024  |  160000 | -        | -              | 78.45 |         79.97 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes/ocrnet_hr18s_512x1024_160k_cityscapes_20200602_191005-f4a7af28.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes/ocrnet_hr18s_512x1024_160k_cityscapes_20200602_191005.log.json) |
 | OCRNet | HRNetV2p-W18       | 512x1024  |  160000 | -        | -              | 79.47 |         80.91 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001-b9172d0c.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001.log.json)     |
 | OCRNet | HRNetV2p-W48       | 512x1024  |  160000 | -        | -              | 81.35 |         82.70 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037-dfbf1b0c.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037.log.json)     |
+| OCRNet (w/ dropout) | HRNetV2p-W48       | 512x1024  |   160000 | -        | -              | - |         - | |
 
 #### ResNet backbone
 
-| Method |      Backbone      | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                               download                                                                                                                                                                                               |
-|--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   79.88  |  -  | [model]() &#124; [log]()     |
-| OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |   -  |  -  | [model]() &#124; [log]()     |
-| OCRNet  | R-101-D8 | 512x1024  | 8 |   80000 |   -  |    -  |   79.66  |  -  | [model]() &#124; [log]()     |
+| Method |      Backbone      | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip)|
+|--------|--------------------|-----------|-----------|--------:|----------|----------------|------:|--------------:|
+| OCRNet  | R-101-D8 | 769x769 | 8 | 40000 |   -  |    -  |   79.15  | 
+| OCRNet  | R-50-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   78.65  |
+| OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   79.88  |  
+| OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |   80.29  |  
+| OCRNet  | R-101-D8 | 512x1024  | 8 |   80000 |   -  |    -  |   79.66  |  
 
 
 ### ADE20K
@@ -45,6 +49,15 @@
 | OCRNet | HRNetV2p-W18-Small | 512x512   |  160000 | -        | -              | 37.19 |         38.40 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_160k_ade20k/ocrnet_hr18s_512x512_160k_ade20k_20200615_184505-8e913058.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_160k_ade20k/ocrnet_hr18s_512x512_160k_ade20k_20200615_184505.log.json) |
 | OCRNet | HRNetV2p-W18       | 512x512   |  160000 | -        | -              | 39.32 |         40.80 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_160k_ade20k/ocrnet_hr18_512x512_160k_ade20k_20200615_200940-d8fcd9d1.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_160k_ade20k/ocrnet_hr18_512x512_160k_ade20k_20200615_200940.log.json)     |
 | OCRNet | HRNetV2p-W48       | 512x512   |  160000 | -        | -              | 43.25 |         44.88 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_160k_ade20k/ocrnet_hr48_512x512_160k_ade20k_20200615_184705-a073726d.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_160k_ade20k/ocrnet_hr48_512x512_160k_ade20k_20200615_184705.log.json)     |
+
+
+#### ResNet backbone
+
+| Method |      Backbone      | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip)|
+|--------|--------------------|-----------|-----------|--------:|----------|----------------|------:|--------------:|
+| OCRNet  | R-50-D8  | 512x512   |  16  |    -  |    -  | -  |   41.31  | - |
+| OCRNet  | R-101-D8 | 512x512   |  16  |    -  |    -  | -  |   -      | - |
+
 
 ### Pascal VOC 2012 + Aug
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                       download                                                                                                                                                                                       |

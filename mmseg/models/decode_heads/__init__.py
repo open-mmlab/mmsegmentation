@@ -9,6 +9,8 @@ from .nl_head import NLHead
 from .ocr_head import OCRHead
 from .ocr_head_v2 import OCRHeadv2
 from .ocr_head_v3 import OCRHeadv3
+from .ocrplus_head import OCRPlusHead
+from .sep_ocrplus_head import DepthwiseSeparableOCRPlusHead
 from .psa_head import PSAHead
 from .psp_head import PSPHead
 from .sep_aspp_head import DepthwiseSeparableASPPHead
@@ -17,5 +19,5 @@ from .uper_head import UPerHead
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
     'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
-    'EncHead', 'OCRHeadv2', 'OCRHeadv3'
+    'EncHead', 'OCRHeadv2', 'OCRHeadv3', 'OCRPlusHead', 'DepthwiseSeparableOCRPlusHead'
 ]
