@@ -74,6 +74,8 @@
 | OCRNet  | R-101-D8 | 512x512   |  16  |    160000  |    -  | -  |   43.64  | - |
 | OCRNet  | R-101-D8  | 512x512   |  16  |    160000  |    -  | -  |   43.64  | - |
 | OCRNet  | R-101-D8  | 512x512   |  16  |    160000  |    -  | -  |   44.38  | - |
+| OCRNet  | R-101-D8  | 512x512   |  32  |    80000  |    -  | -  |   -  | - |
+
 
 ### Pascal VOC 2012 + Aug
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                       download                                                                                                                                                                                       |
