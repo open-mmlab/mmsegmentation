@@ -125,23 +125,34 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
         --eval mAP
     ```
 
-4. Test PSPNet with 8 GPUs, and evaluate the standard mIoU and cityscapes metric.
+4. Test PSPNet with 4 GPUs, and evaluate the standard mIoU and cityscapes metric.
 
     ```shell
     ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
         checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-        8 --out results.pkl --eval mIoU cityscapes
+        4 --out results.pkl --eval mIoU cityscapes
     ```
 
-5. Test PSPNet on cityscapes test split with 8 GPUs, and generate the png files to be submit to the official evaluation server.
+5. Test PSPNet on cityscapes test split with 4 GPUs, and generate the png files to be submit to the official evaluation server.
+
+    First, add following to config file `configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py`,
+
+    ```python
+    data = dict(
+        test=dict(
+            img_dir='leftImg8bit/test',
+            ann_dir='gtFine/test'))
+    ```
+   Then run test.
 
     ```shell
     ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
         checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-        8 --format-only --options "imgfile_prefix=./pspnet_test_results"
+        4 --format-only --options "imgfile_prefix=./pspnet_test_results"
     ```
 
 You will get png files under `./pspnet_test_results` directory.
+You may run `zip -r results.zip pspnet_test_results/` and submit the zip file to [evaluation server](https://www.cityscapes-dataset.com/submit/).
 
 
 ### Image demo
@@ -205,8 +216,10 @@ By default we evaluate the model on the validation set after some iterations, yo
 evaluation = dict(interval=4000)  # This evaluate the model per 4000 iterations.
 ```
 
-**\*Important\***: The default learning rate in config files is for 8 GPUs and 1 img/gpu (batch size = 8x1 = 8).
-Equivalently, you may also use 4 GPUs and 2 imgs/gpu since all models using cross-GPU SyncBN.
+**\*Important\***: The default learning rate in config files is for 4 GPUs and 2 img/gpu (batch size = 4x2 = 8).
+Equivalently, you may also use 8 GPUs and 1 imgs/gpu since all models using cross-GPU SyncBN.
+
+To trade speed with GPU memory, you may pass in `--options model.backbone.with_cp=True` to enable checkpoint in backbone.
 
 ### Train with a single GPU
 
