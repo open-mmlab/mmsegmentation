@@ -6,7 +6,7 @@ PYTHON="/data/anaconda/envs/pytorch1.5.1/bin/python"
 CONFIG=$1
 GPUS=$2
 PORT=${PORT:-29500}
-WORK_DIR="./work_dirs/${CONFIG}_$3"
+WORK_DIR="./work_dirs/${CONFIG}"
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
 ${PYTHON} -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=$PORT \
