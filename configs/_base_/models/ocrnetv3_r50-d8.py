@@ -30,11 +30,11 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
-            type='OCRHeadv3',
+            type='DepthwiseSeparableOCRHeadv2',
             in_channels=2048,
             in_index=3,
-            channels=512,
-            ocr_channels=256,
+            channels=256,
+            ocr_channels=128,
             drop_out_ratio=0.1,
             num_classes=19,
             norm_cfg=norm_cfg,
