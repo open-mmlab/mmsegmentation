@@ -27,27 +27,33 @@
 | OCRNet | HRNetV2p-W18-Small | 512x1024  |  160000 | -        | -              | 78.45 |         79.97 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes/ocrnet_hr18s_512x1024_160k_cityscapes_20200602_191005-f4a7af28.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes/ocrnet_hr18s_512x1024_160k_cityscapes_20200602_191005.log.json) |
 | OCRNet | HRNetV2p-W18       | 512x1024  |  160000 | -        | -              | 79.47 |         80.91 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001-b9172d0c.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001.log.json)     |
 | OCRNet | HRNetV2p-W48       | 512x1024  |  160000 | -        | -              | 81.35 |         82.70 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037-dfbf1b0c.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037.log.json)     |
-| OCRNet (w/ dropout) | HRNetV2p-W48       | 512x1024  |   160000 | -        | -              | - |         - | |
+| OCRNet (w/ dropout) | HRNetV2p-W48       | 512x1024  |   160000 | -        | -              | 81.15 |         - | |
+<!-- | OCRNet (w/ dropout) | HRNetV2p-W48  |  512x1024  | 40000 | -        | -     |  80.72  |        - | | -->
 
 #### ResNet backbone
 
 | Method |      Backbone      | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip)|
 |--------|--------------------|-----------|-----------|--------:|----------|----------------|------:|--------------:|
 | DeepLabV3 | R-101-D8 | 769x769   |   8   |   40000 |     10.9 |           0.83 | 79.27 |         80.11 | 
-| DeepLabV3 | R-101-D8 | 769x769   |   16   |   40000 |     10.9 |           0.83 | - |        - | 
 | DeepLabV3 | R-101-D8 | 512x1024  |   8   |   80000 | -        | -              | 80.20 |         81.21 |
+| DeepLabV3 | R-101-D8 | 512x1024   |   16   |   40000 |     10.9 |           0.83 | 79.13 |        - | 
+| DeepLabv3 (w/ SepDepthWiseConv)  | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |   80.48  |
 | DeepLabV3+ | R-101-D8 | 512x1024  |  8   |   40000 |     11 |        2.60 | 80.21 |         81.82 | 
 | DeepLabV3+ | R-101-D8 | 512x1024  |  16   |   40000 |     11 |        2.60 | -  |        - |
 | DeepLabV3+ | R-101-D8 | 512x1024  |  8   | 80000 | -        | -              | 80.97 |         82.03 |
 | DeepLabV3+ | R-101-D8 | 769x769   |  8   | 80000 | -        | -              | 80.98 |         82.18 |
+| DeepLabv3+  | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |   80.31  |        - |   
 | OCRNet  | R-101-D8 | 769x769 | 8 | 40000 |   -  |    -  |   79.15  | 
 | OCRNet  | R-50-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   78.65  |
 | OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   79.88  | 
-| OCRNetPlus (Decoder w/o DepthWiseConv)  | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   79.90  | 
-| OCRNetPlus (Decoder w/ DepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   80.33  |
-| OCRNetPlus (OCR & Decoder w/ DepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   -  |    
+| OCRNet (replace the 1x1 Conv (fusion) with 3x3 SepDepthWiseConv) | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   80.01 | 
+| OCRNetPlus | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   79.90  | 
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   80.33  |
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |  -  |
+| OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   40000 |   -  |  -  |  79.99  |   -  |    
 | OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |   80.29  |  
 | OCRNet  | R-101-D8 | 512x1024  | 8  |   80000 |   -  |    -  |   79.66  |  
+
 
 
 ### ADE20K
@@ -75,7 +81,8 @@
 | OCRNet  | R-101-D8  | 512x512   |  16  |    160000  |    -  | -  |   43.64  | - |
 | OCRNet  | R-101-D8  | 512x512   |  16  |    160000  |    -  | -  |   44.38  | - |
 | OCRNet  | R-101-D8  | 512x512   |  32  |    80000  |    -  | -  |   -  | - |
-
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)  | R-101-D8  | 512x512   |  16  |    160000 |    -  | -  |   -  |  -  |
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)  | R-101-D8  | 512x512   |  32  |    80000  |    -  | -  |   -  |  -  |
 
 ### Pascal VOC 2012 + Aug
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                       download                                                                                                                                                                                       |

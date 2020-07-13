@@ -5,7 +5,6 @@ from mmcv.cnn import ConvModule
 
 from mmseg.ops import DepthwiseSeparableConvModule, resize
 from ..builder import HEADS
-from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .cascade_decode_head import BaseCascadeDecodeHead
 from .ocr_head import SpatialGatherModule, ObjectAttentionBlock
 from .sep_ocr_head import DepthwiseSeparableObjectAttentionBlock
@@ -17,6 +16,10 @@ class DepthwiseSeparableOCRPlusHead(BaseCascadeDecodeHead):
 
     This head is augment the original `OCRNet
     <https://arxiv.org/abs/1909.11065>` with a decoder head.
+
+    We make 2 modifications:
+    -1- apply a decoder head to combine the higher-resolution feature maps from Res-2 stage.
+    -2- replace the normal 3x3 conv with separable 3x3 conv to decrease the channel from 2048->512
 
     Args:
         ocr_channels (int): The intermediate channels of OCR block.
@@ -103,6 +106,12 @@ class DepthwiseSeparableOCRPlusHeadv2(BaseCascadeDecodeHead):
 
     This head is augment the original `OCRNet
     <https://arxiv.org/abs/1909.11065>` with a decoder head.
+
+    We make 3 modifications:
+    -1- apply a decoder head to combine the higher-resolution feature maps from Res-2 stage.
+    -2- replace the normal 3x3 conv with separable 3x3 conv to decrease the channel from 2048->512
+    -3- replace the original 1x1 fusion conv (on the concatenation of the context features and input features)
+    within the OCR block with a separable 3x3 conv.
 
     Args:
         ocr_channels (int): The intermediate channels of OCR block.

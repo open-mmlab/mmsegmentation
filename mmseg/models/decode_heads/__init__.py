@@ -7,10 +7,8 @@ from .fcn_head import FCNHead
 from .gc_head import GCHead
 from .nl_head import NLHead
 from .ocr_head import OCRHead
-from .ocr_head_v2 import OCRHeadv2
-from .ocr_head_v3 import OCRHeadv3
 from .ocrplus_head import OCRPlusHead
-from .sep_ocr_head import DepthwiseSeparableOCRHead, DepthwiseSeparableOCRHeadv2, DepthwiseSeparableOCRHeadv3, DepthwiseSeparableOCRHeadv4
+from .sep_ocr_head import DepthwiseSeparableOCRHead, MoreDepthwiseSeparableOCRHead
 from .sep_ocrplus_head import DepthwiseSeparableOCRPlusHead, DepthwiseSeparableOCRPlusHeadv2
 from .psa_head import PSAHead
 from .psp_head import PSPHead
@@ -19,7 +17,7 @@ from .uper_head import UPerHead
 
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
-    'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
-    'EncHead', 'OCRHeadv2', 'OCRHeadv3', 'OCRPlusHead', 'DepthwiseSeparableOCRPlusHead', 'DepthwiseSeparableOCRPlusHeadv2',
-    'DepthwiseSeparableOCRHead', 'DepthwiseSeparableOCRHeadv2', 'DepthwiseSeparableOCRHeadv3', 'DepthwiseSeparableOCRHeadv4'
+    'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead', 'EncHead', 
+    'DepthwiseSeparableOCRHead', 'MoreDepthwiseSeparableOCRHead',
+    'OCRPlusHead',  'DepthwiseSeparableOCRPlusHead', 'DepthwiseSeparableOCRPlusHeadv2',
 ]
