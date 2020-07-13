@@ -35,7 +35,7 @@ Please refer to [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/maste
 
 ### DeepLabV3
 
-Please refer to [DeepLabV3](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/deeplabv3) for details.
+Please refer to [DeepLabV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3) for details.
 
 ### PSANet
 
@@ -43,7 +43,7 @@ Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/blob/maste
 
 ### DeepLabV3+
 
-Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/deeplabv3plus) for details.
+Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus) for details.
 
 ### UPerNet
 
@@ -51,11 +51,11 @@ Please refer to [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/mast
 
 ### NonLocal Net
 
-Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/nlnet) for details.
+Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/nlnet) for details.
 
 ### EncNet
 
-Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentatio/blob/master/configs/encnet) for details.
+Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) for details.
 
 ### CCNet
 

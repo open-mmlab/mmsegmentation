@@ -84,7 +84,7 @@ jobs:
         run: |
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
-          coverage report -m --omit="mmseg/utils/*","mmseg/apis/*"
+          coverage report -m
       # Only upload coverage report for python3.7 && pytorch1.5
       - name: Upload coverage to Codecov
         if: ${{matrix.torch == '1.5.0+cu101' && matrix.python-version == '3.7'}}
