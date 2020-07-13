@@ -1,12 +1,7 @@
-#!/usr/bin/env python
 import os
 import subprocess
 import time
 from setuptools import find_packages, setup
-
-import torch
-from mmcv.utils.parrots_wrapper import (BuildExtension, CppExtension,
-                                        CUDAExtension)
 
 
 def readme():
@@ -83,32 +78,6 @@ def get_version():
     with open(version_file, 'r') as f:
         exec(compile(f.read(), version_file, 'exec'))
     return locals()['__version__']
-
-
-def make_cuda_ext(name, module, sources, sources_cuda=[]):
-
-    define_macros = []
-    extra_compile_args = {'cxx': []}
-
-    if torch.cuda.is_available() or os.getenv('FORCE_CUDA', '0') == '1':
-        define_macros += [('WITH_CUDA', None)]
-        extension = CUDAExtension
-        extra_compile_args['nvcc'] = [
-            '-D__CUDA_NO_HALF_OPERATORS__',
-            '-D__CUDA_NO_HALF_CONVERSIONS__',
-            '-D__CUDA_NO_HALF2_OPERATORS__',
-        ]
-        sources += sources_cuda
-    else:
-        print('Compiling {} without CUDA'.format(name))
-        extension = CppExtension
-        # raise EnvironmentError('CUDA is required to compile MMSegmentation!')
-
-    return extension(
-        name='{}.{}'.format(module, name),
-        sources=[os.path.join(*module.split('.'), p) for p in sources],
-        define_macros=define_macros,
-        extra_compile_args=extra_compile_args)
 
 
 def parse_requirements(fname='requirements.txt', with_version=True):
@@ -199,7 +168,6 @@ if __name__ == '__main__':
         keywords='computer vision, semantic segmentation',
         url='http://github.com/open-mmlab/mmsegmentation',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
-        package_data={'mmseg.ops': ['*/*.so']},
         classifiers=[
             'Development Status :: 4 - Beta',
             'License :: OSI Approved :: Apache Software License',
@@ -219,5 +187,4 @@ if __name__ == '__main__':
             'optional': parse_requirements('requirements/optional.txt'),
         },
         ext_modules=[],
-        cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
