@@ -1,12 +1,8 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
 name: build
 
 on: [push, pull_request]
 
 jobs:
-
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -53,49 +49,49 @@ jobs:
             python-version: 3.7
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install CUDA
-      if: ${{matrix.torch == '1.5.0+cu101'}}
-      run: |
-        export INSTALLER=cuda-repo-${UBUNTU_VERSION}_${CUDA}_amd64.deb
-        wget http://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${INSTALLER}
-        sudo dpkg -i ${INSTALLER}
-        wget https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/7fa2af80.pub
-        sudo apt-key add 7fa2af80.pub
-        sudo apt update -qq
-        sudo apt install -y cuda-${CUDA_SHORT/./-} cuda-cufft-dev-${CUDA_SHORT/./-}
-        sudo apt clean
-        export CUDA_HOME=/usr/local/cuda-${CUDA_SHORT}
-        export LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${CUDA_HOME}/include:${LD_LIBRARY_PATH}
-        export PATH=${CUDA_HOME}/bin:${PATH}
-        sudo apt-get install -y ninja-build
-    - name: Install Pillow
-      if: ${{matrix.torchvision == '0.4.2+cpu'}}
-      run: pip install Pillow==6.2.2
-    - name: Install PyTorch
-      run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
-    - name: Install mmseg dependencies
-      run: |
-        pip install mmcv-full==latest+torch${{matrix.torch}} -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
-        pip install -r requirements.txt
-    - name: Build and install
-      run: rm -rf .eggs && pip install -e .
-    - name: Run unittests and generate coverage report
-      run: |
-        coverage run --branch --source mmseg -m pytest tests/
-        coverage xml
-        coverage report -m --omit="mmseg/utils/*","mmseg/apis/*"
-    # Only upload coverage report for python3.7 && pytorch1.5
-    - name: Upload coverage to Codecov
-      if: ${{matrix.torch == '1.5.0+cu101' && matrix.python-version == '3.7'}}
-      uses: codecov/codecov-action@v1.0.10
-      with:
-        file: ./coverage.xml
-        flags: unittests
-        env_vars: OS,PYTHON
-        name: codecov-umbrella
-        fail_ci_if_error: false
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install CUDA
+        if: ${{matrix.torch == '1.5.0+cu101'}}
+        run: |
+          export INSTALLER=cuda-repo-${UBUNTU_VERSION}_${CUDA}_amd64.deb
+          wget http://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${INSTALLER}
+          sudo dpkg -i ${INSTALLER}
+          wget https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/7fa2af80.pub
+          sudo apt-key add 7fa2af80.pub
+          sudo apt update -qq
+          sudo apt install -y cuda-${CUDA_SHORT/./-} cuda-cufft-dev-${CUDA_SHORT/./-}
+          sudo apt clean
+          export CUDA_HOME=/usr/local/cuda-${CUDA_SHORT}
+          export LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${CUDA_HOME}/include:${LD_LIBRARY_PATH}
+          export PATH=${CUDA_HOME}/bin:${PATH}
+          sudo apt-get install -y ninja-build
+      - name: Install Pillow
+        if: ${{matrix.torchvision == '0.4.2+cpu'}}
+        run: pip install Pillow==6.2.2
+      - name: Install PyTorch
+        run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
+      - name: Install mmseg dependencies
+        run: |
+          pip install mmcv-full==latest+torch${{matrix.torch}} -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
+          pip install -r requirements.txt
+      - name: Build and install
+        run: rm -rf .eggs && pip install -e .
+      - name: Run unittests and generate coverage report
+        run: |
+          coverage run --branch --source mmseg -m pytest tests/
+          coverage xml
+          coverage report -m
+      # Only upload coverage report for python3.7 && pytorch1.5
+      - name: Upload coverage to Codecov
+        if: ${{matrix.torch == '1.5.0+cu101' && matrix.python-version == '3.7'}}
+        uses: codecov/codecov-action@v1.0.10
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          env_vars: OS,PYTHON
+          name: codecov-umbrella
+          fail_ci_if_error: false
