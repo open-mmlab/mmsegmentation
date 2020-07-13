@@ -41,6 +41,10 @@ The master branch works with **PyTorch 1.3 to 1.5**.
 
 This project is released under the [Apache 2.0 license](LICENSE).
 
+## Changelog
+
+v0.5.0 was released in 10/7/2020.
+
 ## Benchmark and model zoo
 
 Results and models are available in the [model zoo](docs/model_zoo.md).
