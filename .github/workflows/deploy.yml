@@ -18,20 +18,3 @@ jobs:
         run: |
           pip install twine
           twine upload dist/* -u __token__ -p ${{ secrets.pypi_password }}
-  build-n-publish_with_ops:
-    runs-on: ubuntu-latest
-    if: startsWith(github.event.ref, 'refs/tags')
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-      - name: Build MMCV with ops
-        run: |
-          sed -i "s/os.getenv('MMCV_WITH_OPS', '0')/os.getenv('MMCV_WITH_OPS', '1')/g" setup.py
-          python setup.py sdist
-      - name: Publish distribution to PyPI
-        run: |
-          pip install twine
-          twine upload dist/* -u __token__ -p ${{ secrets.pypi_password }}
