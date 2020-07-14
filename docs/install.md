@@ -36,7 +36,7 @@ pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelera
 d. Install MMSegmentation.
 
 ```shell
-pip install mmseg # install the latest release
+pip install mmsegmentation # install the latest release
 ```
 
 or
