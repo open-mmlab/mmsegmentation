@@ -36,7 +36,7 @@ pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelera
 d. Install MMSegmentation.
 
 ```shell
-pip install mmseg # install the latest release
+pip install mmsegmentation # install the latest release
 ```
 
 or
@@ -45,12 +45,19 @@ or
 pip install git+https://github.com/open-mmlab/mmsegmentation.git # install the master branch
 ```
 
+Instead, if you would like to install MMSegmentation in `dev` mode, run following
+```shell
+git clone https://github.com/open-mmlab/mmsegmentation
+cd mmsegmentation
+pip install -e .  # or "python setup.py develop"
+```
+
 Note:
 
-1. The git commit id will be written to the version number with step *e*, e.g. 0.5.0+c415a2e. The version will also be saved in trained models.
-It is recommended that you run step *e* each time you pull some updates from github. If C++/CUDA codes are modified, then this step is compulsory.
+1. In `dev` mode, the git commit id will be written to the version number with step *d*, e.g. 0.5.0+c415a2e. The version will also be saved in trained models.
+It is recommended that you run step *d* each time you pull some updates from github. If C++/CUDA codes are modified, then this step is compulsory.
 
-2. Following the above instructions, mmsegmentation is installed on `dev` mode, any local modifications made to the code will take effect without the need to reinstall it (unless you submit some commits and want to update the version number).
+2. When MMsegmentation is installed on `dev` mode, any local modifications made to the code will take effect without the need to reinstall it (unless you submit some commits and want to update the version number).
 
 3. If you would like to use `opencv-python-headless` instead of `opencv-python`,
 you can install it before installing MMCV.
@@ -68,7 +75,9 @@ conda activate open-mmlab
 
 conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
 pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
-pip install git+https://github.com/open-mmlab/mmsegmentation.git
+git clone https://github.com/open-mmlab/mmsegmentation
+cd mmsegmentation
+pip install -e .  # or "python setup.py develop"
 
 mkdir data
 ln -s $DATA_ROOT data
