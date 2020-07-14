@@ -3,13 +3,6 @@ import subprocess
 import time
 from setuptools import find_packages, setup
 
-
-def readme():
-    with open('README.md', encoding='utf-8') as f:
-        content = f.read()
-    return content
-
-
 version_file = 'mmseg/version.py'
 
 
@@ -167,7 +160,6 @@ if __name__ == '__main__':
         name='mmsegmentation',
         version=get_version(),
         description='Open MMLab Semantic Segmentation Toolbox and Benchmark',
-        long_description=readme(),
         author='MMSegmentation Authors',
         author_email='openmmlab@gmail.com',
         keywords='computer vision, semantic segmentation',
