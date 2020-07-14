@@ -18,7 +18,6 @@ model = dict(
         type='FPN',
         in_channels=[256, 512, 1024, 2048],
         out_channels=256,
-        norm_cfg=norm_cfg,
         num_outs=4),
     decode_head=dict(
         type='FPNHead',
