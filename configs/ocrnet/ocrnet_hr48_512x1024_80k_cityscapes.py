@@ -18,9 +18,9 @@ model = dict(
             num_convs=1,
             norm_cfg=norm_cfg,
             concat_input=False,
-            drop_out_ratio=0.1,
+            dropout_ratio=-1,
             num_classes=19,
-            align_corners=True,
+            align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
@@ -31,9 +31,9 @@ model = dict(
             input_transform='resize_concat',
             in_index=(0, 1, 2, 3),
             norm_cfg=norm_cfg,
-            drop_out_ratio=0.1,
+            dropout_ratio=-1,
             num_classes=19,
-            align_corners=True,
+            align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
     ])

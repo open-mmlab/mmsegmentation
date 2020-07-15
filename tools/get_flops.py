@@ -13,7 +13,7 @@ def parse_args():
         '--shape',
         type=int,
         nargs='+',
-        default=[1024, 512],
+        default=[2048, 1024],
         help='input image size')
     args = parser.parse_args()
     return args
@@ -31,6 +31,7 @@ def main():
         raise ValueError('invalid input shape')
 
     cfg = Config.fromfile(args.config)
+    cfg.model.pretrained = None
     model = build_segmentor(
         cfg.model, train_cfg=cfg.train_cfg, test_cfg=cfg.test_cfg).cuda()
     model.eval()
@@ -42,9 +43,8 @@ def main():
             'FLOPs counter is currently not currently supported with {}'.
             format(model.__class__.__name__))
 
-    flops, params = get_model_complexity_info(model, input_shape, print_per_layer_stat=False)
+    flops, params = get_model_complexity_info(model, input_shape)
     split_line = '=' * 30
-    print(args.config)
     print('{0}\nInput shape: {1}\nFlops: {2}\nParams: {3}\n{0}'.format(
         split_line, input_shape, flops, params))
     print('!!!Please be cautious if you use the results in papers. '

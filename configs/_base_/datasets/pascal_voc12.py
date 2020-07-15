@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'PascalVOCDataset'
-data_root = '../../../../dataset/pascal_voc/'
+data_root = 'data/VOCdevkit/VOC2012'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 crop_size = (512, 512)
@@ -32,26 +32,26 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=2,
-    workers_per_gpu=2,
+    samples_per_gpu=4,
+    workers_per_gpu=4,
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='train/image',
-        ann_dir='train/label',
-        # split='ImageSets/Segmentation/train.txt',
+        img_dir='JPEGImages',
+        ann_dir='SegmentationClass',
+        split='ImageSets/Segmentation/train.txt',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='val/image',
-        ann_dir='val/label',
-        # split='ImageSets/Segmentation/val.txt',
+        img_dir='JPEGImages',
+        ann_dir='SegmentationClass',
+        split='ImageSets/Segmentation/val.txt',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='val/image',
-        ann_dir='val/label',
-        # split='ImageSets/Segmentation/val.txt',
+        img_dir='JPEGImages',
+        ann_dir='SegmentationClass',
+        split='ImageSets/Segmentation/val.txt',
         pipeline=test_pipeline))

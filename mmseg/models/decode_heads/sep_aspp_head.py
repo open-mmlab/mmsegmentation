@@ -27,7 +27,8 @@ class DepthwiseSeparableASPPModule(ASPPModule):
 
 @HEADS.register_module()
 class DepthwiseSeparableASPPHead(ASPPHead):
-    """Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation.
+    """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
+    Segmentation.
 
     This head is the implementation of `DeepLabV3+
     <https://arxiv.org/abs/1802.02611>`_.
@@ -37,6 +38,7 @@ class DepthwiseSeparableASPPHead(ASPPHead):
             the no decoder will be used.
         c1_channels (int): The intermediate channels of c1 decoder.
     """
+
     def __init__(self, c1_in_channels, c1_channels, **kwargs):
         super(DepthwiseSeparableASPPHead, self).__init__(**kwargs)
         assert c1_in_channels >= 0

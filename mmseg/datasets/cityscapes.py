@@ -61,6 +61,7 @@ class CityscapesDataset(CustomDataset):
             list[str: str]: result txt files which contains corresponding
             semantic segmentation images.
         """
+        mmcv.mkdir_or_exist(imgfile_prefix)
         result_files = []
         prog_bar = mmcv.ProgressBar(len(self))
         for idx in range(len(self)):
@@ -135,9 +136,9 @@ class CityscapesDataset(CustomDataset):
                 the prefix of filename, e.g., "a/b/prefix".
                 If results are evaluated with cityscapes protocol, it would be
                 the prefix of output png files. The output files would be
-                png images under folder "a/b/prefix/xxx/", where "xxx" is the
-                video name of cityscapes. If not specified, a temp file will
-                be created.
+                png images under folder "a/b/prefix/xxx.png", where "xxx" is
+                the image name of cityscapes. If not specified, a temp file
+                will be created for evaluation.
                 Default: None.
 
         Returns:
