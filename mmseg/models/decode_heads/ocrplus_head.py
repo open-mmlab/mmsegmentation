@@ -1,19 +1,26 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import DepthwiseSeparableConvModule, resize
 from ..builder import HEADS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .cascade_decode_head import BaseCascadeDecodeHead
-from .ocr_head import SpatialGatherModule, ObjectAttentionBlock
+from .ocr_head import SpatialGatherModule
 
 
 class DepthwiseSeparableObjectAttentionBlock(_SelfAttentionBlock):
-    """We replace the original 1x1 conv with a separable 3x3 conv within the self.bottleneck."""
-
-    def __init__(self, in_channels, channels, scale, conv_cfg, norm_cfg,
+    """
+    We replace the original 1x1 conv with a 
+    separable 3x3 conv within the self.bottleneck.
+    """
+    
+    def __init__(self, 
+                 in_channels, 
+                 channels, 
+                 scale, 
+                 conv_cfg, 
+                 norm_cfg,
                  act_cfg):
         if scale > 1:
             query_downsample = nn.MaxPool2d(kernel_size=scale)
@@ -64,18 +71,25 @@ class DepthwiseSeparableOCRPlusHead(BaseCascadeDecodeHead):
     <https://arxiv.org/abs/1909.11065>` with a decoder head.
 
     We make 3 modifications based on the OCRHead:
-    -1- apply a decoder head to combine the 2x-resolution feature maps from Res-2 stage following the DeepLabv3+
-    -2- replace the 3x3 conv with separable 3x3 conv that is used decrease the channel from 2048->512 (self.bottleneck)
+    -1- apply a decoder head to combine the 2x-resolution feature maps 
+        from Res-2 stage following the DeepLabv3+
+    -2- replace the 3x3 conv with separable 3x3 conv that is used decrease 
+        the channel from 2048->512 (self.bottleneck)
     -3- replace the ObjectAttentionBlock with DepthwiseSeparableObjectAttentionBlock
 
     Args:
         ocr_channels (int): The intermediate channels of OCR block.
-        c1_in_channels (int): The input channels of c1 decoder. If is 0, the no decoder will be used.
+        c1_in_channels (int): The input channels of c1 decoder. 
+                              If is 0, the no decoder will be used.
         c1_channels (int): The intermediate channels of c1 decoder.
         scale (int): The scale of probability map in SpatialGatherModule in Default: 1.
     """
 
-    def __init__(self, ocr_channels, c1_in_channels, c1_channels, scale=1, **kwargs):
+    def __init__(self, 
+                 ocr_channels, 
+                 c1_in_channels, 
+                 c1_channels, 
+                 scale=1, **kwargs):
         super(DepthwiseSeparableOCRPlusHead, self).__init__(**kwargs)
         assert c1_in_channels >= 0
 
