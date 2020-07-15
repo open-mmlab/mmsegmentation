@@ -75,7 +75,7 @@ class DepthwiseSeparableOCRPlusHead(BaseCascadeDecodeHead):
         from Res-2 stage following the DeepLabv3+
     -2- replace the 3x3 conv -> separable 3x3 conv that is used decrease
         the channel from 2048->512 (self.bottleneck)
-    -3- replace the ObjectAttentionBlock -> 
+    -3- replace the ObjectAttentionBlock ->
         DepthwiseSeparableObjectAttentionBlock
 
     Args:
