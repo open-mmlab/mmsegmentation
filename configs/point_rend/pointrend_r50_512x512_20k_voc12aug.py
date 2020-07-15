@@ -11,7 +11,7 @@ model = dict(decode_head=[
         in_index=[0, 1, 2, 3],
         feature_strides=[4, 8, 16, 32],
         channels=128,
-        drop_out_ratio=-1,
+        dropout_ratio=-1,
         num_classes=21,
         norm_cfg=norm_cfg,
         align_corners=False,
@@ -24,9 +24,10 @@ model = dict(decode_head=[
         channels=256,
         num_fcs=3,
         coarse_pred_each_layer=True,
-        drop_out_ratio=-1,
+        dropout_ratio=-1,
         num_classes=21,
         align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
 ])
+lr_config = dict(warmup='linear', warmup_iters=200)

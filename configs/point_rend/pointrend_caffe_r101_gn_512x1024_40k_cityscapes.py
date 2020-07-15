@@ -29,7 +29,7 @@ model = dict(
             in_index=[0, 1, 2, 3],
             feature_strides=[4, 8, 16, 32],
             channels=128,
-            drop_out_ratio=0.1,
+            dropout_ratio=0.1,
             num_classes=19,
             # norm_cfg=dict(type='GN', num_groups=32),
             align_corners=False,

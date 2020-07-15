@@ -97,8 +97,8 @@ class PointHead(BaseCascadeDecodeHead):
             kernel_size=1,
             stride=1,
             padding=0)
-        if self.drop_out_ratio > 0:
-            self.dropout = nn.Dropout(self.drop_out_ratio)
+        if self.dropout_ratio > 0:
+            self.dropout = nn.Dropout(self.dropout_ratio)
         delattr(self, 'conv_seg')
 
     def init_weights(self):
