@@ -7,7 +7,7 @@ norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(decode_head=[
     dict(
         type='FPNHead',
-        in_channels=[256, 512, 1024, 2048],
+        in_channels=[256, 256, 256, 256],
         in_index=[0, 1, 2, 3],
         feature_strides=[4, 8, 16, 32],
         channels=128,
