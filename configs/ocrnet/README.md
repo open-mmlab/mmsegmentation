@@ -60,7 +60,7 @@
 | OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   60000 |   -  |   -  |  80.77  |  -  |
 | OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   40000 |   -  |  -  |  79.99  |   -  |  
 | OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   60000 |   -  |  -  |  80.15  |   -  |  
-| OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   40000 |   -  |  -  |  80.91,80.36,80.08  |   -  |     
+| OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   40000 |   -  |  -  |  80.91,80.36  |   -  |     
 | OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   60000 |   -  |  -  |  80.82,81.03,80.82  |   -  | 
 
 
