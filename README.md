@@ -3,6 +3,7 @@
 </div>
 <br />
 
+[![PyPI](https://img.shields.io/pypi/v/mmsegmentation)](https://pypi.org/project/mmsegmentation)
 [![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/en/latest/)
 [![badge](https://github.com/open-mmlab/mmsegmentation/workflows/build/badge.svg)](https://github.com/open-mmlab/mmsegmentation/actions)
 [![codecov](https://codecov.io/gh/open-mmlab/mmsegmentation/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmsegmentation)
@@ -40,6 +41,10 @@ The master branch works with **PyTorch 1.3 to 1.5**.
 ## License
 
 This project is released under the [Apache 2.0 license](LICENSE).
+
+## Changelog
+
+v0.5.0 was released in 10/7/2020.
 
 ## Benchmark and model zoo
 

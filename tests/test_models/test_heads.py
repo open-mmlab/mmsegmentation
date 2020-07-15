@@ -71,7 +71,7 @@ def test_decode_head():
     assert hasattr(head, 'dropout') and head.dropout.p == 0.1
 
     # test set dropout
-    head = BaseDecodeHead(32, 16, num_classes=19, drop_out_ratio=0.2)
+    head = BaseDecodeHead(32, 16, num_classes=19, dropout_ratio=0.2)
     assert hasattr(head, 'dropout') and head.dropout.p == 0.2
 
     # test no input_transform
