@@ -13,7 +13,7 @@ def parse_args():
         '--shape',
         type=int,
         nargs='+',
-        default=[2048, 1024],
+        default=[1024, 512],
         help='input image size')
     args = parser.parse_args()
     return args
@@ -42,8 +42,9 @@ def main():
             'FLOPs counter is currently not currently supported with {}'.
             format(model.__class__.__name__))
 
-    flops, params = get_model_complexity_info(model, input_shape)
+    flops, params = get_model_complexity_info(model, input_shape, print_per_layer_stat=False)
     split_line = '=' * 30
+    print(args.config)
     print('{0}\nInput shape: {1}\nFlops: {2}\nParams: {3}\n{0}'.format(
         split_line, input_shape, flops, params))
     print('!!!Please be cautious if you use the results in papers. '

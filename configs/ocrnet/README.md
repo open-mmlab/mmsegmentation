@@ -43,19 +43,25 @@
 | DeepLabV3+ | R-101-D8 | 512x1024  |  8   | 80000 | -        | -              | 80.97 |         82.03 |
 | DeepLabV3+ | R-101-D8 | 769x769   |  8   | 80000 | -        | -              | 80.98 |         82.18 |
 | DeepLabv3+  | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |   80.31  |        - |   
+| DeepLabv3+  | R-101-D8 | 512x1024  | 16 |   60000 |   -  |    -  |   80.91,80.60,80.98  |        - |   
 | OCRNet  | R-101-D8 | 769x769 | 8 | 40000 |   -  |    -  |   79.15  | 
 | OCRNet  | R-50-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   78.65  |
-| OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   79.88  | 
+| OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   79.88  |
+| OCRNet  | R-101-D8 | 512x1024  | 8 |   60000 |   -  |    -  |   80.27  |
+| OCRNet  | R-101-D8 | 512x1024  | 8  |   80000 |   -  |    -  |   79.66  |   
+| OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |   80.29  |
+| OCRNet  | R-101-D8 | 512x1024  | 16 |   60000 |   -  |    -  |   -  | 
 | OCRNet (replace the 1x1 Conv (fusion) with 3x3 SepDepthWiseConv) | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   80.01 | 
 | OCRNetPlus | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   79.90  | 
-| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   80.33  |
-| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   60000 |   -  |    -  |   -  |
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   40000 |   -  |    -  |   80.33  | -  |
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   60000 |   -  |    -  |   80.17  | -  |
 | OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   80000 |   -  |    -  |   -  |
-| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    80.44, 80.73  |  -  |
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   40000 |   -  |   -  |  80.44, 80.73  |  -  |
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   60000 |   -  |   -  |  80.77  |  -  |
 | OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   40000 |   -  |  -  |  79.99  |   -  |  
-| OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   40000 |   -  |  -  |  80.91  |   -  |     
-| OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |   -  |    -  |   80.29  |  
-| OCRNet  | R-101-D8 | 512x1024  | 8  |   80000 |   -  |    -  |   79.66  |  
+| OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 8 |   60000 |   -  |  -  |  80.15  |   -  |  
+| OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   40000 |   -  |  -  |  80.91,80.36,80.08  |   -  |     
+| OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8 | 512x1024  | 16 |   60000 |   -  |  -  |  80.82,81.03,80.82  |   -  | 
 
 
 
@@ -83,9 +89,9 @@
 | OCRNet  | R-101-D8 | 512x512   |  16  |    160000  |    -  | -  |   43.64  | - |
 | OCRNet  | R-101-D8  | 512x512   |  16  |    160000  |    -  | -  |   43.64  | - |
 | OCRNet  | R-101-D8  | 512x512   |  16  |    160000  |    -  | -  |   44.38  | - |
-| OCRNet  | R-101-D8  | 512x512   |  32  |    80000  |    -  | -  |   -  | - |
-| OCRNetPlus (Decoder w/ SepDepthWiseConv)  | R-101-D8  | 512x512   |  16  |    160000 |    -  | -  |   -  |  -  |
-| OCRNetPlus (Decoder w/ SepDepthWiseConv)  | R-101-D8  | 512x512   |  32  |    80000  |    -  | -  |   -  |  -  |
+| OCRNet  | R-101-D8  | 512x512   |  32  |    80000  |    -  | -  |   44.02  | - |
+| OCRNetPlus (Decoder w/ SepDepthWiseConv)  | R-101-D8  | 512x512   |  16  |    160000 |    -  | -  |   44.33  |  -  |
+| OCRNetPlus (OCR & Decoder w/ SepDepthWiseConv)   | R-101-D8  | 512x512   |  16  |    160000 |    -  | -  |  -  |  -  |
 
 ### Pascal VOC 2012 + Aug
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                       download                                                                                                                                                                                       |
