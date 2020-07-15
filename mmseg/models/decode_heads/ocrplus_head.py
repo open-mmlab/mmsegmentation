@@ -85,7 +85,7 @@ class DepthwiseSeparableOCRPlusHead(BaseCascadeDecodeHead):
                  ocr_channels,
                  c1_in_channels,
                  c1_channels,
-                 scale=1, 
+                 scale=1,
                  **kwargs):
         super(DepthwiseSeparableOCRPlusHead, self).__init__(**kwargs)
         assert c1_in_channels >= 0
