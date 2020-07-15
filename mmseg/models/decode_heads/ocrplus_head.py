@@ -15,12 +15,7 @@ class DepthwiseSeparableObjectAttentionBlock(_SelfAttentionBlock):
     separable 3x3 conv within the self.bottleneck.
     """
 
-    def __init__(self,
-                 in_channels,
-                 channels,
-                 scale,
-                 conv_cfg,
-                 norm_cfg,
+    def __init__(self, in_channels, channels, scale, conv_cfg, norm_cfg,
                  act_cfg):
         if scale > 1:
             query_downsample = nn.MaxPool2d(kernel_size=scale)
@@ -90,7 +85,8 @@ class DepthwiseSeparableOCRPlusHead(BaseCascadeDecodeHead):
                  ocr_channels,
                  c1_in_channels,
                  c1_channels,
-                 scale=1, **kwargs):
+                 scale=1, 
+                 **kwargs):
         super(DepthwiseSeparableOCRPlusHead, self).__init__(**kwargs)
         assert c1_in_channels >= 0
 
