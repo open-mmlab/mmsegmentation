@@ -1,4 +1,4 @@
 matplotlib
 numpy
-# torch	
+# torch
 # torchvision
