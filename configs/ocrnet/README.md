@@ -5,14 +5,14 @@
 <figure>
   <text-align: center;>
   <img src="./OCR.PNG" alt="OCR" title="Framework of OCR" width="900" height="200" />
-  <figcaption>Fig.1 - Illustrating the pipeline of OCR.
+  <figcaption>Fig.1 - Illustrating the pipeline of OCRNet.
 </figcaption>
 </figure>
 
 <figure>
   <text-align: center;>
   <img src="./OCRPlus.PNG" alt="OCR+" title="Framework of OCR+" width="900" height="260" />
-  <figcaption>Fig.2 - Illustrating the pipeline of OCR+.
+  <figcaption>Fig.2 - Illustrating the pipeline of OCRNet+.
   </figcaption>
 </figure>
 
