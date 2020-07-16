@@ -1,14 +1,22 @@
-# Object-Contextual Representations for Semantic Segmentation
+# Object-Contextual Representations for Semantic Segmentation (ECCV2020)
 
 ## Introduction
-```
-@article{yuan2019ocr,
-  title={Object-Contextual Representations for Semantic Segmentation},
-  author={Yuan Yuhui and Chen Xilin and Wang Jingdong},
-  journal={arXiv preprint arXiv:1909.11065},
-  year={2019}
-}
-```
+
+<figure>
+  <text-align: center;>
+  <img src="./OCR.PNG" alt="OCR" title="Framework of OCR" width="900" height="200" />
+  <figcaption>Fig.1 - Illustrating the pipeline of OCR.
+</figcaption>
+</figure>
+
+<figure>
+  <text-align: center;>
+  <img src="./OCRPlus.PNG" alt="OCR+" title="Framework of OCR+" width="900" height="260" />
+  <figcaption>Fig.2 - Illustrating the pipeline of OCR+.
+  </figcaption>
+</figure>
+
+
 
 ## Results and models
 
@@ -61,3 +69,16 @@ We report the Memory and Inf time via using 8x V100 GPUs with 2 images on each G
 | OCRNet | HRNetV2p-W18-Small | 512x512   |   40000 | -        | -              | 72.76 |         74.60 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug/ocrnet_hr18s_512x512_40k_voc12aug_20200614_002025-42b587ac.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug/ocrnet_hr18s_512x512_40k_voc12aug_20200614_002025.log.json) |
 | OCRNet | HRNetV2p-W18       | 512x512   |   40000 | -        | -              | 74.98 |         77.40 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_40k_voc12aug/ocrnet_hr18_512x512_40k_voc12aug_20200614_015958-714302be.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_40k_voc12aug/ocrnet_hr18_512x512_40k_voc12aug_20200614_015958.log.json)     |
 | OCRNet | HRNetV2p-W48       | 512x512   |   40000 | -        | -              | 77.14 |         79.71 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_40k_voc12aug/ocrnet_hr48_512x512_40k_voc12aug_20200614_015958-255bc5ce.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_40k_voc12aug/ocrnet_hr48_512x512_40k_voc12aug_20200614_015958.log.json)     |
+
+
+## Citation
+Please consider citing our work if you find it helps you,
+
+```
+@article{YuanXCW20,
+  title={SegFix: Model-Agnostic Boundary Refinement for Segmentation},
+  author={Yuhui Yuan and Jingyi Xie and Xilin Chen and Jingdong Wang},
+  booktitle={ECCV},
+  year={2020}
+}
+```
