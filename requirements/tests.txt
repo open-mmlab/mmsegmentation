@@ -1,3 +1,4 @@
+asynctest
 codecov
 flake8
 interrogate

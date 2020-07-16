@@ -31,7 +31,6 @@ def main():
         raise ValueError('invalid input shape')
 
     cfg = Config.fromfile(args.config)
-    cfg.model.pretrained = None
     model = build_segmentor(
         cfg.model, train_cfg=cfg.train_cfg, test_cfg=cfg.test_cfg).cuda()
     model.eval()
