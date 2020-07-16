@@ -75,9 +75,16 @@ We report the Memory and Inf time via using 8x V100 GPUs with 2 images on each G
 Please consider citing our work if you find it helps you,
 
 ```
-@article{YuanXCW20,
-  title={SegFix: Model-Agnostic Boundary Refinement for Segmentation},
-  author={Yuhui Yuan and Jingyi Xie and Xilin Chen and Jingdong Wang},
+@article{YuanW18,
+  title={Ocnet: Object context network for scene parsing},
+  author={Yuhui Yuan and Jingdong Wang},
+  booktitle={arXiv preprint arXiv:1809.00916},
+  year={2018}
+}
+
+@article{YuanCW20,
+  title={Object-Contextual Representations for Semantic Segmentation},
+  author={Yuhui Yuan and Xilin Chen and Jingdong Wang},
   booktitle={ECCV},
   year={2020}
 }
