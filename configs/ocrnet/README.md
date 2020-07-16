@@ -11,7 +11,7 @@
 
 <figure>
   <text-align: center;>
-  <img src="./OCRPlus.PNG" alt="OCR+" title="Framework of OCR+" width="900" height="260" />
+  <img src="./OCRPlus.png" alt="OCR+" title="Framework of OCR+" width="900" height="260" />
   <figcaption>Fig.2 - Illustrating the pipeline of OCRNet+.
   </figcaption>
 </figure>
