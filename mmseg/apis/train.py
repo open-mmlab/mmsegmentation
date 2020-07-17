@@ -5,7 +5,7 @@ import torch
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import IterBasedRunner, build_optimizer
 
-from mmseg.core import DistEvalHook, EvalHook, Fp16OptimizerHook
+from mmseg.core import DistEvalHook, EvalHook
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import get_root_logger
 
@@ -70,14 +70,6 @@ def train_segmentor(model,
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
 
-    # fp16 setting
-    fp16_cfg = cfg.get('fp16', None)
-    if fp16_cfg is not None:
-        optimizer_config = Fp16OptimizerHook(
-            **cfg.optimizer_config, **fp16_cfg, distributed=distributed)
-    else:
-        optimizer_config = cfg.optimizer_config
-
     runner = IterBasedRunner(
         model=model,
         batch_processor=None,
@@ -87,7 +79,7 @@ def train_segmentor(model,
         meta=meta)
 
     # register hooks
-    runner.register_training_hooks(cfg.lr_config, optimizer_config,
+    runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config,
                                    cfg.get('momentum_config', None))
 
