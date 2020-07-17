@@ -363,3 +363,13 @@ data = dict(
     test=dict(pipeline=test_pipeline))
 ```
 We first define the new `train_pipeline`/`test_pipeline` and pass them into `data`.
+
+Similarly, if we would like to switch from `SyncBN` to `BN` or `MMSyncBN`, we need to substitute every `norm_cfg` in the config.
+```python
+_base_ = '../pspnet/psp_r50_512x1024_40ki_cityscpaes.py'
+norm_cfg = dict(type='BN', requires_grad=True)
+model = dict(
+    backbone=dict(norm_cfg=norm_cfg),
+    decode_head=dict(norm_cfg=norm_cfg),
+    auxiliary_head=dict(norm_cfg=norm_cfg))
+```
