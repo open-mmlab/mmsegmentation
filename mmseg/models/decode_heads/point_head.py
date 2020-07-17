@@ -59,7 +59,7 @@ class PointHead(BaseCascadeDecodeHead):
 
     def __init__(self,
                  num_fcs=3,
-                 coarse_pred_each_layer=True,
+                 coarse_pred_each_layer=False,
                  conv_cfg=dict(type='Conv1d'),
                  norm_cfg=None,
                  act_cfg=dict(type='ReLU', inplace=False),

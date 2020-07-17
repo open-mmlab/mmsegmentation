@@ -22,7 +22,7 @@ model = dict(decode_head=[
         in_index=[0],
         channels=256,
         num_fcs=3,
-        coarse_pred_each_layer=True,
+        coarse_pred_each_layer=False,
         dropout_ratio=-1,
         num_classes=150,
         align_corners=False,
