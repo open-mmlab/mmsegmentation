@@ -132,6 +132,8 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
         checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
         4 --out results.pkl --eval mIoU cityscapes
     ```
+   Note: There is some inconsistency between cityscapes mIoU and our mIoU. The reason is that cityscapes average each class with class size by default.
+   We use the simple version without average for all datasets.
 
 5. Test PSPNet on cityscapes test split with 4 GPUs, and generate the png files to be submit to the official evaluation server.
 
@@ -151,8 +153,8 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
         4 --format-only --options "imgfile_prefix=./pspnet_test_results"
     ```
 
-You will get png files under `./pspnet_test_results` directory.
-You may run `zip -r results.zip pspnet_test_results/` and submit the zip file to [evaluation server](https://www.cityscapes-dataset.com/submit/).
+    You will get png files under `./pspnet_test_results` directory.
+    You may run `zip -r results.zip pspnet_test_results/` and submit the zip file to [evaluation server](https://www.cityscapes-dataset.com/submit/).
 
 
 ### Image demo
