@@ -7,8 +7,8 @@ import onnxruntime as rt
 import torch
 import torch._C
 import torch.serialization
+from mmcv.onnx import register_extra_symbolics
 from mmcv.runner import load_checkpoint
-from onnx_util.symbolic import register_extra_symbolics
 
 from mmseg.models import build_segmentor
 
@@ -141,7 +141,7 @@ def parse_args():
         '--shape',
         type=int,
         nargs='+',
-        default=[2048, 1024],
+        default=[256, 256],
         help='input image size')
     args = parser.parse_args()
     return args
