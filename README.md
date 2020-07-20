@@ -69,6 +69,7 @@ Supported methods:
 - [x] [GCNet](configs/gcnet)
 - [x] [ANN](configs/ann)
 - [x] [OCRNet](configs/ocrnet)
+- [x] [Mixed Precision (FP16) Training](configs/fp16/README.md)
 
 ## Installation
 
