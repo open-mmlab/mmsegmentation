@@ -8,7 +8,7 @@ In semantic segmentation, some methods make the LR of heads larger than backbone
 
 In MMSegmentation, you may add following lines to config to make the LR of heads 10 times of backbone.
 ```python
-optimizer_config=dict(
+optimizer=dict(
     paramwise_cfg = dict(
         custom_keys={
             'head': dict(lr_mult=10.)}))
