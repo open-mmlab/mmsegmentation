@@ -72,7 +72,21 @@ def pytorch2onnx(model,
                  opset_version=11,
                  show=False,
                  output_file='tmp.onnx',
-                 verify_onnx=False):
+                 verify=False):
+    """Export Pytorch model to ONNX model and verify the outputs are same
+    between Pytorch and ONNX.
+
+    Args:
+        model (nn.Module): Pytorch model we want to export.
+        input_shape (tuple): Use this input shape to construct
+            the corresponding dummy input and execute the model.
+        opset_version (int): The onnx op version. Default: 11.
+        show (bool): Whether print the computation graph. Default: False.
+        output_file (string): The path to where we store the output ONNX model.
+            Default: `tmp.onnx`.
+        verify (bool): Whether compare the outputs between Pytorch and ONNX.
+            Default: False.
+    """
     model.cpu().eval()
 
     num_classes = model.decode_head.num_classes
@@ -102,7 +116,7 @@ def pytorch2onnx(model,
         print(f'Successfully exported ONNX model: {output_file}')
     model.forward = origin_forward
 
-    if verify_onnx:
+    if verify:
         # check by onnx
         import onnx
         onnx_model = onnx.load(output_file)
@@ -122,7 +136,7 @@ def pytorch2onnx(model,
         sess = rt.InferenceSession(output_file)
         onnx_result = sess.run(
             None, {net_feed_input[0]: img_list[0].detach().numpy()})[0]
-        if not (pytorch_result == onnx_result).all():
+        if not np.allclose(pytorch_result, onnx_result):
             raise ValueError(
                 'The outputs are different between Pytorch and ONNX')
         print('The outputs are same between Pytorch and ONNX')
@@ -135,8 +149,8 @@ def parse_args():
     parser.add_argument('--show', action='store_true', help='show onnx graph')
     parser.add_argument(
         '--verify', action='store_true', help='verify the onnx model')
-    parser.add_argument('--output_file', type=str, default='tmp.onnx')
-    parser.add_argument('--opset_version', type=int, default=11)
+    parser.add_argument('--output-file', type=str, default='tmp.onnx')
+    parser.add_argument('--opset-version', type=int, default=11)
     parser.add_argument(
         '--shape',
         type=int,
@@ -174,10 +188,6 @@ if __name__ == '__main__':
     if args.checkpoint:
         checkpoint = load_checkpoint(
             segmentor, args.checkpoint, map_location='cpu')
-        # old versions did not save class info in checkpoints,
-        # this walkaround is for backward compatibility
-        if 'CLASSES' in checkpoint['meta']:
-            segmentor.CLASSES = checkpoint['meta']['CLASSES']
 
     # conver model to onnx file
     pytorch2onnx(
@@ -186,4 +196,4 @@ if __name__ == '__main__':
         opset_version=args.opset_version,
         show=args.show,
         output_file=args.output_file,
-        verify_onnx=args.verify)
+        verify=args.verify)
