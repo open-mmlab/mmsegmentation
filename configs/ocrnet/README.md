@@ -38,16 +38,16 @@
 
 #### ResNet backbone
 
-We report the Memory and Inf time via using 8x V100 GPUs with 2 images on each GPU.
+We report the Memory and Inf time via using 8x V100 GPUs with 2 images on each GPU. Currently, the results of OCR+ is not stable. 
 
 | Method |      Backbone      | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip)|
 |--------|--------------------|-----------|-----------|--------:|----------|----------------|------:|--------------:|
-| OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |  -   |   -  |   79.88  |  
-| OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |  8.8   |   3.02  |   80.29  |
-| OCRNet+   | R-101-D8 | 512x1024  | 16 |   40000 |   -  |  -  |  80.91,80.36,80.08  |   -  |    
-| OCRNet+   | R-101-D8 | 512x1024  | 16 |   60000 |   10.3  |  3  |  80.82,81.03,80.82  |   -  | 
-| DeepLabv3+   | R-101-D8 | 512x1024  | 16 |   60000 |   11  |  2.64  |   80.91,80.60       |   -  |  
-| DeepLabv3    | R-101-D8 | 512x1024  | 16 |   60000 |   9.6  |  2  |   80.10,79.96       |   -  |
+| OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |  -   |   -  |   79.88,80.09  |  
+| OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |  8.8   |   3.02  |   80.29,80.65  |
+| OCRNet  | R-101-D8 | 512x1024  | 16 |   80000 |  8.8   |   3.02  |   80.54,80.41,80.71 |
+| OCRNet+   | R-101-D8 | 512x1024  | 16 |   40000 |   10.3  |  3  |  80.91,80.36,80.08  |   -  |    
+| OCRNet+   | R-101-D8 | 512x1024  | 16 |   60000 |   10.3  |  3  |  80.82,81.03,80.40  |   -  | 
+| OCRNet+   | R-101-D8 | 512x1024  | 16 |   80000 |   10.3  |  3  |  80.87  |   -  | 
 
 
 ### ADE20K

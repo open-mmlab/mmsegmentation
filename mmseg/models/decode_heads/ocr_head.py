@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import resize
+from mmseg.ops import DepthwiseSeparableConvModule, resize
 from ..builder import HEADS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .cascade_decode_head import BaseCascadeDecodeHead
@@ -40,7 +40,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
     """Make a OCR used SelfAttentionBlock."""
 
     def __init__(self, in_channels, channels, scale, conv_cfg, norm_cfg,
-                 act_cfg):
+                 act_cfg, use_sep_conv=False):
         if scale > 1:
             query_downsample = nn.MaxPool2d(kernel_size=scale)
         else:
@@ -62,13 +62,23 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
-        self.bottleneck = ConvModule(
-            in_channels * 2,
-            in_channels,
-            1,
-            conv_cfg=self.conv_cfg,
-            norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg)
+
+        if use_sep_conv:
+            self.bottleneck = DepthwiseSeparableConvModule(
+                in_channels * 2,
+                in_channels,
+                3,
+                padding=1,
+                norm_cfg=norm_cfg,
+                act_cfg=act_cfg)
+        else:
+            self.bottleneck = ConvModule(
+                in_channels * 2,
+                in_channels,
+                1,
+                conv_cfg=conv_cfg,
+                norm_cfg=norm_cfg,
+                act_cfg=act_cfg)
 
     def forward(self, query_feats, key_feats):
         """Forward function."""
