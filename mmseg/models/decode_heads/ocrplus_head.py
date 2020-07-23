@@ -12,8 +12,8 @@ from .ocr_head import ObjectAttentionBlock, SpatialGatherModule
 class OCRPlusHead(BaseCascadeDecodeHead):
     """Object-Contextual Representations for Semantic Segmentation.
 
-    This head is augment the original `OCRNet
-    <https://arxiv.org/abs/1909.11065>` with a decoder head.
+    This head is a variant of the original `OCRNet
+    <https://arxiv.org/abs/1909.11065>` via adding a decoder head.
 
     We make 3 modifications based on the OCRHead:
     -1- apply a decoder head to combine the 2x-resolution feature maps
