@@ -39,8 +39,14 @@ class SpatialGatherModule(nn.Module):
 class ObjectAttentionBlock(_SelfAttentionBlock):
     """Make a OCR used SelfAttentionBlock."""
 
-    def __init__(self, in_channels, channels, scale, conv_cfg, norm_cfg,
-                 act_cfg, use_sep_conv=False):
+    def __init__(self, 
+                 in_channels,
+                 channels,
+                 scale,
+                 conv_cfg,
+                 norm_cfg,
+                 act_cfg,
+                 use_sep_conv=False):
         if scale > 1:
             query_downsample = nn.MaxPool2d(kernel_size=scale)
         else:

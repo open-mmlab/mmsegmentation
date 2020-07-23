@@ -25,8 +25,8 @@ class OCRPlusHead(BaseCascadeDecodeHead):
 
     Args:
         ocr_channels (int): The intermediate channels of OCR block.
-        c1_in_channels (int): The input channels of c1 decoder.
-                              If is 0, the no decoder will be used.
+        c1_in_channels (int): The input channels of c1 decoder. If is 0,
+            the no decoder will be used.
         c1_channels (int): The intermediate channels of c1 decoder.
         scale (int): The scale of probability map in SpatialGatherModule.
     """
