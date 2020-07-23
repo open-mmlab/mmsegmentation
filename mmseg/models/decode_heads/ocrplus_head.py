@@ -4,7 +4,6 @@ from mmcv.cnn import ConvModule
 
 from mmseg.ops import DepthwiseSeparableConvModule, resize
 from ..builder import HEADS
-from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .cascade_decode_head import BaseCascadeDecodeHead
 from .ocr_head import SpatialGatherModule, ObjectAttentionBlock
 
@@ -53,9 +52,8 @@ class OCRPlusHead(BaseCascadeDecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
             use_sep_conv=self.use_sep_conv)
-
         self.spatial_gather_module = SpatialGatherModule(self.scale)
-        
+
         self.bottleneck = DepthwiseSeparableConvModule(
             self.in_channels,
             self.channels,
@@ -111,4 +109,3 @@ class OCRPlusHead(BaseCascadeDecodeHead):
         output = self.cls_seg(output)
 
         return output
-
