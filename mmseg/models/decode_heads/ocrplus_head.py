@@ -5,7 +5,7 @@ from mmcv.cnn import ConvModule
 from mmseg.ops import DepthwiseSeparableConvModule, resize
 from ..builder import HEADS
 from .cascade_decode_head import BaseCascadeDecodeHead
-from .ocr_head import SpatialGatherModule, ObjectAttentionBlock
+from .ocr_head import ObjectAttentionBlock, SpatialGatherModule
 
 
 @HEADS.register_module()
