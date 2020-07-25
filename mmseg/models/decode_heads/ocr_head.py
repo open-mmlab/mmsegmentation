@@ -39,7 +39,7 @@ class SpatialGatherModule(nn.Module):
 class ObjectAttentionBlock(_SelfAttentionBlock):
     """Make a OCR used SelfAttentionBlock."""
 
-    def __init__(self, 
+    def __init__(self,
                  in_channels,
                  channels,
                  scale,
