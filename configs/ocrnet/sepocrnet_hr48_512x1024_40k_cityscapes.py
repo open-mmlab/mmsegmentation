@@ -24,7 +24,7 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
-            type='OCRHead',
+            type='SepOCRHead',
             in_channels=[48, 96, 192, 384],
             channels=512,
             ocr_channels=256,

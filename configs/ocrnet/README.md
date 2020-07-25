@@ -9,12 +9,12 @@
 </figcaption>
 </figure>
 
-<figure>
+<!-- <figure>
   <text-align: center;>
   <img src="./OCRPlus.png" alt="OCR+" title="Framework of OCR+" width="900" height="260" />
   <figcaption>Fig.2 - Illustrating the pipeline of OCRNet+.
   </figcaption>
-</figure>
+</figure> -->
 
 
 
@@ -38,16 +38,19 @@
 
 #### ResNet backbone
 
-We report the Memory and Inf time via using 8x V100 GPUs with 2 images on each GPU. Currently, the results of OCR+ is not stable. 
+We report the Memory and Inf time via using 8x V100 GPUs with 2 images on each GPU. We also run the results based on DeepLabv3/DeepLav3+ with larger batch size 16 to ensure the comparison fairness. We can see that our OCR consistently achieves better/comparable performance when compared to DeepLabv3/DeepLabv3+ separately while requiring less GPU memory and runs faster with higher FPS, suggesting the advantage of our OCR method.
+
 
 | Method |      Backbone      | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip)|
 |--------|--------------------|-----------|-----------|--------:|----------|----------------|------:|--------------:|
-| OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |  -   |   -  |   79.88,80.09  |  
-| OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |  8.8   |   3.02  |   80.29,80.65  |
-| OCRNet  | R-101-D8 | 512x1024  | 16 |   80000 |  8.8   |   3.02  |   80.54,80.41,80.71 |
-| OCRNet+   | R-101-D8 | 512x1024  | 16 |   40000 |   10.3  |  3  |  80.91,80.36,80.08  |   -  |    
-| OCRNet+   | R-101-D8 | 512x1024  | 16 |   60000 |   10.3  |  3  |  80.82,81.03,80.40  |   -  | 
-| OCRNet+   | R-101-D8 | 512x1024  | 16 |   80000 |   10.3  |  3  |  80.87  |   -  | 
+| OCRNet  | R-101-D8 | 512x1024  | 8 |   40000 |  -   |   -  |   79.88,80.09  |  -  | 
+| OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |  8.8   |   3.02  |   80.29,80.30,80.65  |  -  | 
+| OCRNet  | R-101-D8 | 512x1024  | 16 |   80000 |  8.8   |   3.02  |   80.40,80.54,80.81  |  -  | 
+| DeepLabv3  | R-101-D8 | 512x1024  | 16 |  40000 |  9.6  |   2    |  79.69 | -  | 
+| DeepLabv3  | R-101-D8 | 512x1024  | 16 |  80000 |  9.6  |   2    |  80.43 | -  | 
+| DeepLabv3+  | R-101-D8 | 512x1024  | 16 |  40000 |  11  |   2.64    |  80.13 | -  | 
+| DeepLabv3+  | R-101-D8 | 512x1024  | 16 |  80000 |  11  |   2.64    |  80.86 | -  | 
+
 
 
 ### ADE20K

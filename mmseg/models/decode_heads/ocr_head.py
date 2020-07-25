@@ -45,8 +45,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
                  scale,
                  conv_cfg,
                  norm_cfg,
-                 act_cfg,
-                 use_sep_conv=False):
+                 act_cfg):
         if scale > 1:
             query_downsample = nn.MaxPool2d(kernel_size=scale)
         else:
@@ -69,22 +68,20 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
 
-        if use_sep_conv:
-            self.bottleneck = DepthwiseSeparableConvModule(
-                in_channels * 2,
-                in_channels,
-                3,
-                padding=1,
-                norm_cfg=norm_cfg,
-                act_cfg=act_cfg)
-        else:
-            self.bottleneck = ConvModule(
-                in_channels * 2,
-                in_channels,
-                1,
-                conv_cfg=conv_cfg,
-                norm_cfg=norm_cfg,
-                act_cfg=act_cfg)
+        self.in_channels = in_channels
+        self.channels = channels
+        self.scale = scale
+        self.conv_cfg = conv_cfg
+        self.norm_cfg = norm_cfg
+        self.act_cfg = act_cfg
+            
+        self.bottleneck = ConvModule(
+            in_channels * 2,
+            in_channels,
+            1,
+            conv_cfg=conv_cfg,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg)
 
     def forward(self, query_feats, key_feats):
         """Forward function."""

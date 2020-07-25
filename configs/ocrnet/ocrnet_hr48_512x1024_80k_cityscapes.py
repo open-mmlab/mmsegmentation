@@ -1,4 +1,4 @@
-_base_ = './ocrnet_hr18_512x1024_80k_cityscapes.py'
+_base_ = './ocrnet_hr18_512x1024_40k_cityscapes.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     pretrained='open-mmlab://msra/hrnetv2_w48',
@@ -31,7 +31,7 @@ model = dict(
             input_transform='resize_concat',
             in_index=(0, 1, 2, 3),
             norm_cfg=norm_cfg,
-            drop_out_ratio=-1,
+            drop_out_ratio=0.1,
             num_classes=19,
             align_corners=False,
             loss_decode=dict(
