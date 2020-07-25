@@ -137,6 +137,7 @@ class EMAHead(BaseDecodeHead):
             self.in_channels,
             self.ema_channels,
             3,
+            padding=1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
