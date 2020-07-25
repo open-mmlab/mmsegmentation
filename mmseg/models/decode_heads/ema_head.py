@@ -1,7 +1,6 @@
 import math
 
 import torch
-from torch import Number
 import torch.distributed as dist
 import torch.nn as nn
 import torch.nn.functional as F
@@ -23,7 +22,6 @@ class EMAModule(nn.Module):
 
     def __init__(self, channels, num_bases, num_stages, momentum, epsilon):
         super(EMAModule, self).__init__()
-        
         assert num_stages >= 1, 'num_stages must be at least 1!'
         self.num_bases = num_bases
         self.num_stages = num_stages
@@ -39,7 +37,7 @@ class EMAModule(nn.Module):
     def _l2norm(self, input, dim):
         """Normlize the inp tensor with l2-norm.
 
-        Returns a tensor where each sub-tensor of input along the given dim is 
+        Returns a tensor where each sub-tensor of input along the given dim is
         normalized such that the 2-norm of the sub-tensor is equal to 1.
 
         Args:
