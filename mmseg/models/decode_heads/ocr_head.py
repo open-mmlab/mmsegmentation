@@ -74,7 +74,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
-        
+
         self.bottleneck = ConvModule(
             in_channels * 2,
             in_channels,
