@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import DepthwiseSeparableConvModule, resize
+from mmseg.ops import resize
 from ..builder import HEADS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .cascade_decode_head import BaseCascadeDecodeHead
@@ -74,7 +74,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
-            
+        
         self.bottleneck = ConvModule(
             in_channels * 2,
             in_channels,
