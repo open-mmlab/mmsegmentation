@@ -62,21 +62,13 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
-
-        self.in_channels = in_channels
-        self.channels = channels
-        self.scale = scale
-        self.conv_cfg = conv_cfg
-        self.norm_cfg = norm_cfg
-        self.act_cfg = act_cfg
-
         self.bottleneck = ConvModule(
             in_channels * 2,
             in_channels,
             1,
-            conv_cfg=conv_cfg,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
+            conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg)
 
     def forward(self, query_feats, key_feats):
         """Forward function."""
