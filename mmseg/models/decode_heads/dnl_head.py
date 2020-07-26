@@ -9,7 +9,7 @@ from .fcn_head import FCNHead
 class DisentangledNonLocal2d(NonLocal2d):
 
     def __init__(self, *arg, **kwargs):
-        super().__init__(*arg, norm_cfg=None, **kwargs)
+        super().__init__(*arg, **kwargs)
         self.conv_mask = nn.Conv2d(self.in_channels, 1, kernel_size=1)
 
     def forward(self, x):
@@ -96,6 +96,7 @@ class DNLHead(FCNHead):
             reduction=self.reduction,
             use_scale=self.use_scale,
             conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
             mode=self.mode)
 
     def forward(self, inputs):
