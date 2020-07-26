@@ -72,10 +72,10 @@ class EMAModule(nn.Module):
 
     def forward(self, feats):
         """Forward function."""
-        batch_size, num_classes, height, width = feats.size()
-        # [batch_size, num_classes, height*width]
-        feats = feats.view(batch_size, num_classes, height * width)
-        # [batch_size, num_classes, num_bases]
+        batch_size, channels, height, width = feats.size()
+        # [batch_size, channels, height*width]
+        feats = feats.view(batch_size, channels, height * width)
+        # [batch_size, channels, num_bases]
         bases = self.bases.repeat(batch_size, 1, 1)
 
         with torch.no_grad():
@@ -84,12 +84,12 @@ class EMAModule(nn.Module):
                 attention = torch.einsum('bcn,bck->bnk', feats, bases)
                 attention = F.softmax(attention, dim=2)
                 attention_normed = self._l1norm(attention, dim=1)
-                # [batch_size, num_classes, num_bases]
+                # [batch_size, channels, num_bases]
                 bases = torch.einsum('bcn,bnk->bck', feats, attention_normed)
                 bases = self._l2norm(bases, dim=1)
 
         feats_recon = torch.einsum('bck,bnk->bcn', bases, attention)
-        feats_recon = feats_recon.view(batch_size, num_classes, height, width)
+        feats_recon = feats_recon.view(batch_size, channels, height, width)
 
         if self.training:
             bases = bases.mean(dim=0, keepdim=True)
