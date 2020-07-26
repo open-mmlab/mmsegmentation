@@ -45,7 +45,7 @@ class EMAModule(nn.Module):
 
         bases = torch.zeros(1, channels, self.num_bases)
         bases.normal_(0, math.sqrt(2. / self.num_bases))
-        # [1, num_classes, num_bases]
+        # [1, channels, num_bases]
         bases = self._l2norm(bases, dim=1)
         self.register_buffer('bases', bases)
 
