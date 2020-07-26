@@ -141,6 +141,7 @@ class EMAHead(BaseDecodeHead):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
+        # project (0, inf) -> (-inf, inf)
         self.ema_mid_conv = ConvModule(
             self.ema_channels,
             self.ema_channels,
@@ -148,6 +149,9 @@ class EMAHead(BaseDecodeHead):
             conv_cfg=self.conv_cfg,
             norm_cfg=None,
             act_cfg=None)
+        for param in self.ema_mid_conv.parameters():
+            param.requires_grad = False
+
         self.ema_out_conv = ConvModule(
             self.ema_channels,
             self.ema_channels,
@@ -168,11 +172,12 @@ class EMAHead(BaseDecodeHead):
         """Forward function."""
         x = self._transform_inputs(inputs)
         feats = self.ema_in_conv(x)
+        identity = feats
         feats = self.ema_mid_conv(feats)
         recon = self.ema_module(feats)
         recon = F.relu(recon, inplace=True)
         recon = self.ema_out_conv(recon)
-        output = F.relu(feats + recon, inplace=True)
+        output = F.relu(identity + recon, inplace=True)
         output = self.bottleneck(output)
         output = self.cls_seg(output)
         return output
