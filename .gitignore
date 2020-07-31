@@ -113,6 +113,10 @@ data
 *.pkl.json
 *.log.json
 work_dirs/
+workdirs/
+configs_unify/
 
 # Pytorch
 *.pth
+
+
