@@ -246,7 +246,7 @@ Optional arguments are:
 
 Difference between `resume-from` and `load-from`:
 - `resume-from` loads both the model weights and optimizer state including the iteration number.
-- `load-from` loads only the model weights, starts the training from scratch (iteration 0).
+- `load-from` loads only the model weights, starts the training from iteration 0.
 
 ### Train with multiple machines
 
