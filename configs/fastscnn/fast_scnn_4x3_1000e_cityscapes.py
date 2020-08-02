@@ -55,7 +55,7 @@ lr_config = dict(
 )
 # runtime settings
 # total_epochs = 1000
-total_iters = 10000
+total_iters = 247917
 evaluation = dict(interval=100, metric='mIoU')
 checkpoint_config = dict(interval=100)
 

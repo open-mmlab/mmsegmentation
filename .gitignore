@@ -115,6 +115,7 @@ data
 work_dirs/
 workdirs/
 configs_unify/
+results/
 
 # Pytorch
 *.pth
