@@ -120,4 +120,7 @@ results/
 # Pytorch
 *.pth
 
+# Nohup out file
+*.file
+
 

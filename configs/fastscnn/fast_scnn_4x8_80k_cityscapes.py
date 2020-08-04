@@ -38,14 +38,14 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=3,
-    workers_per_gpu=3,
+    samples_per_gpu=8,
+    workers_per_gpu=4,
     train=dict(pipeline=train_pipeline),
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.045, momentum=0.9, weight_decay=4e-5)
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=4e-5)
 optimizer_config = dict()
 # learning policy
 lr_config = dict(
@@ -55,7 +55,7 @@ lr_config = dict(
 )
 # runtime settings
 # total_epochs = 1000
-total_iters = 247000
+total_iters = 80000
 evaluation = dict(interval=100, metric='mIoU')
 checkpoint_config = dict(interval=100)
 
