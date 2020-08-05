@@ -556,4 +556,4 @@ def test_point_head():
     test_cfg = ConfigDict(
         subdivision_steps=2, subdivision_num_points=8196, scale_factor=2)
     output = point_head.forward_test(inputs, prev_output, None, test_cfg)
-    assert output.shape == (1, point_head.num_classes, 45, 45)
+    assert output.shape == (1, point_head.num_classes, 180, 180)
