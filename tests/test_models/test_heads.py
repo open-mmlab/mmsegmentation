@@ -3,6 +3,7 @@ from unittest.mock import patch
 import pytest
 import torch
 from mmcv.cnn import ConvModule
+from mmcv.utils import ConfigDict
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
@@ -552,7 +553,7 @@ def test_point_head():
         head, inputs = to_cuda(point_head, inputs)
         head, inputs = to_cuda(fcn_head, inputs)
     prev_output = fcn_head(inputs)
-    test_cfg = dict(
+    test_cfg = ConfigDict(
         subdivision_steps=2, subdivision_num_points=8196, scale_factor=2)
     output = point_head.forward_test(inputs, prev_output, None, test_cfg)
     assert output.shape == (1, point_head.num_classes, 45, 45)
