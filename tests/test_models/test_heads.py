@@ -544,7 +544,8 @@ def test_dw_aspp_head():
 def test_point_head():
 
     inputs = [torch.randn(1, 32, 45, 45)]
-    point_head = PointHead(in_channels=32, channels=16, num_classes=19)
+    point_head = PointHead(
+        in_channels=[32], in_index=[0], channels=16, num_classes=19)
     assert len(point_head.fcs) == 3
     fcn_head = FCNHead(in_channels=32, channels=16, num_classes=19)
     if torch.cuda.is_available():
