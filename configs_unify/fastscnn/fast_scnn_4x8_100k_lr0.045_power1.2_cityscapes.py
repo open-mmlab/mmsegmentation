@@ -50,12 +50,15 @@ optimizer_config = dict()
 # learning policy
 lr_config = dict(
     policy='poly',
-    power=0.9,
+    power=1.2,
     by_epoch=False,
 )
 # runtime settings
 # total_epochs = 1000
-total_iters = 80000
-evaluation = dict(interval=8000, metric='mIoU')
-checkpoint_config = dict(interval=8000)
+total_iters = 100000
+evaluation = dict(interval=2000, metric='mIoU')
+checkpoint_config = dict(interval=2000)
+
+# log config: log by iter.
+log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook', by_epoch=False)])
 

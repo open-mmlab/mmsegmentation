@@ -56,6 +56,9 @@ lr_config = dict(
 # runtime settings
 # total_epochs = 1000
 total_iters = 100000
-evaluation = dict(interval=5000, metric='mIoU')
-checkpoint_config = dict(interval=5000)
+evaluation = dict(interval=2000, metric='mIoU')
+checkpoint_config = dict(interval=2000)
+
+# log config: log by iter.
+log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook', by_epoch=False)])
 
