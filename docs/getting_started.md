@@ -271,35 +271,22 @@ Usually it is slow if you do not have high speed networking like InfiniBand.
 ### Launch multiple jobs on a single machine
 
 If you launch multiple jobs on a single machine, e.g., 2 jobs of 4-GPU training on a machine with 8 GPUs,
-you need to specify different ports (29500 by default) for each job to avoid communication conflict.
+you need to specify different ports (29500 by default) for each job to avoid communication conflict. Otherwise, there will be error message saying `RuntimeError: Address already in use`.
 
-If you use `dist_train.sh` to launch training jobs, you can set the port in commands.
+If you use `dist_train.sh` to launch training jobs, you can set the port in commands with environment variable `PORT`.
 
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 ./tools/dist_train.sh ${CONFIG_FILE} 4
 CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 ./tools/dist_train.sh ${CONFIG_FILE} 4
 ```
 
-If you use launch training jobs with Slurm, you need to modify the config files (usually the 6th line from the bottom in config files) to set different communication ports.
+If you use `slurm_train.sh` to launch training jobs, you can set the port in commands with environment variable `MASTER_PORT`.
 
-In `config1.py`,
-```python
-dist_params = dict(backend='nccl', port=29500)
-```
-
-In `config2.py`,
-```python
-dist_params = dict(backend='nccl', port=29501)
-```
-
-Then you can launch two jobs with `config1.py` ang `config2.py`.
 
 ```shell
-CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py ${WORK_DIR}
-CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py ${WORK_DIR}
+MASTER_PORT=29500 ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE}
+MASTER_PORT=29501 ./tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE}
 ```
-
-Or you could specify port by `---options dist_params.port=29501`
 
 ## Useful tools
 
