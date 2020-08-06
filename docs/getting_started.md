@@ -241,11 +241,12 @@ Optional arguments are:
 
 - `--no-validate` (**not suggested**): By default, the codebase will perform evaluation at every k iterations during the training. To disable this behavior, use `--no-validate`.
 - `--work-dir ${WORK_DIR}`: Override the working directory specified in the config file.
-- `--resume-from ${CHECKPOINT_FILE}`: Resume from a previous checkpoint file.
+- `--resume-from ${CHECKPOINT_FILE}`: Resume from a previous checkpoint file (to continue the training process).
+- `--load-from ${CHECKPOINT_FILE}`: Load weights from a checkpoint file (to start finetuning for another task).
 
 Difference between `resume-from` and `load-from`:
-`resume-from` loads both the model weights and optimizer status, and the iteration number is also inherited from the specified checkpoint. It is usually used for resuming the training process that is interrupted accidentally.
-`load-from` only loads the model weights and the training iteration starts from 0. It is usually used for finetuning.
+- `resume-from` loads both the model weights and optimizer state including the iteration number.
+- `load-from` loads only the model weights, starts the training from iteration 0.
 
 ### Train with multiple machines
 
