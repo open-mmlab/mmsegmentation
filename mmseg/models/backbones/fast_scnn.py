@@ -227,6 +227,13 @@ class FastSCNN(nn.Module):
         """
 
         super(FastSCNN, self).__init__()
+        if global_in_channels != higher_in_channels:
+            raise AssertionError('Global Input Channels must be the same with Higher Input Channels!')
+        elif global_out_channels != lower_in_channels:
+            raise AssertionError('Global Output Channels must be the same with Lower Input Channels!')
+        if scale_factor != 4:
+            raise AssertionError('Scale-factor must compensate the downsampling factor in the GFE module!')
+
         self.in_channels = in_channels
         self.downsample_dw_channels1 = downsample_dw_channels1
         self.downsample_dw_channels2 = downsample_dw_channels2
