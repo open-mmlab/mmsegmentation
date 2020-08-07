@@ -59,7 +59,7 @@ class OHEMPixelSampler(BasePixelSampler):
                 else:
                     min_threshold = 0.0
                 threshold = max(min_threshold, self.thresh)
-                valid_seg_weight[sort_prob < threshold] = 1.
+                valid_seg_weight[seg_prob < threshold] = 1.
             else:
                 losses = self.context.loss_decode(
                     seg_logit,
