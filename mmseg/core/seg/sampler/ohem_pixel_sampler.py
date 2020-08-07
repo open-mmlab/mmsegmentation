@@ -28,7 +28,7 @@ class OHEMPixelSampler(BasePixelSampler):
         self.min_kept = min_kept
 
     def sample(self, seg_logit, seg_label):
-        """Hard examples sample.
+        """Sample pixels that have high loss or with low prediction confidence.
 
         Args:
             seg_logit (torch.Tensor): segmentation logits, shape (N, C, H, W)
