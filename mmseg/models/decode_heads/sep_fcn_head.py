@@ -5,7 +5,8 @@ from .fcn_head import FCNHead
 
 @HEADS.register_module()
 class SepFCNHead(FCNHead):
-    """Depthwise-Separable Fully Convolutional Network for Semantic Segmentation
+    """Depthwise-Separable Fully Convolutional Network for Semantic
+    Segmentation.
 
     This head is implemented according to Fast-SCNN.
     Args:
@@ -16,7 +17,8 @@ class SepFCNHead(FCNHead):
         concat_input(bool): Whether to concatenate original decode input into
             the result of consecutive convolution layers.
 
-        num_classes(int): Used to determine the dimension of final prediction tensor.
+        num_classes(int): Used to determine the dimension of
+            final prediction tensor.
 
         in_index(int): Correspond with 'out_indices' in FastSCNN backbone.
 
@@ -24,7 +26,8 @@ class SepFCNHead(FCNHead):
 
         align_corners (bool): align_corners argument of F.interpolate.
 
-        loss_decode(dict): Config of loss type and some relevant additional options.
+        loss_decode(dict): Config of loss type and some
+            relevant additional options.
     """
 
     def __init__(self, **kwargs):

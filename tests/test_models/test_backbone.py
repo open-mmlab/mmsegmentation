@@ -4,7 +4,7 @@ from mmcv.ops import DeformConv2dPack
 from mmcv.utils.parrots_wrapper import _BatchNorm
 from torch.nn.modules import AvgPool2d, GroupNorm
 
-from mmseg.models.backbones import ResNet, ResNetV1d, ResNeXt, FastSCNN
+from mmseg.models.backbones import FastSCNN, ResNet, ResNetV1d, ResNeXt
 from mmseg.models.backbones.resnet import BasicBlock, Bottleneck
 from mmseg.models.backbones.resnext import Bottleneck as BottleneckX
 from mmseg.models.utils import ResLayer
@@ -680,11 +680,9 @@ def test_fastscnn_backbone():
     feat = model(imgs)
 
     assert len(feat) == 3
-    assert feat[0].shape == torch.Size([num_batch_picts, 64, 128, 256])   # higher-res
-    assert feat[1].shape == torch.Size([num_batch_picts, 128, 32, 64])    # lower-res
-    assert feat[2].shape == torch.Size([num_batch_picts, 128, 128, 256])  # FFM output
-
-
-
-
-
+    # higher-res
+    assert feat[0].shape == torch.Size([num_batch_picts, 64, 128, 256])
+    # lower-res
+    assert feat[1].shape == torch.Size([num_batch_picts, 128, 32, 64])
+    # FFM output
+    assert feat[2].shape == torch.Size([num_batch_picts, 128, 128, 256])
