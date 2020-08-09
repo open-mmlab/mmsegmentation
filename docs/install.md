@@ -54,7 +54,7 @@ pip install -e .  # or "python setup.py develop"
 
 Note:
 
-1. The git commit id will be written to the version number with step *d*, e.g. 0.5.0+c415a2e. The version will also be saved in trained models.
+1. The `version+git_hash` will also be saved in trained models meta, e.g. 0.5.0+c415a2e.
 
 2. When MMsegmentation is installed on `dev` mode, any local modifications made to the code will take effect without the need to reinstall it.
 
