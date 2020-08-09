@@ -10,22 +10,25 @@ class OHEMPixelSampler(BasePixelSampler):
     """Online Hard Example Mining Sampler for segmentation.
 
     Args:
-        thresh (float): The threshold for hard example selection. Below
-            which, are prediction with low confidence. Default: 0.7.
-        min_kept (int): The minimum number of predictions to keep.
+        context (nn.Module): The context of sampler, subclass of
+            :obj:`BaseDecodeHead`.
+        thresh (float, optional): The threshold for hard example selection.
+            Below which, are prediction with low confidence. If not
+            specified, the hard examples will be pixels of top ``min_kept``
+            loss. Default: None.
+        min_kept (int, optional): The minimum number of predictions to keep.
             Default: 100000.
-        ignore_index (int): The ignore index for training. Default: 255.
     """
 
-    def __init__(self, thresh=0.7, min_kept=100000, ignore_index=255):
+    def __init__(self, context, thresh=None, min_kept=100000):
         super(OHEMPixelSampler, self).__init__()
+        self.context = context
         assert min_kept > 1
         self.thresh = thresh
         self.min_kept = min_kept
-        self.ignore_index = ignore_index
 
     def sample(self, seg_logit, seg_label):
-        """
+        """Sample pixels that have high loss or with low prediction confidence.
 
         Args:
             seg_logit (torch.Tensor): segmentation logits, shape (N, C, H, W)
@@ -33,32 +36,41 @@ class OHEMPixelSampler(BasePixelSampler):
 
         Returns:
             torch.Tensor: segmentation weight, shape (N, H, W)
-
         """
         with torch.no_grad():
             assert seg_logit.shape[2:] == seg_label.shape[2:]
             assert seg_label.shape[1] == 1
             seg_label = seg_label.squeeze(1).long()
             batch_kept = self.min_kept * seg_label.size(0)
-            seg_prob = F.softmax(seg_logit, dim=1)
-            mask = seg_label.contiguous().view(-1, ) != self.ignore_index
+            valid_mask = seg_label != self.context.ignore_index
+            seg_weight = seg_logit.new_zeros(size=seg_label.size())
+            valid_seg_weight = seg_weight[valid_mask]
+            if self.thresh is not None:
+                seg_prob = F.softmax(seg_logit, dim=1)
 
-            tmp_seg_label = seg_label.clone()
-            tmp_seg_label[tmp_seg_label == self.ignore_index] = 0
-            seg_prob = seg_prob.gather(1, tmp_seg_label.unsqueeze(1))
-            sort_prob, sort_indices = seg_prob.contiguous().view(
-                -1, )[mask].contiguous().sort()
+                tmp_seg_label = seg_label.clone().unsqueeze(1)
+                tmp_seg_label[tmp_seg_label == self.context.ignore_index] = 0
+                seg_prob = seg_prob.gather(1, tmp_seg_label).squeeze(1)
+                sort_prob, sort_indices = seg_prob[valid_mask].sort()
 
-            if sort_prob.numel() > 0:
-                min_threshold = sort_prob[min(batch_kept,
-                                              sort_prob.numel() - 1)]
+                if sort_prob.numel() > 0:
+                    min_threshold = sort_prob[min(batch_kept,
+                                                  sort_prob.numel() - 1)]
+                else:
+                    min_threshold = 0.0
+                threshold = max(min_threshold, self.thresh)
+                valid_seg_weight[seg_prob[valid_mask] < threshold] = 1.
             else:
-                min_threshold = 0.0
-            threshold = max(min_threshold, self.thresh)
+                losses = self.context.loss_decode(
+                    seg_logit,
+                    seg_label,
+                    weight=None,
+                    ignore_index=self.context.ignore_index,
+                    reduction_override='none')
+                # faster than topk according to https://github.com/pytorch/pytorch/issues/22812  # noqa
+                _, sort_indices = losses[valid_mask].sort(descending=True)
+                valid_seg_weight[sort_indices[:batch_kept]] = 1.
 
-            seg_weight = seg_logit.new_ones(size=seg_label.size())
-            seg_weight = seg_weight.view(-1)
-            seg_weight[mask][sort_prob < threshold] = 0.
-            seg_weight = seg_weight.view_as(seg_label)
+            seg_weight[valid_mask] = valid_seg_weight
 
             return seg_weight

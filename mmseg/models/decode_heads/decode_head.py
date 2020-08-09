@@ -73,7 +73,7 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         self.ignore_index = ignore_index
         self.align_corners = align_corners
         if sampler is not None:
-            self.sampler = build_pixel_sampler(sampler)
+            self.sampler = build_pixel_sampler(sampler, context=self)
         else:
             self.sampler = None
 
