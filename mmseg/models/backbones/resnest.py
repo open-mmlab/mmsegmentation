@@ -12,17 +12,21 @@ from .resnet import Bottleneck as _Bottleneck
 from .resnet import ResNetV1d
 
 
-class rSoftMax(nn.Module):
+class RSoftmax(nn.Module):
+    """Radix Softmax module in ``SplAtConv2d``.
 
-    def __init__(self, radix, cardinality):
+    radix (int): Radix of input. groups (int): Groups of input.
+    """
+
+    def __init__(self, radix, groups):
         super().__init__()
         self.radix = radix
-        self.cardinality = cardinality
+        self.groups = groups
 
     def forward(self, x):
         batch = x.size(0)
         if self.radix > 1:
-            x = x.view(batch, self.cardinality, self.radix, -1).transpose(1, 2)
+            x = x.view(batch, self.groups, self.radix, -1).transpose(1, 2)
             x = F.softmax(x, dim=1)
             x = x.reshape(batch, -1)
         else:
@@ -31,7 +35,18 @@ class rSoftMax(nn.Module):
 
 
 class SplAtConv2d(nn.Module):
-    """Split-Attention Conv2d."""
+    """Split-Attention Conv2d.
+
+    in_channels (int): Same as nn.Conv2d. out_channels (int): Same as
+    nn.Conv2d. kernel_size (int | tuple[int]): Same as nn.Conv2d. stride (int |
+    tuple[int]): Same as nn.Conv2d. padding (int | tuple[int]): Same as
+    nn.Conv2d. dilation (int | tuple[int]): Same as nn.Conv2d. groups (int):
+    Same as nn.Conv2d. radix (int): Radix of SpltAtConv2d. Default: 2
+    reduction_factor (int): Reduction factor of SplAtConv2d. Default: 4.
+    conv_cfg (dict): Config dict for convolution layer. Default: None,
+    which means using conv2d. norm_cfg (dict): Config dict for normalization
+    layer. Default: None. dcn (dict): Config dict for DCN. Default: None.
+    """
 
     def __init__(self,
                  in_channels,
@@ -41,7 +56,6 @@ class SplAtConv2d(nn.Module):
                  padding=0,
                  dilation=1,
                  groups=1,
-                 bias=True,
                  radix=2,
                  reduction_factor=4,
                  conv_cfg=None,
@@ -50,7 +64,7 @@ class SplAtConv2d(nn.Module):
         super(SplAtConv2d, self).__init__()
         inter_channels = max(in_channels * radix // reduction_factor, 32)
         self.radix = radix
-        self.cardinality = groups
+        self.groups = groups
         self.channels = channels
         self.with_dcn = dcn is not None
         self.dcn = dcn
@@ -69,26 +83,28 @@ class SplAtConv2d(nn.Module):
             padding=padding,
             dilation=dilation,
             groups=groups * radix,
-            bias=bias)
+            bias=False)
         self.norm0_name, norm0 = build_norm_layer(
             norm_cfg, channels * radix, postfix=0)
         self.add_module(self.norm0_name, norm0)
         self.relu = nn.ReLU(inplace=True)
         self.fc1 = build_conv_layer(
-            None, channels, inter_channels, 1, groups=self.cardinality)
+            None, channels, inter_channels, 1, groups=self.groups)
         self.norm1_name, norm1 = build_norm_layer(
             norm_cfg, inter_channels, postfix=1)
         self.add_module(self.norm1_name, norm1)
         self.fc2 = build_conv_layer(
-            None, inter_channels, channels * radix, 1, groups=self.cardinality)
-        self.rsoftmax = rSoftMax(radix, groups)
+            None, inter_channels, channels * radix, 1, groups=self.groups)
+        self.rsoftmax = RSoftmax(radix, groups)
 
     @property
     def norm0(self):
+        """nn.Module: the normalization layer named "norm0" """
         return getattr(self, self.norm0_name)
 
     @property
     def norm1(self):
+        """nn.Module: the normalization layer named "norm1" """
         return getattr(self, self.norm1_name)
 
     def forward(self, x):
@@ -120,6 +136,21 @@ class SplAtConv2d(nn.Module):
 
 
 class Bottleneck(_Bottleneck):
+    """Bottleneck block for ResNeSt.
+
+    Args:
+        inplane (int): Input planes of this block.
+        planes (int): Middle planes of this block.
+        groups (int): Groups of conv2.
+        width_per_group (int): Width per group of conv2. 64x4d indicates
+            ``groups=64, width_per_group=4`` and 32x8d indicates
+            ``groups=32, width_per_group=8``.
+        radix (int): Radix of SpltAtConv2d. Default: 2
+        reduction_factor (int): Reduction factor of SplAtConv2d. Default: 4.
+        avg_down_stride (bool): Whether to use average pool for stride in
+            Bottleneck. Default: True.
+        kwargs (dict): Key word arguments for base class.
+    """
     expansion = 4
 
     def __init__(self,
@@ -167,7 +198,6 @@ class Bottleneck(_Bottleneck):
             groups=groups,
             radix=radix,
             reduction_factor=reduction_factor,
-            bias=False,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             dcn=self.dcn)
@@ -263,6 +293,7 @@ class ResNeSt(ResNetV1d):
         super(ResNeSt, self).__init__(**kwargs)
 
     def make_res_layer(self, **kwargs):
+        """Pack all blocks in a stage into a ``ResLayer``."""
         return ResLayer(
             groups=self.groups,
             base_width=self.base_width,
