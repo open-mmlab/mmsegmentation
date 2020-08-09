@@ -113,12 +113,10 @@ data
 *.pkl.json
 *.log.json
 work_dirs/
-workdirs/
 
 # Pytorch
 *.pth
 
-# Nohup out file
-*.file
+
 
 
