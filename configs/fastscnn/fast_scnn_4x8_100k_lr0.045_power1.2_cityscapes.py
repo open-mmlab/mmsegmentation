@@ -38,8 +38,8 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=3,
-    workers_per_gpu=3,
+    samples_per_gpu=8,
+    workers_per_gpu=4,
     train=dict(pipeline=train_pipeline),
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
@@ -50,13 +50,15 @@ optimizer_config = dict()
 # learning policy
 lr_config = dict(
     policy='poly',
-    power=0.9,
+    power=1.2,
     by_epoch=False,
 )
 # runtime settings
-total_epochs = 247000
-evaluation = dict(interval=1000, metric='mIoU')
-checkpoint_config = dict(interval=1000)
+# total_epochs = 1000
+total_iters = 100000
+evaluation = dict(interval=2000, metric='mIoU')
+checkpoint_config = dict(interval=2000)
 
 # log config: log by iter.
 log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook', by_epoch=False)])
+
