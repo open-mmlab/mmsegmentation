@@ -15,7 +15,8 @@ from .resnet import ResNetV1d
 class RSoftmax(nn.Module):
     """Radix Softmax module in ``SplAtConv2d``.
 
-    radix (int): Radix of input. groups (int): Groups of input.
+    Args:
+        radix (int): Radix of input. groups (int): Groups of input.
     """
 
     def __init__(self, radix, groups):
@@ -35,7 +36,7 @@ class RSoftmax(nn.Module):
 
 
 class SplAtConv2d(nn.Module):
-    """Split-Attention Conv2d.
+    """Split-Attention Conv2d in ResNeSt.
 
     Args:
         in_channels (int): Same as nn.Conv2d.
