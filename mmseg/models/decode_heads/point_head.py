@@ -186,8 +186,6 @@ class PointHead(BaseCascadeDecodeHead):
             refined_seg_logits = refined_seg_logits.view(
                 batch_size, channels, height, width)
 
-        import pdb
-        pdb.set_trace()
         return refined_seg_logits
 
     def losses(self, point_logits, point_label):
