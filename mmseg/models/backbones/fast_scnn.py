@@ -10,7 +10,24 @@ from ..builder import BACKBONES
 
 
 class LearningToDownsample(nn.Module):
-    """Learning to downsample module."""
+    """Learning to downsample module.
+    Args:
+        in_channels (int): Number of input channels.
+
+        dw_channels1 (int): Number of output channels of the first
+            depthwise conv (dwconv) layer.
+
+        dw_channels2 (int): Number of output channels of the second
+            dwconv layer.
+
+        out_channels (int): Number of output channels of the whole
+            'learning to downsample' module.
+
+
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+    """
 
     def __init__(self,
                  in_channels,
@@ -53,7 +70,29 @@ class LearningToDownsample(nn.Module):
 
 
 class GlobalFeatureExtractor(nn.Module):
-    """Global feature extractor module."""
+    """Global feature extractor module.
+    Args:
+        in_channels (int): Number of input channels of the GFE module.
+
+        block_channels (tuple): Tuple of ints. Each int specifies the
+            number of output channels of each Inverted Residual module.
+
+        out_channels(int): Number of output channels of the GFE module.
+
+        t (int): t parameter (upsampling factor) of each Inverted Residual
+            module.
+
+        num_blocks (tuple): Tuple of ints. Each int specifies the number of
+        times each Inverted Residual module is repeated.
+
+        pool_scales (tuple): Tuple of ints. Each int specifies the parameter
+            required in 'global average pooling' within PPM.
+
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+        align_corners (bool): align_corners argument of F.interpolate.
+    """
 
     def __init__(self,
                  in_channels=64,
@@ -115,7 +154,25 @@ class GlobalFeatureExtractor(nn.Module):
 
 
 class FeatureFusionModule(nn.Module):
-    """Feature fusion module."""
+    """Feature fusion module.
+    Args:
+        higher_in_channels (int): Number of input channels of the
+            higher-resolution branch.
+
+        lower_in_channels (int): Number of input channels of the
+            lower-resolution branch.
+
+        out_channels (int): Number of output channels.
+
+        scale_factor (int): Scale factor applied to the lower-res input.
+            Should be coherent with the downsampling factor determined
+            by the GFE module.
+
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+        align_corners (bool): align_corners argument of F.interpolate.
+    """
 
     def __init__(self,
                  higher_in_channels,
@@ -190,39 +247,39 @@ class FastSCNN(nn.Module):
                  align_corners=False):
         """Fast-SCNN Backbone.
         Args:
-            in_channels(int): Number of input image channels. Default=3 (RGB)
+            in_channels (int): Number of input image channels. Default=3 (RGB)
 
-            downsample_dw_channels1(int): Number of output channels after
+            downsample_dw_channels1 (int): Number of output channels after
                 the first conv layer in Learning-To-Downsample (LTD) module.
 
-            downsample_dw_channels2(int): Number of output channels
+            downsample_dw_channels2 (int): Number of output channels
                 after the second conv layer in LTD.
 
-            global_in_channels(int): Number of input channels of
+            global_in_channels (int): Number of input channels of
                 Global Feature Extractor(GFE).
                 Equal to number of output channels of LTD.
 
-            global_block_channels(tuple): Tuple of integers that describe
+            global_block_channels (tuple): Tuple of integers that describe
                 the output channels for each of the MobileNet-v2 bottleneck
                 residual blocks in GFE.
 
-            global_out_channels(int): Number of output channels of GFE.
+            global_out_channels (int): Number of output channels of GFE.
 
-            higher_in_channels(int): Number of input channels of the higher
+            higher_in_channels (int): Number of input channels of the higher
                 resolution branch in FFM.
                 Equal to global_in_channels.
 
-            lower_in_channels(int): Number of input channels of  the lower
+            lower_in_channels (int): Number of input channels of  the lower
                 resolution branch in FFM.
                 Equal to global_out_channels.
 
-            fusion_out_channels(int): Number of output channels of FFM.
+            fusion_out_channels (int): Number of output channels of FFM.
 
-            scale_factor(int): The upsampling factor of the higher resolution
+            scale_factor (int): The upsampling factor of the higher resolution
                 branch in FFM.
                 Equal to the downsampling factor in GFE.
 
-            out_indices(tuple): Tuple of indices of list
+            out_indices (tuple): Tuple of indices of list
                 [higher_res_features, lower_res_features, fusion_output].
                 Often set to (0,1,2) to enable aux. heads.
 
