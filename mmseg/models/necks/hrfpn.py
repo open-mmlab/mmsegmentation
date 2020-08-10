@@ -9,7 +9,7 @@ from ..builder import NECKS
 
 @NECKS.register_module()
 class HRFPN(nn.Module):
-    """HRFPN (High Resolution Feature Pyrmamids)
+    """HRFPN (High Resolution Feature Pyramids)
 
     arXiv: https://arxiv.org/abs/1904.04514
 
