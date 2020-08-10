@@ -37,15 +37,20 @@ class RSoftmax(nn.Module):
 class SplAtConv2d(nn.Module):
     """Split-Attention Conv2d.
 
-    in_channels (int): Same as nn.Conv2d. out_channels (int): Same as
-    nn.Conv2d. kernel_size (int | tuple[int]): Same as nn.Conv2d. stride (int |
-    tuple[int]): Same as nn.Conv2d. padding (int | tuple[int]): Same as
-    nn.Conv2d. dilation (int | tuple[int]): Same as nn.Conv2d. groups (int):
-    Same as nn.Conv2d. radix (int): Radix of SpltAtConv2d. Default: 2
-    reduction_factor (int): Reduction factor of SplAtConv2d. Default: 4.
-    conv_cfg (dict): Config dict for convolution layer. Default: None,
-    which means using conv2d. norm_cfg (dict): Config dict for normalization
-    layer. Default: None. dcn (dict): Config dict for DCN. Default: None.
+    Args:
+        in_channels (int): Same as nn.Conv2d.
+        out_channels (int): Same as nn.Conv2d.
+        kernel_size (int | tuple[int]): Same as nn.Conv2d.
+        stride (int | tuple[int]): Same as nn.Conv2d.
+        padding (int | tuple[int]): Same as nn.Conv2d.
+        dilation (int | tuple[int]): Same as nn.Conv2d.
+        groups (int): Same as nn.Conv2d.
+        radix (int): Radix of SpltAtConv2d. Default: 2
+        reduction_factor (int): Reduction factor of SplAtConv2d. Default: 4.
+        conv_cfg (dict): Config dict for convolution layer. Default: None,
+            which means using conv2d.
+        norm_cfg (dict): Config dict for normalization layer. Default: None.
+        dcn (dict): Config dict for DCN. Default: None.
     """
 
     def __init__(self,
