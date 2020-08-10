@@ -102,9 +102,11 @@ class PointHead(BaseCascadeDecodeHead):
         delattr(self, 'conv_seg')
 
     def init_weights(self):
+        """Initialize weights of classification layer."""
         normal_init(self.fc_seg, std=0.001)
 
     def cls_seg(self, feat):
+        """Classify each pixel with fc."""
         if self.dropout is not None:
             feat = self.dropout(feat)
         output = self.fc_seg(feat)
@@ -119,6 +121,18 @@ class PointHead(BaseCascadeDecodeHead):
         return self.cls_seg(x)
 
     def _get_fine_grained_point_feats(self, x, points):
+        """Sample from fine grained features.
+
+        Args:
+            x (list[Tensor]): Feature pyramid from by neck or backbone.
+            points (Tensor): Point coordinates, shape (batch_size,
+                num_points, 2).
+
+        Returns:
+            fine_grained_feats (Tensor): Sampled fine grained feature,
+                shape (batch_size, sum(channels of x), num_points).
+        """
+
         fine_grained_feats_list = [
             point_sample(_, points, align_corners=self.align_corners)
             for _ in x
@@ -131,6 +145,18 @@ class PointHead(BaseCascadeDecodeHead):
         return fine_grained_feats
 
     def _get_coarse_point_feats(self, prev_output, points):
+        """Sample from fine grained features.
+
+        Args:
+            prev_output (list[Tensor]): Prediction of previous decode head.
+            points (Tensor): Point coordinates, shape (batch_size,
+                num_points, 2).
+
+        Returns:
+            coarse_feats (Tensor): Sampled coarse feature, shape (batch_size,
+                num_classes, num_points).
+        """
+
         coarse_feats = point_sample(
             prev_output, points, align_corners=self.align_corners)
 
@@ -138,6 +164,22 @@ class PointHead(BaseCascadeDecodeHead):
 
     def forward_train(self, inputs, prev_output, img_metas, gt_semantic_seg,
                       train_cfg):
+        """Forward function for training.
+        Args:
+            inputs (list[Tensor]): List of multi-level img features.
+            prev_output (Tensor): The output of previous decode head.
+            img_metas (list[dict]): List of image info dict where each dict
+                has: 'img_shape', 'scale_factor', 'flip', and may also contain
+                'filename', 'ori_shape', 'pad_shape', and 'img_norm_cfg'.
+                For details on the values of these keys see
+                `mmseg/datasets/pipelines/formatting.py:Collect`.
+            gt_semantic_seg (Tensor): Semantic segmentation masks
+                used if the architecture supports semantic segmentation task.
+            train_cfg (dict): The training config.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components
+        """
         x = self._transform_inputs(inputs)
         with torch.no_grad():
             points = self.get_points_train(
@@ -159,6 +201,21 @@ class PointHead(BaseCascadeDecodeHead):
         return losses
 
     def forward_test(self, inputs, prev_output, img_metas, test_cfg):
+        """Forward function for testing.
+
+        Args:
+            inputs (list[Tensor]): List of multi-level img features.
+            prev_output (Tensor): The output of previous decode head.
+            img_metas (list[dict]): List of image info dict where each dict
+                has: 'img_shape', 'scale_factor', 'flip', and may also contain
+                'filename', 'ori_shape', 'pad_shape', and 'img_norm_cfg'.
+                For details on the values of these keys see
+                `mmseg/datasets/pipelines/formatting.py:Collect`.
+            test_cfg (dict): The testing config.
+
+        Returns:
+            Tensor: Output segmentation map.
+        """
 
         x = self._transform_inputs(inputs)
         refined_seg_logits = prev_output.clone()
@@ -189,6 +246,7 @@ class PointHead(BaseCascadeDecodeHead):
         return refined_seg_logits
 
     def losses(self, point_logits, point_label):
+        """Compute segmentation loss."""
         loss = dict()
         loss['loss_point'] = self.loss_decode(
             point_logits, point_label, ignore_index=self.ignore_index)
@@ -196,20 +254,23 @@ class PointHead(BaseCascadeDecodeHead):
         return loss
 
     def get_points_train(self, seg_logits, uncertainty_func, cfg):
-        """Sample points in [0, 1] x [0, 1] coordinate space based on their
+        """Sample points for training.
+
+        Sample points in [0, 1] x [0, 1] coordinate space based on their
         uncertainty. The uncertainties are calculated for each point using
         'uncertainty_func' function that takes point's logit prediction as
         input.
 
         Args:
-            seg_logits (Tensor): Semantic segmentation logits, shape (N, C,
-                height, width).
+            seg_logits (Tensor): Semantic segmentation logits, shape (
+                batch_size, num_classes, height, width).
             uncertainty_func (func): uncertainty calculation function.
             cfg (dict): Training config of point head.
 
         Returns:
-            point_coords (Tensor): A tensor of shape (N, P, 2) that contains
-                the coordinates of P sampled points.
+            point_coords (Tensor): A tensor of shape (batch_size, num_points,
+                2) that contains the coordinates of ``num_points`` sampled
+                points.
         """
         num_points = cfg.num_points
         oversample_ratio = cfg.oversample_ratio
@@ -247,21 +308,23 @@ class PointHead(BaseCascadeDecodeHead):
         return point_coords
 
     def get_points_test(self, seg_logits, uncertainty_func, cfg):
-        """Find `num_points` most uncertain points from `uncertainty_map` grid.
+        """Sample points for testing.
+
+        Find ``num_points`` most uncertain points from ``uncertainty_map``.
 
         Args:
-            seg_logits (Tensor): A tensor of shape (N, C, height,
-                width) for class-specific or class-agnostic prediction.
+            seg_logits (Tensor): A tensor of shape (batch_size, num_classes,
+                height, width) for class-specific or class-agnostic prediction.
             uncertainty_func (func): uncertainty calculation function.
             cfg (dict): Testing config of point head.
 
         Returns:
-            point_indices (Tensor): A tensor of shape (N, P) that contains
-                indices from [0, height x width) of the most
+            point_indices (Tensor): A tensor of shape (batch_size, num_points)
+                that contains indices from [0, height x width) of the most
                 uncertain points.
-            point_coords (Tensor): A tensor of shape (N, P, 2) that contains
-                [0, 1] x [0, 1] normalized coordinates of the most uncertain
-                points from the ``height x width`` grid .
+            point_coords (Tensor): A tensor of shape (batch_size, num_points,
+                2) that contains [0, 1] x [0, 1] normalized coordinates of the
+                most uncertain points from the ``height x width`` grid .
         """
 
         num_points = cfg.subdivision_num_points
