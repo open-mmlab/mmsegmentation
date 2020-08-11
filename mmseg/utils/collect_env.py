@@ -9,7 +9,6 @@ import torch
 import torchvision
 from mmcv.utils.parrots_wrapper import get_build_config
 
-
 import mmseg
 
 
