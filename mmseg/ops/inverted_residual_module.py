@@ -3,6 +3,17 @@ from torch import nn
 
 
 class InvertedResidual(nn.Module):
+    """Inverted Residual Module
+    Args:
+        inp (int): input channels.
+        oup (int): output channels.
+        stride (int): downsampling factor.
+        expand_ratio (int): 1 or 2.
+        dilation (int): Dilated conv. Default: 1
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+    """
 
     def __init__(self,
                  inp,
