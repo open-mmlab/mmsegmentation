@@ -20,10 +20,17 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'MMSegmentation'
 copyright = '2020-2020, OpenMMLab'
 author = 'MMSegmentation Authors'
+version_file = '../mmseg/version.py'
+
+
+def get_version():
+    with open(version_file, 'r') as f:
+        exec(compile(f.read(), version_file, 'exec'))
+    return locals()['__version__']
+
 
 # The full version, including alpha/beta/rc tags
-with open('../mmseg/VERSION', 'r') as f:
-    release = f.read().strip()
+release = get_version()
 
 # -- General configuration ---------------------------------------------------
 
