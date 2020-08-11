@@ -676,13 +676,13 @@ def test_fastscnn_backbone():
     model.init_weights()
     model.train()
     batch_size = 4
-    imgs = torch.randn(batch_size, 3, 1024, 2048)
+    imgs = torch.randn(batch_size, 3, 512, 1024)
     feat = model(imgs)
 
     assert len(feat) == 3
     # higher-res
-    assert feat[0].shape == torch.Size([batch_size, 64, 128, 256])
+    assert feat[0].shape == torch.Size([batch_size, 64, 64, 128])
     # lower-res
-    assert feat[1].shape == torch.Size([batch_size, 128, 32, 64])
+    assert feat[1].shape == torch.Size([batch_size, 128, 16, 32])
     # FFM output
-    assert feat[2].shape == torch.Size([batch_size, 128, 128, 256])
+    assert feat[2].shape == torch.Size([batch_size, 128, 64, 128])
