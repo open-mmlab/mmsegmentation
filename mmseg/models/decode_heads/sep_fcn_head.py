@@ -11,21 +11,16 @@ class DepthwiseSeparableFCNHead(FCNHead):
     This head is implemented according to Fast-SCNN.
     Args:
         in_channels(int): Number of output channels of FFM.
-
         channels(int): Number of middle-stage channels in the decode head.
-
         concat_input(bool): Whether to concatenate original decode input into
             the result of several consecutive convolution layers.
-
+            Default: True.
         num_classes(int): Used to determine the dimension of
             final prediction tensor.
-
         in_index(int): Correspond with 'out_indices' in FastSCNN backbone.
-
         norm_cfg (dict|None): Config of norm layers.
-
         align_corners (bool): align_corners argument of F.interpolate.
-
+            Default: False.
         loss_decode(dict): Config of loss type and some
             relevant additional options.
     """

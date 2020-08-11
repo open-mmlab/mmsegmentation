@@ -9,10 +9,12 @@ class InvertedResidual(nn.Module):
         oup (int): output channels.
         stride (int): downsampling factor.
         expand_ratio (int): 1 or 2.
-        dilation (int): Dilated conv. Default: 1
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
-        act_cfg (dict): Config of activation layers.
+        dilation (int): Dilated conv. Default: 1.
+        conv_cfg (dict | None): Config of conv layers. Default: None.
+        norm_cfg (dict | None): Config of norm layers. Default:
+            dict(type='BN').
+        act_cfg (dict): Config of activation layers. Default:
+            dict(type='ReLU6').
     """
 
     def __init__(self,

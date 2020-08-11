@@ -12,20 +12,17 @@ class LearningToDownsample(nn.Module):
     """Learning to downsample module.
     Args:
         in_channels (int): Number of input channels.
-
         dw_channels1 (int): Number of output channels of the first
             depthwise conv (dwconv) layer.
-
         dw_channels2 (int): Number of output channels of the second
             dwconv layer.
-
         out_channels (int): Number of output channels of the whole
             'learning to downsample' module.
-
-
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
-        act_cfg (dict): Config of activation layers.
+        conv_cfg (dict | None): Config of conv layers. Default: None
+        norm_cfg (dict | None): Config of norm layers. Default:
+            dict(type='BN')
+        act_cfg (dict): Config of activation layers. Default:
+            dict(type='ReLU')
     """
 
     def __init__(self,
@@ -89,10 +86,13 @@ class GlobalFeatureExtractor(nn.Module):
         pool_scales (tuple): Tuple of ints. Each int specifies the parameter
             required in 'global average pooling' within PPM.
 
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
-        act_cfg (dict): Config of activation layers.
+        conv_cfg (dict | None): Config of conv layers. Default: None
+        norm_cfg (dict | None): Config of norm layers. Default:
+            dict(type='BN')
+        act_cfg (dict): Config of activation layers. Default:
+            dict(type='ReLU')
         align_corners (bool): align_corners argument of F.interpolate.
+            Default: False
     """
 
     def __init__(self,
@@ -105,7 +105,7 @@ class GlobalFeatureExtractor(nn.Module):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
-                 align_corners=True):
+                 align_corners=False):
         super(GlobalFeatureExtractor, self).__init__()
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
@@ -169,10 +169,13 @@ class FeatureFusionModule(nn.Module):
             Should be coherent with the downsampling factor determined
             by the GFE module.
 
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
-        act_cfg (dict): Config of activation layers.
+        conv_cfg (dict | None): Config of conv layers. Default: None
+        norm_cfg (dict | None): Config of norm layers. Default:
+            dict(type='BN')
+        act_cfg (dict): Config of activation layers. Default:
+            dict(type='ReLU')
         align_corners (bool): align_corners argument of F.interpolate.
+            Default: False
     """
 
     def __init__(self,
@@ -183,7 +186,7 @@ class FeatureFusionModule(nn.Module):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
-                 align_corners=True):
+                 align_corners=False):
         super(FeatureFusionModule, self).__init__()
         self.scale_factor = scale_factor
         self.conv_cfg = conv_cfg
@@ -231,46 +234,48 @@ class FeatureFusionModule(nn.Module):
 class FastSCNN(nn.Module):
     """Fast-SCNN Backbone.
     Args:
-        in_channels (int): Number of input image channels. Default=3 (RGB)
-
+        in_channels (int): Number of input image channels. Default: 3.
         downsample_dw_channels1 (int): Number of output channels after
             the first conv layer in Learning-To-Downsample (LTD) module.
-
+            Default: 32.
         downsample_dw_channels2 (int): Number of output channels
             after the second conv layer in LTD.
-
+            Default: 48.
         global_in_channels (int): Number of input channels of
             Global Feature Extractor(GFE).
             Equal to number of output channels of LTD.
-
+            Default: 64.
         global_block_channels (tuple): Tuple of integers that describe
             the output channels for each of the MobileNet-v2 bottleneck
             residual blocks in GFE.
-
+            Default: (64, 96, 128).
         global_out_channels (int): Number of output channels of GFE.
-
+            Default: 128.
         higher_in_channels (int): Number of input channels of the higher
             resolution branch in FFM.
             Equal to global_in_channels.
-
+            Default: 64.
         lower_in_channels (int): Number of input channels of  the lower
             resolution branch in FFM.
             Equal to global_out_channels.
-
+            Default: 128.
         fusion_out_channels (int): Number of output channels of FFM.
-
+            Default: 128.
         scale_factor (int): The upsampling factor of the higher resolution
             branch in FFM.
             Equal to the downsampling factor in GFE.
-
+            Default: 4.
         out_indices (tuple): Tuple of indices of list
             [higher_res_features, lower_res_features, fusion_output].
             Often set to (0,1,2) to enable aux. heads.
-
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
-        act_cfg (dict): Config of activation layers.
+            Default: (0, 1, 2).
+        conv_cfg (dict | None): Config of conv layers. Default: None
+        norm_cfg (dict | None): Config of norm layers. Default:
+            dict(type='BN')
+        act_cfg (dict): Config of activation layers. Default:
+            dict(type='ReLU')
         align_corners (bool): align_corners argument of F.interpolate.
+            Default: False
     """
 
     def __init__(self,
