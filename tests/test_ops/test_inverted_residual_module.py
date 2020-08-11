@@ -1,6 +1,5 @@
 import pytest
 import torch
-import torch.nn as nn
 
 from mmseg.ops import InvertedResidual
 
@@ -39,7 +38,3 @@ def test_inv_residual():
     x = torch.rand(1, 32, 64, 64)
     output = inv_module(x)
     assert output.shape == (1, 32, 64, 64)
-
-
-
-
