@@ -4,7 +4,7 @@ from .fcn_head import FCNHead
 
 
 @HEADS.register_module()
-class SepFCNHead(FCNHead):
+class DepthwiseSeparableFCNHead(FCNHead):
     """Depthwise-Separable Fully Convolutional Network for Semantic
     Segmentation.
 
@@ -15,7 +15,7 @@ class SepFCNHead(FCNHead):
         channels(int): Number of middle-stage channels in the decode head.
 
         concat_input(bool): Whether to concatenate original decode input into
-            the result of consecutive convolution layers.
+            the result of several consecutive convolution layers.
 
         num_classes(int): Used to determine the dimension of
             final prediction tensor.
@@ -31,7 +31,7 @@ class SepFCNHead(FCNHead):
     """
 
     def __init__(self, **kwargs):
-        super(SepFCNHead, self).__init__(**kwargs)
+        super(DepthwiseSeparableFCNHead, self).__init__(**kwargs)
         self.convs[0] = DepthwiseSeparableConvModule(
             self.in_channels,
             self.channels,

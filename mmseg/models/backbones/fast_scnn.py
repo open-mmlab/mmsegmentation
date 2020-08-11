@@ -228,6 +228,49 @@ class FeatureFusionModule(nn.Module):
 
 @BACKBONES.register_module()
 class FastSCNN(nn.Module):
+    """Fast-SCNN Backbone.
+    Args:
+        in_channels (int): Number of input image channels. Default=3 (RGB)
+
+        downsample_dw_channels1 (int): Number of output channels after
+            the first conv layer in Learning-To-Downsample (LTD) module.
+
+        downsample_dw_channels2 (int): Number of output channels
+            after the second conv layer in LTD.
+
+        global_in_channels (int): Number of input channels of
+            Global Feature Extractor(GFE).
+            Equal to number of output channels of LTD.
+
+        global_block_channels (tuple): Tuple of integers that describe
+            the output channels for each of the MobileNet-v2 bottleneck
+            residual blocks in GFE.
+
+        global_out_channels (int): Number of output channels of GFE.
+
+        higher_in_channels (int): Number of input channels of the higher
+            resolution branch in FFM.
+            Equal to global_in_channels.
+
+        lower_in_channels (int): Number of input channels of  the lower
+            resolution branch in FFM.
+            Equal to global_out_channels.
+
+        fusion_out_channels (int): Number of output channels of FFM.
+
+        scale_factor (int): The upsampling factor of the higher resolution
+            branch in FFM.
+            Equal to the downsampling factor in GFE.
+
+        out_indices (tuple): Tuple of indices of list
+            [higher_res_features, lower_res_features, fusion_output].
+            Often set to (0,1,2) to enable aux. heads.
+
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+        align_corners (bool): align_corners argument of F.interpolate.
+    """
 
     def __init__(self,
                  in_channels=3,
@@ -245,49 +288,6 @@ class FastSCNN(nn.Module):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  align_corners=False):
-        """Fast-SCNN Backbone.
-        Args:
-            in_channels (int): Number of input image channels. Default=3 (RGB)
-
-            downsample_dw_channels1 (int): Number of output channels after
-                the first conv layer in Learning-To-Downsample (LTD) module.
-
-            downsample_dw_channels2 (int): Number of output channels
-                after the second conv layer in LTD.
-
-            global_in_channels (int): Number of input channels of
-                Global Feature Extractor(GFE).
-                Equal to number of output channels of LTD.
-
-            global_block_channels (tuple): Tuple of integers that describe
-                the output channels for each of the MobileNet-v2 bottleneck
-                residual blocks in GFE.
-
-            global_out_channels (int): Number of output channels of GFE.
-
-            higher_in_channels (int): Number of input channels of the higher
-                resolution branch in FFM.
-                Equal to global_in_channels.
-
-            lower_in_channels (int): Number of input channels of  the lower
-                resolution branch in FFM.
-                Equal to global_out_channels.
-
-            fusion_out_channels (int): Number of output channels of FFM.
-
-            scale_factor (int): The upsampling factor of the higher resolution
-                branch in FFM.
-                Equal to the downsampling factor in GFE.
-
-            out_indices (tuple): Tuple of indices of list
-                [higher_res_features, lower_res_features, fusion_output].
-                Often set to (0,1,2) to enable aux. heads.
-
-            conv_cfg (dict|None): Config of conv layers.
-            norm_cfg (dict|None): Config of norm layers.
-            act_cfg (dict): Config of activation layers.
-            align_corners (bool): align_corners argument of F.interpolate.
-        """
 
         super(FastSCNN, self).__init__()
         if global_in_channels != higher_in_channels:

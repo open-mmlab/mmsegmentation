@@ -17,7 +17,7 @@ model = dict(
         norm_cfg=norm_cfg,
         align_corners=False),
     decode_head=dict(
-        type='SepFCNHead',
+        type='DepthwiseSeparableFCNHead',
         in_channels=128,
         channels=128,
         concat_input=False,
@@ -53,3 +53,7 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
     ])
+
+# model training and testing settings
+train_cfg = dict()
+test_cfg = dict(mode='whole')
