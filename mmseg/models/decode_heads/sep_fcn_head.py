@@ -35,19 +35,18 @@ class DepthwiseSeparableFCNHead(FCNHead):
         self.convs[0] = DepthwiseSeparableConvModule(
             self.in_channels,
             self.channels,
-            norm_cfg=self.norm_cfg,
-            relu_first=False)
+            kernel_size=3,
+            norm_cfg=self.norm_cfg)
         for i in range(1, self.num_convs):
             self.convs[i] = DepthwiseSeparableConvModule(
                 self.channels,
                 self.channels,
-                norm_cfg=self.norm_cfg,
-                relu_first=False)
+                kernel_size=3,
+                norm_cfg=self.norm_cfg)
 
         if self.concat_input:
             self.conv_cat = DepthwiseSeparableConvModule(
                 self.in_channels + self.channels,
                 self.channels,
                 self.channels,
-                norm_cfg=self.norm_cfg,
-                relu_first=False)
+                norm_cfg=self.norm_cfg)

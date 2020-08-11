@@ -52,14 +52,16 @@ class LearningToDownsample(nn.Module):
         self.dsconv1 = DepthwiseSeparableConvModule(
             dw_channels1,
             dw_channels2,
+            kernel_size=3,
             stride=2,
-            relu_first=False,
+            padding=1,
             norm_cfg=self.norm_cfg)
         self.dsconv2 = DepthwiseSeparableConvModule(
             dw_channels2,
             out_channels,
+            kernel_size=3,
             stride=2,
-            relu_first=False,
+            padding=1,
             norm_cfg=self.norm_cfg)
 
     def forward(self, x):
