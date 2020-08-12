@@ -100,7 +100,7 @@ class GlobalFeatureExtractor(nn.Module):
                  in_channels=64,
                  block_channels=(64, 96, 128),
                  out_channels=128,
-                 t=6,
+                 expand_ratio=6,
                  num_blocks=(3, 3, 3),
                  pool_scales=(1, 2, 3, 6),
                  conv_cfg=None,
@@ -113,13 +113,13 @@ class GlobalFeatureExtractor(nn.Module):
         self.act_cfg = act_cfg
         assert len(block_channels) == len(num_blocks) == 3
         self.bottleneck1 = self._make_layer(in_channels, block_channels[0],
-                                            num_blocks[0], t, 2)
+                                            num_blocks[0], expand_ratio, 2)
         self.bottleneck2 = self._make_layer(block_channels[0],
                                             block_channels[1], num_blocks[1],
-                                            t, 2)
+                                            expand_ratio, 2)
         self.bottleneck3 = self._make_layer(block_channels[1],
                                             block_channels[2], num_blocks[2],
-                                            t, 1)
+                                            expand_ratio, 1)
         self.ppm = PPM(
             pool_scales,
             block_channels[2],
@@ -136,14 +136,15 @@ class GlobalFeatureExtractor(nn.Module):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
-    def _make_layer(self, inplanes, planes, blocks, t=6, stride=1):
-        layers = []
-        layers.append(
+    def _make_layer(self, inplanes, planes, blocks, expand_ratio=6, stride=1):
+        layers = [
             InvertedResidual(
-                inplanes, planes, stride, t, norm_cfg=self.norm_cfg))
+                inplanes, planes, stride, expand_ratio, norm_cfg=self.norm_cfg)
+        ]
         for i in range(1, blocks):
             layers.append(
-                InvertedResidual(planes, planes, 1, t, norm_cfg=self.norm_cfg))
+                InvertedResidual(
+                    planes, planes, 1, expand_ratio, norm_cfg=self.norm_cfg))
         return nn.Sequential(*layers)
 
     def forward(self, x):
