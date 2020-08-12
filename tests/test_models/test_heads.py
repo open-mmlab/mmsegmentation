@@ -549,7 +549,8 @@ def test_sep_fcn_head():
         channels=128,
         concat_input=False,
         num_classes=19,
-        in_index=-1)
+        in_index=-1,
+        norm_cfg=dict(type='SyncBN', requires_grad=True, momentum=0.01))
     x = torch.rand(1, 128, 32, 32)
     output = head(x)
     assert output.shape == (1, head.num_classes, 32, 32)
