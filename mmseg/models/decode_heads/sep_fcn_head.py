@@ -45,6 +45,6 @@ class DepthwiseSeparableFCNHead(FCNHead):
             self.conv_cat = DepthwiseSeparableConvModule(
                 self.in_channels + self.channels,
                 self.channels,
-                self.channels,
-                padding=1,
+                kernel_size=self.kernel_size,
+                padding=self.kernel_size // 2,
                 norm_cfg=self.norm_cfg)

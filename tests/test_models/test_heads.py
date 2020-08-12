@@ -559,3 +559,18 @@ def test_sep_fcn_head():
     assert isinstance(head.convs[0], DepthwiseSeparableConvModule)
     assert isinstance(head.convs[1], DepthwiseSeparableConvModule)
     assert head.conv_seg.kernel_size == (1, 1)
+
+    head = DepthwiseSeparableFCNHead(
+        in_channels=64,
+        channels=64,
+        concat_input=True,
+        num_classes=19,
+        in_index=-1,
+        norm_cfg=dict(type='BN', requires_grad=True, momentum=0.01))
+    x = [torch.rand(3, 64, 32, 32)]
+    output = head(x)
+    assert output.shape == (3, head.num_classes, 32, 32)
+    assert head.concat_input
+    from mmseg.ops.separable_conv_module import DepthwiseSeparableConvModule
+    assert isinstance(head.convs[0], DepthwiseSeparableConvModule)
+    assert isinstance(head.convs[1], DepthwiseSeparableConvModule)
