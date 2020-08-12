@@ -70,23 +70,18 @@ class LearningToDownsample(nn.Module):
 
 class GlobalFeatureExtractor(nn.Module):
     """Global feature extractor module.
+
     Args:
         in_channels (int): Number of input channels of the GFE module.
-
         block_channels (tuple): Tuple of ints. Each int specifies the
             number of output channels of each Inverted Residual module.
-
         out_channels(int): Number of output channels of the GFE module.
-
-        t (int): t parameter (upsampling factor) of each Inverted Residual
+        expand_ratio (int): upsampling factor of each Inverted Residual
             module.
-
         num_blocks (tuple): Tuple of ints. Each int specifies the number of
         times each Inverted Residual module is repeated.
-
         pool_scales (tuple): Tuple of ints. Each int specifies the parameter
             required in 'global average pooling' within PPM.
-
         conv_cfg (dict | None): Config of conv layers. Default: None
         norm_cfg (dict | None): Config of norm layers. Default:
             dict(type='BN')
@@ -158,19 +153,16 @@ class GlobalFeatureExtractor(nn.Module):
 
 class FeatureFusionModule(nn.Module):
     """Feature fusion module.
+
     Args:
         higher_in_channels (int): Number of input channels of the
             higher-resolution branch.
-
         lower_in_channels (int): Number of input channels of the
             lower-resolution branch.
-
         out_channels (int): Number of output channels.
-
         scale_factor (int): Scale factor applied to the lower-res input.
             Should be coherent with the downsampling factor determined
             by the GFE module.
-
         conv_cfg (dict | None): Config of conv layers. Default: None
         norm_cfg (dict | None): Config of norm layers. Default:
             dict(type='BN')
