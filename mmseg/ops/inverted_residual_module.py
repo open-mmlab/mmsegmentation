@@ -1,10 +1,9 @@
-import torch.utils.checkpoint as cp
-from mmcv.cnn import ConvModule
+from mmcv.cnn import ConvModule, build_norm_layer
 from torch import nn
 
 
 class InvertedResidual(nn.Module):
-    """InvertedResidual block for MobileNetV2.
+    """Inverted residual module.
 
     Args:
         in_channels (int): The input channels of the InvertedResidual block.
@@ -18,10 +17,6 @@ class InvertedResidual(nn.Module):
             Default: dict(type='BN').
         act_cfg (dict): Config dict for activation layer.
             Default: dict(type='ReLU6').
-        with_cp (bool): Use checkpoint or not. Using checkpoint will save some
-            memory while slowing down the training speed. Default: False.
-    Returns:
-        Tensor: The output tensor
     """
 
     def __init__(self,
@@ -29,60 +24,50 @@ class InvertedResidual(nn.Module):
                  out_channels,
                  stride,
                  expand_ratio,
+                 dilation=1,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU6'),
-                 with_cp=False):
+                 act_cfg=dict(type='ReLU6')):
         super(InvertedResidual, self).__init__()
         self.stride = stride
-        assert stride in [1, 2], f'stride must in [1, 2]. ' \
-            f'But received {stride}.'
-        self.with_cp = with_cp
-        self.use_res_connect = self.stride == 1 and in_channels == out_channels
+        assert stride in [1, 2]
+
         hidden_dim = int(round(in_channels * expand_ratio))
+        self.use_res_connect = self.stride == 1 \
+            and in_channels == out_channels
 
         layers = []
         if expand_ratio != 1:
+            # pw
             layers.append(
                 ConvModule(
-                    in_channels=in_channels,
-                    out_channels=hidden_dim,
+                    in_channels,
+                    hidden_dim,
                     kernel_size=1,
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
                     act_cfg=act_cfg))
         layers.extend([
+            # dw
             ConvModule(
-                in_channels=hidden_dim,
-                out_channels=hidden_dim,
+                hidden_dim,
+                hidden_dim,
                 kernel_size=3,
+                padding=dilation,
                 stride=stride,
-                padding=1,
+                dilation=dilation,
                 groups=hidden_dim,
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg),
-            ConvModule(
-                in_channels=hidden_dim,
-                out_channels=out_channels,
-                kernel_size=1,
-                conv_cfg=conv_cfg,
-                norm_cfg=norm_cfg,
-                act_cfg=None)
+            # pw-linear
+            nn.Conv2d(hidden_dim, out_channels, 1, 1, 0, bias=False),
+            build_norm_layer(norm_cfg, out_channels)[1],
         ])
         self.conv = nn.Sequential(*layers)
 
     def forward(self, x):
-
-        def _inner_forward(x):
-            if self.use_res_connect:
-                return x + self.conv(x)
-            else:
-                return self.conv(x)
-
-        if self.with_cp and x.requires_grad:
-            out = cp.checkpoint(_inner_forward, x)
+        if self.use_res_connect:
+            return x + self.conv(x)
         else:
-            out = _inner_forward(x)
-
-        return out
+            return self.conv(x)
