@@ -2,7 +2,6 @@ _base_ = [
     '../_base_/models/fast_scnn.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
-cudnn_benchmark = True
 
 # Re-config the data sampler.
 data = dict(samples_per_gpu=8, workers_per_gpu=4)
