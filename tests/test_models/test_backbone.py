@@ -669,7 +669,7 @@ def test_resnext_backbone():
 def test_fastscnn_backbone():
     with pytest.raises(AssertionError):
         # Fast-SCNN channel constraints.
-        FastSCNN(3, 32, 48, 64, (64, 96, 128), 127, 64, 128)
+        FastSCNN(3, (32, 48), 64, (64, 96, 128), 127, 64, 128)
 
     # Test FastSCNN Standard Forward
     model = FastSCNN()
