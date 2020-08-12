@@ -37,8 +37,8 @@ class DepthwiseSeparableFCNHead(FCNHead):
             self.convs[i] = DepthwiseSeparableConvModule(
                 self.channels,
                 self.channels,
-                kernel_size=3,
-                padding=1,
+                kernel_size=self.kernel_size,
+                padding=self.kernel_size//2,
                 norm_cfg=self.norm_cfg)
 
         if self.concat_input:
