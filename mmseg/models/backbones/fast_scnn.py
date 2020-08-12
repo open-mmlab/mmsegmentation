@@ -73,15 +73,20 @@ class GlobalFeatureExtractor(nn.Module):
 
     Args:
         in_channels (int): Number of input channels of the GFE module.
-        block_channels (tuple): Tuple of ints. Each int specifies the
+            Default: 64
+        block_channels (tuple[int]): Tuple of ints. Each int specifies the
             number of output channels of each Inverted Residual module.
+            Default: (64, 96, 128)
         out_channels(int): Number of output channels of the GFE module.
-        expand_ratio (int): upsampling factor of each Inverted Residual
-            module.
-        num_blocks (tuple): Tuple of ints. Each int specifies the number of
-        times each Inverted Residual module is repeated.
-        pool_scales (tuple): Tuple of ints. Each int specifies the parameter
-            required in 'global average pooling' within PPM.
+            Default: 128
+        expand_ratio (int): Upsampling factor of each Inverted Residual
+            module. Default: 6
+        num_blocks (tuple[int]): Tuple of ints. Each int specifies the
+            number of times each Inverted Residual module is repeated.
+            Default: (3, 3, 3)
+        pool_scales (tuple[int]): Tuple of ints. Each int specifies
+            the parameter required in 'global average pooling' within PPM.
+            Default: (1, 2, 3, 6)
         conv_cfg (dict | None): Config of conv layers. Default: None
         norm_cfg (dict | None): Config of norm layers. Default:
             dict(type='BN')
@@ -229,7 +234,7 @@ class FastSCNN(nn.Module):
     """Fast-SCNN Backbone.
     Args:
         in_channels (int): Number of input image channels. Default: 3.
-        downsample_dw_channels (tuple): Number of output channels after
+        downsample_dw_channels (tuple[int]): Number of output channels after
             the first conv layer & the second conv layer in
             Learning-To-Downsample (LTD) module.
             Default: (32, 48).
@@ -237,7 +242,7 @@ class FastSCNN(nn.Module):
             Global Feature Extractor(GFE).
             Equal to number of output channels of LTD.
             Default: 64.
-        global_block_channels (tuple): Tuple of integers that describe
+        global_block_channels (tuple[int]): Tuple of integers that describe
             the output channels for each of the MobileNet-v2 bottleneck
             residual blocks in GFE.
             Default: (64, 96, 128).
