@@ -18,7 +18,7 @@ class DepthwiseSeparableFCNHead(FCNHead):
         num_classes(int): Used to determine the dimension of
             final prediction tensor.
         in_index(int): Correspond with 'out_indices' in FastSCNN backbone.
-        norm_cfg (dict|None): Config of norm layers.
+        norm_cfg (dict | None): Config of norm layers.
         align_corners (bool): align_corners argument of F.interpolate.
             Default: False.
         loss_decode(dict): Config of loss type and some
@@ -31,14 +31,14 @@ class DepthwiseSeparableFCNHead(FCNHead):
             self.in_channels,
             self.channels,
             kernel_size=self.kernel_size,
-            padding=self.kernel_size//2,
+            padding=self.kernel_size // 2,
             norm_cfg=self.norm_cfg)
         for i in range(1, self.num_convs):
             self.convs[i] = DepthwiseSeparableConvModule(
                 self.channels,
                 self.channels,
                 kernel_size=self.kernel_size,
-                padding=self.kernel_size//2,
+                padding=self.kernel_size // 2,
                 norm_cfg=self.norm_cfg)
 
         if self.concat_input:

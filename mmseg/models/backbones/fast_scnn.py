@@ -232,6 +232,7 @@ class FeatureFusionModule(nn.Module):
 @BACKBONES.register_module()
 class FastSCNN(nn.Module):
     """Fast-SCNN Backbone.
+
     Args:
         in_channels (int): Number of input image channels. Default: 3.
         downsample_dw_channels (tuple[int]): Number of output channels after

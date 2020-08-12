@@ -3,7 +3,8 @@ from torch import nn
 
 
 class InvertedResidual(nn.Module):
-    """Inverted Residual Module
+    """Inverted residual module.
+
     Args:
         inp (int): input channels.
         oup (int): output channels.
