@@ -13,7 +13,7 @@ class LearningToDownsample(nn.Module):
 
     Args:
         in_channels (int): Number of input channels.
-        dw_channels (tuple): Number of output channels of the first and
+        dw_channels (tuple[int]): Number of output channels of the first and
             the second depthwise conv (dwconv) layers.
         out_channels (int): Number of output channels of the whole
             'learning to downsample' module.
