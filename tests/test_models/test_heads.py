@@ -551,7 +551,7 @@ def test_sep_fcn_head():
         num_classes=19,
         in_index=-1,
         norm_cfg=dict(type='SyncBN', requires_grad=True, momentum=0.01))
-    x = torch.rand(2, 128, 32, 32)
+    x = [torch.rand(2, 128, 32, 32)]
     output = head(x)
     assert output.shape == (2, head.num_classes, 32, 32)
     assert not head.concat_input
