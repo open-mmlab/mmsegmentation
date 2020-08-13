@@ -36,7 +36,7 @@ def _convert_batchnorm(module):
     return module_output
 
 
-def _demo_mm_inputs(input_shape, num_classes):  # yapf: disable
+def _demo_mm_inputs(input_shape, num_classes):
     """Create a superset of inputs needed to run test or train batches.
 
     Args:
