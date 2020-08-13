@@ -42,7 +42,6 @@ def _demo_mm_inputs(input_shape, num_classes):
     Args:
         input_shape (tuple):
             input batch dimensions
-
         num_classes (int):
             number of semantic classes
     """
