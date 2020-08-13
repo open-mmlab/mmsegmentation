@@ -113,13 +113,13 @@ class GlobalFeatureExtractor(nn.Module):
         self.act_cfg = act_cfg
         assert len(block_channels) == len(num_blocks) == 3
         self.bottleneck1 = self._make_layer(in_channels, block_channels[0],
-                                            num_blocks[0], expand_ratio, 2)
+                                            num_blocks[0], 2, expand_ratio)
         self.bottleneck2 = self._make_layer(block_channels[0],
                                             block_channels[1], num_blocks[1],
-                                            expand_ratio, 2)
+                                            2, expand_ratio)
         self.bottleneck3 = self._make_layer(block_channels[1],
                                             block_channels[2], num_blocks[2],
-                                            expand_ratio, 1)
+                                            1, expand_ratio)
         self.ppm = PPM(
             pool_scales,
             block_channels[2],
@@ -136,15 +136,15 @@ class GlobalFeatureExtractor(nn.Module):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
-    def _make_layer(self, inplanes, planes, blocks, expand_ratio=6, stride=1):
+    def _make_layer(self, in_channels, out_channels, blocks, stride=1, expand_ratio=6):
         layers = [
             InvertedResidual(
-                inplanes, planes, stride, expand_ratio, norm_cfg=self.norm_cfg)
+                in_channels, out_channels, stride, expand_ratio, norm_cfg=self.norm_cfg)
         ]
         for i in range(1, blocks):
             layers.append(
                 InvertedResidual(
-                    planes, planes, 1, expand_ratio, norm_cfg=self.norm_cfg))
+                    out_channels, out_channels, 1, expand_ratio, norm_cfg=self.norm_cfg))
         return nn.Sequential(*layers)
 
     def forward(self, x):
