@@ -1,22 +1,22 @@
-# Object-Contextual Representations for Semantic Segmentation (ECCV2020)
+# Object-Contextual Representations for Semantic Segmentation
 
 ## Introduction
 
-<figure>
-  <text-align: center;>
-  <img src="./OCR.PNG" alt="OCR" title="Framework of OCR" width="900" height="200" />
-  <figcaption>Fig.1 - Illustrating the pipeline of OCRNet.
-</figcaption>
-</figure>
+```
+@article{YuanW18,
+  title={Ocnet: Object context network for scene parsing},
+  author={Yuhui Yuan and Jingdong Wang},
+  booktitle={arXiv preprint arXiv:1809.00916},
+  year={2018}
+}
 
-<!-- <figure>
-  <text-align: center;>
-  <img src="./OCRPlus.png" alt="OCR+" title="Framework of OCR+" width="900" height="260" />
-  <figcaption>Fig.2 - Illustrating the pipeline of OCRNet+.
-  </figcaption>
-</figure> -->
-
-
+@article{YuanCW20,
+  title={Object-Contextual Representations for Semantic Segmentation},
+  author={Yuhui Yuan and Xilin Chen and Jingdong Wang},
+  booktitle={ECCV},
+  year={2020}
+}
+```
 
 ## Results and models
 
@@ -37,9 +37,6 @@
 
 
 #### ResNet backbone
-
-We report the Memory and Inf time via using 8x V100 GPUs with 2 images on each GPU. We also include the results based on DeepLabv3/DeepLav3+ with larger batch size 16 in the OCR paper to ensure the comparison fairness. We can see that our OCR consistently achieves better/comparable performance when compared to DeepLabv3/DeepLabv3+ separately while requiring less GPU memory and runs faster with higher FPS, suggesting the advantage of our OCR method.
-
 
 | Method |      Backbone      | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                               download                                                                                                                                                                                               |
 |--------|--------------------|-----------|--------|----------|-----------|----------------|------|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -67,23 +64,3 @@ We report the Memory and Inf time via using 8x V100 GPUs with 2 images on each G
 | OCRNet | HRNetV2p-W18-Small | 512x512   |   40000 | -        | -              | 72.76 |         74.60 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug/ocrnet_hr18s_512x512_40k_voc12aug_20200614_002025-42b587ac.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug/ocrnet_hr18s_512x512_40k_voc12aug_20200614_002025.log.json) |
 | OCRNet | HRNetV2p-W18       | 512x512   |   40000 | -        | -              | 74.98 |         77.40 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_40k_voc12aug/ocrnet_hr18_512x512_40k_voc12aug_20200614_015958-714302be.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_40k_voc12aug/ocrnet_hr18_512x512_40k_voc12aug_20200614_015958.log.json)     |
 | OCRNet | HRNetV2p-W48       | 512x512   |   40000 | -        | -              | 77.14 |         79.71 | [model](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_40k_voc12aug/ocrnet_hr48_512x512_40k_voc12aug_20200614_015958-255bc5ce.pth) &#124; [log](https://openmmlab.oss-accelerate.aliyuncs.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_40k_voc12aug/ocrnet_hr48_512x512_40k_voc12aug_20200614_015958.log.json)     |
-
-
-## Citation
-Please consider citing our work if you find it helps you,
-
-```
-@article{YuanW18,
-  title={Ocnet: Object context network for scene parsing},
-  author={Yuhui Yuan and Jingdong Wang},
-  booktitle={arXiv preprint arXiv:1809.00916},
-  year={2018}
-}
-
-@article{YuanCW20,
-  title={Object-Contextual Representations for Semantic Segmentation},
-  author={Yuhui Yuan and Xilin Chen and Jingdong Wang},
-  booktitle={ECCV},
-  year={2020}
-}
-```
