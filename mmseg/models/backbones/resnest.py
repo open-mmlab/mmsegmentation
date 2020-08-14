@@ -120,9 +120,10 @@ class SplitAttentionConv2d(nn.Module):
         x = self.relu(x)
 
         batch, rchannel = x.shape[:2]
+        batch = x.size(0)
         if self.radix > 1:
-            splits = torch.split(x, rchannel // self.radix, dim=1)
-            gap = sum(splits)
+            splits = x.view(batch, self.radix, -1, *x.shape[2:])
+            gap = splits.sum(dim=1)
         else:
             gap = x
         gap = F.adaptive_avg_pool2d(gap, 1)
@@ -135,8 +136,8 @@ class SplitAttentionConv2d(nn.Module):
         atten = self.rsoftmax(atten).view(batch, -1, 1, 1)
 
         if self.radix > 1:
-            attens = torch.split(atten, rchannel // self.radix, dim=1)
-            out = sum([att * split for (att, split) in zip(attens, splits)])
+            attens = atten.view(batch, self.radix, -1, *atten.shape[2:])
+            out = torch.sum(attens * splits, dim=1)
         else:
             out = atten * x
         return out.contiguous()
