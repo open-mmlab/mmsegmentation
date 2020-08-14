@@ -351,7 +351,7 @@ class FastSCNN(nn.Module):
             global_in_channels,
             global_block_channels,
             global_out_channels,
-            downsample_factors=self.global_block_strides,
+            strides=self.global_block_strides,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
