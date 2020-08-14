@@ -47,7 +47,6 @@ def check_norm_state(modules, train_state):
 
 
 def test_resnet_basic_block():
-
     with pytest.raises(AssertionError):
         # Not implemented yet.
         dcn = dict(type='DCN', deform_groups=1, fallback_on_stride=False)
@@ -97,7 +96,6 @@ def test_resnet_basic_block():
 
 
 def test_resnet_bottleneck():
-
     with pytest.raises(AssertionError):
         # Style must be in ['pytorch', 'caffe']
         Bottleneck(64, 64, style='tensorflow')
@@ -669,7 +667,12 @@ def test_resnext_backbone():
 def test_fastscnn_backbone():
     with pytest.raises(AssertionError):
         # Fast-SCNN channel constraints.
-        FastSCNN(3, (32, 48), 64, (64, 96, 128), 127, 64, 128)
+        FastSCNN(
+            3, (32, 48),
+            64, (64, 96, 128), (2, 2, 1),
+            global_out_channels=127,
+            higher_in_channels=64,
+            lower_in_channels=128)
 
     # Test FastSCNN Standard Forward
     model = FastSCNN()
