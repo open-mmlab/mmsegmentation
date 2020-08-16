@@ -54,7 +54,8 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 Supported backbones:
 - [x] ResNet
 - [x] ResNeXt
-- [x] HRNet
+- [x] [HRNet](configs/hrnet/README.md)
+- [x] [ResNeSt](configs/resnest/README.md)
 
 Supported methods:
 - [x] [FCN](configs/fcn)

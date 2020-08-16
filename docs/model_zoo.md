@@ -81,6 +81,10 @@ Please refer to [ANN](https://github.com/open-mmlab/mmsegmentation/blob/master/c
 
 Please refer to [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet) for details.
 
+### ResNeSt
+
+Please refer to [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest) for details.
+
 
 ### Mixed Precision (FP16) Training
 
