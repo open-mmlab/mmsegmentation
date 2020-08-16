@@ -2,20 +2,11 @@
 
 ## Introduction
 ```
-@article{DBLP:journals/corr/abs-1902-04502,
-  author    = {Rudra P. K. Poudel and
-               Stephan Liwicki and
-               Roberto Cipolla},
-  title     = {Fast-SCNN: Fast Semantic Segmentation Network},
-  journal   = {CoRR},
-  volume    = {abs/1902.04502},
-  year      = {2019},
-  url       = {http://arxiv.org/abs/1902.04502},
-  archivePrefix = {arXiv},
-  eprint    = {1902.04502},
-  timestamp = {Tue, 21 May 2019 18:03:38 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-1902-04502.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@article{poudel2019fast,
+  title={Fast-scnn: Fast semantic segmentation network},
+  author={Poudel, Rudra PK and Liwicki, Stephan and Cipolla, Roberto},
+  journal={arXiv preprint arXiv:1902.04502},
+  year={2019}
 }
 ```
 
