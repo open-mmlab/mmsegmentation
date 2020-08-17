@@ -7,7 +7,7 @@ import time
 import mmcv
 import torch
 from mmcv.runner import init_dist
-from mmcv.utils import Config, DictAction
+from mmcv.utils import Config, DictAction, get_git_hash
 
 from mmseg import __version__
 from mmseg.apis import set_random_seed, train_segmentor
@@ -141,7 +141,7 @@ def main():
         # save mmseg version, config file content and class names in
         # checkpoints as meta data
         cfg.checkpoint_config.meta = dict(
-            mmseg_version=__version__,
+            mmseg_version=f'{__version__}+{get_git_hash()[:7]}',
             config=cfg.pretty_text,
             CLASSES=datasets[0].CLASSES,
             PALETTE=datasets[0].PALETTE)

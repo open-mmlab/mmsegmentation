@@ -85,6 +85,10 @@ Please refer to [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/maste
 
 Please refer to [Fast-SCNN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastscnn) for details.
 
+### ResNeSt
+
+Please refer to [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest) for details.
+
 ### Mixed Precision (FP16) Training
 
 Please refer [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fp16/README.md) for details.

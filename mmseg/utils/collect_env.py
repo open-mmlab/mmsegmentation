@@ -7,7 +7,7 @@ import cv2
 import mmcv
 import torch
 import torchvision
-from mmcv.utils.parrots_wrapper import get_build_config
+from mmcv.utils import get_build_config, get_git_hash
 
 import mmseg
 
@@ -53,7 +53,7 @@ def collect_env():
     env_info['OpenCV'] = cv2.__version__
 
     env_info['MMCV'] = mmcv.__version__
-    env_info['MMSegmentation'] = mmseg.__version__
+    env_info['MMSegmentation'] = f'{mmseg.__version__}+{get_git_hash()[:7]}'
     try:
         from mmcv.ops import get_compiler_version, get_compiling_cuda_version
         env_info['MMCV Compiler'] = get_compiler_version()
