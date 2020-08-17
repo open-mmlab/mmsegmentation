@@ -4,7 +4,8 @@ from mmcv.cnn import ConvModule, constant_init, kaiming_init
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.models.decode_heads.psp_head import PPM
-from mmseg.ops import DepthwiseSeparableConvModule, InvertedResidual, resize
+from mmseg.ops import DepthwiseSeparableConvModule, resize
+from mmseg.utils import InvertedResidual
 from ..builder import BACKBONES
 
 
