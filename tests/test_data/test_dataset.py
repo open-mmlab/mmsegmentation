@@ -6,7 +6,7 @@ import pytest
 
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (ADE20KDataset, CityscapesDataset, ConcatDataset,
-                            CustomDataset, PascalVOCDataset, RepeatDataset)
+                            CustomDataset, PascalVOCDataset, RepeatDataset, DATASETS)
 
 
 def test_classes():
@@ -171,3 +171,23 @@ def test_custom_dataset():
     assert 'mIoU' in eval_results
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results
+
+
+@pytest.mark.parametrize('dataset', [
+    'ADE20KDataset', 'CityscapesDataset', 'ConcatDataset', 'CustomDataset', 'PascalVOCDataset', 'RepeatDataset'
+])
+def test_custom_classes_override_default(dataset):
+    dataset_class = DATASETS.get(dataset)
+    dataset_class.load_annotations = MagicMock()
+
+    original_classes = dataset_class.CLASSES
+
+    custom_dataset = dataset_class(
+        ann_file=MagicMock(),
+        pipeline=[],
+        classes=('foo', 'bar'),
+        test_mode=True,
+        img_prefix='VOC2007' if dataset == 'VOCDataset' else '')
+
+    assert custom_dataset.CLASSES != original_classes
+    assert custom_dataset.CLASSES == ('foo', 'bar')

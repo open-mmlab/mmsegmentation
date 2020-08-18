@@ -74,7 +74,8 @@ class CustomDataset(Dataset):
                  data_root=None,
                  test_mode=False,
                  ignore_index=255,
-                 reduce_zero_label=False):
+                 reduce_zero_label=False,
+                 classes=None):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
         self.img_suffix = img_suffix
@@ -85,6 +86,9 @@ class CustomDataset(Dataset):
         self.test_mode = test_mode
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
+
+        if classes is not None:
+            self.CLASSES = classes
 
         # join paths if data_root is specified
         if self.data_root is not None:
