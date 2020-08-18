@@ -174,7 +174,7 @@ def test_custom_dataset():
 
 
 @pytest.mark.parametrize('dataset', [
-    'ADE20KDataset', 'CityscapesDataset', 'ConcatDataset', 'CustomDataset', 'PascalVOCDataset', 'RepeatDataset'
+    'ADE20KDataset', 'CityscapesDataset', 'CustomDataset', 'PascalVOCDataset'
 ])
 def test_custom_classes_override_default(dataset):
     dataset_class = DATASETS.get(dataset)
@@ -183,11 +183,11 @@ def test_custom_classes_override_default(dataset):
     original_classes = dataset_class.CLASSES
 
     custom_dataset = dataset_class(
-        ann_file=MagicMock(),
         pipeline=[],
-        classes=('foo', 'bar'),
+        img_dir=MagicMock(),
+        split='',
         test_mode=True,
-        img_prefix='VOC2007' if dataset == 'VOCDataset' else '')
+        classes=('foo', 'bar'))
 
     assert custom_dataset.CLASSES != original_classes
     assert custom_dataset.CLASSES == ('foo', 'bar')
