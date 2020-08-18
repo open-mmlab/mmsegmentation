@@ -5,8 +5,9 @@ import numpy as np
 import pytest
 
 from mmseg.core.evaluation import get_classes, get_palette
-from mmseg.datasets import (ADE20KDataset, CityscapesDataset, ConcatDataset,
-                            CustomDataset, PascalVOCDataset, RepeatDataset, DATASETS)
+from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
+                            ConcatDataset, CustomDataset, PascalVOCDataset,
+                            RepeatDataset)
 
 
 def test_classes():
@@ -173,21 +174,57 @@ def test_custom_dataset():
     assert 'aAcc' in eval_results
 
 
+@patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
+@patch('mmseg.datasets.CustomDataset.__getitem__',
+       MagicMock(side_effect=lambda idx: idx))
 @pytest.mark.parametrize('dataset', [
     'ADE20KDataset', 'CityscapesDataset', 'CustomDataset', 'PascalVOCDataset'
 ])
 def test_custom_classes_override_default(dataset):
+
     dataset_class = DATASETS.get(dataset)
-    dataset_class.load_annotations = MagicMock()
 
     original_classes = dataset_class.CLASSES
 
+    # Test setting classes as a tuple
     custom_dataset = dataset_class(
         pipeline=[],
         img_dir=MagicMock(),
-        split='',
-        test_mode=True,
-        classes=('foo', 'bar'))
+        split=MagicMock(),
+        classes=('bus', 'car'),
+        test_mode=True)
 
     assert custom_dataset.CLASSES != original_classes
-    assert custom_dataset.CLASSES == ('foo', 'bar')
+    assert custom_dataset.CLASSES == ('bus', 'car')
+
+    # Test setting classes as a list
+    custom_dataset = dataset_class(
+        pipeline=[],
+        img_dir=MagicMock(),
+        split=MagicMock(),
+        classes=['bus', 'car'],
+        test_mode=True)
+
+    assert custom_dataset.CLASSES != original_classes
+    assert custom_dataset.CLASSES == ['bus', 'car']
+
+    # Test overriding not a subset
+    custom_dataset = dataset_class(
+        pipeline=[],
+        img_dir=MagicMock(),
+        split=MagicMock(),
+        classes=['foo'],
+        test_mode=True)
+
+    assert custom_dataset.CLASSES != original_classes
+    assert custom_dataset.CLASSES == ['foo']
+
+    # Test default behavior
+    custom_dataset = dataset_class(
+        pipeline=[],
+        img_dir=MagicMock(),
+        split=MagicMock(),
+        classes=None,
+        test_mode=True)
+
+    assert custom_dataset.CLASSES == original_classes
