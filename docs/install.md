@@ -2,7 +2,7 @@
 
 ### Requirements
 
-- Linux or Windows
+- Linux or Windows(Experimental)
 - Python 3.6+
 - PyTorch 1.3 or higher
 - [mmcv](https://github.com/open-mmlab/mmcv)
@@ -100,7 +100,7 @@ mkdir data
 ln -s $DATA_ROOT data
 ```
 
-#### Windows
+#### Windows(Experimental)
 Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is
 %DATA_ROOT%. Notice: It must be an absolute path).
 
