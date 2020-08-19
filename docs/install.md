@@ -101,7 +101,8 @@ ln -s $DATA_ROOT data
 ```
 
 #### Windows
-Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is %DATA_ROOT%).
+Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is
+%DATA_ROOT%. Notice: It must be an absolute path).
 
 ```shell
 conda create -n open-mmlab python=3.7 -y
