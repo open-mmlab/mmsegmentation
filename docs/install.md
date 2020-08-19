@@ -2,7 +2,7 @@
 
 ### Requirements
 
-- Linux (Windows is not officially supported)
+- Linux or Windows
 - Python 3.6+
 - PyTorch 1.3 or higher
 - [mmcv](https://github.com/open-mmlab/mmcv)
@@ -25,9 +25,26 @@ conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
 ```
 
 c. Install [MMCV](https://mmcv.readthedocs.io/en/latest/) following the [official instructions](https://mmcv.readthedocs.io/en/latest/#installation).
-Either `mmcv` or `mmcv-full` is compatible with MMSegmentation, but for methods like CCNet and PSANet, CUDA ops in `mmcv-full` is required
+Either `mmcv` or `mmcv-full` is compatible with MMSegmentation, but for methods like CCNet and PSANet, CUDA ops in `mmcv-full` is required.
+Notice: for Windows, the installation of MMCV requires native C++ compilers, such as cl.exe. Please add the compiler to %PATH%.
 
-The pre-build mmcv-full (with PyTorch 1.5 and CUDA 10.1) can be installed by running: (other available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
+A typical path for cl.exe looks like the following if you have Windows SDK and Visual Studio installed on your computer:
+
+```shell
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.26.28801\bin\Hostx86\x64
+```
+
+Or you should download the cl compiler from web and then set up the path.
+Then, clone mmcv from github and install mmcv via pip:
+
+```shell
+git clone https://github.com/open-mmlab/mmcv
+cd mmcv
+pip install -e .
+```
+
+Currently, mmcv-full is not supported on Windows.
+But for Linux systems, the pre-build mmcv-full (with PyTorch 1.5 and CUDA 10.1) can be installed by running: (other available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
 
 ```shell
 pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
@@ -65,6 +82,7 @@ you can install it before installing MMCV.
 To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
 
 ### A from-scratch setup script
+#### Linux
 
 Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is $DATA_ROOT).
 
@@ -80,4 +98,24 @@ pip install -e .  # or "python setup.py develop"
 
 mkdir data
 ln -s $DATA_ROOT data
+```
+
+#### Windows
+Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is %DATA_ROOT%).
+
+```shell
+conda create -n open-mmlab python=3.7 -y
+conda activate open-mmlab
+
+conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
+set PATH=full\path\to\your\cpp\compiler;%PATH%
+git clone https://github.com/open-mmlab/mmcv
+cd mmcv
+pip install -e .
+
+git clone https://github.com/open-mmlab/mmsegmentation
+cd mmsegmentation
+pip install -e .  # or "python setup.py develop"
+
+mklink /D data %DATA_ROOT%
 ```
