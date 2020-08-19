@@ -17,15 +17,6 @@ class DisentangledNonLocal2d(NonLocal2d):
         super().__init__(*arg, **kwargs)
         self.temperature = temperature
         self.conv_mask = nn.Conv2d(self.in_channels, 1, kernel_size=1)
-        # self.g = ConvModule(
-        #     self.in_channels,
-        #     self.in_channels,
-        #     kernel_size=1,
-        #     conv_cfg=None,
-        #     act_cfg=None,
-        #     bias=False)
-        # self.gamma = Scale(0.)
-        # delattr(self, 'conv_out')
 
     def embedded_gaussian(self, theta_x, phi_x):
         """Embedded gaussian with temperature."""
@@ -77,8 +68,6 @@ class DisentangledNonLocal2d(NonLocal2d):
         y = y.permute(0, 2, 1).contiguous().reshape(n, self.inter_channels,
                                                     *x.size()[2:])
 
-        # y = self.gamma(y)
-
         # unary_mask: [N, 1, HxW]
         unary_mask = self.conv_mask(x)
         unary_mask = unary_mask.view(n, 1, -1)
@@ -89,7 +78,7 @@ class DisentangledNonLocal2d(NonLocal2d):
         unary_x = unary_x.permute(0, 2, 1).contiguous().reshape(
             n, self.inter_channels, 1, 1)
 
-        output = x + self.conv_out(y) + unary_x
+        output = x + self.conv_out(y + unary_x)
 
         return output
 
