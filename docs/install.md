@@ -46,7 +46,7 @@ pip install git+https://github.com/open-mmlab/mmsegmentation.git # install the m
 
 Instead, if you would like to install MMSegmentation in `dev` mode, run following
 ```shell
-git clone https://github.com/open-mmlab/mmsegmentation
+git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -e .  # or "python setup.py develop"
 ```
@@ -94,9 +94,14 @@ Or you should download the cl compiler from web and then set up the path.
 Then, clone mmcv from github and install mmcv via pip:
 
 ```shell
-git clone https://github.com/open-mmlab/mmcv
+git clone https://github.com/open-mmlab/mmcv.git
 cd mmcv
 pip install -e .
+```
+
+Or simply:
+```shell
+pip install mmcv
 ```
 
 Currently, mmcv-full is not supported on Windows.
@@ -115,7 +120,7 @@ pip install git+https://github.com/open-mmlab/mmsegmentation.git # install the m
 
 Instead, if you would like to install MMSegmentation in `dev` mode, run following
 ```shell
-git clone https://github.com/open-mmlab/mmsegmentation
+git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -e .  # or "python setup.py develop"
 ```
@@ -145,7 +150,7 @@ conda activate open-mmlab
 
 conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
 pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
-git clone https://github.com/open-mmlab/mmsegmentation
+git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -e .  # or "python setup.py develop"
 
@@ -163,11 +168,9 @@ conda activate open-mmlab
 
 conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
 set PATH=full\path\to\your\cpp\compiler;%PATH%
-git clone https://github.com/open-mmlab/mmcv
-cd mmcv
-pip install -e .
+pip install mmcv
 
-git clone https://github.com/open-mmlab/mmsegmentation
+git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -e .  # or "python setup.py develop"
 
