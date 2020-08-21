@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/fast_scnn.py', '../_base_/datasets/ade20k.py',
+    '../_base_/models/fast_scnn.py', '../_base_/datasets/pascal_voc12.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
 
