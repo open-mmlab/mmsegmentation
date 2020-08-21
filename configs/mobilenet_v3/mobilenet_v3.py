@@ -2,16 +2,20 @@ _base_ = [
     '../_base_/datasets/cityscapes.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_80k.py'
 ]
+data = dict(
+    samples_per_gpu=8,
+    workers_per_gpu=4,
+)
 
 # model settings
-norm_cfg = dict(type='BN', requires_grad=True, momentum=0.01)
+norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.01)
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
         type='MobileNetv3',
         arch='big',
         norm_cfg=norm_cfg,
-        out_indices=(5, 12),  # 1/8 res and 1/16 res
+        out_indices=(5, 12),  # 1/8 res and 1/16 res.
     ),
     decode_head=dict(
         type='LR_ASPPHead',
@@ -30,3 +34,6 @@ model = dict(
 # model training and testing settings
 train_cfg = dict()
 test_cfg = dict(mode='whole')
+
+# optimizer
+optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.00001)
