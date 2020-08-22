@@ -76,4 +76,4 @@ class LR_ASPPHead(BaseDecodeHead):
                 mode='bilinear',
                 align_corners=self.align_corners))
 
-        return self.cls_seg(pred_lower_res + pred_higher_res)
+        return pred_lower_res + pred_higher_res
