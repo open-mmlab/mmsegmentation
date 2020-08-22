@@ -3,12 +3,13 @@ _base_ = [
     '../_base_/schedules/schedule_80k.py'
 ]
 data = dict(
-    samples_per_gpu=8,
+    samples_per_gpu=4,
     workers_per_gpu=4,
 )
 
 # model settings
-norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.01)
+norm_cfg = dict(type='BN', requires_grad=True, momentum=0.01)
+
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
@@ -20,8 +21,8 @@ model = dict(
     decode_head=dict(
         type='LR_ASPPHead',
         in_channels=(40, 160),
-        channels=19,
         input_transform='multiple_select',
+        channels=19,
         num_classes=19,
         in_index=(0, 1),
         # all the outputs of MobileNetV3 backbone are needed.
@@ -35,5 +36,5 @@ model = dict(
 train_cfg = dict()
 test_cfg = dict(mode='whole')
 
-# optimizer
+# redefine optimizer
 optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.00001)
