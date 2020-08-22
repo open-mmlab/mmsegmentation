@@ -78,7 +78,7 @@ class DisentangledNonLocal2d(NonLocal2d):
         unary_x = unary_x.permute(0, 2, 1).contiguous().reshape(
             n, self.inter_channels, 1, 1)
 
-        output = x + self.conv_out(y) + self.conv_out(unary_x)
+        output = x + self.conv_out(y + unary_x)
 
         return output
 
@@ -115,7 +115,7 @@ class DNLHead(FCNHead):
             reduction=self.reduction,
             use_scale=self.use_scale,
             conv_cfg=self.conv_cfg,
-            norm_cfg=self.norm_cfg,
+            norm_cfg=None,
             mode=self.mode,
             temperature=self.temperature)
 
