@@ -87,8 +87,6 @@ class MobileNetv3(nn.Module):
         self.arch = arch
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
-        self.out_indices = out_indices
-        self.frozen_stages = frozen_stages
         self.norm_eval = norm_eval
         self.with_cp = with_cp
 
@@ -110,6 +108,8 @@ class MobileNetv3(nn.Module):
         layers = []
         layer_setting = self.arch_settings[self.arch]
         for i, params in enumerate(layer_setting):
+            if i > max(self.out_indices):
+                break
             (kernel_size, mid_channels, out_channels, with_se, act,
              stride) = params
             if with_se:
