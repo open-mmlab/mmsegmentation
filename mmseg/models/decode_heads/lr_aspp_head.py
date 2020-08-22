@@ -77,3 +77,7 @@ class LR_ASPPHead(BaseDecodeHead):
                 align_corners=self.align_corners))
 
         return pred_lower_res + pred_higher_res
+
+    def init_weights(self):
+        super(LR_ASPPHead, self).init_weights()
+        del self.conv_seg
