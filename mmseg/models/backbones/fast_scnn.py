@@ -186,9 +186,6 @@ class FeatureFusionModule(nn.Module):
         lower_in_channels (int): Number of input channels of the
             lower-resolution branch.
         out_channels (int): Number of output channels.
-        scale_factor (int): Scale factor applied to the lower-res input.
-            Should be coherent with the downsampling factor determined
-            by the GFE module.
         conv_cfg (dict | None): Config of conv layers. Default: None
         norm_cfg (dict | None): Config of norm layers. Default:
             dict(type='BN')
@@ -202,13 +199,11 @@ class FeatureFusionModule(nn.Module):
                  higher_in_channels,
                  lower_in_channels,
                  out_channels,
-                 scale_factor,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  align_corners=False):
         super(FeatureFusionModule, self).__init__()
-        self.scale_factor = scale_factor
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
@@ -239,7 +234,7 @@ class FeatureFusionModule(nn.Module):
     def forward(self, higher_res_feature, lower_res_feature):
         lower_res_feature = resize(
             lower_res_feature,
-            scale_factor=self.scale_factor,
+            size=higher_res_feature.size()[2:],
             mode='bilinear',
             align_corners=self.align_corners)
         lower_res_feature = self.dwconv(lower_res_feature)
@@ -321,11 +316,6 @@ class FastSCNN(nn.Module):
             raise AssertionError('Global Output Channels must be the same \
                                 with Lower Input Channels!')
 
-        # Calculate scale factor used in FFM.
-        self.scale_factor = 1
-        for factor in global_block_strides:
-            self.scale_factor *= factor
-
         self.in_channels = in_channels
         self.downsample_dw_channels1 = downsample_dw_channels[0]
         self.downsample_dw_channels2 = downsample_dw_channels[1]
@@ -361,7 +351,6 @@ class FastSCNN(nn.Module):
             higher_in_channels,
             lower_in_channels,
             fusion_out_channels,
-            scale_factor=self.scale_factor,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
