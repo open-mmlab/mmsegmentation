@@ -16,11 +16,11 @@ conda activate open-mmlab
 ```
 
 b. Install PyTorch and torchvision following the [official instructions](https://pytorch.org/).
-Here we use PyTorch 1.5.0 and CUDA 10.1.
+Here we use PyTorch 1.6.0 and CUDA 10.1.
 You may also switch to other version by specifying the version number.
 
 ```shell
-conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
 ```
 
 c. Install [MMCV](https://mmcv.readthedocs.io/en/latest/) following the [official instructions](https://mmcv.readthedocs.io/en/latest/#installation).
@@ -73,11 +73,11 @@ conda activate open-mmlab
 ```
 
 b. Install PyTorch and torchvision following the [official instructions](https://pytorch.org/).
-Here we use PyTorch 1.5.0 and CUDA 10.1.
+Here we use PyTorch 1.6.0 and CUDA 10.1.
 You may also switch to other version by specifying the version number.
 
 ```shell
-conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
 ```
 
 c. Install [MMCV](https://mmcv.readthedocs.io/en/latest/) following the [official instructions](https://mmcv.readthedocs.io/en/latest/#installation).
@@ -148,7 +148,7 @@ Here is a full script for setting up mmsegmentation with conda and link the data
 conda create -n open-mmlab python=3.7 -y
 conda activate open-mmlab
 
-conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
 pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
 git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
@@ -166,7 +166,7 @@ Here is a full script for setting up mmsegmentation with conda and link the data
 conda create -n open-mmlab python=3.7 -y
 conda activate open-mmlab
 
-conda install pytorch=1.5.0 torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
 set PATH=full\path\to\your\cpp\compiler;%PATH%
 pip install mmcv
 
