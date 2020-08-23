@@ -155,7 +155,7 @@ def test_encnet_forward():
 
 def test_mobilenet_v2_forward():
     _test_encoder_decoder_forward(
-        'mobilenet_v2/pspnet_s101-d8_512x1024_80k_cityscapes.py')
+        'mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes.py')
 
 
 def get_world_size(process_group):
