@@ -27,6 +27,7 @@ model = dict(
         in_index=(0, 1),
         # all the outputs of MobileNetV3 backbone are needed.
         norm_cfg=norm_cfg,
+        act_cfg=dict(type='HSwish'),
         align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.)),
