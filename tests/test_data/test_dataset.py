@@ -177,10 +177,13 @@ def test_custom_dataset():
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
 @patch('mmseg.datasets.CustomDataset.__getitem__',
        MagicMock(side_effect=lambda idx: idx))
-@pytest.mark.parametrize('dataset', [
-    'ADE20KDataset', 'CityscapesDataset', 'CustomDataset', 'PascalVOCDataset'
+@pytest.mark.parametrize('dataset, classes', [
+    ('ADE20KDataset', ('wall', 'building')),
+    ('CityscapesDataset', ('road', 'sidewalk')),
+    ('CustomDataset', ('bus', 'car')),
+    ('PascalVOCDataset', ('aeroplane', 'bicycle')),
 ])
-def test_custom_classes_override_default(dataset):
+def test_custom_classes_override_default(dataset, classes):
 
     dataset_class = DATASETS.get(dataset)
 
@@ -191,33 +194,33 @@ def test_custom_classes_override_default(dataset):
         pipeline=[],
         img_dir=MagicMock(),
         split=MagicMock(),
-        classes=('bus', 'car'),
+        classes=classes,
         test_mode=True)
 
     assert custom_dataset.CLASSES != original_classes
-    assert custom_dataset.CLASSES == ('bus', 'car')
+    assert custom_dataset.CLASSES == classes
 
     # Test setting classes as a list
     custom_dataset = dataset_class(
         pipeline=[],
         img_dir=MagicMock(),
         split=MagicMock(),
-        classes=['bus', 'car'],
+        classes=list(classes),
         test_mode=True)
 
     assert custom_dataset.CLASSES != original_classes
-    assert custom_dataset.CLASSES == ['bus', 'car']
+    assert custom_dataset.CLASSES == list(classes)
 
     # Test overriding not a subset
     custom_dataset = dataset_class(
         pipeline=[],
         img_dir=MagicMock(),
         split=MagicMock(),
-        classes=['foo'],
+        classes=[classes[0]],
         test_mode=True)
 
     assert custom_dataset.CLASSES != original_classes
-    assert custom_dataset.CLASSES == ['foo']
+    assert custom_dataset.CLASSES == [classes[0]]
 
     # Test default behavior
     custom_dataset = dataset_class(

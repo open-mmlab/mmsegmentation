@@ -91,12 +91,11 @@ class CustomDataset(Dataset):
         # overwrite classes with custom classes
         if classes:
             self.custom_classes = True
-            if not self.CLASSES:
-                self.CLASSES = classes
-            elif not isinstance(classes, (tuple, list)):
+            if not isinstance(classes, (tuple, list)):
                 raise ValueError(
                     f'Unsupported type {type(classes)} of classes.')
-            else:
+
+            if self.CLASSES:
                 self.old_id_to_new_id = {}
                 matched_classes = 0
                 for i, c in enumerate(self.CLASSES):
@@ -111,6 +110,8 @@ class CustomDataset(Dataset):
                         matched_classes += 1
                 if matched_classes < len(classes):
                     raise ValueError('classes is not a subset of CLASSES.')
+
+            self.CLASSES = classes
 
         # join paths if data_root is specified
         if self.data_root is not None:
