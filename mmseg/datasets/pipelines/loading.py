@@ -132,6 +132,10 @@ class LoadAnnotations(object):
         gt_semantic_seg = mmcv.imfrombytes(
             img_bytes, flag='unchanged',
             backend=self.imdecode_backend).squeeze().astype(np.uint8)
+        # modify if custom classes
+        if results.get('old_id_to_new_id', None) is not None:
+            for old_id, new_id in results['old_id_to_new_id'].items():
+                gt_semantic_seg[gt_semantic_seg == old_id] = new_id
         # reduce zero_label
         if self.reduce_zero_label:
             # avoid using underflow conversion

@@ -86,9 +86,31 @@ class CustomDataset(Dataset):
         self.test_mode = test_mode
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
+        self.custom_classes = False
 
-        if classes is not None:
-            self.CLASSES = classes
+        # overwrite classes with custom classes
+        if classes:
+            self.custom_classes = True
+            if not self.CLASSES:
+                self.CLASSES = classes
+            elif not isinstance(classes, (tuple, list)):
+                raise ValueError(
+                    f'Unsupported type {type(classes)} of classes.')
+            else:
+                self.old_id_to_new_id = {}
+                matched_classes = 0
+                for i, c in enumerate(self.CLASSES):
+                    if c not in classes:
+                        self.old_id_to_new_id[
+                            i + int(self.reduce_zero_label)] = -1 + int(
+                                self.reduce_zero_label)
+                    else:
+                        self.old_id_to_new_id[i + int(
+                            self.reduce_zero_label)] = classes.index(c) + int(
+                                self.reduce_zero_label)
+                        matched_classes += 1
+                if matched_classes < len(classes):
+                    raise ValueError('classes is not a subset of CLASSES.')
 
         # join paths if data_root is specified
         if self.data_root is not None:
@@ -164,6 +186,8 @@ class CustomDataset(Dataset):
     def pre_pipeline(self, results):
         """Prepare results dict for pipeline."""
         results['seg_fields'] = []
+        if self.custom_classes:
+            results['old_id_to_new_id'] = self.old_id_to_new_id
 
     def __getitem__(self, idx):
         """Get training/test data after pipeline.
