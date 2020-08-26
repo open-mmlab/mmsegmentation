@@ -115,7 +115,7 @@ class DNLHead(FCNHead):
             reduction=self.reduction,
             use_scale=self.use_scale,
             conv_cfg=self.conv_cfg,
-            norm_cfg=None,
+            norm_cfg=self.norm_cfg,
             mode=self.mode,
             temperature=self.temperature)
 
