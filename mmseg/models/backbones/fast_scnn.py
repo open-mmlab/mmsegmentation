@@ -5,8 +5,8 @@ from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.models.decode_heads.psp_head import PPM
 from mmseg.ops import DepthwiseSeparableConvModule, resize
-from mmseg.utils import InvertedResidual
 from ..builder import BACKBONES
+from ..utils import InvertedResidual
 
 
 class LearningToDownsample(nn.Module):
@@ -152,19 +152,19 @@ class GlobalFeatureExtractor(nn.Module):
                     expand_ratio=6):
         layers = [
             InvertedResidual(
-                in_channels,
-                out_channels,
-                stride,
-                expand_ratio,
+                in_channels=in_channels,
+                mid_channels=int(in_channels * expand_ratio),
+                out_channels=out_channels,
+                stride=stride,
                 norm_cfg=self.norm_cfg)
         ]
         for i in range(1, blocks):
             layers.append(
                 InvertedResidual(
-                    out_channels,
-                    out_channels,
-                    1,
-                    expand_ratio,
+                    in_channels=out_channels,
+                    mid_channels=int(out_channels * expand_ratio),
+                    out_channels=out_channels,
+                    stride=1,
                     norm_cfg=self.norm_cfg))
         return nn.Sequential(*layers)
 
