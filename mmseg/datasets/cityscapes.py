@@ -173,7 +173,7 @@ class CityscapesDataset(CustomDataset):
         try:
             import cityscapesscripts.evaluation.evalPixelLevelSemanticLabeling as CSEval  # noqa
         except ImportError:
-            raise ImportError('Please run "pip install citscapesscripts" to '
+            raise ImportError('Please run "pip install cityscapesscripts" to '
                               'install cityscapesscripts first.')
         msg = 'Evaluating in Cityscapes style'
         if logger is None:
