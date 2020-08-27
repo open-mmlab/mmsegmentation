@@ -15,6 +15,7 @@ class InvertedResidual(nn.Module):
         kernel_size (int): The kernal size of the depthwise convolution.
             Default: 3.
         stride (int): The stride of the depthwise convolution. Default: 1.
+        dilation (int): The dilation of the depthwise convolution. Default: 1.
         se_cfg (dict): Config dict for se layer. Defaul: None, which means no
             se layer.
         with_expand_conv (bool): Use expand conv or not. If set False,
@@ -39,6 +40,7 @@ class InvertedResidual(nn.Module):
                  mid_channels,
                  kernel_size=3,
                  stride=1,
+                 dilation=1,
                  se_cfg=None,
                  with_expand_conv=True,
                  conv_cfg=None,
@@ -72,7 +74,8 @@ class InvertedResidual(nn.Module):
             out_channels=mid_channels,
             kernel_size=kernel_size,
             stride=stride,
-            padding=kernel_size // 2,
+            dilation=dilation,
+            padding=((kernel_size - 1) * dilation + 1) // 2,
             groups=mid_channels,
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,

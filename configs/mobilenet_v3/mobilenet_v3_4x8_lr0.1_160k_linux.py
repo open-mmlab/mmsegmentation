@@ -16,7 +16,7 @@ model = dict(
         type='MobileNetv3',
         arch='big',
         norm_cfg=norm_cfg,
-        out_indices=(5, 12),  # 1/8 res and 1/16 res.
+        out_indices=(5, 14),  # 1/8 res and 1/16 res.
     ),
     decode_head=dict(
         type='LR_ASPPHead',

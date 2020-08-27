@@ -32,34 +32,35 @@ class MobileNetv3(nn.Module):
             Defualt: False.
     """
     # Parameters to build each block:
-    #     [kernel size, mid channels, out channels, with_se, act type, stride]
+    #     [kernel size, mid channels, out channels, with_se,
+    #     act type, stride, dilation]
     arch_settings = {
-        'small': [[3, 16, 16, True, 'ReLU', 2],
-                  [3, 72, 24, False, 'ReLU', 2],
-                  [3, 88, 24, False, 'ReLU', 1],
-                  [5, 96, 40, True, 'HSwish', 2],
-                  [5, 240, 40, True, 'HSwish', 1],
-                  [5, 240, 40, True, 'HSwish', 1],
-                  [5, 120, 48, True, 'HSwish', 1],
-                  [5, 144, 48, True, 'HSwish', 1],
-                  [5, 288, 96, True, 'HSwish', 2],
-                  [5, 576, 96, True, 'HSwish', 1],
-                  [5, 576, 96, True, 'HSwish', 1]],
-        'big': [[3, 16, 16, False, 'ReLU', 1],
-                [3, 64, 24, False, 'ReLU', 2],
-                [3, 72, 24, False, 'ReLU', 1],
-                [5, 72, 40, True, 'ReLU', 2],
-                [5, 120, 40, True, 'ReLU', 1],
-                [5, 120, 40, True, 'ReLU', 1],
-                [3, 240, 80, False, 'HSwish', 2],
-                [3, 200, 80, False, 'HSwish', 1],
-                [3, 184, 80, False, 'HSwish', 1],
-                [3, 184, 80, False, 'HSwish', 1],
-                [3, 480, 112, True, 'HSwish', 1],
-                [3, 672, 112, True, 'HSwish', 1],
-                [5, 672, 160, True, 'HSwish', 1],
-                [5, 672, 160, True, 'HSwish', 2],
-                [5, 960, 160, True, 'HSwish', 1]]
+        'small': [[3, 16, 16, True, 'ReLU', 2, 1],
+                  [3, 72, 24, False, 'ReLU', 2, 1],
+                  [3, 88, 24, False, 'ReLU', 1, 1],
+                  [5, 96, 40, True, 'HSwish', 2, 1],
+                  [5, 240, 40, True, 'HSwish', 1, 1],
+                  [5, 240, 40, True, 'HSwish', 1, 1],
+                  [5, 120, 48, True, 'HSwish', 1, 1],
+                  [5, 144, 48, True, 'HSwish', 1, 1],
+                  [5, 288, 96, True, 'HSwish', 2, 1],
+                  [5, 576, 96, True, 'HSwish', 1, 1],
+                  [5, 576, 96, True, 'HSwish', 1, 1]],
+        'big': [[3, 16, 16, False, 'ReLU', 1, 1],
+                [3, 64, 24, False, 'ReLU', 2, 1],
+                [3, 72, 24, False, 'ReLU', 1, 1],
+                [5, 72, 40, True, 'ReLU', 2, 1],
+                [5, 120, 40, True, 'ReLU', 1, 1],
+                [5, 120, 40, True, 'ReLU', 1, 1],
+                [3, 240, 80, False, 'HSwish', 2, 1],
+                [3, 200, 80, False, 'HSwish', 1, 1],
+                [3, 184, 80, False, 'HSwish', 1, 1],
+                [3, 184, 80, False, 'HSwish', 1, 1],
+                [3, 480, 112, True, 'HSwish', 1, 1],
+                [3, 672, 112, True, 'HSwish', 1, 1],
+                [5, 672, 160, True, 'HSwish', 1, 1],
+                [5, 672, 160, True, 'HSwish', 1, 2],
+                [5, 960, 160, True, 'HSwish', 1, 1]]
     }  # yapf: disable
 
     def __init__(self,
@@ -110,8 +111,8 @@ class MobileNetv3(nn.Module):
         for i, params in enumerate(layer_setting):
             if i > max(self.out_indices):
                 break
-            (kernel_size, mid_channels, out_channels, with_se, act,
-             stride) = params
+            (kernel_size, mid_channels, out_channels, with_se, act, stride,
+             dilation) = params
             if with_se:
                 se_cfg = dict(
                     channels=mid_channels,
@@ -126,6 +127,7 @@ class MobileNetv3(nn.Module):
                 mid_channels=mid_channels,
                 kernel_size=kernel_size,
                 stride=stride,
+                dilation=dilation,
                 se_cfg=se_cfg,
                 with_expand_conv=True,
                 conv_cfg=self.conv_cfg,
