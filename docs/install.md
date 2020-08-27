@@ -33,7 +33,7 @@ The pre-build mmcv-full (with PyTorch 1.5 and CUDA 10.1) can be installed by run
 pip install mmcv-full==latest+torch1.5.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
 ```
 
-Install mmcv for Windows:
+**Install mmcv for Windows (Experimental):**
 
 For Windows, the installation of MMCV requires native C++ compilers, such as cl.exe. Please add the compiler to %PATH%.
 
