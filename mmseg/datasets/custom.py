@@ -58,6 +58,10 @@ class CustomDataset(Dataset):
         ignore_index (int): The label index to be ignored. Default: 255
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default: False
+        classes (str | Sequence[str], optional): Specify classes to load.
+            If is None, ``cls.CLASSES`` will be used. Default: None.
+        palette (str | Sequence[str], optional): Specify palette to load.
+            If is None, ``cls.PALETTE`` will be used. Default: None.
     """
 
     CLASSES = None
@@ -75,7 +79,8 @@ class CustomDataset(Dataset):
                  test_mode=False,
                  ignore_index=255,
                  reduce_zero_label=False,
-                 classes=None):
+                 classes=None,
+                 palette=None):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
         self.img_suffix = img_suffix
@@ -86,7 +91,8 @@ class CustomDataset(Dataset):
         self.test_mode = test_mode
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
-        self.CLASSES = self.get_classes(classes)
+        self.CLASSES, self.PALETTE = self.get_classes_and_palette(
+            classes, palette)
 
         # join paths if data_root is specified
         if self.data_root is not None:
@@ -238,8 +244,7 @@ class CustomDataset(Dataset):
 
         return gt_seg_maps
 
-    @classmethod
-    def get_classes_and_palette(cls, classes=None, palette=None):
+    def get_classes_and_palette(self, classes=None, palette=None):
         """Get class names of current dataset.
 
         Args:
@@ -248,12 +253,18 @@ class CustomDataset(Dataset):
                 string, take it as a file name. The file contains the name of
                 classes where each line contains one class name. If classes is
                 a tuple or list, override the CLASSES defined by the dataset.
+            palette (Sequence[str] | str | None): If palette is None, use
+                default PALETTE defined by builtin dataset. If palette is a
+                string, take it as a file name. The file contains the name of
+                palette where each line contains one palette value. If palette
+                is a tuple or list, override the PALETTE defined by the
+                dataset.
         """
         if classes is None:
-            cls.custom_classes = False
-            return cls.CLASSES, cls.PALETTE
+            self.custom_classes = False
+            return self.CLASSES, self.PALETTE
 
-        cls.custom_classes = True
+        self.custom_classes = True
         if isinstance(classes, str):
             # take it as a file path
             class_names = mmcv.list_from_file(classes)
@@ -262,41 +273,36 @@ class CustomDataset(Dataset):
         else:
             raise ValueError(f'Unsupported type {type(classes)} of classes.')
 
-        if cls.CLASSES:
-
-            if not classes.issubset(cls.CLASSES):
+        if self.CLASSES:
+            if not set(classes).issubset(self.CLASSES):
                 raise ValueError('classes is not a subset of CLASSES.')
-
-            cls.old_id_to_new_id = {}
-            for i, c in enumerate(cls.CLASSES):
+            self.old_id_to_new_id = {}
+            for i, c in enumerate(self.CLASSES):
                 if c not in class_names:
-                    cls.old_id_to_new_id[i] = -1
+                    self.old_id_to_new_id[i] = -1
                 else:
-                    cls.old_id_to_new_id[i] = classes.index(c)
+                    self.old_id_to_new_id[i] = classes.index(c)
 
-        return class_names, cls.get_palette_for_custom_classes(palette)
+        return class_names, self.get_palette_for_custom_classes(palette)
 
     def get_palette_for_custom_classes(self, palette=None):
 
         if palette:
             if isinstance(palette, str):
                 # take it as a file path
-                palette_values = mmcv.list_from_file(palette)
-            elif isinstance(palette, (tuple, list)):
-                palette_values = palette
-            else:
+                palette = mmcv.list_from_file(palette)
+            elif not isinstance(palette, (tuple, list)):
                 raise ValueError(
                     f'Unsupported type {type(palette)} of palette.')
 
-        else:
-            palette_values = []
+        elif hasattr(self, 'old_id_to_new_id'):
+            palette = []
             for x in sorted(self.old_id_to_new_id.items(), key=lambda x: x[1]):
                 if x[1] != -1:
-                    palette_values.append(self.PALETTE[x[0]])
+                    palette.append(self.PALETTE[x[0]])
+            palette = type(self.PALETTE)(palette)
 
-            palette_values = type(self.PALETTE)(palette_values)
-
-        return palette_values
+        return palette
 
     def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
