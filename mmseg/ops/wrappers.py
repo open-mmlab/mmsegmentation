@@ -30,6 +30,7 @@ def resize(input,
 
 
 class Upsample(nn.Module):
+
     def __init__(self, scale_factor, mode, align_corners):
         super(Upsample, self).__init__()
         self.scale_factor = scale_factor
