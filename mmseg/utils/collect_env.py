@@ -40,7 +40,6 @@ def collect_env():
             devices[torch.cuda.get_device_name(k)].append(str(k))
         for name, devids in devices.items():
             env_info['GPU ' + ','.join(devids)] = name
-
     try:
         gcc = subprocess.check_output('gcc --version | head -n1', shell=True)
         gcc = gcc.decode('utf-8').strip()
