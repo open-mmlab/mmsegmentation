@@ -86,32 +86,7 @@ class CustomDataset(Dataset):
         self.test_mode = test_mode
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
-        self.custom_classes = False
-
-        # overwrite classes with custom classes
-        if classes:
-            self.custom_classes = True
-            if not isinstance(classes, (tuple, list)):
-                raise ValueError(
-                    f'Unsupported type {type(classes)} of classes.')
-
-            if self.CLASSES:
-                self.old_id_to_new_id = {}
-                matched_classes = 0
-                for i, c in enumerate(self.CLASSES):
-                    if c not in classes:
-                        self.old_id_to_new_id[
-                            i + int(self.reduce_zero_label)] = -1 + int(
-                                self.reduce_zero_label)
-                    else:
-                        self.old_id_to_new_id[i + int(
-                            self.reduce_zero_label)] = classes.index(c) + int(
-                                self.reduce_zero_label)
-                        matched_classes += 1
-                if matched_classes < len(classes):
-                    raise ValueError('classes is not a subset of CLASSES.')
-
-            self.CLASSES = classes
+        self.CLASSES = self.get_classes(classes)
 
         # join paths if data_root is specified
         if self.data_root is not None:
@@ -249,6 +224,10 @@ class CustomDataset(Dataset):
         for img_info in self.img_infos:
             gt_seg_map = mmcv.imread(
                 img_info['ann']['seg_map'], flag='unchanged', backend='pillow')
+            # modify if custom classes
+            if hasattr(self, 'old_id_to_new_id'):
+                for old_id, new_id in self.old_id_to_new_id.items():
+                    gt_seg_map[gt_seg_map == old_id] = new_id
             if self.reduce_zero_label:
                 # avoid using underflow conversion
                 gt_seg_map[gt_seg_map == 0] = 255
@@ -258,6 +237,66 @@ class CustomDataset(Dataset):
             gt_seg_maps.append(gt_seg_map)
 
         return gt_seg_maps
+
+    @classmethod
+    def get_classes_and_palette(cls, classes=None, palette=None):
+        """Get class names of current dataset.
+
+        Args:
+            classes (Sequence[str] | str | None): If classes is None, use
+                default CLASSES defined by builtin dataset. If classes is a
+                string, take it as a file name. The file contains the name of
+                classes where each line contains one class name. If classes is
+                a tuple or list, override the CLASSES defined by the dataset.
+        """
+        if classes is None:
+            cls.custom_classes = False
+            return cls.CLASSES, cls.PALETTE
+
+        cls.custom_classes = True
+        if isinstance(classes, str):
+            # take it as a file path
+            class_names = mmcv.list_from_file(classes)
+        elif isinstance(classes, (tuple, list)):
+            class_names = classes
+        else:
+            raise ValueError(f'Unsupported type {type(classes)} of classes.')
+
+        if cls.CLASSES:
+
+            if not classes.issubset(cls.CLASSES):
+                raise ValueError('classes is not a subset of CLASSES.')
+
+            cls.old_id_to_new_id = {}
+            for i, c in enumerate(cls.CLASSES):
+                if c not in class_names:
+                    cls.old_id_to_new_id[i] = -1
+                else:
+                    cls.old_id_to_new_id[i] = classes.index(c)
+
+        return class_names, cls.get_palette_for_custom_classes(palette)
+
+    def get_palette_for_custom_classes(self, palette=None):
+
+        if palette:
+            if isinstance(palette, str):
+                # take it as a file path
+                palette_values = mmcv.list_from_file(palette)
+            elif isinstance(palette, (tuple, list)):
+                palette_values = palette
+            else:
+                raise ValueError(
+                    f'Unsupported type {type(palette)} of palette.')
+
+        else:
+            palette_values = []
+            for x in sorted(self.old_id_to_new_id.items(), key=lambda x: x[1]):
+                if x[1] != -1:
+                    palette_values.append(self.PALETTE[x[0]])
+
+            palette_values = type(self.PALETTE)(palette_values)
+
+        return palette_values
 
     def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
