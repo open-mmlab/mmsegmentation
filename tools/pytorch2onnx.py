@@ -146,7 +146,7 @@ def pytorch2onnx(model,
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Convert MMDet to ONNX')
+    parser = argparse.ArgumentParser(description='Convert MMSeg to ONNX')
     parser.add_argument('config', help='test config file path')
     parser.add_argument('--checkpoint', help='checkpoint file', default=None)
     parser.add_argument('--show', action='store_true', help='show onnx graph')
@@ -192,8 +192,7 @@ if __name__ == '__main__':
         num_classes = segmentor.decode_head.num_classes
 
     if args.checkpoint:
-        checkpoint = load_checkpoint(
-            segmentor, args.checkpoint, map_location='cpu')
+        load_checkpoint(segmentor, args.checkpoint, map_location='cpu')
 
     # conver model to onnx file
     pytorch2onnx(
