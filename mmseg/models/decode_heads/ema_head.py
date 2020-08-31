@@ -88,15 +88,15 @@ class EMAModule(nn.Module):
                 bases = torch.einsum('bcn,bnk->bck', feats, attention_normed)
                 bases = self._l2norm(bases, dim=1)
 
-        feats_recon = torch.einsum('bck,bnk->bcn', bases, attention)
-        feats_recon = feats_recon.view(batch_size, channels, height, width)
-
         if self.training:
             bases = bases.mean(dim=0, keepdim=True)
             bases = reduce_mean(bases)
             bases = self._l2norm(bases, dim=1)
             self.bases = (1 -
                           self.momentum) * self.bases + self.momentum * bases
+
+        feats_recon = torch.einsum('bck,bnk->bcn', bases, attention)
+        feats_recon = feats_recon.view(batch_size, channels, height, width)
 
         return feats_recon
 
@@ -109,10 +109,13 @@ class EMAHead(BaseDecodeHead):
     <https://arxiv.org/abs/1907.13426>`_.
 
     Args:
+        ema_channels (int): EMA module channels
         num_bases (int): Number of bases.
         num_stages (int): Number of the EM iterations.
+        concat_input (bool): Whether concat the input and output of convs
+            before classification layer. Default: True
         momentum (float): Momentum to update the base. Default: 0.1.
-        epsilon (float): A small value for computation stability.
+        eps (float): A small value for computation stability.
             Default: 1e-6.
     """
 
@@ -120,15 +123,17 @@ class EMAHead(BaseDecodeHead):
                  ema_channels,
                  num_bases,
                  num_stages,
+                 concat_input=True,
                  momentum=0.1,
-                 epsilon=1e-6,
+                 eps=1e-6,
                  **kwargs):
         super(EMAHead, self).__init__(**kwargs)
         self.ema_channels = ema_channels
         self.num_bases = num_bases
         self.num_stages = num_stages
+        self.concat_input = concat_input
         self.momentum = momentum
-        self.epsilon = epsilon
+        self.epsilon = eps
         self.ema_module = EMAModule(self.ema_channels, self.num_bases,
                                     self.num_stages, self.momentum,
                                     self.epsilon)
@@ -167,6 +172,15 @@ class EMAHead(BaseDecodeHead):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
+        if self.concat_input:
+            self.conv_cat = ConvModule(
+                self.in_channels + self.channels,
+                self.channels,
+                kernel_size=3,
+                padding=1,
+                conv_cfg=self.conv_cfg,
+                norm_cfg=self.norm_cfg,
+                act_cfg=self.act_cfg)
 
     def forward(self, inputs):
         """Forward function."""
@@ -179,5 +193,7 @@ class EMAHead(BaseDecodeHead):
         recon = self.ema_out_conv(recon)
         output = F.relu(identity + recon, inplace=True)
         output = self.bottleneck(output)
+        if self.concat_input:
+            output = self.conv_cat(output)
         output = self.cls_seg(output)
         return output
