@@ -40,10 +40,12 @@ def collect_env():
             devices[torch.cuda.get_device_name(k)].append(str(k))
         for name, devids in devices.items():
             env_info['GPU ' + ','.join(devids)] = name
-
-    gcc = subprocess.check_output('gcc --version | head -n1', shell=True)
-    gcc = gcc.decode('utf-8').strip()
-    env_info['GCC'] = gcc
+    try:
+        gcc = subprocess.check_output('gcc --version | head -n1', shell=True)
+        gcc = gcc.decode('utf-8').strip()
+        env_info['GCC'] = gcc
+    except subprocess.CalledProcessError:
+        env_info['GCC'] = 'n/a'
 
     env_info['PyTorch'] = torch.__version__
     env_info['PyTorch compiling details'] = get_build_config()
