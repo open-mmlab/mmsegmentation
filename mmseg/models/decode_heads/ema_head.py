@@ -194,6 +194,6 @@ class EMAHead(BaseDecodeHead):
         output = F.relu(identity + recon, inplace=True)
         output = self.bottleneck(output)
         if self.concat_input:
-            output = self.conv_cat(output)
+            output = self.conv_cat(torch.cat([x, output], dim=1))
         output = self.cls_seg(output)
         return output
