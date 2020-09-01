@@ -88,15 +88,15 @@ class EMAModule(nn.Module):
                 bases = torch.einsum('bcn,bnk->bck', feats, attention_normed)
                 bases = self._l2norm(bases, dim=1)
 
+        feats_recon = torch.einsum('bck,bnk->bcn', bases, attention)
+        feats_recon = feats_recon.view(batch_size, channels, height, width)
+
         if self.training:
             bases = bases.mean(dim=0, keepdim=True)
             bases = reduce_mean(bases)
             bases = self._l2norm(bases, dim=1)
             self.bases = (1 -
                           self.momentum) * self.bases + self.momentum * bases
-
-        feats_recon = torch.einsum('bck,bnk->bcn', bases, attention)
-        feats_recon = feats_recon.view(batch_size, channels, height, width)
 
         return feats_recon
 
