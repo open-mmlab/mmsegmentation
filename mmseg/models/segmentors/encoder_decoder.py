@@ -195,8 +195,10 @@ class EncoderDecoder(BaseSegmentor):
 
                 count_mat[:, :, y1:y2, x1:x2] += 1
         assert (count_mat == 0).sum() == 0
-        # We want to regard count_mat as a constant while exporting to ONNX
-        count_mat = torch.from_numpy(count_mat.detach().numpy())
+        if torch.onnx.is_in_onnx_export():
+            # cast count_mat to constant while exporting to ONNX
+            count_mat = torch.from_numpy(
+                count_mat.cpu().detach().numpy()).to(device=img.device)
         preds = preds / count_mat
         if rescale:
             preds = resize(
