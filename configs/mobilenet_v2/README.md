@@ -3,16 +3,12 @@
 ## Introduction
 
 ```
-@article{Sandler_2018,
-   title={MobileNetV2: Inverted Residuals and Linear Bottlenecks},
-   ISBN={9781538664209},
-   url={http://dx.doi.org/10.1109/CVPR.2018.00474},
-   DOI={10.1109/cvpr.2018.00474},
-   journal={2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-   publisher={IEEE},
-   author={Sandler, Mark and Howard, Andrew and Zhu, Menglong and Zhmoginov, Andrey and Chen, Liang-Chieh},
-   year={2018},
-   month={Jun}
+@inproceedings{sandler2018mobilenetv2,
+  title={Mobilenetv2: Inverted residuals and linear bottlenecks},
+  author={Sandler, Mark and Howard, Andrew and Zhu, Menglong and Zhmoginov, Andrey and Chen, Liang-Chieh},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={4510--4520},
+  year={2018}
 }
 ```
 
