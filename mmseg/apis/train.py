@@ -73,8 +73,10 @@ def train_segmentor(model,
 
     if runner_type == 'iter':
         runner_class = IterBasedRunner
+        max_iters = cfg.total_iters
     else:
         runner_class = EpochBasedRunner
+        max_iters = cfg.total_epochs
 
     runner = runner_class(
         model=model,
@@ -109,4 +111,4 @@ def train_segmentor(model,
         runner.resume(cfg.resume_from)
     elif cfg.load_from:
         runner.load_checkpoint(cfg.load_from)
-    runner.run(data_loaders, cfg.workflow, cfg.total_iters)
+    runner.run(data_loaders, cfg.workflow, max_iters)
