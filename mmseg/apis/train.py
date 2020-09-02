@@ -36,7 +36,7 @@ def train_segmentor(model,
                     validate=False,
                     timestamp=None,
                     meta=None,
-                    runner_type="iter"):
+                    runner_type='iter'):
     """Launch segmentor training."""
     logger = get_root_logger(cfg.log_level)
 
@@ -71,8 +71,8 @@ def train_segmentor(model,
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
 
-    if runner_type == "iter":
-        runner_class = IterBasedRunner 
+    if runner_type == 'iter':
+        runner_class = IterBasedRunner
     else:
         runner_class = EpochBasedRunner
 
