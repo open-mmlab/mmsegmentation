@@ -3,7 +3,7 @@ import random
 import numpy as np
 import torch
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
-from mmcv.runner import IterBasedRunner, build_optimizer
+from mmcv.runner import EpochBasedRunner, IterBasedRunner, build_optimizer
 
 from mmseg.core import DistEvalHook, EvalHook
 from mmseg.datasets import build_dataloader, build_dataset
@@ -35,7 +35,8 @@ def train_segmentor(model,
                     distributed=False,
                     validate=False,
                     timestamp=None,
-                    meta=None):
+                    meta=None,
+                    runner_type="iter"):
     """Launch segmentor training."""
     logger = get_root_logger(cfg.log_level)
 
@@ -70,7 +71,12 @@ def train_segmentor(model,
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
 
-    runner = IterBasedRunner(
+    if runner_type == "iter":
+        runner_class = IterBasedRunner 
+    else:
+        runner_class = EpochBasedRunner
+
+    runner = runner_class(
         model=model,
         batch_processor=None,
         optimizer=optimizer,
