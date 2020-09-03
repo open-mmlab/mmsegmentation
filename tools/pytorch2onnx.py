@@ -5,6 +5,7 @@ import mmcv
 import numpy as np
 import onnxruntime as rt
 import torch
+from torch import nn
 import torch._C
 import torch.serialization
 from mmcv.onnx import register_extra_symbolics
@@ -88,7 +89,10 @@ def pytorch2onnx(model,
     """
     model.cpu().eval()
 
-    num_classes = model.decode_head.num_classes
+    if isinstance(model.decode_head, nn.ModuleList):
+        num_classes = model.decode_head[-1].num_classes
+    else:
+        num_classes = model.decode_head.num_classes
 
     mm_inputs = _demo_mm_inputs(input_shape, num_classes)
 
@@ -142,7 +146,7 @@ def pytorch2onnx(model,
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Convert MMDet to ONNX')
+    parser = argparse.ArgumentParser(description='Convert MMSeg to ONNX')
     parser.add_argument('config', help='test config file path')
     parser.add_argument('--checkpoint', help='checkpoint file', default=None)
     parser.add_argument('--show', action='store_true', help='show onnx graph')
@@ -182,11 +186,13 @@ if __name__ == '__main__':
     # convert SyncBN to BN
     segmentor = _convert_batchnorm(segmentor)
 
-    num_classes = segmentor.decode_head.num_classes
+    if isinstance(segmentor.decode_head, nn.ModuleList):
+        num_classes = segmentor.decode_head[-1].num_classes
+    else:
+        num_classes = segmentor.decode_head.num_classes
 
     if args.checkpoint:
-        checkpoint = load_checkpoint(
-            segmentor, args.checkpoint, map_location='cpu')
+        load_checkpoint(segmentor, args.checkpoint, map_location='cpu')
 
     # conver model to onnx file
     pytorch2onnx(
