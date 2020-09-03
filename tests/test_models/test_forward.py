@@ -153,6 +153,10 @@ def test_encnet_forward():
         'encnet/encnet_r50-d8_512x1024_40k_cityscapes.py')
 
 
+def test_sem_fpn_forward():
+    _test_encoder_decoder_forward('sem_fpn/fpn_r50_512x1024_80k_cityscapes.py')
+
+
 def get_world_size(process_group):
 
     return 1
