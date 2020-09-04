@@ -4,7 +4,7 @@ from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
 from mmcv.runner import load_checkpoint
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
-from mmseg.ops import resize
+from mmseg.ops import Upsample, resize
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from .resnet import BasicBlock, Bottleneck
@@ -141,7 +141,7 @@ class HRModule(nn.Module):
                                 bias=False),
                             build_norm_layer(self.norm_cfg, in_channels[i])[1],
                             # we set align_corners=False for HRNet
-                            nn.Upsample(
+                            Upsample(
                                 scale_factor=2**(j - i),
                                 mode='bilinear',
                                 align_corners=False)))

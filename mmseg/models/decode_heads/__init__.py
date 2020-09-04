@@ -4,6 +4,7 @@ from .cc_head import CCHead
 from .da_head import DAHead
 from .enc_head import EncHead
 from .fcn_head import FCNHead
+from .fpn_head import FPNHead
 from .gc_head import GCHead
 from .lr_aspp_head import LR_ASPPHead
 from .nl_head import NLHead
@@ -17,5 +18,5 @@ from .uper_head import UPerHead
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
     'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
-    'EncHead', 'DepthwiseSeparableFCNHead', 'LR_ASPPHead'
+    'EncHead', 'DepthwiseSeparableFCNHead', 'LR_ASPPHead', 'FPNHead'
 ]
