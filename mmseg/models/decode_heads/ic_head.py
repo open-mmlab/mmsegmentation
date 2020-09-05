@@ -105,8 +105,7 @@ class ICHead(BaseDecodeHead):
         loss_weights = [1.0, 0.4, 0.4, 0.4]
         loss = dict()
         for i in range(4):
-            loss_tmp = super(ICHead, self).losses(
-                seg_logit[i], seg_label)
+            loss_tmp = super(ICHead, self).losses(seg_logit[i], seg_label)
             loss_tmp['loss_seg'] *= loss_weights[i]
             loss[f'loss_seg_{loss_names[i]}'] = loss_tmp['loss_seg']
             loss.update(loss_tmp)
