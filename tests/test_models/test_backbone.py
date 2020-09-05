@@ -4,8 +4,8 @@ from mmcv.ops import DeformConv2dPack
 from mmcv.utils.parrots_wrapper import _BatchNorm
 from torch.nn.modules import AvgPool2d, GroupNorm
 
-from mmseg.models.backbones import (FastSCNN, ResNeSt, ResNet, ResNetV1d,
-                                    ResNeXt)
+from mmseg.models.backbones import (FastSCNN, ICNet, ResNeSt, ResNet,
+                                    ResNetV1d, ResNeXt)
 from mmseg.models.backbones.resnest import Bottleneck as BottleneckS
 from mmseg.models.backbones.resnet import BasicBlock, Bottleneck
 from mmseg.models.backbones.resnext import Bottleneck as BottleneckX
@@ -729,3 +729,24 @@ def test_resnest_backbone():
     assert feat[1].shape == torch.Size([2, 512, 28, 28])
     assert feat[2].shape == torch.Size([2, 1024, 14, 14])
     assert feat[3].shape == torch.Size([2, 2048, 7, 7])
+
+
+def test_icnet_backbone():
+    model = ICNet(
+        resnet_cfg=dict(
+            depth=50,
+            stem_channels=128,
+            strides=(1, 2, 1, 1),
+            dilations=(1, 1, 2, 4),
+            deep_stem=True,
+            style='pytorch',
+            norm_cfg=dict(type='BN')))
+    model.init_weights()
+    model.eval()
+
+    imgs = torch.randn(1, 3, 680, 680)
+    feat = model(imgs)
+    assert len(feat) == 3
+    assert feat[0].shape == torch.Size([1, 64, 85, 85])
+    assert feat[1].shape == torch.Size([1, 256, 43, 43])
+    assert feat[2].shape == torch.Size([1, 256, 21, 21])

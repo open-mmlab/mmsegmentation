@@ -7,8 +7,8 @@ from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
                                        DepthwiseSeparableASPPHead, EncHead,
-                                       FCNHead, GCHead, NLHead, OCRHead,
-                                       PSAHead, PSPHead, UPerHead)
+                                       FCNHead, GCHead, ICHead, NLHead,
+                                       OCRHead, PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -539,3 +539,19 @@ def test_dw_aspp_head():
     assert head.aspp_modules[2].depthwise_conv.dilation == (24, 24)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_ic_head():
+
+    inputs = [
+        torch.randn(1, 64, 85, 85),
+        torch.randn(1, 256, 43, 43),
+        torch.randn(1, 256, 21, 21)
+    ]
+    head = ICHead(in_channels=128, channels=128, num_classes=19)
+    output = head(inputs)
+    assert len(output) == 4
+    assert output[0].shape == (1, head.num_classes, 680, 680)
+    assert output[1].shape == (1, head.num_classes, 170, 170)
+    assert output[2].shape == (1, head.num_classes, 85, 85)
+    assert output[3].shape == (1, head.num_classes, 43, 43)
