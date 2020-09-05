@@ -5,10 +5,10 @@ import torch
 from mmcv.cnn import ConvModule
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
-from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
-                                       DepthwiseSeparableASPPHead, EncHead,
-                                       FCNHead, GCHead, NLHead, OCRHead,
-                                       PSAHead, PSPHead, UPerHead)
+from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, CGHead,
+                                       DAHead, DepthwiseSeparableASPPHead,
+                                       EncHead, FCNHead, GCHead, NLHead,
+                                       OCRHead, PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -539,3 +539,11 @@ def test_dw_aspp_head():
     assert head.aspp_modules[2].depthwise_conv.dilation == (24, 24)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_cg_head():
+
+    inputs = [torch.randn(1, 256, 45, 45)]
+    head = CGHead(in_channels=256, channels=256, num_classes=19)
+    output = head(inputs)
+    assert output.shape == (1, head.num_classes, 45, 45)
