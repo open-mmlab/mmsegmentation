@@ -26,49 +26,20 @@ class EMAModule(nn.Module):
         channels (int): Channels of the whole module.
         num_bases (int): Number of bases.
         num_stages (int): Number of the EM iterations.
-        epsilon (float): A small value for computation stability.
-            Default: 1e-6.
     """
 
-    def __init__(self,
-                 channels,
-                 num_bases,
-                 num_stages,
-                 momentum,
-                 epsilon=1e-6):
+    def __init__(self, channels, num_bases, num_stages, momentum):
         super(EMAModule, self).__init__()
         assert num_stages >= 1, 'num_stages must be at least 1!'
         self.num_bases = num_bases
         self.num_stages = num_stages
         self.momentum = momentum
-        self.epsilon = epsilon
 
         bases = torch.zeros(1, channels, self.num_bases)
         bases.normal_(0, math.sqrt(2. / self.num_bases))
         # [1, channels, num_bases]
-        bases = self._l2norm(bases, dim=1)
+        bases = F.normalize(bases, dim=1, p=2)
         self.register_buffer('bases', bases)
-
-    def _l2norm(self, input, dim):
-        """Normalize the inp tensor with l2-norm.
-
-        Returns a tensor where each sub-tensor of input along the given dim is
-        normalized such that the 2-norm of the sub-tensor is equal to 1.
-
-        Args:
-            input (tensor): The input tensor.
-            dim (int): The dimension to slice over to get the ssub-tensors.
-        """
-        return input / (self.epsilon + input.norm(dim=dim, keepdim=True))
-
-    def _l1norm(self, input, dim):
-        """Normalize the inp tensor with l1-norm.
-
-        Args:
-            input (tensor): The input tensor.
-            dim (int): The dimension to slice over to get the ssub-tensors.
-        """
-        return input / (self.epsilon + input.sum(dim=dim, keepdim=True))
 
     def forward(self, feats):
         """Forward function."""
@@ -83,10 +54,12 @@ class EMAModule(nn.Module):
                 # [batch_size, height*width, num_bases]
                 attention = torch.einsum('bcn,bck->bnk', feats, bases)
                 attention = F.softmax(attention, dim=2)
-                attention_normed = self._l1norm(attention, dim=1)
+                # l1 norm
+                attention_normed = F.normalize(attention, dim=1, p=1)
                 # [batch_size, channels, num_bases]
                 bases = torch.einsum('bcn,bnk->bck', feats, attention_normed)
-                bases = self._l2norm(bases, dim=1)
+                # l2 norm
+                bases = F.normalize(bases, dim=1, p=2)
 
         feats_recon = torch.einsum('bck,bnk->bcn', bases, attention)
         feats_recon = feats_recon.view(batch_size, channels, height, width)
@@ -94,7 +67,8 @@ class EMAModule(nn.Module):
         if self.training:
             bases = bases.mean(dim=0, keepdim=True)
             bases = reduce_mean(bases)
-            bases = self._l2norm(bases, dim=1)
+            # l2 norm
+            bases = F.normalize(bases, dim=1, p=2)
             self.bases = (1 -
                           self.momentum) * self.bases + self.momentum * bases
 
@@ -115,8 +89,6 @@ class EMAHead(BaseDecodeHead):
         concat_input (bool): Whether concat the input and output of convs
             before classification layer. Default: True
         momentum (float): Momentum to update the base. Default: 0.1.
-        eps (float): A small value for computation stability.
-            Default: 1e-6.
     """
 
     def __init__(self,
@@ -125,7 +97,6 @@ class EMAHead(BaseDecodeHead):
                  num_stages,
                  concat_input=True,
                  momentum=0.1,
-                 eps=1e-6,
                  **kwargs):
         super(EMAHead, self).__init__(**kwargs)
         self.ema_channels = ema_channels
@@ -133,10 +104,8 @@ class EMAHead(BaseDecodeHead):
         self.num_stages = num_stages
         self.concat_input = concat_input
         self.momentum = momentum
-        self.epsilon = eps
         self.ema_module = EMAModule(self.ema_channels, self.num_bases,
-                                    self.num_stages, self.momentum,
-                                    self.epsilon)
+                                    self.num_stages, self.momentum)
 
         self.ema_in_conv = ConvModule(
             self.in_channels,
