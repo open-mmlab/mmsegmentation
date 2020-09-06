@@ -30,8 +30,8 @@ def single_gpu_test(model, data_loader, show=False, out_dir=None):
     prog_bar = mmcv.ProgressBar(len(dataset))
     for i, data in enumerate(data_loader):
         with torch.no_grad():
-            result = model(return_loss=False, rescale=not show, **data)
-        if isinstance(results, list):
+            result = model(return_loss=False, **data)
+        if isinstance(result, list):
             results.extend(result)
         else:
             results.append(result)
@@ -96,7 +96,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
-        if isinstance(results, list):
+        if isinstance(result, list):
             results.extend(result)
         else:
             results.append(result)

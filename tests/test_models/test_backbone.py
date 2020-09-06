@@ -4,7 +4,9 @@ from mmcv.ops import DeformConv2dPack
 from mmcv.utils.parrots_wrapper import _BatchNorm
 from torch.nn.modules import AvgPool2d, GroupNorm
 
-from mmseg.models.backbones import ResNet, ResNetV1d, ResNeXt
+from mmseg.models.backbones import (FastSCNN, ResNeSt, ResNet, ResNetV1d,
+                                    ResNeXt)
+from mmseg.models.backbones.resnest import Bottleneck as BottleneckS
 from mmseg.models.backbones.resnet import BasicBlock, Bottleneck
 from mmseg.models.backbones.resnext import Bottleneck as BottleneckX
 from mmseg.models.utils import ResLayer
@@ -47,7 +49,6 @@ def check_norm_state(modules, train_state):
 
 
 def test_resnet_basic_block():
-
     with pytest.raises(AssertionError):
         # Not implemented yet.
         dcn = dict(type='DCN', deform_groups=1, fallback_on_stride=False)
@@ -97,7 +98,6 @@ def test_resnet_basic_block():
 
 
 def test_resnet_bottleneck():
-
     with pytest.raises(AssertionError):
         # Style must be in ['pytorch', 'caffe']
         Bottleneck(64, 64, style='tensorflow')
@@ -664,3 +664,68 @@ def test_resnext_backbone():
     assert feat[1].shape == torch.Size([1, 512, 28, 28])
     assert feat[2].shape == torch.Size([1, 1024, 14, 14])
     assert feat[3].shape == torch.Size([1, 2048, 7, 7])
+
+
+def test_fastscnn_backbone():
+    with pytest.raises(AssertionError):
+        # Fast-SCNN channel constraints.
+        FastSCNN(
+            3, (32, 48),
+            64, (64, 96, 128), (2, 2, 1),
+            global_out_channels=127,
+            higher_in_channels=64,
+            lower_in_channels=128)
+
+    # Test FastSCNN Standard Forward
+    model = FastSCNN()
+    model.init_weights()
+    model.train()
+    batch_size = 4
+    imgs = torch.randn(batch_size, 3, 512, 1024)
+    feat = model(imgs)
+
+    assert len(feat) == 3
+    # higher-res
+    assert feat[0].shape == torch.Size([batch_size, 64, 64, 128])
+    # lower-res
+    assert feat[1].shape == torch.Size([batch_size, 128, 16, 32])
+    # FFM output
+    assert feat[2].shape == torch.Size([batch_size, 128, 64, 128])
+
+
+def test_resnest_bottleneck():
+    with pytest.raises(AssertionError):
+        # Style must be in ['pytorch', 'caffe']
+        BottleneckS(64, 64, radix=2, reduction_factor=4, style='tensorflow')
+
+    # Test ResNeSt Bottleneck structure
+    block = BottleneckS(
+        64, 256, radix=2, reduction_factor=4, stride=2, style='pytorch')
+    assert block.avd_layer.stride == 2
+    assert block.conv2.channels == 256
+
+    # Test ResNeSt Bottleneck forward
+    block = BottleneckS(64, 16, radix=2, reduction_factor=4)
+    x = torch.randn(2, 64, 56, 56)
+    x_out = block(x)
+    assert x_out.shape == torch.Size([2, 64, 56, 56])
+
+
+def test_resnest_backbone():
+    with pytest.raises(KeyError):
+        # ResNeSt depth should be in [50, 101, 152, 200]
+        ResNeSt(depth=18)
+
+    # Test ResNeSt with radix 2, reduction_factor 4
+    model = ResNeSt(
+        depth=50, radix=2, reduction_factor=4, out_indices=(0, 1, 2, 3))
+    model.init_weights()
+    model.train()
+
+    imgs = torch.randn(2, 3, 224, 224)
+    feat = model(imgs)
+    assert len(feat) == 4
+    assert feat[0].shape == torch.Size([2, 256, 56, 56])
+    assert feat[1].shape == torch.Size([2, 512, 28, 28])
+    assert feat[2].shape == torch.Size([2, 1024, 14, 14])
+    assert feat[3].shape == torch.Size([2, 2048, 7, 7])

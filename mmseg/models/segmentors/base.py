@@ -8,6 +8,7 @@ import numpy as np
 import torch
 import torch.distributed as dist
 import torch.nn as nn
+from mmcv.runner import auto_fp16
 
 
 class BaseSegmentor(nn.Module):
@@ -17,6 +18,7 @@ class BaseSegmentor(nn.Module):
 
     def __init__(self):
         super(BaseSegmentor, self).__init__()
+        self.fp16_enabled = False
 
     @property
     def with_neck(self):
@@ -105,6 +107,7 @@ class BaseSegmentor(nn.Module):
         else:
             return self.aug_test(imgs, img_metas, **kwargs)
 
+    @auto_fp16(apply_to=('img', ))
     def forward(self, img, img_metas, return_loss=True, **kwargs):
         """Calls either :func:`forward_train` or :func:`forward_test` depending
         on whether ``return_loss`` is ``True``.
@@ -146,7 +149,7 @@ class BaseSegmentor(nn.Module):
                 DDP, it means the batch size on each GPU), which is used for
                 averaging the logs.
         """
-        losses = self.forward_train(**data_batch, **kwargs)
+        losses = self(**data_batch)
         loss, log_vars = self._parse_losses(losses)
 
         outputs = dict(
@@ -163,7 +166,7 @@ class BaseSegmentor(nn.Module):
         during val epochs. Note that the evaluation after training epochs is
         not implemented with this method, but an evaluation hook.
         """
-        output = self.forward_test(**data_batch, **kwargs)
+        output = self(**data_batch, **kwargs)
         return output
 
     @staticmethod
@@ -239,8 +242,7 @@ class BaseSegmentor(nn.Module):
                     0, 255, size=(len(self.CLASSES), 3))
             else:
                 palette = self.PALETTE
-        else:
-            palette = np.array(palette)
+        palette = np.array(palette)
         assert palette.shape[0] == len(self.CLASSES)
         assert palette.shape[1] == 3
         assert len(palette.shape) == 2

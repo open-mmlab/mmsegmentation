@@ -7,7 +7,7 @@ import cv2
 import mmcv
 import torch
 import torchvision
-from mmcv.utils.parrots_wrapper import get_build_config
+from mmcv.utils import get_build_config, get_git_hash
 
 import mmseg
 
@@ -40,10 +40,12 @@ def collect_env():
             devices[torch.cuda.get_device_name(k)].append(str(k))
         for name, devids in devices.items():
             env_info['GPU ' + ','.join(devids)] = name
-
-    gcc = subprocess.check_output('gcc --version | head -n1', shell=True)
-    gcc = gcc.decode('utf-8').strip()
-    env_info['GCC'] = gcc
+    try:
+        gcc = subprocess.check_output('gcc --version | head -n1', shell=True)
+        gcc = gcc.decode('utf-8').strip()
+        env_info['GCC'] = gcc
+    except subprocess.CalledProcessError:
+        env_info['GCC'] = 'n/a'
 
     env_info['PyTorch'] = torch.__version__
     env_info['PyTorch compiling details'] = get_build_config()
@@ -53,7 +55,7 @@ def collect_env():
     env_info['OpenCV'] = cv2.__version__
 
     env_info['MMCV'] = mmcv.__version__
-    env_info['MMSegmentation'] = mmseg.__version__
+    env_info['MMSegmentation'] = f'{mmseg.__version__}+{get_git_hash()[:7]}'
     try:
         from mmcv.ops import get_compiler_version, get_compiling_cuda_version
         env_info['MMCV Compiler'] = get_compiler_version()
