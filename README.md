@@ -44,7 +44,8 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.5.0 was released in 10/7/2020.
+v0.5.1 was released in 11/08/2020.
+Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
 
@@ -53,7 +54,8 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 Supported backbones:
 - [x] ResNet
 - [x] ResNeXt
-- [x] HRNet
+- [x] [HRNet](configs/hrnet/README.md)
+- [x] [ResNeSt](configs/resnest/README.md)
 
 Supported methods:
 - [x] [FCN](configs/fcn)
@@ -69,6 +71,7 @@ Supported methods:
 - [x] [GCNet](configs/gcnet)
 - [x] [ANN](configs/ann)
 - [x] [OCRNet](configs/ocrnet)
+- [x] [Fast-SCNN](configs/fastscnn)
 - [x] [Mixed Precision (FP16) Training](configs/fp16/README.md)
 
 ## Installation
@@ -92,22 +95,3 @@ MMSegmentation is an open source project that welcome any contribution and feedb
 We wish that the toolbox and benchmark could serve the growing research
 community by providing a flexible as well as standardized toolkit to reimplement existing methods
 and develop their own new semantic segmentation methods.
-
-Many thanks to Ruobing Han ([@drcut](https://github.com/drcut)), Xiaoming Ma([@aishangmaxiaoming](https://github.com/aishangmaxiaoming)), Shiguang Wang ([@sunnyxiaohu](https://github.com/sunnyxiaohu)) for deployment support.
-
-## Citation
-
-If you use this toolbox or benchmark in your research, please cite this project.
-
-```
-@misc{mmseg2020,
-  author={Xu, Jiarui and Chen, Kai and Lin, Dahua},
-  title={{MMSegmenation}},
-  howpublished={\url{https://github.com/open-mmlab/mmsegmentation}},
-  year={2020}
-}
-```
-
-## Contact
-
-This repo is currently maintained by Jiarui Xu ([@xvjiarui](https://github.com/xvjiarui)), Kai Chen ([@hellock](http://github.com/hellock)).
