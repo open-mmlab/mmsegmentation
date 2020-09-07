@@ -157,6 +157,11 @@ def test_sem_fpn_forward():
     _test_encoder_decoder_forward('sem_fpn/fpn_r50_512x1024_80k_cityscapes.py')
 
 
+def test_point_rend_forward():
+    _test_encoder_decoder_forward(
+        'point_rend/pointrend_r50_512x1024_80k_cityscapes.py')
+
+
 def test_mobilenet_v2_forward():
     _test_encoder_decoder_forward(
         'mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes.py')
