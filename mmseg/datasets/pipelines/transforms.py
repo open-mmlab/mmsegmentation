@@ -1,3 +1,4 @@
+import cv2
 import mmcv
 import numpy as np
 from numpy import random
@@ -461,6 +462,73 @@ class RandomCrop(object):
 
     def __repr__(self):
         return self.__class__.__name__ + f'(crop_size={self.crop_size})'
+
+
+@PIPELINES.register_module()
+class RandomRotate(object):
+    """Random rotate the image & seg.
+
+    Args:
+        max_degree (float): The maximum rotation degree (range from -x to x).
+        rotation_ratio (float, optional): The rotation probability.
+            Default: None.
+    """
+
+    def __init__(self, max_degree, rotation_ratio=None):
+        self.rotation_ratio = rotation_ratio
+        if rotation_ratio is not None:
+            assert rotation_ratio >= 0 and rotation_ratio <= 1
+        self.max_degree = max_degree
+
+    def get_rotation_degree(self):
+        """Randomly get a rotation degree."""
+        rotation_degree = random.uniform(-1 * self.max_degree, self.max_degree)
+        return rotation_degree
+
+    def rotate(self,
+               img,
+               rotation_degree,
+               flags=cv2.INTER_LINEAR,
+               borderValue=0):
+        """Rotate  ``img``"""
+        h, w = img.shape[:2]
+        center = ((w - 1) * 0.5, (h - 1) * 0.5)
+        matrix = cv2.getRotationMatrix2D(center, rotation_degree, 1)
+        img = cv2.warpAffine(
+            img, matrix, (w, h), flags=flags, borderValue=borderValue)
+        return img
+
+    def __call__(self, results):
+        """Call function to randomly rotate images, semantic segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Randomly rotated results.
+        """
+
+        if 'rotation' not in results:
+            rotation = True if np.random.rand(
+            ) < self.rotation_ratio else False
+            results['rotation'] = rotation
+        if results['rotation']:
+            img = results['img']
+            rotation_degree = self.get_rotation_degree()
+
+            # rotate the image and semantic segmentation map
+            img = self.rotate(img, rotation_degree)
+            results['img'] = img
+            for key in results.get('seg_fields', []):
+                results[key] = self.rotate(
+                    results[key],
+                    rotation_degree,
+                    flags=cv2.INTER_NEAREST,
+                    borderValue=255)
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__ + f'(max_degree={self.max_degree})'
 
 
 @PIPELINES.register_module()
