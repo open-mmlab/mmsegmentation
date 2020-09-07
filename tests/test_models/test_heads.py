@@ -6,9 +6,9 @@ from mmcv.cnn import ConvModule
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
-                                       DepthwiseSeparableASPPHead, EncHead,
-                                       FCNHead, GCHead, NLHead, OCRHead,
-                                       PSAHead, PSPHead, UPerHead)
+                                       DepthwiseSeparableASPPHead, EMAHead,
+                                       EncHead, FCNHead, GCHead, NLHead,
+                                       OCRHead, PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -537,5 +537,23 @@ def test_dw_aspp_head():
     assert head.aspp_modules[0].conv.dilation == (1, 1)
     assert head.aspp_modules[1].depthwise_conv.dilation == (12, 12)
     assert head.aspp_modules[2].depthwise_conv.dilation == (24, 24)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_emanet_head():
+    head = EMAHead(
+        in_channels=32,
+        ema_channels=24,
+        channels=16,
+        num_stages=3,
+        num_bases=16,
+        num_classes=19)
+    for param in head.ema_mid_conv.parameters():
+        assert not param.requires_grad
+    assert hasattr(head, 'ema_module')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
