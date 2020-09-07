@@ -167,6 +167,11 @@ def test_dnlnet_forward():
         'dnlnet/dnl_r50-d8_512x1024_40k_cityscapes.py')
 
 
+def test_emanet_forward():
+    _test_encoder_decoder_forward(
+        'emanet/emanet_r50-d8_512x1024_80k_cityscapes.py')
+
+
 def get_world_size(process_group):
 
     return 1

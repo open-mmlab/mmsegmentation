@@ -72,6 +72,9 @@ Supported methods:
 - [x] [ANN](configs/ann)
 - [x] [OCRNet](configs/ocrnet)
 - [x] [Fast-SCNN](configs/fastscnn)
+- [x] [Semantic FPN](configs/sem_fpn)
+- [x] [EMANet](configs/emanet)
+- [x] [DNLNet](configs/dnlnet)
 - [x] [Mixed Precision (FP16) Training](configs/fp16/README.md)
 
 ## Installation
