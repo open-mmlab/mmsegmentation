@@ -60,7 +60,7 @@ class CustomDataset(Dataset):
             Default: False
         classes (str | Sequence[str], optional): Specify classes to load.
             If is None, ``cls.CLASSES`` will be used. Default: None.
-        palette (str | Sequence[str], optional): Specify palette to load.
+        palette (Sequence[str], optional): Specify palette to load.
             If is None, ``cls.PALETTE`` will be used. Default: None.
     """
 
@@ -253,10 +253,8 @@ class CustomDataset(Dataset):
                 string, take it as a file name. The file contains the name of
                 classes where each line contains one class name. If classes is
                 a tuple or list, override the CLASSES defined by the dataset.
-            palette (Sequence[str] | str | None): If palette is None, use
-                default PALETTE defined by builtin dataset. If palette is a
-                string, take it as a file name. The file contains the name of
-                palette where each line contains one palette value. If palette
+            palette (Sequence[str] | None): If palette is None, use
+                default PALETTE defined by builtin dataset. If palette
                 is a tuple or list, override the PALETTE defined by the
                 dataset.
         """
@@ -288,10 +286,7 @@ class CustomDataset(Dataset):
     def get_palette_for_custom_classes(self, palette=None):
 
         if palette:
-            if isinstance(palette, str):
-                # take it as a file path
-                palette = mmcv.list_from_file(palette)
-            elif not isinstance(palette, (tuple, list)):
+            if not isinstance(palette, (tuple, list)):
                 raise ValueError(
                     f'Unsupported type {type(palette)} of palette.')
 
