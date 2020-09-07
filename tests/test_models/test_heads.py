@@ -3,13 +3,15 @@ from unittest.mock import patch
 import pytest
 import torch
 from mmcv.cnn import ConvModule
+from mmcv.utils import ConfigDict
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
-                                       DepthwiseSeparableASPPHead, DNLHead,
+                                       DepthwiseSeparableASPPHead,
+                                       DepthwiseSeparableFCNHead, DNLHead,
                                        EMAHead, EncHead, FCNHead, GCHead,
-                                       NLHead, OCRHead, PSAHead, PSPHead,
-                                       UPerHead)
+                                       NLHead, OCRHead, PointHead, PSAHead,
+                                       PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -542,6 +544,40 @@ def test_dw_aspp_head():
     assert outputs.shape == (1, head.num_classes, 45, 45)
 
 
+def test_sep_fcn_head():
+    # test sep_fcn_head with concat_input=False
+    head = DepthwiseSeparableFCNHead(
+        in_channels=128,
+        channels=128,
+        concat_input=False,
+        num_classes=19,
+        in_index=-1,
+        norm_cfg=dict(type='BN', requires_grad=True, momentum=0.01))
+    x = [torch.rand(2, 128, 32, 32)]
+    output = head(x)
+    assert output.shape == (2, head.num_classes, 32, 32)
+    assert not head.concat_input
+    from mmseg.ops.separable_conv_module import DepthwiseSeparableConvModule
+    assert isinstance(head.convs[0], DepthwiseSeparableConvModule)
+    assert isinstance(head.convs[1], DepthwiseSeparableConvModule)
+    assert head.conv_seg.kernel_size == (1, 1)
+
+    head = DepthwiseSeparableFCNHead(
+        in_channels=64,
+        channels=64,
+        concat_input=True,
+        num_classes=19,
+        in_index=-1,
+        norm_cfg=dict(type='BN', requires_grad=True, momentum=0.01))
+    x = [torch.rand(3, 64, 32, 32)]
+    output = head(x)
+    assert output.shape == (3, head.num_classes, 32, 32)
+    assert head.concat_input
+    from mmseg.ops.separable_conv_module import DepthwiseSeparableConvModule
+    assert isinstance(head.convs[0], DepthwiseSeparableConvModule)
+    assert isinstance(head.convs[1], DepthwiseSeparableConvModule)
+
+
 def test_dnl_head():
     # DNL with 'embedded_gaussian' mode
     head = DNLHead(in_channels=32, channels=16, num_classes=19)
@@ -598,3 +634,20 @@ def test_emanet_head():
         head, inputs = to_cuda(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_point_head():
+
+    inputs = [torch.randn(1, 32, 45, 45)]
+    point_head = PointHead(
+        in_channels=[32], in_index=[0], channels=16, num_classes=19)
+    assert len(point_head.fcs) == 3
+    fcn_head = FCNHead(in_channels=32, channels=16, num_classes=19)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(point_head, inputs)
+        head, inputs = to_cuda(fcn_head, inputs)
+    prev_output = fcn_head(inputs)
+    test_cfg = ConfigDict(
+        subdivision_steps=2, subdivision_num_points=8196, scale_factor=2)
+    output = point_head.forward_test(inputs, prev_output, None, test_cfg)
+    assert output.shape == (1, point_head.num_classes, 180, 180)
