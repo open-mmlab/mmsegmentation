@@ -169,7 +169,7 @@ class CustomDataset(Dataset):
         """Prepare results dict for pipeline."""
         results['seg_fields'] = []
         if self.custom_classes:
-            results['old_id_to_new_id'] = self.old_id_to_new_id
+            results['label_map'] = self.label_map
 
     def __getitem__(self, idx):
         """Get training/test data after pipeline.
@@ -231,8 +231,8 @@ class CustomDataset(Dataset):
             gt_seg_map = mmcv.imread(
                 img_info['ann']['seg_map'], flag='unchanged', backend='pillow')
             # modify if custom classes
-            if hasattr(self, 'old_id_to_new_id'):
-                for old_id, new_id in self.old_id_to_new_id.items():
+            if hasattr(self, 'label_map'):
+                for old_id, new_id in self.label_map.items():
                     gt_seg_map[gt_seg_map == old_id] = new_id
             if self.reduce_zero_label:
                 # avoid using underflow conversion
@@ -274,12 +274,16 @@ class CustomDataset(Dataset):
         if self.CLASSES:
             if not set(classes).issubset(self.CLASSES):
                 raise ValueError('classes is not a subset of CLASSES.')
-            self.old_id_to_new_id = {}
+
+            # dictionary, its keys are the old label ids and its values
+            # are the new label ids.
+            # used for changing pixel labels in load_annotations.
+            self.label_map = {}
             for i, c in enumerate(self.CLASSES):
                 if c not in class_names:
-                    self.old_id_to_new_id[i] = -1
+                    self.label_map[i] = -1
                 else:
-                    self.old_id_to_new_id[i] = classes.index(c)
+                    self.label_map[i] = classes.index(c)
 
         return class_names, self.get_palette_for_custom_classes(palette)
 
@@ -290,9 +294,9 @@ class CustomDataset(Dataset):
                 raise ValueError(
                     f'Unsupported type {type(palette)} of palette.')
 
-        elif hasattr(self, 'old_id_to_new_id'):
+        elif hasattr(self, 'label_map'):
             palette = []
-            for x in sorted(self.old_id_to_new_id.items(), key=lambda x: x[1]):
+            for x in sorted(self.label_map.items(), key=lambda x: x[1]):
                 if x[1] != -1:
                     palette.append(self.PALETTE[x[0]])
             palette = type(self.PALETTE)(palette)

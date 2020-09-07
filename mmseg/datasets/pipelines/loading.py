@@ -133,8 +133,8 @@ class LoadAnnotations(object):
             img_bytes, flag='unchanged',
             backend=self.imdecode_backend).squeeze().astype(np.uint8)
         # modify if custom classes
-        if results.get('old_id_to_new_id', None) is not None:
-            for old_id, new_id in results['old_id_to_new_id'].items():
+        if results.get('label_map', None) is not None:
+            for old_id, new_id in results['label_map'].items():
                 gt_semantic_seg[gt_semantic_seg == old_id] = new_id
         # reduce zero_label
         if self.reduce_zero_label:
