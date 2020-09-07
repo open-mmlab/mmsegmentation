@@ -6,9 +6,10 @@ from mmcv.cnn import ConvModule
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
-                                       DepthwiseSeparableASPPHead, EMAHead,
-                                       EncHead, FCNHead, GCHead, NLHead,
-                                       OCRHead, PSAHead, PSPHead, UPerHead)
+                                       DepthwiseSeparableASPPHead, DNLHead,
+                                       EMAHead, EncHead, FCNHead, GCHead,
+                                       NLHead, OCRHead, PSAHead, PSPHead,
+                                       UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -537,6 +538,46 @@ def test_dw_aspp_head():
     assert head.aspp_modules[0].conv.dilation == (1, 1)
     assert head.aspp_modules[1].depthwise_conv.dilation == (12, 12)
     assert head.aspp_modules[2].depthwise_conv.dilation == (24, 24)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_dnl_head():
+    # DNL with 'embedded_gaussian' mode
+    head = DNLHead(in_channels=32, channels=16, num_classes=19)
+    assert len(head.convs) == 2
+    assert hasattr(head, 'dnl_block')
+    assert head.dnl_block.temperature == 0.05
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # NonLocal2d with 'dot_product' mode
+    head = DNLHead(
+        in_channels=32, channels=16, num_classes=19, mode='dot_product')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # NonLocal2d with 'gaussian' mode
+    head = DNLHead(
+        in_channels=32, channels=16, num_classes=19, mode='gaussian')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # NonLocal2d with 'concatenation' mode
+    head = DNLHead(
+        in_channels=32, channels=16, num_classes=19, mode='concatenation')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
 
