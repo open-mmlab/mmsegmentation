@@ -55,7 +55,7 @@ Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob
 
 ### EncNet
 
-Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) for details.
+Please refer to [EncNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) for details.
 
 ### CCNet
 
@@ -88,6 +88,22 @@ Please refer to [Fast-SCNN](https://github.com/open-mmlab/mmsegmentation/blob/ma
 ### ResNeSt
 
 Please refer to [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest) for details.
+
+### Semantic FPN
+
+Please refer to [Semantic FPN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/semfpn) for details.
+
+### PointRend
+
+Please refer to [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/point_rend) for details.
+
+### EMANet
+
+Please refer to [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet) for details.
+
+### DNLNet
+
+Please refer to [DNLNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dnlnet) for details.
 
 ### Mixed Precision (FP16) Training
 
