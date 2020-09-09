@@ -38,7 +38,7 @@ class ExampleModel(nn.Module):
         return dict(loss=loss)
 
 
-def test_eval_hook():
+def test_iter_eval_hook():
     with pytest.raises(TypeError):
         test_dataset = ExampleModel()
         data_loader = [
@@ -65,6 +65,43 @@ def test_eval_hook():
     with tempfile.TemporaryDirectory() as tmpdir:
         eval_hook = EvalHook(data_loader)
         runner = mmcv.runner.IterBasedRunner(
+            model=model,
+            optimizer=optimizer,
+            work_dir=tmpdir,
+            logger=logging.getLogger())
+        runner.register_hook(eval_hook)
+        runner.run([loader], [('train', 1)], 1)
+        test_dataset.evaluate.assert_called_with([torch.tensor([1])],
+                                                 logger=runner.logger)
+
+
+def test_epoch_eval_hook():
+    with pytest.raises(TypeError):
+        test_dataset = ExampleModel()
+        data_loader = [
+            DataLoader(
+                test_dataset,
+                batch_size=1,
+                sampler=None,
+                num_worker=0,
+                shuffle=False)
+        ]
+        EvalHook(data_loader, by_epoch=True)
+
+    test_dataset = ExampleDataset()
+    test_dataset.evaluate = MagicMock(return_value=dict(test='success'))
+    loader = DataLoader(test_dataset, batch_size=1)
+    model = ExampleModel()
+    data_loader = DataLoader(
+        test_dataset, batch_size=1, sampler=None, num_workers=0, shuffle=False)
+    optim_cfg = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
+    optimizer = obj_from_dict(optim_cfg, torch.optim,
+                              dict(params=model.parameters()))
+
+    # test EvalHook
+    with tempfile.TemporaryDirectory() as tmpdir:
+        eval_hook = EvalHook(data_loader)
+        runner = mmcv.runner.EpochBasedRunner(
             model=model,
             optimizer=optimizer,
             work_dir=tmpdir,
