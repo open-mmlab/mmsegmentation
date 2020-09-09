@@ -64,7 +64,7 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index):
         total_area_pred_label += area_pred_label
         total_area_label += area_label
     all_acc = total_area_intersect.sum() / total_area_label.sum()
-    acc = total_area_intersect / total_area_label
-    iou = total_area_intersect / total_area_union
+    acc = total_area_intersect / (total_area_label+2.220446049250313e-16)
+    iou = total_area_intersect / (total_area_union+2.220446049250313e-16)
 
     return all_acc, acc, iou
