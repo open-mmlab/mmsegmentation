@@ -1,4 +1,3 @@
-import cv2
 import mmcv
 import numpy as np
 from numpy import random
@@ -485,19 +484,6 @@ class RandomRotate(object):
         rotation_degree = random.uniform(-1 * self.max_degree, self.max_degree)
         return rotation_degree
 
-    def rotate(self,
-               img,
-               rotation_degree,
-               flags=cv2.INTER_LINEAR,
-               borderValue=0):
-        """Rotate  ``img``"""
-        h, w = img.shape[:2]
-        center = ((w - 1) * 0.5, (h - 1) * 0.5)
-        matrix = cv2.getRotationMatrix2D(center, rotation_degree, 1)
-        img = cv2.warpAffine(
-            img, matrix, (w, h), flags=flags, borderValue=borderValue)
-        return img
-
     def __call__(self, results):
         """Call function to randomly rotate images, semantic segmentation maps.
 
@@ -517,14 +503,14 @@ class RandomRotate(object):
             rotation_degree = self.get_rotation_degree()
 
             # rotate the image and semantic segmentation map
-            img = self.rotate(img, rotation_degree)
+            img = mmcv.imrotate(img, rotation_degree)
             results['img'] = img
             for key in results.get('seg_fields', []):
                 results[key] = self.rotate(
                     results[key],
                     rotation_degree,
-                    flags=cv2.INTER_NEAREST,
-                    borderValue=255)
+                    borderValue=255,
+                    interpolation='nearest')
         return results
 
     def __repr__(self):
