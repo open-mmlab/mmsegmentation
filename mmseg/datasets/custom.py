@@ -285,23 +285,7 @@ class CustomDataset(Dataset):
                 else:
                     self.label_map[i] = classes.index(c)
 
-        return class_names, self.get_palette_for_custom_classes(palette)
-
-    def get_palette_for_custom_classes(self, palette=None):
-
-        if palette:
-            if not isinstance(palette, (tuple, list)):
-                raise ValueError(
-                    f'Unsupported type {type(palette)} of palette.')
-
-        elif hasattr(self, 'label_map'):
-            palette = []
-            for x in sorted(self.label_map.items(), key=lambda x: x[1]):
-                if x[1] != -1:
-                    palette.append(self.PALETTE[x[0]])
-            palette = type(self.PALETTE)(palette)
-
-        return palette
+        return class_names, palette
 
     def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
