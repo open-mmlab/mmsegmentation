@@ -3,10 +3,9 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, normal_init
-from mmcv.ops import point_sample
 
 from mmseg.models.builder import HEADS
-from mmseg.ops import resize
+from mmseg.ops import point_sample, resize
 from ..losses import accuracy
 from .cascade_decode_head import BaseCascadeDecodeHead
 
