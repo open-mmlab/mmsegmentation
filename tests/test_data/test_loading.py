@@ -1,6 +1,8 @@
 import copy
 import os.path as osp
+import tempfile
 
+import mmcv
 import numpy as np
 
 from mmseg.datasets.pipelines import LoadAnnotations, LoadImageFromFile
@@ -98,3 +100,99 @@ class TestLoading(object):
         # this image is saved by PIL
         assert results['gt_semantic_seg'].shape == (288, 512)
         assert results['gt_semantic_seg'].dtype == np.uint8
+
+    def test_load_seg_custom_classes(self):
+
+        test_img = np.random.rand(10, 10)
+        test_gt = np.zeros_like(test_img)
+        test_gt[2:4, 2:4] = 1
+        test_gt[2:4, 6:8] = 2
+        test_gt[6:8, 2:4] = 3
+        test_gt[6:8, 6:8] = 4
+
+        tmp_dir = tempfile.TemporaryDirectory()
+        img_path = osp.join(tmp_dir.name, 'img.jpg')
+        gt_path = osp.join(tmp_dir.name, 'gt.png')
+
+        mmcv.imwrite(test_img, img_path)
+        mmcv.imwrite(test_gt, gt_path)
+
+        # test only train with label with id 3
+        results = dict(
+            img_info=dict(filename=img_path),
+            ann_info=dict(seg_map=gt_path),
+            label_map={
+                0: 0,
+                1: 0,
+                2: 0,
+                3: 1,
+                4: 0
+            },
+            seg_fields=[])
+
+        load_imgs = LoadImageFromFile()
+        results = load_imgs(copy.deepcopy(results))
+
+        load_anns = LoadAnnotations()
+        results = load_anns(copy.deepcopy(results))
+
+        gt_array = results['gt_semantic_seg']
+
+        true_mask = np.zeros_like(gt_array)
+        true_mask[6:8, 2:4] = 1
+
+        assert results['seg_fields'] == ['gt_semantic_seg']
+        assert gt_array.shape == (10, 10)
+        assert gt_array.dtype == np.uint8
+        np.testing.assert_array_equal(gt_array, true_mask)
+
+        # test only train with label with id 4 and 3
+        results = dict(
+            img_info=dict(filename=img_path),
+            ann_info=dict(seg_map=gt_path),
+            label_map={
+                0: 0,
+                1: 0,
+                2: 0,
+                3: 2,
+                4: 1
+            },
+            seg_fields=[])
+
+        load_imgs = LoadImageFromFile()
+        results = load_imgs(copy.deepcopy(results))
+
+        load_anns = LoadAnnotations()
+        results = load_anns(copy.deepcopy(results))
+
+        gt_array = results['gt_semantic_seg']
+
+        true_mask = np.zeros_like(gt_array)
+        true_mask[6:8, 2:4] = 2
+        true_mask[6:8, 6:8] = 1
+
+        assert results['seg_fields'] == ['gt_semantic_seg']
+        assert gt_array.shape == (10, 10)
+        assert gt_array.dtype == np.uint8
+        np.testing.assert_array_equal(gt_array, true_mask)
+
+        # test no custom classes
+        results = dict(
+            img_info=dict(filename=img_path),
+            ann_info=dict(seg_map=gt_path),
+            seg_fields=[])
+
+        load_imgs = LoadImageFromFile()
+        results = load_imgs(copy.deepcopy(results))
+
+        load_anns = LoadAnnotations()
+        results = load_anns(copy.deepcopy(results))
+
+        gt_array = results['gt_semantic_seg']
+
+        assert results['seg_fields'] == ['gt_semantic_seg']
+        assert gt_array.shape == (10, 10)
+        assert gt_array.dtype == np.uint8
+        np.testing.assert_array_equal(gt_array, test_gt)
+
+        tmp_dir.cleanup()
