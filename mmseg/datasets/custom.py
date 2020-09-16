@@ -58,6 +58,8 @@ class CustomDataset(Dataset):
         ignore_index (int): The label index to be ignored. Default: 255
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default: False
+        classes (str | Sequence[str], optional): Specify classes to load.
+            If is None, ``cls.CLASSES`` will be used. Default: None.
     """
 
     CLASSES = None
@@ -74,7 +76,8 @@ class CustomDataset(Dataset):
                  data_root=None,
                  test_mode=False,
                  ignore_index=255,
-                 reduce_zero_label=False):
+                 reduce_zero_label=False,
+                 classes=None):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
         self.img_suffix = img_suffix
@@ -85,6 +88,8 @@ class CustomDataset(Dataset):
         self.test_mode = test_mode
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
+        self.label_map = None
+        self.CLASSES, self.PALETTE = self.get_classes_and_palette(classes)
 
         # join paths if data_root is specified
         if self.data_root is not None:
@@ -160,6 +165,8 @@ class CustomDataset(Dataset):
     def pre_pipeline(self, results):
         """Prepare results dict for pipeline."""
         results['seg_fields'] = []
+        if self.custom_classes:
+            results['label_map'] = self.label_map
 
     def __getitem__(self, idx):
         """Get training/test data after pipeline.
@@ -220,6 +227,10 @@ class CustomDataset(Dataset):
         for img_info in self.img_infos:
             gt_seg_map = mmcv.imread(
                 img_info['ann']['seg_map'], flag='unchanged', backend='pillow')
+            # modify if custom classes
+            if self.label_map is not None:
+                for old_id, new_id in self.label_map.items():
+                    gt_seg_map[gt_seg_map == old_id] = new_id
             if self.reduce_zero_label:
                 # avoid using underflow conversion
                 gt_seg_map[gt_seg_map == 0] = 255
@@ -229,6 +240,63 @@ class CustomDataset(Dataset):
             gt_seg_maps.append(gt_seg_map)
 
         return gt_seg_maps
+
+    def get_classes_and_palette(self, classes=None):
+        """Get class names of current dataset.
+
+        Args:
+            classes (Sequence[str] | str | None): If classes is None, use
+                default CLASSES defined by builtin dataset. If classes is a
+                string, take it as a file name. The file contains the name of
+                classes where each line contains one class name. If classes is
+                a tuple or list, override the CLASSES defined by the dataset.
+        """
+        if classes is None:
+            self.custom_classes = False
+            return self.CLASSES, self.PALETTE
+
+        self.custom_classes = True
+        if isinstance(classes, str):
+            # take it as a file path
+            class_names = mmcv.list_from_file(classes)
+        elif isinstance(classes, (tuple, list)):
+            class_names = classes
+        else:
+            raise ValueError(f'Unsupported type {type(classes)} of classes.')
+
+        if self.CLASSES:
+            if not set(classes).issubset(self.CLASSES):
+                raise ValueError('classes is not a subset of CLASSES.')
+
+            # dictionary, its keys are the old label ids and its values
+            # are the new label ids.
+            # used for changing pixel labels in load_annotations.
+            self.label_map = {}
+            for i, c in enumerate(self.CLASSES):
+                if c not in class_names:
+                    self.label_map[i] = -1
+                else:
+                    self.label_map[i] = classes.index(c)
+
+        palette = self.get_palette_for_custom_classes()
+
+        return class_names, palette
+
+    def get_palette_for_custom_classes(self):
+
+        if self.label_map is not None:
+            # return subset of palette
+            palette = []
+            for old_id, new_id in sorted(
+                    self.label_map.items(), key=lambda x: x[1]):
+                if new_id != -1:
+                    palette.append(self.PALETTE[old_id])
+            palette = type(self.PALETTE)(palette)
+
+        else:
+            palette = self.PALETTE
+
+        return palette
 
     def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
