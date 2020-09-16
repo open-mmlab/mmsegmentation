@@ -88,6 +88,7 @@ class CustomDataset(Dataset):
         self.test_mode = test_mode
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
+        self.label_map = None
         self.CLASSES, self.PALETTE = self.get_classes_and_palette(classes)
 
         # join paths if data_root is specified
@@ -227,7 +228,7 @@ class CustomDataset(Dataset):
             gt_seg_map = mmcv.imread(
                 img_info['ann']['seg_map'], flag='unchanged', backend='pillow')
             # modify if custom classes
-            if hasattr(self, 'label_map'):
+            if self.label_map is not None:
                 for old_id, new_id in self.label_map.items():
                     gt_seg_map[gt_seg_map == old_id] = new_id
             if self.reduce_zero_label:
@@ -283,12 +284,13 @@ class CustomDataset(Dataset):
 
     def get_palette_for_custom_classes(self):
 
-        if hasattr(self, 'label_map'):
+        if self.label_map is not None:
             # return subset of palette
             palette = []
-            for x in sorted(self.label_map.items(), key=lambda x: x[1]):
-                if x[1] != -1:
-                    palette.append(self.PALETTE[x[0]])
+            for old_id, new_id in sorted(
+                    self.label_map.items(), key=lambda x: x[1]):
+                if new_id != -1:
+                    palette.append(self.PALETTE[old_id])
             palette = type(self.PALETTE)(palette)
 
         else:
