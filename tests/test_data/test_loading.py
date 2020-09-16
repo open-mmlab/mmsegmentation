@@ -1,9 +1,9 @@
 import copy
-import os
 import os.path as osp
+import tempfile
 
+import mmcv
 import numpy as np
-from mmcv.image.io import imwrite
 
 from mmseg.datasets.pipelines import LoadAnnotations, LoadImageFromFile
 
@@ -110,11 +110,12 @@ class TestLoading(object):
         test_gt[6:8, 2:4] = 3
         test_gt[6:8, 6:8] = 4
 
-        img_path = osp.join(osp.dirname(__file__), 'img.jpg')
-        gt_path = osp.join(osp.dirname(__file__), 'gt.png')
+        tmp_dir = tempfile.TemporaryDirectory()
+        img_path = osp.join(tmp_dir.name, 'img.jpg')
+        gt_path = osp.join(tmp_dir.name, 'gt.png')
 
-        imwrite(test_img, img_path)
-        imwrite(test_gt, gt_path)
+        mmcv.imwrite(test_img, img_path)
+        mmcv.imwrite(test_gt, gt_path)
 
         # test only train with label with id 3
         results = dict(
@@ -194,5 +195,4 @@ class TestLoading(object):
         assert gt_array.dtype == np.uint8
         np.testing.assert_array_equal(gt_array, test_gt)
 
-        os.remove(img_path)
-        os.remove(gt_path)
+        tmp_dir.cleanup()
