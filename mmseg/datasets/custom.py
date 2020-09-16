@@ -60,8 +60,6 @@ class CustomDataset(Dataset):
             Default: False
         classes (str | Sequence[str], optional): Specify classes to load.
             If is None, ``cls.CLASSES`` will be used. Default: None.
-        palette (Sequence[str], optional): Specify palette to load.
-            If is None, ``cls.PALETTE`` will be used. Default: None.
     """
 
     CLASSES = None
@@ -79,8 +77,7 @@ class CustomDataset(Dataset):
                  test_mode=False,
                  ignore_index=255,
                  reduce_zero_label=False,
-                 classes=None,
-                 palette=None):
+                 classes=None):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
         self.img_suffix = img_suffix
@@ -91,8 +88,7 @@ class CustomDataset(Dataset):
         self.test_mode = test_mode
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
-        self.CLASSES, self.PALETTE = self.get_classes_and_palette(
-            classes, palette)
+        self.CLASSES, self.PALETTE = self.get_classes_and_palette(classes)
 
         # join paths if data_root is specified
         if self.data_root is not None:
@@ -244,7 +240,7 @@ class CustomDataset(Dataset):
 
         return gt_seg_maps
 
-    def get_classes_and_palette(self, classes=None, palette=None):
+    def get_classes_and_palette(self, classes=None):
         """Get class names of current dataset.
 
         Args:
@@ -253,10 +249,6 @@ class CustomDataset(Dataset):
                 string, take it as a file name. The file contains the name of
                 classes where each line contains one class name. If classes is
                 a tuple or list, override the CLASSES defined by the dataset.
-            palette (Sequence[str] | None): If palette is None, use
-                default PALETTE defined by builtin dataset. If palette
-                is a tuple or list, override the PALETTE defined by the
-                dataset.
         """
         if classes is None:
             self.custom_classes = False
@@ -285,7 +277,24 @@ class CustomDataset(Dataset):
                 else:
                     self.label_map[i] = classes.index(c)
 
+        palette = self.get_palette_for_custom_classes()
+
         return class_names, palette
+
+    def get_palette_for_custom_classes(self):
+
+        if hasattr(self, 'label_map'):
+            # return subset of palette
+            palette = []
+            for x in sorted(self.label_map.items(), key=lambda x: x[1]):
+                if x[1] != -1:
+                    palette.append(self.PALETTE[x[0]])
+            palette = type(self.PALETTE)(palette)
+
+        else:
+            palette = self.PALETTE
+
+        return palette
 
     def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
