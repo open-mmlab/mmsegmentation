@@ -9,4 +9,4 @@ model = dict(
     decode_head=dict(
         dilations=(1, 6, 12, 18),
         sampler=dict(type='OHEMPixelSampler', min_kept=100000)))
-lr_config = dict(warmup='linear', warmup_ratio=1 / 200, warmup_iters=200)
+data = dict(samples_per_gpu=4, workers_per_gpu=4)
