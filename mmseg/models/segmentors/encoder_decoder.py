@@ -91,7 +91,7 @@ class EncoderDecoder(BaseSegmentor):
             size=img.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
-        return out.exp()
+        return out
 
     def _decode_head_forward_train(self, x, img_metas, gt_semantic_seg):
         """Run forward function and calculate loss for decode head in
@@ -167,13 +167,15 @@ class EncoderDecoder(BaseSegmentor):
 
     # TODO refactor
     def slide_inference(self, img, img_meta, rescale):
-        """Inference by sliding-window with overlap."""
+        """Inference by sliding-window with overlap.
+
+        If h_crop > h_img or w_crop > w_img, we will not pad the crop_img but
+        send a smaller crop_img to encode_decode.
+        """
 
         h_stride, w_stride = self.test_cfg.stride
         h_crop, w_crop = self.test_cfg.crop_size
         batch_size, _, h_img, w_img = img.size()
-        # assert h_crop <= h_img and w_crop <= w_img, (
-        #     'crop size should not greater than image size')
         num_classes = self.num_classes
         h_grids = max(h_img - h_crop + h_stride - 1, 0) // h_stride + 1
         w_grids = max(w_img - w_crop + w_stride - 1, 0) // w_stride + 1

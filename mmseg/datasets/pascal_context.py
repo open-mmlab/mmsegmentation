@@ -6,23 +6,28 @@ from .custom import CustomDataset
 
 @DATASETS.register_module()
 class PascalContextDataset(CustomDataset):
-    '''PascalContext dataset.
-    '''
+    """PascalContext dataset.
 
-    CLASSES = (
-        'background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus',
-        'car', 'cat', 'chair', 'cow', 'table', 'dog', 'horse', 'motorbike',
-        'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor', 'bag',
-        'bed', 'bench', 'book', 'building', 'cabinet', 'ceiling', 'cloth',
-        'computer', 'cup', 'door', 'fence', 'floor', 'flower', 'food',
-        'grass', 'ground', 'keyboard', 'light', 'mountain', 'mouse',
-        'curtain', 'platform', 'sign', 'plate', 'road', 'rock', 'shelves',
-        'sidewalk', 'sky', 'snow', 'bedclothes', 'track', 'tree', 'truck',
-        'wall', 'water', 'window', 'wood')
+    In segmentation map annotation for PascalContext, 0 stands for background,
+    which is included in 60 categories. ``reduce_zero_label`` is fixed to
+    False. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
+    fixed to '.png'.
 
-    '''
-    PALETTE is testing
-    '''
+    Args:
+        split (str): Split txt file for PascalContext.
+    """
+
+    CLASSES = ('background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
+               'bus', 'car', 'cat', 'chair', 'cow', 'table', 'dog', 'horse',
+               'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train',
+               'tvmonitor', 'bag', 'bed', 'bench', 'book', 'building',
+               'cabinet', 'ceiling', 'cloth', 'computer', 'cup', 'door',
+               'fence', 'floor', 'flower', 'food', 'grass', 'ground',
+               'keyboard', 'light', 'mountain', 'mouse', 'curtain', 'platform',
+               'sign', 'plate', 'road', 'rock', 'shelves', 'sidewalk', 'sky',
+               'snow', 'bedclothes', 'track', 'tree', 'truck', 'wall', 'water',
+               'window', 'wood')
+
     PALETTE = [[120, 120, 120], [180, 120, 120], [6, 230, 230], [80, 50, 50],
                [4, 200, 3], [120, 120, 80], [140, 140, 140], [204, 5, 255],
                [230, 230, 230], [4, 250, 7], [224, 5, 255], [235, 255, 7],
@@ -41,5 +46,9 @@ class PascalContextDataset(CustomDataset):
 
     def __init__(self, split, **kwargs):
         super(PascalContextDataset, self).__init__(
-            img_suffix='.jpg', seg_map_suffix='.png', split=split, **kwargs)
+            img_suffix='.jpg',
+            seg_map_suffix='.png',
+            split=split,
+            reduce_zero_label=False,
+            **kwargs)
         assert osp.exists(self.img_dir) and self.split is not None
