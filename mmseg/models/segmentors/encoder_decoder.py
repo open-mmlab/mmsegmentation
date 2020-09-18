@@ -169,8 +169,7 @@ class EncoderDecoder(BaseSegmentor):
     def slide_inference(self, img, img_meta, rescale):
         """Inference by sliding-window with overlap.
 
-        If h_crop > h_img or w_crop > w_img, we will not pad the crop_img but
-        send a smaller crop_img to encode_decode.
+        If h_crop > h_img or w_crop > w_img, the small patch will be used to decode without padding.
         """
 
         h_stride, w_stride = self.test_cfg.stride
