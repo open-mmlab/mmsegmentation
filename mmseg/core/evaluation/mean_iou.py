@@ -42,7 +42,7 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
         gt_seg_maps (list[ndarray]): list of ground truth segmentation maps
         num_classes (int): Number of categories
         ignore_index (int): Index that will be ignored in evaluation.
-        nan_to_num (int): Replace NaN with the numbers defined by the user.
+        nan_to_num (int, optional): If specified, NaN values will be replaced by the numbers defined by the user. Default: None. 
 
      Returns:
          float: Overall accuracy on all images.
