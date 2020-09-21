@@ -3,13 +3,15 @@ from unittest.mock import patch
 import pytest
 import torch
 from mmcv.cnn import ConvModule
+from mmcv.utils import ConfigDict
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
                                        DepthwiseSeparableASPPHead,
-                                       DepthwiseSeparableFCNHead, EncHead,
-                                       FCNHead, GCHead, NLHead, OCRHead,
-                                       PSAHead, PSPHead, UPerHead)
+                                       DepthwiseSeparableFCNHead, DNLHead,
+                                       EMAHead, EncHead, FCNHead, GCHead,
+                                       NLHead, OCRHead, PointHead, PSAHead,
+                                       PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -574,3 +576,78 @@ def test_sep_fcn_head():
     from mmseg.ops.separable_conv_module import DepthwiseSeparableConvModule
     assert isinstance(head.convs[0], DepthwiseSeparableConvModule)
     assert isinstance(head.convs[1], DepthwiseSeparableConvModule)
+
+
+def test_dnl_head():
+    # DNL with 'embedded_gaussian' mode
+    head = DNLHead(in_channels=32, channels=16, num_classes=19)
+    assert len(head.convs) == 2
+    assert hasattr(head, 'dnl_block')
+    assert head.dnl_block.temperature == 0.05
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # NonLocal2d with 'dot_product' mode
+    head = DNLHead(
+        in_channels=32, channels=16, num_classes=19, mode='dot_product')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # NonLocal2d with 'gaussian' mode
+    head = DNLHead(
+        in_channels=32, channels=16, num_classes=19, mode='gaussian')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # NonLocal2d with 'concatenation' mode
+    head = DNLHead(
+        in_channels=32, channels=16, num_classes=19, mode='concatenation')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_emanet_head():
+    head = EMAHead(
+        in_channels=32,
+        ema_channels=24,
+        channels=16,
+        num_stages=3,
+        num_bases=16,
+        num_classes=19)
+    for param in head.ema_mid_conv.parameters():
+        assert not param.requires_grad
+    assert hasattr(head, 'ema_module')
+    inputs = [torch.randn(1, 32, 45, 45)]
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_point_head():
+
+    inputs = [torch.randn(1, 32, 45, 45)]
+    point_head = PointHead(
+        in_channels=[32], in_index=[0], channels=16, num_classes=19)
+    assert len(point_head.fcs) == 3
+    fcn_head = FCNHead(in_channels=32, channels=16, num_classes=19)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(point_head, inputs)
+        head, inputs = to_cuda(fcn_head, inputs)
+    prev_output = fcn_head(inputs)
+    test_cfg = ConfigDict(
+        subdivision_steps=2, subdivision_num_points=8196, scale_factor=2)
+    output = point_head.forward_test(inputs, prev_output, None, test_cfg)
+    assert output.shape == (1, point_head.num_classes, 180, 180)
