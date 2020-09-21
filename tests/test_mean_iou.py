@@ -57,7 +57,7 @@ def test_mean_iou():
 
     results = np.random.randint(0, 5, size=pred_size)
     label = np.random.randint(0, 4, size=pred_size)
-    all_acc, acc, iou = mean_iou(results, label,num_classes, ignore_index=255,
+    all_acc, acc, iou = mean_iou(results, label, num_classes, ignore_index=255,
                                  nan_to_num=-1)
     assert acc[-1] == -1
     assert iou[-1] == -1
