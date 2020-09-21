@@ -68,5 +68,6 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
     acc = total_area_intersect / total_area_label
     iou = total_area_intersect / total_area_union
     if nan_to_num is not None:
-        return all_acc, np.nan_to_num(acc, nan=nan_to_num), np.nan_to_num(iou, nan=nan_to_num)
+        return all_acc, np.nan_to_num(acc, nan=nan_to_num), \
+            np.nan_to_num(iou, nan=nan_to_num)
     return all_acc, acc, iou
