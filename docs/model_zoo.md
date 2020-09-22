@@ -25,6 +25,10 @@ Otherwise, for input size of 8x (e.g. 512, 1024), `align_corner=False` is adopte
 
 ## Baselines
 
+### MobileNetV2
+
+Please refer to [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v2) for details.
+
 ### FCN
 
 Please refer to [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) for details.
