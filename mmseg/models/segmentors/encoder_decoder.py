@@ -167,13 +167,15 @@ class EncoderDecoder(BaseSegmentor):
 
     # TODO refactor
     def slide_inference(self, img, img_meta, rescale):
-        """Inference by sliding-window with overlap."""
+        """Inference by sliding-window with overlap.
+
+        If h_crop > h_img or w_crop > w_img, the small patch will be used to
+        decode without padding.
+        """
 
         h_stride, w_stride = self.test_cfg.stride
         h_crop, w_crop = self.test_cfg.crop_size
         batch_size, _, h_img, w_img = img.size()
-        assert h_crop <= h_img and w_crop <= w_img, (
-            'crop size should not greater than image size')
         num_classes = self.num_classes
         h_grids = max(h_img - h_crop + h_stride - 1, 0) // h_stride + 1
         w_grids = max(w_img - w_crop + w_stride - 1, 0) // w_stride + 1
@@ -263,6 +265,8 @@ class EncoderDecoder(BaseSegmentor):
         seg_logit = self.inference(img, img_meta, rescale)
         seg_pred = seg_logit.argmax(dim=1)
         if torch.onnx.is_in_onnx_export():
+            # our inference backend only support 4D output
+            seg_pred = seg_pred.unsqueeze(0)
             return seg_pred
         seg_pred = seg_pred.cpu().numpy()
         # unravel batch dim
