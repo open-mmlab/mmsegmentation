@@ -133,7 +133,8 @@ class CustomDataset(Dataset):
                     img_name = line.strip()
                     img_info = dict(filename=img_name + img_suffix)
                     if ann_dir is not None:
-                        img_info['ann'] = dict(seg_map=img_name + seg_map_suffix)
+                        seg_map = img_name + seg_map_suffix
+                        img_info['ann'] = dict(seg_map)
                     img_infos.append(img_info)
         else:
             for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
@@ -161,7 +162,7 @@ class CustomDataset(Dataset):
     def pre_pipeline(self, results):
         """Prepare results dict for pipeline."""
         results['seg_fields'] = []
-        resuts['img_prefix'] = self.img_dir
+        results['img_prefix'] = self.img_dir
         results['seg_prefix'] = self.ann_dir
         if self.custom_classes:
             results['label_map'] = self.label_map
