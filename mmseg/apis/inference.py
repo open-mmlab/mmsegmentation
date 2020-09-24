@@ -16,7 +16,8 @@ def init_segmentor(config, checkpoint=None, device='cuda:0'):
             object.
         checkpoint (str, optional): Checkpoint path. If left as None, the model
             will not load any weights.
-
+        device (str, optional) CPU/CUDA device option. Default 'cuda:0'.
+            Use 'cpu' for loading model on CPU.
     Returns:
         nn.Module: The constructed segmentor.
     """
