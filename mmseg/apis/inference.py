@@ -29,7 +29,6 @@ def init_segmentor(config, checkpoint=None, device='cuda:0'):
     config.model.pretrained = None
     model = build_segmentor(config.model, test_cfg=config.test_cfg)
     if checkpoint is not None:
-        map_loc = 'cpu' if device == 'cpu' else None
         checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
         model.CLASSES = checkpoint['meta']['CLASSES']
         model.PALETTE = checkpoint['meta']['PALETTE']
