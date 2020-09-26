@@ -1,16 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-from mmcv.cnn import (build_activation_layer, build_conv_layer,
-                      build_norm_layer, build_plugin_layer,
-                      build_upsample_layer, constant_init, kaiming_init)
-from mmcv.runner import load_checkpoint
+from mmcv.cnn import (UPSAMPLE_LAYERS, ConvModule, build_activation_layer,
+                      build_norm_layer, build_upsample_layer)
 from mmcv.utils.parrots_wrapper import _BatchNorm
-
-from mmseg.utils import get_root_logger
-from ..builder import BACKBONES
-from ..utils import ResLayer
-from mmcv.cnn import ConvModule, UPSAMPLE_LAYERS
 
 
 class BasicConvBlock(nn.Module):
@@ -379,27 +372,24 @@ class UNet(nn.Module):
 
     """
 
-    def __init__(
-            self,
-            in_channels=3,
-            base_channels=64,
-            # num_classes=2,
-            # dropout_ratio=0.1,
-            num_stages=5,
-            strides=(1, 1, 1, 1, 1),
-            enc_num_convs=(2, 2, 2, 2, 2),
-            dec_num_convs=(2, 2, 2, 2),
-            downsamples=(True, True, True, True),
-            enc_dilations=(1, 1, 1, 1, 1),
-            dec_dilations=(1, 1, 1, 1),
-            with_cp=False,
-            conv_cfg=None,
-            norm_cfg=dict(type='BN'),
-            act_cfg=dict(type='ReLU'),
-            upsample_cfg=dict(type='interp_up'),
-            norm_eval=False,
-            dcn=None,
-            plugins=None):
+    def __init__(self,
+                 in_channels=3,
+                 base_channels=64,
+                 num_stages=5,
+                 strides=(1, 1, 1, 1, 1),
+                 enc_num_convs=(2, 2, 2, 2, 2),
+                 dec_num_convs=(2, 2, 2, 2),
+                 downsamples=(True, True, True, True),
+                 enc_dilations=(1, 1, 1, 1, 1),
+                 dec_dilations=(1, 1, 1, 1),
+                 with_cp=False,
+                 conv_cfg=None,
+                 norm_cfg=dict(type='BN'),
+                 act_cfg=dict(type='ReLU'),
+                 upsample_cfg=dict(type='interp_up'),
+                 norm_eval=False,
+                 dcn=None,
+                 plugins=None):
         super(UNet, self).__init__()
         assert dcn is None, 'Not implemented yet.'
         assert plugins is None, 'Not implemented yet.'
@@ -480,12 +470,6 @@ class UNet(nn.Module):
             self.encoder.append((nn.Sequential(*enc_conv_block)))
             in_channels = base_channels * 2**i
 
-        # self.conv_seg = nn.Conv2d(base_channels, num_classes, kernel_size=1)
-        # if dropout_ratio > 0:
-        #     self.dropout = nn.Dropout2d(dropout_ratio)
-        # else:
-        #     self.dropout = None
-
     def forward(self, x):
         self._check_input_devisible(x)
         enc_outs = []
@@ -496,11 +480,6 @@ class UNet(nn.Module):
         for i in range(len(self.decoder) - 1, -1, -1):
             x = self.decoder[i](enc_outs[i], x)
             dec_outs.append(x)
-
-        # if self.dropout is not None:
-        #     x = self.dropout(x)
-        # output = self.conv_seg(x)
-        # return output
 
         return dec_outs
 
