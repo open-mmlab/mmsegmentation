@@ -218,7 +218,7 @@ def test_up_conv_block():
 
     # test UpConvBlock with checkpoint forward and upsample 2X.
     block = UpConvBlock(BasicConvBlock, 64, 32, 32, with_cp=True)
-    skip_x = torch.rand(1, 32, 256, 256, requires_grad=True)
+    skip_x = torch.randn(1, 32, 256, 256, requires_grad=True)
     x = torch.randn(1, 64, 128, 128, requires_grad=True)
     x_out = block(skip_x, x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
@@ -226,7 +226,7 @@ def test_up_conv_block():
     # test UpConvBlock with upsample=True for upsample 2X. The spatial size of
     # skip_x is 2X larger than x.
     block = UpConvBlock(BasicConvBlock, 64, 32, 32, upsample=True)
-    skip_x = torch.rand(1, 32, 256, 256)
+    skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(skip_x, x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
@@ -234,7 +234,7 @@ def test_up_conv_block():
     # test UpConvBlock with upsample=False for upsample 2X. The spatial size of
     # skip_x is the same as that of x.
     block = UpConvBlock(BasicConvBlock, 64, 32, 32, upsample=False)
-    skip_x = torch.rand(1, 32, 256, 256)
+    skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 256, 256)
     x_out = block(skip_x, x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
@@ -251,7 +251,7 @@ def test_up_conv_block():
             type='interp_up',
             upsampe_cfg=dict(
                 scale_factor=2, mode='bilinear', align_corners=False)))
-    skip_x = torch.rand(1, 32, 256, 256)
+    skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(skip_x, x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
@@ -266,7 +266,7 @@ def test_up_conv_block():
         upsample=True,
         upsample_cfg=dict(
             type='deconv_up2x', kernel_size=4, stride=2, padding=1))
-    skip_x = torch.rand(1, 32, 256, 256)
+    skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(skip_x, x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
@@ -284,7 +284,7 @@ def test_up_conv_block():
             type='interp_up',
             upsampe_cfg=dict(
                 scale_factor=2, mode='bilinear', align_corners=False)))
-    skip_x = torch.rand(1, 32, 256, 256)
+    skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(skip_x, x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
