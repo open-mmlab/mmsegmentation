@@ -1,21 +1,11 @@
 import pytest
 import torch
-from torch import nn
 from mmcv.cnn import ConvModule
 from mmcv.utils.parrots_wrapper import _BatchNorm
+from torch import nn
 
-from mmseg.models.backbones.unet import BasicConvBlock, DeconvUpsample,\
-                                        InterpUpsample, UpConvBlock, UNet
-from mmcv.ops import DeformConv2dPack
-from mmcv.utils.parrots_wrapper import _BatchNorm
-from torch.nn.modules import AvgPool2d, GroupNorm
-
-from mmseg.models.backbones import (FastSCNN, ResNeSt, ResNet, ResNetV1d,
-                                    ResNeXt)
-from mmseg.models.backbones.resnest import Bottleneck as BottleneckS
-from mmseg.models.backbones.resnet import BasicBlock, Bottleneck
-from mmseg.models.backbones.resnext import Bottleneck as BottleneckX
-from mmseg.models.utils import ResLayer
+from mmseg.models.backbones.unet import (BasicConvBlock, DeconvUpsample,
+                                         InterpUpsample, UNet, UpConvBlock)
 
 
 def check_norm_state(modules, train_state):
