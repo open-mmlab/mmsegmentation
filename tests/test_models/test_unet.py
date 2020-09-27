@@ -134,7 +134,7 @@ def test_interp_upsamle():
     # test InterpUpsample with checkpoint forward and upsample 2X.
     block = InterpUpsample(64, 32, with_cp=True)
     assert block.with_cp
-    x = torch.randn(1, 64, 128, 128)
+    x = torch.randn(1, 64, 128, 128, requires_grad=True)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
