@@ -511,13 +511,13 @@ def test_unet():
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
 
-    x = torch.randn(2, 3, 512, 512)
+    x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
-    assert x_outs[0].shape == torch.Size([2, 1024, 32, 32])
-    assert x_outs[1].shape == torch.Size([2, 512, 64, 64])
-    assert x_outs[2].shape == torch.Size([2, 256, 128, 128])
-    assert x_outs[3].shape == torch.Size([2, 128, 256, 256])
-    assert x_outs[4].shape == torch.Size([2, 64, 512, 512])
+    assert x_outs[0].shape == torch.Size([2, 1024, 8, 8])
+    assert x_outs[1].shape == torch.Size([2, 512, 16, 16])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
 
     # test UNet forward and outputs. The whole downsample rate is 8.
     unet = UNet(
@@ -531,13 +531,13 @@ def test_unet():
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
 
-    x = torch.randn(2, 3, 512, 512)
+    x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
-    assert x_outs[0].shape == torch.Size([2, 1024, 64, 64])
-    assert x_outs[1].shape == torch.Size([2, 512, 64, 64])
-    assert x_outs[2].shape == torch.Size([2, 256, 128, 128])
-    assert x_outs[3].shape == torch.Size([2, 128, 256, 256])
-    assert x_outs[4].shape == torch.Size([2, 64, 512, 512])
+    assert x_outs[0].shape == torch.Size([2, 1024, 16, 16])
+    assert x_outs[1].shape == torch.Size([2, 512, 16, 16])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
 
     # test UNet forward and outputs. The whole downsample rate is 4.
     unet = UNet(
@@ -551,13 +551,13 @@ def test_unet():
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
 
-    x = torch.randn(2, 3, 512, 512)
+    x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
-    assert x_outs[0].shape == torch.Size([2, 1024, 128, 128])
-    assert x_outs[1].shape == torch.Size([2, 512, 128, 128])
-    assert x_outs[2].shape == torch.Size([2, 256, 128, 128])
-    assert x_outs[3].shape == torch.Size([2, 128, 256, 256])
-    assert x_outs[4].shape == torch.Size([2, 64, 512, 512])
+    assert x_outs[0].shape == torch.Size([2, 1024, 32, 32])
+    assert x_outs[1].shape == torch.Size([2, 512, 32, 32])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
 
     # test UNet forward and outputs. The whole downsample rate is 2.
     unet = UNet(
@@ -571,13 +571,13 @@ def test_unet():
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
 
-    x = torch.randn(2, 3, 512, 512)
+    x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
-    assert x_outs[0].shape == torch.Size([2, 1024, 256, 256])
-    assert x_outs[1].shape == torch.Size([2, 512, 256, 256])
-    assert x_outs[2].shape == torch.Size([2, 256, 256, 256])
-    assert x_outs[3].shape == torch.Size([2, 128, 256, 256])
-    assert x_outs[4].shape == torch.Size([2, 64, 512, 512])
+    assert x_outs[0].shape == torch.Size([2, 1024, 64, 64])
+    assert x_outs[1].shape == torch.Size([2, 512, 64, 64])
+    assert x_outs[2].shape == torch.Size([2, 256, 64, 64])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
 
     # test UNet forward and outputs. The whole downsample rate is 1.
     unet = UNet(
@@ -591,10 +591,10 @@ def test_unet():
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
 
-    x = torch.randn(2, 3, 512, 512)
+    x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
-    assert x_outs[0].shape == torch.Size([2, 1024, 512, 512])
-    assert x_outs[1].shape == torch.Size([2, 512, 512, 512])
-    assert x_outs[2].shape == torch.Size([2, 256, 512, 512])
-    assert x_outs[3].shape == torch.Size([2, 128, 512, 512])
-    assert x_outs[4].shape == torch.Size([2, 64, 512, 512])
+    assert x_outs[0].shape == torch.Size([2, 1024, 128, 128])
+    assert x_outs[1].shape == torch.Size([2, 512, 128, 128])
+    assert x_outs[2].shape == torch.Size([2, 256, 128, 128])
+    assert x_outs[3].shape == torch.Size([2, 128, 128, 128])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
