@@ -6,8 +6,8 @@ from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.models.decode_heads.psp_head import PPM
 from mmseg.ops import resize
-from mmseg.utils import InvertedResidual
 from ..builder import BACKBONES
+from ..utils.inverted_residual import InvertedResidual
 
 
 class LearningToDownsample(nn.Module):
