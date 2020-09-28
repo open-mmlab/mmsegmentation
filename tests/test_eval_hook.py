@@ -100,16 +100,16 @@ def test_epoch_eval_hook():
 
     # test EvalHook
     with tempfile.TemporaryDirectory() as tmpdir:
-        eval_hook = EvalHook(data_loader)
+        eval_hook = EvalHook(data_loader, by_epoch=True, interval=2)
         runner = mmcv.runner.EpochBasedRunner(
             model=model,
             optimizer=optimizer,
             work_dir=tmpdir,
             logger=logging.getLogger())
         runner.register_hook(eval_hook)
-        runner.run([loader], [('train', 1)], 1)
-        test_dataset.evaluate.assert_called_with([torch.tensor([1])],
-                                                 logger=runner.logger)
+        runner.run([loader], [('train', 1)], 2)
+        test_dataset.evaluate.assert_called_once_with([torch.tensor([1])],
+                                                      logger=runner.logger)
 
 
 def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
