@@ -2,7 +2,7 @@ import mmcv
 
 from .version import __version__, version_info
 
-MMCV_MIN = '1.1.2'
+MMCV_MIN = '1.1.4'
 MMCV_MAX = '1.2.0'
 
 
