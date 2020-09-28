@@ -79,7 +79,7 @@ jobs:
         run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
-          pip install mmcv-full==latest+torch${{matrix.torch}} -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
+          pip install mmcv-full==latest+torch${{matrix.torch}} -f https://download.openmmlab.com/mmcv/dist/index.html
           pip install -r requirements.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .

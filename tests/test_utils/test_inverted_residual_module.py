@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from mmseg.utils import InvertedResidual
+from mmseg.models.utils import InvertedResidual
 
 
 def test_inv_residual():
