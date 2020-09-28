@@ -380,6 +380,40 @@ def test_unet():
     with pytest.raises(AssertionError):
         # Check whether the input image size can be devisible by the whole
         # downsample rate of the encoder. The whole downsample rate of this
+        # case is 8.
+        unet = UNet(
+            in_channels=3,
+            base_channels=64,
+            num_stages=5,
+            strides=(1, 1, 1, 1, 1),
+            enc_num_convs=(2, 2, 2, 2, 2),
+            dec_num_convs=(2, 2, 2, 2),
+            downsamples=(True, True, True, False),
+            enc_dilations=(1, 1, 1, 1, 1),
+            dec_dilations=(1, 1, 1, 1))
+        x = torch.randn(2, 3, 65, 65)
+        unet(x)
+
+    with pytest.raises(AssertionError):
+        # Check whether the input image size can be devisible by the whole
+        # downsample rate of the encoder. The whole downsample rate of this
+        # case is 8.
+        unet = UNet(
+            in_channels=3,
+            base_channels=64,
+            num_stages=5,
+            strides=(1, 2, 2, 2, 1),
+            enc_num_convs=(2, 2, 2, 2, 2),
+            dec_num_convs=(2, 2, 2, 2),
+            downsamples=(True, True, True, False),
+            enc_dilations=(1, 1, 1, 1, 1),
+            dec_dilations=(1, 1, 1, 1))
+        x = torch.randn(2, 3, 65, 65)
+        unet(x)
+
+    with pytest.raises(AssertionError):
+        # Check whether the input image size can be devisible by the whole
+        # downsample rate of the encoder. The whole downsample rate of this
         # case is 32.
         unet = UNet(
             in_channels=3,
@@ -499,6 +533,21 @@ def test_unet():
     unet.train()
     assert check_norm_state(unet.modules(), False)
 
+    # test UNet norm_eval=False
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 1, 1, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, True, True),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1),
+        norm_eval=False)
+    unet.train()
+    assert check_norm_state(unet.modules(), True)
+
     # test UNet forward and outputs. The whole downsample rate is 16.
     unet = UNet(
         in_channels=3,
@@ -515,6 +564,86 @@ def test_unet():
     x_outs = unet(x)
     assert x_outs[0].shape == torch.Size([2, 1024, 8, 8])
     assert x_outs[1].shape == torch.Size([2, 512, 16, 16])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet forward and outputs. The whole downsample rate is 8.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 1, 1, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, True, False),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 16, 16])
+    assert x_outs[1].shape == torch.Size([2, 512, 16, 16])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet forward and outputs. The whole downsample rate is 8.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 2, 2, 2, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, True, False),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 16, 16])
+    assert x_outs[1].shape == torch.Size([2, 512, 16, 16])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet forward and outputs. The whole downsample rate is 4.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 1, 1, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, False, False),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 32, 32])
+    assert x_outs[1].shape == torch.Size([2, 512, 32, 32])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet forward and outputs. The whole downsample rate is 4.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 2, 2, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, False, False),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 32, 32])
+    assert x_outs[1].shape == torch.Size([2, 512, 32, 32])
     assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
     assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
     assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
@@ -597,4 +726,84 @@ def test_unet():
     assert x_outs[1].shape == torch.Size([2, 512, 128, 128])
     assert x_outs[2].shape == torch.Size([2, 256, 128, 128])
     assert x_outs[3].shape == torch.Size([2, 128, 128, 128])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet forward and outputs. The whole downsample rate is 16.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 2, 2, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, True, True),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+    print(unet)
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 8, 8])
+    assert x_outs[1].shape == torch.Size([2, 512, 16, 16])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet forward and outputs. The whole downsample rate is 8.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 2, 2, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, True, False),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+    print(unet)
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 16, 16])
+    assert x_outs[1].shape == torch.Size([2, 512, 16, 16])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet forward and outputs. The whole downsample rate is 8.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 2, 2, 2, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, True, False),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+    print(unet)
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 16, 16])
+    assert x_outs[1].shape == torch.Size([2, 512, 16, 16])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet forward and outputs. The whole downsample rate is 4.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 2, 2, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, False, False),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+    print(unet)
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 32, 32])
+    assert x_outs[1].shape == torch.Size([2, 512, 32, 32])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
     assert x_outs[4].shape == torch.Size([2, 64, 128, 128])

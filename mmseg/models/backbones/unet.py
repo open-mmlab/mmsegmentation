@@ -458,9 +458,9 @@ class UNet(nn.Module):
                 BasicConvBlock(
                     in_channels=in_channels,
                     out_channels=base_channels * 2**i,
-                    num_convs=enc_num_convs[1],
-                    stride=strides[1],
-                    dilation=enc_dilations[1],
+                    num_convs=enc_num_convs[i],
+                    stride=strides[i],
+                    dilation=enc_dilations[i],
                     with_cp=with_cp,
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
@@ -497,7 +497,7 @@ class UNet(nn.Module):
         h, w = x.shape[-2:]
         whole_downsample_rate = 1
         for i in range(1, self.num_stages):
-            if self.strides[i] or self.downsamples[i - 1]:
+            if self.strides[i] == 2 or self.downsamples[i - 1]:
                 whole_downsample_rate *= 2
         assert (h % whole_downsample_rate == 0) \
             and (w % whole_downsample_rate == 0),\
