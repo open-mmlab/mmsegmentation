@@ -32,7 +32,7 @@ class EvalHook(Hook):
 
     def after_train_epoch(self, runner):
         """After train epoch hook."""
-        if not self.by_epoch:
+        if not self.by_epoch or not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
         runner.log_buffer.clear()
