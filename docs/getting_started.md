@@ -27,6 +27,14 @@ mmsegmentation
 │   │   │   ├── SegmentationClass
 │   │   │   ├── ImageSets
 │   │   │   │   ├── Segmentation
+│   │   ├── VOC2010
+│   │   │   ├── JPEGImages
+│   │   │   ├── SegmentationClassContext
+│   │   │   ├── ImageSets
+│   │   │   │   ├── SegmentationContext
+│   │   │   │   │   ├── train.txt
+│   │   │   │   │   ├── val.txt
+│   │   │   ├── trainval_merged.json
 │   │   ├── VOCaug
 │   │   │   ├── dataset
 │   │   │   │   ├── cls
@@ -68,6 +76,17 @@ Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/bl
 ### ADE20K
 The training and validation set of ADE20K could be download from this [link](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
 We may also download test set from [here](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
+
+### Pascal Context
+The training and validation set of Pascal Context could be download from [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCtrainval_03-May-2010.tar). You may also download test set from [here](http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2010test.tar) after registration.
+
+To split the training and validation set from original dataset, you may download trainval_merged.json from [here](https://codalabuser.blob.core.windows.net/public/trainval_merged.json).
+
+If you would like to use Pascal Context dataset, please install [Detail](https://github.com/ccvl/detail-api) and then run the following command to convert annotations into proper format.
+
+```shell
+python tools/convert_datasets/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
+```
 
 ## Inference with pretrained models
 
