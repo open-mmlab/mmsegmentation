@@ -98,7 +98,7 @@ def test_epoch_eval_hook():
     optimizer = obj_from_dict(optim_cfg, torch.optim,
                               dict(params=model.parameters()))
 
-    # test EvalHook
+    # test EvalHook with interval
     with tempfile.TemporaryDirectory() as tmpdir:
         eval_hook = EvalHook(data_loader, by_epoch=True, interval=2)
         runner = mmcv.runner.EpochBasedRunner(
