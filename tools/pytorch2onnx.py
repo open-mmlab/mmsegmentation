@@ -5,6 +5,8 @@ import mmcv
 import numpy as np
 import onnxruntime as rt
 import torch
+import torch._C
+import torch.serialization
 from mmcv.onnx import register_extra_symbolics
 from mmcv.runner import load_checkpoint
 from torch import nn
