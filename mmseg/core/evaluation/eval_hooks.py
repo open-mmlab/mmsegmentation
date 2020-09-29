@@ -64,6 +64,7 @@ class DistEvalHook(EvalHook):
                  dataloader,
                  interval=1,
                  gpu_collect=False,
+                 by_epoch=False,
                  **eval_kwargs):
         if not isinstance(dataloader, DataLoader):
             raise TypeError(
@@ -72,6 +73,7 @@ class DistEvalHook(EvalHook):
         self.dataloader = dataloader
         self.interval = interval
         self.gpu_collect = gpu_collect
+        self.by_epoch = by_epoch
         self.eval_kwargs = eval_kwargs
 
     def after_train_iter(self, runner):
