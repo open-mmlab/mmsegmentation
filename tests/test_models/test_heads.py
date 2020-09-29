@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 import torch
-from mmcv.cnn import ConvModule
+from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
 from mmcv.utils import ConfigDict
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
@@ -557,7 +557,6 @@ def test_sep_fcn_head():
     output = head(x)
     assert output.shape == (2, head.num_classes, 32, 32)
     assert not head.concat_input
-    from mmseg.ops.separable_conv_module import DepthwiseSeparableConvModule
     assert isinstance(head.convs[0], DepthwiseSeparableConvModule)
     assert isinstance(head.convs[1], DepthwiseSeparableConvModule)
     assert head.conv_seg.kernel_size == (1, 1)
@@ -573,7 +572,6 @@ def test_sep_fcn_head():
     output = head(x)
     assert output.shape == (3, head.num_classes, 32, 32)
     assert head.concat_input
-    from mmseg.ops.separable_conv_module import DepthwiseSeparableConvModule
     assert isinstance(head.convs[0], DepthwiseSeparableConvModule)
     assert isinstance(head.convs[1], DepthwiseSeparableConvModule)
 
