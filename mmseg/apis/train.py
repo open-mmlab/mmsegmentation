@@ -1,4 +1,5 @@
 import random
+import warnings
 
 import numpy as np
 import torch
@@ -69,6 +70,12 @@ def train_segmentor(model,
 
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
+
+    if cfg.get('runner') is None:
+        cfg.runner = {'type': 'IterBasedRunner', 'max_iters': cfg.total_iters}
+        warnings.warn(
+            'config is now expected to have a `runner` section, '
+            'please set `runner` in your config.', DeprecationWarning)
 
     runner = build_runner(
         cfg.runner,
