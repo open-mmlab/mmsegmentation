@@ -32,7 +32,7 @@ class EvalHook(Hook):
 
     def after_train_epoch(self, runner):
         """After train epoch hook."""
-        if not self.by_epoch or not self.every_n_iters(runner, self.interval):
+        if not self.by_epoch or not self.every_n_epochs(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
         runner.log_buffer.clear()
@@ -76,7 +76,22 @@ class DistEvalHook(EvalHook):
 
     def after_train_iter(self, runner):
         """After train epoch hook."""
-        if not self.every_n_iters(runner, self.interval):
+        if self.by_epoch or not self.every_n_iters(runner, self.interval):
+            return
+        from mmseg.apis import multi_gpu_test
+        runner.log_buffer.clear()
+        results = multi_gpu_test(
+            runner.model,
+            self.dataloader,
+            tmpdir=osp.join(runner.work_dir, '.eval_hook'),
+            gpu_collect=self.gpu_collect)
+        if runner.rank == 0:
+            print('\n')
+            self.evaluate(runner, results)
+
+    def after_train_epoch(self, runner):
+        """After train epoch hook."""
+        if not self.by_epoch or not self.every_n_epochs(runner, self.interval):
             return
         from mmseg.apis import multi_gpu_test
         runner.log_buffer.clear()
