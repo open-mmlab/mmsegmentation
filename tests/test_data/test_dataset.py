@@ -252,7 +252,7 @@ def test_custom_dataset_random_palette_is_generated():
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
 @patch('mmseg.datasets.CustomDataset.__getitem__',
        MagicMock(side_effect=lambda idx: idx))
-def test_custom_dataset_rcustom_palette():
+def test_custom_dataset_custom_palette():
     dataset = CustomDataset(
         pipeline=[],
         img_dir=MagicMock(),
