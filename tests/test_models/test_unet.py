@@ -807,3 +807,24 @@ def test_unet():
     assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
     assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
     assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
+
+    # test UNet init_weights method.
+    unet = UNet(
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 2, 2, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, False, False),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1))
+    unet.init_weights()
+    print(unet)
+    x = torch.randn(2, 3, 128, 128)
+    x_outs = unet(x)
+    assert x_outs[0].shape == torch.Size([2, 1024, 32, 32])
+    assert x_outs[1].shape == torch.Size([2, 512, 32, 32])
+    assert x_outs[2].shape == torch.Size([2, 256, 32, 32])
+    assert x_outs[3].shape == torch.Size([2, 128, 64, 64])
+    assert x_outs[4].shape == torch.Size([2, 64, 128, 128])
