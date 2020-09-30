@@ -231,3 +231,33 @@ def test_custom_classes_override_default(dataset, classes):
         test_mode=True)
 
     assert custom_dataset.CLASSES == original_classes
+
+
+@patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
+@patch('mmseg.datasets.CustomDataset.__getitem__',
+       MagicMock(side_effect=lambda idx: idx))
+def test_custom_dataset_random_palette_is_generated():
+    dataset = CustomDataset(
+        pipeline=[],
+        img_dir=MagicMock(),
+        split=MagicMock(),
+        classes=('bus', 'car'),
+        test_mode=True)
+    assert len(dataset.PALETTE) == 2
+    for class_color in dataset.PALETTE:
+        assert len(class_color) == 3
+        assert all(x >= 0 and x <= 255 for x in class_color)
+
+
+@patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
+@patch('mmseg.datasets.CustomDataset.__getitem__',
+       MagicMock(side_effect=lambda idx: idx))
+def test_custom_dataset_custom_palette():
+    dataset = CustomDataset(
+        pipeline=[],
+        img_dir=MagicMock(),
+        split=MagicMock(),
+        classes=('bus', 'car'),
+        palette=[[100, 100, 100], [200, 200, 200]],
+        test_mode=True)
+    assert tuple(dataset.PALETTE) == tuple([[100, 100, 100], [200, 200, 200]])
