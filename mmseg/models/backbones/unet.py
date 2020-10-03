@@ -8,6 +8,7 @@ from mmcv.runner import load_checkpoint
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.utils import get_root_logger
+from ..builder import BACKBONES
 
 
 class BasicConvBlock(nn.Module):
@@ -321,6 +322,7 @@ class UpConvBlock(nn.Module):
         return out
 
 
+@BACKBONES.register_module()
 class UNet(nn.Module):
     """UNet backbone.
     U-Net: Convolutional Networks for Biomedical Image Segmentation.

@@ -819,7 +819,7 @@ def test_unet():
         downsamples=(True, True, False, False),
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
-    unet.init_weights()
+    unet.init_weights(pretrained=None)
     print(unet)
     x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
