@@ -1,7 +1,8 @@
 # PSANet: Point-wise Spatial Attention Network for Scene Parsing
 
 ## Introduction
-```
+
+```latex
 @inproceedings{zhao2018psanet,
   title={Psanet: Point-wise spatial attention network for scene parsing},
   author={Zhao, Hengshuang and Zhang, Yi and Liu, Shu and Shi, Jianping and Change Loy, Chen and Lin, Dahua and Jia, Jiaya},
@@ -14,6 +15,7 @@
 ## Results and models
 
 ### Cityscapes
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                 download                                                                                                                                                                                                 |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | PSANet | R-50-D8  | 512x1024  |   40000 |        7 |           3.17 | 77.63 |         79.04 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x1024_40k_cityscapes/psanet_r50-d8_512x1024_40k_cityscapes_20200606_103117-99fac37c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x1024_40k_cityscapes/psanet_r50-d8_512x1024_40k_cityscapes_20200606_103117.log.json)     |
@@ -26,6 +28,7 @@
 | PSANet | R-101-D8 | 769x769   |   80000 | -        | -              | 79.69 |         80.89 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_769x769_80k_cityscapes/psanet_r101-d8_769x769_80k_cityscapes_20200606_214550-7665827b.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_769x769_80k_cityscapes/psanet_r101-d8_769x769_80k_cityscapes_20200606_214550.log.json)     |
 
 ### ADE20K
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                         download                                                                                                                                                                                         |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | PSANet | R-50-D8  | 512x512   |   80000 |        9 |          18.91 | 41.14 |         41.91 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x512_80k_ade20k/psanet_r50-d8_512x512_80k_ade20k_20200614_144141-835e4b97.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x512_80k_ade20k/psanet_r50-d8_512x512_80k_ade20k_20200614_144141.log.json)         |
@@ -34,6 +37,7 @@
 | PSANet | R-101-D8 | 512x512   |  160000 | -        | -              | 43.74 |         45.38 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_512x512_160k_ade20k/psanet_r101-d8_512x512_160k_ade20k_20200615_161537-dbfa564c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_512x512_160k_ade20k/psanet_r101-d8_512x512_160k_ade20k_20200615_161537.log.json) |
 
 ### Pascal VOC 2012 + Aug
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                           download                                                                                                                                                                                           |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | PSANet | R-50-D8  | 512x512   |   20000 |      6.9 |          18.24 | 76.39 |         77.34 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x512_20k_voc12aug/psanet_r50-d8_512x512_20k_voc12aug_20200617_102413-2f1bbaa1.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x512_20k_voc12aug/psanet_r50-d8_512x512_20k_voc12aug_20200617_102413.log.json)     |

@@ -1,7 +1,8 @@
 # Deep High-Resolution Representation Learning for Human Pose Estimation
 
 ## Introduction
-```
+
+```latext
 @inproceedings{SunXLW19,
   title={Deep High-Resolution Representation Learning for Human Pose Estimation},
   author={Ke Sun and Bin Xiao and Dong Liu and Jingdong Wang},
@@ -13,6 +14,7 @@
 ## Results and models
 
 ### Cityscapes
+
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                        download                                                                                                                                                                                        |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | HRNetV2p-W18-Small | 512x1024  |   40000 |      1.7 |          23.74 | 73.86 |         75.91 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x1024_40k_cityscapes/fcn_hr18s_512x1024_40k_cityscapes_20200601_014216-93db27d0.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x1024_40k_cityscapes/fcn_hr18s_512x1024_40k_cityscapes_20200601_014216.log.json)     |
@@ -26,6 +28,7 @@
 | FCN    | HRNetV2p-W48       | 512x1024  |  160000 | -        | -              | 80.65 |         81.92 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x1024_160k_cityscapes/fcn_hr48_512x1024_160k_cityscapes_20200602_190946-59b7973e.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x1024_160k_cityscapes/fcn_hr48_512x1024_160k_cityscapes_20200602_190946.log.json)     |
 
 ### ADE20K
+
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                              download                                                                                                                                                                              |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | HRNetV2p-W18-Small | 512x512   |   80000 |      3.8 |          38.66 | 31.38 |         32.45 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_ade20k/fcn_hr18s_512x512_80k_ade20k_20200614_144345-77fc814a.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_ade20k/fcn_hr18s_512x512_80k_ade20k_20200614_144345.log.json)     |
@@ -36,6 +39,7 @@
 | FCN    | HRNetV2p-W48       | 512x512   |  160000 | -        | -              | 42.02 |         43.86 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_160k_ade20k/fcn_hr48_512x512_160k_ade20k_20200614_214407-a52fc02c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_160k_ade20k/fcn_hr48_512x512_160k_ade20k_20200614_214407.log.json)     |
 
 ### Pascal VOC 2012 + Aug
+
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                download                                                                                                                                                                                |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | HRNetV2p-W18-Small | 512x512   |   20000 |      1.8 |          43.36 | 65.20 |         68.55 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20200617_224503-56e36088.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20200617_224503.log.json) |
@@ -46,6 +50,7 @@
 | FCN    | HRNetV2p-W48       | 512x512   |   40000 | -        | -              | 76.24 |         78.49 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_40k_voc12aug/fcn_hr48_512x512_40k_voc12aug_20200613_222111-1b0f18bc.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_40k_voc12aug/fcn_hr48_512x512_40k_voc12aug_20200613_222111.log.json)     |
 
 ### Pascal Context
+
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                download                                                                                                                                                                                |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | HRNetV2p-W48       | 480x480   |   40000 | 6.1        | 8.86              | 45.14 |         47.42 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_40k_pascal_context/fcn_hr48_480x480_40k_pascal_context_20200911_164852-667d00b0.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_40k_pascal_context/fcn_hr48_480x480_40k_pascal_context-20200911_164852.log.json)     |

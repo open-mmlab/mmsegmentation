@@ -54,6 +54,7 @@ pip install -e .
 ```
 
 Or simply:
+
 ```shell
 pip install mmcv
 ```
@@ -73,6 +74,7 @@ pip install git+https://github.com/open-mmlab/mmsegmentation.git # install the m
 ```
 
 Instead, if you would like to install MMSegmentation in `dev` mode, run following
+
 ```shell
 git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
@@ -82,19 +84,15 @@ pip install -e .  # or "python setup.py develop"
 Note:
 
 1. When training or testing models on Windows, please ensure that all the '\\' in paths are replaced with '/'. Add .replace('\\', '/') to your python code wherever path strings occur.
-
 2. The `version+git_hash` will also be saved in trained models meta, e.g. 0.5.0+c415a2e.
-
 3. When MMsegmentation is installed on `dev` mode, any local modifications made to the code will take effect without the need to reinstall it.
-
 4. If you would like to use `opencv-python-headless` instead of `opencv-python`,
-you can install it before installing MMCV.
-
+   you can install it before installing MMCV.
 5. Some dependencies are optional. Simply running `pip install -e .` will only install the minimum runtime requirements.
-To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
-
+   To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
 
 ## A from-scratch setup script
+
 ### Linux
 
 Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is $DATA_ROOT).
@@ -114,6 +112,7 @@ ln -s $DATA_ROOT data
 ```
 
 ### Windows(Experimental)
+
 Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is
 %DATA_ROOT%. Notice: It must be an absolute path).
 
