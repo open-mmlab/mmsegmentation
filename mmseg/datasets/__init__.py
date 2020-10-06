@@ -5,9 +5,11 @@ from .custom import CustomDataset
 from .dataset_wrappers import ConcatDataset, RepeatDataset
 from .pascal_context import PascalContextDataset
 from .voc import PascalVOCDataset
+from .a2d2 import A2D2Dataset
 
 __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
     'DATASETS', 'build_dataset', 'PIPELINES', 'CityscapesDataset',
-    'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset'
+    'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
+    'A2D2Dataset'
 ]
