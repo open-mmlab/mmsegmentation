@@ -10,6 +10,5 @@ from .voc import PascalVOCDataset
 __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
     'DATASETS', 'build_dataset', 'PIPELINES', 'CityscapesDataset',
-    'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
-    'A2D2Dataset'
+    'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset', 'A2D2Dataset'
 ]
