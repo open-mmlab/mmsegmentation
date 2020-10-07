@@ -1,3 +1,4 @@
+from .a2d2 import A2D2Dataset
 from .ade import ADE20KDataset
 from .builder import DATASETS, PIPELINES, build_dataloader, build_dataset
 from .chase_db1 import ChaseDB1Dataset
@@ -9,7 +10,6 @@ from .hrf import HRFDataset
 from .pascal_context import PascalContextDataset
 from .stare import STAREDataset
 from .voc import PascalVOCDataset
-from .a2d2 import A2D2Dataset
 
 __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
