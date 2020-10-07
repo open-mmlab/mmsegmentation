@@ -1,10 +1,4 @@
 import os.path as osp
-import tempfile
-
-import mmcv
-import numpy as np
-from mmcv.utils import print_log
-from PIL import Image
 
 from .builder import DATASETS
 from .custom import CustomDataset
@@ -28,9 +22,10 @@ class A2D2Dataset(CustomDataset):
                [107, 142, 35], [152, 251, 152], [70, 130, 180], [220, 20, 60],
                [255, 0, 0], [0, 0, 142], [0, 0, 70], [0, 60, 100],
                [0, 80, 100], [0, 0, 230], [119, 11, 32]]
-    
+
     def __init__(self, **kwargs):
         super(A2D2Dataset, self).__init__(
             img_suffix='.png',
             seg_map_suffix='_labelTrainIds.png',
             **kwargs)
+        assert osp.exists(self.img_dir) is not None
