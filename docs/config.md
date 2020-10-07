@@ -1,4 +1,5 @@
 # Config System
+
 We incorporate modular and inheritance design into our config system, which is convenient to conduct various experiments.
 If you wish to inspect the config file, you may run `python tools/print_config.py /PATH/TO/CONFIG` to see the complete config.
 You may also pass `--options xxx.yyy=zzz` to see updated config.
@@ -325,6 +326,7 @@ The `_delete_=True` would replace all old keys in `backbone` field with new keys
 Some intermediate variables are used in the configs files, like `train_pipeline`/`test_pipeline` in datasets.
 It's worth noting that when modifying intermediate variables in the children configs, user need to pass the intermediate variables into corresponding fields again.
 For example, we would like to change multi scale strategy to train/test a PSPNet. `train_pipeline`/`test_pipeline` are intermediate variable we would like modify.
+
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscapes.py'
 crop_size = (512, 1024)
@@ -362,9 +364,11 @@ data = dict(
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
 ```
+
 We first define the new `train_pipeline`/`test_pipeline` and pass them into `data`.
 
 Similarly, if we would like to switch from `SyncBN` to `BN` or `MMSyncBN`, we need to substitute every `norm_cfg` in the config.
+
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscpaes.py'
 norm_cfg = dict(type='BN', requires_grad=True)

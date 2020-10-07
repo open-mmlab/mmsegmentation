@@ -1,7 +1,8 @@
 # Unified Perceptual Parsing for Scene Understanding
 
 ## Introduction
-```
+
+```latex
 @inproceedings{xiao2018unified,
   title={Unified perceptual parsing for scene understanding},
   author={Xiao, Tete and Liu, Yingcheng and Zhou, Bolei and Jiang, Yuning and Sun, Jian},
@@ -14,6 +15,7 @@
 ## Results and models
 
 ### Cityscapes
+
 | Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                              download                                                                                                                                                                                              |
 |---------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | UPerNet | R-50     | 512x1024  |   40000 |      6.4 |           4.25 | 77.10 |         78.37 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827-aa54cb54.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827.log.json)     |
@@ -26,6 +28,7 @@
 | UPerNet | R-101    | 769x769   |   80000 | -        | -              | 80.10 |         81.49 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014-082fc334.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014.log.json)     |
 
 ### ADE20K
+
 | Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                      download                                                                                                                                                                                      |
 |---------|----------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | UPerNet | R-50     | 512x512   |   80000 |      8.1 |          23.40 | 40.70 |         41.81 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127-ecc8377b.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127.log.json)         |
@@ -34,6 +37,7 @@
 | UPerNet | R-101    | 512x512   |  160000 | -        | -              | 43.82 |         44.85 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951-91b32684.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951.log.json) |
 
 ### Pascal VOC 2012 + Aug
+
 | Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                        download                                                                                                                                                                                        |
 |---------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | UPerNet | R-50     | 512x512   |   20000 |      6.4 |          23.17 | 74.82 |         76.35 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330-5b5890a7.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330.log.json)     |

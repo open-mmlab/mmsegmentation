@@ -1,7 +1,8 @@
 # Pyramid Scene Parsing Network
 
 ## Introduction
-```
+
+```latex
 @inproceedings{zhao2017pspnet,
   title={Pyramid Scene Parsing Network},
   author={Zhao, Hengshuang and Shi, Jianping and Qi, Xiaojuan and Wang, Xiaogang and Jia, Jiaya},
@@ -13,6 +14,7 @@
 ## Results and models
 
 ### Cityscapes
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                 download                                                                                                                                                                                                 |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | PSPNet | R-50-D8  | 512x1024  |   40000 |      6.1 |           4.07 | 77.85 |         79.18 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338.log.json)     |
@@ -25,6 +27,7 @@
 | PSPNet | R-101-D8 | 769x769   |   80000 | -        | -              | 79.77 |         81.06 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_80k_cityscapes/pspnet_r101-d8_769x769_80k_cityscapes_20200606_225055-dba412fa.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_80k_cityscapes/pspnet_r101-d8_769x769_80k_cityscapes_20200606_225055.log.json)     |
 
 ### ADE20K
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                         download                                                                                                                                                                                         |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | PSPNet | R-50-D8  | 512x512   |   80000 |      8.5 |          23.53 | 41.13 |         41.94 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_ade20k/pspnet_r50-d8_512x512_80k_ade20k_20200615_014128-15a8b914.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_ade20k/pspnet_r50-d8_512x512_80k_ade20k_20200615_014128.log.json)         |
@@ -33,6 +36,7 @@
 | PSPNet | R-101-D8 | 512x512   |  160000 | -        | -              | 44.39 |         45.35 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_160k_ade20k/pspnet_r101-d8_512x512_160k_ade20k_20200615_100650-967c316f.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_160k_ade20k/pspnet_r101-d8_512x512_160k_ade20k_20200615_100650.log.json) |
 
 ### Pascal VOC 2012 + Aug
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                           download                                                                                                                                                                                           |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | PSPNet | R-50-D8  | 512x512   |   20000 |      6.1 |          23.59 | 76.78 |         77.61 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_20k_voc12aug/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958-ed5dfbd9.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_20k_voc12aug/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958.log.json)     |
@@ -41,6 +45,7 @@
 | PSPNet | R-101-D8 | 512x512   |   40000 | -        | -              | 78.52 |         79.57 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_40k_voc12aug/pspnet_r101-d8_512x512_40k_voc12aug_20200613_161222-bc933b18.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_40k_voc12aug/pspnet_r101-d8_512x512_40k_voc12aug_20200613_161222.log.json) |
 
 ### Pascal Context
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                           download                                                                                                                                                                                           |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | PSPNet | R-101-D8 | 480x480   |   40000 |      8.8 |          9.68 | 46.60 |         47.78 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context/pspnet_r101-d8_480x480_40k_pascal_context_20200911_211210-bf0f5d7c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context/pspnet_r101-d8_480x480_40k_pascal_context-20200911_211210.log.json) |

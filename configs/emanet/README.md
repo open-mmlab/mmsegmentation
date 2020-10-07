@@ -1,7 +1,8 @@
 # Expectation-Maximization Attention Networks for Semantic Segmentation
 
 ## Introduction
-```
+
+```latex
 @inproceedings{li2019expectation,
   title={Expectation-maximization attention networks for semantic segmentation},
   author={Li, Xia and Zhong, Zhisheng and Wu, Jianlong and Yang, Yibo and Lin, Zhouchen and Liu, Hong},
@@ -14,6 +15,7 @@
 ## Results and models
 
 ### Cityscapes
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                          download                                                                                                                                                                                          |
 |--------|----------|-----------|--------:|---------:|----------------|------:|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | EMANet | R-50-D8  | 512x1024  |   80000 |      5.4 | 4.58           | 77.59 | 79.44         | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes_20200901_100301-c43fcef1.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes-20200901_100301.log.json)     |
