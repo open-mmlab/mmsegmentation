@@ -56,56 +56,71 @@ For each operation, we list the related dict fields that are added/updated/remov
 ### Data loading
 
 `LoadImageFromFile`
+
 - add: img, img_shape, ori_shape
 
 `LoadAnnotations`
+
 - add: gt_semantic_seg, seg_fields
 
 ### Pre-processing
 
 `Resize`
+
 - add: scale, scale_idx, pad_shape, scale_factor, keep_ratio
 - update: img, img_shape, *seg_fields
 
 `RandomFlip`
+
 - add: flip
 - update: img, *seg_fields
 
 `Pad`
+
 - add: pad_fixed_size, pad_size_divisor
 - update: img, pad_shape, *seg_fields
 
 `RandomCrop`
+
 - update: img, pad_shape, *seg_fields
 
 `Normalize`
+
 - add: img_norm_cfg
 - update: img
 
 `SegRescale`
+
 - update: gt_semantic_seg
 
 `PhotoMetricDistortion`
+
 - update: img
 
 ### Formatting
 
 `ToTensor`
+
 - update: specified by `keys`.
 
 `ImageToTensor`
+
 - update: specified by `keys`.
 
 `Transpose`
+
 - update: specified by `keys`.
 
 `ToDataContainer`
+
 - update: specified by `fields`.
 
 `DefaultFormatBundle`
+
 - update: img, gt_semantic_seg
 
 `Collect`
+
 - add: img_meta (the keys of img_meta is specified by `meta_keys`)
 - remove: all other keys except for those specified by `keys`
 
