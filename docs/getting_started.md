@@ -123,6 +123,7 @@ To convert CHASE DB1 dataset to mmsegmentation format, you should run the follow
 ```shell
 python tools/convert_datasets/chase_db1.py ~/CHASEDB1.zip
 ```
+
 The script will make directory structure automatically.
 
 ### DRIVE
@@ -132,6 +133,7 @@ To convert DRIVE dataset to mmsegmentation format, you should run the following 
 ```shell
 python tools/convert_datasets/drive.py ~/training.zip ~/test.zip
 ```
+
 The script will make directory structure automatically.
 
 ### HRF
@@ -141,6 +143,7 @@ To convert HRF dataset to mmsegmentation format, you should run the following co
 ```shell
 python tools/convert_datasets/hrf.py ~/healthy.zip ~/healthy_manualsegm.zip ~/glaucoma.zip ~/glaucoma_manualsegm.zip ~/diabetic_retinopathy.zip ~/diabetic_retinopathy_manualsegm.zip
 ```
+
 The script will make directory structure automatically.
 
 ### STARE
@@ -150,6 +153,7 @@ To convert STARE dataset to mmsegmentation format, you should run the following 
 ```shell
 python tools/convert_datasets/hrf.py ~/stare-images.tar ~/labels-ah.tar ~/labels-vk.tar
 ```
+
 The script will make directory structure automatically.
 
 ## Inference with pretrained models
