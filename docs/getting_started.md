@@ -78,6 +78,7 @@ mmsegmentation
 ```
 
 ### Cityscapes
+
 The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
 
 By convention, `**labelTrainIds.png` are used for cityscapes training.
@@ -89,6 +90,7 @@ python tools/convert_datasets/cityscapes.py data/cityscapes --nproc 8
 ```
 
 ### Pascal VOC
+
 Pascal VOC 2012 could be downloaded from [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar).
 Beside, most recent works on Pascal VOC dataset usually exploit extra augmentation data, which could be found [here](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz).
 
@@ -102,10 +104,12 @@ Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/bl
 
 
 ### ADE20K
+
 The training and validation set of ADE20K could be download from this [link](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
 We may also download test set from [here](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
 
 ### Pascal Context
+
 The training and validation set of Pascal Context could be download from [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCtrainval_03-May-2010.tar). You may also download test set from [here](http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2010test.tar) after registration.
 
 To split the training and validation set from original dataset, you may download trainval_merged.json from [here](https://codalabuser.blob.core.windows.net/public/trainval_merged.json).
