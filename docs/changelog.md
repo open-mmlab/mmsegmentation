@@ -1,5 +1,30 @@
 ## Changelog
 
+### V0.7 (07/10/2020)
+
+**Highlights**
+
+- Support Pascal Context dataset and customizing class dataset.
+
+**Bug Fixes**
+
+- Fixed CPU inference ([#153](https://github.com/open-mmlab/mmsegmentation/pull/153))
+
+**New Features**
+
+- Add DeepLab OS16 models ([#154](https://github.com/open-mmlab/mmsegmentation/pull/154))
+- Support Pascal Context dataset ([#133](https://github.com/open-mmlab/mmsegmentation/pull/133))
+- Support customizing dataset classes ([#71](https://github.com/open-mmlab/mmsegmentation/pull/71))
+- Support customizing dataset palette ([#157](https://github.com/open-mmlab/mmsegmentation/pull/157))
+
+**Improvements**
+
+- Support 4D tensor output in ONNX ([#150](https://github.com/open-mmlab/mmsegmentation/pull/150))
+- Remove redundancies in ONNX export ([#160](https://github.com/open-mmlab/mmsegmentation/pull/160))
+- Migrate to MMCV DepthwiseSeparableConv ([#158](https://github.com/open-mmlab/mmsegmentation/pull/158))
+- Migrate to MMCV collect_env ([#137](https://github.com/open-mmlab/mmsegmentation/pull/137))
+- Use img_prefix and seg_prefix for loading ([#153](https://github.com/open-mmlab/mmsegmentation/pull/153))
+
 ### V0.6 (10/09/2020)
 
 **Highlights**
