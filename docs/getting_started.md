@@ -79,7 +79,7 @@ Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/bl
 ### ADE20K
 
 The training and validation set of ADE20K could be download from this [link](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
-We may also download test set from [here](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
+We may also download test set from [here](http://data.csail.mit.edu/places/ADEchallenge/release_test.zip).
 
 ### Pascal Context
 
