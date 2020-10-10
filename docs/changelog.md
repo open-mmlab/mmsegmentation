@@ -4,7 +4,7 @@
 
 **Highlights**
 
-- Support Pascal Context dataset and custom class dataset.
+- Support Pascal Context dataset and customizing class dataset.
 
 **Bug Fixes**
 
@@ -14,8 +14,8 @@
 
 - Add DeepLab OS16 models ([#154](https://github.com/open-mmlab/mmsegmentation/pull/154))
 - Support Pascal Context dataset ([#133](https://github.com/open-mmlab/mmsegmentation/pull/133))
-- Support customize dataset classes ([#71](https://github.com/open-mmlab/mmsegmentation/pull/71))
-- Support customize dataset palette ([#157](https://github.com/open-mmlab/mmsegmentation/pull/157))
+- Support customizing dataset classes ([#71](https://github.com/open-mmlab/mmsegmentation/pull/71))
+- Support customizing dataset palette ([#157](https://github.com/open-mmlab/mmsegmentation/pull/157))
 
 **Improvements**
 
