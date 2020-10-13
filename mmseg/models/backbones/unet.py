@@ -113,25 +113,23 @@ class DeconvUpsample(nn.Module):
                  kernel_size=4):
         super(DeconvUpsample, self).__init__()
 
+        assert (kernel_size - 2 >= 0) and (kernel_size - 2) % 2 == 0,\
+            f'kernel_size should be even numbers and greater than or equal to \
+            2, while the kernel size is {kernel_size}.'
+
         stride = 2
-        pad = (kernel_size - 2) // 2
-        if (kernel_size - 2) % 2 == 0:
-            p2d = (pad, pad, pad, pad)
-        else:
-            p2d = (pad + 1, pad, pad + 1, pad)
-        zero_pad2d = nn.ZeroPad2d(padding=p2d)
+        padding = (kernel_size - 2) // 2
         self.with_cp = with_cp
         deconv = nn.ConvTranspose2d(
             in_channels,
             out_channels,
             kernel_size=kernel_size,
             stride=stride,
-            padding=0)
+            padding=padding)
 
         norm_name, norm = build_norm_layer(norm_cfg, out_channels)
         activate = build_activation_layer(act_cfg)
-        self.deconv_upsamping = nn.Sequential(zero_pad2d, deconv, norm,
-                                              activate)
+        self.deconv_upsamping = nn.Sequential(deconv, norm, activate)
 
     def forward(self, x):
         """Forward function."""

@@ -88,24 +88,19 @@ def test_unet_basic_conv_block():
 
 def test_deconv_upsamle():
     with pytest.raises(AssertionError):
-        # test 2X upsample. only support for 2X upsample, so the stride
-        # should be equal to 2.
-        DeconvUpsample(64, 32, stride=1)
+        # test kernel_size should be even numbers and greater than or equal to
+        # 2
+        DeconvUpsample(64, 32, kernel_size=1)
 
     with pytest.raises(AssertionError):
-        # test 2X upsample. only support for 2X upsample, so the stride
-        # should be equal to 2.
-        DeconvUpsample(64, 32, stride=3)
+        # test kernel_size should be even numbers and greater than or equal to
+        # 2
+        DeconvUpsample(64, 32, kernel_size=3)
 
     with pytest.raises(AssertionError):
-        # test 2X upsample. only support for 2X upsample, so the stride
-        # should be equal to 2 and (kernel_size-2*padding-2)=0.
-        DeconvUpsample(64, 32, kernel_size=3, stride=2, padding=1)
-
-    with pytest.raises(AssertionError):
-        # test 2X upsample. only support for 2X upsample, so the stride
-        # should be equal to 2 and (kernel_size-2*padding-2)=0.
-        DeconvUpsample(64, 32, kernel_size=4, stride=2, padding=2)
+        # test kernel_size should be even numbers and greater than or equal to
+        # 2
+        DeconvUpsample(64, 32, kernel_size=5)
 
     # test DeconvUpsample with checkpoint forward and upsample 2X.
     block = DeconvUpsample(64, 32, with_cp=True)
@@ -121,11 +116,11 @@ def test_deconv_upsamle():
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
     # test DeconvUpsample with different kernel size for upsample 2X.
-    block = DeconvUpsample(64, 32, kernel_size=2, stride=2, padding=0)
+    block = DeconvUpsample(64, 32, kernel_size=2)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
-    block = DeconvUpsample(64, 32, kernel_size=6, stride=2, padding=2)
+    block = DeconvUpsample(64, 32, kernel_size=6)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
@@ -225,7 +220,8 @@ def test_up_conv_block():
 
     # test UpConvBlock with upsample=True for upsample 2X. The spatial size of
     # skip_x is 2X larger than x.
-    block = UpConvBlock(BasicConvBlock, 64, 32, 32, upsample=True)
+    block = UpConvBlock(
+        BasicConvBlock, 64, 32, 32, upsample_cfg=dict(type='interp_up'))
     skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(skip_x, x)
@@ -233,7 +229,7 @@ def test_up_conv_block():
 
     # test UpConvBlock with upsample=False for upsample 2X. The spatial size of
     # skip_x is the same as that of x.
-    block = UpConvBlock(BasicConvBlock, 64, 32, 32, upsample=False)
+    block = UpConvBlock(BasicConvBlock, 64, 32, 32, upsample_cfg=None)
     skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 256, 256)
     x_out = block(skip_x, x)
@@ -246,7 +242,6 @@ def test_up_conv_block():
         64,
         32,
         32,
-        upsample=True,
         upsample_cfg=dict(
             type='interp_up',
             upsampe_cfg=dict(
@@ -263,9 +258,7 @@ def test_up_conv_block():
         64,
         32,
         32,
-        upsample=True,
-        upsample_cfg=dict(
-            type='deconv_up2x', kernel_size=4, stride=2, padding=1))
+        upsample_cfg=dict(type='deconv_up2x', kernel_size=4))
     skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(skip_x, x)
@@ -279,7 +272,6 @@ def test_up_conv_block():
         out_channels=32,
         num_convs=3,
         dilation=3,
-        upsample=True,
         upsample_cfg=dict(
             type='interp_up',
             upsampe_cfg=dict(
