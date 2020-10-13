@@ -1,7 +1,8 @@
 # Mixed Precision Training
 
 ## Introduction
-```
+
+```latex
 @article{micikevicius2017mixed,
   title={Mixed precision training},
   author={Micikevicius, Paulius and Narang, Sharan and Alben, Jonah and Diamos, Gregory and Elsen, Erich and Garcia, David and Ginsburg, Boris and Houston, Michael and Kuchaiev, Oleksii and Venkatesh, Ganesh and others},
@@ -13,6 +14,7 @@
 ## Results and models
 
 ### Cityscapes
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                        download                                                                                                                                                                                        |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | R-101-D8 | 512x1024  |   80000 | 5.50        | 2.66              | 76.80 |         - | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fp16/fcn_r101-d8_512x1024_80k_fp16_cityscapes/fcn_r101-d8_512x1024_80k_fp16_cityscapes-50245227.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fp16/fcn_r101-d8_512x1024_80k_fp16_cityscapes/fcn_r101-d8_512x1024_80k_fp16_cityscapes_20200717_230921.log.json) |
