@@ -101,9 +101,6 @@ class DeconvUpsample(nn.Module):
         act_cfg (dict | None): Config dict for activation layer in ConvModule.
             Default: dict(type='ReLU').
         kernel_size (int): Kernel size of the convolutional layer. Default: 4.
-        stride (int): Control the stride for the cross-correlation. Default: 2.
-        padding (int): Control the amount of implicit zero-paddings
-            on both sides. Default: 1.
     """
 
     def __init__(self,
@@ -113,29 +110,28 @@ class DeconvUpsample(nn.Module):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  *,
-                 kernel_size=4,
-                 stride=2,
-                 padding=1):
+                 kernel_size=4):
         super(DeconvUpsample, self).__init__()
 
-        assert stride == 2 and (kernel_size-2*padding-2) == 0, \
-            f"Only support 2X upsample, Please set stride to 2 and\
-            make '(kernel_size-2*padding-2) == 0' satisfied,\
-            while the kernel size is {kernel_size},\
-            the stride is {stride},\
-            and padding is {padding}."
-
+        stride = 2
+        pad = (kernel_size - 2) // 2
+        if (kernel_size - 2) % 2 == 0:
+            p2d = (pad, pad, pad, pad)
+        else:
+            p2d = (pad + 1, pad, pad + 1, pad)
+        zero_pad2d = nn.ZeroPad2d(padding=p2d)
         self.with_cp = with_cp
         deconv = nn.ConvTranspose2d(
             in_channels,
             out_channels,
             kernel_size=kernel_size,
             stride=stride,
-            padding=padding)
+            padding=0)
 
         norm_name, norm = build_norm_layer(norm_cfg, out_channels)
         activate = build_activation_layer(act_cfg)
-        self.deconv_upsamping = nn.Sequential(deconv, norm, activate)
+        self.deconv_upsamping = nn.Sequential(zero_pad2d, deconv, norm,
+                                              activate)
 
     def forward(self, x):
         """Forward function."""
@@ -249,13 +245,11 @@ class UpConvBlock(nn.Module):
             Default: dict(type='BN').
         act_cfg (dict | None): Config dict for activation layer in ConvModule.
             Default: dict(type='ReLU').
-        upsample (bool): Whether need upsample the high-level feature map
-            or not. If the size of high-level feature map is the same as that
-            of skip feature map (low-level feature map from encoder), it does
-            not need upsample the high-level feature map and the upsample
-            is False. Default: True.
         upsample_cfg (dict): The upsample config of the upsample module in
-            decoder. Default: dict(type='interp_up').
+            decoder. Default: dict(type='interp_up'). If the size of high-level
+            feature map is the same as that of skip feature map (low-level
+            feature map from encoder), it does not need upsample the high-level
+            feature map and the upsample_cfg is None.
         dcn (bool): Use deformable convoluton in convolutional layer or not.
             Default: None.
         plugins (dict): plugins for convolutional layers. Default: None.
@@ -273,7 +267,6 @@ class UpConvBlock(nn.Module):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
-                 upsample=True,
                  upsample_cfg=dict(type='interp_up'),
                  dcn=None,
                  plugins=None):
@@ -293,7 +286,7 @@ class UpConvBlock(nn.Module):
             act_cfg=act_cfg,
             dcn=None,
             plugins=None)
-        if upsample:
+        if upsample_cfg is not None:
             self.upsample = build_upsample_layer(
                 cfg=upsample_cfg,
                 in_channels=in_channels,
@@ -442,6 +435,7 @@ class UNet(nn.Module):
             if i != 0:
                 if strides[i] == 1 and downsamples[i - 1]:
                     enc_conv_block.append(nn.MaxPool2d(kernel_size=2))
+                upsample = (strides[i] != 1 or downsamples[i - 1])
                 self.decoder.append(
                     UpConvBlock(
                         conv_block=BasicConvBlock,
@@ -455,8 +449,7 @@ class UNet(nn.Module):
                         conv_cfg=conv_cfg,
                         norm_cfg=norm_cfg,
                         act_cfg=act_cfg,
-                        upsample=(strides[i] != 1 or downsamples[i - 1]),
-                        upsample_cfg=upsample_cfg,
+                        upsample_cfg=upsample_cfg if upsample else None,
                         dcn=None,
                         plugins=None))
 
