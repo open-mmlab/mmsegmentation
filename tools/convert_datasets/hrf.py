@@ -1,11 +1,12 @@
 import argparse
 import os
 import os.path as osp
-import shutil
+import tempfile
 import zipfile
 
-import cv2
 import mmcv
+
+HRF_LEN = 15
 
 
 def parse_args():
@@ -23,6 +24,7 @@ def parse_args():
     parser.add_argument(
         'diabetic_retinopathy_manualsegm_path',
         help='the path of diabetic_retinopathy_manualsegm.zip')
+    parser.add_argument('--tmp_dir', help='path of the temporary directory')
     parser.add_argument('-o', '--out_dir', help='output path')
     args = parser.parse_args()
     return args
@@ -53,41 +55,52 @@ def main():
 
     print('Generating images...')
     for now_path in images_path:
-        tmp_dir = osp.join(out_dir, 'tmp')
-        mmcv.mkdir_or_exist(tmp_dir)
-        zip_file = zipfile.ZipFile(now_path)
-        zip_file.extractall(tmp_dir)
-        for filename in sorted(os.listdir(tmp_dir))[:5]:
-            img = cv2.imread(osp.join(tmp_dir, filename))
-            cv2.imwrite(
-                osp.join(out_dir, 'images', 'training',
-                         osp.splitext(filename)[0] + '.jpg'), img)
-        for filename in sorted(os.listdir(tmp_dir))[5:]:
-            img = cv2.imread(osp.join(tmp_dir, filename))
-            cv2.imwrite(
-                osp.join(out_dir, 'images', 'validation',
-                         osp.splitext(filename)[0] + '.jpg'), img)
-        shutil.rmtree(tmp_dir)
+        with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
+            zip_file = zipfile.ZipFile(now_path)
+            zip_file.extractall(tmp_dir)
+
+            assert len(os.listdir(tmp_dir)) == HRF_LEN, \
+                'len(os.listdir(tmp_dir)) != {}'.format(HRF_LEN)
+
+            for filename in sorted(os.listdir(tmp_dir))[:5]:
+                img = mmcv.imread(osp.join(tmp_dir, filename))
+                mmcv.imwrite(
+                    img,
+                    osp.join(out_dir, 'images', 'training',
+                             osp.splitext(filename)[0] + '.jpg'))
+            for filename in sorted(os.listdir(tmp_dir))[5:]:
+                img = mmcv.imread(osp.join(tmp_dir, filename))
+                mmcv.imwrite(
+                    img,
+                    osp.join(out_dir, 'images', 'validation',
+                             osp.splitext(filename)[0] + '.jpg'))
 
     print('Generating annotations...')
     for now_path in annotations_path:
-        tmp_dir = osp.join(out_dir, 'tmp')
-        mmcv.mkdir_or_exist(tmp_dir)
-        zip_file = zipfile.ZipFile(now_path)
-        zip_file.extractall(tmp_dir)
-        for filename in sorted(os.listdir(tmp_dir))[:5]:
-            img = cv2.imread(osp.join(tmp_dir, filename))
-            cv2.imwrite(
-                osp.join(out_dir, 'annotations', 'training',
-                         osp.splitext(filename)[0] + '.jpg'),
-                img[:, :, 0] // 128)
-        for filename in sorted(os.listdir(tmp_dir))[5:]:
-            img = cv2.imread(osp.join(tmp_dir, filename))
-            cv2.imwrite(
-                osp.join(out_dir, 'annotations', 'validation',
-                         osp.splitext(filename)[0] + '.jpg'),
-                img[:, :, 0] // 128)
-        shutil.rmtree(tmp_dir)
+        with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
+            zip_file = zipfile.ZipFile(now_path)
+            zip_file.extractall(tmp_dir)
+
+            assert len(os.listdir(tmp_dir)) == HRF_LEN, \
+                'len(os.listdir(tmp_dir)) != {}'.format(HRF_LEN)
+
+            for filename in sorted(os.listdir(tmp_dir))[:5]:
+                img = mmcv.imread(osp.join(tmp_dir, filename))
+                # The annotation img should be divided by 128, because some of
+                # the annotation imgs are not standard. We should set a
+                # threshold to convert the nonstandard annotation imgs. The
+                # value divided by 128 is equivalent to '1 if value >= 128
+                # else 0'
+                mmcv.imwrite(
+                    img[:, :, 0] // 128,
+                    osp.join(out_dir, 'annotations', 'training',
+                             osp.splitext(filename)[0] + '.jpg'))
+            for filename in sorted(os.listdir(tmp_dir))[5:]:
+                img = mmcv.imread(osp.join(tmp_dir, filename))
+                mmcv.imwrite(
+                    img[:, :, 0] // 128,
+                    osp.join(out_dir, 'annotations', 'validation',
+                             osp.splitext(filename)[0] + '.jpg'))
 
     print('Done!')
 

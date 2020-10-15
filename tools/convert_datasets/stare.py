@@ -2,10 +2,9 @@ import argparse
 import gzip
 import os
 import os.path as osp
-import shutil
 import tarfile
+import tempfile
 
-import cv2
 import mmcv
 
 
@@ -22,6 +21,7 @@ def parse_args():
     parser.add_argument('image_path', help='the path of stare-images.tar')
     parser.add_argument('labels_ah', help='the path of labels-ah.tar')
     parser.add_argument('labels_vk', help='the path of labels-vk.tar')
+    parser.add_argument('--tmp_dir', help='path of the temporary directory')
     parser.add_argument('-o', '--out_dir', help='output path')
     args = parser.parse_args()
     return args
@@ -46,93 +46,99 @@ def main():
     mmcv.mkdir_or_exist(osp.join(out_dir, 'annotations', 'training'))
     mmcv.mkdir_or_exist(osp.join(out_dir, 'annotations', 'validation'))
 
-    tmp_dir = osp.join(out_dir, 'tmp')
-    mmcv.mkdir_or_exist(tmp_dir)
-    mmcv.mkdir_or_exist(osp.join(tmp_dir, 'gz'))
-    mmcv.mkdir_or_exist(osp.join(tmp_dir, 'files'))
+    with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
+        mmcv.mkdir_or_exist(osp.join(tmp_dir, 'gz'))
+        mmcv.mkdir_or_exist(osp.join(tmp_dir, 'files'))
 
-    print('Extracting stare-images.tar...')
-    with tarfile.open(image_path) as f:
-        f.extractall(osp.join(tmp_dir, 'gz'))
+        print('Extracting stare-images.tar...')
+        with tarfile.open(image_path) as f:
+            f.extractall(osp.join(tmp_dir, 'gz'))
 
-    for filename in os.listdir(osp.join(tmp_dir, 'gz')):
-        un_gz(
-            osp.join(tmp_dir, 'gz', filename),
-            osp.join(tmp_dir, 'files',
-                     osp.splitext(filename)[0]))
+        for filename in os.listdir(osp.join(tmp_dir, 'gz')):
+            un_gz(
+                osp.join(tmp_dir, 'gz', filename),
+                osp.join(tmp_dir, 'files',
+                         osp.splitext(filename)[0]))
 
-    for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
-        img = cv2.imread(osp.join(tmp_dir, 'files', filename))
-        cv2.imwrite(
-            osp.join(out_dir, 'images', 'training',
-                     osp.splitext(filename)[0] + '.jpg'), img)
+        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
+            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+            mmcv.imwrite(
+                img,
+                osp.join(out_dir, 'images', 'training',
+                         osp.splitext(filename)[0] + '.jpg'))
 
-    for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
-        img = cv2.imread(osp.join(tmp_dir, 'files', filename))
-        cv2.imwrite(
-            osp.join(out_dir, 'images', 'validation',
-                     osp.splitext(filename)[0] + '.jpg'), img)
+        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
+            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+            mmcv.imwrite(
+                img,
+                osp.join(out_dir, 'images', 'validation',
+                         osp.splitext(filename)[0] + '.jpg'))
 
-    print('Removing the temporary files...')
-    shutil.rmtree(tmp_dir)
+        print('Removing the temporary files...')
 
-    mmcv.mkdir_or_exist(tmp_dir)
-    mmcv.mkdir_or_exist(osp.join(tmp_dir, 'gz'))
-    mmcv.mkdir_or_exist(osp.join(tmp_dir, 'files'))
+    with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
+        mmcv.mkdir_or_exist(osp.join(tmp_dir, 'gz'))
+        mmcv.mkdir_or_exist(osp.join(tmp_dir, 'files'))
 
-    print('Extracting labels-ah.tar...')
-    with tarfile.open(labels_ah) as f:
-        f.extractall(osp.join(tmp_dir, 'gz'))
+        print('Extracting labels-ah.tar...')
+        with tarfile.open(labels_ah) as f:
+            f.extractall(osp.join(tmp_dir, 'gz'))
 
-    for filename in os.listdir(osp.join(tmp_dir, 'gz')):
-        un_gz(
-            osp.join(tmp_dir, 'gz', filename),
-            osp.join(tmp_dir, 'files',
-                     osp.splitext(filename)[0]))
+        for filename in os.listdir(osp.join(tmp_dir, 'gz')):
+            un_gz(
+                osp.join(tmp_dir, 'gz', filename),
+                osp.join(tmp_dir, 'files',
+                         osp.splitext(filename)[0]))
 
-    for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
-        img = cv2.imread(osp.join(tmp_dir, 'files', filename))
-        cv2.imwrite(
-            osp.join(out_dir, 'annotations', 'training',
-                     osp.splitext(filename)[0] + '.jpg'), img[:, :, 0] // 128)
+        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
+            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+            # The annotation img should be divided by 128, because some of
+            # the annotation imgs are not standard. We should set a threshold
+            # to convert the nonstandard annotation imgs. The value divided by
+            # 128 equivalent to '1 if value >= 128 else 0'
+            mmcv.imwrite(
+                img[:, :, 0] // 128,
+                osp.join(out_dir, 'annotations', 'training',
+                         osp.splitext(filename)[0] + '.jpg'))
 
-    for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
-        img = cv2.imread(osp.join(tmp_dir, 'files', filename))
-        cv2.imwrite(
-            osp.join(out_dir, 'annotations', 'validation',
-                     osp.splitext(filename)[0] + '.jpg'), img[:, :, 0] // 128)
+        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
+            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+            mmcv.imwrite(
+                img[:, :, 0] // 128,
+                osp.join(out_dir, 'annotations', 'validation',
+                         osp.splitext(filename)[0] + '.jpg'))
 
-    print('Removing the temporary files...')
-    shutil.rmtree(tmp_dir)
+        print('Removing the temporary files...')
 
-    mmcv.mkdir_or_exist(tmp_dir)
-    mmcv.mkdir_or_exist(osp.join(tmp_dir, 'gz'))
-    mmcv.mkdir_or_exist(osp.join(tmp_dir, 'files'))
+    with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
+        mmcv.mkdir_or_exist(osp.join(tmp_dir, 'gz'))
+        mmcv.mkdir_or_exist(osp.join(tmp_dir, 'files'))
 
-    print('Extracting labels-vk.tar...')
-    with tarfile.open(labels_vk) as f:
-        f.extractall(osp.join(tmp_dir, 'gz'))
+        print('Extracting labels-vk.tar...')
+        with tarfile.open(labels_vk) as f:
+            f.extractall(osp.join(tmp_dir, 'gz'))
 
-    for filename in os.listdir(osp.join(tmp_dir, 'gz')):
-        un_gz(
-            osp.join(tmp_dir, 'gz', filename),
-            osp.join(tmp_dir, 'files',
-                     osp.splitext(filename)[0]))
+        for filename in os.listdir(osp.join(tmp_dir, 'gz')):
+            un_gz(
+                osp.join(tmp_dir, 'gz', filename),
+                osp.join(tmp_dir, 'files',
+                         osp.splitext(filename)[0]))
 
-    for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
-        img = cv2.imread(osp.join(tmp_dir, 'files', filename))
-        cv2.imwrite(
-            osp.join(out_dir, 'annotations', 'training',
-                     osp.splitext(filename)[0] + '.jpg'), img[:, :, 0] // 128)
+        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
+            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+            mmcv.imwrite(
+                img[:, :, 0] // 128,
+                osp.join(out_dir, 'annotations', 'training',
+                         osp.splitext(filename)[0] + '.jpg'))
 
-    for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
-        img = cv2.imread(osp.join(tmp_dir, 'files', filename))
-        cv2.imwrite(
-            osp.join(out_dir, 'annotations', 'validation',
-                     osp.splitext(filename)[0] + '.jpg'), img[:, :, 0] // 128)
+        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
+            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+            mmcv.imwrite(
+                img[:, :, 0] // 128,
+                osp.join(out_dir, 'annotations', 'validation',
+                         osp.splitext(filename)[0] + '.jpg'))
 
-    print('Removing the temporary files...')
-    shutil.rmtree(tmp_dir)
+        print('Removing the temporary files...')
 
     print('Done!')
 

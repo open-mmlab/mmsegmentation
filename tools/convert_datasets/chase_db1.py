@@ -1,17 +1,19 @@
 import argparse
 import os
 import os.path as osp
-import shutil
+import tempfile
 import zipfile
 
-import cv2
 import mmcv
+
+CHASE_DB1_LEN = 28 * 3
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Convert CHASE_DB1 dataset to mmsegmentation format')
     parser.add_argument('dataset_path', help='path of CHASEDB1.zip')
+    parser.add_argument('--tmp_dir', help='path of the temporary directory')
     parser.add_argument('-o', '--out_dir', help='output path')
     args = parser.parse_args()
     return args
@@ -34,37 +36,44 @@ def main():
     mmcv.mkdir_or_exist(osp.join(out_dir, 'annotations', 'training'))
     mmcv.mkdir_or_exist(osp.join(out_dir, 'annotations', 'validation'))
 
-    tmp_dir = osp.join(out_dir, 'tmp')
-    mmcv.mkdir_or_exist(tmp_dir)
+    with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
+        print('Extracting CHASEDB1.zip...')
+        zip_file = zipfile.ZipFile(dataset_path)
+        zip_file.extractall(tmp_dir)
 
-    print('Extracting CHASEDB1.zip...')
-    zip_file = zipfile.ZipFile(dataset_path)
-    zip_file.extractall(tmp_dir)
+        print('Generating training dataset...')
 
-    print('Generating training dataset...')
-    for img_name in sorted(os.listdir(tmp_dir))[:60]:
-        img = cv2.imread(osp.join(tmp_dir, img_name))
-        if osp.splitext(img_name)[1] == '.jpg':
-            cv2.imwrite(osp.join(out_dir, 'images', 'training', img_name), img)
-        else:
-            cv2.imwrite(
-                osp.join(out_dir, 'annotations', 'training',
-                         osp.splitext(img_name)[0] + '.jpg'),
-                img[:, :, 0] // 128)
+        assert len(os.listdir(tmp_dir)) == CHASE_DB1_LEN, \
+            'len(os.listdir(tmp_dir)) != {}'.format(CHASE_DB1_LEN)
 
-    for img_name in sorted(os.listdir(tmp_dir))[60:]:
-        img = cv2.imread(osp.join(tmp_dir, img_name))
-        if osp.splitext(img_name)[1] == '.jpg':
-            cv2.imwrite(
-                osp.join(out_dir, 'images', 'validation', img_name), img)
-        else:
-            cv2.imwrite(
-                osp.join(out_dir, 'annotations', 'validation',
-                         osp.splitext(img_name)[0] + '.jpg'),
-                img[:, :, 0] // 128)
+        for img_name in sorted(os.listdir(tmp_dir))[:60]:
+            img = mmcv.imread(osp.join(tmp_dir, img_name))
+            if osp.splitext(img_name)[1] == '.jpg':
+                mmcv.imwrite(img,
+                             osp.join(out_dir, 'images', 'training', img_name))
+            else:
+                # The annotation img should be divided by 128, because some of
+                # the annotation imgs are not standard. We should set a
+                # threshold to convert the nonstandard annotation imgs. The
+                # value divided by 128 is equivalent to '1 if value >= 128
+                # else 0'
+                mmcv.imwrite(
+                    img[:, :, 0] // 128,
+                    osp.join(out_dir, 'annotations', 'training',
+                             osp.splitext(img_name)[0] + '.jpg'))
 
-    print('Removing the temporary files...')
-    shutil.rmtree(tmp_dir)
+        for img_name in sorted(os.listdir(tmp_dir))[60:]:
+            img = mmcv.imread(osp.join(tmp_dir, img_name))
+            if osp.splitext(img_name)[1] == '.jpg':
+                mmcv.imwrite(
+                    img, osp.join(out_dir, 'images', 'validation', img_name))
+            else:
+                mmcv.imwrite(
+                    img[:, :, 0] // 128,
+                    osp.join(out_dir, 'annotations', 'validation',
+                             osp.splitext(img_name)[0] + '.jpg'))
+
+        print('Removing the temporary files...')
 
     print('Done!')
 
