@@ -134,7 +134,7 @@ The script will make directory structure automatically.
 
 ### DRIVE
 
-The training and validation set of DRIVE could be download from [here](https://drive.grand-challenge.org/). Before that, you should registrate an account.
+The training and validation set of DRIVE could be download from [here](https://drive.grand-challenge.org/). Before that, you should registrate an account. Now, there is no '1st_manual' in the test dataset, if you need it, please search for it by yourself, we do not provide links to download.
 
 To convert DRIVE dataset to mmsegmentation format, you should run the following command:
 
