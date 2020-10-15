@@ -163,7 +163,7 @@ First, download [stare-images.tar](http://cecas.clemson.edu/~ahoover/stare/probi
 To convert STARE dataset to mmsegmentation format, you should run the following command:
 
 ```shell
-python tools/convert_datasets/hrf.py ~/stare-images.tar ~/labels-ah.tar ~/labels-vk.tar
+python tools/convert_datasets/stare.py ~/stare-images.tar ~/labels-ah.tar ~/labels-vk.tar
 ```
 
 The script will make directory structure automatically.
