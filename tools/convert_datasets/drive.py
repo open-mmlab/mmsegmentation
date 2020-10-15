@@ -74,20 +74,24 @@ def main():
                      osp.splitext(img_name)[0] + '.jpg'), img)
 
     now_dir = osp.join(tmp_dir, 'test', '1st_manual')
-    for img_name in os.listdir(now_dir):
-        cap = cv2.VideoCapture(osp.join(now_dir, img_name))
-        ret, img = cap.read()
-        cv2.imwrite(
-            osp.join(out_dir, 'annotations', 'validation',
-                     osp.splitext(img_name)[0] + '.jpg'), img[:, :, 0] // 128)
+    if osp.exists(now_dir):
+        for img_name in os.listdir(now_dir):
+            cap = cv2.VideoCapture(osp.join(now_dir, img_name))
+            ret, img = cap.read()
+            cv2.imwrite(
+                osp.join(out_dir, 'annotations', 'validation',
+                         osp.splitext(img_name)[0] + '.jpg'),
+                img[:, :, 0] // 128)
 
     now_dir = osp.join(tmp_dir, 'test', '2nd_manual')
-    for img_name in os.listdir(now_dir):
-        cap = cv2.VideoCapture(osp.join(now_dir, img_name))
-        ret, img = cap.read()
-        cv2.imwrite(
-            osp.join(out_dir, 'annotations', 'validation',
-                     osp.splitext(img_name)[0] + '.jpg'), img[:, :, 0] // 128)
+    if osp.exists(now_dir):
+        for img_name in os.listdir(now_dir):
+            cap = cv2.VideoCapture(osp.join(now_dir, img_name))
+            ret, img = cap.read()
+            cv2.imwrite(
+                osp.join(out_dir, 'annotations', 'validation',
+                         osp.splitext(img_name)[0] + '.jpg'),
+                img[:, :, 0] // 128)
 
     print('Removing the temporary files...')
     shutil.rmtree(tmp_dir)
