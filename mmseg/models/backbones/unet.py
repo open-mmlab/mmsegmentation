@@ -23,7 +23,7 @@ class BasicConvBlock(nn.Module):
         stride (int 1|2): Whether use stride convolution to downsample
             the input feature map. If stride=2, it only uses stride convolution
             in the first convolutional layer to downsample the input feature
-            map. Default: 1.
+            map. Options are 1 or 2. Default: 1.
         dilation (int): Whether use dilated convolution to expand the
             receptive field. Set dilation rate of each convolutional layer and
             the dilation rate of the first convolutional layer is always 1.
