@@ -7,6 +7,7 @@ import zipfile
 import mmcv
 
 HRF_LEN = 15
+TRAINING_LEN = 5
 
 
 def parse_args():
@@ -62,13 +63,13 @@ def main():
             assert len(os.listdir(tmp_dir)) == HRF_LEN, \
                 'len(os.listdir(tmp_dir)) != {}'.format(HRF_LEN)
 
-            for filename in sorted(os.listdir(tmp_dir))[:5]:
+            for filename in sorted(os.listdir(tmp_dir))[:TRAINING_LEN]:
                 img = mmcv.imread(osp.join(tmp_dir, filename))
                 mmcv.imwrite(
                     img,
                     osp.join(out_dir, 'images', 'training',
                              osp.splitext(filename)[0] + '.jpg'))
-            for filename in sorted(os.listdir(tmp_dir))[5:]:
+            for filename in sorted(os.listdir(tmp_dir))[TRAINING_LEN:]:
                 img = mmcv.imread(osp.join(tmp_dir, filename))
                 mmcv.imwrite(
                     img,
@@ -84,7 +85,7 @@ def main():
             assert len(os.listdir(tmp_dir)) == HRF_LEN, \
                 'len(os.listdir(tmp_dir)) != {}'.format(HRF_LEN)
 
-            for filename in sorted(os.listdir(tmp_dir))[:5]:
+            for filename in sorted(os.listdir(tmp_dir))[:TRAINING_LEN]:
                 img = mmcv.imread(osp.join(tmp_dir, filename))
                 # The annotation img should be divided by 128, because some of
                 # the annotation imgs are not standard. We should set a
@@ -95,7 +96,7 @@ def main():
                     img[:, :, 0] // 128,
                     osp.join(out_dir, 'annotations', 'training',
                              osp.splitext(filename)[0] + '.jpg'))
-            for filename in sorted(os.listdir(tmp_dir))[5:]:
+            for filename in sorted(os.listdir(tmp_dir))[TRAINING_LEN:]:
                 img = mmcv.imread(osp.join(tmp_dir, filename))
                 mmcv.imwrite(
                     img[:, :, 0] // 128,

@@ -7,6 +7,9 @@ import tempfile
 
 import mmcv
 
+STARE_LEN = 20
+TRAINING_LEN = 10
+
 
 def un_gz(src, dst):
     g_file = gzip.GzipFile(src)
@@ -60,15 +63,20 @@ def main():
                 osp.join(tmp_dir, 'files',
                          osp.splitext(filename)[0]))
 
-        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
-            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+        now_dir = osp.join(tmp_dir, 'files')
+
+        assert len(os.listdir(now_dir)) == STARE_LEN, \
+            'len(os.listdir(now_dir)) != {}'.format(STARE_LEN)
+
+        for filename in sorted(os.listdir(now_dir))[:TRAINING_LEN]:
+            img = mmcv.imread(osp.join(now_dir, filename))
             mmcv.imwrite(
                 img,
                 osp.join(out_dir, 'images', 'training',
                          osp.splitext(filename)[0] + '.jpg'))
 
-        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
-            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+        for filename in sorted(os.listdir(now_dir))[TRAINING_LEN:]:
+            img = mmcv.imread(osp.join(now_dir, filename))
             mmcv.imwrite(
                 img,
                 osp.join(out_dir, 'images', 'validation',
@@ -90,8 +98,13 @@ def main():
                 osp.join(tmp_dir, 'files',
                          osp.splitext(filename)[0]))
 
-        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
-            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+        now_dir = osp.join(tmp_dir, 'files')
+
+        assert len(os.listdir(now_dir)) == STARE_LEN, \
+            'len(os.listdir(now_dir)) != {}'.format(STARE_LEN)
+
+        for filename in sorted(os.listdir(now_dir))[:TRAINING_LEN]:
+            img = mmcv.imread(osp.join(now_dir, filename))
             # The annotation img should be divided by 128, because some of
             # the annotation imgs are not standard. We should set a threshold
             # to convert the nonstandard annotation imgs. The value divided by
@@ -101,8 +114,8 @@ def main():
                 osp.join(out_dir, 'annotations', 'training',
                          osp.splitext(filename)[0] + '.jpg'))
 
-        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
-            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+        for filename in sorted(os.listdir(now_dir))[TRAINING_LEN:]:
+            img = mmcv.imread(osp.join(now_dir, filename))
             mmcv.imwrite(
                 img[:, :, 0] // 128,
                 osp.join(out_dir, 'annotations', 'validation',
@@ -124,15 +137,20 @@ def main():
                 osp.join(tmp_dir, 'files',
                          osp.splitext(filename)[0]))
 
-        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[:10]:
-            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+        now_dir = osp.join(tmp_dir, 'files')
+
+        assert len(os.listdir(now_dir)) == STARE_LEN, \
+            'len(os.listdir(now_dir)) != {}'.format(STARE_LEN)
+
+        for filename in sorted(os.listdir(now_dir))[:TRAINING_LEN]:
+            img = mmcv.imread(osp.join(now_dir, filename))
             mmcv.imwrite(
                 img[:, :, 0] // 128,
                 osp.join(out_dir, 'annotations', 'training',
                          osp.splitext(filename)[0] + '.jpg'))
 
-        for filename in sorted(os.listdir(osp.join(tmp_dir, 'files')))[10:]:
-            img = mmcv.imread(osp.join(tmp_dir, 'files', filename))
+        for filename in sorted(os.listdir(now_dir))[TRAINING_LEN:]:
+            img = mmcv.imread(osp.join(now_dir, filename))
             mmcv.imwrite(
                 img[:, :, 0] // 128,
                 osp.join(out_dir, 'annotations', 'validation',

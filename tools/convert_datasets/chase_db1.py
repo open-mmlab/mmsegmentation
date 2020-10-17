@@ -7,6 +7,7 @@ import zipfile
 import mmcv
 
 CHASE_DB1_LEN = 28 * 3
+TRAINING_LEN = 60
 
 
 def parse_args():
@@ -46,7 +47,7 @@ def main():
         assert len(os.listdir(tmp_dir)) == CHASE_DB1_LEN, \
             'len(os.listdir(tmp_dir)) != {}'.format(CHASE_DB1_LEN)
 
-        for img_name in sorted(os.listdir(tmp_dir))[:60]:
+        for img_name in sorted(os.listdir(tmp_dir))[:TRAINING_LEN]:
             img = mmcv.imread(osp.join(tmp_dir, img_name))
             if osp.splitext(img_name)[1] == '.jpg':
                 mmcv.imwrite(img,
@@ -62,7 +63,7 @@ def main():
                     osp.join(out_dir, 'annotations', 'training',
                              osp.splitext(img_name)[0] + '.jpg'))
 
-        for img_name in sorted(os.listdir(tmp_dir))[60:]:
+        for img_name in sorted(os.listdir(tmp_dir))[TRAINING_LEN:]:
             img = mmcv.imread(osp.join(tmp_dir, img_name))
             if osp.splitext(img_name)[1] == '.jpg':
                 mmcv.imwrite(
