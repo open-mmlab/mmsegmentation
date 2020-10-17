@@ -375,7 +375,7 @@ class UNet(nn.Module):
             x = enc(x)
             enc_outs.append(x)
         dec_outs = [x]
-        for i in range(len(self.decoder) - 1, -1, -1):
+        for i in reversed(range(len(self.decoder))):
             x = self.decoder[i](enc_outs[i], x)
             dec_outs.append(x)
 
