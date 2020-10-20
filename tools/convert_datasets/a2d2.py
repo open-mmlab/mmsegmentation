@@ -36,13 +36,13 @@ SEG_COLOR_DICT_A2D2 = {
     (60, 157, 199):   20,  # Traffic sign 3
     (255, 255, 0):    29,  # Utility vehicle 1
     (255, 255, 200):  29,  # Utility vehicle 2
-    (0, 0, 100):      31,  # Tractor
     (233, 100, 0):    16,  # Sidebars
     (110, 110, 0):    12,  # Speed bumper
     (128, 128, 0):    14,  # Curbstone
     (255, 193, 37):    6,  # Solid line
     (64, 0, 64):      22,  # Irrelevant signs
     (185, 122, 87):   17,  # Road blocks
+    (0, 0, 100):      31,  # Tractor
     (139, 99, 108):    1,  # Non-drivable street
     (210, 50, 115):    8,  # Zebra crossing
     (255, 0, 128):    34,  # Obstacles / trash
@@ -148,7 +148,7 @@ def convert_a2d2_trainids(label_filepath, ignore_id=255):
         ignore_id: Default value for unlabeled elements.
     '''
     # Read label file as Numpy array (H, W, 3)
-    orig_label = Image.open(label_filepath)
+    orig_label = mmcv.imread(label_filepath)
     orig_label = np.array(orig_label, dtype=np.int)
 
     # Empty array with all elements set as 'ignore id' label
@@ -170,7 +170,7 @@ def convert_a2d2_trainids(label_filepath, ignore_id=255):
     # Save new 'trainids' semantic label
     label_filepath = modify_label_filename(label_filepath)
     label_img = Image.fromarray(mod_label.astype(np.uint8))
-    label_img.save(label_filepath)
+    mmcv.imwrite(label_img, label_filepath)
 
 
 def convert_cityscapes_trainids(label_filepath, ignore_id=255):
@@ -184,7 +184,7 @@ def convert_cityscapes_trainids(label_filepath, ignore_id=255):
         ignore_id: Default value for unlabeled elements.
     '''
     # Read label file as Numpy array (H, W, 3)
-    orig_label = Image.open(label_filepath)
+    orig_label = mmcv.imread(label_filepath)
     orig_label = np.array(orig_label, dtype=np.int)
 
     # Empty array with all elements set as 'ignore id' label
@@ -206,7 +206,7 @@ def convert_cityscapes_trainids(label_filepath, ignore_id=255):
     # Save new 'trainids' semantic label
     label_filepath = modify_label_filename(label_filepath)
     label_img = Image.fromarray(mod_label.astype(np.uint8))
-    label_img.save(label_filepath)
+    mmcv.imwrite(label_img, label_filepath)
 
 
 def restructure_a2d2_directory(a2d2_path, val_ratio, test_ratio,
@@ -304,7 +304,7 @@ def parse_args():
     parser.add_argument(
         '-o', '--out-dir', help='Output path')
     parser.add_argument(
-        '--conv', default=True, help='Convert label images')
+        '--convert', default=True, help='Convert label images')
     parser.add_argument(
         '--restruct', default=True, help='Restructure directory structure')
     parser.add_argument(
@@ -330,7 +330,7 @@ def main():
         while semantic segmentation requires categorical segmentations.
 
         The function 'convert_TYPE_trainids()' converts all instance
-        segmentation to thier corresponding categorical segmentation and saves
+        segmentation to their corresponding categorical segmentation and saves
         them as new label image files.
 
         Conversion type options
