@@ -1,12 +1,10 @@
 import argparse
+import glob
+import mmcv
+import numpy as np
 import os.path as osp
 from os import symlink
-import glob
 from PIL import Image
-import numpy as np
-
-import mmcv
-
 
 # Dictionaries specifying which A2D2 segmentation color corresponds to
 
@@ -256,7 +254,8 @@ def restructure_a2d2_directory(a2d2_path, val_ratio, test_ratio,
     img_filepaths = sorted(glob.glob(osp.join(a2d2_path,
                            '*/camera/cam_front_center/*.png')))
     ann_filepaths = sorted(glob.glob(osp.join(a2d2_path,
-                           f'*/label/cam_front_center/*{label_suffix}')))
+                           '*/label/cam_front_center/*{}'.format(label_suffix)
+                                              )))
 
     # Split data according to given ratios
     total_samples = len(img_filepaths)
