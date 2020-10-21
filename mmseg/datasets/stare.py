@@ -8,10 +8,10 @@ from .custom import CustomDataset
 class StareDataset(CustomDataset):
     """Stare dataset.
 
-    In segmentation map annotation for Stare, 0 stands for background,
-    which is included in 2 categories. ``reduce_zero_label`` is fixed to
-    False. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
-    fixed to '.ah.jpg'.
+    In segmentation map annotation for Stare, 0 stands for background, which
+    is included in 2 categories. ``reduce_zero_label`` is fixed to False. The
+    ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed to
+    '.ah.jpg'.
     """
 
     CLASSES = ('background', 'vessel')

@@ -8,10 +8,10 @@ from .custom import CustomDataset
 class DriveDataset(CustomDataset):
     """Drive dataset.
 
-    In segmentation map annotation for Drive, 0 stands for background,
-    which is included in 2 categories. ``reduce_zero_label`` is fixed to
-    False. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
-    fixed to '_manual1.jpg'.
+    In segmentation map annotation for Drive, 0 stands for background, which
+    is included in 2 categories. ``reduce_zero_label`` is fixed to False. The
+    ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed to
+    '_manual1.jpg'.
     """
 
     CLASSES = ('background', 'vessel')

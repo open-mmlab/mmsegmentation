@@ -8,10 +8,10 @@ from .custom import CustomDataset
 class HrfDataset(CustomDataset):
     """Hrf dataset.
 
-    In segmentation map annotation for Hrf, 0 stands for background,
-    which is included in 2 categories. ``reduce_zero_label`` is fixed to
-    False. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
-    fixed to '.jpg'.
+    In segmentation map annotation for Hrf, 0 stands for background, which is
+    included in 2 categories. ``reduce_zero_label`` is fixed to False. The
+    ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed to
+    '.jpg'.
     """
 
     CLASSES = ('background', 'vessel')

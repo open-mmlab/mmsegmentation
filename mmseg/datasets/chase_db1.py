@@ -9,9 +9,9 @@ class Chase_db1Dataset(CustomDataset):
     """Chase_db1 dataset.
 
     In segmentation map annotation for Chase_db1, 0 stands for background,
-    which is included in 2 categories. ``reduce_zero_label`` is fixed to
-    False. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
-    fixed to '_1stHO.jpg'.
+    which is included in 2 categories. ``reduce_zero_label`` is fixed to False.
+    The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed to
+    '_1stHO.jpg'.
     """
 
     CLASSES = ('background', 'vessel')
