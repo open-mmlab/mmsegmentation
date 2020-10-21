@@ -53,7 +53,7 @@ class UpConvBlock(nn.Module):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
-                 upsample_cfg=dict(type='interp_up'),
+                 upsample_cfg=dict(type='InterpConv'),
                  dcn=None,
                  plugins=None):
         super(UpConvBlock, self).__init__()

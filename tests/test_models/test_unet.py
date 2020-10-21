@@ -4,8 +4,8 @@ from mmcv.cnn import ConvModule
 from mmcv.utils.parrots_wrapper import _BatchNorm
 from torch import nn
 
-from mmseg.models.backbones.unet import (BasicConvBlock, DeconvUpsample,
-                                         InterpUpsample, UNet, UpConvBlock)
+from mmseg.models.backbones.unet import (BasicConvBlock, DeconvModule,
+                                         InterpConv, UNet, UpConvBlock)
 
 
 def check_norm_state(modules, train_state):
@@ -86,77 +86,88 @@ def test_unet_basic_conv_block():
     assert block.convs[2].conv.padding == (3, 3)
 
 
-def test_deconv_upsamle():
+def test_deconv_module():
     with pytest.raises(AssertionError):
-        # test kernel_size should be even numbers and greater than or equal to
-        # 2
-        DeconvUpsample(64, 32, kernel_size=1)
+        # kernel_size should be greater than or equal to scale_factor and
+        # (kernel_size - scale_factor) should be even numbers
+        DeconvModule(64, 32, kernel_size=1, scale_factor=2)
 
     with pytest.raises(AssertionError):
-        # test kernel_size should be even numbers and greater than or equal to
-        # 2
-        DeconvUpsample(64, 32, kernel_size=3)
+        # kernel_size should be greater than or equal to scale_factor and
+        # (kernel_size - scale_factor) should be even numbers
+        DeconvModule(64, 32, kernel_size=3, scale_factor=2)
 
     with pytest.raises(AssertionError):
-        # test kernel_size should be even numbers and greater than or equal to
-        # 2
-        DeconvUpsample(64, 32, kernel_size=5)
+        # kernel_size should be greater than or equal to scale_factor and
+        # (kernel_size - scale_factor) should be even numbers
+        DeconvModule(64, 32, kernel_size=5, scale_factor=4)
 
-    # test DeconvUpsample with checkpoint forward and upsample 2X.
-    block = DeconvUpsample(64, 32, with_cp=True)
+    # test DeconvModule with checkpoint forward and upsample 2X.
+    block = DeconvModule(64, 32, with_cp=True)
     assert block.with_cp
     x = torch.randn(1, 64, 128, 128, requires_grad=True)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
-    block = DeconvUpsample(64, 32, with_cp=False)
+    block = DeconvModule(64, 32, with_cp=False)
     assert not block.with_cp
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
-    # test DeconvUpsample with different kernel size for upsample 2X.
-    block = DeconvUpsample(64, 32, kernel_size=2)
+    # test DeconvModule with different kernel size for upsample 2X.
+    x = torch.randn(1, 64, 64, 64)
+    block = DeconvModule(64, 32, kernel_size=2, scale_factor=2)
+    x_out = block(x)
+    assert x_out.shape == torch.Size([1, 32, 128, 128])
+
+    block = DeconvModule(64, 32, kernel_size=6, scale_factor=2)
+    x_out = block(x)
+    assert x_out.shape == torch.Size([1, 32, 128, 128])
+
+    # test DeconvModule with different kernel size for upsample 4X.
+    x = torch.randn(1, 64, 64, 64)
+    block = DeconvModule(64, 32, kernel_size=4, scale_factor=4)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
-    block = DeconvUpsample(64, 32, kernel_size=6)
+    block = DeconvModule(64, 32, kernel_size=6, scale_factor=4)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
 
-def test_interp_upsamle():
-    # test InterpUpsample with checkpoint forward and upsample 2X.
-    block = InterpUpsample(64, 32, with_cp=True)
+def test_interp_conv():
+    # test InterpConv with checkpoint forward and upsample 2X.
+    block = InterpConv(64, 32, with_cp=True)
     assert block.with_cp
     x = torch.randn(1, 64, 128, 128, requires_grad=True)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
-    block = InterpUpsample(64, 32, with_cp=False)
+    block = InterpConv(64, 32, with_cp=False)
     assert not block.with_cp
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
-    # test InterpUpsample with conv_first=False for upsample 2X.
-    block = InterpUpsample(64, 32, conv_first=False)
+    # test InterpConv with conv_first=False for upsample 2X.
+    block = InterpConv(64, 32, conv_first=False)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert isinstance(block.interp_upsample[0], nn.Upsample)
     assert isinstance(block.interp_upsample[1], ConvModule)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
-    # test InterpUpsample with conv_first=True for upsample 2X.
-    block = InterpUpsample(64, 32, conv_first=True)
+    # test InterpConv with conv_first=True for upsample 2X.
+    block = InterpConv(64, 32, conv_first=True)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert isinstance(block.interp_upsample[0], ConvModule)
     assert isinstance(block.interp_upsample[1], nn.Upsample)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
-    # test InterpUpsample with bilinear upsample for upsample 2X.
-    block = InterpUpsample(
+    # test InterpConv with bilinear upsample for upsample 2X.
+    block = InterpConv(
         64,
         32,
         conv_first=False,
@@ -168,8 +179,8 @@ def test_interp_upsamle():
     assert x_out.shape == torch.Size([1, 32, 256, 256])
     assert block.interp_upsample[0].mode == 'bilinear'
 
-    # test InterpUpsample with nearest upsample for upsample 2X.
-    block = InterpUpsample(
+    # test InterpConv with nearest upsample for upsample 2X.
+    block = InterpConv(
         64,
         32,
         conv_first=False,

@@ -84,7 +84,7 @@ class BasicConvBlock(nn.Module):
 
 
 @UPSAMPLE_LAYERS.register_module(name='deconv_up2x')
-class DeconvUpsample(nn.Module):
+class DeconvModule(nn.Module):
     """Deconvolution upsample module in decoder for UNet (2X upsample).
 
     This module uses deconvolution to upsample feature map in the decoder
@@ -109,15 +109,19 @@ class DeconvUpsample(nn.Module):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  *,
-                 kernel_size=4):
-        super(DeconvUpsample, self).__init__()
+                 kernel_size=4,
+                 scale_factor=2):
+        super(DeconvModule, self).__init__()
 
-        assert (kernel_size - 2 >= 0) and (kernel_size - 2) % 2 == 0,\
-            f'kernel_size should be even numbers and greater than or equal to \
-            2, while the kernel size is {kernel_size}.'
+        assert (kernel_size - scale_factor >= 0) and\
+               (kernel_size - scale_factor) % 2 == 0,\
+               f'kernel_size should be greater than or equal to scale_factor '\
+               f'and (kernel_size - scale_factor) should be even numbers, '\
+               f'while the kernel size is {kernel_size} and scale_factor is '\
+               f'{scale_factor}.'
 
-        stride = 2
-        padding = (kernel_size - 2) // 2
+        stride = scale_factor
+        padding = (kernel_size - scale_factor) // 2
         self.with_cp = with_cp
         deconv = nn.ConvTranspose2d(
             in_channels,
@@ -140,8 +144,8 @@ class DeconvUpsample(nn.Module):
         return out
 
 
-@UPSAMPLE_LAYERS.register_module(name='interp_up')
-class InterpUpsample(nn.Module):
+@UPSAMPLE_LAYERS.register_module()
+class InterpConv(nn.Module):
     """Interpolation upsample module in decoder for UNet.
 
     This module uses interpolation to upsample feature map in the decoder
@@ -186,7 +190,7 @@ class InterpUpsample(nn.Module):
                  padding=0,
                  upsampe_cfg=dict(
                      scale_factor=2, mode='bilinear', align_corners=False)):
-        super(InterpUpsample, self).__init__()
+        super(InterpConv, self).__init__()
 
         self.with_cp = with_cp
         conv = ConvModule(
