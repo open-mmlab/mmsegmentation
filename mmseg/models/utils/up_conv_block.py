@@ -32,10 +32,10 @@ class UpConvBlock(nn.Module):
         act_cfg (dict | None): Config dict for activation layer in ConvModule.
             Default: dict(type='ReLU').
         upsample_cfg (dict): The upsample config of the upsample module in
-            decoder. Default: dict(type='interp_up'). If the size of high-level
-            feature map is the same as that of skip feature map (low-level
-            feature map from encoder), it does not need upsample the high-level
-            feature map and the upsample_cfg is None.
+            decoder. Default: dict(type='InterpConv'). If the size of
+            high-level feature map is the same as that of skip feature map
+            (low-level feature map from encoder), it does not need upsample the
+            high-level feature map and the upsample_cfg is None.
         dcn (bool): Use deformable convoluton in convolutional layer or not.
             Default: None.
         plugins (dict): plugins for convolutional layers. Default: None.

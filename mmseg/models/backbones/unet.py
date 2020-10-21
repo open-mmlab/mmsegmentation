@@ -259,7 +259,7 @@ class UNet(nn.Module):
         act_cfg (dict | None): Config dict for activation layer in ConvModule.
             Default: dict(type='ReLU').
         upsample_cfg (dict): The upsample config of the upsample module in
-            decoder. Default: dict(type='interp_up').
+            decoder. Default: dict(type='InterpConv').
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
@@ -288,7 +288,7 @@ class UNet(nn.Module):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
-                 upsample_cfg=dict(type='interp_up'),
+                 upsample_cfg=dict(type='InterpConv'),
                  norm_eval=False,
                  dcn=None,
                  plugins=None):

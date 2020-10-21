@@ -232,7 +232,7 @@ def test_up_conv_block():
     # test UpConvBlock with upsample=True for upsample 2X. The spatial size of
     # skip_x is 2X larger than x.
     block = UpConvBlock(
-        BasicConvBlock, 64, 32, 32, upsample_cfg=dict(type='interp_up'))
+        BasicConvBlock, 64, 32, 32, upsample_cfg=dict(type='DeconvModule'))
     skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(skip_x, x)
@@ -254,7 +254,7 @@ def test_up_conv_block():
         32,
         32,
         upsample_cfg=dict(
-            type='interp_up',
+            type='DeconvModule',
             upsampe_cfg=dict(
                 scale_factor=2, mode='bilinear', align_corners=False)))
     skip_x = torch.randn(1, 32, 256, 256)
@@ -284,7 +284,7 @@ def test_up_conv_block():
         num_convs=3,
         dilation=3,
         upsample_cfg=dict(
-            type='interp_up',
+            type='DeconvModule',
             upsampe_cfg=dict(
                 scale_factor=2, mode='bilinear', align_corners=False)))
     skip_x = torch.randn(1, 32, 256, 256)
