@@ -48,10 +48,9 @@ def main():
         now_dir = osp.join(tmp_dir, 'training', 'images')
         for img_name in os.listdir(now_dir):
             img = mmcv.imread(osp.join(now_dir, img_name))
-            mmcv.imwrite(
-                img,
-                osp.join(out_dir, 'images', 'training',
-                         osp.splitext(img_name)[0] + '.jpg'))
+            mmcv.imwrite(img, osp.join(out_dir, 'images', 'training',
+                         osp.splitext(img_name)[0].replace('_training', '')
+                         + '.jpg'))
 
         now_dir = osp.join(tmp_dir, 'training', '1st_manual')
         for img_name in os.listdir(now_dir):
@@ -70,10 +69,9 @@ def main():
         now_dir = osp.join(tmp_dir, 'test', 'images')
         for img_name in os.listdir(now_dir):
             img = mmcv.imread(osp.join(now_dir, img_name))
-            mmcv.imwrite(
-                img,
-                osp.join(out_dir, 'images', 'validation',
-                         osp.splitext(img_name)[0] + '.jpg'))
+            mmcv.imwrite(img, osp.join(out_dir, 'images', 'validation',
+                         osp.splitext(img_name)[0].replace('_test', '')
+                         + '.jpg'))
 
         now_dir = osp.join(tmp_dir, 'test', '1st_manual')
         if osp.exists(now_dir):
