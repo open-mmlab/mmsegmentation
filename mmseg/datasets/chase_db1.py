@@ -5,7 +5,7 @@ from .custom import CustomDataset
 
 
 @DATASETS.register_module()
-class Chase_db1Dataset(CustomDataset):
+class ChaseDB1Dataset(CustomDataset):
     """Chase_db1 dataset.
 
     In segmentation map annotation for Chase_db1, 0 stands for background,
@@ -19,7 +19,7 @@ class Chase_db1Dataset(CustomDataset):
     PALETTE = [[120, 120, 120], [6, 230, 230]]
 
     def __init__(self, **kwargs):
-        super(Chase_db1Dataset, self).__init__(
+        super(ChaseDB1Dataset, self).__init__(
             img_suffix='.jpg',
             seg_map_suffix='_1stHO.jpg',
             reduce_zero_label=False,
