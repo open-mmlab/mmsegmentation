@@ -51,7 +51,8 @@ def binary_cross_entropy(pred,
                          weight=None,
                          reduction='mean',
                          avg_factor=None,
-                         class_weight=None):
+                         class_weight=None,
+                         ignore_index=None):
     """Calculate the binary CrossEntropy loss.
 
     Args:
@@ -63,10 +64,13 @@ def binary_cross_entropy(pred,
         avg_factor (int, optional): Average factor that is used to average
             the loss. Defaults to None.
         class_weight (list[float], optional): The weight for each class.
+        ignore_index (None): Placeholder, to be consistent with other loss.
+            Default: None.
 
     Returns:
         torch.Tensor: The calculated loss
     """
+    assert ignore_index is None, 'BCE loss does not support ignore_index'
     if pred.dim() != label.dim():
         label, weight = _expand_onehot_labels(label, weight, pred.size(-1))
 
@@ -87,7 +91,8 @@ def mask_cross_entropy(pred,
                        label,
                        reduction='mean',
                        avg_factor=None,
-                       class_weight=None):
+                       class_weight=None,
+                       ignore_index=None):
     """Calculate the CrossEntropy loss for masks.
 
     Args:
@@ -103,10 +108,13 @@ def mask_cross_entropy(pred,
         avg_factor (int, optional): Average factor that is used to average
             the loss. Defaults to None.
         class_weight (list[float], optional): The weight for each class.
+        ignore_index (None): Placeholder, to be consistent with other loss.
+            Default: None.
 
     Returns:
         torch.Tensor: The calculated loss
     """
+    assert ignore_index is None, 'BCE loss does not support ignore_index'
     # TODO: handle these two reserved arguments
     assert reduction == 'mean' and avg_factor is None
     num_rois = pred.size()[0]
