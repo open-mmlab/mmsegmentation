@@ -12,17 +12,27 @@ class EvalHook(Hook):
         interval (int): Evaluation interval (by epochs). Default: 1.
     """
 
-    def __init__(self, dataloader, interval=1, **eval_kwargs):
+    def __init__(self, dataloader, interval=1, by_epoch=False, **eval_kwargs):
         if not isinstance(dataloader, DataLoader):
             raise TypeError('dataloader must be a pytorch DataLoader, but got '
                             f'{type(dataloader)}')
         self.dataloader = dataloader
         self.interval = interval
+        self.by_epoch = by_epoch
         self.eval_kwargs = eval_kwargs
 
     def after_train_iter(self, runner):
         """After train epoch hook."""
-        if not self.every_n_iters(runner, self.interval):
+        if self.by_epoch or not self.every_n_iters(runner, self.interval):
+            return
+        from mmseg.apis import single_gpu_test
+        runner.log_buffer.clear()
+        results = single_gpu_test(runner.model, self.dataloader, show=False)
+        self.evaluate(runner, results)
+
+    def after_train_epoch(self, runner):
+        """After train epoch hook."""
+        if not self.by_epoch or not self.every_n_epochs(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
         runner.log_buffer.clear()
@@ -54,6 +64,7 @@ class DistEvalHook(EvalHook):
                  dataloader,
                  interval=1,
                  gpu_collect=False,
+                 by_epoch=False,
                  **eval_kwargs):
         if not isinstance(dataloader, DataLoader):
             raise TypeError(
@@ -62,11 +73,27 @@ class DistEvalHook(EvalHook):
         self.dataloader = dataloader
         self.interval = interval
         self.gpu_collect = gpu_collect
+        self.by_epoch = by_epoch
         self.eval_kwargs = eval_kwargs
 
     def after_train_iter(self, runner):
         """After train epoch hook."""
-        if not self.every_n_iters(runner, self.interval):
+        if self.by_epoch or not self.every_n_iters(runner, self.interval):
+            return
+        from mmseg.apis import multi_gpu_test
+        runner.log_buffer.clear()
+        results = multi_gpu_test(
+            runner.model,
+            self.dataloader,
+            tmpdir=osp.join(runner.work_dir, '.eval_hook'),
+            gpu_collect=self.gpu_collect)
+        if runner.rank == 0:
+            print('\n')
+            self.evaluate(runner, results)
+
+    def after_train_epoch(self, runner):
+        """After train epoch hook."""
+        if not self.by_epoch or not self.every_n_epochs(runner, self.interval):
             return
         from mmseg.apis import multi_gpu_test
         runner.log_buffer.clear()
