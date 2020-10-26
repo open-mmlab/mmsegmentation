@@ -34,7 +34,12 @@ def intersect_and_union(pred_label, label, num_classes, ignore_index):
     return area_intersect, area_union, area_pred_label, area_label
 
 
-def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
+def mean_iou_or_dice(results,
+                     gt_seg_maps,
+                     num_classes,
+                     ignore_index,
+                     metric='mIoU',
+                     nan_to_num=None):
     """Calculate Intersection and Union (IoU)
 
     Args:
@@ -42,6 +47,7 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
         gt_seg_maps (list[ndarray]): list of ground truth segmentation maps
         num_classes (int): Number of categories
         ignore_index (int): Index that will be ignored in evaluation.
+        metric (str): Metrics to be evaluated, 'mIoU' or 'mDice'.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
 
@@ -51,6 +57,9 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
          ndarray: Per category IoU, shape (num_classes, )
     """
 
+    allowed_metrics = ['mIoU', 'mDice']
+    if (not isinstance(metric, str)) or (metric not in allowed_metrics):
+        raise KeyError('metric {} is not supported'.format(metric))
     num_imgs = len(results)
     assert len(gt_seg_maps) == num_imgs
     total_area_intersect = np.zeros((num_classes, ), dtype=np.float)
@@ -67,8 +76,12 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
         total_area_label += area_label
     all_acc = total_area_intersect.sum() / total_area_label.sum()
     acc = total_area_intersect / total_area_label
-    iou = total_area_intersect / total_area_union
+    if metric == 'mIoU':
+        eval_metric = total_area_intersect / total_area_union
+    else:
+        eval_metric = 2 * total_area_intersect / (
+            total_area_pred_label + total_area_label)
     if nan_to_num is not None:
         return all_acc, np.nan_to_num(acc, nan=nan_to_num), \
-            np.nan_to_num(iou, nan=nan_to_num)
-    return all_acc, acc, iou
+            np.nan_to_num(eval_metric, nan=nan_to_num)
+    return all_acc, acc, eval_metric
