@@ -213,7 +213,7 @@ def test_rotate():
 
     assert str(transform) == f'RandomRotate(' \
                              f'rotate_ratio={1.}, ' \
-                             f'degree={10.}, ' \
+                             f'degree=({-10.}, {10.}), ' \
                              f'pad_val={0}, ' \
                              f'seg_pad_val={255}, ' \
                              f'center={None}, ' \
