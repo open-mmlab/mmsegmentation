@@ -470,8 +470,8 @@ class RandomRotate(object):
     Args:
         rotate_ratio (float): The rotation probability.
         degree (float, tuple[float]): Range of degrees to select from. If
-            degrees is a number instead of tuple like (min, max),
-            the range of degrees will be (-degrees, +degrees)
+            degree is a number instead of tuple like (min, max),
+            the range of degree will be (``-degree``, ``+degree``)
         pad_val (float, optional): Padding value. Default: 0.
         seg_pad_val (float, optional): Padding value of segmentation map.
             Default: 255.
