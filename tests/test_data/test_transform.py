@@ -208,8 +208,16 @@ def test_rotate():
             type='RandomRotate', rotate_ratio=0.5, degree=(10., 20., 30.))
         build_from_cfg(transform, PIPELINES)
 
-    transform = dict(type='RandomRotate', degree=10., rotate_ratio=0.5)
+    transform = dict(type='RandomRotate', degree=10., rotate_ratio=1.)
     transform = build_from_cfg(transform, PIPELINES)
+
+    assert str(transform) == f'RandomRotate(' \
+                             f'rotate_ratio={1.}, ' \
+                             f'degree={10.}, ' \
+                             f'pad_val={0}, ' \
+                             f'seg_pad_val={255}, ' \
+                             f'center={None}, ' \
+                             f'auto_bound={False})'
 
     results = dict()
     img = mmcv.imread(
