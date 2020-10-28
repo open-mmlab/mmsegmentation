@@ -491,12 +491,11 @@ class RandomRotate(object):
                  auto_bound=False):
         self.rotate_ratio = rotate_ratio
         assert rotate_ratio >= 0 and rotate_ratio <= 1
-        if isinstance(degree, float):
+        if isinstance(degree, (float, int)):
             assert degree > 0, f'degree {degree} should be positive'
             self.degree = (-degree, degree)
         else:
             self.degree = degree
-        assert mmcv.is_tuple_of(self.degree, float)
         assert len(self.degree) == 2, f'degree {self.degree} should be a ' \
                                       f'tuple of (min, max)'
         self.pal_val = pad_val
