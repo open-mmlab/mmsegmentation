@@ -200,14 +200,15 @@ def test_pad():
 def test_rotate():
     # test assertion degree should be tuple[float] or float
     with pytest.raises(AssertionError):
-        transform = dict(type='RandomRotate', degree='x')
+        transform = dict(type='RandomRotate', rotate_ratio=0.5, degree='x')
         build_from_cfg(transform, PIPELINES)
     # test assertion degree should be tuple[float] or float
     with pytest.raises(AssertionError):
-        transform = dict(type='RandomRotate', degree=(10., 20., 30.))
+        transform = dict(
+            type='RandomRotate', rotate_ratio=0.5, degree=(10., 20., 30.))
         build_from_cfg(transform, PIPELINES)
 
-    transform = dict(type='RandomRotate', degree=10)
+    transform = dict(type='RandomRotate', degree=10, rotate_ratio=0.5)
     transform = build_from_cfg(transform, PIPELINES)
 
     results = dict()
