@@ -197,6 +197,39 @@ def test_pad():
     assert img_shape[1] % 32 == 0
 
 
+def test_rotate():
+    # test assertion degree should be tuple[float] or float
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotate', degree='x')
+        build_from_cfg(transform, PIPELINES)
+    # test assertion degree should be tuple[float] or float
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotate', degree=(10., 20., 30.))
+        build_from_cfg(transform, PIPELINES)
+
+    transform = dict(type='RandomRotate', degree=10)
+    transform = build_from_cfg(transform, PIPELINES)
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    h, w, _ = img.shape
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+    assert results['img'].shape[:2] == (h, w)
+    assert results['gt_semantic_seg'].shape[:2] == (h, w)
+
+
 def test_normalize():
     img_norm_cfg = dict(
         mean=[123.675, 116.28, 103.53],

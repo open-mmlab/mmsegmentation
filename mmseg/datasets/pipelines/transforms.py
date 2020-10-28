@@ -497,9 +497,8 @@ class RandomRotate(object):
         else:
             self.degree = degree
         assert mmcv.is_tuple_of(self.degree, float)
-        assert len(
-            self.degree
-        ) == 2, f'degree {self.degree} should be a tuple of (min, max)'
+        assert len(self.degree) == 2, f'degree {self.degree} should be a ' \
+                                      f'tuple of (min, max)'
         self.pal_val = pad_val
         self.seg_pad_val = seg_pad_val
         self.center = center
