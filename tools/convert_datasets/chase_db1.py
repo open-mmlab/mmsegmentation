@@ -64,7 +64,7 @@ def main():
                     img[:, :, 0] // 128,
                     osp.join(out_dir, 'annotations', 'training',
                              osp.splitext(img_name)[0] + '.png'))
-                             
+
         for img_name in sorted(os.listdir(tmp_dir))[TRAINING_LEN:]:
             img = mmcv.imread(osp.join(tmp_dir, img_name))
             if osp.splitext(img_name)[1] == '.jpg':
