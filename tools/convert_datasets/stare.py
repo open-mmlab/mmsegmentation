@@ -73,14 +73,14 @@ def main():
             mmcv.imwrite(
                 img,
                 osp.join(out_dir, 'images', 'training',
-                         osp.splitext(filename)[0] + '.jpg'))
+                         osp.splitext(filename)[0] + '.png'))
 
         for filename in sorted(os.listdir(now_dir))[TRAINING_LEN:]:
             img = mmcv.imread(osp.join(now_dir, filename))
             mmcv.imwrite(
                 img,
                 osp.join(out_dir, 'images', 'validation',
-                         osp.splitext(filename)[0] + '.jpg'))
+                         osp.splitext(filename)[0] + '.png'))
 
         print('Removing the temporary files...')
 
@@ -112,14 +112,14 @@ def main():
             mmcv.imwrite(
                 img[:, :, 0] // 128,
                 osp.join(out_dir, 'annotations', 'training',
-                         osp.splitext(filename)[0] + '.jpg'))
+                         osp.splitext(filename)[0] + '.png'))
 
         for filename in sorted(os.listdir(now_dir))[TRAINING_LEN:]:
             img = mmcv.imread(osp.join(now_dir, filename))
             mmcv.imwrite(
                 img[:, :, 0] // 128,
                 osp.join(out_dir, 'annotations', 'validation',
-                         osp.splitext(filename)[0] + '.jpg'))
+                         osp.splitext(filename)[0] + '.png'))
 
         print('Removing the temporary files...')
 
@@ -147,14 +147,14 @@ def main():
             mmcv.imwrite(
                 img[:, :, 0] // 128,
                 osp.join(out_dir, 'annotations', 'training',
-                         osp.splitext(filename)[0] + '.jpg'))
+                         osp.splitext(filename)[0] + '.png'))
 
         for filename in sorted(os.listdir(now_dir))[TRAINING_LEN:]:
             img = mmcv.imread(osp.join(now_dir, filename))
             mmcv.imwrite(
                 img[:, :, 0] // 128,
                 osp.join(out_dir, 'annotations', 'validation',
-                         osp.splitext(filename)[0] + '.jpg'))
+                         osp.splitext(filename)[0] + '.png'))
 
         print('Removing the temporary files...')
 
