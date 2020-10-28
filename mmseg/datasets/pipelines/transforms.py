@@ -465,56 +465,89 @@ class RandomCrop(object):
 
 @PIPELINES.register_module()
 class RandomRotate(object):
-    """Random rotate the image & seg.
+    """Rotate the image & seg.
 
     Args:
-        max_degree (float): The maximum rotation degree (range from -x to x).
-        rotation_ratio (float, optional): The rotation probability.
-            Default: None.
+        rotate_ratio (float): The rotation probability.
+        degree (float, tuple[float]): Range of degrees to select from. If
+            degrees is a number instead of tuple like (min, max),
+            the range of degrees will be (-degrees, +degrees)
+        pad_val (float, optional): Padding value. Default: 0.
+        seg_pad_val (float, optional): Padding value of segmentation map.
+            Default: 255.
+        center (tuple[float], optional): Center point (w, h) of the rotation in
+            the source image. If not specified, the center of the image will be
+            used. Default: None.
+        auto_bound (bool): Whether to adjust the image size to cover the whole
+            rotated image. Default: False
     """
 
-    def __init__(self, max_degree, rotation_ratio=None):
-        self.rotation_ratio = rotation_ratio
-        if rotation_ratio is not None:
-            assert rotation_ratio >= 0 and rotation_ratio <= 1
-        self.max_degree = max_degree
-
-    def get_rotation_degree(self):
-        """Randomly get a rotation degree."""
-        rotation_degree = random.uniform(-1 * self.max_degree, self.max_degree)
-        return rotation_degree
+    def __init__(self,
+                 rotate_ratio,
+                 degree,
+                 pad_val=0,
+                 seg_pad_val=255,
+                 center=None,
+                 auto_bound=False):
+        self.rotate_ratio = rotate_ratio
+        assert rotate_ratio >= 0 and rotate_ratio <= 1
+        if isinstance(degree, float):
+            assert degree > 0, f'degree {degree} should be positive'
+            self.degree = (-degree, degree)
+        else:
+            self.degree = degree
+        assert mmcv.is_tuple_of(self.degree, float)
+        assert len(
+            self.degree
+        ) == 2, f'degree {self.degree} should be a tuple of (min, max)'
+        self.pal_val = pad_val
+        self.seg_pad_val = seg_pad_val
+        self.center = center
+        self.auto_bound = auto_bound
 
     def __call__(self, results):
-        """Call function to randomly rotate images, semantic segmentation maps.
+        """Call function to flip bounding boxes, masks, semantic segmentation
+        maps.
 
         Args:
             results (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Randomly rotated results.
+            dict: Flipped results, 'flip', 'flip_direction' keys are added into
+                result dict.
         """
 
-        if 'rotation' not in results:
-            rotation = True if np.random.rand(
-            ) < self.rotation_ratio else False
-            results['rotation'] = rotation
-        if results['rotation']:
-            img = results['img']
-            rotation_degree = self.get_rotation_degree()
+        rotate = True if np.random.rand() < self.rotate_ratio else False
+        degree = np.random.uniform(min(*self.degree), max(*self.degree))
+        if rotate:
+            # rotate image
+            results['img'] = mmcv.imrotate(
+                results['img'],
+                angle=degree,
+                border_value=self.pal_val,
+                center=self.center,
+                auto_bound=self.auto_bound)
 
-            # rotate the image and semantic segmentation map
-            img = mmcv.imrotate(img, rotation_degree)
-            results['img'] = img
+            # rotate segs
             for key in results.get('seg_fields', []):
-                results[key] = self.rotate(
+                results[key] = mmcv.imrotate(
                     results[key],
-                    rotation_degree,
-                    borderValue=255,
+                    angle=degree,
+                    border_value=self.seg_pad_val,
+                    center=self.center,
+                    auto_bound=self.auto_bound,
                     interpolation='nearest')
         return results
 
     def __repr__(self):
-        return self.__class__.__name__ + f'(max_degree={self.max_degree})'
+        repr_str = self.__class__.__name__
+        repr_str += f'(rotate_ratio={self.rotate_ratio}, ' \
+                    f'degree={self.degree}, ' \
+                    f'pad_val={self.pal_val}, ' \
+                    f'seg_pad_val={self.seg_pad_val}, ' \
+                    f'center={self.center}, ' \
+                    f'auto_bound={self.auto_bound})'
+        return repr_str
 
 
 @PIPELINES.register_module()
