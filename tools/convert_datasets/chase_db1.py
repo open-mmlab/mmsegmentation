@@ -50,8 +50,10 @@ def main():
         for img_name in sorted(os.listdir(tmp_dir))[:TRAINING_LEN]:
             img = mmcv.imread(osp.join(tmp_dir, img_name))
             if osp.splitext(img_name)[1] == '.jpg':
-                mmcv.imwrite(img,
-                             osp.join(out_dir, 'images', 'training', img_name))
+                mmcv.imwrite(
+                    img,
+                    osp.join(out_dir, 'images', 'training',
+                             osp.splitext(img_name)[0] + '.png'))
             else:
                 # The annotation img should be divided by 128, because some of
                 # the annotation imgs are not standard. We should set a
@@ -61,18 +63,20 @@ def main():
                 mmcv.imwrite(
                     img[:, :, 0] // 128,
                     osp.join(out_dir, 'annotations', 'training',
-                             osp.splitext(img_name)[0] + '.jpg'))
+                             osp.splitext(img_name)[0] + '.png'))
 
         for img_name in sorted(os.listdir(tmp_dir))[TRAINING_LEN:]:
             img = mmcv.imread(osp.join(tmp_dir, img_name))
             if osp.splitext(img_name)[1] == '.jpg':
                 mmcv.imwrite(
-                    img, osp.join(out_dir, 'images', 'validation', img_name))
+                    img,
+                    osp.join(out_dir, 'images', 'validation',
+                             osp.splitext(img_name)[0] + '.png'))
             else:
                 mmcv.imwrite(
                     img[:, :, 0] // 128,
                     osp.join(out_dir, 'annotations', 'validation',
-                             osp.splitext(img_name)[0] + '.jpg'))
+                             osp.splitext(img_name)[0] + '.png'))
 
         print('Removing the temporary files...')
 
