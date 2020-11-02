@@ -316,7 +316,7 @@ def parse_args():
     parser.add_argument(
         '--restruct', default=True, help='Restructure directory structure')
     parser.add_argument(
-        '--type', default='cityscapes', help='Semantic label conversion type')
+        '--choice', default='cityscapes', help='Label conversion type choice')
     parser.add_argument(
         '--val', default=0.02, type=float, help='Validation set sample ratio')
     parser.add_argument(
@@ -370,15 +370,15 @@ def main():
 
     # Convert segmentation images to the Cityscapes 'TrainIds' values
     if args.convert:
-        seg_type = args.type
-        if seg_type == 'cityscapes':
+        seg_choice = args.choice
+        if seg_choice == 'cityscapes':
             if args.nproc > 1:
                 mmcv.track_parallel_progress(convert_cityscapes_trainids,
                                              label_filepaths, args.nproc)
             else:
                 mmcv.track_progress(convert_cityscapes_trainids,
                                     label_filepaths)
-        elif seg_type == 'a2d2':
+        elif seg_choice == 'a2d2':
             if args.nproc > 1:
                 mmcv.track_parallel_progress(convert_a2d2_trainids,
                                              label_filepaths, args.nproc)
