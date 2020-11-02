@@ -64,7 +64,7 @@ class ContextGuidedBlock(nn.Module):
             Default: 2.
         reduction (int): Reduction for global context extractor. Default: 16.
         skip_connect (bool): Add input to output or not. Default: True.
-        down (bool): Downsample the input to 1/2 or not. Default: False.
+        downsample (bool): Downsample the input to 1/2 or not. Default: False.
         conv_cfg (dict): Config dict for convolution layer.
             Default: None, which means using conv2d.
         norm_cfg (dict): Config dict for normalization layer.
@@ -81,20 +81,20 @@ class ContextGuidedBlock(nn.Module):
                  dilation=2,
                  reduction=16,
                  skip_connect=True,
-                 down=False,
+                 downsample=False,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN', requires_grad=True),
                  act_cfg=dict(type='PReLU'),
                  with_cp=False):
         super(ContextGuidedBlock, self).__init__()
         self.with_cp = with_cp
-        self.down = down
+        self.downsample = downsample
 
-        channels = out_channels if down else out_channels // 2
+        channels = out_channels if downsample else out_channels // 2
         if 'type' in act_cfg and act_cfg['type'] == 'PReLU':
             act_cfg['num_parameters'] = channels
-        kernel_size = 3 if down else 1
-        stride = 2 if down else 1
+        kernel_size = 3 if downsample else 1
+        stride = 2 if downsample else 1
         padding = (kernel_size - 1) // 2
 
         self.conv1x1 = ConvModule(
@@ -128,7 +128,7 @@ class ContextGuidedBlock(nn.Module):
         self.bn = build_norm_layer(norm_cfg, 2 * channels)[1]
         self.activate = nn.PReLU(2 * channels)
 
-        if down:
+        if downsample:
             self.bottleneck = build_conv_layer(
                 conv_cfg,
                 2 * channels,
@@ -136,7 +136,7 @@ class ContextGuidedBlock(nn.Module):
                 kernel_size=1,
                 bias=False)
 
-        self.skip_connect = skip_connect and not down
+        self.skip_connect = skip_connect and not downsample
         self.f_glo = FGlo(out_channels, reduction, with_cp)
 
     def forward(self, x):
@@ -149,7 +149,7 @@ class ContextGuidedBlock(nn.Module):
             joi_feat = torch.cat([loc, sur], 1)  # the joint feature
             joi_feat = self.bn(joi_feat)
             joi_feat = self.activate(joi_feat)
-            if self.down:
+            if self.downsample:
                 joi_feat = self.bottleneck(joi_feat)  # channel = out_channels
             # f_glo is employed to refine the joint feature
             out = self.f_glo(joi_feat)
@@ -275,7 +275,7 @@ class CGNet(nn.Module):
                     num_channels[1],
                     dilations[0],
                     reductions[0],
-                    down=(i == 0),
+                    downsample=(i == 0),
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
                     act_cfg=act_cfg,
@@ -295,7 +295,7 @@ class CGNet(nn.Module):
                     num_channels[2],
                     dilations[1],
                     reductions[1],
-                    down=(i == 0),
+                    downsample=(i == 0),
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
                     act_cfg=act_cfg,
