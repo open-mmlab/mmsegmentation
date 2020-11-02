@@ -107,7 +107,7 @@ class ContextGuidedBlock(nn.Module):
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
 
-        self.F_loc = build_conv_layer(
+        self.f_loc = build_conv_layer(
             conv_cfg,
             channels,
             channels,
@@ -115,7 +115,7 @@ class ContextGuidedBlock(nn.Module):
             padding=1,
             groups=channels,
             bias=False)
-        self.F_sur = build_conv_layer(
+        self.f_sur = build_conv_layer(
             conv_cfg,
             channels,
             channels,
@@ -137,22 +137,22 @@ class ContextGuidedBlock(nn.Module):
                 bias=False)
 
         self.add = add and not down
-        self.F_glo = FGlo(out_channels, reduction, with_cp)
+        self.f_glo = FGlo(out_channels, reduction, with_cp)
 
     def forward(self, x):
 
         def _inner_forward(x):
             out = self.conv1x1(x)
-            loc = self.F_loc(out)
-            sur = self.F_sur(out)
+            loc = self.f_loc(out)
+            sur = self.f_sur(out)
 
             joi_feat = torch.cat([loc, sur], 1)  # the joint feature
             joi_feat = self.bn(joi_feat)
             joi_feat = self.activate(joi_feat)
             if self.down:
                 joi_feat = self.bottleneck(joi_feat)  # channel = out_channels
-            # F_glo is employed to refine the joint feature
-            out = self.F_glo(joi_feat)
+            # f_glo is employed to refine the joint feature
+            out = self.f_glo(joi_feat)
 
             if self.add:
                 return x + out
@@ -170,10 +170,10 @@ class ContextGuidedBlock(nn.Module):
 class InputInjection(nn.Module):
     """Downsampling module for CGNet."""
 
-    def __init__(self, downsamplingRatio):
+    def __init__(self, num_downsampling):
         super(InputInjection, self).__init__()
         self.pool = nn.ModuleList()
-        for i in range(0, downsamplingRatio):
+        for i in range(num_downsampling):
             self.pool.append(nn.AvgPool2d(3, stride=2, padding=1))
 
     def forward(self, x):
