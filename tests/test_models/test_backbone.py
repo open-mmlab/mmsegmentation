@@ -767,23 +767,23 @@ def test_cgnet_context_guided_block():
     assert block.conv1x1.conv.stride == (2, 2)
     assert block.conv1x1.conv.padding == (1, 1)
 
-    assert block.F_loc.in_channels == 32
-    assert block.F_loc.out_channels == 32
-    assert block.F_loc.kernel_size == (3, 3)
-    assert block.F_loc.stride == (1, 1)
-    assert block.F_loc.padding == (1, 1)
-    assert block.F_loc.groups == 32
-    assert block.F_loc.dilation == (1, 1)
-    assert block.F_loc.bias is None
+    assert block.f_loc.in_channels == 32
+    assert block.f_loc.out_channels == 32
+    assert block.f_loc.kernel_size == (3, 3)
+    assert block.f_loc.stride == (1, 1)
+    assert block.f_loc.padding == (1, 1)
+    assert block.f_loc.groups == 32
+    assert block.f_loc.dilation == (1, 1)
+    assert block.f_loc.bias is None
 
-    assert block.F_sur.in_channels == 32
-    assert block.F_sur.out_channels == 32
-    assert block.F_sur.kernel_size == (3, 3)
-    assert block.F_sur.stride == (1, 1)
-    assert block.F_sur.padding == (2, 2)
-    assert block.F_sur.groups == 32
-    assert block.F_sur.dilation == (2, 2)
-    assert block.F_sur.bias is None
+    assert block.f_sur.in_channels == 32
+    assert block.f_sur.out_channels == 32
+    assert block.f_sur.kernel_size == (3, 3)
+    assert block.f_sur.stride == (1, 1)
+    assert block.f_sur.padding == (2, 2)
+    assert block.f_sur.groups == 32
+    assert block.f_sur.dilation == (2, 2)
+    assert block.f_sur.bias is None
 
     assert block.bottleneck.in_channels == 64
     assert block.bottleneck.out_channels == 32
@@ -803,23 +803,23 @@ def test_cgnet_context_guided_block():
     assert block.conv1x1.conv.stride == (1, 1)
     assert block.conv1x1.conv.padding == (0, 0)
 
-    assert block.F_loc.in_channels == 16
-    assert block.F_loc.out_channels == 16
-    assert block.F_loc.kernel_size == (3, 3)
-    assert block.F_loc.stride == (1, 1)
-    assert block.F_loc.padding == (1, 1)
-    assert block.F_loc.groups == 16
-    assert block.F_loc.dilation == (1, 1)
-    assert block.F_loc.bias is None
+    assert block.f_loc.in_channels == 16
+    assert block.f_loc.out_channels == 16
+    assert block.f_loc.kernel_size == (3, 3)
+    assert block.f_loc.stride == (1, 1)
+    assert block.f_loc.padding == (1, 1)
+    assert block.f_loc.groups == 16
+    assert block.f_loc.dilation == (1, 1)
+    assert block.f_loc.bias is None
 
-    assert block.F_sur.in_channels == 16
-    assert block.F_sur.out_channels == 16
-    assert block.F_sur.kernel_size == (3, 3)
-    assert block.F_sur.stride == (1, 1)
-    assert block.F_sur.padding == (2, 2)
-    assert block.F_sur.groups == 16
-    assert block.F_sur.dilation == (2, 2)
-    assert block.F_sur.bias is None
+    assert block.f_sur.in_channels == 16
+    assert block.f_sur.out_channels == 16
+    assert block.f_sur.kernel_size == (3, 3)
+    assert block.f_sur.stride == (1, 1)
+    assert block.f_sur.padding == (2, 2)
+    assert block.f_sur.groups == 16
+    assert block.f_sur.dilation == (2, 2)
+    assert block.f_sur.bias is None
 
     x = torch.randn(1, 32, 32, 32)
     x_out = block(x)
