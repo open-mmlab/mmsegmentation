@@ -1,6 +1,4 @@
-_base_ = [
-    '../_base_/models/cgnet_m3n21.py', '../_base_/default_runtime.py'
-]
+_base_ = ['../_base_/models/cgnet_m3n21.py', '../_base_/default_runtime.py']
 
 # optimizer
 optimizer = dict(type='Adam', lr=0.001, eps=1e-08, weight_decay=0.0005)
