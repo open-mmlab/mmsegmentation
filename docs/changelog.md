@@ -1,15 +1,42 @@
 ## Changelog
 
+### V0.7 (07/10/2020)
 
-### V0.6 (10/09/2020)
 **Highlights**
-- Support new methods i.e. MobileNetV2, EMANet, DNL, PointRend, Semantic FPN, Fast-SCNN,
-ResNeSt.
+
+- Support Pascal Context dataset and customizing class dataset.
 
 **Bug Fixes**
+
+- Fixed CPU inference ([#153](https://github.com/open-mmlab/mmsegmentation/pull/153))
+
+**New Features**
+
+- Add DeepLab OS16 models ([#154](https://github.com/open-mmlab/mmsegmentation/pull/154))
+- Support Pascal Context dataset ([#133](https://github.com/open-mmlab/mmsegmentation/pull/133))
+- Support customizing dataset classes ([#71](https://github.com/open-mmlab/mmsegmentation/pull/71))
+- Support customizing dataset palette ([#157](https://github.com/open-mmlab/mmsegmentation/pull/157))
+
+**Improvements**
+
+- Support 4D tensor output in ONNX ([#150](https://github.com/open-mmlab/mmsegmentation/pull/150))
+- Remove redundancies in ONNX export ([#160](https://github.com/open-mmlab/mmsegmentation/pull/160))
+- Migrate to MMCV DepthwiseSeparableConv ([#158](https://github.com/open-mmlab/mmsegmentation/pull/158))
+- Migrate to MMCV collect_env ([#137](https://github.com/open-mmlab/mmsegmentation/pull/137))
+- Use img_prefix and seg_prefix for loading ([#153](https://github.com/open-mmlab/mmsegmentation/pull/153))
+
+### V0.6 (10/09/2020)
+
+**Highlights**
+
+- Support new methods i.e. MobileNetV2, EMANet, DNL, PointRend, Semantic FPN, Fast-SCNN, ResNeSt.
+
+**Bug Fixes**
+
 - Fixed sliding inference ONNX export ([#90](https://github.com/open-mmlab/mmsegmentation/pull/90))
 
 **New Features**
+
 - Support MobileNet v2 ([#86](https://github.com/open-mmlab/mmsegmentation/pull/86))
 - Support EMANet ([#34](https://github.com/open-mmlab/mmsegmentation/pull/34))
 - Support DNL ([#37](https://github.com/open-mmlab/mmsegmentation/pull/37))
@@ -20,6 +47,7 @@ ResNeSt.
 - Support ONNX export (experimental) ([#12](https://github.com/open-mmlab/mmsegmentation/pull/12))
 
 **Improvements**
+
 - Support Upsample in ONNX ([#100](https://github.com/open-mmlab/mmsegmentation/pull/100))
 - Support Windows install (experimental) ([#75](https://github.com/open-mmlab/mmsegmentation/pull/75))
 - Add more OCRNet results ([#20](https://github.com/open-mmlab/mmsegmentation/pull/20))
@@ -27,15 +55,23 @@ ResNeSt.
 - Get version and githash automatically ([#55](https://github.com/open-mmlab/mmsegmentation/pull/55))
 
 ### v0.5.1 (11/08/2020)
+
 **Highlights**
+
 - Support FP16 and more generalized OHEM
+
 **Bug Fixes**
+
 - Fixed Pascal VOC conversion script (#19)
 - Fixed OHEM weight assign bug (#54)
 - Fixed palette type when palette is not given (#27)
+
 **New Features**
+
 - Support FP16 (#21)
 - Generalized OHEM (#54)
+
 **Improvements**
+
 - Add load-from flag (#33)
 - Fixed training tricks doc about different learning rates of model (#26)

@@ -1,4 +1,5 @@
 # Config System
+
 We incorporate modular and inheritance design into our config system, which is convenient to conduct various experiments.
 If you wish to inspect the config file, you may run `python tools/print_config.py /PATH/TO/CONFIG` to see the complete config.
 You may also pass `--options xxx.yyy=zzz` to see updated config.
@@ -225,7 +226,7 @@ dist_params = dict(backend='nccl')  # Parameters to setup distributed training, 
 log_level = 'INFO'  # The level of logging.
 load_from = None  # load models as a pre-trained model from a given path. This will not resume training.
 resume_from = None  # Resume checkpoints from a given path, the training will be resumed from the iteration when the checkpoint's is saved.
-workflow = [('train', 1)]  # Workflow for runner. [('train', 1)] means there is only one workflow and the workflow named 'train' is executed once. The workflow trains the model by 40000 iterations according to the total_iters.
+workflow = [('train', 1)]  # Workflow for runner. [('train', 1)] means there is only one workflow and the workflow named 'train' is executed once. The workflow trains the model by 40000 iterations according to the `runner.max_iters`.
 cudnn_benchmark = True  # Whether use cudnn_benchmark to speed up, which is fast for fixed input size.
 optimizer = dict(  # Config used to build optimizer, support all the optimizers in PyTorch whose arguments are also the same as those in PyTorch
     type='SGD',  # Type of optimizers, refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/optimizer/default_constructor.py#L13 for more details
@@ -238,7 +239,9 @@ lr_config = dict(
     power=0.9,  # The power of polynomial decay.
     min_lr=0.0001,  # The minimum learning rate to stable the training.
     by_epoch=False)  # Whethe count by epoch or not.
-total_iters = 40000  # Total number of iterations.
+runner = dict(
+    type='IterBasedRunner', # Type of runner to use (i.e. IterBasedRunner or EpochBasedRunner)
+    max_iters=40000) # Total number of iterations. For EpochBasedRunner use `max_epochs`
 checkpoint_config = dict(  # Config to set the checkpoint hook, Refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py for implementation.
     by_epoch=False,  # Whethe count by epoch or not.
     interval=4000)  # The save interval.
@@ -325,6 +328,7 @@ The `_delete_=True` would replace all old keys in `backbone` field with new keys
 Some intermediate variables are used in the configs files, like `train_pipeline`/`test_pipeline` in datasets.
 It's worth noting that when modifying intermediate variables in the children configs, user need to pass the intermediate variables into corresponding fields again.
 For example, we would like to change multi scale strategy to train/test a PSPNet. `train_pipeline`/`test_pipeline` are intermediate variable we would like modify.
+
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscapes.py'
 crop_size = (512, 1024)
@@ -362,9 +366,11 @@ data = dict(
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
 ```
+
 We first define the new `train_pipeline`/`test_pipeline` and pass them into `data`.
 
 Similarly, if we would like to switch from `SyncBN` to `BN` or `MMSyncBN`, we need to substitute every `norm_cfg` in the config.
+
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscpaes.py'
 norm_cfg = dict(type='BN', requires_grad=True)

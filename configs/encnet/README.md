@@ -1,7 +1,8 @@
 # Context Encoding for Semantic Segmentation
 
 ## Introduction
-```
+
+```latex
 @InProceedings{Zhang_2018_CVPR,
 author = {Zhang, Hang and Dana, Kristin and Shi, Jianping and Zhang, Zhongyue and Wang, Xiaogang and Tyagi, Ambrish and Agrawal, Amit},
 title = {Context Encoding for Semantic Segmentation},
@@ -14,6 +15,7 @@ year = {2018}
 ## Results and models
 
 ### Cityscapes
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                 download                                                                                                                                                                                                 |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | encnet | R-50-D8  | 512x1024  |   40000 |      8.6 |           4.58 | 75.67 |         77.08 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_40k_cityscapes/encnet_r50-d8_512x1024_40k_cityscapes_20200621_220958-68638a47.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_40k_cityscapes/encnet_r50-d8_512x1024_40k_cityscapes-20200621_220958.log.json)     |
@@ -26,6 +28,7 @@ year = {2018}
 | encnet | R-101-D8 | 769x769   |   80000 | -        | -              | 76.10 |         76.97 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_80k_cityscapes/encnet_r101-d8_769x769_80k_cityscapes_20200622_003555-470ef79d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_80k_cityscapes/encnet_r101-d8_769x769_80k_cityscapes-20200622_003555.log.json)     |
 
 ### ADE20K
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                         download                                                                                                                                                                                         |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | encnet | R-50-D8  | 512x512   |   80000 |     10.1 |          22.81 | 39.53 |         41.17 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_80k_ade20k/encnet_r50-d8_512x512_80k_ade20k_20200622_042412-44b46b04.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_80k_ade20k/encnet_r50-d8_512x512_80k_ade20k-20200622_042412.log.json)         |

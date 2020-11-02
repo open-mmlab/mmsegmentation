@@ -2,7 +2,7 @@
 
 ## Introduction
 
-```
+```latex
 @article{YuanW18,
   title={Ocnet: Object context network for scene parsing},
   author={Yuhui Yuan and Jingdong Wang},
@@ -23,6 +23,7 @@
 ### Cityscapes
 
 #### HRNet backbone
+
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                               download                                                                                                                                                                                               |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | OCRNet | HRNetV2p-W18-Small | 512x1024  |   40000 |      3.5 |          10.45 | 74.30 |         75.95 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes/ocrnet_hr18s_512x1024_40k_cityscapes_20200601_033304-fa2436c2.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes/ocrnet_hr18s_512x1024_40k_cityscapes_20200601_033304.log.json)     |
@@ -35,7 +36,6 @@
 | OCRNet | HRNetV2p-W18       | 512x1024  |  160000 | -        | -              | 79.47 |         80.91 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001-b9172d0c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001.log.json)     |
 | OCRNet | HRNetV2p-W48       | 512x1024  |  160000 | -        | -              | 81.35 |         82.70 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037-dfbf1b0c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037.log.json)     |
 
-
 #### ResNet backbone
 
 | Method |      Backbone      | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                               download                                                                                                                                                                                               |
@@ -44,8 +44,8 @@
 | OCRNet  | R-101-D8 | 512x1024  | 16 |   40000 |  8.8   |   3.02  |   80.30  |  -  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes-db500f80.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes_20200723_193726.log.json) |
 | OCRNet  | R-101-D8 | 512x1024  | 16 |   80000 |  8.8   |   3.02  |   80.81  |  -  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes-78688424.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes_20200723_192421.log.json) |
 
-
 ### ADE20K
+
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                     download                                                                                                                                                                                     |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | OCRNet | HRNetV2p-W18-Small | 512x512   |   80000 |      6.7 |          28.98 | 35.06 |         35.80 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_80k_ade20k/ocrnet_hr18s_512x512_80k_ade20k_20200615_055600-e80b62af.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_80k_ade20k/ocrnet_hr18s_512x512_80k_ade20k_20200615_055600.log.json)     |
@@ -56,6 +56,7 @@
 | OCRNet | HRNetV2p-W48       | 512x512   |  160000 | -        | -              | 43.25 |         44.88 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_160k_ade20k/ocrnet_hr48_512x512_160k_ade20k_20200615_184705-a073726d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_160k_ade20k/ocrnet_hr48_512x512_160k_ade20k_20200615_184705.log.json)     |
 
 ### Pascal VOC 2012 + Aug
+
 | Method |      Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                       download                                                                                                                                                                                       |
 |--------|--------------------|-----------|--------:|----------|----------------|------:|--------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | OCRNet | HRNetV2p-W18-Small | 512x512   |   20000 |      3.5 |          31.55 | 71.70 |         73.84 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_20k_voc12aug/ocrnet_hr18s_512x512_20k_voc12aug_20200617_233913-02b04fcb.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_20k_voc12aug/ocrnet_hr18s_512x512_20k_voc12aug_20200617_233913.log.json) |

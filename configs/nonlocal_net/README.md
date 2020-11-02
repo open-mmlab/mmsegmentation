@@ -1,7 +1,8 @@
 # Non-local Neural Networks
 
 ## Introduction
-```
+
+```latex
 @inproceedings{wang2018non,
   title={Non-local neural networks},
   author={Wang, Xiaolong and Girshick, Ross and Gupta, Abhinav and He, Kaiming},
@@ -14,6 +15,7 @@
 ## Results and models
 
 ### Cityscapes
+
 |  Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                           download                                                                                                                                                                                                           |
 |----------|----------|-----------|--------:|----------|----------------|------:|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | NonLocal | R-50-D8  | 512x1024  |   40000 |      7.4 |           2.72 | 78.24 | -             | [model](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes/nonlocal_r50-d8_512x1024_40k_cityscapes_20200605_210748-c75e81e3.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes/nonlocal_r50-d8_512x1024_40k_cityscapes_20200605_210748.log.json)     |
@@ -26,6 +28,7 @@
 | NonLocal | R-101-D8 | 769x769   |   80000 | -        | -              | 79.40 |         80.85 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes/nonlocal_r101-d8_769x769_80k_cityscapes_20200607_183428-0e1fa4f9.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes/nonlocal_r101-d8_769x769_80k_cityscapes_20200607_183428.log.json)     |
 
 ### ADE20K
+
 |  Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                   download                                                                                                                                                                                                   |
 |----------|----------|-----------|--------:|----------|----------------|------:|--------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | NonLocal | R-50-D8  | 512x512   |   80000 |      9.1 |          21.37 | 40.75 |         42.05 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k/nonlocal_r50-d8_512x512_80k_ade20k_20200615_015801-5ae0aa33.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k/nonlocal_r50-d8_512x512_80k_ade20k_20200615_015801.log.json)         |
@@ -34,6 +37,7 @@
 | NonLocal | R-101-D8 | 512x512   |  160000 | -        | -              | 43.36 |         44.83 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20200616_003422-affd0f8d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20200616_003422.log.json) |
 
 ### Pascal VOC 2012 + Aug
+
 |  Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                     download                                                                                                                                                                                                     |
 |----------|----------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | NonLocal | R-50-D8  | 512x512   |   20000 |      6.4 |          21.21 | 76.20 |         77.12 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug/nonlocal_r50-d8_512x512_20k_voc12aug_20200617_222613-07f2a57c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug/nonlocal_r50-d8_512x512_20k_voc12aug_20200617_222613.log.json)     |

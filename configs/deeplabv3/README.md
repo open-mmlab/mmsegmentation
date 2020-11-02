@@ -1,7 +1,8 @@
 # Rethinking atrous convolution for semantic image segmentation
 
 ## Introduction
-```
+
+```latext
 @article{chen2017rethinking,
   title={Rethinking atrous convolution for semantic image segmentation},
   author={Chen, Liang-Chieh and Papandreou, George and Schroff, Florian and Adam, Hartwig},
@@ -15,6 +16,7 @@
 Note: `D-8` here corresponding to the output stride 8 setting for DeepLab series.
 
 ### Cityscapes
+
 |  Method   | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                          download                                                                                                                                                                                                          |
 |-----------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | DeepLabV3 | R-50-D8  | 512x1024  |   40000 |      6.1 |           2.57 | 79.09 |         80.45 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes/deeplabv3_r50-d8_512x1024_40k_cityscapes_20200605_022449-acadc2f8.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes/deeplabv3_r50-d8_512x1024_40k_cityscapes_20200605_022449.log.json)     |
@@ -29,6 +31,7 @@ Note: `D-8` here corresponding to the output stride 8 setting for DeepLab series
 | DeepLabV3 | R-101-D16-MG124 | 512x1024  |   80000 |       -  | -              | 78.36 |         79.84 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes_20200908_005644-57bb8425.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes-20200908_005644.log.json) |
 
 ### ADE20K
+
 |  Method   | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                  download                                                                                                                                                                                                  |
 |-----------|----------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | DeepLabV3 | R-50-D8  | 512x512   |   80000 |      8.9 |          14.76 | 42.42 |         43.28 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k/deeplabv3_r50-d8_512x512_80k_ade20k_20200614_185028-0bb3f844.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k/deeplabv3_r50-d8_512x512_80k_ade20k_20200614_185028.log.json)         |
@@ -37,6 +40,7 @@ Note: `D-8` here corresponding to the output stride 8 setting for DeepLab series
 | DeepLabV3 | R-101-D8 | 512x512   |  160000 | -        | -              | 45.00 |         46.66 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k/deeplabv3_r101-d8_512x512_160k_ade20k_20200615_105816-b1f72b3b.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k/deeplabv3_r101-d8_512x512_160k_ade20k_20200615_105816.log.json) |
 
 ### Pascal VOC 2012 + Aug
+
 |  Method   | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                    download                                                                                                                                                                                                    |
 |-----------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | DeepLabV3 | R-50-D8  | 512x512   |   20000 |      6.1 |          13.88 | 76.17 |         77.42 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug/deeplabv3_r50-d8_512x512_20k_voc12aug_20200617_010906-596905ef.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug/deeplabv3_r50-d8_512x512_20k_voc12aug_20200617_010906.log.json)     |
@@ -45,6 +49,7 @@ Note: `D-8` here corresponding to the output stride 8 setting for DeepLab series
 | DeepLabV3 | R-101-D8 | 512x512   |   40000 | -        | -              | 77.92 |         79.18 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug/deeplabv3_r101-d8_512x512_40k_voc12aug_20200613_161432-0017d784.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug/deeplabv3_r101-d8_512x512_40k_voc12aug_20200613_161432.log.json) |
 
 ### Pascal Context
+
 |  Method   | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                                    download                                                                                                                                                                                                    |
 |-----------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | DeepLabV3 | R-101-D8 | 480x480   |   40000 |      9.2 |           7.09 | 46.55 |         47.81 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context/deeplabv3_r101-d8_480x480_40k_pascal_context_20200911_204118-1aa27336.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context/deeplabv3_r101-d8_480x480_40k_pascal_context-20200911_204118.log.json) |

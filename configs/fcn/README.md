@@ -1,7 +1,8 @@
 # Fully Convolutional Networks for Semantic Segmentation
 
 ## Introduction
-```
+
+```latex
 @article{shelhamer2017fully,
   title={Fully convolutional networks for semantic segmentation},
   author={Shelhamer, Evan and Long, Jonathan and Darrell, Trevor},
@@ -17,6 +18,7 @@
 ## Results and models
 
 ### Cityscapes
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                        download                                                                                                                                                                                        |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | R-50-D8  | 512x1024  |   40000 |      5.7 |           4.17 | 72.25 |         73.36 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608.log.json)     |
@@ -29,6 +31,7 @@
 | FCN    | R-101-D8 | 769x769   |   80000 | -        | -              | 75.52 |         76.61 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354-45cbac68.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354.log.json)     |
 
 ### ADE20K
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                download                                                                                                                                                                                |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | R-50-D8  | 512x512   |   80000 |      8.5 |          23.49 | 35.94 |         37.94 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016.log.json)         |
@@ -37,6 +40,7 @@
 | FCN    | R-101-D8 | 512x512   |  160000 | -        | -              | 39.91 |         41.40 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816-fd192bd5.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816.log.json) |
 
 ### Pascal VOC 2012 + Aug
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                  download                                                                                                                                                                                  |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | R-50-D8  | 512x512   |   20000 |      5.7 |          23.28 | 67.08 |         69.94 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715-52dc5306.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715.log.json)     |
@@ -45,6 +49,7 @@
 | FCN    | R-101-D8 | 512x512   |   40000 | -        | -              | 69.91 |         72.38 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240-4c8bcefd.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240.log.json) |
 
 ### Pascal Context
+
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) |                                                                                                                                                                                  download                                                                                                                                                                                  |
 |--------|----------|-----------|--------:|----------|----------------|------:|--------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | FCN    | R-101-D8 | 480x480   |   40000 |      - |          9.93 | 44.14 |         45.67 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context_20200911_212515-9b565a6d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20200911_212515.log.json) |

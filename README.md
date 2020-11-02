@@ -46,7 +46,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.5.1 was released in 11/08/2020.
+v0.7.0 was released in 07/10/2020.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -54,6 +54,7 @@ Please refer to [changelog.md](docs/changelog.md) for details and release histor
 Results and models are available in the [model zoo](docs/model_zoo.md).
 
 Supported backbones:
+
 - [x] ResNet
 - [x] ResNeXt
 - [x] [HRNet](configs/hrnet/README.md)
@@ -61,6 +62,7 @@ Supported backbones:
 - [x] [MobileNetV2](configs/mobilenet_v2/README.md)
 
 Supported methods:
+
 - [x] [FCN](configs/fcn)
 - [x] [PSPNet](configs/pspnet)
 - [x] [DeepLabV3](configs/deeplabv3)

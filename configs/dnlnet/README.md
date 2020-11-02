@@ -5,7 +5,8 @@
 This example is to reproduce ["Disentangled Non-Local Neural Networks"](https://arxiv.org/abs/2006.06668) for semantic segmentation. It is still in progress.
 
 ## Citation
-```
+
+```latex
 @misc{yin2020disentangled,
     title={Disentangled Non-Local Neural Networks},
     author={Minghao Yin and Zhuliang Yao and Yue Cao and Xiu Li and Zheng Zhang and Stephen Lin and Han Hu},
@@ -28,7 +29,6 @@ This example is to reproduce ["Disentangled Non-Local Neural Networks"](https://
 | dnl    | R-101-D8 | 512x1024  |   80000 |     -    | -              | 80.41 | -             | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes/dnl_r101-d8_512x1024_80k_cityscapes_20200904_233629-758e2dd4.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes/dnl_r101-d8_512x1024_80k_cityscapes-20200904_233629.log.json) |
 | dnl    | R-50-D8  | 769x769   |   80000 |     -    | -              | 79.36 | 80.70         | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_80k_cityscapes/dnl_r50-d8_769x769_80k_cityscapes_20200820_011925-366bc4c7.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_80k_cityscapes/dnl_r50-d8_769x769_80k_cityscapes-20200820_011925.log.json)         |
 | dnl    | R-101-D8 | 769x769   |   80000 |     -    | -              | 79.41 | 80.68         | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes_20200821_051111-95ff84ab.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes-20200821_051111.log.json)     |
-
 
 ### ADE20K
 

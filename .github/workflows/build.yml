@@ -11,18 +11,16 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.7
-      - name: Install linting dependencies
+      - name: Install pre-commit hook
         run: |
-          python -m pip install --upgrade pip
-          pip install flake8 isort==4.3.21 yapf interrogate
-      - name: Lint with flake8
-        run: flake8 .
-      - name: Lint with isort
-        run: isort --recursive --check-only --diff mmseg/ tests/ examples/
-      - name: Format python codes with yapf
-        run: yapf -r -d mmseg/ tests/ examples/
+          pip install pre-commit
+          pre-commit install
+      - name: Linting
+        run: pre-commit run --all-files
       - name: Check docstring
-        run: interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --exclude mmseg/ops --ignore-regex "__repr__" --fail-under 80 mmseg
+        run: |
+          pip install interrogate
+          interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --exclude mmseg/ops --ignore-regex "__repr__" --fail-under 80 mmseg
 
   build:
     env:
