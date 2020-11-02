@@ -149,7 +149,6 @@ def convert_a2d2_trainids(label_filepath, ignore_id=255):
     """
     # Read label file as Numpy array (H, W, 3)
     orig_label = mmcv.imread(label_filepath, channel_order='rgb')
-    orig_label = np.array(orig_label, dtype=np.int)
 
     # Empty array with all elements set as 'ignore id' label
     H, W, _ = orig_label.shape
@@ -185,7 +184,6 @@ def convert_cityscapes_trainids(label_filepath, ignore_id=255):
     """
     # Read label file as Numpy array (H, W, 3)
     orig_label = mmcv.imread(label_filepath, channel_order='rgb')
-    orig_label = np.array(orig_label, dtype=np.int)
 
     # Empty array with all elements set as 'ignore id' label
     H, W, _ = orig_label.shape
