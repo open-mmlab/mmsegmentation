@@ -268,7 +268,7 @@ class CGNet(nn.Module):
 
         # stage 1
         self.level1 = nn.ModuleList()
-        for i in range(0, num_blocks[0]):
+        for i in range(num_blocks[0]):
             self.level1.append(
                 ContextGuidedBlock(
                     cur_channels if i == 0 else num_channels[1],
@@ -288,7 +288,7 @@ class CGNet(nn.Module):
 
         # stage 2
         self.level2 = nn.ModuleList()
-        for i in range(0, num_blocks[1]):
+        for i in range(num_blocks[1]):
             self.level2.append(
                 ContextGuidedBlock(
                     cur_channels if i == 0 else num_channels[2],
