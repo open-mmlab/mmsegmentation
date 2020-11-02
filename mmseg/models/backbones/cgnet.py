@@ -63,7 +63,7 @@ class ContextGuidedBlock(nn.Module):
         dilation (int): Dilation rate for surrounding context extractor.
             Default: 2.
         reduction (int): Reduction for global context extractor. Default: 16.
-        add (bool): Add input to output or not. Default: True.
+        skip_connect (bool): Add input to output or not. Default: True.
         down (bool): Downsample the input to 1/2 or not. Default: False.
         conv_cfg (dict): Config dict for convolution layer.
             Default: None, which means using conv2d.
@@ -80,7 +80,7 @@ class ContextGuidedBlock(nn.Module):
                  out_channels,
                  dilation=2,
                  reduction=16,
-                 add=True,
+                 skip_connect=True,
                  down=False,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN', requires_grad=True),
@@ -136,7 +136,7 @@ class ContextGuidedBlock(nn.Module):
                 kernel_size=1,
                 bias=False)
 
-        self.add = add and not down
+        self.skip_connect = skip_connect and not down
         self.f_glo = FGlo(out_channels, reduction, with_cp)
 
     def forward(self, x):
@@ -154,7 +154,7 @@ class ContextGuidedBlock(nn.Module):
             # f_glo is employed to refine the joint feature
             out = self.f_glo(joi_feat)
 
-            if self.add:
+            if self.skip_connect:
                 return x + out
             else:
                 return out
