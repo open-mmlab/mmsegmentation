@@ -760,7 +760,7 @@ def test_cgnet_context_guided_block():
     assert x_out.shape == torch.Size([3, 32, 32, 32])
 
     # test cgnet ContextGuidedBlock with down sampling
-    block = ContextGuidedBlock(32, 32, down=True)
+    block = ContextGuidedBlock(32, 32, downsample=True)
     assert block.conv1x1.conv.in_channels == 32
     assert block.conv1x1.conv.out_channels == 32
     assert block.conv1x1.conv.kernel_size == (3, 3)
@@ -796,7 +796,7 @@ def test_cgnet_context_guided_block():
     assert x_out.shape == torch.Size([1, 32, 16, 16])
 
     # test cgnet ContextGuidedBlock without down sampling
-    block = ContextGuidedBlock(32, 32, down=False)
+    block = ContextGuidedBlock(32, 32, downsample=False)
     assert block.conv1x1.conv.in_channels == 32
     assert block.conv1x1.conv.out_channels == 16
     assert block.conv1x1.conv.kernel_size == (1, 1)
