@@ -288,7 +288,7 @@ def restructure_a2d2_directory(a2d2_path,
         img_link_path = osp.join(a2d2_path, 'img_dir', split, img_filename)
         ann_link_path = osp.join(a2d2_path, 'ann_dir', split, ann_filename)
 
-        if use_symlinks is True:
+        if use_symlinks:
             # NOTE: Can only create new symlinks if no priors ones exists
             try:
                 symlink(img_filepath, img_link_path)
@@ -369,7 +369,7 @@ def main():
     label_filepaths = glob.glob(osp.join(a2d2_path, '*/label/*/*[0-9].png'))
 
     # Convert segmentation images to the Cityscapes 'TrainIds' values
-    if args.convert is True:
+    if args.convert:
         seg_type = args.type
         if seg_type == 'cityscapes':
             if args.nproc > 1:
