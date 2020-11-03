@@ -111,6 +111,10 @@ Please refer to [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/maste
 
 Please refer to [DNLNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dnlnet) for details.
 
+### CGNet
+
+Please refer to [CGNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/cgnet) for details.
+
 ### Mixed Precision (FP16) Training
 
 Please refer [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fp16/README.md) for details.

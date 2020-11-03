@@ -81,6 +81,7 @@ Supported methods:
 - [x] [PointRend](configs/point_rend)
 - [x] [EMANet](configs/emanet)
 - [x] [DNLNet](configs/dnlnet)
+- [x] [CGNet](configs/cgnet)
 - [x] [Mixed Precision (FP16) Training](configs/fp16/README.md)
 
 ## Installation
