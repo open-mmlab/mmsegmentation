@@ -5,11 +5,11 @@ import mmcv
 import numpy as np
 import onnxruntime as rt
 import torch
-from torch import nn
 import torch._C
 import torch.serialization
 from mmcv.onnx import register_extra_symbolics
 from mmcv.runner import load_checkpoint
+from torch import nn
 
 from mmseg.models import build_segmentor
 
@@ -185,11 +185,6 @@ if __name__ == '__main__':
         cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
     # convert SyncBN to BN
     segmentor = _convert_batchnorm(segmentor)
-
-    if isinstance(segmentor.decode_head, nn.ModuleList):
-        num_classes = segmentor.decode_head[-1].num_classes
-    else:
-        num_classes = segmentor.decode_head.num_classes
 
     if args.checkpoint:
         load_checkpoint(segmentor, args.checkpoint, map_location='cpu')

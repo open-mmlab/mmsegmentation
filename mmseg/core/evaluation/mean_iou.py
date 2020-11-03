@@ -34,7 +34,7 @@ def intersect_and_union(pred_label, label, num_classes, ignore_index):
     return area_intersect, area_union, area_pred_label, area_label
 
 
-def mean_iou(results, gt_seg_maps, num_classes, ignore_index):
+def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
     """Calculate Intersection and Union (IoU)
 
     Args:
@@ -42,6 +42,8 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index):
         gt_seg_maps (list[ndarray]): list of ground truth segmentation maps
         num_classes (int): Number of categories
         ignore_index (int): Index that will be ignored in evaluation.
+        nan_to_num (int, optional): If specified, NaN values will be replaced
+            by the numbers defined by the user. Default: None.
 
      Returns:
          float: Overall accuracy on all images.
@@ -66,5 +68,7 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index):
     all_acc = total_area_intersect.sum() / total_area_label.sum()
     acc = total_area_intersect / total_area_label
     iou = total_area_intersect / total_area_union
-
+    if nan_to_num is not None:
+        return all_acc, np.nan_to_num(acc, nan=nan_to_num), \
+            np.nan_to_num(iou, nan=nan_to_num)
     return all_acc, acc, iou

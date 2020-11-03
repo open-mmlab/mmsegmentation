@@ -1,4 +1,5 @@
-from mmseg.ops import DepthwiseSeparableConvModule
+from mmcv.cnn import DepthwiseSeparableConvModule
+
 from ..builder import HEADS
 from .fcn_head import FCNHead
 
