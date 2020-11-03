@@ -105,7 +105,7 @@ def test_decode_head():
 def test_fcn_head():
 
     with pytest.raises(AssertionError):
-        # num_convs must be no not less than 0
+        # num_convs must be not less than 0
         FCNHead(num_classes=19, num_convs=-1)
 
     # test no norm_cfg
