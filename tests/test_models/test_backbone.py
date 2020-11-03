@@ -6,7 +6,8 @@ from torch.nn.modules import AvgPool2d, GroupNorm
 
 from mmseg.models.backbones import (CGNet, FastSCNN, ResNeSt, ResNet,
                                     ResNetV1d, ResNeXt)
-from mmseg.models.backbones.cgnet import ContextGuidedBlock, FGlo
+from mmseg.models.backbones.cgnet import (ContextGuidedBlock,
+                                          GlobalContextExtractor)
 from mmseg.models.backbones.resnest import Bottleneck as BottleneckS
 from mmseg.models.backbones.resnet import BasicBlock, Bottleneck
 from mmseg.models.backbones.resnext import Bottleneck as BottleneckX
@@ -732,8 +733,8 @@ def test_resnest_backbone():
     assert feat[3].shape == torch.Size([2, 2048, 7, 7])
 
 
-def test_cgnet_FGlo():
-    block = FGlo(16, 16, with_cp=True)
+def test_cgnet_GlobalContextExtractor():
+    block = GlobalContextExtractor(16, 16, with_cp=True)
     x = torch.randn(2, 16, 64, 64, requires_grad=True)
     x_out = block(x)
     assert x_out.shape == torch.Size([2, 16, 64, 64])
@@ -741,7 +742,8 @@ def test_cgnet_FGlo():
 
 def test_cgnet_context_guided_block():
     with pytest.raises(AssertionError):
-        # cgnet ContextGuidedBlock FGlo channel and reduction constraints.
+        # cgnet ContextGuidedBlock GlobalContextExtractor channel and reduction
+        # constraints.
         ContextGuidedBlock(8, 8)
 
     # test cgnet ContextGuidedBlock with checkpoint forward

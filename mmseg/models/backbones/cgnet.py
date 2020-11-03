@@ -10,10 +10,10 @@ from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 
 
-class FGlo(nn.Module):
+class GlobalContextExtractor(nn.Module):
     """Global Context Extractor for CGNet.
 
-    This class is employed to refine the joint feature of both local feature
+    This class is employed to refine the joFint feature of both local feature
     and surrounding context.
 
     Args:
@@ -24,7 +24,7 @@ class FGlo(nn.Module):
     """
 
     def __init__(self, channel, reduction=16, with_cp=False):
-        super(FGlo, self).__init__()
+        super(GlobalContextExtractor, self).__init__()
         self.channel = channel
         self.reduction = reduction
         assert reduction >= 1 and channel >= reduction
@@ -137,7 +137,7 @@ class ContextGuidedBlock(nn.Module):
                 bias=False)
 
         self.skip_connect = skip_connect and not downsample
-        self.f_glo = FGlo(out_channels, reduction, with_cp)
+        self.f_glo = GlobalContextExtractor(out_channels, reduction, with_cp)
 
     def forward(self, x):
 
