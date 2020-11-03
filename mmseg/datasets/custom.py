@@ -6,7 +6,7 @@ import numpy as np
 from mmcv.utils import print_log
 from torch.utils.data import Dataset
 
-from mmseg.core import metrics
+from mmseg.core import eval_metrics
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -327,7 +327,7 @@ class CustomDataset(Dataset):
         else:
             num_classes = len(self.CLASSES)
 
-        all_acc, acc, eval_metric = metrics(
+        all_acc, acc, eval_metric = eval_metrics(
             results,
             gt_seg_maps,
             num_classes,

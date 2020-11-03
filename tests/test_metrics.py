@@ -1,6 +1,6 @@
 import numpy as np
 
-from mmseg.core.evaluation import metrics
+from mmseg.core.evaluation import eval_metrics
 
 
 def get_confusion_matrix(pred_label, label, num_classes, ignore_index):
@@ -65,7 +65,7 @@ def test_metrics():
     results = np.random.randint(0, num_classes, size=pred_size)
     label = np.random.randint(0, num_classes, size=pred_size)
     label[:, 2, 5:10] = ignore_index
-    all_acc, acc, iou = metrics(
+    all_acc, acc, iou = eval_metrics(
         results, label, num_classes, ignore_index, metric='mIoU')
     all_acc_l, acc_l, iou_l = legacy_mean_iou(results, label, num_classes,
                                               ignore_index)
@@ -73,7 +73,7 @@ def test_metrics():
     assert np.allclose(acc, acc_l)
     assert np.allclose(iou, iou_l)
 
-    all_acc, acc, dice = metrics(
+    all_acc, acc, dice = eval_metrics(
         results, label, num_classes, ignore_index, metric='mDice')
     all_acc_l, acc_l, dice_l = legacy_mean_dice(results, label, num_classes,
                                                 ignore_index)
@@ -83,7 +83,7 @@ def test_metrics():
 
     results = np.random.randint(0, 5, size=pred_size)
     label = np.random.randint(0, 4, size=pred_size)
-    all_acc, acc, iou = metrics(
+    all_acc, acc, iou = eval_metrics(
         results,
         label,
         num_classes,
@@ -93,7 +93,7 @@ def test_metrics():
     assert acc[-1] == -1
     assert iou[-1] == -1
 
-    all_acc, acc, dice = metrics(
+    all_acc, acc, dice = eval_metrics(
         results,
         label,
         num_classes,

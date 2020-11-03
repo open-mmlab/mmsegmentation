@@ -135,12 +135,12 @@ def mean_dice(results,
     return all_acc, acc, dice
 
 
-def metrics(results,
-            gt_seg_maps,
-            num_classes,
-            ignore_index,
-            metric='mIoU',
-            nan_to_num=None):
+def eval_metrics(results,
+                 gt_seg_maps,
+                 num_classes,
+                 ignore_index,
+                 metric='mIoU',
+                 nan_to_num=None):
     """Calculate evaluation metrics
     Args:
         results (list[ndarray]): List of prediction segmentation maps
@@ -159,6 +159,8 @@ def metrics(results,
     allowed_metrics = {'mIoU': mean_iou, 'mDice': mean_dice}
     if (not isinstance(metric, str)) or (metric not in allowed_metrics):
         raise KeyError('metric {} is not supported'.format(metric))
-    all_acc, acc, eval_metric = allowed_metrics[metric](
-        results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None)
+    all_acc, acc, eval_metric = allowed_metrics[metric](results, gt_seg_maps,
+                                                        num_classes,
+                                                        ignore_index,
+                                                        nan_to_num)
     return all_acc, acc, eval_metric
