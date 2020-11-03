@@ -191,14 +191,14 @@ class CGNet(nn.Module):
 
     Args:
         in_channels (int): Number of input image channels. Normally 3.
-        num_channels (list[int]): Numbers of feature channels at each stages.
-            Default: [32, 64, 128].
-        num_blocks (list[int]): Numbers of CG blocks at stage 1 and stage 2.
-            Default: [3, 21].
-        dilations (list[int]): Dilation rate for surrounding context extractors
-            at stage 1 and stage 2. Default: [2, 4].
-        reductions (list[int]): Reductions for global context extractors at
-            stage 1 and stage 2. Default: [8, 16].
+        num_channels (tuple[int]): Numbers of feature channels at each stages.
+            Default: (32, 64, 128).
+        num_blocks (tuple[int]): Numbers of CG blocks at stage 1 and stage 2.
+            Default: (3, 21).
+        dilations (tuple[int]): Dilation rate for surrounding context extractors
+            at stage 1 and stage 2. Default: (2, 4).
+        reductions (tuple[int]): Reductions for global context extractors at
+            stage 1 and stage 2. Default: (8, 16).
         conv_cfg (dict): Config dict for convolution layer.
             Default: None, which means using conv2d.
         norm_cfg (dict): Config dict for normalization layer.
@@ -214,10 +214,10 @@ class CGNet(nn.Module):
 
     def __init__(self,
                  in_channels=3,
-                 num_channels=[32, 64, 128],
-                 num_blocks=[3, 21],
-                 dilations=[2, 4],
-                 reductions=[8, 16],
+                 num_channels=(32, 64, 128),
+                 num_blocks=(3, 21),
+                 dilations=(2, 4),
+                 reductions=(8, 16),
                  conv_cfg=None,
                  norm_cfg=dict(type='BN', requires_grad=True),
                  act_cfg=dict(type='PReLU'),
@@ -227,14 +227,14 @@ class CGNet(nn.Module):
         super(CGNet, self).__init__()
         self.in_channels = in_channels
         self.num_channels = num_channels
-        assert isinstance(self.num_channels, list) and len(
+        assert isinstance(self.num_channels, tuple) and len(
             self.num_channels) == 3
         self.num_blocks = num_blocks
-        assert isinstance(self.num_blocks, list) and len(self.num_blocks) == 2
+        assert isinstance(self.num_blocks, tuple) and len(self.num_blocks) == 2
         self.dilations = dilations
-        assert isinstance(self.dilations, list) and len(self.dilations) == 2
+        assert isinstance(self.dilations, tuple) and len(self.dilations) == 2
         self.reductions = reductions
-        assert isinstance(self.reductions, list) and len(self.reductions) == 2
+        assert isinstance(self.reductions, tuple) and len(self.reductions) == 2
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg

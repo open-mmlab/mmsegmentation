@@ -831,11 +831,11 @@ def test_cgnet_context_guided_block():
 def test_cgnet_backbone():
     with pytest.raises(AssertionError):
         # check invalid num_channels
-        CGNet(num_channels=[32, 64, 128, 256])
+        CGNet(num_channels=(32, 64, 128, 256))
 
     with pytest.raises(AssertionError):
         # check invalid num_blocks
-        CGNet(num_blocks=[3, 21, 3])
+        CGNet(num_blocks=(3, 21, 3))
 
     with pytest.raises(AssertionError):
         # check invalid dilation
@@ -847,7 +847,7 @@ def test_cgnet_backbone():
 
     with pytest.raises(AssertionError):
         # check invalid num_channels and reduction
-        CGNet(num_channels=[32, 64, 128], reductions=[64, 129])
+        CGNet(num_channels=(32, 64, 128), reductions=(64, 129))
 
     # Test CGNet with default settings
     model = CGNet()
