@@ -195,8 +195,8 @@ class CGNet(nn.Module):
             Default: (32, 64, 128).
         num_blocks (tuple[int]): Numbers of CG blocks at stage 1 and stage 2.
             Default: (3, 21).
-        dilations (tuple[int]): Dilation rate for surrounding context extractors
-            at stage 1 and stage 2. Default: (2, 4).
+        dilations (tuple[int]): Dilation rate for surrounding context
+            extractors at stage 1 and stage 2. Default: (2, 4).
         reductions (tuple[int]): Reductions for global context extractors at
             stage 1 and stage 2. Default: (8, 16).
         conv_cfg (dict): Config dict for convolution layer.

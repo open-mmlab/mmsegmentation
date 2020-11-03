@@ -178,6 +178,20 @@ def test_fcn_head():
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
 
+    # test num_conv = 0
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head = FCNHead(
+        in_channels=32,
+        channels=32,
+        num_classes=19,
+        num_convs=0,
+        concat_input=False)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    assert isinstance(head.convs, torch.nn.Identity)
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
 
 def test_psp_head():
 
