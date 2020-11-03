@@ -262,7 +262,7 @@ class CGNet(nn.Module):
         self.inject_4x = InputInjection(2)  # down-sample for Input, factor=4
 
         cur_channels += in_channels
-        self.bn_prelu_0 = nn.Sequential(
+        self.norm_prelu_0 = nn.Sequential(
             build_norm_layer(norm_cfg, cur_channels)[1],
             nn.PReLU(cur_channels))
 
@@ -282,7 +282,7 @@ class CGNet(nn.Module):
                     with_cp=with_cp))  # CG block
 
         cur_channels = 2 * num_channels[1] + in_channels
-        self.bn_prelu_1 = nn.Sequential(
+        self.norm_prelu_1 = nn.Sequential(
             build_norm_layer(norm_cfg, cur_channels)[1],
             nn.PReLU(cur_channels))
 
@@ -302,7 +302,7 @@ class CGNet(nn.Module):
                     with_cp=with_cp))  # CG block
 
         cur_channels = 2 * num_channels[2]
-        self.bn_prelu_2 = nn.Sequential(
+        self.norm_prelu_2 = nn.Sequential(
             build_norm_layer(norm_cfg, cur_channels)[1],
             nn.PReLU(cur_channels))
 
@@ -314,7 +314,7 @@ class CGNet(nn.Module):
         inp_4x = self.inject_4x(x)
         for layer in self.stem:
             x = layer(x)
-        x = self.bn_prelu_0(torch.cat([x, inp_2x], 1))
+        x = self.norm_prelu_0(torch.cat([x, inp_2x], 1))
         output.append(x)
 
         # stage 1
@@ -322,7 +322,7 @@ class CGNet(nn.Module):
             x = layer(x)
             if i == 0:
                 down1 = x
-        x = self.bn_prelu_1(torch.cat([x, down1, inp_4x], 1))
+        x = self.norm_prelu_1(torch.cat([x, down1, inp_4x], 1))
         output.append(x)
 
         # stage 2
@@ -330,7 +330,7 @@ class CGNet(nn.Module):
             x = layer(x)
             if i == 0:
                 down2 = x
-        x = self.bn_prelu_2(torch.cat([down2, x], 1))
+        x = self.norm_prelu_2(torch.cat([down2, x], 1))
         output.append(x)
 
         return output
