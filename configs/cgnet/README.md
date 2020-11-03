@@ -3,11 +3,11 @@
 ## Introduction
 
 ```latext
-@article{wu2019cgnet,
+@article{wu2018cgnet,
   title={CGNet: A Light-weight Context Guided Network for Semantic Segmentation},
-  author={Tianyi Wu, Sheng Tang, Rui Zhang and Yongdong Zhang},
+  author={Wu, Tianyi and Tang, Sheng and Zhang, Rui and Zhang, Yongdong},
   journal={arXiv preprint arXiv:1811.08201},
-  year={2019}
+  year={2018}
 }
 ```
 
