@@ -1,6 +1,6 @@
 import numpy as np
 
-from mmseg.core.evaluation import mean_iou
+from mmseg.core.evaluation import metrics
 
 
 def get_confusion_matrix(pred_label, label, num_classes, ignore_index):
@@ -41,23 +41,64 @@ def legacy_mean_iou(results, gt_seg_maps, num_classes, ignore_index):
     return all_acc, acc, iou
 
 
-def test_mean_iou():
+# This func is deprecated since it's not memory efficient
+def legacy_mean_dice(results, gt_seg_maps, num_classes, ignore_index):
+    num_imgs = len(results)
+    assert len(gt_seg_maps) == num_imgs
+    total_mat = np.zeros((num_classes, num_classes), dtype=np.float)
+    for i in range(num_imgs):
+        mat = get_confusion_matrix(
+            results[i], gt_seg_maps[i], num_classes, ignore_index=ignore_index)
+        total_mat += mat
+    all_acc = np.diag(total_mat).sum() / total_mat.sum()
+    acc = np.diag(total_mat) / total_mat.sum(axis=1)
+    dice = 2 * np.diag(total_mat) / (
+        total_mat.sum(axis=1) + total_mat.sum(axis=0))
+
+    return all_acc, acc, dice
+
+
+def test_metrics():
     pred_size = (10, 30, 30)
     num_classes = 19
     ignore_index = 255
     results = np.random.randint(0, num_classes, size=pred_size)
     label = np.random.randint(0, num_classes, size=pred_size)
     label[:, 2, 5:10] = ignore_index
-    all_acc, acc, iou = mean_iou(results, label, num_classes, ignore_index)
+    all_acc, acc, iou = metrics(
+        results, label, num_classes, ignore_index, metric='mIoU')
     all_acc_l, acc_l, iou_l = legacy_mean_iou(results, label, num_classes,
                                               ignore_index)
     assert all_acc == all_acc_l
     assert np.allclose(acc, acc_l)
     assert np.allclose(iou, iou_l)
 
+    all_acc, acc, dice = metrics(
+        results, label, num_classes, ignore_index, metric='mDice')
+    all_acc_l, acc_l, dice_l = legacy_mean_dice(results, label, num_classes,
+                                                ignore_index)
+    assert all_acc == all_acc_l
+    assert np.allclose(acc, acc_l)
+    assert np.allclose(dice, dice_l)
+
     results = np.random.randint(0, 5, size=pred_size)
     label = np.random.randint(0, 4, size=pred_size)
-    all_acc, acc, iou = mean_iou(
-        results, label, num_classes, ignore_index=255, nan_to_num=-1)
+    all_acc, acc, iou = metrics(
+        results,
+        label,
+        num_classes,
+        ignore_index=255,
+        metric='mIoU',
+        nan_to_num=-1)
     assert acc[-1] == -1
     assert iou[-1] == -1
+
+    all_acc, acc, dice = metrics(
+        results,
+        label,
+        num_classes,
+        ignore_index=255,
+        metric='mDice',
+        nan_to_num=-1)
+    assert acc[-1] == -1
+    assert dice[-1] == -1

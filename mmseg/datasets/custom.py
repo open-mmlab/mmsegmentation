@@ -6,7 +6,7 @@ import numpy as np
 from mmcv.utils import print_log
 from torch.utils.data import Dataset
 
-from mmseg.core import mean_iou
+from mmseg.core import metrics
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -14,12 +14,10 @@ from .pipelines import Compose
 
 @DATASETS.register_module()
 class CustomDataset(Dataset):
-    """Custom dataset for semantic segmentation.
-
-    An example of file structure is as followed.
+    """Custom dataset for semantic segmentation. An example of file structure
+    is as followed.
 
     .. code-block:: none
-
         ├── data
         │   ├── my_dataset
         │   │   ├── img_dir
@@ -34,15 +32,12 @@ class CustomDataset(Dataset):
         │   │   │   │   ├── yyy{seg_map_suffix}
         │   │   │   │   ├── zzz{seg_map_suffix}
         │   │   │   ├── val
-
     The img/gt_semantic_seg pair of CustomDataset should be of the same
     except suffix. A valid img/gt_semantic_seg filename pair should be like
     ``xxx{img_suffix}`` and ``xxx{seg_map_suffix}`` (extension is also included
     in the suffix). If split is given, then ``xxx`` is specified in txt file.
     Otherwise, all files in ``img_dir/``and ``ann_dir`` will be loaded.
     Please refer to ``docs/tutorials/new_dataset.md`` for more details.
-
-
     Args:
         pipeline (list[dict]): Processing pipeline
         img_dir (str): Path to image directory
@@ -127,7 +122,6 @@ class CustomDataset(Dataset):
             split (str|None): Split txt file. If split is specified, only file
                 with suffix in the splits will be loaded. Otherwise, all images
                 in img_dir/ann_dir will be loaded. Default: None
-
         Returns:
             list[dict]: All image info of dataset.
         """
@@ -158,7 +152,6 @@ class CustomDataset(Dataset):
 
         Args:
             idx (int): Index of data.
-
         Returns:
             dict: Annotation info of specified index.
         """
@@ -178,7 +171,6 @@ class CustomDataset(Dataset):
 
         Args:
             idx (int): Index of data.
-
         Returns:
             dict: Training/test data (with annotation if `test_mode` is set
                 False).
@@ -194,7 +186,6 @@ class CustomDataset(Dataset):
 
         Args:
             idx (int): Index of data.
-
         Returns:
             dict: Training data and annotation after pipeline with new keys
                 introduced by pipeline.
@@ -211,7 +202,6 @@ class CustomDataset(Dataset):
 
         Args:
             idx (int): Index of data.
-
         Returns:
             dict: Testing data after pipeline with new keys intorduced by
                 piepline.
@@ -318,7 +308,6 @@ class CustomDataset(Dataset):
             metric (str | list[str]): Metrics to be evaluated.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
-
         Returns:
             dict[str, float]: Default metrics.
         """
@@ -326,7 +315,7 @@ class CustomDataset(Dataset):
         if not isinstance(metric, str):
             assert len(metric) == 1
             metric = metric[0]
-        allowed_metrics = ['mIoU']
+        allowed_metrics = ['mIoU', 'mDice']
         if metric not in allowed_metrics:
             raise KeyError('metric {} is not supported'.format(metric))
 
@@ -338,33 +327,44 @@ class CustomDataset(Dataset):
         else:
             num_classes = len(self.CLASSES)
 
-        all_acc, acc, iou = mean_iou(
-            results, gt_seg_maps, num_classes, ignore_index=self.ignore_index)
+        all_acc, acc, eval_metric = metrics(
+            results,
+            gt_seg_maps,
+            num_classes,
+            ignore_index=self.ignore_index,
+            metric=metric)
         summary_str = ''
         summary_str += 'per class results:\n'
 
         line_format = '{:<15} {:>10} {:>10}\n'
-        summary_str += line_format.format('Class', 'IoU', 'Acc')
+        if metric == 'mIoU':
+            summary_str += line_format.format('Class', 'IoU', 'Acc')
+        else:
+            summary_str += line_format.format('Class', 'Dice', 'Acc')
         if self.CLASSES is None:
             class_names = tuple(range(num_classes))
         else:
             class_names = self.CLASSES
         for i in range(num_classes):
-            iou_str = '{:.2f}'.format(iou[i] * 100)
+            eval_metric_str = '{:.2f}'.format(eval_metric[i] * 100)
             acc_str = '{:.2f}'.format(acc[i] * 100)
-            summary_str += line_format.format(class_names[i], iou_str, acc_str)
+            summary_str += line_format.format(class_names[i], eval_metric_str,
+                                              acc_str)
         summary_str += 'Summary:\n'
         line_format = '{:<15} {:>10} {:>10} {:>10}\n'
-        summary_str += line_format.format('Scope', 'mIoU', 'mAcc', 'aAcc')
+        if metric == 'mIoU':
+            summary_str += line_format.format('Scope', 'mIoU', 'mAcc', 'aAcc')
+        else:
+            summary_str += line_format.format('Scope', 'mDice', 'mAcc', 'aAcc')
 
-        iou_str = '{:.2f}'.format(np.nanmean(iou) * 100)
+        eval_metric_str = '{:.2f}'.format(np.nanmean(eval_metric) * 100)
         acc_str = '{:.2f}'.format(np.nanmean(acc) * 100)
         all_acc_str = '{:.2f}'.format(all_acc * 100)
-        summary_str += line_format.format('global', iou_str, acc_str,
+        summary_str += line_format.format('global', eval_metric_str, acc_str,
                                           all_acc_str)
         print_log(summary_str, logger)
 
-        eval_results['mIoU'] = np.nanmean(iou)
+        eval_results[metric] = np.nanmean(eval_metric)
         eval_results['mAcc'] = np.nanmean(acc)
         eval_results['aAcc'] = all_acc
 
