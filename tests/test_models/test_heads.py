@@ -6,8 +6,8 @@ from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
 from mmcv.utils import ConfigDict
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
-from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, CGHead,
-                                       DAHead, DepthwiseSeparableASPPHead,
+from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
+                                       DepthwiseSeparableASPPHead,
                                        DepthwiseSeparableFCNHead, DNLHead,
                                        EMAHead, EncHead, FCNHead, GCHead,
                                        NLHead, OCRHead, PointHead, PSAHead,
@@ -649,10 +649,3 @@ def test_point_head():
         subdivision_steps=2, subdivision_num_points=8196, scale_factor=2)
     output = point_head.forward_test(inputs, prev_output, None, test_cfg)
     assert output.shape == (1, point_head.num_classes, 180, 180)
-
-
-def test_cg_head():
-    inputs = [torch.randn(1, 256, 45, 45)]
-    head = CGHead(in_channels=256, in_index=0, channels=256, num_classes=2)
-    output = head(inputs)
-    assert output.shape == torch.Size([1, 2, 45, 45])
