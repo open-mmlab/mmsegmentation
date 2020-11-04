@@ -1,3 +1,4 @@
+import cv2
 import mmcv
 import numpy as np
 from numpy import random
@@ -387,6 +388,50 @@ class Normalize(object):
         repr_str = self.__class__.__name__
         repr_str += f'(mean={self.mean}, std={self.std}, to_rgb=' \
                     f'{self.to_rgb})'
+        return repr_str
+
+
+@PIPELINES.register_module()
+class CLAHE(object):
+    """Use CLAHE method to process the image.
+
+    Args:
+        clip_limit (float): Threshold for contrast limiting. Default: 40.0.
+        tile_grid_size (tuple[int]): Size of grid for histogram equalization.
+            Input image will be divided into equally sized rectangular tiles.
+            It defines the number of tiles in row and column. Default: (8, 8).
+    """
+
+    def __init__(self, clip_limit=40.0, tile_grid_size=(8, 8)):
+        assert isinstance(clip_limit, float) or isinstance(clip_limit, int)
+        self.clip_limit = clip_limit
+        assert isinstance(tile_grid_size, tuple)
+        assert len(tile_grid_size) == 2
+        for item in tile_grid_size:
+            assert isinstance(item, int)
+        self.tile_grid_size = tile_grid_size
+        self.clahe = cv2.createCLAHE(clip_limit, tile_grid_size)
+
+    def __call__(self, results):
+        """Call function to Use CLAHE method process images.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Processed results.
+        """
+
+        for i in range(results['img'].shape[2]):
+            results['img'][:,:,i] = self.clahe.apply(
+                np.array(results['img'][:,:,i], dtype = np.uint8))
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(clip_limit={self.clip_limit}, '\
+                    f'tile_grid_size={self.tile_grid_size})'
         return repr_str
 
 

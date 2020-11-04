@@ -1,6 +1,7 @@
 import copy
 import os.path as osp
 
+import cv2
 import mmcv
 import numpy as np
 import pytest
@@ -220,6 +221,46 @@ def test_normalize():
     mean = np.array(img_norm_cfg['mean'])
     std = np.array(img_norm_cfg['std'])
     converted_img = (original_img[..., ::-1] - mean) / std
+    assert np.allclose(results['img'], converted_img)
+
+
+def test_CLAHE():
+    # test assertion if clip_limit is None
+    with pytest.raises(AssertionError):
+        transform = dict(type='CLAHE', clip_limit=None)
+        build_from_cfg(transform, PIPELINES)
+
+    # test assertion if tile_grid_size is illegal
+    with pytest.raises(AssertionError):
+        transform = dict(type='CLAHE', tile_grid_size=(8.0, 8.0))
+        build_from_cfg(transform, PIPELINES)
+
+    # test assertion if tile_grid_size is illegal
+    with pytest.raises(AssertionError):
+        transform = dict(type='CLAHE', tile_grid_size=(9, 9, 9))
+        build_from_cfg(transform, PIPELINES)
+
+    transform = dict(type='CLAHE', clip_limit=2)
+    transform = build_from_cfg(transform, PIPELINES)
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    original_img = copy.deepcopy(img)
+    results['img'] = img
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    converted_img = np.empty(original_img.shape)
+    for i in range(original_img.shape[2]):
+        converted_img[:,:,i] = clahe.apply(
+            np.array(original_img[:,:,i], dtype = np.uint8))
+    
     assert np.allclose(results['img'], converted_img)
 
 
