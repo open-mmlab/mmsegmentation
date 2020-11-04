@@ -208,6 +208,8 @@ class Resize(object):
                 'keep_ratio' keys are added into result dict.
         """
 
+        # print(results)
+        print(results, results['img'].shape)
         if 'scale' not in results:
             self._random_scale(results)
         self._resize_img(results)
@@ -461,6 +463,60 @@ class RandomCrop(object):
 
     def __repr__(self):
         return self.__class__.__name__ + f'(crop_size={self.crop_size})'
+
+
+@PIPELINES.register_module()
+class Rgb2Gray(object):
+    """Convert RGB image to grayscale image.
+
+    This transform calculate the weighted mean of input image channels with
+    ``weights`` and then expand the channels to ``out_channels``. When
+    ``out_channels`` equals 0, the number of output channels is the same as
+    input channels.
+
+    Args:
+        out_channels (int): Expected number of output channels after
+            transforming.
+        weights (tuple[float]): The weights to calculate the weighted mean.
+            Default: (0.299, 0.587, 0.114).
+    """
+
+    def __init__(self, out_channels, weights=(0.299, 0.587, 0.114)):
+        assert out_channels >= 0
+        self.out_channels = out_channels
+        assert isinstance(weights, tuple)
+        self.weights = weights
+        self.trans_weights = np.array(weights).reshape((1, 1, -1))
+
+    def __call__(self, results):
+        """Call function to convert RGB image to grayscale image.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with grayscale image.
+        """
+        img = results['img']
+        assert len(img.shape) == 3
+        assert img.shape[2] == self.trans_weights.shape[2]
+        img = (img * self.trans_weights).sum(2)
+        if self.out_channels == 0:
+            img = np.expand_dims(img, 2).repeat(
+                self.trans_weights.shape[2], axis=2)
+        else:
+            img = np.expand_dims(img, 2).repeat(self.out_channels, axis=2)
+
+        results['img'] = img
+        results['img_shape'] = img.shape
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(out_channels={self.out_channels}, ' \
+                    f'weights={self.weights})'
+        return repr_str
 
 
 @PIPELINES.register_module()
