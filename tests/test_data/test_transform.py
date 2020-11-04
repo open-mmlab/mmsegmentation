@@ -255,12 +255,12 @@ def test_CLAHE():
 
     results = transform(results)
 
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     converted_img = np.empty(original_img.shape)
     for i in range(original_img.shape[2]):
-        converted_img[:,:,i] = clahe.apply(
-            np.array(original_img[:,:,i], dtype = np.uint8))
-    
+        converted_img[:, :, i] = clahe.apply(
+            np.array(original_img[:, :, i], dtype=np.uint8))
+
     assert np.allclose(results['img'], converted_img)
 
 
