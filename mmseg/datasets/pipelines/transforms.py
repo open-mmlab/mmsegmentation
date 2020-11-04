@@ -423,8 +423,8 @@ class CLAHE(object):
         """
 
         for i in range(results['img'].shape[2]):
-            results['img'][:,:,i] = self.clahe.apply(
-                np.array(results['img'][:,:,i], dtype = np.uint8))
+            results['img'][:, :, i] = self.clahe.apply(
+                np.array(results['img'][:, :, i], dtype=np.uint8))
 
         return results
 
