@@ -94,18 +94,17 @@ def test_resize():
 
 
 def test_flip():
-    # test assertion for invalid flip_ratio
+    # test assertion for invalid prob
     with pytest.raises(AssertionError):
-        transform = dict(type='RandomFlip', flip_ratio=1.5)
+        transform = dict(type='RandomFlip', prob=1.5)
         build_from_cfg(transform, PIPELINES)
 
     # test assertion for invalid direction
     with pytest.raises(AssertionError):
-        transform = dict(
-            type='RandomFlip', flip_ratio=1, direction='horizonta')
+        transform = dict(type='RandomFlip', prob=1, direction='horizonta')
         build_from_cfg(transform, PIPELINES)
 
-    transform = dict(type='RandomFlip', flip_ratio=1)
+    transform = dict(type='RandomFlip', prob=1)
     flip_module = build_from_cfg(transform, PIPELINES)
 
     results = dict()

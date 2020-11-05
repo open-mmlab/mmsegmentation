@@ -1,5 +1,6 @@
 import mmcv
 import numpy as np
+from mmcv.utils import deprecated_api_warning
 from numpy import random
 
 from ..builder import PIPELINES
@@ -232,16 +233,17 @@ class RandomFlip(object):
     method.
 
     Args:
-        flip_ratio (float, optional): The flipping probability. Default: None.
+        prob (float, optional): The flipping probability. Default: None.
         direction(str, optional): The flipping direction. Options are
             'horizontal' and 'vertical'. Default: 'horizontal'.
     """
 
-    def __init__(self, flip_ratio=None, direction='horizontal'):
-        self.flip_ratio = flip_ratio
+    @deprecated_api_warning({'flip_ratio': 'prob'}, cls_name='RandomFlip')
+    def __init__(self, prob=None, direction='horizontal'):
+        self.prob = prob
         self.direction = direction
-        if flip_ratio is not None:
-            assert flip_ratio >= 0 and flip_ratio <= 1
+        if prob is not None:
+            assert prob >= 0 and prob <= 1
         assert direction in ['horizontal', 'vertical']
 
     def __call__(self, results):
@@ -257,7 +259,7 @@ class RandomFlip(object):
         """
 
         if 'flip' not in results:
-            flip = True if np.random.rand() < self.flip_ratio else False
+            flip = True if np.random.rand() < self.prob else False
             results['flip'] = flip
         if 'flip_direction' not in results:
             results['flip_direction'] = self.direction
@@ -274,7 +276,7 @@ class RandomFlip(object):
         return results
 
     def __repr__(self):
-        return self.__class__.__name__ + f'(flip_ratio={self.flip_ratio})'
+        return self.__class__.__name__ + f'(prob={self.prob})'
 
 
 @PIPELINES.register_module()
@@ -468,11 +470,11 @@ class RandomRotate(object):
     """Rotate the image & seg.
 
     Args:
-        rotate_ratio (float): The rotation probability.
+        prob (float): The rotation probability.
         degree (float, tuple[float]): Range of degrees to select from. If
             degree is a number instead of tuple like (min, max),
             the range of degree will be (``-degree``, ``+degree``)
-        pad_val (float, optional): Padding value. Default: 0.
+        pad_val (float, optional): Padding value of image. Default: 0.
         seg_pad_val (float, optional): Padding value of segmentation map.
             Default: 255.
         center (tuple[float], optional): Center point (w, h) of the rotation in
@@ -483,14 +485,14 @@ class RandomRotate(object):
     """
 
     def __init__(self,
-                 rotate_ratio,
+                 prob,
                  degree,
                  pad_val=0,
                  seg_pad_val=255,
                  center=None,
                  auto_bound=False):
-        self.rotate_ratio = rotate_ratio
-        assert rotate_ratio >= 0 and rotate_ratio <= 1
+        self.prob = prob
+        assert prob >= 0 and prob <= 1
         if isinstance(degree, (float, int)):
             assert degree > 0, f'degree {degree} should be positive'
             self.degree = (-degree, degree)
@@ -504,18 +506,16 @@ class RandomRotate(object):
         self.auto_bound = auto_bound
 
     def __call__(self, results):
-        """Call function to flip bounding boxes, masks, semantic segmentation
-        maps.
+        """Call function to rotate image, semantic segmentation maps.
 
         Args:
             results (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Flipped results, 'flip', 'flip_direction' keys are added into
-                result dict.
+            dict: Rotated results.
         """
 
-        rotate = True if np.random.rand() < self.rotate_ratio else False
+        rotate = True if np.random.rand() < self.prob else False
         degree = np.random.uniform(min(*self.degree), max(*self.degree))
         if rotate:
             # rotate image
@@ -539,7 +539,7 @@ class RandomRotate(object):
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += f'(rotate_ratio={self.rotate_ratio}, ' \
+        repr_str += f'(prob={self.prob}, ' \
                     f'degree={self.degree}, ' \
                     f'pad_val={self.pal_val}, ' \
                     f'seg_pad_val={self.seg_pad_val}, ' \
