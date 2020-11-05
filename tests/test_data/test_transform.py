@@ -1,6 +1,7 @@
 import copy
 import os.path as osp
 
+import cv2
 import mmcv
 import numpy as np
 import pytest
@@ -221,6 +222,44 @@ def test_normalize():
     std = np.array(img_norm_cfg['std'])
     converted_img = (original_img[..., ::-1] - mean) / std
     assert np.allclose(results['img'], converted_img)
+
+
+def test_adjust_gamma():
+    # test assertion if gamma <= 0
+    with pytest.raises(AssertionError):
+        transform = dict(type='AdjustGamma', gamma=0)
+        build_from_cfg(transform, PIPELINES)
+
+    # test assertion if gamma is list
+    with pytest.raises(AssertionError):
+        transform = dict(type='AdjustGamma', gamma=[1.2])
+        build_from_cfg(transform, PIPELINES)
+
+    # test with gamma = 1.2
+    transform = dict(type='AdjustGamma', gamma=1.2)
+    transform = build_from_cfg(transform, PIPELINES)
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    original_img = copy.deepcopy(img)
+    results['img'] = img
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+
+    inv_gamma = 1.0 / 1.2
+    table = np.array([((i / 255.0)**inv_gamma) * 255
+                      for i in np.arange(0, 256)]).astype('uint8')
+    converted_img = np.empty(original_img.shape)
+    for i in range(original_img.shape[2]):
+        converted_img[:, :, i] = cv2.LUT(
+            np.array(original_img[:, :, i], dtype=np.uint8), table)
+    assert np.allclose(results['img'], converted_img)
+    assert str(transform) == f'AdjustGamma(gamma={1.2})'
 
 
 def test_seg_rescale():
