@@ -485,8 +485,9 @@ class Rgb2Gray(object):
         assert out_channels >= 0
         self.out_channels = out_channels
         assert isinstance(weights, tuple)
+        for item in weights:
+            assert isinstance(item, (float, int))
         self.weights = weights
-        self.trans_weights = np.array(weights).reshape((1, 1, -1))
 
     def __call__(self, results):
         """Call function to convert RGB image to grayscale image.
@@ -499,11 +500,11 @@ class Rgb2Gray(object):
         """
         img = results['img']
         assert len(img.shape) == 3
-        assert img.shape[2] == self.trans_weights.shape[2]
-        img = (img * self.trans_weights).sum(2)
+        assert img.shape[2] == len(self.weights)
+        weights = np.array(self.weights).reshape((1, 1, -1))
+        img = (img * weights).sum(2)
         if self.out_channels == 0:
-            img = np.expand_dims(img, 2).repeat(
-                self.trans_weights.shape[2], axis=2)
+            img = np.expand_dims(img, 2).repeat(weights.shape[2], axis=2)
         else:
             img = np.expand_dims(img, 2).repeat(self.out_channels, axis=2)
 
