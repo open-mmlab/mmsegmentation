@@ -262,6 +262,7 @@ def test_CLAHE():
             np.array(original_img[:, :, i], dtype=np.uint8))
 
     assert np.allclose(results['img'], converted_img)
+    assert str(transform) == f'CLAHE(clip_limit={2}, tile_grid_size={(8, 8)})'
 
 
 def test_seg_rescale():
