@@ -18,6 +18,7 @@ class CustomDataset(Dataset):
     is as followed.
 
     .. code-block:: none
+
         ├── data
         │   ├── my_dataset
         │   │   ├── img_dir
@@ -32,12 +33,15 @@ class CustomDataset(Dataset):
         │   │   │   │   ├── yyy{seg_map_suffix}
         │   │   │   │   ├── zzz{seg_map_suffix}
         │   │   │   ├── val
+
     The img/gt_semantic_seg pair of CustomDataset should be of the same
     except suffix. A valid img/gt_semantic_seg filename pair should be like
     ``xxx{img_suffix}`` and ``xxx{seg_map_suffix}`` (extension is also included
     in the suffix). If split is given, then ``xxx`` is specified in txt file.
     Otherwise, all files in ``img_dir/``and ``ann_dir`` will be loaded.
     Please refer to ``docs/tutorials/new_dataset.md`` for more details.
+
+
     Args:
         pipeline (list[dict]): Processing pipeline
         img_dir (str): Path to image directory
@@ -122,6 +126,7 @@ class CustomDataset(Dataset):
             split (str|None): Split txt file. If split is specified, only file
                 with suffix in the splits will be loaded. Otherwise, all images
                 in img_dir/ann_dir will be loaded. Default: None
+
         Returns:
             list[dict]: All image info of dataset.
         """
@@ -152,6 +157,7 @@ class CustomDataset(Dataset):
 
         Args:
             idx (int): Index of data.
+
         Returns:
             dict: Annotation info of specified index.
         """
@@ -171,6 +177,7 @@ class CustomDataset(Dataset):
 
         Args:
             idx (int): Index of data.
+
         Returns:
             dict: Training/test data (with annotation if `test_mode` is set
                 False).
@@ -186,6 +193,7 @@ class CustomDataset(Dataset):
 
         Args:
             idx (int): Index of data.
+
         Returns:
             dict: Training data and annotation after pipeline with new keys
                 introduced by pipeline.
@@ -202,6 +210,7 @@ class CustomDataset(Dataset):
 
         Args:
             idx (int): Index of data.
+
         Returns:
             dict: Testing data after pipeline with new keys intorduced by
                 piepline.
@@ -308,6 +317,7 @@ class CustomDataset(Dataset):
             metric (str | list[str]): Metrics to be evaluated.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
+
         Returns:
             dict[str, float]: Default metrics.
         """
