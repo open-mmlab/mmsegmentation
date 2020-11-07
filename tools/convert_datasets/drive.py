@@ -53,7 +53,7 @@ def main():
                 osp.join(
                     out_dir, 'images', 'training',
                     osp.splitext(img_name)[0].replace('_training', '') +
-                    '.jpg'))
+                    '.png'))
 
         now_dir = osp.join(tmp_dir, 'training', '1st_manual')
         for img_name in os.listdir(now_dir):
@@ -62,7 +62,7 @@ def main():
             mmcv.imwrite(
                 img[:, :, 0] // 128,
                 osp.join(out_dir, 'annotations', 'training',
-                         osp.splitext(img_name)[0] + '.jpg'))
+                         osp.splitext(img_name)[0] + '.png'))
 
         print('Extracting test.zip...')
         zip_file = zipfile.ZipFile(testing_path)
@@ -76,7 +76,7 @@ def main():
                 img,
                 osp.join(
                     out_dir, 'images', 'validation',
-                    osp.splitext(img_name)[0].replace('_test', '') + '.jpg'))
+                    osp.splitext(img_name)[0].replace('_test', '') + '.png'))
 
         now_dir = osp.join(tmp_dir, 'test', '1st_manual')
         if osp.exists(now_dir):
@@ -91,7 +91,7 @@ def main():
                 mmcv.imwrite(
                     img[:, :, 0] // 128,
                     osp.join(out_dir, 'annotations', 'validation',
-                             osp.splitext(img_name)[0] + '.jpg'))
+                             osp.splitext(img_name)[0] + '.png'))
 
         now_dir = osp.join(tmp_dir, 'test', '2nd_manual')
         if osp.exists(now_dir):
@@ -101,7 +101,7 @@ def main():
                 mmcv.imwrite(
                     img[:, :, 0] // 128,
                     osp.join(out_dir, 'annotations', 'validation',
-                             osp.splitext(img_name)[0] + '.jpg'))
+                             osp.splitext(img_name)[0] + '.png'))
 
         print('Removing the temporary files...')
 

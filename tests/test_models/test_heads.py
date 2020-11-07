@@ -105,8 +105,8 @@ def test_decode_head():
 def test_fcn_head():
 
     with pytest.raises(AssertionError):
-        # num_convs must be larger than 0
-        FCNHead(num_classes=19, num_convs=0)
+        # num_convs must be not less than 0
+        FCNHead(num_classes=19, num_convs=-1)
 
     # test no norm_cfg
     head = FCNHead(in_channels=32, channels=16, num_classes=19)
@@ -175,6 +175,20 @@ def test_fcn_head():
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
     assert len(head.convs) == 1
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # test num_conv = 0
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head = FCNHead(
+        in_channels=32,
+        channels=32,
+        num_classes=19,
+        num_convs=0,
+        concat_input=False)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    assert isinstance(head.convs, torch.nn.Identity)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
 

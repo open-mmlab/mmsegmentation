@@ -94,18 +94,17 @@ def test_resize():
 
 
 def test_flip():
-    # test assertion for invalid flip_ratio
+    # test assertion for invalid prob
     with pytest.raises(AssertionError):
-        transform = dict(type='RandomFlip', flip_ratio=1.5)
+        transform = dict(type='RandomFlip', prob=1.5)
         build_from_cfg(transform, PIPELINES)
 
     # test assertion for invalid direction
     with pytest.raises(AssertionError):
-        transform = dict(
-            type='RandomFlip', flip_ratio=1, direction='horizonta')
+        transform = dict(type='RandomFlip', prob=1, direction='horizonta')
         build_from_cfg(transform, PIPELINES)
 
-    transform = dict(type='RandomFlip', flip_ratio=1)
+    transform = dict(type='RandomFlip', prob=1)
     flip_module = build_from_cfg(transform, PIPELINES)
 
     results = dict()
@@ -195,6 +194,47 @@ def test_pad():
     img_shape = results['img'].shape
     assert img_shape[0] % 32 == 0
     assert img_shape[1] % 32 == 0
+
+
+def test_rotate():
+    # test assertion degree should be tuple[float] or float
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotate', prob=0.5, degree=-10)
+        build_from_cfg(transform, PIPELINES)
+    # test assertion degree should be tuple[float] or float
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotate', prob=0.5, degree=(10., 20., 30.))
+        build_from_cfg(transform, PIPELINES)
+
+    transform = dict(type='RandomRotate', degree=10., prob=1.)
+    transform = build_from_cfg(transform, PIPELINES)
+
+    assert str(transform) == f'RandomRotate(' \
+                             f'prob={1.}, ' \
+                             f'degree=({-10.}, {10.}), ' \
+                             f'pad_val={0}, ' \
+                             f'seg_pad_val={255}, ' \
+                             f'center={None}, ' \
+                             f'auto_bound={False})'
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    h, w, _ = img.shape
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+    assert results['img'].shape[:2] == (h, w)
+    assert results['gt_semantic_seg'].shape[:2] == (h, w)
 
 
 def test_normalize():

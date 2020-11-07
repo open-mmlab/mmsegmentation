@@ -10,8 +10,8 @@ class HRFDataset(CustomDataset):
 
     In segmentation map annotation for HRF, 0 stands for background, which is
     included in 2 categories. ``reduce_zero_label`` is fixed to False. The
-    ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed to
-    '.jpg'.
+    ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is fixed to
+    '.png'.
     """
 
     CLASSES = ('background', 'vessel')
@@ -20,8 +20,8 @@ class HRFDataset(CustomDataset):
 
     def __init__(self, **kwargs):
         super(HRFDataset, self).__init__(
-            img_suffix='.jpg',
-            seg_map_suffix='.jpg',
+            img_suffix='.png',
+            seg_map_suffix='.png',
             reduce_zero_label=False,
             **kwargs)
         assert osp.exists(self.img_dir)

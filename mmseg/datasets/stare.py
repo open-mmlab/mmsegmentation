@@ -10,8 +10,8 @@ class STAREDataset(CustomDataset):
 
     In segmentation map annotation for STARE, 0 stands for background, which is
     included in 2 categories. ``reduce_zero_label`` is fixed to False. The
-    ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed to
-    '.ah.jpg'.
+    ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is fixed to
+    '.ah.png'.
     """
 
     CLASSES = ('background', 'vessel')
@@ -20,8 +20,8 @@ class STAREDataset(CustomDataset):
 
     def __init__(self, **kwargs):
         super(STAREDataset, self).__init__(
-            img_suffix='.jpg',
-            seg_map_suffix='.ah.jpg',
+            img_suffix='.png',
+            seg_map_suffix='.ah.png',
             reduce_zero_label=False,
             **kwargs)
         assert osp.exists(self.img_dir)
