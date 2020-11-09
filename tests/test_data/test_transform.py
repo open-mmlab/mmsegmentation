@@ -263,6 +263,73 @@ def test_normalize():
     assert np.allclose(results['img'], converted_img)
 
 
+def test_rgb2gray():
+    # test assertion out_channels should be greater than 0
+    with pytest.raises(AssertionError):
+        transform = dict(type='RGB2Gray', out_channels=-1)
+        build_from_cfg(transform, PIPELINES)
+    # test assertion weights should be tuple[float]
+    with pytest.raises(AssertionError):
+        transform = dict(type='RGB2Gray', out_channels=1, weights=1.1)
+        build_from_cfg(transform, PIPELINES)
+
+    # test out_channels is None
+    transform = dict(type='RGB2Gray')
+    transform = build_from_cfg(transform, PIPELINES)
+
+    assert str(transform) == f'RGB2Gray(' \
+                             f'out_channels={None}, ' \
+                             f'weights={(0.299, 0.587, 0.114)})'
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    h, w, c = img.shape
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+    assert results['img'].shape == (h, w, c)
+    assert results['img_shape'] == (h, w, c)
+    assert results['ori_shape'] == (h, w, c)
+
+    # test out_channels = 2
+    transform = dict(type='RGB2Gray', out_channels=2)
+    transform = build_from_cfg(transform, PIPELINES)
+
+    assert str(transform) == f'RGB2Gray(' \
+                             f'out_channels={2}, ' \
+                             f'weights={(0.299, 0.587, 0.114)})'
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    h, w, c = img.shape
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+    assert results['img'].shape == (h, w, 2)
+    assert results['img_shape'] == (h, w, 2)
+    assert results['ori_shape'] == (h, w, c)
+
+
 def test_seg_rescale():
     results = dict()
     seg = np.array(

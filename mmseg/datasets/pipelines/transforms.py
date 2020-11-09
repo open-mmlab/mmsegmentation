@@ -549,6 +549,61 @@ class RandomRotate(object):
 
 
 @PIPELINES.register_module()
+class RGB2Gray(object):
+    """Convert RGB image to grayscale image.
+
+    This transform calculate the weighted mean of input image channels with
+    ``weights`` and then expand the channels to ``out_channels``. When
+    ``out_channels`` is None, the number of output channels is the same as
+    input channels.
+
+    Args:
+        out_channels (int): Expected number of output channels after
+            transforming. Default: None.
+        weights (tuple[float]): The weights to calculate the weighted mean.
+            Default: (0.299, 0.587, 0.114).
+    """
+
+    def __init__(self, out_channels=None, weights=(0.299, 0.587, 0.114)):
+        assert out_channels is None or out_channels > 0
+        self.out_channels = out_channels
+        assert isinstance(weights, tuple)
+        for item in weights:
+            assert isinstance(item, (float, int))
+        self.weights = weights
+
+    def __call__(self, results):
+        """Call function to convert RGB image to grayscale image.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with grayscale image.
+        """
+        img = results['img']
+        assert len(img.shape) == 3
+        assert img.shape[2] == len(self.weights)
+        weights = np.array(self.weights).reshape((1, 1, -1))
+        img = (img * weights).sum(2, keepdims=True)
+        if self.out_channels is None:
+            img = img.repeat(weights.shape[2], axis=2)
+        else:
+            img = img.repeat(self.out_channels, axis=2)
+
+        results['img'] = img
+        results['img_shape'] = img.shape
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(out_channels={self.out_channels}, ' \
+                    f'weights={self.weights})'
+        return repr_str
+
+
+@PIPELINES.register_module()
 class SegRescale(object):
     """Rescale semantic segmentation maps.
 
