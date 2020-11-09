@@ -415,8 +415,7 @@ class Rerange(object):
             results (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Reranged results, 'img_rerange_cfg' key is added into
-                result dict.
+            dict: Reranged results.
         """
 
         img = results['img']
