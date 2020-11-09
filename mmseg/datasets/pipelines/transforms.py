@@ -208,8 +208,6 @@ class Resize(object):
                 'keep_ratio' keys are added into result dict.
         """
 
-        # print(results)
-        print(results, results['img'].shape)
         if 'scale' not in results:
             self._random_scale(results)
         self._resize_img(results)
@@ -466,23 +464,23 @@ class RandomCrop(object):
 
 
 @PIPELINES.register_module()
-class Rgb2Gray(object):
+class RGB2Gray(object):
     """Convert RGB image to grayscale image.
 
     This transform calculate the weighted mean of input image channels with
     ``weights`` and then expand the channels to ``out_channels``. When
-    ``out_channels`` equals 0, the number of output channels is the same as
+    ``out_channels`` is None, the number of output channels is the same as
     input channels.
 
     Args:
         out_channels (int): Expected number of output channels after
-            transforming.
+            transforming. Default: None.
         weights (tuple[float]): The weights to calculate the weighted mean.
             Default: (0.299, 0.587, 0.114).
     """
 
-    def __init__(self, out_channels, weights=(0.299, 0.587, 0.114)):
-        assert out_channels >= 0
+    def __init__(self, out_channels=None, weights=(0.299, 0.587, 0.114)):
+        assert out_channels is None or out_channels > 0
         self.out_channels = out_channels
         assert isinstance(weights, tuple)
         for item in weights:
@@ -502,11 +500,11 @@ class Rgb2Gray(object):
         assert len(img.shape) == 3
         assert img.shape[2] == len(self.weights)
         weights = np.array(self.weights).reshape((1, 1, -1))
-        img = (img * weights).sum(2)
-        if self.out_channels == 0:
-            img = np.expand_dims(img, 2).repeat(weights.shape[2], axis=2)
+        img = (img * weights).sum(2, keepdims=True)
+        if self.out_channels is None:
+            img = img.repeat(weights.shape[2], axis=2)
         else:
-            img = np.expand_dims(img, 2).repeat(self.out_channels, axis=2)
+            img = img.repeat(self.out_channels, axis=2)
 
         results['img'] = img
         results['img_shape'] = img.shape

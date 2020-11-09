@@ -224,21 +224,21 @@ def test_normalize():
 
 
 def test_rgb2gray():
-    # test assertion out_channels should be not less than 0
+    # test assertion out_channels should be greater than 0
     with pytest.raises(AssertionError):
-        transform = dict(type='Rgb2Gray', out_channels=-1)
+        transform = dict(type='RGB2Gray', out_channels=-1)
         build_from_cfg(transform, PIPELINES)
     # test assertion weights should be tuple[float]
     with pytest.raises(AssertionError):
-        transform = dict(type='Rgb2Gray', out_channels=1, weights=1.1)
+        transform = dict(type='RGB2Gray', out_channels=1, weights=1.1)
         build_from_cfg(transform, PIPELINES)
 
-    # test out_channels = 0
-    transform = dict(type='Rgb2Gray', out_channels=0)
+    # test out_channels is None
+    transform = dict(type='RGB2Gray')
     transform = build_from_cfg(transform, PIPELINES)
 
-    assert str(transform) == f'Rgb2Gray(' \
-                             f'out_channels={0}, ' \
+    assert str(transform) == f'RGB2Gray(' \
+                             f'out_channels={None}, ' \
                              f'weights={(0.299, 0.587, 0.114)})'
 
     results = dict()
@@ -262,10 +262,10 @@ def test_rgb2gray():
     assert results['ori_shape'] == (h, w, c)
 
     # test out_channels = 2
-    transform = dict(type='Rgb2Gray', out_channels=2)
+    transform = dict(type='RGB2Gray', out_channels=2)
     transform = build_from_cfg(transform, PIPELINES)
 
-    assert str(transform) == f'Rgb2Gray(' \
+    assert str(transform) == f'RGB2Gray(' \
                              f'out_channels={2}, ' \
                              f'weights={(0.299, 0.587, 0.114)})'
 
