@@ -468,6 +468,7 @@ class RandomCrop(object):
 @PIPELINES.register_module()
 class RandomRotate(object):
     """Rotate the image & seg.
+
     Args:
         prob (float): The rotation probability.
         degree (float, tuple[float]): Range of degrees to select from. If
@@ -506,8 +507,10 @@ class RandomRotate(object):
 
     def __call__(self, results):
         """Call function to rotate image, semantic segmentation maps.
+
         Args:
             results (dict): Result dict from loading pipeline.
+
         Returns:
             dict: Rotated results.
         """
