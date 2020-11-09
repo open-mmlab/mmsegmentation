@@ -428,8 +428,6 @@ class Rerange(object):
         img = img * (self.max_value - self.min_value) + self.min_value
         results['img'] = img
 
-        results['img_rerange_cfg'] = dict(
-            min_value=self.min_value, max_value=self.max_value)
         return results
 
     def __repr__(self):
