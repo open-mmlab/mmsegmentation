@@ -234,6 +234,14 @@ def test_rerange():
         transform = dict(type='Rerange', min_value=1, max_value=1)
         build_from_cfg(transform, PIPELINES)
 
+    # test assertion if img_min_value == img_max_value
+    with pytest.raises(AssertionError):
+        transform = dict(type='Rerange', min_value=0, max_value=1)
+        transform = build_from_cfg(transform, PIPELINES)
+        results = dict()
+        results['img'] = np.array([[1, 1], [1, 1]])
+        transform(results)
+
     img_rerange_cfg = dict()
     transform = dict(type='Rerange', **img_rerange_cfg)
     transform = build_from_cfg(transform, PIPELINES)

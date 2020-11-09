@@ -421,6 +421,8 @@ class Rerange(object):
         img = results['img']
         img_min_value = np.min(img)
         img_max_value = np.max(img)
+
+        assert img_min_value < img_max_value
         # rerange to [0, 1]
         img = (img - img_min_value) / (img_max_value - img_min_value)
         # rerange to [min_value, max_value]
