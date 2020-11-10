@@ -162,10 +162,10 @@ def eval_metrics(results,
     acc = total_area_intersect / total_area_label
     ret_metrics = [all_acc, acc]
     for metric in metrics:
-        if 'mIoU' == metric:
+        if metric == 'mIoU':
             iou = total_area_intersect / total_area_union
             ret_metrics.append(iou)
-        elif 'mDice' == metric:
+        elif metric == 'mDice':
             dice = 2 * total_area_intersect / (
                 total_area_pred_label + total_area_label)
             ret_metrics.append(dice)
