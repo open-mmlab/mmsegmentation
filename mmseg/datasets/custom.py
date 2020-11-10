@@ -4,6 +4,7 @@ from functools import reduce
 import mmcv
 import numpy as np
 from mmcv.utils import print_log
+from terminaltables import AsciiTable
 from torch.utils.data import Dataset
 
 from mmseg.core import eval_metrics
@@ -322,13 +323,11 @@ class CustomDataset(Dataset):
             dict[str, float]: Default metrics.
         """
 
-        if not isinstance(metric, str):
-            assert len(metric) == 1
-            metric = metric[0]
+        if isinstance(metric, str):
+            metric = [metric]
         allowed_metrics = ['mIoU', 'mDice']
-        if metric not in allowed_metrics:
+        if not set(metric).issubset(set(allowed_metrics)):
             raise KeyError('metric {} is not supported'.format(metric))
-
         eval_results = {}
         gt_seg_maps = self.get_gt_seg_maps()
         if self.CLASSES is None:
@@ -336,46 +335,37 @@ class CustomDataset(Dataset):
                 reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
         else:
             num_classes = len(self.CLASSES)
-
-        all_acc, acc, eval_metric = eval_metrics(
+        ret_metrics = eval_metrics(
             results,
             gt_seg_maps,
             num_classes,
             ignore_index=self.ignore_index,
-            metric=metric)
-        summary_str = ''
-        summary_str += 'per class results:\n'
-
-        line_format = '{:<15} {:>10} {:>10}\n'
-        if metric == 'mIoU':
-            summary_str += line_format.format('Class', 'IoU', 'Acc')
-        else:
-            summary_str += line_format.format('Class', 'Dice', 'Acc')
+            metrics=metric)
+        class_table_data = [['Class'] + [m[1:] for m in metric] + ['Acc']]
         if self.CLASSES is None:
             class_names = tuple(range(num_classes))
         else:
             class_names = self.CLASSES
         for i in range(num_classes):
-            eval_metric_str = '{:.2f}'.format(eval_metric[i] * 100)
-            acc_str = '{:.2f}'.format(acc[i] * 100)
-            summary_str += line_format.format(class_names[i], eval_metric_str,
-                                              acc_str)
-        summary_str += 'Summary:\n'
-        line_format = '{:<15} {:>10} {:>10} {:>10}\n'
-        if metric == 'mIoU':
-            summary_str += line_format.format('Scope', 'mIoU', 'mAcc', 'aAcc')
-        else:
-            summary_str += line_format.format('Scope', 'mDice', 'mAcc', 'aAcc')
+            class_table_data.append(
+                [class_names[i]] +
+                [round(m[i] * 100, 2) for m in ret_metrics[2:]] +
+                [round(ret_metrics[1][i] * 100, 2)])
+        summary_table_data = [['Scope'] +
+                              ['m' + head
+                               for head in class_table_data[0][1:]] + ['aAcc']]
+        summary_table_data.append(
+            ['global'] +
+            [round(np.nanmean(m) * 100, 2) for m in ret_metrics[2:]] +
+            [round(np.nanmean(ret_metrics[1]) * 100, 2)] +
+            [round(np.nanmean(ret_metrics[0]) * 100, 2)])
+        print_log('per class results:', logger)
+        table = AsciiTable(class_table_data)
+        print_log('\n' + table.table, logger=logger)
+        print_log('Summary:', logger)
+        table = AsciiTable(summary_table_data)
+        print_log('\n' + table.table, logger=logger)
 
-        eval_metric_str = '{:.2f}'.format(np.nanmean(eval_metric) * 100)
-        acc_str = '{:.2f}'.format(np.nanmean(acc) * 100)
-        all_acc_str = '{:.2f}'.format(all_acc * 100)
-        summary_str += line_format.format('global', eval_metric_str, acc_str,
-                                          all_acc_str)
-        print_log(summary_str, logger)
-
-        eval_results[metric] = np.nanmean(eval_metric)
-        eval_results['mAcc'] = np.nanmean(acc)
-        eval_results['aAcc'] = all_acc
-
+        for i in range(1, len(summary_table_data[0])):
+            eval_results[summary_table_data[0][i]] = summary_table_data[1][i]
         return eval_results

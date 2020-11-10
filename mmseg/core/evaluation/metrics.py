@@ -87,16 +87,13 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
          ndarray: Per category IoU, shape (num_classes, )
     """
 
-    total_area_intersect, total_area_union, total_area_pred_label, \
-        total_area_label = total_intersect_and_union(results, gt_seg_maps,
-                                                     num_classes,
-                                                     ignore_index=ignore_index)
-    all_acc = total_area_intersect.sum() / total_area_label.sum()
-    acc = total_area_intersect / total_area_label
-    iou = total_area_intersect / total_area_union
-    if nan_to_num is not None:
-        return all_acc, np.nan_to_num(acc, nan=nan_to_num), \
-            np.nan_to_num(iou, nan=nan_to_num)
+    all_acc, acc, iou = eval_metrics(
+        results=results,
+        gt_seg_maps=gt_seg_maps,
+        num_classes=num_classes,
+        ignore_index=ignore_index,
+        metrics=['mIoU'],
+        nan_to_num=nan_to_num)
     return all_acc, acc, iou
 
 
@@ -121,17 +118,13 @@ def mean_dice(results,
          ndarray: Per category dice, shape (num_classes, )
     """
 
-    total_area_intersect, total_area_union, total_area_pred_label, \
-        total_area_label = total_intersect_and_union(results, gt_seg_maps,
-                                                     num_classes,
-                                                     ignore_index=ignore_index)
-    all_acc = total_area_intersect.sum() / total_area_label.sum()
-    acc = total_area_intersect / total_area_label
-    dice = 2 * total_area_intersect / (
-        total_area_pred_label + total_area_label)
-    if nan_to_num is not None:
-        return all_acc, np.nan_to_num(acc, nan=nan_to_num), \
-            np.nan_to_num(dice, nan=nan_to_num)
+    all_acc, acc, dice = eval_metrics(
+        results=results,
+        gt_seg_maps=gt_seg_maps,
+        num_classes=num_classes,
+        ignore_index=ignore_index,
+        metrics=['mDice'],
+        nan_to_num=nan_to_num)
     return all_acc, acc, dice
 
 
@@ -139,7 +132,7 @@ def eval_metrics(results,
                  gt_seg_maps,
                  num_classes,
                  ignore_index,
-                 metric='mIoU',
+                 metrics=['mIoU'],
                  nan_to_num=None):
     """Calculate evaluation metrics
     Args:
@@ -147,7 +140,7 @@ def eval_metrics(results,
         gt_seg_maps (list[ndarray]): list of ground truth segmentation maps
         num_classes (int): Number of categories
         ignore_index (int): Index that will be ignored in evaluation.
-        metric (str): Metrics to be evaluated, 'mIoU' or 'mDice'.
+        metrics (list[str] | str): Metrics to be evaluated, 'mIoU' and 'mDice'.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
      Returns:
@@ -156,11 +149,28 @@ def eval_metrics(results,
          ndarray: Per category evalution metrics, shape (num_classes, )
     """
 
-    allowed_metrics = {'mIoU': mean_iou, 'mDice': mean_dice}
-    if (not isinstance(metric, str)) or (metric not in allowed_metrics):
-        raise KeyError('metric {} is not supported'.format(metric))
-    all_acc, acc, eval_metric = allowed_metrics[metric](results, gt_seg_maps,
-                                                        num_classes,
-                                                        ignore_index,
-                                                        nan_to_num)
-    return all_acc, acc, eval_metric
+    if isinstance(metrics, str):
+        metrics = [metrics]
+    allowed_metrics = ['mIoU', 'mDice']
+    if not set(metrics).issubset(set(allowed_metrics)):
+        raise KeyError('metrics {} is not supported'.format(metrics))
+    total_area_intersect, total_area_union, total_area_pred_label, \
+        total_area_label = total_intersect_and_union(results, gt_seg_maps,
+                                                     num_classes,
+                                                     ignore_index=ignore_index)
+    all_acc = total_area_intersect.sum() / total_area_label.sum()
+    acc = total_area_intersect / total_area_label
+    ret_metrics = [all_acc, acc]
+    for metric in metrics:
+        if 'mIoU' == metric:
+            iou = total_area_intersect / total_area_union
+            ret_metrics.append(iou)
+        elif 'mDice' == metric:
+            dice = 2 * total_area_intersect / (
+                total_area_pred_label + total_area_label)
+            ret_metrics.append(dice)
+    if nan_to_num is not None:
+        ret_metrics = [
+            np.nan_to_num(metric, nan=nan_to_num) for metric in ret_metrics
+        ]
+    return ret_metrics
