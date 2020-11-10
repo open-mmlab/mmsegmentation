@@ -330,6 +330,49 @@ def test_rgb2gray():
     assert results['ori_shape'] == (h, w, c)
 
 
+def test_rerange():
+    # test assertion if min_value or max_value is illegal
+    with pytest.raises(AssertionError):
+        transform = dict(type='Rerange', min_value=[0], max_value=[255])
+        build_from_cfg(transform, PIPELINES)
+
+    # test assertion if min_value >= max_value
+    with pytest.raises(AssertionError):
+        transform = dict(type='Rerange', min_value=1, max_value=1)
+        build_from_cfg(transform, PIPELINES)
+
+    # test assertion if img_min_value == img_max_value
+    with pytest.raises(AssertionError):
+        transform = dict(type='Rerange', min_value=0, max_value=1)
+        transform = build_from_cfg(transform, PIPELINES)
+        results = dict()
+        results['img'] = np.array([[1, 1], [1, 1]])
+        transform(results)
+
+    img_rerange_cfg = dict()
+    transform = dict(type='Rerange', **img_rerange_cfg)
+    transform = build_from_cfg(transform, PIPELINES)
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    original_img = copy.deepcopy(img)
+    results['img'] = img
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+
+    min_value = np.min(original_img)
+    max_value = np.max(original_img)
+    converted_img = (original_img - min_value) / (max_value - min_value) * 255
+
+    assert np.allclose(results['img'], converted_img)
+    assert str(transform) == f'Rerange(min_value={0}, max_value={255})'
+
+
 def test_seg_rescale():
     results = dict()
     seg = np.array(
