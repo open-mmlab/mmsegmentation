@@ -1,5 +1,18 @@
 ## Changelog
 
+### V0.8 (03/11/2020)
+
+**Highlights**
+
+- Support 4 medical dataset, UNet and CGNet.
+
+**New Features**
+
+- Support customize runner ([#118](https://github.com/open-mmlab/mmsegmentation/pull/118))
+- Support UNet ([#161](https://github.com/open-mmlab/mmsegmentation/pull/162))
+- Support CHASE_DB1, DRIVE, STARE, HRD ([#203](https://github.com/open-mmlab/mmsegmentation/pull/203))
+- Support CGNet ([#223](https://github.com/open-mmlab/mmsegmentation/pull/223))
+
 ### V0.7 (07/10/2020)
 
 **Highlights**
