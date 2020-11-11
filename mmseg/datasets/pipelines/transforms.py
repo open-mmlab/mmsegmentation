@@ -1,4 +1,3 @@
-import cv2
 import mmcv
 import numpy as np
 from numpy import random
@@ -410,7 +409,6 @@ class CLAHE(object):
         for item in tile_grid_size:
             assert isinstance(item, int)
         self.tile_grid_size = tile_grid_size
-        self.clahe = cv2.createCLAHE(clip_limit, tile_grid_size)
 
     def __call__(self, results):
         """Call function to Use CLAHE method process images.
@@ -423,7 +421,7 @@ class CLAHE(object):
         """
 
         for i in range(results['img'].shape[2]):
-            results['img'][:, :, i] = self.clahe.apply(
+            results['img'][:, :, i] = mmcv.clahe.apply(
                 np.array(results['img'][:, :, i], dtype=np.uint8))
 
         return results
