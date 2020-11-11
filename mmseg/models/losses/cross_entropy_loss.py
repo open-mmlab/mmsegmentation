@@ -32,7 +32,7 @@ def cross_entropy(pred,
     if (class_weight is None) and (img_based_class_weights
                                    is not None) and (not batch_weights):
         assert pred.dim() > 2 and label.dim() > 1
-        loss = torch.zeros_like(label)
+        loss = torch.zeros_like(label).float()
         for i in range(pred.shape[0]):
             class_weight = calculate_weights(
                 label=label[i],
@@ -51,6 +51,7 @@ def cross_entropy(pred,
                 label=label,
                 num_classes=pred.shape[1],
                 norm=img_based_class_weights == 'norm')
+            # print(class_weight)
         loss = F.cross_entropy(
             pred,
             label,
