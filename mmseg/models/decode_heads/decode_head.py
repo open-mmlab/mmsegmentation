@@ -33,7 +33,10 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
                 a list and passed into decode head.
             None: Only one select feature map is allowed.
             Default: None.
-        loss_decode (dict): Config of decode loss.
+        loss_decode (dict|Sequence[dice]): Config of decode loss.
+            e.g. dict(type='CrossEntropyLoss'),
+            [dict(type='LossName_1', name=loss_1),
+             dict(type='LossName_2', name=loss_2)]
             Default: dict(type='CrossEntropyLoss').
         ignore_index (int): The label index to be ignored. Default: 255
         sampler (dict|None): The config of segmentation map sampler.
@@ -69,9 +72,21 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
         self.in_index = in_index
-        self.loss_decode = build_loss(loss_decode)
         self.ignore_index = ignore_index
         self.align_corners = align_corners
+        self.loss_decode = nn.ModuleList()
+        self.loss_names = []
+        if isinstance(loss_decode, dict):
+            self.loss_decode.append(build_loss(loss_decode))
+            self.loss_names.append('loss_seg')
+        elif isinstance(loss_decode, (list, tuple)):
+            for loss in loss_decode:
+                name = loss.pop('name')
+                self.loss_decode.append(build_loss(loss))
+                self.loss_names.append('loss_' + name)
+        else:
+            raise TypeError(f'loss_decode must be a dict or Sequence of dict,\
+                but got {type(loss_decode)}')
         if sampler is not None:
             self.sampler = build_pixel_sampler(sampler, context=self)
         else:
@@ -224,10 +239,11 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
-        loss['loss_seg'] = self.loss_decode(
-            seg_logit,
-            seg_label,
-            weight=seg_weight,
-            ignore_index=self.ignore_index)
+        for i in range(len(self.loss_decode)):
+            loss[self.loss_names[i]] = self.loss_decode[i](
+                seg_logit,
+                seg_label,
+                weight=seg_weight,
+                ignore_index=self.ignore_index)
         loss['acc_seg'] = accuracy(seg_logit, seg_label)
         return loss
