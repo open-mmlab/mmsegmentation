@@ -442,6 +442,9 @@ class Rerange(object):
 class CLAHE(object):
     """Use CLAHE method to process the image.
 
+    See `ZUIDERVELD,K. Contrast Limited Adaptive Histogram Equalization[J].
+    Graphics Gems, 1994:474-485.` for more information.
+
     Args:
         clip_limit (float): Threshold for contrast limiting. Default: 40.0.
         tile_grid_size (tuple[int]): Size of grid for histogram equalization.
