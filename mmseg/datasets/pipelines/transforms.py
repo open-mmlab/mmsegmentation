@@ -682,7 +682,7 @@ class SegRescale(object):
 
 
 @PIPELINES.register_module()
-class RelaxedBoundaryOneHot(object):
+class BoundaryRelaxedOneHot(object):
     """Convert segmentation label to one hot with boundary ralax.
 
     The piexls around the boundary share the class labels of their neighbors,

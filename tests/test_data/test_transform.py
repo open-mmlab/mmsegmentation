@@ -400,7 +400,7 @@ def test_relaxed_boundary_one_hot():
     h, w = seg.shape
 
     transform = dict(
-        type='RelaxedBoundaryOneHot',
+        type='BoundaryRelaxedOneHot',
         num_classes=2,
         border_window=1,
         strict_border_classes=(0, 1),
@@ -417,7 +417,7 @@ def test_relaxed_boundary_one_hot():
     seg[:100, :100] = 255
     results['gt_semantic_seg'] = seg
     transform = dict(
-        type='RelaxedBoundaryOneHot',
+        type='BoundaryRelaxedOneHot',
         num_classes=9,
         border_window=1,
         strict_border_classes=None,
