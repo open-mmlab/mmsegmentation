@@ -2,6 +2,7 @@ import mmcv
 import numpy as np
 from mmcv.utils import deprecated_api_warning
 from numpy import random
+from scipy.ndimage.morphology import distance_transform_edt
 
 from ..builder import PIPELINES
 
@@ -678,6 +679,59 @@ class SegRescale(object):
 
     def __repr__(self):
         return self.__class__.__name__ + f'(scale_factor={self.scale_factor})'
+
+
+@PIPELINES.register_module()
+class GenerateEdgeMap(object):
+    """Generate edge map from segmentation label.
+
+    Convert 'gt_semantic_seg' in results dict to edge map.
+    Added key is "edge_map".
+
+    Args:
+        num_classes (int): Number of classes.
+        radius (int): The distance to boundary. Default: 2.
+        ignore_index (int): The label index to be ignored. Default: 255.
+    """
+
+    def __init__(self, num_classes, radius=2, ignore_index=255):
+        self.num_classes = num_classes
+        self.radius = radius
+        self.ignore_index = ignore_index
+        assert radius > 0
+
+    def __call__(self, results):
+        """Call function to convert segmentation label to edge map.
+
+        Args:
+            results (dict): Results dict from loading pipeline.
+        Returns:
+            dict: 'edge_map' key is added into results dict.
+        """
+
+        gt_semantic_seg = results['gt_semantic_seg'].copy()
+        edge_map = np.zeros(gt_semantic_seg.shape)
+        for i in range(self.num_classes):
+            mask = (gt_semantic_seg == i).astype(np.uint8)
+            # We need to pad the borders for boundary conditions
+            mask_pad = np.pad(
+                mask, ((1, 1), (1, 1)), mode='constant', constant_values=0)
+            dist = distance_transform_edt(mask_pad) + distance_transform_edt(
+                1 - mask_pad)
+            dist = dist[1:-1, 1:-1]
+            dist[dist > self.radius] = 0
+            edge_map += dist
+        edge_map = (edge_map > 0).astype(np.uint8)
+        edge_map[gt_semantic_seg == self.ignore_index] = self.ignore_index
+        results['edge_map'] = edge_map.astype(np.uint8)
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(num_classes={self.num_classes}, '
+                     f'radius={self.radius}, '
+                     f'ignore_index={self.ignore_index})')
+        return repr_str
 
 
 @PIPELINES.register_module()

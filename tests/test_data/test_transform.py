@@ -390,3 +390,37 @@ def test_seg_rescale():
     rescale_module = build_from_cfg(transform, PIPELINES)
     rescale_results = rescale_module(results.copy())
     assert rescale_results['gt_semantic_seg'].shape == (h, w)
+
+
+def test_generate_edge_map():
+    results = dict()
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    results['gt_semantic_seg'] = seg
+    h, w = seg.shape
+
+    transform = dict(
+        type='GenerateEdgeMap', num_classes=2, radius=2, ignore_index=255)
+    generate_edge_map = build_from_cfg(transform, PIPELINES)
+    edge_map_results = generate_edge_map(results.copy())
+    edge_map = edge_map_results['edge_map']
+    assert seg.shape == edge_map.shape
+    assert seg.shape == edge_map_results['gt_semantic_seg'].shape
+    assert edge_map.shape == edge_map_results['gt_semantic_seg'].shape
+
+    seg[:100, :100] = 255
+    results['gt_semantic_seg'] = seg
+    transform = dict(
+        type='GenerateEdgeMap', num_classes=2, radius=2, ignore_index=255)
+    generate_edge_map = build_from_cfg(transform, PIPELINES)
+    edge_map_results = generate_edge_map(results.copy())
+    edge_map = edge_map_results['edge_map']
+    assert (seg == 255).astype(np.uint8).sum() == 10000
+    assert (edge_map_results['edge_map'] == 255).sum() == 10000
+    assert edge_map_results['edge_map'].shape == (h, w)
+    assert ((seg == 255).astype(np.uint8) -
+            (edge_map == 255).astype(np.uint8)).sum() == 0
+
+
+if __name__ == '__main__':
+    test_generate_edge_map()
