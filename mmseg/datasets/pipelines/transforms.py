@@ -2,6 +2,7 @@ import mmcv
 import numpy as np
 from mmcv.utils import deprecated_api_warning
 from numpy import random
+from scipy.ndimage.interpolation import shift
 
 from ..builder import PIPELINES
 
@@ -678,6 +679,83 @@ class SegRescale(object):
 
     def __repr__(self):
         return self.__class__.__name__ + f'(scale_factor={self.scale_factor})'
+
+
+@PIPELINES.register_module()
+class BoundaryRelaxedOneHot(object):
+    """Convert segmentation label to one hot with boundary ralax.
+
+    The piexls around the boundary share the class labels of their neighbors,
+    so the relaxed boundary has multiple hot.
+
+    Added key is "relaxed_boundary_one_hot".
+
+    Args:
+        num_classes (int): Number of classes.
+        border_window (int): Set the border width. Default: 1.
+        strict_border_classes (None|Sequence): The bundary of these classes
+            without boundary ralax. Default: None.
+        ignore_index (int): The label index to be ignored. Default: 255.
+    """
+
+    def __init__(self,
+                 num_classes,
+                 border_window=1,
+                 strict_border_classes=None,
+                 ignore_index=255):
+        self.num_classes = num_classes
+        self.border_window = border_window
+        self.strict_border_classes = strict_border_classes
+        self.ignore_index = ignore_index
+
+    def _one_hot_converter(self, gt_semantic_seg):
+        """Convert segmentation label to one hot, also encode ignore_index."""
+        ncols = self.num_classes + 1
+        onehot = np.zeros((gt_semantic_seg.size, ncols), dtype=np.uint8)
+        onehot[np.arange(gt_semantic_seg.size), gt_semantic_seg.ravel()] = 1
+        onehot.shape = gt_semantic_seg.shape + (ncols, )
+        return onehot
+
+    def __call__(self, results):
+        """Call function to convert segmentation label to one hot with boundary
+        ralax.
+
+        Args:
+            results (dict): Results dict from loading pipeline.
+
+        Returns:
+            dict: 'relaxed_boundary_one_hot' key is added into
+                results dict.
+        """
+
+        gt_semantic_seg = results['gt_semantic_seg'].copy()
+        gt_semantic_seg[gt_semantic_seg ==
+                        self.ignore_index] = self.num_classes
+
+        if self.strict_border_classes is not None:
+            one_hot_ori = self._one_hot_converter(gt_semantic_seg)
+            mask = np.zeros(gt_semantic_seg.shape[:2])
+            for cls_kep in self.strict_border_classes:
+                mask = np.logical_or(mask, (gt_semantic_seg == cls_kep))
+        one_hot = 0
+        for i in range(-self.border_window, self.border_window + 1):
+            for j in range(-self.border_window, self.border_window + 1):
+                shifted = shift(gt_semantic_seg, (i, j), cval=self.num_classes)
+                one_hot += self._one_hot_converter(shifted)
+        one_hot[one_hot > 1] = 1
+
+        if self.strict_border_classes is not None:
+            one_hot = np.where(np.expand_dims(mask, 2), one_hot_ori, one_hot)
+        results['relaxed_boundary_one_hot'] = one_hot.astype(np.uint8)
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(num_classes={self.num_classes}, '
+                     f'border_window={self.border_window}, '
+                     f'strict_border_classes={self.strict_border_classes}, '
+                     f'ignore_index={self.ignore_index})')
+        return repr_str
 
 
 @PIPELINES.register_module()

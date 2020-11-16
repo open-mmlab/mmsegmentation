@@ -390,3 +390,42 @@ def test_seg_rescale():
     rescale_module = build_from_cfg(transform, PIPELINES)
     rescale_results = rescale_module(results.copy())
     assert rescale_results['gt_semantic_seg'].shape == (h, w)
+
+
+def test_relaxed_boundary_one_hot():
+    results = dict()
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    results['gt_semantic_seg'] = seg
+    h, w = seg.shape
+
+    transform = dict(
+        type='BoundaryRelaxedOneHot',
+        num_classes=2,
+        border_window=1,
+        strict_border_classes=(0, 1),
+        ignore_index=255)
+    boundary_relax_module = build_from_cfg(transform, PIPELINES)
+    relaxed_boundary_one_hot_results = boundary_relax_module(results.copy())
+    seg_ = np.argmax(
+        relaxed_boundary_one_hot_results['relaxed_boundary_one_hot'], 2)
+    assert np.allclose(seg, seg_)
+    assert (seg - seg_).sum() == 0
+    assert relaxed_boundary_one_hot_results[
+        'relaxed_boundary_one_hot'].shape == (h, w, 3)
+
+    seg[:100, :100] = 255
+    results['gt_semantic_seg'] = seg
+    transform = dict(
+        type='BoundaryRelaxedOneHot',
+        num_classes=9,
+        border_window=1,
+        strict_border_classes=None,
+        ignore_index=255)
+    boundary_relax_module = build_from_cfg(transform, PIPELINES)
+    relaxed_boundary_one_hot_results = boundary_relax_module(results.copy())
+    assert (seg == 255).astype(np.uint8).sum() == 10000
+    assert (relaxed_boundary_one_hot_results['relaxed_boundary_one_hot']
+            [:, :, -1]).sum() > 10000
+    assert relaxed_boundary_one_hot_results[
+        'relaxed_boundary_one_hot'].shape == (h, w, 10)
