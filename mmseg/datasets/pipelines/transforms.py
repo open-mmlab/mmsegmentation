@@ -195,7 +195,7 @@ class Resize(object):
             else:
                 gt_seg = mmcv.imresize(
                     results[key], results['scale'], interpolation='nearest')
-            results['gt_semantic_seg'] = gt_seg
+            results[key] = gt_seg
 
     def __call__(self, results):
         """Call function to resize images, bounding boxes, masks, semantic
