@@ -20,7 +20,7 @@ for f in files:
     title = content.split('\n')[0].replace('#', '')
     titles.append(title)
     ckpts = set(x.lower().strip()
-                for x in re.findall(r'https://download.*\.pth', content)
+                for x in re.findall(r'https?://download.*\.pth', content)
                 if 'mmsegmentation' in x)
     num_ckpts += len(ckpts)
     statsmsg = f"""
