@@ -7,11 +7,10 @@ from torch.nn.modules.batchnorm import _BatchNorm
 
 from ..builder import BACKBONES
 from ..utils import InvertedResidualV3 as InvertedResidual
-from .base_backbone import BaseBackbone
 
 
 @BACKBONES.register_module()
-class MobileNetV3(BaseBackbone):
+class MobileNetV3(nn.Module):
     """MobileNetV3 backbone.
 
     Args:
