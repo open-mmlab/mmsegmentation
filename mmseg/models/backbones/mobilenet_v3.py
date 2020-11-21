@@ -42,7 +42,8 @@ class MobileNetV3(nn.Module):
                   [5, 240, 40, True, 'HSwish', 1],
                   [5, 120, 48, True, 'HSwish', 1],
                   [5, 144, 48, True, 'HSwish', 1],
-                  [5, 288, 96, True, 'HSwish', 2],
+                  [5, 288, 96, True, 'HSwish', 1],
+                  #   [5, 288, 96, True, 'HSwish', 2],
                   [5, 576, 96, True, 'HSwish', 1],
                   [5, 576, 96, True, 'HSwish', 1]],
         'large': [[3, 16, 16, False, 'ReLU', 1],
@@ -57,7 +58,8 @@ class MobileNetV3(nn.Module):
                   [3, 184, 80, False, 'HSwish', 1],
                   [3, 480, 112, True, 'HSwish', 1],
                   [3, 672, 112, True, 'HSwish', 1],
-                  [5, 672, 160, True, 'HSwish', 2],
+                  [5, 672, 160, True, 'HSwish', 1],
+                  #   [5, 672, 160, True, 'HSwish', 2],
                   [5, 960, 160, True, 'HSwish', 1],
                   [5, 960, 160, True, 'HSwish', 1]]
     }  # yapf: disable
@@ -66,12 +68,14 @@ class MobileNetV3(nn.Module):
                  arch='small',
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 out_indices=(10, ),
+                 out_indices=(7, 10),
                  frozen_stages=-1,
+                 reduction_factor=2,
                  norm_eval=False,
                  with_cp=False):
         super(MobileNetV3, self).__init__()
         assert arch in self.arch_settings
+        assert isinstance(reduction_factor, int) and reduction_factor > 0
         for index in out_indices:
             if index not in range(0, len(self.arch_settings[arch])):
                 raise ValueError('the item in out_indices must in '
@@ -82,13 +86,12 @@ class MobileNetV3(nn.Module):
             raise ValueError('frozen_stages must be in range(-1, '
                              f'{len(self.arch_settings[arch])}). '
                              f'But received {frozen_stages}')
-        self.out_indices = out_indices
-        self.frozen_stages = frozen_stages
         self.arch = arch
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.out_indices = out_indices
         self.frozen_stages = frozen_stages
+        self.reduction_factor = reduction_factor
         self.norm_eval = norm_eval
         self.with_cp = with_cp
 
@@ -112,6 +115,12 @@ class MobileNetV3(nn.Module):
         for i, params in enumerate(layer_setting):
             (kernel_size, mid_channels, out_channels, with_se, act,
              stride) = params
+
+            if self.arch == 'large' and i >= 12 or self.arch == 'small' and \
+                    i >= 8:
+                mid_channels = mid_channels // self.reduction_factor
+                out_channels = out_channels // self.reduction_factor
+
             if with_se:
                 se_cfg = dict(
                     channels=mid_channels,
@@ -161,10 +170,7 @@ class MobileNetV3(nn.Module):
             if i in self.out_indices:
                 outs.append(x)
 
-        if len(outs) == 1:
-            return outs[0]
-        else:
-            return tuple(outs)
+        return outs
 
     def _freeze_stages(self):
         if self.frozen_stages >= 0:
