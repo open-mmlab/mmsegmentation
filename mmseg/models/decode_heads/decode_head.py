@@ -33,7 +33,7 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
                 a list and passed into decode head.
             None: Only one select feature map is allowed.
             Default: None.
-        loss_decode (dict|Sequence[dice]): Config of decode loss.
+        loss_decode (dict | Sequence[dict]): Config of decode loss.
             e.g. dict(type='CrossEntropyLoss'),
             [dict(type='LossName_1', name=loss_1),
              dict(type='LossName_2', name=loss_2)]
@@ -85,7 +85,7 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
                 self.loss_decode.append(build_loss(loss))
                 self.loss_names.append('loss_' + name)
         else:
-            raise TypeError(f'loss_decode must be a dict or Sequence of dict,\
+            raise TypeError(f'loss_decode must be a dict or sequence of dict,\
                 but got {type(loss_decode)}')
         if sampler is not None:
             self.sampler = build_pixel_sampler(sampler, context=self)
@@ -239,8 +239,8 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
-        for i in range(len(self.loss_decode)):
-            loss[self.loss_names[i]] = self.loss_decode[i](
+        for loss_name, loss_decode in zip(self.loss_names, self.loss_decode):
+            loss[loss_name] = loss_decode(
                 seg_logit,
                 seg_label,
                 weight=seg_weight,
