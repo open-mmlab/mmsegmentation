@@ -683,7 +683,7 @@ class SegRescale(object):
 
 @PIPELINES.register_module()
 class BoundaryRelaxedOneHot(object):
-    """Convert segmentation label to one hot with boundary ralax.
+    """Convert segmentation label to one hot with boundary relax.
 
     The piexls around the boundary share the class labels of their neighbors,
     so the relaxed boundary has multiple hot.
@@ -694,7 +694,7 @@ class BoundaryRelaxedOneHot(object):
         num_classes (int): Number of classes.
         border_window (int): Set the border width. Default: 1.
         strict_border_classes (None|Sequence): The bundary of these classes
-            without boundary ralax. Default: None.
+            without boundary relax. Default: None.
         ignore_index (int): The label index to be ignored. Default: 255.
     """
 
@@ -718,7 +718,7 @@ class BoundaryRelaxedOneHot(object):
 
     def __call__(self, results):
         """Call function to convert segmentation label to one hot with boundary
-        ralax.
+        relax.
 
         Args:
             results (dict): Results dict from loading pipeline.
