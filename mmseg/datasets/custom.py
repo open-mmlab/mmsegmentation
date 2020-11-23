@@ -316,7 +316,7 @@ class CustomDataset(Dataset):
         Args:
             results (list): Testing results of the dataset.
             metric (str | list[str]): Metrics to be evaluated. 'mIoU' and
-                'mDice' are support ONLY.
+                'mDice' are supported.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
 
@@ -347,19 +347,23 @@ class CustomDataset(Dataset):
             class_names = tuple(range(num_classes))
         else:
             class_names = self.CLASSES
+        ret_metrics_round = [
+            np.round(ret_metric * 100, 2) for ret_metric in ret_metrics
+        ]
         for i in range(num_classes):
-            class_table_data.append(
-                [class_names[i]] +
-                [np.round(m[i] * 100, 2) for m in ret_metrics[2:]] +
-                [np.round(ret_metrics[1][i] * 100, 2)])
+            class_table_data.append([class_names[i]] +
+                                    [m[i] for m in ret_metrics_round[2:]] +
+                                    [ret_metrics_round[1][i]])
         summary_table_data = [['Scope'] +
                               ['m' + head
                                for head in class_table_data[0][1:]] + ['aAcc']]
-        summary_table_data.append(
-            ['global'] +
-            [np.round(np.nanmean(m) * 100, 2) for m in ret_metrics[2:]] +
-            [np.round(np.nanmean(ret_metrics[1]) * 100, 2)] +
-            [np.round(np.nanmean(ret_metrics[0]) * 100, 2)])
+        ret_metrics_mean = [
+            np.round(np.nanmean(ret_metric) * 100, 2)
+            for ret_metric in ret_metrics
+        ]
+        summary_table_data.append(['global'] + ret_metrics_mean[2:] +
+                                  [ret_metrics_mean[1]] +
+                                  [ret_metrics_mean[0]])
         print_log('per class results:', logger)
         table = AsciiTable(class_table_data)
         print_log('\n' + table.table, logger=logger)
@@ -368,5 +372,6 @@ class CustomDataset(Dataset):
         print_log('\n' + table.table, logger=logger)
 
         for i in range(1, len(summary_table_data[0])):
-            eval_results[summary_table_data[0][i]] = summary_table_data[1][i]
+            eval_results[summary_table_data[0]
+                         [i]] = summary_table_data[1][i] / 100.0
         return eval_results
