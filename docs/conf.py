@@ -81,7 +81,7 @@ html_static_path = ['_static']
 
 
 def builder_inited_handler(app):
-    subprocess.run(['python ./stat.py'])
+    subprocess.run(['./stat.py'])
 
 
 def setup(app):
