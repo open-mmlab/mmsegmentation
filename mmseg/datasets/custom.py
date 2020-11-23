@@ -315,7 +315,8 @@ class CustomDataset(Dataset):
 
         Args:
             results (list): Testing results of the dataset.
-            metric (str | list[str]): Metrics to be evaluated.
+            metric (str | list[str]): Metrics to be evaluated. 'mIoU' and
+                'mDice' are support ONLY.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
 
@@ -349,16 +350,16 @@ class CustomDataset(Dataset):
         for i in range(num_classes):
             class_table_data.append(
                 [class_names[i]] +
-                [round(m[i] * 100, 2) for m in ret_metrics[2:]] +
-                [round(ret_metrics[1][i] * 100, 2)])
+                [np.round(m[i] * 100, 2) for m in ret_metrics[2:]] +
+                [np.round(ret_metrics[1][i] * 100, 2)])
         summary_table_data = [['Scope'] +
                               ['m' + head
                                for head in class_table_data[0][1:]] + ['aAcc']]
         summary_table_data.append(
             ['global'] +
-            [round(np.nanmean(m) * 100, 2) for m in ret_metrics[2:]] +
-            [round(np.nanmean(ret_metrics[1]) * 100, 2)] +
-            [round(np.nanmean(ret_metrics[0]) * 100, 2)])
+            [np.round(np.nanmean(m) * 100, 2) for m in ret_metrics[2:]] +
+            [np.round(np.nanmean(ret_metrics[1]) * 100, 2)] +
+            [np.round(np.nanmean(ret_metrics[0]) * 100, 2)])
         print_log('per class results:', logger)
         table = AsciiTable(class_table_data)
         print_log('\n' + table.table, logger=logger)
