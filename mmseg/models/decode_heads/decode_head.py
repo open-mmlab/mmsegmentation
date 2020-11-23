@@ -35,7 +35,8 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
             Default: None.
         loss_decode (dict): Config of decode loss.
             Default: dict(type='CrossEntropyLoss').
-        ignore_index (int): The label index to be ignored. Default: 255
+        ignore_index (int | None): The label index to be ignored. When using
+            masked BCE loss, ignore_index should be set to None. Default: 255
         sampler (dict|None): The config of segmentation map sampler.
             Default: None.
         align_corners (bool): align_corners argument of F.interpolate.

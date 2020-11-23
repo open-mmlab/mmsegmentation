@@ -252,7 +252,7 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
     ```shell
     ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
         checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-        4 --format-only --options "imgfile_prefix=./pspnet_test_results"
+        4 --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
     ```
 
     You will get png files under `./pspnet_test_results` directory.
