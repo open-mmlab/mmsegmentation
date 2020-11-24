@@ -16,7 +16,7 @@ def test_test_time_augmentation_on_cpu():
     config.model.auxiliary_head.norm_cfg = norm_cfg
 
     # Enable test time augmentation
-    config.test_pipeline[1].flip = True
+    config.data.test.pipeline[1].flip = True
 
     checkpoint_file = None
     model = init_segmentor(config, checkpoint_file, device='cpu')
