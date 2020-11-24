@@ -159,17 +159,45 @@ def test_custom_dataset():
     for gt_seg_map in gt_seg_maps:
         h, w = gt_seg_map.shape
         pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
-    eval_results = train_dataset.evaluate(pseudo_results)
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mIoU')
     assert isinstance(eval_results, dict)
     assert 'mIoU' in eval_results
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results
 
-    # evaluation with CLASSES
-    train_dataset.CLASSES = tuple(['a'] * 7)
-    eval_results = train_dataset.evaluate(pseudo_results)
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
+    assert isinstance(eval_results, dict)
+    assert 'mDice' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(
+        pseudo_results, metric=['mDice', 'mIoU'])
     assert isinstance(eval_results, dict)
     assert 'mIoU' in eval_results
+    assert 'mDice' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    # evaluation with CLASSES
+    train_dataset.CLASSES = tuple(['a'] * 7)
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mIoU')
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
+    assert isinstance(eval_results, dict)
+    assert 'mDice' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(
+        pseudo_results, metric=['mIoU', 'mDice'])
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
+    assert 'mDice' in eval_results
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results
 
