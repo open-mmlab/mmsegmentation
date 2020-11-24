@@ -1,7 +1,8 @@
 import os.path as osp
 
-from mmseg.apis import inference_segmentor, init_segmentor
 import mmcv
+
+from mmseg.apis import inference_segmentor, init_segmentor
 
 
 def test_test_time_augmentation_on_cpu():
@@ -20,6 +21,7 @@ def test_test_time_augmentation_on_cpu():
     checkpoint_file = None
     model = init_segmentor(config, checkpoint_file, device='cpu')
 
-    img = mmcv.imread(osp.join(osp.dirname(__file__), 'data/color.jpg'), 'color')
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), 'data/color.jpg'), 'color')
     result = inference_segmentor(model, img)
     assert result[0].shape == (288, 512)
