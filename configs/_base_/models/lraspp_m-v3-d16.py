@@ -1,12 +1,12 @@
 # model settings
-norm_cfg = dict(type='SyncBN', requires_grad=True)
+norm_cfg = dict(type='SyncBN', eps=0.001, requires_grad=True)
 model = dict(
     type='EncoderDecoder',
     backbone=dict(type='MobileNetV3', arch='small', norm_cfg=norm_cfg),
     decode_head=dict(
         type='LRASPPHead',
-        in_channels=[48, 48],
-        in_index=(0, 1),
+        in_channels=(16, 16, 576),
+        in_index=(0, 1, 2),
         channels=128,
         input_transform='multiple_select',
         dropout_ratio=0.1,

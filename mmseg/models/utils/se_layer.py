@@ -26,7 +26,8 @@ class SELayer(nn.Module):
                  channels,
                  ratio=16,
                  conv_cfg=None,
-                 act_cfg=(dict(type='ReLU'), dict(type='Sigmoid'))):
+                 act_cfg=(dict(type='ReLU'),
+                          dict(type='HSigmoid', bias=3.0, divisor=6.0))):
         super(SELayer, self).__init__()
         if isinstance(act_cfg, dict):
             act_cfg = (act_cfg, act_cfg)

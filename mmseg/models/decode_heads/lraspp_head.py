@@ -1,4 +1,6 @@
+import torch
 import torch.nn as nn
+from mmcv import is_tuple_of
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
@@ -10,39 +12,81 @@ from .decode_head import BaseDecodeHead
 class LRASPPHead(BaseDecodeHead):
     """Lite R-ASPP (LRASPP) head is proposed in Searching for MobileNetV3.
 
-    This head is the implementation of `MobileNetV3
+    This head is the improved implementation of `MobileNetV3
     <https://ieeexplore.ieee.org/document/9008835>`_.
+
+    Args:
+        branch_channels (tuple[int]): The number of output channels in every
+            each branch. Default: (32, 64).
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, branch_channels=(32, 64), **kwargs):
         super(LRASPPHead, self).__init__(**kwargs)
-        self.conv = ConvModule(
-            self.in_channels[1],
+        if self.input_transform != 'multiple_select':
+            raise ValueError('in Lite R-ASPP (LRASPP) head, input_transform '
+                             f'must be \'multiple_select\'. But received '
+                             f'\'{self.input_transform}\'')
+        assert is_tuple_of(branch_channels, int)
+        assert len(branch_channels) == len(self.in_channels) - 1
+        self.branch_channels = branch_channels
+
+        self.convs = nn.Sequential()
+        self.conv_ups = nn.Sequential()
+        for i in range(len(branch_channels)):
+            self.convs.add_module(
+                f'conv{i}',
+                nn.Conv2d(
+                    self.in_channels[i], branch_channels[i], 1, bias=False))
+            self.conv_ups.add_module(
+                f'conv_up{i}',
+                ConvModule(
+                    self.channels + branch_channels[i],
+                    self.channels,
+                    1,
+                    norm_cfg=self.norm_cfg,
+                    act_cfg=self.act_cfg,
+                    bias=False))
+
+        self.conv_up_input = nn.Conv2d(self.channels, self.channels, 1)
+
+        self.aspp_conv = ConvModule(
+            self.in_channels[-1],
             self.channels,
             1,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg)
-
+            act_cfg=self.act_cfg,
+            bias=False)
         self.image_pool = nn.Sequential(
             nn.AvgPool2d(kernel_size=49, stride=(16, 20)),
             ConvModule(
-                self.in_channels[1],
+                self.in_channels[2],
                 self.channels,
                 1,
-                act_cfg=dict(type='Sigmoid')))
-
-        self.auxiliary_cls_seg = nn.Conv2d(
-            self.in_channels[0], self.num_classes, kernel_size=1)
+                act_cfg=dict(type='Sigmoid'),
+                bias=False))
 
     def forward(self, inputs):
         """Forward function."""
-        x = self._transform_inputs(inputs)
+        inputs = self._transform_inputs(inputs)
 
-        x[1] = self.conv(x[1]) * resize(
-            self.image_pool(x[1]), size=x[1].size()[2:], mode='bilinear')
+        # import pdb
+        # pdb.set_trace()
 
-        x[1] = resize(x[1], size=x[0].size()[2:], mode='bilinear')
+        x = inputs[-1]
+        x = self.aspp_conv(x) * resize(
+            self.image_pool(x),
+            size=x.size()[2:],
+            mode='bilinear',
+            align_corners=True)
+        x = self.conv_up_input(x)
 
-        output = self.cls_seg(x[1]) + self.auxiliary_cls_seg(x[0])
+        for i in range(len(self.branch_channels) - 1, -1, -1):
+            x = resize(
+                x,
+                size=inputs[i].size()[2:],
+                mode='bilinear',
+                align_corners=False)
+            x = torch.cat([x, self.convs[i](inputs[i])], 1)
+            x = self.conv_ups[i](x)
 
-        return output
+        return self.cls_seg(x)
