@@ -683,7 +683,7 @@ class AdjustGamma(object):
         return results
 
     def __repr__(self):
-        return self.__class__.__name__ + f'(gamma={self.gamma})'
+        return self.__class__.__name__ + f'(gamma={self.gamma})' 
 
 
 @PIPELINES.register_module()
