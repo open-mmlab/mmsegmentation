@@ -678,12 +678,12 @@ class AdjustGamma(object):
         """
 
         results['img'] = mmcv.lut_transform(
-                np.array(results['img'], dtype=np.uint8), self.table)
+            np.array(results['img'], dtype=np.uint8), self.table)
 
         return results
 
     def __repr__(self):
-        return self.__class__.__name__ + f'(gamma={self.gamma})' 
+        return self.__class__.__name__ + f'(gamma={self.gamma})'
 
 
 @PIPELINES.register_module()
