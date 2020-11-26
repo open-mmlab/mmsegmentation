@@ -677,9 +677,8 @@ class AdjustGamma(object):
             dict: Processed results.
         """
 
-        for i in range(results['img'].shape[2]):
-            results['img'][:, :, i] = mmcv.lut_transform(
-                np.array(results['img'][:, :, i], dtype=np.uint8), self.table)
+        results['img'] = mmcv.lut_transform(
+                np.array(results['img'], dtype=np.uint8), self.table)
 
         return results
 
