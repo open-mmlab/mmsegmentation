@@ -678,7 +678,7 @@ class AdjustGamma(object):
         """
 
         for i in range(results['img'].shape[2]):
-            results['img'][:, :, i] = cv2.LUT(
+            results['img'][:, :, i] = mmcv.lut_transform(
                 np.array(results['img'][:, :, i], dtype=np.uint8), self.table)
 
         return results
