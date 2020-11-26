@@ -1,6 +1,6 @@
-import cv2
 import mmcv
 import numpy as np
+from mmcv.utils import deprecated_api_warning
 from numpy import random
 
 from ..builder import PIPELINES
@@ -195,7 +195,7 @@ class Resize(object):
             else:
                 gt_seg = mmcv.imresize(
                     results[key], results['scale'], interpolation='nearest')
-            results['gt_semantic_seg'] = gt_seg
+            results[key] = gt_seg
 
     def __call__(self, results):
         """Call function to resize images, bounding boxes, masks, semantic
@@ -233,16 +233,17 @@ class RandomFlip(object):
     method.
 
     Args:
-        flip_ratio (float, optional): The flipping probability. Default: None.
+        prob (float, optional): The flipping probability. Default: None.
         direction(str, optional): The flipping direction. Options are
             'horizontal' and 'vertical'. Default: 'horizontal'.
     """
 
-    def __init__(self, flip_ratio=None, direction='horizontal'):
-        self.flip_ratio = flip_ratio
+    @deprecated_api_warning({'flip_ratio': 'prob'}, cls_name='RandomFlip')
+    def __init__(self, prob=None, direction='horizontal'):
+        self.prob = prob
         self.direction = direction
-        if flip_ratio is not None:
-            assert flip_ratio >= 0 and flip_ratio <= 1
+        if prob is not None:
+            assert prob >= 0 and prob <= 1
         assert direction in ['horizontal', 'vertical']
 
     def __call__(self, results):
@@ -258,7 +259,7 @@ class RandomFlip(object):
         """
 
         if 'flip' not in results:
-            flip = True if np.random.rand() < self.flip_ratio else False
+            flip = True if np.random.rand() < self.prob else False
             results['flip'] = flip
         if 'flip_direction' not in results:
             results['flip_direction'] = self.direction
@@ -275,7 +276,7 @@ class RandomFlip(object):
         return results
 
     def __repr__(self):
-        return self.__class__.__name__ + f'(flip_ratio={self.flip_ratio})'
+        return self.__class__.__name__ + f'(prob={self.prob})'
 
 
 @PIPELINES.register_module()
@@ -392,40 +393,50 @@ class Normalize(object):
 
 
 @PIPELINES.register_module()
-class AdjustGamma(object):
-    """Using gamma correction to process the image.
+class Rerange(object):
+    """Rerange the image pixel value.
 
     Args:
-        gamma (float or int): Gamma value used in gamma correction.
-            Default: 1.0.
+        min_value (float or int): Minimum value of the reranged image.
+            Default: 0.
+        max_value (float or int): Maximum value of the reranged image.
+            Default: 255.
     """
 
-    def __init__(self, gamma=1.0):
-        assert isinstance(gamma, float) or isinstance(gamma, int)
-        assert gamma > 0
-        self.gamma = gamma
-        inv_gamma = 1.0 / gamma
-        self.table = np.array([(i / 255.0)**inv_gamma * 255
-                               for i in np.arange(0, 256)]).astype('uint8')
+    def __init__(self, min_value=0, max_value=255):
+        assert isinstance(min_value, float) or isinstance(min_value, int)
+        assert isinstance(max_value, float) or isinstance(max_value, int)
+        assert min_value < max_value
+        self.min_value = min_value
+        self.max_value = max_value
 
     def __call__(self, results):
-        """Call function to process the image with gamma correction.
+        """Call function to rerange images.
 
         Args:
             results (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Processed results.
+            dict: Reranged results.
         """
 
-        for i in range(results['img'].shape[2]):
-            results['img'][:, :, i] = cv2.LUT(
-                np.array(results['img'][:, :, i], dtype=np.uint8), self.table)
+        img = results['img']
+        img_min_value = np.min(img)
+        img_max_value = np.max(img)
+
+        assert img_min_value < img_max_value
+        # rerange to [0, 1]
+        img = (img - img_min_value) / (img_max_value - img_min_value)
+        # rerange to [min_value, max_value]
+        img = img * (self.max_value - self.min_value) + self.min_value
+        results['img'] = img
 
         return results
 
     def __repr__(self):
-        return self.__class__.__name__ + f'(gamma={self.gamma})'
+        repr_str = self.__class__.__name__
+        repr_str += f'(min_value={self.min_value}, max_value={self.max_value})'
+        return repr_str
 
 
 @PIPELINES.register_module()
@@ -499,6 +510,181 @@ class RandomCrop(object):
 
     def __repr__(self):
         return self.__class__.__name__ + f'(crop_size={self.crop_size})'
+
+
+@PIPELINES.register_module()
+class RandomRotate(object):
+    """Rotate the image & seg.
+
+    Args:
+        prob (float): The rotation probability.
+        degree (float, tuple[float]): Range of degrees to select from. If
+            degree is a number instead of tuple like (min, max),
+            the range of degree will be (``-degree``, ``+degree``)
+        pad_val (float, optional): Padding value of image. Default: 0.
+        seg_pad_val (float, optional): Padding value of segmentation map.
+            Default: 255.
+        center (tuple[float], optional): Center point (w, h) of the rotation in
+            the source image. If not specified, the center of the image will be
+            used. Default: None.
+        auto_bound (bool): Whether to adjust the image size to cover the whole
+            rotated image. Default: False
+    """
+
+    def __init__(self,
+                 prob,
+                 degree,
+                 pad_val=0,
+                 seg_pad_val=255,
+                 center=None,
+                 auto_bound=False):
+        self.prob = prob
+        assert prob >= 0 and prob <= 1
+        if isinstance(degree, (float, int)):
+            assert degree > 0, f'degree {degree} should be positive'
+            self.degree = (-degree, degree)
+        else:
+            self.degree = degree
+        assert len(self.degree) == 2, f'degree {self.degree} should be a ' \
+                                      f'tuple of (min, max)'
+        self.pal_val = pad_val
+        self.seg_pad_val = seg_pad_val
+        self.center = center
+        self.auto_bound = auto_bound
+
+    def __call__(self, results):
+        """Call function to rotate image, semantic segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Rotated results.
+        """
+
+        rotate = True if np.random.rand() < self.prob else False
+        degree = np.random.uniform(min(*self.degree), max(*self.degree))
+        if rotate:
+            # rotate image
+            results['img'] = mmcv.imrotate(
+                results['img'],
+                angle=degree,
+                border_value=self.pal_val,
+                center=self.center,
+                auto_bound=self.auto_bound)
+
+            # rotate segs
+            for key in results.get('seg_fields', []):
+                results[key] = mmcv.imrotate(
+                    results[key],
+                    angle=degree,
+                    border_value=self.seg_pad_val,
+                    center=self.center,
+                    auto_bound=self.auto_bound,
+                    interpolation='nearest')
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, ' \
+                    f'degree={self.degree}, ' \
+                    f'pad_val={self.pal_val}, ' \
+                    f'seg_pad_val={self.seg_pad_val}, ' \
+                    f'center={self.center}, ' \
+                    f'auto_bound={self.auto_bound})'
+        return repr_str
+
+
+@PIPELINES.register_module()
+class RGB2Gray(object):
+    """Convert RGB image to grayscale image.
+
+    This transform calculate the weighted mean of input image channels with
+    ``weights`` and then expand the channels to ``out_channels``. When
+    ``out_channels`` is None, the number of output channels is the same as
+    input channels.
+
+    Args:
+        out_channels (int): Expected number of output channels after
+            transforming. Default: None.
+        weights (tuple[float]): The weights to calculate the weighted mean.
+            Default: (0.299, 0.587, 0.114).
+    """
+
+    def __init__(self, out_channels=None, weights=(0.299, 0.587, 0.114)):
+        assert out_channels is None or out_channels > 0
+        self.out_channels = out_channels
+        assert isinstance(weights, tuple)
+        for item in weights:
+            assert isinstance(item, (float, int))
+        self.weights = weights
+
+    def __call__(self, results):
+        """Call function to convert RGB image to grayscale image.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with grayscale image.
+        """
+        img = results['img']
+        assert len(img.shape) == 3
+        assert img.shape[2] == len(self.weights)
+        weights = np.array(self.weights).reshape((1, 1, -1))
+        img = (img * weights).sum(2, keepdims=True)
+        if self.out_channels is None:
+            img = img.repeat(weights.shape[2], axis=2)
+        else:
+            img = img.repeat(self.out_channels, axis=2)
+
+        results['img'] = img
+        results['img_shape'] = img.shape
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(out_channels={self.out_channels}, ' \
+                    f'weights={self.weights})'
+        return repr_str
+
+
+@PIPELINES.register_module()
+class AdjustGamma(object):
+    """Using gamma correction to process the image.
+
+    Args:
+        gamma (float or int): Gamma value used in gamma correction.
+            Default: 1.0.
+    """
+
+    def __init__(self, gamma=1.0):
+        assert isinstance(gamma, float) or isinstance(gamma, int)
+        assert gamma > 0
+        self.gamma = gamma
+        inv_gamma = 1.0 / gamma
+        self.table = np.array([(i / 255.0)**inv_gamma * 255
+                               for i in np.arange(0, 256)]).astype('uint8')
+
+    def __call__(self, results):
+        """Call function to process the image with gamma correction.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Processed results.
+        """
+
+        for i in range(results['img'].shape[2]):
+            results['img'][:, :, i] = cv2.LUT(
+                np.array(results['img'][:, :, i], dtype=np.uint8), self.table)
+
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__ + f'(gamma={self.gamma})' 
 
 
 @PIPELINES.register_module()

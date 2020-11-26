@@ -7,6 +7,7 @@ Welcome to MMSegmenation's documentation!
    install.md
    getting_started.md
    config.md
+   modelzoo_statistics.md
    model_zoo.md
 
 .. toctree::

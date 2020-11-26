@@ -115,7 +115,7 @@ The training and validation set of Pascal Context could be download from [here](
 
 To split the training and validation set from original dataset, you may download trainval_merged.json from [here](https://codalabuser.blob.core.windows.net/public/trainval_merged.json).
 
-If you would like to use Pascal Context dataset, please install [Detail](https://github.com/ccvl/detail-api) and then run the following command to convert annotations into proper format.
+If you would like to use Pascal Context dataset, please install [Detail](https://github.com/zhanghang1989/detail-api) and then run the following command to convert annotations into proper format.
 
 ```shell
 python tools/convert_datasets/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
@@ -252,7 +252,7 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
     ```shell
     ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
         checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-        4 --format-only --options "imgfile_prefix=./pspnet_test_results"
+        4 --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
     ```
 
     You will get png files under `./pspnet_test_results` directory.
