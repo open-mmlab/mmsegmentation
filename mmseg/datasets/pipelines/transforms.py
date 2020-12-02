@@ -651,6 +651,42 @@ class RGB2Gray(object):
 
 
 @PIPELINES.register_module()
+class AdjustGamma(object):
+    """Using gamma correction to process the image.
+
+    Args:
+        gamma (float or int): Gamma value used in gamma correction.
+            Default: 1.0.
+    """
+
+    def __init__(self, gamma=1.0):
+        assert isinstance(gamma, float) or isinstance(gamma, int)
+        assert gamma > 0
+        self.gamma = gamma
+        inv_gamma = 1.0 / gamma
+        self.table = np.array([(i / 255.0)**inv_gamma * 255
+                               for i in np.arange(256)]).astype('uint8')
+
+    def __call__(self, results):
+        """Call function to process the image with gamma correction.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Processed results.
+        """
+
+        results['img'] = mmcv.lut_transform(
+            np.array(results['img'], dtype=np.uint8), self.table)
+
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__ + f'(gamma={self.gamma})'
+
+
+@PIPELINES.register_module()
 class SegRescale(object):
     """Rescale semantic segmentation maps.
 
