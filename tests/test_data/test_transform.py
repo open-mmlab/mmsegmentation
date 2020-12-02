@@ -1,7 +1,6 @@
 import copy
 import os.path as osp
 
-import cv2
 import mmcv
 import numpy as np
 import pytest
@@ -441,11 +440,10 @@ def test_CLAHE():
 
     results = transform(results)
 
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     converted_img = np.empty(original_img.shape)
     for i in range(original_img.shape[2]):
-        converted_img[:, :, i] = clahe.apply(
-            np.array(original_img[:, :, i], dtype=np.uint8))
+        converted_img[:, :, i] = mmcv.clahe(
+            np.array(original_img[:, :, i], dtype=np.uint8), 2, (8, 8))
 
     assert np.allclose(results['img'], converted_img)
     assert str(transform) == f'CLAHE(clip_limit={2}, tile_grid_size={(8, 8)})'
