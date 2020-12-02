@@ -360,7 +360,8 @@ def test_adjust_gamma():
     inv_gamma = 1.0 / 1.2
     table = np.array([((i / 255.0)**inv_gamma) * 255
                       for i in np.arange(0, 256)]).astype('uint8')
-    converted_img = mmcv.lut_transform(np.array(original_img, dtype=np.uint8), table)
+    converted_img = mmcv.lut_transform(
+        np.array(original_img, dtype=np.uint8), table)
     assert np.allclose(results['img'], converted_img)
     assert str(transform) == f'AdjustGamma(gamma={1.2})'
 
