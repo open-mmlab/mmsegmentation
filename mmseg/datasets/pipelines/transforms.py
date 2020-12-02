@@ -472,7 +472,7 @@ class CLAHE(object):
         """
 
         for i in range(results['img'].shape[2]):
-            results['img'][:, :, i] = mmcv.clahe.apply(
+            results['img'][:, :, i] = mmcv.clahe(
                 np.array(results['img'][:, :, i], dtype=np.uint8))
 
         return results
