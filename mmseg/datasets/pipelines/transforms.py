@@ -665,7 +665,7 @@ class AdjustGamma(object):
         self.gamma = gamma
         inv_gamma = 1.0 / gamma
         self.table = np.array([(i / 255.0)**inv_gamma * 255
-                               for i in np.arange(0, 256)]).astype('uint8')
+                               for i in np.arange(256)]).astype('uint8')
 
     def __call__(self, results):
         """Call function to process the image with gamma correction.
