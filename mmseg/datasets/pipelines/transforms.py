@@ -1,6 +1,6 @@
 import mmcv
 import numpy as np
-from mmcv.utils import deprecated_api_warning
+from mmcv.utils import deprecated_api_warning, is_tuple_of
 from numpy import random
 
 from ..builder import PIPELINES
@@ -415,7 +415,6 @@ class Rerange(object):
 
         Args:
             results (dict): Result dict from loading pipeline.
-
         Returns:
             dict: Reranged results.
         """
@@ -436,6 +435,51 @@ class Rerange(object):
     def __repr__(self):
         repr_str = self.__class__.__name__
         repr_str += f'(min_value={self.min_value}, max_value={self.max_value})'
+        return repr_str
+
+
+@PIPELINES.register_module()
+class CLAHE(object):
+    """Use CLAHE method to process the image.
+
+    See `ZUIDERVELD,K. Contrast Limited Adaptive Histogram Equalization[J].
+    Graphics Gems, 1994:474-485.` for more information.
+
+    Args:
+        clip_limit (float): Threshold for contrast limiting. Default: 40.0.
+        tile_grid_size (tuple[int]): Size of grid for histogram equalization.
+            Input image will be divided into equally sized rectangular tiles.
+            It defines the number of tiles in row and column. Default: (8, 8).
+    """
+
+    def __init__(self, clip_limit=40.0, tile_grid_size=(8, 8)):
+        assert isinstance(clip_limit, (float, int))
+        self.clip_limit = clip_limit
+        assert is_tuple_of(tile_grid_size, int)
+        assert len(tile_grid_size) == 2
+        self.tile_grid_size = tile_grid_size
+
+    def __call__(self, results):
+        """Call function to Use CLAHE method process images.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Processed results.
+        """
+
+        for i in range(results['img'].shape[2]):
+            results['img'][:, :, i] = mmcv.clahe(
+                np.array(results['img'][:, :, i], dtype=np.uint8),
+                self.clip_limit, self.tile_grid_size)
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(clip_limit={self.clip_limit}, '\
+                    f'tile_grid_size={self.tile_grid_size})'
         return repr_str
 
 
