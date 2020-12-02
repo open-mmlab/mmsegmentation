@@ -1,6 +1,6 @@
 import mmcv
 import numpy as np
-from mmcv.utils import deprecated_api_warning
+from mmcv.utils import deprecated_api_warning, is_tuple_of
 from numpy import random
 
 from ..builder import PIPELINES
@@ -453,12 +453,10 @@ class CLAHE(object):
     """
 
     def __init__(self, clip_limit=40.0, tile_grid_size=(8, 8)):
-        assert isinstance(clip_limit, float) or isinstance(clip_limit, int)
+        assert isinstance(clip_limit, (float, int))
         self.clip_limit = clip_limit
-        assert isinstance(tile_grid_size, tuple)
+        assert is_tuple_of(tile_grid_size, int)
         assert len(tile_grid_size) == 2
-        for item in tile_grid_size:
-            assert isinstance(item, int)
         self.tile_grid_size = tile_grid_size
 
     def __call__(self, results):
@@ -473,7 +471,8 @@ class CLAHE(object):
 
         for i in range(results['img'].shape[2]):
             results['img'][:, :, i] = mmcv.clahe(
-                np.array(results['img'][:, :, i], dtype=np.uint8))
+                np.array(results['img'][:, :, i], dtype=np.uint8),
+                self.clip_limit, self.tile_grid_size)
 
         return results
 
