@@ -330,6 +330,42 @@ def test_rgb2gray():
     assert results['ori_shape'] == (h, w, c)
 
 
+def test_adjust_gamma():
+    # test assertion if gamma <= 0
+    with pytest.raises(AssertionError):
+        transform = dict(type='AdjustGamma', gamma=0)
+        build_from_cfg(transform, PIPELINES)
+
+    # test assertion if gamma is list
+    with pytest.raises(AssertionError):
+        transform = dict(type='AdjustGamma', gamma=[1.2])
+        build_from_cfg(transform, PIPELINES)
+
+    # test with gamma = 1.2
+    transform = dict(type='AdjustGamma', gamma=1.2)
+    transform = build_from_cfg(transform, PIPELINES)
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    original_img = copy.deepcopy(img)
+    results['img'] = img
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+
+    inv_gamma = 1.0 / 1.2
+    table = np.array([((i / 255.0)**inv_gamma) * 255
+                      for i in np.arange(0, 256)]).astype('uint8')
+    converted_img = mmcv.lut_transform(
+        np.array(original_img, dtype=np.uint8), table)
+    assert np.allclose(results['img'], converted_img)
+    assert str(transform) == f'AdjustGamma(gamma={1.2})'
+
+
 def test_rerange():
     # test assertion if min_value or max_value is illegal
     with pytest.raises(AssertionError):
