@@ -409,6 +409,46 @@ def test_rerange():
     assert str(transform) == f'Rerange(min_value={0}, max_value={255})'
 
 
+def test_CLAHE():
+    # test assertion if clip_limit is None
+    with pytest.raises(AssertionError):
+        transform = dict(type='CLAHE', clip_limit=None)
+        build_from_cfg(transform, PIPELINES)
+
+    # test assertion if tile_grid_size is illegal
+    with pytest.raises(AssertionError):
+        transform = dict(type='CLAHE', tile_grid_size=(8.0, 8.0))
+        build_from_cfg(transform, PIPELINES)
+
+    # test assertion if tile_grid_size is illegal
+    with pytest.raises(AssertionError):
+        transform = dict(type='CLAHE', tile_grid_size=(9, 9, 9))
+        build_from_cfg(transform, PIPELINES)
+
+    transform = dict(type='CLAHE', clip_limit=2)
+    transform = build_from_cfg(transform, PIPELINES)
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    original_img = copy.deepcopy(img)
+    results['img'] = img
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = transform(results)
+
+    converted_img = np.empty(original_img.shape)
+    for i in range(original_img.shape[2]):
+        converted_img[:, :, i] = mmcv.clahe(
+            np.array(original_img[:, :, i], dtype=np.uint8), 2, (8, 8))
+
+    assert np.allclose(results['img'], converted_img)
+    assert str(transform) == f'CLAHE(clip_limit={2}, tile_grid_size={(8, 8)})'
+
+
 def test_seg_rescale():
     results = dict()
     seg = np.array(
