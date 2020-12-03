@@ -14,11 +14,7 @@ from .voc import PascalVOCDataset
 __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
     'DATASETS', 'build_dataset', 'PIPELINES', 'CityscapesDataset',
-<<<<<<< HEAD
     'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
     'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset', 'STAREDataset',
     'A2D2Dataset'
-=======
-    'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset', 'A2D2Dataset'
->>>>>>> Fixed yapf errors
 ]
