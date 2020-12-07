@@ -254,12 +254,9 @@ def restructure_a2d2_directory(a2d2_path,
     mmcv.mkdir_or_exist(osp.join(a2d2_path, 'ann_dir', 'test'))
 
     # Lists containing all images and labels to symlinked
-    img_filepaths = sorted(
-        glob.glob(osp.join(a2d2_path, '*/camera/*/*.png')))
+    img_filepaths = sorted(glob.glob(osp.join(a2d2_path, '*/camera/*/*.png')))
     ann_filepaths = sorted(
-        glob.glob(
-            osp.join(a2d2_path,
-                     '*/label/*/*{}'.format(label_suffix))))
+        glob.glob(osp.join(a2d2_path, '*/label/*/*{}'.format(label_suffix))))
 
     # Split data according to given ratios
     total_samples = len(img_filepaths)
@@ -311,15 +308,18 @@ def parse_args():
         'a2d2_path',
         help='A2D2 segmentation data absolute path\
                            (NOT the symbolically linked one!)')
+    parser.add_argument('-o', '--out-dir', help='Output path')
     parser.add_argument(
-        '-o', '--out-dir', help='Output path')
-    parser.add_argument(
-        '--no-convert', dest='convert', action='store_false',
-        help='Convert label images')
+        '--no-convert',
+        dest='convert',
+        action='store_false',
+        help='Skips converting label images')
     parser.set_defaults(convert=True)
     parser.add_argument(
-        '--no-restruct', dest='restruct', action='store_false',
-        help='Restructure directory structure')
+        '--no-restruct',
+        dest='restruct',
+        action='store_false',
+        help='Skips restructuring directory structure')
     parser.set_defaults(restruct=True)
     parser.add_argument(
         '--choice', default='cityscapes', help='Label conversion type choice')
