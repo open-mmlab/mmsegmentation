@@ -255,11 +255,11 @@ def restructure_a2d2_directory(a2d2_path,
 
     # Lists containing all images and labels to symlinked
     img_filepaths = sorted(
-        glob.glob(osp.join(a2d2_path, '*/camera/cam_front_center/*.png')))
+        glob.glob(osp.join(a2d2_path, '*/camera/*/*.png')))
     ann_filepaths = sorted(
         glob.glob(
             osp.join(a2d2_path,
-                     '*/label/cam_front_center/*{}'.format(label_suffix))))
+                     '*/label/*/*{}'.format(label_suffix))))
 
     # Split data according to given ratios
     total_samples = len(img_filepaths)
@@ -311,8 +311,10 @@ def parse_args():
         'a2d2_path',
         help='A2D2 segmentation data absolute path\
                            (NOT the symbolically linked one!)')
-    parser.add_argument('-o', '--out-dir', help='Output path')
-    parser.add_argument('--convert', default=True, help='Convert label images')
+    parser.add_argument(
+        '-o', '--out-dir', help='Output path')
+    parser.add_argument(
+        '--convert', default=True, type=bool, help='Convert label images')
     parser.add_argument(
         '--restruct', default=True, help='Restructure directory structure')
     parser.add_argument(
