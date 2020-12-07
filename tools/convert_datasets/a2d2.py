@@ -314,9 +314,13 @@ def parse_args():
     parser.add_argument(
         '-o', '--out-dir', help='Output path')
     parser.add_argument(
-        '--convert', default=True, type=bool, help='Convert label images')
+        '--no-convert', dest='convert', action='store_false',
+        help='Convert label images')
+    parser.set_defaults(convert=True)
     parser.add_argument(
-        '--restruct', default=True, help='Restructure directory structure')
+        '--no-restruct', dest='restruct', action='store_false',
+        help='Restructure directory structure')
+    parser.set_defaults(restruct=True)
     parser.add_argument(
         '--choice', default='cityscapes', help='Label conversion type choice')
     parser.add_argument(
@@ -391,7 +395,7 @@ def main():
             raise ValueError
 
     # Restructure directory structure into 'img_dir' and 'ann_dir'
-    if args.restruct is True:
+    if args.restruct:
         restructure_a2d2_directory(out_dir, args.val, args.test, args.symlink)
 
 
