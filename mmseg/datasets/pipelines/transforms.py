@@ -18,7 +18,8 @@ class Resize(object):
     (multi-scale). There are 3 multiscale modes:
 
     - ``ratio_range is not None``: randomly sample a ratio from the ratio range
-    and multiply it with the image scale.
+    and multiply it with the image scale. When img_scale is None, img_scale is
+    the shape of image in results (img_scale = results['img'].shape[:2]).
 
     - ``ratio_range is None and multiscale_mode == "range"``: randomly sample a
     scale from the a range.
@@ -50,7 +51,7 @@ class Resize(object):
 
         if ratio_range is not None:
             # mode 1: given a scale and a range of image ratio
-            assert len(self.img_scale) == 1
+            assert len(self.img_scale) == 1 or self.img_scale is None
         else:
             # mode 2: given multiple scales or a range of scales
             assert multiscale_mode in ['value', 'range']
