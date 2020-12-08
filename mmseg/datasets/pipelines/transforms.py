@@ -150,8 +150,12 @@ class Resize(object):
         """
 
         if self.ratio_range is not None:
-            scale, scale_idx = self.random_sample_ratio(
-                self.img_scale[0], self.ratio_range)
+            if self.img_scale is None:
+                scale, scale_idx = self.random_sample_ratio(
+                    results['img'].shape[:2], self.ratio_range)
+            else:
+                scale, scale_idx = self.random_sample_ratio(
+                    self.img_scale[0], self.ratio_range)
         elif len(self.img_scale) == 1:
             scale, scale_idx = self.img_scale[0], 0
         elif self.multiscale_mode == 'range':
