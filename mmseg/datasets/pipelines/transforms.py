@@ -51,7 +51,7 @@ class Resize(object):
 
         if ratio_range is not None:
             # mode 1: given a scale and a range of image ratio
-            assert len(self.img_scale) == 1 or self.img_scale is None
+            assert self.img_scale is None or len(self.img_scale) == 1
         else:
             # mode 2: given multiple scales or a range of scales
             assert multiscale_mode in ['value', 'range']
