@@ -65,8 +65,9 @@ class MultiScaleFlipAug(object):
             # mode 1: given img_scale=None and a range of image ratio
             self.img_scale = None
             assert mmcv.is_list_of(img_ratios, float)
-        elif isinstance(img_scale, tuple) and len(img_scale) == 2:
-            assert mmcv.is_list_of(img_ratios, float)
+        elif isinstance(img_scale,
+                        tuple) and len(img_scale) == 2 and mmcv.is_list_of(
+                            img_ratios, float):
             # mode 2: given a scale and a range of image ratio
             self.img_scale = [(int(img_scale[0] * ratio),
                                int(img_scale[1] * ratio))
