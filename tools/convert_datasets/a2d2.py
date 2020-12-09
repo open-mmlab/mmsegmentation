@@ -1,6 +1,7 @@
 import argparse
 import glob
 import os.path as osp
+import random
 from os import symlink
 from shutil import copyfile
 
@@ -257,6 +258,11 @@ def restructure_a2d2_directory(a2d2_path,
     img_filepaths = sorted(glob.glob(osp.join(a2d2_path, '*/camera/*/*.png')))
     ann_filepaths = sorted(
         glob.glob(osp.join(a2d2_path, '*/label/*/*{}'.format(label_suffix))))
+
+    # Randomize order of (image, label) pairs
+    pairs = list(zip(img_filepaths, ann_filepaths))
+    random.shuffle(pairs)
+    img_filepaths, ann_filepaths = zip(*pairs)
 
     # Split data according to given ratios
     total_samples = len(img_filepaths)
