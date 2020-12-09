@@ -14,18 +14,21 @@ class Resize(object):
     contains the key "scale", then the scale in the input dict is used,
     otherwise the specified scale in the init method is used.
 
-    ``img_scale`` can either be a tuple (single-scale) or a list of tuple
-    (multi-scale). There are 3 multiscale modes:
+    ``img_scale`` can be Nong, a tuple (single-scale) or a list of tuple
+    (multi-scale). There are 4 multiscale modes:
 
-    - ``ratio_range is not None``: randomly sample a ratio from the ratio range
-    and multiply it with the image scale. When img_scale is None, img_scale is
-    the shape of image in results (img_scale = results['img'].shape[:2]).
+    - ``ratio_range is not None``:
+    1. When img_scale is None, img_scale is the shape of image in results
+        (img_scale = results['img'].shape[:2]) and the image is resized based
+        on the original size. (mode 1)
+    2. When img_scale is a tuple (single-scale), randomly sample a ratio from
+        the ratio range and multiply it with the image scale. (mode 2)
 
     - ``ratio_range is None and multiscale_mode == "range"``: randomly sample a
-    scale from the a range.
+    scale from the a range. (mode 3)
 
     - ``ratio_range is None and multiscale_mode == "value"``: randomly sample a
-    scale from multiple scales.
+    scale from multiple scales. (mode 4)
 
     Args:
         img_scale (tuple or list[tuple]): Images scales for resizing.
@@ -50,10 +53,11 @@ class Resize(object):
             assert mmcv.is_list_of(self.img_scale, tuple)
 
         if ratio_range is not None:
-            # mode 1: given a scale and a range of image ratio
+            # mode 1: given img_scale=None and a range of image ratio
+            # mode 2: given a scale and a range of image ratio
             assert self.img_scale is None or len(self.img_scale) == 1
         else:
-            # mode 2: given multiple scales or a range of scales
+            # mode 3 and 4: given multiple scales or a range of scales
             assert multiscale_mode in ['value', 'range']
 
         self.multiscale_mode = multiscale_mode
