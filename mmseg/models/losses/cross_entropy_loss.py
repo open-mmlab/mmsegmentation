@@ -35,14 +35,14 @@ def cross_entropy(pred,
 def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
     """Expand onehot labels to match the size of prediction."""
     bin_labels = labels.new_zeros(target_shape)
-    valid_mask = (labels >= 0) & (labels != ignore_index)
+    valid_mask = (labels > 0) & (labels != ignore_index)
     inds = torch.nonzero(valid_mask, as_tuple=True)
 
     if inds[0].numel() > 0:
         if labels.dim() == 3:
-            bin_labels[inds[0], labels[valid_mask], inds[1], inds[2]] = 1
+            bin_labels[inds[0], labels[valid_mask] - 1, inds[1], inds[2]] = 1
         else:
-            bin_labels[inds[0], labels[valid_mask]] = 1
+            bin_labels[inds[0], labels[valid_mask] - 1] = 1
 
     valid_mask = valid_mask.unsqueeze(1).expand(target_shape).float()
     if label_weights is None:
@@ -64,8 +64,10 @@ def binary_cross_entropy(pred,
     """Calculate the binary CrossEntropy loss.
 
     Args:
-        pred (torch.Tensor): The prediction with shape (N, 1).
-        label (torch.Tensor): The learning label of the prediction.
+        pred (torch.Tensor): The prediction with shape (N, num_fg_classes) or
+            (b, num_fg_classes, h, w).
+        label (torch.Tensor): The learning label of the prediction with shape
+            (N, ) or (b, h, w).
         weight (torch.Tensor, optional): Sample-wise loss weight.
         reduction (str, optional): The method used to reduce the loss.
             Options are "none", "mean" and "sum".
