@@ -17,8 +17,8 @@ class ACM(nn.Module):
         fusion (bool): Add one conv to fuse residual feature.
         in_channels (int): Input channels.
         channels (int): Channels after modules, before conv_seg.
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
+        conv_cfg (dict | None): Config of conv layers.
+        norm_cfg (dict | None): Config of norm layers.
         act_cfg (dict): Config of activation layers.
     """
 
@@ -89,7 +89,7 @@ class ACM(nn.Module):
         # [batch_size, h * w, pool_scale * pool_scale]
         affinity_matrix = self.gla(x + resize(
             self.global_info(F.adaptive_avg_pool2d(x, 1)), size=x.shape[2:])
-                                   ).permute(0, 2, 3, 1).contiguous().view(
+                                   ).permute(0, 2, 3, 1).reshape(
                                        batch_size, -1, self.pool_scale**2)
         affinity_matrix = F.sigmoid(affinity_matrix)
         # [batch_size, h * w, channels]
@@ -126,9 +126,9 @@ class APCHead(BaseDecodeHead):
         assert isinstance(pool_scales, (list, tuple))
         self.pool_scales = pool_scales
         self.fusion = fusion
-        self.acm_modules = []
+        acm_modules = []
         for pool_scale in self.pool_scales:
-            self.acm_modules.append(
+            acm_modules.append(
                 ACM(pool_scale,
                     self.fusion,
                     self.in_channels,
@@ -136,7 +136,7 @@ class APCHead(BaseDecodeHead):
                     conv_cfg=self.conv_cfg,
                     norm_cfg=self.norm_cfg,
                     act_cfg=self.act_cfg))
-        self.acm_modules = nn.ModuleList(self.acm_modules)
+        self.acm_modules = nn.ModuleList(acm_modules)
         self.bottleneck = ConvModule(
             self.in_channels + len(pool_scales) * self.channels,
             self.channels,
