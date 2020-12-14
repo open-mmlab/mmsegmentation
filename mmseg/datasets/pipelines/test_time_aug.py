@@ -103,12 +103,13 @@ class MultiScaleFlipAug(object):
 
         aug_data = []
         if self.img_scale is None and mmcv.is_list_of(self.img_ratios, float):
-            img_scale = results['img'].shape[:2]
-            self.img_scale = [(int(img_scale[0] * ratio),
-                               int(img_scale[1] * ratio))
-                              for ratio in self.img_ratios]
+            h, w = results['img'].shape[:2]
+            img_scale = [(int(h * ratio), int(w * ratio))
+                         for ratio in self.img_ratios]
+        else:
+            img_scale = self.img_scale
         flip_aug = [False, True] if self.flip else [False]
-        for scale in self.img_scale:
+        for scale in img_scale:
             for flip in flip_aug:
                 for direction in self.flip_direction:
                     _results = results.copy()
