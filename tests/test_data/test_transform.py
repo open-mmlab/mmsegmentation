@@ -38,6 +38,7 @@ def test_resize():
     resize_module = build_from_cfg(transform, PIPELINES)
 
     results = dict()
+    # (288, 512, 3)
     img = mmcv.imread(
         osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
     results['img'] = img
@@ -91,6 +92,15 @@ def test_resize():
     resize_module = build_from_cfg(transform, PIPELINES)
     resized_results = resize_module(results.copy())
     assert max(resized_results['img_shape'][:2]) <= 1333 * 1.1
+
+    # test img_scale=None and ratio_range is tuple.
+    # img shape: (288, 512, 3)
+    transform = dict(
+        type='Resize', img_scale=None, ratio_range=(0.5, 2.0), keep_ratio=True)
+    resize_module = build_from_cfg(transform, PIPELINES)
+    resized_results = resize_module(results.copy())
+    assert int(288 * 0.5) <= resized_results['img_shape'][0] <= 288 * 2.0
+    assert int(512 * 0.5) <= resized_results['img_shape'][1] <= 512 * 2.0
 
 
 def test_flip():
