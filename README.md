@@ -64,6 +64,7 @@ Supported backbones:
 Supported methods:
 
 - [x] [FCN](configs/fcn)
+- [x] [APCNet](configs/apcnet)
 - [x] [PSPNet](configs/pspnet)
 - [x] [DeepLabV3](configs/deeplabv3)
 - [x] [PSANet](configs/psanet)
