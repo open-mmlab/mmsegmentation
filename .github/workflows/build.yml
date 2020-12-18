@@ -47,9 +47,6 @@ jobs:
             torchvision: 0.7.0
             python-version: 3.7
             device: cu101
-          - torch: 1.6.0
-            torchvision: 0.7.0
-            python-version: 3.8
 
     steps:
       - uses: actions/checkout@v2
