@@ -31,10 +31,6 @@
 
 Please refer to [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) for details.
 
-### APCNet
-
-Please refer to [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) for details.
-
 ### PSPNet
 
 Please refer to [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) for details.
@@ -70,6 +66,10 @@ Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master
 ### DANet
 
 Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) for details.
+
+### APCNet
+
+Please refer to [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) for details.
 
 ### HRNet
 
