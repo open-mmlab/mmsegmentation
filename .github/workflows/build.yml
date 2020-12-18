@@ -76,7 +76,7 @@ jobs:
         run: pip install torch==${{matrix.torch}}+${{matrix.device}} torchvision==${{matrix.torchvision}}+${{matrix.device}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
-          pip install mmcv-full==${{matrix.mmcv}}+torch${{matrix.torch}}+${{matrix.device}} -f https://download.openmmlab.com/mmcv/dist/index.html
+          pip install mmcv-full==${{matrix.mmcv}} -f https://download.openmmlab.com/mmcv/dist/${{matrix.device}}/torch${{matrix.torch}}/index.html
           pip install -r requirements.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
@@ -87,7 +87,7 @@ jobs:
           coverage report -m
       # Only upload coverage report for python3.7 && pytorch1.5
       - name: Upload coverage to Codecov
-        if: ${{matrix.torch == '1.5.0' && matrix.device == 'cu101' && matrix.python-version == '3.7'}}
+        if: ${{matrix.torch == '1.6.0' && matrix.device == 'cu101' && matrix.python-version == '3.7'}}
         uses: codecov/codecov-action@v1.0.10
         with:
           file: ./coverage.xml
