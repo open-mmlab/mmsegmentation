@@ -29,6 +29,7 @@ jobs:
       UBUNTU_VERSION: ubuntu1804
       FORCE_CUDA: 1
       MMCV_CUDA_ARGS: -gencode=arch=compute_61,code=sm_61
+      CUDA_HOME: /usr/local/cuda
     runs-on: ubuntu-latest
     strategy:
       matrix:
