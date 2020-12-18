@@ -67,6 +67,10 @@ Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master
 
 Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) for details.
 
+### APCNet
+
+Please refer to [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) for details.
+
 ### HRNet
 
 Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet) for details.

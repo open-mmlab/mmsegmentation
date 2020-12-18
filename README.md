@@ -73,6 +73,7 @@ Supported methods:
 - [x] [EncNet](configs/encnet)
 - [x] [CCNet](configs/ccnet)
 - [x] [DANet](configs/danet)
+- [x] [APCNet](configs/apcnet)
 - [x] [GCNet](configs/gcnet)
 - [x] [ANN](configs/ann)
 - [x] [OCRNet](configs/ocrnet)
