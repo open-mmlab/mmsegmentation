@@ -55,6 +55,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Upgrade pip
+        run: |
+          pip install pip --upgrade
+          pip install wheel
       - name: Install CUDA
         if: ${{matrix.device == 'cu101'}}
         run: |
