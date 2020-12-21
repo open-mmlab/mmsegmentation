@@ -75,6 +75,7 @@ Supported methods:
 - [x] [DANet](configs/danet)
 - [x] [APCNet](configs/apcnet)
 - [x] [GCNet](configs/gcnet)
+- [x] [DMNet](configs/dmnet)
 - [x] [ANN](configs/ann)
 - [x] [OCRNet](configs/ocrnet)
 - [x] [Fast-SCNN](configs/fastscnn)
