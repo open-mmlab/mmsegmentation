@@ -16,8 +16,9 @@ Welcome to MMSegmenation's documentation!
 .. toctree::
    :maxdepth: 1
    :caption: Model Zoo
-   modelzoo_statistics.md
+
    model_zoo.md
+   modelzoo_statistics.md
 
 .. toctree::
    :maxdepth: 2
