@@ -96,9 +96,9 @@ Note:
 5. Some dependencies are optional. Simply running `pip install -e .` will only install the minimum runtime requirements.
    To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
 
-## A from-scratch setup script
+### A from-scratch setup script
 
-### Linux
+#### Linux
 
 Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is $DATA_ROOT).
 
@@ -116,7 +116,7 @@ mkdir data
 ln -s $DATA_ROOT data
 ```
 
-### Windows(Experimental)
+#### Windows(Experimental)
 
 Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is
 %DATA_ROOT%. Notice: It must be an absolute path).
@@ -136,7 +136,7 @@ pip install -e .  # or "python setup.py develop"
 mklink /D data %DATA_ROOT%
 ```
 
-### Developing with multiple MMSegmentation versions
+#### Developing with multiple MMSegmentation versions
 
 The train and test scripts already modify the `PYTHONPATH` to ensure the script use the MMSegmentation in the current directory.
 
