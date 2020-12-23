@@ -36,7 +36,7 @@ def generate_labels(img_id, detail, out_dir):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Convert PASCAL VOC annotations to mmdetection format')
+        description='Convert PASCAL VOC annotations to mmsegmentation format')
     parser.add_argument('devkit_path', help='pascal voc devkit path')
     parser.add_argument('json_path', help='annoation json filepath')
     parser.add_argument('-o', '--out_dir', help='output path')
