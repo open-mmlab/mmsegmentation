@@ -1,4 +1,4 @@
-# 3. Adding New Modules
+# Tutorial 4: Customize Models
 
 ## Customize optimizer
 
