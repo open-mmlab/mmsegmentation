@@ -11,8 +11,8 @@ class DCM(nn.Module):
     """Dynamic Convolutional Module used in DMNet.
 
     Args:
-        pool_scale (int): The filter size of generated convolution kernel used
-            in Dynamic Convolutional Module.
+        filter_size (int): The filter size of generated convolution kernel
+            used in Dynamic Convolutional Module.
         fusion (bool): Add one conv to fuse DCM output feature.
         in_channels (int): Input channels.
         channels (int): Channels after modules, before conv_seg.
@@ -43,8 +43,9 @@ class DCM(nn.Module):
             act_cfg=self.act_cfg)
 
         if self.norm_cfg is not None:
-            self.norm_name, self.norm = build_norm_layer(
-                self.norm_cfg, self.channels)
+            self.norm = build_norm_layer(self.norm_cfg, self.channels)[1]
+        else:
+            self.norm = None
         self.activate = build_activation_layer(self.act_cfg)
 
         if self.fusion:
@@ -77,10 +78,9 @@ class DCM(nn.Module):
         output = F.conv2d(input=x, weight=generted_filter, groups=b * c)
         # [b, c, h, w]
         output = output.view(b, c, h, w)
-        if self.norm_cfg is not None:
-            output = self.activate(self.norm(output))
-        else:
-            output = self.activate(output)
+        if self.norm is not None:
+            output = self.norm(output)
+        output = self.activate(output)
 
         if self.fusion:
             output = self.fusion_conv(output)
