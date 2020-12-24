@@ -79,6 +79,10 @@ Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master
 
 Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/gcnet) for details.
 
+### DMNet
+
+Please refer to [DMNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dmnet) for details.
+
 ### ANN
 
 Please refer to [ANN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ann) for details.
