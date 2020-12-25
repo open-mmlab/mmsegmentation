@@ -14,6 +14,9 @@ from ..utils import InvertedResidualV3 as InvertedResidual
 class MobileNetV3(nn.Module):
     """MobileNetV3 backbone.
 
+    This backbone is the improved implementation of `Searching for MobileNetV3
+    <https://ieeexplore.ieee.org/document/9008835>`_.
+
     Args:
         arch (str): Architechture of mobilnetv3, from {'small', 'large'}.
             Default: 'small'.
