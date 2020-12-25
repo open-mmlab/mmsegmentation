@@ -19,7 +19,8 @@ class SELayer(nn.Module):
             by this dict. If act_cfg is a sequence of dicts, the first
             activation layer will be configurated by the first dict and the
             second activation layer will be configurated by the second dict.
-            Default: (dict(type='ReLU'), dict(type='Sigmoid'))
+            Default: (dict(type='ReLU'), dict(type='HSigmoid', bias=3.0,
+            divisor=6.0)).
     """
 
     def __init__(self,

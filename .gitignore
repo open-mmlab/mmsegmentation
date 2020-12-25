@@ -112,6 +112,8 @@ data
 *.pkl.json
 *.log.json
 work_dirs/
+old_work_dirs/
+configs/mobilenet_v3_test/
 
 # Pytorch
 *.pth

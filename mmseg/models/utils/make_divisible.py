@@ -1,8 +1,10 @@
 def make_divisible(value, divisor, min_value=None, min_ratio=0.9):
     """Make divisible function.
 
-    This function rounds the channel number down to the nearest value that can
-    be divisible by the divisor.
+    This function rounds the channel number to the nearest value that can be
+    divisible by the divisor. It is taken from the original tf repo. It ensures
+    that all layers have a channel number that is divisible by divisor. It can
+    be seen here: https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet/mobilenet.py  # noqa
 
     Args:
         value (int): The original channel number.

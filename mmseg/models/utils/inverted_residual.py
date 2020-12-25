@@ -167,11 +167,10 @@ class InvertedResidualV3(nn.Module):
                 type='Conv2dAdaptivePadding') if stride == 2 else conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
-        # act_cfg=None if self.with_expand_conv else act_cfg)
+
         if self.with_se:
             self.se = SELayer(**se_cfg)
-        # if self.with_expand_conv:
-        #     self.activate = build_activation_layer(act_cfg)
+
         self.linear_conv = ConvModule(
             in_channels=mid_channels,
             out_channels=out_channels,
@@ -194,9 +193,6 @@ class InvertedResidualV3(nn.Module):
 
             if self.with_se:
                 out = self.se(out)
-
-            # if self.with_expand_conv:
-            #     out = self.activate(out)
 
             out = self.linear_conv(out)
 

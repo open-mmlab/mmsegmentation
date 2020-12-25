@@ -17,6 +17,7 @@ model = dict(
         num_classes=19,
         norm_cfg=norm_cfg,
         act_cfg=dict(type='ReLU'),
+        align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)))
 # model training and testing settings

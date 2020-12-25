@@ -235,10 +235,7 @@ class MobileNetV3(nn.Module):
         return outs
 
     def _freeze_stages(self):
-        if self.frozen_stages >= 0:
-            for param in self.conv1.parameters():
-                param.requires_grad = False
-        for i in range(1, self.frozen_stages + 1):
+        for i in range(self.frozen_stages + 1):
             layer = getattr(self, f'layer{i}')
             layer.eval()
             for param in layer.parameters():

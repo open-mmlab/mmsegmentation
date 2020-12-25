@@ -69,15 +69,12 @@ class LRASPPHead(BaseDecodeHead):
         """Forward function."""
         inputs = self._transform_inputs(inputs)
 
-        # import pdb
-        # pdb.set_trace()
-
         x = inputs[-1]
         x = self.aspp_conv(x) * resize(
             self.image_pool(x),
             size=x.size()[2:],
             mode='bilinear',
-            align_corners=True)
+            align_corners=self.align_corners)
         x = self.conv_up_input(x)
 
         for i in range(len(self.branch_channels) - 1, -1, -1):
@@ -85,7 +82,7 @@ class LRASPPHead(BaseDecodeHead):
                 x,
                 size=inputs[i].size()[2:],
                 mode='bilinear',
-                align_corners=False)
+                align_corners=self.align_corners)
             x = torch.cat([x, self.convs[i](inputs[i])], 1)
             x = self.conv_ups[i](x)
 

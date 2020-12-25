@@ -10,8 +10,8 @@ from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
                                        DepthwiseSeparableASPPHead,
                                        DepthwiseSeparableFCNHead, DNLHead,
                                        EMAHead, EncHead, FCNHead, GCHead,
-                                       NLHead, OCRHead, PointHead, PSAHead,
-                                       PSPHead, UPerHead)
+                                       LRASPPHead, NLHead, OCRHead, PointHead,
+                                       PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -663,3 +663,34 @@ def test_point_head():
         subdivision_steps=2, subdivision_num_points=8196, scale_factor=2)
     output = point_head.forward_test(inputs, prev_output, None, test_cfg)
     assert output.shape == (1, point_head.num_classes, 180, 180)
+
+
+def test_lraspp_head():
+    with pytest.raises(ValueError):
+        # check invalid input_transform
+        LRASPPHead(input_transform='resize_concat')
+
+    with pytest.raises(AssertionError):
+        # check invalid branch_channels
+        LRASPPHead(branch_channels=64)
+
+    # test with default settings
+    lraspp_head = LRASPPHead(
+        in_channels=(16, 16, 576),
+        in_index=(0, 1, 2),
+        channels=128,
+        input_transform='multiple_select',
+        dropout_ratio=0.1,
+        num_classes=19,
+        norm_cfg=dict(type='BN'),
+        act_cfg=dict(type='ReLU'),
+        align_corners=False,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
+    inputs = [
+        torch.randn(2, 16, 45, 45),
+        torch.randn(2, 16, 28, 28),
+        torch.randn(2, 16, 14, 14)
+    ]
+    output = lraspp_head(inputs)
+    assert output.shape == (2, 19, 45, 45)
