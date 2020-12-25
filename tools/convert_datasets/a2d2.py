@@ -336,7 +336,11 @@ def parse_args():
     parser.add_argument(
         '--nproc', default=1, type=int, help='Number of process')
     parser.add_argument(
-        '--symlink', default=True, help='Use symbolic links insted of copies')
+        '--no-symlink',
+        dest="symlink",
+        action='store_false',
+        help='Use hard links instead of symbolic links')
+    parser.set_defaults(symlink=True)
     args = parser.parse_args()
     return args
 
