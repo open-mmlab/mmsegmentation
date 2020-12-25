@@ -3,6 +3,8 @@ model = dict(
     pretrained='torchvision://resnet18',
     backbone=dict(type='ResNet', depth=18),
     decode_head=dict(
+        c1_in_channels=64,
+        c1_channels=12,
         in_channels=512,
         channels=128,
     ),
