@@ -1,6 +1,7 @@
 import logging
 
 import torch.nn as nn
+import mmcv
 from mmcv.cnn import ConvModule, constant_init, kaiming_init
 from mmcv.runner import load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
