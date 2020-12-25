@@ -819,7 +819,7 @@ def test_lraspp_head():
     inputs = [
         torch.randn(2, 16, 45, 45),
         torch.randn(2, 16, 28, 28),
-        torch.randn(2, 16, 14, 14)
+        torch.randn(2, 576, 14, 14)
     ]
     output = lraspp_head(inputs)
     assert output.shape == (2, 19, 45, 45)
