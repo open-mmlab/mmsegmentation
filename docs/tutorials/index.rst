@@ -1,7 +1,9 @@
 .. toctree::
    :maxdepth: 2
 
-   new_dataset.md
+   config.md
+   customize_datasets.md
    data_pipeline.md
-   new_modules.md
+   customize_models.md
    training_tricks.md
+   customize_runtime.md

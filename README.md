@@ -46,7 +46,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.7.0 was released in 07/10/2020.
+v0.9.0 was released in 30/11/2020.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -74,7 +74,9 @@ Supported methods:
 - [x] [EncNet](configs/encnet)
 - [x] [CCNet](configs/ccnet)
 - [x] [DANet](configs/danet)
+- [x] [APCNet](configs/apcnet)
 - [x] [GCNet](configs/gcnet)
+- [x] [DMNet](configs/dmnet)
 - [x] [ANN](configs/ann)
 - [x] [OCRNet](configs/ocrnet)
 - [x] [Fast-SCNN](configs/fastscnn)

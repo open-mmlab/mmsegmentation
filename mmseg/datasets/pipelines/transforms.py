@@ -1,6 +1,6 @@
 import mmcv
 import numpy as np
-from mmcv.utils import deprecated_api_warning
+from mmcv.utils import deprecated_api_warning, is_tuple_of
 from numpy import random
 
 from ..builder import PIPELINES
@@ -14,17 +14,21 @@ class Resize(object):
     contains the key "scale", then the scale in the input dict is used,
     otherwise the specified scale in the init method is used.
 
-    ``img_scale`` can either be a tuple (single-scale) or a list of tuple
-    (multi-scale). There are 3 multiscale modes:
+    ``img_scale`` can be Nong, a tuple (single-scale) or a list of tuple
+    (multi-scale). There are 4 multiscale modes:
 
-    - ``ratio_range is not None``: randomly sample a ratio from the ratio range
-    and multiply it with the image scale.
+    - ``ratio_range is not None``:
+    1. When img_scale is None, img_scale is the shape of image in results
+        (img_scale = results['img'].shape[:2]) and the image is resized based
+        on the original size. (mode 1)
+    2. When img_scale is a tuple (single-scale), randomly sample a ratio from
+        the ratio range and multiply it with the image scale. (mode 2)
 
     - ``ratio_range is None and multiscale_mode == "range"``: randomly sample a
-    scale from the a range.
+    scale from the a range. (mode 3)
 
     - ``ratio_range is None and multiscale_mode == "value"``: randomly sample a
-    scale from multiple scales.
+    scale from multiple scales. (mode 4)
 
     Args:
         img_scale (tuple or list[tuple]): Images scales for resizing.
@@ -49,10 +53,11 @@ class Resize(object):
             assert mmcv.is_list_of(self.img_scale, tuple)
 
         if ratio_range is not None:
-            # mode 1: given a scale and a range of image ratio
-            assert len(self.img_scale) == 1
+            # mode 1: given img_scale=None and a range of image ratio
+            # mode 2: given a scale and a range of image ratio
+            assert self.img_scale is None or len(self.img_scale) == 1
         else:
-            # mode 2: given multiple scales or a range of scales
+            # mode 3 and 4: given multiple scales or a range of scales
             assert multiscale_mode in ['value', 'range']
 
         self.multiscale_mode = multiscale_mode
@@ -150,8 +155,12 @@ class Resize(object):
         """
 
         if self.ratio_range is not None:
-            scale, scale_idx = self.random_sample_ratio(
-                self.img_scale[0], self.ratio_range)
+            if self.img_scale is None:
+                scale, scale_idx = self.random_sample_ratio(
+                    results['img'].shape[:2], self.ratio_range)
+            else:
+                scale, scale_idx = self.random_sample_ratio(
+                    self.img_scale[0], self.ratio_range)
         elif len(self.img_scale) == 1:
             scale, scale_idx = self.img_scale[0], 0
         elif self.multiscale_mode == 'range':
@@ -415,7 +424,6 @@ class Rerange(object):
 
         Args:
             results (dict): Result dict from loading pipeline.
-
         Returns:
             dict: Reranged results.
         """
@@ -436,6 +444,51 @@ class Rerange(object):
     def __repr__(self):
         repr_str = self.__class__.__name__
         repr_str += f'(min_value={self.min_value}, max_value={self.max_value})'
+        return repr_str
+
+
+@PIPELINES.register_module()
+class CLAHE(object):
+    """Use CLAHE method to process the image.
+
+    See `ZUIDERVELD,K. Contrast Limited Adaptive Histogram Equalization[J].
+    Graphics Gems, 1994:474-485.` for more information.
+
+    Args:
+        clip_limit (float): Threshold for contrast limiting. Default: 40.0.
+        tile_grid_size (tuple[int]): Size of grid for histogram equalization.
+            Input image will be divided into equally sized rectangular tiles.
+            It defines the number of tiles in row and column. Default: (8, 8).
+    """
+
+    def __init__(self, clip_limit=40.0, tile_grid_size=(8, 8)):
+        assert isinstance(clip_limit, (float, int))
+        self.clip_limit = clip_limit
+        assert is_tuple_of(tile_grid_size, int)
+        assert len(tile_grid_size) == 2
+        self.tile_grid_size = tile_grid_size
+
+    def __call__(self, results):
+        """Call function to Use CLAHE method process images.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Processed results.
+        """
+
+        for i in range(results['img'].shape[2]):
+            results['img'][:, :, i] = mmcv.clahe(
+                np.array(results['img'][:, :, i], dtype=np.uint8),
+                self.clip_limit, self.tile_grid_size)
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(clip_limit={self.clip_limit}, '\
+                    f'tile_grid_size={self.tile_grid_size})'
         return repr_str
 
 
@@ -648,6 +701,42 @@ class RGB2Gray(object):
         repr_str += f'(out_channels={self.out_channels}, ' \
                     f'weights={self.weights})'
         return repr_str
+
+
+@PIPELINES.register_module()
+class AdjustGamma(object):
+    """Using gamma correction to process the image.
+
+    Args:
+        gamma (float or int): Gamma value used in gamma correction.
+            Default: 1.0.
+    """
+
+    def __init__(self, gamma=1.0):
+        assert isinstance(gamma, float) or isinstance(gamma, int)
+        assert gamma > 0
+        self.gamma = gamma
+        inv_gamma = 1.0 / gamma
+        self.table = np.array([(i / 255.0)**inv_gamma * 255
+                               for i in np.arange(256)]).astype('uint8')
+
+    def __call__(self, results):
+        """Call function to process the image with gamma correction.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Processed results.
+        """
+
+        results['img'] = mmcv.lut_transform(
+            np.array(results['img'], dtype=np.uint8), self.table)
+
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__ + f'(gamma={self.gamma})'
 
 
 @PIPELINES.register_module()

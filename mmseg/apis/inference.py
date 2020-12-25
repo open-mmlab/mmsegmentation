@@ -89,7 +89,7 @@ def inference_segmentor(model, img):
         # scatter to specified GPU
         data = scatter(data, [device])[0]
     else:
-        data['img_metas'] = data['img_metas'][0].data
+        data['img_metas'] = [i.data[0] for i in data['img_metas']]
 
     # forward the model
     with torch.no_grad():
