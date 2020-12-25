@@ -821,5 +821,14 @@ def test_lraspp_head():
         torch.randn(2, 16, 28, 28),
         torch.randn(2, 576, 14, 14)
     ]
+    with pytest.raises(AssertionError):
+        # check invalid inputs
+        output = lraspp_head(inputs)
+
+    inputs = [
+        torch.randn(2, 16, 111, 111),
+        torch.randn(2, 16, 77, 77),
+        torch.randn(2, 576, 55, 55)
+    ]
     output = lraspp_head(inputs)
-    assert output.shape == (2, 19, 45, 45)
+    assert output.shape == (2, 19, 111, 111)
