@@ -6,12 +6,12 @@ from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
 from mmcv.utils import ConfigDict
 from mmcv.utils.parrots_wrapper import SyncBatchNorm
 
-from mmseg.models.decode_heads import (ANNHead, ASPPHead, CCHead, DAHead,
-                                       DepthwiseSeparableASPPHead,
-                                       DepthwiseSeparableFCNHead, DNLHead,
-                                       EMAHead, EncHead, FCNHead, GCHead,
-                                       NLHead, OCRHead, PointHead, PSAHead,
-                                       PSPHead, UPerHead)
+from mmseg.models.decode_heads import (ANNHead, APCHead, ASPPHead, CCHead,
+                                       DAHead, DepthwiseSeparableASPPHead,
+                                       DepthwiseSeparableFCNHead, DMHead,
+                                       DNLHead, EMAHead, EncHead, FCNHead,
+                                       GCHead, NLHead, OCRHead, PointHead,
+                                       PSAHead, PSPHead, UPerHead)
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
@@ -219,6 +219,112 @@ def test_psp_head():
     assert head.psp_modules[0][0].output_size == 1
     assert head.psp_modules[1][0].output_size == 2
     assert head.psp_modules[2][0].output_size == 3
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_apc_head():
+
+    with pytest.raises(AssertionError):
+        # pool_scales must be list|tuple
+        APCHead(in_channels=32, channels=16, num_classes=19, pool_scales=1)
+
+    # test no norm_cfg
+    head = APCHead(in_channels=32, channels=16, num_classes=19)
+    assert not _conv_has_norm(head, sync_bn=False)
+
+    # test with norm_cfg
+    head = APCHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        norm_cfg=dict(type='SyncBN'))
+    assert _conv_has_norm(head, sync_bn=True)
+
+    # fusion=True
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head = APCHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        pool_scales=(1, 2, 3),
+        fusion=True)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    assert head.fusion is True
+    assert head.acm_modules[0].pool_scale == 1
+    assert head.acm_modules[1].pool_scale == 2
+    assert head.acm_modules[2].pool_scale == 3
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # fusion=False
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head = APCHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        pool_scales=(1, 2, 3),
+        fusion=False)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    assert head.fusion is False
+    assert head.acm_modules[0].pool_scale == 1
+    assert head.acm_modules[1].pool_scale == 2
+    assert head.acm_modules[2].pool_scale == 3
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_dm_head():
+
+    with pytest.raises(AssertionError):
+        # filter_sizes must be list|tuple
+        DMHead(in_channels=32, channels=16, num_classes=19, filter_sizes=1)
+
+    # test no norm_cfg
+    head = DMHead(in_channels=32, channels=16, num_classes=19)
+    assert not _conv_has_norm(head, sync_bn=False)
+
+    # test with norm_cfg
+    head = DMHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        norm_cfg=dict(type='SyncBN'))
+    assert _conv_has_norm(head, sync_bn=True)
+
+    # fusion=True
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head = DMHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        filter_sizes=(1, 3, 5),
+        fusion=True)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    assert head.fusion is True
+    assert head.dcm_modules[0].filter_size == 1
+    assert head.dcm_modules[1].filter_size == 3
+    assert head.dcm_modules[2].filter_size == 5
+    outputs = head(inputs)
+    assert outputs.shape == (1, head.num_classes, 45, 45)
+
+    # fusion=False
+    inputs = [torch.randn(1, 32, 45, 45)]
+    head = DMHead(
+        in_channels=32,
+        channels=16,
+        num_classes=19,
+        filter_sizes=(1, 3, 5),
+        fusion=False)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    assert head.fusion is False
+    assert head.dcm_modules[0].filter_size == 1
+    assert head.dcm_modules[1].filter_size == 3
+    assert head.dcm_modules[2].filter_size == 5
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
 

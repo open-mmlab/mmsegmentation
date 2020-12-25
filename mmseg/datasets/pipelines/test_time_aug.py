@@ -41,7 +41,7 @@ class MultiScaleFlipAug(object):
 
     Args:
         transforms (list[dict]): Transforms to apply in each augmentation.
-        img_scale (tuple | list[tuple]): Images scales for resizing.
+        img_scale (None | tuple | list[tuple]): Images scales for resizing.
         img_ratios (float | list[float]): Image ratios for resizing
         flip (bool): Whether apply flip augmentation. Default: False.
         flip_direction (str | list[str]): Flip augmentation directions,
@@ -58,20 +58,27 @@ class MultiScaleFlipAug(object):
                  flip_direction='horizontal'):
         self.transforms = Compose(transforms)
         if img_ratios is not None:
-            # mode 1: given a scale and a range of image ratio
             img_ratios = img_ratios if isinstance(img_ratios,
                                                   list) else [img_ratios]
             assert mmcv.is_list_of(img_ratios, float)
-            assert isinstance(img_scale, tuple) and len(img_scale) == 2
+        if img_scale is None:
+            # mode 1: given img_scale=None and a range of image ratio
+            self.img_scale = None
+            assert mmcv.is_list_of(img_ratios, float)
+        elif isinstance(img_scale, tuple) and mmcv.is_list_of(
+                img_ratios, float):
+            assert len(img_scale) == 2
+            # mode 2: given a scale and a range of image ratio
             self.img_scale = [(int(img_scale[0] * ratio),
                                int(img_scale[1] * ratio))
                               for ratio in img_ratios]
         else:
-            # mode 2: given multiple scales
+            # mode 3: given multiple scales
             self.img_scale = img_scale if isinstance(img_scale,
                                                      list) else [img_scale]
-        assert mmcv.is_list_of(self.img_scale, tuple)
+        assert mmcv.is_list_of(self.img_scale, tuple) or self.img_scale is None
         self.flip = flip
+        self.img_ratios = img_ratios
         self.flip_direction = flip_direction if isinstance(
             flip_direction, list) else [flip_direction]
         assert mmcv.is_list_of(self.flip_direction, str)
@@ -95,8 +102,14 @@ class MultiScaleFlipAug(object):
         """
 
         aug_data = []
+        if self.img_scale is None and mmcv.is_list_of(self.img_ratios, float):
+            h, w = results['img'].shape[:2]
+            img_scale = [(int(h * ratio), int(w * ratio))
+                         for ratio in self.img_ratios]
+        else:
+            img_scale = self.img_scale
         flip_aug = [False, True] if self.flip else [False]
-        for scale in self.img_scale:
+        for scale in img_scale:
             for flip in flip_aug:
                 for direction in self.flip_direction:
                     _results = results.copy()

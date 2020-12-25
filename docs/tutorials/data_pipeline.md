@@ -1,4 +1,4 @@
-# 2. Custom Data Pipelines
+# Tutorial 3: Customize Data Pipelines
 
 ## Design of Data pipelines
 
