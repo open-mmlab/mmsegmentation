@@ -15,14 +15,14 @@ class MobileNetV3(nn.Module):
     """MobileNetV3 backbone.
 
     Args:
-        arch (str): Architechture of mobilnetv3, from {small, large}.
-            Default: small.
+        arch (str): Architechture of mobilnetv3, from {'small', 'large'}.
+            Default: 'small'.
         conv_cfg (dict): Config dict for convolution layer.
             Default: None, which means using conv2d.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='BN').
-        out_indices (None or Sequence[int]): Output from which stages.
-            Default: (10, ), which means output tensors from final stage.
+        out_indices (tuple[int]): Output from which layer.
+            Default: (0, 1, 12).
         frozen_stages (int): Stages to be frozen (all param fixed).
             Defualt: -1, which means not freezing any parameters.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
@@ -75,6 +75,7 @@ class MobileNetV3(nn.Module):
         super(MobileNetV3, self).__init__()
         assert arch in self.arch_settings
         assert isinstance(reduction_factor, int) and reduction_factor > 0
+        assert mmcv.is_tuple_of(out_indices, int)
         for index in out_indices:
             if index not in range(0, len(self.arch_settings[arch]) + 2):
                 raise ValueError(
