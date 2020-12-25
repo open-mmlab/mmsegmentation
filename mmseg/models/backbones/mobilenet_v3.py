@@ -1,7 +1,7 @@
 import logging
 
-import torch.nn as nn
 import mmcv
+import torch.nn as nn
 from mmcv.cnn import ConvModule, constant_init, kaiming_init
 from mmcv.cnn.bricks import Conv2dAdaptivePadding
 from mmcv.runner import load_checkpoint
