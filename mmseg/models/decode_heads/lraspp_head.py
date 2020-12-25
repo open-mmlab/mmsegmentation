@@ -12,7 +12,7 @@ from .decode_head import BaseDecodeHead
 class LRASPPHead(BaseDecodeHead):
     """Lite R-ASPP (LRASPP) head is proposed in Searching for MobileNetV3.
 
-    This head is the improved implementation of `MobileNetV3
+    This head is the improved implementation of `Searching for MobileNetV3
     <https://ieeexplore.ieee.org/document/9008835>`_.
 
     Args:

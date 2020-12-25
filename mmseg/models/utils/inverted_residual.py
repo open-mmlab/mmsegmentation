@@ -25,7 +25,7 @@ class InvertedResidual(nn.Module):
             memory while slowing down the training speed. Default: False.
 
     Returns:
-        Tensor: The output tensor
+        Tensor: The output tensor.
     """
 
     def __init__(self,
@@ -107,8 +107,7 @@ class InvertedResidualV3(nn.Module):
         se_cfg (dict): Config dict for se layer. Defaul: None, which means no
             se layer.
         with_expand_conv (bool): Use expand conv or not. If set False,
-            mid_channels must be the same with in_channels.
-            Default: True.
+            mid_channels must be the same with in_channels. Default: True.
         conv_cfg (dict): Config dict for convolution layer. Default: None,
             which means using conv2d.
         norm_cfg (dict): Config dict for normalization layer.

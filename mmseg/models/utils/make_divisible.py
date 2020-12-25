@@ -9,12 +9,13 @@ def make_divisible(value, divisor, min_value=None, min_ratio=0.9):
     Args:
         value (int): The original channel number.
         divisor (int): The divisor to fully divide the channel number.
-        min_value (int, optional): The minimum value of the output channel.
+        min_value (int): The minimum value of the output channel.
             Default: None, means that the minimum value equal to the divisor.
-        min_ratio (float, optional): The minimum ratio of the rounded channel
-            number to the original channel number. Default: 0.9.
+        min_ratio (float): The minimum ratio of the rounded channel number to
+            the original channel number. Default: 0.9.
+
     Returns:
-        int: The modified output channel number
+        int: The modified output channel number.
     """
 
     if min_value is None:

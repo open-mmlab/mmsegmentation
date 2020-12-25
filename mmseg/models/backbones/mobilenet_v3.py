@@ -154,7 +154,7 @@ class MobileNetV3(nn.Module):
             self.add_module(layer_name, layer)
             layers.append(layer_name)
 
-        # build the final layer
+        # build the last layer
         # block5 layer12 os=32 for small model
         # block6 layer16 os=32 for large model
         layer = ConvModule(
