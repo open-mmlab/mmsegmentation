@@ -345,7 +345,7 @@ def main():
     """Program for making Audi's A2D2 dataset compatible with mmsegmentation.
 
     NOTE: The input argument path must be the ABSOLUTE PATH to the dataset
-          - NOT the symbolically linked one (i.e. data/a2d2)!
+          - NOT the symbolically linked one (i.e. data/a2d2)
 
     Segmentation label conversion:
         The A2D2 labels are instance segmentations (i.e. car_1, car_2, ...),
