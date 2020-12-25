@@ -775,6 +775,7 @@ def test_lraspp_head():
     with pytest.raises(ValueError):
         # check invalid input_transform
         LRASPPHead(
+            in_channels=(16, 16, 576),
             in_index=(0, 1, 2),
             channels=128,
             input_transform='resize_concat',
@@ -789,6 +790,7 @@ def test_lraspp_head():
     with pytest.raises(AssertionError):
         # check invalid branch_channels
         LRASPPHead(
+            in_channels=(16, 16, 576),
             in_index=(0, 1, 2),
             channels=128,
             branch_channels=64,
