@@ -70,7 +70,7 @@ class LRASPPHead(BaseDecodeHead):
         inputs = self._transform_inputs(inputs)
 
         x = inputs[-1]
-        assert x.size(2) >= 49 and x.size(3) >= 49
+
         x = self.aspp_conv(x) * resize(
             self.image_pool(x),
             size=x.size()[2:],
