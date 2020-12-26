@@ -7,5 +7,3 @@ _base_ = [
 data = dict(samples_per_gpu=4, workers_per_gpu=4)
 
 runner = dict(type='IterBasedRunner', max_iters=320000)
-
-cudnn_benchmark = False
