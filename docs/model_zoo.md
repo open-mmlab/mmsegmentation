@@ -111,6 +111,10 @@ Please refer to [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/ma
 
 Please refer to [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v2) for details.
 
+### MobileNetV3
+
+Please refer to [MobileNetV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v3) for details.
+
 ### EMANet
 
 Please refer to [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet) for details.

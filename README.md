@@ -60,6 +60,7 @@ Supported backbones:
 - [x] [HRNet](configs/hrnet/README.md)
 - [x] [ResNeSt](configs/resnest/README.md)
 - [x] [MobileNetV2](configs/mobilenet_v2/README.md)
+- [x] [MobileNetV3](configs/mobilenet_v3/README.md)
 
 Supported methods:
 
