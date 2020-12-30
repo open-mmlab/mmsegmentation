@@ -112,7 +112,7 @@ SEG_COLOR_DICT_CITYSCAPES = {
     (150, 0, 150): 0,  # RD restricted area --> Road
     (204, 255, 153): 255,  # Animals --> Dynamic (void)
     (238, 162, 173): 4,  # Grid structure --> Fence
-    (33, 44, 177): 6, # Signal corpus --> Traffic light
+    (33, 44, 177): 6,  # Signal corpus --> Traffic light
     (180, 50, 180): 0,  # Drivable cobblestone --> Road
     (255, 70, 185): 255,  # Electronic traffic --> Static (void)
     (238, 233, 191): 0,  # Slow drive area --> Road
@@ -120,7 +120,7 @@ SEG_COLOR_DICT_CITYSCAPES = {
     (150, 150, 200): 0,  # Parking area --> Road
     (180, 150, 200): 1,  # Sidewalk --> Sidewalk
     (72, 209, 204): 255,  # Ego car --> Static (void)
-    (200, 125, 210): 0, # Painted driv. instr. --> Road
+    (200, 125, 210): 0,  # Painted driv. instr. --> Road
     (159, 121, 238): 4,  # Traffic guide obj. --> Fence
     (128, 0, 255): 0,  # Dashed line --> Road
     (255, 0, 255): 0,  # RD normal street --> Road
