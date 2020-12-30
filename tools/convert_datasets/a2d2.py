@@ -87,47 +87,47 @@ SEG_COLOR_DICT_CITYSCAPES = {
     (255, 128, 0): 14,  # Truck 1 --> Truck
     (200, 128, 0): 14,  # Truck 2 --> Truck
     (150, 128, 0): 14,  # Truck 3 --> Truck
-    (0, 0, 100): 14,  # Tractor --> Truck ?
-    (0, 255, 0): 17,  # Small vehicles 1 --> Motorcycle ?
-    (0, 200, 0): 17,  # Small vehicles 2 --> Motorcycle ?
-    (0, 150, 0): 17,  # Small vehicles 3 --> Motorcycle ?
+    (0, 0, 100): 255,  # Tractor --> Dynamic (void)
+    (0, 255, 0): 17,  # Small vehicles 1 --> Motorcycle
+    (0, 200, 0): 17,  # Small vehicles 2 --> Motorcycle
+    (0, 150, 0): 17,  # Small vehicles 3 --> Motorcycle
     (0, 128, 255): 6,  # Traffic signal 1 --> Traffic light
     (30, 28, 158): 6,  # Traffic signal 2 --> Traffic light
     (60, 28, 100): 6,  # Traffic signal 3 --> Traffic light
     (0, 255, 255): 7,  # Traffic sign 1 --> Traffic sign
     (30, 220, 220): 7,  # Traffic sign 2 --> Traffic sign
     (60, 157, 199): 7,  # Traffic sign 3 --> Traffic sign
-    (255, 255, 0): 13,  # Utility vehicle 1 --> Car ?
-    (255, 255, 200): 13,  # Utility vehicle 2 --> Car ?
-    (233, 100, 0): 4,  # Sidebars --> Fence
+    (255, 255, 0): 255,  # Utility vehicle 1 --> Dynamic (void)
+    (255, 255, 200): 255,  # Utility vehicle 2 --> Dynamic (void)
+    (233, 100, 0): 5,  # Sidebars --> Poles
     (110, 110, 0): 0,  # Speed bumper --> Road
     (128, 128, 0): 1,  # Curbstone --> Sidewalk
     (255, 193, 37): 0,  # Solid line --> Road
-    (64, 0, 64): 255,  # Irrelevant signs --> Ignore
+    (64, 0, 64): 255,  # Irrelevant signs --> Static (void)
     (185, 122, 87): 4,  # Road blocks --> Fence
-    (139, 99, 108): 0,  # Non-drivable street --> Road
+    (139, 99, 108): 255,  # Non-drivable street --> Ground (void)
     (210, 50, 115): 0,  # Zebra crossing --> Road
-    (255, 0, 128): 255,  # Obstacles / trash --> Ignore ?
+    (255, 0, 128): 255,  # Obstacles / trash --> Dynamic (void)
     (255, 246, 143): 5,  # Poles --> Poles
-    (150, 0, 150): 0,  # RD restricted area --> Road ?
-    (204, 255, 153): 255,  # Animals --> Ignore ?
-    (238, 162, 173): 0,  # Grid structure --> Road ???
-    (33, 44, 177): 6,  # Signal corpus --> Traffic light ?
+    (150, 0, 150): 0,  # RD restricted area --> Road
+    (204, 255, 153): 255,  # Animals --> Dynamic (void)
+    (238, 162, 173): 4,  # Grid structure --> Fence
+    (33, 44, 177): 6, # Signal corpus --> Traffic light
     (180, 50, 180): 0,  # Drivable cobblestone --> Road
-    (255, 70, 185): 255,  # Electronic traffic --> Ignore ???
+    (255, 70, 185): 255,  # Electronic traffic --> Static (void)
     (238, 233, 191): 0,  # Slow drive area --> Road
     (147, 253, 194): 8,  # Nature object --> Vegetation
     (150, 150, 200): 0,  # Parking area --> Road
     (180, 150, 200): 1,  # Sidewalk --> Sidewalk
-    (72, 209, 204): 255,  # Ego car --> Ignore
-    (200, 125, 210): 0,  # Painted driv. instr. --> Road ???
-    (159, 121, 238): 0,  # Traffic guide obj. --> Road ???
+    (72, 209, 204): 255,  # Ego car --> Static (void)
+    (200, 125, 210): 0, # Painted driv. instr. --> Road
+    (159, 121, 238): 4,  # Traffic guide obj. --> Fence
     (128, 0, 255): 0,  # Dashed line --> Road
     (255, 0, 255): 0,  # RD normal street --> Road
     (135, 206, 255): 10,  # Sky --> Sky
     (241, 230, 255): 2,  # Buildings --> Building
-    (96, 69, 143): 255,  # Blurred area --> Ignore ?
-    (53, 46, 82): 255,  # Rain dirt --> Ignore ?
+    (96, 69, 143): 255,  # Blurred area --> Static (void)
+    (53, 46, 82): 255,  # Rain dirt --> Dynamic (void)
 }
 
 
