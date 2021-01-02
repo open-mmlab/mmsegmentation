@@ -1,5 +1,29 @@
 ## Changelog
 
+### V0.10 (01/01/2021)
+
+**Highlights**
+
+- Support MobileNetV3, DMNet, APCNet. Add models of ResNet18V1b, ResNet18V1c, ResNet50V1b.
+
+**Bug Fixes**
+
+- Fixed CPU TTA ([#276](https://github.com/open-mmlab/mmsegmentation/pull/276))
+- Fixed CI for pip 20.3 ([#307](https://github.com/open-mmlab/mmsegmentation/pull/307))
+
+**New Features**
+
+- Add ResNet18V1b, ResNet18V1c, ResNet50V1b OS16 models ([#316](https://github.com/open-mmlab/mmsegmentation/pull/316))
+- Support MobileNetV3 ([#268](https://github.com/open-mmlab/mmsegmentation/pull/268))
+- Add 4 retinal vessel segmentation benchmark  ([#315](https://github.com/open-mmlab/mmsegmentation/pull/315))
+- Support DMNet ([#313](https://github.com/open-mmlab/mmsegmentation/pull/313))
+- Support APCNet ([#299](https://github.com/open-mmlab/mmsegmentation/pull/299))
+
+**Improvements**
+
+- Refactor Documentation page ([#311](https://github.com/open-mmlab/mmsegmentation/pull/311))
+- Support resize data augmentation according to original image size ([#291](https://github.com/open-mmlab/mmsegmentation/pull/291))
+
 ### V0.9 (30/11/2020)
 
 **Highlights**
