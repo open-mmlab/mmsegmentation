@@ -13,7 +13,7 @@
 
 **New Features**
 
-- Add ResNet18V1b, ResNet18V1c, ResNet50V1b OS16 models ([#316](https://github.com/open-mmlab/mmsegmentation/pull/316))
+- Add ResNet18V1b, ResNet18V1c, ResNet50V1b, ResNet101V1b models ([#316](https://github.com/open-mmlab/mmsegmentation/pull/316))
 - Support MobileNetV3 ([#268](https://github.com/open-mmlab/mmsegmentation/pull/268))
 - Add 4 retinal vessel segmentation benchmark  ([#315](https://github.com/open-mmlab/mmsegmentation/pull/315))
 - Support DMNet ([#313](https://github.com/open-mmlab/mmsegmentation/pull/313))
