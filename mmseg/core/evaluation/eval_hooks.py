@@ -12,13 +12,19 @@ class EvalHook(Hook):
         interval (int): Evaluation interval (by epochs). Default: 1.
     """
 
-    def __init__(self, dataloader, interval=1, by_epoch=False, **eval_kwargs):
+    def __init__(self,
+                 dataloader,
+                 interval=1,
+                 by_epoch=False,
+                 save_np=False,
+                 **eval_kwargs):
         if not isinstance(dataloader, DataLoader):
             raise TypeError('dataloader must be a pytorch DataLoader, but got '
                             f'{type(dataloader)}')
         self.dataloader = dataloader
         self.interval = interval
         self.by_epoch = by_epoch
+        self.save_np = save_np
         self.eval_kwargs = eval_kwargs
 
     def after_train_iter(self, runner):
@@ -27,7 +33,8 @@ class EvalHook(Hook):
             return
         from mmseg.apis import single_gpu_test
         runner.log_buffer.clear()
-        results = single_gpu_test(runner.model, self.dataloader, show=False)
+        results = single_gpu_test(
+            runner.model, self.dataloader, show=False, save_np=self.save_np)
         self.evaluate(runner, results)
 
     def after_train_epoch(self, runner):
@@ -36,7 +43,8 @@ class EvalHook(Hook):
             return
         from mmseg.apis import single_gpu_test
         runner.log_buffer.clear()
-        results = single_gpu_test(runner.model, self.dataloader, show=False)
+        results = single_gpu_test(
+            runner.model, self.dataloader, show=False, save_np=self.save_np)
         self.evaluate(runner, results)
 
     def evaluate(self, runner, results):
@@ -65,6 +73,7 @@ class DistEvalHook(EvalHook):
                  interval=1,
                  gpu_collect=False,
                  by_epoch=False,
+                 save_np=False,
                  **eval_kwargs):
         if not isinstance(dataloader, DataLoader):
             raise TypeError(
@@ -74,6 +83,7 @@ class DistEvalHook(EvalHook):
         self.interval = interval
         self.gpu_collect = gpu_collect
         self.by_epoch = by_epoch
+        self.save_np = save_np
         self.eval_kwargs = eval_kwargs
 
     def after_train_iter(self, runner):
@@ -86,7 +96,8 @@ class DistEvalHook(EvalHook):
             runner.model,
             self.dataloader,
             tmpdir=osp.join(runner.work_dir, '.eval_hook'),
-            gpu_collect=self.gpu_collect)
+            gpu_collect=self.gpu_collect,
+            save_np=self.save_np)
         if runner.rank == 0:
             print('\n')
             self.evaluate(runner, results)
@@ -101,7 +112,8 @@ class DistEvalHook(EvalHook):
             runner.model,
             self.dataloader,
             tmpdir=osp.join(runner.work_dir, '.eval_hook'),
-            gpu_collect=self.gpu_collect)
+            gpu_collect=self.gpu_collect,
+            save_np=self.save_np)
         if runner.rank == 0:
             print('\n')
             self.evaluate(runner, results)

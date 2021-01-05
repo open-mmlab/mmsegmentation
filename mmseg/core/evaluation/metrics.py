@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 
 
@@ -18,6 +20,11 @@ def intersect_and_union(pred_label, label, num_classes, ignore_index):
          ndarray: The prediction histogram on all classes.
          ndarray: The ground truth histogram on all classes.
     """
+
+    if isinstance(pred_label, str):
+        pred_label_ = pred_label
+        pred_label = np.load(pred_label)
+        os.remove(pred_label_)
 
     mask = (label != ignore_index)
     pred_label = pred_label[mask]

@@ -4,21 +4,28 @@ import shutil
 import tempfile
 
 import mmcv
+import numpy as np
 import torch
 import torch.distributed as dist
 from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
 
 
-def single_gpu_test(model, data_loader, show=False, out_dir=None):
+def single_gpu_test(model,
+                    data_loader,
+                    show=False,
+                    out_dir=None,
+                    save_np=False):
     """Test with single GPU.
 
     Args:
         model (nn.Module): Model to be tested.
-        data_loader (nn.Dataloader): Pytorch data loader.
+        data_loader (utils.data.Dataloader): Pytorch data loader.
         show (bool): Whether show results during infernece. Default: False.
-        out_dir (str, optional): If specified, the results will be dumped
-        into the directory to save output results.
+        out_dir (str, optional): If specified, the results will be dumped into
+            the directory to save output results.
+        save_np (bool): Whether save the results as local numpy files to save
+            CUDA memory during evaluation. Default: False.
 
     Returns:
         list: The prediction results.
@@ -31,10 +38,6 @@ def single_gpu_test(model, data_loader, show=False, out_dir=None):
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, **data)
-        if isinstance(result, list):
-            results.extend(result)
-        else:
-            results.append(result)
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -61,13 +64,35 @@ def single_gpu_test(model, data_loader, show=False, out_dir=None):
                     show=show,
                     out_file=out_file)
 
+        if isinstance(result, list):
+            if save_np:
+                tmp_result = []
+                for item in result:
+                    temp_file_name = tempfile.NamedTemporaryFile(
+                        suffix='.npy', delete=False).name
+                    np.save(temp_file_name, item)
+                    tmp_result.append(temp_file_name)
+                result = tmp_result
+            results.extend(result)
+        else:
+            if save_np:
+                temp_file_name = tempfile.NamedTemporaryFile(
+                    suffix='.npy', delete=False).name
+                np.save(temp_file_name, result)
+                result = temp_file_name
+            results.append(result)
+
         batch_size = data['img'][0].size(0)
         for _ in range(batch_size):
             prog_bar.update()
     return results
 
 
-def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
+def multi_gpu_test(model,
+                   data_loader,
+                   tmpdir=None,
+                   gpu_collect=False,
+                   save_np=False):
     """Test model with multiple gpus.
 
     This method tests model with multiple gpus and collects the results
@@ -78,10 +103,12 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
 
     Args:
         model (nn.Module): Model to be tested.
-        data_loader (nn.Dataloader): Pytorch data loader.
+        data_loader (utils.data.Dataloader): Pytorch data loader.
         tmpdir (str): Path of directory to save the temporary results from
             different gpus under cpu mode.
         gpu_collect (bool): Option to use either gpu or cpu to collect results.
+        save_np (bool): Whether save the results as local numpy files to save
+            CUDA memory during evaluation. Default: False.
 
     Returns:
         list: The prediction results.
@@ -97,8 +124,21 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
         if isinstance(result, list):
+            if save_np:
+                tmp_result = []
+                for item in result:
+                    temp_file_name = tempfile.NamedTemporaryFile(
+                        suffix='.npy', delete=False).name
+                    np.save(temp_file_name, item)
+                    tmp_result.append(temp_file_name)
+                result = tmp_result
             results.extend(result)
         else:
+            if save_np:
+                temp_file_name = tempfile.NamedTemporaryFile(
+                    suffix='.npy', delete=False).name
+                np.save(temp_file_name, result)
+                result = temp_file_name
             results.append(result)
 
         if rank == 0:
