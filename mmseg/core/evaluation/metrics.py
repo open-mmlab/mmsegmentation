@@ -1,7 +1,9 @@
+import mmcv
 import numpy as np
 
 
-def intersect_and_union(pred_label, label, num_classes, ignore_index):
+def intersect_and_union(pred_label, label, label_map, reduce_zero_label,
+                        num_classes, ignore_index):
     """Calculate intersection and Union.
 
     Args:
@@ -19,6 +21,21 @@ def intersect_and_union(pred_label, label, num_classes, ignore_index):
          ndarray: The ground truth histogram on all classes.
     """
 
+    if isinstance(pred_label, str):
+        pred_label = np.load(pred_label)
+
+    if isinstance(label, str):
+        label = mmcv.imread(label, flag='unchanged', backend='pillow')
+        # modify if custom classes
+        if label_map is not None:
+            for old_id, new_id in label_map.items():
+                label[label == old_id] = new_id
+        if reduce_zero_label:
+            # avoid using underflow conversion
+            label[label == 0] = 255
+            label = label - 1
+            label[label == 254] = 255
+
     mask = (label != ignore_index)
     pred_label = pred_label[mask]
     label = label[mask]
@@ -34,7 +51,8 @@ def intersect_and_union(pred_label, label, num_classes, ignore_index):
     return area_intersect, area_union, area_pred_label, area_label
 
 
-def total_intersect_and_union(results, gt_seg_maps, num_classes, ignore_index):
+def total_intersect_and_union(results, gt_seg_maps, label_map,
+                              reduce_zero_label, num_classes, ignore_index):
     """Calculate Total Intersection and Union.
 
     Args:
@@ -60,8 +78,8 @@ def total_intersect_and_union(results, gt_seg_maps, num_classes, ignore_index):
     total_area_label = np.zeros((num_classes, ), dtype=np.float)
     for i in range(num_imgs):
         area_intersect, area_union, area_pred_label, area_label = \
-            intersect_and_union(results[i], gt_seg_maps[i], num_classes,
-                                ignore_index=ignore_index)
+            intersect_and_union(results[i], gt_seg_maps[i], label_map,
+                                reduce_zero_label, num_classes, ignore_index)
         total_area_intersect += area_intersect
         total_area_union += area_union
         total_area_pred_label += area_pred_label
@@ -70,7 +88,13 @@ def total_intersect_and_union(results, gt_seg_maps, num_classes, ignore_index):
         total_area_pred_label, total_area_label
 
 
-def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
+def mean_iou(results,
+             gt_seg_maps,
+             label_map,
+             reduce_zero_label,
+             num_classes,
+             ignore_index,
+             nan_to_num=None):
     """Calculate Mean Intersection and Union (mIoU)
 
     Args:
@@ -99,6 +123,8 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
 
 def mean_dice(results,
               gt_seg_maps,
+              label_map,
+              reduce_zero_label,
               num_classes,
               ignore_index,
               nan_to_num=None):
@@ -130,6 +156,8 @@ def mean_dice(results,
 
 def eval_metrics(results,
                  gt_seg_maps,
+                 label_map,
+                 reduce_zero_label,
                  num_classes,
                  ignore_index,
                  metrics=['mIoU'],
@@ -156,8 +184,9 @@ def eval_metrics(results,
         raise KeyError('metrics {} is not supported'.format(metrics))
     total_area_intersect, total_area_union, total_area_pred_label, \
         total_area_label = total_intersect_and_union(results, gt_seg_maps,
-                                                     num_classes,
-                                                     ignore_index=ignore_index)
+                                                     label_map,
+                                                     reduce_zero_label,
+                                                     num_classes, ignore_index)
     all_acc = total_area_intersect.sum() / total_area_label.sum()
     acc = total_area_intersect / total_area_label
     ret_metrics = [all_acc, acc]
