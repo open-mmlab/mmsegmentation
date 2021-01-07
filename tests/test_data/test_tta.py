@@ -108,7 +108,7 @@ def test_multi_scale_flip_aug():
     )
     tta_module = build_from_cfg(tta_transform, PIPELINES)
     tta_results = tta_module(results.copy())
-    assert tta_results['scale'] == [(144, 256), (288, 512), (576, 1024)]
+    assert tta_results['scale'] == [(256, 144), (512, 288), (1024, 576)]
     assert tta_results['flip'] == [False, False, False]
 
     tta_transform = dict(
@@ -120,8 +120,8 @@ def test_multi_scale_flip_aug():
     )
     tta_module = build_from_cfg(tta_transform, PIPELINES)
     tta_results = tta_module(results.copy())
-    assert tta_results['scale'] == [(144, 256), (144, 256), (288, 512),
-                                    (288, 512), (576, 1024), (576, 1024)]
+    assert tta_results['scale'] == [(256, 144), (256, 144), (512, 288),
+                                    (512, 288), (1024, 576), (1024, 576)]
     assert tta_results['flip'] == [False, True, False, True, False, True]
 
     tta_transform = dict(
