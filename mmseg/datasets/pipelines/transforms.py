@@ -157,7 +157,7 @@ class Resize(object):
         if self.ratio_range is not None:
             if self.img_scale is None:
                 scale, scale_idx = self.random_sample_ratio(
-                    results['img'].shape[:2], self.ratio_range)
+                    results['img'].shape[:2:-1], self.ratio_range)
             else:
                 scale, scale_idx = self.random_sample_ratio(
                     self.img_scale[0], self.ratio_range)
