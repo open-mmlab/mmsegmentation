@@ -4,6 +4,7 @@ import os.path as osp
 import re
 
 url_prefix = 'https://github.com/open-mmlab/mmsegmentation/blob/master/'
+titles_to_be_excluded = ['Mixed Precision Training']
 
 files = sorted(glob.glob('../configs/*/README.md'))
 
@@ -18,10 +19,16 @@ for f in files:
         content = content_file.read()
 
     title = content.split('\n')[0].replace('#', '')
-    titles.append(title)
+    if title.strip() in titles_to_be_excluded:
+        continue
+
     ckpts = set(x.lower().strip()
                 for x in re.findall(r'https?://download.*\.pth', content)
                 if 'mmsegmentation' in x)
+    if len(ckpts) == 0:
+        continue
+
+    titles.append(title)
     num_ckpts += len(ckpts)
     statsmsg = f"""
 \t* [{title}]({url}) ({len(ckpts)} ckpts)
@@ -33,7 +40,7 @@ msglist = '\n'.join(x for _, _, x in stats)
 modelzoo = f"""
 # Model Zoo Statistics
 
-* Number of papers: {len(titles)}
+* Number of papers: {len(set(titles))}
 * Number of checkpoints: {num_ckpts}
 {msglist}
 """
