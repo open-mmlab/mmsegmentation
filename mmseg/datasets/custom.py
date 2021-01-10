@@ -1,3 +1,4 @@
+import os
 import os.path as osp
 from functools import reduce
 
@@ -226,25 +227,17 @@ class CustomDataset(Dataset):
         """Place holder to format result to dataset specific output."""
         pass
 
-    def get_gt_seg_maps(self):
+    def get_gt_seg_maps(self, efficient_test=False):
         """Get ground truth segmentation maps for evaluation."""
         gt_seg_maps = []
         for img_info in self.img_infos:
             seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
-            gt_seg_map = mmcv.imread(
-                seg_map, flag='unchanged', backend='pillow')
-            # modify if custom classes
-            if self.label_map is not None:
-                for old_id, new_id in self.label_map.items():
-                    gt_seg_map[gt_seg_map == old_id] = new_id
-            if self.reduce_zero_label:
-                # avoid using underflow conversion
-                gt_seg_map[gt_seg_map == 0] = 255
-                gt_seg_map = gt_seg_map - 1
-                gt_seg_map[gt_seg_map == 254] = 255
-
+            if efficient_test:
+                gt_seg_map = seg_map
+            else:
+                gt_seg_map = mmcv.imread(
+                    seg_map, flag='unchanged', backend='pillow')
             gt_seg_maps.append(gt_seg_map)
-
         return gt_seg_maps
 
     def get_classes_and_palette(self, classes=None, palette=None):
@@ -310,7 +303,12 @@ class CustomDataset(Dataset):
 
         return palette
 
-    def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
+    def evaluate(self,
+                 results,
+                 metric='mIoU',
+                 logger=None,
+                 efficient_test=False,
+                 **kwargs):
         """Evaluate the dataset.
 
         Args:
@@ -330,7 +328,7 @@ class CustomDataset(Dataset):
         if not set(metric).issubset(set(allowed_metrics)):
             raise KeyError('metric {} is not supported'.format(metric))
         eval_results = {}
-        gt_seg_maps = self.get_gt_seg_maps()
+        gt_seg_maps = self.get_gt_seg_maps(efficient_test)
         if self.CLASSES is None:
             num_classes = len(
                 reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
@@ -340,8 +338,10 @@ class CustomDataset(Dataset):
             results,
             gt_seg_maps,
             num_classes,
-            ignore_index=self.ignore_index,
-            metrics=metric)
+            self.ignore_index,
+            metric,
+            label_map=self.label_map,
+            reduce_zero_label=self.reduce_zero_label)
         class_table_data = [['Class'] + [m[1:] for m in metric] + ['Acc']]
         if self.CLASSES is None:
             class_names = tuple(range(num_classes))
@@ -374,4 +374,7 @@ class CustomDataset(Dataset):
         for i in range(1, len(summary_table_data[0])):
             eval_results[summary_table_data[0]
                          [i]] = summary_table_data[1][i] / 100.0
+        if mmcv.is_list_of(results, str):
+            for file_name in results:
+                os.remove(file_name)
         return eval_results
