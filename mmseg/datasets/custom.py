@@ -337,11 +337,11 @@ class CustomDataset(Dataset):
         ret_metrics = eval_metrics(
             results,
             gt_seg_maps,
-            self.label_map,
-            self.reduce_zero_label,
             num_classes,
-            ignore_index=self.ignore_index,
-            metrics=metric)
+            self.ignore_index,
+            metric,
+            label_map=self.label_map,
+            reduce_zero_label=self.reduce_zero_label)
         class_table_data = [['Class'] + [m[1:] for m in metric] + ['Acc']]
         if self.CLASSES is None:
             class_names = tuple(range(num_classes))
