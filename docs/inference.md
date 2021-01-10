@@ -97,3 +97,5 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
     --eval-options efficient_test=True \
     --eval mIoU
     ```
+
+    Using ```pmap``` to view CPU memory footprint, it used 2.25GB CPU memory with ```efficient_test=True``` and 11.06GB CPU memory with ```efficient_test=False``` . This optional parameter can save a lot of memory.
