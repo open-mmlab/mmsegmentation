@@ -119,8 +119,6 @@ def main():
     if args.eval_options is not None:
         efficient_test = args.eval_options.get('efficient_test', False)
 
-    print(f'args.eval_options={args.eval_options}, distributed={distributed}')
-
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
         outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,

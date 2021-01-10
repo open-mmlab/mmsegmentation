@@ -11,6 +11,26 @@ from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
 
 
+def np2tmp(array, temp_file_name=None):
+    """Save ndarray to local numpy file.
+
+    Args:
+        array (ndarray): Ndarray to save.
+        temp_file_name (str): Numpy file name. If 'temp_file_name=None', this
+            function will generate a file name with tempfile.NamedTemporaryFile
+            to save ndarray. Default: None.
+
+    Returns:
+        str: The numpy file name.
+    """
+
+    if temp_file_name is None:
+        temp_file_name = tempfile.NamedTemporaryFile(
+            suffix='.npy', delete=False).name
+    np.save(temp_file_name, array)
+    return temp_file_name
+
+
 def single_gpu_test(model,
                     data_loader,
                     show=False,
@@ -66,20 +86,11 @@ def single_gpu_test(model,
 
         if isinstance(result, list):
             if efficient_test:
-                tmp_result = []
-                for item in result:
-                    temp_file_name = tempfile.NamedTemporaryFile(
-                        suffix='.npy', delete=False).name
-                    np.save(temp_file_name, item)
-                    tmp_result.append(temp_file_name)
-                result = tmp_result
+                result = [np2tmp(_) for _ in result]
             results.extend(result)
         else:
             if efficient_test:
-                temp_file_name = tempfile.NamedTemporaryFile(
-                    suffix='.npy', delete=False).name
-                np.save(temp_file_name, result)
-                result = temp_file_name
+                result = np2tmp(result)
             results.append(result)
 
         batch_size = data['img'][0].size(0)
@@ -123,22 +134,14 @@ def multi_gpu_test(model,
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
+
         if isinstance(result, list):
             if efficient_test:
-                tmp_result = []
-                for item in result:
-                    temp_file_name = tempfile.NamedTemporaryFile(
-                        suffix='.npy', delete=False).name
-                    np.save(temp_file_name, item)
-                    tmp_result.append(temp_file_name)
-                result = tmp_result
+                result = [np2tmp(_) for _ in result]
             results.extend(result)
         else:
             if efficient_test:
-                temp_file_name = tempfile.NamedTemporaryFile(
-                    suffix='.npy', delete=False).name
-                np.save(temp_file_name, result)
-                result = temp_file_name
+                result = np2tmp(result)
             results.append(result)
 
         if rank == 0:

@@ -7,16 +7,20 @@ def intersect_and_union(pred_label, label, label_map, reduce_zero_label,
     """Calculate intersection and Union.
 
     Args:
-        pred_label (ndarray): Prediction segmentation map
-        label (ndarray): Ground truth segmentation map
-        num_classes (int): Number of categories
+        pred_label (ndarray): Prediction segmentation map.
+        label (ndarray): Ground truth segmentation map.
+        label_map (dict): Mapping old labels to new labels. The parameter will
+            work only when label is str.
+        reduce_zero_label (bool): Wether ignore zero label. The parameter will
+            work only when label is str.
+        num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
 
      Returns:
          ndarray: The intersection of prediction and ground truth histogram
-             on all classes
+             on all classes.
          ndarray: The union of prediction and ground truth histogram on all
-             classes
+             classes.
          ndarray: The prediction histogram on all classes.
          ndarray: The ground truth histogram on all classes.
     """
@@ -56,16 +60,18 @@ def total_intersect_and_union(results, gt_seg_maps, label_map,
     """Calculate Total Intersection and Union.
 
     Args:
-        results (list[ndarray]): List of prediction segmentation maps
-        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps
-        num_classes (int): Number of categories
+        results (list[ndarray]): List of prediction segmentation maps.
+        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps.
+        label_map (dict): Mapping old labels to new labels.
+        reduce_zero_label (bool): Wether ignore zero label.
+        num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
 
      Returns:
          ndarray: The intersection of prediction and ground truth histogram
-             on all classes
+             on all classes.
          ndarray: The union of prediction and ground truth histogram on all
-             classes
+             classes.
          ndarray: The prediction histogram on all classes.
          ndarray: The ground truth histogram on all classes.
     """
@@ -98,17 +104,19 @@ def mean_iou(results,
     """Calculate Mean Intersection and Union (mIoU)
 
     Args:
-        results (list[ndarray]): List of prediction segmentation maps
-        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps
-        num_classes (int): Number of categories
+        results (list[ndarray]): List of prediction segmentation maps.
+        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps.
+        label_map (dict): Mapping old labels to new labels.
+        reduce_zero_label (bool): Wether ignore zero label.
+        num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
 
      Returns:
          float: Overall accuracy on all images.
-         ndarray: Per category accuracy, shape (num_classes, )
-         ndarray: Per category IoU, shape (num_classes, )
+         ndarray: Per category accuracy, shape (num_classes, ).
+         ndarray: Per category IoU, shape (num_classes, ).
     """
 
     all_acc, acc, iou = eval_metrics(
@@ -131,17 +139,19 @@ def mean_dice(results,
     """Calculate Mean Dice (mDice)
 
     Args:
-        results (list[ndarray]): List of prediction segmentation maps
-        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps
-        num_classes (int): Number of categories
+        results (list[ndarray]): List of prediction segmentation maps.
+        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps.
+        label_map (dict): Mapping old labels to new labels.
+        reduce_zero_label (bool): Wether ignore zero label.
+        num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
 
      Returns:
          float: Overall accuracy on all images.
-         ndarray: Per category accuracy, shape (num_classes, )
-         ndarray: Per category dice, shape (num_classes, )
+         ndarray: Per category accuracy, shape (num_classes, ).
+         ndarray: Per category dice, shape (num_classes, ).
     """
 
     all_acc, acc, dice = eval_metrics(
@@ -164,17 +174,19 @@ def eval_metrics(results,
                  nan_to_num=None):
     """Calculate evaluation metrics
     Args:
-        results (list[ndarray]): List of prediction segmentation maps
-        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps
-        num_classes (int): Number of categories
+        results (list[ndarray]): List of prediction segmentation maps.
+        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps.
+        label_map (dict): Mapping old labels to new labels.
+        reduce_zero_label (bool): Wether ignore zero label.
+        num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         metrics (list[str] | str): Metrics to be evaluated, 'mIoU' and 'mDice'.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
      Returns:
          float: Overall accuracy on all images.
-         ndarray: Per category accuracy, shape (num_classes, )
-         ndarray: Per category evalution metrics, shape (num_classes, )
+         ndarray: Per category accuracy, shape (num_classes, ).
+         ndarray: Per category evalution metrics, shape (num_classes, ).
     """
 
     if isinstance(metrics, str):
