@@ -38,6 +38,8 @@ class CityscapesDataset(CustomDataset):
     @staticmethod
     def _convert_to_label_id(result):
         """Convert trainId to id for cityscapes."""
+        if isinstance(result, str):
+            result = np.load(result)
         import cityscapesscripts.helpers.labels as CSLabels
         result_copy = result.copy()
         for trainId, label in CSLabels.trainId2label.items():
@@ -123,7 +125,8 @@ class CityscapesDataset(CustomDataset):
                  results,
                  metric='mIoU',
                  logger=None,
-                 imgfile_prefix=None):
+                 imgfile_prefix=None,
+                 efficient_test=False):
         """Evaluation in Cityscapes/default protocol.
 
         Args:
@@ -154,7 +157,7 @@ class CityscapesDataset(CustomDataset):
         if len(metrics) > 0:
             eval_results.update(
                 super(CityscapesDataset,
-                      self).evaluate(results, metrics, logger))
+                      self).evaluate(results, metrics, logger, efficient_test))
 
         return eval_results
 
