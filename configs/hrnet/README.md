@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latext
 @inproceedings{SunXLW19,
   title={Deep High-Resolution Representation Learning for Human Pose Estimation},

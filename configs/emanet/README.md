@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @inproceedings{li2019expectation,
   title={Expectation-maximization attention networks for semantic segmentation},

@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latext
 @article{chen2017rethinking,
   title={Rethinking atrous convolution for semantic image segmentation},

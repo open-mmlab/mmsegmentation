@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @article{huang2018ccnet,
     title={CCNet: Criss-Cross Attention for Semantic Segmentation},
