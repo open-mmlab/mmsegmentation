@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latext
 @article{wu2018cgnet,
   title={CGNet: A Light-weight Context Guided Network for Semantic Segmentation},

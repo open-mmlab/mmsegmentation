@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @article{Kirillov_2019,
    title={Panoptic Feature Pyramid Networks},

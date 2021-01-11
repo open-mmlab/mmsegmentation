@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @inproceedings{zhao2017pspnet,
   title={Pyramid Scene Parsing Network},

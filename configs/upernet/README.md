@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @inproceedings{xiao2018unified,
   title={Unified perceptual parsing for scene understanding},

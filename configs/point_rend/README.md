@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```
 @misc{alex2019pointrend,
     title={PointRend: Image Segmentation as Rendering},

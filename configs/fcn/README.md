@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @article{shelhamer2017fully,
   title={Fully convolutional networks for semantic segmentation},

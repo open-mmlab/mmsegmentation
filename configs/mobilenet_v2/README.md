@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @inproceedings{sandler2018mobilenetv2,
   title={Mobilenetv2: Inverted residuals and linear bottlenecks},
