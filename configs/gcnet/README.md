@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @inproceedings{cao2019gcnet,
   title={Gcnet: Non-local networks meet squeeze-excitation networks and beyond},

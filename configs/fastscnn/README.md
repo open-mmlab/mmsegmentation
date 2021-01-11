@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @article{poudel2019fast,
   title={Fast-scnn: Fast semantic segmentation network},

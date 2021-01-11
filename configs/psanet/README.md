@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @inproceedings{zhao2018psanet,
   title={Psanet: Point-wise spatial attention network for scene parsing},

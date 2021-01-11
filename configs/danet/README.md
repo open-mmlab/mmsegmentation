@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[ALGORITHM]
+
 ```latex
 @article{fu2018dual,
   title={Dual Attention Network for Scene Segmentation},
