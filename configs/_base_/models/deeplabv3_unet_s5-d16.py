@@ -44,7 +44,7 @@ model = dict(
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
-            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)))
-# model training and testing settings
-train_cfg = dict()
-test_cfg = dict(mode='slide', crop_size=256, stride=170)
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+    # model training and testing settings
+    train_cfg=dict(),
+    test_cfg=dict(mode='slide', crop_size=256, stride=170))
