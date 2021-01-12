@@ -192,7 +192,7 @@ def test_cascade_encoder_decoder():
             dict(type='ExampleCascadeDecodeHead')
         ],
         auxiliary_head=dict(type='ExampleDecodeHead'))
-    cfg.test_cfg = dict(mode='whole')
+    cfg.test_cfg = ConfigDict(mode='whole')
     segmentor = build_segmentor(cfg)
     _segmentor_forward_train_test(segmentor)
 
