@@ -142,3 +142,420 @@ def test_accuracy():
     with pytest.raises(AssertionError):
         accuracy = Accuracy()
         accuracy(pred[:, :, None], true_label)
+
+
+def test_soft_ce_loss():
+    from mmseg.models import build_loss
+
+    # test loss with class weights
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=None, loss=20
+    assert torch.allclose(loss, torch.tensor(20.))
+
+    # test loss with class weights
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=[0.8, 0.2],
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[0.8, 0.2], loss=4
+    assert torch.allclose(loss, torch.tensor(4.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=[0.8, 0.2],
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[0.8, 0.2], loss=4
+    assert torch.allclose(loss, torch.tensor(4.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='no_norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[1, 1], loss=20
+    assert torch.allclose(loss, torch.tensor(20.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[1, 2], loss=40
+    assert torch.allclose(loss, torch.tensor(40.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='no_norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 0, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[1.5, 1.5], loss=15
+    assert torch.allclose(loss, torch.tensor(15.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 0, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[3, 3], loss=30
+    assert torch.allclose(loss, torch.tensor(30.))
+
+    # customsoftmax=True
+    # test loss with class weights
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=True,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=None, loss=20
+    assert torch.allclose(loss, torch.tensor(20.))
+
+    # test loss with class weights
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=True,
+        reduction='mean',
+        class_weight=[0.8, 0.2],
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[0.8, 0.2], loss=4
+    assert torch.allclose(loss, torch.tensor(4.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=True,
+        reduction='mean',
+        class_weight=[0.8, 0.2],
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[0.8, 0.2], loss=4
+    assert torch.allclose(loss, torch.tensor(4.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='no_norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=True,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[1, 1], loss=20
+    assert torch.allclose(loss, torch.tensor(20.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=True,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[1, 2], loss=40
+    assert torch.allclose(loss, torch.tensor(40.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='no_norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=True,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 0, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[1.5, 1.5], loss=15
+    assert torch.allclose(loss, torch.tensor(15.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=True,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 0, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[3, 3], loss=30
+    assert torch.allclose(loss, torch.tensor(30.))
+
+    # batch_weights=False
+    # test loss with class weights
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=None, loss=20
+    assert torch.allclose(loss, torch.tensor(20.))
+
+    # test loss with class weights
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=[0.8, 0.2],
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[0.8, 0.2], loss=4
+    assert torch.allclose(loss, torch.tensor(4.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights=None,
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=[0.8, 0.2],
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[0.8, 0.2], loss=4
+    assert torch.allclose(loss, torch.tensor(4.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='no_norm',
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    # class_weight=[1, 1], [1, 1], loss=20
+    loss = loss_cls(fake_pred, fake_label)
+    assert torch.allclose(loss, torch.tensor(20.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='norm',
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[0, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    # class_weight=[1, 2], [1, 2], loss=40
+    loss = loss_cls(fake_pred, fake_label)
+    assert torch.allclose(loss, torch.tensor(40.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='no_norm',
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 0, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    # class_weight=[1, 1], [1, 1], loss=10
+    loss = loss_cls(fake_pred, fake_label)
+    assert torch.allclose(loss, torch.tensor(10.))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='norm',
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 0, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    # class_weight=[2, 1], [1, 2], loss=20
+    loss = loss_cls(fake_pred, fake_label)
+    assert torch.allclose(loss, torch.tensor(20.))
+
+    # multi-hot
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='no_norm',
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    # class_weight=[1.5, 1.5], [1, 1], loss=17.5
+    loss = loss_cls(fake_pred, fake_label)
+    assert torch.allclose(loss, torch.tensor(17.5))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='norm',
+        batch_weights=False,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 1, 0],
+                               [0, 1, 0]]).long().unsqueeze(2).unsqueeze(3)
+    # class_weight=[3, 3], [1, 2], loss=35
+    loss = loss_cls(fake_pred, fake_label)
+    assert torch.allclose(loss, torch.tensor(35.))
+
+    # ignore
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='no_norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10],
+                              [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 1, 0], [0, 1, 0],
+                               [0, 1, 1]]).long().unsqueeze(2).unsqueeze(3)
+    # class_weight=[1.6667, 1.3333], loss=13.3333
+    loss = loss_cls(fake_pred, fake_label)
+    assert torch.allclose(loss, torch.tensor(13.3333))
+
+    loss_cls_cfg = dict(
+        type='SoftCrossEntropyLoss',
+        img_based_class_weights='norm',
+        batch_weights=True,
+        upper_bound=1.0,
+        customsoftmax=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.Tensor([[10, -10], [10, -10],
+                              [10, -10]]).unsqueeze(2).unsqueeze(3)
+    fake_label = torch.Tensor([[1, 1, 0], [0, 1, 0],
+                               [0, 1, 1]]).long().unsqueeze(2).unsqueeze(3)
+    loss = loss_cls(fake_pred, fake_label)  # class_weight=[4, 2.5], loss=25
+    assert torch.allclose(loss, torch.tensor(25.))
