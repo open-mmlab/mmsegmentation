@@ -228,7 +228,7 @@ class LovaszLoss(nn.Module):
 
     This loss is proposed in `The Lovasz-Softmax loss: A tractable surrogate
     for the optimization of the intersection-over-union measure in neural
-    networks <https://openaccess.thecvf.com/content_cvpr_2018/html/Berman_The_LovaSz-Softmax_Loss_CVPR_2018_paper.html>`_. # noqa
+    networks <https://arxiv.org/abs/1705.08790>`_.
 
     Args:
         loss_type (str, optional): Binary or multi-class loss.
