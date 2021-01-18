@@ -6,7 +6,6 @@ import mmcv
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.autograd import Variable
 
 from ..builder import LOSSES
 from .utils import weight_reduce_loss
@@ -72,12 +71,12 @@ def lovasz_hinge_flat(logits, labels):
         # only void pixels, the gradients should be 0
         return logits.sum() * 0.
     signs = 2. * labels.float() - 1.
-    errors = (1. - logits * Variable(signs))
+    errors = (1. - logits * signs)
     errors_sorted, perm = torch.sort(errors, dim=0, descending=True)
     perm = perm.data
     gt_sorted = labels[perm]
     grad = lovasz_grad(gt_sorted)
-    loss = torch.dot(F.relu(errors_sorted), Variable(grad))
+    loss = torch.dot(F.relu(errors_sorted), grad)
     return loss
 
 
@@ -158,11 +157,11 @@ def lovasz_softmax_flat(probs, labels, classes='present', class_weight=None):
             class_pred = probs[:, 0]
         else:
             class_pred = probs[:, c]
-        errors = (Variable(fg) - class_pred).abs()
+        errors = (fg - class_pred).abs()
         errors_sorted, perm = torch.sort(errors, 0, descending=True)
         perm = perm.data
         fg_sorted = fg[perm]
-        loss = torch.dot(errors_sorted, Variable(lovasz_grad(fg_sorted)))
+        loss = torch.dot(errors_sorted, lovasz_grad(fg_sorted))
         if class_weight is not None:
             loss *= class_weight[c]
         losses.append(loss)
