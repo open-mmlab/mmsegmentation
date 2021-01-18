@@ -1,3 +1,7 @@
+"""Modified from https://github.com/bermanmaxim/LovaszSoftmax/blob/master/pytor
+ch/lovasz_losses.py Lovasz-Softmax and Jaccard hinge loss in PyTorch Maxim
+Berman 2018 ESAT-PSI KU Leuven (MIT License)"""
+
 import mmcv
 import torch
 import torch.nn as nn
@@ -23,42 +27,41 @@ def lovasz_grad(gt_sorted):
     return jaccard
 
 
-def flatten_binary_scores(scores, labels, ignore_index=None):
+def flatten_binary_logits(logits, labels, ignore_index=None):
     """Flattens predictions in the batch (binary case) Remove labels equal to
     'ignore_index'."""
-    scores = scores.view(-1)
+    logits = logits.view(-1)
     labels = labels.view(-1)
     if ignore_index is None:
-        return scores, labels
+        return logits, labels
     valid = (labels != ignore_index)
-    vscores = scores[valid]
+    vlogits = logits[valid]
     vlabels = labels[valid]
-    return vscores, vlabels
+    return vlogits, vlabels
 
 
-def flatten_probas(probas, labels, ignore_index=None):
+def flatten_probs(probs, labels, ignore_index=None):
     """Flattens predictions in the batch."""
-    if probas.dim() == 3:
+    if probs.dim() == 3:
         # assumes output of a sigmoid layer
-        B, H, W = probas.size()
-        probas = probas.view(B, 1, H, W)
-    B, C, H, W = probas.size()
-    probas = probas.permute(0, 2, 3, 1).contiguous().view(-1,
-                                                          C)  # B*H*W, C=P,C
+        B, H, W = probs.size()
+        probs = probs.view(B, 1, H, W)
+    B, C, H, W = probs.size()
+    probs = probs.permute(0, 2, 3, 1).contiguous().view(-1, C)  # B*H*W, C=P,C
     labels = labels.view(-1)
     if ignore_index is None:
-        return probas, labels
+        return probs, labels
     valid = (labels != ignore_index)
-    vprobas = probas[valid.nonzero().squeeze()]
+    vprobs = probs[valid.nonzero().squeeze()]
     vlabels = labels[valid]
-    return vprobas, vlabels
+    return vprobs, vlabels
 
 
 def lovasz_hinge_flat(logits, labels):
     """Binary Lovasz hinge loss.
 
     Args:
-        probas (torch.Tensor): [P], logits at each prediction
+        logits (torch.Tensor): [P], logits at each prediction
             (between -infty and +infty).
         labels (torch.Tensor): [P], binary ground truth labels (0 or 1).
 
@@ -78,7 +81,7 @@ def lovasz_hinge_flat(logits, labels):
     return loss
 
 
-def lovasz_hinge(probas,
+def lovasz_hinge(logits,
                  labels,
                  classes='present',
                  per_image=False,
@@ -89,7 +92,7 @@ def lovasz_hinge(probas,
     """Binary Lovasz hinge loss.
 
     Args:
-        probas (torch.Tensor): [B, H, W], logits at each pixel
+        logits (torch.Tensor): [B, H, W], logits at each pixel
             (between -infty and +infty).
         labels (torch.Tensor): [B, H, W], binary ground truth masks (0 or 1).
         classes (str | list[int], optional): Placeholder, to be consistent with
@@ -111,23 +114,23 @@ def lovasz_hinge(probas,
     """
     if per_image:
         loss = [
-            lovasz_softmax_flat(*flatten_probas(
-                prob.unsqueeze(0), lab.unsqueeze(0), ignore_index))
-            for prob, lab in zip(probas, labels)
+            lovasz_hinge_flat(*flatten_binary_logits(
+                logit.unsqueeze(0), label.unsqueeze(0), ignore_index))
+            for logit, label in zip(logits, labels)
         ]
         loss = weight_reduce_loss(
             torch.stack(loss), None, reduction, avg_factor)
     else:
         loss = lovasz_hinge_flat(
-            *flatten_binary_scores(probas, labels, ignore_index))
+            *flatten_binary_logits(logits, labels, ignore_index))
     return loss
 
 
-def lovasz_softmax_flat(probas, labels, classes='present', class_weight=None):
+def lovasz_softmax_flat(probs, labels, classes='present', class_weight=None):
     """Multi-class Lovasz-Softmax loss.
 
     Args:
-        probas (torch.Tensor): [P, C], class probabilities at each prediction
+        probs (torch.Tensor): [P, C], class probabilities at each prediction
             (between 0 and 1).
         labels (torch.Tensor): [P], ground truth labels (between 0 and C - 1).
         classes (str | list[int], optional): Classes choosed to calculate loss.
@@ -139,10 +142,10 @@ def lovasz_softmax_flat(probas, labels, classes='present', class_weight=None):
     Returns:
         torch.Tensor: The calculated loss.
     """
-    if probas.numel() == 0:
+    if probs.numel() == 0:
         # only void pixels, the gradients should be 0
-        return probas * 0.
-    C = probas.size(1)
+        return probs * 0.
+    C = probs.size(1)
     losses = []
     class_to_sum = list(range(C)) if classes in ['all', 'present'] else classes
     for c in class_to_sum:
@@ -152,9 +155,9 @@ def lovasz_softmax_flat(probas, labels, classes='present', class_weight=None):
         if C == 1:
             if len(classes) > 1:
                 raise ValueError('Sigmoid output possible only with 1 class')
-            class_pred = probas[:, 0]
+            class_pred = probs[:, 0]
         else:
-            class_pred = probas[:, c]
+            class_pred = probs[:, c]
         errors = (Variable(fg) - class_pred).abs()
         errors_sorted, perm = torch.sort(errors, 0, descending=True)
         perm = perm.data
@@ -166,7 +169,7 @@ def lovasz_softmax_flat(probas, labels, classes='present', class_weight=None):
     return torch.stack(losses).mean()
 
 
-def lovasz_softmax(probas,
+def lovasz_softmax(probs,
                    labels,
                    classes='present',
                    per_image=False,
@@ -177,7 +180,7 @@ def lovasz_softmax(probas,
     """Multi-class Lovasz-Softmax loss.
 
     Args:
-        probas (torch.Tensor): [B, C, H, W], class probabilities at each
+        probs (torch.Tensor): [B, C, H, W], class probabilities at each
             prediction (between 0 and 1).
         labels (torch.Tensor): [B, H, W], ground truth labels (between 0 and
             C - 1).
@@ -203,17 +206,17 @@ def lovasz_softmax(probas,
     if per_image:
         loss = [
             lovasz_softmax_flat(
-                *flatten_probas(
-                    prob.unsqueeze(0), lab.unsqueeze(0), ignore_index),
+                *flatten_probs(
+                    prob.unsqueeze(0), label.unsqueeze(0), ignore_index),
                 classes=classes,
                 class_weight=class_weight)
-            for prob, lab in zip(probas, labels)
+            for prob, label in zip(probs, labels)
         ]
         loss = weight_reduce_loss(
             torch.stack(loss), None, reduction, avg_factor)
     else:
         loss = lovasz_softmax_flat(
-            *flatten_probas(probas, labels, ignore_index),
+            *flatten_probs(probs, labels, ignore_index),
             classes=classes,
             class_weight=class_weight)
     return loss
@@ -284,6 +287,11 @@ class LovaszLoss(nn.Module):
             class_weight = cls_score.new_tensor(self.class_weight)
         else:
             class_weight = None
+
+        # if multi-class loss, transform logits to probs
+        if self.cls_criterion == lovasz_softmax:
+            cls_score = F.softmax(cls_score, dim=1)
+
         loss_cls = self.loss_weight * self.cls_criterion(
             cls_score,
             label,
