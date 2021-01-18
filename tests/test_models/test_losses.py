@@ -170,7 +170,11 @@ def test_lovasz_loss():
 
     # test lovasz loss with loss_type = 'multi_class' and per_image = True
     loss_cfg = dict(
-        type='LovaszLoss', per_image=True, reduction='mean', loss_weight=1.0)
+        type='LovaszLoss',
+        per_image=True,
+        reduction='mean',
+        class_weight=[1.0, 2.0, 3.0],
+        loss_weight=1.0)
     lovasz_loss = build_loss(loss_cfg)
     logits = torch.rand(1, 3, 4, 4)
     labels = (torch.rand(1, 4, 4) * 2).long()
