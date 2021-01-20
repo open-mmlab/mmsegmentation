@@ -45,8 +45,6 @@ def test_config_build_segmentor():
         config_mod = Config.fromfile(config_fpath)
 
         config_mod.model
-        config_mod.train_cfg
-        config_mod.test_cfg
         print('Building segmentor, config_fpath = {!r}'.format(config_fpath))
 
         # Remove pretrained keys to allow for testing in an offline environment
@@ -54,10 +52,7 @@ def test_config_build_segmentor():
             config_mod.model['pretrained'] = None
 
         print('building {}'.format(config_fname))
-        segmentor = build_segmentor(
-            config_mod.model,
-            train_cfg=config_mod.train_cfg,
-            test_cfg=config_mod.test_cfg)
+        segmentor = build_segmentor(config_mod.model)
         assert segmentor is not None
 
         head_config = config_mod.model['decode_head']

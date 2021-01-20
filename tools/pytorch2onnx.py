@@ -181,8 +181,9 @@ if __name__ == '__main__':
     cfg.model.pretrained = None
 
     # build the model and load checkpoint
+    cfg.model.train_cfg = None
     segmentor = build_segmentor(
-        cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
+        cfg.model, train_cfg=None, test_cfg=cfg.get('test_cfg'))
     # convert SyncBN to BN
     segmentor = _convert_batchnorm(segmentor)
 
