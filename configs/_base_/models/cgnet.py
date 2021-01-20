@@ -29,7 +29,7 @@ model = dict(
                 10.289121, 9.953208, 4.3097677, 9.490387, 7.674431, 9.396905,
                 10.347791, 6.3927646, 10.226669, 10.241062, 10.280587,
                 10.396974, 10.055647
-            ])))
-# model training and testing settings
-train_cfg = dict(sampler=None)
-test_cfg = dict(mode='whole')
+            ])),
+    # model training and testing settings
+    train_cfg=dict(sampler=None),
+    test_cfg=dict(mode='whole'))

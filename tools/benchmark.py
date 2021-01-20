@@ -40,7 +40,8 @@ def main():
         shuffle=False)
 
     # build the model and load checkpoint
-    model = build_segmentor(cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
+    cfg.model.train_cfg = None
+    model = build_segmentor(cfg.model, test_cfg=cfg.get('test_cfg'))
     load_checkpoint(model, args.checkpoint, map_location='cpu')
 
     model = MMDataParallel(model, device_ids=[0])

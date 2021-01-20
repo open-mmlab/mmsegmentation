@@ -45,12 +45,12 @@ model = dict(
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
-    ])
-# model training and testing settings
-train_cfg = dict(
-    num_points=2048, oversample_ratio=3, importance_sample_ratio=0.75)
-test_cfg = dict(
-    mode='whole',
-    subdivision_steps=2,
-    subdivision_num_points=8196,
-    scale_factor=2)
+    ],
+    # model training and testing settings
+    train_cfg=dict(
+        num_points=2048, oversample_ratio=3, importance_sample_ratio=0.75),
+    test_cfg=dict(
+        mode='whole',
+        subdivision_steps=2,
+        subdivision_num_points=8196,
+        scale_factor=2))
