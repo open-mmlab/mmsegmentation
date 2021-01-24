@@ -5,4 +5,3 @@ _base_ = [
 model = dict(
     decode_head=dict(mask_size=(66, 66), num_classes=150),
     auxiliary_head=dict(num_classes=150))
-test_cfg = dict(mode='whole')
