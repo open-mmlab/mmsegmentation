@@ -34,15 +34,15 @@ def intersect_and_union(pred_label,
 
     if isinstance(label, str):
         label = mmcv.imread(label, flag='unchanged', backend='pillow')
-        # modify if custom classes
-        if label_map is not None:
-            for old_id, new_id in label_map.items():
-                label[label == old_id] = new_id
-        if reduce_zero_label:
-            # avoid using underflow conversion
-            label[label == 0] = 255
-            label = label - 1
-            label[label == 254] = 255
+    # modify if custom classes
+    if label_map is not None:
+        for old_id, new_id in label_map.items():
+            label[label == old_id] = new_id
+    if reduce_zero_label:
+        # avoid using underflow conversion
+        label[label == 0] = 255
+        label = label - 1
+        label[label == 254] = 255
 
     mask = (label != ignore_index)
     pred_label = pred_label[mask]
