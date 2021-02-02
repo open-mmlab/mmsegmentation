@@ -1,5 +1,27 @@
 ## Changelog
 
+### V0.11 (02/02/2021)
+
+**Highlights**
+
+- Support memory efficient test, add more UNet models.
+
+**Bug Fixes**
+
+- Fixed TTA resize scale ([#334](https://github.com/open-mmlab/mmsegmentation/pull/334))
+- Fixed CI for pip 20.3 ([#307](https://github.com/open-mmlab/mmsegmentation/pull/307))
+- Fixed ADE20k test ([#359](https://github.com/open-mmlab/mmsegmentation/pull/359))
+
+**New Features**
+
+- Support memory efficient test ([#330](https://github.com/open-mmlab/mmsegmentation/pull/330))
+- Add more UNet benchmarks ([#324](https://github.com/open-mmlab/mmsegmentation/pull/324))
+- Support Lovasz Loss ([#351](https://github.com/open-mmlab/mmsegmentation/pull/351))
+
+**Improvements**
+
+- Move train_cfg/test_cfg inside model ([#341](https://github.com/open-mmlab/mmsegmentation/pull/341))
+
 ### V0.10 (01/01/2021)
 
 **Highlights**
