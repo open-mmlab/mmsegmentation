@@ -783,7 +783,6 @@ class PhotoMetricDistortion(object):
     5. random hue
     6. convert color from HSV to BGR
     7. random contrast (mode 1)
-    8. randomly swap channels
 
     Args:
         brightness_delta (int): delta of brightness.
