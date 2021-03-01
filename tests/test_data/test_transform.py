@@ -476,3 +476,26 @@ def test_seg_rescale():
     rescale_module = build_from_cfg(transform, PIPELINES)
     rescale_results = rescale_module(results.copy())
     assert rescale_results['gt_semantic_seg'].shape == (h, w)
+
+
+def test_albumentation():
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    transform = dict(
+        type='Albu', transforms=[dict(type='ChannelShuffle', p=1)])
+    transform = build_from_cfg(transform, PIPELINES)
+
+    assert results['img'].dtype == np.uint8
+    assert results['gt_semantic_seg'].dtype == np.uint8

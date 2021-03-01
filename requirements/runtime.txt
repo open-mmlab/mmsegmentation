@@ -1,3 +1,4 @@
+albumentations
 matplotlib
 numpy
 terminaltables
