@@ -1,6 +1,6 @@
 import copy
 import os.path as osp
-
+from unittest.mock import patch
 import mmcv
 import numpy as np
 import pytest
@@ -497,5 +497,31 @@ def test_albumentation():
         type='Albu', transforms=[dict(type='ChannelShuffle', p=1)])
     transform = build_from_cfg(transform, PIPELINES)
 
-    assert results['img'].dtype == np.uint8
-    assert results['gt_semantic_seg'].dtype == np.uint8
+    output = transform(results)
+
+    assert output['img'].dtype == np.uint8
+    assert output['gt_semantic_seg'].dtype == np.uint8
+
+    transform = dict(
+        type='Albu',
+        transforms=[dict(type='ChannelShuffle', p=1)],
+        keymap=dict(img='image', gt_semantic_seg="mask"),
+        update_pad_shape=True
+    )
+    transform = build_from_cfg(transform, PIPELINES)
+
+    output = transform(results)
+    assert output['img'].dtype == np.uint8
+    assert output['gt_semantic_seg'].dtype == np.uint8
+
+    transform = dict(
+        type='Albu',
+        transforms=[dict(type='ChannelShuffle', p=1)],
+        keymap=dict(img='image', gt_semantic_seg="mask"),
+        update_pad_shape=True
+    )
+    transform = build_from_cfg(transform, PIPELINES)
+
+    output = transform(results)
+    assert output['img'].dtype == np.uint8
+    assert output['gt_semantic_seg'].dtype == np.uint8

@@ -8,12 +8,8 @@ from numpy import random
 
 from ..builder import PIPELINES
 
-try:
-    import albumentations
-    from albumentations import Compose
-except ImportError:
-    albumentations = None
-    Compose = None
+import albumentations
+from albumentations import Compose
 
 
 @PIPELINES.register_module()
@@ -935,9 +931,6 @@ class Albu(object):
     """
 
     def __init__(self, transforms, keymap=None, update_pad_shape=False):
-        if Compose is None:
-            raise RuntimeError('albumentations is not installed')
-
         # Args will be modified later, copying it will be safer
         transforms = copy.deepcopy(transforms)
         if keymap is not None:
@@ -969,14 +962,10 @@ class Albu(object):
 
         obj_type = args.pop('type')
         if mmcv.is_str(obj_type):
-            if albumentations is None:
-                raise RuntimeError('albumentations is not installed')
             obj_cls = getattr(albumentations, obj_type)
-        elif inspect.isclass(obj_type):
-            obj_cls = obj_type
         else:
             raise TypeError(
-                f'type must be a str or valid type, but got {type(obj_type)}')
+                f'type must be str, but got {type(obj_type)}')
 
         if 'transforms' in args:
             args['transforms'] = [
