@@ -1,15 +1,14 @@
 import copy
 import inspect
 
+import albumentations
 import mmcv
 import numpy as np
+from albumentations import Compose
 from mmcv.utils import deprecated_api_warning, is_tuple_of
 from numpy import random
 
 from ..builder import PIPELINES
-
-import albumentations
-from albumentations import Compose
 
 
 @PIPELINES.register_module()
@@ -964,8 +963,7 @@ class Albu(object):
         if mmcv.is_str(obj_type):
             obj_cls = getattr(albumentations, obj_type)
         else:
-            raise TypeError(
-                f'type must be str, but got {type(obj_type)}')
+            raise TypeError(f'type must be str, but got {type(obj_type)}')
 
         if 'transforms' in args:
             args['transforms'] = [

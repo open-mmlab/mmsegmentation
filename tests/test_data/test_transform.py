@@ -1,6 +1,7 @@
 import copy
 import os.path as osp
 from unittest.mock import patch
+
 import mmcv
 import numpy as np
 import pytest
@@ -505,9 +506,8 @@ def test_albumentation():
     transform = dict(
         type='Albu',
         transforms=[dict(type='ChannelShuffle', p=1)],
-        keymap=dict(img='image', gt_semantic_seg="mask"),
-        update_pad_shape=True
-    )
+        keymap=dict(img='image', gt_semantic_seg='mask'),
+        update_pad_shape=True)
     transform = build_from_cfg(transform, PIPELINES)
 
     output = transform(results)
@@ -517,9 +517,8 @@ def test_albumentation():
     transform = dict(
         type='Albu',
         transforms=[dict(type='ChannelShuffle', p=1)],
-        keymap=dict(img='image', gt_semantic_seg="mask"),
-        update_pad_shape=True
-    )
+        keymap=dict(img='image', gt_semantic_seg='mask'),
+        update_pad_shape=True)
     transform = build_from_cfg(transform, PIPELINES)
 
     output = transform(results)
