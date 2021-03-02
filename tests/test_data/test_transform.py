@@ -1,6 +1,5 @@
 import copy
 import os.path as osp
-from unittest.mock import patch
 
 import mmcv
 import numpy as np
