@@ -4,7 +4,5 @@ _base_ = [
 ]
 model = dict(
     backbone=dict(dilations=(1, 1, 1, 2), strides=(1, 2, 2, 1)),
-    decode_head=dict(
-        num_classes=21, type='FCNDilateHead', dilation=6, concat_input=True),
-    auxiliary_head=dict(
-        num_classes=21, type='FCNDilateHead', dilation=6, concat_input=True))
+    decode_head=dict(num_classes=21, dilation=6),
+    auxiliary_head=dict(num_classes=21, dilation=6))
