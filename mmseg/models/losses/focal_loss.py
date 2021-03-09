@@ -12,37 +12,27 @@ def focal_loss(pred,
                class_weight=None,
                reduction='mean',
                avg_factor=None,
-               ignore_index=-100,
+               ignore_index=255,
                eps=1e-7,
                gamma=0):
     B, C, H, W = pred.size()
 
-    if label.ndim == 3:
-        label = label.unsqueeze(dim=3)
-    if weight is None:
-        weight = torch.ones_like(pred)
+    target, weight = expand_onehot_labels(label, weight, pred.shape,
+                                          ignore_index)
+
+    if weight is not None:
+        weight = weight.float()
     if class_weight is not None:
         weight *= torch.tensor(class_weight).reshape(
             1, C, 1, 1).expand_as(weight).to(weight)
 
-    if ignore_index is not None:
-        mask = (label != ignore_index)
-        mask = mask.reshape(mask.shape[0], 1, mask.shape[1],
-                            mask.shape[2]).expand_as(weight)
-
-    target = expand_onehot_labels(label, C)
-
-    probs = F.softmax(input, dim=1)
+    probs = F.softmax(pred, dim=1)
     probs = (probs * target)
     probs = probs.clamp(eps, 1. - eps)
 
     log_p = probs.log()
-    # print('probs size= {}'.format(probs.size()))
-    # print(probs)
 
     loss = -(torch.pow((1 - probs), gamma)) * log_p
-    # print('-----bacth_loss------')
-    # print(batch_loss)
     loss = weight_reduce_loss(loss, weight, reduction, avg_factor)
 
     return loss

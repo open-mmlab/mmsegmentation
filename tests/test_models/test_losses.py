@@ -202,3 +202,13 @@ def test_lovasz_loss():
     logits = torch.rand(2, 4, 4)
     labels = (torch.rand(2, 4, 4)).long()
     lovasz_loss(logits, labels, ignore_index=None)
+
+
+def test_focal_loss():
+    from mmseg.models import build_loss
+
+    loss_cfg = dict(type='FocalLoss')
+    focal_loss = build_loss(loss_cfg)
+    logits = torch.rand(2, 3, 4, 4)
+    labels = (torch.rand(2, 4, 4)).long()
+    focal_loss(logits, labels, ignore_index=255)
