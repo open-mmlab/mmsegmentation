@@ -206,9 +206,10 @@ def test_lovasz_loss():
 
 def test_focal_loss():
     from mmseg.models import build_loss
-
+    torch.manual_seed(0)
     loss_cfg = dict(type='FocalLoss')
     focal_loss = build_loss(loss_cfg)
     logits = torch.rand(2, 3, 4, 4)
     labels = (torch.rand(2, 4, 4)).long()
-    focal_loss(logits, labels, ignore_index=255)
+    assert torch.isclose(
+        focal_loss(logits, labels, ignore_index=255), torch.tensor(11.1274))
