@@ -1,3 +1,5 @@
+"""Modified from https://github.com/LikeLy-Journey/SegmenTron/blob/master/
+segmentron/solver/loss.py (Apache-2.0 License)"""
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -64,7 +66,7 @@ class DiceLoss(nn.Module):
         class_weight (list[float], optional): The weight for each class.
             Default: None.
         loss_weight (float, optional): Weight of the loss. Default to 1.0.
-        ignore_index (int | None): The label index to be ignored. Default: -1.
+        ignore_index (int | None): The label index to be ignored. Default: 255.
     """
 
     def __init__(self,
@@ -74,7 +76,7 @@ class DiceLoss(nn.Module):
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0,
-                 ignore_index=-1):
+                 ignore_index=255):
         super(DiceLoss, self).__init__()
         assert loss_type in ['multi_class', 'binary']
         if loss_type == 'multi_class':
