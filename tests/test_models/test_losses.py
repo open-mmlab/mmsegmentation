@@ -202,3 +202,43 @@ def test_lovasz_loss():
     logits = torch.rand(2, 4, 4)
     labels = (torch.rand(2, 4, 4)).long()
     lovasz_loss(logits, labels, ignore_index=None)
+
+
+def test_dice_lose():
+    from mmseg.models import build_loss
+
+    # loss_type should be 'binary' or 'multi_class'
+    with pytest.raises(AssertionError):
+        loss_cfg = dict(
+            type='DiceLoss',
+            loss_type='Binary',
+            reduction='none',
+            loss_weight=1.0)
+        build_loss(loss_cfg)
+
+    # test dice loss with loss_type = 'multi_class'
+    loss_cfg = dict(
+        type='DiceLoss',
+        loss_type='multi_class',
+        reduction='none',
+        class_weight=[1.0, 2.0, 3.0],
+        loss_weight=1.0,
+        ignore_index=1)
+    dice_loss = build_loss(loss_cfg)
+    logits = torch.rand(8, 3, 4, 4)
+    labels = (torch.rand(8, 4, 4) * 3).long()
+    dice_loss(logits, labels)
+
+    # test dice loss with loss_type = 'binary'
+    loss_cfg = dict(
+        type='DiceLoss',
+        loss_type='binary',
+        smooth=2,
+        exponent=3,
+        reduction='sum',
+        loss_weight=1.0,
+        ignore_index=0)
+    dice_loss = build_loss(loss_cfg)
+    logits = torch.rand(16, 4, 4)
+    labels = (torch.rand(16, 4, 4)).long()
+    dice_loss(logits, labels)
