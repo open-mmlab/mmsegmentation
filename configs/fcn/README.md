@@ -39,18 +39,18 @@
 | FCN    | R-18b-D8 | 769x769   |   80000 |      1.7 |           6.70 | 69.66 |         72.07 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_769x769_80k_cityscapes/fcn_r18b-d8_769x769_80k_cityscapes_20201226_004430-32d504e5.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_769x769_80k_cityscapes/fcn_r18b-d8_769x769_80k_cityscapes-20201226_004430.log.json)         |
 | FCN    | R-50b-D8 | 769x769   |   80000 |      6.3 |           1.82 | 73.83 |         76.60 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_769x769_80k_cityscapes/fcn_r50b-d8_769x769_80k_cityscapes_20201225_094223-94552d38.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_769x769_80k_cityscapes/fcn_r50b-d8_769x769_80k_cityscapes-20201225_094223.log.json)         |
 | FCN    | R-101b-D8| 769x769   |   80000 |     10.3 |           1.15 | 77.02 |         78.67 | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_769x769_80k_cityscapes/fcn_r101b-d8_769x769_80k_cityscapes_20201226_170012-82be37e2.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_769x769_80k_cityscapes/fcn_r101b-d8_769x769_80k_cityscapes-20201226_170012.log.json)     |
-|FCN-D6|R-50-D16|512x1024|40000|-|-|77.06|78.85||
-|FCN-D6|R-50-D16|512x1024|80000|-|-|77.27|78.88||
-|FCN-D6|R-50-D16|769x769|40000|-|-|76.82|78.22||
-|FCN-D6|R-50-D16|769x769|80000|-|-|77.04|78.40||
-|FCN-D6|R-101-D16|512x1024|40000|-|-|77.36|79.18||
-|FCN-D6|R-101-D16|512x1024|80000|-|-|78.46|80.42||
-|FCN-D6|R-101-D16|769x769|40000|-|-|77.28|78.95||
-|FCN-D6|R-101-D16|769x769|80000|-|-|78.06|79.58||
-|FCN-D6|R-50b-D16|512x1024|80000|-|-|76.99|79.03||
-|FCN-D6|R-50b-D16|769x769|80000|-|-|76.86|78.52||
-|FCN-D6|R-101b-D16|512x1024|80000|-|-|77.72|79.53||
-|FCN-D6|R-101b-D16|769x769|80000|-|-|77.34|78.91||
+|FCN-D6|R-50-D16|512x1024|40000|-|10.22|77.06|78.85||
+|FCN-D6|R-50-D16|512x1024|80000|-|10.35|77.27|78.88||
+|FCN-D6|R-50-D16|769x769|40000|-|4.17|76.82|78.22||
+|FCN-D6|R-50-D16|769x769|80000|-|4.15|77.04|78.40||
+|FCN-D6|R-101-D16|512x1024|40000|-|8.04|77.36|79.18||
+|FCN-D6|R-101-D16|512x1024|80000|-|8.26|78.46|80.42||
+|FCN-D6|R-101-D16|769x769|40000|-|3.12|77.28|78.95||
+|FCN-D6|R-101-D16|769x769|80000|-|3.21|78.06|79.58||
+|FCN-D6|R-50b-D16|512x1024|80000|-|10.16|76.99|79.03||
+|FCN-D6|R-50b-D16|769x769|80000|-|4.17|76.86|78.52||
+|FCN-D6|R-101b-D16|512x1024|80000|-|8.46|77.72|79.53||
+|FCN-D6|R-101b-D16|769x769|80000|-|3.32|77.34|78.91||
 
 ### ADE20K
 
