@@ -82,8 +82,10 @@ class DiceLoss(nn.Module):
         assert loss_type in ['multi_class', 'binary']
         if loss_type == 'multi_class':
             self.cls_criterion = dice_loss
+            self.binary_cls = False
         else:
             self.cls_criterion = binary_dice_loss
+            self.binary_cls = True
         self.smooth = smooth
         self.exponent = exponent
         self.reduction = reduction
@@ -106,10 +108,10 @@ class DiceLoss(nn.Module):
             class_weight = None
 
         pred = F.softmax(pred, dim=1)
-        num_classes = pred.shape[1]
+        num_classes = 2 if self.binary_cls else pred.shape[1]
         one_hot_target = F.one_hot(
             torch.clamp(target.long(), 0, num_classes - 1),
-            num_classes=num_classes)
+            num_classes=(1 if num_classes == 2 else num_classes))
         valid_mask = (target != self.ignore_index).long()
 
         loss = self.loss_weight * self.cls_criterion(
