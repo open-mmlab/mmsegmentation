@@ -69,23 +69,25 @@ class DiceLoss(nn.Module):
         ignore_index (int | None): The label index to be ignored. Default: 255.
     """
 
-    def __init__(self,
-                 loss_type='multi_class',
-                 smooth=1,
-                 exponent=2,
-                 reduction='mean',
-                 class_weight=None,
-                 loss_weight=1.0,
-                 ignore_index=255,
-                 **kwards):
+    def __init__(
+            self,
+            #  loss_type='multi_class',
+            smooth=1,
+            exponent=2,
+            reduction='mean',
+            class_weight=None,
+            loss_weight=1.0,
+            ignore_index=255,
+            **kwards):
         super(DiceLoss, self).__init__()
-        assert loss_type in ['multi_class', 'binary']
-        if loss_type == 'multi_class':
-            self.cls_criterion = dice_loss
-            self.binary_cls = False
-        else:
-            self.cls_criterion = binary_dice_loss
-            self.binary_cls = True
+        # assert loss_type in ['multi_class', 'binary']
+        # if loss_type == 'multi_class':
+        #     # self.cls_criterion = dice_loss
+        #     self.binary_cls = False
+        # else:
+        #     # self.cls_criterion = binary_dice_loss
+        #     self.binary_cls = True
+        # self.cls_criterion = dice_loss
         self.smooth = smooth
         self.exponent = exponent
         self.reduction = reduction
@@ -108,13 +110,13 @@ class DiceLoss(nn.Module):
             class_weight = None
 
         pred = F.softmax(pred, dim=1)
-        num_classes = 2 if self.binary_cls else pred.shape[1]
+        num_classes = pred.shape[1]
         one_hot_target = F.one_hot(
             torch.clamp(target.long(), 0, num_classes - 1),
-            num_classes=(1 if num_classes == 2 else num_classes))
+            num_classes=num_classes)
         valid_mask = (target != self.ignore_index).long()
 
-        loss = self.loss_weight * self.cls_criterion(
+        loss = self.loss_weight * dice_loss(
             pred,
             one_hot_target,
             valid_mask=valid_mask,
