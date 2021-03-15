@@ -35,7 +35,8 @@ def single_gpu_test(model,
                     data_loader,
                     show=False,
                     out_dir=None,
-                    efficient_test=False):
+                    efficient_test=False,
+                    opacity=0.5):
     """Test with single GPU.
 
     Args:
@@ -46,7 +47,9 @@ def single_gpu_test(model,
             the directory to save output results.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
-
+        opacity(float): Opacity of painted segmentation map.
+            Default 0.5.
+            Must be in (0, 1] range.
     Returns:
         list: The prediction results.
     """
@@ -82,7 +85,8 @@ def single_gpu_test(model,
                     result,
                     palette=dataset.PALETTE,
                     show=show,
-                    out_file=out_file)
+                    out_file=out_file,
+                    opacity=opacity)
 
         if isinstance(result, list):
             if efficient_test:
