@@ -62,3 +62,25 @@ python tools/pytorch2onnx.py ${CONFIG_FILE} --checkpoint ${CHECKPOINT_FILE} --ou
 ```shell
 python tools/print_config.py ${CONFIG} [-h] [--options ${OPTIONS [OPTIONS...]}]
 ```
+
+### Plot training logs
+
+`tools/analyze_logs.py` plot s loss/mIoU curves given a training log file. `pip install seaborn` first to install the dependency.
+
+```shell
+python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] [--backend ${BACKEND}] [--style ${STYLE}] [--out ${OUT_FILE}]
+```
+
+Examples:
+
+- Plot the mIoU, mAcc, aAcc metrics.
+
+  ```shell
+  python tools/analyze_logs.py log.json --keys mIoU mAcc aAcc --legend mIoU mAcc aAcc
+  ```
+
+- Plot loss metric.
+
+  ```shell
+  python tools/analyze_logs.py log.json --keys loss --legend loss
+  ```
