@@ -3,8 +3,8 @@ import numpy as np
 import torch
 
 
-def intersect_and_union(pred_label: torch.Tensor,
-                        label: torch.Tensor,
+def intersect_and_union(pred_label,
+                        label,
                         num_classes: int,
                         ignore_index: int,
                         label_map=dict(),
