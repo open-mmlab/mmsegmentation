@@ -17,7 +17,7 @@ class FCNHead(BaseDecodeHead):
         kernel_size (int): The kernel size for convs in the head. Default: 3.
         concat_input (bool): Whether concat the input and output of convs
             before classification layer.
-        dilation (int): Spacing between kernel elements. Default: 1.
+        dilation (int): The dilation rate for convs in the head. Default: 1.
     """
 
     def __init__(self,
