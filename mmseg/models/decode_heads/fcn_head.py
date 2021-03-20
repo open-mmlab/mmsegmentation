@@ -17,14 +17,16 @@ class FCNHead(BaseDecodeHead):
         kernel_size (int): The kernel size for convs in the head. Default: 3.
         concat_input (bool): Whether concat the input and output of convs
             before classification layer.
+        dilation (int): The dilation rate for convs in the head. Default: 1.
     """
 
     def __init__(self,
                  num_convs=2,
                  kernel_size=3,
                  concat_input=True,
+                 dilation=1,
                  **kwargs):
-        assert num_convs >= 0
+        assert num_convs >= 0 and dilation > 0 and isinstance(dilation, int)
         self.num_convs = num_convs
         self.concat_input = concat_input
         self.kernel_size = kernel_size
@@ -32,13 +34,15 @@ class FCNHead(BaseDecodeHead):
         if num_convs == 0:
             assert self.in_channels == self.channels
 
+        conv_padding = (kernel_size // 2) * dilation
         convs = []
         convs.append(
             ConvModule(
                 self.in_channels,
                 self.channels,
                 kernel_size=kernel_size,
-                padding=kernel_size // 2,
+                padding=conv_padding,
+                dilation=dilation,
                 conv_cfg=self.conv_cfg,
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg))
@@ -48,7 +52,8 @@ class FCNHead(BaseDecodeHead):
                     self.channels,
                     self.channels,
                     kernel_size=kernel_size,
-                    padding=kernel_size // 2,
+                    padding=conv_padding,
+                    dilation=dilation,
                     conv_cfg=self.conv_cfg,
                     norm_cfg=self.norm_cfg,
                     act_cfg=self.act_cfg))
