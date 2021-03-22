@@ -97,7 +97,6 @@ def inference_segmentor(model, imgs):
         data = test_pipeline(data)
         datas.append(data)
     data = collate(datas, samples_per_gpu=1)
-    data['img'] = [img.data[0] for img in data['img']]
     data['img_metas'] = [i.data[0] for i in data['img_metas']]
 
     if next(model.parameters()).is_cuda:
@@ -108,10 +107,8 @@ def inference_segmentor(model, imgs):
     with torch.no_grad():
         results = model(return_loss=False, rescale=True, **data)
 
-    if not is_batch:
-        return results[0]
-    else:
-        return results
+    return results
+
 
 def show_result_pyplot(model, img, result, palette=None, fig_size=(15, 10)):
     """Visualize the segmentation results on the image.
