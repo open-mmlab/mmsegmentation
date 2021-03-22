@@ -104,7 +104,6 @@ def inference_segmentor(model, imgs):
     else:
         data['img_metas'] = [i.data[0] for i in data['img_metas']]
 
-
     # forward the model
     with torch.no_grad():
         results = model(return_loss=False, rescale=True, **data)

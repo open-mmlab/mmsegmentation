@@ -1,7 +1,6 @@
 import os.path as osp
 
 import mmcv
-import pytest
 
 from mmseg.apis import inference_segmentor, init_segmentor
 
@@ -52,7 +51,8 @@ def test_test_time_augmentation_on_cpu():
 
 
 def test_batch_inference():
-    config = mmcv.Config.fromfile('configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k.py')
+    config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
+    config = mmcv.Config.fromfile(config_file)
 
     # Remove pretrain model download for testing
     config.model.pretrained = None
@@ -67,8 +67,8 @@ def test_batch_inference():
 
     img = mmcv.imread(
         osp.join(osp.dirname(__file__), 'data/color.jpg'), 'color')
-    results = inference_segmentor(model, 
-        [osp.join(osp.dirname(__file__), 'data/color.jpg'), img])
+    results = inference_segmentor(
+        model, [osp.join(osp.dirname(__file__), 'data/color.jpg'), img])
 
     assert results[0].shape == (288, 512)
     assert results[1].shape == (288, 512)

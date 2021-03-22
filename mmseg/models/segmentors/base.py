@@ -245,7 +245,8 @@ class BaseSegmentor(nn.Module):
         assert palette.shape[0] == len(self.CLASSES)
         assert palette.shape[1] == 3
         assert len(palette.shape) == 2
-        color_seg = np.zeros((result.shape[0], result.shape[1], 3), dtype=np.uint8)
+        color_seg = np.zeros((result.shape[0], result.shape[1], 3),
+                             dtype=np.uint8)
         for label, color in enumerate(palette):
             color_seg[result == label, :] = color
         # convert to BGR
