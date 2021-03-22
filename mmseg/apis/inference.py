@@ -80,8 +80,8 @@ def inference_segmentor(model, imgs):
     if isinstance(imgs, (list, tuple)):
         is_batch = True
     else:
-        imgs = [imgs]
         is_batch = False
+        imgs = [imgs]
 
     cfg = model.cfg
     device = next(model.parameters()).device  # model device
@@ -96,18 +96,23 @@ def inference_segmentor(model, imgs):
         data = dict(img=img)
         data = test_pipeline(data)
         datas.append(data)
-    data = collate(datas, samples_per_gpu=1)
-    data['img_metas'] = [i.data[0] for i in data['img_metas']]
+    data = collate(datas, samples_per_gpu=len(imgs))
 
     if next(model.parameters()).is_cuda:
         # scatter to specified GPU
         data = scatter(data, [device])[0]
+    else:
+        data['img_metas'] = [i.data[0] for i in data['img_metas']]
+
 
     # forward the model
     with torch.no_grad():
         results = model(return_loss=False, rescale=True, **data)
 
-    return results
+    if not is_batch:
+        return results[0]
+    else:
+        return results
 
 
 def show_result_pyplot(model, img, result, palette=None, fig_size=(15, 10)):

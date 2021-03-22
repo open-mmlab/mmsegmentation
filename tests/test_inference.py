@@ -1,8 +1,30 @@
 import os.path as osp
 
 import mmcv
+import pytest
 
 from mmseg.apis import inference_segmentor, init_segmentor
+
+
+def test_no_augmentation_on_cpu():
+    config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
+    config = mmcv.Config.fromfile(config_file)
+
+    # Remove pretrain model download for testing
+    config.model.pretrained = None
+    # Replace SyncBN with BN to inference on CPU
+    norm_cfg = dict(type='BN', requires_grad=True)
+    config.model.backbone.norm_cfg = norm_cfg
+    config.model.decode_head.norm_cfg = norm_cfg
+    config.model.auxiliary_head.norm_cfg = norm_cfg
+
+    checkpoint_file = None
+    model = init_segmentor(config, checkpoint_file, device='cpu')
+
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), 'data/color.jpg'), 'color')
+    result = inference_segmentor(model, img)
+    assert result.shape == (288, 512)
 
 
 def test_test_time_augmentation_on_cpu():
@@ -26,12 +48,11 @@ def test_test_time_augmentation_on_cpu():
     img = mmcv.imread(
         osp.join(osp.dirname(__file__), 'data/color.jpg'), 'color')
     result = inference_segmentor(model, img)
-    assert result[0].shape == (288, 512)
+    assert result.shape == (288, 512)
 
 
 def test_batch_inference():
-    config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
-    config = mmcv.Config.fromfile(config_file)
+    config = mmcv.Config.fromfile('configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k.py')
 
     # Remove pretrain model download for testing
     config.model.pretrained = None
@@ -41,9 +62,6 @@ def test_batch_inference():
     config.model.decode_head.norm_cfg = norm_cfg
     config.model.auxiliary_head.norm_cfg = norm_cfg
 
-    # Enable test time augmentation
-    config.data.test.pipeline[1].flip = True
-
     checkpoint_file = None
     model = init_segmentor(config, checkpoint_file, device='cpu')
 
@@ -51,5 +69,6 @@ def test_batch_inference():
         osp.join(osp.dirname(__file__), 'data/color.jpg'), 'color')
     results = inference_segmentor(model, 
         [osp.join(osp.dirname(__file__), 'data/color.jpg'), img])
+
     assert results[0].shape == (288, 512)
     assert results[1].shape == (288, 512)
