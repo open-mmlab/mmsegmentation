@@ -235,7 +235,6 @@ class BaseSegmentor(nn.Module):
         """
         img = mmcv.imread(img)
         img = img.copy()
-        seg = result[0]
         if palette is None:
             if self.PALETTE is None:
                 palette = np.random.randint(
@@ -246,9 +245,9 @@ class BaseSegmentor(nn.Module):
         assert palette.shape[0] == len(self.CLASSES)
         assert palette.shape[1] == 3
         assert len(palette.shape) == 2
-        color_seg = np.zeros((seg.shape[0], seg.shape[1], 3), dtype=np.uint8)
+        color_seg = np.zeros((result.shape[0], result.shape[1], 3), dtype=np.uint8)
         for label, color in enumerate(palette):
-            color_seg[seg == label, :] = color
+            color_seg[result == label, :] = color
         # convert to BGR
         color_seg = color_seg[..., ::-1]
 

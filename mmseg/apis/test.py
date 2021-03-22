@@ -65,7 +65,7 @@ def single_gpu_test(model,
             imgs = tensor2imgs(img_tensor, **img_metas[0]['img_norm_cfg'])
             assert len(imgs) == len(img_metas)
 
-            for img, img_meta in zip(imgs, img_metas):
+            for img, img_meta, img_result in zip(imgs, img_metas, result):
                 h, w, _ = img_meta['img_shape']
                 img_show = img[:h, :w, :]
 
@@ -79,7 +79,7 @@ def single_gpu_test(model,
 
                 model.module.show_result(
                     img_show,
-                    result,
+                    img_result,
                     palette=dataset.PALETTE,
                     show=show,
                     out_file=out_file)
