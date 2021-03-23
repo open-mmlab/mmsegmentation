@@ -1,10 +1,13 @@
 import os.path as osp
+import warnings
 
+from mmcv.runner import DistEvalHook as BasicDistEvalHook
+from mmcv.runner import EvalHook as BasicEvalHook
 from mmcv.runner import Hook
 from torch.utils.data import DataLoader
 
 
-class EvalHook(Hook):
+class SegEvalHook(Hook):
     """Evaluation hook.
 
     Attributes:
@@ -16,6 +19,7 @@ class EvalHook(Hook):
         if not isinstance(dataloader, DataLoader):
             raise TypeError('dataloader must be a pytorch DataLoader, but got '
                             f'{type(dataloader)}')
+        warnings.warn('This hook is deprecatd.', category=DeprecationWarning)
         self.dataloader = dataloader
         self.interval = interval
         self.by_epoch = by_epoch
@@ -48,7 +52,7 @@ class EvalHook(Hook):
         runner.log_buffer.ready = True
 
 
-class DistEvalHook(EvalHook):
+class SegDistEvalHook(SegEvalHook):
     """Distributed evaluation hook.
 
     Attributes:
@@ -105,3 +109,19 @@ class DistEvalHook(EvalHook):
         if runner.rank == 0:
             print('\n')
             self.evaluate(runner, results)
+
+
+class EvalHook(BasicEvalHook):
+
+    greater_keys = ['mIoU', 'mAcc', 'aAcc']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class DistEvalHook(BasicDistEvalHook):
+
+    greater_keys = ['mIoU', 'mAcc', 'aAcc']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
