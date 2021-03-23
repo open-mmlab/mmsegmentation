@@ -166,7 +166,8 @@ result = inference_segmentor(model, img)
 # visualize the results in a new window
 model.show_result(img, result, show=True)
 # or save the visualization results to image files
-model.show_result(img, result, out_file='result.jpg')
+# you can change the opacity of the painted segmentation map in (0, 1].
+model.show_result(img, result, out_file='result.jpg', opacity=0.5)
 
 # test a video and show the results
 video = mmcv.VideoReader('video.mp4')
