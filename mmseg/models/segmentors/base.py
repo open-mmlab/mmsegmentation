@@ -212,7 +212,8 @@ class BaseSegmentor(nn.Module):
                     win_name='',
                     show=False,
                     wait_time=0,
-                    out_file=None):
+                    out_file=None,
+                    opacity=0.5):
         """Draw `result` over `img`.
 
         Args:
@@ -229,7 +230,9 @@ class BaseSegmentor(nn.Module):
                 Default: False.
             out_file (str or None): The filename to write the image.
                 Default: None.
-
+            opacity(float): Opacity of painted segmentation map.
+                Default 0.5.
+                Must be in (0, 1] range.
         Returns:
             img (Tensor): Only if not `show` or `out_file`
         """
@@ -246,13 +249,14 @@ class BaseSegmentor(nn.Module):
         assert palette.shape[0] == len(self.CLASSES)
         assert palette.shape[1] == 3
         assert len(palette.shape) == 2
+        assert 0 < opacity <= 1.0
         color_seg = np.zeros((seg.shape[0], seg.shape[1], 3), dtype=np.uint8)
         for label, color in enumerate(palette):
             color_seg[seg == label, :] = color
         # convert to BGR
         color_seg = color_seg[..., ::-1]
 
-        img = img * 0.5 + color_seg * 0.5
+        img = img * (1 - opacity) + color_seg * opacity
         img = img.astype(np.uint8)
         # if out_file specified, do not show image in window
         if out_file is not None:
