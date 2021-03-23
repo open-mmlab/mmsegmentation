@@ -5,15 +5,17 @@ import torch
 
 def intersect_and_union(pred_label,
                         label,
-                        num_classes: int,
-                        ignore_index: int,
+                        num_classes,
+                        ignore_index,
                         label_map=dict(),
                         reduce_zero_label=False):
     """Calculate intersection and Union.
 
     Args:
-        pred_label (ndarray): Prediction segmentation map.
-        label (ndarray): Ground truth segmentation map.
+        pred_label (ndarray | str): Prediction segmentation map
+            or predict result filename.
+        label (ndarray | str): Ground truth segmentation map
+            or label filename.
         num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         label_map (dict): Mapping old labels to new labels. The parameter will
@@ -64,18 +66,19 @@ def intersect_and_union(pred_label,
     return area_intersect, area_union, area_pred_label, area_label
 
 
-def total_intersect_and_union(results: list,
-                              gt_seg_maps: list,
-                              num_classes: int,
-                              ignore_index: int,
+def total_intersect_and_union(results,
+                              gt_seg_maps,
+                              num_classes,
+                              ignore_index,
                               label_map=dict(),
                               reduce_zero_label=False):
     """Calculate Total Intersection and Union.
 
     Args:
-        results (list[ndarray]): List of prediction segmentation maps.
-        gt_seg_maps (list[ndarray]): list of ground truth segmentation
-        maps.
+        results (list[ndarray] | list[str]): List of prediction segmentation
+            maps or list of prediction result filenames.
+        gt_seg_maps (list[ndarray] | list[str]): list of ground truth
+            segmentation maps or list of label filenames.
         num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         label_map (dict): Mapping old labels to new labels. Default: dict().
@@ -118,8 +121,10 @@ def mean_iou(results,
     """Calculate Mean Intersection and Union (mIoU)
 
     Args:
-        results (list[ndarray]): List of prediction segmentation maps.
-        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps.
+        results (list[ndarray] | list[str]): List of prediction segmentation
+            maps or list of prediction result filenames.
+        gt_seg_maps (list[ndarray] | list[str]): list of ground truth
+            segmentation maps or list of label filenames.
         num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         nan_to_num (int, optional): If specified, NaN values will be replaced
@@ -154,8 +159,10 @@ def mean_dice(results,
     """Calculate Mean Dice (mDice)
 
     Args:
-        results (list[ndarray]): List of prediction segmentation maps.
-        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps.
+        results (list[ndarray] | list[str]): List of prediction segmentation
+            maps or list of prediction result filenames.
+        gt_seg_maps (list[ndarray] | list[str]): list of ground truth
+            segmentation maps or list of label filenames.
         num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         nan_to_num (int, optional): If specified, NaN values will be replaced
@@ -181,18 +188,20 @@ def mean_dice(results,
     return all_acc, acc, dice
 
 
-def eval_metrics(results: list,
-                 gt_seg_maps: list,
-                 num_classes: int,
-                 ignore_index: int,
+def eval_metrics(results,
+                 gt_seg_maps,
+                 num_classes,
+                 ignore_index,
                  metrics=['mIoU'],
                  nan_to_num=None,
                  label_map=dict(),
                  reduce_zero_label=False):
     """Calculate evaluation metrics
     Args:
-        results (list[ndarray]): List of prediction segmentation maps.
-        gt_seg_maps (list[ndarray]): list of ground truth segmentation maps.
+        results (list[ndarray] | list[str]): List of prediction segmentation
+            maps or list of prediction result filenames.
+        gt_seg_maps (list[ndarray] | list[str]): list of ground truth
+            segmentation maps or list of label filenames.
         num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         metrics (list[str] | str): Metrics to be evaluated, 'mIoU' and 'mDice'.
