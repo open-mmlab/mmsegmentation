@@ -12,7 +12,7 @@ except ImportError:
     from mmcv.runner import Hook
     use_mmcv_hook = False
 
-if use_mmcv_hook:
+if not use_mmcv_hook:
 
     class EvalHook(Hook):
         """Evaluation hook.
@@ -32,7 +32,8 @@ if use_mmcv_hook:
                     'dataloader must be a pytorch DataLoader, but got '
                     f'{type(dataloader)}')
             warnings.warn(
-                'This hook is deprecatd.', category=DeprecationWarning)
+                'DeprecatedWarning: EvalHook and DistEvalHook in mmseg will'
+                'be deprecated, please install mmcv from master branch.')
             self.dataloader = dataloader
             self.interval = interval
             self.by_epoch = by_epoch
