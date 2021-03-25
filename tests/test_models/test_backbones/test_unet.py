@@ -1,20 +1,11 @@
 import pytest
 import torch
 from mmcv.cnn import ConvModule
-from mmcv.utils.parrots_wrapper import _BatchNorm
 from torch import nn
 
 from mmseg.models.backbones.unet import (BasicConvBlock, DeconvModule,
                                          InterpConv, UNet, UpConvBlock)
-
-
-def check_norm_state(modules, train_state):
-    """Check if norm layer is in correct train state."""
-    for mod in modules:
-        if isinstance(mod, _BatchNorm):
-            if mod.training != train_state:
-                return False
-    return True
+from .utils import check_norm_state
 
 
 def test_unet_basic_conv_block():
