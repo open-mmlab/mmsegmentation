@@ -25,9 +25,9 @@ def intersect_and_union(pred_label,
 
      Returns:
          torch.Tensor: The intersection of prediction and ground truth
-         histogram on all classes.
+            histogram on all classes.
          torch.Tensor: The union of prediction and ground truth histogram on
-         all classes.
+            all classes.
          torch.Tensor: The prediction histogram on all classes.
          torch.Tensor: The ground truth histogram on all classes.
     """

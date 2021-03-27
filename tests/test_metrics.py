@@ -168,17 +168,13 @@ def test_mean_dice():
 
 def test_filename_inputs():
     import cv2
-    import os
-    import shutil
+    import tempfile
 
-    def save_arr(input_arrays: list, title: str, is_image: bool):
+    def save_arr(input_arrays: list, title: str, is_image: bool, dir):
         filenames = []
-        PREFIX = './temp'
         SUFFIX = '.png' if is_image else '.npy'
-        if not os.path.exists(PREFIX):
-            os.makedirs(PREFIX)
         for idx, arr in enumerate(input_arrays):
-            filename = '{}/{}-{}{}'.format(PREFIX, title, idx, SUFFIX)
+            filename = '{}/{}-{}{}'.format(dir.name, title, idx, SUFFIX)
             if is_image:
                 cv2.imwrite(filename, arr)
             else:
@@ -193,8 +189,10 @@ def test_filename_inputs():
     labels = np.random.randint(0, num_classes, size=pred_size)
     labels[:, 2, 5:10] = ignore_index
 
-    result_files = save_arr(results, 'pred', False)
-    label_files = save_arr(labels, 'label', True)
+    temp_dir = tempfile.TemporaryDirectory()
+
+    result_files = save_arr(results, 'pred', False, temp_dir)
+    label_files = save_arr(labels, 'label', True, temp_dir)
 
     all_acc, acc, iou = eval_metrics(
         result_files, label_files, num_classes, ignore_index, metrics='mIoU')
@@ -204,4 +202,4 @@ def test_filename_inputs():
     assert all_acc == all_acc_l
     assert np.allclose(acc, acc_l)
     assert np.allclose(iou, iou_l)
-    shutil.rmtree('./temp')
+    temp_dir.cleanup()
