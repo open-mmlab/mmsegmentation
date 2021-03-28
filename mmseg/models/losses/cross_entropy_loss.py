@@ -6,9 +6,22 @@ from ..builder import LOSSES
 from .utils import weight_reduce_loss
 
 
+def calculate_weights(label, num_classes, norm=False, upper_bound=1.0):
+    """Calculate image based classes' weights."""
+    hist = label.float().histc(bins=num_classes, min=0, max=num_classes - 1)
+    hist_norm = hist / hist.sum()
+    if norm:
+        weights = ((hist != 0) * upper_bound * (1 / (hist_norm + 1e-6))) + 1
+    else:
+        weights = ((hist != 0) * upper_bound * (1 - hist_norm)) + 1
+    return weights
+
+
 def cross_entropy(pred,
                   label,
                   weight=None,
+                  img_based_class_weights=None,
+                  batch_weights=True,
                   class_weight=None,
                   reduction='mean',
                   avg_factor=None,
@@ -16,12 +29,35 @@ def cross_entropy(pred,
     """The wrapper function for :func:`F.cross_entropy`"""
     # class_weight is a manual rescaling weight given to each class.
     # If given, has to be a Tensor of size C element-wise losses
-    loss = F.cross_entropy(
-        pred,
-        label,
-        weight=class_weight,
-        reduction='none',
-        ignore_index=ignore_index)
+    if (class_weight is None) and (img_based_class_weights
+                                   is not None) and (not batch_weights):
+        assert pred.dim() > 2 and label.dim() > 1
+        loss = torch.zeros_like(label).float()
+        for i in range(pred.shape[0]):
+            class_weight = calculate_weights(
+                label=label[i],
+                num_classes=pred.shape[1],
+                norm=img_based_class_weights == 'norm')
+            loss[i] = F.cross_entropy(
+                pred[i].unsqueeze(0),
+                label[i].unsqueeze(0),
+                weight=class_weight,
+                reduction='none',
+                ignore_index=ignore_index)
+    else:
+        if (class_weight is None) and (img_based_class_weights
+                                       is not None) and batch_weights:
+            class_weight = calculate_weights(
+                label=label,
+                num_classes=pred.shape[1],
+                norm=img_based_class_weights == 'norm')
+            # print(class_weight)
+        loss = F.cross_entropy(
+            pred,
+            label,
+            weight=class_weight,
+            reduction='none',
+            ignore_index=ignore_index)
 
     # apply weights and do the reduction
     if weight is not None:
@@ -144,6 +180,11 @@ class CrossEntropyLoss(nn.Module):
             of softmax. Defaults to False.
         use_mask (bool, optional): Whether to use mask cross entropy loss.
             Defaults to False.
+        img_based_class_weights (None | 'norm' | 'no_norm'): Whether to use
+            the training images to calculate classes' weights. Default is None.
+            'norm' and 'no_norm' are two methods to calculate classes; weights.
+        batch_weights (bool): Calculate calsses' weights with batch images or
+            image-wise.
         reduction (str, optional): . Defaults to 'mean'.
             Options are "none", "mean" and "sum".
         class_weight (list[float], optional): Weight of each class.
@@ -154,6 +195,8 @@ class CrossEntropyLoss(nn.Module):
     def __init__(self,
                  use_sigmoid=False,
                  use_mask=False,
+                 img_based_class_weights=None,
+                 batch_weights=True,
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0):
@@ -161,6 +204,8 @@ class CrossEntropyLoss(nn.Module):
         assert (use_sigmoid is False) or (use_mask is False)
         self.use_sigmoid = use_sigmoid
         self.use_mask = use_mask
+        self.img_based_class_weights = img_based_class_weights
+        self.batch_weights = batch_weights
         self.reduction = reduction
         self.loss_weight = loss_weight
         self.class_weight = class_weight
@@ -187,12 +232,24 @@ class CrossEntropyLoss(nn.Module):
             class_weight = cls_score.new_tensor(self.class_weight)
         else:
             class_weight = None
-        loss_cls = self.loss_weight * self.cls_criterion(
-            cls_score,
-            label,
-            weight,
-            class_weight=class_weight,
-            reduction=reduction,
-            avg_factor=avg_factor,
-            **kwargs)
+        if (not self.use_sigmoid) and (not self.use_mask):
+            loss_cls = self.loss_weight * self.cls_criterion(
+                cls_score,
+                label,
+                weight,
+                img_based_class_weights=self.img_based_class_weights,
+                batch_weights=self.batch_weights,
+                class_weight=class_weight,
+                reduction=reduction,
+                avg_factor=avg_factor,
+                **kwargs)
+        else:
+            loss_cls = self.loss_weight * self.cls_criterion(
+                cls_score,
+                label,
+                weight,
+                class_weight=class_weight,
+                reduction=reduction,
+                avg_factor=avg_factor,
+                **kwargs)
         return loss_cls

@@ -83,6 +83,82 @@ def test_ce_loss():
         torch.tensor(0.9354),
         atol=1e-4)
 
+    # test loss with img_based_class_weights
+    # img_based_class_weights='norm'
+    # batch_weights=True
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        use_mask=False,
+        img_based_class_weights='norm',
+        batch_weights=True,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.ones(2, 2, 2)
+    fake_label = torch.Tensor([[1, 1], [0, 0]]).long()
+    loss = loss_cls(fake_pred, fake_label)
+
+    # test loss with img_based_class_weights
+    # img_based_class_weights='norm'
+    # batch_weights=False
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        use_mask=False,
+        img_based_class_weights='norm',
+        batch_weights=False,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.ones(2, 2, 2)
+    fake_label = torch.Tensor([[1, 1], [0, 0]]).long()
+    loss = loss_cls(fake_pred, fake_label)
+
+    # test loss with img_based_class_weights
+    # img_based_class_weights='no_norm'
+    # batch_weights=True
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        use_mask=False,
+        img_based_class_weights='no_norm',
+        batch_weights=True,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.ones(2, 2, 2)
+    fake_label = torch.Tensor([[1, 1], [0, 0]]).long()
+    loss = loss_cls(fake_pred, fake_label)
+
+    # test loss with img_based_class_weights
+    # img_based_class_weights='no_norm'
+    # batch_weights=False
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        use_mask=False,
+        img_based_class_weights='no_norm',
+        batch_weights=False,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.ones(2, 2, 2)
+    fake_label = torch.Tensor([[1, 1], [0, 0]]).long()
+    loss = loss_cls(fake_pred, fake_label)
+
+    # test loss with img_based_class_weights
+    # img_based_class_weights='None'
+    # batch_weights=False
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        use_mask=False,
+        img_based_class_weights='None',
+        batch_weights=False,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_pred = torch.ones(2, 2, 2)
+    fake_label = torch.Tensor([[1, 1], [0, 0]]).long()
+    loss = loss_cls(fake_pred, fake_label)
+    assert loss > 0
+
     # TODO test use_mask
 
 
