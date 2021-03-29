@@ -170,11 +170,11 @@ def test_filename_inputs():
     import cv2
     import tempfile
 
-    def save_arr(input_arrays: list, title: str, is_image: bool, dir):
+    def save_arr(input_arrays: list, title: str, is_image: bool, dir: str):
         filenames = []
         SUFFIX = '.png' if is_image else '.npy'
         for idx, arr in enumerate(input_arrays):
-            filename = '{}/{}-{}{}'.format(dir.name, title, idx, SUFFIX)
+            filename = '{}/{}-{}{}'.format(dir, title, idx, SUFFIX)
             if is_image:
                 cv2.imwrite(filename, arr)
             else:
@@ -189,17 +189,20 @@ def test_filename_inputs():
     labels = np.random.randint(0, num_classes, size=pred_size)
     labels[:, 2, 5:10] = ignore_index
 
-    temp_dir = tempfile.TemporaryDirectory()
+    with tempfile.TemporaryDirectory() as temp_dir:
 
-    result_files = save_arr(results, 'pred', False, temp_dir)
-    label_files = save_arr(labels, 'label', True, temp_dir)
+        result_files = save_arr(results, 'pred', False, temp_dir)
+        label_files = save_arr(labels, 'label', True, temp_dir)
 
-    all_acc, acc, iou = eval_metrics(
-        result_files, label_files, num_classes, ignore_index, metrics='mIoU')
+        all_acc, acc, iou = eval_metrics(
+            result_files,
+            label_files,
+            num_classes,
+            ignore_index,
+            metrics='mIoU')
 
-    all_acc_l, acc_l, iou_l = legacy_mean_iou(results, labels, num_classes,
-                                              ignore_index)
-    assert all_acc == all_acc_l
-    assert np.allclose(acc, acc_l)
-    assert np.allclose(iou, iou_l)
-    temp_dir.cleanup()
+        all_acc_l, acc_l, iou_l = legacy_mean_iou(results, labels, num_classes,
+                                                  ignore_index)
+        assert all_acc == all_acc_l
+        assert np.allclose(acc, acc_l)
+        assert np.allclose(iou, iou_l)
