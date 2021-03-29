@@ -33,20 +33,23 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7]
-        torch: [1.3.0+cpu, 1.5.0+cpu]
+        torch-version: [1.3.0, 1.5.0]
+        device: cpu
         include:
-          - torch: 1.3.0+cpu
-            torchvision: 0.4.1+cpu
-          - torch: 1.5.0+cpu
-            torchvision: 0.6.0+cpu
-          - torch: 1.5.0+cpu
-            torchvision: 0.6.0+cpu
+          - torch-version: 1.3.0
+            torchvision-version: 0.4.1
+          - torch-version: 1.5.0
+            torchvision-version: 0.6.0
+          - torch-version: 1.5.0
+            torchvision-version: 0.6.0
             python-version: 3.8
-          - torch: 1.5.0+cu101
-            torchvision: 0.6.0+cu101
+          - torch-version: 1.5.0
+            device: cu101
+            torchvision-version: 0.6.0
             python-version: 3.7
-          - torch: 1.6.0+cu101
-            torchvision: 0.7.0+cu101
+          - torch-version: 1.6.0
+            device: cu101
+            torchvision-version: 0.7.0
             python-version: 3.7
 
     steps:
@@ -56,7 +59,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install CUDA
-        if: ${{matrix.torch == '1.5.0+cu101'}}
+        if: ${{matrix.torch-version == '1.5.0' && matrix.device == 'cu101'}}
         run: |
           export INSTALLER=cuda-repo-${UBUNTU_VERSION}_${CUDA}_amd64.deb
           wget http://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${INSTALLER}
@@ -71,13 +74,13 @@ jobs:
           export PATH=${CUDA_HOME}/bin:${PATH}
           sudo apt-get install -y ninja-build
       - name: Install Pillow
-        if: ${{matrix.torchvision == '0.4.1+cpu'}}
+        if: ${{matrix.torchvision-version == '0.4.1'}}
         run: pip install Pillow==6.2.2
       - name: Install PyTorch
-        run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
+        run: pip install torch==${{matrix.torch-version}}+${{matrix.device}} torchvision==${{matrix.torchvision-version}}+${{matrix.device}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
-          pip install mmcv-full==latest+torch${{matrix.torch}} -f https://download.openmmlab.com/mmcv/dist/index.html --use-deprecated=legacy-resolver
+          pip install mmcv-full==latest -f https://download.openmmlab.com/mmcv/dist/${{matrix.device}}/torch${{matrix.torch-version}}/index.html
           pip install -r requirements.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
@@ -88,7 +91,7 @@ jobs:
           coverage report -m
       # Only upload coverage report for python3.7 && pytorch1.5
       - name: Upload coverage to Codecov
-        if: ${{matrix.torch == '1.5.0+cu101' && matrix.python-version == '3.7'}}
+        if: ${{matrix.torch == '1.5.0' && matrix.device == 'cu101' && matrix.python-version == '3.7'}}
         uses: codecov/codecov-action@v1.0.10
         with:
           file: ./coverage.xml
