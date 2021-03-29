@@ -34,7 +34,7 @@ jobs:
       matrix:
         python-version: [3.6, 3.7]
         torch-version: [1.3.0, 1.5.0]
-        build-with: "cpu"
+        build-with: ["cpu"]
         include:
           - torch-version: 1.3.0
             torchvision-version: 0.4.1
