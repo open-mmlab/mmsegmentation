@@ -5,27 +5,6 @@ import mmcv
 from mmseg.apis import inference_segmentor, init_segmentor
 
 
-def test_no_augmentation_on_cpu():
-    config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
-    config = mmcv.Config.fromfile(config_file)
-
-    # Remove pretrain model download for testing
-    config.model.pretrained = None
-    # Replace SyncBN with BN to inference on CPU
-    norm_cfg = dict(type='BN', requires_grad=True)
-    config.model.backbone.norm_cfg = norm_cfg
-    config.model.decode_head.norm_cfg = norm_cfg
-    config.model.auxiliary_head.norm_cfg = norm_cfg
-
-    checkpoint_file = None
-    model = init_segmentor(config, checkpoint_file, device='cpu')
-
-    img = mmcv.imread(
-        osp.join(osp.dirname(__file__), 'data/color.jpg'), 'color')
-    result = inference_segmentor(model, img)
-    assert result.shape == (288, 512)
-
-
 def test_test_time_augmentation_on_cpu():
     config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
     config = mmcv.Config.fromfile(config_file)
@@ -51,7 +30,7 @@ def test_test_time_augmentation_on_cpu():
 
 
 def test_batch_inference():
-    config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
+    config_file = 'configs/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k.py'
     config = mmcv.Config.fromfile(config_file)
 
     # Remove pretrain model download for testing
