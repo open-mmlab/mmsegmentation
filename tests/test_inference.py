@@ -6,7 +6,7 @@ from mmseg.apis import inference_segmentor, init_segmentor
 
 
 def test_test_time_augmentation_on_cpu():
-    config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
+    config_file = 'configs/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k.py'
     config = mmcv.Config.fromfile(config_file)
 
     # Remove pretrain model download for testing
