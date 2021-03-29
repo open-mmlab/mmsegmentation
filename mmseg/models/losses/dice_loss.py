@@ -69,25 +69,15 @@ class DiceLoss(nn.Module):
         ignore_index (int | None): The label index to be ignored. Default: 255.
     """
 
-    def __init__(
-            self,
-            #  loss_type='multi_class',
-            smooth=1,
-            exponent=2,
-            reduction='mean',
-            class_weight=None,
-            loss_weight=1.0,
-            ignore_index=255,
-            **kwards):
+    def __init__(self,
+                 smooth=1,
+                 exponent=2,
+                 reduction='mean',
+                 class_weight=None,
+                 loss_weight=1.0,
+                 ignore_index=255,
+                 **kwards):
         super(DiceLoss, self).__init__()
-        # assert loss_type in ['multi_class', 'binary']
-        # if loss_type == 'multi_class':
-        #     # self.cls_criterion = dice_loss
-        #     self.binary_cls = False
-        # else:
-        #     # self.cls_criterion = binary_dice_loss
-        #     self.binary_cls = True
-        # self.cls_criterion = dice_loss
         self.smooth = smooth
         self.exponent = exponent
         self.reduction = reduction
