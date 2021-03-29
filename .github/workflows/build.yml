@@ -43,6 +43,7 @@ jobs:
           - torch-version: 1.5.0
             torchvision-version: 0.6.0
             python-version: 3.8
+            build-with: "cpu"
           - torch-version: 1.5.0
             build-with: "cu101"
             torchvision-version: 0.6.0
