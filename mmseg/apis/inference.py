@@ -114,7 +114,12 @@ def inference_segmentor(model, imgs):
         return results
 
 
-def show_result_pyplot(model, img, result, palette=None, fig_size=(15, 10)):
+def show_result_pyplot(model,
+                       img,
+                       result,
+                       palette=None,
+                       fig_size=(15, 10),
+                       opacity=0.5):
     """Visualize the segmentation results on the image.
 
     Args:
@@ -125,10 +130,14 @@ def show_result_pyplot(model, img, result, palette=None, fig_size=(15, 10)):
             map. If None is given, random palette will be generated.
             Default: None
         fig_size (tuple): Figure size of the pyplot figure.
+        opacity(float): Opacity of painted segmentation map.
+            Default 0.5.
+            Must be in (0, 1] range.
     """
     if hasattr(model, 'module'):
         model = model.module
-    img = model.show_result(img, result, palette=palette, show=False)
+    img = model.show_result(
+        img, result, palette=palette, show=False, opacity=opacity)
     plt.figure(figsize=fig_size)
     plt.imshow(mmcv.bgr2rgb(img))
     plt.show()
