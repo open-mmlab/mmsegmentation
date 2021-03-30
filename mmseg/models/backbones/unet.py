@@ -35,7 +35,7 @@ class BasicConvBlock(nn.Module):
             Default: dict(type='BN').
         act_cfg (dict | None): Config dict for activation layer in ConvModule.
             Default: dict(type='ReLU').
-        dcn (bool): Use deformable convoluton in convolutional layer or not.
+        dcn (bool): Use deformable convolution in convolutional layer or not.
             Default: None.
         plugins (dict): plugins for convolutional layers. Default: None.
     """
@@ -263,7 +263,7 @@ class UNet(nn.Module):
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
-        dcn (bool): Use deformable convoluton in convolutional layer or not.
+        dcn (bool): Use deformable convolution in convolutional layer or not.
             Default: None.
         plugins (dict): plugins for convolutional layers. Default: None.
 
