@@ -329,6 +329,7 @@ class UNet(nn.Module):
         self.strides = strides
         self.downsamples = downsamples
         self.norm_eval = norm_eval
+        self.base_channels = base_channels
 
         self.encoder = nn.ModuleList()
         self.decoder = nn.ModuleList()
