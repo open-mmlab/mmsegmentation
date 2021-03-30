@@ -1,5 +1,5 @@
 import torch
-from torch import nn as nn
+from torch import nn
 from torch.nn import functional as F
 
 
@@ -43,14 +43,14 @@ class Encoding(nn.Module):
         return scaled_l2_norm
 
     @staticmethod
-    def aggregate(assigment_weights, x, codewords):
+    def aggregate(assignment_weights, x, codewords):
         num_codes, channels = codewords.size()
         reshaped_codewords = codewords.view((1, 1, num_codes, channels))
         batch_size = x.size(0)
 
         expanded_x = x.unsqueeze(2).expand(
             (batch_size, x.size(1), num_codes, channels))
-        encoded_feat = (assigment_weights.unsqueeze(3) *
+        encoded_feat = (assignment_weights.unsqueeze(3) *
                         (expanded_x - reshaped_codewords)).sum(dim=1)
         return encoded_feat
 
@@ -61,10 +61,10 @@ class Encoding(nn.Module):
         # [batch_size, height x width, channels]
         x = x.view(batch_size, self.channels, -1).transpose(1, 2).contiguous()
         # assignment_weights: [batch_size, channels, num_codes]
-        assigment_weights = F.softmax(
+        assignment_weights = F.softmax(
             self.scaled_l2(x, self.codewords, self.scale), dim=2)
         # aggregate
-        encoded_feat = self.aggregate(assigment_weights, x, self.codewords)
+        encoded_feat = self.aggregate(assignment_weights, x, self.codewords)
         return encoded_feat
 
     def __repr__(self):

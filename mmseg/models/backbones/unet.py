@@ -35,7 +35,7 @@ class BasicConvBlock(nn.Module):
             Default: dict(type='BN').
         act_cfg (dict | None): Config dict for activation layer in ConvModule.
             Default: dict(type='ReLU').
-        dcn (bool): Use deformable convoluton in convolutional layer or not.
+        dcn (bool): Use deformable convolution in convolutional layer or not.
             Default: None.
         plugins (dict): plugins for convolutional layers. Default: None.
     """
@@ -171,7 +171,7 @@ class InterpConv(nn.Module):
         kernel_size (int): Kernel size of the convolutional layer. Default: 1.
         stride (int): Stride of the convolutional layer. Default: 1.
         padding (int): Padding of the convolutional layer. Default: 1.
-        upsampe_cfg (dict): Interpolation config of the upsample layer.
+        upsample_cfg (dict): Interpolation config of the upsample layer.
             Default: dict(
                 scale_factor=2, mode='bilinear', align_corners=False).
     """
@@ -188,7 +188,7 @@ class InterpConv(nn.Module):
                  kernel_size=1,
                  stride=1,
                  padding=0,
-                 upsampe_cfg=dict(
+                 upsample_cfg=dict(
                      scale_factor=2, mode='bilinear', align_corners=False)):
         super(InterpConv, self).__init__()
 
@@ -202,7 +202,7 @@ class InterpConv(nn.Module):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
-        upsample = nn.Upsample(**upsampe_cfg)
+        upsample = nn.Upsample(**upsample_cfg)
         if conv_first:
             self.interp_upsample = nn.Sequential(conv, upsample)
         else:
@@ -232,17 +232,17 @@ class UNet(nn.Module):
         strides (Sequence[int 1 | 2]): Strides of each stage in encoder.
             len(strides) is equal to num_stages. Normally the stride of the
             first stage in encoder is 1. If strides[i]=2, it uses stride
-            convolution to downsample in the correspondance encoder stage.
+            convolution to downsample in the correspondence encoder stage.
             Default: (1, 1, 1, 1, 1).
         enc_num_convs (Sequence[int]): Number of convolutional layers in the
-            convolution block of the correspondance encoder stage.
+            convolution block of the correspondence encoder stage.
             Default: (2, 2, 2, 2, 2).
         dec_num_convs (Sequence[int]): Number of convolutional layers in the
-            convolution block of the correspondance decoder stage.
+            convolution block of the correspondence decoder stage.
             Default: (2, 2, 2, 2).
         downsamples (Sequence[int]): Whether use MaxPool to downsample the
             feature map after the first stage of encoder
-            (stages: [1, num_stages)). If the correspondance encoder stage use
+            (stages: [1, num_stages)). If the correspondence encoder stage use
             stride convolution (strides[i]=2), it will never use MaxPool to
             downsample, even downsamples[i-1]=True.
             Default: (True, True, True, True).
@@ -263,14 +263,14 @@ class UNet(nn.Module):
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
-        dcn (bool): Use deformable convoluton in convolutional layer or not.
+        dcn (bool): Use deformable convolution in convolutional layer or not.
             Default: None.
         plugins (dict): plugins for convolutional layers. Default: None.
 
     Notice:
-        The input image size should be devisible by the whole downsample rate
+        The input image size should be divisible by the whole downsample rate
         of the encoder. More detail of the whole downsample rate can be found
-        in UNet._check_input_devisible.
+        in UNet._check_input_divisible.
 
     """
 
@@ -373,7 +373,7 @@ class UNet(nn.Module):
             in_channels = base_channels * 2**i
 
     def forward(self, x):
-        self._check_input_devisible(x)
+        self._check_input_divisible(x)
         enc_outs = []
         for enc in self.encoder:
             x = enc(x)
@@ -395,7 +395,7 @@ class UNet(nn.Module):
                 if isinstance(m, _BatchNorm):
                     m.eval()
 
-    def _check_input_devisible(self, x):
+    def _check_input_divisible(self, x):
         h, w = x.shape[-2:]
         whole_downsample_rate = 1
         for i in range(1, self.num_stages):
@@ -403,7 +403,7 @@ class UNet(nn.Module):
                 whole_downsample_rate *= 2
         assert (h % whole_downsample_rate == 0) \
             and (w % whole_downsample_rate == 0),\
-            f'The input image size {(h, w)} should be devisible by the whole '\
+            f'The input image size {(h, w)} should be divisible by the whole '\
             f'downsample rate {whole_downsample_rate}, when num_stages is '\
             f'{self.num_stages}, strides is {self.strides}, and downsamples '\
             f'is {self.downsamples}.'

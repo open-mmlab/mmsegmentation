@@ -17,7 +17,7 @@ class GCHead(FCNHead):
         pooling_type (str): The pooling type of context aggregation.
             Options are 'att', 'avg'. Default: 'avg'.
         fusion_types (tuple[str]): The fusion type for feature fusion.
-            Options are 'channel_add', 'channel_mul'. Defautl: ('channel_add',)
+            Options are 'channel_add', 'channel_mul'. Default: ('channel_add',)
     """
 
     def __init__(self,

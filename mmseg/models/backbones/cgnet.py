@@ -13,7 +13,7 @@ from ..builder import BACKBONES
 class GlobalContextExtractor(nn.Module):
     """Global Context Extractor for CGNet.
 
-    This class is employed to refine the joFint feature of both local feature
+    This class is employed to refine the joint feature of both local feature
     and surrounding context.
 
     Args:
@@ -357,7 +357,7 @@ class CGNet(nn.Module):
             raise TypeError('pretrained must be a str or None')
 
     def train(self, mode=True):
-        """Convert the model into training mode whill keeping the normalization
+        """Convert the model into training mode will keeping the normalization
         layer freezed."""
         super(CGNet, self).train(mode)
         if mode and self.norm_eval:
