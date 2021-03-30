@@ -132,7 +132,7 @@ def lovasz_softmax_flat(probs, labels, classes='present', class_weight=None):
         probs (torch.Tensor): [P, C], class probabilities at each prediction
             (between 0 and 1).
         labels (torch.Tensor): [P], ground truth labels (between 0 and C - 1).
-        classes (str | list[int], optional): Classes choosed to calculate loss.
+        classes (str | list[int], optional): Classes chosen to calculate loss.
             'all' for all classes, 'present' for classes present in labels, or
             a list of classes to average. Default: 'present'.
         class_weight (list[float], optional): The weight for each class.
@@ -183,7 +183,7 @@ def lovasz_softmax(probs,
             prediction (between 0 and 1).
         labels (torch.Tensor): [B, H, W], ground truth labels (between 0 and
             C - 1).
-        classes (str | list[int], optional): Classes choosed to calculate loss.
+        classes (str | list[int], optional): Classes chosen to calculate loss.
             'all' for all classes, 'present' for classes present in labels, or
             a list of classes to average. Default: 'present'.
         per_image (bool, optional): If per_image is True, compute the loss per
@@ -232,7 +232,7 @@ class LovaszLoss(nn.Module):
     Args:
         loss_type (str, optional): Binary or multi-class loss.
             Default: 'multi_class'. Options are "binary" and "multi_class".
-        classes (str | list[int], optional): Classes choosed to calculate loss.
+        classes (str | list[int], optional): Classes chosen to calculate loss.
             'all' for all classes, 'present' for classes present in labels, or
             a list of classes to average. Default: 'present'.
         per_image (bool, optional): If per_image is True, compute the loss per
