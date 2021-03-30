@@ -171,7 +171,7 @@ class InterpConv(nn.Module):
         kernel_size (int): Kernel size of the convolutional layer. Default: 1.
         stride (int): Stride of the convolutional layer. Default: 1.
         padding (int): Padding of the convolutional layer. Default: 1.
-        upsampe_cfg (dict): Interpolation config of the upsample layer.
+        upsample_cfg (dict): Interpolation config of the upsample layer.
             Default: dict(
                 scale_factor=2, mode='bilinear', align_corners=False).
     """
@@ -188,7 +188,7 @@ class InterpConv(nn.Module):
                  kernel_size=1,
                  stride=1,
                  padding=0,
-                 upsampe_cfg=dict(
+                 upsample_cfg=dict(
                      scale_factor=2, mode='bilinear', align_corners=False)):
         super(InterpConv, self).__init__()
 
@@ -202,7 +202,7 @@ class InterpConv(nn.Module):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
-        upsample = nn.Upsample(**upsampe_cfg)
+        upsample = nn.Upsample(**upsample_cfg)
         if conv_first:
             self.interp_upsample = nn.Sequential(conv, upsample)
         else:

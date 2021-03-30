@@ -171,7 +171,7 @@ def test_interp_conv():
         64,
         32,
         conv_first=False,
-        upsampe_cfg=dict(scale_factor=2, mode='bilinear', align_corners=False))
+        upsample_cfg=dict(scale_factor=2, mode='bilinear', align_corners=False))
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert isinstance(block.interp_upsample[0], nn.Upsample)
@@ -184,7 +184,7 @@ def test_interp_conv():
         64,
         32,
         conv_first=False,
-        upsampe_cfg=dict(scale_factor=2, mode='nearest'))
+        upsample_cfg=dict(scale_factor=2, mode='nearest'))
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert isinstance(block.interp_upsample[0], nn.Upsample)
@@ -255,7 +255,7 @@ def test_up_conv_block():
         32,
         upsample_cfg=dict(
             type='InterpConv',
-            upsampe_cfg=dict(
+            upsample_cfg=dict(
                 scale_factor=2, mode='bilinear', align_corners=False)))
     skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
@@ -285,7 +285,7 @@ def test_up_conv_block():
         dilation=3,
         upsample_cfg=dict(
             type='InterpConv',
-            upsampe_cfg=dict(
+            upsample_cfg=dict(
                 scale_factor=2, mode='bilinear', align_corners=False)))
     skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
