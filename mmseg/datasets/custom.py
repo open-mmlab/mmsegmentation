@@ -214,8 +214,8 @@ class CustomDataset(Dataset):
             idx (int): Index of data.
 
         Returns:
-            dict: Testing data after pipeline with new keys intorduced by
-                piepline.
+            dict: Testing data after pipeline with new keys introduced by
+                pipeline.
         """
 
         img_info = self.img_infos[idx]
@@ -225,7 +225,6 @@ class CustomDataset(Dataset):
 
     def format_results(self, results, **kwargs):
         """Place holder to format result to dataset specific output."""
-        pass
 
     def get_gt_seg_maps(self, efficient_test=False):
         """Get ground truth segmentation maps for evaluation."""

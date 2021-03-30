@@ -59,15 +59,15 @@ class DCM(nn.Module):
 
     def forward(self, x):
         """Forward function."""
-        generted_filter = self.filter_gen_conv(
+        generated_filter = self.filter_gen_conv(
             F.adaptive_avg_pool2d(x, self.filter_size))
         x = self.input_redu_conv(x)
         b, c, h, w = x.shape
         # [1, b * c, h, w], c = self.channels
         x = x.view(1, b * c, h, w)
         # [b * c, 1, filter_size, filter_size]
-        generted_filter = generted_filter.view(b * c, 1, self.filter_size,
-                                               self.filter_size)
+        generated_filter = generated_filter.view(b * c, 1, self.filter_size,
+                                                 self.filter_size)
         pad = (self.filter_size - 1) // 2
         if (self.filter_size - 1) % 2 == 0:
             p2d = (pad, pad, pad, pad)
@@ -75,7 +75,7 @@ class DCM(nn.Module):
             p2d = (pad + 1, pad, pad + 1, pad)
         x = F.pad(input=x, pad=p2d, mode='constant', value=0)
         # [1, b * c, h, w]
-        output = F.conv2d(input=x, weight=generted_filter, groups=b * c)
+        output = F.conv2d(input=x, weight=generated_filter, groups=b * c)
         # [b, c, h, w]
         output = output.view(b, c, h, w)
         if self.norm is not None:
