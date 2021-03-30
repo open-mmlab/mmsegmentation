@@ -212,7 +212,7 @@ def eval_metrics(results,
      Returns:
          float: Overall accuracy on all images.
          ndarray: Per category accuracy, shape (num_classes, ).
-         ndarray: Per category evalution metrics, shape (num_classes, ).
+         ndarray: Per category evaluation metrics, shape (num_classes, ).
     """
     if isinstance(metrics, str):
         metrics = [metrics]
