@@ -12,6 +12,11 @@ from torch.utils.data import DataLoader, Dataset
 from mmseg.apis import single_gpu_test
 from mmseg.core import DistEvalHook, EvalHook
 
+if hasattr(mmcv.runner, 'EvalHook') and hasattr(mmcv.runner, 'DistEvalHook'):
+    PATCH_STATEMENT = 'mmcv.engine.multi_gpu_test'
+else:
+    PATCH_STATEMENT = 'mmseg.apis.multi_gpu_test'
+
 
 class ExampleDataset(Dataset):
 
@@ -63,7 +68,7 @@ def test_iter_eval_hook():
 
     # test EvalHook
     with tempfile.TemporaryDirectory() as tmpdir:
-        eval_hook = EvalHook(data_loader)
+        eval_hook = EvalHook(data_loader, by_epoch=False)
         runner = mmcv.runner.IterBasedRunner(
             model=model,
             optimizer=optimizer,
@@ -117,7 +122,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     return results
 
 
-@patch('mmseg.apis.multi_gpu_test', multi_gpu_test)
+@patch(PATCH_STATEMENT, multi_gpu_test)
 def test_dist_eval_hook():
     with pytest.raises(TypeError):
         test_dataset = ExampleModel()
@@ -143,7 +148,7 @@ def test_dist_eval_hook():
 
     # test DistEvalHook
     with tempfile.TemporaryDirectory() as tmpdir:
-        eval_hook = DistEvalHook(data_loader)
+        eval_hook = DistEvalHook(data_loader, by_epoch=False)
         runner = mmcv.runner.IterBasedRunner(
             model=model,
             optimizer=optimizer,
@@ -155,7 +160,7 @@ def test_dist_eval_hook():
                                                  logger=runner.logger)
 
 
-@patch('mmseg.apis.multi_gpu_test', multi_gpu_test)
+@patch(PATCH_STATEMENT, multi_gpu_test)
 def test_dist_eval_hook_epoch():
     with pytest.raises(TypeError):
         test_dataset = ExampleModel()
