@@ -28,6 +28,7 @@ def main():
     # dump models graph
     if args.graph:
         model = init_segmentor(args.config, device='cpu')
+        print(f'Model graph:\n{str(model)}')
         with open('example-graph.txt', 'w') as f:
             f.writelines(str(model))
 
