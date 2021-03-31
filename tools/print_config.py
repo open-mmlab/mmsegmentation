@@ -1,6 +1,7 @@
 import argparse
 
 from mmcv import Config, DictAction
+
 from mmseg.apis import init_segmentor
 
 
