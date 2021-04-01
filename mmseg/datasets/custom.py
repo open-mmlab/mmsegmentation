@@ -214,8 +214,8 @@ class CustomDataset(Dataset):
             idx (int): Index of data.
 
         Returns:
-            dict: Testing data after pipeline with new keys intorduced by
-                piepline.
+            dict: Testing data after pipeline with new keys introduced by
+                pipeline.
         """
 
         img_info = self.img_infos[idx]
@@ -225,7 +225,6 @@ class CustomDataset(Dataset):
 
     def format_results(self, results, **kwargs):
         """Place holder to format result to dataset specific output."""
-        pass
 
     def get_gt_seg_maps(self, efficient_test=False):
         """Get ground truth segmentation maps for evaluation."""
@@ -374,6 +373,11 @@ class CustomDataset(Dataset):
         for i in range(1, len(summary_table_data[0])):
             eval_results[summary_table_data[0]
                          [i]] = summary_table_data[1][i] / 100.0
+        for idx, sub_metric in enumerate(class_table_data[0][1:], 1):
+            for item in class_table_data[1:]:
+                eval_results[str(sub_metric) + '.' +
+                             str(item[0])] = item[idx] / 100.0
+
         if mmcv.is_list_of(results, str):
             for file_name in results:
                 os.remove(file_name)

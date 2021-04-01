@@ -42,7 +42,7 @@ def single_gpu_test(model,
     Args:
         model (nn.Module): Model to be tested.
         data_loader (utils.data.Dataloader): Pytorch data loader.
-        show (bool): Whether show results during infernece. Default: False.
+        show (bool): Whether show results during inference. Default: False.
         out_dir (str, optional): If specified, the results will be dumped into
             the directory to save output results.
         efficient_test (bool): Whether save the results as local numpy files to
