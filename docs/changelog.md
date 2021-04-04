@@ -1,5 +1,31 @@
 ## Changelog
 
+### V0.12 (04/03/2021)
+
+**Highlights**
+
+- Support FCN-Dilate 6 model.
+- Support Dice Loss.
+
+**Bug Fixes**
+
+- Fixed PhotoMetricDistortion Doc ([#388](https://github.com/open-mmlab/mmsegmentation/pull/388))
+- Fixed install scripts ([#399](https://github.com/open-mmlab/mmsegmentation/pull/399))
+- Fixed Dice Loss multi-class ([#417](https://github.com/open-mmlab/mmsegmentation/pull/417))
+
+**New Features**
+
+- Support Dice Loss ([#396](https://github.com/open-mmlab/mmsegmentation/pull/396))
+- Add plot logs tool ([#426](https://github.com/open-mmlab/mmsegmentation/pull/426))
+- Add opacity option to show_result ([#425](https://github.com/open-mmlab/mmsegmentation/pull/425))
+- Speed up mIoU metric ([#430](https://github.com/open-mmlab/mmsegmentation/pull/430))
+
+**Improvements**
+
+- Refactor unittest file structure ([#440](https://github.com/open-mmlab/mmsegmentation/pull/440))
+- Fix typos in the repo ([#449](https://github.com/open-mmlab/mmsegmentation/pull/449))
+- Include class-level metrics in the log ([#445](https://github.com/open-mmlab/mmsegmentation/pull/445))
+
 ### V0.11 (02/02/2021)
 
 **Highlights**
