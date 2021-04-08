@@ -98,6 +98,6 @@ class PascalContextDataset59(CustomDataset):
             img_suffix='.jpg',
             seg_map_suffix='.png',
             split=split,
-            reduce_zero_label=False,
+            reduce_zero_label=True,
             **kwargs)
         assert osp.exists(self.img_dir) and self.split is not None
