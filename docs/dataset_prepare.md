@@ -69,6 +69,18 @@ mmsegmentation
 │   │   ├── annotations
 │   │   │   ├── training
 │   │   │   ├── validation
+│   ├── A2D2
+|   |   ├── 20180807_145028
+|   |   ├── ...
+|   |   ├── 20181204_191844
+|   |   ├── ann_dir
+|   |   |   ├── test
+|   |   |   ├── train
+|   |   |   ├── val
+|   |   ├── img_dir
+|   |   |   ├── test
+|   |   |   ├── train
+|   |   |   ├── val
 
 ```
 
@@ -163,3 +175,26 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 ```
 
 The script will make directory structure automatically.
+
+### A2D2
+
+To set up the A2D2 semantic segmentation dataset, first download 'Dataset - Semantic Segmentation' (`camera_lidar_semantic.tar`) from the official site ([a2d2.audi/a2d2/en/download.html](https://www.a2d2.audi/a2d2/en/download.html)). Extract the downloaded file as `a2d2/camera_lidar_semantic/`. Inside this directory, there will be 10 subdirectories, each containing separate `camera`, `label`, `lidar` subfolders.
+
+Next, while in MMSegmentation directory root, create a symbolic link from `mmsegmentation/data/a2d2` to the dataset directory `a2d2/camera_lidar_semantic`.
+
+```shell
+ln -s data/a2d2/ /absolute/path/to/a2d2/camera_lidar_semantic/
+```
+
+Finally, convert the A2D2 dataset to the MMSegmentation format using either segmentation category labels following Cityscapes (default) or native A2D2 labels. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
+
+```shell
+# For Cityscapes semantic category labels
+python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic
+# For A2D2 semantic category labels
+python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic --choice a2d2
+```
+
+The default arguments will result in randomly splitted 'train' and 'val' sets, each consisting of 98% and 2% of all samples, respectively. Additionally, add `--nproc N` for multiprocessing using N threads.
+
+The converted label images will be generated within the same directory as the original labels. The conversion process creates a new directory structure, where `img_dir/` and `label_dir/` contains symbolic links to camera and label images located within the original data folders.
