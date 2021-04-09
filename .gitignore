@@ -113,5 +113,10 @@ data
 *.log.json
 work_dirs/
 
+# temp file or folder
+/temp*/
+/temp*.py
+/temp*.txt
+
 # Pytorch
 *.pth
