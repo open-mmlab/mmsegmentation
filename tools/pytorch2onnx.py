@@ -92,17 +92,14 @@ def _prepare_input_img(img_path, test_pipeline, shape=None):
 def _update_input_img(img_list, img_meta_list):
     N, C, H, W = img_list[0].shape
     img_meta = img_meta_list[0][0]
-    new_img_meta_list = [[
-        {
-            'img_shape': (H, W, C),
-            'ori_shape': (H, W, C),
-            'pad_shape': (H, W, C),
-            'filename': img_meta['filename'],
-            # 'scale_factor': img_meta['scale_factor'] * 0 + 1,
-            'scale_factor': 1.,
-            'flip': False,
-        } for _ in range(N)
-    ]]
+    new_img_meta_list = [[{
+        'img_shape': (H, W, C),
+        'ori_shape': (H, W, C),
+        'pad_shape': (H, W, C),
+        'filename': img_meta['filename'],
+        'scale_factor': 1.,
+        'flip': False,
+    } for _ in range(N)]]
 
     return img_list, new_img_meta_list
 
@@ -113,7 +110,7 @@ def pytorch2onnx(model,
                  show=False,
                  output_file='tmp.onnx',
                  verify=False,
-                 dynamic_export=None):
+                 dynamic_export=False):
     """Export Pytorch model to ONNX model and verify the outputs are same
     between Pytorch and ONNX.
 
@@ -125,6 +122,8 @@ def pytorch2onnx(model,
         output_file (string): The path to where we store the output ONNX model.
             Default: `tmp.onnx`.
         verify (bool): Whether compare the outputs between Pytorch and ONNX.
+            Default: False.
+        dynamic_export (bool): Whether to export ONNX with dynamic axis.
             Default: False.
     """
     model.cpu().eval()
@@ -148,8 +147,18 @@ def pytorch2onnx(model,
         model.forward, img_metas=img_meta_list, return_loss=False)
     dynamic_axes = None
     if dynamic_export:
-        dynamic_axes = {'input': {0: 'batch', 2: 'height', 3: 'width'},
-                        'output': {1: 'batch', 2: 'height', 3: 'width'}}
+        dynamic_axes = {
+            'input': {
+                0: 'batch',
+                2: 'height',
+                3: 'width'
+            },
+            'output': {
+                1: 'batch',
+                2: 'height',
+                3: 'width'
+            }
+        }
 
     register_extra_symbolics(opset_version)
     with torch.no_grad():
@@ -215,11 +224,10 @@ def pytorch2onnx(model,
                 img = img.detach().numpy().astype(np.uint8)
             # resize onnx_result to ori_shape
             onnx_result_ = cv2.resize(onnx_result[0].astype(np.uint8),
-                                     (ori_shape[1], ori_shape[0]))
+                                      (ori_shape[1], ori_shape[0]))
             show_result_pyplot(
                 model,
-                img,
-                (onnx_result_, ),
+                img, (onnx_result_, ),
                 palette=model.PALETTE,
                 block=False,
                 title='ONNXRuntime',
@@ -227,22 +235,20 @@ def pytorch2onnx(model,
 
             # resize pytorch_result to ori_shape
             pytorch_result_ = cv2.resize(pytorch_result[0].astype(np.uint8),
-                                     (ori_shape[1], ori_shape[0]))
+                                         (ori_shape[1], ori_shape[0]))
             show_result_pyplot(
                 model,
-                img,
-                (pytorch_result_, ),
+                img, (pytorch_result_, ),
                 title='PyTorch',
                 palette=model.PALETTE,
                 opacity=0.5)
         # compare results
         np.testing.assert_allclose(
-                pytorch_result.astype(np.float32)/num_classes,
-                onnx_result.astype(np.float32)/num_classes,
-                rtol=1e-5,
-                atol=1e-5,
-                err_msg='The outputs are different between Pytorch and ONNX'
-        )
+            pytorch_result.astype(np.float32) / num_classes,
+            onnx_result.astype(np.float32) / num_classes,
+            rtol=1e-5,
+            atol=1e-5,
+            err_msg='The outputs are different between Pytorch and ONNX')
         print('The outputs are same between Pytorch and ONNX')
 
 

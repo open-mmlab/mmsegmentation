@@ -216,6 +216,7 @@ class EncoderDecoder(BaseSegmentor):
 
         seg_logit = self.encode_decode(img, img_meta)
         if rescale:
+            # support dynamic shape for onnx
             if torch.onnx.is_in_onnx_export():
                 new_size = img.shape[2:]
             else:
