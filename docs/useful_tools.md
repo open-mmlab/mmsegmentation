@@ -61,6 +61,7 @@ python tools/pytorch2onnx.py \
 ```
 
 Description of arguments:
+
 - `config` : The path of a model config file.
 - `--checkpoint` : The path of a model checkpoint file.
 - `--output-file`: The path of output ONNX model. If not specified, it will be set to `tmp.onnx`.
