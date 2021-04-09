@@ -17,15 +17,15 @@ class PascalContextDataset(CustomDataset):
         split (str): Split txt file for PascalContext.
     """
 
-    CLASSES = ('background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
-               'bus', 'car', 'cat', 'chair', 'cow', 'table', 'dog', 'horse',
-               'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train',
-               'tvmonitor', 'bag', 'bed', 'bench', 'book', 'building',
-               'cabinet', 'ceiling', 'cloth', 'computer', 'cup', 'door',
-               'fence', 'floor', 'flower', 'food', 'grass', 'ground',
-               'keyboard', 'light', 'mountain', 'mouse', 'curtain', 'platform',
-               'sign', 'plate', 'road', 'rock', 'shelves', 'sidewalk', 'sky',
-               'snow', 'bedclothes', 'track', 'tree', 'truck', 'wall', 'water',
+    CLASSES = ('background', 'aeroplane', 'bag', 'bed', 'bedclothes', 'bench',
+               'bicycle', 'bird', 'boat', 'book', 'bottle', 'building', 'bus',
+               'cabinet', 'car', 'cat', 'ceiling', 'chair', 'cloth',
+               'computer', 'cow', 'cup', 'curtain', 'dog', 'door', 'fence',
+               'floor', 'flower', 'food', 'grass', 'ground', 'horse',
+               'keyboard', 'light', 'motorbike', 'mountain', 'mouse', 'person',
+               'plate', 'platform', 'pottedplant', 'road', 'rock', 'sheep',
+               'shelves', 'sidewalk', 'sign', 'sky', 'snow', 'sofa', 'table',
+               'track', 'train', 'tree', 'truck', 'tvmonitor', 'wall', 'water',
                'window', 'wood')
 
     PALETTE = [[120, 120, 120], [180, 120, 120], [6, 230, 230], [80, 50, 50],
@@ -67,15 +67,15 @@ class PascalContextDataset59(CustomDataset):
         split (str): Split txt file for PascalContext.
     """
 
-    CLASSES = ('aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car',
-               'cat', 'chair', 'cow', 'table', 'dog', 'horse', 'motorbike',
-               'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor',
-               'bag', 'bed', 'bench', 'book', 'building', 'cabinet', 'ceiling',
-               'cloth', 'computer', 'cup', 'door', 'fence', 'floor', 'flower',
-               'food', 'grass', 'ground', 'keyboard', 'light', 'mountain',
-               'mouse', 'curtain', 'platform', 'sign', 'plate', 'road', 'rock',
-               'shelves', 'sidewalk', 'sky', 'snow', 'bedclothes', 'track',
-               'tree', 'truck', 'wall', 'water', 'window', 'wood')
+    CLASSES = ('aeroplane', 'bag', 'bed', 'bedclothes', 'bench', 'bicycle',
+               'bird', 'boat', 'book', 'bottle', 'building', 'bus', 'cabinet',
+               'car', 'cat', 'ceiling', 'chair', 'cloth', 'computer', 'cow',
+               'cup', 'curtain', 'dog', 'door', 'fence', 'floor', 'flower',
+               'food', 'grass', 'ground', 'horse', 'keyboard', 'light',
+               'motorbike', 'mountain', 'mouse', 'person', 'plate', 'platform',
+               'pottedplant', 'road', 'rock', 'sheep', 'shelves', 'sidewalk',
+               'sign', 'sky', 'snow', 'sofa', 'table', 'track', 'train',
+               'tree', 'truck', 'tvmonitor', 'wall', 'water', 'window', 'wood')
 
     PALETTE = [[180, 120, 120], [6, 230, 230], [80, 50, 50], [4, 200, 3],
                [120, 120, 80], [140, 140, 140], [204, 5, 255], [230, 230, 230],

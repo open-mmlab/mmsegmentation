@@ -115,8 +115,7 @@ work_dirs/
 
 # temp file or folder
 /temp*/
-/temp*.py
-/temp*.txt
+/temp*.*
 
 # Pytorch
 *.pth
