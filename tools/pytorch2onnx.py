@@ -75,6 +75,7 @@ def _prepare_input_img(img_path, test_pipeline, shape=None):
     # build the data pipeline
     if shape is not None:
         test_pipeline[1]['img_scale'] = shape
+    test_pipeline[1]['transforms'][0]['keep_ratio'] = False
     test_pipeline = [LoadImage()] + test_pipeline[1:]
     test_pipeline = Compose(test_pipeline)
     # prepare data
@@ -145,9 +146,10 @@ def pytorch2onnx(model,
     origin_forward = model.forward
     model.forward = partial(
         model.forward, img_metas=img_meta_list, return_loss=False)
-
+    dynamic_axes = None
     if dynamic_export:
-        dynamic_axes = {'input': {0: 'batch', 2: 'height', 3: 'width'}}
+        dynamic_axes = {'input': {0: 'batch', 2: 'height', 3: 'width'},
+                        'output': {1: 'batch', 2: 'height', 3: 'width'}}
 
     register_extra_symbolics(opset_version)
     with torch.no_grad():
@@ -155,6 +157,7 @@ def pytorch2onnx(model,
             model, (img_list, ),
             output_file,
             input_names=['input'],
+            output_names=['output'],
             export_params=True,
             keep_initializers_as_inputs=False,
             verbose=show,
@@ -202,15 +205,7 @@ def pytorch2onnx(model,
         sess = rt.InferenceSession(output_file)
         onnx_result = sess.run(
             None, {net_feed_input[0]: img_list[0].detach().numpy()})[0][0]
-        if not np.allclose(
-                pytorch_result / num_classes,
-                onnx_result / num_classes,
-                rtol=1e-5,
-                atol=1):
-            raise ValueError(
-                'The outputs are different between Pytorch and ONNX')
-        print('The outputs are same between Pytorch and ONNX')
-
+        # show segmentation results
         if show:
             import cv2
             import os.path as osp
@@ -219,13 +214,36 @@ def pytorch2onnx(model,
                 img = imgs[0][:3, ...].permute(1, 2, 0) * 255
                 img = img.detach().numpy().astype(np.uint8)
             # resize onnx_result to ori_shape
-            onnx_result = cv2.resize(onnx_result[0].astype(np.uint8),
+            onnx_result_ = cv2.resize(onnx_result[0].astype(np.uint8),
                                      (ori_shape[1], ori_shape[0]))
             show_result_pyplot(
                 model,
-                img, (onnx_result, ),
+                img,
+                (onnx_result_, ),
+                palette=model.PALETTE,
+                block=False,
+                title='ONNXRuntime',
+                opacity=0.5)
+
+            # resize pytorch_result to ori_shape
+            pytorch_result_ = cv2.resize(pytorch_result[0].astype(np.uint8),
+                                     (ori_shape[1], ori_shape[0]))
+            show_result_pyplot(
+                model,
+                img,
+                (pytorch_result_, ),
+                title='PyTorch',
                 palette=model.PALETTE,
                 opacity=0.5)
+        # compare results
+        np.testing.assert_allclose(
+                pytorch_result.astype(np.float32)/num_classes,
+                onnx_result.astype(np.float32)/num_classes,
+                rtol=1e-5,
+                atol=1e-5,
+                err_msg='The outputs are different between Pytorch and ONNX'
+        )
+        print('The outputs are same between Pytorch and ONNX')
 
 
 def parse_args():
