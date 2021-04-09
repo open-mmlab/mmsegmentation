@@ -1,6 +1,6 @@
-""" Vision Transformer (ViT) in PyTorch
-Modified from https://github.com/rwightman/pytorch-image-models/blob/master/
-timm/models/vision_transformer.py (Apache-2.0 License) """
+"""Vision Transformer (ViT) in PyTorch Modified from
+https://github.com/rwightman/pytorch-image-models/blob/master/
+timm/models/vision_transformer.py (Apache-2.0 License)"""
 
 from collections import OrderedDict
 
@@ -169,6 +169,7 @@ class VisionTransformer(nn.Module):
             Default: False.
         weight_init: (str): weight init mode.
     """
+
     def __init__(self,
                  img_size=224,
                  patch_size=16,
