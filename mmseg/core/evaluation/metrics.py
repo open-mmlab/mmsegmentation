@@ -57,11 +57,11 @@ def intersect_and_union(pred_label,
 
     intersect = pred_label[pred_label == label]
     area_intersect = torch.histc(
-        intersect.float(), bins=(num_classes), min=0, max=num_classes)
+        intersect.float(), bins=(num_classes), min=0, max=num_classes - 1)
     area_pred_label = torch.histc(
-        pred_label.float(), bins=(num_classes), min=0, max=num_classes)
+        pred_label.float(), bins=(num_classes), min=0, max=num_classes - 1)
     area_label = torch.histc(
-        label.float(), bins=(num_classes), min=0, max=num_classes)
+        label.float(), bins=(num_classes), min=0, max=num_classes - 1)
     area_union = area_pred_label + area_label - area_intersect
     return area_intersect, area_union, area_pred_label, area_label
 
