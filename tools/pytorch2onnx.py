@@ -67,6 +67,29 @@ def _demo_mm_inputs(input_shape, num_classes):
     return mm_inputs
 
 
+def generate_inputs_and_wrap_model(config_path, checkpoint_path, input_config):
+    cfg = mmcv.Config.fromfile(config_path)
+    cfg.model.pretrained = None
+    # build the model and load checkpoint
+    segmentor = build_segmentor(
+        cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
+    load_checkpoint(segmentor, checkpoint_path, map_location='cpu')
+    num_classes = segmentor.decode_head.num_classes
+    input_shape = input_config['shape']
+    mm_inputs = _demo_mm_inputs(input_shape, num_classes)
+    imgs = mm_inputs.pop('imgs')
+    img_metas = mm_inputs.pop('img_metas')
+    # wrap model's forward function
+    segmentor.forward = partial(
+        segmentor.forward, img_metas=img_metas, return_loss=False)
+    return segmentor, imgs
+
+
+def refine_model_for_onnx(model):
+    model_output = _convert_batchnorm(model)
+    return model_output
+
+
 def pytorch2onnx(model,
                  input_shape,
                  opset_version=11,
