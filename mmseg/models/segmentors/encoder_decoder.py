@@ -218,12 +218,12 @@ class EncoderDecoder(BaseSegmentor):
         if rescale:
             # support dynamic shape for onnx
             if torch.onnx.is_in_onnx_export():
-                new_size = img.shape[2:]
+                size = img.shape[2:]
             else:
-                new_size = img_meta[0]['ori_shape'][:2]
+                size = img_meta[0]['ori_shape'][:2]
             seg_logit = resize(
                 seg_logit,
-                size=new_size,
+                size=size,
                 mode='bilinear',
                 align_corners=self.align_corners,
                 warning=False)

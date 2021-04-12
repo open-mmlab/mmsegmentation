@@ -122,7 +122,7 @@ def show_result_pyplot(model,
         title (str): The title of pyplot figure.
             Default is ''.
         block (bool): Whether to block the pyplot figure.
-            Default is False.
+            Default is True.
     """
     if hasattr(model, 'module'):
         model = model.module

@@ -90,6 +90,7 @@ def _prepare_input_img(img_path, test_pipeline, shape=None):
 
 
 def _update_input_img(img_list, img_meta_list):
+    # update img and its meta list
     N, C, H, W = img_list[0].shape
     img_meta = img_meta_list[0][0]
     new_img_meta_list = [[{
@@ -116,7 +117,7 @@ def pytorch2onnx(model,
 
     Args:
         model (nn.Module): Pytorch model we want to export.
-        mm_inputs (dict): Contain the input tensors and img_metas infomation.
+        mm_inputs (dict): Contain the input tensors and img_metas information.
         opset_version (int): The onnx op version. Default: 11.
         show (bool): Whether print the computation graph. Default: False.
         output_file (string): The path to where we store the output ONNX model.
@@ -273,7 +274,7 @@ def parse_args():
         '--cfg-options',
         nargs='+',
         action=DictAction,
-        help='override some settings in the used config, the key-value pair '
+        help='Override some settings in the used config, the key-value pair '
         'in xxx=yyy format will be merged into config file. If the value to '
         'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
         'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
@@ -282,7 +283,7 @@ def parse_args():
     parser.add_argument(
         '--dynamic-export',
         action='store_true',
-        help='Wether to export onnx with dynamic axis.')
+        help='Whether to export onnx with dynamic axis.')
     args = parser.parse_args()
     return args
 
@@ -329,7 +330,7 @@ if __name__ == '__main__':
             num_classes = segmentor.decode_head.num_classes
         mm_inputs = _demo_mm_inputs(input_shape, num_classes)
 
-    # conver model to onnx file
+    # convert model to onnx file
     pytorch2onnx(
         segmentor,
         mm_inputs,
