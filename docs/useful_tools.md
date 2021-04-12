@@ -69,8 +69,8 @@ Description of arguments:
 - `--shape`: The height and width of input tensor to the model. If not specified, it will be set to `256 256`.
 - `--show`: Determines whether to print the architecture of the exported model. If not specified, it will be set to `False`.
 - `--verify`: Determines whether to verify the correctness of an exported model. If not specified, it will be set to `False`.
-- `dynamic-export`: Determines whether to export ONNX model with dynamic input and output shapes. If not specified, it will be set to `False`.
-- `cfg-options`:Update config options.
+- `--dynamic-export`: Determines whether to export ONNX model with dynamic input and output shapes. If not specified, it will be set to `False`.
+- `--cfg-options`:Update config options.
 
 **Note**: This tool is still experimental. Some customized operators are not supported for now.
 
