@@ -259,7 +259,7 @@ def parse_args():
     parser.add_argument('--checkpoint', help='checkpoint file', default=None)
     parser.add_argument(
         '--input-img', type=str, help='Images for input', default=None)
-    parser.add_argument('--show', action='store_true', help='show onnx graph')
+    parser.add_argument('--show', action='store_true', help='show onnx graph and segmentation results')
     parser.add_argument(
         '--verify', action='store_true', help='verify the onnx model')
     parser.add_argument('--output-file', type=str, default='tmp.onnx')
