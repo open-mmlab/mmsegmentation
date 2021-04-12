@@ -1,6 +1,5 @@
-"""Vision Transformer (ViT) in PyTorch Modified from
-https://github.com/rwightman/pytorch-image-models/blob/master/
-timm/models/vision_transformer.py (Apache-2.0 License)"""
+"""Modified from https://github.com/rwightman/pytorch-image-
+models/blob/master/timm/models/vision_transformer.py."""
 
 from collections import OrderedDict
 
@@ -16,6 +15,19 @@ from ..builder import BACKBONES
 
 
 class Mlp(nn.Module):
+    """MLP layer for Encoder block
+    Args:
+        in_features(int): Input dimension for the first fully
+            connected layer.
+        hidden_features(int): Output dimension for the first fully
+            connected layer.
+        out_features(int): Output dementsion for the second fully
+            connected layer.
+        act_cfg(dict): Config dict for activation layer.
+            Default: dict(type='GELU').
+        drop(float): Drop rate for the dropout layer. Dropout rate has
+            to be between 0 and 1. Default: 0.
+    """
 
     def __init__(self,
                  in_features,
@@ -41,6 +53,16 @@ class Mlp(nn.Module):
 
 
 class Attention(nn.Module):
+    """ Attention layer for Encoder block
+    Args:
+        dim (int): Dimension for the input vector.
+        num_heads (int): Number of parallel attention heads.
+        qkv_bias (bool): Enable bias for qkv if True. Default: False.
+        qk_scale (float): Override default qk scale of head_dim ** -0.5 if set.
+        attn_drop (float): Drop rate for attention output weights.
+            Default: 0.
+        proj_drop (float): Drop rate for output weights. Default: 0.
+    """
 
     def __init__(self,
                  dim,
@@ -76,6 +98,24 @@ class Attention(nn.Module):
 
 
 class Block(nn.Module):
+    """Implements encoder block with residual connection.
+
+    Args:
+        dim (int): The feature dimension.
+        num_heads (int): Number of parallel attention heads.
+        mlp_ratio (int): Ratio of mlp hidden dim to embedding dim.
+        qk_scale (float): Override default qk scale of head_dim ** -0.5 if set.
+        drop (float): Drop rate for mlp output weights. Default: 0.
+        attn_drop (float): Drop rate for attention output weights.
+            Default: 0.
+        proj_drop (float): Drop rate for attn layer output weights.
+            Default: 0.
+        drop_path (float): Drop rate for drop_path layer(Not implemented).
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='GELU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN', requires_grad=True).
+    """
 
     def __init__(self,
                  dim,
@@ -105,12 +145,22 @@ class Block(nn.Module):
             drop=drop)
 
     def forward(self, x):
-        x = x + self.drop_path(self.attn(self.norm1(x)))
-        x = x + self.drop_path(self.mlp(self.norm2(x)))
+        x = x + self.attn(self.norm1(x))
+        x = x + self.mlp(self.norm2(x))
         return x
 
 
 class PatchEmbed(nn.Module):
+    """Image to Patch Embedding.
+
+    Args:
+        img_size (int): Width and height for input image (img_size x img_size).
+            default: 224.
+        patch_size (int): Width and height for a patch.
+            default: 16.
+        in_channels (int): Input channels for images. Default: 3.
+        embed_dim (int): The embedding dimension. Default: 768.
+    """
 
     def __init__(self,
                  img_size=224,
@@ -138,8 +188,6 @@ class VisionTransformer(nn.Module):
     """VisionTransformer
     A PyTorch impl of : `An Image is Worth 16x16 Words: Transformers for
         Image Recognition at Scale` - https://arxiv.org/abs/2010.11929
-    Includes distillation token & head support for `DeiT: Data-efficient
-        Image Transformers` - https://arxiv.org/abs/2012.12877
     Args:
         img_size (int, tuple): input image size. Default: 224.
         patch_size (int, tuple): patch size. Default: 16.
@@ -152,8 +200,6 @@ class VisionTransformer(nn.Module):
         qk_scale (float): override default qk scale of head_dim ** -0.5 if set.
         representation_size (Optional[int]): enable and set representation
             layer (pre-logits) to this value if set.
-        distilled (bool): model includes a distillation token and head
-            as in DeiT models. Default: False.
         drop_rate (float): dropout rate. Default: 0.
         attn_drop_rate (float): attention dropout rate. Default: 0.
         drop_path_rate (float): stochastic depth rate. Default: 0.
@@ -181,7 +227,6 @@ class VisionTransformer(nn.Module):
                  qkv_bias=True,
                  qk_scale=None,
                  representation_size=None,
-                 distilled=False,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
@@ -192,7 +237,6 @@ class VisionTransformer(nn.Module):
                  weight_init=''):
         super(VisionTransformer, self).__init__()
         self.features = self.embed_dim = embed_dim
-        self.num_tokens = 2 if distilled else 1
 
         self.patch_embed = PatchEmbed(
             img_size=img_size,
@@ -201,11 +245,7 @@ class VisionTransformer(nn.Module):
             embed_dim=embed_dim)
         num_patches = self.patch_embed.num_patches
 
-        self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
-        self.dist_token = nn.Parameter(torch.zeros(
-            1, 1, embed_dim)) if distilled else None
-        self.pos_embed = nn.Parameter(
-            torch.zeros(1, num_patches + self.num_tokens, embed_dim))
+        self.pos_embed = nn.Parameter(torch.zeros(1, num_patches, embed_dim))
         self.pos_drop = nn.Dropout(p=drop_rate)
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)]
@@ -224,7 +264,7 @@ class VisionTransformer(nn.Module):
         ])
         _, self.norm = build_norm_layer(norm_cfg, embed_dim)
 
-        if representation_size and not distilled:
+        if representation_size:
             self.num_features = representation_size
             self.pre_logits = nn.Sequential(
                 OrderedDict([('fc', Linear(embed_dim, representation_size)),
@@ -241,7 +281,14 @@ class VisionTransformer(nn.Module):
     def init_weights(self, pretrained=None):
         if isinstance(pretrained, str):
             logger = get_root_logger()
-            load_checkpoint(self, pretrained, strict=False, logger=logger)
+            state_dict = load_checkpoint(
+                self, pretrained, strict=False, logger=logger)
+            if 'pos_embed' in state_dict.keys(
+            ) and state_dict['pos_embed'].shape != self.pos_embed.shape:
+                self.pos_embed = nn.Parameter(
+                    torch.zeros(state_dict['pos_embed'].shape))
+                logger.info(msg='Reload checkpoint')
+                load_checkpoint(self, pretrained, strict=False, logger=logger)
         elif pretrained is None:
             normal_init(self.pos_embed)
             for n, m in self.named_modules():
@@ -274,20 +321,10 @@ class VisionTransformer(nn.Module):
 
     def forward(self, x):
         x = self.patch_embed(x)
-        cls_token = self.cls_token.expand(x.shape[0], -1, -1)
-        if self.dist_token is None:
-            x = torch.cat((cls_token, x), dim=1)
-        else:
-            x = torch.cat(
-                (cls_token, self.dist_token.expand(x.shape[0], -1, -1), x),
-                dim=1)
         x = self.pos_drop(x + self.pos_embed)
         x = self.blocks(x)
         x = self.norm(x)
-        if self.dist_token is None:
-            return self.pre_logits(x[:, 0])
-        else:
-            return x[:, 0], x[:, 1]
+        return self.pre_logits(x[:, 0])
 
     def train(self, mode=True):
         super(VisionTransformer, self).train(mode)
