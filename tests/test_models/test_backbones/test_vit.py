@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from mmseg.models.backbones.vision_transformer import VisionTransformer
+from mmseg.models.backbones.vit import VisionTransformer
 from .utils import check_norm_state
 
 
