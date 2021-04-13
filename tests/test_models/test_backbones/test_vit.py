@@ -10,7 +10,7 @@ def test_vit_backbone():
         # pretrained must be a string path
         model = VisionTransformer()
         model.init_weights(pretrained=0)
-    
+
     # Test ViT backbone with input size of 224 and patch size of 16
     model = VisionTransformer()
     model.init_weights()
