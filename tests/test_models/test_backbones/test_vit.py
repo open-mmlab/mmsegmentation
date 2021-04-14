@@ -20,4 +20,4 @@ def test_vit_backbone():
 
     imgs = torch.randn(4, 3, 224, 224)
     feat = model(imgs)
-    assert feat.shape == torch.Size((4, 768))
+    assert feat[0].shape == torch.Size([4, 768, 1, 1])

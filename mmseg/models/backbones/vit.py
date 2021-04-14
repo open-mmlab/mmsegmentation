@@ -5,6 +5,7 @@ from collections import OrderedDict
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from mmcv.cnn import (Conv2d, Linear, build_activation_layer, build_norm_layer,
                       constant_init, kaiming_init, normal_init, xavier_init)
 from mmcv.runner import load_checkpoint
@@ -133,9 +134,6 @@ class Block(nn.Module):
         _, self.norm1 = build_norm_layer(norm_cfg, dim)
         self.attn = Attention(dim, num_heads, qkv_bias, qk_scale, attn_drop,
                               proj_drop)
-        # TODO: drop_path
-        self.drop_path = nn.Dropout(
-            drop_path) if drop_path > 0. else nn.Identity()
         _, self.norm2 = build_norm_layer(norm_cfg, dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(
@@ -175,12 +173,7 @@ class PatchEmbed(nn.Module):
             in_channels, embed_dim, kernel_size=patch_size, stride=patch_size)
 
     def forward(self, x):
-        b, c, h, w = x.shape
-        assert h == self.img_size[0] and w == self.img_size[1], \
-            f'Input image size ({h}*{w}) doesn\'t match model' \
-            f'({self.img_size[0]}*{self.img_size[1]})'
-        x = self.proj(x).flatten(2).transpose(1, 2)
-        return x
+        return self.proj(x).flatten(2).transpose(1, 2)
 
 
 @BACKBONES.register_module()
@@ -236,8 +229,9 @@ class VisionTransformer(nn.Module):
                  with_cp=False,
                  weight_init=''):
         super(VisionTransformer, self).__init__()
+        self.img_size = img_size
+        self.patch_size = patch_size
         self.features = self.embed_dim = embed_dim
-
         self.patch_embed = PatchEmbed(
             img_size=img_size,
             patch_size=patch_size,
@@ -289,6 +283,7 @@ class VisionTransformer(nn.Module):
                     torch.zeros(state_dict['pos_embed'].shape))
                 logger.info(msg='Reload checkpoint')
                 load_checkpoint(self, pretrained, strict=False, logger=logger)
+                self.pos_embed = nn.Parameter(self.pos_embed[:, 1:, :])
         elif pretrained is None:
             normal_init(self.pos_embed)
             for n, m in self.named_modules():
@@ -320,11 +315,24 @@ class VisionTransformer(nn.Module):
             raise TypeError('pretrained must be a str or None')
 
     def forward(self, x):
+        _, _, h, w = x.shape
         x = self.patch_embed(x)
+        if x.shape[1] != self.pos_embed.shape[1]:
+            # Upsample pos_embed weights if input image size > 224
+            num_pathes = self.img_size // self.patch_size
+            h, w = h // self.patch_size, w // self.patch_size
+            pos_embed = self.pos_embed.reshape(
+                1, num_pathes, num_pathes,
+                self.pos_embed.shape[2]).permute(0, 3, 1, 2)
+            pos_embed = F.interpolate(
+                pos_embed, size=[h, w], align_corners=False, mode='bicubic')
+            self.pos_embed = nn.Parameter(
+                torch.flatten(pos_embed, 2).transpose(1, 2))
         x = self.pos_drop(x + self.pos_embed)
         x = self.blocks(x)
         x = self.norm(x)
-        return self.pre_logits(x[:, 0])
+        x = self.pre_logits(x[:, 0])
+        return tuple([x.reshape(x.shape[0], x.shape[1], 1, 1)])
 
     def train(self, mode=True):
         super(VisionTransformer, self).train(mode)
