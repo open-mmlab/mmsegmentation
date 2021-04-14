@@ -136,7 +136,7 @@ def test_metrics():
     num_classes = 59
     all_acc, acc, iou = eval_metrics(
         results, label, num_classes, ignore_index=255, metrics='mIoU')
-    assert np.sum(np.isnan(iou)) == 0
+    assert not np.any(np.isnan(iou))
 
 
 def test_mean_iou():
