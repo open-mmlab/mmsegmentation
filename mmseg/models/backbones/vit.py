@@ -166,9 +166,15 @@ class PatchEmbed(nn.Module):
                  in_channels=3,
                  embed_dim=768):
         super(PatchEmbed, self).__init__()
-        self.img_size = (img_size, img_size)
+        if isinstance(img_size, int):
+            self.img_size = (img_size, img_size)
+        elif isinstance(img_size, tuple):
+            self.img_size = img_size
+        else:
+            raise TypeError('img_size must be type of int or tuple')
+        h, w = self.img_size
         self.patch_size = (patch_size, patch_size)
-        self.num_patches = (img_size // patch_size)**2
+        self.num_patches = (h // patch_size) * (w // patch_size)
         self.proj = Conv2d(
             in_channels, embed_dim, kernel_size=patch_size, stride=patch_size)
 
@@ -182,7 +188,8 @@ class VisionTransformer(nn.Module):
     A PyTorch impl of : `An Image is Worth 16x16 Words: Transformers for
         Image Recognition at Scale` - https://arxiv.org/abs/2010.11929
     Args:
-        img_size (int, tuple): input image size. Default: 224.
+        img_size (tuple): input image size. Default: (224, 224）.
+        pretrain_img_size (int, tuple): pretrained model img size. Default 224.
         patch_size (int, tuple): patch size. Default: 16.
         in_channels (int): number of input channels. Default: 3.
         embed_dim (int): embedding dimension. Default: 768.
@@ -210,8 +217,9 @@ class VisionTransformer(nn.Module):
     """
 
     def __init__(self,
-                 img_size=224,
+                 img_size=(224, 224),
                  patch_size=16,
+                 pretrain_img_size=224,
                  in_channels=3,
                  embed_dim=768,
                  depth=12,
@@ -231,13 +239,14 @@ class VisionTransformer(nn.Module):
         super(VisionTransformer, self).__init__()
         self.img_size = img_size
         self.patch_size = patch_size
+        self.pretrain_img_size = pretrain_img_size
         self.features = self.embed_dim = embed_dim
         self.patch_embed = PatchEmbed(
             img_size=img_size,
             patch_size=patch_size,
             in_channels=in_channels,
             embed_dim=embed_dim)
-        num_patches = self.patch_embed.num_patches
+        num_patches = (pretrain_img_size // patch_size)**2
 
         self.pos_embed = nn.Parameter(torch.zeros(1, num_patches, embed_dim))
         self.pos_drop = nn.Dropout(p=drop_rate)
@@ -284,6 +293,23 @@ class VisionTransformer(nn.Module):
                 logger.info(msg='Reload checkpoint')
                 load_checkpoint(self, pretrained, strict=False, logger=logger)
                 self.pos_embed = nn.Parameter(self.pos_embed[:, 1:, :])
+
+                if self.patch_embed.num_patches != self.pos_embed.shape[1]:
+                    # Upsample pos_embed weights
+                    num_pathes = self.pretrain_img_size // self.patch_size
+                    h, w = self.img_size
+                    h, w = h // self.patch_size, w // self.patch_size
+                    pos_embed = self.pos_embed.reshape(
+                        1, num_pathes, num_pathes,
+                        self.pos_embed.shape[2]).permute(0, 3, 1, 2)
+                    pos_embed = F.interpolate(
+                        pos_embed,
+                        size=[h, w],
+                        align_corners=False,
+                        mode='bicubic')
+                    self.pos_embed = nn.Parameter(
+                        torch.flatten(pos_embed, 2).transpose(1, 2))
+
         elif pretrained is None:
             normal_init(self.pos_embed)
             for n, m in self.named_modules():
@@ -315,19 +341,7 @@ class VisionTransformer(nn.Module):
             raise TypeError('pretrained must be a str or None')
 
     def forward(self, x):
-        _, _, h, w = x.shape
         x = self.patch_embed(x)
-        if x.shape[1] != self.pos_embed.shape[1]:
-            # Upsample pos_embed weights if input image size > 224
-            num_pathes = self.img_size // self.patch_size
-            h, w = h // self.patch_size, w // self.patch_size
-            pos_embed = self.pos_embed.reshape(
-                1, num_pathes, num_pathes,
-                self.pos_embed.shape[2]).permute(0, 3, 1, 2)
-            pos_embed = F.interpolate(
-                pos_embed, size=[h, w], align_corners=False, mode='bicubic')
-            self.pos_embed = nn.Parameter(
-                torch.flatten(pos_embed, 2).transpose(1, 2))
         x = self.pos_drop(x + self.pos_embed)
         x = self.blocks(x)
         x = self.norm(x)
