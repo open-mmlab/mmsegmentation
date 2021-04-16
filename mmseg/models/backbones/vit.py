@@ -296,20 +296,10 @@ class VisionTransformer(nn.Module):
 
                 if self.patch_embed.num_patches != self.pos_embed.shape[1]:
                     # Upsample pos_embed weights
-                    num_pathes = self.pretrain_img_size // self.patch_size
                     h, w = self.img_size
-                    h, w = h // self.patch_size, w // self.patch_size
-                    pos_embed = self.pos_embed.reshape(
-                        1, num_pathes, num_pathes,
-                        self.pos_embed.shape[2]).permute(0, 3, 1, 2)
-                    pos_embed = F.interpolate(
-                        pos_embed,
-                        size=[h, w],
-                        align_corners=False,
-                        mode='bicubic')
-                    self.pos_embed = nn.Parameter(
-                        torch.flatten(pos_embed, 2).transpose(1, 2))
-
+                    pos_embed = self.upsample_pos_embed(
+                        h, w, self.pretrain_img_size, self.pretrain_img_size)
+                    self.pos_embed = nn.Parameter(pos_embed)
         elif pretrained is None:
             normal_init(self.pos_embed)
             for n, m in self.named_modules():
@@ -340,9 +330,29 @@ class VisionTransformer(nn.Module):
         else:
             raise TypeError('pretrained must be a str or None')
 
-    def forward(self, x):
-        x = self.patch_embed(x)
-        x = self.pos_drop(x + self.pos_embed)
+    def upsample_pos_embed(self, input_h, input_w, origin_h, origin_w):
+        """Upsample pos_embed weights."""
+        h = input_h // self.patch_size
+        w = input_w // self.patch_size
+        origin_h = origin_h // self.patch_size
+        origin_w = origin_w // self.patch_size
+        pos_embed = self.pos_embed.reshape(1, origin_h, origin_w,
+                                           self.pos_embed.shape[2]).permute(
+                                               0, 3, 1, 2)
+        pos_embed = F.interpolate(
+            pos_embed, size=[h, w], align_corners=False, mode='bicubic')
+        pos_embed = torch.flatten(pos_embed, 2).transpose(1, 2)
+        return pos_embed
+
+    def forward(self, inputs):
+        # print(inputs.shape)
+        x = self.patch_embed(inputs)
+        pos_embed = self.pos_embed
+        if self.img_size != inputs.shape[2:]:
+            input_h, input_w = inputs.shape[2:]
+            h, w = self.img_size
+            pos_embed = self.upsample_pos_embed(input_h, input_w, h, w)
+        x = self.pos_drop(x + pos_embed)
         x = self.blocks(x)
         x = self.norm(x)
         x = self.pre_logits(x[:, 0])
