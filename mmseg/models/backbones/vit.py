@@ -1,8 +1,6 @@
 """Modified from https://github.com/rwightman/pytorch-image-
 models/blob/master/timm/models/vision_transformer.py."""
 
-from collections import OrderedDict
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -234,8 +232,7 @@ class VisionTransformer(nn.Module):
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
                  norm_eval=False,
-                 with_cp=False,
-                 weight_init=''):
+                 with_cp=False):
         super(VisionTransformer, self).__init__()
         self.img_size = img_size
         self.patch_size = patch_size
@@ -267,19 +264,8 @@ class VisionTransformer(nn.Module):
         ])
         _, self.norm = build_norm_layer(norm_cfg, embed_dim)
 
-        if representation_size:
-            self.num_features = representation_size
-            self.pre_logits = nn.Sequential(
-                OrderedDict([('fc', Linear(embed_dim, representation_size)),
-                             ('act',
-                              build_activation_layer(act_cfg=dict('Tanh')))]))
-        else:
-            self.pre_logits = nn.Identity()
-
         self.norm_eval = norm_eval
         self.with_cp = with_cp
-        # weight init mode
-        self.weight_init = weight_init
 
     def init_weights(self, pretrained=None):
         if isinstance(pretrained, str):
@@ -288,39 +274,37 @@ class VisionTransformer(nn.Module):
                 self, pretrained, strict=False, logger=logger)
             if 'pos_embed' in state_dict.keys(
             ) and state_dict['pos_embed'].shape != self.pos_embed.shape:
-                self.pos_embed = nn.Parameter(
-                    torch.zeros(state_dict['pos_embed'].shape))
-                logger.info(msg='Reload checkpoint')
-                load_checkpoint(self, pretrained, strict=False, logger=logger)
+                # Resize the pos_embed to pretrained model' pos_embed.
+                # self.pos_embed = nn.Parameter(
+                #     torch.zeros(state_dict['pos_embed'].shape))
+                self.pos_embed = nn.Parameter(state_dict['pos_embed'])
+                logger.info(
+                    msg='Resize the pos_embed to pretrained model pos_embed')
+
                 self.pos_embed = nn.Parameter(self.pos_embed[:, 1:, :])
+                logger.info(msg='Remove the "cls_token" dimension')
 
                 if self.patch_embed.num_patches != self.pos_embed.shape[1]:
-                    # Upsample pos_embed weights
+                    # Upsample pos_embed weights for adapting training inputs.
                     h, w = self.img_size
-                    pos_embed = self.upsample_pos_embed(
-                        h, w, self.pretrain_img_size, self.pretrain_img_size)
+                    pos_embed = VisionTransformer.upsample_pos_embed(
+                        self.pos_embed, h, w, self.pretrain_img_size,
+                        self.pretrain_img_size, self.patch_size)
                     self.pos_embed = nn.Parameter(pos_embed)
+
         elif pretrained is None:
+            # We only implement the 'jax_impl' initialization implemented at
+            # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353
             normal_init(self.pos_embed)
             for n, m in self.named_modules():
                 if isinstance(m, Linear):
-                    if n.startswith('pre_logits'):
-                        kaiming_init(m.weight, mode='fan_in')
-                        constant_init(m.bias, 0)
-                    else:
-                        if self.weight_init.startswith('jax'):
-                            xavier_init(m.weight, distribution='uniform')
-                            if m.bias is not None:
-                                if 'mlp' in n:
-                                    normal_init(m.bias, std=1e-6)
-                                else:
-                                    constant_init(m.bias, 0)
+                    xavier_init(m.weight, distribution='uniform')
+                    if m.bias is not None:
+                        if 'mlp' in n:
+                            normal_init(m.bias, std=1e-6)
                         else:
-                            normal_init(m.weight, std=.02)
-                            if m.bias is not None:
-                                constant_init(m.bias, 0)
-                elif self.weight_init.startswith('jax') and isinstance(
-                        m, Conv2d):
+                            constant_init(m.bias, 0)
+                elif isinstance(m, Conv2d):
                     kaiming_init(m.weight, mode='fan_in')
                     if m.bias is not None:
                         constant_init(m.bias, 0)
@@ -330,33 +314,69 @@ class VisionTransformer(nn.Module):
         else:
             raise TypeError('pretrained must be a str or None')
 
-    def upsample_pos_embed(self, input_h, input_w, origin_h, origin_w):
+    def _pos_embeding(self, img, patched_img, pos_embed):
+        """Positiong embeding method.
+
+        Resize the pos_embed, it input image size not equal to training
+            image size.
+        Args:
+            img (torch.Tensor): The inference image tensor, the shape
+                must be [B, C, H, W].
+            patched_img (torch.Tensor): The patched image, it should be
+                shape of [B, L1, C].
+            pos_embed (torch.Tensor): The pos_embed weighs, it should be
+                shape of [B, L2, c].
+        Return:
+            torch.Tensor: The pos encoded image feature.
+        """
+        assert len(patched_img.shape) == 3 and len(pos_embed.shape) == 3, \
+            'the shapes of patched_img and pos_embed must be [B, L, C]'
+        x_len, pos_len = patched_img.shape[1], pos_embed.shape[1]
+        if x_len != pos_len:
+            # If run tools/test.py to test a model, the shape of pos_embed
+            # should be [B, L_pretrain, C]
+            if pos_len == (self.pretrain_img_size // self.patch_size)**2:
+                pos_h, pos_w = self.pretrain_img_size, self.pretrain_img_size
+            # During evaluation at training, the shape of pos_embed should be
+            # [B, L_training, C]
+            elif pos_len == (self.img_size[0] // self.patch_size) * (
+                    self.img_size[1] // self.patch_size):
+                pos_h, pos_w = self.img_size
+            else:
+                raise ValueError('Unexpected shape of pos_embed, got {}.',
+                                 pos_embed.shape)
+            input_h, input_w = img.shape[2:]
+            pos_embed = VisionTransformer.upsample_pos_embed(
+                pos_embed, input_h, input_w, pos_h, pos_w, self.patch_size)
+        return patched_img + pos_embed
+
+    @staticmethod
+    def upsample_pos_embed(pos_embed, input_h, input_w, pos_h, pos_w,
+                           patch_size):
         """Upsample pos_embed weights."""
-        h = input_h // self.patch_size
-        w = input_w // self.patch_size
-        origin_h = origin_h // self.patch_size
-        origin_w = origin_w // self.patch_size
-        pos_embed = self.pos_embed.reshape(1, origin_h, origin_w,
-                                           self.pos_embed.shape[2]).permute(
-                                               0, 3, 1, 2)
+        assert len(
+            pos_embed.shape) == 3, 'shape of pos_embed must be [B, L, C]'
+        pos_embed = pos_embed.reshape(1, pos_h // patch_size,
+                                      pos_w // patch_size,
+                                      pos_embed.shape[2]).permute(0, 3, 1, 2)
         pos_embed = F.interpolate(
-            pos_embed, size=[h, w], align_corners=False, mode='bicubic')
+            pos_embed,
+            size=[input_h // patch_size, input_w // patch_size],
+            align_corners=False,
+            mode='bicubic')
         pos_embed = torch.flatten(pos_embed, 2).transpose(1, 2)
         return pos_embed
 
     def forward(self, inputs):
-        # print(inputs.shape)
         x = self.patch_embed(inputs)
-        pos_embed = self.pos_embed
-        if self.img_size != inputs.shape[2:]:
-            input_h, input_w = inputs.shape[2:]
-            h, w = self.img_size
-            pos_embed = self.upsample_pos_embed(input_h, input_w, h, w)
-        x = self.pos_drop(x + pos_embed)
+        x = self._pos_embeding(inputs, x, self.pos_embed)
         x = self.blocks(x)
         x = self.norm(x)
-        x = self.pre_logits(x[:, 0])
-        return tuple([x.reshape(x.shape[0], x.shape[1], 1, 1)])
+        B, _, C = x.shape
+        x = x.reshape(B, inputs.shape[2] // self.patch_size,
+                      inputs.shape[3] // self.patch_size,
+                      C).permute(0, 3, 1, 2)
+        return [x]
 
     def train(self, mode=True):
         super(VisionTransformer, self).train(mode)
