@@ -30,8 +30,8 @@ def check_torch_version():
     torch_version = digit_version(torch.__version__)
 
     assert (torch_version >= digit_version(torch_minimum_version)), \
-        f'Torch=={torch.__version__} is used but incompatible. ' \
-        f'Please install pytorch>={torch_minimum_version}.'
+        f'Torch=={torch.__version__} is not support for converting to ' \
+        f'torchscript. Please install pytorch>={torch_minimum_version}.'
 
 
 def _convert_batchnorm(module):
