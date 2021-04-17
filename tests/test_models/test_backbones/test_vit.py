@@ -20,12 +20,32 @@ def test_vit_backbone():
         x = torch.randn(1, 196)
         VisionTransformer.upsample_pos_embed(x, 512, 512, 224, 224)
 
+    with pytest.raises(RuntimeError):
+        # forward inputs must be [N, C, H, W]
+        x = torch.randn(3, 30, 30)
+        model = VisionTransformer()
+        model(x)
+
+    # Test img_size isinstance int
+    imgs = torch.randn(1, 3, 224, 224)
+    model = VisionTransformer(img_size=224)
+    model.init_weights()
+    model(imgs)
+
     # Test ViT backbone with input size of 224 and patch size of 16
     model = VisionTransformer()
     model.init_weights()
     model.train()
 
     assert check_norm_state(model.modules(), True)
+
+    # Test large size input image
+    large_size_img = torch.randn(1, 3, 256, 256)
+    model(large_size_img)
+
+    # Test small size input image
+    small_size_img = torch.randn(1, 3, 30, 30)
+    model(small_size_img)
 
     imgs = torch.randn(4, 3, 224, 224)
     feat = model(imgs)
