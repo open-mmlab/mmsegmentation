@@ -11,6 +11,15 @@ def test_vit_backbone():
         model = VisionTransformer()
         model.init_weights(pretrained=0)
 
+    with pytest.raises(TypeError):
+        # img_size must be int or tuple
+        model = VisionTransformer(img_size=512.0)
+
+    with pytest.raises(TypeError):
+        # test upsample_pos_embed function
+        x = torch.randn(1, 196)
+        VisionTransformer.upsample_pos_embed(x, 512, 512, 224, 224)
+
     # Test ViT backbone with input size of 224 and patch size of 16
     model = VisionTransformer()
     model.init_weights()
