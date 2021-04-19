@@ -108,16 +108,10 @@ data
 .idea
 
 # custom
-*.npy
 *.pkl
 *.pkl.json
 *.log.json
 work_dirs/
-backup/
-
-# temp file or folder
-/temp*/
-/temp*.*
 
 # Pytorch
 *.pth
