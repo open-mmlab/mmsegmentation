@@ -74,6 +74,18 @@ Description of arguments:
 
 **Note**: This tool is still experimental. Some customized operators are not supported for now.
 
+### Convert to TorchScript (experimental)
+
+We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between Pytorch and TorchScript model.
+
+```shell
+python tools/pytorch2torchscript.py ${CONFIG_FILE} --checkpoint ${CHECKPOINT_FILE} --output-file ${ONNX_FILE} [--shape ${INPUT_SHAPE} --verify]
+```
+
+**Note**: It's only support PyTorch>=1.8.0 for now.
+
+**Note**: This tool is still experimental. Some customized operators are not supported for now.
+
 ## Miscellaneous
 
 ### Print the entire config
