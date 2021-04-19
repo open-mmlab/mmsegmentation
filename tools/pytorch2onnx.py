@@ -128,6 +128,7 @@ def pytorch2onnx(model,
             Default: False.
     """
     model.cpu().eval()
+    test_mode = model.test_cfg.mode
 
     if isinstance(model.decode_head, nn.ModuleList):
         num_classes = model.decode_head[-1].num_classes
@@ -140,7 +141,9 @@ def pytorch2onnx(model,
 
     img_list = [img[None, :] for img in imgs]
     img_meta_list = [[img_meta] for img_meta in img_metas]
-    img_list, img_meta_list = _update_input_img(img_list, img_meta_list)
+    # update img_meta
+    if test_mode == 'whole':
+        img_list, img_meta_list = _update_input_img(img_list, img_meta_list)
 
     # replace original forward function
     origin_forward = model.forward
@@ -148,18 +151,21 @@ def pytorch2onnx(model,
         model.forward, img_metas=img_meta_list, return_loss=False)
     dynamic_axes = None
     if dynamic_export:
-        dynamic_axes = {
-            'input': {
-                0: 'batch',
-                2: 'height',
-                3: 'width'
-            },
-            'output': {
-                1: 'batch',
-                2: 'height',
-                3: 'width'
+        if test_mode == 'slide':
+            dynamic_axes = {'input': {0: 'batch'}, 'output': {1: 'batch'}}
+        else:
+            dynamic_axes = {
+                'input': {
+                    0: 'batch',
+                    2: 'height',
+                    3: 'width'
+                },
+                'output': {
+                    1: 'batch',
+                    2: 'height',
+                    3: 'width'
+                }
             }
-        }
 
     register_extra_symbolics(opset_version)
     with torch.no_grad():
@@ -184,10 +190,11 @@ def pytorch2onnx(model,
 
         if dynamic_export:
             # scale image for dynamic shape test
-            img_list = [
-                nn.functional.interpolate(_, scale_factor=1.5)
-                for _ in img_list
-            ]
+            if test_mode == 'whole':
+                img_list = [
+                    nn.functional.interpolate(_, scale_factor=1.5)
+                    for _ in img_list
+                ]
             # concate flip image for batch test
             flip_img_list = [_.flip(-1) for _ in img_list]
             img_list = [
@@ -196,8 +203,9 @@ def pytorch2onnx(model,
             ]
 
             # update img_meta
-            img_list, img_meta_list = _update_input_img(
-                img_list, img_meta_list)
+            if test_mode == 'whole':
+                img_list, img_meta_list = _update_input_img(
+                    img_list, img_meta_list)
 
         # check the numerical value
         # get pytorch output
@@ -309,6 +317,8 @@ if __name__ == '__main__':
         cfg.merge_from_dict(args.cfg_options)
     cfg.model.pretrained = None
 
+    test_mode = cfg.model.test_cfg.mode
+
     # build the model and load checkpoint
     cfg.model.train_cfg = None
     segmentor = build_segmentor(
@@ -324,8 +334,12 @@ if __name__ == '__main__':
 
     # read input or create dummpy input
     if args.input_img is not None:
+        preprocess_shape = (input_shape[3], input_shape[2])
+        if test_mode == 'slide':
+            # slide mode does not support dynamic shape
+            preprocess_shape = None
         mm_inputs = _prepare_input_img(args.input_img, cfg.data.test.pipeline,
-                                       (input_shape[3], input_shape[2]))
+                                       preprocess_shape)
     else:
         if isinstance(segmentor.decode_head, nn.ModuleList):
             num_classes = segmentor.decode_head[-1].num_classes
