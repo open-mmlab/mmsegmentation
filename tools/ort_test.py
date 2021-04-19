@@ -33,7 +33,7 @@ class ONNXRuntimeDetector(BaseSegmentor):
             session_options.register_custom_ops_library(ort_custom_op_path)
         sess = ort.InferenceSession(onnx_file, session_options)
         if device_id is not None:
-            option = {'device_id': device_id, 'cuda_mem_limit': 1 << 30}
+            option = {'device_id': device_id}
             sess.set_providers(
                 ['CUDAExecutionProvider', 'CPUExecutionProvider'],
                 [option, {}])
@@ -72,19 +72,14 @@ class ONNXRuntimeDetector(BaseSegmentor):
             self.io_binding.bind_output(name)
         self.sess.run_with_iobinding(self.io_binding)
         seg_pred = self.io_binding.copy_outputs_to_cpu()[0]
-        if self.test_mode == 'whole':
-            # whole might support dynamic reshape
-            scale_factor = img_meta[0]['scale_factor']
-            if isinstance(scale_factor, float):
-                scale_factor = (scale_factor, ) * 2
-            scale_factor = [1. / scale for scale in scale_factor]
-            if not torch.all(torch.tensor(scale_factor) == 1.):
-                seg_pred = torch.from_numpy(seg_pred).float()
-                seg_pred = torch.nn.functional.interpolate(
-                    seg_pred,
-                    scale_factor=tuple(scale_factor[:2]),
-                    mode='nearest')
-                seg_pred = seg_pred.long().detach().cpu().numpy()
+        # whole might support dynamic reshape
+        ori_shape = img_meta[0]['ori_shape']
+        if not (ori_shape[0] == seg_pred.shape[-2]
+                and ori_shape[1] == seg_pred.shape[-1]):
+            seg_pred = torch.from_numpy(seg_pred).float()
+            seg_pred = torch.nn.functional.interpolate(
+                seg_pred, size=tuple(ori_shape[:2]), mode='nearest')
+            seg_pred = seg_pred.long().detach().cpu().numpy()
         seg_pred = seg_pred[0]
         seg_pred = list(seg_pred)
         return seg_pred
