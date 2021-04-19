@@ -1,6 +1,8 @@
 """Modified from https://github.com/rwightman/pytorch-image-
 models/blob/master/timm/models/vision_transformer.py."""
 
+import math
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -150,7 +152,7 @@ class PatchEmbed(nn.Module):
     """Image to Patch Embedding.
 
     Args:
-        img_size (int): Width and height for input image (img_size x img_size).
+        img_size (int， tuple): Input image size.
             default: 224.
         patch_size (int): Width and height for a patch.
             default: 16.
@@ -187,7 +189,6 @@ class VisionTransformer(nn.Module):
         Image Recognition at Scale` - https://arxiv.org/abs/2010.11929
     Args:
         img_size (tuple): input image size. Default: (224, 224）.
-        pretrain_img_size (int, tuple): pretrained model img size. Default 224.
         patch_size (int, tuple): patch size. Default: 16.
         in_channels (int): number of input channels. Default: 3.
         embed_dim (int): embedding dimension. Default: 768.
@@ -217,7 +218,6 @@ class VisionTransformer(nn.Module):
     def __init__(self,
                  img_size=(224, 224),
                  patch_size=16,
-                 pretrain_img_size=224,
                  in_channels=3,
                  embed_dim=768,
                  depth=12,
@@ -236,16 +236,15 @@ class VisionTransformer(nn.Module):
         super(VisionTransformer, self).__init__()
         self.img_size = img_size
         self.patch_size = patch_size
-        self.pretrain_img_size = pretrain_img_size
         self.features = self.embed_dim = embed_dim
         self.patch_embed = PatchEmbed(
             img_size=img_size,
             patch_size=patch_size,
             in_channels=in_channels,
             embed_dim=embed_dim)
-        num_patches = (pretrain_img_size // patch_size)**2
 
-        self.pos_embed = nn.Parameter(torch.zeros(1, num_patches, embed_dim))
+        self.pos_embed = nn.Parameter(
+            torch.zeros(1, self.patch_embed.num_patches, embed_dim))
         self.pos_drop = nn.Dropout(p=drop_rate)
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)]
@@ -274,22 +273,23 @@ class VisionTransformer(nn.Module):
                 self, pretrained, strict=False, logger=logger)
             if 'pos_embed' in state_dict.keys(
             ) and state_dict['pos_embed'].shape != self.pos_embed.shape:
-                # Resize the pos_embed to pretrained model' pos_embed.
-                # self.pos_embed = nn.Parameter(
-                #     torch.zeros(state_dict['pos_embed'].shape))
-                self.pos_embed = nn.Parameter(state_dict['pos_embed'])
+
+                self.pos_embed = nn.Parameter(
+                    nn.Parameter(state_dict['pos_embed'])[:, 1:, :])
                 logger.info(
-                    msg='Resize the pos_embed to pretrained model pos_embed')
-
-                self.pos_embed = nn.Parameter(self.pos_embed[:, 1:, :])
-                logger.info(msg='Remove the "cls_token" dimension')
-
+                    msg='Resize the pos_embed to pretrained model pos_embed\
+                        and remove the "cls_token" dimension,\
+                        shape is changed from {} to {}'.format(
+                        torch.Size([
+                            1, self.patch_embed.num_patches, self.embed_dim
+                        ]), self.pos_embed.shape))
                 if self.patch_embed.num_patches != self.pos_embed.shape[1]:
                     # Upsample pos_embed weights for adapting training inputs.
                     h, w = self.img_size
-                    pos_embed = VisionTransformer.upsample_pos_embed(
-                        self.pos_embed, h, w, self.pretrain_img_size,
-                        self.pretrain_img_size, self.patch_size)
+                    pos_size = int(math.sqrt(self.pos_embed.shape[1]))
+                    pos_embed = self.resize_pos_embed(self.pos_embed, (h, w),
+                                                      (pos_size, pos_size),
+                                                      self.patch_size)
                     self.pos_embed = nn.Parameter(pos_embed)
 
         elif pretrained is None:
@@ -317,8 +317,8 @@ class VisionTransformer(nn.Module):
     def _pos_embeding(self, img, patched_img, pos_embed):
         """Positiong embeding method.
 
-        Resize the pos_embed, it input image size not equal to training
-            image size.
+        Resize the pos_embed, if the input image size doesn't match
+            the training size.
         Args:
             img (torch.Tensor): The inference image tensor, the shape
                 must be [B, C, H, W].
@@ -329,35 +329,39 @@ class VisionTransformer(nn.Module):
         Return:
             torch.Tensor: The pos encoded image feature.
         """
-        assert len(patched_img.shape) == 3 and len(pos_embed.shape) == 3, \
+        assert patched_img.ndim == 3 and pos_embed.ndim == 3, \
             'the shapes of patched_img and pos_embed must be [B, L, C]'
         x_len, pos_len = patched_img.shape[1], pos_embed.shape[1]
         if x_len != pos_len:
-            # If run tools/test.py to test a model, the shape of pos_embed
-            # should be [B, L_pretrain, C]
-            if pos_len == (self.pretrain_img_size // self.patch_size)**2:
-                pos_h, pos_w = self.pretrain_img_size, self.pretrain_img_size
-            # During evaluation at training, the shape of pos_embed should be
-            # [B, L_training, C]
-            elif pos_len == (self.img_size[0] // self.patch_size) * (
+            if pos_len == (self.img_size[0] // self.patch_size) * (
                     self.img_size[1] // self.patch_size):
-                pos_h, pos_w = self.img_size
+                pos_h = self.img_size[0] // self.patch_size
+                pos_w = self.img_size[1] // self.patch_size
             else:
-                raise ValueError('Unexpected shape of pos_embed, got {}.',
-                                 pos_embed.shape)
-            input_h, input_w = img.shape[2:]
-            pos_embed = VisionTransformer.upsample_pos_embed(
-                pos_embed, input_h, input_w, pos_h, pos_w, self.patch_size)
+                raise ValueError(
+                    'Unexpected shape of pos_embed, got {}.'.format(
+                        pos_embed.shape))
+            pos_embed = self.resize_pos_embed(pos_embed, img.shape[2:],
+                                              (pos_h, pos_w), self.patch_size)
         return patched_img + pos_embed
 
     @staticmethod
-    def upsample_pos_embed(pos_embed, input_h, input_w, pos_h, pos_w,
-                           patch_size):
-        """Upsample pos_embed weights."""
-        assert len(
-            pos_embed.shape) == 3, 'shape of pos_embed must be [B, L, C]'
-        pos_embed = pos_embed.reshape(1, pos_h // patch_size,
-                                      pos_w // patch_size,
+    def resize_pos_embed(pos_embed, input_image_shape, pos_size, patch_size):
+        """Resize pos_embed weights.
+
+        Resize pos_embed using bicubic interpolate method.
+        Args:
+            pos_embed (torch.Tensor): pos_embed weights.
+            input_image_shpae (tuple): Tuple for (input_h, intput_w).
+            pos_size (tuple): Tuple for (pos_h, pos_w).
+            patch_size (int): Patch size.
+        Return:
+            torch.Tensor: The resized pos_embed of shape [B, L_new, C]
+        """
+        assert pos_embed.ndim == 3, 'shape of pos_embed must be [B, L, C]'
+        input_h, input_w = input_image_shape
+        pos_h, pos_w = pos_size
+        pos_embed = pos_embed.reshape(1, pos_h, pos_w,
                                       pos_embed.shape[2]).permute(0, 3, 1, 2)
         pos_embed = F.interpolate(
             pos_embed,
