@@ -382,5 +382,5 @@ class VisionTransformer(nn.Module):
         super(VisionTransformer, self).train(mode)
         if mode and self.norm_eval:
             for m in self.modules():
-                if isinstance(m, _BatchNorm):
+                if isinstance(m, nn.LayerNorm):
                     m.eval()

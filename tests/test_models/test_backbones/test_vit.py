@@ -32,6 +32,10 @@ def test_vit_backbone():
     model.init_weights()
     model(imgs)
 
+    # Test norm_eval = True
+    model = VisionTransformer(norm_eval=True)
+    model.train()
+
     # Test ViT backbone with input size of 224 and patch size of 16
     model = VisionTransformer()
     model.init_weights()
