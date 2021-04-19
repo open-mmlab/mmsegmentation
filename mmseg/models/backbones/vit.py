@@ -274,8 +274,8 @@ class VisionTransformer(nn.Module):
             if 'pos_embed' in state_dict.keys(
             ) and state_dict['pos_embed'].shape != self.pos_embed.shape:
 
-                self.pos_embed = nn.Parameter(
-                    nn.Parameter(state_dict['pos_embed'])[:, 1:, :])
+                self.pos_embed = nn.Parameter(state_dict['pos_embed'][:,
+                                                                      1:, :])
                 logger.info(
                     msg='Resize the pos_embed to pretrained model pos_embed\
                         and remove the "cls_token" dimension,\
