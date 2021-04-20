@@ -18,11 +18,6 @@ def parse_args():
     parser.add_argument('config', help='test config file path')
     parser.add_argument('checkpoint', help='checkpoint file')
     parser.add_argument(
-        '-p',
-        '--port',
-        default='25900',
-        help='The data transmit port when distributed training.')
-    parser.add_argument(
         '--aug-test', action='store_true', help='Use Flip and Multi scale aug')
     parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
@@ -90,9 +85,6 @@ def main():
     cfg = mmcv.Config.fromfile(args.config)
     if args.options is not None:
         cfg.merge_from_dict(args.options)
-    # set transmit port
-    if args.port != '25900':
-        cfg.dist_params['port'] = args.port
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True

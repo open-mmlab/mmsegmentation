@@ -28,11 +28,6 @@ def parse_args():
         '--no-validate',
         action='store_true',
         help='whether not to evaluate the checkpoint during training')
-    parser.add_argument(
-        '-p',
-        '--port',
-        default='25900',
-        help='The data transmit port when distributed training.')
     group_gpus = parser.add_mutually_exclusive_group()
     group_gpus.add_argument(
         '--gpus',
@@ -71,9 +66,6 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.options is not None:
         cfg.merge_from_dict(args.options)
-    # set transmit port
-    if args.port != '25900':
-        cfg.dist_params['port'] = args.port
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
