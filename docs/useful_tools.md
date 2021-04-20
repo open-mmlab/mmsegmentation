@@ -115,6 +115,7 @@ Description of all arguments
 - `--options`: Override some settings in the used config file, the key-value pair in `xxx=yyy` format will be merged into config file.
 - `--eval-options`: Custom options for evaluation, the key-value pair in `xxx=yyy` format will be kwargs for `dataset.evaluate()` function
 - `--opacity`: Opacity of painted segmentation map. In (0, 1] range.
+
 ### Convert to TorchScript (experimental)
 
 We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between Pytorch and TorchScript model.
