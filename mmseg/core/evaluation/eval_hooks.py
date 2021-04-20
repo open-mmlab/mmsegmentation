@@ -1,38 +1,24 @@
 import os.path as osp
-import warnings
 
-from mmcv.runner import Hook
-from torch.utils.data import DataLoader
-
-try:
-    from mmcv.runner import DistEvalHook as BasicDistEvalHook
-    from mmcv.runner import EvalHook as BasicEvalHook
-
-    use_mmcv_hook = True
-except ImportError:
-    warnings.warn('Please install the latest version of mmcv.')
-    use_mmcv_hook = False
+from mmcv.runner import DistEvalHook as BasicDistEvalHook
+from mmcv.runner import EvalHook as BasicEvalHook
 
 
-class SegEvalHook(Hook):
-    """Evaluation hook.
+class EvalHook(BasicEvalHook):
+    """Single GPU EvalHook, with efficient test support.
 
-    Attributes:
-        dataloader (DataLoader): A PyTorch dataloader.
-        interval (int): Evaluation interval (by epochs). Default: 1.
+    Args:
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
+    Returns:
+        list: The prediction results.
     """
 
-    def __init__(self, dataloader, interval=1, by_epoch=False, **eval_kwargs):
-        if not isinstance(dataloader, DataLoader):
-            raise TypeError('dataloader must be a pytorch DataLoader, but got '
-                            f'{type(dataloader)}')
-        warnings.warn(
-            'DeprecatedWarning: EvalHook and DistEvalHook in mmseg will'
-            'be deprecated, please install mmcv from master branch.')
-        self.dataloader = dataloader
-        self.interval = interval
-        self.by_epoch = by_epoch
-        self.eval_kwargs = eval_kwargs
+    greater_keys = ['mIoU', 'mAcc', 'aAcc']
+
+    def __init__(self, *args, efficient_test=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.efficient_test = efficient_test
 
     def after_train_iter(self, runner):
         """After train epoch hook."""
@@ -52,42 +38,22 @@ class SegEvalHook(Hook):
         results = single_gpu_test(runner.model, self.dataloader, show=False)
         self.evaluate(runner, results)
 
-    def evaluate(self, runner, results):
-        """Call evaluate function of dataset."""
-        eval_res = self.dataloader.dataset.evaluate(
-            results, logger=runner.logger, **self.eval_kwargs)
-        for name, val in eval_res.items():
-            runner.log_buffer.output[name] = val
-        runner.log_buffer.ready = True
 
+class DistEvalHook(BasicDistEvalHook):
+    """Distributed EvalHook, with efficient test support.
 
-class SegDistEvalHook(SegEvalHook):
-    """Distributed evaluation hook.
-
-    Attributes:
-        dataloader (DataLoader): A PyTorch dataloader.
-        interval (int): Evaluation interval (by epochs). Default: 1.
-        tmpdir (str | None): Temporary directory to save the results of all
-            processes. Default: None.
-        gpu_collect (bool): Whether to use gpu or cpu to collect results.
-            Default: False.
+    Args:
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
+    Returns:
+        list: The prediction results.
     """
 
-    def __init__(self,
-                 dataloader,
-                 interval=1,
-                 gpu_collect=False,
-                 by_epoch=False,
-                 **eval_kwargs):
-        if not isinstance(dataloader, DataLoader):
-            raise TypeError(
-                'dataloader must be a pytorch DataLoader, but got {}'.format(
-                    type(dataloader)))
-        self.dataloader = dataloader
-        self.interval = interval
-        self.gpu_collect = gpu_collect
-        self.by_epoch = by_epoch
-        self.eval_kwargs = eval_kwargs
+    greater_keys = ['mIoU', 'mAcc', 'aAcc']
+
+    def __init__(self, *args, efficient_test=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.efficient_test = efficient_test
 
     def after_train_iter(self, runner):
         """After train epoch hook."""
@@ -118,29 +84,3 @@ class SegDistEvalHook(SegEvalHook):
         if runner.rank == 0:
             print('\n')
             self.evaluate(runner, results)
-
-
-if use_mmcv_hook:
-
-    class EvalHook(BasicEvalHook):
-        greater_keys = ['mIoU', 'mAcc', 'aAcc']
-
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-
-    class DistEvalHook(BasicDistEvalHook):
-        greater_keys = ['mIoU', 'mAcc', 'aAcc']
-
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-else:
-
-    class EvalHook(SegEvalHook):
-
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-
-    class DistEvalHook(SegDistEvalHook):
-
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
