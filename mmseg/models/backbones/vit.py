@@ -212,7 +212,6 @@ class VisionTransformer(nn.Module):
         with_cp (bool): (Not Implement) Use checkpoint or not. Using checkpoint
             will save some memory while slowing down the training speed.
             Default: False.
-        weight_init: (str): weight init mode.
     """
 
     def __init__(self,
@@ -271,26 +270,21 @@ class VisionTransformer(nn.Module):
             logger = get_root_logger()
             state_dict = load_checkpoint(
                 self, pretrained, strict=False, logger=logger)
-            if 'pos_embed' in state_dict.keys(
-            ) and state_dict['pos_embed'].shape != self.pos_embed.shape:
-
-                self.pos_embed = nn.Parameter(state_dict['pos_embed'][:,
-                                                                      1:, :])
+            if 'pos_embed' in state_dict.keys():
+                state_dict['pos_embed'] = state_dict['pos_embed'][:, 1:, :]
                 logger.info(
-                    msg='Resize the pos_embed to pretrained model pos_embed\
-                        and remove the "cls_token" dimension,\
-                        shape is changed from {} to {}'.format(
-                        torch.Size([
-                            1, self.patch_embed.num_patches, self.embed_dim
-                        ]), self.pos_embed.shape))
-                if self.patch_embed.num_patches != self.pos_embed.shape[1]:
-                    # Upsample pos_embed weights for adapting training inputs.
+                    msg='Remove the "cls_token" dimension from the checkpoint')
+
+                if self.pos_embed.shape != state_dict['pos_embed'].shape:
+                    logger.info(msg=f'Resize the pos_embed shape from \
+                        {state_dict["pos_embed"].shape} to \
+                        {self.pos_embed.shape}')
                     h, w = self.img_size
-                    pos_size = int(math.sqrt(self.pos_embed.shape[1]))
-                    pos_embed = self.resize_pos_embed(self.pos_embed, (h, w),
-                                                      (pos_size, pos_size),
-                                                      self.patch_size)
-                    self.pos_embed = nn.Parameter(pos_embed)
+                    pos_size = int(math.sqrt(state_dict['pos_embed'].shape[1]))
+                    state_dict['pos_embed'] = self.resize_pos_embed(
+                        state_dict['pos_embed'], (h, w), (pos_size, pos_size),
+                        self.patch_size)
+                self.pos_embed = nn.Parameter(state_dict['pos_embed'])
 
         elif pretrained is None:
             # We only implement the 'jax_impl' initialization implemented at
