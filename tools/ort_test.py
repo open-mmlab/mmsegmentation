@@ -1,11 +1,12 @@
 import argparse
+import os
+import os.path as osp
+import warnings
+
 import mmcv
 import numpy as np
 import onnxruntime as ort
-import os
-import os.path as osp
 import torch
-import warnings
 from mmcv.parallel import MMDataParallel
 from mmcv.runner import get_dist_info
 from mmcv.utils import DictAction
