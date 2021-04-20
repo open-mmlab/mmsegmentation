@@ -82,8 +82,8 @@ We also provide a script to convert model to [TorchScript](https://pytorch.org/d
 python tools/pytorch2torchscript.py \
     ${CONFIG_FILE} \
     --checkpoint ${CHECKPOINT_FILE} \
-    --output-file ${ONNX_FILE} 
-    --shape ${INPUT_SHAPE} 
+    --output-file ${ONNX_FILE}
+    --shape ${INPUT_SHAPE}
     --verify \
     --show
 ```
