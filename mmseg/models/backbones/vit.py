@@ -2,13 +2,14 @@
 models/blob/master/timm/models/vision_transformer.py."""
 
 import math
+import re
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import (Conv2d, Linear, build_activation_layer, build_norm_layer,
                       constant_init, kaiming_init, normal_init, xavier_init)
-from mmcv.runner import load_checkpoint
+from mmcv.runner import _load_checkpoint
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.utils import get_root_logger
@@ -268,8 +269,19 @@ class VisionTransformer(nn.Module):
     def init_weights(self, pretrained=None):
         if isinstance(pretrained, str):
             logger = get_root_logger()
-            state_dict = load_checkpoint(
-                self, pretrained, strict=False, logger=logger)
+            checkpoint = _load_checkpoint(pretrained, logger=logger)
+            if 'state_dict' in checkpoint:
+                state_dict = checkpoint['state_dict']
+            else:
+                state_dict = checkpoint
+            # strip prefix of state_dict
+            revise_keys = [(r'^module\.', '')]
+            for p, r in revise_keys:
+                state_dict = {
+                    re.sub(p, r, k): v
+                    for k, v in state_dict.items()
+                }
+
             if 'pos_embed' in state_dict.keys():
                 state_dict['pos_embed'] = state_dict['pos_embed'][:, 1:, :]
                 logger.info(
@@ -284,7 +296,7 @@ class VisionTransformer(nn.Module):
                     state_dict['pos_embed'] = self.resize_pos_embed(
                         state_dict['pos_embed'], (h, w), (pos_size, pos_size),
                         self.patch_size)
-                self.pos_embed = nn.Parameter(state_dict['pos_embed'])
+            self.load_state_dict(state_dict, False)
 
         elif pretrained is None:
             # We only implement the 'jax_impl' initialization implemented at
