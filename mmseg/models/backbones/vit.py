@@ -2,7 +2,6 @@
 models/blob/master/timm/models/vision_transformer.py."""
 
 import math
-import re
 
 import torch
 import torch.nn as nn
@@ -274,13 +273,6 @@ class VisionTransformer(nn.Module):
                 state_dict = checkpoint['state_dict']
             else:
                 state_dict = checkpoint
-            # strip prefix of state_dict
-            revise_keys = [(r'^module\.', '')]
-            for p, r in revise_keys:
-                state_dict = {
-                    re.sub(p, r, k): v
-                    for k, v in state_dict.items()
-                }
 
             if 'pos_embed' in state_dict.keys():
                 state_dict['pos_embed'] = state_dict['pos_embed'][:, 1:, :]
