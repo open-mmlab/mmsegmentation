@@ -346,21 +346,21 @@ class VisionTransformer(nn.Module):
         return patched_img + pos_embed
 
     @staticmethod
-    def resize_pos_embed(pos_embed, input_image_shape, pos_size, patch_size):
+    def resize_pos_embed(pos_embed, input_shpae, pos_shape, patch_size):
         """Resize pos_embed weights.
 
         Resize pos_embed using bicubic interpolate method.
         Args:
             pos_embed (torch.Tensor): pos_embed weights.
-            input_image_shpae (tuple): Tuple for (input_h, intput_w).
-            pos_size (tuple): Tuple for (pos_h, pos_w).
+            input_shpae (tuple): Tuple for (input_h, intput_w).
+            pos_shape (tuple): Tuple for (pos_h, pos_w).
             patch_size (int): Patch size.
         Return:
             torch.Tensor: The resized pos_embed of shape [B, L_new, C]
         """
         assert pos_embed.ndim == 3, 'shape of pos_embed must be [B, L, C]'
-        input_h, input_w = input_image_shape
-        pos_h, pos_w = pos_size
+        input_h, input_w = input_shpae
+        pos_h, pos_w = pos_shape
         pos_embed = pos_embed.reshape(1, pos_h, pos_w,
                                       pos_embed.shape[2]).permute(0, 3, 1, 2)
         pos_embed = F.interpolate(
