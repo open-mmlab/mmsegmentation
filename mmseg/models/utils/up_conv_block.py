@@ -36,7 +36,7 @@ class UpConvBlock(nn.Module):
             high-level feature map is the same as that of skip feature map
             (low-level feature map from encoder), it does not need upsample the
             high-level feature map and the upsample_cfg is None.
-        dcn (bool): Use deformable convoluton in convolutional layer or not.
+        dcn (bool): Use deformable convolution in convolutional layer or not.
             Default: None.
         plugins (dict): plugins for convolutional layers. Default: None.
     """

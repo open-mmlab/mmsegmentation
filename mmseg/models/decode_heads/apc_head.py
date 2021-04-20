@@ -13,7 +13,7 @@ class ACM(nn.Module):
 
     Args:
         pool_scale (int): Pooling scale used in Adaptive Context
-            Module to extract region fetures.
+            Module to extract region features.
         fusion (bool): Add one conv to fuse residual feature.
         in_channels (int): Input channels.
         channels (int): Channels after modules, before conv_seg.
