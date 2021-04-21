@@ -79,12 +79,39 @@ Description of arguments:
 We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between Pytorch and TorchScript model.
 
 ```shell
-python tools/pytorch2torchscript.py ${CONFIG_FILE} --checkpoint ${CHECKPOINT_FILE} --output-file ${ONNX_FILE} [--shape ${INPUT_SHAPE} --verify]
+python tools/pytorch2torchscript.py \
+    ${CONFIG_FILE} \
+    --checkpoint ${CHECKPOINT_FILE} \
+    --output-file ${ONNX_FILE}
+    --shape ${INPUT_SHAPE}
+    --verify \
+    --show
 ```
+
+Description of arguments:
+
+- `config` : The path of a pytorch model config file.
+- `--checkpoint` : The path of a pytorch model checkpoint file.
+- `--output-file`: The path of output TorchScript model. If not specified, it will be set to `tmp.pt`.
+- `--input-img` : The path of an input image for conversion and visualize.
+- `--shape`: The height and width of input tensor to the model. If not specified, it will be set to `512 512`.
+- `--show`: Determines whether to print the traced graph of the exported model. If not specified, it will be set to `False`.
+- `--verify`: Determines whether to verify the correctness of an exported model. If not specified, it will be set to `False`.
 
 **Note**: It's only support PyTorch>=1.8.0 for now.
 
 **Note**: This tool is still experimental. Some customized operators are not supported for now.
+
+Examples:
+
+- Convert the cityscapes PSPNet pytorch model.
+
+  ```shell
+  python tools/pytorch2torchscript.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+  --checkpoint checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+  --output-file checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pt \
+  --shape 512 1024
+  ```
 
 ## Miscellaneous
 
@@ -94,12 +121,21 @@ python tools/pytorch2torchscript.py ${CONFIG_FILE} --checkpoint ${CHECKPOINT_FIL
  imports.
 
 ```shell
-python tools/print_config.py ${CONFIG} [-h] [--options ${OPTIONS [OPTIONS...]}]
+python tools/print_config.py \
+  ${CONFIG} \
+  --graph \
+  --options ${OPTIONS [OPTIONS...]} \
 ```
+
+Description of arguments:
+
+- `config` : The path of a pytorch model config file.
+- `--graph` : Determines whether to print the models graph.
+- `--options`: Custom options to replace the config file.
 
 ### Plot training logs
 
-`tools/analyze_logs.py` plot s loss/mIoU curves given a training log file. `pip install seaborn` first to install the dependency.
+`tools/analyze_logs.py` plots loss/mIoU curves given a training log file. `pip install seaborn` first to install the dependency.
 
 ```shell
 python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] [--backend ${BACKEND}] [--style ${STYLE}] [--out ${OUT_FILE}]
