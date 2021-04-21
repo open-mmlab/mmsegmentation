@@ -18,7 +18,7 @@ from mmseg.models.segmentors.base import BaseSegmentor
 
 class ONNXRuntimeDetector(BaseSegmentor):
 
-    def __init__(self, onnx_file, cfg, device_id=None):
+    def __init__(self, onnx_file, cfg, device_id):
         super(ONNXRuntimeDetector, self).__init__()
         # get the custom op path
         ort_custom_op_path = ''
@@ -33,13 +33,14 @@ class ONNXRuntimeDetector(BaseSegmentor):
         if osp.exists(ort_custom_op_path):
             session_options.register_custom_ops_library(ort_custom_op_path)
         sess = ort.InferenceSession(onnx_file, session_options)
-        if device_id is not None:
-            option = {'device_id': device_id}
-            sess.set_providers(
-                ['CUDAExecutionProvider', 'CPUExecutionProvider'],
-                [option, {}])
-        else:
-            sess.set_providers(['CPUExecutionProvider'])
+        providers = ['CPUExecutionProvider']
+        options = [{}]
+        is_cuda_available = ort.get_device() == 'GPU'
+        if is_cuda_available:
+            providers.append('CUDAExecutionProvider')
+            options.append({'device_id': device_id})
+
+        sess.set_providers(providers, options)
 
         self.sess = sess
         self.device_id = device_id
@@ -58,14 +59,11 @@ class ONNXRuntimeDetector(BaseSegmentor):
         raise NotImplementedError('This method is not implemented.')
 
     def simple_test(self, img, img_meta, **kwargs):
-        device_type = 'cpu' if self.device_id is None else 'cuda'
-        device_id = self.device_id if self.device_id is not None else 0
-        if device_type == 'cpu':
-            img = img.cpu()
+        device_type = img.device.type
         self.io_binding.bind_input(
             name='input',
             device_type=device_type,
-            device_id=device_id,
+            device_id=self.device_id,
             element_type=np.float32,
             shape=img.shape,
             buffer_ptr=img.data_ptr())
@@ -122,7 +120,6 @@ def parse_args():
         type=float,
         default=0.5,
         help='Opacity of painted segmentation map. In (0, 1] range.')
-    parser.add_argument('--cpu', action='store_true', help='test use cpu')
     parser.add_argument('--local_rank', type=int, default=0)
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
@@ -156,7 +153,6 @@ def main():
 
     # build the dataloader
     # TODO: support multiple images per gpu (only minor changes are needed)
-    device_id = 0 if not args.cpu else None
     dataset = build_dataset(cfg.data.test)
     data_loader = build_dataloader(
         dataset,
@@ -167,7 +163,7 @@ def main():
 
     # load onnx config and meta
     cfg.model.train_cfg = None
-    model = ONNXRuntimeDetector(args.model, cfg=cfg, device_id=device_id)
+    model = ONNXRuntimeDetector(args.model, cfg=cfg, device_id=0)
     model.CLASSES = dataset.CLASSES
     model.PALETTE = dataset.PALETTE
 
@@ -175,8 +171,7 @@ def main():
     if args.eval_options is not None:
         efficient_test = args.eval_options.get('efficient_test', False)
 
-    model = MMDataParallel(
-        model, device_ids=[device_id] if device_id is not None else None)
+    model = MMDataParallel(model, device_ids=[0])
     outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
                               efficient_test, args.opacity)
 
