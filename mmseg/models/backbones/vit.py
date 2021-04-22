@@ -6,6 +6,7 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.utils.checkpoint as cp
 from mmcv.cnn import (Conv2d, Linear, build_activation_layer, build_norm_layer,
                       constant_init, kaiming_init, normal_init, xavier_init)
 from mmcv.runner import _load_checkpoint
@@ -16,7 +17,8 @@ from ..builder import BACKBONES
 
 
 class Mlp(nn.Module):
-    """MLP layer for Encoder block
+    """MLP layer for Encoder block.
+
     Args:
         in_features(int): Input dimension for the first fully
             connected layer.
@@ -54,7 +56,8 @@ class Mlp(nn.Module):
 
 
 class Attention(nn.Module):
-    """ Attention layer for Encoder block
+    """Attention layer for Encoder block.
+
     Args:
         dim (int): Dimension for the input vector.
         num_heads (int): Number of parallel attention heads.
@@ -111,7 +114,6 @@ class Block(nn.Module):
             Default: 0.
         proj_drop (float): Drop rate for attn layer output weights.
             Default: 0.
-        drop_path (float): Drop rate for drop_path layer(Not implemented).
         act_cfg (dict): Config dict for activation layer.
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
@@ -127,10 +129,11 @@ class Block(nn.Module):
                  drop=0.,
                  attn_drop=0.,
                  proj_drop=0.,
-                 drop_path=0.,
                  act_cfg=dict(type='GELU'),
-                 norm_cfg=dict(type='LN')):
+                 norm_cfg=dict(type='LN'),
+                 with_cp=False):
         super(Block, self).__init__()
+        self.with_cp = with_cp
         _, self.norm1 = build_norm_layer(norm_cfg, dim)
         self.attn = Attention(dim, num_heads, qkv_bias, qk_scale, attn_drop,
                               proj_drop)
@@ -143,9 +146,18 @@ class Block(nn.Module):
             drop=drop)
 
     def forward(self, x):
-        x = x + self.attn(self.norm1(x))
-        x = x + self.mlp(self.norm2(x))
-        return x
+
+        def _inner_forward(x):
+            out = x + self.attn(self.norm1(x))
+            out = out + self.mlp(self.norm2(out))
+            return out
+
+        if self.with_cp and x.requires_grad:
+            out = cp.checkpoint(_inner_forward, x)
+        else:
+            out = _inner_forward(x)
+
+        return out
 
 
 class PatchEmbed(nn.Module):
@@ -184,9 +196,11 @@ class PatchEmbed(nn.Module):
 
 @BACKBONES.register_module()
 class VisionTransformer(nn.Module):
-    """VisionTransformer
+    """Vision transformer backbone.
+
     A PyTorch impl of : `An Image is Worth 16x16 Words: Transformers for
         Image Recognition at Scale` - https://arxiv.org/abs/2010.11929
+
     Args:
         img_size (tuple): input image size. Default: (224, 224）.
         patch_size (int, tuple): patch size. Default: 16.
@@ -197,8 +211,6 @@ class VisionTransformer(nn.Module):
         mlp_ratio (int): ratio of mlp hidden dim to embedding dim. Default: 4.
         qkv_bias (bool): enable bias for qkv if True. Default: True.
         qk_scale (float): override default qk scale of head_dim ** -0.5 if set.
-        representation_size (Optional[int]): enable and set representation
-            layer (pre-logits) to this value if set.
         drop_rate (float): dropout rate. Default: 0.
         attn_drop_rate (float): attention dropout rate. Default: 0.
         drop_path_rate (float): stochastic depth rate. Default: 0.
@@ -209,7 +221,7 @@ class VisionTransformer(nn.Module):
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
-        with_cp (bool): (Not Implement) Use checkpoint or not. Using checkpoint
+        with_cp (bool): Use checkpoint or not. Using checkpoint
             will save some memory while slowing down the training speed.
             Default: False.
     """
@@ -224,7 +236,6 @@ class VisionTransformer(nn.Module):
                  mlp_ratio=4,
                  qkv_bias=True,
                  qk_scale=None,
-                 representation_size=None,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
@@ -258,7 +269,8 @@ class VisionTransformer(nn.Module):
                 attn_drop=attn_drop_rate,
                 drop_path=dpr[i],
                 act_cfg=act_cfg,
-                norm_cfg=norm_cfg) for i in range(depth)
+                norm_cfg=norm_cfg,
+                with_cp=with_cp) for i in range(depth)
         ])
         _, self.norm = build_norm_layer(norm_cfg, embed_dim)
 
@@ -292,7 +304,7 @@ class VisionTransformer(nn.Module):
 
         elif pretrained is None:
             # We only implement the 'jax_impl' initialization implemented at
-            # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353
+            # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
             normal_init(self.pos_embed)
             for n, m in self.named_modules():
                 if isinstance(m, Linear):

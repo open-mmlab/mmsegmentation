@@ -44,13 +44,21 @@ def test_vit_backbone():
     assert check_norm_state(model.modules(), True)
 
     # Test large size input image
-    large_size_img = torch.randn(1, 3, 256, 256)
-    model(large_size_img)
+    imgs = torch.randn(1, 3, 256, 256)
+    feat = model(imgs)
+    assert feat[0].shape == (1, 768, 16, 16)
 
     # Test small size input image
-    small_size_img = torch.randn(1, 3, 30, 30)
-    model(small_size_img)
-
-    imgs = torch.randn(4, 3, 224, 224)
+    imgs = torch.randn(1, 3, 32, 32)
     feat = model(imgs)
-    assert feat[0].shape == torch.Size([4, 768, 14, 14])
+    assert feat[0].shape == (1, 768, 2, 2)
+
+    imgs = torch.randn(1, 3, 224, 224)
+    feat = model(imgs)
+    assert feat[0].shape == (1, 768, 14, 14)
+
+    # Test with_cp=True
+    model = VisionTransformer(with_cp=True)
+    imgs = torch.randn(1, 3, 224, 224)
+    feat = model(imgs)
+    assert feat[0].shape == (1, 768, 14, 14)
