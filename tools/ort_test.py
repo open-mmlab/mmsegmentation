@@ -16,10 +16,10 @@ from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models.segmentors.base import BaseSegmentor
 
 
-class ONNXRuntimeDetector(BaseSegmentor):
+class ONNXRuntimeSegmentor(BaseSegmentor):
 
     def __init__(self, onnx_file, cfg, device_id):
-        super(ONNXRuntimeDetector, self).__init__()
+        super(ONNXRuntimeSegmentor, self).__init__()
         # get the custom op path
         ort_custom_op_path = ''
         try:
@@ -37,8 +37,10 @@ class ONNXRuntimeDetector(BaseSegmentor):
         options = [{}]
         is_cuda_available = ort.get_device() == 'GPU'
         if is_cuda_available:
-            providers.append('CUDAExecutionProvider')
-            options.append({'device_id': device_id})
+            # providers.append('CUDAExecutionProvider')
+            # options.append({'device_id': device_id})
+            providers.insert(0, 'CUDAExecutionProvider')
+            options.insert(0, {'device_id': device_id})
 
         sess.set_providers(providers, options)
 
@@ -163,7 +165,7 @@ def main():
 
     # load onnx config and meta
     cfg.model.train_cfg = None
-    model = ONNXRuntimeDetector(args.model, cfg=cfg, device_id=0)
+    model = ONNXRuntimeSegmentor(args.model, cfg=cfg, device_id=0)
     model.CLASSES = dataset.CLASSES
     model.PALETTE = dataset.PALETTE
 
