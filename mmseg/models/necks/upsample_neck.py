@@ -19,8 +19,7 @@ class UpsampleNeck(nn.Module):
         assert len(scales) == num_outs
         self.scales = scales
         self.num_outs = num_outs
-        self.conv1 = Conv2d(
-            in_channels, out_channels, kernel_size=3, stride=1, padding=1)
+        self.conv1 = Conv2d(in_channels, out_channels, 3, 1, 1)
         self.convs = [
             Conv2d(
                 out_channels, out_channels, kernel_size=3, stride=1, padding=1)
@@ -29,14 +28,12 @@ class UpsampleNeck(nn.Module):
 
     def forward(self, x):
         x = self.conv1(x)
-
         outs = []
         for i in range(self.num_outs):
-            x = self.convs[i](x)
-            outs.append(
-                F.interpolate(
-                    x,
-                    size=list(
-                        (np.array(x.shape[2:]) * self.scales[i]).astype(int)),
-                    mode='bilinear'))
+            x_resize = F.interpolate(
+                x,
+                size=list(
+                    (np.array(x.shape[2:]) * self.scales[i]).astype(int)),
+                mode='bilinear')
+            outs.append(self.convs[i](x_resize))
         return tuple(outs)
