@@ -1,3 +1,4 @@
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import Conv2d
@@ -18,18 +19,24 @@ class UpsampleNeck(nn.Module):
         assert len(scales) == num_outs
         self.scales = scales
         self.num_outs = num_outs
+        self.conv1 = Conv2d(
+            in_channels, out_channels, kernel_size=3, stride=1, padding=1)
         self.convs = [
             Conv2d(
-                in_channels, out_channels, kernel_size=3, stride=1, padding=1)
+                out_channels, out_channels, kernel_size=3, stride=1, padding=1)
             for _ in range(num_outs)
         ]
 
     def forward(self, x):
+        x = self.conv1(x)
+
         outs = []
-        print(len(self.convs))
         for i in range(self.num_outs):
-            scale = self.scales[i]
             x = self.convs[i](x)
             outs.append(
-                F.interpolate(x, size=x.shape[:2] * scale, mode='bilinear'))
+                F.interpolate(
+                    x,
+                    size=list(
+                        (np.array(x.shape[2:]) * self.scales[i]).astype(int)),
+                    mode='bilinear'))
         return tuple(outs)
