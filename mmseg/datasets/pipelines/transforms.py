@@ -1,9 +1,13 @@
 import copy
 
-import albumentations
 import mmcv
 import numpy as np
-from albumentations import Compose
+try:
+    import albumentations
+    from albumentations import Compose
+except ImportError:
+    albumentations = None
+    Compose = None
 from mmcv.utils import deprecated_api_warning, is_tuple_of
 from numpy import random
 
@@ -929,6 +933,8 @@ class Albu(object):
     """
 
     def __init__(self, transforms, keymap=None, update_pad_shape=False):
+        if Compose is None:
+            raise RuntimeError('albumentations is not installed')
         # Args will be modified later, copying it will be safer
         transforms = copy.deepcopy(transforms)
         if keymap is not None:
