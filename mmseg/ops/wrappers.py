@@ -1,6 +1,5 @@
 import warnings
 
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -24,8 +23,6 @@ def resize(input,
                         'the output would more aligned if '
                         f'input size {(input_h, input_w)} is `x+1` and '
                         f'out size {(output_h, output_w)} is `nx+1`')
-    if isinstance(size, torch.Size):
-        size = tuple(int(x) for x in size)
     return F.interpolate(input, size, scale_factor, mode, align_corners)
 
 

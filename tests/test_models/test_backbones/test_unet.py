@@ -1,20 +1,11 @@
 import pytest
 import torch
 from mmcv.cnn import ConvModule
-from mmcv.utils.parrots_wrapper import _BatchNorm
 from torch import nn
 
 from mmseg.models.backbones.unet import (BasicConvBlock, DeconvModule,
                                          InterpConv, UNet, UpConvBlock)
-
-
-def check_norm_state(modules, train_state):
-    """Check if norm layer is in correct train state."""
-    for mod in modules:
-        if isinstance(mod, _BatchNorm):
-            if mod.training != train_state:
-                return False
-    return True
+from .utils import check_norm_state
 
 
 def test_unet_basic_conv_block():
@@ -171,7 +162,8 @@ def test_interp_conv():
         64,
         32,
         conv_first=False,
-        upsampe_cfg=dict(scale_factor=2, mode='bilinear', align_corners=False))
+        upsample_cfg=dict(
+            scale_factor=2, mode='bilinear', align_corners=False))
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert isinstance(block.interp_upsample[0], nn.Upsample)
@@ -184,7 +176,7 @@ def test_interp_conv():
         64,
         32,
         conv_first=False,
-        upsampe_cfg=dict(scale_factor=2, mode='nearest'))
+        upsample_cfg=dict(scale_factor=2, mode='nearest'))
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert isinstance(block.interp_upsample[0], nn.Upsample)
@@ -255,7 +247,7 @@ def test_up_conv_block():
         32,
         upsample_cfg=dict(
             type='InterpConv',
-            upsampe_cfg=dict(
+            upsample_cfg=dict(
                 scale_factor=2, mode='bilinear', align_corners=False)))
     skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
@@ -285,7 +277,7 @@ def test_up_conv_block():
         dilation=3,
         upsample_cfg=dict(
             type='InterpConv',
-            upsampe_cfg=dict(
+            upsample_cfg=dict(
                 scale_factor=2, mode='bilinear', align_corners=False)))
     skip_x = torch.randn(1, 32, 256, 256)
     x = torch.randn(1, 64, 128, 128)
@@ -347,7 +339,7 @@ def test_unet():
         UNet(3, 64, 5, plugins=plugins)
 
     with pytest.raises(AssertionError):
-        # Check whether the input image size can be devisible by the whole
+        # Check whether the input image size can be divisible by the whole
         # downsample rate of the encoder. The whole downsample rate of this
         # case is 8.
         unet = UNet(
@@ -364,7 +356,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check whether the input image size can be devisible by the whole
+        # Check whether the input image size can be divisible by the whole
         # downsample rate of the encoder. The whole downsample rate of this
         # case is 16.
         unet = UNet(
@@ -381,7 +373,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check whether the input image size can be devisible by the whole
+        # Check whether the input image size can be divisible by the whole
         # downsample rate of the encoder. The whole downsample rate of this
         # case is 8.
         unet = UNet(
@@ -398,7 +390,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check whether the input image size can be devisible by the whole
+        # Check whether the input image size can be divisible by the whole
         # downsample rate of the encoder. The whole downsample rate of this
         # case is 8.
         unet = UNet(
@@ -415,7 +407,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check whether the input image size can be devisible by the whole
+        # Check whether the input image size can be divisible by the whole
         # downsample rate of the encoder. The whole downsample rate of this
         # case is 32.
         unet = UNet(
