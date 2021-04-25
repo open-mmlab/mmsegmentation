@@ -1,4 +1,4 @@
 from .fpn import FPN
-from .upsample_neck import UpsampleNeck
+from .multilevel_neck import MultiLevelNeck
 
-__all__ = ['FPN', 'UpsampleNeck']
+__all__ = ['FPN', 'MultiLevelNeck']
