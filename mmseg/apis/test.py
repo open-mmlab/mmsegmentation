@@ -92,12 +92,13 @@ def single_gpu_test(model,
             if efficient_test:
                 result = [np2tmp(_) for _ in result]
             results.extend(result)
+            batch_size = len(result)
         else:
             if efficient_test:
                 result = np2tmp(result)
             results.append(result)
+            batch_size = 1
 
-        batch_size = data['img'][0].size(0)
         for _ in range(batch_size):
             prog_bar.update()
     return results
