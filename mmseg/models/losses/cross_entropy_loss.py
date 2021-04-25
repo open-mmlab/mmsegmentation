@@ -146,8 +146,8 @@ class CrossEntropyLoss(nn.Module):
             Defaults to False.
         reduction (str, optional): . Defaults to 'mean'.
             Options are "none", "mean" and "sum".
-        class_weight (list[float], optional): Weight of each class.
-            Defaults to None.
+        class_weight (list[float] | str, optional): Weight of each class. If in
+            str format, read them from a file. Defaults to None.
         loss_weight (float, optional): Weight of the loss. Defaults to 1.0.
     """
 
@@ -163,7 +163,7 @@ class CrossEntropyLoss(nn.Module):
         self.use_mask = use_mask
         self.reduction = reduction
         self.loss_weight = loss_weight
-        self.class_weight = class_weight
+        self.class_weight = self._get_class_weight(class_weight)
 
         if self.use_sigmoid:
             self.cls_criterion = binary_cross_entropy
@@ -171,6 +171,28 @@ class CrossEntropyLoss(nn.Module):
             self.cls_criterion = mask_cross_entropy
         else:
             self.cls_criterion = cross_entropy
+
+    def _get_class_weight(self, class_weight):
+        """Get class weight for loss function.
+
+        Args:
+            class_weight (list[float] | str | None): If class_weight is a str,
+                take it as a file name and read from it.
+        """
+        import numpy as np
+        import mmcv
+
+        if isinstance(class_weight, str):
+            # take it as a file path
+            if class_weight.endswith('.npy'):
+                class_weight = np.load(class_weight)
+            else:
+                file_format = class_weight.split('.')[-1]
+                assert file_format in ['json', 'yaml', 'pkl'], \
+                    f'unsupported class_weight file type {file_format}'
+                class_weight = mmcv.load(class_weight)
+
+        return class_weight
 
     def forward(self,
                 cls_score,

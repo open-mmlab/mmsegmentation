@@ -240,8 +240,8 @@ class LovaszLoss(nn.Module):
         reduction (str, optional): The method used to reduce the loss. Options
             are "none", "mean" and "sum". This parameter only works when
             per_image is True. Default: 'mean'.
-        class_weight (list[float], optional): The weight for each class.
-            Default: None.
+        class_weight (list[float] | str, optional): Weight of each class. If in
+            str format, read them from a file. Defaults to None.
         loss_weight (float, optional): Weight of the loss. Defaults to 1.0.
     """
 
@@ -269,7 +269,29 @@ class LovaszLoss(nn.Module):
         self.per_image = per_image
         self.reduction = reduction
         self.loss_weight = loss_weight
-        self.class_weight = class_weight
+        self.class_weight = self._get_class_weight(class_weight)
+
+    def _get_class_weight(self, class_weight):
+        """Get class weight for loss function.
+
+        Args:
+            class_weight (list[float] | str | None): If class_weight is a str,
+                take it as a file name and read from it.
+        """
+        import numpy as np
+        import mmcv
+
+        if isinstance(class_weight, str):
+            # take it as a file path
+            if class_weight.endswith('.npy'):
+                class_weight = np.load(class_weight)
+            else:
+                file_format = class_weight.split('.')[-1]
+                assert file_format in ['json', 'yaml', 'pkl'], \
+                    f'unsupported class_weight file type {file_format}'
+                class_weight = mmcv.load(class_weight)
+
+        return class_weight
 
     def forward(self,
                 cls_score,
