@@ -36,7 +36,7 @@ def test_lovasz_loss():
     lovasz_loss = build_loss(loss_cfg)
     logits = torch.rand(1, 3, 4, 4)
     labels = (torch.rand(1, 4, 4) * 2).long()
-    loss = lovasz_loss(logits, labels, ignore_index=None).detach()
+    lovasz_loss(logits, labels, ignore_index=None)
 
     # test loss with class weights from file
     import os
@@ -45,28 +45,28 @@ def test_lovasz_loss():
     import numpy as np
     tmp_file = tempfile.NamedTemporaryFile()
 
-    mmcv.dump([1.0, 2.0, 3.0], f'{tmp_file}.pkl', 'pkl')  # from pkl file
+    mmcv.dump([1.0, 2.0, 3.0], f'{tmp_file.name}.pkl', 'pkl')  # from pkl file
     loss_cfg = dict(
         type='LovaszLoss',
         per_image=True,
         reduction='mean',
-        class_weight=f'{tmp_file}.pkl',
+        class_weight=f'{tmp_file.name}.pkl',
         loss_weight=1.0)
     lovasz_loss = build_loss(loss_cfg)
-    assert torch.allclose(lovasz_loss(logits, labels, ignore_index=None), loss)
+    lovasz_loss(logits, labels, ignore_index=None)
 
-    np.save(f'{tmp_file}.npy', np.array([1.0, 2.0, 3.0]))  # from npy file
+    np.save(f'{tmp_file.name}.npy', np.array([1.0, 2.0, 3.0]))  # from npy file
     loss_cfg = dict(
         type='LovaszLoss',
         per_image=True,
         reduction='mean',
-        class_weight=f'{tmp_file}.npy',
+        class_weight=f'{tmp_file.name}.npy',
         loss_weight=1.0)
     lovasz_loss = build_loss(loss_cfg)
-    assert torch.allclose(lovasz_loss(logits, labels, ignore_index=None), loss)
+    lovasz_loss(logits, labels, ignore_index=None)
     tmp_file.close()
-    os.remove(f'{tmp_file}.pkl')
-    os.remove(f'{tmp_file}.npy')
+    os.remove(f'{tmp_file.name}.pkl')
+    os.remove(f'{tmp_file.name}.npy')
 
     # test lovasz loss with loss_type = 'binary' and per_image = False
     loss_cfg = dict(

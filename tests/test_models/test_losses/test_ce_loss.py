@@ -32,26 +32,26 @@ def test_ce_loss():
     import numpy as np
     tmp_file = tempfile.NamedTemporaryFile()
 
-    mmcv.dump([0.8, 0.2], f'{tmp_file}.pkl', 'pkl')  # from pkl file
+    mmcv.dump([0.8, 0.2], f'{tmp_file.name}.pkl', 'pkl')  # from pkl file
     loss_cls_cfg = dict(
         type='CrossEntropyLoss',
         use_sigmoid=False,
-        class_weight=f'{tmp_file}.pkl',
+        class_weight=f'{tmp_file.name}.pkl',
         loss_weight=1.0)
     loss_cls = build_loss(loss_cls_cfg)
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
 
-    np.save(f'{tmp_file}.npy', np.array([0.8, 0.2]))  # from npy file
+    np.save(f'{tmp_file.name}.npy', np.array([0.8, 0.2]))  # from npy file
     loss_cls_cfg = dict(
         type='CrossEntropyLoss',
         use_sigmoid=False,
-        class_weight=f'{tmp_file}.npy',
+        class_weight=f'{tmp_file.name}.npy',
         loss_weight=1.0)
     loss_cls = build_loss(loss_cls_cfg)
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
     tmp_file.close()
-    os.remove(f'{tmp_file}.pkl')
-    os.remove(f'{tmp_file}.npy')
+    os.remove(f'{tmp_file.name}.pkl')
+    os.remove(f'{tmp_file.name}.npy')
 
     loss_cls_cfg = dict(
         type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)
