@@ -1,6 +1,26 @@
 import functools
 
+import mmcv
+import numpy as np
 import torch.nn.functional as F
+
+
+def get_class_weight(class_weight):
+    """Get class weight for loss function.
+
+    Args:
+        class_weight (list[float] | str | None): If class_weight is a str,
+            take it as a file name and read from it.
+    """
+    if isinstance(class_weight, str):
+        # take it as a file path
+        if class_weight.endswith('.npy'):
+            class_weight = np.load(class_weight)
+        else:
+            # pkl, json or yaml
+            class_weight = mmcv.load(class_weight)
+
+    return class_weight
 
 
 def reduce_loss(loss, reduction):

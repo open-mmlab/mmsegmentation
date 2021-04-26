@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from ..builder import LOSSES
-from .utils import weighted_loss
+from .utils import get_class_weight, weighted_loss
 
 
 @weighted_loss
@@ -81,31 +81,9 @@ class DiceLoss(nn.Module):
         self.smooth = smooth
         self.exponent = exponent
         self.reduction = reduction
-        self.class_weight = self._get_class_weight(class_weight)
+        self.class_weight = get_class_weight(class_weight)
         self.loss_weight = loss_weight
         self.ignore_index = ignore_index
-
-    def _get_class_weight(self, class_weight):
-        """Get class weight for loss function.
-
-        Args:
-            class_weight (list[float] | str | None): If class_weight is a str,
-                take it as a file name and read from it.
-        """
-        import numpy as np
-        import mmcv
-
-        if isinstance(class_weight, str):
-            # take it as a file path
-            if class_weight.endswith('.npy'):
-                class_weight = np.load(class_weight)
-            else:
-                file_format = class_weight.split('.')[-1]
-                assert file_format in ['json', 'yaml', 'pkl'], \
-                    f'unsupported class_weight file type {file_format}'
-                class_weight = mmcv.load(class_weight)
-
-        return class_weight
 
     def forward(self,
                 pred,
