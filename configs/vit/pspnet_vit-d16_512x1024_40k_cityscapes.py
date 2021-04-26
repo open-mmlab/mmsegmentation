@@ -1,11 +1,8 @@
 _base_ = [
-    '../_base_/models/pspnet_vit-d16.py', '../_base_/datasets/ade20k.py',
+    '../_base_/models/pspnet_vit-d16.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
 
-model = dict(
-    decode_head=dict(num_classes=150), auxiliary_head=dict(num_classes=150))
-evaluation=dict(max_iteration=100, metrics='mIoU')
 # AdamW optimizer, no weight decay for position embedding & layer norm in backbone
 optimizer = dict(_delete_=True, type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01,
                  paramwise_cfg=dict(custom_keys={'absolute_pos_embed': dict(decay_mult=0.),
