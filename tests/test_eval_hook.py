@@ -12,11 +12,6 @@ from torch.utils.data import DataLoader, Dataset
 from mmseg.apis import single_gpu_test
 from mmseg.core import DistEvalHook, EvalHook
 
-if hasattr(mmcv.runner, 'EvalHook') and hasattr(mmcv.runner, 'DistEvalHook'):
-    PATCH_STATEMENT = 'mmcv.engine.multi_gpu_test'
-else:
-    PATCH_STATEMENT = 'mmseg.apis.multi_gpu_test'
-
 
 class ExampleDataset(Dataset):
 
@@ -122,7 +117,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     return results
 
 
-@patch(PATCH_STATEMENT, multi_gpu_test)
+@patch('mmseg.apis.multi_gpu_test', multi_gpu_test)
 def test_dist_eval_hook():
     with pytest.raises(TypeError):
         test_dataset = ExampleModel()
@@ -160,7 +155,7 @@ def test_dist_eval_hook():
                                                  logger=runner.logger)
 
 
-@patch(PATCH_STATEMENT, multi_gpu_test)
+@patch('mmseg.apis.multi_gpu_test', multi_gpu_test)
 def test_dist_eval_hook_epoch():
     with pytest.raises(TypeError):
         test_dataset = ExampleModel()
