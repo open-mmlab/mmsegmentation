@@ -13,7 +13,8 @@ class MultiLevelNeck(nn.Module):
     Args:
         in_channels (List[int]): Number of input channels per scale.
         out_channels (int): Number of output channels (used at each scale).
-        scales (List[int]): Scale factors for each input feature map.
+        scales (List[float]): Scale factors for each input feature map.
+            Default: [0.5, 1, 2, 4]
         norm_cfg (dict): Config dict for normalization layer. Default: None.
         act_cfg (dict): Config dict for activation layer in ConvModule.
             Default: None.
@@ -51,6 +52,7 @@ class MultiLevelNeck(nn.Module):
                     stride=1,
                     norm_cfg=norm_cfg,
                     act_cfg=act_cfg))
+
     # default init_weights for conv(msra) and norm in ConvModule
     def init_weights(self):
         for m in self.modules():
