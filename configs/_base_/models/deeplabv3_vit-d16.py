@@ -2,7 +2,8 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
+    pretrained='https://github.com/rwightman/pytorch-image-models/releases/\
+download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
     backbone=dict(
         type='VisionTransformer',
         img_size=(512, 512),
@@ -18,10 +19,7 @@ model = dict(
         norm_cfg=dict(type='LN'),
         act_cfg=dict(type='GELU'),
         norm_eval=False),
-    neck=dict(
-        type='MultiLevelNeck',
-        in_channels=[768],
-        out_channels=768),
+    neck=dict(type='MultiLevelNeck', in_channels=[768], out_channels=768),
     decode_head=dict(
         type='ASPPHead',
         in_channels=768,
@@ -50,4 +48,4 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
-find_unused_parameters=True
+find_unused_parameters = True
