@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import ConvModule
+from mmcv.cnn import ConvModule, xavier_init
 
 from ..builder import NECKS
 
@@ -51,10 +51,15 @@ class MultiLevelNeck(nn.Module):
                     stride=1,
                     norm_cfg=norm_cfg,
                     act_cfg=act_cfg))
+    # default init_weights for conv(msra) and norm in ConvModule
+    def init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                xavier_init(m, distribution='uniform')
 
     def forward(self, inputs):
         assert len(inputs) == len(self.in_channels)
-        print(inputs[0].shape)
+
         inputs = [
             lateral_conv(inputs[i])
             for i, lateral_conv in enumerate(self.lateral_convs)
