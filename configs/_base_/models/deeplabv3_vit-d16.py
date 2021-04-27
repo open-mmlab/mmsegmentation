@@ -19,7 +19,11 @@ download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
         norm_cfg=dict(type='LN'),
         act_cfg=dict(type='GELU'),
         norm_eval=False),
-    neck=dict(type='MultiLevelNeck', in_channels=[768], out_channels=768),
+    neck=dict(
+        type='MultiLevelNeck',
+        in_channels=[768],
+        out_channels=768,
+        scales=[0.5, 1, 2, 4]),
     decode_head=dict(
         type='ASPPHead',
         in_channels=768,

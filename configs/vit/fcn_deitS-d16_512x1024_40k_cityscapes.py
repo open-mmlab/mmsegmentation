@@ -1,7 +1,12 @@
 _base_ = [
-    '../_base_/models/pspnet_vit-d16.py', '../_base_/datasets/cityscapes.py',
+    '../_base_/models/fcn_vit-d16.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
 ]
+
+model = dict(
+    pretrained='https://dl.fbaipublicfiles.com/deit/\
+deit_small_patch16_224-cd65a155.pth',
+    backbone=dict(num_heads=6))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone

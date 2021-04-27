@@ -1,9 +1,13 @@
 _base_ = [
-    '../_base_/models/pspnet_vit-d16.py', '../_base_/datasets/cityscapes.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
+    '../_base_/models/deeplabv3_vit-d16.py',
+    '../_base_/datasets/cityscapes.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_40k.py'
 ]
 
-# AdamW optimizer, no weight decay for position embedding & layer norm
+model = dict(pretrained='https://dl.fbaipublicfiles.com/deit/\
+deit_base_patch16_224-b5f2ef4d.pth')
+
+# AdamW optimizer, no weight decay for position embedding& layer norm
 # in backbone
 optimizer = dict(
     _delete_=True,
