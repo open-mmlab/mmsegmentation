@@ -77,7 +77,7 @@ def _prepare_input_img(img_path,
                        rescale_shape=None):
     # build the data pipeline
     if shape is not None:
-        test_pipeline[1]['img_scale'] = shape
+        test_pipeline[1]['img_scale'] = (shape[1], shape[0])
     test_pipeline[1]['transforms'][0]['keep_ratio'] = False
     test_pipeline = [LoadImage()] + test_pipeline[1:]
     test_pipeline = Compose(test_pipeline)
@@ -362,10 +362,10 @@ if __name__ == '__main__':
 
     # read input or create dummpy input
     if args.input_img is not None:
-        preprocess_shape = (input_shape[3], input_shape[2])
+        preprocess_shape = (input_shape[2], input_shape[3])
         rescale_shape = None
         if args.rescale_shape is not None:
-            rescale_shape = [args.rescale_shape[1], args.rescale_shape[0]]
+            rescale_shape = [args.rescale_shape[0], args.rescale_shape[1]]
         mm_inputs = _prepare_input_img(
             args.input_img,
             cfg.data.test.pipeline,

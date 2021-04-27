@@ -46,6 +46,8 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
         self.device_id = device_id
         self.io_binding = sess.io_binding()
         self.output_names = [_.name for _ in sess.get_outputs()]
+        for name in self.output_names:
+            self.io_binding.bind_output(name)
         self.cfg = cfg
         self.test_mode = cfg.model.test_cfg.mode
 
@@ -67,8 +69,6 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
             element_type=np.float32,
             shape=img.shape,
             buffer_ptr=img.data_ptr())
-        for name in self.output_names:
-            self.io_binding.bind_output(name)
         self.sess.run_with_iobinding(self.io_binding)
         seg_pred = self.io_binding.copy_outputs_to_cpu()[0]
         # whole might support dynamic reshape

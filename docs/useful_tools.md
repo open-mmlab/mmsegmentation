@@ -116,6 +116,15 @@ Description of all arguments
 - `--eval-options`: Custom options for evaluation, the key-value pair in `xxx=yyy` format will be kwargs for `dataset.evaluate()` function
 - `--opacity`: Opacity of painted segmentation map. In (0, 1] range.
 
+#### Results and Models
+
+|   Model    |                     Config                     |  Dataset   | Metric | PyTorch | ONNXRuntime |
+| :--------: | :--------------------------------------------: | :--------: | :----: | :-----: | :---------: |
+|    FCN     |     fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |  mIOU  |  72.2   |    72.2     |
+|   PSPNet   |    pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes |  mIOU  |  78.2   |    78.1     |
+| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py   | cityscapes |  mIOU  |  78.5   |    78.3     |
+| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py | cityscapes |  mIOU  |  78.9   |    78.7     |
+
 ### Convert to TorchScript (experimental)
 
 We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between Pytorch and TorchScript model.
