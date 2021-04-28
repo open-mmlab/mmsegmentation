@@ -120,10 +120,10 @@ Description of all arguments
 
 |   Model    |                     Config                     |  Dataset   | Metric | PyTorch | ONNXRuntime |
 | :--------: | :--------------------------------------------: | :--------: | :----: | :-----: | :---------: |
-|    FCN     |     fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |  mIOU  |  72.2   |    72.2     |
-|   PSPNet   |    pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes |  mIOU  |  78.2   |    78.1     |
-| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py   | cityscapes |  mIOU  |  78.5   |    78.3     |
-| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py | cityscapes |  mIOU  |  78.9   |    78.7     |
+|    FCN     |     fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |  mIoU  |  72.2   |    72.2     |
+|   PSPNet   |    pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes |  mIoU  |  78.2   |    78.1     |
+| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py   | cityscapes |  mIoU  |  78.5   |    78.3     |
+| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py | cityscapes |  mIoU  |  78.9   |    78.7     |
 
 ### Convert to TorchScript (experimental)
 
