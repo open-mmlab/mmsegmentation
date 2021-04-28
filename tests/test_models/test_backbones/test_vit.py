@@ -18,7 +18,7 @@ def test_vit_backbone():
     with pytest.raises(TypeError):
         # test upsample_pos_embed function
         x = torch.randn(1, 196)
-        VisionTransformer.resize_pos_embed(x, 512, 512, 224, 224)
+        VisionTransformer.resize_pos_embed(x, 512, 512, 224, 224, 'bilinear')
 
     with pytest.raises(RuntimeError):
         # forward inputs must be [N, C, H, W]

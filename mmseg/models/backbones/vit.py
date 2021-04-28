@@ -321,7 +321,7 @@ class VisionTransformer(nn.Module):
             trunc_normal_(self.cls_token, std=.02)
             for n, m in self.named_modules():
                 if isinstance(m, Linear):
-                    trunc_normal_(n.weight, std=.02)
+                    trunc_normal_(m.weight, std=.02)
                     if m.bias is not None:
                         if 'mlp' in n:
                             normal_init(m.bias, std=1e-6)
@@ -357,7 +357,7 @@ class VisionTransformer(nn.Module):
         x_len, pos_len = patched_img.shape[1], pos_embed.shape[1]
         if x_len != pos_len:
             if pos_len == (self.img_size[0] // self.patch_size) * (
-                    self.img_size[1] // self.patch_size):
+                    self.img_size[1] // self.patch_size) + 1:
                 pos_h = self.img_size[0] // self.patch_size
                 pos_w = self.img_size[1] // self.patch_size
             else:
