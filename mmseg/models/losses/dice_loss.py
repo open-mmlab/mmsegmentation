@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from ..builder import LOSSES
-from .utils import weighted_loss
+from .utils import get_class_weight, weighted_loss
 
 
 @weighted_loss
@@ -63,8 +63,8 @@ class DiceLoss(nn.Module):
         reduction (str, optional): The method used to reduce the loss. Options
             are "none", "mean" and "sum". This parameter only works when
             per_image is True. Default: 'mean'.
-        class_weight (list[float], optional): The weight for each class.
-            Default: None.
+        class_weight (list[float] | str, optional): Weight of each class. If in
+            str format, read them from a file. Defaults to None.
         loss_weight (float, optional): Weight of the loss. Default to 1.0.
         ignore_index (int | None): The label index to be ignored. Default: 255.
     """
@@ -81,7 +81,7 @@ class DiceLoss(nn.Module):
         self.smooth = smooth
         self.exponent = exponent
         self.reduction = reduction
-        self.class_weight = class_weight
+        self.class_weight = get_class_weight(class_weight)
         self.loss_weight = loss_weight
         self.ignore_index = ignore_index
 
