@@ -16,7 +16,7 @@ download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
         qk_scale=None,
         drop_rate=0.0,
         attn_drop_rate=0.0,
-        norm_cfg=dict(type='LN'),
+        norm_cfg=dict(type='LN', eps=1e-6),
         act_cfg=dict(type='GELU'),
         norm_eval=False),
     neck=dict(
