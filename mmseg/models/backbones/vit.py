@@ -222,7 +222,7 @@ class VisionTransformer(nn.Module):
         drop_rate (float): dropout rate. Default: 0.
         attn_drop_rate (float): attention dropout rate. Default: 0.
         norm_cfg (dict): Config dict for normalization layer.
-            Default: dict(type='LN', requires_grad=True).
+            Default: dict(type='LN', eps=1e-6, requires_grad=True).
         act_cfg (dict): Config dict for activation layer.
             Default: dict(type='GELU').
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
@@ -249,7 +249,7 @@ class VisionTransformer(nn.Module):
                  qk_scale=None,
                  drop_rate=0.,
                  attn_drop_rate=0.,
-                 norm_cfg=dict(type='LN', eps=1e-6),
+                 norm_cfg=dict(type='LN', eps=1e-6, requires_grad=True),
                  act_cfg=dict(type='GELU'),
                  norm_eval=False,
                  final_norm=False,
