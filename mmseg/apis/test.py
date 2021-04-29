@@ -97,7 +97,7 @@ def single_gpu_test(model,
                 result = np2tmp(result)
             results.append(result)
 
-        batch_size = data['img'][0].size(0)
+        batch_size = len(result)
         for _ in range(batch_size):
             prog_bar.update()
     return results
