@@ -434,6 +434,8 @@ class VisionTransformer(nn.Module):
                 if self.input_cls_token:
                     # Remove class token and reshape token for decoder head
                     out = x[:, 1:]
+                else:
+                    out = x
                 B, _, C = out.shape
                 out = out.reshape(B, inputs.shape[2] // self.patch_size,
                                   inputs.shape[3] // self.patch_size,
