@@ -210,7 +210,7 @@ class VisionTransformer(nn.Module):
         Image Recognition at Scale` - https://arxiv.org/abs/2010.11929
 
     Args:
-        img_size (tuple): input image size. Default: (224, 224）.
+        img_size (tuple): input image size. Default: (224, 224).
         patch_size (int, tuple): patch size. Default: 16.
         in_channels (int): number of input channels. Default: 3.
         embed_dim (int): embedding dimension. Default: 768.
@@ -270,7 +270,10 @@ class VisionTransformer(nn.Module):
             torch.zeros(1, self.patch_embed.num_patches + 1, embed_dim))
         self.pos_drop = nn.Dropout(p=drop_rate)
 
-        self.blocks = nn.Sequential(*[
+        self.num_stages = depth
+        self.out_indices = tuple(range(self.num_stages))
+
+        self.blocks = nn.ModuleList([
             Block(
                 dim=embed_dim,
                 num_heads=num_heads,
@@ -281,7 +284,7 @@ class VisionTransformer(nn.Module):
                 attn_drop=attn_drop_rate,
                 act_cfg=act_cfg,
                 norm_cfg=norm_cfg,
-                with_cp=with_cp) for i in range(depth)
+                with_cp=with_cp) for i in range(self.num_stages)
         ])
 
         self.interpolate_mode = interpolate_mode
@@ -407,18 +410,24 @@ class VisionTransformer(nn.Module):
         cls_tokens = self.cls_token.expand(B, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
         x = self._pos_embeding(inputs, x, self.pos_embed)
-        x = self.blocks(x)
 
-        if self.final_norm:
-            x = self.norm(x)
+        outs = []
+        block_len = len(self.blocks)
+        for i, blk in enumerate(self.blocks):
+            x = blk(x)
+            if i == block_len - 1:
+                if self.final_norm:
+                    x = self.norm(x)
+            if i in self.out_indices:
+                # Remove class token and reshape token for decoder head
+                out = x[:, 1:]
+                B, _, C = out.shape
+                out = out.reshape(B, inputs.shape[2] // self.patch_size,
+                                  inputs.shape[3] // self.patch_size,
+                                  C).permute(0, 3, 1, 2)
+                outs.append(out)
 
-        # Remove class token
-        x = x[:, 1:]
-        B, _, C = x.shape
-        x = x.reshape(B, inputs.shape[2] // self.patch_size,
-                      inputs.shape[3] // self.patch_size,
-                      C).permute(0, 3, 1, 2)
-        return [x]
+        return tuple(outs)
 
     def train(self, mode=True):
         super(VisionTransformer, self).train(mode)
