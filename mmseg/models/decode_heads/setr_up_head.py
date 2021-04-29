@@ -14,8 +14,8 @@ class SETRUPHead(BaseDecodeHead):
     Naive or PUP head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`.
 
     Args:
-        img_size (tuple): Input image size. Default: (224, 224).
-        embed_dim (int): embedding dimension. Default: 768.
+        img_size (tuple): Input image size. Default: (384, 384).
+        embed_dim (int): embedding dimension. Default: 1024.
         norm_layer (dict): Config dict for input normalization.
             Default: norm_layer=dict(type='LN', eps=1e-6, requires_grad=True).
         num_conv (int): Number of decoder convolutions. Default: 1.
@@ -26,8 +26,8 @@ class SETRUPHead(BaseDecodeHead):
     """
 
     def __init__(self,
-                 img_size=(224, 224),
-                 embed_dim=768,
+                 img_size=(384, 384),
+                 embed_dim=1024,
                  norm_layer=dict(type='LN', eps=1e-6, requires_grad=True),
                  num_conv=1,
                  up_mode='bilinear',
