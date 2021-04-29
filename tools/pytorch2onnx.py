@@ -71,10 +71,13 @@ def _demo_mm_inputs(input_shape, num_classes):
     return mm_inputs
 
 
-def _prepare_input_img(img_path, test_pipeline, shape=None):
+def _prepare_input_img(img_path,
+                       test_pipeline,
+                       shape=None,
+                       rescale_shape=None):
     # build the data pipeline
     if shape is not None:
-        test_pipeline[1]['img_scale'] = shape
+        test_pipeline[1]['img_scale'] = (shape[1], shape[0])
     test_pipeline[1]['transforms'][0]['keep_ratio'] = False
     test_pipeline = [LoadImage()] + test_pipeline[1:]
     test_pipeline = Compose(test_pipeline)
@@ -84,6 +87,10 @@ def _prepare_input_img(img_path, test_pipeline, shape=None):
     imgs = data['img']
     img_metas = [i.data for i in data['img_metas']]
 
+    if rescale_shape is not None:
+        for img_meta in img_metas:
+            img_meta['ori_shape'] = tuple(rescale_shape) + (3, )
+
     mm_inputs = {'imgs': imgs, 'img_metas': img_metas}
 
     return mm_inputs
@@ -91,15 +98,24 @@ def _prepare_input_img(img_path, test_pipeline, shape=None):
 
 def _update_input_img(img_list, img_meta_list):
     # update img and its meta list
-    N, C, H, W = img_list[0].shape
+    N = img_list[0].size(0)
     img_meta = img_meta_list[0][0]
+    img_shape = img_meta['img_shape']
+    ori_shape = img_meta['ori_shape']
+    pad_shape = img_meta['pad_shape']
     new_img_meta_list = [[{
-        'img_shape': (H, W, C),
-        'ori_shape': (H, W, C),
-        'pad_shape': (H, W, C),
-        'filename': img_meta['filename'],
-        'scale_factor': 1.,
-        'flip': False,
+        'img_shape':
+        img_shape,
+        'ori_shape':
+        ori_shape,
+        'pad_shape':
+        pad_shape,
+        'filename':
+        img_meta['filename'],
+        'scale_factor':
+        (img_shape[1] / ori_shape[1], img_shape[0] / ori_shape[0]) * 2,
+        'flip':
+        False,
     } for _ in range(N)]]
 
     return img_list, new_img_meta_list
@@ -128,6 +144,7 @@ def pytorch2onnx(model,
             Default: False.
     """
     model.cpu().eval()
+    test_mode = model.test_cfg.mode
 
     if isinstance(model.decode_head, nn.ModuleList):
         num_classes = model.decode_head[-1].num_classes
@@ -136,30 +153,36 @@ def pytorch2onnx(model,
 
     imgs = mm_inputs.pop('imgs')
     img_metas = mm_inputs.pop('img_metas')
-    ori_shape = img_metas[0]['ori_shape']
 
     img_list = [img[None, :] for img in imgs]
     img_meta_list = [[img_meta] for img_meta in img_metas]
+    # update img_meta
     img_list, img_meta_list = _update_input_img(img_list, img_meta_list)
 
     # replace original forward function
     origin_forward = model.forward
     model.forward = partial(
-        model.forward, img_metas=img_meta_list, return_loss=False)
+        model.forward,
+        img_metas=img_meta_list,
+        return_loss=False,
+        rescale=True)
     dynamic_axes = None
     if dynamic_export:
-        dynamic_axes = {
-            'input': {
-                0: 'batch',
-                2: 'height',
-                3: 'width'
-            },
-            'output': {
-                1: 'batch',
-                2: 'height',
-                3: 'width'
+        if test_mode == 'slide':
+            dynamic_axes = {'input': {0: 'batch'}, 'output': {1: 'batch'}}
+        else:
+            dynamic_axes = {
+                'input': {
+                    0: 'batch',
+                    2: 'height',
+                    3: 'width'
+                },
+                'output': {
+                    1: 'batch',
+                    2: 'height',
+                    3: 'width'
+                }
             }
-        }
 
     register_extra_symbolics(opset_version)
     with torch.no_grad():
@@ -182,7 +205,7 @@ def pytorch2onnx(model,
         onnx_model = onnx.load(output_file)
         onnx.checker.check_model(onnx_model)
 
-        if dynamic_export:
+        if dynamic_export and test_mode == 'whole':
             # scale image for dynamic shape test
             img_list = [
                 nn.functional.interpolate(_, scale_factor=1.5)
@@ -223,6 +246,10 @@ def pytorch2onnx(model,
             if not osp.exists(img):
                 img = imgs[0][:3, ...].permute(1, 2, 0) * 255
                 img = img.detach().numpy().astype(np.uint8)
+                ori_shape = img.shape[:2]
+            else:
+                ori_shape = LoadImage()({'img': img})['ori_shape']
+
             # resize onnx_result to ori_shape
             onnx_result_ = cv2.resize(onnx_result[0].astype(np.uint8),
                                       (ori_shape[1], ori_shape[0]))
@@ -271,8 +298,14 @@ def parse_args():
         '--shape',
         type=int,
         nargs='+',
-        default=[256, 256],
-        help='input image size')
+        default=None,
+        help='input image height and width.')
+    parser.add_argument(
+        '--rescale_shape',
+        type=int,
+        nargs='+',
+        default=None,
+        help='output image rescale height and width, work for slide mode.')
     parser.add_argument(
         '--cfg-options',
         nargs='+',
@@ -294,7 +327,15 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
-    if len(args.shape) == 1:
+    cfg = mmcv.Config.fromfile(args.config)
+    if args.cfg_options is not None:
+        cfg.merge_from_dict(args.cfg_options)
+    cfg.model.pretrained = None
+
+    if args.shape is None:
+        img_scale = cfg.test_pipeline[1]['img_scale']
+        input_shape = (1, 3, img_scale[1], img_scale[0])
+    elif len(args.shape) == 1:
         input_shape = (1, 3, args.shape[0], args.shape[0])
     elif len(args.shape) == 2:
         input_shape = (
@@ -304,10 +345,7 @@ if __name__ == '__main__':
     else:
         raise ValueError('invalid input shape')
 
-    cfg = mmcv.Config.fromfile(args.config)
-    if args.cfg_options is not None:
-        cfg.merge_from_dict(args.cfg_options)
-    cfg.model.pretrained = None
+    test_mode = cfg.model.test_cfg.mode
 
     # build the model and load checkpoint
     cfg.model.train_cfg = None
@@ -324,8 +362,15 @@ if __name__ == '__main__':
 
     # read input or create dummpy input
     if args.input_img is not None:
-        mm_inputs = _prepare_input_img(args.input_img, cfg.data.test.pipeline,
-                                       (input_shape[3], input_shape[2]))
+        preprocess_shape = (input_shape[2], input_shape[3])
+        rescale_shape = None
+        if args.rescale_shape is not None:
+            rescale_shape = [args.rescale_shape[0], args.rescale_shape[1]]
+        mm_inputs = _prepare_input_img(
+            args.input_img,
+            cfg.data.test.pipeline,
+            shape=preprocess_shape,
+            rescale_shape=rescale_shape)
     else:
         if isinstance(segmentor.decode_head, nn.ModuleList):
             num_classes = segmentor.decode_head[-1].num_classes
