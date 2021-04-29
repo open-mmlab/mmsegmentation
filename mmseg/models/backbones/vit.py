@@ -232,6 +232,8 @@ class VisionTransformer(nn.Module):
             final feature map. Default: False.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bilinear.
+        input_cls_token (bool): If concatenating class token into image tokens
+        as transformer input. Default: True.
         with_cp (bool): Use checkpoint or not. Using checkpoint
             will save some memory while slowing down the training speed.
             Default: False.
@@ -253,6 +255,7 @@ class VisionTransformer(nn.Module):
                  act_cfg=dict(type='GELU'),
                  norm_eval=False,
                  final_norm=False,
+                 input_cls_token=True,
                  interpolate_mode='bilinear',
                  with_cp=False):
         super(VisionTransformer, self).__init__()
@@ -265,6 +268,7 @@ class VisionTransformer(nn.Module):
             in_channels=in_channels,
             embed_dim=embed_dim)
 
+        self.input_cls_token = input_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, self.embed_dim))
         self.pos_embed = nn.Parameter(
             torch.zeros(1, self.patch_embed.num_patches + 1, embed_dim))
@@ -411,6 +415,10 @@ class VisionTransformer(nn.Module):
         x = torch.cat((cls_tokens, x), dim=1)
         x = self._pos_embeding(inputs, x, self.pos_embed)
 
+        if not self.input_cls_token:
+            # Remove class token for transformer input
+            x = x[:, 1:]
+
         outs = []
         block_len = len(self.blocks)
         for i, blk in enumerate(self.blocks):
@@ -419,8 +427,9 @@ class VisionTransformer(nn.Module):
                 if self.final_norm:
                     x = self.norm(x)
             if i in self.out_indices:
-                # Remove class token and reshape token for decoder head
-                out = x[:, 1:]
+                if self.input_cls_token:
+                    # Remove class token and reshape token for decoder head
+                    out = x[:, 1:]
                 B, _, C = out.shape
                 out = out.reshape(B, inputs.shape[2] // self.patch_size,
                                   inputs.shape[3] // self.patch_size,
