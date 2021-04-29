@@ -221,6 +221,7 @@ class VisionTransformer(nn.Module):
         qk_scale (float): override default qk scale of head_dim ** -0.5 if set.
         drop_rate (float): dropout rate. Default: 0.
         attn_drop_rate (float): attention dropout rate. Default: 0.
+        drop_path_rate (float): Rate of DropPath. Default: 0.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN', eps=1e-6, requires_grad=True).
         act_cfg (dict): Config dict for activation layer.
@@ -251,6 +252,7 @@ class VisionTransformer(nn.Module):
                  qk_scale=None,
                  drop_rate=0.,
                  attn_drop_rate=0.,
+                 drop_path_rate=0.,
                  norm_cfg=dict(type='LN', eps=1e-6, requires_grad=True),
                  act_cfg=dict(type='GELU'),
                  norm_eval=False,
@@ -277,6 +279,8 @@ class VisionTransformer(nn.Module):
         self.num_stages = depth
         self.out_indices = tuple(range(self.num_stages))
 
+        dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)
+               ]  # stochastic depth decay rule
         self.blocks = nn.ModuleList([
             Block(
                 dim=embed_dim,
@@ -284,7 +288,7 @@ class VisionTransformer(nn.Module):
                 mlp_ratio=mlp_ratio,
                 qkv_bias=qkv_bias,
                 qk_scale=qk_scale,
-                drop=drop_rate,
+                drop=dpr[i],
                 attn_drop=attn_drop_rate,
                 act_cfg=act_cfg,
                 norm_cfg=norm_cfg,
