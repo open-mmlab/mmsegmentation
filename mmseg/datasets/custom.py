@@ -370,7 +370,10 @@ class CustomDataset(Dataset):
 
         summary_table_data = PrettyTable()
         for key, val in ret_metrics_summary.items():
-            summary_table_data.add_column(key, [val])
+            if key == 'aAcc':
+                summary_table_data.add_column(key, [val])
+            else:
+                summary_table_data.add_column('m' + key, [val])
 
         print_log('per class results:', logger)
         print_log('\n' + class_table_data.get_string(), logger=logger)

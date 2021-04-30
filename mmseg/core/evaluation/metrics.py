@@ -153,11 +153,11 @@ def mean_iou(results,
 
      Returns:
         dict[str, float | ndarray]:
-        <aAcc> float: Overall accuracy on all images.
-        <Acc> ndarray: Per category accuracy, shape (num_classes, ).
-        <IoU> ndarray: Per category IoU, shape (num_classes, ).
+            <aAcc> float: Overall accuracy on all images.
+            <Acc> ndarray: Per category accuracy, shape (num_classes, ).
+            <IoU> ndarray: Per category IoU, shape (num_classes, ).
     """
-    mIoU_result = eval_metrics(
+    iou_result = eval_metrics(
         results=results,
         gt_seg_maps=gt_seg_maps,
         num_classes=num_classes,
@@ -166,7 +166,7 @@ def mean_iou(results,
         nan_to_num=nan_to_num,
         label_map=label_map,
         reduce_zero_label=reduce_zero_label)
-    return mIoU_result
+    return iou_result
 
 
 def mean_dice(results,
@@ -192,12 +192,12 @@ def mean_dice(results,
 
      Returns:
         dict[str, float | ndarray]: Default metrics.
-        <aAcc> float: Overall accuracy on all images.
-        <Acc> ndarray: Per category accuracy, shape (num_classes, ).
-        <Dice> ndarray: Per category dice, shape (num_classes, ).
+            <aAcc> float: Overall accuracy on all images.
+            <Acc> ndarray: Per category accuracy, shape (num_classes, ).
+            <Dice> ndarray: Per category dice, shape (num_classes, ).
     """
 
-    mDice_result = eval_metrics(
+    dice_result = eval_metrics(
         results=results,
         gt_seg_maps=gt_seg_maps,
         num_classes=num_classes,
@@ -206,7 +206,7 @@ def mean_dice(results,
         nan_to_num=nan_to_num,
         label_map=label_map,
         reduce_zero_label=reduce_zero_label)
-    return mDice_result
+    return dice_result
 
 
 def mean_fscore(results,
@@ -236,12 +236,12 @@ def mean_fscore(results,
 
      Returns:
         dict[str, float | ndarray]: Default metrics.
-         <aAcc> float: Overall accuracy on all images.
-         <Fscore> ndarray: Per category recall, shape (num_classes, ).
-         <Precision> ndarray: Per category precision, shape (num_classes, ).
-         <Recall> ndarray: Per category f-score, shape (num_classes, ).
+            <aAcc> float: Overall accuracy on all images.
+            <Fscore> ndarray: Per category recall, shape (num_classes, ).
+            <Precision> ndarray: Per category precision, shape (num_classes, ).
+            <Recall> ndarray: Per category f-score, shape (num_classes, ).
     """
-    mFscore_result = eval_metrics(
+    fscore_result = eval_metrics(
         results=results,
         gt_seg_maps=gt_seg_maps,
         num_classes=num_classes,
@@ -251,7 +251,7 @@ def mean_fscore(results,
         label_map=label_map,
         reduce_zero_label=reduce_zero_label,
         beta=beta)
-    return mFscore_result
+    return fscore_result
 
 
 def eval_metrics(results,
@@ -277,9 +277,9 @@ def eval_metrics(results,
         label_map (dict): Mapping old labels to new labels. Default: dict().
         reduce_zero_label (bool): Wether ignore zero label. Default: False.
      Returns:
-         float: Overall accuracy on all images.
-         ndarray: Per category accuracy, shape (num_classes, ).
-         ndarray: Per category evaluation metrics, shape (num_classes, ).
+        float: Overall accuracy on all images.
+        ndarray: Per category accuracy, shape (num_classes, ).
+        ndarray: Per category evaluation metrics, shape (num_classes, ).
     """
     if isinstance(metrics, str):
         metrics = [metrics]

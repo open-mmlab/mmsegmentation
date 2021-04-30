@@ -2,23 +2,7 @@ import numpy as np
 
 from mmseg.core.evaluation import (eval_metrics, mean_dice, mean_fscore,
                                    mean_iou)
-
-
-def f_score(precision, recall, beta=1):
-    """calcuate the f-score value.
-
-    Args:
-        precision (float | torch.Tensor): The precision value.
-        recall (float | torch.Tensor): The recall value.
-        beta (int): Determines the weight of recall in the combined score.
-            Default: False.
-
-    Returns:
-        [torch.tensor]: The f-score value.
-    """
-    score = (1 + beta**2) * (precision * recall) / (
-        (beta**2 * precision) + recall)
-    return score
+from mmseg.core.evaluation.metrics import f_score
 
 
 def get_confusion_matrix(pred_label, label, num_classes, ignore_index):
