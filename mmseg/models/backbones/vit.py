@@ -235,7 +235,7 @@ class VisionTransformer(nn.Module):
         final_norm (bool):  Whether to add a additional layer to normalize
             final feature map. Default: False.
         interpolate_mode (str): Select the interpolate mode for position
-            embeding vector resize. Default: bilinear.
+            embeding vector resize. Default: bicubic.
         with_cls_token (bool): If concatenating class token into image tokens
             as transformer input. Default: True.
         with_cp (bool): Use checkpoint or not. Using checkpoint
@@ -262,7 +262,7 @@ class VisionTransformer(nn.Module):
                  norm_eval=False,
                  final_norm=False,
                  with_cls_token=True,
-                 interpolate_mode='bilinear',
+                 interpolate_mode='bicubic',
                  with_cp=False):
         super(VisionTransformer, self).__init__()
         self.img_size = img_size
