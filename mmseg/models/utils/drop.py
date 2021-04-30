@@ -14,7 +14,7 @@ class DropPath(nn.Module):
             to be between 0 and 1. Default: 0.
     """
 
-    def __init__(self, drop_prob=None):
+    def __init__(self, drop_prob=0.):
         super(DropPath, self).__init__()
         self.drop_prob = drop_prob
         self.keep_prob = 1 - drop_prob

@@ -216,7 +216,10 @@ class VisionTransformer(nn.Module):
         embed_dim (int): embedding dimension. Default: 768.
         depth (int): depth of transformer. Default: 12.
         num_heads (int): number of attention heads. Default: 12.
-        mlp_ratio (int): ratio of mlp hidden dim to embedding dim. Default: 4.
+        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+            Default: 4.
+        out_indices (list | tuple | int): Output from which stages.
+            Default: -1.
         qkv_bias (bool): enable bias for qkv if True. Default: True.
         qk_scale (float): override default qk scale of head_dim ** -0.5 if set.
         drop_rate (float): dropout rate. Default: 0.
@@ -233,8 +236,8 @@ class VisionTransformer(nn.Module):
             final feature map. Default: False.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bilinear.
-        input_cls_token (bool): If concatenating class token into image tokens
-        as transformer input. Default: True.
+        with_cls_token (bool): If concatenating class token into image tokens
+            as transformer input. Default: True.
         with_cp (bool): Use checkpoint or not. Using checkpoint
             will save some memory while slowing down the training speed.
             Default: False.
@@ -248,6 +251,7 @@ class VisionTransformer(nn.Module):
                  depth=12,
                  num_heads=12,
                  mlp_ratio=4,
+                 out_indices=11,
                  qkv_bias=True,
                  qk_scale=None,
                  drop_rate=0.,
@@ -257,7 +261,7 @@ class VisionTransformer(nn.Module):
                  act_cfg=dict(type='GELU'),
                  norm_eval=False,
                  final_norm=False,
-                 input_cls_token=True,
+                 with_cls_token=True,
                  interpolate_mode='bilinear',
                  with_cp=False):
         super(VisionTransformer, self).__init__()
@@ -270,14 +274,18 @@ class VisionTransformer(nn.Module):
             in_channels=in_channels,
             embed_dim=embed_dim)
 
-        self.input_cls_token = input_cls_token
+        self.with_cls_token = with_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, self.embed_dim))
         self.pos_embed = nn.Parameter(
             torch.zeros(1, self.patch_embed.num_patches + 1, embed_dim))
         self.pos_drop = nn.Dropout(p=drop_rate)
 
-        self.num_stages = depth
-        self.out_indices = tuple(range(self.num_stages))
+        if isinstance(out_indices, int):
+            self.out_indices = [out_indices]
+        elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
+            self.out_indices = out_indices
+        else:
+            raise TypeError('out_indices must be type of int, list or tuple')
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)
                ]  # stochastic depth decay rule
@@ -292,7 +300,7 @@ class VisionTransformer(nn.Module):
                 attn_drop=attn_drop_rate,
                 act_cfg=act_cfg,
                 norm_cfg=norm_cfg,
-                with_cp=with_cp) for i in range(self.num_stages)
+                with_cp=with_cp) for i in range(depth)
         ])
 
         self.interpolate_mode = interpolate_mode
@@ -419,19 +427,18 @@ class VisionTransformer(nn.Module):
         x = torch.cat((cls_tokens, x), dim=1)
         x = self._pos_embeding(inputs, x, self.pos_embed)
 
-        if not self.input_cls_token:
+        if not self.with_cls_token:
             # Remove class token for transformer input
             x = x[:, 1:]
 
         outs = []
-        block_len = len(self.blocks)
         for i, blk in enumerate(self.blocks):
             x = blk(x)
-            if i == block_len - 1:
+            if i == len(self.blocks) - 1:
                 if self.final_norm:
                     x = self.norm(x)
             if i in self.out_indices:
-                if self.input_cls_token:
+                if self.with_cls_token:
                     # Remove class token and reshape token for decoder head
                     out = x[:, 1:]
                 else:
