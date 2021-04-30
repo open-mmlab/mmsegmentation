@@ -1,3 +1,5 @@
+import math
+
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
@@ -18,7 +20,7 @@ class SETRUPHead(BaseDecodeHead):
         embed_dim (int): embedding dimension. Default: 1024.
         norm_layer (dict): Config dict for input normalization.
             Default: norm_layer=dict(type='LN', eps=1e-6, requires_grad=True).
-        num_conv (int): Number of decoder convolutions. Default: 1.
+        num_convs (int): Number of decoder convolutions. Default: 1.
         up_mode (str): Interpolate mode of upsampling. Default: bilinear.
         num_up_layer (str): Nunber of upsampling layers. Default: 1.
         conv3x3_conv1x1 (bool): Naive head use conv1x1_conv1x1, PUP head use
@@ -29,11 +31,15 @@ class SETRUPHead(BaseDecodeHead):
                  img_size=(384, 384),
                  embed_dim=1024,
                  norm_layer=dict(type='LN', eps=1e-6, requires_grad=True),
-                 num_conv=1,
+                 num_convs=2,
                  up_mode='bilinear',
                  num_up_layer=1,
                  conv3x3_conv1x1=True,
                  **kwargs):
+
+        if num_convs not in [2, 4]:
+            raise NotImplementedError
+
         super(SETRUPHead, self).__init__(**kwargs)
 
         if isinstance(img_size, int):
@@ -43,7 +49,10 @@ class SETRUPHead(BaseDecodeHead):
         else:
             raise TypeError('img_size must be type of int or tuple')
 
-        self.num_conv = num_conv
+        assert isinstance(self.in_channels, int)
+        assert embed_dim == self.in_channels
+
+        self.num_convs = num_convs
         _, self.norm = build_norm_layer(norm_layer, embed_dim)
         self.up_mode = up_mode
         self.num_up_layer = num_up_layer
@@ -51,16 +60,16 @@ class SETRUPHead(BaseDecodeHead):
 
         out_channel = self.num_classes
 
-        if self.num_conv == 2:
+        if self.num_convs == 2:
             if self.conv3x3_conv1x1:
                 self.conv_0 = nn.Conv2d(
                     embed_dim, 256, kernel_size=3, stride=1, padding=1)
             else:
                 self.conv_0 = nn.Conv2d(embed_dim, 256, 1, 1)
-            self.conv_1 = nn.Conv2d(256, out_channel, 1, 1)
+            self.conv_seg = nn.Conv2d(256, out_channel, 1, 1)
             _, self.unified_bn_fc_0 = build_norm_layer(self.norm_cfg, 256)
 
-        elif self.num_conv == 4:
+        elif self.num_convs == 4:
             self.conv_0 = nn.Conv2d(
                 embed_dim, 256, kernel_size=3, stride=1, padding=1)
             self.conv_1 = nn.Conv2d(
@@ -69,10 +78,8 @@ class SETRUPHead(BaseDecodeHead):
                 256, 256, kernel_size=3, stride=1, padding=1)
             self.conv_3 = nn.Conv2d(
                 256, 256, kernel_size=3, stride=1, padding=1)
-            self.conv_4 = nn.Conv2d(256, out_channel, kernel_size=1, stride=1)
-
-        else:
-            raise NotImplementedError
+            self.conv_seg = nn.Conv2d(
+                256, out_channel, kernel_size=1, stride=1)
 
             _, self.unified_bn_fc_0 = build_norm_layer(self.norm_cfg, 256)
             _, self.unified_bn_fc_1 = build_norm_layer(self.norm_cfg, 256)
@@ -93,7 +100,10 @@ class SETRUPHead(BaseDecodeHead):
         x = self._transform_inputs(x)
 
         if x.dim() == 3:
+            n, hw, c = x.shape
+            h = w = int(math.sqrt(hw))
             x = self.norm(x)
+            x = x.transpose(1, 2).reshape(n, c, h, w)
         elif x.dim() == 4:
             n, c, h, w = x.shape
             x = x.reshape(n, c, h * w).transpose(2, 1)
@@ -102,12 +112,12 @@ class SETRUPHead(BaseDecodeHead):
         else:
             raise NotImplementedError
 
-        if self.num_conv == 2:
+        if self.num_convs == 2:
             if self.num_up_layer == 1:
                 x = self.conv_0(x)
                 x = self.unified_bn_fc_0(x)
                 x = F.relu(x, inplace=True)
-                x = self.conv_1(x)
+                x = self.conv_seg(x)
                 x = F.interpolate(
                     x,
                     size=self.img_size,
@@ -122,7 +132,7 @@ class SETRUPHead(BaseDecodeHead):
                     size=x.shape[-1] * 4,
                     mode=self.up_mode,
                     align_corners=self.align_corners)
-                x = self.conv_1(x)
+                x = self.conv_seg(x)
                 x = F.interpolate(
                     x,
                     size=self.img_size,
@@ -130,7 +140,7 @@ class SETRUPHead(BaseDecodeHead):
                     align_corners=self.align_corners)
             else:
                 raise NotImplementedError
-        elif self.num_conv == 4:
+        elif self.num_convs == 4:
             if self.num_up_layer == 4:
                 x = self.conv_0(x)
                 x = self.unified_bn_fc_0(x)
@@ -159,7 +169,7 @@ class SETRUPHead(BaseDecodeHead):
                 x = self.conv_3(x)
                 x = self.unified_bn_fc_3(x)
                 x = F.relu(x, inplace=True)
-                x = self.conv_4(x)
+                x = self.conv_seg(x)
                 x = F.interpolate(
                     x,
                     size=x.shape[-1] * 2,
@@ -167,7 +177,5 @@ class SETRUPHead(BaseDecodeHead):
                     align_corners=self.align_corners)
             else:
                 raise NotImplementedError
-        else:
-            raise NotImplementedError
 
         return x

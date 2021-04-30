@@ -170,7 +170,7 @@ class SETRMLAHead(BaseDecodeHead):
             mla_channels=self.mla_channels,
             mlahead_channels=self.mlahead_channels,
             norm_cfg=self.norm_cfg)
-        self.cls = nn.Conv2d(
+        self.conv_seg = nn.Conv2d(
             4 * self.mlahead_channels, self.num_classes, 3, padding=1)
 
     def forward(self, inputs):
@@ -192,7 +192,7 @@ class SETRMLAHead(BaseDecodeHead):
         inputs = self.mla(*inputs)
 
         inputs = self.mlahead(*inputs)
-        out = self.cls(inputs)
+        out = self.conv_seg(inputs)
 
         out = F.interpolate(
             out,

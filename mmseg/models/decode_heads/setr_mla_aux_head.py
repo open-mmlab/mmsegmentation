@@ -121,7 +121,7 @@ class SETRMLAAUXHead(BaseDecodeHead):
         # we use mla select index to replace in_index of aux head of  offcial
         # repo.
         self.mla_in_channel = self.in_channels[self.mla_select_index]
-        self.aux = nn.Conv2d(
+        self.conv_seg = nn.Conv2d(
             mla_channels, self.num_classes, kernel_size=1, bias=False)
 
     def forward(self, inputs):
@@ -142,7 +142,7 @@ class SETRMLAAUXHead(BaseDecodeHead):
 
         inputs = self.mla(*inputs)
         x = inputs[self.mla_select_index]
-        x = self.aux(x)
+        x = self.conv_seg(x)
         x = F.interpolate(
             x,
             size=self.img_size,
