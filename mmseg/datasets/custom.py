@@ -1,11 +1,12 @@
 import os
 import os.path as osp
+from collections import OrderedDict
 from functools import reduce
 
 import mmcv
 import numpy as np
 from mmcv.utils import print_log
-from terminaltables import AsciiTable
+from prettytable import PrettyTable
 from torch.utils.data import Dataset
 
 from mmseg.core import eval_metrics
@@ -312,8 +313,8 @@ class CustomDataset(Dataset):
 
         Args:
             results (list): Testing results of the dataset.
-            metric (str | list[str]): Metrics to be evaluated. 'mIoU' and
-                'mDice' are supported.
+            metric (str | list[str]): Metrics to be evaluated. 'mIoU',
+                'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
 
@@ -323,7 +324,7 @@ class CustomDataset(Dataset):
 
         if isinstance(metric, str):
             metric = [metric]
-        allowed_metrics = ['mIoU', 'mDice']
+        allowed_metrics = ['mIoU', 'mDice', 'mFscore']
         if not set(metric).issubset(set(allowed_metrics)):
             raise KeyError('metric {} is not supported'.format(metric))
         eval_results = {}
@@ -341,42 +342,57 @@ class CustomDataset(Dataset):
             metric,
             label_map=self.label_map,
             reduce_zero_label=self.reduce_zero_label)
-        class_table_data = [['Class'] + [m[1:] for m in metric] + ['Acc']]
+
         if self.CLASSES is None:
             class_names = tuple(range(num_classes))
         else:
             class_names = self.CLASSES
-        ret_metrics_round = [
-            np.round(ret_metric * 100, 2) for ret_metric in ret_metrics
-        ]
-        for i in range(num_classes):
-            class_table_data.append([class_names[i]] +
-                                    [m[i] for m in ret_metrics_round[2:]] +
-                                    [ret_metrics_round[1][i]])
-        summary_table_data = [['Scope'] +
-                              ['m' + head
-                               for head in class_table_data[0][1:]] + ['aAcc']]
-        ret_metrics_mean = [
-            np.round(np.nanmean(ret_metric) * 100, 2)
-            for ret_metric in ret_metrics
-        ]
-        summary_table_data.append(['global'] + ret_metrics_mean[2:] +
-                                  [ret_metrics_mean[1]] +
-                                  [ret_metrics_mean[0]])
-        print_log('per class results:', logger)
-        table = AsciiTable(class_table_data)
-        print_log('\n' + table.table, logger=logger)
-        print_log('Summary:', logger)
-        table = AsciiTable(summary_table_data)
-        print_log('\n' + table.table, logger=logger)
 
-        for i in range(1, len(summary_table_data[0])):
-            eval_results[summary_table_data[0]
-                         [i]] = summary_table_data[1][i] / 100.0
-        for idx, sub_metric in enumerate(class_table_data[0][1:], 1):
-            for item in class_table_data[1:]:
-                eval_results[str(sub_metric) + '.' +
-                             str(item[0])] = item[idx] / 100.0
+        # summary table
+        ret_metrics_summary = OrderedDict({
+            ret_metric: np.round(np.nanmean(ret_metric_value) * 100, 2)
+            for ret_metric, ret_metric_value in ret_metrics.items()
+        })
+
+        # each class table
+        ret_metrics.pop('aAcc', None)
+        ret_metrics_class = OrderedDict({
+            ret_metric: np.round(ret_metric_value * 100, 2)
+            for ret_metric, ret_metric_value in ret_metrics.items()
+        })
+        ret_metrics_class.update({'Class': class_names})
+        ret_metrics_class.move_to_end('Class', last=False)
+
+        # for logger
+        class_table_data = PrettyTable()
+        for key, val in ret_metrics_class.items():
+            class_table_data.add_column(key, val)
+
+        summary_table_data = PrettyTable()
+        for key, val in ret_metrics_summary.items():
+            if key == 'aAcc':
+                summary_table_data.add_column(key, [val])
+            else:
+                summary_table_data.add_column('m' + key, [val])
+
+        print_log('per class results:', logger)
+        print_log('\n' + class_table_data.get_string(), logger=logger)
+        print_log('Summary:', logger)
+        print_log('\n' + summary_table_data.get_string(), logger=logger)
+
+        # each metric dict
+        for key, value in ret_metrics_summary.items():
+            if key == 'aAcc':
+                eval_results[key] = value / 100.0
+            else:
+                eval_results['m' + key] = value / 100.0
+
+        ret_metrics_class.pop('Class', None)
+        for key, value in ret_metrics_class.items():
+            eval_results.update({
+                key + '.' + str(name): value[idx] / 100.0
+                for idx, name in enumerate(class_names)
+            })
 
         if mmcv.is_list_of(results, str):
             for file_name in results:

@@ -1,6 +1,25 @@
+from collections import OrderedDict
+
 import mmcv
 import numpy as np
 import torch
+
+
+def f_score(precision, recall, beta=1):
+    """calcuate the f-score value.
+
+    Args:
+        precision (float | torch.Tensor): The precision value.
+        recall (float | torch.Tensor): The recall value.
+        beta (int): Determines the weight of recall in the combined score.
+            Default: False.
+
+    Returns:
+        [torch.tensor]: The f-score value.
+    """
+    score = (1 + beta**2) * (precision * recall) / (
+        (beta**2 * precision) + recall)
+    return score
 
 
 def intersect_and_union(pred_label,
@@ -133,11 +152,12 @@ def mean_iou(results,
         reduce_zero_label (bool): Wether ignore zero label. Default: False.
 
      Returns:
-         float: Overall accuracy on all images.
-         ndarray: Per category accuracy, shape (num_classes, ).
-         ndarray: Per category IoU, shape (num_classes, ).
+        dict[str, float | ndarray]:
+            <aAcc> float: Overall accuracy on all images.
+            <Acc> ndarray: Per category accuracy, shape (num_classes, ).
+            <IoU> ndarray: Per category IoU, shape (num_classes, ).
     """
-    all_acc, acc, iou = eval_metrics(
+    iou_result = eval_metrics(
         results=results,
         gt_seg_maps=gt_seg_maps,
         num_classes=num_classes,
@@ -146,7 +166,7 @@ def mean_iou(results,
         nan_to_num=nan_to_num,
         label_map=label_map,
         reduce_zero_label=reduce_zero_label)
-    return all_acc, acc, iou
+    return iou_result
 
 
 def mean_dice(results,
@@ -171,12 +191,13 @@ def mean_dice(results,
         reduce_zero_label (bool): Wether ignore zero label. Default: False.
 
      Returns:
-         float: Overall accuracy on all images.
-         ndarray: Per category accuracy, shape (num_classes, ).
-         ndarray: Per category dice, shape (num_classes, ).
+        dict[str, float | ndarray]: Default metrics.
+            <aAcc> float: Overall accuracy on all images.
+            <Acc> ndarray: Per category accuracy, shape (num_classes, ).
+            <Dice> ndarray: Per category dice, shape (num_classes, ).
     """
 
-    all_acc, acc, dice = eval_metrics(
+    dice_result = eval_metrics(
         results=results,
         gt_seg_maps=gt_seg_maps,
         num_classes=num_classes,
@@ -185,7 +206,52 @@ def mean_dice(results,
         nan_to_num=nan_to_num,
         label_map=label_map,
         reduce_zero_label=reduce_zero_label)
-    return all_acc, acc, dice
+    return dice_result
+
+
+def mean_fscore(results,
+                gt_seg_maps,
+                num_classes,
+                ignore_index,
+                nan_to_num=None,
+                label_map=dict(),
+                reduce_zero_label=False,
+                beta=1):
+    """Calculate Mean Intersection and Union (mIoU)
+
+    Args:
+        results (list[ndarray] | list[str]): List of prediction segmentation
+            maps or list of prediction result filenames.
+        gt_seg_maps (list[ndarray] | list[str]): list of ground truth
+            segmentation maps or list of label filenames.
+        num_classes (int): Number of categories.
+        ignore_index (int): Index that will be ignored in evaluation.
+        nan_to_num (int, optional): If specified, NaN values will be replaced
+            by the numbers defined by the user. Default: None.
+        label_map (dict): Mapping old labels to new labels. Default: dict().
+        reduce_zero_label (bool): Wether ignore zero label. Default: False.
+        beta (int): Determines the weight of recall in the combined score.
+            Default: False.
+
+
+     Returns:
+        dict[str, float | ndarray]: Default metrics.
+            <aAcc> float: Overall accuracy on all images.
+            <Fscore> ndarray: Per category recall, shape (num_classes, ).
+            <Precision> ndarray: Per category precision, shape (num_classes, ).
+            <Recall> ndarray: Per category f-score, shape (num_classes, ).
+    """
+    fscore_result = eval_metrics(
+        results=results,
+        gt_seg_maps=gt_seg_maps,
+        num_classes=num_classes,
+        ignore_index=ignore_index,
+        metrics=['mFscore'],
+        nan_to_num=nan_to_num,
+        label_map=label_map,
+        reduce_zero_label=reduce_zero_label,
+        beta=beta)
+    return fscore_result
 
 
 def eval_metrics(results,
@@ -195,7 +261,8 @@ def eval_metrics(results,
                  metrics=['mIoU'],
                  nan_to_num=None,
                  label_map=dict(),
-                 reduce_zero_label=False):
+                 reduce_zero_label=False,
+                 beta=1):
     """Calculate evaluation metrics
     Args:
         results (list[ndarray] | list[str]): List of prediction segmentation
@@ -210,13 +277,13 @@ def eval_metrics(results,
         label_map (dict): Mapping old labels to new labels. Default: dict().
         reduce_zero_label (bool): Wether ignore zero label. Default: False.
      Returns:
-         float: Overall accuracy on all images.
-         ndarray: Per category accuracy, shape (num_classes, ).
-         ndarray: Per category evaluation metrics, shape (num_classes, ).
+        float: Overall accuracy on all images.
+        ndarray: Per category accuracy, shape (num_classes, ).
+        ndarray: Per category evaluation metrics, shape (num_classes, ).
     """
     if isinstance(metrics, str):
         metrics = [metrics]
-    allowed_metrics = ['mIoU', 'mDice']
+    allowed_metrics = ['mIoU', 'mDice', 'mFscore']
     if not set(metrics).issubset(set(allowed_metrics)):
         raise KeyError('metrics {} is not supported'.format(metrics))
 
@@ -225,19 +292,35 @@ def eval_metrics(results,
             results, gt_seg_maps, num_classes, ignore_index, label_map,
             reduce_zero_label)
     all_acc = total_area_intersect.sum() / total_area_label.sum()
-    acc = total_area_intersect / total_area_label
-    ret_metrics = [all_acc, acc]
+    ret_metrics = OrderedDict({'aAcc': all_acc})
     for metric in metrics:
         if metric == 'mIoU':
             iou = total_area_intersect / total_area_union
-            ret_metrics.append(iou)
+            acc = total_area_intersect / total_area_label
+            ret_metrics['IoU'] = iou
+            ret_metrics['Acc'] = acc
         elif metric == 'mDice':
             dice = 2 * total_area_intersect / (
                 total_area_pred_label + total_area_label)
-            ret_metrics.append(dice)
-    ret_metrics = [metric.numpy() for metric in ret_metrics]
+            acc = total_area_intersect / total_area_label
+            ret_metrics['Dice'] = dice
+            ret_metrics['Acc'] = acc
+        elif metric == 'mFscore':
+            precision = total_area_intersect / total_area_pred_label
+            recall = total_area_intersect / total_area_label
+            f_value = torch.tensor(
+                [f_score(x[0], x[1], beta) for x in zip(precision, recall)])
+            ret_metrics['Fscore'] = f_value
+            ret_metrics['Precision'] = precision
+            ret_metrics['Recall'] = recall
+
+    ret_metrics = {
+        metric: value.numpy()
+        for metric, value in ret_metrics.items()
+    }
     if nan_to_num is not None:
-        ret_metrics = [
-            np.nan_to_num(metric, nan=nan_to_num) for metric in ret_metrics
-        ]
+        ret_metrics = OrderedDict({
+            metric: np.nan_to_num(metric_value, nan=nan_to_num)
+            for metric, metric_value in ret_metrics.items()
+        })
     return ret_metrics
