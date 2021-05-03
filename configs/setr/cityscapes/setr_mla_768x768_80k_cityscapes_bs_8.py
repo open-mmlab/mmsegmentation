@@ -7,8 +7,8 @@ model = dict(backbone=dict(drop_rate=0., ))
 optimizer = dict(
     lr=0.002,
     weight_decay=0.0,
-    paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}))
+    paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}),
+    test_cfg=dict(mode='slide', crop_size=(768, 768), stride=(512, 512)))
 
-test_cfg = dict(mode='slide', crop_size=(768, 768), stride=(512, 512))
 find_unused_parameters = True
 data = dict(samples_per_gpu=1)

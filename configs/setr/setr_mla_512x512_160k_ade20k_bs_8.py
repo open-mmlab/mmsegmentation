@@ -1,16 +1,18 @@
-# model settings
-backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
+_base_ = [
+    '../_base_/models/setr_mla.py', '../_base_/datasets/ade20k.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 aux_alpha = dict(
     type='SETRMLAAUXHead',
     in_channels=(1024, 1024, 1024, 1024),
     channels=512,
     in_index=(0, 1, 2, 3),
-    img_size=(768, 768),
+    img_size=(512, 512),
     embed_dim=1024,
     mla_channels=256,
     mla_select_index=0,
-    num_classes=19,
+    num_classes=150,
     norm_cfg=norm_cfg,
     align_corners=False,
     loss_decode=dict(
@@ -20,11 +22,11 @@ aux_beta = dict(
     in_channels=(1024, 1024, 1024, 1024),
     channels=512,
     in_index=(0, 1, 2, 3),
-    img_size=(768, 768),
+    img_size=(512, 512),
     embed_dim=1024,
     mla_channels=256,
     mla_select_index=1,
-    num_classes=19,
+    num_classes=150,
     norm_cfg=norm_cfg,
     align_corners=False,
     loss_decode=dict(
@@ -34,11 +36,11 @@ aux_gamma = dict(
     in_channels=(1024, 1024, 1024, 1024),
     channels=512,
     in_index=(0, 1, 2, 3),
-    img_size=(768, 768),
+    img_size=(512, 512),
     embed_dim=1024,
     mla_channels=256,
     mla_select_index=2,
-    num_classes=19,
+    num_classes=150,
     norm_cfg=norm_cfg,
     align_corners=False,
     loss_decode=dict(
@@ -48,47 +50,26 @@ aux_delta = dict(
     in_channels=(1024, 1024, 1024, 1024),
     channels=512,
     in_index=(0, 1, 2, 3),
-    img_size=(768, 768),
+    img_size=(512, 512),
     embed_dim=1024,
     mla_channels=256,
     mla_select_index=3,
-    num_classes=19,
+    num_classes=150,
     norm_cfg=norm_cfg,
     align_corners=False,
     loss_decode=dict(
         type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4))
 model = dict(
-    type='EncoderDecoder',
-    pretrained='https://github.com/rwightman/pytorch-image-models/releases/\
-download/v0.1-vitjx/jx_vit_large_p16_384-b3be5167.pth',
-    backbone=dict(
-        type='VisionTransformer',
-        img_size=(768, 768),
-        patch_size=16,
-        in_channels=3,
-        embed_dim=1024,
-        depth=24,
-        num_heads=16,
-        out_indices=(5, 11, 17, 23),
-        drop_rate=0.1,
-        norm_cfg=backbone_norm_cfg,
-        with_cls_token=False,
-        interpolate_mode='bilinear',
-    ),
-    decode_head=dict(
-        type='SETRMLAHead',
-        in_channels=(1024, 1024, 1024, 1024),
-        channels=512,
-        in_index=(0, 1, 2, 3),
-        img_size=(768, 768),
-        embed_dim=1024,
-        mla_channels=256,
-        mlahead_channels=128,
-        num_classes=19,
-        norm_cfg=norm_cfg,
-        align_corners=False,
-        loss_decode=dict(
-            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+    backbone=dict(img_size=(512, 512), drop_rate=0.),
+    decode_head=dict(img_size=(512, 512), num_classes=150),
     auxiliary_head=[aux_alpha, aux_beta, aux_gamma, aux_delta],
-    train_cfg=dict(),
-    test_cfg=dict(mode='whole'))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)),
+)
+
+optimizer = dict(
+    lr=0.001,
+    weight_decay=0.0,
+    paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}))
+
+find_unused_parameters = True
+data = dict(samples_per_gpu=1)
