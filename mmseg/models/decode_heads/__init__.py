@@ -19,10 +19,14 @@ from .psp_head import PSPHead
 from .sep_aspp_head import DepthwiseSeparableASPPHead
 from .sep_fcn_head import DepthwiseSeparableFCNHead
 from .uper_head import UPerHead
+from .vit_up_head import VisionTransformerUpHead
+from .vit_mla_head import VIT_MLAHead
+from .vit_mla_auxi_head import VIT_MLA_AUXIHead
 
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
     'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
-    'PointHead', 'APCHead', 'DMHead', 'LRASPPHead'
+    'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'VisionTransformerUpHead',
+    'VIT_MLAHead', 'VIT_MLA_AUXIHead'
 ]
