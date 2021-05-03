@@ -185,8 +185,6 @@ class SETRMLAHead(BaseDecodeHead):
                 n, c, h, w = x.shape
                 x = x.reshape(n, c, h * w).transpose(2, 1)
                 x = self.norm[i](x)
-            else:
-                raise NotImplementedError
             inputs[i] = x
 
         inputs = self.mla(*inputs)

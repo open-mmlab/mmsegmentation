@@ -96,7 +96,7 @@ download/v0.1-vitjx/jx_vit_large_p16_384-b3be5167.pth',
             num_conv=2,
             up_mode='bilinear',
             num_up_layer=2,
-            conv3x3_conv1x1=False,
+            conv3x3_conv1x1=True,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),

@@ -109,8 +109,6 @@ class SETRUPHead(BaseDecodeHead):
             x = x.reshape(n, c, h * w).transpose(2, 1)
             x = self.norm(x)
             x = x.transpose(1, 2).reshape(n, c, h, w)
-        else:
-            raise NotImplementedError
 
         if self.num_convs == 2:
             if self.num_up_layer == 1:

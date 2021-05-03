@@ -1,34 +1,34 @@
 import pytest
 import torch
 
-from mmseg.models.decode_heads import SETRMLAHead
+from mmseg.models.decode_heads import SETRMLAAUXHead
 from .utils import to_cuda
 
 
-def test_setr_mla_head(capsys):
+def test_setr_mla_aux_head(capsys):
 
     with pytest.raises(AssertionError):
         # MLA requires input multiple stage feature information.
-        SETRMLAHead(in_channels=32, channels=16, num_classes=19, in_index=1)
+        SETRMLAAUXHead(in_channels=32, channels=16, num_classes=19, in_index=1)
 
     with pytest.raises(AssertionError):
         # multiple in_indexs requires multiple in_channels.
-        SETRMLAHead(
+        SETRMLAAUXHead(
             in_channels=32, channels=16, num_classes=19, in_index=(0, 1, 2, 3))
 
-        with pytest.raises(TypeError):
-            # img_size must be int or tuple.
-            SETRMLAHead(
-                in_channels=(32, 32, 32, 32),
-                channels=16,
-                num_classes=19,
-                in_index=(0, 1, 2, 3),
-                img_size=[224, 224])
+    with pytest.raises(TypeError):
+        # img_size must be int or tuple.
+        SETRMLAAUXHead(
+            in_channels=(32, 32, 32, 32),
+            channels=16,
+            num_classes=19,
+            in_index=(0, 1, 2, 3),
+            img_size=[224, 224])
 
-    # test inference of MLA head
+    # test inference of MLA AUX head
     img_size = (32, 32)
     patch_size = 16
-    head = SETRMLAHead(
+    head = SETRMLAAUXHead(
         img_size=img_size,
         in_channels=(32, 32, 32, 32),
         channels=16,
