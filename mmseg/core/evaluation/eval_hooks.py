@@ -1,10 +1,10 @@
 import os.path as osp
 
-from mmcv.runner import DistEvalHook as BasicDistEvalHook
-from mmcv.runner import EvalHook as BasicEvalHook
+from mmcv.runner import DistEvalHook as _DistEvalHook
+from mmcv.runner import EvalHook as _EvalHook
 
 
-class EvalHook(BasicEvalHook):
+class EvalHook(_EvalHook):
     """Single GPU EvalHook, with efficient test support.
 
     Args:
@@ -29,7 +29,11 @@ class EvalHook(BasicEvalHook):
             return
         from mmseg.apis import single_gpu_test
         runner.log_buffer.clear()
-        results = single_gpu_test(runner.model, self.dataloader, show=False)
+        results = single_gpu_test(
+            runner.model,
+            self.dataloader,
+            show=False,
+            efficient_test=self.efficient_test)
         self.evaluate(runner, results)
 
     def after_train_epoch(self, runner):
@@ -42,7 +46,7 @@ class EvalHook(BasicEvalHook):
         self.evaluate(runner, results)
 
 
-class DistEvalHook(BasicDistEvalHook):
+class DistEvalHook(_DistEvalHook):
     """Distributed EvalHook, with efficient test support.
 
     Args:
@@ -71,7 +75,8 @@ class DistEvalHook(BasicDistEvalHook):
             runner.model,
             self.dataloader,
             tmpdir=osp.join(runner.work_dir, '.eval_hook'),
-            gpu_collect=self.gpu_collect)
+            gpu_collect=self.gpu_collect,
+            efficient_test=self.efficient_test)
         if runner.rank == 0:
             print('\n')
             self.evaluate(runner, results)
