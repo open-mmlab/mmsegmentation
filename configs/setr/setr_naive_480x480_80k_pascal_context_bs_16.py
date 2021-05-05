@@ -55,13 +55,13 @@ model = dict(
     backbone=dict(img_size=(480, 480), drop_rate=0.),
     decode_head=dict(img_size=(480, 480), num_classes=60),
     auxiliary_head=[aux_alpha, aux_beta, aux_gamma],
-)
+    test_cfg=dict(mode='slide', crop_size=(480, 480), stride=(320, 320)))
 
 optimizer = dict(
     lr=0.01,
     weight_decay=0.0,
     paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}),
-    test_cfg=dict(mode='slide', crop_size=(480, 480), stride=(320, 320)))
+)
 
 find_unused_parameters = True
 data = dict(samples_per_gpu=2)
