@@ -42,7 +42,9 @@ class Resize(object):
                  img_scale=None,
                  multiscale_mode='range',
                  ratio_range=None,
-                 keep_ratio=True):
+                 keep_ratio=True,
+                 crop_size=None,
+                 setr_multi_scale=False):
         if img_scale is None:
             self.img_scale = None
         else:
@@ -63,6 +65,8 @@ class Resize(object):
         self.multiscale_mode = multiscale_mode
         self.ratio_range = ratio_range
         self.keep_ratio = keep_ratio
+        self.crop_size = crop_size
+        self.setr_multi_scale = setr_multi_scale
 
     @staticmethod
     def random_select(img_scales):
@@ -177,6 +181,19 @@ class Resize(object):
     def _resize_img(self, results):
         """Resize images with ``results['scale']``."""
         if self.keep_ratio:
+            if self.setr_multi_scale:
+                if min(results['scale']) < self.crop_size[0]:
+                    new_short = self.crop_size[0]
+                else:
+                    new_short = min(results['scale'])
+
+                h, w = results['img'].shape[:2]
+                if h > w:
+                    new_h, new_w = new_short * h / w, new_short
+                else:
+                    new_h, new_w = new_short, new_short * w / h
+                results['scale'] = (new_h, new_w)
+                
             img, scale_factor = mmcv.imrescale(
                 results['img'], results['scale'], return_scale=True)
             # the w_scale and h_scale has minor difference

@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/models/setr_mla.py',
-    '../_base_/datasets/pascal_context_multi_scale.py', '../_base_/default_runtime.py',
+    '../_base_/datasets/pascal_context.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_80k.py'
 ]
 model = dict(
@@ -54,7 +54,32 @@ model = dict(
 optimizer = dict(lr=0.001, weight_decay=0.0,
                  paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)})
                  )
+img_norm_cfg = dict(
+    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+img_scale = (520, 520)
+crop_size = (480, 480)
 
-test_cfg = dict(mode='slide', crop_size=(480, 480), stride=(320, 320))
+test_cfg = dict(mode='slide', crop_size=crop_size, stride=(320, 320))
 find_unused_parameters = True
 data = dict(samples_per_gpu=1)
+
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=img_scale,
+        img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
+        flip=True,
+        transforms=[
+            dict(type='Resize', keep_ratio=True,
+                 crop_size=crop_size, setr_multi_scale=True),
+            dict(type='RandomFlip'),
+            dict(type='Normalize', **img_norm_cfg),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img']),
+        ])
+]
+
+data = dict(
+    val=dict(pipeline=test_pipeline),
+    test=dict(pipeline=test_pipeline))
