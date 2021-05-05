@@ -1,5 +1,45 @@
 ## Changelog
 
+### V0.13 (05/05/2021)
+
+**Highlights**
+
+- Support Pascal Context Class-59 dataset.
+- Support Visual Transformer Backbone.
+- Support mFscore metric.
+
+**Bug Fixes**
+
+- Fixed Colaboratory tutorial ([#451](https://github.com/open-mmlab/mmsegmentation/pull/451))
+- Fixed mIoU calculation range ([#471](https://github.com/open-mmlab/mmsegmentation/pull/471))
+- Fixed sem_fpn, unet README.md ([#492](https://github.com/open-mmlab/mmsegmentation/pull/492))
+- Fixed `num_classes` in FCN for Pascal Context 60-class dataset ([#488](https://github.com/open-mmlab/mmsegmentation/pull/488))
+- Fixed FP16 inference ([#497](https://github.com/open-mmlab/mmsegmentation/pull/497))
+
+**New Features**
+
+- Support dynamic export and visualize to pytorch2onnx ([#463](https://github.com/open-mmlab/mmsegmentation/pull/463))
+- Support export to torchscript ([#469](https://github.com/open-mmlab/mmsegmentation/pull/469), [#499](https://github.com/open-mmlab/mmsegmentation/pull/499))
+- Support Pascal Context Class-59 dataset ([#459](https://github.com/open-mmlab/mmsegmentation/pull/459))
+- Support Visual Transformer backbone ([#465](https://github.com/open-mmlab/mmsegmentation/pull/465))
+- Support UpSample Neck ([#512](https://github.com/open-mmlab/mmsegmentation/pull/512))
+- Support mFscore metric ([#509](https://github.com/open-mmlab/mmsegmentation/pull/509))
+
+**Improvements**
+
+- Add more CI for PyTorch ([#460](https://github.com/open-mmlab/mmsegmentation/pull/460))
+- Add print model graph args for tools/print_config.py ([#451](https://github.com/open-mmlab/mmsegmentation/pull/451))
+- Add cfg links in modelzoo README.md ([#468](https://github.com/open-mmlab/mmsegmentation/pull/469))
+- Add BaseSegmentor import to segmentors/__init__.py ([#495](https://github.com/open-mmlab/mmsegmentation/pull/495))
+- Add MMOCR, MMGeneration links ([#501](https://github.com/open-mmlab/mmsegmentation/pull/501), [#506](https://github.com/open-mmlab/mmsegmentation/pull/506))
+- Add Chinese QR code ([#506](https://github.com/open-mmlab/mmsegmentation/pull/506))
+- Use MMCV MODEL_REGISTRY ([#515](https://github.com/open-mmlab/mmsegmentation/pull/515))
+- Add ONNX testing tools ([#498](https://github.com/open-mmlab/mmsegmentation/pull/498))
+- Replace data_dict calling 'img' key to support MMDet3D ([#514](https://github.com/open-mmlab/mmsegmentation/pull/514))
+- Support reading class_weight from file in loss function ([#513](https://github.com/open-mmlab/mmsegmentation/pull/513))
+- Make tags as comment ([#505](https://github.com/open-mmlab/mmsegmentation/pull/505))
+- Use MMCV EvalHook ([#438](https://github.com/open-mmlab/mmsegmentation/pull/438))
+
 ### V0.12 (04/03/2021)
 
 **Highlights**
