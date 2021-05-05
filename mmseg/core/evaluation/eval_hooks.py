@@ -24,7 +24,10 @@ class EvalHook(_EvalHook):
         self.efficient_test = efficient_test
 
     def after_train_iter(self, runner):
-        """After train epoch hook."""
+        """After train epoch hook.
+
+        Override default ``single_gpu_test``.
+        """
         if self.by_epoch or not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
@@ -37,7 +40,10 @@ class EvalHook(_EvalHook):
         self.evaluate(runner, results)
 
     def after_train_epoch(self, runner):
-        """After train epoch hook."""
+        """After train epoch hook.
+
+        Override default ``single_gpu_test``.
+        """
         if not self.by_epoch or not self.every_n_epochs(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
@@ -66,7 +72,10 @@ class DistEvalHook(_DistEvalHook):
         self.efficient_test = efficient_test
 
     def after_train_iter(self, runner):
-        """After train epoch hook."""
+        """After train epoch hook.
+
+        Override default ``multi_gpu_test``.
+        """
         if self.by_epoch or not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import multi_gpu_test
@@ -82,7 +91,10 @@ class DistEvalHook(_DistEvalHook):
             self.evaluate(runner, results)
 
     def after_train_epoch(self, runner):
-        """After train epoch hook."""
+        """After train epoch hook.
+
+        Override default ``multi_gpu_test``.
+        """
         if not self.by_epoch or not self.every_n_epochs(runner, self.interval):
             return
         from mmseg.apis import multi_gpu_test
