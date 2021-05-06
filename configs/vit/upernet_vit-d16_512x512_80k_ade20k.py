@@ -16,8 +16,8 @@ optimizer = dict(
     weight_decay=0.01,
     paramwise_cfg=dict(
         custom_keys={
-            'absolute_pos_embed': dict(decay_mult=0.),
-            'relative_position_bias_table': dict(decay_mult=0.),
+            'pos_embed': dict(decay_mult=0.),
+            'cls_token': dict(decay_mult=0.),
             'norm': dict(decay_mult=0.)
         }))
 
