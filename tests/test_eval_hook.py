@@ -63,7 +63,7 @@ def test_iter_eval_hook():
 
     # test EvalHook
     with tempfile.TemporaryDirectory() as tmpdir:
-        eval_hook = EvalHook(data_loader)
+        eval_hook = EvalHook(data_loader, by_epoch=False)
         runner = mmcv.runner.IterBasedRunner(
             model=model,
             optimizer=optimizer,
@@ -112,7 +112,11 @@ def test_epoch_eval_hook():
                                                       logger=runner.logger)
 
 
-def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
+def multi_gpu_test(model,
+                   data_loader,
+                   tmpdir=None,
+                   gpu_collect=False,
+                   efficient_test=False):
     results = single_gpu_test(model, data_loader)
     return results
 
@@ -143,7 +147,7 @@ def test_dist_eval_hook():
 
     # test DistEvalHook
     with tempfile.TemporaryDirectory() as tmpdir:
-        eval_hook = DistEvalHook(data_loader)
+        eval_hook = DistEvalHook(data_loader, by_epoch=False)
         runner = mmcv.runner.IterBasedRunner(
             model=model,
             optimizer=optimizer,

@@ -8,12 +8,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as cp
 from mmcv.cnn import (Conv2d, Linear, build_activation_layer, build_norm_layer,
-                      constant_init, kaiming_init, normal_init, xavier_init)
+                      constant_init, kaiming_init, normal_init)
 from mmcv.runner import _load_checkpoint
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
+from ..utils import DropPath, trunc_normal_
 
 
 class Mlp(nn.Module):
@@ -114,10 +115,14 @@ class Block(nn.Module):
             Default: 0.
         proj_drop (float): Drop rate for attn layer output weights.
             Default: 0.
+        drop_path (float): Drop rate for paths of model.
+            Default: 0.
         act_cfg (dict): Config dict for activation layer.
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN', requires_grad=True).
+        with_cp (bool): Use checkpoint or not. Using checkpoint will save some
+            memory while slowing down the training speed. Default: False.
     """
 
     def __init__(self,
@@ -129,14 +134,17 @@ class Block(nn.Module):
                  drop=0.,
                  attn_drop=0.,
                  proj_drop=0.,
+                 drop_path=0.,
                  act_cfg=dict(type='GELU'),
-                 norm_cfg=dict(type='LN'),
+                 norm_cfg=dict(type='LN', eps=1e-6),
                  with_cp=False):
         super(Block, self).__init__()
         self.with_cp = with_cp
         _, self.norm1 = build_norm_layer(norm_cfg, dim)
         self.attn = Attention(dim, num_heads, qkv_bias, qk_scale, attn_drop,
                               proj_drop)
+        self.drop_path = DropPath(
+            drop_path) if drop_path > 0. else nn.Identity()
         _, self.norm2 = build_norm_layer(norm_cfg, dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(
@@ -148,8 +156,8 @@ class Block(nn.Module):
     def forward(self, x):
 
         def _inner_forward(x):
-            out = x + self.attn(self.norm1(x))
-            out = out + self.mlp(self.norm2(out))
+            out = x + self.drop_path(self.attn(self.norm1(x)))
+            out = out + self.drop_path(self.mlp(self.norm2(out)))
             return out
 
         if self.with_cp and x.requires_grad:
@@ -164,7 +172,7 @@ class PatchEmbed(nn.Module):
     """Image to Patch Embedding.
 
     Args:
-        img_size (int， tuple): Input image size.
+        img_size (int | tuple): Input image size.
             default: 224.
         patch_size (int): Width and height for a patch.
             default: 16.
@@ -202,24 +210,34 @@ class VisionTransformer(nn.Module):
         Image Recognition at Scale` - https://arxiv.org/abs/2010.11929
 
     Args:
-        img_size (tuple): input image size. Default: (224, 224）.
+        img_size (tuple): input image size. Default: (224, 224).
         patch_size (int, tuple): patch size. Default: 16.
         in_channels (int): number of input channels. Default: 3.
         embed_dim (int): embedding dimension. Default: 768.
         depth (int): depth of transformer. Default: 12.
         num_heads (int): number of attention heads. Default: 12.
-        mlp_ratio (int): ratio of mlp hidden dim to embedding dim. Default: 4.
+        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+            Default: 4.
+        out_indices (list | tuple | int): Output from which stages.
+            Default: -1.
         qkv_bias (bool): enable bias for qkv if True. Default: True.
         qk_scale (float): override default qk scale of head_dim ** -0.5 if set.
         drop_rate (float): dropout rate. Default: 0.
         attn_drop_rate (float): attention dropout rate. Default: 0.
+        drop_path_rate (float): Rate of DropPath. Default: 0.
         norm_cfg (dict): Config dict for normalization layer.
-            Default: dict(type='LN', requires_grad=True).
+            Default: dict(type='LN', eps=1e-6, requires_grad=True).
         act_cfg (dict): Config dict for activation layer.
             Default: dict(type='GELU').
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
+        final_norm (bool):  Whether to add a additional layer to normalize
+            final feature map. Default: False.
+        interpolate_mode (str): Select the interpolate mode for position
+            embeding vector resize. Default: bicubic.
+        with_cls_token (bool): If concatenating class token into image tokens
+            as transformer input. Default: True.
         with_cp (bool): Use checkpoint or not. Using checkpoint
             will save some memory while slowing down the training speed.
             Default: False.
@@ -233,13 +251,18 @@ class VisionTransformer(nn.Module):
                  depth=12,
                  num_heads=12,
                  mlp_ratio=4,
+                 out_indices=11,
                  qkv_bias=True,
                  qk_scale=None,
                  drop_rate=0.,
                  attn_drop_rate=0.,
-                 norm_cfg=dict(type='LN'),
+                 drop_path_rate=0.,
+                 norm_cfg=dict(type='LN', eps=1e-6, requires_grad=True),
                  act_cfg=dict(type='GELU'),
                  norm_eval=False,
+                 final_norm=False,
+                 with_cls_token=True,
+                 interpolate_mode='bicubic',
                  with_cp=False):
         super(VisionTransformer, self).__init__()
         self.img_size = img_size
@@ -251,24 +274,39 @@ class VisionTransformer(nn.Module):
             in_channels=in_channels,
             embed_dim=embed_dim)
 
+        self.with_cls_token = with_cls_token
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, self.embed_dim))
         self.pos_embed = nn.Parameter(
-            torch.zeros(1, self.patch_embed.num_patches, embed_dim))
+            torch.zeros(1, self.patch_embed.num_patches + 1, embed_dim))
         self.pos_drop = nn.Dropout(p=drop_rate)
 
-        self.blocks = nn.Sequential(*[
+        if isinstance(out_indices, int):
+            self.out_indices = [out_indices]
+        elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
+            self.out_indices = out_indices
+        else:
+            raise TypeError('out_indices must be type of int, list or tuple')
+
+        dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)
+               ]  # stochastic depth decay rule
+        self.blocks = nn.ModuleList([
             Block(
                 dim=embed_dim,
                 num_heads=num_heads,
                 mlp_ratio=mlp_ratio,
                 qkv_bias=qkv_bias,
                 qk_scale=qk_scale,
-                drop=drop_rate,
+                drop=dpr[i],
                 attn_drop=attn_drop_rate,
                 act_cfg=act_cfg,
                 norm_cfg=norm_cfg,
                 with_cp=with_cp) for i in range(depth)
         ])
-        _, self.norm = build_norm_layer(norm_cfg, embed_dim)
+
+        self.interpolate_mode = interpolate_mode
+        self.final_norm = final_norm
+        if final_norm:
+            _, self.norm = build_norm_layer(norm_cfg, embed_dim)
 
         self.norm_eval = norm_eval
         self.with_cp = with_cp
@@ -283,28 +321,26 @@ class VisionTransformer(nn.Module):
                 state_dict = checkpoint
 
             if 'pos_embed' in state_dict.keys():
-                state_dict['pos_embed'] = state_dict['pos_embed'][:, 1:, :]
-                logger.info(
-                    msg='Remove the "cls_token" dimension from the checkpoint')
-
                 if self.pos_embed.shape != state_dict['pos_embed'].shape:
                     logger.info(msg=f'Resize the pos_embed shape from \
-                        {state_dict["pos_embed"].shape} to \
-                        {self.pos_embed.shape}')
+{state_dict["pos_embed"].shape} to {self.pos_embed.shape}')
                     h, w = self.img_size
-                    pos_size = int(math.sqrt(state_dict['pos_embed'].shape[1]))
+                    pos_size = int(
+                        math.sqrt(state_dict['pos_embed'].shape[1] - 1))
                     state_dict['pos_embed'] = self.resize_pos_embed(
                         state_dict['pos_embed'], (h, w), (pos_size, pos_size),
-                        self.patch_size)
+                        self.patch_size, self.interpolate_mode)
+
             self.load_state_dict(state_dict, False)
 
         elif pretrained is None:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
-            normal_init(self.pos_embed)
+            trunc_normal_(self.pos_embed, std=.02)
+            trunc_normal_(self.cls_token, std=.02)
             for n, m in self.named_modules():
                 if isinstance(m, Linear):
-                    xavier_init(m.weight, distribution='uniform')
+                    trunc_normal_(m.weight, std=.02)
                     if m.bias is not None:
                         if 'mlp' in n:
                             normal_init(m.bias, std=1e-6)
@@ -316,7 +352,7 @@ class VisionTransformer(nn.Module):
                         constant_init(m.bias, 0)
                 elif isinstance(m, (_BatchNorm, nn.GroupNorm, nn.LayerNorm)):
                     constant_init(m.bias, 0)
-                    constant_init(m.weight, 1)
+                    constant_init(m.weight, 1.0)
         else:
             raise TypeError('pretrained must be a str or None')
 
@@ -340,7 +376,7 @@ class VisionTransformer(nn.Module):
         x_len, pos_len = patched_img.shape[1], pos_embed.shape[1]
         if x_len != pos_len:
             if pos_len == (self.img_size[0] // self.patch_size) * (
-                    self.img_size[1] // self.patch_size):
+                    self.img_size[1] // self.patch_size) + 1:
                 pos_h = self.img_size[0] // self.patch_size
                 pos_w = self.img_size[1] // self.patch_size
             else:
@@ -348,11 +384,12 @@ class VisionTransformer(nn.Module):
                     'Unexpected shape of pos_embed, got {}.'.format(
                         pos_embed.shape))
             pos_embed = self.resize_pos_embed(pos_embed, img.shape[2:],
-                                              (pos_h, pos_w), self.patch_size)
-        return patched_img + pos_embed
+                                              (pos_h, pos_w), self.patch_size,
+                                              self.interpolate_mode)
+        return self.pos_drop(patched_img + pos_embed)
 
     @staticmethod
-    def resize_pos_embed(pos_embed, input_shpae, pos_shape, patch_size):
+    def resize_pos_embed(pos_embed, input_shpae, pos_shape, patch_size, mode):
         """Resize pos_embed weights.
 
         Resize pos_embed using bicubic interpolate method.
@@ -367,26 +404,52 @@ class VisionTransformer(nn.Module):
         assert pos_embed.ndim == 3, 'shape of pos_embed must be [B, L, C]'
         input_h, input_w = input_shpae
         pos_h, pos_w = pos_shape
-        pos_embed = pos_embed.reshape(1, pos_h, pos_w,
-                                      pos_embed.shape[2]).permute(0, 3, 1, 2)
-        pos_embed = F.interpolate(
-            pos_embed,
+        cls_token_weight = pos_embed[:, 0]
+        pos_embed_weight = pos_embed[:, (-1 * pos_h * pos_w):]
+        pos_embed_weight = pos_embed_weight.reshape(
+            1, pos_h, pos_w, pos_embed.shape[2]).permute(0, 3, 1, 2)
+        pos_embed_weight = F.interpolate(
+            pos_embed_weight,
             size=[input_h // patch_size, input_w // patch_size],
             align_corners=False,
-            mode='bicubic')
-        pos_embed = torch.flatten(pos_embed, 2).transpose(1, 2)
+            mode=mode)
+        cls_token_weight = cls_token_weight.unsqueeze(1)
+        pos_embed_weight = torch.flatten(pos_embed_weight, 2).transpose(1, 2)
+        pos_embed = torch.cat((cls_token_weight, pos_embed_weight), dim=1)
         return pos_embed
 
     def forward(self, inputs):
+        B = inputs.shape[0]
+
         x = self.patch_embed(inputs)
+
+        cls_tokens = self.cls_token.expand(B, -1, -1)
+        x = torch.cat((cls_tokens, x), dim=1)
         x = self._pos_embeding(inputs, x, self.pos_embed)
-        x = self.blocks(x)
-        x = self.norm(x)
-        B, _, C = x.shape
-        x = x.reshape(B, inputs.shape[2] // self.patch_size,
-                      inputs.shape[3] // self.patch_size,
-                      C).permute(0, 3, 1, 2)
-        return [x]
+
+        if not self.with_cls_token:
+            # Remove class token for transformer input
+            x = x[:, 1:]
+
+        outs = []
+        for i, blk in enumerate(self.blocks):
+            x = blk(x)
+            if i == len(self.blocks) - 1:
+                if self.final_norm:
+                    x = self.norm(x)
+            if i in self.out_indices:
+                if self.with_cls_token:
+                    # Remove class token and reshape token for decoder head
+                    out = x[:, 1:]
+                else:
+                    out = x
+                B, _, C = out.shape
+                out = out.reshape(B, inputs.shape[2] // self.patch_size,
+                                  inputs.shape[3] // self.patch_size,
+                                  C).permute(0, 3, 1, 2)
+                outs.append(out)
+
+        return tuple(outs)
 
     def train(self, mode=True):
         super(VisionTransformer, self).train(mode)
