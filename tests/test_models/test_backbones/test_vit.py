@@ -30,6 +30,10 @@ def test_vit_backbone():
         model = VisionTransformer()
         model(x)
 
+    with pytest.raises(AssertionError):
+        # out_shape must be 'NLC' or 'NCHW;'
+        VisionTransformer(out_shape='NCL')
+
     # Test img_size isinstance int
     imgs = torch.randn(1, 3, 224, 224)
     model = VisionTransformer(img_size=224)
@@ -72,3 +76,9 @@ def test_vit_backbone():
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert feat[-1].shape == (1, 768, 14, 14)
+
+    # Test final reshape arg
+    imgs = torch.randn(1, 3, 224, 224)
+    model = VisionTransformer(out_shape='NLC')
+    feat = model(imgs)
+    assert feat[-1].shape == (1, 196, 768)
