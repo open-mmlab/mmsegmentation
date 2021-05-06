@@ -4,7 +4,7 @@ _base_ = [
 ]
 
 model = dict(pretrained='https://dl.fbaipublicfiles.com/deit/\
-deit_base_patch16_224-b5f2ef4d.pth')
+deit_base_distilled_patch16_384-d0272ac0.pth')
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -33,5 +33,3 @@ lr_config = dict(
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)
-
-find_unused_parameters = True

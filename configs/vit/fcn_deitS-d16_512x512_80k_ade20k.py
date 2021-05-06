@@ -5,8 +5,8 @@ _base_ = [
 
 model = dict(
     pretrained='https://dl.fbaipublicfiles.com/deit/\
-deit_small_patch16_224-cd65a155.pth',
-    backbone=dict(num_heads=6),
+deit_small_distilled_patch16_224-649709d9.pth',
+    backbone=dict(num_heads=6, embed_dim=384),
     decode_head=dict(num_classes=150),
     auxiliary_head=dict(num_classes=150))
 

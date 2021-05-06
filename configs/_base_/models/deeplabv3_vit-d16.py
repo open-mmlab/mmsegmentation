@@ -53,4 +53,3 @@ download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
-find_unused_parameters = True
