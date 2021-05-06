@@ -306,7 +306,8 @@ class VisionTransformer(nn.Module):
                 with_cp=with_cp) for i in range(depth)
         ])
 
-        assert out_shape in ['NLC', 'NCHW']
+        assert out_shape in ['NLC',
+                             'NCHW'], 'output shape must be "NLC" or "NCHW".'
 
         self.out_shape = out_shape
 
