@@ -18,15 +18,15 @@ from .psa_head import PSAHead
 from .psp_head import PSPHead
 from .sep_aspp_head import DepthwiseSeparableASPPHead
 from .sep_fcn_head import DepthwiseSeparableFCNHead
+from .setr_mla_aux_head import SETRMLAAUXHead
+from .setr_mla_head import SETRMLAHead
+from .setr_up_head import SETRUPHead
 from .uper_head import UPerHead
-from .vit_up_head import VisionTransformerUpHead
-from .vit_mla_head import VIT_MLAHead
-from .vit_mla_auxi_head import VIT_MLA_AUXIHead
 
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
     'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
-    'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'VisionTransformerUpHead',
-    'VIT_MLAHead', 'VIT_MLA_AUXIHead'
+    'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
+    'SETRMLAHead', 'SETRMLAAUXHead'
 ]
