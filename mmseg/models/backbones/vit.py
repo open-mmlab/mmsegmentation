@@ -234,6 +234,8 @@ class VisionTransformer(nn.Module):
             and its variants only. Default: False.
         final_norm (bool):  Whether to add a additional layer to normalize
             final feature map. Default: False.
+        out_reshape (str): Select the output format of feature information.
+            Default: NCHW.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bicubic.
         with_cls_token (bool): If concatenating class token into image tokens
@@ -261,6 +263,7 @@ class VisionTransformer(nn.Module):
                  act_cfg=dict(type='GELU'),
                  norm_eval=False,
                  final_norm=False,
+                 out_shape='NCHW',
                  with_cls_token=True,
                  interpolate_mode='bicubic',
                  with_cp=False):
@@ -302,6 +305,11 @@ class VisionTransformer(nn.Module):
                 norm_cfg=norm_cfg,
                 with_cp=with_cp) for i in range(depth)
         ])
+
+        assert out_shape in ['NLC',
+                             'NCHW'], 'output shape must be "NLC" or "NCHW".'
+
+        self.out_shape = out_shape
 
         self.interpolate_mode = interpolate_mode
         self.final_norm = final_norm
@@ -443,10 +451,11 @@ class VisionTransformer(nn.Module):
                     out = x[:, 1:]
                 else:
                     out = x
-                B, _, C = out.shape
-                out = out.reshape(B, inputs.shape[2] // self.patch_size,
-                                  inputs.shape[3] // self.patch_size,
-                                  C).permute(0, 3, 1, 2)
+                if self.out_shape == 'NCHW':
+                    B, _, C = out.shape
+                    out = out.reshape(B, inputs.shape[2] // self.patch_size,
+                                      inputs.shape[3] // self.patch_size,
+                                      C).permute(0, 3, 1, 2)
                 outs.append(out)
 
         return tuple(outs)
