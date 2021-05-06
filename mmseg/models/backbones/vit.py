@@ -235,7 +235,7 @@ class VisionTransformer(nn.Module):
         final_norm (bool):  Whether to add a additional layer to normalize
             final feature map. Default: False.
         final_reshape (bool): Whether to reshape the output feature information
-            from NLC format to NCHW format. Default: False.
+            from NLC format to NCHW format. Default: True.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bicubic.
         with_cls_token (bool): If concatenating class token into image tokens
