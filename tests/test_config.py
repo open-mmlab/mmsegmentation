@@ -61,6 +61,7 @@ def test_config_build_segmentor():
 
 def test_config_data_pipeline():
     """Test whether the data pipeline is valid and can process corner cases.
+
     CommandLine:
         xdoctest -m tests/test_config.py test_config_build_data_pipeline
     """

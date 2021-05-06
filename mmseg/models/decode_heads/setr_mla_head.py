@@ -1,3 +1,5 @@
+import math
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -100,11 +102,47 @@ class SETRMLAHead(BaseDecodeHead):
         self.conv_seg = nn.Conv2d(
             4 * self.mlahead_channels, self.num_classes, 3, padding=1)
 
+    def to_1D(self, x):
+
+        def convertion(x):
+            n, c, h, w = x.shape
+            x = x.reshape(n, c, h * w).transpose(2, 1)
+            return x
+
+        if isinstance(x, list) or isinstance(x, tuple):
+            outs = []
+            for item in x:
+                outs.append(convertion(item))
+            x = outs
+        else:
+            x = convertion(x)
+        return x
+
+    def to_2D(self, x):
+
+        def convertion(x):
+            n, hw, c = x.shape
+            h = w = int(math.sqrt(hw))
+            x = x.transpose(1, 2).reshape(n, c, h, w)
+            return x
+
+        if isinstance(x, list) or isinstance(x, tuple):
+            outs = []
+            for item in x:
+                outs.append(convertion(item))
+            x = outs
+        else:
+            x = convertion(x)
+        return x
+
     def forward(self, inputs):
         inputs = self._transform_inputs(inputs)
 
-        inputs = self.mlahead(*inputs)
-        out = self.conv_seg(inputs)
+        if inputs[0].dim() == 3:
+            inputs = self.to_2D(inputs)
+
+        out = self.mlahead(*inputs)
+        out = self.conv_seg(out)
 
         out = F.interpolate(
             out,

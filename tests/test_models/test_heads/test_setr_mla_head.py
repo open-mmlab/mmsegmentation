@@ -32,9 +32,9 @@ def test_setr_mla_head(capsys):
         img_size=img_size,
         in_channels=(32, 32, 32, 32),
         channels=16,
+        mla_channels=32,
         in_index=(0, 1, 2, 3),
         num_classes=19,
-        embed_dim=32,
         norm_cfg=dict(type='BN'))
 
     h, w = img_size[0] // patch_size, img_size[1] // patch_size
