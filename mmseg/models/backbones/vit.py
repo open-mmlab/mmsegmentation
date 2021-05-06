@@ -234,7 +234,7 @@ class VisionTransformer(nn.Module):
             and its variants only. Default: False.
         final_norm (bool):  Whether to add a additional layer to normalize
             final feature map. Default: False.
-        out_reshape (str): Select the output format of feature information.
+        out_shape (str): Select the output format of feature information.
             Default: NCHW.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bicubic.

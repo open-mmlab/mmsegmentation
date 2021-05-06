@@ -1,5 +1,3 @@
-import math
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -7,65 +5,6 @@ from mmcv.cnn import build_norm_layer
 
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
-
-
-class MLAConv(nn.Module):
-
-    def __init__(self, in_channels=1024, mla_channels=256, norm_cfg=None):
-        super(MLAConv, self).__init__()
-        self.mla_p2_1x1 = nn.Sequential(
-            nn.Conv2d(in_channels, mla_channels, 1, bias=False),
-            build_norm_layer(norm_cfg, mla_channels)[1], nn.ReLU())
-        self.mla_p3_1x1 = nn.Sequential(
-            nn.Conv2d(in_channels, mla_channels, 1, bias=False),
-            build_norm_layer(norm_cfg, mla_channels)[1], nn.ReLU())
-        self.mla_p4_1x1 = nn.Sequential(
-            nn.Conv2d(in_channels, mla_channels, 1, bias=False),
-            build_norm_layer(norm_cfg, mla_channels)[1], nn.ReLU())
-        self.mla_p5_1x1 = nn.Sequential(
-            nn.Conv2d(in_channels, mla_channels, 1, bias=False),
-            build_norm_layer(norm_cfg, mla_channels)[1], nn.ReLU())
-        self.mla_p2 = nn.Sequential(
-            nn.Conv2d(mla_channels, mla_channels, 3, padding=1, bias=False),
-            build_norm_layer(norm_cfg, mla_channels)[1], nn.ReLU())
-        self.mla_p3 = nn.Sequential(
-            nn.Conv2d(mla_channels, mla_channels, 3, padding=1, bias=False),
-            build_norm_layer(norm_cfg, mla_channels)[1], nn.ReLU())
-        self.mla_p4 = nn.Sequential(
-            nn.Conv2d(mla_channels, mla_channels, 3, padding=1, bias=False),
-            build_norm_layer(norm_cfg, mla_channels)[1], nn.ReLU())
-        self.mla_p5 = nn.Sequential(
-            nn.Conv2d(mla_channels, mla_channels, 3, padding=1, bias=False),
-            build_norm_layer(norm_cfg, mla_channels)[1], nn.ReLU())
-
-    def to_2D(self, x):
-        n, hw, c = x.shape
-        h = w = int(math.sqrt(hw))
-        x = x.transpose(1, 2).reshape(n, c, h, w)
-        return x
-
-    def forward(self, res2, res3, res4, res5):
-
-        res2 = self.to_2D(res2)
-        res3 = self.to_2D(res3)
-        res4 = self.to_2D(res4)
-        res5 = self.to_2D(res5)
-
-        mla_p5_1x1 = self.mla_p5_1x1(res5)
-        mla_p4_1x1 = self.mla_p4_1x1(res4)
-        mla_p3_1x1 = self.mla_p3_1x1(res3)
-        mla_p2_1x1 = self.mla_p2_1x1(res2)
-
-        mla_p4_plus = mla_p5_1x1 + mla_p4_1x1
-        mla_p3_plus = mla_p4_plus + mla_p3_1x1
-        mla_p2_plus = mla_p3_plus + mla_p2_1x1
-
-        mla_p5 = self.mla_p5(mla_p5_1x1)
-        mla_p4 = self.mla_p4(mla_p4_plus)
-        mla_p3 = self.mla_p3(mla_p3_plus)
-        mla_p2 = self.mla_p2(mla_p2_plus)
-
-        return mla_p2, mla_p3, mla_p4, mla_p5
 
 
 class MLAHead(nn.Module):
@@ -144,7 +83,6 @@ class SETRMLAHead(BaseDecodeHead):
 
     def __init__(self,
                  img_size=(384, 384),
-                 embed_dim=1024,
                  norm_layer=dict(type='LN', eps=1e-6, requires_grad=True),
                  mla_channels=256,
                  mlahead_channels=128,
@@ -152,19 +90,8 @@ class SETRMLAHead(BaseDecodeHead):
         super(SETRMLAHead, self).__init__(
             input_transform='multiple_select', **kwargs)
         self.img_size = img_size
-        self.embed_dim = embed_dim
         self.mla_channels = mla_channels
         self.mlahead_channels = mlahead_channels
-
-        self.norm = nn.ModuleList([
-            build_norm_layer(norm_layer, self.embed_dim)[1]
-            for i in range(len(self.in_index))
-        ])
-
-        self.mla = MLAConv(
-            in_channels=self.embed_dim,
-            mla_channels=self.mla_channels,
-            norm_cfg=self.norm_cfg)
 
         self.mlahead = MLAHead(
             mla_channels=self.mla_channels,
@@ -175,19 +102,6 @@ class SETRMLAHead(BaseDecodeHead):
 
     def forward(self, inputs):
         inputs = self._transform_inputs(inputs)
-
-        # Convert from nchw to nlc
-        for i in range(len(inputs)):
-            x = inputs[i]
-            if x.dim() == 3:
-                x = self.norm[i](x)
-            elif x.dim() == 4:
-                n, c, h, w = x.shape
-                x = x.reshape(n, c, h * w).transpose(2, 1)
-                x = self.norm[i](x)
-            inputs[i] = x
-
-        inputs = self.mla(*inputs)
 
         inputs = self.mlahead(*inputs)
         out = self.conv_seg(inputs)
