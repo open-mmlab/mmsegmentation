@@ -18,30 +18,35 @@ class MLAConv(nn.Module):
             in_channels[0],
             mla_channels,
             kernel_size=1,
+            bias=False,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
         self.mla_p3_1x1 = ConvModule(
             in_channels[1],
             mla_channels,
             kernel_size=1,
+            bias=False,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
         self.mla_p4_1x1 = ConvModule(
             in_channels[2],
             mla_channels,
             kernel_size=1,
+            bias=False,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
         self.mla_p5_1x1 = ConvModule(
             in_channels[3],
             mla_channels,
             kernel_size=1,
+            bias=False,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
         self.mla_p2 = ConvModule(
             mla_channels,
             mla_channels,
             kernel_size=3,
+            bias=False,
             padding=1,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
@@ -49,6 +54,7 @@ class MLAConv(nn.Module):
             mla_channels,
             mla_channels,
             kernel_size=3,
+            bias=False,
             padding=1,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
@@ -56,6 +62,7 @@ class MLAConv(nn.Module):
             mla_channels,
             mla_channels,
             kernel_size=3,
+            bias=False,
             padding=1,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
@@ -63,6 +70,7 @@ class MLAConv(nn.Module):
             mla_channels,
             mla_channels,
             kernel_size=3,
+            bias=False,
             padding=1,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
@@ -136,12 +144,11 @@ class MLA(nn.Module):
         self.mla = MLAConv(
             in_channels=in_channels,
             mla_channels=out_channels,
-            norm_cfg=norm_cfg)
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg)
 
     def forward(self, inputs):
         assert len(inputs) == len(self.in_channels)
-
-        [print(x.shape) for x in inputs]
 
         # Convert from nchw to nlc
         outs = []
