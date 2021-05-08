@@ -62,7 +62,7 @@ class MobileNetV2(nn.Module):
         for index in out_indices:
             if index not in range(0, 7):
                 raise ValueError('the item in out_indices must in '
-                                 f'range(0, 8). But received {index}')
+                                 f'range(0, 7). But received {index}')
 
         if frozen_stages not in range(-1, 7):
             raise ValueError('frozen_stages must be in range(-1, 7). '
