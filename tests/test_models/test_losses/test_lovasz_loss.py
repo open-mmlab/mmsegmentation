@@ -45,6 +45,15 @@ def test_lovasz_loss():
     import numpy as np
     tmp_file = tempfile.NamedTemporaryFile()
 
+    loss_cfg = dict(
+        type='LovaszLoss',
+        per_image=True,
+        reduction='mean',
+        class_weight=f'{tmp_file.name}.pkl',  # file doesn't exist
+        loss_weight=1.0)
+    lovasz_loss = build_loss(loss_cfg)
+    assert lovasz_loss.class_weight is None
+
     mmcv.dump([1.0, 2.0, 3.0], f'{tmp_file.name}.pkl', 'pkl')  # from pkl file
     loss_cfg = dict(
         type='LovaszLoss',

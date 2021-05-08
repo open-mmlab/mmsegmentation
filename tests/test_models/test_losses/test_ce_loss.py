@@ -32,6 +32,14 @@ def test_ce_loss():
     import numpy as np
     tmp_file = tempfile.NamedTemporaryFile()
 
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        class_weight=f'{tmp_file.name}.pkl',  # file doesn't exist
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+    assert loss_cls.class_weight is None
+
     mmcv.dump([0.8, 0.2], f'{tmp_file.name}.pkl', 'pkl')  # from pkl file
     loss_cls_cfg = dict(
         type='CrossEntropyLoss',

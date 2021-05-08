@@ -23,6 +23,15 @@ def test_dice_lose():
     import numpy as np
     tmp_file = tempfile.NamedTemporaryFile()
 
+    loss_cfg = dict(
+        type='DiceLoss',
+        reduction='none',
+        class_weight=f'{tmp_file.name}.pkl',  # file doesn't exist
+        loss_weight=1.0,
+        ignore_index=1)
+    dice_loss = build_loss(loss_cfg)
+    assert dice_loss.class_weight is None
+
     mmcv.dump([1.0, 2.0, 3.0], f'{tmp_file.name}.pkl', 'pkl')  # from pkl file
     loss_cfg = dict(
         type='DiceLoss',
