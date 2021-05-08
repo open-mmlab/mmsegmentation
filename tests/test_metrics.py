@@ -26,6 +26,43 @@ def get_confusion_matrix(pred_label, label, num_classes, ignore_index):
     return mat
 
 
+def np_intersect_and_union(pred_label, label, num_classes, ignore_index):
+
+    mask = (label != ignore_index)
+    pred_label = pred_label[mask]
+    label = label[mask]
+
+    intersect = pred_label[pred_label == label]
+    area_intersect = np.bincount(intersect, minlength=num_classes)
+    area_pred_label = np.bincount(pred_label, minlength=num_classes)
+    area_label = np.bincount(label, minlength=num_classes)
+    area_union = area_pred_label + area_label - area_intersect
+    return area_intersect, area_union, area_pred_label, area_label
+
+
+# this func is used to match iou value between torch style and np style.
+def np_mean_iou(results, gt_seg_maps, num_classes, ignore_index):
+    num_imgs = len(results)
+    assert len(gt_seg_maps) == num_imgs
+    total_area_intersect = np.zeros((num_classes, ), dtype=np.float64)
+    total_area_union = np.zeros((num_classes, ), dtype=np.float64)
+    total_area_pred_label = np.zeros((num_classes, ), dtype=np.float64)
+    total_area_label = np.zeros((num_classes, ), dtype=np.float64)
+    for i in range(num_imgs):
+        area_intersect, area_union, area_pred_label, area_label = \
+            np_intersect_and_union(
+                results[i], gt_seg_maps[i], num_classes,
+                ignore_index)
+        total_area_intersect += area_intersect
+        total_area_union += area_union
+        total_area_pred_label += area_pred_label
+        total_area_label += area_label
+    all_acc = total_area_intersect.sum() / total_area_label.sum()
+    acc = total_area_intersect / total_area_label
+    iou = total_area_intersect / total_area_union
+    return all_acc, acc, iou
+
+
 # This func is deprecated since it's not memory efficient
 def legacy_mean_iou(results, gt_seg_maps, num_classes, ignore_index):
     num_imgs = len(results)
@@ -213,6 +250,25 @@ def test_metrics():
     all_acc, acc, iou = ret_metrics['aAcc'], ret_metrics['Acc'], ret_metrics[
         'IoU']
     assert not np.any(np.isnan(iou))
+
+    # check if the np style IoU calculation implementation is true.
+    all_acc_l, acc_l, iou_l = legacy_mean_iou(results, label, num_classes,
+                                              ignore_index)
+    all_acc_np, acc_np, iou_np = np_mean_iou(results, label, num_classes,
+                                             ignore_index)
+    assert np.allclose(all_acc_np, all_acc_l)
+    assert np.allclose(acc_np, acc_l)
+    assert np.allclose(iou_np, iou_l)
+
+    # Test extreme large size seg map.
+    results = np.random.randint(0, 2, size=(2**25, ))
+    label = np.random.randint(0, 2, size=(2**25, ))
+    ret_metrics = eval_metrics([results], [label],
+                               2,
+                               ignore_index=255,
+                               metrics='mIoU')
+    all_acc_np, acc_np, iou_np = np_mean_iou([results], [label], 2, 255)
+    assert np.allclose(ret_metrics['IoU'], iou_np)
 
 
 def test_mean_iou():
