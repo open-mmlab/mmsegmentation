@@ -68,7 +68,7 @@ aux_delta = dict(
     loss_decode=dict(
         type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4))
 model = dict(
-    backbone=dict(img_size=512, drop_rate=0.),
+    backbone=dict(img_size=(512, 512), drop_rate=0.),
     decode_head=dict(img_size=(512, 512), num_classes=150),
     auxiliary_head=[aux_alpha, aux_beta, aux_gamma, aux_delta],
     test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)),
