@@ -70,11 +70,21 @@ def intersect_and_union(pred_label,
         label = label - 1
         label[label == 254] = 255
 
+    # Remove ignore_index related pixelx.
     mask = (label != ignore_index)
     pred_label = pred_label[mask]
     label = label[mask]
 
     intersect = pred_label[pred_label == label]
+
+    # Remove those pixels which have larger value than num_classes - 1.
+    # Those pixels will cause error when use `torch.bincount`, because
+    # `torch.bincount` can only restrict min length of count vector and
+    # can't restrict max length of count vector.
+    pred_label = pred_label[pred_label < num_classes]
+    label = label[label < num_classes]
+    intersect = intersect[intersect < num_classes]
+
     area_intersect = torch.bincount(intersect, minlength=num_classes)
     area_pred_label = torch.bincount(pred_label, minlength=num_classes)
     area_label = torch.bincount(label, minlength=num_classes)
