@@ -1,4 +1,5 @@
 import functools
+import warnings
 
 import mmcv
 import numpy as np
@@ -14,6 +15,15 @@ def get_class_weight(class_weight):
     """
     if isinstance(class_weight, str):
         # take it as a file path
+        try:
+            mmcv.check_file_exist(class_weight)
+        except FileNotFoundError:
+            # don't use class_weight if file not exist
+            warnings.warn(
+                f'class weight file "{class_weight}" does not exist, '
+                'set as None instead')
+            return None
+
         if class_weight.endswith('.npy'):
             class_weight = np.load(class_weight)
         else:
