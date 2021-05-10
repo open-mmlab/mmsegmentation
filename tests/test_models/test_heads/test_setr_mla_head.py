@@ -38,18 +38,6 @@ def test_setr_mla_head(capsys):
         norm_cfg=dict(type='BN'))
 
     h, w = img_size[0] // patch_size, img_size[1] // patch_size
-    # Input NLC format feature information
-    x = [
-        torch.randn(1, h * w, 32),
-        torch.randn(1, h * w, 32),
-        torch.randn(1, h * w, 32),
-        torch.randn(1, h * w, 32)
-    ]
-    if torch.cuda.is_available():
-        head, x = to_cuda(head, x)
-    out = head(x)
-    assert out.shape == (1, head.num_classes, *img_size)
-
     # Input NCHW format feature information
     x = [
         torch.randn(1, 32, h, w),

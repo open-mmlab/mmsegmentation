@@ -1,5 +1,3 @@
-import math
-
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
@@ -99,16 +97,10 @@ class SETRUPHead(BaseDecodeHead):
     def forward(self, x):
         x = self._transform_inputs(x)
 
-        if x.dim() == 3:
-            n, hw, c = x.shape
-            h = w = int(math.sqrt(hw))
-            x = self.norm(x)
-            x = x.transpose(1, 2).reshape(n, c, h, w)
-        elif x.dim() == 4:
-            n, c, h, w = x.shape
-            x = x.reshape(n, c, h * w).transpose(2, 1)
-            x = self.norm(x)
-            x = x.transpose(1, 2).reshape(n, c, h, w)
+        n, c, h, w = x.shape
+        x = x.reshape(n, c, h * w).transpose(2, 1)
+        x = self.norm(x)
+        x = x.transpose(1, 2).reshape(n, c, h, w)
 
         if self.num_convs == 2:
             if self.num_up_layer == 1:

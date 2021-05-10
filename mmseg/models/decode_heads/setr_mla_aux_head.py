@@ -1,5 +1,3 @@
-import math
-
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
@@ -47,29 +45,8 @@ class SETRMLAAUXHead(BaseDecodeHead):
             bias=False,
             act_cfg=None)
 
-    def to_2D(self, x):
-
-        def convertion(x):
-            print(x.shape)
-            n, hw, c = x.shape
-            h = w = int(math.sqrt(hw))
-            x = x.transpose(1, 2).reshape(n, c, h, w)
-            return x
-
-        if isinstance(x, list) or isinstance(x, tuple):
-            outs = []
-            for item in x:
-                outs.append(convertion(item))
-            x = outs
-        else:
-            x = convertion(x)
-        return x
-
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
-
-        if x.dim() == 3:
-            x = self.to_2D(x)
 
         if self.in_channels != self.mla_channels:
             x = self.conv_proj(x)
