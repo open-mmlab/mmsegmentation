@@ -32,10 +32,17 @@ class Resize(object):
 
     Args:
         img_scale (tuple or list[tuple]): Images scales for resizing.
+            Default:None.
         multiscale_mode (str): Either "range" or "value".
-        ratio_range (tuple[float]): (min_ratio, max_ratio)
+            Default: 'range'
+        ratio_range (tuple[float]): (min_ratio, max_ratio).
+            Default: None
         keep_ratio (bool): Whether to keep the aspect ratio when resizing the
-            image.
+            image. Default: True
+        crop_size (tuple [int]): the input size of slide inference.
+            Default=None.
+        restrict_min_size (bool): Whether to restrict the minimal size of
+            rescaling when multi-scale testing. Default: False
     """
 
     def __init__(self,
@@ -44,7 +51,7 @@ class Resize(object):
                  ratio_range=None,
                  keep_ratio=True,
                  crop_size=None,
-                 setr_multi_scale=False):
+                 restrict_min_size=False):
         if img_scale is None:
             self.img_scale = None
         else:
@@ -66,7 +73,7 @@ class Resize(object):
         self.ratio_range = ratio_range
         self.keep_ratio = keep_ratio
         self.crop_size = crop_size
-        self.setr_multi_scale = setr_multi_scale
+        self.restrict_min_size = restrict_min_size
 
     @staticmethod
     def random_select(img_scales):
@@ -181,7 +188,7 @@ class Resize(object):
     def _resize_img(self, results):
         """Resize images with ``results['scale']``."""
         if self.keep_ratio:
-            if self.setr_multi_scale:
+            if self.restrict_min_size:
                 if min(results['scale']) < self.crop_size[0]:
                     new_short = self.crop_size[0]
                 else:
