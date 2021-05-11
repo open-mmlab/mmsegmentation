@@ -80,6 +80,7 @@ deit_base_distilled_patch16_384-d0272ac0.pth',
         in_channels=768,
         embed_dim=768,
     ),
+    auxiliary_head=[aux_alpha, aux_beta, aux_gamma, aux_delta],
     test_cfg=dict(mode='slide', crop_size=(768, 768), stride=(512, 512)),
 )
 
