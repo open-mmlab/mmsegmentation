@@ -154,12 +154,9 @@ class MLA(nn.Module):
         outs = []
         for i in range(len(inputs)):
             x = inputs[i]
-            if x.dim() == 3:
-                x = self.norm[i](x)
-            elif x.dim() == 4:
-                n, c, h, w = x.shape
-                x = x.reshape(n, c, h * w).transpose(2, 1)
-                x = self.norm[i](x)
+            n, c, h, w = x.shape
+            x = x.reshape(n, c, h * w).transpose(2, 1)
+            x = self.norm[i](x)
             outs.append(x)
 
         outs = self.mla(*outs)

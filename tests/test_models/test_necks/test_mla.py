@@ -13,10 +13,3 @@ def test_mla():
     assert outputs[1].shape == torch.Size([1, 256, 24, 24])
     assert outputs[2].shape == torch.Size([1, 256, 24, 24])
     assert outputs[3].shape == torch.Size([1, 256, 24, 24])
-
-    inputs_3d = [torch.randn(1, 24 * 24, c) for i, c in enumerate(in_channels)]
-    outputs = mla(inputs_3d)
-    assert outputs[0].shape == torch.Size([1, 256, 24, 24])
-    assert outputs[1].shape == torch.Size([1, 256, 24, 24])
-    assert outputs[2].shape == torch.Size([1, 256, 24, 24])
-    assert outputs[3].shape == torch.Size([1, 256, 24, 24])

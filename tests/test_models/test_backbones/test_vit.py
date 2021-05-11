@@ -65,6 +65,11 @@ def test_vit_backbone():
     feat = model(imgs)
     assert feat[-1].shape == (1, 768, 14, 14)
 
+    # Test unbalanced size input image
+    imgs = torch.randn(1, 3, 112, 224)
+    feat = model(imgs)
+    assert feat[-1].shape == (1, 768, 7, 14)
+
     # Test with_cp=True
     model = VisionTransformer(with_cp=True)
     imgs = torch.randn(1, 3, 224, 224)

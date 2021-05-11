@@ -42,7 +42,7 @@ def test_setr_mla_aux_head(capsys):
     assert out.shape == (1, head.num_classes, *img_size)
 
     # test inference of MLA AUX head
-    img_size = (32, 32)
+    img_size = 32
     patch_size = 16
     head = SETRMLAAUXHead(
         img_size=img_size,
@@ -53,7 +53,7 @@ def test_setr_mla_aux_head(capsys):
         num_classes=19,
         norm_cfg=dict(type='BN'))
 
-    h, w = img_size[0] // patch_size, img_size[1] // patch_size
+    h, w = img_size // patch_size, img_size // patch_size
     # Input NCHW format feature information
     x = [
         torch.randn(1, 32, h, w),
@@ -64,4 +64,4 @@ def test_setr_mla_aux_head(capsys):
     if torch.cuda.is_available():
         head, x = to_cuda(head, x)
     out = head(x)
-    assert out.shape == (1, head.num_classes, *img_size)
+    assert out.shape == (1, head.num_classes, img_size, img_size)

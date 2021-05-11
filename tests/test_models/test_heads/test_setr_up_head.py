@@ -22,7 +22,7 @@ def test_setr_up_head(capsys):
             in_channels=(32, 32), channels=16, embed_dim=32, num_classes=19)
         SETRUPHead(in_channels=24, channels=16, embed_dim=32, num_classes=19)
 
-        with pytest.raises(NotImplementedError):
+        with pytest.raises(TypeError):
             # img_size must be int or tuple.
             SETRUPHead(
                 in_channels=32,
@@ -60,7 +60,17 @@ def test_setr_up_head(capsys):
             norm_cfg=dict(type='SyncBN'))
         head(x)
 
+    # test init_weights of head
+    head = SETRUPHead(
+        in_channels=32,
+        channels=16,
+        embed_dim=32,
+        norm_cfg=dict(type='SyncBN'),
+        num_classes=19)
+    head.init_weights()
+
     # test inference of Naive head
+    # the auxiliary head of Naive head is same as Naive head
     img_size = (32, 32)
     patch_size = 16
     head = SETRUPHead(
@@ -106,7 +116,7 @@ def test_setr_up_head(capsys):
     assert out.shape == (1, head.num_classes, *img_size)
 
     # test inference of PUP auxiliary head
-    img_size = (32, 32)
+    img_size = 32
     patch_size = 16
     head = SETRUPHead(
         img_size=img_size,
@@ -119,10 +129,10 @@ def test_setr_up_head(capsys):
         conv3x3_conv1x1=True,
         norm_cfg=dict(type='BN'))
 
-    h, w = img_size[0] // patch_size, img_size[1] // patch_size
+    h, w = img_size // patch_size, img_size // patch_size
     # Input NCHW format feature information
     x = [torch.randn(1, 32, h, w)]
     if torch.cuda.is_available():
         head, x = to_cuda(head, x)
     out = head(x)
-    assert out.shape == (1, head.num_classes, *img_size)
+    assert out.shape == (1, head.num_classes, img_size, img_size)
