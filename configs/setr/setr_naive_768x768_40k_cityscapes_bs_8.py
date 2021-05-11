@@ -13,5 +13,4 @@ optimizer = dict(
     paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}),
 )
 
-find_unused_parameters = False
 data = dict(samples_per_gpu=1)
