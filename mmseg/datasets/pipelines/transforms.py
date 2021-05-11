@@ -39,10 +39,6 @@ class Resize(object):
             Default: None
         keep_ratio (bool): Whether to keep the aspect ratio when resizing the
             image. Default: True
-        crop_size (tuple [int]): the input size of slide inference.
-            Default=None.
-        restrict_min_size (bool): Whether to restrict the minimal size of
-            rescaling when multi-scale testing. Default: False
     """
 
     def __init__(self,
