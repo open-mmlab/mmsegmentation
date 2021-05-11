@@ -11,7 +11,7 @@ deit_base_distilled_patch16_384-d0272ac0.pth',
         embed_dim=768,
         depth=12,
         num_heads=12),
-    neck=dict(in_channels=(768, 768, 768, 768)),
+    neck=dict(in_channels=[768, 768, 768, 768]),
     test_cfg=dict(mode='slide', crop_size=(768, 768), stride=(512, 512)))
 
 optimizer = dict(
