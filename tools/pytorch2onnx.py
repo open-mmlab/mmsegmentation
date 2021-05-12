@@ -96,12 +96,12 @@ def _prepare_input_img(img_path,
     return mm_inputs
 
 
-def _update_input_img(img_list, img_meta_list, update_origin=False):
+def _update_input_img(img_list, img_meta_list, update_ori_shape=False):
     # update img and its meta list
     N, C, H, W = img_list[0].shape
     img_meta = img_meta_list[0][0]
     img_shape = (H, W, C)
-    if update_origin:
+    if update_ori_shape:
         ori_shape = img_shape
     else:
         ori_shape = img_meta['ori_shape']
