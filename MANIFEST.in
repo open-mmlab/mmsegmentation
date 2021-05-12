@@ -1,4 +1,4 @@
 
 include requirements/*.txt
-recursive-include mmcls/configs *.py *.yml
-recursive-include mmcls/tools *.sh *.py
+recursive-include mmseg/configs *.py *.yml
+recursive-include mmseg/tools *.sh *.py
