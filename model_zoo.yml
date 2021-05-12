@@ -1,0 +1,4 @@
+Import:
+  - configs/fcn/metafile.yml
+  - configs/pspnet/metafile.yml
+  - configs/deeplabv3/metafile.yml
