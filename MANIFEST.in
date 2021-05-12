@@ -1,10 +1,4 @@
 
 include requirements/*.txt
-include mmseg/VERSION
-include mmseg/model_zoo.yml
-include mmseg/configs/*/*.py
-include mmseg/configs/*/*.yml
-include mmseg/tools/*.py
-include mmseg/tools/*.sh
-include mmseg/tools/*/*.py
-include mmseg/demo/*/*
+recursive-include mmcls/configs *.py *.yml
+recursive-include mmcls/tools *.sh *.py
