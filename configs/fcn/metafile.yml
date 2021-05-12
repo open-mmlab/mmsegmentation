@@ -1,0 +1,7 @@
+Collections:
+  - Name: FCN
+Models:
+  - Name: fcn_r50-d8_512x1024_40k_cityscapes
+    In Collection: FCN
+    Metadata:
+      Training Data: Cityscapes

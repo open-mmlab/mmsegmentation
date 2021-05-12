@@ -35,7 +35,7 @@ Either `mmcv` or `mmcv-full` is compatible with MMSegmentation, but for methods 
 The pre-build mmcv-full (with PyTorch 1.5 and CUDA 10.1) can be installed by running: (other available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
 
 ```shell
-pip install mmcv-full==latest+torch1.5.0+cu101 -f https://download.openmmlab.com/mmcv/dist/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.5.0/index.html
 ```
 
 **Install mmcv for Windows (Experimental):**
@@ -166,7 +166,8 @@ result = inference_segmentor(model, img)
 # visualize the results in a new window
 model.show_result(img, result, show=True)
 # or save the visualization results to image files
-model.show_result(img, result, out_file='result.jpg')
+# you can change the opacity of the painted segmentation map in (0, 1].
+model.show_result(img, result, out_file='result.jpg', opacity=0.5)
 
 # test a video and show the results
 video = mmcv.VideoReader('video.mp4')

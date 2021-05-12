@@ -56,37 +56,37 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 已支持的骨干网络：
 
-- [x] ResNet
-- [x] ResNeXt
-- [x] [HRNet](configs/hrnet/README.md)
-- [x] [ResNeSt](configs/resnest/README.md)
-- [x] [MobileNetV2](configs/mobilenet_v2/README.md)
-- [x] [MobileNetV3](configs/mobilenet_v3/README.md)
+- [x] ResNet (CVPR'2016)
+- [x] ResNeXt (CVPR'2017)
+- [x] [HRNet (CVPR'2019)](configs/hrnet/README.md)
+- [x] [ResNeSt (ArXiv'2020)](configs/resnest/README.md)
+- [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2/README.md)
+- [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3/README.md)
 
 已支持的算法：
 
-- [x] [FCN](configs/fcn)
-- [x] [PSPNet](configs/pspnet)
-- [x] [DeepLabV3](configs/deeplabv3)
-- [x] [PSANet](configs/psanet)
-- [x] [DeepLabV3+](configs/deeplabv3plus)
-- [x] [UPerNet](configs/upernet)
-- [x] [NonLocal Net](configs/nonlocal_net)
-- [x] [EncNet](configs/encnet)
-- [x] [CCNet](configs/ccnet)
-- [x] [DANet](configs/danet)
-- [x] [APCNet](configs/apcnet)
-- [x] [GCNet](configs/gcnet)
-- [x] [DMNet](configs/dmnet)
-- [x] [ANN](configs/ann)
-- [x] [OCRNet](configs/ocrnet)
-- [x] [Fast-SCNN](configs/fastscnn)
-- [x] [Semantic FPN](configs/sem_fpn)
-- [x] [PointRend](configs/point_rend)
-- [x] [EMANet](configs/emanet)
-- [x] [DNLNet](configs/dnlnet)
-- [x] [CGNet](configs/cgnet)
-- [x] [Mixed Precision (FP16) Training](configs/fp16/README.md)
+- [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
+- [x] [PSPNet (CVPR'2017)](configs/pspnet)
+- [x] [DeepLabV3 (CVPR'2017)](configs/deeplabv3)
+- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16/README.md)
+- [x] [PSANet (ECCV'2018)](configs/psanet)
+- [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
+- [x] [UPerNet (ECCV'2018)](configs/upernet)
+- [x] [NonLocal Net (CVPR'2018)](configs/nonlocal_net)
+- [x] [EncNet (CVPR'2018)](configs/encnet)
+- [x] [Semantic FPN (CVPR'2019)](configs/sem_fpn)
+- [x] [DANet (CVPR'2019)](configs/danet)
+- [x] [APCNet (CVPR'2019)](configs/apcnet)
+- [x] [EMANet (ICCV'2019)](configs/emanet)
+- [x] [CCNet (ICCV'2019)](configs/ccnet)
+- [x] [DMNet (ICCV'2019)](configs/dmnet)
+- [x] [ANN (ICCV'2019)](configs/ann)
+- [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
+- [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
+- [x] [OCRNet (ECCV'2020)](configs/ocrnet)
+- [x] [DNLNet (ECCV'2020)](configs/dnlnet)
+- [x] [PointRend (CVPR'2020)](configs/point_rend)
+- [x] [CGNet (TIP'2020)](configs/cgnet)
 
 ## 安装
 
@@ -132,3 +132,24 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - [MMTracking](https://github.com/open-mmlab/mmtracking): OpenMMLab 一体化视频目标感知平台
 - [MMPose](https://github.com/open-mmlab/mmpose): OpenMMLab 姿态估计工具箱
 - [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab 图像视频编辑工具箱
+- [MMOCR](https://github.com/open-mmlab/mmocr): OpenMMLab 全流程文字检测识别理解工具包
+- [MMGeneration](https://github.com/open-mmlab/mmgeneration): OpenMMLab 生成模型工具箱
+
+## 欢迎加入 OpenMMLab 社区
+
+ 扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，加入 OpenMMLab 团队的 [官方交流 QQ 群](https://jq.qq.com/?_wv=1027&k=aCvMxdr3)
+
+ <div align="center">
+ <img src="docs/imgs/zhihu_qrcode.jpg" height="400" />  <img src="docs/imgs/qq_group_qrcode.jpg" height="400" />
+ </div>
+
+ 我们会在 OpenMMLab 社区为大家
+
+- 📢 分享 AI 框架的前沿核心技术
+- 💻 解读 PyTorch 常用模块源码
+- 📰 发布 OpenMMLab 的相关新闻
+- 🚀 介绍 OpenMMLab 开发的前沿算法
+- 🏃 获取更高效的问题答疑和意见反馈
+- 🔥 提供与各行各业开发者充分交流的平台
+
+ 干货满满 📘，等你来撩 💗，OpenMMLab 社区期待您的加入 👬

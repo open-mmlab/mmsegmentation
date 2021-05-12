@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from ..builder import LOSSES
-from .utils import weighted_loss
+from .utils import get_class_weight, weighted_loss
 
 
 @weighted_loss
@@ -15,7 +15,7 @@ def dice_loss(pred,
               smooth=1,
               exponent=2,
               class_weight=None,
-              ignore_index=-1):
+              ignore_index=255):
     assert pred.shape[0] == target.shape[0]
     total_loss = 0
     num_classes = pred.shape[1]
@@ -36,9 +36,9 @@ def dice_loss(pred,
 @weighted_loss
 def binary_dice_loss(pred, target, valid_mask, smooth=1, exponent=2, **kwards):
     assert pred.shape[0] == target.shape[0]
-    pred = pred.contiguous().view(pred.shape[0], -1)
-    target = target.contiguous().view(target.shape[0], -1)
-    valid_mask = valid_mask.contiguous().view(valid_mask.shape[0], -1)
+    pred = pred.reshape(pred.shape[0], -1)
+    target = target.reshape(target.shape[0], -1)
+    valid_mask = valid_mask.reshape(valid_mask.shape[0], -1)
 
     num = torch.sum(torch.mul(pred, target) * valid_mask, dim=1) * 2 + smooth
     den = torch.sum(pred.pow(exponent) + target.pow(exponent), dim=1) + smooth
@@ -63,34 +63,34 @@ class DiceLoss(nn.Module):
         reduction (str, optional): The method used to reduce the loss. Options
             are "none", "mean" and "sum". This parameter only works when
             per_image is True. Default: 'mean'.
-        class_weight (list[float], optional): The weight for each class.
-            Default: None.
+        class_weight (list[float] | str, optional): Weight of each class. If in
+            str format, read them from a file. Defaults to None.
         loss_weight (float, optional): Weight of the loss. Default to 1.0.
         ignore_index (int | None): The label index to be ignored. Default: 255.
     """
 
     def __init__(self,
-                 loss_type='multi_class',
                  smooth=1,
                  exponent=2,
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0,
-                 ignore_index=255):
+                 ignore_index=255,
+                 **kwards):
         super(DiceLoss, self).__init__()
-        assert loss_type in ['multi_class', 'binary']
-        if loss_type == 'multi_class':
-            self.cls_criterion = dice_loss
-        else:
-            self.cls_criterion = binary_dice_loss
         self.smooth = smooth
         self.exponent = exponent
         self.reduction = reduction
-        self.class_weight = class_weight
+        self.class_weight = get_class_weight(class_weight)
         self.loss_weight = loss_weight
         self.ignore_index = ignore_index
 
-    def forward(self, pred, target, avg_factor=None, reduction_override=None):
+    def forward(self,
+                pred,
+                target,
+                avg_factor=None,
+                reduction_override=None,
+                **kwards):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
@@ -100,10 +100,13 @@ class DiceLoss(nn.Module):
             class_weight = None
 
         pred = F.softmax(pred, dim=1)
-        one_hot_target = F.one_hot(torch.clamp_min(target.long(), 0))
+        num_classes = pred.shape[1]
+        one_hot_target = F.one_hot(
+            torch.clamp(target.long(), 0, num_classes - 1),
+            num_classes=num_classes)
         valid_mask = (target != self.ignore_index).long()
 
-        loss = self.loss_weight * self.cls_criterion(
+        loss = self.loss_weight * dice_loss(
             pred,
             one_hot_target,
             valid_mask=valid_mask,

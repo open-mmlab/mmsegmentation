@@ -8,7 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from ..builder import LOSSES
-from .utils import weight_reduce_loss
+from .utils import get_class_weight, weight_reduce_loss
 
 
 def lovasz_grad(gt_sorted):
@@ -132,7 +132,7 @@ def lovasz_softmax_flat(probs, labels, classes='present', class_weight=None):
         probs (torch.Tensor): [P, C], class probabilities at each prediction
             (between 0 and 1).
         labels (torch.Tensor): [P], ground truth labels (between 0 and C - 1).
-        classes (str | list[int], optional): Classes choosed to calculate loss.
+        classes (str | list[int], optional): Classes chosen to calculate loss.
             'all' for all classes, 'present' for classes present in labels, or
             a list of classes to average. Default: 'present'.
         class_weight (list[float], optional): The weight for each class.
@@ -183,7 +183,7 @@ def lovasz_softmax(probs,
             prediction (between 0 and 1).
         labels (torch.Tensor): [B, H, W], ground truth labels (between 0 and
             C - 1).
-        classes (str | list[int], optional): Classes choosed to calculate loss.
+        classes (str | list[int], optional): Classes chosen to calculate loss.
             'all' for all classes, 'present' for classes present in labels, or
             a list of classes to average. Default: 'present'.
         per_image (bool, optional): If per_image is True, compute the loss per
@@ -232,7 +232,7 @@ class LovaszLoss(nn.Module):
     Args:
         loss_type (str, optional): Binary or multi-class loss.
             Default: 'multi_class'. Options are "binary" and "multi_class".
-        classes (str | list[int], optional): Classes choosed to calculate loss.
+        classes (str | list[int], optional): Classes chosen to calculate loss.
             'all' for all classes, 'present' for classes present in labels, or
             a list of classes to average. Default: 'present'.
         per_image (bool, optional): If per_image is True, compute the loss per
@@ -240,8 +240,8 @@ class LovaszLoss(nn.Module):
         reduction (str, optional): The method used to reduce the loss. Options
             are "none", "mean" and "sum". This parameter only works when
             per_image is True. Default: 'mean'.
-        class_weight (list[float], optional): The weight for each class.
-            Default: None.
+        class_weight (list[float] | str, optional): Weight of each class. If in
+            str format, read them from a file. Defaults to None.
         loss_weight (float, optional): Weight of the loss. Defaults to 1.0.
     """
 
@@ -269,7 +269,7 @@ class LovaszLoss(nn.Module):
         self.per_image = per_image
         self.reduction = reduction
         self.loss_weight = loss_weight
-        self.class_weight = class_weight
+        self.class_weight = get_class_weight(class_weight)
 
     def forward(self,
                 cls_score,

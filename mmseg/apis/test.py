@@ -35,18 +35,21 @@ def single_gpu_test(model,
                     data_loader,
                     show=False,
                     out_dir=None,
-                    efficient_test=False):
+                    efficient_test=False,
+                    opacity=0.5):
     """Test with single GPU.
 
     Args:
         model (nn.Module): Model to be tested.
         data_loader (utils.data.Dataloader): Pytorch data loader.
-        show (bool): Whether show results during infernece. Default: False.
+        show (bool): Whether show results during inference. Default: False.
         out_dir (str, optional): If specified, the results will be dumped into
             the directory to save output results.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
-
+        opacity(float): Opacity of painted segmentation map.
+            Default 0.5.
+            Must be in (0, 1] range.
     Returns:
         list: The prediction results.
     """
@@ -82,7 +85,8 @@ def single_gpu_test(model,
                     result,
                     palette=dataset.PALETTE,
                     show=show,
-                    out_file=out_file)
+                    out_file=out_file,
+                    opacity=opacity)
 
         if isinstance(result, list):
             if efficient_test:
@@ -93,7 +97,7 @@ def single_gpu_test(model,
                 result = np2tmp(result)
             results.append(result)
 
-        batch_size = data['img'][0].size(0)
+        batch_size = len(result)
         for _ in range(batch_size):
             prog_bar.update()
     return results
@@ -145,7 +149,7 @@ def multi_gpu_test(model,
             results.append(result)
 
         if rank == 0:
-            batch_size = data['img'][0].size(0)
+            batch_size = len(result)
             for _ in range(batch_size * world_size):
                 prog_bar.update()
 

@@ -7,8 +7,10 @@ from .resnest import ResNeSt
 from .resnet import ResNet, ResNetV1c, ResNetV1d
 from .resnext import ResNeXt
 from .unet import UNet
+from .vit import VisionTransformer
 
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
-    'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3'
+    'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
+    'VisionTransformer'
 ]

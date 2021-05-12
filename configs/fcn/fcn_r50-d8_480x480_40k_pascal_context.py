@@ -4,5 +4,6 @@ _base_ = [
 ]
 model = dict(
     decode_head=dict(num_classes=60),
+    auxiliary_head=dict(num_classes=60),
     test_cfg=dict(mode='slide', crop_size=(480, 480), stride=(320, 320)))
 optimizer = dict(type='SGD', lr=0.004, momentum=0.9, weight_decay=0.0001)

@@ -1,9 +1,8 @@
 import numpy as np
 import torch
-from mmcv import ConfigDict
 from torch import nn
 
-from mmseg.models import BACKBONES, HEADS, build_segmentor
+from mmseg.models import BACKBONES, HEADS
 from mmseg.models.decode_heads.cascade_decode_head import BaseCascadeDecodeHead
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
@@ -118,97 +117,3 @@ def _segmentor_forward_train_test(segmentor):
         img_meta_list = [[img_meta] for img_meta in img_metas]
         img_meta_list = img_meta_list + img_meta_list
         segmentor.forward(img_list, img_meta_list, return_loss=False)
-
-
-def test_encoder_decoder():
-
-    # test 1 decode head, w.o. aux head
-
-    cfg = ConfigDict(
-        type='EncoderDecoder',
-        backbone=dict(type='ExampleBackbone'),
-        decode_head=dict(type='ExampleDecodeHead'),
-        train_cfg=None,
-        test_cfg=dict(mode='whole'))
-    segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
-
-    # test slide mode
-    cfg.test_cfg = ConfigDict(mode='slide', crop_size=(3, 3), stride=(2, 2))
-    segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
-
-    # test 1 decode head, 1 aux head
-    cfg = ConfigDict(
-        type='EncoderDecoder',
-        backbone=dict(type='ExampleBackbone'),
-        decode_head=dict(type='ExampleDecodeHead'),
-        auxiliary_head=dict(type='ExampleDecodeHead'))
-    cfg.test_cfg = ConfigDict(mode='whole')
-    segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
-
-    # test 1 decode head, 2 aux head
-    cfg = ConfigDict(
-        type='EncoderDecoder',
-        backbone=dict(type='ExampleBackbone'),
-        decode_head=dict(type='ExampleDecodeHead'),
-        auxiliary_head=[
-            dict(type='ExampleDecodeHead'),
-            dict(type='ExampleDecodeHead')
-        ])
-    cfg.test_cfg = ConfigDict(mode='whole')
-    segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
-
-
-def test_cascade_encoder_decoder():
-
-    # test 1 decode head, w.o. aux head
-    cfg = ConfigDict(
-        type='CascadeEncoderDecoder',
-        num_stages=2,
-        backbone=dict(type='ExampleBackbone'),
-        decode_head=[
-            dict(type='ExampleDecodeHead'),
-            dict(type='ExampleCascadeDecodeHead')
-        ])
-    cfg.test_cfg = ConfigDict(mode='whole')
-    segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
-
-    # test slide mode
-    cfg.test_cfg = ConfigDict(mode='slide', crop_size=(3, 3), stride=(2, 2))
-    segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
-
-    # test 1 decode head, 1 aux head
-    cfg = ConfigDict(
-        type='CascadeEncoderDecoder',
-        num_stages=2,
-        backbone=dict(type='ExampleBackbone'),
-        decode_head=[
-            dict(type='ExampleDecodeHead'),
-            dict(type='ExampleCascadeDecodeHead')
-        ],
-        auxiliary_head=dict(type='ExampleDecodeHead'))
-    cfg.test_cfg = ConfigDict(mode='whole')
-    segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
-
-    # test 1 decode head, 2 aux head
-    cfg = ConfigDict(
-        type='CascadeEncoderDecoder',
-        num_stages=2,
-        backbone=dict(type='ExampleBackbone'),
-        decode_head=[
-            dict(type='ExampleDecodeHead'),
-            dict(type='ExampleCascadeDecodeHead')
-        ],
-        auxiliary_head=[
-            dict(type='ExampleDecodeHead'),
-            dict(type='ExampleDecodeHead')
-        ])
-    cfg.test_cfg = ConfigDict(mode='whole')
-    segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
