@@ -90,7 +90,7 @@ We provide `tools/ort_test.py` to evaluate ONNX model with ONNXRuntime backend.
 
 #### Usage
 
-```python
+```bash
 python tools/ort_test.py \
     ${CONFIG_FILE} \
     ${ONNX_FILE} \
@@ -163,6 +163,46 @@ Examples:
   --output-file checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pt \
   --shape 512 1024
   ```
+
+### Convert to TensorRT (experimental)
+
+A script to convert [ONNX](https://github.com/onnx/onnx) model to [TensorRT](https://developer.nvidia.com/tensorrt) format.
+
+Prerequisite
+
+- install `mmcv-full` with ONNXRuntime custom ops and TensorRT plugins follow [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) and [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md).
+- Use [pytorch2onnx](#convert-to-onnx-experimental) to convert the model from PyTorch to ONNX.
+
+Usage
+
+```bash
+python ${MMSEG_PATH}/tools/onnx2tensorrt.py \
+    ${CFG_PATH} \
+    ${ONNX_PATH} \
+    --trt-file ${OUTPUT_TRT_PATH} \
+    --min-shape ${MIN_SHAPE} \
+    --max-shape ${MAX_SHAPE} \
+    --input-img ${INPUT_IMG} \
+    --show \
+    --verify
+```
+
+Description of all arguments
+
+- `config` : Config file of the model.
+- `model` : Path to the input ONNX model.
+- `--trt-file` : Path to the output TensorRT engine.
+- `--max-shape` : Maximum shape of model input.
+- `--min-shape` : Minimum shape of model input.
+- `--fp16` : Enable fp16 model conversion.
+- `--workspace-size` : Max workspace size in GiB.
+- `--input-img` : Image for visualize.
+- `--show` : Enable result visualize.
+- `--dataset` : Palette provider, `CityscapesDataset` as default.
+- `--verify` : Verify the outputs of ONNXRuntime and TensorRT.
+- `--verbose` : Whether to verbose logging messages while creating TensorRT engine. Defaults to False.
+
+**Note**: Only tested on whole mode.
 
 ## Miscellaneous
 
