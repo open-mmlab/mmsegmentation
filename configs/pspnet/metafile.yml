@@ -1,5 +1,7 @@
 Collections:
   - Name: PSPNet
+    Metadata:
+      Training Data: Cityscapes/Pascal Context/Pascal VOC 2012 + Aug/ADE20K
 
 Modles:
 
