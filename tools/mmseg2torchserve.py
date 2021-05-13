@@ -19,7 +19,8 @@ def mmseg2torchserve(
     model_version: str = '1.0',
     force: bool = False,
 ):
-    """Converts mmsegmentation model (config + checkpoint) to TorchServe `.mar`.
+    """Converts mmsegmentation model (config + checkpoint) to TorchServe
+    `.mar`.
 
     Args:
         config_file:
@@ -68,7 +69,7 @@ def mmseg2torchserve(
 
 def parse_args():
     parser = ArgumentParser(
-        description='Convert MMSegmentation models to TorchServe `.mar` format.')
+        description='Convert mmseg models to TorchServe `.mar` format.')
     parser.add_argument('config', type=str, help='config file path')
     parser.add_argument('checkpoint', type=str, help='checkpoint file path')
     parser.add_argument(

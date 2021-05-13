@@ -11,6 +11,7 @@ from mmseg.apis import inference_segmentor, init_segmentor
 
 
 class MMsegHandler(BaseHandler):
+
     def initialize(self, context):
         properties = context.system_properties
         self.map_location = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -40,15 +41,13 @@ class MMsegHandler(BaseHandler):
         return images
 
     def inference(self, data, *args, **kwargs):
-        results = [
-            inference_segmentor(self.model, img) for img in data
-        ]
+        results = [inference_segmentor(self.model, img) for img in data]
         return results
 
     def postprocess(self, data):
         output = []
         for image_result in data:
             buffer = io.BytesIO()
-            _, buffer = cv2.imencode(".png", image_result[0].astype("uint8"))
+            _, buffer = cv2.imencode('.png', image_result[0].astype('uint8'))
             output.append(buffer.tobytes())
         return output

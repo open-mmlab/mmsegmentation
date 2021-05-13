@@ -246,7 +246,6 @@ Examples:
   python tools/analyze_logs.py log.json --keys loss --legend loss
   ```
 
-
 ## Model Serving
 
 In order to serve an `MMSegmentation` model with [`TorchServe`](https://pytorch.org/serve/), you can follow the steps:
@@ -293,8 +292,7 @@ curl -O curl -O https://raw.githubusercontent.com/pytorch/serve/master/docs/imag
 curl http://127.0.0.1:8080/predictions/${MODEL_NAME} -T 3dogs_mask.png
 ```
 
-
-The response will be a ".png" mask. 
+The response will be a ".png" mask.
 
 You can visualize the output as follows:
 
