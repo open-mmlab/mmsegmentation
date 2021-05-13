@@ -115,30 +115,23 @@ class ADE20KDataset(CustomDataset):
             filename = self.img_infos[idx]['filename']
             basename = osp.splitext(osp.basename(filename))[0]
 
-            # save seg_logit
-            if len(result.shape) == 3:
-                # print(result.shape)
-                npy_filename = osp.join(imgfile_prefix, f'{basename}.npy')
-                np.save(npy_filename, result)
-                result_files.append(npy_filename)
+            png_filename = osp.join(imgfile_prefix, f'{basename}.png')
 
-            # save seg_pred
-            if len(result.shape) == 2:
-                # print(result.shape)
-                png_filename = osp.join(imgfile_prefix, f'{basename}.png')
-                result = result + 1
+            # The  index range of official requirement is from 0 to 150.
+            # But the index range of output is from 0 to 149.
+            # That is because we set reduce_zero_label=True.
+            result = result + 1
 
-                output = Image.fromarray(result.astype(np.uint8))
-                output.save(png_filename)
-                result_files.append(png_filename)
+            output = Image.fromarray(result.astype(np.uint8))
+            output.save(png_filename)
+            result_files.append(png_filename)
 
             prog_bar.update()
 
         return result_files
 
     def format_results(self, results, imgfile_prefix=None, to_label_id=True):
-        """Format the results into dir (standard format for Cityscapes
-        evaluation).
+        """Format the results into dir (standard format for ade20k evaluation).
 
         Args:
             results (list): Testing results of the dataset.
@@ -165,5 +158,6 @@ class ADE20KDataset(CustomDataset):
             imgfile_prefix = tmp_dir.name
         else:
             tmp_dir = None
+
         result_files = self.results2img(results, imgfile_prefix, to_label_id)
         return result_files, tmp_dir
