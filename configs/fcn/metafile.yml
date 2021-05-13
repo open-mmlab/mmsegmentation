@@ -3,7 +3,7 @@ Collections:
     Metadata:
       Training Data: Cityscapes/Pascal Context/Pascal VOC 2012 + Aug/ADE20K
   - Name: FCN-D6
-     Metadata:
+    Metadata:
        Training Data: Cityscapes/Pascal Context/Pascal VOC 2012 + Aug/ADE20K
 
 Models:
