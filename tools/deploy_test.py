@@ -2,6 +2,7 @@ import argparse
 import os
 import os.path as osp
 import warnings
+from typing import Any, Iterable
 
 import mmcv
 import numpy as np
@@ -13,7 +14,6 @@ from mmcv.utils import DictAction
 from mmseg.apis import single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models.segmentors.base import BaseSegmentor
-from typing import Any, Iterable
 
 # import onnxruntime if needed
 try:
