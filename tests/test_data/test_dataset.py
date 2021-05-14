@@ -159,7 +159,7 @@ def test_custom_dataset():
     for gt_seg_map in gt_seg_maps:
         h, w = gt_seg_map.shape
         pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
-    eval_results = train_dataset.evaluate(pseudo_results, metric='mIoU')
+    eval_results = train_dataset.evaluate(pseudo_results, metric=['mIoU'])
     assert isinstance(eval_results, dict)
     assert 'mIoU' in eval_results
     assert 'mAcc' in eval_results
@@ -193,13 +193,23 @@ def test_custom_dataset():
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results
 
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mFscore')
+    assert isinstance(eval_results, dict)
+    assert 'mRecall' in eval_results
+    assert 'mPrecision' in eval_results
+    assert 'mFscore' in eval_results
+    assert 'aAcc' in eval_results
+
     eval_results = train_dataset.evaluate(
-        pseudo_results, metric=['mIoU', 'mDice'])
+        pseudo_results, metric=['mIoU', 'mDice', 'mFscore'])
     assert isinstance(eval_results, dict)
     assert 'mIoU' in eval_results
     assert 'mDice' in eval_results
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results
+    assert 'mFscore' in eval_results
+    assert 'mPrecision' in eval_results
+    assert 'mRecall' in eval_results
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)

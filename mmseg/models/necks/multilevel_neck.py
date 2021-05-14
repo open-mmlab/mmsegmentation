@@ -54,7 +54,6 @@ class MultiLevelNeck(nn.Module):
 
     def forward(self, inputs):
         assert len(inputs) == len(self.in_channels)
-        print(inputs[0].shape)
         inputs = [
             lateral_conv(inputs[i])
             for i, lateral_conv in enumerate(self.lateral_convs)

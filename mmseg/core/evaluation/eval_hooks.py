@@ -1,37 +1,49 @@
 import os.path as osp
 
-from mmcv.runner import Hook
-from torch.utils.data import DataLoader
+from mmcv.runner import DistEvalHook as _DistEvalHook
+from mmcv.runner import EvalHook as _EvalHook
 
 
-class EvalHook(Hook):
-    """Evaluation hook.
+class EvalHook(_EvalHook):
+    """Single GPU EvalHook, with efficient test support.
 
-    Attributes:
-        dataloader (DataLoader): A PyTorch dataloader.
-        interval (int): Evaluation interval (by epochs). Default: 1.
+    Args:
+        by_epoch (bool): Determine perform evaluation by epoch or by iteration.
+            If set to True, it will perform by epoch. Otherwise, by iteration.
+            Default: False.
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
+    Returns:
+        list: The prediction results.
     """
 
-    def __init__(self, dataloader, interval=1, by_epoch=False, **eval_kwargs):
-        if not isinstance(dataloader, DataLoader):
-            raise TypeError('dataloader must be a pytorch DataLoader, but got '
-                            f'{type(dataloader)}')
-        self.dataloader = dataloader
-        self.interval = interval
-        self.by_epoch = by_epoch
-        self.eval_kwargs = eval_kwargs
+    greater_keys = ['mIoU', 'mAcc', 'aAcc']
+
+    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
+        super().__init__(*args, by_epoch=by_epoch, **kwargs)
+        self.efficient_test = efficient_test
 
     def after_train_iter(self, runner):
-        """After train epoch hook."""
+        """After train epoch hook.
+
+        Override default ``single_gpu_test``.
+        """
         if self.by_epoch or not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
         runner.log_buffer.clear()
-        results = single_gpu_test(runner.model, self.dataloader, show=False)
+        results = single_gpu_test(
+            runner.model,
+            self.dataloader,
+            show=False,
+            efficient_test=self.efficient_test)
         self.evaluate(runner, results)
 
     def after_train_epoch(self, runner):
-        """After train epoch hook."""
+        """After train epoch hook.
+
+        Override default ``single_gpu_test``.
+        """
         if not self.by_epoch or not self.every_n_epochs(runner, self.interval):
             return
         from mmseg.apis import single_gpu_test
@@ -39,45 +51,31 @@ class EvalHook(Hook):
         results = single_gpu_test(runner.model, self.dataloader, show=False)
         self.evaluate(runner, results)
 
-    def evaluate(self, runner, results):
-        """Call evaluate function of dataset."""
-        eval_res = self.dataloader.dataset.evaluate(
-            results, logger=runner.logger, **self.eval_kwargs)
-        for name, val in eval_res.items():
-            runner.log_buffer.output[name] = val
-        runner.log_buffer.ready = True
 
+class DistEvalHook(_DistEvalHook):
+    """Distributed EvalHook, with efficient test support.
 
-class DistEvalHook(EvalHook):
-    """Distributed evaluation hook.
-
-    Attributes:
-        dataloader (DataLoader): A PyTorch dataloader.
-        interval (int): Evaluation interval (by epochs). Default: 1.
-        tmpdir (str | None): Temporary directory to save the results of all
-            processes. Default: None.
-        gpu_collect (bool): Whether to use gpu or cpu to collect results.
+    Args:
+        by_epoch (bool): Determine perform evaluation by epoch or by iteration.
+            If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
+    Returns:
+        list: The prediction results.
     """
 
-    def __init__(self,
-                 dataloader,
-                 interval=1,
-                 gpu_collect=False,
-                 by_epoch=False,
-                 **eval_kwargs):
-        if not isinstance(dataloader, DataLoader):
-            raise TypeError(
-                'dataloader must be a pytorch DataLoader, but got {}'.format(
-                    type(dataloader)))
-        self.dataloader = dataloader
-        self.interval = interval
-        self.gpu_collect = gpu_collect
-        self.by_epoch = by_epoch
-        self.eval_kwargs = eval_kwargs
+    greater_keys = ['mIoU', 'mAcc', 'aAcc']
+
+    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
+        super().__init__(*args, by_epoch=by_epoch, **kwargs)
+        self.efficient_test = efficient_test
 
     def after_train_iter(self, runner):
-        """After train epoch hook."""
+        """After train epoch hook.
+
+        Override default ``multi_gpu_test``.
+        """
         if self.by_epoch or not self.every_n_iters(runner, self.interval):
             return
         from mmseg.apis import multi_gpu_test
@@ -86,13 +84,17 @@ class DistEvalHook(EvalHook):
             runner.model,
             self.dataloader,
             tmpdir=osp.join(runner.work_dir, '.eval_hook'),
-            gpu_collect=self.gpu_collect)
+            gpu_collect=self.gpu_collect,
+            efficient_test=self.efficient_test)
         if runner.rank == 0:
             print('\n')
             self.evaluate(runner, results)
 
     def after_train_epoch(self, runner):
-        """After train epoch hook."""
+        """After train epoch hook.
+
+        Override default ``multi_gpu_test``.
+        """
         if not self.by_epoch or not self.every_n_epochs(runner, self.interval):
             return
         from mmseg.apis import multi_gpu_test
