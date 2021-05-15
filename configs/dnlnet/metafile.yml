@@ -120,7 +120,7 @@ Models:
 
 
   - Name: dnl_r50-d8_512x512_80k_ade20k
-    In Collection: DNL
+    In Collection: dnl
     Metadata:
       inference time (fps): 20.66
     Results:
@@ -134,7 +134,7 @@ Models:
 
 
   - Name: dnl_r101-d8_512x512_80k_ade20k
-    In Collection: DNL
+    In Collection: dnl
     Metadata:
       inference time (fps): 12.54
     Results:
@@ -148,7 +148,7 @@ Models:
 
 
   - Name: dnl_r50-d8_512x512_160k_ade20k
-    In Collection: DNL
+    In Collection: dnl
     Metadata:
       inference time (fps):
     Results:
@@ -162,7 +162,7 @@ Models:
 
 
   - Name: dnl_r101-d8_512x512_160k_ade20k
-    In Collection: DNL
+    In Collection: dnl
     Metadata:
       inference time (fps):
     Results:
