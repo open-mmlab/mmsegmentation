@@ -1,18 +1,7 @@
 Collections:
   - Name: FCN
     Metadata:
-      Training Data:
-        - Cityscapes
-        - Pascal Context
-        - Pascal VOC 2012 + Aug
-        - ADE20K
-  - Name: FCN-D6
-    Metadata:
-      Training Data:
-        - Cityscapes
-        - Pascal Context
-        - Pascal VOC 2012 + Aug
-        - ADE20K
+      Training Data: Cityscapes/Pascal Context/Pascal VOC 2012 + Aug/ADE20K
 
 Models:
 
@@ -26,7 +15,7 @@ Models:
         Metrics:
           mIoU: 72.25
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth
-    Config: configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes
+    Config: configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py
 
 
 
@@ -40,7 +29,7 @@ Models:
         Metrics:
           mIoU: 75.45
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_40k_cityscapes/fcn_r101-d8_512x1024_40k_cityscapes_20200604_181852-a883d3a1.pth
-    Config: configs/fcn/fcn_r101-d8_512x1024_40k_cityscapes
+    Config: configs/fcn/fcn_r101-d8_512x1024_40k_cityscapes.py
 
 
 
@@ -54,7 +43,7 @@ Models:
         Metrics:
           mIoU: 71.47
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_40k_cityscapes/fcn_r50-d8_769x769_40k_cityscapes_20200606_113104-977b5d02.pth
-    Config: configs/fcn/fcn_r50-d8_769x769_40k_cityscapes
+    Config: configs/fcn/fcn_r50-d8_769x769_40k_cityscapes.py
 
 
 
@@ -68,7 +57,7 @@ Models:
         Metrics:
           mIoU: 73.93
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_40k_cityscapes/fcn_r101-d8_769x769_40k_cityscapes_20200606_113208-7d4ab69c.pth
-    Config: configs/fcn/fcn_r101-d8_769x769_40k_cityscapes
+    Config: configs/fcn/fcn_r101-d8_769x769_40k_cityscapes.py
 
 
 
@@ -82,7 +71,7 @@ Models:
         Metrics:
           mIoU: 71.11
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth
-    Config: configs/fcn/fcn_r18-d8_512x1024_80k_cityscapes
+    Config: configs/fcn/fcn_r18-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -96,7 +85,7 @@ Models:
         Metrics:
           mIoU: 73.61
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019-03aa804d.pth
-    Config: configs/fcn/fcn_r50-d8_512x1024_80k_cityscapes
+    Config: configs/fcn/fcn_r50-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -110,7 +99,7 @@ Models:
         Metrics:
           mIoU: 75.13
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038-3fb937eb.pth
-    Config: configs/fcn/fcn_r101-d8_512x1024_80k_cityscapes
+    Config: configs/fcn/fcn_r101-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -124,7 +113,7 @@ Models:
         Metrics:
           mIoU: 70.80
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes_20201225_021451-9739d1b8.pth
-    Config: configs/fcn/fcn_r18-d8_769x769_80k_cityscapes
+    Config: configs/fcn/fcn_r18-d8_769x769_80k_cityscapes.py
 
 
 
@@ -138,7 +127,7 @@ Models:
         Metrics:
           mIoU: 72.64
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749-f5caeabc.pth
-    Config: configs/fcn/fcn_r50-d8_769x769_80k_cityscapes
+    Config: configs/fcn/fcn_r50-d8_769x769_80k_cityscapes.py
 
 
 
@@ -152,7 +141,7 @@ Models:
         Metrics:
           mIoU: 75.52
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354-45cbac68.pth
-    Config: configs/fcn/fcn_r101-d8_769x769_80k_cityscapes
+    Config: configs/fcn/fcn_r101-d8_769x769_80k_cityscapes.py
 
 
 
@@ -166,7 +155,7 @@ Models:
         Metrics:
           mIoU: 70.24
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_512x1024_80k_cityscapes/fcn_r18b-d8_512x1024_80k_cityscapes_20201225_230143-92c0f445.pth
-    Config: configs/fcn/fcn_r18b-d8_512x1024_80k_cityscapes
+    Config: configs/fcn/fcn_r18b-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -180,7 +169,7 @@ Models:
         Metrics:
           mIoU: 75.65
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_512x1024_80k_cityscapes/fcn_r50b-d8_512x1024_80k_cityscapes_20201225_094221-82957416.pth
-    Config: configs/fcn/fcn_r50b-d8_512x1024_80k_cityscapes
+    Config: configs/fcn/fcn_r50b-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -194,7 +183,7 @@ Models:
         Metrics:
           mIoU: 77.37
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_512x1024_80k_cityscapes/fcn_r101b-d8_512x1024_80k_cityscapes_20201226_160213-4543858f.pth
-    Config: configs/fcn/fcn_r101b-d8_512x1024_80k_cityscapes
+    Config: configs/fcn/fcn_r101b-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -208,7 +197,7 @@ Models:
         Metrics:
           mIoU: 69.66
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_769x769_80k_cityscapes/fcn_r18b-d8_769x769_80k_cityscapes_20201226_004430-32d504e5.pth
-    Config: configs/fcn/fcn_r18b-d8_769x769_80k_cityscapes
+    Config: configs/fcn/fcn_r18b-d8_769x769_80k_cityscapes.py
 
 
 
@@ -222,7 +211,7 @@ Models:
         Metrics:
           mIoU: 73.83
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_769x769_80k_cityscapes/fcn_r50b-d8_769x769_80k_cityscapes_20201225_094223-94552d38.pth
-    Config: configs/fcn/fcn_r50b-d8_769x769_80k_cityscapes
+    Config: configs/fcn/fcn_r50b-d8_769x769_80k_cityscapes.py
 
 
 
@@ -236,7 +225,7 @@ Models:
         Metrics:
           mIoU: 77.02
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_769x769_80k_cityscapes/fcn_r101b-d8_769x769_80k_cityscapes_20201226_170012-82be37e2.pth
-    Config: configs/fcn/fcn_r101b-d8_769x769_80k_cityscapes
+    Config: configs/fcn/fcn_r101b-d8_769x769_80k_cityscapes.py
 
 
 
@@ -250,7 +239,7 @@ Models:
         Metrics:
           mIoU: 77.06
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
-    Config: configs/fcn-d6/fcn_d6_r50-d16_512x1024_40k_cityscapes
+    Config: configs/fcn-d6/fcn_d6_r50-d16_512x1024_40k_cityscapes.py
 
 
 
@@ -264,7 +253,7 @@ Models:
         Metrics:
           mIoU: 77.27
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
-    Config: configs/fcn-d6/fcn_d6_r50-d16_512x1024_80k_cityscapes
+    Config: configs/fcn-d6/fcn_d6_r50-d16_512x1024_80k_cityscapes.py
 
 
 
@@ -278,7 +267,7 @@ Models:
         Metrics:
           mIoU: 76.82
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes-1aab18ed.pth
-    Config: configs/fcn-d6/fcn_d6_r50-d16_769x769_40k_cityscapes
+    Config: configs/fcn-d6/fcn_d6_r50-d16_769x769_40k_cityscapes.py
 
 
 
@@ -292,7 +281,7 @@ Models:
         Metrics:
           mIoU: 77.04
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes-109d88eb.pth
-    Config: configs/fcn-d6/fcn_d6_r50-d16_769x769_80k_cityscapes
+    Config: configs/fcn-d6/fcn_d6_r50-d16_769x769_80k_cityscapes.py
 
 
 
@@ -306,7 +295,7 @@ Models:
         Metrics:
           mIoU: 77.36
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes-9cf2b450.pth
-    Config: configs/fcn-d6/fcn_d6_r101-d16_512x1024_40k_cityscapes
+    Config: configs/fcn-d6/fcn_d6_r101-d16_512x1024_40k_cityscapes.py
 
 
 
@@ -320,7 +309,7 @@ Models:
         Metrics:
           mIoU: 78.46
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes-cb336445.pth
-    Config: configs/fcn-d6/fcn_d6_r101-d16_512x1024_80k_cityscapes
+    Config: configs/fcn-d6/fcn_d6_r101-d16_512x1024_80k_cityscapes.py
 
 
 
@@ -334,7 +323,7 @@ Models:
         Metrics:
           mIoU: 77.28
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes-60b114e9.pth
-    Config: configs/fcn-d6/fcn_d6_r101-d16_769x769_40k_cityscapes
+    Config: configs/fcn-d6/fcn_d6_r101-d16_769x769_40k_cityscapes.py
 
 
 
@@ -348,7 +337,7 @@ Models:
         Metrics:
           mIoU: 78.06
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes-e33adc4f.pth
-    Config: configs/fcn-d6/fcn_d6_r101-d16_769x769_80k_cityscapes
+    Config: configs/fcn-d6/fcn_d6_r101-d16_769x769_80k_cityscapes.py
 
 
 
@@ -362,7 +351,7 @@ Models:
         Metrics:
           mIoU: 35.94
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
-    Config: configs/fcn/fcn_r50-d8_512x512_80k_ade20k
+    Config: configs/fcn/fcn_r50-d8_512x512_80k_ade20k.py
 
 
 
@@ -376,7 +365,7 @@ Models:
         Metrics:
           mIoU: 39.61
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_80k_ade20k/fcn_r101-d8_512x512_80k_ade20k_20200615_014143-bc1809f7.pth
-    Config: configs/fcn/fcn_r101-d8_512x512_80k_ade20k
+    Config: configs/fcn/fcn_r101-d8_512x512_80k_ade20k.py
 
 
 
@@ -390,7 +379,7 @@ Models:
         Metrics:
           mIoU: 36.10
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_160k_ade20k/fcn_r50-d8_512x512_160k_ade20k_20200615_100713-4edbc3b4.pth
-    Config: configs/fcn/fcn_r50-d8_512x512_160k_ade20k
+    Config: configs/fcn/fcn_r50-d8_512x512_160k_ade20k.py
 
 
 
@@ -404,7 +393,7 @@ Models:
         Metrics:
           mIoU: 39.91
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816-fd192bd5.pth
-    Config: configs/fcn/fcn_r101-d8_512x512_160k_ade20k
+    Config: configs/fcn/fcn_r101-d8_512x512_160k_ade20k.py
 
 
 
@@ -418,7 +407,7 @@ Models:
         Metrics:
           mIoU: 67.08
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715-52dc5306.pth
-    Config: configs/fcn/fcn_r50-d8_512x512_20k_voc12aug
+    Config: configs/fcn/fcn_r50-d8_512x512_20k_voc12aug.py
 
 
 
@@ -432,7 +421,7 @@ Models:
         Metrics:
           mIoU: 71.16
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_20k_voc12aug/fcn_r101-d8_512x512_20k_voc12aug_20200617_010842-0bb4e798.pth
-    Config: configs/fcn/fcn_r101-d8_512x512_20k_voc12aug
+    Config: configs/fcn/fcn_r101-d8_512x512_20k_voc12aug.py
 
 
 
@@ -446,7 +435,7 @@ Models:
         Metrics:
           mIoU: 66.97
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_40k_voc12aug/fcn_r50-d8_512x512_40k_voc12aug_20200613_161222-5e2dbf40.pth
-    Config: configs/fcn/fcn_r50-d8_512x512_40k_voc12aug
+    Config: configs/fcn/fcn_r50-d8_512x512_40k_voc12aug.py
 
 
 
@@ -460,7 +449,7 @@ Models:
         Metrics:
           mIoU: 69.91
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240-4c8bcefd.pth
-    Config: configs/fcn/fcn_r101-d8_512x512_40k_voc12aug
+    Config: configs/fcn/fcn_r101-d8_512x512_40k_voc12aug.py
 
 
 
@@ -474,7 +463,7 @@ Models:
         Metrics:
           mIoU: 44.43
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20210421_154757-b5e97937.pth
-    Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context
+    Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context.py
 
 
 
@@ -488,7 +477,7 @@ Models:
         Metrics:
           mIoU: 44.13
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context-20210421_163310-4711813f.pth
-    Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context
+    Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context.py
 
 
 
@@ -502,7 +491,7 @@ Models:
         Metrics:
           mIoU: 48.42
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context_59/fcn_r101-d8_480x480_40k_pascal_context_59_20210415_230724-8cf83682.pth
-    Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context_59
+    Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context_59.py
 
 
 
@@ -516,4 +505,4 @@ Models:
         Metrics:
           mIoU: 49.35
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context_59/fcn_r101-d8_480x480_80k_pascal_context_59_20210416_110804-9a6f2c94.pth
-    Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context_59
+    Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context_59.py

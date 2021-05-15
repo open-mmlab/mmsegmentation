@@ -1,11 +1,7 @@
 Collections:
   - Name: DeepLabV3
     Metadata:
-      Training Data:
-        - Cityscapes
-        - Pascal Context
-        - Pascal VOC 2012 + Aug
-        - ADE20K
+      Training Data: Cityscapes/Pascal Context/Pascal VOC 2012 + Aug/ADE20K
 
 Models:
 
@@ -19,7 +15,7 @@ Models:
         Metrics:
           mIoU: 79.09
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes/deeplabv3_r50-d8_512x1024_40k_cityscapes_20200605_022449-acadc2f8.pth
-    Config: configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes.py
 
 
 
@@ -33,7 +29,7 @@ Models:
         Metrics:
           mIoU: 77.12
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_40k_cityscapes/deeplabv3_r101-d8_512x1024_40k_cityscapes_20200605_012241-7fd3f799.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_512x1024_40k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r101-d8_512x1024_40k_cityscapes.py
 
 
 
@@ -47,7 +43,7 @@ Models:
         Metrics:
           mIoU: 78.58
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_769x769_40k_cityscapes/deeplabv3_r50-d8_769x769_40k_cityscapes_20200606_113723-7eda553c.pth
-    Config: configs/deeplabv3/deeplabv3_r50-d8_769x769_40k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r50-d8_769x769_40k_cityscapes.py
 
 
 
@@ -61,7 +57,7 @@ Models:
         Metrics:
           mIoU: 79.27
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_769x769_40k_cityscapes/deeplabv3_r101-d8_769x769_40k_cityscapes_20200606_113809-c64f889f.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_769x769_40k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r101-d8_769x769_40k_cityscapes.py
 
 
 
@@ -75,7 +71,7 @@ Models:
         Metrics:
           mIoU: 76.70
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes/deeplabv3_r18-d8_512x1024_80k_cityscapes_20201225_021506-23dffbe2.pth
-    Config: configs/deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -89,7 +85,7 @@ Models:
         Metrics:
           mIoU: 79.32
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes/deeplabv3_r50-d8_512x1024_80k_cityscapes_20200606_113404-b92cfdd4.pth
-    Config: configs/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -103,7 +99,7 @@ Models:
         Metrics:
           mIoU: 80.20
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503-9e428899.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -117,7 +113,7 @@ Models:
         Metrics:
           mIoU: 76.60
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_769x769_80k_cityscapes/deeplabv3_r18-d8_769x769_80k_cityscapes_20201225_021506-6452126a.pth
-    Config: configs/deeplabv3/deeplabv3_r18-d8_769x769_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r18-d8_769x769_80k_cityscapes.py
 
 
 
@@ -131,7 +127,7 @@ Models:
         Metrics:
           mIoU: 79.89
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes/deeplabv3_r50-d8_769x769_80k_cityscapes_20200606_221338-788d6228.pth
-    Config: configs/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes.py
 
 
 
@@ -145,7 +141,7 @@ Models:
         Metrics:
           mIoU: 79.67
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes/deeplabv3_r101-d8_769x769_80k_cityscapes_20200607_013353-60e95418.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes.py
 
 
 
@@ -159,7 +155,7 @@ Models:
         Metrics:
           mIoU: 76.71
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes_20200908_005644-67b0c992.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes.py
 
 
 
@@ -173,7 +169,7 @@ Models:
         Metrics:
           mIoU: 78.36
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes_20200908_005644-57bb8425.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes.py
 
 
 
@@ -187,7 +183,7 @@ Models:
         Metrics:
           mIoU: 76.26
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18b-d8_512x1024_80k_cityscapes/deeplabv3_r18b-d8_512x1024_80k_cityscapes_20201225_094144-46040cef.pth
-    Config: configs/deeplabv3/deeplabv3_r18b-d8_512x1024_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r18b-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -201,7 +197,7 @@ Models:
         Metrics:
           mIoU: 79.63
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50b-d8_512x1024_80k_cityscapes/deeplabv3_r50b-d8_512x1024_80k_cityscapes_20201225_155148-ec368954.pth
-    Config: configs/deeplabv3/deeplabv3_r50b-d8_512x1024_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r50b-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -215,7 +211,7 @@ Models:
         Metrics:
           mIoU: 80.01
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101b-d8_512x1024_80k_cityscapes/deeplabv3_r101b-d8_512x1024_80k_cityscapes_20201226_171821-8fd49503.pth
-    Config: configs/deeplabv3/deeplabv3_r101b-d8_512x1024_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r101b-d8_512x1024_80k_cityscapes.py
 
 
 
@@ -229,7 +225,7 @@ Models:
         Metrics:
           mIoU: 76.63
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18b-d8_769x769_80k_cityscapes/deeplabv3_r18b-d8_769x769_80k_cityscapes_20201225_094144-fdc985d9.pth
-    Config: configs/deeplabv3/deeplabv3_r18b-d8_769x769_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r18b-d8_769x769_80k_cityscapes.py
 
 
 
@@ -243,7 +239,7 @@ Models:
         Metrics:
           mIoU: 78.80
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50b-d8_769x769_80k_cityscapes/deeplabv3_r50b-d8_769x769_80k_cityscapes_20201225_155404-87fb0cf4.pth
-    Config: configs/deeplabv3/deeplabv3_r50b-d8_769x769_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r50b-d8_769x769_80k_cityscapes.py
 
 
 
@@ -257,7 +253,7 @@ Models:
         Metrics:
           mIoU: 79.41
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101b-d8_769x769_80k_cityscapes/deeplabv3_r101b-d8_769x769_80k_cityscapes_20201226_190843-9142ee57.pth
-    Config: configs/deeplabv3/deeplabv3_r101b-d8_769x769_80k_cityscapes
+    Config: configs/deeplabv3/deeplabv3_r101b-d8_769x769_80k_cityscapes.py
 
 
 
@@ -271,7 +267,7 @@ Models:
         Metrics:
           mIoU: 42.42
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k/deeplabv3_r50-d8_512x512_80k_ade20k_20200614_185028-0bb3f844.pth
-    Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k
+    Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k.py
 
 
 
@@ -285,7 +281,7 @@ Models:
         Metrics:
           mIoU: 44.08
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_80k_ade20k/deeplabv3_r101-d8_512x512_80k_ade20k_20200615_021256-d89c7fa4.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_80k_ade20k
+    Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_80k_ade20k.py
 
 
 
@@ -299,7 +295,7 @@ Models:
         Metrics:
           mIoU: 42.66
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_160k_ade20k/deeplabv3_r50-d8_512x512_160k_ade20k_20200615_123227-5d0ee427.pth
-    Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_160k_ade20k
+    Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_160k_ade20k.py
 
 
 
@@ -313,7 +309,7 @@ Models:
         Metrics:
           mIoU: 45.00
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k/deeplabv3_r101-d8_512x512_160k_ade20k_20200615_105816-b1f72b3b.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k
+    Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k.py
 
 
 
@@ -327,7 +323,7 @@ Models:
         Metrics:
           mIoU: 76.17
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug/deeplabv3_r50-d8_512x512_20k_voc12aug_20200617_010906-596905ef.pth
-    Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug
+    Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug.py
 
 
 
@@ -341,7 +337,7 @@ Models:
         Metrics:
           mIoU: 78.70
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_20k_voc12aug/deeplabv3_r101-d8_512x512_20k_voc12aug_20200617_010932-8d13832f.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_20k_voc12aug
+    Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_20k_voc12aug.py
 
 
 
@@ -355,7 +351,7 @@ Models:
         Metrics:
           mIoU: 77.68
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_40k_voc12aug/deeplabv3_r50-d8_512x512_40k_voc12aug_20200613_161546-2ae96e7e.pth
-    Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_40k_voc12aug
+    Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_40k_voc12aug.py
 
 
 
@@ -369,7 +365,7 @@ Models:
         Metrics:
           mIoU: 77.92
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug/deeplabv3_r101-d8_512x512_40k_voc12aug_20200613_161432-0017d784.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug
+    Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug.py
 
 
 
@@ -383,7 +379,7 @@ Models:
         Metrics:
           mIoU: 46.55
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context/deeplabv3_r101-d8_480x480_40k_pascal_context_20200911_204118-1aa27336.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context
+    Config: configs/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context.py
 
 
 
@@ -397,7 +393,7 @@ Models:
         Metrics:
           mIoU: 46.42
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context/deeplabv3_r101-d8_480x480_80k_pascal_context_20200911_170155-2a21fff3.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context
+    Config: configs/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context.py
 
 
 
@@ -411,7 +407,7 @@ Models:
         Metrics:
           mIoU: 52.61
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context_59/deeplabv3_r101-d8_480x480_40k_pascal_context_59_20210416_110332-cb08ea46.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context
+    Config: configs/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context.py
 
 
 
@@ -425,4 +421,4 @@ Models:
         Metrics:
           mIoU: 52.46
     Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context_59/deeplabv3_r101-d8_480x480_80k_pascal_context_59_20210416_113002-26303993.pth
-    Config: configs/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context_59
+    Config: configs/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context_59.py
