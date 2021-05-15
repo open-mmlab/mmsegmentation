@@ -1,0 +1,19 @@
+Collections:
+  - Name: Fast-SCNN
+    Metadata:
+      Training Data:
+        - Cityscapes
+
+Models:
+
+  - Name: fast_scnn_4x8_80k_lr0.12_cityscapes
+    In Collection: Fast-SCNN
+    Metadata:
+      inference time (fps): 63.61
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 69.06
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_4x8_80k_lr0.12_cityscapes-f5096c79.pth
+    Config: configs/fast-scnn/fast_scnn_4x8_80k_lr0.12_cityscapes.py
