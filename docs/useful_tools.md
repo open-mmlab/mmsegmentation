@@ -88,14 +88,14 @@ We provide `tools/deploy_test.py` to evaluate ONNX model with different backend.
   pip install onnx onnxruntime-gpu
   ```
 
-- Install TensorRT python package(optional)
+- Install TensorRT python package follow [how-to-build-tensorrt-plugins-in-mmcv](https://mmcv.readthedocs.io/en/latest/tensorrt_plugin.html#how-to-build-tensorrt-plugins-in-mmcv)(optional)
 
 #### Usage
 
 ```bash
 python tools/deploy_test.py \
     ${CONFIG_FILE} \
-    ${ONNX_FILE} \
+    ${MODEL_FILE} \
     ${BACKEND} \
     --out ${OUTPUT_FILE} \
     --eval ${EVALUATION_METRICS} \
@@ -109,7 +109,7 @@ python tools/deploy_test.py \
 Description of all arguments
 
 - `config`: The path of a model config file.
-- `model`: The path of a ONNX model file.
+- `model`: The path of a converted model file.
 - `backend`: Backend of the inference, options: `onnxruntime`, `tensorrt`.
 - `--out`: The path of output result file in pickle format.
 - `--format-only` : Format the output results without perform evaluation. It is useful when you want to format the result to a specific format and submit it to the test server. If not specified, it will be set to `False`. Note that this argument is **mutually exclusive** with `--eval`.

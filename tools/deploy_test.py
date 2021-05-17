@@ -16,7 +16,6 @@ from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models.segmentors.base import BaseSegmentor
 
 
-# import onnxruntime if needed
 class ONNXRuntimeSegmentor(BaseSegmentor):
 
     def __init__(self, onnx_file: str, cfg: Any, device_id: int):
@@ -91,7 +90,6 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
         raise NotImplementedError('This method is not implemented.')
 
 
-# import onnxruntime if needed
 class TensorRTSegmentor(BaseSegmentor):
 
     def __init__(self, trt_file: str, cfg: Any, device_id: int):
