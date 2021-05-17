@@ -47,23 +47,19 @@ class MLAModule(nn.Module):
 
     def forward(self, mla_p2, mla_p3, mla_p4, mla_p5):
         head2 = F.interpolate(
-            self.head2(mla_p2),
-            4 * mla_p2.shape[-1],
+            self.head2(mla_p2), (4 * mla_p2.shape[-2], 4 * mla_p2.shape[-1]),
             mode='bilinear',
             align_corners=self.align_corners)
         head3 = F.interpolate(
-            self.head3(mla_p3),
-            4 * mla_p3.shape[-1],
+            self.head3(mla_p3), (4 * mla_p3.shape[-2], 4 * mla_p3.shape[-1]),
             mode='bilinear',
             align_corners=self.align_corners)
         head4 = F.interpolate(
-            self.head4(mla_p4),
-            4 * mla_p4.shape[-1],
+            self.head4(mla_p4), (4 * mla_p4.shape[-2], 4 * mla_p4.shape[-1]),
             mode='bilinear',
             align_corners=self.align_corners)
         head5 = F.interpolate(
-            self.head5(mla_p5),
-            4 * mla_p5.shape[-1],
+            self.head5(mla_p5), (4 * mla_p5.shape[-2], 4 * mla_p5.shape[-1]),
             mode='bilinear',
             align_corners=self.align_corners)
         return torch.cat([head2, head3, head4, head5], dim=1)

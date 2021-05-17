@@ -1,5 +1,3 @@
-import math
-
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 
@@ -75,18 +73,7 @@ class MLAConv(nn.Module):
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
 
-    def to_2D(self, x):
-        n, hw, c = x.shape
-        h = w = int(math.sqrt(hw))
-        x = x.transpose(1, 2).reshape(n, c, h, w)
-        return x
-
     def forward(self, res2, res3, res4, res5):
-
-        res2 = self.to_2D(res2)
-        res3 = self.to_2D(res3)
-        res4 = self.to_2D(res4)
-        res5 = self.to_2D(res5)
 
         mla_p5_1x1 = self.mla_p5_1x1(res5)
         mla_p4_1x1 = self.mla_p4_1x1(res4)
@@ -106,7 +93,7 @@ class MLAConv(nn.Module):
 
 
 @NECKS.register_module()
-class MLA(nn.Module):
+class MLANeck(nn.Module):
     """Multi-level Feature Aggregation.
 
     The Multi-level Feature Aggregation construction of SETR:
@@ -129,7 +116,7 @@ class MLA(nn.Module):
                  norm_layer=dict(type='LN', eps=1e-6, requires_grad=True),
                  norm_cfg=None,
                  act_cfg=None):
-        super(MLA, self).__init__()
+        super(MLANeck, self).__init__()
         assert isinstance(in_channels, list)
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -157,6 +144,7 @@ class MLA(nn.Module):
             n, c, h, w = x.shape
             x = x.reshape(n, c, h * w).transpose(2, 1)
             x = self.norm[i](x)
+            x = x.transpose(1, 2).reshape(n, c, h, w)
             outs.append(x)
 
         outs = self.mla(*outs)

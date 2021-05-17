@@ -1,5 +1,5 @@
 from .fpn import FPN
-from .mla import MLA
+from .mla_neck import MLANeck
 from .multilevel_neck import MultiLevelNeck
 
-__all__ = ['FPN', 'MultiLevelNeck', 'MLA']
+__all__ = ['FPN', 'MultiLevelNeck', 'MLANeck']

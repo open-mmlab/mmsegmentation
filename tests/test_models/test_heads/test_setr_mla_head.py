@@ -28,7 +28,7 @@ def test_setr_mla_head(capsys):
         norm_cfg=dict(type='BN'))
 
     h, w = img_size[0] // patch_size, img_size[1] // patch_size
-    # Input NCHW format feature information
+    # Input square NCHW format feature information
     x = [
         torch.randn(1, 32, h, w),
         torch.randn(1, 32, h, w),
@@ -39,3 +39,15 @@ def test_setr_mla_head(capsys):
         head, x = to_cuda(head, x)
     out = head(x)
     assert out.shape == (1, head.num_classes, h * 4, w * 4)
+
+    # Input non-square NCHW format feature information
+    x = [
+        torch.randn(1, 32, h, w * 2),
+        torch.randn(1, 32, h, w * 2),
+        torch.randn(1, 32, h, w * 2),
+        torch.randn(1, 32, h, w * 2)
+    ]
+    if torch.cuda.is_available():
+        head, x = to_cuda(head, x)
+    out = head(x)
+    assert out.shape == (1, head.num_classes, h * 4, w * 8)

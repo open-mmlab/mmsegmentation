@@ -1,11 +1,11 @@
 import torch
 
-from mmseg.models import MLA
+from mmseg.models import MLANeck
 
 
 def test_mla():
     in_channels = [1024, 1024, 1024, 1024]
-    mla = MLA(in_channels, 256)
+    mla = MLANeck(in_channels, 256)
 
     inputs_4d = [torch.randn(1, c, 24, 24) for i, c in enumerate(in_channels)]
     outputs = mla(inputs_4d)

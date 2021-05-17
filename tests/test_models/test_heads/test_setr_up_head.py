@@ -79,12 +79,19 @@ def test_setr_up_head(capsys):
 
     h, w = img_size[0] // patch_size, img_size[1] // patch_size
 
-    # Input NCHW format feature information
+    # Input square NCHW format feature information
     x = [torch.randn(1, 32, h, w)]
     if torch.cuda.is_available():
         head, x = to_cuda(head, x)
     out = head(x)
     assert out.shape == (1, head.num_classes, h, w)
+
+    # Input non-square NCHW format feature information
+    x = [torch.randn(1, 32, h, w * 2)]
+    if torch.cuda.is_available():
+        head, x = to_cuda(head, x)
+    out = head(x)
+    assert out.shape == (1, head.num_classes, h, w * 2)
 
     # test inference of PUP head
     img_size = (32, 32)
@@ -100,13 +107,19 @@ def test_setr_up_head(capsys):
         norm_cfg=dict(type='BN'))
 
     h, w = img_size[0] // patch_size, img_size[1] // patch_size
-    # Input NCHW format feature information
-    # NCHW is the main input format.
+    # Input square NCHW format feature information
     x = [torch.randn(1, 32, h, w)]
     if torch.cuda.is_available():
         head, x = to_cuda(head, x)
     out = head(x)
     assert out.shape == (1, head.num_classes, h * 8, w * 8)
+
+    # Input non-square NCHW format feature information
+    x = [torch.randn(1, 32, h, w * 2)]
+    if torch.cuda.is_available():
+        head, x = to_cuda(head, x)
+    out = head(x)
+    assert out.shape == (1, head.num_classes, h * 8, w * 16)
 
     # test inference of PUP auxiliary head
     img_size = 32
@@ -122,9 +135,16 @@ def test_setr_up_head(capsys):
         norm_cfg=dict(type='BN'))
 
     h, w = img_size // patch_size, img_size // patch_size
-    # Input NCHW format feature information
+    # Input square NCHW format feature information
     x = [torch.randn(1, 32, h, w)]
     if torch.cuda.is_available():
         head, x = to_cuda(head, x)
     out = head(x)
     assert out.shape == (1, head.num_classes, h * 4, w * 4)
+
+    # Input non-square NCHW format feature information
+    x = [torch.randn(1, 32, h, w * 2)]
+    if torch.cuda.is_available():
+        head, x = to_cuda(head, x)
+    out = head(x)
+    assert out.shape == (1, head.num_classes, h * 4, w * 8)

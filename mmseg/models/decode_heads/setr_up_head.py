@@ -110,7 +110,7 @@ class SETRUPHead(BaseDecodeHead):
                 x = F.relu(x, inplace=True)
                 x = F.interpolate(
                     x,
-                    size=x.shape[-1] * 4,
+                    size=(x.shape[-2] * 4, x.shape[-1] * 4),
                     mode=self.up_mode,
                     align_corners=self.align_corners)
                 x = self.conv_seg(x)
@@ -123,7 +123,7 @@ class SETRUPHead(BaseDecodeHead):
                 x = F.relu(x, inplace=True)
                 x = F.interpolate(
                     x,
-                    size=x.shape[-1] * 2,
+                    size=(x.shape[-2] * 2, x.shape[-1] * 2),
                     mode=self.up_mode,
                     align_corners=self.align_corners)
                 x = self.conv_1(x)
@@ -131,7 +131,7 @@ class SETRUPHead(BaseDecodeHead):
                 x = F.relu(x, inplace=True)
                 x = F.interpolate(
                     x,
-                    size=x.shape[-1] * 2,
+                    size=(x.shape[-2] * 2, x.shape[-1] * 2),
                     mode=self.up_mode,
                     align_corners=self.align_corners)
                 x = self.conv_2(x)
@@ -139,7 +139,7 @@ class SETRUPHead(BaseDecodeHead):
                 x = F.relu(x, inplace=True)
                 x = F.interpolate(
                     x,
-                    size=x.shape[-1] * 2,
+                    size=(x.shape[-2] * 2, x.shape[-1] * 2),
                     mode=self.up_mode,
                     align_corners=self.align_corners)
                 x = self.conv_3(x)
