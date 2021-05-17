@@ -6,7 +6,8 @@ _base_ = [
 model = dict(
     pretrained='https://dl.fbaipublicfiles.com/deit/\
 deit_small_distilled_patch16_224-649709d9.pth',
-    backbone=dict(num_heads=6, embed_dim=384))
+    backbone=dict(num_heads=6, embed_dim=384),
+    neck=dict(in_channels=[384]))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone

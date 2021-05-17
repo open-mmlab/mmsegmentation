@@ -8,6 +8,7 @@ model = dict(
 deit_small_distilled_patch16_224-649709d9.pth',
     backbone=dict(num_heads=6, embed_dim=384),
     decode_head=dict(num_classes=150),
+    neck=dict(in_channels=[384]),
     auxiliary_head=dict(num_classes=150))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
