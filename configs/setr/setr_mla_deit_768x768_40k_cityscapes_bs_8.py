@@ -3,8 +3,8 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
 ]
 model = dict(
-    pretrained='https://dl.fbaipublicfiles.com/deit/\
-deit_base_distilled_patch16_384-d0272ac0.pth',
+    pretrained=\
+    'https://dl.fbaipublicfiles.com/deit/deit_base_distilled_patch16_384-d0272ac0.pth',  # noqa
     backbone=dict(
         drop_rate=0.,
         out_indices=(2, 5, 8, 11),

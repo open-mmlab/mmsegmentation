@@ -9,7 +9,7 @@ from .decode_head import BaseDecodeHead
 
 @HEADS.register_module()
 class SETRUPHead(BaseDecodeHead):
-    """Vision Transformer with support for patch or hybrid CNN input stage.
+    """Naive upsampling head and Progressive upsampling head of SETR.
 
     Naive or PUP head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`.
 

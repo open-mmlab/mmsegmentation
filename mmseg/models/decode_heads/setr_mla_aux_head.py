@@ -7,7 +7,7 @@ from .decode_head import BaseDecodeHead
 
 @HEADS.register_module()
 class SETRMLAAUXHead(BaseDecodeHead):
-    """Vision Transformer with support for patch or hybrid CNN input stage.
+    """Multi level feature aggretation auxiliary head of SETR.
 
     The extra head of MLA head of `SETR
     <https://arxiv.org/pdf/2012.15840.pdf>`

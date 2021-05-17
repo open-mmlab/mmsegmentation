@@ -66,7 +66,7 @@ class MLAHead(nn.Module):
 
 @HEADS.register_module()
 class SETRMLAHead(BaseDecodeHead):
-    """Vision Transformer with support for patch or hybrid CNN input stage.
+    """Multi level feature aggretation head of SETR.
 
     MLA head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`.
 

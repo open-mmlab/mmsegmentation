@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/setr_pup.py', '../_base_/datasets/cityscapes_768x768.py',
+    '../_base_/models/setr_pup.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -8,6 +8,7 @@ model = dict(
     'https://dl.fbaipublicfiles.com/deit/deit_base_distilled_patch16_384-d0272ac0.pth',  # noqa
     backbone=dict(
         drop_rate=0.,
+        img_size=(512, 1024),
         out_indices=(4, 7, 9, 11),
         embed_dim=768,
         depth=12,
@@ -82,7 +83,6 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4))
     ],
-    test_cfg=dict(mode='slide', crop_size=(768, 768), stride=(512, 512)),
 )
 
 optimizer = dict(
