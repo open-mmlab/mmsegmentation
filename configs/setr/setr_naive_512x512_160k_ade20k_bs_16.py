@@ -5,21 +5,20 @@ _base_ = [
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     backbone=dict(img_size=(512, 512), drop_rate=0.),
-    decode_head=dict(img_size=(512, 512), num_classes=150),
+    decode_head=dict(num_classes=150),
     auxiliary_head=[
         dict(
             type='SETRUPHead',
             in_channels=1024,
             channels=512,
             in_index=0,
-            img_size=(512, 512),
             embed_dim=1024,
             num_classes=150,
             norm_cfg=norm_cfg,
             num_convs=2,
             up_mode='bilinear',
             num_up_layer=1,
-            conv3x3_conv1x1=False,
+            kernel_size=1,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -28,14 +27,13 @@ model = dict(
             in_channels=1024,
             channels=512,
             in_index=1,
-            img_size=(512, 512),
             embed_dim=1024,
             num_classes=150,
             norm_cfg=norm_cfg,
             num_convs=2,
             up_mode='bilinear',
             num_up_layer=1,
-            conv3x3_conv1x1=False,
+            kernel_size=1,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -44,14 +42,13 @@ model = dict(
             in_channels=1024,
             channels=512,
             in_index=2,
-            img_size=(512, 512),
             embed_dim=1024,
             num_classes=150,
             norm_cfg=norm_cfg,
             num_convs=2,
             up_mode='bilinear',
             num_up_layer=1,
-            conv3x3_conv1x1=False,
+            kernel_size=1,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4))

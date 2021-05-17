@@ -23,14 +23,13 @@ model = dict(
             in_channels=768,
             channels=512,
             in_index=0,
-            img_size=(768, 768),
             embed_dim=768,
             num_classes=19,
             norm_cfg=norm_cfg,
             num_convs=2,
             up_mode='bilinear',
             num_up_layer=1,
-            conv3x3_conv1x1=False,
+            kernel_size=1,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -46,7 +45,7 @@ model = dict(
             num_convs=2,
             up_mode='bilinear',
             num_up_layer=1,
-            conv3x3_conv1x1=False,
+            kernel_size=1,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -62,7 +61,7 @@ model = dict(
             num_convs=2,
             up_mode='bilinear',
             num_up_layer=1,
-            conv3x3_conv1x1=False,
+            kernel_size=1,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4))

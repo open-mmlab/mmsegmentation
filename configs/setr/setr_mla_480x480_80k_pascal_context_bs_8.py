@@ -5,52 +5,56 @@ _base_ = [
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     backbone=dict(img_size=(480, 480), drop_rate=0),
-    decode_head=dict(img_size=(480, 480), num_classes=60),
+    decode_head=dict(num_classes=60),
     auxiliary_head=[
         dict(
-            type='SETRMLAAUXHead',
+            type='FCNHead',
             in_channels=256,
-            channels=512,
+            channels=256,
             in_index=0,
-            img_size=(480, 480),
-            mla_channels=256,
+            num_convs=0,
+            kernel_size=1,
+            concat_input=False,
             num_classes=60,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
-            type='SETRMLAAUXHead',
+            type='FCNHead',
             in_channels=256,
-            channels=512,
+            channels=256,
             in_index=1,
-            img_size=(480, 480),
-            mla_channels=256,
+            num_convs=0,
+            kernel_size=1,
+            concat_input=False,
             num_classes=60,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
-            type='SETRMLAAUXHead',
+            type='FCNHead',
             in_channels=256,
-            channels=512,
+            channels=256,
             in_index=2,
-            img_size=(480, 480),
-            mla_channels=256,
+            num_convs=0,
+            kernel_size=1,
+            concat_input=False,
             num_classes=60,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
-            type='SETRMLAAUXHead',
+            type='FCNHead',
             in_channels=256,
-            channels=512,
+            channels=256,
             in_index=3,
-            img_size=(480, 480),
-            mla_channels=256,
-            num_classes=19,
+            num_convs=0,
+            kernel_size=1,
+            concat_input=False,
+            num_classes=60,
             align_corners=False,
             loss_decode=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4))
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
     ],
     test_cfg=dict(mode='slide', crop_size=(480, 480), stride=(320, 320)))
 
