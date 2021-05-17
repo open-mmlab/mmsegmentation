@@ -72,21 +72,26 @@ class SETRMLAHead(BaseDecodeHead):
     MLA head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`.
 
     Args:
-        embed_dim (int): embedding dimension. Default: 1024.
         mla_channels (int): Channels of reshape-conv of multi-level feature
             aggregation. Default: 256.
         mlahead_channels (int): Channels of conv-conv-4x of multi-level feature
             aggregation. Default: 128.
+        mla_align_corners (bool): Whether to use align_corners in MLAModule.
+            Default: True.
     """
 
-    def __init__(self, mla_channels=256, mlahead_channels=128, **kwargs):
+    def __init__(self,
+                 mla_align_corners=True,
+                 mla_channels=256,
+                 mlahead_channels=128,
+                 **kwargs):
         super(SETRMLAHead, self).__init__(
             input_transform='multiple_select', **kwargs)
         self.mla_channels = mla_channels
         self.mlahead_channels = mlahead_channels
 
         self.mlahead = MLAModule(
-            align_corners=self.align_corners,
+            align_corners=mla_align_corners,
             mla_channels=self.mla_channels,
             mlahead_channels=self.mlahead_channels,
             norm_cfg=self.norm_cfg)
