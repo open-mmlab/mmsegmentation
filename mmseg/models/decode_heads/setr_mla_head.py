@@ -73,19 +73,13 @@ class SETRMLAHead(BaseDecodeHead):
 
     Args:
         embed_dim (int): embedding dimension. Default: 1024.
-        norm_layer (dict): Config dict for input normalization.
-            Default: norm_layer=dict(type='LN', eps=1e-6, requires_grad=True).
         mla_channels (int): Channels of reshape-conv of multi-level feature
             aggregation. Default: 256.
         mlahead_channels (int): Channels of conv-conv-4x of multi-level feature
             aggregation. Default: 128.
     """
 
-    def __init__(self,
-                 norm_layer=dict(type='LN', eps=1e-6, requires_grad=True),
-                 mla_channels=256,
-                 mlahead_channels=128,
-                 **kwargs):
+    def __init__(self, mla_channels=256, mlahead_channels=128, **kwargs):
         super(SETRMLAHead, self).__init__(
             input_transform='multiple_select', **kwargs)
         self.mla_channels = mla_channels
