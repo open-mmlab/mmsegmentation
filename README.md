@@ -69,7 +69,7 @@ Supported methods:
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
-- [x] [DeepLabV3 (CVPR'2017)](configs/deeplabv3)
+- [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
 - [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16/README.md)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
