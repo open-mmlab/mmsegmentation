@@ -1,10 +1,11 @@
 _base_ = [
-    '../_base_/models/pspnet_vit-d16.py', '../_base_/datasets/cityscapes.py',
+    '../_base_/models/upernet_vit-d16.py', '../_base_/datasets/cityscapes.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
 ]
 
-model = dict(pretrained='https://dl.fbaipublicfiles.com/deit/\
-deit_base_distilled_patch16_384-d0272ac0.pth')
+model = dict(
+    pretrained='https://dl.fbaipublicfiles.com/deit/deit_base_patch16_224-b5f2ef4d.pth'  # noqa
+)  # yapf: disable
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -30,6 +31,3 @@ lr_config = dict(
     power=1.0,
     min_lr=0.0,
     by_epoch=False)
-
-# By default, models are trained on 8 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=2)

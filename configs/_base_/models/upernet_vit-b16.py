@@ -2,8 +2,7 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='https://github.com/rwightman/pytorch-image-models/releases/\
-download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
+    pretrained='https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',  # noqa
     backbone=dict(
         type='VisionTransformer',
         img_size=(512, 512),
@@ -16,7 +15,7 @@ download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
         qk_scale=None,
         drop_rate=0.0,
         attn_drop_rate=0.0,
-        drop_path_rate=0.3,
+        drop_path_rate=0.0,
         norm_cfg=dict(type='LN', eps=1e-6),
         act_cfg=dict(type='GELU'),
         norm_eval=False),
@@ -26,11 +25,11 @@ download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
         out_channels=768,
         scales=[0.5, 1, 2, 4]),
     decode_head=dict(
-        type='ASPPHead',
-        in_channels=768,
-        in_index=1,
+        type='UPerHead',
+        in_channels=[768, 768, 768, 768],
+        in_index=[0, 1, 2, 3],
+        pool_scales=(1, 2, 3, 6),
         channels=512,
-        dilations=(1, 12, 24, 36),
         dropout_ratio=0.1,
         num_classes=19,
         norm_cfg=norm_cfg,
@@ -40,7 +39,7 @@ download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
     auxiliary_head=dict(
         type='FCNHead',
         in_channels=768,
-        in_index=2,
+        in_index=0,
         channels=256,
         num_convs=1,
         concat_input=False,
@@ -52,4 +51,4 @@ download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
     # model training and testing settings
     train_cfg=dict(),
-    test_cfg=dict(mode='whole'))
+    test_cfg=dict(mode='whole'))  # yapf: disable

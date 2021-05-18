@@ -5,9 +5,9 @@
 <!-- [ALGORITHM] -->
 
 ```latex
-@article{dosovitskiy2020,
+@article{dosoViTskiy2020,
   title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
-  author={Dosovitskiy, Alexey and Beyer, Lucas and Kolesnikov, Alexander and Weissenborn, Dirk and Zhai, Xiaohua and Unterthiner, Thomas and  Dehghani, Mostafa and Minderer, Matthias and Heigold, Georg and Gelly, Sylvain and Uszkoreit, Jakob and Houlsby, Neil},
+  author={DosoViTskiy, Alexey and Beyer, Lucas and Kolesnikov, Alexander and Weissenborn, Dirk and Zhai, Xiaohua and Unterthiner, Thomas and  Dehghani, Mostafa and Minderer, Matthias and Heigold, Georg and Gelly, Sylvain and Uszkoreit, Jakob and Houlsby, Neil},
   journal={arXiv preprint arXiv:2010.11929},
   year={2020}
 }
@@ -19,35 +19,17 @@
 
 | Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                     | download                                                                                                                                                                                                                                                                                                                                               |
 | ------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| UPerNet | Vit     | 512x1024  |   40000 |       |           | 72.61 |     | |
-| UPerNet | Deit-S  | 512x1024  |   40000 |       |           | 69.28 |     | |
-| UPerNet | Deit-B  | 512x1024  |   40000 |       |           | 73.35 |    | |
-| DeepLabV3 | Vit     | 512x1024  |   40000 |       |           | |          | |
-| DeepLabV3 | Deit-S  | 512x1024  |   40000 |       |           | |          | |
-| DeepLabV3 | Deit-B  | 512x1024  |   40000 |       |           | |          | |
-| PSPNet | Vit     | 512x1024  |   40000 |       |           | |          | |
-| PSPNet | Deit-S  | 512x1024  |   40000 |       |           | |          | |
-| PSPNet | Deit-B  | 512x1024  |   40000 |       |           | |          | |
-| FCN | Vit     | 512x1024  |   40000 |       |           | |          | |
-| FCN | Deit-S  | 512x1024  |   40000 |       |           | |          | |
-| FCN | Deit-B  | 512x1024  |   40000 |       |           | |          | |
+| UPerNet | ViT-B     | 512x1024  |   40000 |       |           | 72.61 |     | |
+| UPerNet | DeiT-S  | 512x1024  |   40000 |       |           | 69.28 |     | |
+| UPerNet | DeiT-B  | 512x1024  |   40000 |       |           | 73.35 |    | |
 
 ### ADE20K
 
 | Method  | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                 | download                                                                                                                                                                                                                                                                                                                               |
 | ------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| UPerNet | Vit     | 512x512  |   80000 |       |           |45.99  |    | |
-| UPerNet | Vit     | 512x512  |   160000 |       |           |45.88  |    | |
-| UPerNet | Deit-S  | 512x512  |   80000 |       |           |40.86  |    | |
-| UPerNet | Deit-S  | 512x512  |   160000 |       |           |41.71  |    | |
-| UPerNet | Deit-B  | 512x512  |   80000 |       |           |44.62   |   | |
-| UPerNet | Deit-B  | 512x512  |   160000 |       |           |44.69   |   | |
-| DeepLabV3 | Vit     | 512x512  |   80000 |       |           | |          | |
-| DeepLabV3 | Deit-S  | 512x512  |   80000 |       |           | |          | |
-| DeepLabV3 | Deit-B  | 512x512  |   80000 |       |           | |          | |
-| PSPNet | Vit     | 512x512  |   80000 |       |           | |          | |
-| PSPNet | Deit-S  | 512x512  |   80000 |       |           | |          | |
-| PSPNet | Deit-B  | 512x512  |   80000 |       |           | |          | |
-| FCN | Vit     | 512x512  |   80000 |       |           | |          | |
-| FCN | Deit-S  | 512x512  |   80000 |       |           | |          | |
-| FCN | Deit-B  | 512x512  |   80000 |       |           | |          | |
+| UPerNet | ViT-B     | 512x512  |   80000 |       |           |45.99  |    | |
+| UPerNet | ViT-B     | 512x512  |   160000 |       |           |45.88  |    | |
+| UPerNet | DeiT-S  | 512x512  |   80000 |       |           |41.32  |    | |
+| UPerNet | DeiT-S  | 512x512  |   160000 |       |           |  |    | |
+| UPerNet | DeiT-B  | 512x512  |   80000 |       |           |   |   | |
+| UPerNet | DeiT-B  | 512x512  |   160000 |       |           | |   | |

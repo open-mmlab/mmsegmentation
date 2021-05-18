@@ -1,12 +1,10 @@
 _base_ = [
-    '../_base_/models/pspnet_vit-d16.py', '../_base_/datasets/cityscapes.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
+    '../_base_/models/upernet_vit-d16.py', '../_base_/datasets/ade20k.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
 model = dict(
-    pretrained='https://dl.fbaipublicfiles.com/deit/\
-deit_small_distilled_patch16_224-649709d9.pth',
-    backbone=dict(num_heads=6, embed_dim=384))
+    decode_head=dict(num_classes=150), auxiliary_head=dict(num_classes=150))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -32,6 +30,3 @@ lr_config = dict(
     power=1.0,
     min_lr=0.0,
     by_epoch=False)
-
-# By default, models are trained on 8 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=2)
