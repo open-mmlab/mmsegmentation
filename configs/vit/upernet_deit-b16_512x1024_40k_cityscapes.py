@@ -4,7 +4,8 @@ _base_ = [
 ]
 
 model = dict(
-    pretrained='https://dl.fbaipublicfiles.com/deit/deit_base_patch16_224-b5f2ef4d.pth'  # noqa
+    pretrained='https://dl.fbaipublicfiles.com/deit/deit_base_patch16_224-b5f2ef4d.pth',  # noqa
+    backbone=dict(drop_path_rate=0.1),
 )  # yapf: disable
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
