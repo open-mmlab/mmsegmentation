@@ -88,7 +88,7 @@ We provide `tools/deploy_test.py` to evaluate ONNX model with different backend.
   pip install onnx onnxruntime-gpu
   ```
 
-- Install TensorRT python package follow [how-to-build-tensorrt-plugins-in-mmcv](https://mmcv.readthedocs.io/en/latest/tensorrt_plugin.html#how-to-build-tensorrt-plugins-in-mmcv)(optional)
+- Install TensorRT following [how-to-build-tensorrt-plugins-in-mmcv](https://mmcv.readthedocs.io/en/latest/tensorrt_plugin.html#how-to-build-tensorrt-plugins-in-mmcv)(optional)
 
 #### Usage
 
@@ -131,6 +131,8 @@ Description of all arguments
 |   PSPNet   |     pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes |  mIoU  |  78.2   |    78.1     |               |               |
 | deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py    | cityscapes |  mIoU  |  78.5   |    78.3     |               |               |
 | deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py  | cityscapes |  mIoU  |  78.9   |    78.7     |               |               |
+
+**Note**: TensorRT is only available on configs with `whole mode`.
 
 ### Convert to TorchScript (experimental)
 
