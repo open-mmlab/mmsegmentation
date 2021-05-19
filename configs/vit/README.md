@@ -30,6 +30,6 @@
 | UPerNet | ViT-B     | 512x512  |   80000 |       |           |45.99  |    | |
 | UPerNet | ViT-B     | 512x512  |   160000 |       |           |45.88  |    | |
 | UPerNet | DeiT-S  | 512x512  |   80000 |       |           |41.32  |    | |
-| UPerNet | DeiT-S  | 512x512  |   160000 |       |           |  |    | |
+| UPerNet | DeiT-S  | 512x512  |   160000 |       |           | 40.61 |    | |
 | UPerNet | DeiT-B  | 512x512  |   80000 |       |           |   |   | |
 | UPerNet | DeiT-B  | 512x512  |   160000 |       |           | |   | |
