@@ -1,11 +1,12 @@
+import warnings
+
 import torch.nn as nn
 import torch.utils.checkpoint as cp
 from mmcv.cnn import (UPSAMPLE_LAYERS, ConvModule, build_activation_layer,
-                      build_norm_layer, constant_init, kaiming_init)
-from mmcv.runner import load_checkpoint
+                      build_norm_layer)
+from mmcv.runner import BaseModule
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
-from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import UpConvBlock
 
@@ -219,7 +220,7 @@ class InterpConv(nn.Module):
 
 
 @BACKBONES.register_module()
-class UNet(nn.Module):
+class UNet(BaseModule):
     """UNet backbone.
     U-Net: Convolutional Networks for Biomedical Image Segmentation.
     https://arxiv.org/pdf/1505.04597.pdf
@@ -266,6 +267,9 @@ class UNet(nn.Module):
         dcn (bool): Use deformable convolution in convolutional layer or not.
             Default: None.
         plugins (dict): plugins for convolutional layers. Default: None.
+        pretrained (str, optional): model pretrained path. Default: None
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None
 
     Notice:
         The input image size should be divisible by the whole downsample rate
@@ -291,8 +295,30 @@ class UNet(nn.Module):
                  upsample_cfg=dict(type='InterpConv'),
                  norm_eval=False,
                  dcn=None,
-                 plugins=None):
-        super(UNet, self).__init__()
+                 plugins=None,
+                 pretrained=None,
+                 init_cfg=None):
+        super(UNet, self).__init__(init_cfg)
+
+        self.pretrained = pretrained
+        assert not (init_cfg and pretrained), \
+            'init_cfg and pretrained cannot be setting at the same time'
+        if isinstance(pretrained, str):
+            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+                          'please use "init_cfg" instead')
+            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
+        elif pretrained is None:
+            if init_cfg is None:
+                self.init_cfg = [
+                    dict(type='Kaiming', layer='Conv2d'),
+                    dict(
+                        type='Constant',
+                        val=1,
+                        layer=['_BatchNorm', 'GroupNorm'])
+                ]
+        else:
+            raise TypeError('pretrained must be a str or None')
+
         assert dcn is None, 'Not implemented yet.'
         assert plugins is None, 'Not implemented yet.'
         assert len(strides) == num_stages, \
@@ -408,22 +434,3 @@ class UNet(nn.Module):
             f'downsample rate {whole_downsample_rate}, when num_stages is '\
             f'{self.num_stages}, strides is {self.strides}, and downsamples '\
             f'is {self.downsamples}.'
-
-    def init_weights(self, pretrained=None):
-        """Initialize the weights in backbone.
-
-        Args:
-            pretrained (str, optional): Path to pre-trained weights.
-                Defaults to None.
-        """
-        if isinstance(pretrained, str):
-            logger = get_root_logger()
-            load_checkpoint(self, pretrained, strict=False, logger=logger)
-        elif pretrained is None:
-            for m in self.modules():
-                if isinstance(m, nn.Conv2d):
-                    kaiming_init(m)
-                elif isinstance(m, (_BatchNorm, nn.GroupNorm)):
-                    constant_init(m, 1)
-        else:
-            raise TypeError('pretrained must be a str or None')

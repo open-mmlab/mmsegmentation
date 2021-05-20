@@ -24,7 +24,8 @@ class CascadeEncoderDecoder(EncoderDecoder):
                  auxiliary_head=None,
                  train_cfg=None,
                  test_cfg=None,
-                 pretrained=None):
+                 pretrained=None,
+                 init_cfg=None):
         self.num_stages = num_stages
         super(CascadeEncoderDecoder, self).__init__(
             backbone=backbone,
@@ -33,7 +34,8 @@ class CascadeEncoderDecoder(EncoderDecoder):
             auxiliary_head=auxiliary_head,
             train_cfg=train_cfg,
             test_cfg=test_cfg,
-            pretrained=pretrained)
+            pretrained=pretrained,
+            init_cfg=init_cfg)
 
     def _init_decode_head(self, decode_head):
         """Initialize ``decode_head``"""
@@ -44,23 +46,6 @@ class CascadeEncoderDecoder(EncoderDecoder):
             self.decode_head.append(builder.build_head(decode_head[i]))
         self.align_corners = self.decode_head[-1].align_corners
         self.num_classes = self.decode_head[-1].num_classes
-
-    def init_weights(self, pretrained=None):
-        """Initialize the weights in backbone and heads.
-
-        Args:
-            pretrained (str, optional): Path to pre-trained weights.
-                Defaults to None.
-        """
-        self.backbone.init_weights(pretrained=pretrained)
-        for i in range(self.num_stages):
-            self.decode_head[i].init_weights()
-        if self.with_auxiliary_head:
-            if isinstance(self.auxiliary_head, nn.ModuleList):
-                for aux_head in self.auxiliary_head:
-                    aux_head.init_weights()
-            else:
-                self.auxiliary_head.init_weights()
 
     def encode_decode(self, img, img_metas):
         """Encode images with backbone and decode into a semantic segmentation
