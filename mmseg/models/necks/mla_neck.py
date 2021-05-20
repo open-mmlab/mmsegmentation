@@ -4,92 +4,58 @@ from mmcv.cnn import ConvModule, build_norm_layer
 from ..builder import NECKS
 
 
-class MLAConv(nn.Module):
+class MLAModule(nn.Module):
 
     def __init__(self,
                  in_channels=[1024, 1024, 1024, 1024],
-                 mla_channels=256,
+                 out_channels=256,
                  norm_cfg=None,
                  act_cfg=None):
-        super(MLAConv, self).__init__()
-        self.mla_p2_1x1 = ConvModule(
-            in_channels[0],
-            mla_channels,
-            kernel_size=1,
-            bias=False,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
-        self.mla_p3_1x1 = ConvModule(
-            in_channels[1],
-            mla_channels,
-            kernel_size=1,
-            bias=False,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
-        self.mla_p4_1x1 = ConvModule(
-            in_channels[2],
-            mla_channels,
-            kernel_size=1,
-            bias=False,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
-        self.mla_p5_1x1 = ConvModule(
-            in_channels[3],
-            mla_channels,
-            kernel_size=1,
-            bias=False,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
-        self.mla_p2 = ConvModule(
-            mla_channels,
-            mla_channels,
-            kernel_size=3,
-            bias=False,
-            padding=1,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
-        self.mla_p3 = ConvModule(
-            mla_channels,
-            mla_channels,
-            kernel_size=3,
-            bias=False,
-            padding=1,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
-        self.mla_p4 = ConvModule(
-            mla_channels,
-            mla_channels,
-            kernel_size=3,
-            bias=False,
-            padding=1,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
-        self.mla_p5 = ConvModule(
-            mla_channels,
-            mla_channels,
-            kernel_size=3,
-            bias=False,
-            padding=1,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
+        super(MLAModule, self).__init__()
+        self.channel_proj = nn.ModuleList()
+        for i in range(len(in_channels)):
+            self.channel_proj.append(
+                ConvModule(
+                    in_channels=in_channels[i],
+                    out_channels=out_channels,
+                    kernel_size=1,
+                    norm_cfg=norm_cfg,
+                    act_cfg=act_cfg))
+        self.feat_extract = nn.ModuleList()
+        for i in range(len(in_channels)):
+            self.feat_extract.append(
+                ConvModule(
+                    in_channels=out_channels,
+                    out_channels=out_channels,
+                    kernel_size=3,
+                    padding=1,
+                    norm_cfg=norm_cfg,
+                    act_cfg=act_cfg))
 
-    def forward(self, res2, res3, res4, res5):
+    def forward(self, inputs):
 
-        mla_p5_1x1 = self.mla_p5_1x1(res5)
-        mla_p4_1x1 = self.mla_p4_1x1(res4)
-        mla_p3_1x1 = self.mla_p3_1x1(res3)
-        mla_p2_1x1 = self.mla_p2_1x1(res2)
+        # feat_list -> [p2, p3, p4, p5]
+        feat_list = []
+        for x, op in zip(inputs, self.channel_proj):
+            feat_list.append(op(x))
 
-        mla_p4_plus = mla_p5_1x1 + mla_p4_1x1
-        mla_p3_plus = mla_p4_plus + mla_p3_1x1
-        mla_p2_plus = mla_p3_plus + mla_p2_1x1
+        # feat_list -> [p5, p4, p3, p2]
+        # mid_list -> [m5, m4, m3, m2]
+        feat_list = feat_list[::-1]
+        mid_list = []
+        for feat in feat_list:
+            if len(mid_list) == 0:
+                mid_list.append(feat)
+            else:
+                mid_list.append(mid_list[-1] + feat)
 
-        mla_p5 = self.mla_p5(mla_p5_1x1)
-        mla_p4 = self.mla_p4(mla_p4_plus)
-        mla_p3 = self.mla_p3(mla_p3_plus)
-        mla_p2 = self.mla_p2(mla_p2_plus)
+        # mid_list -> [m5, m4, m3, m2]
+        # out_list -> [o2, o3, o4, o5]
+        out_list = []
+        for mid, op in zip(mid_list, self.feat_extract):
+            out_list.append(op(mid))
 
-        return mla_p2, mla_p3, mla_p4, mla_p5
+        return tuple(out_list)
 
 
 @NECKS.register_module()
@@ -128,9 +94,9 @@ class MLANeck(nn.Module):
             for i in range(len(in_channels))
         ])
 
-        self.mla = MLAConv(
+        self.mla = MLAModule(
             in_channels=in_channels,
-            mla_channels=out_channels,
+            out_channels=out_channels,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
 
@@ -147,5 +113,5 @@ class MLANeck(nn.Module):
             x = x.transpose(1, 2).reshape(n, c, h, w)
             outs.append(x)
 
-        outs = self.mla(*outs)
+        outs = self.mla(outs)
         return tuple(outs)

@@ -7,8 +7,8 @@ from ..builder import HEADS
 from .decode_head import BaseDecodeHead
 
 
-class MLAModule(nn.ModuleList):
-    """Multi level feature aggregation Module.
+class ConvConv4x(nn.ModuleList):
+    """The conv-conv-4x operation of SETR Head.
 
     Args:
         align_corners (bool): Whether to use align_corners of F.interpolate.
@@ -28,7 +28,7 @@ class MLAModule(nn.ModuleList):
                  mla_channels=128,
                  norm_cfg=None,
                  act_cfg=dict(type='ReLU')):
-        super(MLAModule, self).__init__()
+        super(ConvConv4x, self).__init__()
         self.align_corners = align_corners
         for i in range(aggregation_stages):
             self.append(
@@ -80,7 +80,7 @@ class SETRMLAHead(BaseDecodeHead):
         # Refer to self.cls_seg settings of BaseDecodeHead
         assert self.channels == num_inputs * mla_channels
 
-        self.mlahead = MLAModule(
+        self.mlahead = ConvConv4x(
             align_corners=self.align_corners,
             aggregation_stages=num_inputs,
             in_channels=self.in_channels,
