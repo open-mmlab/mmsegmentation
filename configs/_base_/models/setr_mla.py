@@ -29,14 +29,12 @@ model = dict(
     ),
     decode_head=dict(
         type='SETRMLAHead',
-        in_channels=(1024, 1024, 1024, 1024),
+        in_channels=(256, 256, 256, 256),
         channels=512,
         in_index=(0, 1, 2, 3),
-        mla_channels=256,
-        mlahead_channels=128,
+        mla_channels=128,
         num_classes=19,
         norm_cfg=norm_cfg,
-        mla_align_corners=True,
         align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),

@@ -16,13 +16,22 @@ def test_setr_mla_head(capsys):
         SETRMLAHead(
             in_channels=32, channels=16, num_classes=19, in_index=(0, 1, 2, 3))
 
+    with pytest.raises(AssertionError):
+        # channels should be len(in_channels) * mla_channels
+        SETRMLAHead(
+            in_channels=(32, 32, 32, 32),
+            channels=32,
+            mla_channels=16,
+            in_index=(0, 1, 2, 3),
+            num_classes=19)
+
     # test inference of MLA head
     img_size = (32, 32)
     patch_size = 16
     head = SETRMLAHead(
         in_channels=(32, 32, 32, 32),
-        channels=16,
-        mla_channels=32,
+        channels=64,
+        mla_channels=16,
         in_index=(0, 1, 2, 3),
         num_classes=19,
         norm_cfg=dict(type='BN'))
