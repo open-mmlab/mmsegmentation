@@ -405,6 +405,7 @@ class ResNet(BaseModule):
             raise KeyError(f'invalid depth {depth} for resnet')
 
         self.pretrained = pretrained
+        self.zero_init_residual = zero_init_residual
         block_init_cfg = None
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be setting at the same time'
@@ -461,7 +462,6 @@ class ResNet(BaseModule):
         self.plugins = plugins
         self.multi_grid = multi_grid
         self.contract_dilation = contract_dilation
-        self.zero_init_residual = zero_init_residual
         self.block, stage_blocks = self.arch_settings[depth]
         self.stage_blocks = stage_blocks[:num_stages]
         self.inplanes = stem_channels
@@ -497,7 +497,7 @@ class ResNet(BaseModule):
                 plugins=stage_plugins,
                 multi_grid=stage_multi_grid,
                 contract_dilation=contract_dilation,
-                block_init_cfg=block_init_cfg)
+                init_cfg=block_init_cfg)
             self.inplanes = planes * self.block.expansion
             layer_name = f'layer{i+1}'
             self.add_module(layer_name, res_layer)

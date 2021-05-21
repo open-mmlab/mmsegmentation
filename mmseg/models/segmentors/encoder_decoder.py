@@ -28,7 +28,10 @@ class EncoderDecoder(BaseSegmentor):
                  pretrained=None,
                  init_cfg=None):
         super(EncoderDecoder, self).__init__(init_cfg)
-        backbone.pretrained = pretrained
+        if pretrained is not None:
+            assert backbone.get('pretrained') is None, \
+                'both backbone and segmentor set pretrained weight'
+            backbone.pretrained = pretrained
         self.backbone = builder.build_backbone(backbone)
         if neck is not None:
             self.neck = builder.build_neck(neck)

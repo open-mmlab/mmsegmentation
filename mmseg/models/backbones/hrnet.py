@@ -291,6 +291,7 @@ class HRNet(BaseModule):
         super(HRNet, self).__init__(init_cfg)
 
         self.pretrained = pretrained
+        self.zero_init_residual = zero_init_residual
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be setting at the same time'
         if isinstance(pretrained, str):
@@ -314,7 +315,6 @@ class HRNet(BaseModule):
         self.norm_cfg = norm_cfg
         self.norm_eval = norm_eval
         self.with_cp = with_cp
-        self.zero_init_residual = zero_init_residual
 
         # stem net
         self.norm1_name, norm1 = build_norm_layer(self.norm_cfg, 64, postfix=1)
