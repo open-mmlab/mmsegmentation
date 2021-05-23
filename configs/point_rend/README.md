@@ -2,16 +2,15 @@
 
 ## Introduction
 
-[ALGORITHM]
+<!-- [ALGORITHM] -->
 
 ```
-@misc{alex2019pointrend,
-    title={PointRend: Image Segmentation as Rendering},
-    author={Alexander Kirillov and Yuxin Wu and Kaiming He and Ross Girshick},
-    year={2019},
-    eprint={1912.08193},
-    archivePrefix={arXiv},
-    primaryClass={cs.CV}
+@inproceedings{kirillov2020pointrend,
+  title={Pointrend: Image segmentation as rendering},
+  author={Kirillov, Alexander and Wu, Yuxin and He, Kaiming and Girshick, Ross},
+  booktitle={Proceedings of the IEEE/CVF conference on computer vision and pattern recognition},
+  pages={9799--9808},
+  year={2020}
 }
 ```
 

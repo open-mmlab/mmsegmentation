@@ -2,14 +2,17 @@
 
 ## Introduction
 
-[ALGORITHM]
+<!-- [ALGORITHM] -->
 
 ```latext
-@article{wu2018cgnet,
-  title={CGNet: A Light-weight Context Guided Network for Semantic Segmentation},
-  author={Wu, Tianyi and Tang, Sheng and Zhang, Rui and Zhang, Yongdong},
-  journal={arXiv preprint arXiv:1811.08201},
-  year={2018}
+@article{wu2020cgnet,
+  title={Cgnet: A light-weight context guided network for semantic segmentation},
+  author={Wu, Tianyi and Tang, Sheng and Zhang, Rui and Cao, Juan and Zhang, Yongdong},
+  journal={IEEE Transactions on Image Processing},
+  volume={30},
+  pages={1169--1179},
+  year={2020},
+  publisher={IEEE}
 }
 ```
 

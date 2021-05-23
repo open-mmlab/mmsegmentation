@@ -2,7 +2,7 @@
 
 ## Introduction
 
-[ALGORITHM]
+<!-- [ALGORITHM] -->
 
 ```latex
 @article{shelhamer2017fully,
@@ -74,8 +74,8 @@
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                   | download                                                                                                                                                                                                                                                                                                                                               |
 | ------ | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| FCN    | R-101-D8 | 480x480   |   40000 | -        | 9.93           | 44.14 |         45.67 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_480x480_40k_pascal_context.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context_20200911_212515-9b565a6d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20200911_212515.log.json) |
-| FCN    | R-101-D8 | 480x480   |   80000 | -        | -              | 44.47 |         45.74 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_480x480_80k_pascal_context.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context_20200915_032644-a3828480.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context-20200915_032644.log.json) |
+| FCN    | R-101-D8 | 480x480   |   40000 | -        | 9.93           | 44.43 |         45.63 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_480x480_40k_pascal_context.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20210421_154757-b5e97937.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20210421_154757.log.json) |
+| FCN    | R-101-D8 | 480x480   |   80000 | -        | -              | 44.13 |         45.26 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_480x480_80k_pascal_context.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context-20210421_163310-4711813f.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context-20210421_163310.log.json) |
 
 ### Pascal Context 59
 
