@@ -1,5 +1,5 @@
 Collections:
-  - Name: SEM FPN
+  - Name: FPN
     Metadata:
       Training Data:
         - Cityscapes
