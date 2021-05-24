@@ -34,68 +34,11 @@ def test_setr_up_head(capsys):
         num_classes=19,
         num_convs=1,
         up_scale=4,
-        num_up_layer=0,
         kernel_size=1,
         norm_cfg=dict(type='BN'))
 
     h, w = img_size[0] // patch_size, img_size[1] // patch_size
 
-    # Input square NCHW format feature information
-    x = [torch.randn(1, 32, h, w)]
-    if torch.cuda.is_available():
-        head, x = to_cuda(head, x)
-    out = head(x)
-    assert out.shape == (1, head.num_classes, h, w)
-
-    # Input non-square NCHW format feature information
-    x = [torch.randn(1, 32, h, w * 2)]
-    if torch.cuda.is_available():
-        head, x = to_cuda(head, x)
-    out = head(x)
-    assert out.shape == (1, head.num_classes, h, w * 2)
-
-    # test inference of PUP head
-    img_size = (32, 32)
-    patch_size = 16
-    head = SETRUPHead(
-        in_channels=32,
-        channels=16,
-        num_classes=19,
-        num_convs=4,
-        up_scale=2,
-        num_up_layer=3,
-        kernel_size=3,
-        norm_cfg=dict(type='BN'))
-
-    h, w = img_size[0] // patch_size, img_size[1] // patch_size
-    # Input square NCHW format feature information
-    x = [torch.randn(1, 32, h, w)]
-    if torch.cuda.is_available():
-        head, x = to_cuda(head, x)
-    out = head(x)
-    assert out.shape == (1, head.num_classes, h * 8, w * 8)
-
-    # Input non-square NCHW format feature information
-    x = [torch.randn(1, 32, h, w * 2)]
-    if torch.cuda.is_available():
-        head, x = to_cuda(head, x)
-    out = head(x)
-    assert out.shape == (1, head.num_classes, h * 8, w * 16)
-
-    # test inference of PUP auxiliary head
-    img_size = 32
-    patch_size = 16
-    head = SETRUPHead(
-        in_channels=32,
-        channels=16,
-        num_classes=19,
-        num_convs=1,
-        up_scale=4,
-        num_up_layer=1,
-        kernel_size=3,
-        norm_cfg=dict(type='BN'))
-
-    h, w = img_size // patch_size, img_size // patch_size
     # Input square NCHW format feature information
     x = [torch.randn(1, 32, h, w)]
     if torch.cuda.is_available():

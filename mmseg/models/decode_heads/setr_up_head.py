@@ -37,11 +37,11 @@ class SETRUPHead(BaseDecodeHead):
 
         _, self.norm = build_norm_layer(norm_layer, self.in_channels)
 
-        self.up = nn.ModuleList()
+        self.up_convs = nn.ModuleList()
         in_channels = self.in_channels
         out_channels = self.channels
         for i in range(num_convs):
-            self.up.append(
+            self.up_convs.append(
                 nn.Sequential(
                     ConvModule(
                         in_channels=in_channels,
@@ -75,7 +75,7 @@ class SETRUPHead(BaseDecodeHead):
         x = self.norm(x)
         x = x.transpose(1, 2).reshape(n, c, h, w)
 
-        for op in self.up:
-            x = op(x)
+        for up_conv in self.up_convs:
+            x = up_conv(x)
         out = self.cls_seg(x)
         return out
