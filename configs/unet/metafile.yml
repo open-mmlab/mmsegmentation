@@ -1,15 +1,7 @@
-Collections:
-  - Name: UPerNet
-    Metadata:
-      Training Data:
-        - Cityscapes
-        - Pascal VOC 2012 + Aug
-        - ADE20K
-
 Models:
 
   - Name: fcn_unet_s5-d16_64x64_40k_drive
-    In Collection: UNet-S5-D16
+    In Collection: FCN
     Metadata:
       inference time (fps): 40000
     Results:
@@ -23,7 +15,7 @@ Models:
 
 
   - Name: pspnet_unet_s5-d16_64x64_40k_drive
-    In Collection: UNet-S5-D16
+    In Collection: PSPNet
     Metadata:
       inference time (fps): 40000
     Results:
@@ -37,7 +29,7 @@ Models:
 
 
   - Name: deeplabv3_unet_s5-d16_64x64_40k_drive
-    In Collection: UNet-S5-D16
+    In Collection: DeepLabV3
     Metadata:
       inference time (fps): 40000
     Results:
@@ -51,7 +43,7 @@ Models:
 
 
   - Name: fcn_unet_s5-d16_128x128_40k_stare
-    In Collection: UNet-S5-D16
+    In Collection: FCN
     Metadata:
       inference time (fps): 40000
     Results:
@@ -65,7 +57,7 @@ Models:
 
 
   - Name: pspnet_unet_s5-d16_128x128_40k_stare
-    In Collection: UNet-S5-D16
+    In Collection: PSPNet
     Metadata:
       inference time (fps): 40000
     Results:
@@ -79,7 +71,7 @@ Models:
 
 
   - Name: deeplabv3_unet_s5-d16_128x128_40k_stare
-    In Collection: UNet-S5-D16
+    In Collection: DeepLabV3
     Metadata:
       inference time (fps): 40000
     Results:
@@ -93,7 +85,7 @@ Models:
 
 
   - Name: fcn_unet_s5-d16_128x128_40k_chase_db1
-    In Collection: UNet-S5-D16
+    In Collection: FCN
     Metadata:
       inference time (fps): 40000
     Results:
@@ -107,7 +99,7 @@ Models:
 
 
   - Name: pspnet_unet_s5-d16_128x128_40k_chase_db1
-    In Collection: UNet-S5-D16
+    In Collection: PSPNet
     Metadata:
       inference time (fps): 40000
     Results:
@@ -121,7 +113,7 @@ Models:
 
 
   - Name: deeplabv3_unet_s5-d16_128x128_40k_chase_db1
-    In Collection: UNet-S5-D16
+    In Collection: DeepLabV3
     Metadata:
       inference time (fps): 40000
     Results:
@@ -135,7 +127,7 @@ Models:
 
 
   - Name: fcn_unet_s5-d16_256x256_40k_hrf
-    In Collection: UNet-S5-D16
+    In Collection: FCN
     Metadata:
       inference time (fps): 40000
     Results:
@@ -149,7 +141,7 @@ Models:
 
 
   - Name: pspnet_unet_s5-d16_256x256_40k_hrf
-    In Collection: UNet-S5-D16
+    In Collection: PSPNet
     Metadata:
       inference time (fps): 40000
     Results:
@@ -163,7 +155,7 @@ Models:
 
 
   - Name: deeplabv3_unet_s5-d16_256x256_40k_hrf
-    In Collection: UNet-S5-D16
+    In Collection: DeepLabV3
     Metadata:
       inference time (fps): 40000
     Results:
