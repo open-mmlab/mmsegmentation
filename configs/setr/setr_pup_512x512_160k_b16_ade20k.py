@@ -17,8 +17,6 @@ model = dict(
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
             num_convs=2,
-            up_mode='bilinear',
-            num_up_layer=2,
             kernel_size=3,
             align_corners=False,
             loss_decode=dict(
@@ -33,8 +31,6 @@ model = dict(
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
             num_convs=2,
-            up_mode='bilinear',
-            num_up_layer=2,
             kernel_size=3,
             align_corners=False,
             loss_decode=dict(
@@ -49,8 +45,6 @@ model = dict(
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
             num_convs=2,
-            up_mode='bilinear',
-            num_up_layer=2,
             kernel_size=3,
             align_corners=False,
             loss_decode=dict(
@@ -65,8 +59,6 @@ model = dict(
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
             num_convs=2,
-            up_mode='bilinear',
-            num_up_layer=2,
             kernel_size=3,
             align_corners=False,
             loss_decode=dict(

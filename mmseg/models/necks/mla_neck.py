@@ -36,8 +36,8 @@ class MLAModule(nn.Module):
 
         # feat_list -> [p2, p3, p4, p5]
         feat_list = []
-        for x, op in zip(inputs, self.channel_proj):
-            feat_list.append(op(x))
+        for x, conv in zip(inputs, self.channel_proj):
+            feat_list.append(conv(x))
 
         # feat_list -> [p5, p4, p3, p2]
         # mid_list -> [m5, m4, m3, m2]
@@ -52,8 +52,8 @@ class MLAModule(nn.Module):
         # mid_list -> [m5, m4, m3, m2]
         # out_list -> [o2, o3, o4, o5]
         out_list = []
-        for mid, op in zip(mid_list, self.feat_extract):
-            out_list.append(op(mid))
+        for mid, conv in zip(mid_list, self.feat_extract):
+            out_list.append(conv(mid))
 
         return tuple(out_list)
 
