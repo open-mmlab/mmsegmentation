@@ -1,4 +1,4 @@
-
+Models:
   - Name: fcn_hr18s_512x1024_40k_cityscapes
     In Collection: FCN
     Metadata:
