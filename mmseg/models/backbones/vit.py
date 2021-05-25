@@ -1,370 +1,312 @@
-"""Modified from https://github.com/rwightman/pytorch-image-
-models/blob/master/timm/models/vision_transformer.py."""
-
-import math
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.utils.checkpoint as cp
-from mmcv.cnn import (Conv2d, Linear, build_activation_layer, build_norm_layer,
-                      constant_init, kaiming_init, normal_init)
-from mmcv.runner import _load_checkpoint
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmcv.cnn import build_conv_layer, build_norm_layer
+from mmcv.cnn.bricks.registry import (TRANSFORMER_LAYER,
+                                      TRANSFORMER_LAYER_SEQUENCE)
+from mmcv.cnn.bricks.transformer import (BaseTransformerLayer,
+                                         TransformerLayerSequence,
+                                         build_transformer_layer_sequence)
+from mmcv.runner.base_module import BaseModule
 
-from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import DropPath, trunc_normal_
+from ..utils import to_2tuple
+from .base_backbone import BaseBackbone
 
 
-class Mlp(nn.Module):
-    """MLP layer for Encoder block.
+@TRANSFORMER_LAYER.register_module()
+class VitTransformerEncoderLayer(BaseTransformerLayer):
+    """Implements encoder layer in Vit transformer."""
 
-    Args:
-        in_features(int): Input dimension for the first fully
-            connected layer.
-        hidden_features(int): Output dimension for the first fully
-            connected layer.
-        out_features(int): Output dementsion for the second fully
-            connected layer.
-        act_cfg(dict): Config dict for activation layer.
-            Default: dict(type='GELU').
-        drop(float): Drop rate for the dropout layer. Dropout rate has
-            to be between 0 and 1. Default: 0.
-    """
+    def __init__(self, *args, **kwargs):
+        super(VitTransformerEncoderLayer, self).__init__(*args, **kwargs)
+        assert len(self.operation_order) == 4
+        assert set(self.operation_order) == set(['self_attn', 'norm', 'ffn'])
 
-    def __init__(self,
-                 in_features,
-                 hidden_features=None,
-                 out_features=None,
-                 act_cfg=dict(type='GELU'),
-                 drop=0.):
-        super(Mlp, self).__init__()
-        out_features = out_features or in_features
-        hidden_features = hidden_features or in_features
-        self.fc1 = Linear(in_features, hidden_features)
-        self.act = build_activation_layer(act_cfg)
-        self.fc2 = Linear(hidden_features, out_features)
-        self.drop = nn.Dropout(drop)
-
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.act(x)
-        x = self.drop(x)
-        x = self.fc2(x)
-        x = self.drop(x)
-        return x
+    def init_weights(self):
+        super(VitTransformerEncoderLayer, self).init_weights()
+        for ffn in self.ffns:
+            for m in ffn.modules():
+                if isinstance(m, nn.Linear):
+                    nn.init.xavier_normal_(m.weight)
+                    nn.init.normal_(m.bias, std=1e-6)
 
 
-class Attention(nn.Module):
-    """Attention layer for Encoder block.
+@TRANSFORMER_LAYER_SEQUENCE.register_module()
+class VitTransformerEncoder(TransformerLayerSequence):
+    """TransformerEncoder of Vit.
 
     Args:
-        dim (int): Dimension for the input vector.
-        num_heads (int): Number of parallel attention heads.
-        qkv_bias (bool): Enable bias for qkv if True. Default: False.
-        qk_scale (float): Override default qk scale of head_dim ** -0.5 if set.
-        attn_drop (float): Drop rate for attention output weights.
-            Default: 0.
-        proj_drop (float): Drop rate for output weights. Default: 0.
+        final_norm (dict): Whether to add a additional layer to normalize
+            final feature map.
+        out_indices (list | tuple | int): Output from which stages.
+        coder_norm_cfg (dict): Config of last normalization layer. Only
+            used when `self.pre_norm` and `self.final_norm` is `True`.
+            Default: dict(type='LN')
     """
 
-    def __init__(self,
-                 dim,
-                 num_heads=8,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 attn_drop=0.,
-                 proj_drop=0.):
-        super(Attention, self).__init__()
-        self.num_heads = num_heads
-        head_dim = dim // num_heads
-        self.scale = qk_scale or head_dim**-0.5
+    def __init__(
+            self,
+            *args,
+            final_norm,
+            out_indices,
+            coder_norm_cfg=dict(type='LN'),
+            **kwargs,
+    ):
+        super(VitTransformerEncoder, self).__init__(*args, **kwargs)
 
-        self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
-        self.attn_drop = nn.Dropout(attn_drop)
-        self.proj = Linear(dim, dim)
-        self.proj_drop = nn.Dropout(proj_drop)
-
-    def forward(self, x):
-        b, n, c = x.shape
-        qkv = self.qkv(x).reshape(b, n, 3, self.num_heads,
-                                  c // self.num_heads).permute(2, 0, 3, 1, 4)
-        q, k, v = qkv[0], qkv[1], qkv[2]
-
-        attn = (q @ k.transpose(-2, -1)) * self.scale
-        attn = attn.softmax(dim=-1)
-        attn = self.attn_drop(attn)
-
-        x = (attn @ v).transpose(1, 2).reshape(b, n, c)
-        x = self.proj(x)
-        x = self.proj_drop(x)
-        return x
-
-
-class Block(nn.Module):
-    """Implements encoder block with residual connection.
-
-    Args:
-        dim (int): The feature dimension.
-        num_heads (int): Number of parallel attention heads.
-        mlp_ratio (int): Ratio of mlp hidden dim to embedding dim.
-        qk_scale (float): Override default qk scale of head_dim ** -0.5 if set.
-        drop (float): Drop rate for mlp output weights. Default: 0.
-        attn_drop (float): Drop rate for attention output weights.
-            Default: 0.
-        proj_drop (float): Drop rate for attn layer output weights.
-            Default: 0.
-        drop_path (float): Drop rate for paths of model.
-            Default: 0.
-        act_cfg (dict): Config dict for activation layer.
-            Default: dict(type='GELU').
-        norm_cfg (dict): Config dict for normalization layer.
-            Default: dict(type='LN', requires_grad=True).
-        with_cp (bool): Use checkpoint or not. Using checkpoint will save some
-            memory while slowing down the training speed. Default: False.
-    """
-
-    def __init__(self,
-                 dim,
-                 num_heads,
-                 mlp_ratio=4,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 drop=0.,
-                 attn_drop=0.,
-                 proj_drop=0.,
-                 drop_path=0.,
-                 act_cfg=dict(type='GELU'),
-                 norm_cfg=dict(type='LN', eps=1e-6),
-                 with_cp=False):
-        super(Block, self).__init__()
-        self.with_cp = with_cp
-        _, self.norm1 = build_norm_layer(norm_cfg, dim)
-        self.attn = Attention(dim, num_heads, qkv_bias, qk_scale, attn_drop,
-                              proj_drop)
-        self.drop_path = DropPath(
-            drop_path) if drop_path > 0. else nn.Identity()
-        _, self.norm2 = build_norm_layer(norm_cfg, dim)
-        mlp_hidden_dim = int(dim * mlp_ratio)
-        self.mlp = Mlp(
-            in_features=dim,
-            hidden_features=mlp_hidden_dim,
-            act_cfg=act_cfg,
-            drop=drop)
-
-    def forward(self, x):
-
-        def _inner_forward(x):
-            out = x + self.drop_path(self.attn(self.norm1(x)))
-            out = out + self.drop_path(self.mlp(self.norm2(out)))
-            return out
-
-        if self.with_cp and x.requires_grad:
-            out = cp.checkpoint(_inner_forward, x)
+        if isinstance(out_indices, int):
+            self.out_indices = [
+                out_indices,
+            ]
+        elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
+            self.out_indices = out_indices
         else:
-            out = _inner_forward(x)
+            raise TypeError('out_indices must be type of int, list or tuple')
 
-        return out
+        if coder_norm_cfg is not None:
+            self.coder_norm = build_norm_layer(
+                coder_norm_cfg, self.embed_dims)[1] if final_norm else None
+        else:
+            assert not final_norm, f'Use finalnorm in ' \
+                                      f'{self.__class__.__name__},' \
+                                      f'Please specify coder_norm_cfg'
+            self.coder_norm = None
+
+    def forward(self, query, key, value, *args, **kwargs):
+        """Forward function for `TransformerCoder`.
+
+        Returns:
+            query_list: Output a list of feature vector and their indices
+            refer to out_indices attribute. Each vector has shape
+            [bs, num_query, embed_dims].
+        """
+        query_list = []
+        for i, layer in enumerate(self.layers):
+            query = layer(query=query, key=key, value=value, *args, **kwargs)
+            if i == len(self.layers) - 1:
+                if self.coder_norm is not None:
+                    query = self.coder_norm(query)
+            if i in self.out_indices:
+                query_list.append(query)
+
+        return query_list
 
 
-class PatchEmbed(nn.Module):
+# Modified from pytorch-image-models
+class PatchEmbed(BaseModule):
     """Image to Patch Embedding.
 
     Args:
-        img_size (int | tuple): Input image size.
-            default: 224.
-        patch_size (int): Width and height for a patch.
-            default: 16.
-        in_channels (int): Input channels for images. Default: 3.
-        embed_dim (int): The embedding dimension. Default: 768.
+        img_size (int | tuple): The size of input image.
+        patch_size (int): The size of one patch
+        in_channels (int): The num of input channels.
+        embed_dim (int): The dimensions of embedding.
+        norm_cfg (dict, optional): Config dict for normalization layer.
+        conv_cfg (dict, optional): The config dict for conv layers.
+            Default: None.
+        init_cfg (`mmcv.ConfigDict`, optional): The Config for initialization.
+            Default: None.
     """
 
     def __init__(self,
                  img_size=224,
                  patch_size=16,
                  in_channels=3,
-                 embed_dim=768):
-        super(PatchEmbed, self).__init__()
-        if isinstance(img_size, int):
-            self.img_size = (img_size, img_size)
-        elif isinstance(img_size, tuple):
-            self.img_size = img_size
+                 embed_dim=768,
+                 norm_cfg=None,
+                 conv_cfg=None,
+                 init_cfg=None):
+        super(PatchEmbed, self).__init__(init_cfg)
+
+        self.img_size = img_size
+        self.patch_size = to_2tuple(patch_size)
+
+        patches_resolution = [
+            img_size[0] // self.patch_size[0],
+            img_size[1] // self.patch_size[1]
+        ]
+        num_patches = patches_resolution[0] * patches_resolution[1]
+        assert num_patches * self.patch_size[0] * self.patch_size[1] == \
+               self.img_size[0] * self.img_size[1], \
+               'The image size H*W must be divisible by patch size'
+        self.patches_resolution = patches_resolution
+        self.num_patches = num_patches
+
+        # Use conv layer to embed
+        self.projection = build_conv_layer(
+            conv_cfg,
+            in_channels,
+            embed_dim,
+            kernel_size=patch_size,
+            stride=patch_size)
+
+        if norm_cfg is not None:
+            self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
         else:
-            raise TypeError('img_size must be type of int or tuple')
-        h, w = self.img_size
-        self.patch_size = (patch_size, patch_size)
-        self.num_patches = (h // patch_size) * (w // patch_size)
-        self.proj = Conv2d(
-            in_channels, embed_dim, kernel_size=patch_size, stride=patch_size)
+            self.norm = None
 
     def forward(self, x):
-        return self.proj(x).flatten(2).transpose(1, 2)
+        B, C, H, W = x.shape
+        # FIXME look at relaxing size constraints
+        assert H == self.img_size[0] and W == self.img_size[1], \
+            f"Input image size ({H}*{W}) doesn't " \
+            f'match model ({self.img_size[0]}*{self.img_size[1]}).'
+        # The output size is (B, N, D), where N=H*W/P/P, D is embid_dim
+        x = self.projection(x).flatten(2).transpose(1, 2)
+        if self.norm is not None:
+            x = self.norm(x)
+
+        return x
+
+
+# Modified from pytorch-image-models
+class HybridEmbed(BaseModule):
+    """CNN Feature Map Embedding.
+
+    Extract feature map from CNN, flatten, project to embedding dim.
+    """
+
+    def __init__(self,
+                 backbone,
+                 img_size=224,
+                 feature_size=None,
+                 in_channels=3,
+                 embed_dim=768,
+                 conv_cfg=None,
+                 init_cfg=None):
+        super(HybridEmbed, self).__init__(init_cfg)
+        assert isinstance(backbone, nn.Module)
+
+        self.img_size = img_size
+        self.backbone = backbone
+        if feature_size is None:
+            with torch.no_grad():
+                # FIXME this is hacky, but most reliable way of
+                #  determining the exact dim of the output feature
+                #  map for all networks, the feature metadata has
+                #  reliable channel and stride info, but using
+                #  stride to calc feature dim requires info about padding of
+                #  each stage that isn't captured.
+                training = backbone.training
+                if training:
+                    backbone.eval()
+                o = self.backbone(
+                    torch.zeros(1, in_channels, img_size[0], img_size[1]))
+                if isinstance(o, (list, tuple)):
+                    # last feature if backbone outputs list/tuple of features
+                    o = o[-1]
+                feature_size = o.shape[-2:]
+                feature_dim = o.shape[1]
+                backbone.train(training)
+        else:
+            feature_size = to_2tuple(feature_size)
+            if hasattr(self.backbone, 'feature_info'):
+                feature_dim = self.backbone.feature_info.channels()[-1]
+            else:
+                feature_dim = self.backbone.num_features
+        self.num_patches = feature_size[0] * feature_size[1]
+
+        # Use conv layer to embed
+        self.projection = build_conv_layer(
+            conv_cfg, feature_dim, embed_dim, kernel_size=1, stride=1)
+
+    def forward(self, x):
+        x = self.backbone(x)
+        if isinstance(x, (list, tuple)):
+            # last feature if backbone outputs list/tuple of features
+            x = x[-1]
+        x = self.projection(x).flatten(2).transpose(1, 2)
+        return x
 
 
 @BACKBONES.register_module()
-class VisionTransformer(nn.Module):
-    """Vision transformer backbone.
-
-    A PyTorch impl of : `An Image is Worth 16x16 Words: Transformers for
-        Image Recognition at Scale` - https://arxiv.org/abs/2010.11929
-
+class VisionTransformer(BaseBackbone):
+    """ Vision Transformer
+    A PyTorch impl of : `An Image is Worth 16x16 Words:
+    Transformers for Image Recognition at Scale`  -
+        https://arxiv.org/abs/2010.11929
     Args:
-        img_size (tuple): input image size. Default: (224, 224).
-        patch_size (int, tuple): patch size. Default: 16.
-        in_channels (int): number of input channels. Default: 3.
-        embed_dim (int): embedding dimension. Default: 768.
-        depth (int): depth of transformer. Default: 12.
-        num_heads (int): number of attention heads. Default: 12.
-        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
-            Default: 4.
-        out_indices (list | tuple | int): Output from which stages.
-            Default: -1.
-        qkv_bias (bool): enable bias for qkv if True. Default: True.
-        qk_scale (float): override default qk scale of head_dim ** -0.5 if set.
-        drop_rate (float): dropout rate. Default: 0.
-        attn_drop_rate (float): attention dropout rate. Default: 0.
-        drop_path_rate (float): Rate of DropPath. Default: 0.
-        norm_cfg (dict): Config dict for normalization layer.
-            Default: dict(type='LN', eps=1e-6, requires_grad=True).
-        act_cfg (dict): Config dict for activation layer.
-            Default: dict(type='GELU').
-        norm_eval (bool): Whether to set norm layers to eval mode, namely,
-            freeze running stats (mean and var). Note: Effect on Batch Norm
-            and its variants only. Default: False.
-        final_norm (bool):  Whether to add a additional layer to normalize
-            final feature map. Default: False.
-        out_reshape (str): Select the output format of feature information.
-            Default: NCHW.
+        embed_dim (int): Embedding dimension
+        img_size (int | tuple): Input image size
+        patch_size (int | tuple): The patch size
+        in_channels (int): Number of input channels
+        drop_rate (float): Probability of an element to be zeroed.
+            Default 0.0.
+        hybrid_backbone (nn.Module, optional): CNN backbone to use in-place of
+            PatchEmbed module. Default None.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bicubic.
         with_cls_token (bool): If concatenating class token into image tokens
             as transformer input. Default: True.
-        with_cp (bool): Use checkpoint or not. Using checkpoint
-            will save some memory while slowing down the training speed.
-            Default: False.
+        out_shape (str): Select the output format of feature information.
+            Default: NCHW.
+        encoder (`mmcv.ConfigDict` | Dict): Config of TransformerEncoder
+        init_cfg (dict, optional): Initialization config dict.
     """
 
     def __init__(self,
-                 img_size=(224, 224),
+                 img_size=224,
                  patch_size=16,
                  in_channels=3,
                  embed_dim=768,
-                 depth=12,
-                 num_heads=12,
-                 mlp_ratio=4,
-                 out_indices=11,
-                 qkv_bias=True,
-                 qk_scale=None,
                  drop_rate=0.,
-                 attn_drop_rate=0.,
-                 drop_path_rate=0.,
-                 norm_cfg=dict(type='LN', eps=1e-6, requires_grad=True),
-                 act_cfg=dict(type='GELU'),
-                 norm_eval=False,
-                 final_norm=False,
-                 out_shape='NCHW',
-                 with_cls_token=True,
+                 hybrid_backbone=None,
                  interpolate_mode='bicubic',
-                 with_cp=False):
-        super(VisionTransformer, self).__init__()
+                 with_cls_token=True,
+                 out_shape='NCHW',
+                 encoder=dict(
+                     type='VitTransformerEncoder',
+                     transformerlayers=None,
+                     num_layers=12,
+                     final_norm=False,
+                     out_indices=None,
+                     coder_norm_cfg=None,
+                 ),
+                 init_cfg=None):
+        super(VisionTransformer, self).__init__(init_cfg)
+
+        if isinstance(img_size, int):
+            img_size = to_2tuple(img_size)
+        elif isinstance(img_size, tuple):
+            if len(img_size) == 1:
+                img_size = to_2tuple(img_size[0])
+            assert len(img_size) == 2, \
+                f'The size of image should have length 1 or 2, ' \
+                f'but got {len(img_size)}'
+
         self.img_size = img_size
         self.patch_size = patch_size
-        self.features = self.embed_dim = embed_dim
-        self.patch_embed = PatchEmbed(
-            img_size=img_size,
-            patch_size=patch_size,
-            in_channels=in_channels,
-            embed_dim=embed_dim)
-
+        self.embed_dim = embed_dim
+        self.interpolate_mode = interpolate_mode
         self.with_cls_token = with_cls_token
-        self.cls_token = nn.Parameter(torch.zeros(1, 1, self.embed_dim))
+        self.out_shape = out_shape
+
+        if hybrid_backbone is not None:
+            self.patch_embed = HybridEmbed(
+                hybrid_backbone,
+                img_size=img_size,
+                in_channels=in_channels,
+                embed_dim=embed_dim)
+        else:
+            self.patch_embed = PatchEmbed(
+                img_size=img_size,
+                patch_size=patch_size,
+                in_channels=in_channels,
+                embed_dim=embed_dim)
+
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
         self.pos_embed = nn.Parameter(
             torch.zeros(1, self.patch_embed.num_patches + 1, embed_dim))
         self.pos_drop = nn.Dropout(p=drop_rate)
-
-        if isinstance(out_indices, int):
-            self.out_indices = [out_indices]
-        elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
-            self.out_indices = out_indices
-        else:
-            raise TypeError('out_indices must be type of int, list or tuple')
-
-        dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)
-               ]  # stochastic depth decay rule
-        self.blocks = nn.ModuleList([
-            Block(
-                dim=embed_dim,
-                num_heads=num_heads,
-                mlp_ratio=mlp_ratio,
-                qkv_bias=qkv_bias,
-                qk_scale=qk_scale,
-                drop=dpr[i],
-                attn_drop=attn_drop_rate,
-                act_cfg=act_cfg,
-                norm_cfg=norm_cfg,
-                with_cp=with_cp) for i in range(depth)
-        ])
-
-        assert out_shape in ['NLC',
-                             'NCHW'], 'output shape must be "NLC" or "NCHW".'
-
-        self.out_shape = out_shape
-
-        self.interpolate_mode = interpolate_mode
-        self.final_norm = final_norm
-        if final_norm:
-            _, self.norm = build_norm_layer(norm_cfg, embed_dim)
-
-        self.norm_eval = norm_eval
-        self.with_cp = with_cp
+        self.encoder = build_transformer_layer_sequence(encoder)
 
     def init_weights(self, pretrained=None):
-        if isinstance(pretrained, str):
-            logger = get_root_logger()
-            checkpoint = _load_checkpoint(pretrained, logger=logger)
-            if 'state_dict' in checkpoint:
-                state_dict = checkpoint['state_dict']
-            elif 'model' in checkpoint:
-                state_dict = checkpoint['model']
-            else:
-                state_dict = checkpoint
+        super(VisionTransformer, self).init_weights(pretrained)
 
-            if 'pos_embed' in state_dict.keys():
-                if self.pos_embed.shape != state_dict['pos_embed'].shape:
-                    logger.info(msg=f'Resize the pos_embed shape from \
-{state_dict["pos_embed"].shape} to {self.pos_embed.shape}')
-                    h, w = self.img_size
-                    pos_size = int(
-                        math.sqrt(state_dict['pos_embed'].shape[1] - 1))
-                    state_dict['pos_embed'] = self.resize_pos_embed(
-                        state_dict['pos_embed'], (h, w), (pos_size, pos_size),
-                        self.patch_size, self.interpolate_mode)
-
-            self.load_state_dict(state_dict, False)
-
-        elif pretrained is None:
-            # We only implement the 'jax_impl' initialization implemented at
-            # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
-            trunc_normal_(self.pos_embed, std=.02)
-            trunc_normal_(self.cls_token, std=.02)
-            for n, m in self.named_modules():
-                if isinstance(m, Linear):
-                    trunc_normal_(m.weight, std=.02)
-                    if m.bias is not None:
-                        if 'mlp' in n:
-                            normal_init(m.bias, std=1e-6)
-                        else:
-                            constant_init(m.bias, 0)
-                elif isinstance(m, Conv2d):
-                    kaiming_init(m.weight, mode='fan_in')
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
-                elif isinstance(m, (_BatchNorm, nn.GroupNorm, nn.LayerNorm)):
-                    constant_init(m.bias, 0)
-                    constant_init(m.weight, 1.0)
-        else:
-            raise TypeError('pretrained must be a str or None')
+        if pretrained is None:
+            # Modified from ClassyVision
+            nn.init.normal_(self.pos_embed, std=0.02)
 
     def _pos_embeding(self, img, patched_img, pos_embed):
         """Positiong embeding method.
@@ -430,7 +372,6 @@ class VisionTransformer(nn.Module):
 
     def forward(self, inputs):
         B = inputs.shape[0]
-
         x = self.patch_embed(inputs)
 
         cls_tokens = self.cls_token.expand(B, -1, -1)
@@ -441,30 +382,19 @@ class VisionTransformer(nn.Module):
             # Remove class token for transformer input
             x = x[:, 1:]
 
+        query_list = self.encoder(query=x, key=None, value=None)
+
         outs = []
-        for i, blk in enumerate(self.blocks):
-            x = blk(x)
-            if i == len(self.blocks) - 1:
-                if self.final_norm:
-                    x = self.norm(x)
-            if i in self.out_indices:
-                if self.with_cls_token:
-                    # Remove class token and reshape token for decoder head
-                    out = x[:, 1:]
-                else:
-                    out = x
-                if self.out_shape == 'NCHW':
-                    B, _, C = out.shape
-                    out = out.reshape(B, inputs.shape[2] // self.patch_size,
-                                      inputs.shape[3] // self.patch_size,
-                                      C).permute(0, 3, 1, 2)
-                outs.append(out)
-
-        return tuple(outs)
-
-    def train(self, mode=True):
-        super(VisionTransformer, self).train(mode)
-        if mode and self.norm_eval:
-            for m in self.modules():
-                if isinstance(m, nn.LayerNorm):
-                    m.eval()
+        for query in query_list:
+            if self.with_cls_token:
+                # Remove class token and reshape token for decoder head
+                out = query[:, 1:]
+            else:
+                out = query
+            if self.out_shape == 'NCHW':
+                B, _, C = out.shape
+                out = out.reshape(B, inputs.shape[2] // self.patch_size,
+                                  inputs.shape[3] // self.patch_size,
+                                  C).permute(0, 3, 1, 2)
+            outs.append(out)
+        return outs
