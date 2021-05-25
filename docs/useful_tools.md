@@ -76,9 +76,9 @@ Description of arguments:
 
 **Note**: This tool is still experimental. Some customized operators are not supported for now.
 
-### Evaluate ONNX model with ONNXRuntime
+### Evaluate ONNX model
 
-We provide `tools/ort_test.py` to evaluate ONNX model with ONNXRuntime backend.
+We provide `tools/deploy_test.py` to evaluate ONNX model with different backend.
 
 #### Prerequisite
 
@@ -88,12 +88,15 @@ We provide `tools/ort_test.py` to evaluate ONNX model with ONNXRuntime backend.
   pip install onnx onnxruntime-gpu
   ```
 
+- Install TensorRT following [how-to-build-tensorrt-plugins-in-mmcv](https://mmcv.readthedocs.io/en/latest/tensorrt_plugin.html#how-to-build-tensorrt-plugins-in-mmcv)(optional)
+
 #### Usage
 
 ```bash
-python tools/ort_test.py \
+python tools/deploy_test.py \
     ${CONFIG_FILE} \
-    ${ONNX_FILE} \
+    ${MODEL_FILE} \
+    ${BACKEND} \
     --out ${OUTPUT_FILE} \
     --eval ${EVALUATION_METRICS} \
     --show \
@@ -106,7 +109,8 @@ python tools/ort_test.py \
 Description of all arguments
 
 - `config`: The path of a model config file.
-- `model`: The path of a ONNX model file.
+- `model`: The path of a converted model file.
+- `backend`: Backend of the inference, options: `onnxruntime`, `tensorrt`.
 - `--out`: The path of output result file in pickle format.
 - `--format-only` : Format the output results without perform evaluation. It is useful when you want to format the result to a specific format and submit it to the test server. If not specified, it will be set to `False`. Note that this argument is **mutually exclusive** with `--eval`.
 - `--eval`: Evaluation metrics, which depends on the dataset, e.g., "mIoU" for generic datasets, and "cityscapes" for Cityscapes. Note that this argument is **mutually exclusive** with `--format-only`.
@@ -118,12 +122,17 @@ Description of all arguments
 
 #### Results and Models
 
-|   Model    |                     Config                     |  Dataset   | Metric | PyTorch | ONNXRuntime |
-| :--------: | :--------------------------------------------: | :--------: | :----: | :-----: | :---------: |
-|    FCN     |     fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |  mIoU  |  72.2   |    72.2     |
-|   PSPNet   |    pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes |  mIoU  |  78.2   |    78.1     |
-| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py   | cityscapes |  mIoU  |  78.5   |    78.3     |
-| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py | cityscapes |  mIoU  |  78.9   |    78.7     |
+|   Model    |                     Config                      |  Dataset   | Metric | PyTorch | ONNXRuntime | TensorRT-fp32 | TensorRT-fp16 |
+| :--------: | :---------------------------------------------: | :--------: | :----: | :-----: | :---------: | :-----------: | :-----------: |
+|    FCN     |      fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |  mIoU  |  72.2   |    72.2     |     72.2      |     72.2      |
+|   PSPNet   |    pspnet_r50-d8_512x1024_40k_cityscapes.py     | cityscapes |  mIoU  |  77.8   |    77.8     |     77.8      |     77.8      |
+| deeplabv3  |   deeplabv3_r50-d8_512x1024_40k_cityscapes.py   | cityscapes |  mIoU  |  79.0   |    79.0     |     79.0      |     79.0      |
+| deeplabv3+ | deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py | cityscapes |  mIoU  |  79.6   |    79.5     |     79.5      |     79.5      |
+|   PSPNet   |     pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes |  mIoU  |  78.2   |    78.1     |               |               |
+| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py    | cityscapes |  mIoU  |  78.5   |    78.3     |               |               |
+| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py  | cityscapes |  mIoU  |  78.9   |    78.7     |               |               |
+
+**Note**: TensorRT is only available on configs with `whole mode`.
 
 ### Convert to TorchScript (experimental)
 
