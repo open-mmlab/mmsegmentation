@@ -21,6 +21,11 @@ model = dict(
         act_cfg=dict(type='GELU'),
         norm_eval=False,
         out_shape='NCHW'),
+    neck=dict(
+        type='MultiLevelNeck',
+        in_channels=[768, 768, 768, 768],
+        out_channels=768,
+        scales=[4, 2, 1, 0.5]),
     decode_head=dict(
         type='UPerHead',
         in_channels=[768, 768, 768, 768],
