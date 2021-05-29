@@ -7,6 +7,20 @@
 - GCC 5+
 - [MMCV](https://mmcv.readthedocs.io/en/latest/#installation)
 
+The compatible MMSegmentation and MMCV versions are as below. Please install the correct version of MMCV to avoid installation issues.
+
+| MMSegmentation version |    MMCV version     |
+|:-------------------:|:-------------------:|
+| master              | mmcv-full>=1.3.1, <1.4.0 |
+| 0.13.0              | mmcv-full>=1.3.1, <1.4.0 |
+| 0.12.0              | mmcv-full>=1.1.4, <1.4.0 |
+| 0.11.0              | mmcv-full>=1.1.4, <1.3.0 |
+| 0.10.0              | mmcv-full>=1.1.4, <1.3.0 |
+| 0.9.0               | mmcv-full>=1.1.4, <1.3.0 |
+| 0.8.0               | mmcv-full>=1.1.4, <1.2.0 |
+| 0.7.0               | mmcv-full>=1.1.2, <1.2.0 |
+| 0.6.0               | mmcv-full>=1.1.2, <1.2.0 |
+
 Note: You need to run `pip uninstall mmcv` first if you have mmcv installed.
 If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 
@@ -35,7 +49,7 @@ Either `mmcv` or `mmcv-full` is compatible with MMSegmentation, but for methods 
 The pre-build mmcv-full (with PyTorch 1.5 and CUDA 10.1) can be installed by running: (other available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
 
 ```shell
-pip install mmcv-full==latest+torch1.5.0+cu101 -f https://download.openmmlab.com/mmcv/dist/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.5.0/index.html
 ```
 
 **Install mmcv for Windows (Experimental):**
@@ -166,7 +180,8 @@ result = inference_segmentor(model, img)
 # visualize the results in a new window
 model.show_result(img, result, show=True)
 # or save the visualization results to image files
-model.show_result(img, result, out_file='result.jpg')
+# you can change the opacity of the painted segmentation map in (0, 1].
+model.show_result(img, result, out_file='result.jpg', opacity=0.5)
 
 # test a video and show the results
 video = mmcv.VideoReader('video.mp4')

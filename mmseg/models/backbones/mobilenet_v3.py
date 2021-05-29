@@ -19,7 +19,7 @@ class MobileNetV3(nn.Module):
     <https://ieeexplore.ieee.org/document/9008835>`_.
 
     Args:
-        arch (str): Architechture of mobilnetv3, from {'small', 'large'}.
+        arch (str): Architecture of mobilnetv3, from {'small', 'large'}.
             Default: 'small'.
         conv_cfg (dict): Config dict for convolution layer.
             Default: None, which means using conv2d.
@@ -28,13 +28,13 @@ class MobileNetV3(nn.Module):
         out_indices (tuple[int]): Output from which layer.
             Default: (0, 1, 12).
         frozen_stages (int): Stages to be frozen (all param fixed).
-            Defualt: -1, which means not freezing any parameters.
+            Default: -1, which means not freezing any parameters.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save
             some memory while slowing down the training speed.
-            Defualt: False.
+            Default: False.
     """
     # Parameters to build each block:
     #     [kernel size, mid channels, out channels, with_se, act type, stride]
