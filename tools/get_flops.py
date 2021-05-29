@@ -33,7 +33,9 @@ def main():
     cfg = Config.fromfile(args.config)
     cfg.model.pretrained = None
     model = build_segmentor(
-        cfg.model, train_cfg=cfg.train_cfg, test_cfg=cfg.test_cfg).cuda()
+        cfg.model,
+        train_cfg=cfg.get('train_cfg'),
+        test_cfg=cfg.get('test_cfg')).cuda()
     model.eval()
 
     if hasattr(model, 'forward_dummy'):

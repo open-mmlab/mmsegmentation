@@ -67,6 +67,10 @@ Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master
 
 Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) for details.
 
+### APCNet
+
+Please refer to [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) for details.
+
 ### HRNet
 
 Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet) for details.
@@ -74,6 +78,10 @@ Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master
 ### GCNet
 
 Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/gcnet) for details.
+
+### DMNet
+
+Please refer to [DMNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dmnet) for details.
 
 ### ANN
 
@@ -102,6 +110,10 @@ Please refer to [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/ma
 ### MobileNetV2
 
 Please refer to [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v2) for details.
+
+### MobileNetV3
+
+Please refer to [MobileNetV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v3) for details.
 
 ### EMANet
 
