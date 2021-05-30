@@ -37,7 +37,9 @@ class EvalHook(_EvalHook):
             self.dataloader,
             show=False,
             efficient_test=self.efficient_test)
-        self.evaluate(runner, results)
+        key_score = self.evaluate(runner, results)
+        if self.save_best is not None:
+            self._save_ckpt(runner, key_score)
 
     def after_train_epoch(self, runner):
         """After train epoch hook.
@@ -49,7 +51,9 @@ class EvalHook(_EvalHook):
         from mmseg.apis import single_gpu_test
         runner.log_buffer.clear()
         results = single_gpu_test(runner.model, self.dataloader, show=False)
-        self.evaluate(runner, results)
+        key_score = self.evaluate(runner, results)
+        if self.save_best is not None:
+            self._save_ckpt(runner, key_score)
 
 
 class DistEvalHook(_DistEvalHook):
@@ -88,7 +92,9 @@ class DistEvalHook(_DistEvalHook):
             efficient_test=self.efficient_test)
         if runner.rank == 0:
             print('\n')
-            self.evaluate(runner, results)
+            key_score = self.evaluate(runner, results)
+            if self.save_best is not None:
+                self._save_ckpt(runner, key_score)
 
     def after_train_epoch(self, runner):
         """After train epoch hook.
@@ -106,4 +112,6 @@ class DistEvalHook(_DistEvalHook):
             gpu_collect=self.gpu_collect)
         if runner.rank == 0:
             print('\n')
-            self.evaluate(runner, results)
+            key_score = self.evaluate(runner, results)
+            if self.save_best is not None:
+                self._save_ckpt(runner, key_score)
