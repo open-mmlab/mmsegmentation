@@ -1,0 +1,231 @@
+Collections:
+  - Name: UPerNet
+    Metadata:
+      Training Data:
+        - Cityscapes
+        - Pascal VOC 2012 + Aug
+        - ADE20K
+
+Models:
+
+  - Name: upernet_r50_512x1024_40k_cityscapes
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 4.25
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.10
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827-aa54cb54.pth
+    Config: configs/upernet/upernet_r50_512x1024_40k_cityscapes.py
+
+
+
+  - Name: upernet_r101_512x1024_40k_cityscapes
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 3.79
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.69
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_40k_cityscapes/upernet_r101_512x1024_40k_cityscapes_20200605_094933-ebce3b10.pth
+    Config: configs/upernet/upernet_r101_512x1024_40k_cityscapes.py
+
+
+
+  - Name: upernet_r50_769x769_40k_cityscapes
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 1.76
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.98
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_40k_cityscapes/upernet_r50_769x769_40k_cityscapes_20200530_033048-92d21539.pth
+    Config: configs/upernet/upernet_r50_769x769_40k_cityscapes.py
+
+
+
+  - Name: upernet_r101_769x769_40k_cityscapes
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 1.56
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.03
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819-83c95d01.pth
+    Config: configs/upernet/upernet_r101_769x769_40k_cityscapes.py
+
+
+
+  - Name: upernet_r50_512x1024_80k_cityscapes
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 4.25
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.19
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_80k_cityscapes/upernet_r50_512x1024_80k_cityscapes_20200607_052207-848beca8.pth
+    Config: configs/upernet/upernet_r50_512x1024_80k_cityscapes.py
+
+
+
+  - Name: upernet_r101_512x1024_80k_cityscapes
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 3.79
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.40
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_80k_cityscapes/upernet_r101_512x1024_80k_cityscapes_20200607_002403-f05f2345.pth
+    Config: configs/upernet/upernet_r101_512x1024_80k_cityscapes.py
+
+
+
+  - Name: upernet_r50_769x769_80k_cityscapes
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 1.76
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.39
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_80k_cityscapes/upernet_r50_769x769_80k_cityscapes_20200607_005107-82ae7d15.pth
+    Config: configs/upernet/upernet_r50_769x769_80k_cityscapes.py
+
+
+
+  - Name: upernet_r101_769x769_80k_cityscapes
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 1.56
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.10
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014-082fc334.pth
+    Config: configs/upernet/upernet_r101_769x769_80k_cityscapes.py
+
+
+
+  - Name: upernet_r50_512x512_80k_ade20k
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 23.40
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 40.70
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127-ecc8377b.pth
+    Config: configs/upernet/upernet_r50_512x512_80k_ade20k.py
+
+
+
+  - Name: upernet_r101_512x512_80k_ade20k
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 20.34
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 42.91
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117-32e4db94.pth
+    Config: configs/upernet/upernet_r101_512x512_80k_ade20k.py
+
+
+
+  - Name: upernet_r50_512x512_160k_ade20k
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 23.40
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 42.05
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_160k_ade20k/upernet_r50_512x512_160k_ade20k_20200615_184328-8534de8d.pth
+    Config: configs/upernet/upernet_r50_512x512_160k_ade20k.py
+
+
+
+  - Name: upernet_r101_512x512_160k_ade20k
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 20.34
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 43.82
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951-91b32684.pth
+    Config: configs/upernet/upernet_r101_512x512_160k_ade20k.py
+
+
+
+  - Name: upernet_r50_512x512_20k_voc12aug
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 23.17
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 74.82
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330-5b5890a7.pth
+    Config: configs/upernet/upernet_r50_512x512_20k_voc12aug.py
+
+
+
+  - Name: upernet_r101_512x512_20k_voc12aug
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 19.98
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 77.10
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629-f14e7f27.pth
+    Config: configs/upernet/upernet_r101_512x512_20k_voc12aug.py
+
+
+
+  - Name: upernet_r50_512x512_40k_voc12aug
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 23.17
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 75.92
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_40k_voc12aug/upernet_r50_512x512_40k_voc12aug_20200613_162257-ca9bcc6b.pth
+    Config: configs/upernet/upernet_r50_512x512_40k_voc12aug.py
+
+
+
+  - Name: upernet_r101_512x512_40k_voc12aug
+    In Collection: UPerNet
+    Metadata:
+      inference time (fps): 19.98
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 77.43
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_40k_voc12aug/upernet_r101_512x512_40k_voc12aug_20200613_163549-e26476ac.pth
+    Config: configs/upernet/upernet_r101_512x512_40k_voc12aug.py

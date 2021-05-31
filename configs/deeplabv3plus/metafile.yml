@@ -1,0 +1,428 @@
+Collections:
+  - Name: DeepLabV3+
+    Metadata:
+      Training Data:
+        - Cityscapes
+        - Pascal Context
+        - Pascal VOC 2012 + Aug
+        - ADE20K
+
+Models:
+
+  - Name: deeplabv3plus_r50-d8_512x1024_40k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 3.94
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.61
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes/deeplabv3plus_r50-d8_512x1024_40k_cityscapes_20200605_094610-d222ffcd.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_512x1024_40k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 2.60
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.21
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes/deeplabv3plus_r101-d8_512x1024_40k_cityscapes_20200605_094614-3769eecf.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r50-d8_769x769_40k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 1.72
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.97
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes/deeplabv3plus_r50-d8_769x769_40k_cityscapes_20200606_114143-1dcb0e3c.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_769x769_40k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 1.15
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.46
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes/deeplabv3plus_r101-d8_769x769_40k_cityscapes_20200606_114304-ff414b9e.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r18-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 14.27
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 76.89
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes/deeplabv3plus_r18-d8_512x1024_80k_cityscapes_20201226_080942-cff257fe.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r50-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 3.94
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.09
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes/deeplabv3plus_r50-d8_512x1024_80k_cityscapes_20200606_114049-f9fb496d.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 2.60
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.97
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_20200606_114143-068fcfe9.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r18-d8_769x769_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 5.74
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 76.26
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_769x769_80k_cityscapes/deeplabv3plus_r18-d8_769x769_80k_cityscapes_20201226_083346-f326e06a.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r18-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r50-d8_769x769_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 1.72
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.83
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes/deeplabv3plus_r50-d8_769x769_80k_cityscapes_20200606_210233-0e9dfdc4.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_769x769_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 1.15
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.98
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20200607_000405-a7573d20.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 7.48
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.09
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes_20200908_005644-cf9ce186.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 7.48
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.90
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes_20200908_005644-ee6158e0.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r18b-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 14.95
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 75.87
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes_20201226_090828-e451abd9.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r50b-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 3.94
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.28
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes_20201225_213645-a97e4e43.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101b-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 2.60
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.16
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes_20201226_190843-9c3c93a4.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r18b-d8_769x769_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 5.96
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 76.36
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes_20201226_151312-2c868aff.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r18b-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r50b-d8_769x769_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 1.72
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.41
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_769x769_80k_cityscapes/deeplabv3plus_r50b-d8_769x769_80k_cityscapes_20201225_224655-8b596d1c.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50b-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101b-d8_769x769_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 1.10
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.88
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes/deeplabv3plus_r101b-d8_769x769_80k_cityscapes_20201226_205041-227cdf7c.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101b-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r50-d8_512x512_80k_ade20k
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 21.01
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 42.72
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028-bf1400d8.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_512x512_80k_ade20k
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 14.16
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 44.60
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k/deeplabv3plus_r101-d8_512x512_80k_ade20k_20200615_014139-d5730af7.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: deeplabv3plus_r50-d8_512x512_160k_ade20k
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 21.01
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 43.95
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k/deeplabv3plus_r50-d8_512x512_160k_ade20k_20200615_124504-6135c7e0.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_512x512_160k_ade20k
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 14.16
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 45.47
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k/deeplabv3plus_r101-d8_512x512_160k_ade20k_20200615_123232-38ed86bb.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: deeplabv3plus_r50-d8_512x512_20k_voc12aug
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 21
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 75.93
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug/deeplabv3plus_r50-d8_512x512_20k_voc12aug_20200617_102323-aad58ef1.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_512x512_20k_voc12aug
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 13.88
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 77.22
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug/deeplabv3plus_r101-d8_512x512_20k_voc12aug_20200617_102345-c7ff3d56.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: deeplabv3plus_r50-d8_512x512_40k_voc12aug
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 21
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 76.81
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug/deeplabv3plus_r50-d8_512x512_40k_voc12aug_20200613_161759-e1b43aa9.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r50-d8_512x512_40k_voc12aug.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_512x512_40k_voc12aug
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 13.88
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 78.62
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug/deeplabv3plus_r101-d8_512x512_40k_voc12aug_20200613_205333-faf03387.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_512x512_40k_voc12aug.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 9.09
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal Context
+        Metrics:
+          mIoU: 47.30
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context/deeplabv3plus_r101-d8_480x480_40k_pascal_context_20200911_165459-d3c8a29e.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_480x480_40k_pascal_context.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 9.09
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal Context
+        Metrics:
+          mIoU: 47.23
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context/deeplabv3plus_r101-d8_480x480_80k_pascal_context_20200911_155322-145d3ee8.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_480x480_80k_pascal_context.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): None
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal Context
+        Metrics:
+          mIoU: 52.86
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59_20210416_111233-ed937f15.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_480x480_40k_pascal_context.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): None
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal Context
+        Metrics:
+          mIoU: 53.2
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59_20210416_111127-7ca0331d.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_480x480_80k_pascal_context.py

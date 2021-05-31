@@ -1,0 +1,61 @@
+Collections:
+  - Name: EMANet
+    Metadata:
+      Training Data:
+        - Cityscapes
+
+Models:
+
+  - Name: emanet_r50-d8_512x1024_80k_cityscapes
+    In Collection: EMANet
+    Metadata:
+      inference time (fps): 4.58
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.59
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes_20200901_100301-c43fcef1.pth
+    Config: configs/emanet/emanet_r50-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: emanet_r101-d8_512x1024_80k_cityscapes
+    In Collection: EMANet
+    Metadata:
+      inference time (fps): 2.87
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.10
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes_20200901_100301-2d970745.pth
+    Config: configs/emanet/emanet_r101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: emanet_r50-d8_769x769_80k_cityscapes
+    In Collection: EMANet
+    Metadata:
+      inference time (fps): 1.97
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.33
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes_20200901_100301-16f8de52.pth
+    Config: configs/emanet/emanet_r50-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: emanet_r101-d8_769x769_80k_cityscapes
+    In Collection: EMANet
+    Metadata:
+      inference time (fps): 1.22
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.62
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_769x769_80k_cityscapes/emanet_r101-d8_769x769_80k_cityscapes_20200901_100301-47a324ce.pth
+    Config: configs/emanet/emanet_r101-d8_769x769_80k_cityscapes.py
