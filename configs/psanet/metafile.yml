@@ -67,7 +67,7 @@ Models:
   - Name: psanet_r50-d8_512x1024_80k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (fps):
+      inference time (fps): 3.17
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +81,7 @@ Models:
   - Name: psanet_r101-d8_512x1024_80k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (fps):
+      inference time (fps): 2.20
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +95,7 @@ Models:
   - Name: psanet_r50-d8_769x769_80k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (fps):
+      inference time (fps): 1.40
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +109,7 @@ Models:
   - Name: psanet_r101-d8_769x769_80k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (fps):
+      inference time (fps): 0.98
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -151,7 +151,7 @@ Models:
   - Name: psanet_r50-d8_512x512_160k_ade20k
     In Collection: PSANet
     Metadata:
-      inference time (fps):
+      inference time (fps): 18.91
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -165,7 +165,7 @@ Models:
   - Name: psanet_r101-d8_512x512_160k_ade20k
     In Collection: PSANet
     Metadata:
-      inference time (fps):
+      inference time (fps): 13.13
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -207,7 +207,7 @@ Models:
   - Name: psanet_r50-d8_512x512_40k_voc12aug
     In Collection: PSANet
     Metadata:
-      inference time (fps):
+      inference time (fps): 18.24
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -221,7 +221,7 @@ Models:
   - Name: psanet_r101-d8_512x512_40k_voc12aug
     In Collection: PSANet
     Metadata:
-      inference time (fps):
+      inference time (fps): 12.63
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug

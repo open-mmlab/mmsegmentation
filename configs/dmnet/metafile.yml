@@ -66,7 +66,7 @@ Models:
   - Name: dmnet_r50-d8_512x1024_80k_cityscapes
     In Collection: DMNet
     Metadata:
-      inference time (fps):
+      inference time (fps): 3.66
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -80,7 +80,7 @@ Models:
   - Name: dmnet_r101-d8_512x1024_80k_cityscapes
     In Collection: DMNet
     Metadata:
-      inference time (fps):
+      inference time (fps): 2.54
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -94,7 +94,7 @@ Models:
   - Name: dmnet_r50-d8_769x769_80k_cityscapes
     In Collection: DMNet
     Metadata:
-      inference time (fps):
+      inference time (fps): 1.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -108,7 +108,7 @@ Models:
   - Name: dmnet_r101-d8_769x769_80k_cityscapes
     In Collection: DMNet
     Metadata:
-      inference time (fps):
+      inference time (fps): 1.01
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -150,7 +150,7 @@ Models:
   - Name: dmnet_r50-d8_512x512_160k_ade20k
     In Collection: DMNet
     Metadata:
-      inference time (fps):
+      inference time (fps): 20.95
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -164,7 +164,7 @@ Models:
   - Name: dmnet_r101-d8_512x512_160k_ade20k
     In Collection: DMNet
     Metadata:
-      inference time (fps):
+      inference time (fps): 13.88
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K

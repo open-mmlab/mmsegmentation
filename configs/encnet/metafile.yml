@@ -67,7 +67,7 @@ Models:
   - Name: encnet_r50-d8_512x1024_80k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (fps):
+      inference time (fps): 4.58
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +81,7 @@ Models:
   - Name: encnet_r101-d8_512x1024_80k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (fps):
+      inference time (fps): 2.66
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +95,7 @@ Models:
   - Name: encnet_r50-d8_769x769_80k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (fps):
+      inference time (fps): 1.82
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +109,7 @@ Models:
   - Name: encnet_r101-d8_769x769_80k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (fps):
+      inference time (fps): 1.26
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -151,7 +151,7 @@ Models:
   - Name: encnet_r50-d8_512x512_160k_ade20k
     In Collection: encnet
     Metadata:
-      inference time (fps):
+      inference time (fps): 22.81
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -165,7 +165,7 @@ Models:
   - Name: encnet_r101-d8_512x512_160k_ade20k
     In Collection: encnet
     Metadata:
-      inference time (fps):
+      inference time (fps): 14.87
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K

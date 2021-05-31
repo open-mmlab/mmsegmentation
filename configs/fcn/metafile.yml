@@ -89,7 +89,7 @@ Models:
   - Name: fcn_r50-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 4.17
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -103,7 +103,7 @@ Models:
   - Name: fcn_r101-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 2.66
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -131,7 +131,7 @@ Models:
   - Name: fcn_r50-d8_769x769_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 1.80
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -145,7 +145,7 @@ Models:
   - Name: fcn_r101-d8_769x769_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 1.19
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -383,7 +383,7 @@ Models:
   - Name: fcn_r50-d8_512x512_160k_ade20k
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 23.49
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -397,7 +397,7 @@ Models:
   - Name: fcn_r101-d8_512x512_160k_ade20k
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 14.78
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -439,7 +439,7 @@ Models:
   - Name: fcn_r50-d8_512x512_40k_voc12aug
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 23.28
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -453,7 +453,7 @@ Models:
   - Name: fcn_r101-d8_512x512_40k_voc12aug
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 14.81
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -481,7 +481,7 @@ Models:
   - Name: fcn_r101-d8_480x480_80k_pascal_context
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): 9.93
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -495,7 +495,7 @@ Models:
   - Name: fcn_r101-d8_480x480_40k_pascal_context_59
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): None
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -509,7 +509,7 @@ Models:
   - Name: fcn_r101-d8_480x480_80k_pascal_context_59
     In Collection: FCN
     Metadata:
-      inference time (fps):
+      inference time (fps): None
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
