@@ -25,7 +25,7 @@ def cross_entropy(pred,
 
     # apply weights and do the reduction
     # pytorch's official cross_entropy average loss over non-ignored elements
-    # refer to https://github.com/pytorch/pytorch/blob/56b43f4fec1f76953f15a627694d4bba34588969/torch/nn/functional.py#L2660
+    # refer to https://github.com/pytorch/pytorch/blob/56b43f4fec1f76953f15a627694d4bba34588969/torch/nn/functional.py#L2660  # noqa
     if avg_factor is None:
         avg_factor = label.numel() - (label == ignore_index).sum().item()
 
@@ -89,8 +89,19 @@ def binary_cross_entropy(pred,
             'H, W], label shape [N, H, W] are supported'
         label, weight = _expand_onehot_labels(label, weight, pred.shape,
                                               ignore_index)
+    else:
+        # should mask out the ignored elements
+        valid_mask = ((label >= 0) & (label != ignore_index)).float()
+        if weight is not None:
+            weight *= valid_mask
+        else:
+            weight = valid_mask
 
     # weighted element-wise losses
+    # average loss over non-ignored elements
+    if avg_factor is None:
+        avg_factor = label.numel() - (label == ignore_index).sum().item()
+
     if weight is not None:
         weight = weight.float()
     loss = F.binary_cross_entropy_with_logits(
