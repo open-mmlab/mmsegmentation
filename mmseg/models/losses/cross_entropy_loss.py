@@ -24,6 +24,11 @@ def cross_entropy(pred,
         ignore_index=ignore_index)
 
     # apply weights and do the reduction
+    # pytorch's official cross_entropy average loss over non-ignored elements
+    # refer to https://github.com/pytorch/pytorch/blob/56b43f4fec1f76953f15a627694d4bba34588969/torch/nn/functional.py#L2660
+    if avg_factor is None:
+        avg_factor = label.numel() - (label == ignore_index).sum().item()
+
     if weight is not None:
         weight = weight.float()
     loss = weight_reduce_loss(

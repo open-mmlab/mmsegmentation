@@ -73,4 +73,27 @@ def test_ce_loss():
         torch.tensor(0.9354),
         atol=1e-4)
 
+    # test ce loss with ignore index
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        reduction='mean',
+        class_weight=None,
+        loss_weight=1.0)
+    loss_cls = build_loss(loss_cls_cfg)
+
+    fake_pred = torch.randn(2, 5, 10).float()  # 5-way classification
+    fake_label = torch.randint(0, 5, (2, 10)).long()
+    loss = loss_cls(fake_pred, fake_label)
+    torch_loss = torch.nn.functional.cross_entropy(
+        fake_pred, fake_label, reduction='mean')
+    assert torch.allclose(loss, torch_loss)
+
+    fake_label[0, [1, 2, 5, 7]] = 10  # set ignore_index
+    fake_label[0, [0, 5, 8, 9]] = 10
+    loss = loss_cls(fake_pred, fake_label, ignore_index=10)
+    torch_loss = torch.nn.functional.cross_entropy(
+        fake_pred, fake_label, ignore_index=10, reduction='mean')
+    assert torch.allclose(loss, torch_loss)
+
     # TODO test use_mask
