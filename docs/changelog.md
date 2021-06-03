@@ -1,5 +1,30 @@
 ## Changelog
 
+### V0.14 (06/02/2021)
+
+**Highlights**
+
+- Support ONNX to TensorRT
+- Support MIM
+
+**Bug Fixes**
+
+- Fix ONNX to TensorRT verify ([#547](https://github.com/open-mmlab/mmsegmentation/pull/547))
+- Fix save best for EvalHook ([#575](https://github.com/open-mmlab/mmsegmentation/pull/575))
+
+**New Features**
+
+- Support loading DeiT weights ([#538](https://github.com/open-mmlab/mmsegmentation/pull/538))
+- Support ONNX to TensorRT ([#542](https://github.com/open-mmlab/mmsegmentation/pull/542))
+- Support output results for ADE20k ([#544](https://github.com/open-mmlab/mmsegmentation/pull/544))
+- Support MIM ([#549](https://github.com/open-mmlab/mmsegmentation/pull/549))
+
+**Improvements**
+
+- Add option for ViT output shape ([#530](https://github.com/open-mmlab/mmsegmentation/pull/530))
+- Infer batch size using len(result) ([#532](https://github.com/open-mmlab/mmsegmentation/pull/532))
+- Add compatible table between MMSeg and MMCV ([#558](https://github.com/open-mmlab/mmsegmentation/pull/558))
+
 ### V0.13 (05/05/2021)
 
 **Highlights**
