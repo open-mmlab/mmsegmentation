@@ -288,8 +288,8 @@ mmseg-serve:latest
 ### 4. Test deployment
 
 ```shell
-curl -O curl -O https://raw.githubusercontent.com/pytorch/serve/master/docs/images/3dogs.jpg
-curl http://127.0.0.1:8080/predictions/${MODEL_NAME} -T 3dogs_mask.png
+curl -O https://raw.githubusercontent.com/pytorch/serve/master/docs/images/3dogs.jpg
+curl http://127.0.0.1:8080/predictions/${MODEL_NAME} -T 3dogs.jpg -o 3dogs_mask.png
 ```
 
 The response will be a ".png" mask.
