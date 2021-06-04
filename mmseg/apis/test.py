@@ -105,9 +105,11 @@ def single_gpu_test(model,
 
 def multi_gpu_test(model,
                    data_loader,
+                   out_dir=None,
                    tmpdir=None,
                    gpu_collect=False,
-                   efficient_test=False):
+                   efficient_test=False,
+                   opacity=0.5,):
     """Test model with multiple gpus.
 
     This method tests model with multiple gpus and collects the results
@@ -119,11 +121,16 @@ def multi_gpu_test(model,
     Args:
         model (nn.Module): Model to be tested.
         data_loader (utils.data.Dataloader): Pytorch data loader.
+        out_dir (str, optional): If specified, the results will be dumped into
+            the directory to save output results.
         tmpdir (str): Path of directory to save the temporary results from
             different gpus under cpu mode.
         gpu_collect (bool): Option to use either gpu or cpu to collect results.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
+        opacity(float): Opacity of painted segmentation map.
+            Default 0.5.
+            Must be in (0, 1] range.
 
     Returns:
         list: The prediction results.
@@ -138,6 +145,29 @@ def multi_gpu_test(model,
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
+
+        if out_dir:
+            img_tensor = data['img'][0]
+            img_metas = data['img_metas'][0].data[0]
+            imgs = tensor2imgs(img_tensor, **img_metas[0]['img_norm_cfg'])
+            assert len(imgs) == len(img_metas)
+
+            for img, img_meta in zip(imgs, img_metas):
+                h, w, _ = img_meta['img_shape']
+                img_show = img[:h, :w, :]
+
+                ori_h, ori_w = img_meta['ori_shape'][:-1]
+                img_show = mmcv.imresize(img_show, (ori_w, ori_h))
+
+                out_file = osp.join(out_dir, img_meta['ori_filename'])
+
+                model.module.show_result(
+                    img_show,
+                    result,
+                    palette=dataset.PALETTE,
+                    show=False,
+                    out_file=out_file,
+                    opacity=opacity)
 
         if isinstance(result, list):
             if efficient_test:

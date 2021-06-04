@@ -138,8 +138,9 @@ def main():
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        outputs = multi_gpu_test(model, data_loader, args.tmpdir,
-                                 args.gpu_collect, efficient_test)
+        outputs = multi_gpu_test(model, data_loader, args.show_dir,
+                                 args.tmpdir, args.gpu_collect, efficient_test,
+                                 args.opacity)
 
     rank, _ = get_dist_info()
     if rank == 0:
