@@ -95,16 +95,15 @@ python tools/convert_datasets/cityscapes.py data/cityscapes --nproc 8
 
 ### COCO Stuff
 
-The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
+The data could be downloaded [here](http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip) by wget.
 
-By convention, `**labelTrainIds.png` are used for cityscapes training.
-We provided a [scripts](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/convert_datasets/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
-to generate `**labelTrainIds.png`.
+If you would like to use COCO Stuff dataset, please run following command to convert augmentation annotations into proper format.
 
 ```shell
 # --nproc means 8 process for conversion, which could be omitted as well.
-python tools/convert_datasets/cityscapes.py data/cityscapes --nproc 8
+python tools/convert_datasets/coco_stuff.py data/coco_stuff annotations --nproc 8
 ```
+By convention, masks in `data/coco_stuff/masks/*.png` are used for COCO Stuff training and testing.
 
 ### Pascal VOC
 
