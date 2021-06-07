@@ -7,7 +7,7 @@ from torch.nn.modules.batchnorm import _BatchNorm
 from mmseg.models.decode_heads.psp_head import PPM
 from mmseg.ops import resize
 from ..builder import BACKBONES
-from ..utils.inverted_residual import InvertedResidual
+from ..utils import InvertedResidual
 
 
 class LearningToDownsample(nn.Module):
@@ -47,21 +47,25 @@ class LearningToDownsample(nn.Module):
             stride=2,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg)
+            act_cfg=self.act_cfg,
+            bias=True)
+
         self.dsconv1 = DepthwiseSeparableConvModule(
             dw_channels1,
             dw_channels2,
             kernel_size=3,
             stride=2,
             padding=1,
-            norm_cfg=self.norm_cfg)
+            norm_cfg=self.norm_cfg,
+            bias=True)
         self.dsconv2 = DepthwiseSeparableConvModule(
             dw_channels2,
             out_channels,
             kernel_size=3,
             stride=2,
             padding=1,
-            norm_cfg=self.norm_cfg)
+            norm_cfg=self.norm_cfg,
+            bias=True)
 
     def forward(self, x):
         x = self.conv(x)
@@ -136,14 +140,17 @@ class GlobalFeatureExtractor(nn.Module):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
-            align_corners=align_corners)
+            align_corners=align_corners,
+            bias=True)
         self.out = ConvModule(
             block_channels[2] * 2,
             out_channels,
-            1,
+            3,
+            padding=1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg)
+            act_cfg=self.act_cfg,
+            bias=True)
 
     def _make_layer(self,
                     in_channels,
@@ -212,7 +219,9 @@ class FeatureFusionModule(nn.Module):
         self.dwconv = ConvModule(
             lower_in_channels,
             out_channels,
-            1,
+            3,
+            padding=1,
+            groups=out_channels,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
@@ -222,14 +231,16 @@ class FeatureFusionModule(nn.Module):
             1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=None)
+            act_cfg=None,
+            bias=True)
         self.conv_higher_res = ConvModule(
             higher_in_channels,
             out_channels,
             1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=None)
+            act_cfg=None,
+            bias=True)
         self.relu = nn.ReLU(True)
 
     def forward(self, higher_res_feature, lower_res_feature):
