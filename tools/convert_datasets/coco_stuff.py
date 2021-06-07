@@ -55,7 +55,8 @@ def main():
     in_dir = osp.join(coco_path, annotations_path)
 
     all_list = generate_coco_list(coco_path)
-    assert len(all_list) == COCO_LEN, 'Wrong length of list {}'.format(len(all_list))
+    assert len(all_list) == COCO_LEN, 'Wrong length of list {}'.format(
+        len(all_list))
 
     mmcv.track_parallel_progress(
         partial(convert_mat, in_dir=in_dir, out_dir=out_dir),
