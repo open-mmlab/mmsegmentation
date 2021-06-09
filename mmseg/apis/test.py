@@ -1,10 +1,9 @@
+import mmcv
+import numpy as np
 import os.path as osp
 import pickle
 import shutil
 import tempfile
-
-import mmcv
-import numpy as np
 import torch
 import torch.distributed as dist
 from mmcv.image import tensor2imgs
@@ -58,7 +57,7 @@ def single_gpu_test(model,
     results = []
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
-    for i, data in enumerate(data_loader):
+    for data in data_loader:
         with torch.no_grad():
             result = model(return_loss=False, **data)
 
@@ -103,13 +102,15 @@ def single_gpu_test(model,
     return results
 
 
-def multi_gpu_test(model,
-                   data_loader,
-                   out_dir=None,
-                   tmpdir=None,
-                   gpu_collect=False,
-                   efficient_test=False,
-                   opacity=0.5,):
+def multi_gpu_test(
+    model,
+    data_loader,
+    out_dir=None,
+    tmpdir=None,
+    gpu_collect=False,
+    efficient_test=False,
+    opacity=0.5,
+):
     """Test model with multiple gpus.
 
     This method tests model with multiple gpus and collects the results
@@ -142,7 +143,7 @@ def multi_gpu_test(model,
     rank, world_size = get_dist_info()
     if rank == 0:
         prog_bar = mmcv.ProgressBar(len(dataset))
-    for i, data in enumerate(data_loader):
+    for data in data_loader:
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
 
