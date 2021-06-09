@@ -1,8 +1,8 @@
 import math
 import torch
 import torch.nn as nn
-from functools import partial
 
+from mmcv.cnn import build_norm_layer, build_activation_layer
 from mmcv.runner import load_checkpoint
 
 from ..builder import BACKBONES
@@ -31,14 +31,14 @@ class Mlp(nn.Module):
                  in_features,
                  hidden_features=None,
                  out_features=None,
-                 act_layer=nn.GELU,
+                 act_cfg=dict(type='GELU'),
                  drop=0.):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = nn.Linear(in_features, hidden_features)
         self.dwconv = DWConv(hidden_features)
-        self.act = act_layer()
+        self.act = build_activation_layer(act_cfg)
         self.fc2 = nn.Linear(hidden_features, out_features)
         self.drop = nn.Dropout(drop)
 
@@ -73,6 +73,7 @@ class Attention(nn.Module):
 
     def __init__(self,
                  dim,
+                 norm_cfg=dict(type='LN'),
                  num_heads=8,
                  qkv_bias=False,
                  qk_scale=None,
@@ -98,7 +99,7 @@ class Attention(nn.Module):
         if sr_ratio > 1:
             self.sr = nn.Conv2d(
                 dim, dim, kernel_size=sr_ratio, stride=sr_ratio)
-            self.norm = nn.LayerNorm(dim)
+            _, self.norm = build_norm_layer(norm_cfg, dim)
 
         self.apply(self._init_weights)
 
@@ -157,11 +158,11 @@ class Block(nn.Module):
                  drop=0.,
                  attn_drop=0.,
                  drop_path=0.,
-                 act_layer=nn.GELU,
-                 norm_layer=nn.LayerNorm,
+                 act_cfg=dict(type='GELU'),
+                 norm_cfg=dict(type='LN'),
                  sr_ratio=1):
         super().__init__()
-        self.norm1 = norm_layer(dim)
+        _, self.norm1 = build_norm_layer(norm_cfg, dim)
         self.attn = Attention(
             dim,
             num_heads=num_heads,
@@ -174,12 +175,12 @@ class Block(nn.Module):
         # than dropout here
         self.drop_path = DropPath(
             drop_path) if drop_path > 0. else nn.Identity()
-        self.norm2 = norm_layer(dim)
+        _, self.norm2 = build_norm_layer(norm_cfg, dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(
             in_features=dim,
             hidden_features=mlp_hidden_dim,
-            act_layer=act_layer,
+            act_cfg=act_cfg,
             drop=drop)
 
         self.apply(self._init_weights)
@@ -274,12 +275,11 @@ class MixVisionTransformer(nn.Module):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 norm_layer=partial(nn.LayerNorm, eps=1e-6),
+                 norm_cfg=dict(type='LN', eps=1e-6),
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1]):
         super().__init__()
         self.depths = depths
-
         # patch_embed
         self.patch_embed1 = OverlapPatchEmbed(
             img_size=img_size,
@@ -321,11 +321,10 @@ class MixVisionTransformer(nn.Module):
                 drop=drop_rate,
                 attn_drop=attn_drop_rate,
                 drop_path=dpr[cur + i],
-                norm_layer=norm_layer,
+                norm_cfg=norm_cfg,
                 sr_ratio=sr_ratios[0]) for i in range(depths[0])
         ])
-        self.norm1 = norm_layer(embed_dims[0])
-
+        _, self.norm1 = build_norm_layer(norm_cfg, embed_dims[0])
         cur += depths[0]
         self.block2 = nn.ModuleList([
             Block(
@@ -337,10 +336,10 @@ class MixVisionTransformer(nn.Module):
                 drop=drop_rate,
                 attn_drop=attn_drop_rate,
                 drop_path=dpr[cur + i],
-                norm_layer=norm_layer,
+                norm_cfg=norm_cfg,
                 sr_ratio=sr_ratios[1]) for i in range(depths[1])
         ])
-        self.norm2 = norm_layer(embed_dims[1])
+        _, self.norm2 = build_norm_layer(norm_cfg, embed_dims[1])
 
         cur += depths[1]
         self.block3 = nn.ModuleList([
@@ -353,10 +352,10 @@ class MixVisionTransformer(nn.Module):
                 drop=drop_rate,
                 attn_drop=attn_drop_rate,
                 drop_path=dpr[cur + i],
-                norm_layer=norm_layer,
+                norm_cfg=norm_cfg,
                 sr_ratio=sr_ratios[2]) for i in range(depths[2])
         ])
-        self.norm3 = norm_layer(embed_dims[2])
+        _, self.norm3 = build_norm_layer(norm_cfg, embed_dims[2])
 
         cur += depths[2]
         self.block4 = nn.ModuleList([
@@ -369,10 +368,10 @@ class MixVisionTransformer(nn.Module):
                 drop=drop_rate,
                 attn_drop=attn_drop_rate,
                 drop_path=dpr[cur + i],
-                norm_layer=norm_layer,
+                norm_cfg=norm_cfg,
                 sr_ratio=sr_ratios[3]) for i in range(depths[3])
         ])
-        self.norm4 = norm_layer(embed_dims[3])
+        _, self.norm4 = build_norm_layer(norm_cfg, embed_dims[3])
 
         # classification head
         # self.head = nn.Linear(embed_dims[3], num_classes) if num_classes
