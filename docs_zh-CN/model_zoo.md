@@ -2,143 +2,132 @@
 
 ## 共同设定
 
-* We use distributed training with 4 GPUs by default.
-* All pytorch-style pretrained backbones on ImageNet are train by ourselves, with the same procedure in the [paper](https://arxiv.org/pdf/1812.01187.pdf).
-  Our ResNet style backbone are based on ResNetV1c variant, where the 7x7 conv in the input stem is replaced with three 3x3 convs.
-* For the consistency across different hardwares, we report the GPU memory as the maximum value of `torch.cuda.max_memory_allocated()` for all 4 GPUs with `torch.backends.cudnn.benchmark=False`.
-  Note that this value is usually less than what `nvidia-smi` shows.
-* We report the inference time as the total time of network forwarding and post-processing, excluding the data loading time.
-  Results are obtained with the script `tools/benchmark.py` which computes the average time on 200 images with `torch.backends.cudnn.benchmark=False`.
-* There are two inference modes in this framework.
-
-  * `slide` mode: The `test_cfg` will be like `dict(mode='slide', crop_size=(769, 769), stride=(513, 513))`.
-
-    In this mode, multiple patches will be cropped from input image, passed into network individually.
-    The crop size and stride between patches are specified by `crop_size` and `stride`.
-    The overlapping area will be merged by average
-
-  * `whole` mode: The `test_cfg` will be like `dict(mode='whole')`.
-
-    In this mode, the whole imaged will be passed into network directly.
-
-    By default, we use `slide` inference for 769x769 trained model, `whole` inference for the rest.
-* For input size of 8x+1 (e.g. 769), `align_corner=True` is adopted as a traditional practice.
-  Otherwise, for input size of 8x (e.g. 512, 1024), `align_corner=False` is adopted.
+* 我们默认使用 4 卡分布式训练
+* 所有 PyTorch 风格的 ImageNet 预训练网络由我们自己训练，和 [论文](https://arxiv.org/pdf/1812.01187.pdf) 保持一致。
+  我们的 ResNet 网络是基于 ResNetV1c 的变种，在这里输入层的 7x7 卷积被 3个 3x3 取代。
+* 为了在不同的硬件上保持一致，我们以 `torch.cuda.max_memory_allocated()` 的最大值作为 GPU 占用率，同时设置 `torch.backends.cudnn.benchmark=False`。
+  注意，这通常比 `nvidia-smi` 显示的要少。
+* 我们以网络 forward 和后处理的时间加和作为推理时间，除去数据加载时间。我们使用脚本 `tools/benchmark.py` 来获取推理时间，它在 `torch.backends.cudnn.benchmark=False` 的设定下，计算 200 张图片的平均推理时间。
+* 在框架中，有两种推理模式。
+  * `slide` 模式（滑动模式）：测试的配置文件字段 `test_cfg` 会是 `dict(mode='slide', crop_size=(769, 769), stride=(513, 513))`.
+    在这个模式下，多个小图分别输入网络中。小图的大小和小图之间的距离由 `crop_size` 和 `stride` 决定，重合区域会进行平均。
+  * `whole` 模式 （全图模式）:测试的配置文件字段 `test_cfg` 会是 `dict(mode='whole')`. 在这个模式下，全图会被直接输入到网络中。
+    对于 769x769 下训练的模型，我们默认使用 `slide` 进行推理，其余模型用 `whole` 进行推理。
 
 ## 基线
 
 ### FCN
 
-Please refer to [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) for details.
+请参考 [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) for details.
 
 ### PSPNet
 
-Please refer to [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) for details.
+请参考 [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) for details.
 
 ### DeepLabV3
 
-Please refer to [DeepLabV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3) for details.
+请参考 [DeepLabV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3) for details.
 
 ### PSANet
 
-Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/psanet) for details.
+请参考 [PSANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/psanet) for details.
 
 ### DeepLabV3+
 
-Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus) for details.
+请参考 [DeepLabV3+](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus) for details.
 
 ### UPerNet
 
-Please refer to [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/upernet) for details.
+请参考 [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/upernet) for details.
 
 ### NonLocal Net
 
-Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/nlnet) for details.
+请参考 [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/nlnet) for details.
 
 ### EncNet
 
-Please refer to [EncNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) for details.
+请参考 [EncNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) for details.
 
 ### CCNet
 
-Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ccnet) for details.
+请参考 [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ccnet) for details.
 
 ### DANet
 
-Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) for details.
+请参考 [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) for details.
 
 ### APCNet
 
-Please refer to [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) for details.
+请参考 [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) for details.
 
 ### HRNet
 
-Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet) for details.
+请参考 [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet) for details.
 
 ### GCNet
 
-Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/gcnet) for details.
+请参考 [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/gcnet) for details.
 
 ### DMNet
 
-Please refer to [DMNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dmnet) for details.
+请参考 [DMNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dmnet) for details.
 
 ### ANN
 
-Please refer to [ANN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ann) for details.
+请参考 [ANN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ann) for details.
 
 ### OCRNet
 
-Please refer to [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet) for details.
+请参考 [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet) for details.
 
 ### Fast-SCNN
 
-Please refer to [Fast-SCNN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastscnn) for details.
+请参考 [Fast-SCNN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastscnn) for details.
 
 ### ResNeSt
 
-Please refer to [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest) for details.
+请参考 [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest) for details.
 
 ### Semantic FPN
 
-Please refer to [Semantic FPN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/semfpn) for details.
+请参考 [Semantic FPN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/semfpn) for details.
 
 ### PointRend
 
-Please refer to [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/point_rend) for details.
+请参考 [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/point_rend) for details.
 
 ### MobileNetV2
 
-Please refer to [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v2) for details.
+请参考 [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v2) for details.
 
 ### MobileNetV3
 
-Please refer to [MobileNetV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v3) for details.
+请参考 [MobileNetV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v3) for details.
 
 ### EMANet
 
-Please refer to [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet) for details.
+请参考 [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet) for details.
 
 ### DNLNet
 
-Please refer to [DNLNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dnlnet) for details.
+请参考 [DNLNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dnlnet) for details.
 
 ### CGNet
 
-Please refer to [CGNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/cgnet) for details.
+请参考 [CGNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/cgnet) for details.
 
 ### Mixed Precision (FP16) Training
 
 Please refer [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fp16/README.md) for details.
 
-## Speed benchmark
+## 速度标定
 
-### Hardware
+### 硬件
 
 * 8 NVIDIA Tesla V100 (32G) GPUs
 * Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz
 
-### Software environment
+### 软件环境
 
 * Python 3.7
 * PyTorch 1.5
@@ -146,12 +135,11 @@ Please refer [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mms
 * CUDNN 7.6.03
 * NCCL 2.4.08
 
-### Training speed
+### 训练速度
 
-For fair comparison, we benchmark all implementations with ResNet-101V1c.
-The input size is fixed to 1024x512 with batch size 2.
+为了公平比较，我们全部使用 ResNet-101V1c 进行标定。输入大小为 1024x512，批量样本数为 2。
 
-The training speed is reported as followed, in terms of second per iter (s/iter). The lower, the better.
+训练速度如下表，指标为每次迭代的时间，以秒为单位，越低越快。
 
 | Implementation | PSPNet (s/iter) | DeepLabV3+ (s/iter) |
 |----------------|-----------------|---------------------|
