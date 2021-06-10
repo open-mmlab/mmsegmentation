@@ -103,6 +103,7 @@ If you would like to use COCO Stuff dataset, please run following command to con
 # --nproc means 8 process for conversion, which could be omitted as well.
 python tools/convert_datasets/coco_stuff.py data/coco_stuff annotations --nproc 8
 ```
+
 By convention, masks in `data/coco_stuff/masks/*.png` are used for COCO Stuff training and testing.
 
 ### Pascal VOC
