@@ -1,13 +1,13 @@
 import math
+
 import torch
 import torch.nn as nn
-
-from mmcv.cnn import build_norm_layer, build_activation_layer
+from mmcv.cnn import build_activation_layer, build_norm_layer
 from mmcv.runner import load_checkpoint
 
+from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import DropPath, to_2tuple, trunc_normal_
-from ...utils import get_root_logger
 
 
 class DWConv(nn.Module):
@@ -81,8 +81,8 @@ class Attention(nn.Module):
                  proj_drop=0.,
                  sr_ratio=1):
         super().__init__()
-        assert dim % num_heads == 0, f"dim {dim} should be divided by "
-        f"num_heads {num_heads}."
+        assert dim % num_heads == 0, f'dim {dim} should be divided by '
+        f'num_heads {num_heads}.'
 
         self.dim = dim
         self.num_heads = num_heads
@@ -208,8 +208,7 @@ class Block(nn.Module):
 
 
 class OverlapPatchEmbed(nn.Module):
-    """ Image to Patch Embedding
-    """
+    """Image to Patch Embedding."""
 
     def __init__(self,
                  img_size=224,
