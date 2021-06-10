@@ -110,6 +110,17 @@ Note:
 5. Some dependencies are optional. Simply running `pip install -e .` will only install the minimum runtime requirements.
    To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
 
+### Install MMSegmentation with MIM
+
+You can also install MMSegmentation with [MIM](https://github.com/open-mmlab/mim).
+
+```shell
+pip install openmim
+mim install mmsegmentation
+```
+
+MIM can automatically install OpenMMLab projects and their requirements.
+
 ### A from-scratch setup script
 
 #### Linux
