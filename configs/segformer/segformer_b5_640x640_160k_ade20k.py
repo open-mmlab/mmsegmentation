@@ -1,5 +1,6 @@
 _base_ = [
-    '../_base_/models/segformer.py', '../_base_/datasets/ade20k_aligned.py',
+    '../_base_/models/segformer.py',
+    '../_base_/datasets/ade20k_aligned_640x640.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
@@ -34,8 +35,6 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
-
-find_unused_parameters = True
 
 # optimizer
 optimizer = dict(

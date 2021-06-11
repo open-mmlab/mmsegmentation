@@ -35,8 +35,6 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 
-find_unused_parameters = True
-
 # optimizer
 optimizer = dict(
     _delete_=True,
