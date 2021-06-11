@@ -7,20 +7,20 @@ _base_ = [
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='pretrain/mit_b0.pth',
+    pretrained='pretrain/mit_b5.pth',
     backbone=dict(
         patch_size=4,
-        embed_dims=[32, 64, 160, 256],
+        embed_dims=[64, 128, 320, 512],
         num_heads=[1, 2, 5, 8],
         mlp_ratios=[4, 4, 4, 4],
         qkv_bias=True,
-        depths=[2, 2, 2, 2],
+        depths=[3, 6, 40, 3],
         sr_ratios=[8, 4, 2, 1],
         drop_rate=0.0,
         drop_path_rate=0.1),
     decode_head=dict(
         type='SegFormerHead',
-        in_channels=[32, 64, 160, 256],
+        in_channels=[64, 128, 320, 512],
         in_index=[0, 1, 2, 3],
         feature_strides=[4, 8, 16, 32],
         channels=128,
@@ -28,12 +28,14 @@ model = dict(
         num_classes=150,
         norm_cfg=norm_cfg,
         align_corners=False,
-        decoder_params=dict(embed_dim=256),
+        decoder_params=dict(embed_dim=768),
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
+
+find_unused_parameters = True
 
 # optimizer
 optimizer = dict(
@@ -59,4 +61,5 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
+# By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)

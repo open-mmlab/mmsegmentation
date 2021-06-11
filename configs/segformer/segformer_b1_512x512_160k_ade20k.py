@@ -7,10 +7,10 @@ _base_ = [
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='pretrain/mit_b0.pth',
+    pretrained='pretrain/mit_b1.pth',
     backbone=dict(
         patch_size=4,
-        embed_dims=[32, 64, 160, 256],
+        embed_dims=[64, 128, 320, 512],
         num_heads=[1, 2, 5, 8],
         mlp_ratios=[4, 4, 4, 4],
         qkv_bias=True,
@@ -20,7 +20,7 @@ model = dict(
         drop_path_rate=0.1),
     decode_head=dict(
         type='SegFormerHead',
-        in_channels=[32, 64, 160, 256],
+        in_channels=[64, 128, 320, 512],
         in_index=[0, 1, 2, 3],
         feature_strides=[4, 8, 16, 32],
         channels=128,
@@ -34,6 +34,8 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
+
+find_unused_parameters = True
 
 # optimizer
 optimizer = dict(
