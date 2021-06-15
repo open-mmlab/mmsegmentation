@@ -1,11 +1,11 @@
 ## 使用预训练模型推理
 
-我们提供测试脚本来评估完整数据集（Cityscapes, PASCAL VOC, ADE20k等） 上的结果，同时为了对其他项目的整合更容易，也提供一些高级API。
+我们提供测试脚本来评估完整数据集（Cityscapes, PASCAL VOC, ADE20k 等） 上的结果，同时为了对其他项目的整合更容易，也提供一些高级 API。
 
 ### 测试一个数据集
 
 - 单卡 GPU
-- 单节点 多卡GPU
+- 单节点 多卡 GPU
 - 多节点
 
 您可以使用以下命令来测试一个数据集。
@@ -20,15 +20,15 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
 
 可选参数:
 
-- `RESULT_FILE`: pickle格式的输出结果的文件名，如果不专门指定，结果将不会被专门保存成文件。
-- `EVAL_METRICS`: 在结果里将被评估的指标。这主要取决于数据集，  `mIoU`  对于所有数据集都可获得，像Cityscapes数据集可以通过 `cityscapes` 命令来专门评估，就像标准的 `mIoU`一样。
-- `--show`: 如果被指定，分割结果将会在一张图像里画出来并且在另一个窗口展示。它仅仅是用来调试与可视化，并且仅针对单卡GPU测试。请确认GUI在您的环境里可用，否则您也许会遇到报错 `cannot connect to X server`
-- `--show-dir`: 如果被指定，分割结果将会在一张图像里画出来并且保存在指定文件夹里。它仅仅是用来调试与可视化，并且仅针对单卡GPU测试。使用该参数时，您的环境不需要GUI。
-- `--eval-options`: 评估时的可选参数，当设置`efficient_test=True`时，它将会保存中间结果至本地文件里以节约CPU内存。请确认您本地硬盘有足够的存储空间（大于20GB）。
+- `RESULT_FILE`: pickle 格式的输出结果的文件名，如果不专门指定，结果将不会被专门保存成文件。
+- `EVAL_METRICS`: 在结果里将被评估的指标。这主要取决于数据集，  `mIoU`  对于所有数据集都可获得，像 Cityscapes 数据集可以通过 `cityscapes` 命令来专门评估，就像标准的 `mIoU`一样。
+- `--show`: 如果被指定，分割结果将会在一张图像里画出来并且在另一个窗口展示。它仅仅是用来调试与可视化，并且仅针对单卡 GPU 测试。请确认 GUI 在您的环境里可用，否则您也许会遇到报错 `cannot connect to X server`
+- `--show-dir`: 如果被指定，分割结果将会在一张图像里画出来并且保存在指定文件夹里。它仅仅是用来调试与可视化，并且仅针对单卡GPU测试。使用该参数时，您的环境不需要 GUI。
+- `--eval-options`: 评估时的可选参数，当设置 `efficient_test=True` 时，它将会保存中间结果至本地文件里以节约CPU内存。请确认您本地硬盘有足够的存储空间（大于20GB）。
 
 例子:
 
-假设您已经下载检查点文件至文件夹`checkpoints/`里。
+假设您已经下载检查点文件至文件夹 `checkpoints/` 里。
 
 1. 测试 PSPNet 并可视化结果。按下任何键会进行到下一张图。
 
@@ -46,7 +46,7 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
         --show-dir psp_r50_512x1024_40ki_cityscapes_results
     ```
 
-3. 在数据集PASCAL VOC (不保存测试结果) 上测试 PSPNet 并评估mIoU。
+3. 在数据集 PASCAL VOC (不保存测试结果) 上测试 PSPNet 并评估 mIoU。
 
     ```shell
     python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
@@ -54,7 +54,7 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
         --eval mAP
     ```
 
-4. 使用4卡GPU测试 PSPNet，并且在标准 mIoU和cityscapes指标里评估模型。
+4. 使用4卡 GPU 测试 PSPNet，并且在标准 mIoU 和 cityscapes 指标里评估模型。
 
     ```shell
     ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
@@ -62,9 +62,9 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
         4 --out results.pkl --eval mIoU cityscapes
     ```
 
-   注意：在cityscapes mIoU 和我们的mIoU指标会有一些差异 (~0.1%) 。原因是因为cityscapes会以默认的类的大小去平均每一类。而我们不去平均，是更简单的，适用于所有数据集的方法。
+   注意：在 cityscapes mIoU 和我们的 mIoU 指标会有一些差异 (~0.1%) 。原因是因为 cityscapes 会以默认的类的大小去平均每一类。而我们不去平均，是更简单的，适用于所有数据集的方法。
 
-5. 在cityscapes数据集上4卡GPU测试 PSPNet， 并生成png文件以便提交给官方评估服务器。
+5. 在 cityscapes 数据集上4卡 GPU 测试 PSPNet， 并生成 png 文件以便提交给官方评估服务器。
 
    首先，在配置文件里添加内容： `configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py`，
 
@@ -83,8 +83,8 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
         4 --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
     ```
 
-   您会在文件夹`./pspnet_test_results`里得到生成的png文件。
-   您也许可以运行 `zip -r results.zip pspnet_test_results/` 并提交zip文件给 [evaluation server](https://www.cityscapes-dataset.com/submit/)。
+   您会在文件夹 `./pspnet_test_results` 里得到生成的png文件。
+   您也许可以运行 `zip -r results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://www.cityscapes-dataset.com/submit/)。
 
 6. CPU memory efficient test DeeplabV3+ on Cityscapes (without saving the test results) and evaluate the mIoU.
 6. 在Cityscapes数据集上测试CPU内存高效率版本的DeeplabV3+ (没有保存测试结果) 并且评估 mIoU。
