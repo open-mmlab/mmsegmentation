@@ -90,11 +90,11 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 安装
 
-请参考[快速入门文档](docs/get_started.md#installation)进行安装和数据集准备。
+请参考[快速入门文档](docs_zh-CN/get_started.md#installation)进行安装和数据集准备。
 
 ## 快速入门
 
-请参考[训练教程](docs/train.md)和[测试教程](docs/inference.md)学习 MMSegmentation 的基本使用。
+请参考[训练教程](docs_zh-CN/train.md)和[测试教程](docs_zh-CN/inference.md)学习 MMSegmentation 的基本使用。
 我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs/tutorials/data_pipeline.md)，[增加自定义模型](docs/tutorials/customize_models.md)，[增加自定义的运行时配置](docs/tutorials/customize_runtime.md)。
 除此之外，我们也提供了很多实用的[训练技巧说明](docs/tutorials/training_tricks.md)。
 
