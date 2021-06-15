@@ -6,6 +6,7 @@
 - CUDA 9.2+ (如果您基于源文件编译 PyTorch, CUDA 9.0也可以使用)
 - GCC 5+
 - [MMCV](https://mmcv.readthedocs.io/en/latest/#installation)
+
 可编译的MMSegmentation和MMCV版本如下所示，请对照对应版本安装以避免安装问题。
 
 | MMSegmentation 版本 |    MMCV 版本     |
