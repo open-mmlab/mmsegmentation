@@ -123,14 +123,6 @@ class PatchEmbed(BaseModule):
                  conv_cfg=None,
                  init_cfg=None):
         super(PatchEmbed, self).__init__(init_cfg)
-        if isinstance(img_size, int):
-            img_size = to_2tuple(img_size)
-        elif isinstance(img_size, tuple):
-            if len(img_size) == 1:
-                img_size = to_2tuple(img_size[0])
-            assert len(img_size) == 2, \
-                f'The size of image should have length 1 or 2, ' \
-                f'but got {len(img_size)}'
 
         self.img_size = img_size
         self.patch_size = to_2tuple(patch_size)
@@ -140,9 +132,6 @@ class PatchEmbed(BaseModule):
             img_size[1] // self.patch_size[1]
         ]
         num_patches = patches_resolution[0] * patches_resolution[1]
-        assert num_patches * self.patch_size[0] * self.patch_size[1] == \
-               self.img_size[0] * self.img_size[1], \
-               'The image size H*W must be divisible by patch size'
         self.patches_resolution = patches_resolution
         self.num_patches = num_patches
 
@@ -174,99 +163,49 @@ class PatchEmbed(BaseModule):
         return x
 
 
-# Modified from pytorch-image-models
-class HybridEmbed(BaseModule):
-    """CNN Feature Map Embedding.
-
-    Extract feature map from CNN, flatten, project to embedding dim.
-    """
-
-    def __init__(self,
-                 backbone,
-                 img_size=224,
-                 feature_size=None,
-                 in_channels=3,
-                 embed_dim=768,
-                 conv_cfg=None,
-                 init_cfg=None):
-        super(HybridEmbed, self).__init__(init_cfg)
-        assert isinstance(backbone, nn.Module)
-        if isinstance(img_size, int):
-            img_size = to_2tuple(img_size)
-        elif isinstance(img_size, tuple):
-            if len(img_size) == 1:
-                img_size = to_2tuple(img_size[0])
-            assert len(img_size) == 2, \
-                f'The size of image should have length 1 or 2, ' \
-                f'but got {len(img_size)}'
-
-        self.img_size = img_size
-        self.backbone = backbone
-        if feature_size is None:
-            with torch.no_grad():
-                # FIXME this is hacky, but most reliable way of
-                #  determining the exact dim of the output feature
-                #  map for all networks, the feature metadata has
-                #  reliable channel and stride info, but using
-                #  stride to calc feature dim requires info about padding of
-                #  each stage that isn't captured.
-                training = backbone.training
-                if training:
-                    backbone.eval()
-                o = self.backbone(
-                    torch.zeros(1, in_channels, img_size[0], img_size[1]))
-                if isinstance(o, (list, tuple)):
-                    # last feature if backbone outputs list/tuple of features
-                    o = o[-1]
-                feature_size = o.shape[-2:]
-                feature_dim = o.shape[1]
-                backbone.train(training)
-        else:
-            feature_size = to_2tuple(feature_size)
-            if hasattr(self.backbone, 'feature_info'):
-                feature_dim = self.backbone.feature_info.channels()[-1]
-            else:
-                feature_dim = self.backbone.num_features
-        self.num_patches = feature_size[0] * feature_size[1]
-
-        # Use conv layer to embed
-        self.projection = build_conv_layer(
-            conv_cfg, feature_dim, embed_dim, kernel_size=1, stride=1)
-
-    def forward(self, x):
-        x = self.backbone(x)
-        if isinstance(x, (list, tuple)):
-            # last feature if backbone outputs list/tuple of features
-            x = x[-1]
-        x = self.projection(x).flatten(2).transpose(1, 2)
-        return x
-
-
 @BACKBONES.register_module()
 class VisionTransformer(BaseBackbone):
     """Vision Transformer.
 
     A PyTorch implement of : `An Image is Worth 16x16 Words:
-    Transformers for Image Recognition at Scale`  -
+    Transformers for Image Recognition at Scale` -
         https://arxiv.org/abs/2010.11929
 
     Args:
-        img_size (int | tuple): Input image size
-        patch_size (int | tuple): The patch size
-        in_channels (int): Number of input channels
+        img_size (int | tuple): Input image size. Default: 224.
+        patch_size (int): The patch size. Default: 16.
+        in_channels (int): Number of input channels. Default: 3.
+        embed_dims (int): embedding dimension. Default: 768.
+        num_layers (int): depth of transformer. Default: 12.
+        num_heads (int): number of attention heads. Default: 12.
+        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+            Default: 4.
+        out_indices (list | tuple | int): Output from which stages.
+            Default: -1.
+        qkv_bias (bool): enable bias for qkv if True. Default: True.
         drop_rate (float): Probability of an element to be zeroed.
             Default 0.0
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
         drop_path_rate (float): stochastic depth rate. Default 0.0
-        hybrid_backbone (nn.Module, optional): CNN backbone to use in-place of
-            PatchEmbed module. Default None
-        norm_cfg (dict): Config dict for normalization layer. Default
-            layer normalization
-        act_cfg (dict): The activation config for FFNs. Defalut GELU
+        with_cls_token (bool): If concatenating class token into image tokens
+            as transformer input. Default: True.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN')
+        act_cfg (dict): The activation config for FFNs.
+            Defalut: dict(type='GELU').
+        final_norm (bool):  Whether to add a additional layer to normalize
+            final feature map. Default: False.
+        interpolate_mode (str): Select the interpolate mode for position
+            embeding vector resize. Default: bicubic.
         num_fcs (int): The number of fully-connected layers for FFNs.
-            Default 2
-        init_cfg (dict, optional): Initialization config dict
+            Default: 2.
+        init_cfg (dict, optional): Initialization config dict. Default: None.
+        norm_eval (bool): Whether to set norm layers to eval mode, namely,
+            freeze running stats (mean and var). Note: Effect on Batch Norm
+            and its variants only. Default: False.
+        with_cp (bool): Use checkpoint or not. Using checkpoint will save
+            some memory while slowing down the training speed. Default: False.
     """
 
     def __init__(self,
@@ -282,7 +221,6 @@ class VisionTransformer(BaseBackbone):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 hybrid_backbone=None,
                  with_cls_token=True,
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
@@ -306,18 +244,12 @@ class VisionTransformer(BaseBackbone):
         self.img_size = img_size
         self.patch_size = patch_size
 
-        if hybrid_backbone is not None:
-            self.patch_embed = HybridEmbed(
-                hybrid_backbone,
-                img_size=img_size,
-                in_channels=in_channels,
-                embed_dim=embed_dims)
-        else:
-            self.patch_embed = PatchEmbed(
-                img_size=img_size,
-                patch_size=patch_size,
-                in_channels=in_channels,
-                embed_dim=embed_dims)
+        self.patch_embed = PatchEmbed(
+            img_size=img_size,
+            patch_size=patch_size,
+            in_channels=in_channels,
+            embed_dim=embed_dims,
+            norm_cfg=norm_cfg)
         num_patches = self.patch_embed.num_patches
 
         self.with_cls_token = with_cls_token

@@ -30,9 +30,12 @@ def test_vit_backbone():
         model = VisionTransformer()
         model(x)
 
-    # Test img_size isinstance int
+    with pytest.raises(AssertionError):
+        VisionTransformer(img_size=(224, 224, 224))
+
+    # Test img_size isinstance tuple
     imgs = torch.randn(1, 3, 224, 224)
-    model = VisionTransformer(img_size=224)
+    model = VisionTransformer(img_size=(224, 224))
     model.init_weights()
     model(imgs)
 
@@ -74,6 +77,12 @@ def test_vit_backbone():
 
     # Test with_cls_token=False
     model = VisionTransformer(with_cls_token=False)
+    imgs = torch.randn(1, 3, 224, 224)
+    feat = model(imgs)
+    assert feat[-1].shape == (1, 768, 14, 14)
+
+    # Test final norm
+    model = VisionTransformer(final_norm=True)
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert feat[-1].shape == (1, 768, 14, 14)
