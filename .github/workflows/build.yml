@@ -78,6 +78,7 @@ jobs:
         run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install MMCV
         run: |
+          export CUDA_HOME=/usr/local/cuda-${CUDA_SHORT}
           pip install --use-deprecated=legacy-resolver mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch${{matrix.torch}}/index.html
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install mmseg dependencies
