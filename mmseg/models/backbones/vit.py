@@ -10,7 +10,7 @@ from mmcv.runner.base_module import BaseModule, ModuleList
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import to_2tuple
+from ..utils import to_2tuple, vit_convert
 from .base_backbone import BaseBackbone
 
 
@@ -311,6 +311,12 @@ class VisionTransformer(BaseBackbone):
                 state_dict = checkpoint['model']
             else:
                 state_dict = checkpoint
+
+            if 'rwightman/pytorch-image-models' in pretrained:
+                # Because the refactor of vit is blocked by mmcls,
+                # so we firstly use timm pretrain weights to train
+                # downstream model.
+                state_dict = vit_convert(state_dict)
 
             if 'pos_embed' in state_dict.keys():
                 if self.pos_embed.shape != state_dict['pos_embed'].shape:
