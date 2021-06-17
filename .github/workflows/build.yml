@@ -81,7 +81,7 @@ jobs:
         run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
-          pip install --use-deprecated=legacy-resolver mmcv-full -f https://download.openmmlab.com/mmcv/dist/${{matrix.device}}/torch${{matrix.torch_version}}/index.html
+          pip install --use-deprecated=legacy-resolver mmcv-full -f https://download.openmmlab.com/mmcv/dist/${{matrix.device}}/torch${{matrix.torch}}/index.html
           pip install -r requirements.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
