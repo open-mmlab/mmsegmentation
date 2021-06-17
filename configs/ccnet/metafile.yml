@@ -1,0 +1,231 @@
+Collections:
+  - Name: CCNet
+    Metadata:
+      Training Data:
+        - Cityscapes
+        - Pascal VOC 2012 + Aug
+        - ADE20K
+
+Models:
+
+  - Name: ccnet_r50-d8_512x1024_40k_cityscapes
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 3.32
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.76
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes/ccnet_r50-d8_512x1024_40k_cityscapes_20200616_142517-4123f401.pth
+    Config: configs/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: ccnet_r101-d8_512x1024_40k_cityscapes
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 2.31
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 76.35
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes/ccnet_r101-d8_512x1024_40k_cityscapes_20200616_142540-a3b84ba6.pth
+    Config: configs/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: ccnet_r50-d8_769x769_40k_cityscapes
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 1.43
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.46
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_769x769_40k_cityscapes/ccnet_r50-d8_769x769_40k_cityscapes_20200616_145125-76d11884.pth
+    Config: configs/ccnet/ccnet_r50-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: ccnet_r101-d8_769x769_40k_cityscapes
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 1.01
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 76.94
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_769x769_40k_cityscapes/ccnet_r101-d8_769x769_40k_cityscapes_20200617_101428-4f57c8d0.pth
+    Config: configs/ccnet/ccnet_r101-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: ccnet_r50-d8_512x1024_80k_cityscapes
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 3.32
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.03
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes/ccnet_r50-d8_512x1024_80k_cityscapes_20200617_010421-869a3423.pth
+    Config: configs/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: ccnet_r101-d8_512x1024_80k_cityscapes
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 2.31
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.87
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes/ccnet_r101-d8_512x1024_80k_cityscapes_20200617_203935-ffae8917.pth
+    Config: configs/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: ccnet_r50-d8_769x769_80k_cityscapes
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 1.43
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.29
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_769x769_80k_cityscapes/ccnet_r50-d8_769x769_80k_cityscapes_20200617_010421-73eed8ca.pth
+    Config: configs/ccnet/ccnet_r50-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: ccnet_r101-d8_769x769_80k_cityscapes
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 1.01
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.45
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_769x769_80k_cityscapes/ccnet_r101-d8_769x769_80k_cityscapes_20200618_011502-ad3cd481.pth
+    Config: configs/ccnet/ccnet_r101-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: ccnet_r50-d8_512x512_80k_ade20k
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 20.89
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 41.78
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_80k_ade20k/ccnet_r50-d8_512x512_80k_ade20k_20200615_014848-aa37f61e.pth
+    Config: configs/ccnet/ccnet_r50-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: ccnet_r101-d8_512x512_80k_ade20k
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 14.11
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 43.97
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_80k_ade20k/ccnet_r101-d8_512x512_80k_ade20k_20200615_014848-1f4929a3.pth
+    Config: configs/ccnet/ccnet_r101-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: ccnet_r50-d8_512x512_160k_ade20k
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 20.89
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 42.08
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_160k_ade20k/ccnet_r50-d8_512x512_160k_ade20k_20200616_084435-7c97193b.pth
+    Config: configs/ccnet/ccnet_r50-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: ccnet_r101-d8_512x512_160k_ade20k
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 14.11
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 43.71
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_160k_ade20k/ccnet_r101-d8_512x512_160k_ade20k_20200616_000644-e849e007.pth
+    Config: configs/ccnet/ccnet_r101-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: ccnet_r50-d8_512x512_20k_voc12aug
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 20.45
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 76.17
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_20k_voc12aug/ccnet_r50-d8_512x512_20k_voc12aug_20200617_193212-fad81784.pth
+    Config: configs/ccnet/ccnet_r50-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: ccnet_r101-d8_512x512_20k_voc12aug
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 13.64
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 77.27
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_20k_voc12aug/ccnet_r101-d8_512x512_20k_voc12aug_20200617_193212-0007b61d.pth
+    Config: configs/ccnet/ccnet_r101-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: ccnet_r50-d8_512x512_40k_voc12aug
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 20.45
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 75.96
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_40k_voc12aug/ccnet_r50-d8_512x512_40k_voc12aug_20200613_232127-c2a15f02.pth
+    Config: configs/ccnet/ccnet_r50-d8_512x512_40k_voc12aug.py
+
+
+
+  - Name: ccnet_r101-d8_512x512_40k_voc12aug
+    In Collection: CCNet
+    Metadata:
+      inference time (fps): 13.64
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 77.87
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_40k_voc12aug/ccnet_r101-d8_512x512_40k_voc12aug_20200613_232127-c30da577.pth
+    Config: configs/ccnet/ccnet_r101-d8_512x512_40k_voc12aug.py

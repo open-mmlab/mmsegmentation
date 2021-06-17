@@ -1,0 +1,231 @@
+Collections:
+  - Name: ANN
+    Metadata:
+      Training Data:
+        - Cityscapes
+        - Pascal VOC 2012 + Aug
+        - ADE20K
+
+Models:
+
+  - Name: ann_r50-d8_512x1024_40k_cityscapes
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 3.71
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.40
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth
+    Config: configs/ann/ann_r50-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: ann_r101-d8_512x1024_40k_cityscapes
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 2.55
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 76.55
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243-adf6eece.pth
+    Config: configs/ann/ann_r101-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: ann_r50-d8_769x769_40k_cityscapes
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 1.70
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.89
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712-2b46b04d.pth
+    Config: configs/ann/ann_r50-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: ann_r101-d8_769x769_40k_cityscapes
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 1.15
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.32
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720-059bff28.pth
+    Config: configs/ann/ann_r101-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: ann_r50-d8_512x1024_80k_cityscapes
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 3.71
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.34
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911-5a9ad545.pth
+    Config: configs/ann/ann_r50-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: ann_r101-d8_512x1024_80k_cityscapes
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 2.55
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.14
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728-aceccc6e.pth
+    Config: configs/ann/ann_r101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: ann_r50-d8_769x769_80k_cityscapes
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 1.70
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.88
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426-cc7ff323.pth
+    Config: configs/ann/ann_r50-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: ann_r101-d8_769x769_80k_cityscapes
+    In Collection: ANN
+    Metadata:
+      inference time (fps):
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.80
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713-a9d4be8d.pth
+    Config: configs/ann/ann_r101-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: ann_r50-d8_512x512_80k_ade20k
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 21.01
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 41.01
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818-26f75e11.pth
+    Config: configs/ann/ann_r50-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: ann_r101-d8_512x512_80k_ade20k
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 14.12
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 42.94
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818-c0153543.pth
+    Config: configs/ann/ann_r101-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: ann_r50-d8_512x512_160k_ade20k
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 21.01
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 41.74
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733-892247bc.pth
+    Config: configs/ann/ann_r50-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: ann_r101-d8_512x512_160k_ade20k
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 14.12
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 42.94
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733-955eb1ec.pth
+    Config: configs/ann/ann_r101-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: ann_r50-d8_512x512_20k_voc12aug
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 20.92
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 74.86
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246-dfcb1c62.pth
+    Config: configs/ann/ann_r50-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: ann_r101-d8_512x512_20k_voc12aug
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 13.94
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 77.47
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246-2fad0042.pth
+    Config: configs/ann/ann_r101-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: ann_r50-d8_512x512_40k_voc12aug
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 20.92
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 76.56
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314-b5dac322.pth
+    Config: configs/ann/ann_r50-d8_512x512_40k_voc12aug.py
+
+
+
+  - Name: ann_r101-d8_512x512_40k_voc12aug
+    In Collection: ANN
+    Metadata:
+      inference time (fps): 13.94
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 76.70
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314-bd205bbe.pth
+    Config: configs/ann/ann_r101-d8_512x512_40k_voc12aug.py

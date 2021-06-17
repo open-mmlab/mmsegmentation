@@ -1,0 +1,112 @@
+
+Models:
+
+  - Name: fcn_m-v2-d8_512x1024_80k_cityscapes
+    In Collection: FCN
+    Metadata:
+      inference time (fps): 14.2
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 61.54
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x1024_80k_cityscapes/fcn_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-d24c28c1.pth
+    Config: configs/fcn/fcn_m-v2-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: pspnet_m-v2-d8_512x1024_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 11.2
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 70.23
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes/pspnet_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-19e81d51.pth
+    Config: configs/pspnet/pspnet_m-v2-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3_m-v2-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3
+    Metadata:
+      inference time (fps): 8.4
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 73.84
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes/deeplabv3_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-bef03590.pth
+    Config: configs/deeplabv3/deeplabv3_m-v2-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 8.4
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 75.20
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-d256dd4b.pth
+    Config: configs/deeplabv3+/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: fcn_m-v2-d8_512x512_160k_ade20k
+    In Collection: FCN
+    Metadata:
+      inference time (fps): 64.4
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 19.71
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k/fcn_m-v2-d8_512x512_160k_ade20k_20200825_214953-c40e1095.pth
+    Config: configs/fcn/fcn_m-v2-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: pspnet_m-v2-d8_512x512_160k_ade20k
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 57.7
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 29.68
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k/pspnet_m-v2-d8_512x512_160k_ade20k_20200825_214953-f5942f7a.pth
+    Config: configs/pspnet/pspnet_m-v2-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: deeplabv3_m-v2-d8_512x512_160k_ade20k
+    In Collection: DeepLabV3
+    Metadata:
+      inference time (fps): 39.9
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 34.08
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k/deeplabv3_m-v2-d8_512x512_160k_ade20k_20200825_223255-63986343.pth
+    Config: configs/deeplabv3/deeplabv3_m-v2-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: deeplabv3plus_m-v2-d8_512x512_160k_ade20k
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 43.1
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 34.02
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x512_160k_ade20k/deeplabv3plus_m-v2-d8_512x512_160k_ade20k_20200825_223255-465a01d4.pth
+    Config: configs/deeplabv3+/deeplabv3plus_m-v2-d8_512x512_160k_ade20k.py

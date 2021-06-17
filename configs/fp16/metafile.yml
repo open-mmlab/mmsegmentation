@@ -1,0 +1,56 @@
+
+Models:
+
+  - Name: fcn_r101-d8_512x1024_80k_fp16_cityscapes
+    In Collection: FCN
+    Metadata:
+      inference time (fps): 8.64
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 76.80
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/fcn_r101-d8_512x1024_80k_fp16_cityscapes/fcn_r101-d8_512x1024_80k_fp16_cityscapes-50245227.pth
+    Config: configs/fcn/fcn_r101-d8_512x1024_80k_fp16_cityscapes.py
+
+
+
+  - Name: pspnet_r101-d8_512x1024_80k_fp16_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 8.77
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.46
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/pspnet_r101-d8_512x1024_80k_fp16_cityscapes/pspnet_r101-d8_512x1024_80k_fp16_cityscapes-ade37931.pth
+    Config: configs/pspnet/pspnet_r101-d8_512x1024_80k_fp16_cityscapes.py
+
+
+
+  - Name: deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes
+    In Collection: DeepLabV3
+    Metadata:
+      inference time (fps): 3.86
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.48
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes-bc86dc84.pth
+    Config: configs/deeplabv3/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 7.87
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.46
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes-cc58bc8d.pth
+    Config: configs/deeplabv3+/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes.py

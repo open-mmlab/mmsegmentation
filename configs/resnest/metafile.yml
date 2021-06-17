@@ -1,0 +1,118 @@
+Collections:
+  - Name: ResNeSt
+    Metadata:
+      Training Data:
+        - Cityscapes
+        - ADE20K
+
+Models:
+
+  - Name: fcn_s101-d8_512x1024_80k_cityscapes
+    In Collection: FCN
+    Metadata:
+      inference time (fps): 2.39
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.56
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x1024_80k_cityscapes/fcn_s101-d8_512x1024_80k_cityscapes_20200807_140631-f8d155b3.pth
+    Config: configs/fcn/fcn_s101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: pspnet_s101-d8_512x1024_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 2.52
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.57
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x1024_80k_cityscapes/pspnet_s101-d8_512x1024_80k_cityscapes_20200807_140631-c75f3b99.pth
+    Config: configs/pspnet/pspnet_s101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3_s101-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3
+    Metadata:
+      inference time (fps): 1.88
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.67
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes_20200807_144429-b73c4270.pth
+    Config: configs/deeplabv3/deeplabv3_s101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: deeplabv3plus_s101-d8_512x1024_80k_cityscapes
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 2.36
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.62
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes_20200807_144429-1239eb43.pth
+    Config: configs/deeplabv3+/deeplabv3plus_s101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: fcn_s101-d8_512x512_160k_ade20k
+    In Collection: FCN
+    Metadata:
+      inference time (fps): 12.86
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 45.62
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x512_160k_ade20k/fcn_s101-d8_512x512_160k_ade20k_20200807_145416-d3160329.pth
+    Config: configs/fcn/fcn_s101-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: pspnet_s101-d8_512x512_160k_ade20k
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 13.02
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 45.44
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x512_160k_ade20k/pspnet_s101-d8_512x512_160k_ade20k_20200807_145416-a6daa92a.pth
+    Config: configs/pspnet/pspnet_s101-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: deeplabv3_s101-d8_512x512_160k_ade20k
+    In Collection: DeepLabV3
+    Metadata:
+      inference time (fps): 9.28
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 45.71
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x512_160k_ade20k/deeplabv3_s101-d8_512x512_160k_ade20k_20200807_144503-17ecabe5.pth
+    Config: configs/deeplabv3/deeplabv3_s101-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: deeplabv3plus_s101-d8_512x512_160k_ade20k
+    In Collection: DeepLabV3+
+    Metadata:
+      inference time (fps): 11.96
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 46.47
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k_20200807_144503-27b26226.pth
+    Config: configs/deeplabv3+/deeplabv3plus_s101-d8_512x512_160k_ade20k.py

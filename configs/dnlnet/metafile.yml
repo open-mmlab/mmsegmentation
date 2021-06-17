@@ -1,0 +1,174 @@
+Collections:
+  - Name: dnl
+    Metadata:
+      Training Data:
+        - Cityscapes
+        - ADE20K
+
+Models:
+
+  - Name: dnl_r50-d8_512x1024_40k_cityscapes
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 2.56
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.61
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_40k_cityscapes/dnl_r50-d8_512x1024_40k_cityscapes_20200904_233629-53d4ea93.pth
+    Config: configs/dnl/dnl_r50-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: dnl_r101-d8_512x1024_40k_cityscapes
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 1.96
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.31
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_40k_cityscapes/dnl_r101-d8_512x1024_40k_cityscapes_20200904_233629-9928ffef.pth
+    Config: configs/dnl/dnl_r101-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: dnl_r50-d8_769x769_40k_cityscapes
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 1.50
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.44
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_40k_cityscapes/dnl_r50-d8_769x769_40k_cityscapes_20200820_232206-0f283785.pth
+    Config: configs/dnl/dnl_r50-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: dnl_r101-d8_769x769_40k_cityscapes
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 1.02
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 76.39
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_40k_cityscapes/dnl_r101-d8_769x769_40k_cityscapes_20200820_171256-76c596df.pth
+    Config: configs/dnl/dnl_r101-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: dnl_r50-d8_512x1024_80k_cityscapes
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 2.56
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.33
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_80k_cityscapes/dnl_r50-d8_512x1024_80k_cityscapes_20200904_233629-58b2f778.pth
+    Config: configs/dnl/dnl_r50-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: dnl_r101-d8_512x1024_80k_cityscapes
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 1.96
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.41
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes/dnl_r101-d8_512x1024_80k_cityscapes_20200904_233629-758e2dd4.pth
+    Config: configs/dnl/dnl_r101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: dnl_r50-d8_769x769_80k_cityscapes
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 1.50
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.36
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_80k_cityscapes/dnl_r50-d8_769x769_80k_cityscapes_20200820_011925-366bc4c7.pth
+    Config: configs/dnl/dnl_r50-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: dnl_r101-d8_769x769_80k_cityscapes
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 1.02
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.41
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes_20200821_051111-95ff84ab.pth
+    Config: configs/dnl/dnl_r101-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: dnl_r50-d8_512x512_80k_ade20k
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 20.66
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 41.76
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_80k_ade20k/dnl_r50-d8_512x512_80k_ade20k_20200826_183354-1cf6e0c1.pth
+    Config: configs/dnl/dnl_r50-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: dnl_r101-d8_512x512_80k_ade20k
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 12.54
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 43.76
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_80k_ade20k/dnl_r101-d8_512x512_80k_ade20k_20200826_183354-d820d6ea.pth
+    Config: configs/dnl/dnl_r101-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: dnl_r50-d8_512x512_160k_ade20k
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 20.66
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 41.87
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_160k_ade20k/dnl_r50-d8_512x512_160k_ade20k_20200826_183350-37837798.pth
+    Config: configs/dnl/dnl_r50-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: dnl_r101-d8_512x512_160k_ade20k
+    In Collection: dnl
+    Metadata:
+      inference time (fps): 12.54
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 44.25
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_160k_ade20k/dnl_r101-d8_512x512_160k_ade20k_20200826_183350-ed522c61.pth
+    Config: configs/dnl/dnl_r101-d8_512x512_160k_ade20k.py

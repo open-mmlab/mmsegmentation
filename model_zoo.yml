@@ -1,0 +1,27 @@
+Import:
+  - configs/ann/metafile.yml
+  - configs/apcnet/metafile.yml
+  - configs/ccnet/metafile.yml
+  - configs/cgnet/metafile.yml
+  - configs/danet/metafile.yml
+  - configs/deeplabv3/metafile.yml
+  - configs/deeplabv3plus/metafile.yml
+  - configs/dnlnet/metafile.yml
+  - configs/emanet/metafile.yml
+  - configs/encnet/metafile.yml
+  - configs/fastscnn/metafile.yml
+  - configs/fcn/metafile.yml
+  - configs/fp16/metafile.yml
+  - configs/gcnet/metafile.yml
+  - configs/hrnet/metafile.yml
+  - configs/mobilenet_v2/metafile.yml
+  - configs/mobilenet_v3/metafile.yml
+  - configs/nonlocal_net/metafile.yml
+  - configs/ocrnet/metafile.yml
+  - configs/point_rend/metafile.yml
+  - configs/psanet/metafile.yml
+  - configs/pspnet/metafile.yml
+  - configs/resnest/metafile.yml
+  - configs/sem_fpn/metafile.yml
+  - configs/unet/metafile.yml
+  - configs/upernet/metafile.yml
