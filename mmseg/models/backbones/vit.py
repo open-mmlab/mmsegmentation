@@ -196,6 +196,8 @@ class VisionTransformer(BaseModule):
             and its variants only. Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save
             some memory while slowing down the training speed. Default: False.
+        pretrain_style (str): Choose to use timm or mmcls pretrain weights.
+            Default: timm.
     """
 
     def __init__(self,
@@ -218,7 +220,8 @@ class VisionTransformer(BaseModule):
                  interpolate_mode='bicubic',
                  num_fcs=2,
                  norm_eval=False,
-                 with_cp=False):
+                 with_cp=False,
+                 pretrain_style='timm'):
         super(VisionTransformer, self).__init__()
 
         if isinstance(img_size, int):
@@ -230,6 +233,9 @@ class VisionTransformer(BaseModule):
                 f'The size of image should have length 1 or 2, ' \
                 f'but got {len(img_size)}'
 
+        assert pretrain_style in ['timm', 'mmcls']
+
+        self.pretrain_style = pretrain_style
         self.img_size = img_size
         self.patch_size = patch_size
 
@@ -299,7 +305,7 @@ class VisionTransformer(BaseModule):
             else:
                 state_dict = checkpoint
 
-            if 'rwightman/pytorch-image-models' in pretrained:
+            if self.pretrain_style == 'timm':
                 # Because the refactor of vit is blocked by mmcls,
                 # so we firstly use timm pretrain weights to train
                 # downstream model.
