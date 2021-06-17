@@ -24,19 +24,18 @@ def test_vit_backbone():
         x = torch.randn(1, 196)
         VisionTransformer.resize_pos_embed(x, 512, 512, 224, 224, 'bilinear')
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError):
         # forward inputs must be [N, C, H, W]
         x = torch.randn(3, 30, 30)
         model = VisionTransformer()
         model(x)
 
     with pytest.raises(AssertionError):
-        # out_shape must be 'NLC' or 'NCHW;'
-        VisionTransformer(out_shape='NCL')
+        VisionTransformer(img_size=(224, 224, 224))
 
-    # Test img_size isinstance int
+    # Test img_size isinstance tuple
     imgs = torch.randn(1, 3, 224, 224)
-    model = VisionTransformer(img_size=224)
+    model = VisionTransformer(img_size=(224, 224))
     model.init_weights()
     model(imgs)
 
@@ -65,6 +64,11 @@ def test_vit_backbone():
     feat = model(imgs)
     assert feat[-1].shape == (1, 768, 14, 14)
 
+    # Test unbalanced size input image
+    imgs = torch.randn(1, 3, 112, 224)
+    feat = model(imgs)
+    assert feat[-1].shape == (1, 768, 7, 14)
+
     # Test with_cp=True
     model = VisionTransformer(with_cp=True)
     imgs = torch.randn(1, 3, 224, 224)
@@ -77,8 +81,8 @@ def test_vit_backbone():
     feat = model(imgs)
     assert feat[-1].shape == (1, 768, 14, 14)
 
-    # Test final reshape arg
+    # Test final norm
+    model = VisionTransformer(final_norm=True)
     imgs = torch.randn(1, 3, 224, 224)
-    model = VisionTransformer(out_shape='NLC')
     feat = model(imgs)
-    assert feat[-1].shape == (1, 196, 768)
+    assert feat[-1].shape == (1, 768, 14, 14)
