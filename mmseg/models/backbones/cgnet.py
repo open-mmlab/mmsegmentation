@@ -1,12 +1,12 @@
+import warnings
+
 import torch
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-from mmcv.cnn import (ConvModule, build_conv_layer, build_norm_layer,
-                      constant_init, kaiming_init)
-from mmcv.runner import load_checkpoint
+from mmcv.cnn import ConvModule, build_conv_layer, build_norm_layer
+from mmcv.runner import BaseModule
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
-from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 
 
@@ -183,7 +183,7 @@ class InputInjection(nn.Module):
 
 
 @BACKBONES.register_module()
-class CGNet(nn.Module):
+class CGNet(BaseModule):
     """CGNet backbone.
 
     A Light-weight Context Guided Network for Semantic Segmentation
@@ -210,6 +210,9 @@ class CGNet(nn.Module):
             and its variants only. Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
             memory while slowing down the training speed. Default: False.
+        pretrained (str, optional): model pretrained path. Default: None
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None
     """
 
     def __init__(self,
@@ -222,9 +225,31 @@ class CGNet(nn.Module):
                  norm_cfg=dict(type='BN', requires_grad=True),
                  act_cfg=dict(type='PReLU'),
                  norm_eval=False,
-                 with_cp=False):
+                 with_cp=False,
+                 pretrained=None,
+                 init_cfg=None):
 
-        super(CGNet, self).__init__()
+        super(CGNet, self).__init__(init_cfg)
+
+        assert not (init_cfg and pretrained), \
+            'init_cfg and pretrained cannot be setting at the same time'
+        if isinstance(pretrained, str):
+            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+                          'please use "init_cfg" instead')
+            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
+        elif pretrained is None:
+            if init_cfg is None:
+                self.init_cfg = [
+                    dict(type='Kaiming', layer=['Conv2d', 'Linear']),
+                    dict(
+                        type='Constant',
+                        val=1,
+                        layer=['_BatchNorm', 'GroupNorm']),
+                    dict(type='Constant', val=0, layer='PReLU')
+                ]
+        else:
+            raise TypeError('pretrained must be a str or None')
+
         self.in_channels = in_channels
         self.num_channels = num_channels
         assert isinstance(self.num_channels, tuple) and len(
@@ -334,27 +359,6 @@ class CGNet(nn.Module):
         output.append(x)
 
         return output
-
-    def init_weights(self, pretrained=None):
-        """Initialize the weights in backbone.
-
-        Args:
-            pretrained (str, optional): Path to pre-trained weights.
-                Defaults to None.
-        """
-        if isinstance(pretrained, str):
-            logger = get_root_logger()
-            load_checkpoint(self, pretrained, strict=False, logger=logger)
-        elif pretrained is None:
-            for m in self.modules():
-                if isinstance(m, (nn.Conv2d, nn.Linear)):
-                    kaiming_init(m)
-                elif isinstance(m, (_BatchNorm, nn.GroupNorm)):
-                    constant_init(m, 1)
-                elif isinstance(m, nn.PReLU):
-                    constant_init(m, 0)
-        else:
-            raise TypeError('pretrained must be a str or None')
 
     def train(self, mode=True):
         """Convert the model into training mode will keeping the normalization

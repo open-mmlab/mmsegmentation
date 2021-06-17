@@ -9,7 +9,7 @@ import torch.nn.functional as F
 import torch.utils.checkpoint as cp
 from mmcv.cnn import (Conv2d, Linear, build_activation_layer, build_norm_layer,
                       constant_init, kaiming_init, normal_init)
-from mmcv.runner import _load_checkpoint
+from mmcv.runner import BaseModule, _load_checkpoint
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.utils import get_root_logger
@@ -203,7 +203,7 @@ class PatchEmbed(nn.Module):
 
 
 @BACKBONES.register_module()
-class VisionTransformer(nn.Module):
+class VisionTransformer(BaseModule):
     """Vision transformer backbone.
 
     A PyTorch impl of : `An Image is Worth 16x16 Words: Transformers for
@@ -243,6 +243,9 @@ class VisionTransformer(nn.Module):
         with_cp (bool): Use checkpoint or not. Using checkpoint
             will save some memory while slowing down the training speed.
             Default: False.
+        pretrained (str, optional): model pretrained path. Default: None
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None
     """
 
     def __init__(self,
@@ -266,8 +269,12 @@ class VisionTransformer(nn.Module):
                  out_shape='NCHW',
                  with_cls_token=True,
                  interpolate_mode='bicubic',
-                 with_cp=False):
-        super(VisionTransformer, self).__init__()
+                 with_cp=False,
+                 pretrained=None,
+                 init_cfg=None):
+        super(VisionTransformer, self).__init__(init_cfg)
+        self.pretrained = pretrained
+
         self.img_size = img_size
         self.patch_size = patch_size
         self.features = self.embed_dim = embed_dim
@@ -319,7 +326,8 @@ class VisionTransformer(nn.Module):
         self.norm_eval = norm_eval
         self.with_cp = with_cp
 
-    def init_weights(self, pretrained=None):
+    def init_weights(self):
+        pretrained = self.pretrained
         if isinstance(pretrained, str):
             logger = get_root_logger()
             checkpoint = _load_checkpoint(pretrained, logger=logger)

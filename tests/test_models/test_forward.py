@@ -215,6 +215,7 @@ def _test_encoder_decoder_forward(cfg_file):
 
     from mmseg.models import build_segmentor
     segmentor = build_segmentor(model)
+    segmentor.init_weights()
 
     if isinstance(segmentor.decode_head, nn.ModuleList):
         num_classes = segmentor.decode_head[-1].num_classes
