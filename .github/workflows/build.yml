@@ -44,17 +44,15 @@ jobs:
         run: pip install Pillow==6.2.2
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install MMCV
+      - name: Install mmseg dependencies
         run: |
-          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch${{matrix.torch}}/index.html
-          python -c 'import mmcv; print(mmcv.__version__)'
-      - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
+          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch${{matrix.torch}}/index.html
+          pip install -r requirements.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
         run: |
-          coverage run --branch --source mmdet -m pytest tests/
+          coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
 
