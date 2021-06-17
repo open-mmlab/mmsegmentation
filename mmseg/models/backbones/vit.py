@@ -3,15 +3,17 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import build_conv_layer, build_norm_layer
+from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
+                      kaiming_init, normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import _load_checkpoint
 from mmcv.runner.base_module import BaseModule, ModuleList
+from torch.nn.modules.batchnorm import _BatchNorm
+from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import to_2tuple, vit_convert
-from .base_backbone import BaseBackbone
+from ..utils import vit_convert
 
 
 class TransformerEncoderLayer(BaseModule):
@@ -164,7 +166,7 @@ class PatchEmbed(BaseModule):
 
 
 @BACKBONES.register_module()
-class VisionTransformer(BaseBackbone):
+class VisionTransformer(BaseModule):
     """Vision Transformer.
 
     A PyTorch implement of : `An Image is Worth 16x16 Words:
@@ -300,8 +302,6 @@ class VisionTransformer(BaseBackbone):
         return getattr(self, self.norm1_name)
 
     def init_weights(self, pretrained=None):
-        super(VisionTransformer, self).init_weights(pretrained)
-
         if isinstance(pretrained, str):
             logger = get_root_logger()
             checkpoint = _load_checkpoint(pretrained, logger=logger)
@@ -333,8 +333,27 @@ class VisionTransformer(BaseBackbone):
             self.load_state_dict(state_dict, False)
 
         elif pretrained is None:
+            super(VisionTransformer, self).init_weights(pretrained)
             # Modified from ClassyVision
-            nn.init.normal_(self.pos_embed, std=0.02)
+            trunc_normal_init(self.pos_embed, std=.02)
+            trunc_normal_init(self.cls_token, std=.02)
+            for n, m in self.named_modules():
+                if isinstance(m, nn.Linear):
+                    trunc_normal_init(m.weight, std=.02)
+                    if m.bias is not None:
+                        if 'ffn' in n:
+                            normal_init(m.bias, std=1e-6)
+                        else:
+                            constant_init(m.bias, 0)
+                elif isinstance(m, nn.Conv2d):
+                    kaiming_init(m.weight, mode='fan_in')
+                    if m.bias is not None:
+                        constant_init(m.bias, 0)
+                elif isinstance(m, (_BatchNorm, nn.GroupNorm, nn.LayerNorm)):
+                    constant_init(m.bias, 0)
+                    constant_init(m.weight, 1.0)
+        else:
+            raise TypeError('pretrained must be a str or None')
 
     def _pos_embeding(self, img, patched_img, pos_embed):
         """Positiong embeding method.
