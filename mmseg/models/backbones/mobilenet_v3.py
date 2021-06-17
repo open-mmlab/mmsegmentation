@@ -1,10 +1,9 @@
-import logging
+import warnings
 
 import mmcv
-import torch.nn as nn
-from mmcv.cnn import ConvModule, constant_init, kaiming_init
+from mmcv.cnn import ConvModule
 from mmcv.cnn.bricks import Conv2dAdaptivePadding
-from mmcv.runner import load_checkpoint
+from mmcv.runner import BaseModule
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from ..builder import BACKBONES
@@ -12,7 +11,7 @@ from ..utils import InvertedResidualV3 as InvertedResidual
 
 
 @BACKBONES.register_module()
-class MobileNetV3(nn.Module):
+class MobileNetV3(BaseModule):
     """MobileNetV3 backbone.
 
     This backbone is the improved implementation of `Searching for MobileNetV3
@@ -35,6 +34,9 @@ class MobileNetV3(nn.Module):
         with_cp (bool): Use checkpoint or not. Using checkpoint will save
             some memory while slowing down the training speed.
             Default: False.
+        pretrained (str, optional): model pretrained path. Default: None
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None
     """
     # Parameters to build each block:
     #     [kernel size, mid channels, out channels, with_se, act type, stride]
@@ -75,8 +77,30 @@ class MobileNetV3(nn.Module):
                  frozen_stages=-1,
                  reduction_factor=1,
                  norm_eval=False,
-                 with_cp=False):
-        super(MobileNetV3, self).__init__()
+                 with_cp=False,
+                 pretrained=None,
+                 init_cfg=None):
+        super(MobileNetV3, self).__init__(init_cfg)
+
+        self.pretrained = pretrained
+        assert not (init_cfg and pretrained), \
+            'init_cfg and pretrained cannot be setting at the same time'
+        if isinstance(pretrained, str):
+            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+                          'please use "init_cfg" instead')
+            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
+        elif pretrained is None:
+            if init_cfg is None:
+                self.init_cfg = [
+                    dict(type='Kaiming', layer='Conv2d'),
+                    dict(
+                        type='Constant',
+                        val=1,
+                        layer=['_BatchNorm', 'GroupNorm'])
+                ]
+        else:
+            raise TypeError('pretrained must be a str or None')
+
         assert arch in self.arch_settings
         assert isinstance(reduction_factor, int) and reduction_factor > 0
         assert mmcv.is_tuple_of(out_indices, int)
@@ -216,19 +240,6 @@ class MobileNetV3(nn.Module):
                     modified_module.padding = (pad, pad)
 
         return layers
-
-    def init_weights(self, pretrained=None):
-        if isinstance(pretrained, str):
-            logger = logging.getLogger()
-            load_checkpoint(self, pretrained, strict=False, logger=logger)
-        elif pretrained is None:
-            for m in self.modules():
-                if isinstance(m, nn.Conv2d):
-                    kaiming_init(m)
-                elif isinstance(m, nn.BatchNorm2d):
-                    constant_init(m, 1)
-        else:
-            raise TypeError('pretrained must be a str or None')
 
     def forward(self, x):
         outs = []
