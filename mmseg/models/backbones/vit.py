@@ -50,9 +50,8 @@ class TransformerEncoderLayer(BaseModule):
                  qkv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 batch_first=False,
-                 init_cfg=None):
-        super(TransformerEncoderLayer, self).__init__(init_cfg=init_cfg)
+                 batch_first=False):
+        super(TransformerEncoderLayer, self).__init__()
 
         self.norm1_name, norm1 = build_norm_layer(
             norm_cfg, embed_dims, postfix=1)
@@ -87,13 +86,6 @@ class TransformerEncoderLayer(BaseModule):
     def norm2(self):
         return getattr(self, self.norm2_name)
 
-    def init_weights(self):
-        super(TransformerEncoderLayer, self).init_weights()
-        for m in self.ffn.modules():
-            if isinstance(m, nn.Linear):
-                nn.init.xavier_normal_(m.weight)
-                nn.init.normal_(m.bias, std=1e-6)
-
     def forward(self, x):
         x = self.attn(self.norm1(x), identity=x)
         x = self.ffn(self.norm2(x), identity=x)
@@ -112,8 +104,6 @@ class PatchEmbed(BaseModule):
         norm_cfg (dict, optional): Config dict for normalization layer.
         conv_cfg (dict, optional): The config dict for conv layers.
             Default: None.
-        init_cfg (`mmcv.ConfigDict`, optional): The Config for initialization.
-            Default: None.
     """
 
     def __init__(self,
@@ -122,9 +112,8 @@ class PatchEmbed(BaseModule):
                  in_channels=3,
                  embed_dim=768,
                  norm_cfg=None,
-                 conv_cfg=None,
-                 init_cfg=None):
-        super(PatchEmbed, self).__init__(init_cfg)
+                 conv_cfg=None):
+        super(PatchEmbed, self).__init__()
 
         self.img_size = img_size
         self.patch_size = to_2tuple(patch_size)
@@ -202,7 +191,6 @@ class VisionTransformer(BaseModule):
             embeding vector resize. Default: bicubic.
         num_fcs (int): The number of fully-connected layers for FFNs.
             Default: 2.
-        init_cfg (dict, optional): Initialization config dict. Default: None.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
@@ -229,10 +217,9 @@ class VisionTransformer(BaseModule):
                  final_norm=False,
                  interpolate_mode='bicubic',
                  num_fcs=2,
-                 init_cfg=None,
                  norm_eval=False,
                  with_cp=False):
-        super(VisionTransformer, self).__init__(init_cfg)
+        super(VisionTransformer, self).__init__()
 
         if isinstance(img_size, int):
             img_size = to_2tuple(img_size)
@@ -333,8 +320,8 @@ class VisionTransformer(BaseModule):
             self.load_state_dict(state_dict, False)
 
         elif pretrained is None:
-            super(VisionTransformer, self).init_weights(pretrained)
-            # Modified from ClassyVision
+            # We only implement the 'jax_impl' initialization implemented at
+            # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
             trunc_normal_init(self.pos_embed, std=.02)
             trunc_normal_init(self.cls_token, std=.02)
             for n, m in self.named_modules():
