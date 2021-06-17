@@ -14,7 +14,7 @@ from .decode_head import BaseDecodeHead
 class ViTPostProcessBlock(nn.Module):
 
     def __init__(self,
-                 channels=768,
+                 in_channels=768,
                  out_channels=[96, 192, 384, 768],
                  img_size=[384, 384],
                  readout_type='ignore',
@@ -24,10 +24,11 @@ class ViTPostProcessBlock(nn.Module):
                  paddings=[0, 0, 0, 1]):
         super(ViTPostProcessBlock, self).__init__()
 
-        self.readout_ops = _make_readout_ops(channels, out_channels,
+        self.readout_ops = _make_readout_ops(in_channels, out_channels,
                                              readout_type, start_index)
 
-        self.unflatten_size = torch.Size(img_size[0] // 16, img_size[1] // 16)
+        self.unflatten_size = torch.Size(
+            [img_size[0] // 16, img_size[1] // 16])
 
         self.post_process_ops = []
         for idx, out_channels in enumerate(out_channels):
@@ -35,7 +36,7 @@ class ViTPostProcessBlock(nn.Module):
                 nn.Sequential(
                     self.readout_ops[idx], Transpose(1, 2),
                     nn.Unflatten(2, self.unflatten_size),
-                    Conv2d(channels, out_channels, kernel_size=1),
+                    Conv2d(in_channels, out_channels, kernel_size=1),
                     ConvTranspose2d(
                         out_channels,
                         out_channels,
@@ -52,10 +53,7 @@ class ViTPostProcessBlock(nn.Module):
 
 class ResidualConvUnit(nn.Module):
 
-    def __init__(self,
-                 in_channels,
-                 act_cfg=dict(type='ReLU'),
-                 norm_cfg=dict(type='BN')):
+    def __init__(self, in_channels, act_cfg=None, norm_cfg=None):
         super(ResidualConvUnit, self).__init__()
         self.channels = in_channels
 
@@ -138,50 +136,57 @@ class FeatureFusionBlock(nn.Module):
 
 @HEADS.register_module()
 class DPTHead(BaseDecodeHead):
+    """Vision Transformers for Dense Prediction.
+
+    This head is implemented of `DPT <https://arxiv.org/abs/2103.13413>`_.
+
+    Args:
+    """
 
     def __init__(self,
-                 num_classes,
-                 in_channels=256,
                  img_size=[384, 384],
-                 channels=[96, 192, 384, 768],
+                 out_channels=[96, 192, 384, 768],
                  readout_type='ignore',
                  patch_start_index=1,
                  post_process_kernel_size=[4, 2, 1, 3],
                  post_process_strides=[4, 2, 1, 2],
                  post_process_paddings=[0, 0, 0, 1],
                  expand_channels=False,
-                 act_cfg=None,
-                 norm_cfg=None):
-        super(DPTHead, self).__init__()
+                 act_cfg=dict(type='ReLU'),
+                 norm_cfg=dict(type='BN'),
+                 **kwards):
+        super(DPTHead, self).__init__(**kwards)
 
-        self.in_channels = in_channels
-        self.num_classes = num_classes
-        self.channels = channels
+        self.in_channels = self.in_channels
+        self.out_channels = out_channels
         self.expand_channels = expand_channels
         self.post_process_block = ViTPostProcessBlock(
-            in_channels, channels, img_size, readout_type, patch_start_index,
-            post_process_kernel_size, post_process_strides,
+            self.channels, out_channels, img_size, readout_type,
+            patch_start_index, post_process_kernel_size, post_process_strides,
             post_process_paddings)
 
         out_channels = [
             channel * math.pow(2, idx) if expand_channels else channel
-            for idx, channel in enumerate(channels)
+            for idx, channel in enumerate(self.out_channels)
         ]
         self.convs = []
-        for idx, channel in enumerate(channels):
+        for idx, channel in enumerate(self.out_channels):
             self.convs.append(
-                Conv2d(channel, out_channels[idx], kernel_size=3, padding=1))
+                Conv2d(
+                    channel, self.out_channels[idx], kernel_size=3, padding=1))
 
-        self.refinenet0 = FeatureFusionBlock(in_channels, act_cfg, norm_cfg)
-        self.refinenet1 = FeatureFusionBlock(in_channels, act_cfg, norm_cfg)
-        self.refinenet2 = FeatureFusionBlock(in_channels, act_cfg, norm_cfg)
-        self.refinenet3 = FeatureFusionBlock(in_channels, act_cfg, norm_cfg)
+        self.refinenet0 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
+        self.refinenet1 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
+        self.refinenet2 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
+        self.refinenet3 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
 
         self.conv = ConvModule(
-            self.in_channels, self.in_channels, kernel_size=3, padding=1)
+            self.channels, self.channels, kernel_size=3, padding=1)
 
     def forward(self, inputs):
-        x = self.post_process_block(self._transform_inputs(inputs))
+        x = self._transform_inputs(inputs)
+        x = self.post_process_block(x)
+
         x = [self.convs[idx](feature) for idx, feature in enumerate(x)]
 
         path_3 = self.refinenet3(x[3])
