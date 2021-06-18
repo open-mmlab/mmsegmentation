@@ -12,7 +12,6 @@ class SETRUPHead(BaseDecodeHead):
     Naive or PUP head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`.
 
     Args:
-        embed_dim (int): embedding dimension. Default: 1024.
         norm_layer (dict): Config dict for input normalization.
             Default: norm_layer=dict(type='LN', eps=1e-6, requires_grad=True).
         num_convs (int): Number of decoder convolutions. Default: 1.
