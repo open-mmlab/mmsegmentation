@@ -10,7 +10,7 @@ model = dict(
         dict(
             type='SETRUPHead',
             in_channels=1024,
-            channels=512,
+            channels=256,
             in_index=0,
             num_classes=150,
             dropout_ratio=0,
@@ -24,7 +24,7 @@ model = dict(
         dict(
             type='SETRUPHead',
             in_channels=1024,
-            channels=512,
+            channels=256,
             in_index=1,
             num_classes=150,
             dropout_ratio=0,
@@ -38,7 +38,7 @@ model = dict(
         dict(
             type='SETRUPHead',
             in_channels=1024,
-            channels=512,
+            channels=256,
             in_index=2,
             num_classes=150,
             dropout_ratio=0,
