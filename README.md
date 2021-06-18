@@ -48,7 +48,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.14.0 was released in 06/02/2021.
+v0.14.1 was released in 06/16/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -92,7 +92,7 @@ Supported methods:
 
 ## Installation
 
-Please refer to [get_started.md](docs/get_started.md#installation) for installation and dataset preparation.
+Please refer to [get_started.md](docs/get_started.md#installation) for installation and [dataset_prepare.md](docs/dataset_prepare.md#prepare-datasets) for dataset preparation.
 
 ## Get Started
 
