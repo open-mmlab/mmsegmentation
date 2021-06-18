@@ -2,12 +2,12 @@ import math
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from mmcv.cnn import (Conv2d, ConvModule, ConvTranspose2d,
-                      build_activation_layer, build_norm_layer)
+from mmcv.cnn import (Conv2d, ConvModule, build_activation_layer,
+                      build_norm_layer, build_upsample_layer)
 
+from mmseg.ops import resize
 from ..builder import HEADS
-from ..utils import Transpose, _make_readout_ops
+from ..utils import _make_readout_ops
 from .decode_head import BaseDecodeHead
 
 
@@ -34,10 +34,10 @@ class ViTPostProcessBlock(nn.Module):
         for idx, out_channels in enumerate(out_channels):
             self.post_process_ops.append(
                 nn.Sequential(
-                    self.readout_ops[idx], Transpose(1, 2),
-                    nn.Unflatten(2, self.unflatten_size),
-                    Conv2d(in_channels, out_channels, kernel_size=1),
-                    ConvTranspose2d(
+                    self.readout_ops[idx], torch.Tensor.transpose(1, 2),
+                    torch.Tensor.view(self.unflatten_size),
+                    ConvModule(in_channels, out_channels, kernel_size=1),
+                    build_upsample_layer(
                         out_channels,
                         out_channels,
                         kernel_size=kernel_sizes[idx],
@@ -61,14 +61,14 @@ class ResidualConvUnit(nn.Module):
         self.bn = False if norm_cfg is None else True
         self.bias = not self.bn
 
-        self.conv1 = Conv2d(
+        self.conv1 = ConvModule(
             self.channels,
             self.channels,
             kernel_size=3,
             padding=1,
             bias=self.bias)
 
-        self.conv2 = Conv2d(
+        self.conv2 = ConvModule(
             self.channels,
             self.channels,
             kernel_size=3,
@@ -76,8 +76,8 @@ class ResidualConvUnit(nn.Module):
             bias=self.bias)
 
         if self.bn:
-            self.bn1 = build_norm_layer(norm_cfg, self.channels)
-            self.bn2 = build_norm_layer(norm_cfg, self.channels)
+            _, self.bn1 = build_norm_layer(norm_cfg, self.channels)
+            _, self.bn2 = build_norm_layer(norm_cfg, self.channels)
 
     def forward(self, inputs):
         x = self.activation(inputs)
@@ -126,7 +126,7 @@ class FeatureFusionBlock(nn.Module):
         if len(inputs) == 2:
             x = x + self.res_conv_unit1(inputs[1])
         x = self.res_conv_unit2(x)
-        x = F.interpolate(
+        x = resize(
             x,
             scale_factor=2,
             mode='bilinear',
