@@ -241,7 +241,7 @@ class VisionTransformer(BaseModule):
 
         assert pretrain_style in ['timm', 'mmcls']
 
-        if isinstance(pretrained, (str, None)):
+        if isinstance(pretrained, (str, type(None))):
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
                           'please use "init_cfg" instead')
         else:
