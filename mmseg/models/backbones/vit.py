@@ -7,8 +7,7 @@ import torch.nn.functional as F
 from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
                       kaiming_init, normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
-from mmcv.runner import _load_checkpoint
-from mmcv.runner.base_module import BaseModule, ModuleList
+from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
