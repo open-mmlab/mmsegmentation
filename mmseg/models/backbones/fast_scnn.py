@@ -48,8 +48,7 @@ class LearningToDownsample(nn.Module):
             padding=1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg,
-            bias=True)
+            act_cfg=self.act_cfg)
 
         self.dsconv1 = DepthwiseSeparableConvModule(
             dw_channels1,
@@ -58,8 +57,8 @@ class LearningToDownsample(nn.Module):
             stride=2,
             padding=1,
             norm_cfg=self.norm_cfg,
-            dw_act_cfg=None,
-            bias=True)
+            dw_act_cfg=None)
+
         self.dsconv2 = DepthwiseSeparableConvModule(
             dw_channels2,
             out_channels,
@@ -67,8 +66,7 @@ class LearningToDownsample(nn.Module):
             stride=2,
             padding=1,
             norm_cfg=self.norm_cfg,
-            dw_act_cfg=None,
-            bias=True)
+            dw_act_cfg=None)
 
     def forward(self, x):
         x = self.conv(x)
@@ -143,8 +141,8 @@ class GlobalFeatureExtractor(nn.Module):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
-            align_corners=True,
-            bias=True)
+            align_corners=True)
+
         self.out = ConvModule(
             block_channels[2] * 2,
             out_channels,
@@ -152,8 +150,7 @@ class GlobalFeatureExtractor(nn.Module):
             padding=1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg,
-            bias=True)
+            act_cfg=self.act_cfg)
 
     def _make_layer(self,
                     in_channels,
@@ -236,16 +233,16 @@ class FeatureFusionModule(nn.Module):
             1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=None,
-            bias=True)
+            act_cfg=None)
+
         self.conv_higher_res = ConvModule(
             higher_in_channels,
             out_channels,
             1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=None,
-            bias=True)
+            act_cfg=None)
+
         self.relu = nn.ReLU(True)
 
     def forward(self, higher_res_feature, lower_res_feature):
@@ -381,28 +378,10 @@ class FastSCNN(nn.Module):
                 constant_init(m, 1)
 
     def forward(self, x):
-
-        # x = torch.ones((1, 3, 512, 512), dtype=torch.float32).cuda()
-        import mmcv
-        import numpy as np
-        x = torch.from_numpy(
-            mmcv.imfrombytes(mmcv.FileClient().get(
-                '/home/SENSETIME/xiexinchen/Desktop/seg/ade_test2.jpg')).
-            astype(np.float32)).permute(2, 0, 1).unsqueeze(0).cuda()
-
-        print('input shape: ', x.shape)
-        print('input: ', x.sum())
         higher_res_features = self.learning_to_downsample(x)
-        print(higher_res_features.shape)
-        print('learning_to_downsample: ', higher_res_features.sum())
         lower_res_features = self.global_feature_extractor(higher_res_features)
-        print(lower_res_features.shape)
-        print('global_feature_extractor: ', lower_res_features.sum())
-
         fusion_output = self.feature_fusion(higher_res_features,
                                             lower_res_features)
-        print(fusion_output.shape)
-        print('feature_fusion: ', fusion_output.sum())
 
         outs = [higher_res_features, lower_res_features, fusion_output]
         outs = [outs[i] for i in self.out_indices]
