@@ -92,7 +92,7 @@ Supported methods:
 
 ## Installation
 
-Please refer to [get_started.md](docs/get_started.md#installation) for installation and dataset preparation.
+Please refer to [get_started.md](docs/get_started.md#installation) for installation and [dataset_prepare.md](docs/dataset_prepare.md#prepare-datasets) for dataset preparation.
 
 ## Get Started
 
