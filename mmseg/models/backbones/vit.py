@@ -1,4 +1,5 @@
 import math
+import warnings
 
 import torch
 import torch.nn as nn
@@ -198,6 +199,9 @@ class VisionTransformer(BaseModule):
             some memory while slowing down the training speed. Default: False.
         pretrain_style (str): Choose to use timm or mmcls pretrain weights.
             Default: timm.
+        pretrained (str, optional): model pretrained path. Default: None.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     """
 
     def __init__(self,
@@ -221,7 +225,9 @@ class VisionTransformer(BaseModule):
                  num_fcs=2,
                  norm_eval=False,
                  with_cp=False,
-                 pretrain_style='timm'):
+                 pretrain_style='timm',
+                 pretrained=None,
+                 init_cfg=None):
         super(VisionTransformer, self).__init__()
 
         if isinstance(img_size, int):
@@ -235,6 +241,14 @@ class VisionTransformer(BaseModule):
 
         assert pretrain_style in ['timm', 'mmcls']
 
+        if isinstance(pretrained, (str, type(None))):
+            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+                          'please use "init_cfg" instead')
+        else:
+            raise TypeError('pretrained must be a str or None')
+
+        self.pretrained = pretrained
+        self.init_cfg = init_cfg
         self.pretrain_style = pretrain_style
         self.img_size = img_size
         self.patch_size = patch_size
@@ -294,10 +308,10 @@ class VisionTransformer(BaseModule):
     def norm1(self):
         return getattr(self, self.norm1_name)
 
-    def init_weights(self, pretrained=None):
-        if isinstance(pretrained, str):
+    def init_weights(self):
+        if isinstance(self.pretrained, str):
             logger = get_root_logger()
-            checkpoint = _load_checkpoint(pretrained, logger=logger)
+            checkpoint = _load_checkpoint(self.pretrained, logger=logger)
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
             elif 'model' in checkpoint:
@@ -325,7 +339,8 @@ class VisionTransformer(BaseModule):
 
             self.load_state_dict(state_dict, False)
 
-        elif pretrained is None:
+        elif self.pretrained is None:
+            super(VisionTransformer, self).init_weights()
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
             trunc_normal_init(self.pos_embed, std=.02)

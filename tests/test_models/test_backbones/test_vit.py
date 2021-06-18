@@ -35,8 +35,13 @@ def test_vit_backbone():
 
     # Test img_size isinstance tuple
     imgs = torch.randn(1, 3, 224, 224)
-    model = VisionTransformer(img_size=(224, 224))
+    model = VisionTransformer(img_size=(224, ))
     model.init_weights()
+    model(imgs)
+
+    # Test img_size isinstance tuple
+    imgs = torch.randn(1, 3, 224, 224)
+    model = VisionTransformer(img_size=(224, 224))
     model(imgs)
 
     # Test norm_eval = True
