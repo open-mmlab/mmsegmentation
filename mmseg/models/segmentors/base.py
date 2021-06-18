@@ -1,4 +1,3 @@
-import logging
 import warnings
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
@@ -7,17 +6,14 @@ import mmcv
 import numpy as np
 import torch
 import torch.distributed as dist
-import torch.nn as nn
-from mmcv.runner import auto_fp16
+from mmcv.runner import BaseModule, auto_fp16
 
 
-class BaseSegmentor(nn.Module):
+class BaseSegmentor(BaseModule, metaclass=ABCMeta):
     """Base class for segmentors."""
 
-    __metaclass__ = ABCMeta
-
-    def __init__(self):
-        super(BaseSegmentor, self).__init__()
+    def __init__(self, init_cfg=None):
+        super(BaseSegmentor, self).__init__(init_cfg)
         self.fp16_enabled = False
 
     @property
@@ -61,17 +57,6 @@ class BaseSegmentor(nn.Module):
     def aug_test(self, imgs, img_metas, **kwargs):
         """Placeholder for augmentation test."""
         pass
-
-    def init_weights(self, pretrained=None):
-        """Initialize the weights in segmentor.
-
-        Args:
-            pretrained (str, optional): Path to pre-trained weights.
-                Defaults to None.
-        """
-        if pretrained is not None:
-            logger = logging.getLogger()
-            logger.info(f'load model from: {pretrained}')
 
     def forward_test(self, imgs, img_metas, **kwargs):
         """

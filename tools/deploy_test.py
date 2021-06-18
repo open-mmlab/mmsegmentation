@@ -2,10 +2,10 @@ import argparse
 import os
 import os.path as osp
 import warnings
+from typing import Any, Iterable
 
 import mmcv
 import numpy as np
-import onnxruntime as ort
 import torch
 from mmcv.parallel import MMDataParallel
 from mmcv.runner import get_dist_info
@@ -18,8 +18,10 @@ from mmseg.models.segmentors.base import BaseSegmentor
 
 class ONNXRuntimeSegmentor(BaseSegmentor):
 
-    def __init__(self, onnx_file, cfg, device_id):
+    def __init__(self, onnx_file: str, cfg: Any, device_id: int):
         super(ONNXRuntimeSegmentor, self).__init__()
+        import onnxruntime as ort
+
         # get the custom op path
         ort_custom_op_path = ''
         try:
@@ -60,7 +62,8 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
     def forward_train(self, imgs, img_metas, **kwargs):
         raise NotImplementedError('This method is not implemented.')
 
-    def simple_test(self, img, img_meta, **kwargs):
+    def simple_test(self, img: torch.Tensor, img_meta: Iterable,
+                    **kwargs) -> list:
         device_type = img.device.type
         self.io_binding.bind_input(
             name='input',
@@ -87,11 +90,63 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
         raise NotImplementedError('This method is not implemented.')
 
 
-def parse_args():
+class TensorRTSegmentor(BaseSegmentor):
+
+    def __init__(self, trt_file: str, cfg: Any, device_id: int):
+        super(TensorRTSegmentor, self).__init__()
+        from mmcv.tensorrt import TRTWraper, load_tensorrt_plugin
+        try:
+            load_tensorrt_plugin()
+        except (ImportError, ModuleNotFoundError):
+            warnings.warn('If input model has custom op from mmcv, \
+                you may have to build mmcv with TensorRT from source.')
+        model = TRTWraper(
+            trt_file, input_names=['input'], output_names=['output'])
+
+        self.model = model
+        self.device_id = device_id
+        self.cfg = cfg
+        self.test_mode = cfg.model.test_cfg.mode
+
+    def extract_feat(self, imgs):
+        raise NotImplementedError('This method is not implemented.')
+
+    def encode_decode(self, img, img_metas):
+        raise NotImplementedError('This method is not implemented.')
+
+    def forward_train(self, imgs, img_metas, **kwargs):
+        raise NotImplementedError('This method is not implemented.')
+
+    def simple_test(self, img: torch.Tensor, img_meta: Iterable,
+                    **kwargs) -> list:
+        with torch.cuda.device(self.device_id), torch.no_grad():
+            seg_pred = self.model({'input': img})['output']
+        seg_pred = seg_pred.detach().cpu().numpy()
+        # whole might support dynamic reshape
+        ori_shape = img_meta[0]['ori_shape']
+        if not (ori_shape[0] == seg_pred.shape[-2]
+                and ori_shape[1] == seg_pred.shape[-1]):
+            seg_pred = torch.from_numpy(seg_pred).float()
+            seg_pred = torch.nn.functional.interpolate(
+                seg_pred, size=tuple(ori_shape[:2]), mode='nearest')
+            seg_pred = seg_pred.long().detach().cpu().numpy()
+        seg_pred = seg_pred[0]
+        seg_pred = list(seg_pred)
+        return seg_pred
+
+    def aug_test(self, imgs, img_metas, **kwargs):
+        raise NotImplementedError('This method is not implemented.')
+
+
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description='mmseg onnxruntime backend test (and eval) a model')
+        description='mmseg backend test (and eval)')
     parser.add_argument('config', help='test config file path')
     parser.add_argument('model', help='Input model file')
+    parser.add_argument(
+        '--backend',
+        help='Backend of the model.',
+        choices=['onnxruntime', 'tensorrt'])
     parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
         '--format-only',
@@ -163,7 +218,12 @@ def main():
 
     # load onnx config and meta
     cfg.model.train_cfg = None
-    model = ONNXRuntimeSegmentor(args.model, cfg=cfg, device_id=0)
+
+    if args.backend == 'onnxruntime':
+        model = ONNXRuntimeSegmentor(args.model, cfg=cfg, device_id=0)
+    elif args.backend == 'tensorrt':
+        model = TensorRTSegmentor(args.model, cfg=cfg, device_id=0)
+
     model.CLASSES = dataset.CLASSES
     model.PALETTE = dataset.PALETTE
 
