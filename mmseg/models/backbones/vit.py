@@ -339,7 +339,7 @@ class VisionTransformer(BaseModule):
 
             self.load_state_dict(state_dict, False)
 
-        elif self.pretrained is None:
+        elif isinstance(self.pretrained, type(None)):
             super(VisionTransformer, self).init_weights()
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
@@ -360,8 +360,6 @@ class VisionTransformer(BaseModule):
                 elif isinstance(m, (_BatchNorm, nn.GroupNorm, nn.LayerNorm)):
                     constant_init(m.bias, 0)
                     constant_init(m.weight, 1.0)
-        else:
-            raise TypeError('pretrained must be a str or None')
 
     def _pos_embeding(self, img, patched_img, pos_embed):
         """Positiong embeding method.

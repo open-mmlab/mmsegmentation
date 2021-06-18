@@ -31,7 +31,12 @@ def test_vit_backbone():
         model(x)
 
     with pytest.raises(AssertionError):
+        # The length of img_size tuple must be lower than 3.
         VisionTransformer(img_size=(224, 224, 224))
+
+    with pytest.raises(TypeError):
+        # Pretrained must be None or Str.
+        VisionTransformer(pretrained=123)
 
     # Test img_size isinstance tuple
     imgs = torch.randn(1, 3, 224, 224)
