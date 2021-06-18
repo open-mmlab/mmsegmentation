@@ -1,8 +1,7 @@
 import torch.nn as nn
-from mmcv.cnn import ConvModule, build_norm_layer
+from mmcv.cnn import ConvModule, build_norm_layer, trunc_normal_init
 
 from ..builder import HEADS
-from ..utils import trunc_normal_
 from .decode_head import BaseDecodeHead
 
 
@@ -60,7 +59,7 @@ class SETRUPHead(BaseDecodeHead):
     def init_weights(self):
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                trunc_normal_(m.weight, std=.02)
+                trunc_normal_init(m.weight, std=.02)
                 if isinstance(m, nn.Linear) and m.bias is not None:
                     nn.init.constant_(m.bias, 0)
             elif isinstance(m, nn.LayerNorm):
