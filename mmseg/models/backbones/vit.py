@@ -243,7 +243,7 @@ class VisionTransformer(BaseModule):
         assert out_shape in ['NLC',
                              'NCHW'], 'output shape must be "NLC" or "NCHW".'
 
-        if isinstance(pretrained, (str, type(None))):
+        if isinstance(pretrained, str) or pretrained is None:
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
                           'please use "init_cfg" instead')
         else:
@@ -350,7 +350,7 @@ class VisionTransformer(BaseModule):
 
             self.load_state_dict(state_dict, False)
 
-        elif isinstance(self.pretrained, type(None)):
+        elif self.pretrained is None:
             super(VisionTransformer, self).init_weights()
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
