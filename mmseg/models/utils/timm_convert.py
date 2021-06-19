@@ -27,7 +27,6 @@ def vit_convert(timm_dict):
                 new_k = new_k.replace('attn.proj', 'attn.attn.out_proj')
         else:
             new_k = k
-        new_k = f'backbone.{new_k}'
         mmseg_dict[new_k] = v
 
     return mmseg_dict
