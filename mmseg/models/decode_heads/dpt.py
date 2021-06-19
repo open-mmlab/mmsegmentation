@@ -3,7 +3,7 @@ import math
 import torch
 import torch.nn as nn
 from mmcv.cnn import (Conv2d, ConvModule, build_activation_layer,
-                      build_norm_layer, build_upsample_layer)
+                      build_norm_layer)
 
 from mmseg.ops import resize
 from ..builder import HEADS
@@ -19,9 +19,7 @@ class ViTPostProcessBlock(nn.Module):
                  img_size=[384, 384],
                  readout_type='ignore',
                  start_index=1,
-                 kernel_sizes=[4, 2, 1, 3],
-                 strides=[4, 2, 1, 2],
-                 paddings=[0, 0, 0, 1]):
+                 scale_factors=[4, 2, 1, 0.5]):
         super(ViTPostProcessBlock, self).__init__()
 
         self.readout_ops = _make_readout_ops(in_channels, out_channels,
@@ -30,24 +28,9 @@ class ViTPostProcessBlock(nn.Module):
         self.unflatten_size = torch.Size(
             [img_size[0] // 16, img_size[1] // 16])
 
-        self.post_process_ops = []
-        for idx, out_channels in enumerate(out_channels):
-            self.post_process_ops.append(
-                nn.Sequential(
-                    self.readout_ops[idx], torch.Tensor.transpose(1, 2),
-                    torch.Tensor.view(self.unflatten_size),
-                    ConvModule(in_channels, out_channels, kernel_size=1),
-                    build_upsample_layer(
-                        out_channels,
-                        out_channels,
-                        kernel_size=kernel_sizes[idx],
-                        stride=strides[idx],
-                        padding=paddings[idx])))
-
     def forward(self, inputs):
         assert len(inputs) == len(self.readout_ops)
-        for idx, x in enumerate(inputs):
-            inputs[idx] = self.post_process_ops[idx](x)
+
         return inputs
 
 
