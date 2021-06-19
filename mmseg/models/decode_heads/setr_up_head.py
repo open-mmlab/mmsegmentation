@@ -69,9 +69,9 @@ class SETRUPHead(BaseDecodeHead):
         x = self._transform_inputs(x)
 
         n, c, h, w = x.shape
-        x = x.reshape(n, c, h * w).transpose(2, 1)
+        x = x.reshape(n, c, h * w).transpose(2, 1).contiguous()
         x = self.norm(x)
-        x = x.transpose(1, 2).reshape(n, c, h, w)
+        x = x.transpose(1, 2).reshape(n, c, h, w).contiguous()
 
         for up_conv in self.up_convs:
             x = up_conv(x)

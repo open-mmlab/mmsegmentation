@@ -108,9 +108,9 @@ class MLANeck(nn.Module):
         for i in range(len(inputs)):
             x = inputs[i]
             n, c, h, w = x.shape
-            x = x.reshape(n, c, h * w).transpose(2, 1)
+            x = x.reshape(n, c, h * w).transpose(2, 1).contiguous()
             x = self.norm[i](x)
-            x = x.transpose(1, 2).reshape(n, c, h, w)
+            x = x.transpose(1, 2).reshape(n, c, h, w).contiguous()
             outs.append(x)
 
         outs = self.mla(outs)
