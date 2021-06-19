@@ -188,6 +188,8 @@ class VisionTransformer(BaseModule):
             Defalut: dict(type='GELU').
         final_norm (bool):  Whether to add a additional layer to normalize
             final feature map. Default: False.
+        out_shape (str): Select the output format of feature information.
+            Default: NCHW.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bicubic.
         num_fcs (int): The number of fully-connected layers for FFNs.
@@ -221,6 +223,7 @@ class VisionTransformer(BaseModule):
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
                  final_norm=False,
+                 out_shape='NCHW',
                  interpolate_mode='bicubic',
                  num_fcs=2,
                  norm_eval=False,
@@ -258,7 +261,7 @@ class VisionTransformer(BaseModule):
             patch_size=patch_size,
             in_channels=in_channels,
             embed_dim=embed_dims,
-            norm_cfg=norm_cfg)
+            norm_cfg=None)
         num_patches = self.patch_embed.num_patches
 
         self.with_cls_token = with_cls_token
@@ -294,8 +297,11 @@ class VisionTransformer(BaseModule):
                     norm_cfg=norm_cfg,
                     batch_first=True))
 
+        assert out_shape in ['NLC',
+                             'NCHW'], 'output shape must be "NLC" or "NCHW".'
         self.interpolate_mode = interpolate_mode
         self.final_norm = final_norm
+        self.out_shape = out_shape
         if final_norm:
             self.norm1_name, norm1 = build_norm_layer(
                 norm_cfg, embed_dims, postfix=1)
@@ -451,10 +457,11 @@ class VisionTransformer(BaseModule):
                     out = x[:, 1:]
                 else:
                     out = x
-                B, _, C = out.shape
-                out = out.reshape(B, inputs.shape[2] // self.patch_size,
-                                  inputs.shape[3] // self.patch_size,
-                                  C).permute(0, 3, 1, 2)
+                if self.out_shape == 'NCHW':
+                    B, _, C = out.shape
+                    out = out.reshape(B, inputs.shape[2] // self.patch_size,
+                                      inputs.shape[3] // self.patch_size,
+                                      C).permute(0, 3, 1, 2)
                 outs.append(out)
 
         return tuple(outs)
