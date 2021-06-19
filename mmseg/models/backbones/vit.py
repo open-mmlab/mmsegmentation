@@ -140,12 +140,6 @@ class PatchEmbed(BaseModule):
             self.norm = None
 
     def forward(self, x):
-        B, C, H, W = x.shape
-        # FIXME look at relaxing size constraints
-        # assert H == self.img_size[0] and W == self.img_size[1], \
-        #     f"Input image size ({H}*{W}) doesn't " \
-        #     f'match model ({self.img_size[0]}*{self.img_size[1]}).'
-        # The output size is (B, N, D), where N=H*W/P/P, D is embid_dim
         x = self.projection(x).flatten(2).transpose(1, 2)
 
         if self.norm is not None:
@@ -185,8 +179,12 @@ class VisionTransformer(BaseModule):
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
             Defalut: dict(type='GELU').
-        final_norm (bool):  Whether to add a additional layer to normalize
+        first_norm (bool): Whether to add a norm in PatchEmbed Block.
+            Default: False.
+        final_norm (bool): Whether to add a additional layer to normalize
             final feature map. Default: False.
+        out_shape (str): Select the output format of feature information.
+            Default: NCHW.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bicubic.
         num_fcs (int): The number of fully-connected layers for FFNs.
@@ -219,7 +217,9 @@ class VisionTransformer(BaseModule):
                  with_cls_token=True,
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
+                 first_norm=False,
                  final_norm=False,
+                 out_shape='NCHW',
                  interpolate_mode='bicubic',
                  num_fcs=2,
                  norm_eval=False,
@@ -240,24 +240,40 @@ class VisionTransformer(BaseModule):
 
         assert pretrain_style in ['timm', 'mmcls']
 
+        assert out_shape in ['NLC',
+                             'NCHW'], 'output shape must be "NLC" or "NCHW".'
+
         if isinstance(pretrained, (str, type(None))):
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
                           'please use "init_cfg" instead')
         else:
             raise TypeError('pretrained must be a str or None')
 
-        self.pretrained = pretrained
-        self.init_cfg = init_cfg
-        self.pretrain_style = pretrain_style
         self.img_size = img_size
         self.patch_size = patch_size
+        self.out_shape = out_shape
+        self.interpolate_mode = interpolate_mode
+        self.norm_eval = norm_eval
+        self.with_cp = with_cp
+        self.pretrain_style = pretrain_style
+        self.pretrained = pretrained
+        self.init_cfg = init_cfg
 
-        self.patch_embed = PatchEmbed(
-            img_size=img_size,
-            patch_size=patch_size,
-            in_channels=in_channels,
-            embed_dim=embed_dims,
-            norm_cfg=norm_cfg)
+        if first_norm:
+            self.patch_embed = PatchEmbed(
+                img_size=img_size,
+                patch_size=patch_size,
+                in_channels=in_channels,
+                embed_dim=embed_dims,
+                norm_cfg=norm_cfg)
+        else:
+            self.patch_embed = PatchEmbed(
+                img_size=img_size,
+                patch_size=patch_size,
+                in_channels=in_channels,
+                embed_dim=embed_dims,
+                norm_cfg=None)
+
         num_patches = self.patch_embed.num_patches
 
         self.with_cls_token = with_cls_token
@@ -293,15 +309,11 @@ class VisionTransformer(BaseModule):
                     norm_cfg=norm_cfg,
                     batch_first=True))
 
-        self.interpolate_mode = interpolate_mode
         self.final_norm = final_norm
         if final_norm:
             self.norm1_name, norm1 = build_norm_layer(
                 norm_cfg, embed_dims, postfix=1)
             self.add_module(self.norm1_name, norm1)
-
-        self.norm_eval = norm_eval
-        self.with_cp = with_cp
 
     @property
     def norm1(self):
@@ -448,10 +460,11 @@ class VisionTransformer(BaseModule):
                     out = x[:, 1:]
                 else:
                     out = x
-                B, _, C = out.shape
-                out = out.reshape(B, inputs.shape[2] // self.patch_size,
-                                  inputs.shape[3] // self.patch_size,
-                                  C).permute(0, 3, 1, 2)
+                if self.out_shape == 'NCHW':
+                    B, _, C = out.shape
+                    out = out.reshape(B, inputs.shape[2] // self.patch_size,
+                                      inputs.shape[3] // self.patch_size,
+                                      C).permute(0, 3, 1, 2)
                 outs.append(out)
 
         return tuple(outs)
