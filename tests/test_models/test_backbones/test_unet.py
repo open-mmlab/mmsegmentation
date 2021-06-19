@@ -734,7 +734,6 @@ def test_unet():
         downsamples=(True, True, True, True),
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
-    print(unet)
     x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
     assert x_outs[0].shape == torch.Size([2, 1024, 8, 8])
@@ -754,7 +753,6 @@ def test_unet():
         downsamples=(True, True, True, False),
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
-    print(unet)
     x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
     assert x_outs[0].shape == torch.Size([2, 1024, 16, 16])
@@ -774,7 +772,6 @@ def test_unet():
         downsamples=(True, True, True, False),
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
-    print(unet)
     x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
     assert x_outs[0].shape == torch.Size([2, 1024, 16, 16])
@@ -794,7 +791,6 @@ def test_unet():
         downsamples=(True, True, False, False),
         enc_dilations=(1, 1, 1, 1, 1),
         dec_dilations=(1, 1, 1, 1))
-    print(unet)
     x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
     assert x_outs[0].shape == torch.Size([2, 1024, 32, 32])
@@ -813,9 +809,9 @@ def test_unet():
         dec_num_convs=(2, 2, 2, 2),
         downsamples=(True, True, False, False),
         enc_dilations=(1, 1, 1, 1, 1),
-        dec_dilations=(1, 1, 1, 1))
-    unet.init_weights(pretrained=None)
-    print(unet)
+        dec_dilations=(1, 1, 1, 1),
+        pretrained=None)
+    unet.init_weights()
     x = torch.randn(2, 3, 128, 128)
     x_outs = unet(x)
     assert x_outs[0].shape == torch.Size([2, 1024, 32, 32])
