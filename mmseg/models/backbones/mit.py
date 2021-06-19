@@ -2,22 +2,30 @@ import math
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import build_activation_layer, build_norm_layer
-from mmcv.runner import load_checkpoint
+from mmcv.cnn import (ConvModule, Linear, build_activation_layer,
+                      build_norm_layer)
+from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import DropPath, to_2tuple, trunc_normal_
 
 
-class DWConv(nn.Module):
+class DWConv(BaseModule):
 
     def __init__(self, dim=768):
         super(DWConv, self).__init__()
-        self.dwconv = nn.Conv2d(dim, dim, 3, 1, 1, bias=True, groups=dim)
+        self.dwconv = ConvModule(
+            in_channels=dim,
+            out_channels=dim,
+            kernel_size=3,
+            stride=1,
+            padding=(3 - 1) // 2,
+            bias=True,
+            groups=dim)
 
     def forward(self, x, H, W):
-        B, N, C = x.shape
+        B, _, C = x.shape
         x = x.transpose(1, 2).view(B, C, H, W)
         x = self.dwconv(x)
         x = x.flatten(2).transpose(1, 2)
@@ -25,7 +33,7 @@ class DWConv(nn.Module):
         return x
 
 
-class Mlp(nn.Module):
+class Mlp(BaseModule):
 
     def __init__(self,
                  in_features,
@@ -36,28 +44,27 @@ class Mlp(nn.Module):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
-        self.fc1 = nn.Linear(in_features, hidden_features)
+        self.fc1 = Linear(in_features, hidden_features)
         self.dwconv = DWConv(hidden_features)
         self.act = build_activation_layer(act_cfg)
-        self.fc2 = nn.Linear(hidden_features, out_features)
+        self.fc2 = Linear(hidden_features, out_features)
         self.drop = nn.Dropout(drop)
 
-        self.apply(self._init_weights)
-
-    def _init_weights(self, m):
-        if isinstance(m, nn.Linear):
-            trunc_normal_(m.weight, std=.02)
-            if isinstance(m, nn.Linear) and m.bias is not None:
+    def init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                trunc_normal_(m.weight, std=.02)
+                if isinstance(m, nn.Linear) and m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.LayerNorm):
                 nn.init.constant_(m.bias, 0)
-        elif isinstance(m, nn.LayerNorm):
-            nn.init.constant_(m.bias, 0)
-            nn.init.constant_(m.weight, 1.0)
-        elif isinstance(m, nn.Conv2d):
-            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            fan_out //= m.groups
-            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-            if m.bias is not None:
-                m.bias.data.zero_()
+                nn.init.constant_(m.weight, 1.0)
+            elif isinstance(m, nn.Conv2d):
+                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                fan_out //= m.groups
+                m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+                if m.bias is not None:
+                    m.bias.data.zero_()
 
     def forward(self, x, H, W):
         x = self.fc1(x)
@@ -69,7 +76,7 @@ class Mlp(nn.Module):
         return x
 
 
-class Attention(nn.Module):
+class Attention(BaseModule):
 
     def __init__(self,
                  dim,
@@ -89,34 +96,36 @@ class Attention(nn.Module):
         head_dim = dim // num_heads
         self.scale = qk_scale or head_dim**-0.5
 
-        self.q = nn.Linear(dim, dim, bias=qkv_bias)
-        self.kv = nn.Linear(dim, dim * 2, bias=qkv_bias)
+        self.q = Linear(dim, dim, bias=qkv_bias)
+        self.kv = Linear(dim, dim * 2, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop)
-        self.proj = nn.Linear(dim, dim)
+        self.proj = Linear(dim, dim)
         self.proj_drop = nn.Dropout(proj_drop)
 
         self.sr_ratio = sr_ratio
         if sr_ratio > 1:
-            self.sr = nn.Conv2d(
-                dim, dim, kernel_size=sr_ratio, stride=sr_ratio)
+            self.sr = ConvModule(
+                in_channels=dim,
+                out_channels=dim,
+                kernel_size=sr_ratio,
+                stride=sr_ratio)
             _, self.norm = build_norm_layer(norm_cfg, dim)
 
-        self.apply(self._init_weights)
-
-    def _init_weights(self, m):
-        if isinstance(m, nn.Linear):
-            trunc_normal_(m.weight, std=.02)
-            if isinstance(m, nn.Linear) and m.bias is not None:
+    def init_weights(self):
+        for m in self.modules:
+            if isinstance(m, nn.Linear):
+                trunc_normal_(m.weight, std=.02)
+                if isinstance(m, nn.Linear) and m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.LayerNorm):
                 nn.init.constant_(m.bias, 0)
-        elif isinstance(m, nn.LayerNorm):
-            nn.init.constant_(m.bias, 0)
-            nn.init.constant_(m.weight, 1.0)
-        elif isinstance(m, nn.Conv2d):
-            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            fan_out //= m.groups
-            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-            if m.bias is not None:
-                m.bias.data.zero_()
+                nn.init.constant_(m.weight, 1.0)
+            elif isinstance(m, nn.Conv2d):
+                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                fan_out //= m.groups
+                m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+                if m.bias is not None:
+                    m.bias.data.zero_()
 
     def forward(self, x, H, W):
         B, N, C = x.shape
@@ -147,7 +156,7 @@ class Attention(nn.Module):
         return x
 
 
-class Block(nn.Module):
+class Block(BaseModule):
 
     def __init__(self,
                  dim,
@@ -183,22 +192,21 @@ class Block(nn.Module):
             act_cfg=act_cfg,
             drop=drop)
 
-        self.apply(self._init_weights)
-
-    def _init_weights(self, m):
-        if isinstance(m, nn.Linear):
-            trunc_normal_(m.weight, std=.02)
-            if isinstance(m, nn.Linear) and m.bias is not None:
+    def init_weights(self):
+        for m in self.modules:
+            if isinstance(m, nn.Linear):
+                trunc_normal_(m.weight, std=.02)
+                if isinstance(m, nn.Linear) and m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.LayerNorm):
                 nn.init.constant_(m.bias, 0)
-        elif isinstance(m, nn.LayerNorm):
-            nn.init.constant_(m.bias, 0)
-            nn.init.constant_(m.weight, 1.0)
-        elif isinstance(m, nn.Conv2d):
-            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            fan_out //= m.groups
-            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-            if m.bias is not None:
-                m.bias.data.zero_()
+                nn.init.constant_(m.weight, 1.0)
+            elif isinstance(m, nn.Conv2d):
+                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                fan_out //= m.groups
+                m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+                if m.bias is not None:
+                    m.bias.data.zero_()
 
     def forward(self, x, H, W):
         x = x + self.drop_path(self.attn(self.norm1(x), H, W))
@@ -207,7 +215,7 @@ class Block(nn.Module):
         return x
 
 
-class OverlapPatchEmbed(nn.Module):
+class OverlapPatchEmbed(BaseModule):
     """Image to Patch Embedding."""
 
     def __init__(self,
@@ -233,22 +241,21 @@ class OverlapPatchEmbed(nn.Module):
             padding=(patch_size[0] // 2, patch_size[1] // 2))
         self.norm = nn.LayerNorm(embed_dim)
 
-        self.apply(self._init_weights)
-
-    def _init_weights(self, m):
-        if isinstance(m, nn.Linear):
-            trunc_normal_(m.weight, std=.02)
-            if isinstance(m, nn.Linear) and m.bias is not None:
+    def init_weights(self):
+        for m in self.modules:
+            if isinstance(m, nn.Linear):
+                trunc_normal_(m.weight, std=.02)
+                if isinstance(m, nn.Linear) and m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.LayerNorm):
                 nn.init.constant_(m.bias, 0)
-        elif isinstance(m, nn.LayerNorm):
-            nn.init.constant_(m.bias, 0)
-            nn.init.constant_(m.weight, 1.0)
-        elif isinstance(m, nn.Conv2d):
-            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            fan_out //= m.groups
-            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-            if m.bias is not None:
-                m.bias.data.zero_()
+                nn.init.constant_(m.weight, 1.0)
+            elif isinstance(m, nn.Conv2d):
+                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                fan_out //= m.groups
+                m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+                if m.bias is not None:
+                    m.bias.data.zero_()
 
     def forward(self, x):
         x = self.proj(x)
@@ -260,7 +267,13 @@ class OverlapPatchEmbed(nn.Module):
 
 
 @BACKBONES.register_module()
-class MixVisionTransformer(nn.Module):
+class MixVisionTransformer(BaseModule):
+    """Segformer.
+
+    A PyTorch implement of : `An Image is Worth 16x16 Words:
+    Transformers for Image Recognition at Scale` -
+        https://arxiv.org/abs/2010.11929
+    """
 
     def __init__(self,
                  img_size=224,
@@ -276,8 +289,12 @@ class MixVisionTransformer(nn.Module):
                  drop_path_rate=0.,
                  norm_cfg=dict(type='LN', eps=1e-6),
                  depths=[3, 4, 6, 3],
-                 sr_ratios=[8, 4, 2, 1]):
+                 sr_ratios=[8, 4, 2, 1],
+                 init_cfg=None,
+                 pretrained=None):
         super().__init__()
+        self.init_cfg = init_cfg
+        self.pretrained = pretrained
         self.depths = depths
         # patch_embed
         self.patch_embed1 = OverlapPatchEmbed(
@@ -310,7 +327,7 @@ class MixVisionTransformer(nn.Module):
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]  # stochastic depth decay rule
         cur = 0
-        self.block1 = nn.ModuleList([
+        self.block1 = ModuleList([
             Block(
                 dim=embed_dims[0],
                 num_heads=num_heads[0],
@@ -325,7 +342,7 @@ class MixVisionTransformer(nn.Module):
         ])
         _, self.norm1 = build_norm_layer(norm_cfg, embed_dims[0])
         cur += depths[0]
-        self.block2 = nn.ModuleList([
+        self.block2 = ModuleList([
             Block(
                 dim=embed_dims[1],
                 num_heads=num_heads[1],
@@ -341,7 +358,7 @@ class MixVisionTransformer(nn.Module):
         _, self.norm2 = build_norm_layer(norm_cfg, embed_dims[1])
 
         cur += depths[1]
-        self.block3 = nn.ModuleList([
+        self.block3 = ModuleList([
             Block(
                 dim=embed_dims[2],
                 num_heads=num_heads[2],
@@ -357,7 +374,7 @@ class MixVisionTransformer(nn.Module):
         _, self.norm3 = build_norm_layer(norm_cfg, embed_dims[2])
 
         cur += depths[2]
-        self.block4 = nn.ModuleList([
+        self.block4 = ModuleList([
             Block(
                 dim=embed_dims[3],
                 num_heads=num_heads[3],
@@ -372,33 +389,28 @@ class MixVisionTransformer(nn.Module):
         ])
         _, self.norm4 = build_norm_layer(norm_cfg, embed_dims[3])
 
-        # classification head
-        # self.head = nn.Linear(embed_dims[3], num_classes) if num_classes
-        # > 0 else nn.Identity()
-
-        self.apply(self._init_weights)
-
-    def _init_weights(self, m):
-        if isinstance(m, nn.Linear):
-            trunc_normal_(m.weight, std=.02)
-            if isinstance(m, nn.Linear) and m.bias is not None:
-                nn.init.constant_(m.bias, 0)
-        elif isinstance(m, nn.LayerNorm):
-            nn.init.constant_(m.bias, 0)
-            nn.init.constant_(m.weight, 1.0)
-        elif isinstance(m, nn.Conv2d):
-            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            fan_out //= m.groups
-            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-            if m.bias is not None:
-                m.bias.data.zero_()
-
-    def init_weights(self, pretrained=None):
-        if isinstance(pretrained, str):
+    def init_weights(self):
+        if isinstance(self.pretrained, type(None)):
+            for m in self.modules:
+                if isinstance(m, nn.Linear):
+                    trunc_normal_(m.weight, std=.02)
+                    if isinstance(m, nn.Linear) and m.bias is not None:
+                        nn.init.constant_(m.bias, 0)
+                elif isinstance(m, nn.LayerNorm):
+                    nn.init.constant_(m.bias, 0)
+                    nn.init.constant_(m.weight, 1.0)
+                elif isinstance(m, nn.Conv2d):
+                    fan_out = m.kernel_size[0] * m.kernel_size[
+                        1] * m.out_channels
+                    fan_out //= m.groups
+                    m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+                    if m.bias is not None:
+                        m.bias.data.zero_()
+        elif isinstance(self.pretrained, str):
             logger = get_root_logger()
             load_checkpoint(
                 self,
-                pretrained,
+                self.pretrained,
                 map_location='cpu',
                 strict=False,
                 logger=logger)
@@ -433,7 +445,7 @@ class MixVisionTransformer(nn.Module):
             'pos_embed1', 'pos_embed2', 'pos_embed3', 'pos_embed4', 'cls_token'
         }  # has pos_embed may be better
 
-    def forward_features(self, x):
+    def forward(self, x):
         B = x.shape[0]
         outs = []
 
@@ -470,8 +482,3 @@ class MixVisionTransformer(nn.Module):
         outs.append(x)
 
         return outs
-
-    def forward(self, x):
-        x = self.forward_features(x)
-
-        return x
