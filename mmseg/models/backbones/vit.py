@@ -187,6 +187,8 @@ class VisionTransformer(BaseModule):
             Defalut: dict(type='GELU').
         final_norm (bool):  Whether to add a additional layer to normalize
             final feature map. Default: False.
+        out_reshape (str): Select the output format of feature information.
+            Default: NCHW.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bicubic.
         num_fcs (int): The number of fully-connected layers for FFNs.
@@ -217,6 +219,7 @@ class VisionTransformer(BaseModule):
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
                  final_norm=False,
+                 out_shape='NCHW',
                  interpolate_mode='bicubic',
                  num_fcs=2,
                  norm_eval=False,
@@ -234,8 +237,10 @@ class VisionTransformer(BaseModule):
                 f'but got {len(img_size)}'
 
         assert pretrain_style in ['timm', 'mmcls']
-
+        assert out_shape in ['NLC',
+                             'NCHW'], 'output shape must be "NLC" or "NCHW".'
         self.pretrain_style = pretrain_style
+        self.out_shape = out_shape
         self.img_size = img_size
         self.patch_size = patch_size
 
@@ -431,15 +436,18 @@ class VisionTransformer(BaseModule):
                 if self.final_norm:
                     x = self.norm1(x)
             if i in self.out_indices:
-                if self.with_cls_token:
-                    # Remove class token and reshape token for decoder head
-                    out = x[:, 1:]
+                if self.out_shape == 'NCHW':
+                    if self.with_cls_token:
+                        # Remove class token and reshape token for decoder head
+                        out = x[:, 1:]
+                    else:
+                        out = x
+                    B, _, C = out.shape
+                    out = out.reshape(B, inputs.shape[2] // self.patch_size,
+                                      inputs.shape[3] // self.patch_size,
+                                      C).permute(0, 3, 1, 2)
                 else:
                     out = x
-                B, _, C = out.shape
-                out = out.reshape(B, inputs.shape[2] // self.patch_size,
-                                  inputs.shape[3] // self.patch_size,
-                                  C).permute(0, 3, 1, 2)
                 outs.append(out)
 
         return tuple(outs)
