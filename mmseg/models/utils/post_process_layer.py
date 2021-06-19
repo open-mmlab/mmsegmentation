@@ -52,15 +52,3 @@ def _make_readout_ops(channels, out_channels, readout_type, start_index):
             'add' or 'project', but got {readout_type}"
 
     return readout_ops
-
-
-class Transpose(nn.Module):
-
-    def __init__(self, dim0, dim1):
-        super(Transpose, self).__init__()
-        self.dim0 = dim0
-        self.dim1 = dim1
-
-    def forward(self, x):
-        x = x.transpose(self.dim0, self.dim1)
-        return x
