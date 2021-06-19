@@ -179,7 +179,7 @@ class VisionTransformer(BaseModule):
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
             Defalut: dict(type='GELU').
-        first_norm (bool): Whether to add a norm in PatchEmbed Block.
+        patch_norm (bool): Whether to add a norm in PatchEmbed Block.
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
             final feature map. Default: False.
@@ -217,7 +217,7 @@ class VisionTransformer(BaseModule):
                  with_cls_token=True,
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
-                 first_norm=False,
+                 patch_norm=False,
                  final_norm=False,
                  out_shape='NCHW',
                  interpolate_mode='bicubic',
@@ -259,20 +259,12 @@ class VisionTransformer(BaseModule):
         self.pretrained = pretrained
         self.init_cfg = init_cfg
 
-        if first_norm:
-            self.patch_embed = PatchEmbed(
-                img_size=img_size,
-                patch_size=patch_size,
-                in_channels=in_channels,
-                embed_dim=embed_dims,
-                norm_cfg=norm_cfg)
-        else:
-            self.patch_embed = PatchEmbed(
-                img_size=img_size,
-                patch_size=patch_size,
-                in_channels=in_channels,
-                embed_dim=embed_dims,
-                norm_cfg=None)
+        self.patch_embed = PatchEmbed(
+            img_size=img_size,
+            patch_size=patch_size,
+            in_channels=in_channels,
+            embed_dim=embed_dims,
+            norm_cfg=norm_cfg if patch_norm else None)
 
         num_patches = self.patch_embed.num_patches
 
