@@ -162,7 +162,7 @@ PYTHONPATH="$(dirname $0)/..":$PYTHONPATH
 
 ## Verification
 
-To verify whether MMSegmentation and the required environment are installed correctly, we can run sample python codes to initialize a detector and inference a demo image:
+To verify whether MMSegmentation and the required environment are installed correctly, we can run sample python codes to initialize a segmentor and inference a demo image:
 
 ```python
 from mmseg.apis import inference_segmentor, init_segmentor
