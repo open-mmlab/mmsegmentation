@@ -6,6 +6,7 @@ from mmcv.cnn import (ConvModule, Linear, build_activation_layer,
                       build_norm_layer, constant_init, normal_init,
                       trunc_normal_init)
 from mmcv.cnn.bricks import DropPath
+from mmcv.cnn.bricks.transformer import MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from torch.nn.modules.utils import _pair as to_2tuple
 
@@ -13,29 +14,48 @@ from ...utils import get_root_logger
 from ..builder import BACKBONES
 
 
-class DWConv(BaseModule):
+def nlc2nchw(tensor, H, W):
+    assert len(tensor.shape) == 3
+    B, _, C = tensor.shape
+    return tensor.transpose(1, 2).reshape(B, C, H, W)
 
-    def __init__(self, dim=768):
+
+def nchw2nlc(tensor):
+    assert len(tensor.shape) == 4
+    return tensor.flatten(2).transpose(1, 2).contiguous()
+
+
+class PEConv(BaseModule):
+    """Mix-FFN use 3x3 depth-wise Conv to provide positional encode
+    information.
+
+    Args:
+        embed_dims (int): The channels of token after embedding.
+        kernel_size (int): The kernel size of convolution operation.
+            Default: 3.
+        stride (int): The kernel slide move distance of one step.
+            Default: 1.
+    """
+
+    def __init__(self, embed_dims, kernel_size=3, stride=1):
         super().__init__()
-        self.dwconv = ConvModule(
-            in_channels=dim,
-            out_channels=dim,
-            kernel_size=3,
-            stride=1,
-            padding=(3 - 1) // 2,
+        self.conv = ConvModule(
+            in_channels=embed_dims,
+            out_channels=embed_dims,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=(kernel_size - 1) // 2,
             bias=True,
-            groups=dim)
+            groups=embed_dims)
 
     def forward(self, x, H, W):
-        B, _, C = x.shape
-        x = x.transpose(1, 2).reshape(B, C, H, W)
-        x = self.dwconv(x)
-        x = x.flatten(2).transpose(1, 2).contiguous()
-
+        x = nlc2nchw(x, H, W)
+        x = self.conv(x)
+        x = nchw2nlc(x)
         return x
 
 
-class Mlp(BaseModule):
+class MixFFN(BaseModule):
 
     def __init__(self,
                  embed_dims,
@@ -46,21 +66,24 @@ class Mlp(BaseModule):
 
         in_channels = embed_dims
         self.fc1 = Linear(in_channels, feedforward_channels)
-        self.dwconv = DWConv(feedforward_channels)
+        self.pe_conv = PEConv(feedforward_channels)
         self.act = build_activation_layer(act_cfg)
         self.fc2 = Linear(feedforward_channels, in_channels)
         self.drop = nn.Dropout(drop_rate)
 
     def forward(self, x, H, W):
         x = self.fc1(x)
-        x = self.dwconv(x, H, W)
+        x = self.pe_conv(x, H, W)
         x = self.act(x)
+        x = self.drop(x)
         x = self.fc2(x)
+        # NOTE: Add a activation function to follow origin FFN.
+        # x = self.act(x)
         x = self.drop(x)
         return x
 
 
-class Attention(BaseModule):
+class EfficientMultiheadAttention(MultiheadAttention):
 
     def __init__(self,
                  dim,
@@ -68,8 +91,8 @@ class Attention(BaseModule):
                  num_heads=8,
                  qkv_bias=False,
                  qk_scale=None,
-                 attn_drop=0.,
-                 proj_drop=0.,
+                 attn_drop_rate=0.,
+                 proj_drop_rate=0.,
                  sr_ratio=1):
         super().__init__()
         assert dim % num_heads == 0, f'dim {dim} should be divided by '
@@ -82,9 +105,9 @@ class Attention(BaseModule):
 
         self.q = Linear(dim, dim, bias=qkv_bias)
         self.kv = Linear(dim, dim * 2, bias=qkv_bias)
-        self.attn_drop = nn.Dropout(attn_drop)
+        self.attn_drop = nn.Dropout(attn_drop_rate)
         self.proj = Linear(dim, dim)
-        self.proj_drop = nn.Dropout(proj_drop)
+        self.proj_drop = nn.Dropout(proj_drop_rate)
 
         self.sr_ratio = sr_ratio
         if sr_ratio > 1:
@@ -140,21 +163,19 @@ class Block(BaseModule):
                  sr_ratio=1):
         super().__init__()
         _, self.norm1 = build_norm_layer(norm_cfg, dim)
-        self.attn = Attention(
+        self.attn = EfficientMultiheadAttention(
             dim,
             num_heads=num_heads,
             qkv_bias=qkv_bias,
             qk_scale=qk_scale,
-            attn_drop=attn_drop_rate,
-            proj_drop=drop_rate,
+            attn_drop_rate=attn_drop_rate,
+            proj_drop_rate=drop_rate,
             sr_ratio=sr_ratio)
-        # NOTE: drop path for stochastic depth, we shall see if this is better
-        # than dropout here
         self.drop_path = DropPath(
             drop_path_rate) if drop_path_rate > 0. else nn.Identity()
         _, self.norm2 = build_norm_layer(norm_cfg, dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
-        self.mlp = Mlp(
+        self.mlp = MixFFN(
             embed_dims=dim,
             feedforward_channels=mlp_hidden_dim,
             act_cfg=act_cfg,
@@ -170,27 +191,17 @@ class Block(BaseModule):
 class OverlapPatchEmbed(BaseModule):
     """Image to Patch Embedding."""
 
-    def __init__(self,
-                 img_size=224,
-                 patch_size=7,
-                 stride=4,
-                 in_chans=3,
-                 embed_dim=768):
+    def __init__(self, patch_size=7, stride=4, in_chans=3, embed_dim=768):
         super().__init__()
-        img_size = to_2tuple(img_size)
         patch_size = to_2tuple(patch_size)
 
-        self.img_size = img_size
-        self.patch_size = patch_size
-        num_rows, num_cols = img_size[0] // patch_size[0], img_size[
-            1] // patch_size[1]
-        self.num_patches = num_rows * num_cols
-        self.proj = nn.Conv2d(
-            in_chans,
-            embed_dim,
+        self.proj = ConvModule(
+            in_channels=in_chans,
+            out_channels=embed_dim,
             kernel_size=patch_size,
             stride=stride,
-            padding=(patch_size[0] // 2, patch_size[1] // 2))
+            padding=(patch_size[0] // 2, patch_size[1] // 2),
+            act_cfg=None)
         self.norm = nn.LayerNorm(embed_dim)
 
     def forward(self, x):
@@ -204,11 +215,11 @@ class OverlapPatchEmbed(BaseModule):
 
 @BACKBONES.register_module()
 class MixVisionTransformer(BaseModule):
-    """Segformer.
+    """The backbone of Segformer.
 
-    A PyTorch implement of : `An Image is Worth 16x16 Words:
-    Transformers for Image Recognition at Scale` -
-        https://arxiv.org/abs/2010.11929
+    A PyTorch implement of : `SegFormer: Simple and Efficient Design for
+    Semantic Segmentation with Transformers` -
+        https://arxiv.org/pdf/2105.15203.pdf
     """
 
     def __init__(self,
@@ -223,6 +234,7 @@ class MixVisionTransformer(BaseModule):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
+                 act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN', eps=1e-6),
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
