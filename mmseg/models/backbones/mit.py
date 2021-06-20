@@ -104,11 +104,11 @@ class Attention(BaseModule):
             x = x.permute(0, 2, 1).reshape(B, C, H, W)
             x = self.sr(x).reshape(B, C, -1).permute(0, 2, 1)
             x = self.norm(x)
-            kv = self.kv(x).reshape(B, N, 2, self.num_heads,
+            kv = self.kv(x).reshape(B, -1, 2, self.num_heads,
                                     C // self.num_heads).permute(
                                         2, 0, 3, 1, 4)
         else:
-            kv = self.kv(x).reshape(B, N, 2, self.num_heads,
+            kv = self.kv(x).reshape(B, -1, 2, self.num_heads,
                                     C // self.num_heads).permute(
                                         2, 0, 3, 1, 4)
         k, v = kv[0], kv[1]
@@ -159,22 +159,6 @@ class Block(BaseModule):
             feedforward_channels=mlp_hidden_dim,
             act_cfg=act_cfg,
             drop_rate=drop_rate)
-
-    def init_weights(self):
-        for m in self.modules:
-            if isinstance(m, nn.Linear):
-                trunc_normal_init(m.weight, std=.02)
-                if m.bias is not None:
-                    constant_init(m.bias, 0)
-            elif isinstance(m, nn.LayerNorm):
-                constant_init(m.bias, 0)
-                constant_init(m.weight, 1.0)
-            elif isinstance(m, nn.Conv2d):
-                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                fan_out //= m.groups
-                normal_init(m.weight, 0, math.sqrt(2.0 / fan_out))
-                if m.bias is not None:
-                    constant_init(m.bias, 0)
 
     def forward(self, x, H, W):
         x = x + self.drop_path(self.attn(self.norm1(x), H, W))
