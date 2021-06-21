@@ -4,7 +4,7 @@ Models:
   - Name: fcn_m-v2-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (fps): 14.2
+      inference time (ms/im): 70.42
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -18,7 +18,7 @@ Models:
   - Name: pspnet_m-v2-d8_512x1024_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 11.2
+      inference time (ms/im): 89.29
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -32,7 +32,7 @@ Models:
   - Name: deeplabv3_m-v2-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (fps): 8.4
+      inference time (ms/im): 119.05
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -46,7 +46,7 @@ Models:
   - Name: deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 8.4
+      inference time (ms/im): 119.05
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -60,7 +60,7 @@ Models:
   - Name: fcn_m-v2-d8_512x512_160k_ade20k
     In Collection: FCN
     Metadata:
-      inference time (fps): 64.4
+      inference time (ms/im): 15.53
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -74,7 +74,7 @@ Models:
   - Name: pspnet_m-v2-d8_512x512_160k_ade20k
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 57.7
+      inference time (ms/im): 17.33
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -88,7 +88,7 @@ Models:
   - Name: deeplabv3_m-v2-d8_512x512_160k_ade20k
     In Collection: DeepLabV3
     Metadata:
-      inference time (fps): 39.9
+      inference time (ms/im): 25.06
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -102,7 +102,7 @@ Models:
   - Name: deeplabv3plus_m-v2-d8_512x512_160k_ade20k
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 43.1
+      inference time (ms/im): 23.2
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
