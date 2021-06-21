@@ -47,7 +47,7 @@ class PEConv(BaseModule):
             bias=True,
             groups=embed_dims)
 
-    def forward(self, x, H, W):
+    def forward(self, x):
 
         x = self.conv(x)
 
@@ -119,7 +119,7 @@ class MixFFN(BaseModule):
                     nn.Dropout(ffn_drop)))
         layers.append(
             conv1x1(
-                in_channels=in_channels, out_channels=feedforward_channels))
+                in_channels=feedforward_channels, out_channels=in_channels))
         layers.append(nn.Dropout(ffn_drop))
         self.layers = Sequential(*layers)
         self.dropout_layer = build_dropout(
@@ -202,6 +202,8 @@ class EfficientMultiheadAttention(MultiheadAttention):
             x_kv = x.permute(0, 2, 1).reshape(B, C, H, W)
             x_kv = self.sr(x_kv).reshape(B, C, -1).permute(0, 2, 1)
             x_kv = self.norm(x_kv)
+        else:
+            x_kv = x
 
         if identity is None:
             identity = x_q
@@ -303,7 +305,7 @@ class OverlapPatchEmbed(BaseModule):
             padding=patch_size // 2,
             act_cfg=None,
             norm_cfg=None)
-        self.norm = build_norm_layer(norm_cfg, embed_dims)
+        _, self.norm = build_norm_layer(norm_cfg, embed_dims)
 
     def forward(self, x):
         x = self.proj(x)
@@ -360,14 +362,15 @@ class MixVisionTransformer(BaseModule):
             patch_embed = OverlapPatchEmbed(
                 patch_size=patch_sizes[stage_id],
                 in_channels=in_channels,
-                embed_dims=embed_dims[0],
+                embed_dims=embed_dims[stage_id],
                 stride=strides[stage_id],
                 norm_cfg=norm_cfg)
             layer = ModuleList([
                 TransformerEncoderLayer(
                     embed_dims=embed_dims[stage_id],
                     num_heads=num_heads[stage_id],
-                    feedforward_channels=mlp_ratios[stage_id] * embed_dims,
+                    feedforward_channels=mlp_ratios[stage_id] *
+                    embed_dims[stage_id],
                     drop_rate=drop_rate,
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[cur + i],
@@ -378,8 +381,9 @@ class MixVisionTransformer(BaseModule):
                     sr_ratio=sr_ratios[stage_id])
                 for i in range(num_layers[stage_id])
             ])
+            in_channels = embed_dims[stage_id]
             _, norm = build_norm_layer(norm_cfg, embed_dims[stage_id])
-            self.layers.append(ModuleList(patch_embed, layer, norm))
+            self.layers.append(ModuleList([patch_embed, layer, norm]))
             cur += num_layers[stage_id]
 
     def init_weights(self):
@@ -414,7 +418,8 @@ class MixVisionTransformer(BaseModule):
 
         for i, layer in enumerate(self.layers):
             x, H, W = layer[0](x)
-            x = layer[1](x, H, W)
+            for block in layer[1]:
+                x = block(x, H, W)
             x = layer[2](x)
             x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
             if i in self.out_indices:
