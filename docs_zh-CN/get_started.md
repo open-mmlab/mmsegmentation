@@ -55,11 +55,11 @@ pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.5
 可以安装好 mmcv-full (PyTorch 1.5 和 CUDA 10.1) 版本。
 其他 PyTorch 和 CUDA 版本的 MMCV 安装请参照[这里](https://mmcv.readthedocs.io/en/latest/#install-with-pip)
 
-**在Windows下安装mmcv(有风险):**
+**在 Windows 下安装 mmcv (有风险):**
 
 对于 Windows, MMCV 的安装需要本地 C++ 编译工具, 例如 cl.exe. 请添加编译工具至 %PATH%.
 
-如果您已经在电脑上安装好Windows SDK 和 Visual Studio， cl.exe 的一个典型路径看起来如下：
+如果您已经在电脑上安装好Windows SDK 和 Visual Studio，cl.exe 的一个典型路径看起来如下：
 
 ```shell
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.26.28801\bin\Hostx86\x64
@@ -95,7 +95,7 @@ pip install mmsegmentation # 安装最新版本
 pip install git+https://github.com/open-mmlab/mmsegmentation.git # 安装 master 分支
 ```
 
-此外，如果您想安装 `dev` 模式的MMSegmentation, 运行如下命令：
+此外，如果您想安装 `dev` 模式的 MMSegmentation, 运行如下命令：
 
 ```shell
 git clone https://github.com/open-mmlab/mmsegmentation.git

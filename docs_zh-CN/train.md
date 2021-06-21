@@ -2,7 +2,7 @@
 
 MMSegmentation 可以执行分布式训练和非分布式训练，分别使用 `MMDistributedDataParallel` 和 `MMDataParallel` 命令。
 
-所有的输出(日志 log 和检查点 checkpoints)将被保存到工作路径文件夹里，它可以通过配置文件里的 `work_dir` 指定。
+所有的输出(日志 log 和检查点 checkpoints )将被保存到工作路径文件夹里，它可以通过配置文件里的 `work_dir` 指定。
 
 在一定迭代轮次后，我们默认在验证集上评估模型表现。您可以在训练配置文件中添加间隔参数来改变评估间隔。
 
@@ -11,7 +11,7 @@ evaluation = dict(interval=4000)  # 每4000 iterations 评估一次模型的表�
 ```
 
 **\*Important\***: 在配置文件里的默认学习率是针对4卡 GPU 和2张图/GPU (此时 batchsize = 4x2 = 8)来设置的。
-同样，您也可以使用8卡 GPU 和 1张图/GPU的设置，因为所有的模型均使用 cross-GPU 的 SyncBN 模式。
+同样，您也可以使用8卡 GPU 和 1张图/GPU 的设置，因为所有的模型均使用 cross-GPU 的 SyncBN 模式。
 
 为了以 GPU 显存为代价提升运行速度，您也可以通过传递`--options model.backbone.with_cp=True` 来在 backbone 骨架里有 checkpoints 检查点。
 
@@ -23,7 +23,7 @@ python tools/train.py ${配置文件} [可选参数]
 
 如果您想在命令里定义工作文件夹路径，您可以添加一个参数`--work-dir ${YOUR_WORK_DIR}`。
 
-### 使用多卡GPU训练
+### 使用多卡 GPU 训练
 
 ```shell
 ./tools/dist_train.sh ${配置文件} ${GPU 个数} [可选参数]
