@@ -44,7 +44,7 @@ conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
 c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation) 安装 [MMCV](https://mmcv.readthedocs.io/en/latest/) 。
 `mmcv` 或 `mmcv-full` 和 MMSegmentation 均兼容，但对于 CCNet 和 PSANet，`mmcv-full` 里的 CUDA 运算是必须的。
 
-**在Linux下安装mmcv:**
+**在 Linux 下安装 mmcv:**
 
 通过运行
 
