@@ -25,7 +25,7 @@
 
 ## 安装
 
-a. 创建一个conda虚拟环境并激活它。
+a. 创建一个 conda 虚拟环境并激活它。
 
 ```shell
 conda create -n open-mmlab python=3.7 -y
