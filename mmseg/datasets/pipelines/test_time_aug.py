@@ -1,6 +1,8 @@
 import warnings
 
 import mmcv
+import numpy as np
+from torch.nn.modules.utils import _pair as to_2tuple
 
 from ..builder import PIPELINES
 from .compose import Compose
@@ -48,6 +50,9 @@ class MultiScaleFlipAug(object):
             options are "horizontal" and "vertical". If flip_direction is list,
             multiple flip augmentations will be applied.
             It has no effect when flip == False. Default: "horizontal".
+        divisor (None | tuple | int): Resized image size will be multiple to
+            divisor.
+            Default: None.
     """
 
     def __init__(self,
@@ -55,12 +60,16 @@ class MultiScaleFlipAug(object):
                  img_scale,
                  img_ratios=None,
                  flip=False,
-                 flip_direction='horizontal'):
+                 flip_direction='horizontal',
+                 divisor=None):
         self.transforms = Compose(transforms)
         if img_ratios is not None:
             img_ratios = img_ratios if isinstance(img_ratios,
                                                   list) else [img_ratios]
             assert mmcv.is_list_of(img_ratios, float)
+        if divisor is not None:
+            divisor = to_2tuple(divisor)
+        self.divisor = divisor
         if img_scale is None:
             # mode 1: given img_scale=None and a range of image ratio
             self.img_scale = None
@@ -110,6 +119,11 @@ class MultiScaleFlipAug(object):
             img_scale = self.img_scale
         flip_aug = [False, True] if self.flip else [False]
         for scale in img_scale:
+            if self.divisor is not None:
+                scale = tuple([
+                    int(np.ceil(s / divisor)) * divisor
+                    for s, divisor in zip(scale, self.divisor)
+                ])
             for flip in flip_aug:
                 for direction in self.flip_direction:
                     _results = results.copy()

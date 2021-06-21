@@ -148,3 +148,32 @@ def test_multi_scale_flip_aug():
     assert tta_results['scale'] == [(256, 256), (256, 256), (512, 512),
                                     (512, 512), (1024, 1024), (1024, 1024)]
     assert tta_results['flip'] == [False, True, False, True, False, True]
+
+    # test divisor
+    tta_transform = dict(
+        type='MultiScaleFlipAug',
+        img_scale=(511, 511),
+        img_ratios=[0.5, 1.0, 2.0],
+        divisor=16,
+        flip=True,
+        transforms=[dict(type='Resize', keep_ratio=False)],
+    )
+    tta_module = build_from_cfg(tta_transform, PIPELINES)
+    tta_results = tta_module(results.copy())
+    assert tta_results['scale'] == [(256, 256), (256, 256), (512, 512),
+                                    (512, 512), (1024, 1024), (1024, 1024)]
+    assert tta_results['flip'] == [False, True, False, True, False, True]
+
+    tta_transform = dict(
+        type='MultiScaleFlipAug',
+        img_scale=(511, 511),
+        img_ratios=[0.5, 1.0, 2.0],
+        divisor=None,
+        flip=True,
+        transforms=[dict(type='Resize', keep_ratio=False)],
+    )
+    tta_module = build_from_cfg(tta_transform, PIPELINES)
+    tta_results = tta_module(results.copy())
+    assert tta_results['scale'] == [(255, 255), (255, 255), (511, 511),
+                                    (511, 511), (1022, 1022), (1022, 1022)]
+    assert tta_results['flip'] == [False, True, False, True, False, True]
