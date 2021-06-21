@@ -11,7 +11,7 @@ Models:
   - Name: ann_r50-d8_512x1024_40k_cityscapes
     In Collection: ANN
     Metadata:
-      inference time (fps): 3.71
+      inference time (ms/im): 269.54
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +25,7 @@ Models:
   - Name: ann_r101-d8_512x1024_40k_cityscapes
     In Collection: ANN
     Metadata:
-      inference time (fps): 2.55
+      inference time (ms/im): 392.16
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +39,7 @@ Models:
   - Name: ann_r50-d8_769x769_40k_cityscapes
     In Collection: ANN
     Metadata:
-      inference time (fps): 1.70
+      inference time (ms/im): 588.24
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -53,7 +53,7 @@ Models:
   - Name: ann_r101-d8_769x769_40k_cityscapes
     In Collection: ANN
     Metadata:
-      inference time (fps): 1.15
+      inference time (ms/im): 869.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -67,7 +67,7 @@ Models:
   - Name: ann_r50-d8_512x1024_80k_cityscapes
     In Collection: ANN
     Metadata:
-      inference time (fps): 3.71
+      inference time (ms/im): 269.54
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +81,7 @@ Models:
   - Name: ann_r101-d8_512x1024_80k_cityscapes
     In Collection: ANN
     Metadata:
-      inference time (fps): 2.55
+      inference time (ms/im): 392.16
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +95,7 @@ Models:
   - Name: ann_r50-d8_769x769_80k_cityscapes
     In Collection: ANN
     Metadata:
-      inference time (fps): 1.70
+      inference time (ms/im): 588.24
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +109,7 @@ Models:
   - Name: ann_r101-d8_769x769_80k_cityscapes
     In Collection: ANN
     Metadata:
-      inference time (fps):
+      inference time (ms/im): 869.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -123,7 +123,7 @@ Models:
   - Name: ann_r50-d8_512x512_80k_ade20k
     In Collection: ANN
     Metadata:
-      inference time (fps): 21.01
+      inference time (ms/im): 47.6
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -137,7 +137,7 @@ Models:
   - Name: ann_r101-d8_512x512_80k_ade20k
     In Collection: ANN
     Metadata:
-      inference time (fps): 14.12
+      inference time (ms/im): 70.82
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -151,7 +151,7 @@ Models:
   - Name: ann_r50-d8_512x512_160k_ade20k
     In Collection: ANN
     Metadata:
-      inference time (fps): 21.01
+      inference time (ms/im): 47.6
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -165,7 +165,7 @@ Models:
   - Name: ann_r101-d8_512x512_160k_ade20k
     In Collection: ANN
     Metadata:
-      inference time (fps): 14.12
+      inference time (ms/im): 70.82
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -179,7 +179,7 @@ Models:
   - Name: ann_r50-d8_512x512_20k_voc12aug
     In Collection: ANN
     Metadata:
-      inference time (fps): 20.92
+      inference time (ms/im): 47.8
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -193,7 +193,7 @@ Models:
   - Name: ann_r101-d8_512x512_20k_voc12aug
     In Collection: ANN
     Metadata:
-      inference time (fps): 13.94
+      inference time (ms/im): 71.74
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -207,7 +207,7 @@ Models:
   - Name: ann_r50-d8_512x512_40k_voc12aug
     In Collection: ANN
     Metadata:
-      inference time (fps): 20.92
+      inference time (ms/im): 47.8
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -221,7 +221,7 @@ Models:
   - Name: ann_r101-d8_512x512_40k_voc12aug
     In Collection: ANN
     Metadata:
-      inference time (fps): 13.94
+      inference time (ms/im): 71.74
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug

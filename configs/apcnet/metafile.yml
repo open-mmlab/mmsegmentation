@@ -10,7 +10,7 @@ Models:
   - Name: apcnet_r50-d8_512x1024_40k_cityscapes
     In Collection: APCNet
     Metadata:
-      inference time (fps): 3.57
+      inference time (ms/im): 280.11
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -24,7 +24,7 @@ Models:
   - Name: apcnet_r101-d8_512x1024_40k_cityscapes
     In Collection: APCNet
     Metadata:
-      inference time (fps): 2.15
+      inference time (ms/im): 465.12
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -38,7 +38,7 @@ Models:
   - Name: apcnet_r50-d8_769x769_40k_cityscapes
     In Collection: APCNet
     Metadata:
-      inference time (fps): 1.52
+      inference time (ms/im): 657.89
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -52,7 +52,7 @@ Models:
   - Name: apcnet_r101-d8_769x769_40k_cityscapes
     In Collection: APCNet
     Metadata:
-      inference time (fps): 1.03
+      inference time (ms/im): 970.87
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -66,7 +66,7 @@ Models:
   - Name: apcnet_r50-d8_512x1024_80k_cityscapes
     In Collection: APCNet
     Metadata:
-      inference time (fps): 3.57
+      inference time (ms/im): 280.11
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -80,7 +80,7 @@ Models:
   - Name: apcnet_r101-d8_512x1024_80k_cityscapes
     In Collection: APCNet
     Metadata:
-      inference time (fps): 2.15
+      inference time (ms/im): 465.12
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -94,7 +94,7 @@ Models:
   - Name: apcnet_r50-d8_769x769_80k_cityscapes
     In Collection: APCNet
     Metadata:
-      inference time (fps): 1.52
+      inference time (ms/im): 657.89
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -108,7 +108,7 @@ Models:
   - Name: apcnet_r101-d8_769x769_80k_cityscapes
     In Collection: APCNet
     Metadata:
-      inference time (fps): 1.03
+      inference time (ms/im): 970.87
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -122,7 +122,7 @@ Models:
   - Name: apcnet_r50-d8_512x512_80k_ade20k
     In Collection: APCNet
     Metadata:
-      inference time (fps): 19.61
+      inference time (ms/im): 50.99
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -136,7 +136,7 @@ Models:
   - Name: apcnet_r101-d8_512x512_80k_ade20k
     In Collection: APCNet
     Metadata:
-      inference time (fps): 13.10
+      inference time (ms/im): 76.34
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -150,7 +150,7 @@ Models:
   - Name: apcnet_r50-d8_512x512_160k_ade20k
     In Collection: APCNet
     Metadata:
-      inference time (fps): 19.61
+      inference time (ms/im): 50.99
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -164,7 +164,7 @@ Models:
   - Name: apcnet_r101-d8_512x512_160k_ade20k
     In Collection: APCNet
     Metadata:
-      inference time (fps): 13.10
+      inference time (ms/im): 76.34
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K

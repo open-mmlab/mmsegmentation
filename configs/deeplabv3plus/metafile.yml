@@ -12,7 +12,7 @@ Models:
   - Name: deeplabv3plus_r50-d8_512x1024_40k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 3.94
+      inference time (ms/im): 253.81
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -26,7 +26,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_512x1024_40k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 2.60
+      inference time (ms/im): 384.62
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -40,7 +40,7 @@ Models:
   - Name: deeplabv3plus_r50-d8_769x769_40k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 1.72
+      inference time (ms/im): 581.4
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -54,7 +54,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_769x769_40k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 1.15
+      inference time (ms/im): 869.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -68,7 +68,7 @@ Models:
   - Name: deeplabv3plus_r18-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 14.27
+      inference time (ms/im): 70.08
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -82,7 +82,7 @@ Models:
   - Name: deeplabv3plus_r50-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 3.94
+      inference time (ms/im): 253.81
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -96,7 +96,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 2.60
+      inference time (ms/im): 384.62
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -110,7 +110,7 @@ Models:
   - Name: deeplabv3plus_r18-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 5.74
+      inference time (ms/im): 174.22
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -124,7 +124,7 @@ Models:
   - Name: deeplabv3plus_r50-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 1.72
+      inference time (ms/im): 581.4
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -138,7 +138,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 1.15
+      inference time (ms/im): 869.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -152,7 +152,7 @@ Models:
   - Name: deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 7.48
+      inference time (ms/im): 133.69
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -166,7 +166,7 @@ Models:
   - Name: deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 7.48
+      inference time (ms/im): 133.69
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -180,7 +180,7 @@ Models:
   - Name: deeplabv3plus_r18b-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 14.95
+      inference time (ms/im): 66.89
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -194,7 +194,7 @@ Models:
   - Name: deeplabv3plus_r50b-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 3.94
+      inference time (ms/im): 253.81
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -208,7 +208,7 @@ Models:
   - Name: deeplabv3plus_r101b-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 2.60
+      inference time (ms/im): 384.62
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -222,7 +222,7 @@ Models:
   - Name: deeplabv3plus_r18b-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 5.96
+      inference time (ms/im): 167.79
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -236,7 +236,7 @@ Models:
   - Name: deeplabv3plus_r50b-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 1.72
+      inference time (ms/im): 581.4
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -250,7 +250,7 @@ Models:
   - Name: deeplabv3plus_r101b-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 1.10
+      inference time (ms/im): 909.09
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -264,7 +264,7 @@ Models:
   - Name: deeplabv3plus_r50-d8_512x512_80k_ade20k
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 21.01
+      inference time (ms/im): 47.6
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -278,7 +278,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_512x512_80k_ade20k
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 14.16
+      inference time (ms/im): 70.62
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -292,7 +292,7 @@ Models:
   - Name: deeplabv3plus_r50-d8_512x512_160k_ade20k
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 21.01
+      inference time (ms/im): 47.6
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -306,7 +306,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_512x512_160k_ade20k
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 14.16
+      inference time (ms/im): 70.62
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -320,7 +320,7 @@ Models:
   - Name: deeplabv3plus_r50-d8_512x512_20k_voc12aug
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 21
+      inference time (ms/im): 47.62
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -334,7 +334,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_512x512_20k_voc12aug
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 13.88
+      inference time (ms/im): 72.05
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -348,7 +348,7 @@ Models:
   - Name: deeplabv3plus_r50-d8_512x512_40k_voc12aug
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 21
+      inference time (ms/im): 47.62
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -362,7 +362,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_512x512_40k_voc12aug
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 13.88
+      inference time (ms/im): 72.05
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -376,7 +376,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 9.09
+      inference time (ms/im): 110.01
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -390,7 +390,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 9.09
+      inference time (ms/im): 110.01
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -404,7 +404,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -418,7 +418,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
