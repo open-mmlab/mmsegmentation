@@ -51,8 +51,7 @@ class MultiScaleFlipAug(object):
             multiple flip augmentations will be applied.
             It has no effect when flip == False. Default: "horizontal".
         divisor (None | tuple | int): Resized image size will be multiple to
-            divisor.
-            Default: None.
+            divisor. Default: None.
     """
 
     def __init__(self,
