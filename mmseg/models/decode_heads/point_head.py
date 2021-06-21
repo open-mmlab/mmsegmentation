@@ -2,7 +2,7 @@
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import ConvModule, normal_init
+from mmcv.cnn import ConvModule
 from mmcv.ops import point_sample
 
 from mmseg.models.builder import HEADS
@@ -69,6 +69,8 @@ class PointHead(BaseCascadeDecodeHead):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg,
+            init_cfg=dict(
+                type='Normal', std=0.01, override=dict(name='fc_seg')),
             **kwargs)
 
         self.num_fcs = num_fcs
@@ -100,10 +102,6 @@ class PointHead(BaseCascadeDecodeHead):
         if self.dropout_ratio > 0:
             self.dropout = nn.Dropout(self.dropout_ratio)
         delattr(self, 'conv_seg')
-
-    def init_weights(self):
-        """Initialize weights of classification layer."""
-        normal_init(self.fc_seg, std=0.001)
 
     def cls_seg(self, feat):
         """Classify each pixel with fc."""

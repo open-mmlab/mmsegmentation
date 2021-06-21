@@ -1,8 +1,7 @@
 import torch
 import torch.nn as nn
-from mmcv.cnn import (ConvModule, DepthwiseSeparableConvModule, constant_init,
-                      kaiming_init)
-from torch.nn.modules.batchnorm import _BatchNorm
+from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
+from mmcv.runner import BaseModule
 
 from mmseg.models.decode_heads.psp_head import PPM
 from mmseg.ops import resize
@@ -247,7 +246,7 @@ class FeatureFusionModule(nn.Module):
 
 
 @BACKBONES.register_module()
-class FastSCNN(nn.Module):
+class FastSCNN(BaseModule):
     """Fast-SCNN Backbone.
 
     Args:
@@ -291,6 +290,8 @@ class FastSCNN(nn.Module):
             dict(type='ReLU')
         align_corners (bool): align_corners argument of F.interpolate.
             Default: False
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None
     """
 
     def __init__(self,
@@ -307,9 +308,18 @@ class FastSCNN(nn.Module):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
-                 align_corners=False):
+                 align_corners=False,
+                 init_cfg=None):
 
-        super(FastSCNN, self).__init__()
+        super(FastSCNN, self).__init__(init_cfg)
+
+        if init_cfg is None:
+            self.init_cfg = [
+                dict(type='Kaiming', layer='Conv2d'),
+                dict(
+                    type='Constant', val=1, layer=['_BatchNorm', 'GroupNorm'])
+            ]
+
         if global_in_channels != higher_in_channels:
             raise AssertionError('Global Input Channels must be the same \
                                  with Higher Input Channels!')
@@ -356,13 +366,6 @@ class FastSCNN(nn.Module):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
             align_corners=self.align_corners)
-
-    def init_weights(self, pretrained=None):
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                kaiming_init(m)
-            elif isinstance(m, (_BatchNorm, nn.GroupNorm)):
-                constant_init(m, 1)
 
     def forward(self, x):
         higher_res_features = self.learning_to_downsample(x)

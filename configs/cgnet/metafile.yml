@@ -1,0 +1,33 @@
+Collections:
+  - Name: CGNet
+    Metadata:
+      Training Data:
+        - Cityscapes
+
+Models:
+
+  - Name: cgnet_680x680_60k_cityscapes
+    In Collection: CGNet
+    Metadata:
+      inference time (fps): 30.51
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 65.63
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth
+    Config: configs/cgnet/cgnet_680x680_60k_cityscapes.py
+
+
+
+  - Name: cgnet_512x1024_60k_cityscapes
+    In Collection: CGNet
+    Metadata:
+      inference time (fps): 31.14
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 68.27
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes_20201101_110254-124ea03b.pth
+    Config: configs/cgnet/cgnet_512x1024_60k_cityscapes.py
