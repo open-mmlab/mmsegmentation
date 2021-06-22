@@ -7,36 +7,95 @@ from mmcv.cnn import (Conv2d, ConvModule, build_activation_layer,
 
 from mmseg.ops import resize
 from ..builder import HEADS
-from ..utils import _make_readout_ops
 from .decode_head import BaseDecodeHead
 
 
 class ViTPostProcessBlock(nn.Module):
+    """ViTPostProcessBlock, process cls_token in ViT backbone output and resize
+    the feature vector to feature map.
+
+    Args:
+        in_channels (int): ViT feature channels. Default: 768.
+        out_channels (List): output channels of each stage.
+            Default: [96, 192, 384, 768].
+        readout_type (str): Type of readout operation. Default: 'ignore'.
+        start_index (int): Start index of feature vector. Default: 1.
+        patch_size (int): The patch size. Default: 16.
+    """
 
     def __init__(self,
                  in_channels=768,
                  out_channels=[96, 192, 384, 768],
-                 img_size=[384, 384],
                  readout_type='ignore',
                  start_index=1,
-                 scale_factors=[4, 2, 1, 0.5]):
+                 patch_size=16):
         super(ViTPostProcessBlock, self).__init__()
 
-        self.readout_ops = _make_readout_ops(in_channels, out_channels,
-                                             readout_type, start_index)
+        assert readout_type in ['ignore', 'add', 'project']
+        self.readout_type = readout_type
+        self.start_index = start_index
+        self.patch_size = patch_size
 
-        self.unflatten_size = torch.Size(
-            [img_size[0] // 16, img_size[1] // 16])
+        self.convs = [
+            ConvModule(
+                in_channels=in_channels,
+                out_channels=out_channel,
+                kernel_size=1,
+            ) for out_channel in out_channels
+        ]
 
-    def forward(self, inputs):
-        assert len(inputs) == len(self.readout_ops)
+        self.resize_layers = nn.ModuleList([
+            nn.ConvTranspose2d(
+                in_channels=out_channels[0],
+                out_channels=out_channels[0],
+                kernel_size=4,
+                stride=4,
+                padding=0),
+            nn.ConvTranspose2d(
+                in_channels=out_channels[1],
+                out_channels=out_channels[1],
+                kernel_size=2,
+                stride=2,
+                padding=0),
+            nn.Identity(),
+            nn.Conv2d(
+                in_channels=out_channels[3],
+                out_channels=out_channels[3],
+                kernel_size=3,
+                stride=2,
+                padding=1)
+        ])
 
+    def forward(self, inputs, img_size):
+        for i, x in enumerate(inputs):
+            if self.readout_type == 'ignore':
+                x = x[:, self.start_index:]
+            elif self.readout_type == 'add':
+                x = x[:, self.start_index] + x[:, 0].unsqueeze(1)
+            else:
+                readout = x[:, 0].unsqueeze(1).expand_as(x[:,
+                                                           self.start_index])
+                x = torch.cat((x[:, self.start_indx], readout), -1)
+            B, _, C = x.shape
+            x = x.reshape(B, img_size[0] // self.patch_size,
+                          img_size[1] // self.patch_size,
+                          C).permute(0, 3, 1, 2)
+            x = self.convs[i](x)
+            x = self.resize_layers[i](x)
+            inputs[i] = x
         return inputs
 
 
 class ResidualConvUnit(nn.Module):
+    """ResidualConvUnit, pre-activate residual unit.
 
-    def __init__(self, in_channels, act_cfg=None, norm_cfg=None):
+    Args:
+        in_channels (int): Input channels.
+        act_cfg (dict): The activation config before conv.
+        norm_cfg (dict): Config dict for normalization layer.
+    """
+
+    def __init__(self, in_channels, act_cfg, norm_cfg):
         super(ResidualConvUnit, self).__init__()
         self.channels = in_channels
 
@@ -77,19 +136,28 @@ class ResidualConvUnit(nn.Module):
 
 
 class FeatureFusionBlock(nn.Module):
+    """FeatureFusionBlock, merge feature map from different stage.
+
+    Args:
+        in_channels (int): Input channels.
+        act_cfg (dict): The activation config for ResidualConvUnit.
+        norm_cfg (dict): Config dict for normalization layer.
+        expand (bool): Whether expand the channels in post process block.
+            Default: False.
+        align_corners (bool): align_corner setting for bilinear upsample.
+            Default: True.
+    """
 
     def __init__(self,
                  in_channels,
-                 act_cfg=None,
-                 norm_cfg=None,
-                 deconv=False,
+                 act_cfg,
+                 norm_cfg,
                  expand=False,
                  align_corners=True):
         super(FeatureFusionBlock, self).__init__()
 
         self.in_channels = in_channels
         self.expand = expand
-        self.deconv = deconv
         self.align_corners = align_corners
 
         self.out_channels = in_channels
@@ -124,16 +192,25 @@ class DPTHead(BaseDecodeHead):
     This head is implemented of `DPT <https://arxiv.org/abs/2103.13413>`_.
 
     Args:
+        embed_dims (int): The embed dimension of the ViT backbone.
+        post_process_channels (List): Out channels of post process conv
+            layers. Default: [96, 192, 384, 768].
+        readout_type (str): Type of readout operation. Default: 'ignore'.
+        patch_start_index (int): Start index of feature vector.
+        patch_size (int): The patch size. Default: 16.
+        expand_channels (bool): Whether expand the channels in post process
+            block. Default: False.
+        act_cfg (dict): The activation config for residual conv unit.
+            Defalut 'ReLU'.
+        norm_cfg (dict): Config dict for normalization layer. Default 'BN'.
     """
 
     def __init__(self,
-                 img_size=[384, 384],
-                 out_channels=[96, 192, 384, 768],
+                 embed_dims=768,
+                 post_process_channels=[96, 192, 384, 768],
                  readout_type='ignore',
                  patch_start_index=1,
-                 post_process_kernel_size=[4, 2, 1, 3],
-                 post_process_strides=[4, 2, 1, 2],
-                 post_process_paddings=[0, 0, 0, 1],
+                 patch_size=16,
                  expand_channels=False,
                  act_cfg=dict(type='ReLU'),
                  norm_cfg=dict(type='BN'),
@@ -141,22 +218,21 @@ class DPTHead(BaseDecodeHead):
         super(DPTHead, self).__init__(**kwards)
 
         self.in_channels = self.in_channels
-        self.out_channels = out_channels
         self.expand_channels = expand_channels
-        self.post_process_block = ViTPostProcessBlock(
-            self.channels, out_channels, img_size, readout_type,
-            patch_start_index, post_process_kernel_size, post_process_strides,
-            post_process_paddings)
+        self.post_process_block = ViTPostProcessBlock(embed_dims,
+                                                      post_process_channels,
+                                                      readout_type,
+                                                      patch_start_index,
+                                                      patch_size)
 
-        out_channels = [
-            channel * math.pow(2, idx) if expand_channels else channel
-            for idx, channel in enumerate(self.out_channels)
+        self.post_process_channels = [
+            channel * math.pow(2, i) if expand_channels else channel
+            for i, channel in enumerate(post_process_channels)
         ]
-        self.convs = []
-        for idx, channel in enumerate(self.out_channels):
+        self.convs = nn.ModuleList()
+        for _, channel in enumerate(self.post_process_channels):
             self.convs.append(
-                Conv2d(
-                    channel, self.out_channels[idx], kernel_size=3, padding=1))
+                Conv2d(channel, self.channels, kernel_size=3, padding=1))
 
         self.refinenet0 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
         self.refinenet1 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
@@ -168,15 +244,14 @@ class DPTHead(BaseDecodeHead):
 
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
-        x = self.post_process_block(x)
-
-        x = [self.convs[idx](feature) for idx, feature in enumerate(x)]
+        x, img_size = [i[0] for i in x], x[0][1]
+        x = self.post_process_block(x, img_size)
+        x = [self.convs[i](feature) for i, feature in enumerate(x)]
 
         path_3 = self.refinenet3(x[3])
         path_2 = self.refinenet2(path_3, x[2])
         path_1 = self.refinenet1(path_2, x[1])
         path_0 = self.refinenet0(path_1, x[0])
-
         x = self.conv(path_0)
         output = self.cls_seg(x)
         return output

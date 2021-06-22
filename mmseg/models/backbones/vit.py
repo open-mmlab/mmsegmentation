@@ -224,7 +224,8 @@ class VisionTransformer(BaseModule):
                  num_fcs=2,
                  norm_eval=False,
                  with_cp=False,
-                 pretrain_style='timm'):
+                 pretrain_style='timm',
+                 with_image_shape=False):
         super(VisionTransformer, self).__init__()
 
         if isinstance(img_size, int):
@@ -294,6 +295,7 @@ class VisionTransformer(BaseModule):
 
         self.norm_eval = norm_eval
         self.with_cp = with_cp
+        self.with_image_shape = with_image_shape
 
     @property
     def norm1(self):
@@ -447,7 +449,10 @@ class VisionTransformer(BaseModule):
                                       inputs.shape[3] // self.patch_size,
                                       C).permute(0, 3, 1, 2)
                 else:
-                    out = x
+                    if self.with_image_shape:
+                        out = [x, [inputs.shape[2], inputs.shape[3]]]
+                    else:
+                        out = x
                 outs.append(out)
 
         return tuple(outs)
