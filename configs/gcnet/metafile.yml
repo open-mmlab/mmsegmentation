@@ -11,7 +11,7 @@ Models:
   - Name: gcnet_r50-d8_512x1024_40k_cityscapes
     In Collection: GCNet
     Metadata:
-      inference time (fps): 3.93
+      inference time (ms/im): 254.45
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +25,7 @@ Models:
   - Name: gcnet_r101-d8_512x1024_40k_cityscapes
     In Collection: GCNet
     Metadata:
-      inference time (fps): 2.61
+      inference time (ms/im): 383.14
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +39,7 @@ Models:
   - Name: gcnet_r50-d8_769x769_40k_cityscapes
     In Collection: GCNet
     Metadata:
-      inference time (fps): 1.67
+      inference time (ms/im): 598.8
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -53,7 +53,7 @@ Models:
   - Name: gcnet_r101-d8_769x769_40k_cityscapes
     In Collection: GCNet
     Metadata:
-      inference time (fps): 1.13
+      inference time (ms/im): 884.96
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -67,7 +67,7 @@ Models:
   - Name: gcnet_r50-d8_512x1024_80k_cityscapes
     In Collection: GCNet
     Metadata:
-      inference time (fps): 3.93
+      inference time (ms/im): 254.45
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +81,7 @@ Models:
   - Name: gcnet_r101-d8_512x1024_80k_cityscapes
     In Collection: GCNet
     Metadata:
-      inference time (fps): 2.61
+      inference time (ms/im): 383.14
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +95,7 @@ Models:
   - Name: gcnet_r50-d8_769x769_80k_cityscapes
     In Collection: GCNet
     Metadata:
-      inference time (fps): 1.67
+      inference time (ms/im): 598.8
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +109,7 @@ Models:
   - Name: gcnet_r101-d8_769x769_80k_cityscapes
     In Collection: GCNet
     Metadata:
-      inference time (fps): 1.13
+      inference time (ms/im): 884.96
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -123,7 +123,7 @@ Models:
   - Name: gcnet_r50-d8_512x512_80k_ade20k
     In Collection: GCNet
     Metadata:
-      inference time (fps): 23.38
+      inference time (ms/im): 42.77
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -137,7 +137,7 @@ Models:
   - Name: gcnet_r101-d8_512x512_80k_ade20k
     In Collection: GCNet
     Metadata:
-      inference time (fps): 15.20
+      inference time (ms/im): 65.79
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -151,7 +151,7 @@ Models:
   - Name: gcnet_r50-d8_512x512_160k_ade20k
     In Collection: GCNet
     Metadata:
-      inference time (fps): 23.38
+      inference time (ms/im): 42.77
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -165,7 +165,7 @@ Models:
   - Name: gcnet_r101-d8_512x512_160k_ade20k
     In Collection: GCNet
     Metadata:
-      inference time (fps): 15.20
+      inference time (ms/im): 65.79
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -179,7 +179,7 @@ Models:
   - Name: gcnet_r50-d8_512x512_20k_voc12aug
     In Collection: GCNet
     Metadata:
-      inference time (fps): 23.35
+      inference time (ms/im): 42.83
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -193,7 +193,7 @@ Models:
   - Name: gcnet_r101-d8_512x512_20k_voc12aug
     In Collection: GCNet
     Metadata:
-      inference time (fps): 14.80
+      inference time (ms/im): 67.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -207,7 +207,7 @@ Models:
   - Name: gcnet_r50-d8_512x512_40k_voc12aug
     In Collection: GCNet
     Metadata:
-      inference time (fps): 23.35
+      inference time (ms/im): 42.83
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -221,7 +221,7 @@ Models:
   - Name: gcnet_r101-d8_512x512_40k_voc12aug
     In Collection: GCNet
     Metadata:
-      inference time (fps): 14.80
+      inference time (ms/im): 67.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug

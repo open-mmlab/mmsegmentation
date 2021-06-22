@@ -9,7 +9,7 @@ Models:
   - Name: lraspp_m-v3-d8_512x1024_320k_cityscapes
     In Collection: LRASPP
     Metadata:
-      inference time (fps): 15.22
+      inference time (ms/im): 65.7
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -23,7 +23,7 @@ Models:
   - Name: lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes
     In Collection: LRASPP
     Metadata:
-      inference time (fps): 14.77
+      inference time (ms/im): 67.7
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -37,7 +37,7 @@ Models:
   - Name: lraspp_m-v3s-d8_512x1024_320k_cityscapes
     In Collection: LRASPP
     Metadata:
-      inference time (fps): 23.64
+      inference time (ms/im): 42.3
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -51,7 +51,7 @@ Models:
   - Name: lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes
     In Collection: LRASPP
     Metadata:
-      inference time (fps): 24.50
+      inference time (ms/im): 40.82
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
