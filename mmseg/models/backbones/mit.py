@@ -1,4 +1,5 @@
 import math
+import warnings
 from functools import partial
 
 import torch
@@ -7,10 +8,11 @@ from mmcv.cnn import (ConvModule, build_activation_layer, build_norm_layer,
                       constant_init, normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import MultiheadAttention
-from mmcv.runner import BaseModule, ModuleList, Sequential, load_checkpoint
+from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
+from ..utils import mit_convert
 
 
 def nlc_to_nchw(tensor, H, W):
@@ -45,7 +47,9 @@ class PEConv(BaseModule):
             stride=stride,
             padding=(kernel_size - 1) // 2,
             bias=True,
-            groups=embed_dims)
+            groups=embed_dims,
+            norm_cfg=None,
+            act_cfg=None)
 
     def forward(self, x):
 
@@ -191,7 +195,9 @@ class EfficientMultiheadAttention(MultiheadAttention):
                 in_channels=embed_dims,
                 out_channels=embed_dims,
                 kernel_size=sr_ratio,
-                stride=sr_ratio)
+                stride=sr_ratio,
+                norm_cfg=None,
+                act_cfg=None)
             _, self.norm = build_norm_layer(norm_cfg, embed_dims)
 
     def forward(self, x, H, W, identity=None):
@@ -339,13 +345,23 @@ class MixVisionTransformer(BaseModule):
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN', eps=1e-6),
                  sr_ratios=[8, 4, 2, 1],
+                 pretrain_style='official',
                  pretrained=None,
                  init_cfg=None):
         super().__init__()
 
+        assert pretrain_style in ['official', 'mmcls']
+
+        if isinstance(pretrained, str) or pretrained is None:
+            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+                          'please use "init_cfg" instead')
+        else:
+            raise TypeError('pretrained must be a str or None')
+
         self.out_indices = out_indices
-        self.init_cfg = init_cfg
+        self.pretrain_style = pretrain_style
         self.pretrained = pretrained
+        self.init_cfg = init_cfg
 
         patch_sizes = [7, 3, 3, 3]
         strides = [4, 2, 2, 2]
@@ -405,12 +421,22 @@ class MixVisionTransformer(BaseModule):
                         constant_init(m.bias)
         elif isinstance(self.pretrained, str):
             logger = get_root_logger()
-            load_checkpoint(
-                self,
-                self.pretrained,
-                map_location='cpu',
-                strict=False,
-                logger=logger)
+            checkpoint = _load_checkpoint(
+                self.pretrained, logger=logger, map_location='cpu')
+            if 'state_dict' in checkpoint:
+                state_dict = checkpoint['state_dict']
+            elif 'model' in checkpoint:
+                state_dict = checkpoint['model']
+            else:
+                state_dict = checkpoint
+
+            if self.pretrain_style == 'official':
+                # Because segformer backbone is not support by mmcls,
+                # so we need to convert pretrain weights to match this
+                # implementation.
+                state_dict = mit_convert(state_dict)
+
+            self.load_state_dict(state_dict, False)
 
     def forward(self, x):
         B = x.shape[0]
