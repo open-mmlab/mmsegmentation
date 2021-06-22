@@ -4,7 +4,7 @@ Models:
   - Name: fcn_r101-d8_512x1024_80k_fp16_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (fps): 8.64
+      inference time (ms/im): 115.74
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -18,7 +18,7 @@ Models:
   - Name: pspnet_r101-d8_512x1024_80k_fp16_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 8.77
+      inference time (ms/im): 114.03
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -32,7 +32,7 @@ Models:
   - Name: deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (fps): 3.86
+      inference time (ms/im): 259.07
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -46,7 +46,7 @@ Models:
   - Name: deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (fps): 7.87
+      inference time (ms/im): 127.06
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
