@@ -10,7 +10,7 @@ Please briefly describe what modification is made in this PR.
 
 ## BC-breaking (Optional)
 
-Does the modification introduce changes that break the back-compatibility of the downstream repos?
+Does the modification introduce changes that break the backward-compatibility of the downstream repos?
 If so, please describe how it breaks the compatibility and how the downstream projects should modify their code to keep compatibility with this PR.
 
 ## Use cases (Optional)
