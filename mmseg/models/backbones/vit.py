@@ -197,7 +197,7 @@ class VisionTransformer(BaseModule):
                  num_layers=12,
                  num_heads=12,
                  mlp_ratio=4,
-                 out_indices=11,
+                 out_indices=-1,
                  qkv_bias=True,
                  drop_rate=0.,
                  attn_drop_rate=0.,
@@ -263,6 +263,8 @@ class VisionTransformer(BaseModule):
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
         if isinstance(out_indices, int):
+            if self.out_indices == -1:
+                self.out_indices = num_layers - 1
             self.out_indices = [out_indices]
         elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
             self.out_indices = out_indices
@@ -303,7 +305,8 @@ class VisionTransformer(BaseModule):
     def init_weights(self):
         if isinstance(self.pretrained, str):
             logger = get_root_logger()
-            checkpoint = _load_checkpoint(self.pretrained, logger=logger)
+            checkpoint = _load_checkpoint(
+                self.pretrained, logger=logger, map_location='cpu')
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
             elif 'model' in checkpoint:
