@@ -1,0 +1,400 @@
+Collections:
+  - Name: PSPNet
+    Metadata:
+      Training Data:
+        - Cityscapes
+        - Pascal Context
+        - Pascal VOC 2012 + Aug
+        - ADE20K
+
+Models:
+
+  - Name: pspnet_r50-d8_512x1024_40k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 4.07
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 77.85
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth
+    Config: configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: pspnet_r101-d8_512x1024_40k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 2.68
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.34
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_40k_cityscapes/pspnet_r101-d8_512x1024_40k_cityscapes_20200604_232751-467e7cf4.pth
+    Config: configs/pspnet/pspnet_r101-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: pspnet_r50-d8_769x769_40k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 1.76
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.26
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_769x769_40k_cityscapes/pspnet_r50-d8_769x769_40k_cityscapes_20200606_112725-86638686.pth
+    Config: configs/pspnet/pspnet_r50-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: pspnet_r101-d8_769x769_40k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 1.15
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.08
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_40k_cityscapes/pspnet_r101-d8_769x769_40k_cityscapes_20200606_112753-61c6f5be.pth
+    Config: configs/pspnet/pspnet_r101-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: pspnet_r18-d8_512x1024_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 15.71
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 74.87
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_512x1024_80k_cityscapes/pspnet_r18-d8_512x1024_80k_cityscapes_20201225_021458-09ffa746.pth
+    Config: configs/pspnet/pspnet_r18-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r50-d8_512x1024_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 4.07
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.55
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_512x1024_80k_cityscapes_20200606_112131-2376f12b.pth
+    Config: configs/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r101-d8_512x1024_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 2.68
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.76
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes/pspnet_r101-d8_512x1024_80k_cityscapes_20200606_112211-e1e1100f.pth
+    Config: configs/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r18-d8_769x769_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 6.20
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 75.90
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_769x769_80k_cityscapes/pspnet_r18-d8_769x769_80k_cityscapes_20201225_021458-3deefc62.pth
+    Config: configs/pspnet/pspnet_r18-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r50-d8_769x769_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 1.76
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.59
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_769x769_80k_cityscapes/pspnet_r50-d8_769x769_80k_cityscapes_20200606_210121-5ccf03dd.pth
+    Config: configs/pspnet/pspnet_r50-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r101-d8_769x769_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 1.15
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.77
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_80k_cityscapes/pspnet_r101-d8_769x769_80k_cityscapes_20200606_225055-dba412fa.pth
+    Config: configs/pspnet/pspnet_r101-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r18b-d8_512x1024_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 16.28
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 74.23
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18b-d8_512x1024_80k_cityscapes/pspnet_r18b-d8_512x1024_80k_cityscapes_20201226_063116-26928a60.pth
+    Config: configs/pspnet/pspnet_r18b-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r50b-d8_512x1024_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 4.30
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.22
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d8_512x1024_80k_cityscapes/pspnet_r50b-d8_512x1024_80k_cityscapes_20201225_094315-6344287a.pth
+    Config: configs/pspnet/pspnet_r50b-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r101b-d8_512x1024_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 2.76
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.69
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101b-d8_512x1024_80k_cityscapes/pspnet_r101b-d8_512x1024_80k_cityscapes_20201226_170012-3a4d38ab.pth
+    Config: configs/pspnet/pspnet_r101b-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r18b-d8_769x769_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 6.41
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 74.92
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18b-d8_769x769_80k_cityscapes/pspnet_r18b-d8_769x769_80k_cityscapes_20201226_080942-bf98d186.pth
+    Config: configs/pspnet/pspnet_r18b-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r50b-d8_769x769_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 1.88
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.50
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d8_769x769_80k_cityscapes/pspnet_r50b-d8_769x769_80k_cityscapes_20201225_094316-4c643cf6.pth
+    Config: configs/pspnet/pspnet_r50b-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r101b-d8_769x769_80k_cityscapes
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 1.17
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.87
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101b-d8_769x769_80k_cityscapes/pspnet_r101b-d8_769x769_80k_cityscapes_20201226_171823-f0e7c293.pth
+    Config: configs/pspnet/pspnet_r101b-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: pspnet_r50-d8_512x512_80k_ade20k
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 23.53
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 41.13
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_ade20k/pspnet_r50-d8_512x512_80k_ade20k_20200615_014128-15a8b914.pth
+    Config: configs/pspnet/pspnet_r50-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: pspnet_r101-d8_512x512_80k_ade20k
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 15.30
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 43.57
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_80k_ade20k/pspnet_r101-d8_512x512_80k_ade20k_20200614_031423-b6e782f0.pth
+    Config: configs/pspnet/pspnet_r101-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: pspnet_r50-d8_512x512_160k_ade20k
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 23.53
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 42.48
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_160k_ade20k/pspnet_r50-d8_512x512_160k_ade20k_20200615_184358-1890b0bd.pth
+    Config: configs/pspnet/pspnet_r50-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: pspnet_r101-d8_512x512_160k_ade20k
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 15.30
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 44.39
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_160k_ade20k/pspnet_r101-d8_512x512_160k_ade20k_20200615_100650-967c316f.pth
+    Config: configs/pspnet/pspnet_r101-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: pspnet_r50-d8_512x512_20k_voc12aug
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 23.59
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 76.78
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_20k_voc12aug/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958-ed5dfbd9.pth
+    Config: configs/pspnet/pspnet_r50-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: pspnet_r101-d8_512x512_20k_voc12aug
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 15.02
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 78.47
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_20k_voc12aug/pspnet_r101-d8_512x512_20k_voc12aug_20200617_102003-4aef3c9a.pth
+    Config: configs/pspnet/pspnet_r101-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: pspnet_r50-d8_512x512_40k_voc12aug
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 23.59
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 77.29
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_40k_voc12aug/pspnet_r50-d8_512x512_40k_voc12aug_20200613_161222-ae9c1b8c.pth
+    Config: configs/pspnet/pspnet_r50-d8_512x512_40k_voc12aug.py
+
+
+
+  - Name: pspnet_r101-d8_512x512_40k_voc12aug
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 15.02
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 78.52
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_40k_voc12aug/pspnet_r101-d8_512x512_40k_voc12aug_20200613_161222-bc933b18.pth
+    Config: configs/pspnet/pspnet_r101-d8_512x512_40k_voc12aug.py
+
+
+
+  - Name: pspnet_r101-d8_480x480_40k_pascal_context
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 9.68
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal Context
+        Metrics:
+          mIoU: 46.60
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context/pspnet_r101-d8_480x480_40k_pascal_context_20200911_211210-bf0f5d7c.pth
+    Config: configs/pspnet/pspnet_r101-d8_480x480_40k_pascal_context.py
+
+
+
+  - Name: pspnet_r101-d8_480x480_80k_pascal_context
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): 9.68
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal Context
+        Metrics:
+          mIoU: 46.03
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context/pspnet_r101-d8_480x480_80k_pascal_context_20200911_190530-c86d6233.pth
+    Config: configs/pspnet/pspnet_r101-d8_480x480_80k_pascal_context.py
+
+
+
+  - Name: pspnet_r101-d8_480x480_40k_pascal_context
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): None
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal Context
+        Metrics:
+          mIoU: 52.02
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context_59/pspnet_r101-d8_480x480_40k_pascal_context_59_20210416_114524-86d44cd4.pth
+    Config: configs/pspnet/pspnet_r101-d8_480x480_40k_pascal_context.py
+
+
+
+  - Name: pspnet_r101-d8_480x480_80k_pascal_context_59
+    In Collection: PSPNet
+    Metadata:
+      inference time (fps): None
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal Context
+        Metrics:
+          mIoU: 52.47
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59/pspnet_r101-d8_480x480_80k_pascal_context_59_20210416_114418-fa6caaa2.pth
+    Config: configs/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59.py

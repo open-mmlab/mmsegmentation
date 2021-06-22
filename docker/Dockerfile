@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y git ninja-build libglib2.0-0 libsm6 lib
 RUN conda clean --all
 
 RUN pip install mmcv-full==latest+torch1.6.0+cu101 -f https://download.openmmlab.com/mmcv/dist/index.html
-RUN git clone https://github.com/open-mmlab/mmsegmenation.git /mmsegmentation
+RUN git clone https://github.com/open-mmlab/mmsegmentation.git /mmsegmentation
 WORKDIR /mmsegmentation
-RUN pip install -r requirements/build.txt
+RUN pip install -r requirements.txt
 RUN pip install --no-cache-dir -e .

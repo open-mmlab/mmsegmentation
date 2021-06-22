@@ -1,0 +1,231 @@
+Collections:
+  - Name: DANet
+    Metadata:
+      Training Data:
+        - Cityscapes
+        - Pascal VOC 2012 + Aug
+        - ADE20K
+
+Models:
+
+  - Name: danet_r50-d8_512x1024_40k_cityscapes
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 2.66
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.74
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x1024_40k_cityscapes/danet_r50-d8_512x1024_40k_cityscapes_20200605_191324-c0dbfa5f.pth
+    Config: configs/danet/danet_r50-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: danet_r101-d8_512x1024_40k_cityscapes
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 1.99
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.52
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x1024_40k_cityscapes/danet_r101-d8_512x1024_40k_cityscapes_20200605_200831-c57a7157.pth
+    Config: configs/danet/danet_r101-d8_512x1024_40k_cityscapes.py
+
+
+
+  - Name: danet_r50-d8_769x769_40k_cityscapes
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 1.56
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 78.88
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_769x769_40k_cityscapes/danet_r50-d8_769x769_40k_cityscapes_20200530_025703-76681c60.pth
+    Config: configs/danet/danet_r50-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: danet_r101-d8_769x769_40k_cityscapes
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 1.07
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.88
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_769x769_40k_cityscapes/danet_r101-d8_769x769_40k_cityscapes_20200530_025717-dcb7fd4e.pth
+    Config: configs/danet/danet_r101-d8_769x769_40k_cityscapes.py
+
+
+
+  - Name: danet_r50-d8_512x1024_80k_cityscapes
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 2.66
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.34
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x1024_80k_cityscapes/danet_r50-d8_512x1024_80k_cityscapes_20200607_133029-2bfa2293.pth
+    Config: configs/danet/danet_r50-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: danet_r101-d8_512x1024_80k_cityscapes
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 1.99
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.41
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x1024_80k_cityscapes/danet_r101-d8_512x1024_80k_cityscapes_20200607_132918-955e6350.pth
+    Config: configs/danet/danet_r101-d8_512x1024_80k_cityscapes.py
+
+
+
+  - Name: danet_r50-d8_769x769_80k_cityscapes
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 1.56
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 79.27
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_769x769_80k_cityscapes/danet_r50-d8_769x769_80k_cityscapes_20200607_132954-495689b4.pth
+    Config: configs/danet/danet_r50-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: danet_r101-d8_769x769_80k_cityscapes
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 1.07
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Cityscapes
+        Metrics:
+          mIoU: 80.47
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_769x769_80k_cityscapes/danet_r101-d8_769x769_80k_cityscapes_20200607_132918-f3a929e7.pth
+    Config: configs/danet/danet_r101-d8_769x769_80k_cityscapes.py
+
+
+
+  - Name: danet_r50-d8_512x512_80k_ade20k
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 21.20
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 41.66
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_80k_ade20k/danet_r50-d8_512x512_80k_ade20k_20200615_015125-edb18e08.pth
+    Config: configs/danet/danet_r50-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: danet_r101-d8_512x512_80k_ade20k
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 14.18
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 43.64
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_80k_ade20k/danet_r101-d8_512x512_80k_ade20k_20200615_015126-d0357c73.pth
+    Config: configs/danet/danet_r101-d8_512x512_80k_ade20k.py
+
+
+
+  - Name: danet_r50-d8_512x512_160k_ade20k
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 21.20
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 42.45
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_160k_ade20k/danet_r50-d8_512x512_160k_ade20k_20200616_082340-9cb35dcd.pth
+    Config: configs/danet/danet_r50-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: danet_r101-d8_512x512_160k_ade20k
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 14.18
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: ADE20K
+        Metrics:
+          mIoU: 44.17
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_160k_ade20k/danet_r101-d8_512x512_160k_ade20k_20200616_082348-23bf12f9.pth
+    Config: configs/danet/danet_r101-d8_512x512_160k_ade20k.py
+
+
+
+  - Name: danet_r50-d8_512x512_20k_voc12aug
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 20.94
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 74.45
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_20k_voc12aug/danet_r50-d8_512x512_20k_voc12aug_20200618_070026-9e9e3ab3.pth
+    Config: configs/danet/danet_r50-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: danet_r101-d8_512x512_20k_voc12aug
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 13.76
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 76.02
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_20k_voc12aug/danet_r101-d8_512x512_20k_voc12aug_20200618_070026-d48d23b2.pth
+    Config: configs/danet/danet_r101-d8_512x512_20k_voc12aug.py
+
+
+
+  - Name: danet_r50-d8_512x512_40k_voc12aug
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 20.94
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 76.37
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_40k_voc12aug/danet_r50-d8_512x512_40k_voc12aug_20200613_235526-426e3a64.pth
+    Config: configs/danet/danet_r50-d8_512x512_40k_voc12aug.py
+
+
+
+  - Name: danet_r101-d8_512x512_40k_voc12aug
+    In Collection: DANet
+    Metadata:
+      inference time (fps): 13.76
+    Results:
+      - Task: Semantic Segmentation
+        Dataset: Pascal VOC 2012 + Aug
+        Metrics:
+          mIoU: 76.51
+    Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_40k_voc12aug/danet_r101-d8_512x512_40k_voc12aug_20200613_223031-788e232a.pth
+    Config: configs/danet/danet_r101-d8_512x512_40k_voc12aug.py
