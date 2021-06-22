@@ -100,7 +100,7 @@ class PatchEmbed(BaseModule):
     Args:
         patch_size (int): The size of one patch
         in_channels (int): The num of input channels.
-        embed_dim (int): The dimensions of embedding.
+        embed_dims (int): The dimensions of embedding.
         norm_cfg (dict, optional): Config dict for normalization layer.
         conv_cfg (dict, optional): The config dict for conv layers.
             Default: None.
@@ -109,7 +109,7 @@ class PatchEmbed(BaseModule):
     def __init__(self,
                  patch_size=16,
                  in_channels=3,
-                 embed_dim=768,
+                 embed_dims=768,
                  norm_cfg=None,
                  conv_cfg=None):
         super(PatchEmbed, self).__init__()
@@ -118,12 +118,12 @@ class PatchEmbed(BaseModule):
         self.projection = build_conv_layer(
             conv_cfg,
             in_channels,
-            embed_dim,
+            embed_dims,
             kernel_size=patch_size,
             stride=patch_size)
 
         if norm_cfg is not None:
-            self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
+            self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
         else:
             self.norm = None
 
@@ -250,7 +250,7 @@ class VisionTransformer(BaseModule):
         self.patch_embed = PatchEmbed(
             patch_size=patch_size,
             in_channels=in_channels,
-            embed_dim=embed_dims,
+            embed_dims=embed_dims,
             norm_cfg=norm_cfg if patch_norm else None)
 
         num_patches = (img_size[0] // patch_size) * \
