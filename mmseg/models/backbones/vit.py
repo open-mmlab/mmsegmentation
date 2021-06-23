@@ -263,8 +263,8 @@ class VisionTransformer(BaseModule):
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
         if isinstance(out_indices, int):
-            if self.out_indices == -1:
-                self.out_indices = num_layers - 1
+            if out_indices == -1:
+                out_indices = num_layers - 1
             self.out_indices = [out_indices]
         elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
             self.out_indices = out_indices
