@@ -3,11 +3,9 @@ import mmcv
 import numpy as np
 import os
 import os.path as osp
-import shutil
 from functools import partial
 from glob import glob
 from PIL import Image
-from scipy.io import loadmat
 
 COCO_LEN = 123287
 

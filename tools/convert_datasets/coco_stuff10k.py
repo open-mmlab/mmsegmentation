@@ -1,13 +1,12 @@
 import argparse
-import os
-import os.path as osp
-from functools import partial
-
 import mmcv
 import numpy as np
+import os
+import os.path as osp
+import shutil
+from functools import partial
 from PIL import Image
 from scipy.io import loadmat
-import shutil
 
 COCO_LEN = 10000
 
