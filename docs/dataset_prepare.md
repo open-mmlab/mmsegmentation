@@ -160,7 +160,6 @@ python tools/convert_datasets/coco_stuff10k.py data/coco_stuff10k --nproc 8
 
 By conversion, masks in `data/coco_stuff10k/masks/*.png` are used for COCO Stuff 10k training and testing.
 
-
 ### COCO Stuff 164k
 
 The data could be downloaded and converted augmentation annotations into proper format. by following command.
@@ -188,7 +187,6 @@ python tools/convert_datasets/coco_stuff164k.py data/coco_stuff164k --nproc 8
 By convention, masks in `data/coco_stuff164k/masks/*.png` are used for COCO Stuff 164k training and testing.
 
 The details of this dataset could be found at [here](https://github.com/nightrome/cocostuff#downloads).
-
 
 ### CHASE DB1
 
