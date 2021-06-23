@@ -3,7 +3,7 @@ Models:
   - Name: fcn_unet_s5-d16_64x64_40k_drive
     In Collection: FCN
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: DRIVE
@@ -17,7 +17,7 @@ Models:
   - Name: pspnet_unet_s5-d16_64x64_40k_drive
     In Collection: PSPNet
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: DRIVE
@@ -31,7 +31,7 @@ Models:
   - Name: deeplabv3_unet_s5-d16_64x64_40k_drive
     In Collection: DeepLabV3
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: DRIVE
@@ -45,7 +45,7 @@ Models:
   - Name: fcn_unet_s5-d16_128x128_40k_stare
     In Collection: FCN
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: STARE
@@ -59,7 +59,7 @@ Models:
   - Name: pspnet_unet_s5-d16_128x128_40k_stare
     In Collection: PSPNet
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: STARE
@@ -73,7 +73,7 @@ Models:
   - Name: deeplabv3_unet_s5-d16_128x128_40k_stare
     In Collection: DeepLabV3
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: STARE
@@ -87,7 +87,7 @@ Models:
   - Name: fcn_unet_s5-d16_128x128_40k_chase_db1
     In Collection: FCN
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: CHASE_DB1
@@ -101,7 +101,7 @@ Models:
   - Name: pspnet_unet_s5-d16_128x128_40k_chase_db1
     In Collection: PSPNet
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: CHASE_DB1
@@ -115,7 +115,7 @@ Models:
   - Name: deeplabv3_unet_s5-d16_128x128_40k_chase_db1
     In Collection: DeepLabV3
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: CHASE_DB1
@@ -129,7 +129,7 @@ Models:
   - Name: fcn_unet_s5-d16_256x256_40k_hrf
     In Collection: FCN
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: HRF
@@ -143,7 +143,7 @@ Models:
   - Name: pspnet_unet_s5-d16_256x256_40k_hrf
     In Collection: PSPNet
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: HRF
@@ -157,7 +157,7 @@ Models:
   - Name: deeplabv3_unet_s5-d16_256x256_40k_hrf
     In Collection: DeepLabV3
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: HRF
