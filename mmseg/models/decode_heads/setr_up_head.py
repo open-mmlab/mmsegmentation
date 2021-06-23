@@ -1,5 +1,5 @@
 import torch.nn as nn
-from mmcv.cnn import ConvModule, build_norm_layer, constant_init
+from mmcv.cnn import ConvModule, build_norm_layer
 
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
@@ -25,6 +25,7 @@ class SETRUPHead(BaseDecodeHead):
                  num_convs=1,
                  up_scale=4,
                  kernel_size=3,
+                 init_cfg=None,
                  **kwargs):
 
         assert kernel_size in [1, 3], 'kernel_size must be 1 or 3.'
@@ -32,6 +33,10 @@ class SETRUPHead(BaseDecodeHead):
         super(SETRUPHead, self).__init__(**kwargs)
 
         assert isinstance(self.in_channels, int)
+
+        self.init_cfg = [
+            dict(dict='Constant', val=1.0, bias=0, layer='LayerNorm')
+        ]
 
         _, self.norm = build_norm_layer(norm_layer, self.in_channels)
 
@@ -54,12 +59,6 @@ class SETRUPHead(BaseDecodeHead):
                         mode='bilinear',
                         align_corners=self.align_corners)))
             in_channels = out_channels
-
-    def init_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.LayerNorm):
-                constant_init(m.bias, 0)
-                constant_init(m.weight, 1.0)
 
     def forward(self, x):
         x = self._transform_inputs(x)
