@@ -35,7 +35,7 @@ class SegFormerHead(BaseDecodeHead):
                     norm_cfg=self.norm_cfg,
                     act_cfg=self.act_cfg))
 
-        self.conv_fuse = ConvModule(
+        self.fusion_conv = ConvModule(
             in_channels=self.channels * num_inputs,
             out_channels=self.channels,
             kernel_size=1,
@@ -53,7 +53,7 @@ class SegFormerHead(BaseDecodeHead):
                     mode=self.interpolate_mode,
                     align_corners=self.align_corners))
 
-        out = self.conv_fuse(torch.cat(outs, dim=1))
+        out = self.fusion_conv(torch.cat(outs, dim=1))
 
         out = self.cls_seg(out)
 
