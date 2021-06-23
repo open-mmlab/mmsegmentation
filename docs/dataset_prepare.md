@@ -175,9 +175,9 @@ wget http://images.cocodataset.org/zips/val2017.zip
 wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/stuffthingmaps_trainval2017.zip
 
 # unzip
-unzip downloads/train2017.zip -d images/
-unzip downloads/val2017.zip -d images/
-unzip downloads/stuffthingmaps_trainval2017.zip -d annotations/
+unzip train2017.zip -d images/
+unzip val2017.zip -d images/
+unzip stuffthingmaps_trainval2017.zip -d annotations/
 cd ../..
 
 # --nproc means 8 process for conversion, which could be omitted as well.
