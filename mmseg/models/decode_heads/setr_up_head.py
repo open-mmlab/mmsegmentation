@@ -18,6 +18,9 @@ class SETRUPHead(BaseDecodeHead):
         up_scale (int): The scale factor of interpolate. Default:4.
         kernel_size (int): The kernel size of convolution when decoding
             feature information from backbone. Default: 3.
+        init_cfg (dict | list[dict] | None): Initialization config dict.
+            Default: dict(
+                     type='Constant', val=1.0, bias=0, layer='LayerNorm').
     """
 
     def __init__(self,
@@ -25,25 +28,22 @@ class SETRUPHead(BaseDecodeHead):
                  num_convs=1,
                  up_scale=4,
                  kernel_size=3,
-                 init_cfg=None,
+                 init_cfg=dict(
+                     type='Constant', val=1.0, bias=0, layer='LayerNorm'),
                  **kwargs):
 
         assert kernel_size in [1, 3], 'kernel_size must be 1 or 3.'
 
-        super(SETRUPHead, self).__init__(**kwargs)
+        super(SETRUPHead, self).__init__(init_cfg=init_cfg, **kwargs)
 
         assert isinstance(self.in_channels, int)
-
-        self.init_cfg = [
-            dict(type='Constant', val=1.0, bias=0, layer='LayerNorm')
-        ]
 
         _, self.norm = build_norm_layer(norm_layer, self.in_channels)
 
         self.up_convs = nn.ModuleList()
         in_channels = self.in_channels
         out_channels = self.channels
-        for i in range(num_convs):
+        for _ in range(num_convs):
             self.up_convs.append(
                 nn.Sequential(
                     ConvModule(
