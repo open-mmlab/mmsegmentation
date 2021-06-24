@@ -1,5 +1,5 @@
 import torch.nn as nn
-from mmcv.cnn import ConvModule, build_norm_layer, constant_init
+from mmcv.cnn import ConvModule, build_norm_layer
 
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
@@ -18,6 +18,9 @@ class SETRUPHead(BaseDecodeHead):
         up_scale (int): The scale factor of interpolate. Default:4.
         kernel_size (int): The kernel size of convolution when decoding
             feature information from backbone. Default: 3.
+        init_cfg (dict | list[dict] | None): Initialization config dict.
+            Default: dict(
+                     type='Constant', val=1.0, bias=0, layer='LayerNorm').
     """
 
     def __init__(self,
@@ -25,11 +28,18 @@ class SETRUPHead(BaseDecodeHead):
                  num_convs=1,
                  up_scale=4,
                  kernel_size=3,
+                 init_cfg=[
+                     dict(type='Constant', val=1.0, bias=0, layer='LayerNorm'),
+                     dict(
+                         type='Normal',
+                         std=0.01,
+                         override=dict(name='conv_seg'))
+                 ],
                  **kwargs):
 
         assert kernel_size in [1, 3], 'kernel_size must be 1 or 3.'
 
-        super(SETRUPHead, self).__init__(**kwargs)
+        super(SETRUPHead, self).__init__(init_cfg=init_cfg, **kwargs)
 
         assert isinstance(self.in_channels, int)
 
@@ -38,7 +48,7 @@ class SETRUPHead(BaseDecodeHead):
         self.up_convs = nn.ModuleList()
         in_channels = self.in_channels
         out_channels = self.channels
-        for i in range(num_convs):
+        for _ in range(num_convs):
             self.up_convs.append(
                 nn.Sequential(
                     ConvModule(
@@ -54,12 +64,6 @@ class SETRUPHead(BaseDecodeHead):
                         mode='bilinear',
                         align_corners=self.align_corners)))
             in_channels = out_channels
-
-    def init_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.LayerNorm):
-                constant_init(m.bias, 0)
-                constant_init(m.weight, 1.0)
 
     def forward(self, x):
         x = self._transform_inputs(x)
