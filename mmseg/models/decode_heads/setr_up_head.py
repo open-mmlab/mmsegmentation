@@ -35,7 +35,7 @@ class SETRUPHead(BaseDecodeHead):
         assert isinstance(self.in_channels, int)
 
         self.init_cfg = [
-            dict(dict='Constant', val=1.0, bias=0, layer='LayerNorm')
+            dict(type='Constant', val=1.0, bias=0, layer='LayerNorm')
         ]
 
         _, self.norm = build_norm_layer(norm_layer, self.in_channels)
