@@ -186,7 +186,7 @@ class GlobalFeatureExtractor(nn.Module):
         x = self.bottleneck1(x)
         x = self.bottleneck2(x)
         x = self.bottleneck3(x)
-        x = torch.cat([x, *self.ppm(x)[::-1]], dim=1)
+        x = torch.cat([x, *self.ppm(x)], dim=1)
         x = self.out(x)
         return x
 
