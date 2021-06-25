@@ -7,9 +7,98 @@ from mmcv.cnn import build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.registry import ATTENTION
 from mmcv.cnn.bricks.transformer import FFN, build_dropout
 from mmcv.runner.base_module import BaseModule, ModuleList
+from torch.nn.modules.utils import _pair as to_2tuple
 
 from ..builder import BACKBONES
-from ..utils import PatchEmbed, PatchMerging, to_2tuple
+from ..utils import PatchEmbed
+
+
+class PatchMerging(BaseModule):
+    """Merge patch feature map.
+
+    This layer use nn.Unfold to group feature map by kernel_size, and use norm
+    and linear layer to embed grouped feature map.
+    Args:
+        input_resolution (tuple): The size of input patch resolution.
+        in_channels (int): The num of input channels.
+        out_channels (int): The num of output channels.
+        kernel_size (int | tuple, optional): the kernel size in the unfold
+            layer. Defaults: 2.
+        stride (int | tuple, optional): the stride of the sliding blocks in the
+            unfold layer.
+            Defaults: None. (Default to be equal with kernel_size).
+        padding (int | tuple, optional): zero padding width in the unfold
+            layer. Defaults: 0.
+        dilation (int | tuple, optional): dilation parameter in the unfold
+            layer. Defaults: 1.
+        bias (bool, optional): Whether to add bias in linear layer or not.
+            Defaults: False.
+        norm_cfg (dict, optional): Config dict for normalization layer.
+            Defaults: dict(type='LN').
+        init_cfg (dict, optional): The extra config for initialization.
+            Defaults: None.
+    """
+
+    def __init__(self,
+                 input_resolution,
+                 in_channels,
+                 out_channels,
+                 kernel_size=2,
+                 stride=None,
+                 padding=0,
+                 dilation=1,
+                 bias=False,
+                 norm_cfg=dict(type='LN'),
+                 init_cfg=None):
+        super().__init__(init_cfg)
+        H, W = input_resolution
+        self.input_resolution = input_resolution
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+
+        if stride is None:
+            stride = kernel_size
+        kernel_size = to_2tuple(kernel_size)
+        stride = to_2tuple(stride)
+        padding = to_2tuple(padding)
+        dilation = to_2tuple(dilation)
+        self.sampler = nn.Unfold(kernel_size, dilation, padding, stride)
+
+        sample_dim = kernel_size[0] * kernel_size[1] * in_channels
+
+        if norm_cfg is not None:
+            self.norm = build_norm_layer(norm_cfg, sample_dim)[1]
+        else:
+            self.norm = None
+
+        self.reduction = nn.Linear(sample_dim, out_channels, bias=bias)
+
+        # See https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html
+        H_out = (H + 2 * padding[0] - dilation[0] *
+                 (kernel_size[0] - 1) - 1) // stride[0] + 1
+        W_out = (W + 2 * padding[1] - dilation[1] *
+                 (kernel_size[1] - 1) - 1) // stride[1] + 1
+        self.output_resolution = (H_out, W_out)
+
+    def forward(self, x):
+        """
+        x: B, H*W, C
+        """
+        H, W = self.input_resolution
+        B, L, C = x.shape
+        assert L == H * W, 'input feature has wrong size'
+
+        x = x.view(B, H, W, C).permute([0, 3, 1, 2])  # B, C, H, W
+
+        # Use nn.Unfold to merge patch. About 25% faster than original method,
+        # but need to modify pretrained model for compatibility
+        x = self.sampler(x)  # B, 4*C, H/2*W/2
+        x = x.transpose(1, 2)  # B, H/2*W/2, 4*C
+
+        x = self.norm(x) if self.norm else x
+        x = self.reduction(x)
+
+        return x
 
 
 @ATTENTION.register_module()
@@ -34,12 +123,12 @@ class WindowMSA(BaseModule):
 
     def __init__(self,
                  embed_dims,
-                 window_size,
                  num_heads,
+                 window_size,
                  qkv_bias=True,
                  qk_scale=None,
-                 attn_drop=0.,
-                 proj_drop=0.,
+                 attn_drop_rate=0.,
+                 proj_drop_rate=0.,
                  init_cfg=None):
 
         super().__init__(init_cfg)
@@ -63,9 +152,9 @@ class WindowMSA(BaseModule):
         self.register_buffer('relative_position_index', rel_position_index)
 
         self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=qkv_bias)
-        self.attn_drop = nn.Dropout(attn_drop)
+        self.attn_drop = nn.Dropout(attn_drop_rate)
         self.proj = nn.Linear(embed_dims, embed_dims)
-        self.proj_drop = nn.Dropout(proj_drop)
+        self.proj_drop = nn.Dropout(proj_drop_rate)
 
         self.softmax = nn.Softmax(dim=-1)
 
@@ -82,8 +171,8 @@ class WindowMSA(BaseModule):
             mask (tensor, Optional): mask with shape of (num_windows, Wh*Ww,
                 Wh*Ww), value should be between (-inf, 0].
         """
-        B_, N, C = x.shape
-        qkv = self.qkv(x).reshape(B_, N, 3, self.num_heads,
+        B, N, C = x.shape
+        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads,
                                   C // self.num_heads).permute(2, 0, 3, 1, 4)
         q, k, v = qkv[0], qkv[1], qkv[
             2]  # make torchscript happy (cannot use tensor as tuple)
@@ -102,7 +191,7 @@ class WindowMSA(BaseModule):
 
         if mask is not None:
             nW = mask.shape[0]
-            attn = attn.view(B_ // nW, nW, self.num_heads, N,
+            attn = attn.view(B // nW, nW, self.num_heads, N,
                              N) + mask.unsqueeze(1).unsqueeze(0)
             attn = attn.view(-1, self.num_heads, N, N)
             attn = self.softmax(attn)
@@ -111,7 +200,7 @@ class WindowMSA(BaseModule):
 
         attn = self.attn_drop(attn)
 
-        x = (attn @ v).transpose(1, 2).reshape(B_, N, C)
+        x = (attn @ v).transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
         x = self.proj_drop(x)
         return x
@@ -127,64 +216,68 @@ class WindowMSA(BaseModule):
 class ShiftWindowMSA(BaseModule):
 
     def __init__(self,
+                 input_resolution,
                  embed_dims,
                  num_heads,
-                 input_resolution,
                  window_size,
                  shift_size=0,
                  qkv_bias=True,
                  qk_scale=None,
-                 attn_drop=0,
-                 proj_drop=0,
+                 attn_drop_rate=0,
+                 proj_drop_rate=0,
                  dropout_layer=dict(type='DropPath', drop_prob=0.),
                  auto_pad=False,
                  init_cfg=None):
         super().__init__(init_cfg)
 
-        self.embed_dims = embed_dims
         self.input_resolution = input_resolution
-        self.shift_size = shift_size
         self.window_size = window_size
-        if min(self.input_resolution) <= self.window_size:
-            # if window size is larger than input resolution, don't partition
-            self.shift_size = 0
-            self.window_size = min(self.input_resolution)
+        self.shift_size = shift_size
 
-        self.w_msa = WindowMSA(embed_dims, to_2tuple(self.window_size),
-                               num_heads, qkv_bias, qk_scale, attn_drop,
-                               proj_drop)
+        if min(input_resolution) <= window_size:
+            # if window size is larger than input resolution, don't partition
+            self.shift_size = shift_size = 0
+            self.window_size = window_size = min(input_resolution)
+
+        self.w_msa = WindowMSA(
+            embed_dims=embed_dims,
+            num_heads=num_heads,
+            window_size=to_2tuple(window_size),
+            qkv_bias=qkv_bias,
+            qk_scale=qk_scale,
+            attn_drop_rate=attn_drop_rate,
+            proj_drop_rate=proj_drop_rate,
+            init_cfg=None)
 
         self.drop = build_dropout(dropout_layer)
 
-        H, W = self.input_resolution
+        H, W = input_resolution
         # Handle auto padding
         self.auto_pad = auto_pad
         if self.auto_pad:
-            self.pad_r = (self.window_size -
-                          W % self.window_size) % self.window_size
-            self.pad_b = (self.window_size -
-                          H % self.window_size) % self.window_size
+            self.pad_r = (window_size - W % window_size) % window_size
+            self.pad_b = (window_size - H % window_size) % window_size
             dummy = torch.empty((1, H, W, 1))  # 1 H W 1
             dummy = F.pad(dummy, (0, 0, 0, self.pad_r, 0, self.pad_b))
             _, self.H_pad, self.W_pad, _ = dummy.shape
         else:
-            H_pad, W_pad = self.input_resolution
-            assert H_pad % self.window_size + W_pad % self.window_size == 0,\
-                f'input_resolution({self.input_resolution}) is not divisible '\
-                f'by window_size({self.window_size}). Please check feature '\
+            H_pad, W_pad = H, W
+            assert H_pad % window_size + W_pad % window_size == 0,\
+                f'input_resolution({input_resolution}) is not divisible '\
+                f'by window_size({window_size}). Please check feature '\
                 f'map shape or set `auto_pad=True`.'
             self.H_pad, self.W_pad = H_pad, W_pad
             self.pad_r, self.pad_b = 0, 0
 
-        if self.shift_size > 0:
+        if shift_size > 0:
             # calculate attention mask for SW-MSA
             img_mask = torch.zeros((1, self.H_pad, self.W_pad, 1))  # 1 H W 1
-            h_slices = (slice(0, -self.window_size),
-                        slice(-self.window_size,
-                              -self.shift_size), slice(-self.shift_size, None))
-            w_slices = (slice(0, -self.window_size),
-                        slice(-self.window_size,
-                              -self.shift_size), slice(-self.shift_size, None))
+            h_slices = (slice(0, -window_size), slice(-window_size,
+                                                      -shift_size),
+                        slice(-shift_size, None))
+            w_slices = (slice(0, -window_size), slice(-window_size,
+                                                      -shift_size),
+                        slice(-shift_size, None))
             cnt = 0
             for h in h_slices:
                 for w in w_slices:
@@ -193,8 +286,7 @@ class ShiftWindowMSA(BaseModule):
 
             # nW, window_size, window_size, 1
             mask_windows = self.window_partition(img_mask)
-            mask_windows = mask_windows.view(
-                -1, self.window_size * self.window_size)
+            mask_windows = mask_windows.view(-1, window_size * window_size)
             attn_mask = mask_windows.unsqueeze(1) - mask_windows.unsqueeze(2)
             attn_mask = attn_mask.masked_fill(attn_mask != 0,
                                               float(-100.0)).masked_fill(
@@ -274,15 +366,17 @@ class ShiftWindowMSA(BaseModule):
 class SwinBlock(BaseModule):
 
     def __init__(self,
-                 embed_dims,
                  input_resolution,
+                 embed_dims,
                  num_heads,
+                 feedforward_channels,
                  window_size=7,
                  shift=False,
-                 mlp_ratio=4.,
-                 drop_path=0.,
-                 attn_cfgs=dict(),
-                 ffn_cfgs=dict(),
+                 qkv_bias=True,
+                 qk_scale=None,
+                 drop_rate=0.,
+                 attn_drop_rate=0.,
+                 drop_path_rate=0.,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  auto_pad=False,
@@ -290,30 +384,31 @@ class SwinBlock(BaseModule):
 
         super(SwinBlock, self).__init__(init_cfg)
 
-        _attn_cfgs = {
-            'embed_dims': embed_dims,
-            'num_heads': num_heads,
-            'input_resolution': input_resolution,
-            'shift_size': window_size // 2 if shift else 0,
-            'window_size': window_size,
-            'dropout_layer': dict(type='DropPath', drop_prob=drop_path),
-            'auto_pad': auto_pad,
-            **attn_cfgs
-        }
         self.norm1 = build_norm_layer(norm_cfg, embed_dims)[1]
-        self.attn = ShiftWindowMSA(**_attn_cfgs)
+        self.attn = ShiftWindowMSA(
+            input_resolution=input_resolution,
+            embed_dims=embed_dims,
+            num_heads=num_heads,
+            window_size=window_size,
+            shift_size=window_size // 2 if shift else 0,
+            qkv_bias=qkv_bias,
+            qk_scale=qk_scale,
+            attn_drop_rate=attn_drop_rate,
+            proj_drop_rate=drop_rate,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+            auto_pad=auto_pad,
+            init_cfg=None)
 
-        _ffn_cfgs = {
-            'embed_dims': embed_dims,
-            'feedforward_channels': int(embed_dims * mlp_ratio),
-            'num_fcs': 2,
-            'ffn_drop': 0,
-            'dropout_layer': dict(type='DropPath', drop_prob=drop_path),
-            'act_cfg': act_cfg,
-            **ffn_cfgs
-        }
         self.norm2 = build_norm_layer(norm_cfg, embed_dims)[1]
-        self.ffn = FFN(**_ffn_cfgs)
+        self.ffn = FFN(
+            embed_dims=embed_dims,
+            feedforward_channels=feedforward_channels,
+            num_fcs=2,
+            ffn_drop=drop_rate,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+            act_cfg=act_cfg,
+            add_identity=True,
+            init_cfg=None)
 
     def forward(self, x):
         identity = x
@@ -330,36 +425,50 @@ class SwinBlock(BaseModule):
 class SwinBlockSequence(BaseModule):
 
     def __init__(self,
-                 embed_dims,
                  input_resolution,
-                 depth,
+                 embed_dims,
                  num_heads,
+                 feedforward_channels,
+                 depth,
+                 kernel_size,
+                 stride,
+                 padding,
+                 dilation,
+                 window_size=7,
+                 qkv_bias=True,
+                 qk_scale=None,
+                 drop_rate=0.,
+                 attn_drop_rate=0.,
+                 drop_path_rate=0.,
                  downsample=None,
-                 drop_path=0.,
+                 act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 block_cfg=dict(),
                  auto_pad=False,
                  init_cfg=None):
         super().__init__(init_cfg)
 
-        if not isinstance(drop_path, list):
-            drop_path = [deepcopy(drop_path) for _ in range(depth)]
-
-        if not isinstance(block_cfg, list):
-            block_cfg = [deepcopy(block_cfg) for _ in range(depth)]
+        drop_path_rate = drop_path_rate if isinstance(
+            drop_path_rate,
+            list) else [deepcopy(drop_path_rate) for _ in range(depth)]
 
         self.blocks = ModuleList()
         for i in range(depth):
-            _block_cfg = {
-                'embed_dims': embed_dims,
-                'input_resolution': input_resolution,
-                'num_heads': num_heads,
-                'shift': False if i % 2 == 0 else True,
-                'drop_path': drop_path[i],
-                'auto_pad': auto_pad,
-                **block_cfg[i]
-            }
-            block = SwinBlock(**_block_cfg)
+            block = SwinBlock(
+                input_resolution=input_resolution,
+                embed_dims=embed_dims,
+                num_heads=num_heads,
+                feedforward_channels=feedforward_channels,
+                window_size=window_size,
+                shift=False if i % 2 == 0 else True,
+                qkv_bias=qkv_bias,
+                qk_scale=qk_scale,
+                drop_rate=drop_rate,
+                attn_drop_rate=attn_drop_rate,
+                drop_path_rate=drop_path_rate[i],
+                act_cfg=act_cfg,
+                norm_cfg=norm_cfg,
+                auto_pad=auto_pad,
+                init_cfg=None)
             self.blocks.append(block)
 
         if downsample:
@@ -367,7 +476,12 @@ class SwinBlockSequence(BaseModule):
                 input_resolution,
                 in_channels=embed_dims,
                 out_channels=2 * embed_dims,
-                norm_cfg=norm_cfg)
+                kernel_size=kernel_size,
+                stride=stride,
+                padding=padding,
+                dilation=dilation,
+                norm_cfg=norm_cfg,
+                init_cfg=None)
         else:
             self.downsample = None
 
@@ -414,97 +528,106 @@ class SwinTransformer(BaseModule):
         init_cfg (dict, optional): The Config for initialization.
             Defaults to None.
     """
-    arch_zoo = {
-        #     depth num_heads downsample
-        **dict.fromkeys(['t', 'tiny'],
-                        {'embed_dims': 96,
-                         'depths':     [2, 2,  6,  2],
-                         'num_heads':  [3, 6, 12, 24]}),
-        **dict.fromkeys(['s', 'small'],
-                        {'embed_dims': 96,
-                         'depths':     [2, 2, 18,  2],
-                         'num_heads':  [3, 6, 12, 24]}),
-        **dict.fromkeys(['b', 'base'],
-                        {'embed_dims': 128,
-                         'depths':     [2, 2, 18,  2],
-                         'num_heads':  [4, 8, 16, 32]}),
-        **dict.fromkeys(['l', 'large'],
-                        {'embed_dims': 192,
-                         'depths':     [2,  2, 18,  2],
-                         'num_heads':  [6, 12, 24, 48]}),
-    }  # yapf: disable
 
     def __init__(self,
                  img_size=224,
                  in_channels=3,
                  embed_dims=96,
                  depths=[2, 2, 6, 2],
+                 window_sizes=[7, 7, 7, 7],
                  num_heads=[3, 6, 12, 24],
+                 mlp_ratio=[4, 4, 4, 4],
+                 conv_types=['Conv2d', 'Conv2d', 'Conv2d', 'Conv2d'],
+                 kernel_sizes=[4, 2, 2, 2],
+                 strides=[None, None, None, None],
+                 paddings=[0, 0, 0, 0],
+                 dilations=[1, 1, 1, 1],
                  out_indices=[0, 1, 2, 3],
+                 qkv_bias=True,
+                 qk_scale=None,
                  drop_rate=0.,
+                 attn_drop_rate=0.,
                  drop_path_rate=0.1,
                  use_abs_pos_embed=False,
                  auto_pad=False,
+                 act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 stage_cfg=dict(),
-                 patch_cfg=dict(),
                  init_cfg=None):
         super(SwinTransformer, self).__init__(init_cfg)
 
-        self.embed_dims = embed_dims
-        self.depths = depths
-        self.num_heads = num_heads
-        self.num_layers = len(self.depths)
+        num_layers = len(depths)
         self.use_abs_pos_embed = use_abs_pos_embed
         self.auto_pad = auto_pad
-        self.num_features = int(self.embed_dims * 2**(self.num_layers - 1))
+        self.num_features = int(embed_dims * 2**(num_layers - 1))
 
-        _patch_cfg = dict(
+        self.patch_embed = PatchEmbed(
             img_size=img_size,
             in_channels=in_channels,
-            embed_dims=self.embed_dims,
-            conv_cfg=dict(
-                type='Conv2d', kernel_size=4, stride=4, padding=0, dilation=1),
-            norm_cfg=dict(type='LN'),
-            **patch_cfg)
-        self.patch_embed = PatchEmbed(**_patch_cfg)
+            embed_dims=embed_dims,
+            conv_type=dict(type=conv_types[0]),
+            kernel_size=kernel_sizes[0],
+            stride=strides[0],
+            padding=paddings[0],
+            dilation=dilations[0],
+            norm_cfg=norm_cfg,
+            init_cfg=None)
         num_patches = self.patch_embed.num_patches
         patches_resolution = self.patch_embed.patches_resolution
         self.patches_resolution = patches_resolution
 
         if self.use_abs_pos_embed:
             self.absolute_pos_embed = nn.Parameter(
-                torch.zeros(1, num_patches, self.embed_dims))
+                torch.zeros(1, num_patches, embed_dims))
 
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
         # stochastic depth
-        total_depth = sum(self.depths)
+        total_depth = sum(depths)
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, total_depth)
         ]  # stochastic depth decay rule
 
         self.stages = ModuleList()
-        embed_dims = self.embed_dims
         input_resolution = patches_resolution
-        for i, (depth,
-                num_heads) in enumerate(zip(self.depths, self.num_heads)):
-            downsample = True if i < self.num_layers - 1 else False
-            _stage_cfg = {
-                'embed_dims': embed_dims,
-                'depth': depth,
-                'num_heads': num_heads,
-                'downsample': downsample,
-                'input_resolution': input_resolution,
-                'drop_path': dpr[:depth],
-                'auto_pad': auto_pad,
-                **stage_cfg
-            }
+        for i in range(num_layers):
+            if i < num_layers - 1:
+                downsample = True
+                kernel_size = kernel_sizes[i + 1]
+                stride = strides[i + 1]
+                padding = paddings[i + 1]
+                dilation = dilations[i + 1]
+            else:
+                downsample = False
+                kernel_size = None
+                stride = None
+                padding = None
+                dilation = None
 
-            stage = SwinBlockSequence(**_stage_cfg)
+            stage = SwinBlockSequence(
+                input_resolution=input_resolution,
+                embed_dims=embed_dims,
+                num_heads=num_heads[i],
+                feedforward_channels=mlp_ratio[i] * embed_dims,
+                depth=depths[i],
+                kernel_size=kernel_size,
+                stride=stride,
+                padding=padding,
+                dilation=dilation,
+                window_size=window_sizes[i],
+                qkv_bias=qkv_bias,
+                qk_scale=qk_scale,
+                drop_rate=drop_rate,
+                attn_drop_rate=attn_drop_rate,
+                drop_path_rate=dpr[:depths[i]],
+                downsample=downsample,
+                act_cfg=act_cfg,
+                norm_cfg=norm_cfg,
+                auto_pad=auto_pad,
+                init_cfg=None,
+            )
             self.stages.append(stage)
 
-            dpr = dpr[depth:]
+            dpr = dpr[depths[i]:]
             if downsample:
                 embed_dims = stage.downsample.out_channels
                 input_resolution = stage.downsample.output_resolution

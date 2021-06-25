@@ -4,8 +4,8 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
-                      kaiming_init, normal_init, trunc_normal_init)
+from mmcv.cnn import (build_norm_layer, constant_init, kaiming_init,
+                      normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
@@ -13,7 +13,7 @@ from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import vit_convert
+from ..utils import PatchEmbed, vit_convert
 
 
 class TransformerEncoderLayer(BaseModule):
@@ -75,7 +75,7 @@ class TransformerEncoderLayer(BaseModule):
             feedforward_channels=feedforward_channels,
             num_fcs=num_fcs,
             ffn_drop=drop_rate,
-            dropout_layer=None,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
             act_cfg=act_cfg)
 
     @property
@@ -89,62 +89,6 @@ class TransformerEncoderLayer(BaseModule):
     def forward(self, x):
         x = self.attn(self.norm1(x), identity=x)
         x = self.ffn(self.norm2(x), identity=x)
-        return x
-
-
-# Modified from pytorch-image-models
-class PatchEmbed(BaseModule):
-    """Image to Patch Embedding.
-
-    Args:
-        img_size (int | tuple): The size of input image.
-        patch_size (int): The size of one patch
-        in_channels (int): The num of input channels.
-        embed_dim (int): The dimensions of embedding.
-        norm_cfg (dict, optional): Config dict for normalization layer.
-        conv_cfg (dict, optional): The config dict for conv layers.
-            Default: None.
-    """
-
-    def __init__(self,
-                 img_size=224,
-                 patch_size=16,
-                 in_channels=3,
-                 embed_dim=768,
-                 norm_cfg=None,
-                 conv_cfg=None):
-        super(PatchEmbed, self).__init__()
-
-        self.img_size = img_size
-        self.patch_size = to_2tuple(patch_size)
-
-        patches_resolution = [
-            img_size[0] // self.patch_size[0],
-            img_size[1] // self.patch_size[1]
-        ]
-        num_patches = patches_resolution[0] * patches_resolution[1]
-        self.patches_resolution = patches_resolution
-        self.num_patches = num_patches
-
-        # Use conv layer to embed
-        self.projection = build_conv_layer(
-            conv_cfg,
-            in_channels,
-            embed_dim,
-            kernel_size=patch_size,
-            stride=patch_size)
-
-        if norm_cfg is not None:
-            self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
-        else:
-            self.norm = None
-
-    def forward(self, x):
-        x = self.projection(x).flatten(2).transpose(1, 2)
-
-        if self.norm is not None:
-            x = self.norm(x)
-
         return x
 
 
@@ -261,10 +205,14 @@ class VisionTransformer(BaseModule):
 
         self.patch_embed = PatchEmbed(
             img_size=img_size,
-            patch_size=patch_size,
             in_channels=in_channels,
-            embed_dim=embed_dims,
-            norm_cfg=norm_cfg if patch_norm else None)
+            embed_dims=embed_dims,
+            conv_type='Conv2d',
+            kernel_size=patch_size,
+            stride=patch_size,
+            norm_cfg=norm_cfg if patch_norm else None,
+            init_cfg=None,
+        )
 
         num_patches = self.patch_embed.num_patches
 
