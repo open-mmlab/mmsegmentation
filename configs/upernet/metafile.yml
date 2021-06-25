@@ -11,7 +11,7 @@ Models:
   - Name: upernet_r50_512x1024_40k_cityscapes
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 4.25
+      inference time (ms/im): 235.29
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +25,7 @@ Models:
   - Name: upernet_r101_512x1024_40k_cityscapes
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 3.79
+      inference time (ms/im): 263.85
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +39,7 @@ Models:
   - Name: upernet_r50_769x769_40k_cityscapes
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 1.76
+      inference time (ms/im): 568.18
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -53,7 +53,7 @@ Models:
   - Name: upernet_r101_769x769_40k_cityscapes
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 1.56
+      inference time (ms/im): 641.03
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -67,7 +67,7 @@ Models:
   - Name: upernet_r50_512x1024_80k_cityscapes
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 4.25
+      inference time (ms/im): 235.29
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +81,7 @@ Models:
   - Name: upernet_r101_512x1024_80k_cityscapes
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 3.79
+      inference time (ms/im): 263.85
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +95,7 @@ Models:
   - Name: upernet_r50_769x769_80k_cityscapes
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 1.76
+      inference time (ms/im): 568.18
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +109,7 @@ Models:
   - Name: upernet_r101_769x769_80k_cityscapes
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 1.56
+      inference time (ms/im): 641.03
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -123,7 +123,7 @@ Models:
   - Name: upernet_r50_512x512_80k_ade20k
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 23.40
+      inference time (ms/im): 42.74
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -137,7 +137,7 @@ Models:
   - Name: upernet_r101_512x512_80k_ade20k
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 20.34
+      inference time (ms/im): 49.16
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -151,7 +151,7 @@ Models:
   - Name: upernet_r50_512x512_160k_ade20k
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 23.40
+      inference time (ms/im): 42.74
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -165,7 +165,7 @@ Models:
   - Name: upernet_r101_512x512_160k_ade20k
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 20.34
+      inference time (ms/im): 49.16
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -179,7 +179,7 @@ Models:
   - Name: upernet_r50_512x512_20k_voc12aug
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 23.17
+      inference time (ms/im): 43.16
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -193,7 +193,7 @@ Models:
   - Name: upernet_r101_512x512_20k_voc12aug
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 19.98
+      inference time (ms/im): 50.05
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -207,7 +207,7 @@ Models:
   - Name: upernet_r50_512x512_40k_voc12aug
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 23.17
+      inference time (ms/im): 43.16
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -221,7 +221,7 @@ Models:
   - Name: upernet_r101_512x512_40k_voc12aug
     In Collection: UPerNet
     Metadata:
-      inference time (fps): 19.98
+      inference time (ms/im): 50.05
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug

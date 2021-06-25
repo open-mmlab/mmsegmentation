@@ -9,7 +9,7 @@ Models:
   - Name: emanet_r50-d8_512x1024_80k_cityscapes
     In Collection: EMANet
     Metadata:
-      inference time (fps): 4.58
+      inference time (ms/im): 218.34
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -23,7 +23,7 @@ Models:
   - Name: emanet_r101-d8_512x1024_80k_cityscapes
     In Collection: EMANet
     Metadata:
-      inference time (fps): 2.87
+      inference time (ms/im): 348.43
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -37,7 +37,7 @@ Models:
   - Name: emanet_r50-d8_769x769_80k_cityscapes
     In Collection: EMANet
     Metadata:
-      inference time (fps): 1.97
+      inference time (ms/im): 507.61
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -51,7 +51,7 @@ Models:
   - Name: emanet_r101-d8_769x769_80k_cityscapes
     In Collection: EMANet
     Metadata:
-      inference time (fps): 1.22
+      inference time (ms/im): 819.67
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes

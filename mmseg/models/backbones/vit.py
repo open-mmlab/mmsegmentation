@@ -20,23 +20,24 @@ class TransformerEncoderLayer(BaseModule):
     """Implements one encoder layer in Vision Transformer.
 
     Args:
-        embed_dims (int): The feature dimension
-        num_heads (int): Parallel attention heads
-        feedforward_channels (int): The hidden dimension for FFNs
+        embed_dims (int): The feature dimension.
+        num_heads (int): Parallel attention heads.
+        feedforward_channels (int): The hidden dimension for FFNs.
         drop_rate (float): Probability of an element to be zeroed
-            after the feed forward layer. Default 0.0
+            after the feed forward layer. Default: 0.0.
         attn_drop_rate (float): The drop out rate for attention layer.
-            Default 0.0
+            Default: 0.0.
         drop_path_rate (float): stochastic depth rate. Default 0.0.
-        num_fcs (int): The number of fully-connected layers for FFNs. Default 2
-        qkv_bias (bool): enable bias for qkv if True. Default True
-        act_cfg (dict): The activation config for FFNs. Defalut GELU
-        norm_cfg (dict): Config dict for normalization layer. Default
-            layer normalization
+        num_fcs (int): The number of fully-connected layers for FFNs.
+            Default: 2.
+        qkv_bias (bool): enable bias for qkv if True. Default: True
+        act_cfg (dict): The activation config for FFNs.
+            Defalut: dict(type='GELU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN').
         batch_first (bool): Key, Query and Value are shape of
             (batch, n, embed_dim)
-            or (n, batch, embed_dim). Default to False.
-        init_cfg (dict, optional): Initialization config dict
+            or (n, batch, embed_dim). Default: True.
     """
 
     def __init__(self,
@@ -50,7 +51,7 @@ class TransformerEncoderLayer(BaseModule):
                  qkv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 batch_first=False):
+                 batch_first=True):
         super(TransformerEncoderLayer, self).__init__()
 
         self.norm1_name, norm1 = build_norm_layer(
@@ -153,7 +154,7 @@ class VisionTransformer(BaseModule):
                  num_layers=12,
                  num_heads=12,
                  mlp_ratio=4,
-                 out_indices=11,
+                 out_indices=-1,
                  qkv_bias=True,
                  drop_rate=0.,
                  attn_drop_rate=0.,
@@ -214,7 +215,8 @@ class VisionTransformer(BaseModule):
             init_cfg=None,
         )
 
-        num_patches = self.patch_embed.num_patches
+        num_patches = (img_size[0] // patch_size) * \
+            (img_size[1] // patch_size)
 
         self.with_cls_token = with_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
@@ -223,6 +225,8 @@ class VisionTransformer(BaseModule):
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
         if isinstance(out_indices, int):
+            if out_indices == -1:
+                out_indices = num_layers - 1
             self.out_indices = [out_indices]
         elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
             self.out_indices = out_indices
@@ -250,6 +254,7 @@ class VisionTransformer(BaseModule):
                     batch_first=True))
 
         self.final_norm = final_norm
+        self.out_shape = out_shape
         if final_norm:
             self.norm1_name, norm1 = build_norm_layer(
                 norm_cfg, embed_dims, postfix=1)
@@ -262,7 +267,8 @@ class VisionTransformer(BaseModule):
     def init_weights(self):
         if isinstance(self.pretrained, str):
             logger = get_root_logger()
-            checkpoint = _load_checkpoint(self.pretrained, logger=logger)
+            checkpoint = _load_checkpoint(
+                self.pretrained, logger=logger, map_location='cpu')
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
             elif 'model' in checkpoint:

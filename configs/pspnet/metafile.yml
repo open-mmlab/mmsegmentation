@@ -12,7 +12,7 @@ Models:
   - Name: pspnet_r50-d8_512x1024_40k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 4.07
+      inference time (ms/im): 245.7
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -26,7 +26,7 @@ Models:
   - Name: pspnet_r101-d8_512x1024_40k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 2.68
+      inference time (ms/im): 373.13
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -40,7 +40,7 @@ Models:
   - Name: pspnet_r50-d8_769x769_40k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 1.76
+      inference time (ms/im): 568.18
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -54,7 +54,7 @@ Models:
   - Name: pspnet_r101-d8_769x769_40k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 1.15
+      inference time (ms/im): 869.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -68,7 +68,7 @@ Models:
   - Name: pspnet_r18-d8_512x1024_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 15.71
+      inference time (ms/im): 63.65
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -82,7 +82,7 @@ Models:
   - Name: pspnet_r50-d8_512x1024_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 4.07
+      inference time (ms/im): 245.7
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -96,7 +96,7 @@ Models:
   - Name: pspnet_r101-d8_512x1024_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 2.68
+      inference time (ms/im): 373.13
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -110,7 +110,7 @@ Models:
   - Name: pspnet_r18-d8_769x769_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 6.20
+      inference time (ms/im): 161.29
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -124,7 +124,7 @@ Models:
   - Name: pspnet_r50-d8_769x769_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 1.76
+      inference time (ms/im): 568.18
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -138,7 +138,7 @@ Models:
   - Name: pspnet_r101-d8_769x769_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 1.15
+      inference time (ms/im): 869.57
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -152,7 +152,7 @@ Models:
   - Name: pspnet_r18b-d8_512x1024_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 16.28
+      inference time (ms/im): 61.43
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -166,7 +166,7 @@ Models:
   - Name: pspnet_r50b-d8_512x1024_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 4.30
+      inference time (ms/im): 232.56
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -180,7 +180,7 @@ Models:
   - Name: pspnet_r101b-d8_512x1024_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 2.76
+      inference time (ms/im): 362.32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -194,7 +194,7 @@ Models:
   - Name: pspnet_r18b-d8_769x769_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 6.41
+      inference time (ms/im): 156.01
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -208,7 +208,7 @@ Models:
   - Name: pspnet_r50b-d8_769x769_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 1.88
+      inference time (ms/im): 531.91
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -222,7 +222,7 @@ Models:
   - Name: pspnet_r101b-d8_769x769_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 1.17
+      inference time (ms/im): 854.7
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -236,7 +236,7 @@ Models:
   - Name: pspnet_r50-d8_512x512_80k_ade20k
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 23.53
+      inference time (ms/im): 42.5
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -250,7 +250,7 @@ Models:
   - Name: pspnet_r101-d8_512x512_80k_ade20k
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 15.30
+      inference time (ms/im): 65.36
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -264,7 +264,7 @@ Models:
   - Name: pspnet_r50-d8_512x512_160k_ade20k
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 23.53
+      inference time (ms/im): 42.5
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -278,7 +278,7 @@ Models:
   - Name: pspnet_r101-d8_512x512_160k_ade20k
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 15.30
+      inference time (ms/im): 65.36
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -292,7 +292,7 @@ Models:
   - Name: pspnet_r50-d8_512x512_20k_voc12aug
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 23.59
+      inference time (ms/im): 42.39
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -306,7 +306,7 @@ Models:
   - Name: pspnet_r101-d8_512x512_20k_voc12aug
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 15.02
+      inference time (ms/im): 66.58
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -320,7 +320,7 @@ Models:
   - Name: pspnet_r50-d8_512x512_40k_voc12aug
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 23.59
+      inference time (ms/im): 42.39
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -334,7 +334,7 @@ Models:
   - Name: pspnet_r101-d8_512x512_40k_voc12aug
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 15.02
+      inference time (ms/im): 66.58
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -348,7 +348,7 @@ Models:
   - Name: pspnet_r101-d8_480x480_40k_pascal_context
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 9.68
+      inference time (ms/im): 103.31
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -362,7 +362,7 @@ Models:
   - Name: pspnet_r101-d8_480x480_80k_pascal_context
     In Collection: PSPNet
     Metadata:
-      inference time (fps): 9.68
+      inference time (ms/im): 103.31
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -376,7 +376,7 @@ Models:
   - Name: pspnet_r101-d8_480x480_40k_pascal_context
     In Collection: PSPNet
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -390,7 +390,7 @@ Models:
   - Name: pspnet_r101-d8_480x480_80k_pascal_context_59
     In Collection: PSPNet
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context

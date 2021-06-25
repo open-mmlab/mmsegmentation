@@ -11,7 +11,7 @@ Models:
   - Name: ocrnet_hr18s_512x1024_40k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 10.45
+      inference time (ms/im): 95.69
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +25,7 @@ Models:
   - Name: ocrnet_hr18_512x1024_40k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 7.50
+      inference time (ms/im): 133.33
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +39,7 @@ Models:
   - Name: ocrnet_hr48_512x1024_40k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 4.22
+      inference time (ms/im): 236.97
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -53,7 +53,7 @@ Models:
   - Name: ocrnet_hr18s_512x1024_80k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 10.45
+      inference time (ms/im): 95.69
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -67,7 +67,7 @@ Models:
   - Name: ocrnet_hr18_512x1024_80k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 7.50
+      inference time (ms/im): 133.33
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +81,7 @@ Models:
   - Name: ocrnet_hr48_512x1024_80k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 4.22
+      inference time (ms/im): 236.97
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +95,7 @@ Models:
   - Name: ocrnet_hr18s_512x1024_160k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 10.45
+      inference time (ms/im): 95.69
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +109,7 @@ Models:
   - Name: ocrnet_hr18_512x1024_160k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 7.50
+      inference time (ms/im): 133.33
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -123,7 +123,7 @@ Models:
   - Name: ocrnet_hr48_512x1024_160k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 4.22
+      inference time (ms/im): 236.97
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -137,7 +137,7 @@ Models:
   - Name: ocrnet_r101-d8_512x1024_40k_b8_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): None
+      inference time (ms/im): None
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -151,7 +151,7 @@ Models:
   - Name: ocrnet_r101-d8_512x1024_40k_b16_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 8.8
+      inference time (ms/im): 113.64
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -165,7 +165,7 @@ Models:
   - Name: ocrnet_r101-d8_512x1024_80k_b16_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 8.8
+      inference time (ms/im): 113.64
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -179,7 +179,7 @@ Models:
   - Name: ocrnet_hr18s_512x512_80k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 28.98
+      inference time (ms/im): 34.51
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -193,7 +193,7 @@ Models:
   - Name: ocrnet_hr18_512x512_80k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 18.93
+      inference time (ms/im): 52.83
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -207,7 +207,7 @@ Models:
   - Name: ocrnet_hr48_512x512_80k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 16.99
+      inference time (ms/im): 58.86
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -221,7 +221,7 @@ Models:
   - Name: ocrnet_hr18s_512x512_160k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 28.98
+      inference time (ms/im): 34.51
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -235,7 +235,7 @@ Models:
   - Name: ocrnet_hr18_512x512_160k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 18.93
+      inference time (ms/im): 52.83
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -249,7 +249,7 @@ Models:
   - Name: ocrnet_hr48_512x512_160k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 16.99
+      inference time (ms/im): 58.86
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -263,7 +263,7 @@ Models:
   - Name: ocrnet_hr18s_512x512_20k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 31.55
+      inference time (ms/im): 31.7
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -277,7 +277,7 @@ Models:
   - Name: ocrnet_hr18_512x512_20k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 19.91
+      inference time (ms/im): 50.23
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -291,7 +291,7 @@ Models:
   - Name: ocrnet_hr48_512x512_20k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 17.83
+      inference time (ms/im): 56.09
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -305,7 +305,7 @@ Models:
   - Name: ocrnet_hr18s_512x512_40k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 31.55
+      inference time (ms/im): 31.7
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -319,7 +319,7 @@ Models:
   - Name: ocrnet_hr18_512x512_40k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 19.91
+      inference time (ms/im): 50.23
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -333,7 +333,7 @@ Models:
   - Name: ocrnet_hr48_512x512_40k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (fps): 17.83
+      inference time (ms/im): 56.09
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
