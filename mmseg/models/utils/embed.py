@@ -55,7 +55,7 @@ class PatchEmbed(BaseModule):
         # Use conv layer to embed
         conv_type = conv_type or dict(type='Conv2d')
         self.projection = build_conv_layer(
-            conv_type,
+            dict(type=conv_type),
             in_channels=in_channels,
             out_channels=embed_dims,
             kernel_size=kernel_size,
@@ -83,12 +83,6 @@ class PatchEmbed(BaseModule):
             self.norm = None
 
     def forward(self, x):
-        B, C, H, W = x.shape
-        # FIXME look at relaxing size constraints
-        assert H == self.img_size[0] and W == self.img_size[1], \
-            f"Input image size ({H}*{W}) doesn't " \
-            f'match model ({self.img_size[0]}*{self.img_size[1]}).'
-        # The output size is (B, N, D), where N=H*W/P/P, D is embid_dim
         x = self.projection(x).flatten(2).transpose(1, 2)
 
         if self.norm is not None:

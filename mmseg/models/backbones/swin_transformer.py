@@ -1,3 +1,4 @@
+import warnings
 from copy import deepcopy
 
 import torch
@@ -6,9 +7,14 @@ import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.registry import ATTENTION
 from mmcv.cnn.bricks.transformer import FFN, build_dropout
+from mmcv.cnn.utils.weight_init import constant_init
+from mmcv.runner import _load_checkpoint
 from mmcv.runner.base_module import BaseModule, ModuleList
+from torch.nn.modules.linear import Linear
+from torch.nn.modules.normalization import LayerNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
+from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed
 
@@ -552,19 +558,41 @@ class SwinTransformer(BaseModule):
                  auto_pad=False,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
+                 pretrain_style='official',
+                 pretrained=None,
                  init_cfg=None):
-        super(SwinTransformer, self).__init__(init_cfg)
+        super(SwinTransformer, self).__init__()
+
+        if isinstance(img_size, int):
+            img_size = to_2tuple(img_size)
+        elif isinstance(img_size, tuple):
+            if len(img_size) == 1:
+                img_size = to_2tuple(img_size[0])
+            assert len(img_size) == 2, \
+                f'The size of image should have length 1 or 2, ' \
+                f'but got {len(img_size)}'
+
+        assert pretrain_style in ['official', 'mmcls']
+
+        if isinstance(pretrained, str) or pretrained is None:
+            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+                          'please use "init_cfg" instead')
+        else:
+            raise TypeError('pretrained must be a str or None')
 
         num_layers = len(depths)
+        self.out_indices = out_indices
         self.use_abs_pos_embed = use_abs_pos_embed
         self.auto_pad = auto_pad
-        self.num_features = int(embed_dims * 2**(num_layers - 1))
+        self.pretrain_style = pretrain_style
+        self.pretrained = pretrained
+        self.init_cfg = init_cfg
 
         self.patch_embed = PatchEmbed(
             img_size=img_size,
             in_channels=in_channels,
             embed_dims=embed_dims,
-            conv_type=dict(type=conv_types[0]),
+            conv_type=conv_types[0],
             kernel_size=kernel_sizes[0],
             stride=strides[0],
             padding=paddings[0],
@@ -573,7 +601,6 @@ class SwinTransformer(BaseModule):
             init_cfg=None)
         num_patches = self.patch_embed.num_patches
         patches_resolution = self.patch_embed.patches_resolution
-        self.patches_resolution = patches_resolution
 
         if self.use_abs_pos_embed:
             self.absolute_pos_embed = nn.Parameter(
@@ -623,8 +650,7 @@ class SwinTransformer(BaseModule):
                 act_cfg=act_cfg,
                 norm_cfg=norm_cfg,
                 auto_pad=auto_pad,
-                init_cfg=None,
-            )
+                init_cfg=None)
             self.stages.append(stage)
 
             dpr = dpr[depths[i]:]
@@ -632,16 +658,84 @@ class SwinTransformer(BaseModule):
                 embed_dims = stage.downsample.out_channels
                 input_resolution = stage.downsample.output_resolution
 
-        if norm_cfg is not None:
-            self.norm = build_norm_layer(norm_cfg, self.num_features)[1]
-        else:
-            self.norm = None
+        num_features = [int(embed_dims * 2**i) for i in range(num_layers)]
+        # Add a norm layer for each output
+        for i in out_indices:
+            layer = build_norm_layer(norm_cfg, num_features[i])[1]
+            layer_name = f'norm{i}'
+            self.add_module(layer_name, layer)
 
     def init_weights(self):
-        super(SwinTransformer, self).init_weights()
+        if self.pretrained is None:
+            if self.use_abs_pos_embed:
+                trunc_normal_init(self.absolute_pos_embed, std=0.02)
+            for m in self.modules:
+                if isinstance(m, Linear):
+                    trunc_normal_init(m.weight, std=.02)
+                    if m.bias is not None:
+                        constant_init(m.bias, 0)
+                elif isinstance(m, LayerNorm):
+                    constant_init(m.bias, 0)
+                    constant_init(m.weight, 1.0)
+        elif isinstance(self.pretrained, str):
+            logger = get_root_logger()
+            ckpt = _load_checkpoint(
+                self.pretrained, logger=logger, map_location='cpu')
 
-        if self.use_abs_pos_embed:
-            trunc_normal_init(self.absolute_pos_embed, std=0.02)
+            # OrderedDict is a subclass of dict
+            if not isinstance(ckpt, dict):
+                raise RuntimeError(
+                    f'No state_dict found in checkpoint file {self.pretrained}'
+                )
+            # get state_dict from checkpoint
+            if 'state_dict' in ckpt:
+                state_dict = ckpt['state_dict']
+            elif 'model' in ckpt:
+                state_dict = ckpt['model']
+            else:
+                state_dict = ckpt
+
+            # strip prefix of state_dict
+            if list(state_dict.keys())[0].startswith('module.'):
+                state_dict = {k[7:]: v for k, v in state_dict.items()}
+
+            # reshape absolute position embedding
+            if state_dict.get('absolute_pos_embed') is not None:
+                absolute_pos_embed = state_dict['absolute_pos_embed']
+                N1, L, C1 = absolute_pos_embed.size()
+                N2, C2, H, W = self.absolute_pos_embed.size()
+                if N1 != N2 or C1 != C2 or L != H * W:
+                    logger.warning('Error in loading absolute_pos_embed, pass')
+                else:
+                    state_dict['absolute_pos_embed'] = absolute_pos_embed.view(
+                        N2, H, W, C2).permute(0, 3, 1, 2)
+
+            # interpolate position bias table if needed
+            relative_position_bias_table_keys = [
+                k for k in state_dict.keys()
+                if 'relative_position_bias_table' in k
+            ]
+            for table_key in relative_position_bias_table_keys:
+                table_pretrained = state_dict[table_key]
+                table_current = self.state_dict()[table_key]
+                L1, nH1 = table_pretrained.size()
+                L2, nH2 = table_current.size()
+                if nH1 != nH2:
+                    logger.warning(f'Error in loading {table_key}, pass')
+                else:
+                    if L1 != L2:
+                        S1 = int(L1**0.5)
+                        S2 = int(L2**0.5)
+                        table_pretrained_resized = F.interpolate(
+                            table_pretrained.permute(1,
+                                                     0).view(1, nH1, S1, S1),
+                            size=(S2, S2),
+                            mode='bicubic')
+                        state_dict[table_key] = table_pretrained_resized.view(
+                            nH2, L2).permute(1, 0)
+
+            # load state_dict
+            self.load_state_dict(state_dict, False)
 
     def forward(self, x):
         x = self.patch_embed(x)
@@ -649,9 +743,12 @@ class SwinTransformer(BaseModule):
             x = x + self.absolute_pos_embed
         x = self.drop_after_pos(x)
 
-        for stage in self.stages:
+        outs = []
+        for i, stage in enumerate(self.stages):
             x = stage(x)
-
-        x = self.norm(x) if self.norm else x
+            if i in self.out_indices:
+                norm_layer = getattr(self, f'norm{i}')
+                out = norm_layer(x)
+                outs.append(out)
 
         return x.transpose(1, 2)
