@@ -10,9 +10,10 @@
 * 我们以网络 forward 和后处理的时间加和作为推理时间，除去数据加载时间。我们使用脚本 `tools/benchmark.py` 来获取推理时间，它在 `torch.backends.cudnn.benchmark=False` 的设定下，计算 200 张图片的平均推理时间。
 * 在框架中，有两种推理模式。
   * `slide` 模式（滑动模式）：测试的配置文件字段 `test_cfg` 会是 `dict(mode='slide', crop_size=(769, 769), stride=(513, 513))`.
-    在这个模式下，多个小图分别输入网络中。小图的大小和小图之间的距离由 `crop_size` 和 `stride` 决定，重合区域会进行平均。
-  * `whole` 模式 （全图模式）:测试的配置文件字段 `test_cfg` 会是 `dict(mode='whole')`. 在这个模式下，全图会被直接输入到网络中。
+    在这个模式下，从原图中裁剪多个小图分别输入网络中进行推理。小图的大小和小图之间的距离由 `crop_size` 和 `stride` 决定，重合区域会进行平均。
+  * `whole` 模式 （全图模式）:测试的配置文件字段 `test_cfg` 会是 `dict(mode='whole')`. 在这个模式下，全图会被直接输入到网络中进行推理。
     对于 769x769 下训练的模型，我们默认使用 `slide` 进行推理，其余模型用 `whole` 进行推理。
+* 对于输入大小为 8x+1 （比如769），我们使用 `align_corners=True`。其余情况，对于输入大小为 8x+1 (比如 512，1024)，我们使用 `align_corners=False`。
 
 ## 基线
 
@@ -148,4 +149,4 @@ Please refer [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mms
 | [CASILVision](https://github.com/CSAILVision/semantic-segmentation-pytorch) | 1.15           | N/A          |
 | [vedaseg](https://github.com/Media-Smart/vedaseg)                           | 0.95           | 1.25       |
 
-Note: The output stride of DeepLabV3+ is 8.
+注意：DeepLabV3+ 的输出步长为 8。
