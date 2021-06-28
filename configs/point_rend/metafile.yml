@@ -10,7 +10,7 @@ Models:
   - Name: pointrend_r50_512x1024_80k_cityscapes
     In Collection: PointRend
     Metadata:
-      inference time (fps): 8.48
+      inference time (ms/im): 117.92
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -24,7 +24,7 @@ Models:
   - Name: pointrend_r101_512x1024_80k_cityscapes
     In Collection: PointRend
     Metadata:
-      inference time (fps): 7.00
+      inference time (ms/im): 142.86
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -38,7 +38,7 @@ Models:
   - Name: pointrend_r50_512x512_160k_ade20k
     In Collection: PointRend
     Metadata:
-      inference time (fps): 17.31
+      inference time (ms/im): 57.77
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -52,7 +52,7 @@ Models:
   - Name: pointrend_r101_512x512_160k_ade20k
     In Collection: PointRend
     Metadata:
-      inference time (fps): 15.50
+      inference time (ms/im): 64.52
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K

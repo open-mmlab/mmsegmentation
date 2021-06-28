@@ -11,7 +11,7 @@ Models:
   - Name: ccnet_r50-d8_512x1024_40k_cityscapes
     In Collection: CCNet
     Metadata:
-      inference time (fps): 3.32
+      inference time (ms/im): 301.2
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +25,7 @@ Models:
   - Name: ccnet_r101-d8_512x1024_40k_cityscapes
     In Collection: CCNet
     Metadata:
-      inference time (fps): 2.31
+      inference time (ms/im): 432.9
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +39,7 @@ Models:
   - Name: ccnet_r50-d8_769x769_40k_cityscapes
     In Collection: CCNet
     Metadata:
-      inference time (fps): 1.43
+      inference time (ms/im): 699.3
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -53,7 +53,7 @@ Models:
   - Name: ccnet_r101-d8_769x769_40k_cityscapes
     In Collection: CCNet
     Metadata:
-      inference time (fps): 1.01
+      inference time (ms/im): 990.1
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -67,7 +67,7 @@ Models:
   - Name: ccnet_r50-d8_512x1024_80k_cityscapes
     In Collection: CCNet
     Metadata:
-      inference time (fps): 3.32
+      inference time (ms/im): 301.2
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +81,7 @@ Models:
   - Name: ccnet_r101-d8_512x1024_80k_cityscapes
     In Collection: CCNet
     Metadata:
-      inference time (fps): 2.31
+      inference time (ms/im): 432.9
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +95,7 @@ Models:
   - Name: ccnet_r50-d8_769x769_80k_cityscapes
     In Collection: CCNet
     Metadata:
-      inference time (fps): 1.43
+      inference time (ms/im): 699.3
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +109,7 @@ Models:
   - Name: ccnet_r101-d8_769x769_80k_cityscapes
     In Collection: CCNet
     Metadata:
-      inference time (fps): 1.01
+      inference time (ms/im): 990.1
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -123,7 +123,7 @@ Models:
   - Name: ccnet_r50-d8_512x512_80k_ade20k
     In Collection: CCNet
     Metadata:
-      inference time (fps): 20.89
+      inference time (ms/im): 47.87
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -137,7 +137,7 @@ Models:
   - Name: ccnet_r101-d8_512x512_80k_ade20k
     In Collection: CCNet
     Metadata:
-      inference time (fps): 14.11
+      inference time (ms/im): 70.87
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -151,7 +151,7 @@ Models:
   - Name: ccnet_r50-d8_512x512_160k_ade20k
     In Collection: CCNet
     Metadata:
-      inference time (fps): 20.89
+      inference time (ms/im): 47.87
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -165,7 +165,7 @@ Models:
   - Name: ccnet_r101-d8_512x512_160k_ade20k
     In Collection: CCNet
     Metadata:
-      inference time (fps): 14.11
+      inference time (ms/im): 70.87
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -179,7 +179,7 @@ Models:
   - Name: ccnet_r50-d8_512x512_20k_voc12aug
     In Collection: CCNet
     Metadata:
-      inference time (fps): 20.45
+      inference time (ms/im): 48.9
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -193,7 +193,7 @@ Models:
   - Name: ccnet_r101-d8_512x512_20k_voc12aug
     In Collection: CCNet
     Metadata:
-      inference time (fps): 13.64
+      inference time (ms/im): 73.31
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -207,7 +207,7 @@ Models:
   - Name: ccnet_r50-d8_512x512_40k_voc12aug
     In Collection: CCNet
     Metadata:
-      inference time (fps): 20.45
+      inference time (ms/im): 48.9
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -221,7 +221,7 @@ Models:
   - Name: ccnet_r101-d8_512x512_40k_voc12aug
     In Collection: CCNet
     Metadata:
-      inference time (fps): 13.64
+      inference time (ms/im): 73.31
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
