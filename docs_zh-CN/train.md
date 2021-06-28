@@ -7,13 +7,13 @@ MMSegmentation 可以执行分布式训练和非分布式训练，分别使用 `
 在一定迭代轮次后，我们默认在验证集上评估模型表现。您可以在训练配置文件中添加间隔参数来改变评估间隔。
 
 ```python
-evaluation = dict(interval=4000)  # 每4000 iterations 评估一次模型的表现
+evaluation = dict(interval=4000)  # 每4000 iterations 评估一次模型的性能
 ```
 
 **\*Important\***: 在配置文件里的默认学习率是针对4卡 GPU 和2张图/GPU (此时 batchsize = 4x2 = 8)来设置的。
 同样，您也可以使用8卡 GPU 和 1张图/GPU 的设置，因为所有的模型均使用 cross-GPU 的 SyncBN 模式。
 
-为了以 GPU 显存为代价提升运行速度，您也可以通过传递`--options model.backbone.with_cp=True` 来在 backbone 骨架里有 checkpoints 检查点。
+我们可以在训练速度和 GPU 显存之间做平衡。当模型或者 Batch Size 比较大的时，可以传递`--options model.backbone.with_cp=True` ，使用 `with_cp` 来节省显存，但是速度会更慢，因为原先使用 `ith_cp` 时，是逐层反向传播(Back Propagation, BP)，不会保存所有的梯度。
 
 ### 使用单卡 GPU 训练
 
@@ -31,10 +31,10 @@ python tools/train.py ${配置文件} [可选参数]
 
 可选参数可以为:
 
-- `--no-validate` (**不推荐**): 训练时代码库默认会在每k轮迭代后在验证集上进行评估，如果不需评估使用命令 `--no-validate`。
+- `--no-validate` (**不推荐**): 训练时代码库默认会在每 k 轮迭代后在验证集上进行评估，如果不需评估使用命令 `--no-validate`。
 - `--work-dir ${工作路径}`: 在配置文件里重写工作路径文件夹。
-- `--resume-from ${检查点文件}`: 继续使用先前的检查点文件（可以继续训练过程）。
-- `--load-from ${检查点文件}`: 从一个检查点文件里加载权重（对另一个任务进行精调）。
+- `--resume-from ${检查点文件}`: 继续使用先前的检查点 (checkpoint) 文件（可以继续训练过程）。
+- `--load-from ${检查点文件}`: 从一个检查点 (checkpoint) 文件里加载权重（对另一个任务进行精调）。
 
 `resume-from` 和 `load-from` 的区别:
 
@@ -47,7 +47,7 @@ python tools/train.py ${配置文件} [可选参数]
 您可以使用脚本 `slurm_train.sh`（这个脚本同样支持单个机器的训练）。
 
 ```shell
-[GPUS=${GPU号码}] ./tools/slurm_train.sh ${分区} ${任务名称} ${配置文件} --work-dir ${工作路径}
+[GPUS=${GPU 数量}] ./tools/slurm_train.sh ${分区} ${任务名称} ${配置文件} --work-dir ${工作路径}
 ```
 
 这里是在 dev 分区里使用16块 GPU 训练 PSPNet 的例子。
