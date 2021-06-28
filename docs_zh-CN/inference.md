@@ -86,7 +86,6 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
    您会在文件夹 `./pspnet_test_results` 里得到生成的 png 文件。
    您也许可以运行 `zip -r results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://www.cityscapes-dataset.com/submit/)。
 
-6. CPU memory efficient test DeeplabV3+ on Cityscapes (without saving the test results) and evaluate the mIoU.
 6. 在 Cityscapes 数据集上测试 CPU 内存高效率版本的 DeeplabV3+ (没有保存测试结果) 并且评估 mIoU。
 
     ```shell
