@@ -24,7 +24,7 @@
 
 ```
 
-一个训练对将由 img_dir/ann_dir 里同样尾缀的文件组成。
+一个训练对将由 img_dir/ann_dir 里同样首缀的文件组成。
 
 如果给定 `split` 参数，只有部分在 img_dir/ann_dir 里的文件会被加载。
 我们可以对被包括在 split 文本里的文件指定前缀。
@@ -43,13 +43,13 @@ zzz
 `data/my_dataset/ann_dir/train/xxx{seg_map_suffix}`,
 `data/my_dataset/ann_dir/train/zzz{seg_map_suffix}` 将被加载。
 
-注意：注释是跟图像同样的形状 (H, W)，其中的像素值的范围是 `[0, num_classes - 1]`。
-您也可以使用 [pillow](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#palette) 的 `'P'` 模式去创建您的注释，包括了注释图像的颜色。
+注意：标注是跟图像同样的形状 (H, W)，其中的像素值的范围是 `[0, num_classes - 1]`。
+您也可以使用 [pillow](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#palette) 的 `'P'` 模式去创建包含颜色的标注。
 
 ## 通过混合数据去定制数据集
 
 MMSegmentation 同样支持混合数据集去训练。
-当前它支持连接 (concat) 和 重复 (repeat) 数据集。
+当前它支持串联 (concat) 和 重复 (repeat) 数据集。
 
 ### 重复数据集
 
@@ -75,7 +75,7 @@ dataset_A_train = dict(
 1. 如果您想连接的数据集是同样的类型，但有不同的注释文件，
     您可以按如下操作去连接数据集的配置文件：
 
-    1. 您也许可以连接两个注释文件夹 `ann_dir`。
+    1. 您也许可以串联两个标注文件夹 `ann_dir`。
 
         ```python
         dataset_A_train = dict(
@@ -86,7 +86,7 @@ dataset_A_train = dict(
         )
         ```
 
-    2. 您也可以去连接两个 `split` 文本。
+    2. 您也可以去串联两个 `split` 文本。
 
         ```python
         dataset_A_train = dict(
@@ -130,7 +130,7 @@ dataset_A_train = dict(
         )
     ```
 
-一个更复杂的例子如下：分别重复 `Dataset_A` 和 `Dataset_B` N 次和 M 次，然后再去连接重复后的数据集。
+一个更复杂的例子如下：分别重复 `Dataset_A` 和 `Dataset_B` N 次和 M 次，然后再去串联重复后的数据集。
 
 ```python
 dataset_A_train = dict(
