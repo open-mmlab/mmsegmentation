@@ -1,6 +1,6 @@
 ## 依赖
 
-- Linux or macOS (Windows下支持需要mmcv-full，但运行时可能会有一些问题。)
+- Linux or macOS (Windows下支持需要 mmcv-full，但运行时可能会有一些问题。)
 - Python 3.6+
 - PyTorch 1.3+
 - CUDA 9.2+ (如果您基于源文件编译 PyTorch, CUDA 9.0也可以使用)
@@ -65,7 +65,7 @@ pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.5
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.26.28801\bin\Hostx86\x64
 ```
 
-或者您需要从网上下载cl编译工具并安装至路径。
+或者您需要从网上下载 cl 编译工具并安装至路径。
 
 随后，从 github 克隆 mmcv 并通过 pip 安装：
 
@@ -111,7 +111,7 @@ pip install -e .  # 或者 "python setup.py develop"
 4. 如果您想使用 `opencv-python-headless` 替换 `opencv-python`，您可以在安装 MMCV 前安装它。
 5. 一些依赖项是可选的。简单的运行 `pip install -e .` 将仅安装最必要的一些依赖。为了使用可选的依赖项如`cityscapessripts`，要么手动使用 `pip install -r requirements/optional.txt` 安装，要么专门从pip下安装(即 `pip install -e .[optional]`， 其中选项可设置为 `all`, `tests`, `build`, 和 `optional`).
 
-### 即刻安装脚本
+### 完成的安装脚本
 
 #### Linux
 
@@ -175,7 +175,7 @@ checkpoint_file = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_00
 model = init_segmentor(config_file, checkpoint_file, device='cuda:0')
 
 # 测试一张样例图片并得到结果
-img = 'test.jpg'  # or img = mmcv.imread(img), which will only load it once
+img = 'test.jpg'  # 或者 img = mmcv.imread(img), 这将只加载图像一次．
 result = inference_segmentor(model, img)
 # 在新的窗口里可视化结果
 model.show_result(img, result, show=True)
@@ -183,7 +183,7 @@ model.show_result(img, result, show=True)
 # 您可以改变 segmentation map 的不透明度(opacity)，在(0, 1]之间。
 model.show_result(img, result, out_file='result.jpg', opacity=0.5)
 
-# 测试一个视频并得到结果
+# 测试一个视频并得到分割结果
 video = mmcv.VideoReader('video.mp4')
 for frame in video:
    result = inference_segmentor(model, frame)
@@ -192,7 +192,7 @@ for frame in video:
 
 当您完成 MMSegmentation 的安装时，上述代码应该可以成功运行。
 
-我们还提供一个 demo 脚本去测试单张图片：
+我们还提供一个 demo 脚本去可视化单张图片
 
 ```shell
 python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}]
