@@ -1,17 +1,17 @@
 # 教程 1: 学习配置文件
 
-我们整合了模块和继承设计到我们的配置里，这便于做很多实验。如果您像检查配置文件，您可以运行 `python tools/print_config.py /PATH/TO/CONFIG` 去查看完整的配置文件。您还可以传递参数
+我们整合了模块和继承设计到我们的配置里，这便于做很多实验。如果您想查看配置文件，您可以运行 `python tools/print_config.py /PATH/TO/CONFIG` 去查看完整的配置文件。您还可以传递参数
 `--options xxx.yyy=zzz` 去查看更新的配置。
 
 ## 配置文件的结构
 
-在 `config/_base_` 下面有4个基本构成成分(component)： 数据集(dataset)，模型(model)，计划表(schedule)和默认运行时间(default runtime)。
-这样，像 DeepLabV3, PSPNet 这样的模型可以容易地被构造。被来自 `_base_` 的构成成分所组成的配置文件叫做 `_primitive_`。
+在 `config/_base_` 文件夹下面有4种基本组件类型： 数据集(dataset)，模型(model)，训练策略(schedule)和运行时的默认设置(default runtime)。许多方法都可以方便地通过组合这些组件进行实现。
+这样，像 DeepLabV3, PSPNet 这样的模型可以容易地被构造。被来自 `_base_` 下的组件来构建的配置叫做 _原始配置 (primitive)_。
 
-对于所有在同一个文件夹下的配置文件，推荐**只有一个** primitive 配置文件。所有其他的配置文件都应该继承自这个 primitive 配置文件。以这样的方式，最大的继承深度是3。
+对于所有在同一个文件夹下的配置文件，推荐**只有一个**对应的**原始配置**文件。所有其他的配置文件都应该继承自这个**原始配置**文件。这样就能保证配置文件的最大继承深度为 3。
 
-为了便于理解，我们推荐社区贡献者继承已有的方法。
-例如，如果一些修改是基于 DeepLabV3，使用者首先首先应该通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py`来继承基础 DeepLabV3 结构，再去修改配置文件里其他内容。
+为了便于理解，我们推荐社区贡献者继承已有的方法配置文件。
+例如，如果一些修改是基于 DeepLabV3，使用者首先首先应该通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py`来继承基础 DeepLabV3 结构，再去修改配置文件里其他内容以完成继承。
 
 如果您正在构建一个完整的新模型，它完全没有和已有的方法共享一些结构，您可能需要在 `configs` 下面创建一个文件夹 `xxxnet`。
 更详细的文档，请参照 [mmcv](https://mmcv.readthedocs.io/en/latest/utils.html#config) 。
@@ -42,9 +42,9 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)  # 分割框架通常使用 SyncBN
 model = dict(
     type='EncoderDecoder',  # 分割器(segmentor)的名字
-    pretrained='open-mmlab://resnet50_v1c',  # 将被加载的 ImageNet 预训练骨架
+    pretrained='open-mmlab://resnet50_v1c',  # 将被加载的 ImageNet 预训练主干网络
     backbone=dict(
-        type='ResNetV1c',  # 骨架的类别。 可用选项请参考 mmseg/backbone/resnet.py
+        type='ResNetV1c',  # 主干网络的类别。 可用选项请参考 mmseg/backbone/resnet.py
         depth=50,  # 骨架的深度。通常为 50 和 101。
         num_stages=4,  # 骨架状态(stages)的数目，这些状态产生的特征图作为后续的 head 的输入。
         out_indices=(0, 1, 2, 3),  # 每个状态产生的特征图输出的索引。
@@ -92,15 +92,15 @@ data_root = 'data/cityscapes/'  # 数据的根路径。
 img_norm_cfg = dict(  # 图像归一化配置，用来归一化输入的图像。
     mean=[123.675, 116.28, 103.53],  # 预训练里用于预训练骨架模型的平均值。
     std=[58.395, 57.12, 57.375],  # 预训练里用于预训练骨架模型的标准差。
-    to_rgb=True)  # 预训练里用于预训练骨架模型的图像的通道阶数。
+    to_rgb=True)  # 预训练里用于预训练主干网络的图像的通道顺序。
 crop_size = (512, 1024)  # 训练时的裁剪大小
-train_pipeline = [  #训练管道
+train_pipeline = [  #训练流程
     dict(type='LoadImageFromFile'),  # 第1个管道，从文件路径里加载图像。
     dict(type='LoadAnnotations'),  # 第2个管道，对于当前图像，加载它的注释信息。
-    dict(type='Resize',  # 变化图像和其注释大小的数据增广的管道。
+    dict(type='Resize',  # 变化图像和其注释大小的数据增广的流程。
         img_scale=(2048, 1024),  # 图像的最大规模。
         ratio_range=(0.5, 2.0)), # 数据增广的比例范围。
-    dict(type='RandomCrop',  # 随机裁剪当前图像和其注释大小的数据增广的管道。
+    dict(type='RandomCrop',  # 随机裁剪当前图像和其注释大小的数据增广的流程。
         crop_size=(512, 1024),  # 随机裁剪图像生成 patch 的大小。
         cat_max_ratio=0.75),  # 单个类别可以填充的最大区域的比例。
     dict(
@@ -129,7 +129,7 @@ test_pipeline = [
         transforms=[
             dict(type='Resize',  # 使用改变图像大小的数据增广。
                  keep_ratio=True),  # 是否保持宽和高的比例，这里的图像比例设置将覆盖上面的图像规模大小的设置。
-            dict(type='RandomFlip'),  # 考虑到 RandomFlip 已经被添加到管道里，当 flip=False 时它将不被使用。
+            dict(type='RandomFlip'),  # 考虑到 RandomFlip 已经被添加到流程里，当 flip=False 时它将不被使用。
             dict(
                 type='Normalize',  # 归一化配置项，值来自 img_norm_cfg。
                 mean=[123.675, 116.28, 103.53],
@@ -143,7 +143,7 @@ test_pipeline = [
 ]
 data = dict(
     samples_per_gpu=2,  # 单个 GPU 的 Batch size
-    workers_per_gpu=2,  # 单个 GPU 分配的线程数
+    workers_per_gpu=2,  # 单个 GPU 分配的数据加载线程数
     train=dict(  # 训练数据集配置
         type='CityscapesDataset',  # 数据集的类别, 细节参考自 mmseg/datasets/。
         data_root='data/cityscapes/',  # 数据集的根目录。
@@ -223,7 +223,7 @@ log_level = 'INFO'  # 日志的级别。
 load_from = None  # 从一个给定路径里加载模型作为预训练模型，它并不会消耗训练时间。
 resume_from = None  # 从给定路径里恢复检查点(checkpoints)，训练模式将从检查点保存的轮次开始恢复训练。
 workflow = [('train', 1)]  # runner 的工作流程。 [('train', 1)] 意思是只有一个工作流程而且工作流程 'train' 仅执行一次。根据 `runner.max_iters` 工作流程训练模型的迭代轮数为40000次。
-cudnn_benchmark = True  # 是否是使用 cudnn_benchmark 去加速，它对于固定输入大小的可以很快加速。
+cudnn_benchmark = True  # 是否是使用 cudnn_benchmark 去加速，它对于固定输入大小的可以提高训练速度。
 optimizer = dict(  # 用于构建优化器的配置文件。支持 PyTorch 中的所有优化器，同时它们的参数与PyTorch里的优化器参数一致。
     type='SGD',  # 优化器种类，更多细节可参考 https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/optimizer/default_constructor.py#L13。
     lr=0.01,  # 优化器的学习率，参数的使用细节请参照对应的 PyTorch 文档。
@@ -238,9 +238,9 @@ lr_config = dict(
 runner = dict(
     type='IterBasedRunner', # 将使用的 runner 的类别 (例如 IterBasedRunner 或 EpochBasedRunner)。
     max_iters=40000) # 全部迭代轮数大小，对于 EpochBasedRunner 使用 `max_epochs` 。
-checkpoint_config = dict(  # 设置检查点钩 (checkpoint hook) 的配置文件。执行时请参考 https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py。
+checkpoint_config = dict(  # 设置检查点钩子 (checkpoint hook) 的配置文件。执行时请参考 https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py。
     by_epoch=False,  # 是否按照每个 epoch 去算 runner。
-    interval=4000)  # 保存的间歇点
+    interval=4000)  # 保存的间隔
 evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节请参考 mmseg/core/evaulation/eval_hook.py。
     interval=4000,  # 评估的间歇点
     metric='mIoU')  # 评估的指标
