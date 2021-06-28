@@ -49,7 +49,7 @@ optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 对于优化，一些模型可能会有一些特别定义的参数，例如 批归一化 (BatchNorm) 层里面的权重衰减 (weight decay)。
 使用者可以通过定制优化器的构造器来微调这些细粒度的优化器参数。
 
-```
+```python
 from mmcv.utils import build_from_cfg
 
 from mmcv.runner import OPTIMIZER_BUILDERS
@@ -71,8 +71,8 @@ class CocktailOptimizerConstructor(object):
 
 MMSegmentation 里主要有2种组件：
 
-- 骨架 (backbone): 通常是卷积网络的堆叠，来做特征提取，例如 ResNet, HRNet。
-- 头 (head): 用于语义分割图的解码的组件。
+- 主干网络 (backbone): 通常是卷积网络的堆叠，来做特征提取，例如 ResNet, HRNet。
+- 解码头 (head): 用于语义分割图的解码的组件。
 
 ### 添加新的骨架
 
