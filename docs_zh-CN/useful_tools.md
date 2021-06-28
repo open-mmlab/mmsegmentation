@@ -2,7 +2,7 @@
 
 除了训练和测试的脚本，我们在 `tools/` 文件夹路径下还提供许多有用的工具。
 
-### 获取 FLOPs 和参数 (实验性质)
+### 获取 FLOPs 和参数 (试验性)
 
 我们基于 [flops-counter.pytorch](https://github.com/sovrasov/flops-counter.pytorch)
 提供来一个脚本来计算 FLOPs 和一个给定模型的参数。
@@ -21,7 +21,7 @@ Params: 48.98 M
 ==============================
 ```
 
-**注意**: 这个工具仍然是实验性质的，我们无法保证数字是正确的。您可以拿这些结果做简单的实验的对照，在写技术文档报告或者论文前您需要再次确认一下。
+**注意**: 这个工具仍然是试验性的，我们无法保证数字是正确的。您可以拿这些结果做简单的实验的对照，在写技术文档报告或者论文前您需要再次确认一下。
 
 (1) FLOPs 与输入的形状有关，而与参数无关。默认的输入形状是 (1, 3, 1280, 800)。
 (2) 一些运算操作，如 GN 和其他定制的运算操作没有被计入 FLOPs
@@ -44,7 +44,7 @@ python tools/publish_model.py work_dirs/pspnet/latest.pth psp_r50_hszhao_200ep.p
 
 最终输出文件将是 `psp_r50_512x1024_40ki_cityscapes-{hash id}.pth`.
 
-### 转成 ONNX (实验性质)
+### 转成 ONNX (试验性)
 
 我们提供了一个脚本来转换模型到 [ONNX](https://github.com/onnx/onnx) 格式。被转换的模型可以通过工具 [Netron](https://github.com/lutzroeder/netron)
 来可视化。除此以外，我们同样支持对 Pytorch 和 ONNX 模型的输出结果做对比。
@@ -77,7 +77,7 @@ python tools/pytorch2onnx.py \
 - `--dynamic-export`: 是否导出形状变化的输入与输出的 ONNX 模型。如果没有被专门指定，它将被设置成 `False`。
 - `--cfg-options`: 更新配置选项。
 
-**注意**: 这个工具仍然是实验性质的。目前一些自定义操作还没有被支持。
+**注意**: 这个工具仍然是试验性的。目前一些自定义操作还没有被支持。
 
 ### 评估 ONNX 模型
 
@@ -137,7 +137,7 @@ python tools/deploy_test.py \
 
 **注意**: TensorRT 仅在使用 `whole mode` 时的配置文件里可用。
 
-### 转成 TorchScript (实验性质)
+### 转成 TorchScript (试验性)
 
 我们同样提供一个脚本去把模型转移成 [TorchScript](https://pytorch.org/docs/stable/jit.html) 格式。您可以使用 pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) 去推理训练好的模型。
 被转换的模型能被像 [Netron](https://github.com/lutzroeder/netron) 的工具来可视化。此外，我们还支持 Pytorch 和 TorchScript 模型的输出结果的比较。
@@ -164,7 +164,7 @@ python tools/pytorch2torchscript.py \
 
 **注意**: 目前仅支持 PyTorch>=1.8.0 版本.
 
-**注意**: 这个工具仍然是实验性质。一些自定义操作符目前还不被支持。
+**注意**: 这个工具仍然是试验性的。一些自定义操作符目前还不被支持。
 
 例子:
 
@@ -177,7 +177,7 @@ python tools/pytorch2torchscript.py \
   --shape 512 1024
   ```
 
-### 转换 TensorRT (实验性质)
+### 转换 TensorRT (试验性)
 
 一个转换 [ONNX](https://github.com/onnx/onnx) 模型成 [TensorRT](https://developer.nvidia.com/tensorrt) 格式的脚本。
 
