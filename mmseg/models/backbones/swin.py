@@ -417,7 +417,6 @@ class SwinBlockSequence(BaseModule):
                  downsample=None,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 auto_pad=False,
                  init_cfg=None):
         super().__init__(init_cfg)
 
@@ -492,8 +491,6 @@ class SwinTransformer(BaseModule):
             Defaults to 0.1.
         use_abs_pos_embed (bool): If True, add absolute position embedding to
             the patch embedding. Defaults to False.
-        auto_pad (bool): If True, auto pad feature map to fit window_size.
-            Defaults to False.
         norm_cfg (dict, optional): Config dict for normalization layer at end
             of backone. Defaults to dict(type='LN')
         stage_cfg (dict, optional): Extra config dict for stages.
@@ -523,7 +520,6 @@ class SwinTransformer(BaseModule):
                  attn_drop_rate=0.,
                  drop_path_rate=0.1,
                  use_abs_pos_embed=False,
-                 auto_pad=False,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  pretrain_style='official',
@@ -551,7 +547,6 @@ class SwinTransformer(BaseModule):
         num_layers = len(depths)
         self.out_indices = out_indices
         self.use_abs_pos_embed = use_abs_pos_embed
-        self.auto_pad = auto_pad
         self.pretrain_style = pretrain_style
         self.pretrained = pretrained
         self.init_cfg = init_cfg
@@ -615,7 +610,6 @@ class SwinTransformer(BaseModule):
                 downsample=downsample,
                 act_cfg=act_cfg,
                 norm_cfg=norm_cfg,
-                auto_pad=auto_pad,
                 init_cfg=None)
             self.stages.append(stage)
 
