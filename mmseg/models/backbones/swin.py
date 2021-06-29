@@ -25,7 +25,6 @@ class PatchMerging(BaseModule):
     This layer use nn.Unfold to group feature map by kernel_size, and use norm
     and linear layer to embed grouped feature map.
     Args:
-        input_resolution (tuple): The size of input patch resolution.
         in_channels (int): The num of input channels.
         out_channels (int): The num of output channels.
         kernel_size (int | tuple, optional): the kernel size in the unfold

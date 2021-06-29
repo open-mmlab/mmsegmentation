@@ -4,6 +4,7 @@ from mmcv.runner.base_module import BaseModule
 from torch.nn.modules.utils import _pair as to_2tuple
 
 
+# Modified from Pytorch-Image-Models
 class PatchEmbed(BaseModule):
     """Image to Patch Embedding V2.
 
