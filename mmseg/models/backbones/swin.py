@@ -16,7 +16,7 @@ from torch.nn.modules.utils import _pair as to_2tuple
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed
+from ..utils import PatchEmbed, swin_convert
 
 
 class PatchMerging(BaseModule):
@@ -652,6 +652,9 @@ class SwinTransformer(BaseModule):
                 state_dict = ckpt['model']
             else:
                 state_dict = ckpt
+
+            if self.pretrain_style == 'official':
+                state_dict = swin_convert(state_dict)
 
             # strip prefix of state_dict
             if list(state_dict.keys())[0].startswith('module.'):
