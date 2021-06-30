@@ -6,7 +6,7 @@ model = dict(
     pretrained=\
     'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window12_384.pth', # noqa
     backbone=dict(
-        embed_dim=128,
+        embed_dims=128,
         depths=[2, 2, 18, 2],
         num_heads=[4, 8, 16, 32],
         window_size=12,
