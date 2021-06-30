@@ -27,15 +27,9 @@ class PatchMerging(BaseModule):
     Args:
         in_channels (int): The num of input channels.
         out_channels (int): The num of output channels.
-        kernel_size (int | tuple, optional): the kernel size in the unfold
-            layer. Defaults: 2.
-        stride (int | tuple, optional): the stride of the sliding blocks in the
+        stride (int | tuple): the stride of the sliding blocks in the
             unfold layer.
-            Defaults: None. (Default to be equal with kernel_size).
-        padding (int | tuple, optional): zero padding width in the unfold
-            layer. Defaults: 0.
-        dilation (int | tuple, optional): dilation parameter in the unfold
-            layer. Defaults: 1.
+            Defaults: 2. (Default to be equal with kernel_size).
         bias (bool, optional): Whether to add bias in linear layer or not.
             Defaults: False.
         norm_cfg (dict, optional): Config dict for normalization layer.
@@ -47,26 +41,19 @@ class PatchMerging(BaseModule):
     def __init__(self,
                  in_channels,
                  out_channels,
-                 kernel_size=2,
-                 stride=None,
-                 padding=0,
-                 dilation=1,
+                 stride=2,
                  bias=False,
                  norm_cfg=dict(type='LN'),
                  init_cfg=None):
         super().__init__(init_cfg)
         self.in_channels = in_channels
         self.out_channels = out_channels
-
-        if stride is None:
-            stride = kernel_size
-        self.kernel_size = kernel_size
         self.stride = stride
-        self.padding = padding
-        self.dilation = dilation
-        self.sampler = nn.Unfold(kernel_size, dilation, padding, stride)
 
-        sample_dim = kernel_size**2 * in_channels
+        self.sampler = nn.Unfold(
+            kernel_size=stride, dilation=1, padding=0, stride=stride)
+
+        sample_dim = stride**2 * in_channels
 
         if norm_cfg is not None:
             self.norm = build_norm_layer(norm_cfg, sample_dim)[1]
@@ -87,9 +74,8 @@ class PatchMerging(BaseModule):
         x = x.view(B, H, W, C).permute([0, 3, 1, 2])  # B, C, H, W
 
         # stride is fixed to be equal to kernel_size.
-        if (H % self.kernel_size != 0) or (W % self.kernel_size != 0):
-            x = F.pad(x,
-                      (0, 0, 0, W % self.kernel_size, 0, H % self.kernel_size))
+        if (H % self.stride != 0) or (W % self.stride != 0):
+            x = F.pad(x, (0, 0, 0, W % self.stride, 0, H % self.stride))
 
         # Use nn.Unfold to merge patch. About 25% faster than original method,
         # but need to modify pretrained model for compatibility
@@ -464,10 +450,6 @@ class SwinBlockSequence(BaseModule):
         num_heads (int): Parallel attention heads.
         feedforward_channels (int): The hidden dimension for FFNs.
         depth (int): The number of blocks in this stage.
-        kernel_size (int): The kernel_size of patch merging.
-        stride (int): The kernel slide stride of patch merging.
-        padding (int): The padding length of patch merging.
-        dilation (int): The dilation rate of kernel of patch merging.
         window size (int): The local window scale. Default: 7.
         qkv_bias (int): enable bias for qkv if True. Default: True.
         qk_scale (float | None, optional): Override default qk scale of
@@ -475,8 +457,8 @@ class SwinBlockSequence(BaseModule):
         drop_rate (float, optional): Dropout rate. Default: 0.
         attn_drop_rate (float, optional): Attention dropout rate. Default: 0.
         drop_path_rate (float, optional): Stochastic depth rate. Default: 0.2.
-        downsample (bool, optional): Whether to use patch merging to downsample
-            feature map. Default: False.
+        downsample (BaseModule | None, optional): The downsample operation
+            module. Default: None.
         act_cfg (dict, optional): The config dict of activation function.
             Default: dict(type='GELU').
         norm_cfg (dict, optional): The config dict of nomalization.
@@ -490,21 +472,19 @@ class SwinBlockSequence(BaseModule):
                  num_heads,
                  feedforward_channels,
                  depth,
-                 kernel_size,
-                 stride,
-                 padding,
-                 dilation,
                  window_size=7,
                  qkv_bias=True,
                  qk_scale=None,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 downsample=False,
+                 downsample=None,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  init_cfg=None):
-        super().__init__(init_cfg)
+        super().__init__()
+
+        self.init_cfg = init_cfg
 
         drop_path_rate = drop_path_rate if isinstance(
             drop_path_rate,
@@ -528,18 +508,7 @@ class SwinBlockSequence(BaseModule):
                 init_cfg=None)
             self.blocks.append(block)
 
-        if downsample:
-            self.downsample = PatchMerging(
-                in_channels=embed_dims,
-                out_channels=2 * embed_dims,
-                kernel_size=kernel_size,
-                stride=stride,
-                padding=padding,
-                dilation=dilation,
-                norm_cfg=norm_cfg,
-                init_cfg=None)
-        else:
-            self.downsample = None
+        self.downsample = downsample
 
     def forward(self, x, hw_shape):
         for block in self.blocks:
@@ -617,9 +586,7 @@ class SwinTransformer(BaseModule):
                  mlp_ratio=4,
                  depths=(2, 2, 6, 2),
                  num_heads=(3, 6, 12, 24),
-                 strides=(None, None, None, None),
-                 paddings=(0, 0, 0, 0),
-                 dilations=(1, 1, 1, 1),
+                 strides=(4, 2, 2, 2),
                  out_indices=(0, 1, 2, 3),
                  qkv_bias=True,
                  qk_scale=None,
@@ -658,13 +625,14 @@ class SwinTransformer(BaseModule):
         self.pretrained = pretrained
         self.init_cfg = init_cfg
 
+        assert strides[0] == patch_size, 'Use non-overlapping patch embed.'
+
         self.patch_embed = PatchEmbed(
             in_channels=in_channels,
             embed_dims=embed_dims,
             conv_type='Conv2d',
             kernel_size=patch_size,
             stride=strides[0],
-            dilation=dilations[0],
             norm_cfg=norm_cfg,
             init_cfg=None)
 
@@ -687,27 +655,20 @@ class SwinTransformer(BaseModule):
         in_channels = embed_dims
         for i in range(num_layers):
             if i < num_layers - 1:
-                downsample = True
-                kernel_size = 2
-                stride = strides[i + 1]
-                padding = paddings[i + 1]
-                dilation = dilations[i + 1]
+                downsample = PatchMerging(
+                    in_channels=in_channels,
+                    out_channels=2 * in_channels,
+                    stride=strides[i + 1],
+                    norm_cfg=norm_cfg,
+                    init_cfg=None)
             else:
-                downsample = False
-                kernel_size = None
-                stride = None
-                padding = None
-                dilation = None
+                downsample = None
 
             stage = SwinBlockSequence(
                 embed_dims=in_channels,
                 num_heads=num_heads[i],
                 feedforward_channels=mlp_ratio * in_channels,
                 depth=depths[i],
-                kernel_size=kernel_size,
-                stride=stride,
-                padding=padding,
-                dilation=dilation,
                 window_size=window_size,
                 qkv_bias=qkv_bias,
                 qk_scale=qk_scale,
@@ -722,7 +683,7 @@ class SwinTransformer(BaseModule):
 
             dpr = dpr[depths[i]:]
             if downsample:
-                in_channels = stage.downsample.out_channels
+                in_channels = in_channels * 2
 
         self.num_features = [int(embed_dims * 2**i) for i in range(num_layers)]
         # Add a norm layer for each output

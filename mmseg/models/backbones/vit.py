@@ -205,7 +205,6 @@ class VisionTransformer(BaseModule):
         self.init_cfg = init_cfg
 
         self.patch_embed = PatchEmbed(
-            img_size=img_size,
             in_channels=in_channels,
             embed_dims=embed_dims,
             conv_type='Conv2d',

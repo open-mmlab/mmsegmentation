@@ -30,12 +30,14 @@ class PatchEmbed(BaseModule):
                  conv_type=None,
                  kernel_size=16,
                  stride=16,
+                 padding=0,
                  dilation=1,
                  norm_cfg=None,
                  init_cfg=None):
-        super(PatchEmbed, self).__init__(init_cfg)
+        super(PatchEmbed, self).__init__()
 
         self.embed_dims = embed_dims
+        self.init_cfg = init_cfg
 
         if stride is None:
             stride = kernel_size
@@ -61,6 +63,7 @@ class PatchEmbed(BaseModule):
             out_channels=embed_dims,
             kernel_size=kernel_size,
             stride=stride,
+            padding=padding,
             dilation=dilation)
 
         if norm_cfg is not None:
