@@ -75,7 +75,7 @@ class PatchMerging(BaseModule):
 
         # stride is fixed to be equal to kernel_size.
         if (H % self.stride != 0) or (W % self.stride != 0):
-            x = F.pad(x, (0, 0, 0, W % self.stride, 0, H % self.stride))
+            x = F.pad(x, (0, W % self.stride, 0, H % self.stride))
 
         # Use nn.Unfold to merge patch. About 25% faster than original method,
         # but need to modify pretrained model for compatibility
@@ -254,6 +254,7 @@ class ShiftWindowMSA(BaseModule):
     def forward(self, query, hw_shape):
         B, L, C = query.shape
         H, W = hw_shape
+        # print(L, H, W)
         assert L == H * W, 'input feature has wrong size'
         query = query.view(B, H, W, C)
 
@@ -561,6 +562,7 @@ class SwinTransformer(BaseModule):
             value. Default: True
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
+        patch_norm (bool): If add a norm layer for patch embed. Default: True.
         drop_rate (float): Dropout rate. Defaults: 0.
         attn_drop_rate (float): Attention dropout rate. Default: 0.
         drop_path_rate (float): Stochastic depth rate. Defaults: 0.1.
@@ -590,6 +592,7 @@ class SwinTransformer(BaseModule):
                  out_indices=(0, 1, 2, 3),
                  qkv_bias=True,
                  qk_scale=None,
+                 patch_norm=True,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.1,
@@ -610,7 +613,8 @@ class SwinTransformer(BaseModule):
                 f'The size of image should have length 1 or 2, ' \
                 f'but got {len(pretrain_img_size)}'
 
-        assert pretrain_style in ['official', 'mmcls']
+        assert pretrain_style in ['official', 'mmcls'], 'We only support load '
+        'official ckpt and mmcls ckpt.'
 
         if isinstance(pretrained, str) or pretrained is None:
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
@@ -633,15 +637,15 @@ class SwinTransformer(BaseModule):
             conv_type='Conv2d',
             kernel_size=patch_size,
             stride=strides[0],
-            norm_cfg=norm_cfg,
+            norm_cfg=norm_cfg if patch_norm else None,
             init_cfg=None)
 
         if self.use_abs_pos_embed:
-            patch_row = pretrain_img_size[0] / patch_size
-            patch_col = pretrain_img_size[1] / patch_size
+            patch_row = pretrain_img_size[0] // patch_size
+            patch_col = pretrain_img_size[1] // patch_size
             num_patches = patch_row * patch_col
             self.absolute_pos_embed = nn.Parameter(
-                torch.zeros(1, num_patches, embed_dims))
+                torch.zeros((1, num_patches, embed_dims)))
 
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
@@ -696,7 +700,7 @@ class SwinTransformer(BaseModule):
         if self.pretrained is None:
             if self.use_abs_pos_embed:
                 trunc_normal_init(self.absolute_pos_embed, std=0.02)
-            for m in self.modules:
+            for m in self.modules():
                 if isinstance(m, Linear):
                     trunc_normal_init(m.weight, std=.02)
                     if m.bias is not None:

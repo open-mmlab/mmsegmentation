@@ -76,7 +76,7 @@ class PatchEmbed(BaseModule):
         if H % self.patch_size[0] != 0:
             x = F.pad(x,
                       (0, 0, 0, self.patch_size[0] - H % self.patch_size[0]))
-        elif W % self.patch_size[1] != 0:
+        if W % self.patch_size[1] != 0:
             x = F.pad(x,
                       (0, self.patch_size[1] - W % self.patch_size[1], 0, 0))
         x = self.projection(x)
