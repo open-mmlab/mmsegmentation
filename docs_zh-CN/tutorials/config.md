@@ -27,7 +27,7 @@
 `{xxx}` 是被要求的文件 `[yyy]` 是可选的。
 
 - `{model}`: 模型种类，例如 `psp`， `deeplabv3` 等等。
-- `{backbone}`: 骨架种类，例如 `r50` (ResNet-50)， `x101` (ResNeXt-101)。
+- `{backbone}`: 主干网络种类，例如 `r50` (ResNet-50)， `x101` (ResNeXt-101)。
 - `[misc]`: 模型中各式各样的设置/插件，例如 `dconv`， `gcb`， `attention`， `mstrain`。
 - `[gpu x batch_per_gpu]`: GPUs 和每个 GPU 的样本数， 默认为 `8x2` 。
 - `{schedule}`: 训练方案， `20ki` 意思是 20k 迭代轮数.
@@ -45,8 +45,8 @@ model = dict(
     pretrained='open-mmlab://resnet50_v1c',  # 将被加载的 ImageNet 预训练主干网络
     backbone=dict(
         type='ResNetV1c',  # 主干网络的类别。 可用选项请参考 mmseg/backbone/resnet.py
-        depth=50,  # 骨架的深度。通常为 50 和 101。
-        num_stages=4,  # 骨架状态(stages)的数目，这些状态产生的特征图作为后续的 head 的输入。
+        depth=50,  # 主干网络的深度。通常为 50 和 101。
+        num_stages=4,  # 主干网络状态(stages)的数目，这些状态产生的特征图作为后续的 head 的输入。
         out_indices=(0, 1, 2, 3),  # 每个状态产生的特征图输出的索引。
         dilations=(1, 1, 2, 4),  # 每一层(layer)的空心率(dilation rate)。
         strides=(1, 2, 1, 1),  # 每一层(layer)的步长(stride)。
@@ -54,7 +54,7 @@ model = dict(
             type='SyncBN',  # 归一化层的类别。通常是 SyncBN。
             requires_grad=True),   # 是否训练归一化里的 gamma 和 beta。
         norm_eval=False,  # 是否冻结 BN 里的统计项。
-        style='pytorch',  # 骨架的风格，'pytorch' 意思是步长为2的层为 3x3 卷积， 'caffe' 意思是步长为2的层为 1x1 卷积。
+        style='pytorch',  # 主干网络的风格，'pytorch' 意思是步长为2的层为 3x3 卷积， 'caffe' 意思是步长为2的层为 1x1 卷积。
         contract_dilation=True),  # 当空洞 > 1, 是否压缩第一个空洞层。
     decode_head=dict(
         type='PSPHead',  # 解码头(decode head)的类别。 可用选项请参考 mmseg/models/decode_heads。
@@ -90,8 +90,8 @@ test_cfg = dict(mode='whole')  # 测试模式， 选项是 'whole' 和 'sliding'
 dataset_type = 'CityscapesDataset'  # 数据集类型，这将被用来定义数据集。
 data_root = 'data/cityscapes/'  # 数据的根路径。
 img_norm_cfg = dict(  # 图像归一化配置，用来归一化输入的图像。
-    mean=[123.675, 116.28, 103.53],  # 预训练里用于预训练骨架模型的平均值。
-    std=[58.395, 57.12, 57.375],  # 预训练里用于预训练骨架模型的标准差。
+    mean=[123.675, 116.28, 103.53],  # 预训练里用于预训练主干网络模型的平均值。
+    std=[58.395, 57.12, 57.375],  # 预训练里用于预训练主干网络模型的标准差。
     to_rgb=True)  # 预训练里用于预训练主干网络的图像的通道顺序。
 crop_size = (512, 1024)  # 训练时的裁剪大小
 train_pipeline = [  #训练流程
@@ -255,7 +255,7 @@ evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节
 有时，您也许会设置 `_delete_=True` 去忽略基础配置文件里的一些域内容。
 您也许可以参照 [mmcv](https://mmcv.readthedocs.io/en/latest/utils.html#inherit-from-base-config-with-ignored-fields) 来获得一些简单的指导。
 
-在 MMSegmentation 里，例如为了改变 PSPNet 的骨架的某些内容：
+在 MMSegmentation 里，例如为了改变 PSPNet 的主干网络的某些内容：
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
