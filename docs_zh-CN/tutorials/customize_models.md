@@ -17,7 +17,7 @@ class MyOptimizer(Optimizer):
 
 ```
 
-然后增加这个模块到 `mmseg/core/optimizer/__init__.py` 里面，这样注册表 (registry) 将会发现这个新的模块并添加它：
+然后增加这个模块到 `mmseg/core/optimizer/__init__.py` 里面，这样注册器 (registry) 将会发现这个新的模块并添加它：
 
 ```python
 from .my_optimizer import MyOptimizer
@@ -74,9 +74,9 @@ MMSegmentation 里主要有2种组件：
 - 主干网络 (backbone): 通常是卷积网络的堆叠，来做特征提取，例如 ResNet, HRNet。
 - 解码头 (head): 用于语义分割图的解码的组件。
 
-### 添加新的骨架
+### 添加新的主干
 
-这里我们以 MobileNet 为例，展示如何增加新的骨架组件：
+这里我们以 MobileNet 为例，展示如何增加新的主干组件：
 
 1. 创建一个新的文件 `mmseg/models/backbones/mobilenet.py`.
 
@@ -120,7 +120,7 @@ model = dict(
 ### 增加新的头组件
 
 在 MMSegmentation 里面，对于所有的分割头，我们提供一个基础的 [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py) 。
-所有创新的解码头都应该由它生成。这里我们以 [PSPNet](https://arxiv.org/abs/1612.01105) 为例，
+所有新建的解码头都应该由它生成。这里我们以 [PSPNet](https://arxiv.org/abs/1612.01105) 为例，
 展示如何开发一个新的头组件：
 
 首先，在 `mmseg/models/decode_heads/psp_head.py` 里添加一个新的解码头。
@@ -139,7 +139,7 @@ class PSPHead(BaseDecodeHead):
 
 ```
 
-接着，使用者需要在 `mmseg/models/decode_heads/__init__.py` 里面添加这个模块，这样对应的注册表 (registry) 可以查找并加载它们。
+接着，使用者需要在 `mmseg/models/decode_heads/__init__.py` 里面添加这个模块，这样对应的注册器 (registry) 可以查找并加载它们。
 
 PSPNet的配置文件如下所示：
 
