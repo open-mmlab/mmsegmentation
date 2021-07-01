@@ -90,7 +90,7 @@ class PatchMerging(BaseModule):
 
 @ATTENTION.register_module()
 class WindowMSA(BaseModule):
-    """Window based multi-head self attention (W-MSA) module with relative
+    """Window based multi-head self-attention (W-MSA) module with relative
     position bias.
 
     Args:
