@@ -63,7 +63,7 @@ Supported backbones:
 - [x] [ResNeSt (ArXiv'2020)](configs/resnest)
 - [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
-- [x] [Vision Transformer (ICLR'2021)]
+- [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (arXiV'2021)](configs/swin)
 
 Supported methods:
