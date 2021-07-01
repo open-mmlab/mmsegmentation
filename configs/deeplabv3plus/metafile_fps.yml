@@ -18,7 +18,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -38,7 +37,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -58,7 +56,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -78,7 +75,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -98,7 +94,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -118,7 +113,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -138,7 +132,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -158,7 +151,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -178,7 +170,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -198,7 +189,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -218,7 +208,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -238,7 +227,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -258,7 +246,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -278,7 +265,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -298,7 +284,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -318,7 +303,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -338,7 +322,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -358,7 +341,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -378,7 +360,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -398,7 +379,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -418,7 +398,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -438,7 +417,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -458,7 +436,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -478,7 +455,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -498,7 +474,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -518,7 +493,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -538,7 +512,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -558,7 +531,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context

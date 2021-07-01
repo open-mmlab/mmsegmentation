@@ -15,7 +15,6 @@ Models:
           backend: PyTorch
           batch size: 1
           mode: FP32
-          resolution:
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
