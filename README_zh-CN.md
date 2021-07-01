@@ -58,18 +58,20 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 - [x] ResNet (CVPR'2016)
 - [x] ResNeXt (CVPR'2017)
-- [x] [HRNet (CVPR'2019)](configs/hrnet/README.md)
-- [x] [ResNeSt (ArXiv'2020)](configs/resnest/README.md)
-- [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2/README.md)
-- [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3/README.md)
-- [x] [Vision Transformer (ICLR'2021)]
+- [x] [HRNet (CVPR'2019)](configs/hrnet)
+- [x] [ResNeSt (ArXiv'2020)](configs/resnest)
+- [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
+- [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
+- [x] [Vision Transformer (ICLR'2021)](configs/vit)
+- [x] [Swin Transformer (arXiV'2021)](configs/swin)
 
 已支持的算法：
 
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
+- [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
-- [x] [DeepLabV3 (CVPR'2017)](configs/deeplabv3)
-- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16/README.md)
+- [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
+- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
 - [x] [UPerNet (ECCV'2018)](configs/upernet)
