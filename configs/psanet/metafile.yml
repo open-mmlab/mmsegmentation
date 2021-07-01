@@ -11,7 +11,12 @@ Models:
   - Name: psanet_r50-d8_512x1024_40k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 315.46
+      inference time (ms/im):
+        - value: 315.46
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +30,12 @@ Models:
   - Name: psanet_r101-d8_512x1024_40k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 454.55
+      inference time (ms/im):
+        - value: 454.55
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +49,12 @@ Models:
   - Name: psanet_r50-d8_769x769_40k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 714.29
+      inference time (ms/im):
+        - value: 714.29
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -53,7 +68,12 @@ Models:
   - Name: psanet_r101-d8_769x769_40k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 1020.41
+      inference time (ms/im):
+        - value: 1020.41
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -67,7 +87,12 @@ Models:
   - Name: psanet_r50-d8_512x1024_80k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 315.46
+      inference time (ms/im):
+        - value: 315.46
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +106,12 @@ Models:
   - Name: psanet_r101-d8_512x1024_80k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 454.55
+      inference time (ms/im):
+        - value: 454.55
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +125,12 @@ Models:
   - Name: psanet_r50-d8_769x769_80k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 714.29
+      inference time (ms/im):
+        - value: 714.29
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +144,12 @@ Models:
   - Name: psanet_r101-d8_769x769_80k_cityscapes
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 1020.41
+      inference time (ms/im):
+        - value: 1020.41
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -123,7 +163,12 @@ Models:
   - Name: psanet_r50-d8_512x512_80k_ade20k
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 52.88
+      inference time (ms/im):
+        - value: 52.88
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -137,7 +182,12 @@ Models:
   - Name: psanet_r101-d8_512x512_80k_ade20k
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 76.16
+      inference time (ms/im):
+        - value: 76.16
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -151,7 +201,12 @@ Models:
   - Name: psanet_r50-d8_512x512_160k_ade20k
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 52.88
+      inference time (ms/im):
+        - value: 52.88
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -165,7 +220,12 @@ Models:
   - Name: psanet_r101-d8_512x512_160k_ade20k
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 76.16
+      inference time (ms/im):
+        - value: 76.16
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -179,7 +239,12 @@ Models:
   - Name: psanet_r50-d8_512x512_20k_voc12aug
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 54.82
+      inference time (ms/im):
+        - value: 54.82
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -193,7 +258,12 @@ Models:
   - Name: psanet_r101-d8_512x512_20k_voc12aug
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 79.18
+      inference time (ms/im):
+        - value: 79.18
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -207,7 +277,12 @@ Models:
   - Name: psanet_r50-d8_512x512_40k_voc12aug
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 54.82
+      inference time (ms/im):
+        - value: 54.82
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -221,7 +296,12 @@ Models:
   - Name: psanet_r101-d8_512x512_40k_voc12aug
     In Collection: PSANet
     Metadata:
-      inference time (ms/im): 79.18
+      inference time (ms/im):
+        - value: 79.18
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug

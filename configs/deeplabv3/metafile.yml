@@ -12,7 +12,12 @@ Models:
   - Name: deeplabv3_r50-d8_512x1024_40k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 389.11
+      inference time (ms/im):
+        - value: 389.11
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -26,7 +31,12 @@ Models:
   - Name: deeplabv3_r101-d8_512x1024_40k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 520.83
+      inference time (ms/im):
+        - value: 520.83
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -40,7 +50,12 @@ Models:
   - Name: deeplabv3_r50-d8_769x769_40k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 900.9
+      inference time (ms/im):
+        - value: 900.9
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -54,7 +69,12 @@ Models:
   - Name: deeplabv3_r101-d8_769x769_40k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 1204.82
+      inference time (ms/im):
+        - value: 1204.82
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -68,7 +88,12 @@ Models:
   - Name: deeplabv3_r18-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 72.57
+      inference time (ms/im):
+        - value: 72.57
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -82,7 +107,12 @@ Models:
   - Name: deeplabv3_r50-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 389.11
+      inference time (ms/im):
+        - value: 389.11
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -96,7 +126,12 @@ Models:
   - Name: deeplabv3_r101-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 520.83
+      inference time (ms/im):
+        - value: 520.83
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -110,7 +145,12 @@ Models:
   - Name: deeplabv3_r18-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 180.18
+      inference time (ms/im):
+        - value: 180.18
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -124,7 +164,12 @@ Models:
   - Name: deeplabv3_r50-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 900.9
+      inference time (ms/im):
+        - value: 900.9
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -138,7 +183,12 @@ Models:
   - Name: deeplabv3_r101-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 1204.82
+      inference time (ms/im):
+        - value: 1204.82
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -152,7 +202,12 @@ Models:
   - Name: deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 143.68
+      inference time (ms/im):
+        - value: 143.68
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -166,7 +221,12 @@ Models:
   - Name: deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 143.68
+      inference time (ms/im):
+        - value: 143.68
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -180,7 +240,12 @@ Models:
   - Name: deeplabv3_r18b-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 71.79
+      inference time (ms/im):
+        - value: 71.79
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -194,7 +259,12 @@ Models:
   - Name: deeplabv3_r50b-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 364.96
+      inference time (ms/im):
+        - value: 364.96
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -208,7 +278,12 @@ Models:
   - Name: deeplabv3_r101b-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 552.49
+      inference time (ms/im):
+        - value: 552.49
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -222,7 +297,12 @@ Models:
   - Name: deeplabv3_r18b-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 172.71
+      inference time (ms/im):
+        - value: 172.71
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -236,7 +316,12 @@ Models:
   - Name: deeplabv3_r50b-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 862.07
+      inference time (ms/im):
+        - value: 862.07
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -250,7 +335,12 @@ Models:
   - Name: deeplabv3_r101b-d8_769x769_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 1219.51
+      inference time (ms/im):
+        - value: 1219.51
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -264,7 +354,12 @@ Models:
   - Name: deeplabv3_r50-d8_512x512_80k_ade20k
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 67.75
+      inference time (ms/im):
+        - value: 67.75
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -278,7 +373,12 @@ Models:
   - Name: deeplabv3_r101-d8_512x512_80k_ade20k
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 98.62
+      inference time (ms/im):
+        - value: 98.62
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -292,7 +392,12 @@ Models:
   - Name: deeplabv3_r50-d8_512x512_160k_ade20k
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 67.75
+      inference time (ms/im):
+        - value: 67.75
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -306,7 +411,12 @@ Models:
   - Name: deeplabv3_r101-d8_512x512_160k_ade20k
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 98.62
+      inference time (ms/im):
+        - value: 98.62
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -320,7 +430,12 @@ Models:
   - Name: deeplabv3_r50-d8_512x512_20k_voc12aug
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 72.05
+      inference time (ms/im):
+        - value: 72.05
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -334,7 +449,12 @@ Models:
   - Name: deeplabv3_r101-d8_512x512_20k_voc12aug
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 101.94
+      inference time (ms/im):
+        - value: 101.94
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -348,7 +468,12 @@ Models:
   - Name: deeplabv3_r50-d8_512x512_40k_voc12aug
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 72.05
+      inference time (ms/im):
+        - value: 72.05
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -362,7 +487,12 @@ Models:
   - Name: deeplabv3_r101-d8_512x512_40k_voc12aug
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 101.94
+      inference time (ms/im):
+        - value: 101.94
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -376,7 +506,12 @@ Models:
   - Name: deeplabv3_r101-d8_480x480_40k_pascal_context
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 141.04
+      inference time (ms/im):
+        - value: 141.04
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -390,7 +525,12 @@ Models:
   - Name: deeplabv3_r101-d8_480x480_80k_pascal_context
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 141.04
+      inference time (ms/im):
+        - value: 141.04
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -404,7 +544,12 @@ Models:
   - Name: deeplabv3_r101-d8_480x480_40k_pascal_context
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -418,7 +563,12 @@ Models:
   - Name: deeplabv3_r101-d8_480x480_80k_pascal_context_59
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context

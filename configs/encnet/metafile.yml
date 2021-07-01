@@ -11,7 +11,12 @@ Models:
   - Name: encnet_r50-d8_512x1024_40k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 218.34
+      inference time (ms/im):
+        - value: 218.34
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +30,12 @@ Models:
   - Name: encnet_r101-d8_512x1024_40k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 375.94
+      inference time (ms/im):
+        - value: 375.94
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +49,12 @@ Models:
   - Name: encnet_r50-d8_769x769_40k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 549.45
+      inference time (ms/im):
+        - value: 549.45
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -53,7 +68,12 @@ Models:
   - Name: encnet_r101-d8_769x769_40k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 793.65
+      inference time (ms/im):
+        - value: 793.65
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -67,7 +87,12 @@ Models:
   - Name: encnet_r50-d8_512x1024_80k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 218.34
+      inference time (ms/im):
+        - value: 218.34
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +106,12 @@ Models:
   - Name: encnet_r101-d8_512x1024_80k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 375.94
+      inference time (ms/im):
+        - value: 375.94
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +125,12 @@ Models:
   - Name: encnet_r50-d8_769x769_80k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 549.45
+      inference time (ms/im):
+        - value: 549.45
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +144,12 @@ Models:
   - Name: encnet_r101-d8_769x769_80k_cityscapes
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 793.65
+      inference time (ms/im):
+        - value: 793.65
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -123,7 +163,12 @@ Models:
   - Name: encnet_r50-d8_512x512_80k_ade20k
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 43.84
+      inference time (ms/im):
+        - value: 43.84
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -137,7 +182,12 @@ Models:
   - Name: encnet_r101-d8_512x512_80k_ade20k
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 67.25
+      inference time (ms/im):
+        - value: 67.25
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -151,7 +201,12 @@ Models:
   - Name: encnet_r50-d8_512x512_160k_ade20k
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 43.84
+      inference time (ms/im):
+        - value: 43.84
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -165,7 +220,12 @@ Models:
   - Name: encnet_r101-d8_512x512_160k_ade20k
     In Collection: encnet
     Metadata:
-      inference time (ms/im): 67.25
+      inference time (ms/im):
+        - value: 67.25
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
