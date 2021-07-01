@@ -11,7 +11,12 @@ Models:
   - Name: ocrnet_hr18s_512x1024_40k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 95.69
+      inference time (ms/im):
+        - value: 95.69
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +30,12 @@ Models:
   - Name: ocrnet_hr18_512x1024_40k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 133.33
+      inference time (ms/im):
+        - value: 133.33
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +49,12 @@ Models:
   - Name: ocrnet_hr48_512x1024_40k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 236.97
+      inference time (ms/im):
+        - value: 236.97
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -53,7 +68,12 @@ Models:
   - Name: ocrnet_hr18s_512x1024_80k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 95.69
+      inference time (ms/im):
+        - value: 95.69
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -67,7 +87,12 @@ Models:
   - Name: ocrnet_hr18_512x1024_80k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 133.33
+      inference time (ms/im):
+        - value: 133.33
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -81,7 +106,12 @@ Models:
   - Name: ocrnet_hr48_512x1024_80k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 236.97
+      inference time (ms/im):
+        - value: 236.97
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -95,7 +125,12 @@ Models:
   - Name: ocrnet_hr18s_512x1024_160k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 95.69
+      inference time (ms/im):
+        - value: 95.69
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -109,7 +144,12 @@ Models:
   - Name: ocrnet_hr18_512x1024_160k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 133.33
+      inference time (ms/im):
+        - value: 133.33
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -123,7 +163,12 @@ Models:
   - Name: ocrnet_hr48_512x1024_160k_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 236.97
+      inference time (ms/im):
+        - value: 236.97
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -137,7 +182,12 @@ Models:
   - Name: ocrnet_r101-d8_512x1024_40k_b8_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -151,7 +201,12 @@ Models:
   - Name: ocrnet_r101-d8_512x1024_40k_b16_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 113.64
+      inference time (ms/im):
+        - value: 113.64
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -165,7 +220,12 @@ Models:
   - Name: ocrnet_r101-d8_512x1024_80k_b16_cityscapes
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 113.64
+      inference time (ms/im):
+        - value: 113.64
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -179,7 +239,12 @@ Models:
   - Name: ocrnet_hr18s_512x512_80k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 34.51
+      inference time (ms/im):
+        - value: 34.51
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -193,7 +258,12 @@ Models:
   - Name: ocrnet_hr18_512x512_80k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 52.83
+      inference time (ms/im):
+        - value: 52.83
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -207,7 +277,12 @@ Models:
   - Name: ocrnet_hr48_512x512_80k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 58.86
+      inference time (ms/im):
+        - value: 58.86
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -221,7 +296,12 @@ Models:
   - Name: ocrnet_hr18s_512x512_160k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 34.51
+      inference time (ms/im):
+        - value: 34.51
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -235,7 +315,12 @@ Models:
   - Name: ocrnet_hr18_512x512_160k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 52.83
+      inference time (ms/im):
+        - value: 52.83
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -249,7 +334,12 @@ Models:
   - Name: ocrnet_hr48_512x512_160k_ade20k
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 58.86
+      inference time (ms/im):
+        - value: 58.86
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -263,7 +353,12 @@ Models:
   - Name: ocrnet_hr18s_512x512_20k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 31.7
+      inference time (ms/im):
+        - value: 31.7
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -277,7 +372,12 @@ Models:
   - Name: ocrnet_hr18_512x512_20k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 50.23
+      inference time (ms/im):
+        - value: 50.23
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -291,7 +391,12 @@ Models:
   - Name: ocrnet_hr48_512x512_20k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 56.09
+      inference time (ms/im):
+        - value: 56.09
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -305,7 +410,12 @@ Models:
   - Name: ocrnet_hr18s_512x512_40k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 31.7
+      inference time (ms/im):
+        - value: 31.7
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -319,7 +429,12 @@ Models:
   - Name: ocrnet_hr18_512x512_40k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 50.23
+      inference time (ms/im):
+        - value: 50.23
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -333,7 +448,12 @@ Models:
   - Name: ocrnet_hr48_512x512_40k_voc12aug
     In Collection: OCRNet
     Metadata:
-      inference time (ms/im): 56.09
+      inference time (ms/im):
+        - value: 56.09
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug

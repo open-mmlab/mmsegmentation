@@ -4,7 +4,12 @@ Models:
   - Name: fcn_r101-d8_512x1024_80k_fp16_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 115.74
+      inference time (ms/im):
+        - value: 115.74
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -18,7 +23,12 @@ Models:
   - Name: pspnet_r101-d8_512x1024_80k_fp16_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (ms/im): 114.03
+      inference time (ms/im):
+        - value: 114.03
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -32,7 +42,12 @@ Models:
   - Name: deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 259.07
+      inference time (ms/im):
+        - value: 259.07
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -46,7 +61,12 @@ Models:
   - Name: deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (ms/im): 127.06
+      inference time (ms/im):
+        - value: 127.06
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
