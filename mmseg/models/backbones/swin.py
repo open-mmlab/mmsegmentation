@@ -27,9 +27,8 @@ class PatchMerging(BaseModule):
     Args:
         in_channels (int): The num of input channels.
         out_channels (int): The num of output channels.
-        stride (int | tuple): the stride of the sliding blocks in the
-            unfold layer.
-            Defaults: 2. (Default to be equal with kernel_size).
+        stride (int | tuple): the stride of the sliding length in the
+            unfold layer. Defaults: 2. (Default to be equal with kernel_size).
         bias (bool, optional): Whether to add bias in linear layer or not.
             Defaults: False.
         norm_cfg (dict, optional): Config dict for normalization layer.
@@ -254,7 +253,6 @@ class ShiftWindowMSA(BaseModule):
     def forward(self, query, hw_shape):
         B, L, C = query.shape
         H, W = hw_shape
-        # print(L, H, W)
         assert L == H * W, 'input feature has wrong size'
         query = query.view(B, H, W, C)
 
@@ -370,14 +368,13 @@ class SwinBlock(BaseModule):
         num_heads (int): Parallel attention heads.
         feedforward_channels (int): The hidden dimension for FFNs.
         window size (int, optional): The local window scale. Default: 7.
+        shift (bool): whether to shift window or not. Default False.
         qkv_bias (int, optional): enable bias for qkv if True. Default: True.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
         drop_rate (float, optional): Dropout rate. Default: 0.
         attn_drop_rate (float, optional): Attention dropout rate. Default: 0.
         drop_path_rate (float, optional): Stochastic depth rate. Default: 0.2.
-        downsample (bool, optional): Whether to use patch merging to downsample
-            feature map. Default: False.
         act_cfg (dict, optional): The config dict of activation function.
             Default: dict(type='GELU').
         norm_cfg (dict, optional): The config dict of nomalization.
@@ -546,23 +543,17 @@ class SwinTransformer(BaseModule):
             Default: (2, 2, 6, 2).
         num_heads (tuple[int]): Parallel attention heads of each Swin
             Transformer stage. Default: (3, 6, 12, 24).
-        strides (tuple[int] | tuple[None], optional): The patch merging or
-            patch embedding stride of each Swin Transformer stage. (When stride
-            is set to None, stride will be equal to kernel size.)
-            Default: (None, None, None, None).
-        paddings (tuple[int], optional): The patch merging or patch
-            embedding padding length of each Swin Transformer stage.
-            Default: (0, 0, 0, 0).
-        dilations (tuple[int], optional): The patch merging or patch
-            embedding kernel dilation rate of each Swin Transformer stage.
-            Default: (1, 1, 1, 1).
+        strides (tuple[int]): The patch merging or patch embedding stride of
+            each Swin Transformer stage. (In swin, we set kernel size equal to
+            stride.) Default: (4, 2, 2, 2).
         out_indices (tuple[int]): Output from which stages.
             Default: (0, 1, 2, 3).
         qkv_bias (bool, optional): If True, add a learnable bias to query, key,
             value. Default: True
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
-        patch_norm (bool): If add a norm layer for patch embed. Default: True.
+        patch_norm (bool): If add a norm layer for patch embed and patch
+            merging. Default: True.
         drop_rate (float): Dropout rate. Defaults: 0.
         attn_drop_rate (float): Attention dropout rate. Default: 0.
         drop_path_rate (float): Stochastic depth rate. Defaults: 0.1.
@@ -663,7 +654,7 @@ class SwinTransformer(BaseModule):
                     in_channels=in_channels,
                     out_channels=2 * in_channels,
                     stride=strides[i + 1],
-                    norm_cfg=norm_cfg,
+                    norm_cfg=norm_cfg if patch_norm else None,
                     init_cfg=None)
             else:
                 downsample = None
@@ -687,7 +678,7 @@ class SwinTransformer(BaseModule):
 
             dpr = dpr[depths[i]:]
             if downsample:
-                in_channels = in_channels * 2
+                in_channels = downsample.out_channels
 
         self.num_features = [int(embed_dims * 2**i) for i in range(num_layers)]
         # Add a norm layer for each output
@@ -698,6 +689,7 @@ class SwinTransformer(BaseModule):
 
     def init_weights(self):
         if self.pretrained is None:
+            super().init_weights()
             if self.use_abs_pos_embed:
                 trunc_normal_init(self.absolute_pos_embed, std=0.02)
             for m in self.modules():
