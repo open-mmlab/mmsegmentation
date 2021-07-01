@@ -62,6 +62,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [ResNeSt (ArXiv'2020)](configs/resnest/README.md)
 - [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2/README.md)
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3/README.md)
+- [x] [Vision Transformer (ICLR'2021)]
 
 已支持的算法：
 
@@ -87,6 +88,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
+- [x] [SETR (CVPR'2021)](configs/setr)
 
 ## 安装
 

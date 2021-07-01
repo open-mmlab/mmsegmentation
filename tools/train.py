@@ -131,6 +131,7 @@ def main():
         cfg.model,
         train_cfg=cfg.get('train_cfg'),
         test_cfg=cfg.get('test_cfg'))
+    model.init_weights()
 
     logger.info(model)
 
@@ -149,6 +150,8 @@ def main():
             PALETTE=datasets[0].PALETTE)
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
+    # passing checkpoint meta for saving best checkpoint
+    meta.update(cfg.checkpoint_config.meta)
     train_segmentor(
         model,
         datasets,

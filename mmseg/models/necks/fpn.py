@@ -1,12 +1,13 @@
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import ConvModule, xavier_init
+from mmcv.cnn import ConvModule
+from mmcv.runner import BaseModule, auto_fp16
 
 from ..builder import NECKS
 
 
 @NECKS.register_module()
-class FPN(nn.Module):
+class FPN(BaseModule):
     """Feature Pyramid Network.
 
     This is an implementation of - Feature Pyramid Networks for Object
@@ -43,6 +44,7 @@ class FPN(nn.Module):
             Default: None.
         upsample_cfg (dict): Config dict for interpolate layer.
             Default: `dict(mode='nearest')`
+        init_cfg (dict or list[dict], optional): Initialization config dict.
 
     Example:
         >>> import torch
@@ -73,8 +75,10 @@ class FPN(nn.Module):
                  conv_cfg=None,
                  norm_cfg=None,
                  act_cfg=None,
-                 upsample_cfg=dict(mode='nearest')):
-        super(FPN, self).__init__()
+                 upsample_cfg=dict(mode='nearest'),
+                 init_cfg=dict(
+                     type='Xavier', layer='Conv2d', distribution='uniform')):
+        super(FPN, self).__init__(init_cfg)
         assert isinstance(in_channels, list)
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -153,12 +157,7 @@ class FPN(nn.Module):
                     inplace=False)
                 self.fpn_convs.append(extra_fpn_conv)
 
-    # default init_weights for conv(msra) and norm in ConvModule
-    def init_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                xavier_init(m, distribution='uniform')
-
+    @auto_fp16()
     def forward(self, inputs):
         assert len(inputs) == len(self.in_channels)
 

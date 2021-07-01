@@ -48,7 +48,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.13.0 was released in 05/05/2021.
+v0.14.1 was released in 06/16/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -63,6 +63,7 @@ Supported backbones:
 - [x] [ResNeSt (ArXiv'2020)](configs/resnest/README.md)
 - [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2/README.md)
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3/README.md)
+- [x] [Vision Transformer (ICLR'2021)]
 
 Supported methods:
 
@@ -89,10 +90,11 @@ Supported methods:
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
+- [x] [SETR (CVPR'2021)](configs/setr)
 
 ## Installation
 
-Please refer to [get_started.md](docs/get_started.md#installation) for installation and dataset preparation.
+Please refer to [get_started.md](docs/get_started.md#installation) for installation and [dataset_prepare.md](docs/dataset_prepare.md#prepare-datasets) for dataset preparation.
 
 ## Get Started
 
