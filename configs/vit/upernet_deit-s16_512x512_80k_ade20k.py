@@ -1,4 +1,4 @@
-_base_ = './upernet_vit-b16_neck_512x512_80k_ade20k.py'
+_base_ = './upernet_vit-b16_mln_512x512_80k_ade20k.py'
 
 model = dict(
     pretrained='https://dl.fbaipublicfiles.com/deit/deit_small_patch16_224-cd65a155.pth',  # noqa
