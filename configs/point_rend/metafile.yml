@@ -10,7 +10,12 @@ Models:
   - Name: pointrend_r50_512x1024_80k_cityscapes
     In Collection: PointRend
     Metadata:
-      inference time (ms/im): 117.92
+      inference time (ms/im):
+        - value: 117.92
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -24,7 +29,12 @@ Models:
   - Name: pointrend_r101_512x1024_80k_cityscapes
     In Collection: PointRend
     Metadata:
-      inference time (ms/im): 142.86
+      inference time (ms/im):
+        - value: 142.86
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -38,7 +48,12 @@ Models:
   - Name: pointrend_r50_512x512_160k_ade20k
     In Collection: PointRend
     Metadata:
-      inference time (ms/im): 57.77
+      inference time (ms/im):
+        - value: 57.77
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -52,7 +67,12 @@ Models:
   - Name: pointrend_r101_512x512_160k_ade20k
     In Collection: PointRend
     Metadata:
-      inference time (ms/im): 64.52
+      inference time (ms/im):
+        - value: 64.52
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
