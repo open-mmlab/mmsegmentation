@@ -1,22 +1,17 @@
 # 教程 3: 自定义数据流程
 
-## Design of Data pipelines
+## 数据流程的设计
 
-Following typical conventions, we use `Dataset` and `DataLoader` for data loading
-with multiple workers. `Dataset` returns a dict of data items corresponding
-the arguments of models' forward method.
-Since the data in semantic segmentation may not be the same size,
-we introduce a new `DataContainer` type in MMCV to help collect and distribute
-data of different size.
-See [here](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) for more details.
+按照通常的惯例，我们使用 `Dataset` 和 `DataLoader` 做多线程的数据加载。`Dataset` 返回一个数据内容的字典，里面对应于模型前传方法的各个参数。
+因为在语义分割中，输入的图像数据具有不同的大小，我们在 MMCV 里引入一个新的 `DataContainer` 类别去帮助收集和分发不同大小的输入数据。
 
-The data preparation pipeline and the dataset is decomposed. Usually a dataset
-defines how to process the annotations and a data pipeline defines all the steps to prepare a data dict.
-A pipeline consists of a sequence of operations. Each operation takes a dict as input and also output a dict for the next transform.
+更多细节，请查看[这里](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py).
 
-The operations are categorized into data loading, pre-processing, formatting and test-time augmentation.
+数据的准备流程和数据集是解耦的。通常一个数据集定义了如何处理标注数据（annotations）信息，而一个数据流程定义了准备一个数据字典的所有步骤。一个流程包括了一系列操作，每个操作里都把一个字典作为输入，然后再输出一个新的字典给下一个变换操作。
 
-Here is an pipeline example for PSPNet.
+这些操作可分为数据加载 (data loading)，预处理 (pre-processing)，格式变化 (formatting) 和测试时数据增强 (test-time augmentation) 。
+
+下面的例子就是 PSPNet 的一个流程:
 
 ```python
 img_norm_cfg = dict(
@@ -51,86 +46,86 @@ test_pipeline = [
 ]
 ```
 
-For each operation, we list the related dict fields that are added/updated/removed.
+对于每个操作，我们列出它添加、更新、移除的相关字典域 (dict fields)：
 
-### Data loading
+### 数据加载 Data loading
 
 `LoadImageFromFile`
 
-- add: img, img_shape, ori_shape
+- 增加: img, img_shape, ori_shape
 
 `LoadAnnotations`
 
-- add: gt_semantic_seg, seg_fields
+- 增加: gt_semantic_seg, seg_fields
 
-### Pre-processing
+### 预处理 Pre-processing
 
 `Resize`
 
-- add: scale, scale_idx, pad_shape, scale_factor, keep_ratio
-- update: img, img_shape, *seg_fields
+- 增加: scale, scale_idx, pad_shape, scale_factor, keep_ratio
+- 更新: img, img_shape, *seg_fields
 
 `RandomFlip`
 
-- add: flip
-- update: img, *seg_fields
+- 增加: flip
+- 更新: img, *seg_fields
 
 `Pad`
 
-- add: pad_fixed_size, pad_size_divisor
-- update: img, pad_shape, *seg_fields
+- 增加: pad_fixed_size, pad_size_divisor
+- 更新: img, pad_shape, *seg_fields
 
 `RandomCrop`
 
-- update: img, pad_shape, *seg_fields
+- 更新: img, pad_shape, *seg_fields
 
 `Normalize`
 
-- add: img_norm_cfg
-- update: img
+- 增加: img_norm_cfg
+- 更新: img
 
 `SegRescale`
 
-- update: gt_semantic_seg
+- 更新: gt_semantic_seg
 
 `PhotoMetricDistortion`
 
-- update: img
+- 更新: img
 
-### Formatting
+### 格式 Formatting
 
 `ToTensor`
 
-- update: specified by `keys`.
+- 更新: 由 `keys` 指定.
 
 `ImageToTensor`
 
-- update: specified by `keys`.
+- 更新: 由 `keys` 指定.
 
 `Transpose`
 
-- update: specified by `keys`.
+- 更新: 由 `keys` 指定.
 
 `ToDataContainer`
 
-- update: specified by `fields`.
+- 更新: 由 `keys` 指定.
 
 `DefaultFormatBundle`
 
-- update: img, gt_semantic_seg
+- 更新: img, gt_semantic_seg
 
 `Collect`
 
-- add: img_meta (the keys of img_meta is specified by `meta_keys`)
-- remove: all other keys except for those specified by `keys`
+- 增加: img_meta (the keys of img_meta is specified by `meta_keys`)
+- 移除: all other keys except for those specified by `keys`
 
-### Test time augmentation
+### 测试时数据增强 Test time augmentation
 
 `MultiScaleFlipAug`
 
-## Extend and use custom pipelines
+## 拓展和使用自定义的流程
 
-1. Write a new pipeline in any file, e.g., `my_pipeline.py`. It takes a dict as input and return a dict.
+1. 在任何一个文件里写一个新的流程，例如 `my_pipeline.py`。它以一个字典作为输入并且输出一个字典。
 
     ```python
     from mmseg.datasets import PIPELINES
@@ -143,13 +138,13 @@ For each operation, we list the related dict fields that are added/updated/remov
             return results
     ```
 
-2. Import the new class.
+2. 导入一个新类
 
     ```python
     from .my_pipeline import MyTransform
     ```
 
-3. Use it in config files.
+3. 在配置文件里使用它
 
     ```python
     img_norm_cfg = dict(
