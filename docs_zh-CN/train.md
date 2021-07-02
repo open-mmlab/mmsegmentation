@@ -1,4 +1,4 @@
-##s 训练一个模型
+## 训练一个模型
 
 MMSegmentation 可以执行分布式训练和非分布式训练，分别使用 `MMDistributedDataParallel` 和 `MMDataParallel` 命令。
 
