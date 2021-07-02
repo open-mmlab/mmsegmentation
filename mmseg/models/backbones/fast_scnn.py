@@ -23,8 +23,9 @@ class LearningToDownsample(nn.Module):
             dict(type='BN')
         act_cfg (dict): Config of activation layers. Default:
             dict(type='ReLU')
-        dw_act_cfg (dict):Activation config of depthwise ConvModule. If it is
-            'default', it will be the same as `act_cfg`. Default: None.
+        dw_act_cfg (dict): In DepthwiseSeparableConvModule, activation config
+            of depthwise ConvModule. If it is 'default', it will be the same
+            as `act_cfg`. Default: None.
     """
 
     def __init__(self,
@@ -309,8 +310,9 @@ class FastSCNN(BaseModule):
             dict(type='ReLU')
         align_corners (bool): align_corners argument of F.interpolate.
             Default: False
-        dw_act_cfg (dict): Activation config of depthwise ConvModule. If it is
-            'default', it will be the same as `act_cfg`. Default: None.
+        dw_act_cfg (dict): In DepthwiseSeparableConvModule, activation config
+            of depthwise ConvModule. If it is 'default', it will be the same
+            as `act_cfg`. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None
     """
