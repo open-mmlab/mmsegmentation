@@ -5,7 +5,7 @@
 ### 计算参数量（params）和计算量（ FLOPs） (试验性)
 
 我们基于 [flops-counter.pytorch](https://github.com/sovrasov/flops-counter.pytorch)
-提供来一个脚本来计算 FLOPs 和一个给定模型的参数。
+提供了一个用于计算给定模型参数量和计算量的脚本。
 
 ```shell
 python tools/get_flops.py ${CONFIG_FILE} [--shape ${INPUT_SHAPE}]
@@ -23,14 +23,15 @@ Params: 48.98 M
 
 **注意**: 这个工具仍然是试验性的，我们无法保证数字是正确的。您可以拿这些结果做简单的实验的对照，在写技术文档报告或者论文前您需要再次确认一下。
 
-(1) FLOPs 与输入的形状有关，而与参数无关。默认的输入形状是 (1, 3, 1280, 800)。
-(2) 一些运算操作，如 GN 和其他定制的运算操作没有被计入 FLOPs
+(1) 计算量与输入的形状有关，而参数量与输入的形状无关，默认的输入形状是 (1, 3, 1280, 800)；
+(2) 一些运算操作，如 GN 和其他定制的运算操作没有加入到计算量的计算中。
 
-### 公开模型
+### 发布模型
 
-在您上传一个模型到 AWS 之前，您可能想要
-(1) 将模型权重转成 CPU 张量， (2) 删除优化器的状态 (optimizer states) 并且
-(3) 计算 检查点文件 (checkpoint file) 的 hash 并且将 hash id 加到文件名里。
+在您上传一个模型到云服务器之前，您需要做以下几步：
+(1) 将模型权重转成 CPU 张量；
+(2) 删除记录优化器状态 (optimizer states)的相关信息；
+(3) 计算检查点文件 (checkpoint file) 的哈希编码（hash id）并且将哈希编码加到文件名中。
 
 ```shell
 python tools/publish_model.py ${INPUT_FILENAME} ${OUTPUT_FILENAME}
@@ -44,10 +45,10 @@ python tools/publish_model.py work_dirs/pspnet/latest.pth psp_r50_hszhao_200ep.p
 
 最终输出文件将是 `psp_r50_512x1024_40ki_cityscapes-{hash id}.pth`.
 
-### 转成 ONNX (试验性)
+### 导出 ONNX (试验性)
 
-我们提供了一个脚本来转换模型到 [ONNX](https://github.com/onnx/onnx) 格式。被转换的模型可以通过工具 [Netron](https://github.com/lutzroeder/netron)
-来可视化。除此以外，我们同样支持对 Pytorch 和 ONNX 模型的输出结果做对比。
+我们提供了一个脚本来导出模型到 [ONNX](https://github.com/onnx/onnx) 格式。被转换的模型可以通过工具 [Netron](https://github.com/lutzroeder/netron)
+来可视化。除此以外，我们同样支持对 PyTorch 和 ONNX 模型的输出结果做对比。
 
 ```bash
 python tools/pytorch2onnx.py \
@@ -70,14 +71,14 @@ python tools/pytorch2onnx.py \
 - `--checkpoint` : 模型检查点文件的路径。
 - `--output-file`: 输出的 ONNX 模型的路径。如果没有专门指定，它默认是 `tmp.onnx`。
 - `--input-img` : 用来转换和可视化的一张输入图像的路径。
-- `--shape`: 模型的输入张量的高和宽。如果没有专门指定，它将被设置成 `testpipeline` 的 `img_scale`。
+- `--shape`: 模型的输入张量的高和宽。如果没有专门指定，它将被设置成 `test_pipeline` 的 `img_scale`。
 - `--rescale-shape`: 改变输出的形状。设置这个值来避免 OOM，它仅在 `slide` 模式下可以用。
 - `--show`: 是否打印输出模型的结构。如果没有被专门指定，它将被设置成 `False`。
 - `--verify`: 是否验证一个输出模型的正确性 (correctness)。如果没有被专门指定，它将被设置成 `False`。
 - `--dynamic-export`: 是否导出形状变化的输入与输出的 ONNX 模型。如果没有被专门指定，它将被设置成 `False`。
 - `--cfg-options`: 更新配置选项。
 
-**注意**: 这个工具仍然是试验性的。目前一些自定义操作还没有被支持。
+**注意**: 这个工具仍然是试验性的，目前一些自定义操作还没有被支持。
 
 ### 评估 ONNX 模型
 
@@ -135,12 +136,12 @@ python tools/deploy_test.py \
 | deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py    | cityscapes |  mIoU  |  78.5   |    78.3     |               |               |
 | deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py  | cityscapes |  mIoU  |  78.9   |    78.7     |               |               |
 
-**注意**: TensorRT 仅在使用 `whole mode` 时的配置文件里可用。
+**注意**: TensorRT 仅在使用 `whole mode` 测试模式时的配置文件里可用。
 
-### 转成 TorchScript (试验性)
+### 导出 TorchScript (试验性)
 
-我们同样提供一个脚本去把模型转移成 [TorchScript](https://pytorch.org/docs/stable/jit.html) 格式。您可以使用 pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) 去推理训练好的模型。
-被转换的模型能被像 [Netron](https://github.com/lutzroeder/netron) 的工具来可视化。此外，我们还支持 Pytorch 和 TorchScript 模型的输出结果的比较。
+我们同样提供一个脚本去把模型导出成 [TorchScript](https://pytorch.org/docs/stable/jit.html) 格式。您可以使用 pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) 去推理训练好的模型。
+被转换的模型能被像 [Netron](https://github.com/lutzroeder/netron) 的工具来可视化。此外，我们还支持 PyTorch 和 TorchScript 模型的输出结果的比较。
 
 ```shell
 python tools/pytorch2torchscript.py \
@@ -164,11 +165,11 @@ python tools/pytorch2torchscript.py \
 
 **注意**: 目前仅支持 PyTorch>=1.8.0 版本.
 
-**注意**: 这个工具仍然是试验性的。一些自定义操作符目前还不被支持。
+**注意**: 这个工具仍然是试验性的，一些自定义操作符目前还不被支持。
 
 例子:
 
-- 转换 cityscapes PSPNet pytorch 模型。
+- 导出 PSPNet 在 cityscapes 数据集上的 pytorch 模型。
 
   ```shell
   python tools/pytorch2torchscript.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
@@ -177,9 +178,9 @@ python tools/pytorch2torchscript.py \
   --shape 512 1024
   ```
 
-### 转换 TensorRT (试验性)
+### 导出 TensorRT (试验性)
 
-一个转换 [ONNX](https://github.com/onnx/onnx) 模型成 [TensorRT](https://developer.nvidia.com/tensorrt) 格式的脚本。
+一个导出 [ONNX](https://github.com/onnx/onnx) 模型成 [TensorRT](https://developer.nvidia.com/tensorrt) 格式的脚本。
 
 先决条件
 
@@ -215,13 +216,13 @@ python ${MMSEG_PATH}/tools/onnx2tensorrt.py \
 - `--verify` : 验证 ONNXRuntime 和 TensorRT 的输出。
 - `--verbose` : 当创建 TensorRT 引擎时，是否详细做信息日志。默认为 False。
 
-**注意**: 仅在完全模式 (whole mode) 下测试过。
+**注意**: 仅在全图测试模式 (whole mode) 下测试过。
 
 ## 其他内容
 
 ### 打印完整的配置文件
 
-`tools/print_config.py` 会逐字逐句的打印整个配置文件，增加它的所有导入。
+`tools/print_config.py` 会逐字逐句的打印整个配置文件，展开所有的导入。
 
 ```shell
 python tools/print_config.py \
