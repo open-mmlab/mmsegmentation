@@ -67,7 +67,7 @@ Description of arguments:
 - `--checkpoint` : The path of a model checkpoint file.
 - `--output-file`: The path of output ONNX model. If not specified, it will be set to `tmp.onnx`.
 - `--input-img` : The path of an input image for conversion and visualize.
-- `--shape`: The height and width of input tensor to the model. If not specified, it will be set to img_scale of testpipeline.
+- `--shape`: The height and width of input tensor to the model. If not specified, it will be set to img_scale of test_pipeline.
 - `--rescale-shape`: rescale shape of output, set this value to avoid OOM, only work on `slide` mode.
 - `--show`: Determines whether to print the architecture of the exported model. If not specified, it will be set to `False`.
 - `--verify`: Determines whether to verify the correctness of an exported model. If not specified, it will be set to `False`.
