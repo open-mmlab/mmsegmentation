@@ -2,7 +2,7 @@
 
 除了训练和测试的脚本，我们在 `tools/` 文件夹路径下还提供许多有用的工具。
 
-### 获取 FLOPs 和参数 (试验性)
+### 计算参数量（params）和计算量（ FLOPs） (试验性)
 
 我们基于 [flops-counter.pytorch](https://github.com/sovrasov/flops-counter.pytorch)
 提供来一个脚本来计算 FLOPs 和一个给定模型的参数。
