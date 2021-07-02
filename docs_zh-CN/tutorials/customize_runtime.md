@@ -23,7 +23,7 @@ optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 
 假如您想增加一个叫做 `MyOptimizer` 的优化器，它的参数分别有 `a`, `b`, 和 `c`。
 您需要创建一个叫 `mmseg/core/optimizer` 的新文件夹。
-然后再在文件，即  `mmseg/core/optimizer/my_optimizer.py` 里面去实行这个新优化器：
+然后再在文件，即  `mmseg/core/optimizer/my_optimizer.py` 里面去实现这个新优化器：
 
 ```python
 from .registry import OPTIMIZERS
@@ -50,7 +50,7 @@ class MyOptimizer(Optimizer):
 from .my_optimizer import MyOptimizer
 ```
 
-- 在配置文件里使用 `custom_imports` 去手动添加它。
+- 在配置文件里使用 `custom_imports` 去手动导入它。
 
 ```python
 custom_imports = dict(imports=['mmseg.core.optimizer.my_optimizer'], allow_failed_imports=False)
@@ -60,7 +60,7 @@ custom_imports = dict(imports=['mmseg.core.optimizer.my_optimizer'], allow_faile
 需要注意只有包含 `MyOptimizer`  类的包 (package) 应当被导入。
 而 `mmseg.core.optimizer.my_optimizer.MyOptimizer` **不能** 被直接导入。
 
-事实上，使用者完全可以用另一个按这样导入方法的文件夹结构，只要模块的根路径已经被设置到 `PYTHONPATH` 里面。
+事实上，使用者完全可以用另一个按这样导入方法的文件夹结构，只要模块的根路径已经被添加到 `PYTHONPATH` 里面。
 
 #### 3. 在配置文件里定义优化器
 
@@ -101,11 +101,11 @@ class MyOptimizerConstructor(object):
 
 ```
 
-默认的优化器构造器的实施可以参照 [这里](https://github.com/open-mmlab/mmcv/blob/9ecd6b0d5ff9d2172c49a182eaa669e9f27bb8e7/mmcv/runner/optimizer/default_constructor.py#L11) ，它也可以被用作新的优化器构造器的模板。
+默认的优化器构造器的实现可以参照 [这里](https://github.com/open-mmlab/mmcv/blob/9ecd6b0d5ff9d2172c49a182eaa669e9f27bb8e7/mmcv/runner/optimizer/default_constructor.py#L11) ，它也可以被用作新的优化器构造器的模板。
 
 ### 额外的设置
 
-优化器没有实施的一些技巧应该通过优化器构造器 (optimizer constructor) 或者钩 (hook) 去实施，如设置基于参数的学习率 (parameter-wise learning rates)。我们列出一些常见的设置，它们可以稳定或加速模型的训练。
+优化器没有实现的一些技巧应该通过优化器构造器 (optimizer constructor) 或者钩子 (hook) 去实现，如设置基于参数的学习率 (parameter-wise learning rates)。我们列出一些常见的设置，它们可以稳定或加速模型的训练。
 如果您有更多的设置，欢迎在 PR 和 issue 里面提交。
 
 - __使用梯度截断 (gradient clip) 去稳定训练__:
@@ -121,7 +121,7 @@ class MyOptimizerConstructor(object):
 - __使用动量计划表 (momentum schedule) 去加速模型收敛__:
     我们支持动量计划表去让模型基于学习率修改动量，这样可能让模型收敛地更快。
     动量计划表经常和学习率计划表 (LR scheduler) 一起使用，例如如下配置文件就在 3D 检测里经常使用以加速收敛。
-    更多细节请参考 [CyclicLrUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/lr_updater.py#L327) 和 [CyclicMomentumUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/momentum_updater.py#L130) 的实施。
+    更多细节请参考 [CyclicLrUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/lr_updater.py#L327) 和 [CyclicMomentumUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/momentum_updater.py#L130) 的实现。
 
     ```python
     lr_config = dict(
@@ -162,7 +162,7 @@ class MyOptimizerConstructor(object):
 
 ## 自定义工作流 (workflow)
 
-工作流是一个专门定义运行阶数和轮数 (running order and epochs) 的阶段或轮数 (phase, epochs) 的列表。
+工作流是一个专门定义运行顺序和轮数 (running order and epochs) 的列表 (phase, epochs)。
 默认情况下它设置成：
 
 ```python
@@ -182,14 +182,14 @@ workflow = [('train', 1)]
 1. 模型的参数在验证的阶段不会被自动更新。
 2. 配置文件里的关键词 `total_epochs` 仅控制训练的 epochs 数目，而不会影响验证时的工作流。
 3. 工作流 `[('train', 1), ('val', 1)]` 和 `[('train', 1)]` 将不会改变 `EvalHook` 的行为，因为 `EvalHook` 被 `after_train_epoch`
-   召唤而且验证的工作流仅仅影响通过 `after_val_epoch` 召唤的钩 (hooks)。因此， `[('train', 1), ('val', 1)]` 和 `[('train', 1)]`
+   调用而且验证的工作流仅仅影响通过调用 `after_val_epoch` 的钩子 (hooks)。因此， `[('train', 1), ('val', 1)]` 和 `[('train', 1)]`
     的区别仅在于 runner 将在每次训练 epoch 结束后计算在验证集上的损失。
 
 ## 自定义钩 (hooks)
 
-### 使用 MMCV 实施的 钩 (hooks)
+### 使用 MMCV 实现的钩子 (hooks)
 
-如果钩已经在 MMCV 里被实施，如下所示，您可以直接修改配置文件来使用钩：
+如果钩子已经在 MMCV 里被实现，如下所示，您可以直接修改配置文件来使用钩子：
 
 ```python
 custom_hooks = [
@@ -197,9 +197,9 @@ custom_hooks = [
 ]
 ```
 
-### 修改默认的运行时间钩 (runtime hooks)
+### 修改默认的运行时间钩子 (runtime hooks)
 
-以下的常用的钩没有被 `custom_hooks` 注册：
+以下的常用的钩子没有被 `custom_hooks` 注册：
 
 - log_config
 - checkpoint_config
@@ -208,7 +208,7 @@ custom_hooks = [
 - optimizer_config
 - momentum_config
 
-在这些钩里，只有 logger hook 有 `VERY_LOW` 优先级，其他的优先级都是 `NORMAL`。
+在这些钩子里，只有 logger hook 有 `VERY_LOW` 优先级，其他的优先级都是 `NORMAL`。
 上述提及的教程已经包括了如何修改 `optimizer_config`，`momentum_config` 和 `lr_config`。
 这里我们展示我们如何处理 `log_config`， `checkpoint_config` 和 `evaluation`。
 
