@@ -4,14 +4,14 @@
 <br />
 
 [![PyPI](https://img.shields.io/pypi/v/mmsegmentation)](https://pypi.org/project/mmsegmentation)
-[![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/en/latest/)
+[![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/zh_CN/latest/)
 [![badge](https://github.com/open-mmlab/mmsegmentation/workflows/build/badge.svg)](https://github.com/open-mmlab/mmsegmentation/actions)
 [![codecov](https://codecov.io/gh/open-mmlab/mmsegmentation/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmsegmentation)
 [![license](https://img.shields.io/github/license/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/blob/master/LICENSE)
 [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 
-文档: https://mmsegmentation.readthedocs.io/
+文档: https://mmsegmentation.readthedocs.io/zh_CN/latest
 
 [English](README.md) | 简体中文
 
@@ -52,7 +52,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 基准测试和模型库
 
-测试结果和模型可以在[模型库](docs/model_zoo.md)中找到。
+测试结果和模型可以在[模型库](docs_zh-CN/model_zoo.md)中找到。
 
 已支持的骨干网络：
 
@@ -95,8 +95,8 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 ## 快速入门
 
 请参考[训练教程](docs_zh-CN/train.md)和[测试教程](docs_zh-CN/inference.md)学习 MMSegmentation 的基本使用。
-我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs/tutorials/data_pipeline.md)，[增加自定义模型](docs/tutorials/customize_models.md)，[增加自定义的运行时配置](docs/tutorials/customize_runtime.md)。
-除此之外，我们也提供了很多实用的[训练技巧说明](docs/tutorials/training_tricks.md)。
+我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs_zh-CN/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs_zh-CN/tutorials/data_pipeline.md)，[增加自定义模型](docs_zh-CN/tutorials/customize_models.md)，[增加自定义的运行时配置](docs_zh-CN/tutorials/customize_runtime.md)。
+除此之外，我们也提供了很多实用的[训练技巧说明](docs_zh-CN/tutorials/training_tricks.md)。
 
 同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb)。
 
