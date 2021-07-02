@@ -38,7 +38,7 @@ class InvertedResidual(nn.Module):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU6'),
                  with_cp=False,
-                 **kwards):
+                 **kwargs):
         super(InvertedResidual, self).__init__()
         self.stride = stride
         assert stride in [1, 2], f'stride must in [1, 2]. ' \
@@ -57,7 +57,7 @@ class InvertedResidual(nn.Module):
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
                     act_cfg=act_cfg,
-                    **kwards))
+                    **kwargs))
         layers.extend([
             ConvModule(
                 in_channels=hidden_dim,
@@ -70,7 +70,7 @@ class InvertedResidual(nn.Module):
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg,
-                **kwards),
+                **kwargs),
             ConvModule(
                 in_channels=hidden_dim,
                 out_channels=out_channels,
@@ -78,7 +78,7 @@ class InvertedResidual(nn.Module):
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=None,
-                **kwards)
+                **kwargs)
         ])
         self.conv = nn.Sequential(*layers)
 

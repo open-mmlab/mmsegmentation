@@ -22,7 +22,7 @@ class PPM(nn.ModuleList):
     """
 
     def __init__(self, pool_scales, in_channels, channels, conv_cfg, norm_cfg,
-                 act_cfg, align_corners, **kwards):
+                 act_cfg, align_corners, **kwargs):
         super(PPM, self).__init__()
         self.pool_scales = pool_scales
         self.align_corners = align_corners
@@ -42,7 +42,7 @@ class PPM(nn.ModuleList):
                         conv_cfg=self.conv_cfg,
                         norm_cfg=self.norm_cfg,
                         act_cfg=self.act_cfg,
-                        **kwards)))
+                        **kwargs)))
 
     def forward(self, x):
         """Forward function."""
