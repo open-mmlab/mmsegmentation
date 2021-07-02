@@ -32,10 +32,13 @@ class Resize(object):
 
     Args:
         img_scale (tuple or list[tuple]): Images scales for resizing.
+            Default:None.
         multiscale_mode (str): Either "range" or "value".
-        ratio_range (tuple[float]): (min_ratio, max_ratio)
+            Default: 'range'
+        ratio_range (tuple[float]): (min_ratio, max_ratio).
+            Default: None
         keep_ratio (bool): Whether to keep the aspect ratio when resizing the
-            image.
+            image. Default: True
     """
 
     def __init__(self,
