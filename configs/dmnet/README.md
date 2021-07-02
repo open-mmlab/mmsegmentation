@@ -1,4 +1,4 @@
-# Dynamic Multi-scale Filters for Semantic Segmentation
+# Dynamic Multi-scale Filters for Semantic Segmentations
 
 ## Introduction
 
