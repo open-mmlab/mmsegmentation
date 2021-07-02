@@ -62,7 +62,7 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
         4 --out results.pkl --eval mIoU cityscapes
     ```
 
-   注意：在 cityscapes mIoU 和我们的 mIoU 指标会有一些差异 (~0.1%) 。原因是因为 cityscapes 会以默认的类的大小去平均每一类。而我们不去平均，是更简单的，适用于所有数据集的方法。
+   注意：在 cityscapes mIoU 和我们的 mIoU 指标会有一些差异 (~0.1%) 。因为 cityscapes 默认是根据类别样本数的多少进行加权平均，而我们对所有的数据集都是采取直接平均的方法来得到 mIoU。
 
 5. 在 cityscapes 数据集上4卡 GPU 测试 PSPNet， 并生成 png 文件以便提交给官方评估服务器。
 
