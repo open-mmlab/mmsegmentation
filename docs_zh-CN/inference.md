@@ -11,7 +11,7 @@
 您可以使用以下命令来测试一个数据集。
 
 ```shell
-# 单卡GPU 测试
+# 单卡 GPU 测试
 python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] [--eval ${评估指标}] [--show]
 
 # 多卡GPU 测试
