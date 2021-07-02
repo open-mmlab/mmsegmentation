@@ -1,6 +1,6 @@
 ## 准备数据集
 
-推荐用符号链接数据集根目录到 `$MMSEGMENTATION/data` 里。如果您的文件夹结构是不同的，您也许可以试着修改配置文件里的对应路径。
+推荐用软链接，将数据集根目录链接到 `$MMSEGMENTATION/data` 里。如果您的文件夹结构是不同的，您也许可以试着修改配置文件里对应的路径。
 
 ```none
 mmsegmentation
@@ -90,14 +90,14 @@ python tools/convert_datasets/cityscapes.py data/cityscapes --nproc 8
 Pascal VOC 2012 可以在 [这里](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar) 下载。
 此外，许多最近在 Pascal VOC 数据集上的工作都会利用增广的数据，它们可以在 [这里](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz) 找到。
 
-如果您想使用增广后的 VOC 数据集，请运行下面的命令来将数据增广的注释转成正确的格式。
+如果您想使用增广后的 VOC 数据集，请运行下面的命令来将数据增广的标注转成正确的格式。
 
 ```shell
 # --nproc 8 意味着有 8 个进程用来转换，它也可以被忽略。
 python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-关于如何连接 (concatenate) 并一起训练它们，更多细节请参考 [连接 数据集](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/tutorials/new_dataset.md#concatenate-dataset) 。
+关于如何拼接数据集 (concatenate) 并一起训练它们，更多细节请参考 [拼接连接 数据集](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/tutorials/new_dataset.md#concatenate-dataset) 。
 
 ### ADE20K
 
