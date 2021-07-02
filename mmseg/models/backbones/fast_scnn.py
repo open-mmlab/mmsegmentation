@@ -203,10 +203,12 @@ class FeatureFusionModule(nn.Module):
         conv_cfg (dict | None): Config of conv layers. Default: None
         norm_cfg (dict | None): Config of norm layers. Default:
             dict(type='BN')
-        act_cfg (dict): Config of activation layers. Default:
-            dict(type='ReLU')
+        dwconv_act_cfg (dict): Config of activation layers in 3x3 conv.
+            Default: dict(type='ReLU').
+        conv_act_cfg (dict): Config of activation layers in the two 1x1 conv.
+            Default: None.
         align_corners (bool): align_corners argument of F.interpolate.
-            Default: False
+            Default: False.
     """
 
     def __init__(self,
@@ -215,14 +217,14 @@ class FeatureFusionModule(nn.Module):
                  out_channels,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 conv_act_cfg=None,
                  dwconv_act_cfg=dict(type='ReLU'),
+                 conv_act_cfg=None,
                  align_corners=False):
         super(FeatureFusionModule, self).__init__()
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
-        self.conv_act_cfg = conv_act_cfg
         self.dwconv_act_cfg = dwconv_act_cfg
+        self.conv_act_cfg = conv_act_cfg
         self.align_corners = align_corners
         self.dwconv = ConvModule(
             lower_in_channels,
