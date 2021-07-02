@@ -2,7 +2,7 @@
 
 ## 通过重新组织数据来定制数据集
 
-最简单的方法是将您的数据集转化您的数据文件夹里。
+最简单的方法是将您的数据集进行转化，并组织成文件夹的形式。
 
 如下的文件结构就是一个例子。
 
@@ -49,7 +49,7 @@ zzz
 ## 通过混合数据去定制数据集
 
 MMSegmentation 同样支持混合数据集去训练。
-当前它支持串联 (concat) 和 重复 (repeat) 数据集。
+当前它支持拼接 (concat) 和 重复 (repeat) 数据集。
 
 ### 重复数据集
 
@@ -68,14 +68,14 @@ dataset_A_train = dict(
     )
 ```
 
-### 连接数据集
+### 拼接数据集
 
-有2种方式去连接数据集。
+有2种方式去拼接数据集。
 
-1. 如果您想连接的数据集是同样的类型，但有不同的注释文件，
-    您可以按如下操作去连接数据集的配置文件：
+1. 如果您想拼接的数据集是同样的类型，但有不同的标注文件，
+    您可以按如下操作去拼接数据集的配置文件：
 
-    1. 您也许可以串联两个标注文件夹 `ann_dir`。
+    1. 您也许可以拼接两个标注文件夹 `ann_dir`。
 
         ```python
         dataset_A_train = dict(
@@ -86,7 +86,7 @@ dataset_A_train = dict(
         )
         ```
 
-    2. 您也可以去串联两个 `split` 文本。
+    2. 您也可以去拼接两个 `split` 文件列表。
 
         ```python
         dataset_A_train = dict(
@@ -98,7 +98,7 @@ dataset_A_train = dict(
         )
         ```
 
-    3. 您也可以同时连接 `ann_dir` 文件夹和 `split` 文本。
+    3. 您也可以同时拼接 `ann_dir` 文件夹和 `split` 文件列表。
 
         ```python
         dataset_A_train = dict(
@@ -112,7 +112,7 @@ dataset_A_train = dict(
 
         在这样的情况下， `ann_dir_1` 和 `ann_dir_2` 分别对应于 `split_1.txt` 和 `split_2.txt`。
 
-2. 除非您想连接的数据集的不同的，您可以如下去连接数据集的配置文件：
+2. 如果您想拼接不同的数据集，您可以如下去拼接数据集的配置文件：
 
     ```python
     dataset_A_train = dict()
@@ -130,7 +130,7 @@ dataset_A_train = dict(
         )
     ```
 
-一个更复杂的例子如下：分别重复 `Dataset_A` 和 `Dataset_B` N 次和 M 次，然后再去串联重复后的数据集。
+一个更复杂的例子如下：分别重复 `Dataset_A` 和 `Dataset_B` N 次和 M 次，然后再去拼接重复后的数据集。
 
 ```python
 dataset_A_train = dict(
