@@ -1,12 +1,11 @@
 import argparse
 import glob
+import mmcv
+import numpy as np
 import os.path as osp
 import random
 from os import symlink
 from shutil import copyfile
-
-import mmcv
-import numpy as np
 
 # Dictionaries specifying which A2D2 segmentation color corresponds to
 
@@ -286,7 +285,7 @@ def main():
     if args.convert:
         if args.nproc > 1:
             mmcv.track_parallel_progress(convert_a2d2_trainids,
-                                            label_filepaths, args.nproc)
+                                         label_filepaths, args.nproc)
         else:
             mmcv.track_progress(convert_a2d2_trainids, label_filepaths)
 
