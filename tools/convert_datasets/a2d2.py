@@ -70,66 +70,6 @@ SEG_COLOR_DICT_A2D2 = {
     (53, 46, 82): 255,  # Rain dirt
 }
 
-# Cityscapes 'trainId' value
-#   key: RGB color, value: trainId (from Cityscapes)
-SEG_COLOR_DICT_CITYSCAPES = {
-    (255, 0, 0): 13,  # Car 1 --> Car
-    (200, 0, 0): 13,  # Car 2 --> Car
-    (150, 0, 0): 13,  # Car 3 --> Car
-    (128, 0, 0): 13,  # Car 4 --> Car
-    (182, 89, 6): 18,  # Bicycle 1 --> Bicycle
-    (150, 50, 4): 18,  # Bicycle 2 --> Bicycle
-    (90, 30, 1): 18,  # Bicycle 3 --> Bicycle
-    (90, 30, 30): 18,  # Bicycle 4 --> Bicycle
-    (204, 153, 255): 11,  # Pedestrian 1 --> Person
-    (189, 73, 155): 11,  # Pedestrian 2 --> Person
-    (239, 89, 191): 11,  # Pedestrian 3 --> Person
-    (255, 128, 0): 14,  # Truck 1 --> Truck
-    (200, 128, 0): 14,  # Truck 2 --> Truck
-    (150, 128, 0): 14,  # Truck 3 --> Truck
-    (0, 0, 100): 255,  # Tractor --> Dynamic (void)
-    (0, 255, 0): 17,  # Small vehicles 1 --> Motorcycle
-    (0, 200, 0): 17,  # Small vehicles 2 --> Motorcycle
-    (0, 150, 0): 17,  # Small vehicles 3 --> Motorcycle
-    (0, 128, 255): 6,  # Traffic signal 1 --> Traffic light
-    (30, 28, 158): 6,  # Traffic signal 2 --> Traffic light
-    (60, 28, 100): 6,  # Traffic signal 3 --> Traffic light
-    (0, 255, 255): 7,  # Traffic sign 1 --> Traffic sign
-    (30, 220, 220): 7,  # Traffic sign 2 --> Traffic sign
-    (60, 157, 199): 7,  # Traffic sign 3 --> Traffic sign
-    (255, 255, 0): 255,  # Utility vehicle 1 --> Dynamic (void)
-    (255, 255, 200): 255,  # Utility vehicle 2 --> Dynamic (void)
-    (233, 100, 0): 5,  # Sidebars --> Poles
-    (110, 110, 0): 0,  # Speed bumper --> Road
-    (128, 128, 0): 1,  # Curbstone --> Sidewalk
-    (255, 193, 37): 0,  # Solid line --> Road
-    (64, 0, 64): 255,  # Irrelevant signs --> Static (void)
-    (185, 122, 87): 4,  # Road blocks --> Fence
-    (139, 99, 108): 255,  # Non-drivable street --> Ground (void)
-    (210, 50, 115): 0,  # Zebra crossing --> Road
-    (255, 0, 128): 255,  # Obstacles / trash --> Dynamic (void)
-    (255, 246, 143): 5,  # Poles --> Poles
-    (150, 0, 150): 0,  # RD restricted area --> Road
-    (204, 255, 153): 255,  # Animals --> Dynamic (void)
-    (238, 162, 173): 4,  # Grid structure --> Fence
-    (33, 44, 177): 6,  # Signal corpus --> Traffic light
-    (180, 50, 180): 0,  # Drivable cobblestone --> Road
-    (255, 70, 185): 255,  # Electronic traffic --> Static (void)
-    (238, 233, 191): 0,  # Slow drive area --> Road
-    (147, 253, 194): 8,  # Nature object --> Vegetation
-    (150, 150, 200): 0,  # Parking area --> Road
-    (180, 150, 200): 1,  # Sidewalk --> Sidewalk
-    (72, 209, 204): 255,  # Ego car --> Static (void)
-    (200, 125, 210): 0,  # Painted driv. instr. --> Road
-    (159, 121, 238): 4,  # Traffic guide obj. --> Fence
-    (128, 0, 255): 0,  # Dashed line --> Road
-    (255, 0, 255): 0,  # RD normal street --> Road
-    (135, 206, 255): 10,  # Sky --> Sky
-    (241, 230, 255): 2,  # Buildings --> Building
-    (96, 69, 143): 255,  # Blurred area --> Static (void)
-    (53, 46, 82): 255,  # Rain dirt --> Dynamic (void)
-}
-
 
 def modify_label_filename(label_filepath):
     """Returns a mmsegmentation-combatible label filename."""
@@ -153,7 +93,7 @@ def convert_a2d2_trainids(label_filepath, ignore_id=255):
 
     # Empty array with all elements set as 'ignore id' label
     H, W, _ = orig_label.shape
-    mod_label = ignore_id * np.ones((H, W), dtype=np.int)
+    mod_label = ignore_id * np.ones((H, W), dtype=int)
 
     seg_colors = list(SEG_COLOR_DICT_A2D2.keys())
     for seg_color in seg_colors:
@@ -163,44 +103,9 @@ def convert_a2d2_trainids(label_filepath, ignore_id=255):
         # collapse RGB channel dimension (H,W,3) --> (H,W)
         #   Ex: [True, False, False] --> [False]
         mask = np.prod(mask, axis=-1)
-        mask = mask.astype(np.bool)
+        mask = mask.astype(bool)
         # Segment masked elements with 'trainIds' value
         mod_label[mask] = SEG_COLOR_DICT_A2D2[seg_color]
-
-    # Save new 'trainids' semantic label
-    label_filepath = modify_label_filename(label_filepath)
-    label_img = mod_label.astype(np.uint8)
-    mmcv.imwrite(label_img, label_filepath)
-
-
-def convert_cityscapes_trainids(label_filepath, ignore_id=255):
-    """Saves a new semantic label following the Cityscapes 'trainids' format.
-
-    The new image is saved into the same directory as the original image having
-    an additional suffix.
-
-    Args:
-        label_filepath: Path to the original semantic label.
-        ignore_id: Default value for unlabeled elements.
-    """
-    # Read label file as Numpy array (H, W, 3)
-    orig_label = mmcv.imread(label_filepath, channel_order='rgb')
-
-    # Empty array with all elements set as 'ignore id' label
-    H, W, _ = orig_label.shape
-    mod_label = ignore_id * np.ones((H, W), dtype=np.int)
-
-    seg_colors = list(SEG_COLOR_DICT_CITYSCAPES.keys())
-    for seg_color in seg_colors:
-        # The operation produce (H,W,3) array of (i,j,k)-wise truth values
-        mask = (orig_label == seg_color)
-        # Take the product channel-wise to falsify any partial match and
-        # collapse RGB channel dimension (H,W,3) --> (H,W)
-        #   Ex: [True, False, False] --> [False]
-        mask = np.prod(mask, axis=-1)
-        mask = mask.astype(np.bool)
-        # Segment masked elements with 'trainIds' value
-        mod_label[mask] = SEG_COLOR_DICT_CITYSCAPES[seg_color]
 
     # Save new 'trainids' semantic label
     label_filepath = modify_label_filename(label_filepath)
@@ -328,8 +233,6 @@ def parse_args():
         help='Skips restructuring directory structure')
     parser.set_defaults(restruct=True)
     parser.add_argument(
-        '--choice', default='cityscapes', help='Label conversion type choice')
-    parser.add_argument(
         '--val', default=0.02, type=float, help='Validation set sample ratio')
     parser.add_argument(
         '--test', default=0., type=float, help='Test set sample ratio')
@@ -357,12 +260,7 @@ def main():
 
         The function 'convert_TYPE_trainids()' converts all instance
         segmentation to their corresponding categorical segmentation and saves
-        them as new label image files.
-
-        Conversion type options
-            A2D2: Generates segmentations using inherent categories.
-            Cityscapes: Generates segmentations according to the categories and
-                        indexing (i.e. 'trainIds') as in Cityscapes.
+        them as new label image files..
 
     Directory restructuring:
         A2D2 files are not arranged in the required 'train/val/test' directory
@@ -386,23 +284,11 @@ def main():
 
     # Convert segmentation images to the Cityscapes 'TrainIds' values
     if args.convert:
-        seg_choice = args.choice
-        if seg_choice == 'cityscapes':
-            if args.nproc > 1:
-                mmcv.track_parallel_progress(convert_cityscapes_trainids,
-                                             label_filepaths, args.nproc)
-            else:
-                mmcv.track_progress(convert_cityscapes_trainids,
-                                    label_filepaths)
-        elif seg_choice == 'a2d2':
-            if args.nproc > 1:
-                mmcv.track_parallel_progress(convert_a2d2_trainids,
-                                             label_filepaths, args.nproc)
-            else:
-                mmcv.track_progress(convert_a2d2_trainids, label_filepaths)
-
+        if args.nproc > 1:
+            mmcv.track_parallel_progress(convert_a2d2_trainids,
+                                            label_filepaths, args.nproc)
         else:
-            raise ValueError
+            mmcv.track_progress(convert_a2d2_trainids, label_filepaths)
 
     # Restructure directory structure into 'img_dir' and 'ann_dir'
     if args.restruct:
