@@ -27,27 +27,27 @@ class A2D2Dataset(CustomDataset):
     Ref: https://www.a2d2.audi/a2d2/en/dataset.html
     """
 
-    CLASSES = ('car', 'bicycle', 'pedestrian', 'truck', 'small_vehicles',
-               'traffic_signal', 'traffic_sign', 'utility_vehicle', 'sidebars',
-               'speed_bumber', 'curbstone', 'solid_line', 'irrelevant_signs',
-               'road_blocks', 'tractor', 'non-drivable_street',
-               'zebra_crossing', 'obstacles_trash', 'poles',
-               'rd_restricted_area', 'animals', 'grid_structure',
-               'signal_corpus', 'drivable_cobblestone', 'electronic_traffic',
-               'slow_drive_area', 'nature_object', 'parking_area', 'sidewalk',
-               'painted_drive_instr', 'traffic_guide_obj', 'dashed_line',
-               'rd_normal_street', 'sky', 'buildings')
+    CLASSES = ('rd_normal_street', 'non-drivable_street', 'rd_restricted_area',
+               'drivable_cobblestone', 'slow_drive_area', 'parking_area',
+               'solid_line', 'dashed_line', 'zebra_crossing', 'grid_structure',
+               'traffic_guide_obj', 'painted_drive_instr', 'speed_bumber',
+               'sidewalk', 'curbstone', 'buildings', 'sidebars', 'road_blocks',
+               'poles', 'traffic_signal', 'traffic_sign', 'signal_corpus',
+               'irrelevant_signs', 'electronic_traffic', 'nature_object',
+               'sky', 'pedestrian', 'bicycle', 'car', 'utility_vehicle',
+               'truck', 'tractor', 'small_vehicles', 'animals',
+               'obstacles_trash')
 
-    PALETTE = [[255, 0, 0], [182, 89, 6], [204, 153, 255], [255, 128, 0],
-               [0, 255, 0], [0, 128, 255], [0, 255, 255], [255, 255, 0],
-               [233, 100, 0], [110, 110, 0], [128, 128, 0], [255, 193, 37],
-               [64, 0, 64], [185, 122, 87], [0, 0, 100], [139, 99, 108],
-               [210, 50, 115], [255, 0, 128], [255, 246, 143], [150, 0, 150],
-               [204, 255, 153], [238, 162, 173], [33, 44, 177], [180, 50, 180],
-               [255, 70, 185], [238, 233, 191], [147, 253, 194],
-               [150, 150, 200], [180, 150, 200], [200, 125, 210],
-               [159, 121, 238], [128, 0, 255], [255, 0, 255], [135, 206, 255],
-               [241, 230, 255]]
+    PALETTE = [[255, 0, 255], [139, 99, 108], [150, 0, 150], [180, 50, 180],
+               [238, 233, 191], [150, 150, 200], [255, 193, 37], [128, 0, 255],
+               [210, 50, 115], [238, 162, 173], [159, 121,
+                                                 238], [200, 125, 210],
+               [110, 110, 0], [180, 150, 200], [128, 128, 0], [241, 230, 255],
+               [233, 100, 0], [185, 122, 87], [255, 246, 143], [0, 128, 255],
+               [30, 220, 220], [33, 44, 177], [64, 0, 64], [255, 70, 185],
+               [147, 253, 194], [135, 206, 255], [204, 153, 255], [182, 89, 6],
+               [255, 0, 0], [255, 255, 0], [255, 128, 0], [0, 0, 100],
+               [0, 255, 0], [204, 255, 153], [255, 0, 128]]
 
     def __init__(self, **kwargs):
         super(A2D2Dataset, self).__init__(
