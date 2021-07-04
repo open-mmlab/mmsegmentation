@@ -3,7 +3,6 @@ import glob
 import mmcv
 import numpy as np
 import os.path as osp
-import random
 from os import symlink
 from shutil import copyfile
 
@@ -75,6 +74,12 @@ SEG_COLOR_DICT_A2D2 = {
     (53, 46, 82): 255,  # Rain dirt <-- IGNORED
 }
 
+# The following data directories are used for validation samples
+VAL_SPLIT = (
+    '20181204_170238',  # Representative 'countryside' data partition
+    '20181107_132730',  # Representative 'urban' data partition
+)
+
 
 def modify_label_filename(label_filepath):
     """Returns a mmsegmentation-combatible label filename."""
@@ -118,9 +123,55 @@ def convert_a2d2_trainids(label_filepath, ignore_id=255):
     mmcv.imwrite(label_img, label_filepath)
 
 
+def create_split_dir(img_filepaths,
+                     ann_filepaths,
+                     split,
+                     root_path,
+                     use_symlinks=True):
+    """Creates dataset split directory from given file lists using symbolic
+    links or copying files.
+
+    Args:
+        img_filepaths: List of filepaths as strings.
+        ann_filepaths:
+        split: String denoting split (i.e. 'train', 'val', or 'test'),
+        root_path: A2D2 dataset root directory (.../camera_lidar_semantic/)
+        use_symlinks: Symbolically link existing files in the original A2D2
+                      dataset directory. If false, files will be copied.
+
+    Raises:
+        FileExistError: In case of pre-existing files when trying to create new
+                        symbolic links.
+    """
+    assert split in ['train', 'val', 'test']
+
+    for img_filepath, ann_filepath in zip(img_filepaths, ann_filepaths):
+        # Partions string: [generic/path/to/file] [/] [filename]
+        img_filename = img_filepath.rpartition('/')[2]
+        ann_filename = ann_filepath.rpartition('/')[2]
+
+        img_link_path = osp.join(root_path, 'img_dir', split, img_filename)
+        ann_link_path = osp.join(root_path, 'ann_dir', split, ann_filename)
+
+        if use_symlinks:
+            # NOTE: Can only create new symlinks if no priors ones exists
+            try:
+                symlink(img_filepath, img_link_path)
+            except FileExistsError:
+                pass
+            try:
+                symlink(ann_filepath, ann_link_path)
+            except FileExistsError:
+                pass
+
+        else:
+            copyfile(img_filepath, img_link_path)
+            copyfile(ann_filepath, ann_link_path)
+
+
 def restructure_a2d2_directory(a2d2_path,
-                               val_ratio,
-                               test_ratio,
+                               val_split,
+                               train_on_val=False,
                                use_symlinks=True,
                                label_suffix='_labelTrainIds.png'):
     """Creates a new directory structure and link existing files into it.
@@ -147,8 +198,8 @@ def restructure_a2d2_directory(a2d2_path,
 
     Args:
         a2d2_path: Absolute path to the A2D2 'camera_lidar_semantic' directory.
-        val_ratio: Float value representing ratio of validation samples.
-        test_ratio: Float value representing ratio of test samples.
+        val_split: List of directories used for validation samples.
+        train_on_val: Use validation samples as training samples if True.
         label_suffix: Label filename ending string.
         use_symlinks: Symbolically link existing files in the original A2D2
                       dataset directory. If false, files will be copied.
@@ -169,52 +220,43 @@ def restructure_a2d2_directory(a2d2_path,
     ann_filepaths = sorted(
         glob.glob(osp.join(a2d2_path, '*/label/*/*{}'.format(label_suffix))))
 
-    # Randomize order of (image, label) pairs
-    pairs = list(zip(img_filepaths, ann_filepaths))
-    random.shuffle(pairs)
-    img_filepaths, ann_filepaths = zip(*pairs)
+    # Split filepaths into 'training' and 'validation'
+    if train_on_val:
+        train_img_paths = img_filepaths
+        train_ann_paths = ann_filepaths
+    else:
+        # Create new lists that skips validation directories
+        # NOTE: '/.../' is added to so substrings only match with directories
+        train_img_paths = [
+            x for x in img_filepaths
+            if not any(f'/{y}/' in x for y in val_split)
+        ]
+        train_ann_paths = [
+            x for x in ann_filepaths
+            if not any(f'/{y}/' in x for y in val_split)
+        ]
+    # Create new lists that includes only validation directories
+    # NOTE: '/.../' is added to so substrings only match with directories
+    val_img_paths = [
+        x for x in img_filepaths if any(f'/{y}/' in x for y in val_split)
+    ]
+    val_ann_paths = [
+        x for x in ann_filepaths if any(f'/{y}/' in x for y in val_split)
+    ]
 
-    # Split data according to given ratios
-    total_samples = len(img_filepaths)
-    train_ratio = 1.0 - val_ratio - test_ratio
+    create_split_dir(
+        train_img_paths,
+        train_ann_paths,
+        'train',
+        a2d2_path,
+        use_symlinks=use_symlinks)
 
-    train_idx_end = int(np.floor(train_ratio * (total_samples - 1)))
-    val_idx_end = train_idx_end + int(np.ceil(val_ratio * total_samples))
-
-    # Create symlinks file-by-file
-    for sample_idx in range(total_samples):
-
-        img_filepath = img_filepaths[sample_idx]
-        ann_filepath = ann_filepaths[sample_idx]
-
-        # Partions string: [generic/path/to/file] [/] [filename]
-        img_filename = img_filepath.rpartition('/')[2]
-        ann_filename = ann_filepath.rpartition('/')[2]
-
-        if sample_idx <= train_idx_end:
-            split = 'train'
-        elif sample_idx <= val_idx_end:
-            split = 'val'
-        else:
-            split = 'test'
-
-        img_link_path = osp.join(a2d2_path, 'img_dir', split, img_filename)
-        ann_link_path = osp.join(a2d2_path, 'ann_dir', split, ann_filename)
-
-        if use_symlinks:
-            # NOTE: Can only create new symlinks if no priors ones exists
-            try:
-                symlink(img_filepath, img_link_path)
-            except FileExistsError:
-                pass
-            try:
-                symlink(ann_filepath, ann_link_path)
-            except FileExistsError:
-                pass
-
-        else:
-            copyfile(img_filepath, img_link_path)
-            copyfile(ann_filepath, ann_link_path)
+    create_split_dir(
+        val_img_paths,
+        val_ann_paths,
+        'val',
+        a2d2_path,
+        use_symlinks=use_symlinks)
 
 
 def parse_args():
@@ -238,9 +280,11 @@ def parse_args():
         help='Skips restructuring directory structure')
     parser.set_defaults(restruct=True)
     parser.add_argument(
-        '--val', default=0.02, type=float, help='Validation set sample ratio')
-    parser.add_argument(
-        '--test', default=0., type=float, help='Test set sample ratio')
+        '--train-on-val',
+        dest='train_on_val',
+        action='store_true',
+        help='Use validation samples as training samples')
+    parser.set_defaults(train_on_val=False)
     parser.add_argument(
         '--nproc', default=1, type=int, help='Number of process')
     parser.add_argument(
@@ -303,7 +347,8 @@ def main():
 
     # Restructure directory structure into 'img_dir' and 'ann_dir'
     if args.restruct:
-        restructure_a2d2_directory(out_dir, args.val, args.test, args.symlink)
+        restructure_a2d2_directory(out_dir, VAL_SPLIT, args.train_on_val,
+                                   args.symlink)
 
 
 if __name__ == '__main__':
