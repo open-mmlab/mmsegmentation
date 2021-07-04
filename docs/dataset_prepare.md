@@ -186,15 +186,18 @@ Next, while in MMSegmentation directory root, create a symbolic link from `mmseg
 ln -s data/a2d2/ /absolute/path/to/a2d2/camera_lidar_semantic/
 ```
 
-Finally, convert the A2D2 dataset to the MMSegmentation format using either segmentation category labels following Cityscapes (default) or native A2D2 labels. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
+Finally, convert the A2D2 dataset to the MMSegmentation format using either segmentation category labels. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
 
 ```shell
-# For Cityscapes semantic category labels
-python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic
 # For A2D2 semantic category labels
-python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic --choice a2d2
+python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic
 ```
 
 The default arguments will result in randomly splitted 'train' and 'val' sets, each consisting of 98% and 2% of all samples, respectively. Additionally, add `--nproc N` for multiprocessing using N threads.
 
 The converted label images will be generated within the same directory as the original labels. The conversion process creates a new directory structure, where `img_dir/` and `label_dir/` contains symbolic links to camera and label images located within the original data folders.
+
+By default 35 of the original 38 semantic categories will be mapped into a `trainIds` integer. The following segmentation classes are ignored (i.e. trainIds 255):
+- Ego car:  A calibrated system should a priori know what input region corresponds to the ego vehicle.
+- Blurred area: Ambiguous semantic.
+- Rain dirt: Ambiguous semantic.

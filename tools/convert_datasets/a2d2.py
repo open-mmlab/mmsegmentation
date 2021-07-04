@@ -11,6 +11,12 @@ from shutil import copyfile
 
 # A2D2 'trainId' value
 #   key: RGB color, value: trainId
+#
+# The following segmentation classes are ignored (i.e. trainIds 255):
+# - Ego car:      A calibrated system should a priori know what input region
+#                 corresponds to the ego vehicle.
+# - Blurred area: Ambiguous semantic.
+# - Rain dirt:    Ambiguous semantic.
 SEG_COLOR_DICT_A2D2 = {
     (255, 0, 0): 28,  # Car 1
     (200, 0, 0): 28,  # Car 2
@@ -58,15 +64,15 @@ SEG_COLOR_DICT_A2D2 = {
     (147, 253, 194): 24,  # Nature object
     (150, 150, 200): 5,  # Parking area
     (180, 150, 200): 13,  # Sidewalk
-    (72, 209, 204): 255,  # Ego car
+    (72, 209, 204): 255,  # Ego car <-- IGNORED
     (200, 125, 210): 11,  # Painted driv. instr.
     (159, 121, 238): 10,  # Traffic guide obj.
     (128, 0, 255): 7,  # Dashed line
     (255, 0, 255): 0,  # RD normal street
     (135, 206, 255): 25,  # Sky
     (241, 230, 255): 15,  # Buildings
-    (96, 69, 143): 255,  # Blurred area
-    (53, 46, 82): 255,  # Rain dirt
+    (96, 69, 143): 255,  # Blurred area <-- IGNORED
+    (53, 46, 82): 255,  # Rain dirt <-- IGNORED
 }
 
 
@@ -260,6 +266,12 @@ def main():
         The function 'convert_TYPE_trainids()' converts all instance
         segmentation to their corresponding categorical segmentation and saves
         them as new label image files..
+
+    NOTE: The following segmentation classes are ignored (i.e. trainIds 255):
+          - Ego car:  A calibrated system should a priori know what input
+                      region corresponds to the ego vehicle.
+          - Blurred area: Ambiguous semantic.
+          - Rain dirt: Ambiguous semantic.
 
     Directory restructuring:
         A2D2 files are not arranged in the required 'train/val/test' directory
