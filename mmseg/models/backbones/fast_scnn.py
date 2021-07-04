@@ -6,7 +6,7 @@ from mmcv.runner import BaseModule
 from mmseg.models.decode_heads.psp_head import PPM
 from mmseg.ops import resize
 from ..builder import BACKBONES
-from ..utils.inverted_residual import InvertedResidual
+from ..utils import InvertedResidual
 
 
 class LearningToDownsample(nn.Module):
@@ -23,6 +23,9 @@ class LearningToDownsample(nn.Module):
             dict(type='BN')
         act_cfg (dict): Config of activation layers. Default:
             dict(type='ReLU')
+        dw_act_cfg (dict): In DepthwiseSeparableConvModule, activation config
+            of depthwise ConvModule. If it is 'default', it will be the same
+            as `act_cfg`. Default: None.
     """
 
     def __init__(self,
@@ -31,11 +34,13 @@ class LearningToDownsample(nn.Module):
                  out_channels,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU')):
+                 act_cfg=dict(type='ReLU'),
+                 dw_act_cfg=None):
         super(LearningToDownsample, self).__init__()
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
+        self.dw_act_cfg = dw_act_cfg
         dw_channels1 = dw_channels[0]
         dw_channels2 = dw_channels[1]
 
@@ -44,23 +49,28 @@ class LearningToDownsample(nn.Module):
             dw_channels1,
             3,
             stride=2,
+            padding=1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
+
         self.dsconv1 = DepthwiseSeparableConvModule(
             dw_channels1,
             dw_channels2,
             kernel_size=3,
             stride=2,
             padding=1,
-            norm_cfg=self.norm_cfg)
+            norm_cfg=self.norm_cfg,
+            dw_act_cfg=self.dw_act_cfg)
+
         self.dsconv2 = DepthwiseSeparableConvModule(
             dw_channels2,
             out_channels,
             kernel_size=3,
             stride=2,
             padding=1,
-            norm_cfg=self.norm_cfg)
+            norm_cfg=self.norm_cfg,
+            dw_act_cfg=self.dw_act_cfg)
 
     def forward(self, x):
         x = self.conv(x)
@@ -136,10 +146,12 @@ class GlobalFeatureExtractor(nn.Module):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
             align_corners=align_corners)
+
         self.out = ConvModule(
             block_channels[2] * 2,
             out_channels,
-            1,
+            3,
+            padding=1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
@@ -156,7 +168,8 @@ class GlobalFeatureExtractor(nn.Module):
                 out_channels,
                 stride,
                 expand_ratio,
-                norm_cfg=self.norm_cfg)
+                norm_cfg=self.norm_cfg,
+                act_cfg=self.act_cfg)
         ]
         for i in range(1, blocks):
             layers.append(
@@ -165,7 +178,8 @@ class GlobalFeatureExtractor(nn.Module):
                     out_channels,
                     1,
                     expand_ratio,
-                    norm_cfg=self.norm_cfg))
+                    norm_cfg=self.norm_cfg,
+                    act_cfg=self.act_cfg))
         return nn.Sequential(*layers)
 
     def forward(self, x):
@@ -189,10 +203,12 @@ class FeatureFusionModule(nn.Module):
         conv_cfg (dict | None): Config of conv layers. Default: None
         norm_cfg (dict | None): Config of norm layers. Default:
             dict(type='BN')
-        act_cfg (dict): Config of activation layers. Default:
-            dict(type='ReLU')
+        dwconv_act_cfg (dict): Config of activation layers in 3x3 conv.
+            Default: dict(type='ReLU').
+        conv_act_cfg (dict): Config of activation layers in the two 1x1 conv.
+            Default: None.
         align_corners (bool): align_corners argument of F.interpolate.
-            Default: False
+            Default: False.
     """
 
     def __init__(self,
@@ -201,34 +217,40 @@ class FeatureFusionModule(nn.Module):
                  out_channels,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU'),
+                 dwconv_act_cfg=dict(type='ReLU'),
+                 conv_act_cfg=None,
                  align_corners=False):
         super(FeatureFusionModule, self).__init__()
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
-        self.act_cfg = act_cfg
+        self.dwconv_act_cfg = dwconv_act_cfg
+        self.conv_act_cfg = conv_act_cfg
         self.align_corners = align_corners
         self.dwconv = ConvModule(
             lower_in_channels,
             out_channels,
-            1,
+            3,
+            padding=1,
+            groups=out_channels,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg)
+            act_cfg=self.dwconv_act_cfg)
         self.conv_lower_res = ConvModule(
             out_channels,
             out_channels,
             1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=None)
+            act_cfg=self.conv_act_cfg)
+
         self.conv_higher_res = ConvModule(
             higher_in_channels,
             out_channels,
             1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=None)
+            act_cfg=self.conv_act_cfg)
+
         self.relu = nn.ReLU(True)
 
     def forward(self, higher_res_feature, lower_res_feature):
@@ -290,6 +312,9 @@ class FastSCNN(BaseModule):
             dict(type='ReLU')
         align_corners (bool): align_corners argument of F.interpolate.
             Default: False
+        dw_act_cfg (dict): In DepthwiseSeparableConvModule, activation config
+            of depthwise ConvModule. If it is 'default', it will be the same
+            as `act_cfg`. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None
     """
@@ -309,6 +334,7 @@ class FastSCNN(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  align_corners=False,
+                 dw_act_cfg=None,
                  init_cfg=None):
 
         super(FastSCNN, self).__init__(init_cfg)
@@ -348,7 +374,8 @@ class FastSCNN(BaseModule):
             global_in_channels,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg)
+            act_cfg=self.act_cfg,
+            dw_act_cfg=dw_act_cfg)
         self.global_feature_extractor = GlobalFeatureExtractor(
             global_in_channels,
             global_block_channels,
@@ -364,7 +391,7 @@ class FastSCNN(BaseModule):
             fusion_out_channels,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg,
+            dwconv_act_cfg=self.act_cfg,
             align_corners=self.align_corners)
 
     def forward(self, x):

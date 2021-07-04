@@ -11,9 +11,11 @@ The compatible MMSegmentation and MMCV versions are as below. Please install the
 
 | MMSegmentation version |    MMCV version     |
 |:-------------------:|:-------------------:|
-| master              | mmcv-full>=1.3.1, <1.4.0 |
-| 0.13.0              | mmcv-full>=1.3.1, <1.4.0 |
-| 0.12.0              | mmcv-full>=1.1.4, <1.4.0 |
+| master              | mmcv-full>=1.3.7, <1.4.0 |
+| 0.14.1              | mmcv-full>=1.3.7, <1.4.0 |
+| 0.14.0              | mmcv-full>=1.3.1, <1.3.2 |
+| 0.13.0              | mmcv-full>=1.3.1, <1.3.2 |
+| 0.12.0              | mmcv-full>=1.1.4, <1.3.2 |
 | 0.11.0              | mmcv-full>=1.1.4, <1.3.0 |
 | 0.10.0              | mmcv-full>=1.1.4, <1.3.0 |
 | 0.9.0               | mmcv-full>=1.1.4, <1.3.0 |

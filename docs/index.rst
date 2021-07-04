@@ -46,6 +46,11 @@ Welcome to MMSegmenation's documentation!
    changelog.md
 
 .. toctree::
+   :caption: Switch Language
+
+   switch_language.md
+
+.. toctree::
    :caption: API Reference
 
    api.rst
