@@ -24,7 +24,7 @@ def test_vit_backbone():
         x = torch.randn(1, 196)
         VisionTransformer.resize_pos_embed(x, 512, 512, 224, 224, 'bilinear')
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(IndexError):
         # forward inputs must be [N, C, H, W]
         x = torch.randn(3, 30, 30)
         model = VisionTransformer()

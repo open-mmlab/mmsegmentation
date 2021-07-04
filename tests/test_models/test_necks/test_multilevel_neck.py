@@ -5,6 +5,9 @@ from mmseg.models import MultiLevelNeck
 
 def test_multilevel_neck():
 
+    # Test init_weights
+    MultiLevelNeck([266], 256).init_weights()
+
     # Test multi feature maps
     in_channels = [256, 512, 1024, 2048]
     inputs = [torch.randn(1, c, 14, 14) for i, c in enumerate(in_channels)]

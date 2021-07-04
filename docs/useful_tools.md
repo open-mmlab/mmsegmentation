@@ -44,7 +44,7 @@ The final output filename will be `psp_r50_512x1024_40ki_cityscapes-{hash id}.pt
 
 ### Convert to ONNX (experimental)
 
-We provide a script to convert model to [ONNX](https://github.com/onnx/onnx) format. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between Pytorch and ONNX model.
+We provide a script to convert model to [ONNX](https://github.com/onnx/onnx) format. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between PyTorch and ONNX model.
 
 ```bash
 python tools/pytorch2onnx.py \
@@ -67,7 +67,7 @@ Description of arguments:
 - `--checkpoint` : The path of a model checkpoint file.
 - `--output-file`: The path of output ONNX model. If not specified, it will be set to `tmp.onnx`.
 - `--input-img` : The path of an input image for conversion and visualize.
-- `--shape`: The height and width of input tensor to the model. If not specified, it will be set to img_scale of testpipeline.
+- `--shape`: The height and width of input tensor to the model. If not specified, it will be set to img_scale of test_pipeline.
 - `--rescale-shape`: rescale shape of output, set this value to avoid OOM, only work on `slide` mode.
 - `--show`: Determines whether to print the architecture of the exported model. If not specified, it will be set to `False`.
 - `--verify`: Determines whether to verify the correctness of an exported model. If not specified, it will be set to `False`.
@@ -136,7 +136,7 @@ Description of all arguments
 
 ### Convert to TorchScript (experimental)
 
-We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between Pytorch and TorchScript model.
+We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between PyTorch and TorchScript model.
 
 ```shell
 python tools/pytorch2torchscript.py \

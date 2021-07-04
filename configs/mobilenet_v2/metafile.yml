@@ -4,7 +4,12 @@ Models:
   - Name: fcn_m-v2-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 70.42
+      inference time (ms/im):
+        - value: 70.42
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -18,7 +23,12 @@ Models:
   - Name: pspnet_m-v2-d8_512x1024_80k_cityscapes
     In Collection: PSPNet
     Metadata:
-      inference time (ms/im): 89.29
+      inference time (ms/im):
+        - value: 89.29
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -32,7 +42,12 @@ Models:
   - Name: deeplabv3_m-v2-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 119.05
+      inference time (ms/im):
+        - value: 119.05
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -46,7 +61,12 @@ Models:
   - Name: deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes
     In Collection: DeepLabV3+
     Metadata:
-      inference time (ms/im): 119.05
+      inference time (ms/im):
+        - value: 119.05
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -60,7 +80,12 @@ Models:
   - Name: fcn_m-v2-d8_512x512_160k_ade20k
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 15.53
+      inference time (ms/im):
+        - value: 15.53
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -74,7 +99,12 @@ Models:
   - Name: pspnet_m-v2-d8_512x512_160k_ade20k
     In Collection: PSPNet
     Metadata:
-      inference time (ms/im): 17.33
+      inference time (ms/im):
+        - value: 17.33
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -88,7 +118,12 @@ Models:
   - Name: deeplabv3_m-v2-d8_512x512_160k_ade20k
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): 25.06
+      inference time (ms/im):
+        - value: 25.06
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -102,7 +137,12 @@ Models:
   - Name: deeplabv3plus_m-v2-d8_512x512_160k_ade20k
     In Collection: DeepLabV3+
     Metadata:
-      inference time (ms/im): 23.2
+      inference time (ms/im):
+        - value: 23.2
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
