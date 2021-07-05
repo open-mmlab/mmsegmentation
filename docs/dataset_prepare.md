@@ -56,9 +56,6 @@ mmsegmentation
 │   │   ├── images
 │   │   │   ├── train2017
 │   │   │   ├── val2017
-│   │   ├── masks
-│   │   │   ├── train2017
-│   │   │   ├── val2017
 │   │   ├── annotations
 │   │   │   ├── train2017
 │   │   │   ├── val2017
