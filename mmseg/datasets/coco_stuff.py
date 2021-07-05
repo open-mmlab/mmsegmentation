@@ -221,5 +221,5 @@ class COCOStuffDataset(CustomDataset):
     def __init__(self, **kwargs):
         super(COCOStuffDataset, self).__init__(
             img_suffix='.jpg',
-            seg_map_suffix='.png',
+            seg_map_suffix='_labelTrainIds.png',
             **kwargs)
