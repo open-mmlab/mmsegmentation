@@ -5,7 +5,7 @@ from .cc_head import CCHead
 from .da_head import DAHead
 from .dm_head import DMHead
 from .dnl_head import DNLHead
-from .dpt import DPTHead
+from .dpt_head import DPTHead
 from .ema_head import EMAHead
 from .enc_head import EncHead
 from .fcn_head import FCNHead

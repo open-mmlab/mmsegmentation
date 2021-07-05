@@ -141,6 +141,8 @@ class VisionTransformer(BaseModule):
             some memory while slowing down the training speed. Default: False.
         pretrain_style (str): Choose to use timm or mmcls pretrain weights.
             Default: timm.
+        with_spatial_size (bool): Whether append input image shape to output
+            feature vector when out_shape is not 'NCHW'. Default: False.
         pretrained (str, optional): model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
@@ -170,7 +172,7 @@ class VisionTransformer(BaseModule):
                  norm_eval=False,
                  with_cp=False,
                  pretrain_style='timm',
-                 with_image_shape=False,
+                 with_spatial_size=False,
                  pretrained=None,
                  init_cfg=None):
         super(VisionTransformer, self).__init__()
@@ -204,7 +206,7 @@ class VisionTransformer(BaseModule):
         self.pretrain_style = pretrain_style
         self.pretrained = pretrained
         self.init_cfg = init_cfg
-        self.with_image_shape = with_image_shape
+        self.with_spatial_size = with_spatial_size
 
         self.patch_embed = PatchEmbed(
             in_channels=in_channels,
@@ -413,7 +415,7 @@ class VisionTransformer(BaseModule):
                                       inputs.shape[3] // self.patch_size,
                                       C).permute(0, 3, 1, 2)
                 else:
-                    if self.with_image_shape:
+                    if self.with_spatial_size:
                         out = [x, [inputs.shape[2], inputs.shape[3]]]
                     else:
                         out = x

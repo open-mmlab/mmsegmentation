@@ -2,17 +2,18 @@ import math
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import (Conv2d, ConvModule, build_activation_layer,
+from mmcv.cnn import (ConvModule, build_activation_layer, build_conv_layer,
                       build_norm_layer)
+from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
 
 
-class ViTPostProcessBlock(nn.Module):
-    """ViTPostProcessBlock, process cls_token in ViT backbone output and resize
-    the feature vector to feature map.
+class ReassembleBlocks(BaseModule):
+    """ViTPostProcessBlock, process cls_token in ViT backbone output and
+    rearrange the feature vector to feature map.
 
     Args:
         in_channels (int): ViT feature channels. Default: 768.
@@ -29,14 +30,14 @@ class ViTPostProcessBlock(nn.Module):
                  readout_type='ignore',
                  start_index=1,
                  patch_size=16):
-        super(ViTPostProcessBlock, self).__init__()
+        super(ReassembleBlocks, self).__init__()
 
         assert readout_type in ['ignore', 'add', 'project']
         self.readout_type = readout_type
         self.start_index = start_index
         self.patch_size = patch_size
 
-        self.convs = [
+        self.projects = [
             ConvModule(
                 in_channels=in_channels,
                 out_channels=out_channel,
@@ -71,71 +72,76 @@ class ViTPostProcessBlock(nn.Module):
             if self.readout_type == 'ignore':
                 x = x[:, self.start_index:]
             elif self.readout_type == 'add':
-                x = x[:, self.start_index] + x[:, 0].unsqueeze(1)
+                x = x[:, self.start_index:] + x[:, 0].unsqueeze(1)
             else:
                 readout = x[:, 0].unsqueeze(1).expand_as(x[:,
                                                            self.start_index])
-                x = torch.cat((x[:, self.start_indx], readout), -1)
+                x = torch.cat((x[:, self.start_indx:], readout), -1)
             B, _, C = x.shape
             x = x.reshape(B, img_size[0] // self.patch_size,
                           img_size[1] // self.patch_size,
                           C).permute(0, 3, 1, 2)
-            x = self.convs[i](x)
+            x = self.projects[i](x)
             x = self.resize_layers[i](x)
             inputs[i] = x
         return inputs
 
 
-class ResidualConvUnit(nn.Module):
-    """ResidualConvUnit, pre-activate residual unit.
+class PreActResidualConvUnit(BaseModule):
+    """ResidualConvUnit, pre-activate residual unit."""
 
-    Args:
-        in_channels (int): Input channels.
-        act_cfg (dict): The activation config before conv.
-        norm_cfg (dict): Config dict for normalization layer.
-    """
+    def __init__(self,
+                 in_channels,
+                 act_cfg,
+                 norm_cfg,
+                 conv_cfg=None,
+                 stride=1,
+                 dilation=1,
+                 init_cfg=None):
+        super(PreActResidualConvUnit, self).__init__(init_cfg)
 
-    def __init__(self, in_channels, act_cfg, norm_cfg):
-        super(ResidualConvUnit, self).__init__()
-        self.channels = in_channels
+        self.norm1_name, norm1 = build_norm_layer(
+            norm_cfg, in_channels, postfix=1)
+        self.norm2_name, norm2 = build_norm_layer(
+            norm_cfg, in_channels, postfix=2)
 
-        self.activation = build_activation_layer(act_cfg)
-        self.bn = False if norm_cfg is None else True
-        self.bias = not self.bn
+        self.conv1 = build_conv_layer(
+            conv_cfg,
+            in_channels,
+            in_channels,
+            3,
+            stride=stride,
+            padding=dilation,
+            dilation=dilation,
+            bias=False)
+        self.add_module(self.norm1_name, norm1)
+        self.conv2 = build_conv_layer(
+            conv_cfg, in_channels, in_channels, 3, padding=1, bias=False)
+        self.add_module(self.norm2_name, norm2)
+        self.activate = build_activation_layer(act_cfg)
 
-        self.conv1 = ConvModule(
-            self.channels,
-            self.channels,
-            kernel_size=3,
-            padding=1,
-            bias=self.bias)
+    @property
+    def norm1(self):
+        """nn.Module: normalization layer after the first convolution layer"""
+        return getattr(self, self.norm1_name)
 
-        self.conv2 = ConvModule(
-            self.channels,
-            self.channels,
-            kernel_size=3,
-            padding=1,
-            bias=self.bias)
-
-        if self.bn:
-            _, self.bn1 = build_norm_layer(norm_cfg, self.channels)
-            _, self.bn2 = build_norm_layer(norm_cfg, self.channels)
+    @property
+    def norm2(self):
+        """nn.Module: normalization layer after the second convolution layer"""
+        return getattr(self, self.norm2_name)
 
     def forward(self, inputs):
-        x = self.activation(inputs)
+        x = self.activate(inputs)
         x = self.conv1(x)
-        if self.bn:
-            x = self.bn1(x)
-
-        x = self.activation(x)
+        x = self.norm1(x)
+        x = self.activate(x)
         x = self.conv2(x)
-        if self.bn:
-            x = self.bn2(x)
+        x = self.norm2(x)
 
         return x + inputs
 
 
-class FeatureFusionBlock(nn.Module):
+class FeatureFusionBlock(BaseModule):
     """FeatureFusionBlock, merge feature map from different stage.
 
     Args:
@@ -164,13 +170,13 @@ class FeatureFusionBlock(nn.Module):
         if self.expand:
             self.out_channels = in_channels // 2
 
-        self.out_conv = Conv2d(
+        self.project = ConvModule(
             self.in_channels, self.out_channels, kernel_size=1)
 
-        self.res_conv_unit1 = ResidualConvUnit(self.in_channels, act_cfg,
-                                               norm_cfg)
-        self.res_conv_unit2 = ResidualConvUnit(self.in_channels, act_cfg,
-                                               norm_cfg)
+        self.res_conv_unit1 = PreActResidualConvUnit(
+            in_channels=self.in_channels, act_cfg=act_cfg, norm_cfg=norm_cfg)
+        self.res_conv_unit2 = PreActResidualConvUnit(
+            in_channels=self.in_channels, act_cfg=act_cfg, norm_cfg=norm_cfg)
 
     def forward(self, *inputs):
         x = inputs[0]
@@ -182,7 +188,7 @@ class FeatureFusionBlock(nn.Module):
             scale_factor=2,
             mode='bilinear',
             align_corners=self.align_corners)
-        return self.out_conv(x)
+        return self.project(x)
 
 
 @HEADS.register_module()
@@ -214,16 +220,16 @@ class DPTHead(BaseDecodeHead):
                  expand_channels=False,
                  act_cfg=dict(type='ReLU'),
                  norm_cfg=dict(type='BN'),
-                 **kwards):
-        super(DPTHead, self).__init__(**kwards)
+                 **kwargs):
+        super(DPTHead, self).__init__(**kwargs)
 
         self.in_channels = self.in_channels
         self.expand_channels = expand_channels
-        self.post_process_block = ViTPostProcessBlock(embed_dims,
-                                                      post_process_channels,
-                                                      readout_type,
-                                                      patch_start_index,
-                                                      patch_size)
+        self.reassemble_blocks = ReassembleBlocks(embed_dims,
+                                                  post_process_channels,
+                                                  readout_type,
+                                                  patch_start_index,
+                                                  patch_size)
 
         self.post_process_channels = [
             channel * math.pow(2, i) if expand_channels else channel
@@ -232,26 +238,25 @@ class DPTHead(BaseDecodeHead):
         self.convs = nn.ModuleList()
         for _, channel in enumerate(self.post_process_channels):
             self.convs.append(
-                Conv2d(channel, self.channels, kernel_size=3, padding=1))
+                ConvModule(channel, self.channels, kernel_size=3, padding=1))
 
-        self.refinenet0 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
-        self.refinenet1 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
-        self.refinenet2 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
-        self.refinenet3 = FeatureFusionBlock(self.channels, act_cfg, norm_cfg)
+        self.fusion_blocks = nn.ModuleList()
+        for _ in range(len(self.convs)):
+            self.fusion_blocks.append(
+                FeatureFusionBlock(self.channels, act_cfg, norm_cfg))
 
-        self.conv = ConvModule(
+        self.project = ConvModule(
             self.channels, self.channels, kernel_size=3, padding=1)
 
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
         x, img_size = [i[0] for i in x], x[0][1]
-        x = self.post_process_block(x, img_size)
+        x = self.reassemble_blocks(x, img_size)
         x = [self.convs[i](feature) for i, feature in enumerate(x)]
 
-        path_3 = self.refinenet3(x[3])
-        path_2 = self.refinenet2(path_3, x[2])
-        path_1 = self.refinenet1(path_2, x[1])
-        path_0 = self.refinenet0(path_1, x[0])
-        x = self.conv(path_0)
-        output = self.cls_seg(x)
-        return output
+        out = self.fusion_blocks[3](x[3])
+        for i in range(2, -1, -1):
+            out = self.fusion_blocks[i](out, x[i])
+        out = self.project(out)
+        out = self.cls_seg(out)
+        return out
