@@ -305,4 +305,4 @@ plt.show()
 
 You should see something similar to:
 
-![3dogs_mask](imgs/3dogs_mask.png)
+![3dogs_mask](../resources/3dogs_mask.png)
