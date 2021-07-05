@@ -244,11 +244,9 @@ def main():
     coco_path = args.coco_path
     nproc = args.nproc
 
-    out_img_dir = osp.join(coco_path, 'images')
-    if args.out_dir is None:
-        out_mask_dir = osp.join(coco_path, 'masks')
-    else:
-        out_mask_dir = args.out_dir
+    out_dir = args.out_dir or coco_path
+    out_img_dir = osp.join(out_dir, 'images')
+    out_mask_dir = osp.join(out_dir, 'annotations')
 
     mmcv.mkdir_or_exist(osp.join(out_img_dir, 'train2014'))
     mmcv.mkdir_or_exist(osp.join(out_img_dir, 'test2014'))
