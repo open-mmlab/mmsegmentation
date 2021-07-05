@@ -9,7 +9,12 @@ Models:
   - Name: lraspp_m-v3-d8_512x1024_320k_cityscapes
     In Collection: LRASPP
     Metadata:
-      inference time (ms/im): 65.7
+      inference time (ms/im):
+        - value: 65.7
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -23,7 +28,12 @@ Models:
   - Name: lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes
     In Collection: LRASPP
     Metadata:
-      inference time (ms/im): 67.7
+      inference time (ms/im):
+        - value: 67.7
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -37,7 +47,12 @@ Models:
   - Name: lraspp_m-v3s-d8_512x1024_320k_cityscapes
     In Collection: LRASPP
     Metadata:
-      inference time (ms/im): 42.3
+      inference time (ms/im):
+        - value: 42.3
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -51,7 +66,12 @@ Models:
   - Name: lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes
     In Collection: LRASPP
     Metadata:
-      inference time (ms/im): 40.82
+      inference time (ms/im):
+        - value: 40.82
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
