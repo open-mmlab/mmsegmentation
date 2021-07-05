@@ -162,7 +162,7 @@ By conversion, masks in `data/coco_stuff10k/masks/*.png` are used for COCO Stuff
 
 ### COCO Stuff 164k
 
-The data could be downloaded and converted augmentation annotations into proper format. by following command.
+For COCO Stuff 164k dataset, please run the following commands to download and convert the augmented dataset.
 
 ```shell
 # create file
