@@ -45,10 +45,9 @@ mmsegmentation
 │   │   ├── images
 │   │   │   ├── train2014
 │   │   │   ├── test2014
-│   │   ├── masks
+│   │   ├── annotations
 │   │   │   ├── train2014
 │   │   │   ├── test2014
-│   │   ├── annotations
 │   │   ├── imagesLists
 │   │   │   ├── train.txt
 │   │   │   ├── test.txt
