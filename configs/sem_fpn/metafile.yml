@@ -11,7 +11,12 @@ Models:
   - Name: fpn_r50_512x1024_80k_cityscapes
     In Collection: FPN
     Metadata:
-      inference time (ms/im): 73.86
+      inference time (ms/im):
+        - value: 73.86
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -25,7 +30,12 @@ Models:
   - Name: fpn_r101_512x1024_80k_cityscapes
     In Collection: FPN
     Metadata:
-      inference time (ms/im): 97.18
+      inference time (ms/im):
+        - value: 97.18
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -39,7 +49,12 @@ Models:
   - Name: fpn_r50_512x512_160k_ade20k
     In Collection: FPN
     Metadata:
-      inference time (ms/im): 17.93
+      inference time (ms/im):
+        - value: 17.93
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -53,7 +68,12 @@ Models:
   - Name: fpn_r101_512x512_160k_ade20k
     In Collection: FPN
     Metadata:
-      inference time (ms/im): 24.64
+      inference time (ms/im):
+        - value: 24.64
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K

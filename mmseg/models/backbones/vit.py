@@ -4,8 +4,8 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
-                      kaiming_init, normal_init, trunc_normal_init)
+from mmcv.cnn import (build_norm_layer, constant_init, kaiming_init,
+                      normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
@@ -13,30 +13,31 @@ from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import vit_convert
+from ..utils import PatchEmbed, vit_convert
 
 
 class TransformerEncoderLayer(BaseModule):
     """Implements one encoder layer in Vision Transformer.
 
     Args:
-        embed_dims (int): The feature dimension
-        num_heads (int): Parallel attention heads
-        feedforward_channels (int): The hidden dimension for FFNs
+        embed_dims (int): The feature dimension.
+        num_heads (int): Parallel attention heads.
+        feedforward_channels (int): The hidden dimension for FFNs.
         drop_rate (float): Probability of an element to be zeroed
-            after the feed forward layer. Default 0.0
+            after the feed forward layer. Default: 0.0.
         attn_drop_rate (float): The drop out rate for attention layer.
-            Default 0.0
+            Default: 0.0.
         drop_path_rate (float): stochastic depth rate. Default 0.0.
-        num_fcs (int): The number of fully-connected layers for FFNs. Default 2
-        qkv_bias (bool): enable bias for qkv if True. Default True
-        act_cfg (dict): The activation config for FFNs. Defalut GELU
-        norm_cfg (dict): Config dict for normalization layer. Default
-            layer normalization
+        num_fcs (int): The number of fully-connected layers for FFNs.
+            Default: 2.
+        qkv_bias (bool): enable bias for qkv if True. Default: True
+        act_cfg (dict): The activation config for FFNs.
+            Defalut: dict(type='GELU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN').
         batch_first (bool): Key, Query and Value are shape of
             (batch, n, embed_dim)
-            or (n, batch, embed_dim). Default to False.
-        init_cfg (dict, optional): Initialization config dict
+            or (n, batch, embed_dim). Default: True.
     """
 
     def __init__(self,
@@ -50,7 +51,7 @@ class TransformerEncoderLayer(BaseModule):
                  qkv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 batch_first=False):
+                 batch_first=True):
         super(TransformerEncoderLayer, self).__init__()
 
         self.norm1_name, norm1 = build_norm_layer(
@@ -75,7 +76,7 @@ class TransformerEncoderLayer(BaseModule):
             feedforward_channels=feedforward_channels,
             num_fcs=num_fcs,
             ffn_drop=drop_rate,
-            dropout_layer=None,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
             act_cfg=act_cfg)
 
     @property
@@ -89,62 +90,6 @@ class TransformerEncoderLayer(BaseModule):
     def forward(self, x):
         x = self.attn(self.norm1(x), identity=x)
         x = self.ffn(self.norm2(x), identity=x)
-        return x
-
-
-# Modified from pytorch-image-models
-class PatchEmbed(BaseModule):
-    """Image to Patch Embedding.
-
-    Args:
-        img_size (int | tuple): The size of input image.
-        patch_size (int): The size of one patch
-        in_channels (int): The num of input channels.
-        embed_dim (int): The dimensions of embedding.
-        norm_cfg (dict, optional): Config dict for normalization layer.
-        conv_cfg (dict, optional): The config dict for conv layers.
-            Default: None.
-    """
-
-    def __init__(self,
-                 img_size=224,
-                 patch_size=16,
-                 in_channels=3,
-                 embed_dim=768,
-                 norm_cfg=None,
-                 conv_cfg=None):
-        super(PatchEmbed, self).__init__()
-
-        self.img_size = img_size
-        self.patch_size = to_2tuple(patch_size)
-
-        patches_resolution = [
-            img_size[0] // self.patch_size[0],
-            img_size[1] // self.patch_size[1]
-        ]
-        num_patches = patches_resolution[0] * patches_resolution[1]
-        self.patches_resolution = patches_resolution
-        self.num_patches = num_patches
-
-        # Use conv layer to embed
-        self.projection = build_conv_layer(
-            conv_cfg,
-            in_channels,
-            embed_dim,
-            kernel_size=patch_size,
-            stride=patch_size)
-
-        if norm_cfg is not None:
-            self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
-        else:
-            self.norm = None
-
-    def forward(self, x):
-        x = self.projection(x).flatten(2).transpose(1, 2)
-
-        if self.norm is not None:
-            x = self.norm(x)
-
         return x
 
 
@@ -209,7 +154,7 @@ class VisionTransformer(BaseModule):
                  num_layers=12,
                  num_heads=12,
                  mlp_ratio=4,
-                 out_indices=11,
+                 out_indices=-1,
                  qkv_bias=True,
                  drop_rate=0.,
                  attn_drop_rate=0.,
@@ -262,13 +207,17 @@ class VisionTransformer(BaseModule):
         self.with_image_shape = with_image_shape
 
         self.patch_embed = PatchEmbed(
-            img_size=img_size,
-            patch_size=patch_size,
             in_channels=in_channels,
-            embed_dim=embed_dims,
-            norm_cfg=norm_cfg if patch_norm else None)
+            embed_dims=embed_dims,
+            conv_type='Conv2d',
+            kernel_size=patch_size,
+            stride=patch_size,
+            norm_cfg=norm_cfg if patch_norm else None,
+            init_cfg=None,
+        )
 
-        num_patches = self.patch_embed.num_patches
+        num_patches = (img_size[0] // patch_size) * \
+            (img_size[1] // patch_size)
 
         self.with_cls_token = with_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
@@ -277,6 +226,8 @@ class VisionTransformer(BaseModule):
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
         if isinstance(out_indices, int):
+            if out_indices == -1:
+                out_indices = num_layers - 1
             self.out_indices = [out_indices]
         elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
             self.out_indices = out_indices
@@ -304,6 +255,7 @@ class VisionTransformer(BaseModule):
                     batch_first=True))
 
         self.final_norm = final_norm
+        self.out_shape = out_shape
         if final_norm:
             self.norm1_name, norm1 = build_norm_layer(
                 norm_cfg, embed_dims, postfix=1)
@@ -316,7 +268,8 @@ class VisionTransformer(BaseModule):
     def init_weights(self):
         if isinstance(self.pretrained, str):
             logger = get_root_logger()
-            checkpoint = _load_checkpoint(self.pretrained, logger=logger)
+            checkpoint = _load_checkpoint(
+                self.pretrained, logger=logger, map_location='cpu')
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
             elif 'model' in checkpoint:

@@ -19,7 +19,12 @@ Models:
   - Name: fcn_r50-d8_512x1024_40k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 239.81
+      inference time (ms/im):
+        - value: 239.81
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -33,7 +38,12 @@ Models:
   - Name: fcn_r101-d8_512x1024_40k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 375.94
+      inference time (ms/im):
+        - value: 375.94
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -47,7 +57,12 @@ Models:
   - Name: fcn_r50-d8_769x769_40k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 555.56
+      inference time (ms/im):
+        - value: 555.56
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -61,7 +76,12 @@ Models:
   - Name: fcn_r101-d8_769x769_40k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 840.34
+      inference time (ms/im):
+        - value: 840.34
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -75,7 +95,12 @@ Models:
   - Name: fcn_r18-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 68.26
+      inference time (ms/im):
+        - value: 68.26
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -89,7 +114,12 @@ Models:
   - Name: fcn_r50-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 239.81
+      inference time (ms/im):
+        - value: 239.81
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -103,7 +133,12 @@ Models:
   - Name: fcn_r101-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 375.94
+      inference time (ms/im):
+        - value: 375.94
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -117,7 +152,12 @@ Models:
   - Name: fcn_r18-d8_769x769_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 156.25
+      inference time (ms/im):
+        - value: 156.25
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -131,7 +171,12 @@ Models:
   - Name: fcn_r50-d8_769x769_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 555.56
+      inference time (ms/im):
+        - value: 555.56
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -145,7 +190,12 @@ Models:
   - Name: fcn_r101-d8_769x769_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 840.34
+      inference time (ms/im):
+        - value: 840.34
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -159,7 +209,12 @@ Models:
   - Name: fcn_r18b-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 59.74
+      inference time (ms/im):
+        - value: 59.74
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -173,7 +228,12 @@ Models:
   - Name: fcn_r50b-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 238.1
+      inference time (ms/im):
+        - value: 238.1
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -187,7 +247,12 @@ Models:
   - Name: fcn_r101b-d8_512x1024_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 366.3
+      inference time (ms/im):
+        - value: 366.3
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -201,7 +266,12 @@ Models:
   - Name: fcn_r18b-d8_769x769_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 149.25
+      inference time (ms/im):
+        - value: 149.25
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -215,7 +285,12 @@ Models:
   - Name: fcn_r50b-d8_769x769_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 549.45
+      inference time (ms/im):
+        - value: 549.45
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -229,7 +304,12 @@ Models:
   - Name: fcn_r101b-d8_769x769_80k_cityscapes
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 869.57
+      inference time (ms/im):
+        - value: 869.57
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -243,7 +323,12 @@ Models:
   - Name: fcn_d6_r50-d16_512x1024_40k_cityscapes
     In Collection: FCN-D6
     Metadata:
-      inference time (ms/im): 97.85
+      inference time (ms/im):
+        - value: 97.85
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -257,7 +342,12 @@ Models:
   - Name: fcn_d6_r50-d16_512x1024_80k_cityscapes
     In Collection: FCN-D6
     Metadata:
-      inference time (ms/im): 96.62
+      inference time (ms/im):
+        - value: 96.62
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -271,7 +361,12 @@ Models:
   - Name: fcn_d6_r50-d16_769x769_40k_cityscapes
     In Collection: FCN-D6
     Metadata:
-      inference time (ms/im): 239.81
+      inference time (ms/im):
+        - value: 239.81
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -285,7 +380,12 @@ Models:
   - Name: fcn_d6_r50-d16_769x769_80k_cityscapes
     In Collection: FCN-D6
     Metadata:
-      inference time (ms/im): 240.96
+      inference time (ms/im):
+        - value: 240.96
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -299,7 +399,12 @@ Models:
   - Name: fcn_d6_r101-d16_512x1024_40k_cityscapes
     In Collection: FCN-D6
     Metadata:
-      inference time (ms/im): 124.38
+      inference time (ms/im):
+        - value: 124.38
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -313,7 +418,12 @@ Models:
   - Name: fcn_d6_r101-d16_512x1024_80k_cityscapes
     In Collection: FCN-D6
     Metadata:
-      inference time (ms/im): 121.07
+      inference time (ms/im):
+        - value: 121.07
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -327,7 +437,12 @@ Models:
   - Name: fcn_d6_r101-d16_769x769_40k_cityscapes
     In Collection: FCN-D6
     Metadata:
-      inference time (ms/im): 320.51
+      inference time (ms/im):
+        - value: 320.51
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -341,7 +456,12 @@ Models:
   - Name: fcn_d6_r101-d16_769x769_80k_cityscapes
     In Collection: FCN-D6
     Metadata:
-      inference time (ms/im): 311.53
+      inference time (ms/im):
+        - value: 311.53
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -355,7 +475,12 @@ Models:
   - Name: fcn_r50-d8_512x512_80k_ade20k
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 42.57
+      inference time (ms/im):
+        - value: 42.57
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -369,7 +494,12 @@ Models:
   - Name: fcn_r101-d8_512x512_80k_ade20k
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 67.66
+      inference time (ms/im):
+        - value: 67.66
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -383,7 +513,12 @@ Models:
   - Name: fcn_r50-d8_512x512_160k_ade20k
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 42.57
+      inference time (ms/im):
+        - value: 42.57
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -397,7 +532,12 @@ Models:
   - Name: fcn_r101-d8_512x512_160k_ade20k
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 67.66
+      inference time (ms/im):
+        - value: 67.66
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: ADE20K
@@ -411,7 +551,12 @@ Models:
   - Name: fcn_r50-d8_512x512_20k_voc12aug
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 42.96
+      inference time (ms/im):
+        - value: 42.96
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -425,7 +570,12 @@ Models:
   - Name: fcn_r101-d8_512x512_20k_voc12aug
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 67.52
+      inference time (ms/im):
+        - value: 67.52
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -439,7 +589,12 @@ Models:
   - Name: fcn_r50-d8_512x512_40k_voc12aug
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 42.96
+      inference time (ms/im):
+        - value: 42.96
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -453,7 +608,12 @@ Models:
   - Name: fcn_r101-d8_512x512_40k_voc12aug
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 67.52
+      inference time (ms/im):
+        - value: 67.52
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal VOC 2012 + Aug
@@ -467,7 +627,12 @@ Models:
   - Name: fcn_r101-d8_480x480_40k_pascal_context
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 100.7
+      inference time (ms/im):
+        - value: 100.7
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -481,7 +646,12 @@ Models:
   - Name: fcn_r101-d8_480x480_80k_pascal_context
     In Collection: FCN
     Metadata:
-      inference time (ms/im): 100.7
+      inference time (ms/im):
+        - value: 100.7
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -495,7 +665,12 @@ Models:
   - Name: fcn_r101-d8_480x480_40k_pascal_context_59
     In Collection: FCN
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
@@ -509,7 +684,12 @@ Models:
   - Name: fcn_r101-d8_480x480_80k_pascal_context_59
     In Collection: FCN
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Pascal Context
