@@ -24,3 +24,24 @@ def test_dpt_head():
     inputs = [[torch.randn(4, 5, 768), [32, 32]] for _ in range(4)]
     output = head(inputs)
     assert output.shape == torch.Size((4, 19, 16, 16))
+
+    # test readout operation
+    head = DPTHead(
+        in_channels=[768, 768, 768, 768],
+        channels=256,
+        num_classes=19,
+        in_index=[0, 1, 2, 3],
+        input_transform='multiple_select',
+        readout_type='add')
+    output = head(inputs)
+    assert output.shape == torch.Size((4, 19, 16, 16))
+
+    head = DPTHead(
+        in_channels=[768, 768, 768, 768],
+        channels=256,
+        num_classes=19,
+        in_index=[0, 1, 2, 3],
+        input_transform='multiple_select',
+        readout_type='project')
+    output = head(inputs)
+    assert output.shape == torch.Size((4, 19, 16, 16))

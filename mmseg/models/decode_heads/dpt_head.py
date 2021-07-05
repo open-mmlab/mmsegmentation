@@ -66,6 +66,12 @@ class ReassembleBlocks(BaseModule):
                 stride=2,
                 padding=1)
         ])
+        if self.readout_type == 'project':
+            self.readout_projects = nn.ModuleList()
+            for _ in range(len(self.projects)):
+                self.readout_projects.append(
+                    nn.Sequential(
+                        nn.Linear(2 * in_channels, in_channels), nn.GELU()))
 
     def forward(self, inputs, img_size):
         for i, x in enumerate(inputs):
@@ -75,8 +81,9 @@ class ReassembleBlocks(BaseModule):
                 x = x[:, self.start_index:] + x[:, 0].unsqueeze(1)
             else:
                 readout = x[:, 0].unsqueeze(1).expand_as(x[:,
-                                                           self.start_index])
-                x = torch.cat((x[:, self.start_indx:], readout), -1)
+                                                           self.start_index:])
+                x = torch.cat((x[:, self.start_index:], readout), -1)
+                x = self.readout_projects[i](x)
             B, _, C = x.shape
             x = x.reshape(B, img_size[0] // self.patch_size,
                           img_size[1] // self.patch_size,
