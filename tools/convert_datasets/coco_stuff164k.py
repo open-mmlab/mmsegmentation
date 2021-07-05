@@ -186,7 +186,7 @@ clsID_to_trID = {
 
 
 
-def convert_mat(mask_path, out_mask_dir, is_train):
+def convert_to_trainID(mask_path, out_mask_dir, is_train):
     mask = np.array(Image.open(mask_path))
     mask_copy = mask.copy()
     for clsID, trID in clsID_to_trID.items():
@@ -194,7 +194,7 @@ def convert_mat(mask_path, out_mask_dir, is_train):
     seg_filename = osp.join(
         out_mask_dir, 'train2017',
         os.path.basename(mask_path)) if is_train else osp.join(
-            out_mask_dir, 'val2017', os.path.basename(mask_path))
+            out_mask_dir, 'val2017', mask_path.split('.')[0] + '_labelTrainIds.png')
     Image.fromarray(mask_copy).save(seg_filename, 'PNG')
 
 
@@ -215,7 +215,7 @@ def main():
     nproc = args.nproc
 
     if args.out_dir is None:
-        out_mask_dir = osp.join(coco_path, 'masks')
+        out_mask_dir = osp.join(coco_path, 'annotations')
     else:
         out_mask_dir = args.out_dir
 
