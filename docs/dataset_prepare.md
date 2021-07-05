@@ -146,7 +146,7 @@ For  COCO Stuff 10k dataset, please run the following commands to download and c
 ```shell
 # download
 cd data
-mkdir coco_stuff10k && cd coco_stuff10k
+mkdir -p coco_stuff10k && cd coco_stuff10k
 wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip
 
 # unzip
