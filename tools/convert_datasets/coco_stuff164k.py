@@ -200,7 +200,7 @@ def convert_mat(mask_path, out_mask_dir, is_train):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Convert COCO Stuff annotations to mmsegmentation format')
+        description='Convert COCO Stuff 164k annotations to mmsegmentation format')
     parser.add_argument('coco_path', help='coco stuff path')
     parser.add_argument('-o', '--out_dir', help='output path')
     parser.add_argument(
