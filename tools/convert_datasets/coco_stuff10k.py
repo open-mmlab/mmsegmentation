@@ -207,7 +207,7 @@ def convert_mat(tuple_path, in_img_dir, in_ann_dir, out_img_dir, out_mask_dir,
 
 def generate_coco_list(folder):
     train_list = osp.join(folder, 'imageLists', 'train.txt')
-    test_list = os.path.join(folder, 'imageLists', 'test.txt')
+    test_list = osp.join(folder, 'imageLists', 'test.txt')
     train_paths = []
     test_paths = []
 
