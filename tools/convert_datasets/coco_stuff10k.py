@@ -186,7 +186,7 @@ clsID_to_trID = {
 }
 
 
-def convert_mat(tuple_path, in_img_dir, in_ann_dir, out_img_dir, out_mask_dir,
+def convert_to_trainID(tuple_path, in_img_dir, in_ann_dir, out_img_dir, out_mask_dir,
                 is_train):
     imgpath, maskpath = tuple_path
     shutil.move(
@@ -199,8 +199,8 @@ def convert_mat(tuple_path, in_img_dir, in_ann_dir, out_img_dir, out_mask_dir,
     for clsID, trID in clsID_to_trID.items():
         mask_copy[mask == clsID] = trID
     seg_filename = osp.join(
-        out_mask_dir, 'train2014', maskpath.replace(
-            '.mat', '.png')) if is_train else osp.join(
+        out_mask_dir, 'train2014',
+        maskpath.split('.')[0] + '_labelTrainIds.png') if is_train else osp.join(
                 out_mask_dir, 'test2014', maskpath.replace('.mat', '.png'))
     Image.fromarray(mask_copy).save(seg_filename, 'PNG')
 
