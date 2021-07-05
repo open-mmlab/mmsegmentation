@@ -6,10 +6,11 @@ from .custom import CustomDataset
 class COCOStuffDataset(CustomDataset):
     """COCO-Stuff dataset.
 
-    In segmentation map annotation for COCO-Stuff, 0 stands for unlabelled,
-    which is not included in 182 categories. ``reduce_zero_label`` is fixed to
-    True. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed
-    to '.png'.
+    In segmentation map annotation for COCO-Stuff, there are total 171 categories.
+    For the 10k version, 255 stands for unlabelled. And, 0 stands for unlabelled,
+    which is not included in 171 categories. ``reduce_zero_label`` is set
+    in the configerations. The ``img_suffix`` is fixed to '.jpg',
+    and ``seg_map_suffix`` is fixed to '.png'.
     """
     CLASSES = (
         'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
