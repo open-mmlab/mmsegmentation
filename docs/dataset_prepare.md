@@ -142,7 +142,7 @@ python tools/convert_datasets/pascal_context.py data/VOCdevkit data/VOCdevkit/VO
 
 The data could be downloaded [here](http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip) by wget.
 
-If you would like to use COCO Stuff 10k dataset, please run following command to convert augmentation annotations into proper format.
+For  COCO Stuff 10k dataset, please run the following commands to download and convert the dataset.
 
 ```shell
 # download
