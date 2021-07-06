@@ -189,7 +189,7 @@ clsID_to_trID = {
 def convert_to_trainID(tuple_path, in_img_dir, in_ann_dir, out_img_dir,
                        out_mask_dir, is_train):
     imgpath, maskpath = tuple_path
-    shutil.move(
+    shutil.copyfile(
         osp.join(in_img_dir, imgpath),
         osp.join(out_img_dir, 'train2014', imgpath) if is_train else osp.join(
             out_img_dir, 'test2014', imgpath))
