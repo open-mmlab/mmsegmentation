@@ -16,13 +16,14 @@ def test_setr_up_head(capsys):
         # as embed_dim.
         SETRUPHead(in_channels=(32, 32), channels=16, num_classes=19)
 
-    # test init_weights of head
+    # test init_cfg of head
     head = SETRUPHead(
         in_channels=32,
         channels=16,
         norm_cfg=dict(type='SyncBN'),
-        num_classes=19)
-    head.init_weights()
+        num_classes=19,
+        init_cfg=dict(type='Kaiming'))
+    super(SETRUPHead, head).init_weights()
 
     # test inference of Naive head
     # the auxiliary head of Naive head is same as Naive head
