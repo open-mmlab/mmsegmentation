@@ -221,15 +221,17 @@ def main():
     out_img_dir = osp.join(out_dir, 'images')
     out_mask_dir = osp.join(out_dir, 'annotations')
 
-    mmcv.mkdir_or_exist(out_img_dir)
+    # mmcv.mkdir_or_exist(out_img_dir)
     mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'train2017'))
     mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'val2017'))
 
     if out_dir != coco_path:
-        shutil.copytree(osp.join(out_dir, 'images'), out_img_dir)
+        shutil.copytree(osp.join(coco_path, 'images'), out_img_dir)
 
     train_list = glob(osp.join(coco_path, 'annotations', 'train2017', '*.png'))
+    train_list = [file for file in train_list if '_labelTrainIds' not in file]
     test_list = glob(osp.join(coco_path, 'annotations', 'val2017', '*.png'))
+    test_list = [file for file in test_list if '_labelTrainIds' not in file]
     assert (len(train_list) +
             len(test_list)) == COCO_LEN, 'Wrong length of list {} & {}'.format(
                 len(train_list), len(test_list))
