@@ -37,13 +37,13 @@ class ReassembleBlocks(BaseModule):
         self.start_index = start_index
         self.patch_size = patch_size
 
-        self.projects = [
+        self.projects = nn.ModuleList([
             ConvModule(
                 in_channels=in_channels,
                 out_channels=out_channel,
                 kernel_size=1,
             ) for out_channel in out_channels
-        ]
+        ])
 
         self.resize_layers = nn.ModuleList([
             nn.ConvTranspose2d(
@@ -245,7 +245,12 @@ class DPTHead(BaseDecodeHead):
         self.convs = nn.ModuleList()
         for _, channel in enumerate(self.post_process_channels):
             self.convs.append(
-                ConvModule(channel, self.channels, kernel_size=3, padding=1))
+                ConvModule(
+                    channel,
+                    self.channels,
+                    kernel_size=3,
+                    padding=1,
+                    bias=False))
 
         self.fusion_blocks = nn.ModuleList()
         for _ in range(len(self.convs)):
@@ -253,7 +258,11 @@ class DPTHead(BaseDecodeHead):
                 FeatureFusionBlock(self.channels, act_cfg, norm_cfg))
 
         self.project = ConvModule(
-            self.channels, self.channels, kernel_size=3, padding=1)
+            self.channels,
+            self.channels,
+            kernel_size=3,
+            padding=1,
+            norm_cfg=norm_cfg)
 
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
