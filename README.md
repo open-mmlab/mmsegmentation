@@ -48,7 +48,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.14.1 was released in 06/16/2021.
+v0.15.0 was released in 07/04/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
