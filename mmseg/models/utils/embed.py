@@ -42,6 +42,8 @@ class PatchEmbed(BaseModule):
         if stride is None:
             stride = kernel_size
 
+        self.overlapping = stride == kernel_size
+
         # The default setting of patch size is eaual to kernel size.
         patch_size = kernel_size
         if isinstance(patch_size, int):
@@ -56,7 +58,7 @@ class PatchEmbed(BaseModule):
         self.patch_size = patch_size
 
         # Use conv layer to embed
-        conv_type = conv_type or dict(type='Conv2d')
+        conv_type = conv_type or 'Conv2d'
         self.projection = build_conv_layer(
             dict(type=conv_type),
             in_channels=in_channels,
@@ -73,12 +75,18 @@ class PatchEmbed(BaseModule):
 
     def forward(self, x):
         H, W = x.shape[2], x.shape[3]
-        if H % self.patch_size[0] != 0:
-            x = F.pad(x,
-                      (0, 0, 0, self.patch_size[0] - H % self.patch_size[0]))
-        if W % self.patch_size[1] != 0:
-            x = F.pad(x,
-                      (0, self.patch_size[1] - W % self.patch_size[1], 0, 0))
+
+        # Modify H, W to multiple of patch size.
+        if self.overlapping:
+            pass
+        else:
+            if H % self.patch_size[0] != 0:
+                x = F.pad(
+                    x, (0, 0, 0, self.patch_size[0] - H % self.patch_size[0]))
+            if W % self.patch_size[1] != 0:
+                x = F.pad(
+                    x, (0, self.patch_size[1] - W % self.patch_size[1], 0, 0))
+
         x = self.projection(x)
         self.DH, self.DW = x.shape[2], x.shape[3]
         x = x.flatten(2).transpose(1, 2)

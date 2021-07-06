@@ -12,7 +12,7 @@ from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import mit_convert
+from ..utils import PatchEmbed, mit_convert
 
 
 def nlc_to_nchw(tensor, H, W):
@@ -90,6 +90,7 @@ class MixFFN(BaseModule):
                  num_fcs=2,
                  act_cfg=dict(type='GELU'),
                  ffn_drop=0.,
+                 pe_index=0.,
                  dropout_layer=None,
                  add_identity=True,
                  init_cfg=None):
@@ -113,14 +114,17 @@ class MixFFN(BaseModule):
 
         layers = []
         in_channels = embed_dims
-        for _ in range(num_fcs - 1):
-            layers.append(
-                Sequential(
-                    conv1x1(
-                        in_channels=in_channels,
-                        out_channels=feedforward_channels),
-                    PEConv(feedforward_channels), self.activate,
-                    nn.Dropout(ffn_drop)))
+        for idx in range(num_fcs - 1):
+            container = []
+            container.append(
+                conv1x1(
+                    in_channels=in_channels,
+                    out_channels=feedforward_channels))
+            if pe_index == idx:
+                container.append(PEConv(feedforward_channels))
+            container.append(self.activate)
+            container.append(nn.Dropout(ffn_drop))
+            layers.append(Sequential(*container))
         layers.append(
             conv1x1(
                 in_channels=feedforward_channels, out_channels=in_channels))
@@ -198,15 +202,16 @@ class EfficientMultiheadAttention(MultiheadAttention):
                 stride=sr_ratio,
                 norm_cfg=None,
                 act_cfg=None)
-            _, self.norm = build_norm_layer(norm_cfg, embed_dims)
+            # The ret[0] of build_norm_layer is norm name.
+            self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
 
     def forward(self, x, H, W, identity=None):
-        B, _, C = x.shape
 
         x_q = x
         if self.sr_ratio > 1:
-            x_kv = x.permute(0, 2, 1).reshape(B, C, H, W)
-            x_kv = self.sr(x_kv).reshape(B, C, -1).permute(0, 2, 1)
+            x_kv = nlc_to_nchw(x, H, W)
+            x_kv = self.sr(x_kv)
+            x_kv = nchw_to_nlc(x_kv)
             x_kv = self.norm(x_kv)
         else:
             x_kv = x
@@ -263,7 +268,8 @@ class TransformerEncoderLayer(BaseModule):
                  sr_ratio=1):
         super(TransformerEncoderLayer, self).__init__()
 
-        _, self.norm1 = build_norm_layer(norm_cfg, embed_dims)
+        # The ret[0] of build_norm_layer is norm name.
+        self.norm1 = build_norm_layer(norm_cfg, embed_dims)[1]
 
         self.attn = EfficientMultiheadAttention(
             embed_dims=embed_dims,
@@ -276,7 +282,8 @@ class TransformerEncoderLayer(BaseModule):
             norm_cfg=norm_cfg,
             sr_ratio=sr_ratio)
 
-        _, self.norm2 = build_norm_layer(norm_cfg, embed_dims)
+        # The ret[0] of build_norm_layer is norm name.
+        self.norm2 = build_norm_layer(norm_cfg, embed_dims)[1]
 
         self.ffn = MixFFN(
             embed_dims=embed_dims,
@@ -290,36 +297,6 @@ class TransformerEncoderLayer(BaseModule):
         x = self.attn(self.norm1(x), H, W, identity=x)
         x = self.ffn(self.norm2(x), H, W, identity=x)
         return x
-
-
-class OverlapPatchEmbed(BaseModule):
-    """Image to Patch Embedding."""
-
-    def __init__(self,
-                 patch_size,
-                 in_channels,
-                 embed_dims,
-                 stride,
-                 norm_cfg=None):
-        super().__init__()
-
-        self.proj = ConvModule(
-            in_channels=in_channels,
-            out_channels=embed_dims,
-            kernel_size=patch_size,
-            stride=stride,
-            padding=patch_size // 2,
-            act_cfg=None,
-            norm_cfg=None)
-        _, self.norm = build_norm_layer(norm_cfg, embed_dims)
-
-    def forward(self, x):
-        x = self.proj(x)
-        _, _, H, W = x.shape
-        x = nchw_to_nlc(x)
-        x = self.norm(x)
-
-        return x, H, W
 
 
 @BACKBONES.register_module()
@@ -336,6 +313,8 @@ class MixVisionTransformer(BaseModule):
                  embed_dims=[64, 128, 256, 512],
                  num_layers=[3, 4, 6, 3],
                  num_heads=[1, 2, 4, 8],
+                 patch_sizes=[7, 3, 3, 3],
+                 strides=[4, 2, 2, 2],
                  mlp_ratios=[4, 4, 4, 4],
                  out_indices=(0, 1, 2, 3),
                  qkv_bias=True,
@@ -350,7 +329,9 @@ class MixVisionTransformer(BaseModule):
                  init_cfg=None):
         super().__init__()
 
-        assert pretrain_style in ['official', 'mmcls']
+        assert pretrain_style in [
+            'official', 'mmcls'
+        ], 'we only support official weights or mmcls weights.'
 
         if isinstance(pretrained, str) or pretrained is None:
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
@@ -358,13 +339,13 @@ class MixVisionTransformer(BaseModule):
         else:
             raise TypeError('pretrained must be a str or None')
 
+        self.patch_sizes = patch_sizes
+        self.strides = strides
+
         self.out_indices = out_indices
         self.pretrain_style = pretrain_style
         self.pretrained = pretrained
         self.init_cfg = init_cfg
-
-        patch_sizes = [7, 3, 3, 3]
-        strides = [4, 2, 2, 2]
 
         # transformer encoder
         dpr = [
@@ -374,33 +355,33 @@ class MixVisionTransformer(BaseModule):
 
         cur = 0
         self.layers = ModuleList()
-        for stage_id in range(len(num_layers)):
-            patch_embed = OverlapPatchEmbed(
-                patch_size=patch_sizes[stage_id],
+        for i, num_layer in enumerate(num_layers):
+            patch_embed = PatchEmbed(
                 in_channels=in_channels,
-                embed_dims=embed_dims[stage_id],
-                stride=strides[stage_id],
+                embed_dims=embed_dims[i],
+                kernel_size=patch_sizes[i],
+                stride=strides[i],
+                padding=patch_sizes[i] // 2,
                 norm_cfg=norm_cfg)
             layer = ModuleList([
                 TransformerEncoderLayer(
-                    embed_dims=embed_dims[stage_id],
-                    num_heads=num_heads[stage_id],
-                    feedforward_channels=mlp_ratios[stage_id] *
-                    embed_dims[stage_id],
+                    embed_dims=embed_dims[i],
+                    num_heads=num_heads[i],
+                    feedforward_channels=mlp_ratios[i] * embed_dims[i],
                     drop_rate=drop_rate,
                     attn_drop_rate=attn_drop_rate,
-                    drop_path_rate=dpr[cur + i],
+                    drop_path_rate=dpr[cur + idx],
                     num_fcs=2,
                     qkv_bias=qkv_bias,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
-                    sr_ratio=sr_ratios[stage_id])
-                for i in range(num_layers[stage_id])
+                    sr_ratio=sr_ratios[i]) for idx in range(num_layer)
             ])
-            in_channels = embed_dims[stage_id]
-            _, norm = build_norm_layer(norm_cfg, embed_dims[stage_id])
+            in_channels = embed_dims[i]
+            # The ret[0] of build_norm_layer is norm name.
+            norm = build_norm_layer(norm_cfg, embed_dims[i])[1]
             self.layers.append(ModuleList([patch_embed, layer, norm]))
-            cur += num_layers[stage_id]
+            cur += num_layer
 
     def init_weights(self):
         if self.pretrained is None:
@@ -439,15 +420,14 @@ class MixVisionTransformer(BaseModule):
             self.load_state_dict(state_dict, False)
 
     def forward(self, x):
-        B = x.shape[0]
         outs = []
 
         for i, layer in enumerate(self.layers):
-            x, H, W = layer[0](x)
+            x, H, W = layer[0](x), layer[0].DH, layer[0].DW
             for block in layer[1]:
                 x = block(x, H, W)
             x = layer[2](x)
-            x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
+            x = nlc_to_nchw(x, H, W)
             if i in self.out_indices:
                 outs.append(x)
 

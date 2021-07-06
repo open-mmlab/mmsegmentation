@@ -103,7 +103,7 @@ def mit_convert(ckpt):
             new_k = k.replace(f'patch_embed{stage_i}', f'layers.{stage_i-1}.0')
             new_v = v
             if 'proj.' in new_k:
-                new_k = new_k.replace('proj.', 'proj.conv.')
+                new_k = new_k.replace('proj.', 'projection.')
         elif k.startswith('block'):
             stage_i = int(k.split('.')[0].replace('block', ''))
             new_k = k.replace(f'block{stage_i}', f'layers.{stage_i-1}.1')
