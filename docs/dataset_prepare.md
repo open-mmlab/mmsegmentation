@@ -138,34 +138,29 @@ python tools/convert_datasets/pascal_context.py data/VOCdevkit data/VOCdevkit/VO
 
 The data could be downloaded [here](http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip) by wget.
 
-For  COCO Stuff 10k dataset, please run the following commands to download and convert the dataset.
+For COCO Stuff 10k dataset, please run the following commands to download and convert the dataset.
 
 ```shell
 # download
-cd data
 mkdir -p coco_stuff10k && cd coco_stuff10k
 wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip
 
 # unzip
 unzip cocostuff-10k-v1.1.zip
-cd ../..
 
 # --nproc means 8 process for conversion, which could be omitted as well.
-python tools/convert_datasets/coco_stuff10k.py data/coco_stuff10k --nproc 8
+python tools/convert_datasets/coco_stuff10k.py /path/to/coco_stuff10k --nproc 8
 ```
 
-By conversion, masks in `data/coco_stuff10k/masks/*.png` are used for COCO Stuff 10k training and testing.
+By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2014/*_labelTrainIds.png` are used for COCO Stuff 10k training and testing.
 
 ### COCO Stuff 164k
 
 For COCO Stuff 164k dataset, please run the following commands to download and convert the augmented dataset.
 
 ```shell
-# create file
-cd data
-mkdir -p coco_stuff164k && cd coco_stuff164k
-
 # download
+mkdir coco_stuff164k && cd coco_stuff164k
 wget http://images.cocodataset.org/zips/train2017.zip
 wget http://images.cocodataset.org/zips/val2017.zip
 wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/stuffthingmaps_trainval2017.zip
@@ -177,10 +172,10 @@ unzip stuffthingmaps_trainval2017.zip -d annotations/
 cd ../..
 
 # --nproc means 8 process for conversion, which could be omitted as well.
-python tools/convert_datasets/coco_stuff164k.py data/coco_stuff164k --nproc 8
+python tools/convert_datasets/coco_stuff164k.py /path/to/coco_stuff164k --nproc 8
 ```
 
-By convention, masks in `data/coco_stuff164k/masks/*.png` are used for COCO Stuff 164k training and testing.
+By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2017/*_labelTrainIds.png` are used for COCO Stuff 164k training and testing.
 
 The details of this dataset could be found at [here](https://github.com/nightrome/cocostuff#downloads).
 

@@ -1,10 +1,10 @@
 import argparse
-import mmcv
-import numpy as np
-import os
 import os.path as osp
 import shutil
 from functools import partial
+
+import mmcv
+import numpy as np
 from PIL import Image
 from scipy.io import loadmat
 
@@ -186,8 +186,8 @@ clsID_to_trID = {
 }
 
 
-def convert_to_trainID(tuple_path, in_img_dir, in_ann_dir, out_img_dir, out_mask_dir,
-                is_train):
+def convert_to_trainID(tuple_path, in_img_dir, in_ann_dir, out_img_dir,
+                       out_mask_dir, is_train):
     imgpath, maskpath = tuple_path
     shutil.move(
         osp.join(in_img_dir, imgpath),
@@ -198,10 +198,11 @@ def convert_to_trainID(tuple_path, in_img_dir, in_ann_dir, out_img_dir, out_mask
     mask_copy = mask.copy()
     for clsID, trID in clsID_to_trID.items():
         mask_copy[mask == clsID] = trID
-    seg_filename = osp.join(
-        out_mask_dir, 'train2014',
-        maskpath.split('.')[0] + '_labelTrainIds.png') if is_train else osp.join(
-                out_mask_dir, 'test2014', maskpath.replace('.mat', '.png'))
+    seg_filename = osp.join(out_mask_dir, 'train2014',
+                            maskpath.split('.')[0] +
+                            '_labelTrainIds.png') if is_train else osp.join(
+                                out_mask_dir, 'test2014',
+                                maskpath.replace('.mat', '.png'))
     Image.fromarray(mask_copy).save(seg_filename, 'PNG')
 
 
@@ -230,7 +231,8 @@ def generate_coco_list(folder):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Convert COCO Stuff 10k annotations to mmsegmentation format')
+        description=\
+        'Convert COCO Stuff 10k annotations to mmsegmentation format')  # noqa
     parser.add_argument('coco_path', help='coco stuff path')
     parser.add_argument('-o', '--out_dir', help='output path')
     parser.add_argument(
@@ -260,7 +262,7 @@ def main():
 
     mmcv.track_parallel_progress(
         partial(
-            convert_mat,
+            convert_to_trainID,
             in_img_dir=osp.join(coco_path, 'images'),
             in_ann_dir=osp.join(coco_path, 'annotations'),
             out_img_dir=out_img_dir,
@@ -271,7 +273,7 @@ def main():
 
     mmcv.track_parallel_progress(
         partial(
-            convert_mat,
+            convert_to_trainID,
             in_img_dir=osp.join(coco_path, 'images'),
             in_ann_dir=osp.join(coco_path, 'annotations'),
             out_img_dir=out_img_dir,

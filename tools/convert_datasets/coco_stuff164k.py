@@ -1,10 +1,12 @@
 import argparse
-import mmcv
-import numpy as np
 import os
 import os.path as osp
+import shutil
 from functools import partial
 from glob import glob
+
+import mmcv
+import numpy as np
 from PIL import Image
 
 COCO_LEN = 123287
@@ -185,7 +187,6 @@ clsID_to_trID = {
 }
 
 
-
 def convert_to_trainID(mask_path, out_mask_dir, is_train):
     mask = np.array(Image.open(mask_path))
     mask_copy = mask.copy()
@@ -194,13 +195,15 @@ def convert_to_trainID(mask_path, out_mask_dir, is_train):
     seg_filename = osp.join(
         out_mask_dir, 'train2017',
         os.path.basename(mask_path)) if is_train else osp.join(
-            out_mask_dir, 'val2017', mask_path.split('.')[0] + '_labelTrainIds.png')
+            out_mask_dir, 'val2017',
+            mask_path.split('.')[0] + '_labelTrainIds.png')
     Image.fromarray(mask_copy).save(seg_filename, 'PNG')
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Convert COCO Stuff 164k annotations to mmsegmentation format')
+        description=\
+        'Convert COCO Stuff 164k annotations to mmsegmentation format')  # noqa
     parser.add_argument('coco_path', help='coco stuff path')
     parser.add_argument('-o', '--out_dir', help='output path')
     parser.add_argument(
@@ -214,13 +217,16 @@ def main():
     coco_path = args.coco_path
     nproc = args.nproc
 
-    if args.out_dir is None:
-        out_mask_dir = osp.join(coco_path, 'annotations')
-    else:
-        out_mask_dir = args.out_dir
+    out_dir = args.out_dir or coco_path
+    out_img_dir = osp.join(out_dir, 'images')
+    out_mask_dir = osp.join(out_dir, 'annotations')
 
+    mmcv.mkdir_or_exist(out_img_dir)
     mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'train2017'))
     mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'val2017'))
+
+    if out_dir != coco_path:
+        shutil.copytree(osp.join(out_dir, 'images'), out_img_dir)
 
     train_list = glob(osp.join(coco_path, 'annotations', 'train2017', '*.png'))
     test_list = glob(osp.join(coco_path, 'annotations', 'val2017', '*.png'))
@@ -229,12 +235,12 @@ def main():
                 len(train_list), len(test_list))
 
     mmcv.track_parallel_progress(
-        partial(convert_mat, out_mask_dir=out_mask_dir, is_train=True),
+        partial(convert_to_trainID, out_mask_dir=out_mask_dir, is_train=True),
         train_list,
         nproc=nproc)
 
     mmcv.track_parallel_progress(
-        partial(convert_mat, out_mask_dir=out_mask_dir, is_train=False),
+        partial(convert_to_trainID, out_mask_dir=out_mask_dir, is_train=False),
         test_list,
         nproc=nproc)
 
