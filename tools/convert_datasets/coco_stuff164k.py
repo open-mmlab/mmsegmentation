@@ -221,7 +221,6 @@ def main():
     out_img_dir = osp.join(out_dir, 'images')
     out_mask_dir = osp.join(out_dir, 'annotations')
 
-    # mmcv.mkdir_or_exist(out_img_dir)
     mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'train2017'))
     mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'val2017'))
 
