@@ -202,7 +202,7 @@ def convert_to_trainID(tuple_path, in_img_dir, in_ann_dir, out_img_dir,
                             maskpath.split('.')[0] +
                             '_labelTrainIds.png') if is_train else osp.join(
                                 out_mask_dir, 'test2014',
-                                maskpath.replace('.mat', '.png'))
+                                maskpath.split('.')[0] + '_labelTrainIds.png')
     Image.fromarray(mask_copy).save(seg_filename, 'PNG')
 
 
