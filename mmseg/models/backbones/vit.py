@@ -160,11 +160,11 @@ class VisionTransformer(BaseModule):
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  with_cls_token=True,
+                 output_cls_token=False,
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
                  patch_norm=False,
                  final_norm=False,
-                 out_shape='NCHW',
                  interpolate_mode='bicubic',
                  num_fcs=2,
                  norm_eval=False,
@@ -185,8 +185,9 @@ class VisionTransformer(BaseModule):
 
         assert pretrain_style in ['timm', 'mmcls']
 
-        assert out_shape in ['NLC',
-                             'NCHW'], 'output shape must be "NLC" or "NCHW".'
+        if output_cls_token:
+            assert with_cls_token is True, f'with_cls_token must be True if' \
+                f'set output_cls_token to True, but got {with_cls_token}'
 
         if isinstance(pretrained, str) or pretrained is None:
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
@@ -196,7 +197,6 @@ class VisionTransformer(BaseModule):
 
         self.img_size = img_size
         self.patch_size = patch_size
-        self.out_shape = out_shape
         self.interpolate_mode = interpolate_mode
         self.norm_eval = norm_eval
         self.with_cp = with_cp
@@ -218,6 +218,7 @@ class VisionTransformer(BaseModule):
             (img_size[1] // patch_size)
 
         self.with_cls_token = with_cls_token
+        self.output_cls_token = output_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
         self.pos_embed = nn.Parameter(
             torch.zeros(1, num_patches + 1, embed_dims))
@@ -253,7 +254,6 @@ class VisionTransformer(BaseModule):
                     batch_first=True))
 
         self.final_norm = final_norm
-        self.out_shape = out_shape
         if final_norm:
             self.norm1_name, norm1 = build_norm_layer(
                 norm_cfg, embed_dims, postfix=1)
@@ -371,7 +371,8 @@ class VisionTransformer(BaseModule):
             1, pos_h, pos_w, pos_embed.shape[2]).permute(0, 3, 1, 2)
         pos_embed_weight = F.interpolate(
             pos_embed_weight,
-            size=[input_h // patch_size, input_w // patch_size],
+            size=[(input_h + patch_size - 1) // patch_size,
+                  (input_w + patch_size - 1) // patch_size],
             align_corners=False,
             mode=mode)
         cls_token_weight = cls_token_weight.unsqueeze(1)
@@ -405,11 +406,12 @@ class VisionTransformer(BaseModule):
                     out = x[:, 1:]
                 else:
                     out = x
-                if self.out_shape == 'NCHW':
-                    B, _, C = out.shape
-                    out = out.reshape(B, inputs.shape[2] // self.patch_size,
-                                      inputs.shape[3] // self.patch_size,
-                                      C).permute(0, 3, 1, 2)
+                B, _, C = out.shape
+                out = out.reshape(B, inputs.shape[2] // self.patch_size,
+                                  inputs.shape[3] // self.patch_size,
+                                  C).permute(0, 3, 1, 2)
+                if self.output_cls_token:
+                    out = [out, x[:, 0]]
                 outs.append(out)
 
         return tuple(outs)
