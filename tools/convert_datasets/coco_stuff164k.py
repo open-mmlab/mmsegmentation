@@ -192,10 +192,11 @@ def convert_to_trainID(maskpath, out_mask_dir, is_train):
     for clsID, trID in clsID_to_trID.items():
         mask_copy[mask == clsID] = trID
     seg_filename = osp.join(out_mask_dir, 'train2017',
-                            maskpath.split('.')[0] +
+                            osp.basename(maskpath).split('.')[0] +
                             '_labelTrainIds.png') if is_train else osp.join(
                                 out_mask_dir, 'val2017',
-                                maskpath.split('.')[0] + '_labelTrainIds.png')
+                                osp.basename(maskpath).split('.')[0] +
+                                '_labelTrainIds.png')
     Image.fromarray(mask_copy).save(seg_filename, 'PNG')
 
 
