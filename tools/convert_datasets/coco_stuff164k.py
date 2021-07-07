@@ -191,12 +191,12 @@ def convert_to_trainID(maskpath, out_mask_dir, is_train):
     mask_copy = mask.copy()
     for clsID, trID in clsID_to_trID.items():
         mask_copy[mask == clsID] = trID
-    seg_filename = osp.join(out_mask_dir, 'train2017',
-                            osp.basename(maskpath).split('.')[0] +
-                            '_labelTrainIds.png') if is_train else osp.join(
-                                out_mask_dir, 'val2017',
-                                osp.basename(maskpath).split('.')[0] +
-                                '_labelTrainIds.png')
+    seg_filename = osp.join(
+        out_mask_dir, 'train2017',
+        osp.basename(maskpath).split('.')[0] +
+        '_labelTrainIds.png') if is_train else osp.join(
+            out_mask_dir, 'val2017',
+            osp.basename(maskpath).split('.')[0] + '_labelTrainIds.png')
     Image.fromarray(mask_copy).save(seg_filename, 'PNG')
 
 
@@ -235,15 +235,26 @@ def main():
             len(test_list)) == COCO_LEN, 'Wrong length of list {} & {}'.format(
                 len(train_list), len(test_list))
 
-    mmcv.track_parallel_progress(
-        partial(convert_to_trainID, out_mask_dir=out_mask_dir, is_train=True),
-        train_list,
-        nproc=nproc)
-
-    mmcv.track_parallel_progress(
-        partial(convert_to_trainID, out_mask_dir=out_mask_dir, is_train=False),
-        test_list,
-        nproc=nproc)
+    if args.nproc > 1:
+        mmcv.track_parallel_progress(
+            partial(
+                convert_to_trainID, out_mask_dir=out_mask_dir, is_train=True),
+            train_list,
+            nproc=nproc)
+        mmcv.track_parallel_progress(
+            partial(
+                convert_to_trainID, out_mask_dir=out_mask_dir, is_train=False),
+            test_list,
+            nproc=nproc)
+    else:
+        mmcv.track_progress(
+            partial(
+                convert_to_trainID, out_mask_dir=out_mask_dir, is_train=True),
+            train_list)
+        mmcv.track_progress(
+            partial(
+                convert_to_trainID, out_mask_dir=out_mask_dir, is_train=False),
+            test_list)
 
     print('Done!')
 

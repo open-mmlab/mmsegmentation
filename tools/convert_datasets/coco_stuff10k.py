@@ -260,27 +260,44 @@ def main():
             len(test_list)) == COCO_LEN, 'Wrong length of list {} & {}'.format(
                 len(train_list), len(test_list))
 
-    mmcv.track_parallel_progress(
-        partial(
-            convert_to_trainID,
-            in_img_dir=osp.join(coco_path, 'images'),
-            in_ann_dir=osp.join(coco_path, 'annotations'),
-            out_img_dir=out_img_dir,
-            out_mask_dir=out_mask_dir,
-            is_train=True),
-        train_list,
-        nproc=nproc)
-
-    mmcv.track_parallel_progress(
-        partial(
-            convert_to_trainID,
-            in_img_dir=osp.join(coco_path, 'images'),
-            in_ann_dir=osp.join(coco_path, 'annotations'),
-            out_img_dir=out_img_dir,
-            out_mask_dir=out_mask_dir,
-            is_train=False),
-        test_list,
-        nproc=nproc)
+    if args.nproc > 1:
+        mmcv.track_parallel_progress(
+            partial(
+                convert_to_trainID,
+                in_img_dir=osp.join(coco_path, 'images'),
+                in_ann_dir=osp.join(coco_path, 'annotations'),
+                out_img_dir=out_img_dir,
+                out_mask_dir=out_mask_dir,
+                is_train=True),
+            train_list,
+            nproc=nproc)
+        mmcv.track_parallel_progress(
+            partial(
+                convert_to_trainID,
+                in_img_dir=osp.join(coco_path, 'images'),
+                in_ann_dir=osp.join(coco_path, 'annotations'),
+                out_img_dir=out_img_dir,
+                out_mask_dir=out_mask_dir,
+                is_train=False),
+            test_list,
+            nproc=nproc)
+    else:
+        mmcv.track_progress(
+            partial(
+                convert_to_trainID,
+                in_img_dir=osp.join(coco_path, 'images'),
+                in_ann_dir=osp.join(coco_path, 'annotations'),
+                out_img_dir=out_img_dir,
+                out_mask_dir=out_mask_dir,
+                is_train=True), train_list)
+        mmcv.track_progress(
+            partial(
+                convert_to_trainID,
+                in_img_dir=osp.join(coco_path, 'images'),
+                in_ann_dir=osp.join(coco_path, 'annotations'),
+                out_img_dir=out_img_dir,
+                out_mask_dir=out_mask_dir,
+                is_train=False), test_list)
 
     print('Done!')
 
