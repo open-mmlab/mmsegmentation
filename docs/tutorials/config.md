@@ -238,12 +238,12 @@ lr_config = dict(
     policy='poly',  # The policy of scheduler, also support Step, CosineAnnealing, Cyclic, etc. Refer to details of supported LrUpdater from https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/lr_updater.py#L9.
     power=0.9,  # The power of polynomial decay.
     min_lr=0.0001,  # The minimum learning rate to stable the training.
-    by_epoch=False)  # Whethe count by epoch or not.
+    by_epoch=False)  # Whether count by epoch or not.
 runner = dict(
     type='IterBasedRunner', # Type of runner to use (i.e. IterBasedRunner or EpochBasedRunner)
     max_iters=40000) # Total number of iterations. For EpochBasedRunner use `max_epochs`
 checkpoint_config = dict(  # Config to set the checkpoint hook, Refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py for implementation.
-    by_epoch=False,  # Whethe count by epoch or not.
+    by_epoch=False,  # Whether count by epoch or not.
     interval=4000)  # The save interval.
 evaluation = dict(  # The config to build the evaluation hook. Please refer to mmseg/core/evaulation/eval_hook.py for details.
     interval=4000,  # The interval of evaluation.
@@ -321,7 +321,7 @@ model = dict(
     auxiliary_head=dict(...))
 ```
 
-The `_delete_=True` would replace all old keys in `backbone` field with new keys new keys.
+The `_delete_=True` would replace all old keys in `backbone` field with new keys.
 
 ### Use intermediate variables in configs
 
