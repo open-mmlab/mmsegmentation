@@ -289,8 +289,9 @@ class VisionTransformer(BaseModule):
                     pos_size = int(
                         math.sqrt(state_dict['pos_embed'].shape[1] - 1))
                     state_dict['pos_embed'] = self.resize_pos_embed(
-                        state_dict['pos_embed'], (h, w), (pos_size, pos_size),
-                        self.patch_size, self.interpolate_mode)
+                        state_dict['pos_embed'],
+                        (h // self.patch_size, w // self.patch_size),
+                        (pos_size, pos_size), self.interpolate_mode)
 
             self.load_state_dict(state_dict, False)
 
