@@ -14,7 +14,7 @@
 例如，如果一些修改是基于 DeepLabV3，使用者首先首先应该通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py`来继承基础 DeepLabV3 结构，再去修改配置文件里其他内容以完成继承。
 
 如果您正在构建一个完整的新模型，它完全没有和已有的方法共享一些结构，您可能需要在 `configs` 下面创建一个文件夹 `xxxnet`。
-更详细的文档，请参照 [mmcv](https://mmcv.readthedocs.io/en/latest/utils.html#config) 。
+更详细的文档，请参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html) 。
 
 ## 配置文件命名风格
 
@@ -253,7 +253,7 @@ evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节
 ### 忽略基础配置文件里的一些域内容。
 
 有时，您也许会设置 `_delete_=True` 去忽略基础配置文件里的一些域内容。
-您也许可以参照 [mmcv](https://mmcv.readthedocs.io/en/latest/utils.html#inherit-from-base-config-with-ignored-fields) 来获得一些简单的指导。
+您也许可以参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html#inherit-from-base-config-with-ignored-fields) 来获得一些简单的指导。
 
 在 MMSegmentation 里，例如为了改变 PSPNet 的主干网络的某些内容：
 
