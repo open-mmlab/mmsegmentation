@@ -316,15 +316,15 @@ class VisionTransformer(BaseModule):
                     constant_init(m.bias, 0)
                     constant_init(m.weight, 1.0)
 
-    def _pos_embeding(self, downsampled_img_size, patched_img, pos_embed):
+    def _pos_embeding(self, patched_img, hw_shape, pos_embed):
         """Positiong embeding method.
 
         Resize the pos_embed, if the input image size doesn't match
             the training size.
         Args:
-            downsampled_img_size (tuple): The downsampled image resolution.
             patched_img (torch.Tensor): The patched image, it should be
                 shape of [B, L1, C].
+            hw_shape (tuple): The downsampled image resolution.
             pos_embed (torch.Tensor): The pos_embed weighs, it should be
                 shape of [B, L2, c].
         Return:
@@ -342,7 +342,7 @@ class VisionTransformer(BaseModule):
                 raise ValueError(
                     'Unexpected shape of pos_embed, got {}.'.format(
                         pos_embed.shape))
-            pos_embed = self.resize_pos_embed(pos_embed, downsampled_img_size,
+            pos_embed = self.resize_pos_embed(pos_embed, hw_shape,
                                               (pos_h, pos_w), self.patch_size,
                                               self.interpolate_mode)
         return self.drop_after_pos(patched_img + pos_embed)
@@ -380,12 +380,12 @@ class VisionTransformer(BaseModule):
     def forward(self, inputs):
         B = inputs.shape[0]
 
-        x, H, W = self.patch_embed(
-            inputs), self.patch_embed.DH, self.patch_embed.DW
+        x, hw_shape = self.patch_embed(inputs), (self.patch_embed.DH,
+                                                 self.patch_embed.DW)
         # stole cls_tokens impl from Phil Wang, thanks
         cls_tokens = self.cls_token.expand(B, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
-        x = self._pos_embeding((H, W), x, self.pos_embed)
+        x = self._pos_embeding(x, hw_shape, self.pos_embed)
 
         if not self.with_cls_token:
             # Remove class token for transformer encoder input
@@ -404,7 +404,8 @@ class VisionTransformer(BaseModule):
                 else:
                     out = x
                 B, _, C = out.shape
-                out = out.reshape(B, H, W, C).permute(0, 3, 1, 2)
+                out = out.reshape(B, hw_shape[0], hw_shape[1],
+                                  C).permute(0, 3, 1, 2)
                 if self.output_cls_token:
                     out = [out, x[:, 0]]
                 outs.append(out)
