@@ -343,12 +343,12 @@ class VisionTransformer(BaseModule):
                     'Unexpected shape of pos_embed, got {}.'.format(
                         pos_embed.shape))
             pos_embed = self.resize_pos_embed(pos_embed, hw_shape,
-                                              (pos_h, pos_w), self.patch_size,
+                                              (pos_h, pos_w),
                                               self.interpolate_mode)
         return self.drop_after_pos(patched_img + pos_embed)
 
     @staticmethod
-    def resize_pos_embed(pos_embed, input_shpae, pos_shape, patch_size, mode):
+    def resize_pos_embed(pos_embed, input_shpae, pos_shape, mode):
         """Resize pos_embed weights.
 
         Resize pos_embed using bicubic interpolate method.
@@ -356,7 +356,7 @@ class VisionTransformer(BaseModule):
             pos_embed (torch.Tensor): pos_embed weights.
             input_shpae (tuple): Tuple for (input_h, intput_w).
             pos_shape (tuple): Tuple for (pos_h, pos_w).
-            patch_size (int): Patch size.
+            mode (str): Algorithm used for upsampling.
         Return:
             torch.Tensor: The resized pos_embed of shape [B, L_new, C]
         """
