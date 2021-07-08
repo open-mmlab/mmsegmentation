@@ -120,6 +120,7 @@ class VisionTransformer(BaseModule):
         drop_path_rate (float): stochastic depth rate. Default 0.0
         with_cls_token (bool): If concatenating class token into image tokens
             as transformer input. Default: True.
+        output_cls_token (bool): Whether output the cls_token. Default: False.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
@@ -128,8 +129,6 @@ class VisionTransformer(BaseModule):
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
             final feature map. Default: False.
-        out_shape (str): Select the output format of feature information.
-            Default: NCHW.
         interpolate_mode (str): Select the interpolate mode for position
             embeding vector resize. Default: bicubic.
         num_fcs (int): The number of fully-connected layers for FFNs.
