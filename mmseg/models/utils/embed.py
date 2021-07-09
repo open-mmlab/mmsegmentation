@@ -42,7 +42,7 @@ class PatchEmbed(BaseModule):
         if stride is None:
             stride = kernel_size
 
-        self.overlapping = stride == kernel_size
+        self.overlapping = stride < kernel_size
 
         # The default setting of patch size is equal to kernel size.
         patch_size = kernel_size

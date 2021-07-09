@@ -91,13 +91,16 @@ class MixFFN(BaseModule):
                  num_fcs=2,
                  act_cfg=dict(type='GELU'),
                  ffn_drop=0.,
-                 pe_index=0.,
+                 pe_index=1,
                  dropout_layer=None,
                  add_identity=True,
                  init_cfg=None):
         super(MixFFN, self).__init__(init_cfg)
         assert num_fcs >= 2, 'num_fcs should be no less ' \
             f'than 2. got {num_fcs}.'
+
+        assert pe_index <= num_fcs and pe_index >= 0, 'pe_index range from 0 '
+        'to num_fcs'
 
         self.embed_dims = embed_dims
         self.feedforward_channels = feedforward_channels
