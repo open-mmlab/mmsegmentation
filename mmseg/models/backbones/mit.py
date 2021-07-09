@@ -17,7 +17,8 @@ from ..utils import PatchEmbed, mit_convert
 
 def nlc_to_nchw(tensor, H, W):
     assert len(tensor.shape) == 3
-    B, _, C = tensor.shape
+    B, L, C = tensor.shape
+    assert L == H * W, 'The seq_len doesn\'t match H, W'
     return tensor.transpose(1, 2).reshape(B, C, H, W)
 
 
@@ -114,13 +115,17 @@ class MixFFN(BaseModule):
 
         layers = []
         in_channels = embed_dims
+        # first position of MixFFN
+        if pe_index == 0:
+            layers.append(PEConv(in_channels))
         for idx in range(num_fcs - 1):
             container = []
             container.append(
                 conv1x1(
                     in_channels=in_channels,
                     out_channels=feedforward_channels))
-            if pe_index == idx:
+            # middle position of MixFFN
+            if pe_index == idx + 1:
                 container.append(PEConv(feedforward_channels))
             container.append(self.activate)
             container.append(nn.Dropout(ffn_drop))
@@ -128,6 +133,9 @@ class MixFFN(BaseModule):
         layers.append(
             conv1x1(
                 in_channels=feedforward_channels, out_channels=in_channels))
+        # Last position of MixFFN
+        if pe_index == num_fcs:
+            layers.append(PEConv(feedforward_channels))
         layers.append(nn.Dropout(ffn_drop))
         self.layers = Sequential(*layers)
         self.dropout_layer = build_dropout(
@@ -310,20 +318,21 @@ class MixVisionTransformer(BaseModule):
 
     def __init__(self,
                  in_channels=3,
+                 num_stages=4,
                  embed_dims=[64, 128, 256, 512],
-                 num_layers=[3, 4, 6, 3],
+                 depths=[3, 4, 6, 3],
                  num_heads=[1, 2, 4, 8],
                  patch_sizes=[7, 3, 3, 3],
                  strides=[4, 2, 2, 2],
-                 mlp_ratios=[4, 4, 4, 4],
+                 sr_ratios=[8, 4, 2, 1],
                  out_indices=(0, 1, 2, 3),
+                 mlp_ratio=4,
                  qkv_bias=True,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN', eps=1e-6),
-                 sr_ratios=[8, 4, 2, 1],
                  pretrain_style='official',
                  pretrained=None,
                  init_cfg=None):
@@ -339,23 +348,30 @@ class MixVisionTransformer(BaseModule):
         else:
             raise TypeError('pretrained must be a str or None')
 
+        self.num_stages = num_stages
+        self.embed_dims = embed_dims
+        self.depths = depths
+        self.num_heads = num_heads
         self.patch_sizes = patch_sizes
         self.strides = strides
+        self.sr_ratios = sr_ratios
+        assert num_stages == len(embed_dims) == len(depths) == len(num_heads) \
+            == len(patch_sizes) == len(strides) == len(sr_ratios)
 
         self.out_indices = out_indices
+        assert max(out_indices) < self.num_stages
         self.pretrain_style = pretrain_style
         self.pretrained = pretrained
         self.init_cfg = init_cfg
 
         # transformer encoder
         dpr = [
-            x.item()
-            for x in torch.linspace(0, drop_path_rate, sum(num_layers))
+            x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]  # stochastic depth decay rule
 
         cur = 0
         self.layers = ModuleList()
-        for i, num_layer in enumerate(num_layers):
+        for i, depth in enumerate(depths):
             patch_embed = PatchEmbed(
                 in_channels=in_channels,
                 embed_dims=embed_dims[i],
@@ -367,7 +383,7 @@ class MixVisionTransformer(BaseModule):
                 TransformerEncoderLayer(
                     embed_dims=embed_dims[i],
                     num_heads=num_heads[i],
-                    feedforward_channels=mlp_ratios[i] * embed_dims[i],
+                    feedforward_channels=mlp_ratio * embed_dims[i],
                     drop_rate=drop_rate,
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[cur + idx],
@@ -375,13 +391,13 @@ class MixVisionTransformer(BaseModule):
                     qkv_bias=qkv_bias,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
-                    sr_ratio=sr_ratios[i]) for idx in range(num_layer)
+                    sr_ratio=sr_ratios[i]) for idx in range(depth)
             ])
             in_channels = embed_dims[i]
             # The ret[0] of build_norm_layer is norm name.
             norm = build_norm_layer(norm_cfg, embed_dims[i])[1]
             self.layers.append(ModuleList([patch_embed, layer, norm]))
-            cur += num_layer
+            cur += depth
 
     def init_weights(self):
         if self.pretrained is None:

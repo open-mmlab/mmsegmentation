@@ -44,7 +44,7 @@ class PatchEmbed(BaseModule):
 
         self.overlapping = stride == kernel_size
 
-        # The default setting of patch size is eaual to kernel size.
+        # The default setting of patch size is equal to kernel size.
         patch_size = kernel_size
         if isinstance(patch_size, int):
             patch_size = to_2tuple(patch_size)
@@ -76,10 +76,11 @@ class PatchEmbed(BaseModule):
     def forward(self, x):
         H, W = x.shape[2], x.shape[3]
 
-        # Modify H, W to multiple of patch size.
+        # TODO: Process overlapping op
         if self.overlapping:
             pass
         else:
+            # Modify H, W to multiple of patch size.
             if H % self.patch_size[0] != 0:
                 x = F.pad(
                     x, (0, 0, 0, self.patch_size[0] - H % self.patch_size[0]))
