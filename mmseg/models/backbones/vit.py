@@ -120,7 +120,8 @@ class VisionTransformer(BaseModule):
         drop_path_rate (float): stochastic depth rate. Default 0.0
         with_cls_token (bool): If concatenating class token into image tokens
             as transformer input. Default: True.
-        output_cls_token (bool): Whether output the cls_token. Default: False.
+        output_cls_token (bool): Whether output the cls_token. If set True,
+            `with_cls_token` must be True. Default: False.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
@@ -354,25 +355,25 @@ class VisionTransformer(BaseModule):
 
         Resize pos_embed using bicubic interpolate method.
         Args:
-            pos_embed (torch.Tensor): pos_embed weights.
-            input_shpae (tuple): Tuple for (input_h, intput_w).
-            pos_shape (tuple): Tuple for (pos_h, pos_w).
-            mode (str): Algorithm used for upsampling.
+            pos_embed (torch.Tensor): Position embedding weights.
+            input_shpae (tuple): Tuple for (downsampled input image height,
+                downsampled input image width).
+            pos_shape (tuple): The resolution of downsampled origin training
+                image.
+            mode (str): Algorithm used for upsampling:
+                ``'nearest'`` | ``'linear'`` | ``'bilinear'`` | ``'bicubic'`` |
+                ``'trilinear'``. Default: ``'nearest'``
         Return:
             torch.Tensor: The resized pos_embed of shape [B, L_new, C]
         """
         assert pos_embed.ndim == 3, 'shape of pos_embed must be [B, L, C]'
-        input_h, input_w = input_shpae
         pos_h, pos_w = pos_shape
         cls_token_weight = pos_embed[:, 0]
         pos_embed_weight = pos_embed[:, (-1 * pos_h * pos_w):]
         pos_embed_weight = pos_embed_weight.reshape(
             1, pos_h, pos_w, pos_embed.shape[2]).permute(0, 3, 1, 2)
         pos_embed_weight = F.interpolate(
-            pos_embed_weight,
-            size=[input_h, input_w],
-            align_corners=False,
-            mode=mode)
+            pos_embed_weight, size=input_shpae, align_corners=False, mode=mode)
         cls_token_weight = cls_token_weight.unsqueeze(1)
         pos_embed_weight = torch.flatten(pos_embed_weight, 2).transpose(1, 2)
         pos_embed = torch.cat((cls_token_weight, pos_embed_weight), dim=1)
