@@ -9,7 +9,12 @@ Models:
   - Name: cgnet_680x680_60k_cityscapes
     In Collection: CGNet
     Metadata:
-      inference time (ms/im): 32.78
+      inference time (ms/im):
+        - value: 32.78
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -23,7 +28,12 @@ Models:
   - Name: cgnet_512x1024_60k_cityscapes
     In Collection: CGNet
     Metadata:
-      inference time (ms/im): 32.11
+      inference time (ms/im):
+        - value: 32.11
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes

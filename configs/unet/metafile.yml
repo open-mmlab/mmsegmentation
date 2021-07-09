@@ -3,7 +3,12 @@ Models:
   - Name: fcn_unet_s5-d16_64x64_40k_drive
     In Collection: FCN
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: DRIVE
@@ -17,7 +22,12 @@ Models:
   - Name: pspnet_unet_s5-d16_64x64_40k_drive
     In Collection: PSPNet
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: DRIVE
@@ -31,7 +41,12 @@ Models:
   - Name: deeplabv3_unet_s5-d16_64x64_40k_drive
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: DRIVE
@@ -45,7 +60,12 @@ Models:
   - Name: fcn_unet_s5-d16_128x128_40k_stare
     In Collection: FCN
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: STARE
@@ -59,7 +79,12 @@ Models:
   - Name: pspnet_unet_s5-d16_128x128_40k_stare
     In Collection: PSPNet
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: STARE
@@ -73,7 +98,12 @@ Models:
   - Name: deeplabv3_unet_s5-d16_128x128_40k_stare
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: STARE
@@ -87,7 +117,12 @@ Models:
   - Name: fcn_unet_s5-d16_128x128_40k_chase_db1
     In Collection: FCN
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: CHASE_DB1
@@ -101,7 +136,12 @@ Models:
   - Name: pspnet_unet_s5-d16_128x128_40k_chase_db1
     In Collection: PSPNet
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: CHASE_DB1
@@ -115,7 +155,12 @@ Models:
   - Name: deeplabv3_unet_s5-d16_128x128_40k_chase_db1
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: CHASE_DB1
@@ -129,7 +174,12 @@ Models:
   - Name: fcn_unet_s5-d16_256x256_40k_hrf
     In Collection: FCN
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: HRF
@@ -143,7 +193,12 @@ Models:
   - Name: pspnet_unet_s5-d16_256x256_40k_hrf
     In Collection: PSPNet
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: HRF
@@ -157,7 +212,12 @@ Models:
   - Name: deeplabv3_unet_s5-d16_256x256_40k_hrf
     In Collection: DeepLabV3
     Metadata:
-      inference time (ms/im): None
+      inference time (ms/im):
+        - value: None
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: HRF

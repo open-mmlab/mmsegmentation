@@ -9,7 +9,12 @@ Models:
   - Name: emanet_r50-d8_512x1024_80k_cityscapes
     In Collection: EMANet
     Metadata:
-      inference time (ms/im): 218.34
+      inference time (ms/im):
+        - value: 218.34
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -23,7 +28,12 @@ Models:
   - Name: emanet_r101-d8_512x1024_80k_cityscapes
     In Collection: EMANet
     Metadata:
-      inference time (ms/im): 348.43
+      inference time (ms/im):
+        - value: 348.43
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -37,7 +47,12 @@ Models:
   - Name: emanet_r50-d8_769x769_80k_cityscapes
     In Collection: EMANet
     Metadata:
-      inference time (ms/im): 507.61
+      inference time (ms/im):
+        - value: 507.61
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes
@@ -51,7 +66,12 @@ Models:
   - Name: emanet_r101-d8_769x769_80k_cityscapes
     In Collection: EMANet
     Metadata:
-      inference time (ms/im): 819.67
+      inference time (ms/im):
+        - value: 819.67
+          hardware: V100
+          backend: PyTorch
+          batch size: 1
+          mode: FP32
     Results:
       - Task: Semantic Segmentation
         Dataset: Cityscapes

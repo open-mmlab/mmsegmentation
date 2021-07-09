@@ -1,5 +1,37 @@
 ## Changelog
 
+### V0.15 (07/04/2021)
+
+**Highlights**
+
+- Support ViT, SETR, and Swin-Transformer
+- Add Chinese documentation
+- Unified parameter initialization
+
+**Bug Fixes**
+
+- Fix typo and links ([#608](https://github.com/open-mmlab/mmsegmentation/pull/608))
+- Fix Dockerfile ([#607](https://github.com/open-mmlab/mmsegmentation/pull/607))
+- Fix ViT init ([#609](https://github.com/open-mmlab/mmsegmentation/pull/609))
+- Fix mmcv version compatible table ([#658](https://github.com/open-mmlab/mmsegmentation/pull/658))
+- Fix model links of DMNEt ([#660](https://github.com/open-mmlab/mmsegmentation/pull/660))
+
+**New Features**
+
+- Support loading DeiT weights ([#538](https://github.com/open-mmlab/mmsegmentation/pull/538))
+- Support SETR ([#531](https://github.com/open-mmlab/mmsegmentation/pull/531), [#635](https://github.com/open-mmlab/mmsegmentation/pull/635))
+- Add config and models for ViT backbone with UperHead ([#520](https://github.com/open-mmlab/mmsegmentation/pull/531), [#635](https://github.com/open-mmlab/mmsegmentation/pull/520))
+- Support Swin-Transformer ([#511](https://github.com/open-mmlab/mmsegmentation/pull/511))
+- Add higher accuracy FastSCNN ([#606](https://github.com/open-mmlab/mmsegmentation/pull/606))
+- Add Chinese documentation ([#666](https://github.com/open-mmlab/mmsegmentation/pull/666))
+
+**Improvements**
+
+- Unified parameter initialization ([#567](https://github.com/open-mmlab/mmsegmentation/pull/567))
+- Separate CUDA and CPU in  github action CI ([#602](https://github.com/open-mmlab/mmsegmentation/pull/602))
+- Support persistent dataloader worker ([#646](https://github.com/open-mmlab/mmsegmentation/pull/646))
+- Update meta file fields ([#661](https://github.com/open-mmlab/mmsegmentation/pull/661), [#664](https://github.com/open-mmlab/mmsegmentation/pull/664))
+
 ### V0.14 (06/02/2021)
 
 **Highlights**
