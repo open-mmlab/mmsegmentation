@@ -1,42 +1,40 @@
-# 教程 1: 学习配置文件
+# 教程 1: 了解配置文件
 
-我们整合了模块和继承设计到我们的配置里，这便于做很多实验。如果您想查看配置文件，您可以运行 `python tools/print_config.py /PATH/TO/CONFIG` 去查看完整的配置文件。您还可以传递参数
-`--options xxx.yyy=zzz` 去查看更新的配置。
+我们在配置系统中加入了模块化和继承性的设计，这为我们进行各种实验提供了方便。如果您想查看配置文件，您可以运行 `python tools/print_config.py /PATH/TO/CONFIG` 来查看完整的配置文件。您还可以传递参数 `--options xxx.yyy=zzz` 来查看更新的配置。
 
 ## 配置文件的结构
 
-在 `config/_base_` 文件夹下面有4种基本组件类型： 数据集(dataset)，模型(model)，训练策略(schedule)和运行时的默认设置(default runtime)。许多方法都可以方便地通过组合这些组件进行实现。
-这样，像 DeepLabV3, PSPNet 这样的模型可以容易地被构造。被来自 `_base_` 下的组件来构建的配置叫做 _原始配置 (primitive)_。
+`config/_base_` 文件夹下有4种基本组件类型：数据集（dataset），模型（model），训练策略（schedule）和运行时的默认设置（default_runtime）。许多方法都可以方便地通过组合这些组件进行实现，比如 DeepLabV3，PSPNet 这样的模型可以很容易地被构建。由 `_base_` 下的组件组成的配置叫做 _原始配置 （primitive）_。
 
-对于所有在同一个文件夹下的配置文件，推荐**只有一个**对应的**原始配置**文件。所有其他的配置文件都应该继承自这个**原始配置**文件。这样就能保证配置文件的最大继承深度为 3。
+对于同一个文件夹下的所有配置，建议**只有一个原始配置**。所有其他的配置文件都应该继承自这个**原始配置**文件。这样就能保证配置文件的最大继承深度为 3。
 
-为了便于理解，我们推荐社区贡献者继承已有的方法配置文件。
-例如，如果一些修改是基于 DeepLabV3，使用者首先首先应该通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py`来继承基础 DeepLabV3 结构，再去修改配置文件里其他内容以完成继承。
+为了便于理解，我们建议社区贡献者继承已有的方法的配置文件。例如，如果在  DeepLabV3 的基础上做一些修改，使用者可以首先通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py` 来继承 DeepLabV3 的基本结构，然后修改配置文件中的必要字段（配置项）。
 
-如果您正在构建一个完整的新模型，它完全没有和已有的方法共享一些结构，您可能需要在 `configs` 下面创建一个文件夹 `xxxnet`。
+如果您正在构建一个全新的方法，并且不与任何现有的方法共享结构，您可以在 `configs` 下创建一个文件夹 `xxxnet` 。
+
 更详细的文档，请参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html) 。
 
 ## 配置文件命名风格
 
-我们按照下面的风格去命名配置文件。社区贡献者被建议使用同样的风格。
+我们遵循以下风格来命名配置文件。建议社区贡献者遵循同样的风格。
 
 ```
 {model}_{backbone}_[misc]_[gpu x batch_per_gpu]_{resolution}_{schedule}_{dataset}
 ```
 
-`{xxx}` 是被要求的文件 `[yyy]` 是可选的。
+`{xxx}` 是必填字段， `[yyy]` 是可选的。
 
-- `{model}`: 模型种类，例如 `psp`， `deeplabv3` 等等。
-- `{backbone}`: 主干网络种类，例如 `r50` (ResNet-50)， `x101` (ResNeXt-101)。
-- `[misc]`: 模型中各式各样的设置/插件，例如 `dconv`， `gcb`， `attention`， `mstrain`。
-- `[gpu x batch_per_gpu]`: GPU数目 和每个 GPU 的样本数， 默认为 `8x2` 。
-- `{schedule}`: 训练方案， `20ki` 意思是 20k 迭代轮数.
-- `{dataset}`: 数据集，如 `cityscapes`， `voc12aug`， `ade`。
+- `{model}`： 模型种类，例如 `psp`， `deeplabv3` 等等。
+- `{backbone}`：主干网络类型，例如 `r50-d8` （下采样率为8的ResNet-50）， `s101-d8` （下采样率为8的ResNeSt-101）。
+- `[misc]`：模型中杂项设置/插件，例如 `dconv`， `gcb`， `attention`， `mstrain`。
+- `[gpu x batch_per_gpu]`: GPU数目乘以每个 GPU 的样本数， 默认为 `8x2` 。
+- `{resolution}`：训练时输入图像的分辨率，如`512x1024`表示训练时输入图像的分辨率为`[512, 1024]`。
+- `{schedule}`：训练方案，`20k` 表示 20k 迭代轮数.
+- `{dataset}`：数据集，如 `cityscapes`， `voc12aug`， `ade`。
 
-## PSPNet 的一个例子
+## 示例——PSPNet
 
-为了帮助使用者熟悉这个流行的语义分割框架的完整配置文件和模块，我们在下面对使用 ResNet50V1c 的 PSPNet 的配置文件做了详细的注释说明。
-更多的详细使用和其他模块的替代项请参考 API 文档。
+为了帮助使用者熟悉这个流行的语义分割框架的完整配置文件和模块，我们在下面对使用 ResNet50V1c 的 PSPNet 的配置文件做了详细的注释说明。更详细的使用方法和每个模块的相应可选参数请参考 API 文档。
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)  # 分割框架通常使用 SyncBN
@@ -248,14 +246,13 @@ evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节
 
 ```
 
-## FAQ
+## 常见问题
 
-### 忽略基础配置文件里的一些域内容。
+### 忽略基础配置文件中的一些字段
 
-有时，您也许会设置 `_delete_=True` 去忽略基础配置文件里的一些域内容。
-您也许可以参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html#inherit-from-base-config-with-ignored-fields) 来获得一些简单的指导。
+有时，您可以设置 `_delete_=True` 来忽略基础配置文件里的一些字段。您可以参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html#inherit-from-base-config-with-ignored-fields) 来获得一些简单的指导。
 
-在 MMSegmentation 里，例如为了改变 PSPNet 的主干网络的某些内容：
+在 MMSegmentation 里，例如为了改变 PSPNet 的主干网络：
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -317,13 +314,12 @@ model = dict(
     auxiliary_head=dict(...))
 ```
 
-`_delete_=True` 将用新的键去替换 `backbone` 域内所有老的键。
+`_delete_=True` 将用新的键替换 `backbone` 字段内所有老的键。
 
 ### 使用配置文件里的中间变量
 
 配置文件里会使用一些中间变量，例如数据集里的 `train_pipeline`/`test_pipeline`。
-需要注意的是，在子配置文件里修改中间变量时，使用者需要再次传递这些变量给对应的域。
-例如，我们想改变在训练或测试时，PSPNet 的多尺度策略 (multi scale strategy)，`train_pipeline`/`test_pipeline` 是我们想要修改的中间变量。
+需要注意的是，当修改子配置文件里的中间变量时，使用者需要再次传递这些变量给对应的字段。例如，我们想改变在训练或测试时，PSPNet 的多尺度策略（multi scale strategy），`train_pipeline`/`test_pipeline` 是我们想要修改的中间变量。
 
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscapes.py'
