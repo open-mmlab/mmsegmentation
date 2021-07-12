@@ -43,43 +43,43 @@
 
 3. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation) 安装 [MMCV](https://mmcv.readthedocs.io/en/latest/) 。`mmcv` 或 `mmcv-full` 都与 MMSegmentation 兼容，但对于像 CCNet 和 PSANet这样的方法，需要 `mmcv-full` 中的 CUDA 算子支持。
 
-   - **在 Linux 下安装 mmcv：**
+- **在 Linux 下安装 mmcv：**
 
-     通过运行
+   通过运行
 
-     ```shell
-     pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
-     ```
+   ```shell
+   pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
+   ```
 
-     可以安装预编译的 mmcv-full （PyTorch 1.6 和 CUDA 10.1） 。其他 PyTorch 和 CUDA 版本的 MMCV 的安装请参照[这里](https://mmcv.readthedocs.io/en/latest/get_started/installation.html)。
+   可以安装预编译的 mmcv-full （PyTorch 1.6 和 CUDA 10.1） 。其他 PyTorch 和 CUDA 版本的 MMCV 的安装请参照[这里](https://mmcv.readthedocs.io/en/latest/get_started/installation.html)。
 
-   - **在 Windows 下安装 mmcv （试验性）：**
+- **在 Windows 下安装 mmcv （试验性）：**
 
-     对于 Windows，MMCV 的安装需要本地 C++ 编译工具，例如 cl.exe。 请将编译器路径添加到 %PATH%。
+   对于 Windows，MMCV 的安装需要本地 C++ 编译工具，例如 cl.exe。 请将编译器路径添加到 %PATH%。
 
-     如果您已经在电脑上安装了Windows SDK 和 Visual Studio，cl.exe 的典型路径如下：
+   如果您已经在电脑上安装了Windows SDK 和 Visual Studio，cl.exe 的典型路径如下：
 
-     ```shell
-     C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.26.28801\bin\Hostx86\x64
-     ```
+   ```shell
+   C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.26.28801\bin\Hostx86\x64
+   ```
 
-     或者您需要从网上下载 cl 编译器，然后设置好路径。
+   或者您需要从网上下载 cl 编译器，然后设置好路径。
 
-     随后，从 github 克隆 mmcv 并通过 pip 安装：
+   随后，从 github 克隆 mmcv 并通过 pip 安装：
 
-     ```shell
-     git clone https://github.com/open-mmlab/mmcv.git
-     cd mmcv
-     pip install -e .
-     ```
+   ```shell
+   git clone https://github.com/open-mmlab/mmcv.git
+   cd mmcv
+   pip install -e .
+   ```
 
-     或直接：
+   或直接：
 
-     ```shell
-     pip install mmcv
-     ```
+   ```shell
+   pip install mmcv
+   ```
 
-     目前，在 Windows 上 mmcv-full 并不完全支持。
+   目前，在 Windows 上 mmcv-full 并不完全支持。
 
 4. 安装 MMSegmentation。
 
@@ -103,11 +103,11 @@
 
    注意：
 
-   - 当在 windows 下训练和测试模型时，请确保所有路径中的 '\\' 都被替换成 '/'。在 python 代码里，凡是出现路径字符串的地方，都可以通过添加 `.replace('\\', '/')` 进行处理。
-   - `version+git_hash` 也将被保存在训练好的模型的 meta 里，例如 0.5.0+c415a2e。
-   - 当 MMsegmentation 以 `dev` 模式被安装时，本地对代码的修改将不需要重新安装即可产生作用。
-   - 如果您想使用 `opencv-python-headless` 而不是 `opencv-python`，您可以在安装 MMCV 之前安装它。
-   - 一些依赖项是可选的。简单地运行 `pip install -e .` 将仅安装最必要的一些依赖。为了使用可选的依赖项，例如`cityscapessripts`，可以用 `pip install -r requirements/optional.txt` 手动安装，或者在调用pip时指定所需的额外参数（例如 `pip install -e .[optional]`， 其中选项可设置为 `all`, `tests`, `build`, 和 `optional`）。
+- 当在 windows 下训练和测试模型时，请确保所有路径中的 '\\' 都被替换成 '/'。在 python 代码里，凡是出现路径字符串的地方，都可以通过添加 `.replace('\\', '/')` 进行处理。
+- `version+git_hash` 也将被保存在训练好的模型的 meta 里，例如 0.5.0+c415a2e。
+- 当 MMsegmentation 以 `dev` 模式被安装时，本地对代码的修改将不需要重新安装即可产生作用。
+- 如果您想使用 `opencv-python-headless` 而不是 `opencv-python`，您可以在安装 MMCV 之前安装它。
+- 一些依赖项是可选的。简单地运行 `pip install -e .` 将仅安装最必要的一些依赖。为了使用可选的依赖项，例如`cityscapessripts`，可以用 `pip install -r requirements/optional.txt` 手动安装，或者在调用pip时指定所需的额外参数（例如 `pip install -e .[optional]`， 其中选项可设置为 `all`, `tests`, `build`, 和 `optional`）。
 
 ### 完整的安装脚本
 
@@ -204,4 +204,3 @@ python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40
 ```
 
 notebook 格式的 demo 示例路径：[demo/inference_demo.ipynb](../demo/inference_demo.ipynb)。
-

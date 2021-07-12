@@ -161,4 +161,3 @@ test_pipeline = [
         dict(type='Collect', keys=['img', 'gt_semantic_seg']),
     ]
     ```
-

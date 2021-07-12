@@ -316,4 +316,3 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
    你应该看到如下所示的相似图片：
 
    [3dogs_mask](../resources/3dogs_mask.png)
-

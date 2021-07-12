@@ -47,4 +47,3 @@ model=dict(
 ```
 
 `class_weight` 将被作为 `weight` 参数传入 `CrossEntropyLoss`。详细信息请参照 [PyTorch 文档](https://pytorch.org/docs/stable/nn.html?highlight=crossentropy#torch.nn.CrossEntropyLoss) 。
-

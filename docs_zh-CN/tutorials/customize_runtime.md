@@ -39,7 +39,7 @@ class MyOptimizer(Optimizer):
 - 修改 `mmseg/core/optimizer/__init__.py` 来导入它。
 
     新定义的模块应该被导入到 `mmseg/core/optimizer/__init__.py` ，这样注册表将会找到新模块并添加它。
-    
+
     ```python
     from .my_optimizer import MyOptimizer
     ```
@@ -110,7 +110,7 @@ class MyOptimizerConstructor(object):
 - __使用动量策略（momentum schedule）去加速模型收敛__:
     我们支持动量策略去让模型基于学习率修改动量，这样可以让模型收敛地更快。
     动量策略经常和学习率计划表（LR scheduler）一起使用，例如，在 3D 检测中经常使用一下配置来加速收敛。更多细节请参考 [CyclicLrUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/lr_updater.py#L327) 和 [CyclicMomentumUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/momentum_updater.py#L130) 的实现。
-    
+
     ```python
     lr_config = dict(
         policy='cyclic',
@@ -225,4 +225,3 @@ log_config = dict(
 ```python
 evaluation = dict(interval=1, metric='mIoU')
 ```
-

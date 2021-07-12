@@ -97,4 +97,3 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
     ```
 
     使用 ```pmap``` 可查看 CPU 内存情况，```efficient_test=True``` 会使用约 2.25GB 的 CPU 内存， ```efficient_test=False``` 会使用约 11.06GB 的 CPU 内存。 这个可选参数可以节约很多 CPU 内存。
-
