@@ -77,9 +77,7 @@ class PatchEmbed(BaseModule):
         H, W = x.shape[2], x.shape[3]
 
         # TODO: Process overlapping op
-        if self.overlapping:
-            pass
-        else:
+        if not self.overlapping:
             # Modify H, W to multiple of patch size.
             if H % self.patch_size[0] != 0:
                 x = F.pad(

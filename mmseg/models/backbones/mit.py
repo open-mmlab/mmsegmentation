@@ -12,19 +12,7 @@ from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed, mit_convert
-
-
-def nlc_to_nchw(tensor, H, W):
-    assert len(tensor.shape) == 3
-    B, L, C = tensor.shape
-    assert L == H * W, 'The seq_len doesn\'t match H, W'
-    return tensor.transpose(1, 2).reshape(B, C, H, W)
-
-
-def nchw_to_nlc(tensor):
-    assert len(tensor.shape) == 4
-    return tensor.flatten(2).transpose(1, 2).contiguous()
+from ..utils import PatchEmbed, mit_convert, nchw_to_nlc, nlc_to_nchw
 
 
 class PEConv(BaseModule):
@@ -317,13 +305,48 @@ class MixVisionTransformer(BaseModule):
     A PyTorch implement of : `SegFormer: Simple and Efficient Design for
     Semantic Segmentation with Transformers` -
         https://arxiv.org/pdf/2105.15203.pdf
+
+    in_channels (int): Number of input channels. Default: 3.
+    embed_dims (int): Embedding dimension. Default: 768.
+    num_stags (int): The num of stages. Default: 4.
+    num_layers (list[int]): The layer number of each transformer encode
+        layer. Default: [3, 4, 6, 3].
+    num_heads (list[int]): The attention heads of each transformer
+        encode layer. Default: [1, 2, 4, 8].
+    patch_sizes (list[int]): The patch_size of each overlapped patch embedding.
+        Default: [7, 3, 3, 3].
+    strides (list[int]): The stride of each overlapped patch embedding.
+        Default: [4, 2, 2, 2].
+    sr_ratios (list[int]): The spatial reduction rate of each transformer
+        encode layer. Default: [8, 4, 2, 1].
+    out_indices (list[int] | tuple[int] | int): Output from which stages.
+            Default: (0, 1, 2, 3).
+    mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+        Default: 4.
+    out_indices (list | tuple | int): Output from which stages.
+        Default: -1.
+    qkv_bias (bool): Enable bias for qkv if True. Default: True.
+    drop_rate (float): Probability of an element to be zeroed.
+        Default 0.0
+    attn_drop_rate (float): The drop out rate for attention layer.
+        Default 0.0
+    drop_path_rate (float): stochastic depth rate. Default 0.0
+    norm_cfg (dict): Config dict for normalization layer.
+        Default: dict(type='LN')
+    act_cfg (dict): The activation config for FFNs.
+        Defalut: dict(type='GELU').
+    pretrain_style (str): Choose to use official or mmcls pretrain weights.
+        Default: official.
+    pretrained (str, optional): model pretrained path. Default: None.
+    init_cfg (dict or list[dict], optional): Initialization config dict.
+        Default: None.
     """
 
     def __init__(self,
                  in_channels=3,
+                 embed_dims=64,
                  num_stages=4,
-                 embed_dims=[64, 128, 256, 512],
-                 depths=[3, 4, 6, 3],
+                 num_layers=[3, 4, 6, 3],
                  num_heads=[1, 2, 4, 8],
                  patch_sizes=[7, 3, 3, 3],
                  strides=[4, 2, 2, 2],
@@ -351,14 +374,15 @@ class MixVisionTransformer(BaseModule):
         else:
             raise TypeError('pretrained must be a str or None')
 
-        self.num_stages = num_stages
         self.embed_dims = embed_dims
-        self.depths = depths
+
+        self.num_stages = num_stages
+        self.num_layers = num_layers
         self.num_heads = num_heads
         self.patch_sizes = patch_sizes
         self.strides = strides
         self.sr_ratios = sr_ratios
-        assert num_stages == len(embed_dims) == len(depths) == len(num_heads) \
+        assert num_stages == len(num_layers) == len(num_heads) \
             == len(patch_sizes) == len(strides) == len(sr_ratios)
 
         self.out_indices = out_indices
@@ -369,24 +393,26 @@ class MixVisionTransformer(BaseModule):
 
         # transformer encoder
         dpr = [
-            x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
-        ]  # stochastic depth decay rule
+            x.item()
+            for x in torch.linspace(0, drop_path_rate, sum(num_layers))
+        ]  # stochastic num_layer decay rule
 
         cur = 0
         self.layers = ModuleList()
-        for i, depth in enumerate(depths):
+        for i, num_layer in enumerate(num_layers):
+            embed_dims_i = embed_dims * num_heads[i]
             patch_embed = PatchEmbed(
                 in_channels=in_channels,
-                embed_dims=embed_dims[i],
+                embed_dims=embed_dims_i,
                 kernel_size=patch_sizes[i],
                 stride=strides[i],
                 padding=patch_sizes[i] // 2,
                 norm_cfg=norm_cfg)
             layer = ModuleList([
                 TransformerEncoderLayer(
-                    embed_dims=embed_dims[i],
+                    embed_dims=embed_dims_i,
                     num_heads=num_heads[i],
-                    feedforward_channels=mlp_ratio * embed_dims[i],
+                    feedforward_channels=mlp_ratio * embed_dims_i,
                     drop_rate=drop_rate,
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[cur + idx],
@@ -394,13 +420,13 @@ class MixVisionTransformer(BaseModule):
                     qkv_bias=qkv_bias,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
-                    sr_ratio=sr_ratios[i]) for idx in range(depth)
+                    sr_ratio=sr_ratios[i]) for idx in range(num_layer)
             ])
-            in_channels = embed_dims[i]
+            in_channels = embed_dims_i
             # The ret[0] of build_norm_layer is norm name.
-            norm = build_norm_layer(norm_cfg, embed_dims[i])[1]
+            norm = build_norm_layer(norm_cfg, embed_dims_i)[1]
             self.layers.append(ModuleList([patch_embed, layer, norm]))
-            cur += depth
+            cur += num_layer
 
     def init_weights(self):
         if self.pretrained is None:
