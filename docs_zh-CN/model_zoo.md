@@ -6,7 +6,7 @@
 * 所有 PyTorch 风格的 ImageNet 预训练网络由我们自己训练，程序和 [论文](https://arxiv.org/pdf/1812.01187.pdf) 保持一致。
   我们的 ResNet 风格的主干网络是基于 ResNetV1c 的变体，其中输入层的 7x7 卷积被 3个 3x3 替换。
 * 为了在不同的硬件上保持一致，我们将4个GPU在 `torch.backends.cudnn.benchmark=False` 的设置下通过`torch.cuda.max_memory_allocated()` 得到的最大值作为GPU占用率。注意，这通常比 `nvidia-smi` 显示的值要少。
-* 我们以网络 forward 和后处理的时间加和作为推理时间，不包括数据加载时间。我们使用脚本 `tools/benchmark.py` 来获取推理时间，改脚本在 `torch.backends.cudnn.benchmark=False` 的设定下，计算了 200 张图片的平均时间。
+* 我们以网络 forward 和后处理的时间加和作为推理时间，不包括数据加载时间。我们使用脚本 `tools/benchmark.py` 来获取推理时间，该脚本在 `torch.backends.cudnn.benchmark=False` 的设定下，计算了 200 张图片的平均时间。
 * 在MMSegmentation框架中，有两种推理模式。
   * `slide` 模式（滑动模式）：配置文件字段 `test_cfg` 会类似于 `dict(mode='slide', crop_size=(769, 769), stride=(513, 513))`。
     在这个模式下，从原图中裁剪多个小图分别输入网络中进行推理。小图的大小和小图之间的距离由 `crop_size` 和 `stride` 决定，重叠区域的结果将通过取平均合并。
