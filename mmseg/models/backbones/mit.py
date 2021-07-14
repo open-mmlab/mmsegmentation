@@ -133,8 +133,8 @@ class MixFFN(BaseModule):
             dropout_layer) if dropout_layer else torch.nn.Identity()
         self.add_identity = add_identity
 
-    def forward(self, x, H, W, identity=None):
-        out = nlc_to_nchw(x, H, W)
+    def forward(self, x, hw_shape, identity=None):
+        out = nlc_to_nchw(x, *hw_shape)
         out = self.layers(out)
         out = nchw_to_nlc(out)
         if not self.add_identity:
@@ -204,11 +204,11 @@ class EfficientMultiheadAttention(MultiheadAttention):
             # The ret[0] of build_norm_layer is norm name.
             self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
 
-    def forward(self, x, H, W, identity=None):
+    def forward(self, x, hw_shape, identity=None):
 
         x_q = x
         if self.sr_ratio > 1:
-            x_kv = nlc_to_nchw(x, H, W)
+            x_kv = nlc_to_nchw(x, *hw_shape)
             x_kv = self.sr(x_kv)
             x_kv = nchw_to_nlc(x_kv)
             x_kv = self.norm(x_kv)
@@ -292,9 +292,9 @@ class TransformerEncoderLayer(BaseModule):
             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
             act_cfg=act_cfg)
 
-    def forward(self, x, H, W):
-        x = self.attn(self.norm1(x), H, W, identity=x)
-        x = self.ffn(self.norm2(x), H, W, identity=x)
+    def forward(self, x, hw_shape):
+        x = self.attn(self.norm1(x), hw_shape, identity=x)
+        x = self.ffn(self.norm2(x), hw_shape, identity=x)
         return x
 
 
@@ -469,10 +469,11 @@ class MixVisionTransformer(BaseModule):
 
         for i, layer in enumerate(self.layers):
             x, H, W = layer[0](x), layer[0].DH, layer[0].DW
+            hw_shape = (H, W)
             for block in layer[1]:
-                x = block(x, H, W)
+                x = block(x, hw_shape)
             x = layer[2](x)
-            x = nlc_to_nchw(x, H, W)
+            x = nlc_to_nchw(x, hw_shape)
             if i in self.out_indices:
                 outs.append(x)
 
