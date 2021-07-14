@@ -365,7 +365,7 @@ class MixVisionTransformer(BaseModule):
 
     def init_weights(self):
         if self.pretrained is None:
-            for m in self.modules:
+            for m in self.modules():
                 if isinstance(m, nn.Linear):
                     trunc_normal_init(m.weight, std=.02)
                     if m.bias is not None:
@@ -379,7 +379,7 @@ class MixVisionTransformer(BaseModule):
                     fan_out //= m.groups
                     normal_init(m.weight, 0, math.sqrt(2.0 / fan_out))
                     if m.bias is not None:
-                        constant_init(m.bias)
+                        constant_init(m.bias, 0)
         elif isinstance(self.pretrained, str):
             logger = get_root_logger()
             checkpoint = _load_checkpoint(

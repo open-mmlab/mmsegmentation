@@ -19,6 +19,7 @@ def test_mit():
     temp = torch.randn((1, 3, H, W))
     model = MixVisionTransformer(
         embed_dims=32, num_heads=[1, 2, 5, 8], out_indices=(0, 1, 2, 3))
+    model.init_weights()
     outs = model(temp)
     assert outs[0].shape == (1, 32, H // 4, W // 4)
     assert outs[1].shape == (1, 64, H // 8, W // 8)
