@@ -2,6 +2,7 @@ import pytest
 import torch
 
 from mmseg.models.backbones import MixVisionTransformer
+from mmseg.models.backbones.mit import EfficientMultiheadAttention, MixFFN
 
 
 def test_mit():
@@ -32,3 +33,27 @@ def test_mit():
     assert outs[1].shape == (1, 64, H // 8, W // 8)
     assert outs[2].shape == (1, 160, H // 16, W // 16)
     assert outs[3].shape == (1, 256, H // 32, W // 32)
+
+    # Test MixFFN
+    FFN = MixFFN(128, 512)
+    hw_shape = (32, 32)
+    token_len = 32 * 32
+    temp = torch.randn((1, token_len, 128))
+    # Self identity
+    out = FFN(temp, hw_shape)
+    assert out.shape == (1, token_len, 128)
+    # Out identity
+    outs = FFN(temp, hw_shape, temp)
+    assert out.shape == (1, token_len, 128)
+
+    # Test EfficientMHA
+    MHA = EfficientMultiheadAttention(128, 2)
+    hw_shape = (32, 32)
+    token_len = 32 * 32
+    temp = torch.randn((1, token_len, 128))
+    # Self identity
+    out = MHA(temp, hw_shape)
+    assert out.shape == (1, token_len, 128)
+    # Out identity
+    outs = MHA(temp, hw_shape, temp)
+    assert out.shape == (1, token_len, 128)

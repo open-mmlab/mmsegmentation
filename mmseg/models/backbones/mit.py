@@ -176,8 +176,6 @@ class TransformerEncoderLayer(BaseModule):
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0.
         drop_path_rate (float): stochastic depth rate. Default 0.0.
-        num_fcs (int): The number of fully-connected layers for FFNs.
-            Default: 2.
         qkv_bias (bool): enable bias for qkv if True.
             Default: True.
         act_cfg (dict): The activation config for FFNs.
@@ -200,7 +198,6 @@ class TransformerEncoderLayer(BaseModule):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 num_fcs=2,
                  qkv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
@@ -355,7 +352,6 @@ class MixVisionTransformer(BaseModule):
                     drop_rate=drop_rate,
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[cur + idx],
-                    num_fcs=2,
                     qkv_bias=qkv_bias,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
