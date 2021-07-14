@@ -1,10 +1,9 @@
 import math
 import warnings
-from functools import partial
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import (ConvModule, build_activation_layer, build_norm_layer,
+from mmcv.cnn import (Conv2d, build_activation_layer, build_norm_layer,
                       constant_init, normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import MultiheadAttention
@@ -13,38 +12,6 @@ from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed, mit_convert, nchw_to_nlc, nlc_to_nchw
-
-
-class PEConv(BaseModule):
-    """Mix-FFN use 3x3 depth-wise Conv to provide positional encode
-    information.
-
-    Args:
-        embed_dims (int): The channels of token after embedding.
-        kernel_size (int): The kernel size of convolution operation.
-            Default: 3.
-        stride (int): The kernel slide move distance of one step.
-            Default: 1.
-    """
-
-    def __init__(self, embed_dims, kernel_size=3, stride=1):
-        super().__init__()
-        self.conv = ConvModule(
-            in_channels=embed_dims,
-            out_channels=embed_dims,
-            kernel_size=kernel_size,
-            stride=stride,
-            padding=(kernel_size - 1) // 2,
-            bias=True,
-            groups=embed_dims,
-            norm_cfg=None,
-            act_cfg=None)
-
-    def forward(self, x):
-
-        x = self.conv(x)
-
-        return x
 
 
 class MixFFN(BaseModule):
@@ -59,16 +26,12 @@ class MixFFN(BaseModule):
             `MultiheadAttention`. Defaults: 256.
         feedforward_channels (int): The hidden dimension of FFNs.
             Defaults: 1024.
-        num_fcs (int, optional): The number of fully-connected layers in
-            FFNs. Default: 2.
         act_cfg (dict, optional): The activation config for FFNs.
             Default: dict(type='ReLU')
         ffn_drop (float, optional): Probability of an element to be
             zeroed in FFN. Default 0.0.
         dropout_layer (obj:`ConfigDict`): The dropout_layer used
             when adding the shortcut.
-        add_identity (bool, optional): Whether to add the
-            identity connection. Default: `True`.
         init_cfg (obj:`mmcv.ConfigDict`): The Config for initialization.
             Default: None.
     """
@@ -76,69 +39,49 @@ class MixFFN(BaseModule):
     def __init__(self,
                  embed_dims,
                  feedforward_channels,
-                 num_fcs=2,
                  act_cfg=dict(type='GELU'),
                  ffn_drop=0.,
-                 pe_index=1,
                  dropout_layer=None,
-                 add_identity=True,
                  init_cfg=None):
         super(MixFFN, self).__init__(init_cfg)
-        assert num_fcs >= 2, 'num_fcs should be no less ' \
-            f'than 2. got {num_fcs}.'
-
-        assert pe_index <= num_fcs and pe_index >= 0, 'pe_index range from 0 '
-        'to num_fcs'
 
         self.embed_dims = embed_dims
         self.feedforward_channels = feedforward_channels
-        self.num_fcs = num_fcs
         self.act_cfg = act_cfg
         self.activate = build_activation_layer(act_cfg)
 
-        conv1x1 = partial(
-            ConvModule,
+        in_channels = embed_dims
+        fc1 = Conv2d(
+            in_channels=in_channels,
+            out_channels=feedforward_channels,
             kernel_size=1,
             stride=1,
+            bias=True)
+        # 3x3 depth wise conv to provide positional encode information
+        pe_conv = Conv2d(
+            in_channels=feedforward_channels,
+            out_channels=feedforward_channels,
+            kernel_size=3,
+            stride=1,
+            padding=(3 - 1) // 2,
             bias=True,
-            norm_cfg=None,
-            act_cfg=None)
-
-        layers = []
-        in_channels = embed_dims
-        # first position of MixFFN
-        if pe_index == 0:
-            layers.append(PEConv(in_channels))
-        for idx in range(num_fcs - 1):
-            container = []
-            container.append(
-                conv1x1(
-                    in_channels=in_channels,
-                    out_channels=feedforward_channels))
-            # middle position of MixFFN
-            if pe_index == idx + 1:
-                container.append(PEConv(feedforward_channels))
-            container.append(self.activate)
-            container.append(nn.Dropout(ffn_drop))
-            layers.append(Sequential(*container))
-        layers.append(
-            conv1x1(
-                in_channels=feedforward_channels, out_channels=in_channels))
-        # Last position of MixFFN
-        if pe_index == num_fcs:
-            layers.append(PEConv(feedforward_channels))
-        layers.append(nn.Dropout(ffn_drop))
+            groups=feedforward_channels)
+        fc2 = Conv2d(
+            in_channels=feedforward_channels,
+            out_channels=in_channels,
+            kernel_size=1,
+            stride=1,
+            bias=True)
+        drop = nn.Dropout(ffn_drop)
+        layers = [fc1, pe_conv, drop, fc2, drop]
         self.layers = Sequential(*layers)
         self.dropout_layer = build_dropout(
             dropout_layer) if dropout_layer else torch.nn.Identity()
-        self.add_identity = add_identity
 
     def forward(self, x, hw_shape, identity=None):
-        out = nlc_to_nchw(x, *hw_shape)
+        out = nlc_to_nchw(x, hw_shape)
         out = self.layers(out)
         out = nchw_to_nlc(out)
-        if not self.add_identity:
-            return self.dropout_layer(out)
         if identity is None:
             identity = x
         return identity + self.dropout_layer(out)
@@ -194,13 +137,11 @@ class EfficientMultiheadAttention(MultiheadAttention):
 
         self.sr_ratio = sr_ratio
         if sr_ratio > 1:
-            self.sr = ConvModule(
+            self.sr = Conv2d(
                 in_channels=embed_dims,
                 out_channels=embed_dims,
                 kernel_size=sr_ratio,
-                stride=sr_ratio,
-                norm_cfg=None,
-                act_cfg=None)
+                stride=sr_ratio)
             # The ret[0] of build_norm_layer is norm name.
             self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
 
@@ -208,7 +149,7 @@ class EfficientMultiheadAttention(MultiheadAttention):
 
         x_q = x
         if self.sr_ratio > 1:
-            x_kv = nlc_to_nchw(x, *hw_shape)
+            x_kv = nlc_to_nchw(x, hw_shape)
             x_kv = self.sr(x_kv)
             x_kv = nchw_to_nlc(x_kv)
             x_kv = self.norm(x_kv)
@@ -287,7 +228,6 @@ class TransformerEncoderLayer(BaseModule):
         self.ffn = MixFFN(
             embed_dims=embed_dims,
             feedforward_channels=feedforward_channels,
-            num_fcs=num_fcs,
             ffn_drop=drop_rate,
             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
             act_cfg=act_cfg)
@@ -306,40 +246,39 @@ class MixVisionTransformer(BaseModule):
     Semantic Segmentation with Transformers` -
         https://arxiv.org/pdf/2105.15203.pdf
 
-    in_channels (int): Number of input channels. Default: 3.
-    embed_dims (int): Embedding dimension. Default: 768.
-    num_stags (int): The num of stages. Default: 4.
-    num_layers (list[int]): The layer number of each transformer encode
-        layer. Default: [3, 4, 6, 3].
-    num_heads (list[int]): The attention heads of each transformer
-        encode layer. Default: [1, 2, 4, 8].
-    patch_sizes (list[int]): The patch_size of each overlapped patch embedding.
-        Default: [7, 3, 3, 3].
-    strides (list[int]): The stride of each overlapped patch embedding.
-        Default: [4, 2, 2, 2].
-    sr_ratios (list[int]): The spatial reduction rate of each transformer
-        encode layer. Default: [8, 4, 2, 1].
-    out_indices (list[int] | tuple[int] | int): Output from which stages.
+    Args:
+        in_channels (int): Number of input channels. Default: 3.
+        embed_dims (int): Embedding dimension. Default: 768.
+        num_stags (int): The num of stages. Default: 4.
+        num_layers (Sequence[int]): The layer number of each transformer encode
+            layer. Default: [3, 4, 6, 3].
+        num_heads (Sequence[int]): The attention heads of each transformer
+            encode layer. Default: [1, 2, 4, 8].
+        patch_sizes (Sequence[int]): The patch_size of each overlapped patch
+            embedding. Default: [7, 3, 3, 3].
+        strides (Sequence[int]): The stride of each overlapped patch embedding.
+            Default: [4, 2, 2, 2].
+        sr_ratios (Sequence[int]): The spatial reduction rate of each
+            transformer encode layer. Default: [8, 4, 2, 1].
+        out_indices (Sequence[int] | int): Output from which stages.
             Default: (0, 1, 2, 3).
-    mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
-        Default: 4.
-    out_indices (list | tuple | int): Output from which stages.
-        Default: -1.
-    qkv_bias (bool): Enable bias for qkv if True. Default: True.
-    drop_rate (float): Probability of an element to be zeroed.
-        Default 0.0
-    attn_drop_rate (float): The drop out rate for attention layer.
-        Default 0.0
-    drop_path_rate (float): stochastic depth rate. Default 0.0
-    norm_cfg (dict): Config dict for normalization layer.
-        Default: dict(type='LN')
-    act_cfg (dict): The activation config for FFNs.
-        Defalut: dict(type='GELU').
-    pretrain_style (str): Choose to use official or mmcls pretrain weights.
-        Default: official.
-    pretrained (str, optional): model pretrained path. Default: None.
-    init_cfg (dict or list[dict], optional): Initialization config dict.
-        Default: None.
+        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+            Default: 4.
+        qkv_bias (bool): Enable bias for qkv if True. Default: True.
+        drop_rate (float): Probability of an element to be zeroed.
+            Default 0.0
+        attn_drop_rate (float): The drop out rate for attention layer.
+            Default 0.0
+        drop_path_rate (float): stochastic depth rate. Default 0.0
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN')
+        act_cfg (dict): The activation config for FFNs.
+            Defalut: dict(type='GELU').
+        pretrain_style (str): Choose to use official or mmcls pretrain weights.
+            Default: official.
+        pretrained (str, optional): model pretrained path. Default: None.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     """
 
     def __init__(self,
