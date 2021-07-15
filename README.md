@@ -48,7 +48,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.14.0 was released in 06/02/2021.
+v0.15.0 was released in 07/04/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -59,10 +59,12 @@ Supported backbones:
 
 - [x] ResNet (CVPR'2016)
 - [x] ResNeXt (CVPR'2017)
-- [x] [HRNet (CVPR'2019)](configs/hrnet/README.md)
-- [x] [ResNeSt (ArXiv'2020)](configs/resnest/README.md)
-- [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2/README.md)
-- [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3/README.md)
+- [x] [HRNet (CVPR'2019)](configs/hrnet)
+- [x] [ResNeSt (ArXiv'2020)](configs/resnest)
+- [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
+- [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
+- [x] [Vision Transformer (ICLR'2021)](configs/vit)
+- [x] [Swin Transformer (arXiV'2021)](configs/swin)
 
 Supported methods:
 
@@ -70,7 +72,7 @@ Supported methods:
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
-- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16/README.md)
+- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
 - [x] [UPerNet (ECCV'2018)](configs/upernet)
@@ -89,10 +91,11 @@ Supported methods:
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
+- [x] [SETR (CVPR'2021)](configs/setr)
 
 ## Installation
 
-Please refer to [get_started.md](docs/get_started.md#installation) for installation and dataset preparation.
+Please refer to [get_started.md](docs/get_started.md#installation) for installation and [dataset_prepare.md](docs/dataset_prepare.md#prepare-datasets) for dataset preparation.
 
 ## Get Started
 
