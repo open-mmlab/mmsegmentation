@@ -30,9 +30,7 @@ class EvalHook(_EvalHook):
         if not self._should_evaluate(runner):
             return
 
-        tmpdir = self.tmpdir
-        if tmpdir is None:
-            tmpdir = osp.join(runner.work_dir, '.eval_hook')
+        tmpdir = osp.join(runner.work_dir, '.eval_hook')
 
         from mmseg.apis import single_gpu_test
         results = single_gpu_test(
