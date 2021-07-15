@@ -117,15 +117,15 @@ def mit_convert(ckpt):
             elif 'attn.proj.' in new_k:
                 new_k = new_k.replace('proj.', 'attn.out_proj.')
             elif 'attn.sr.' in new_k:
-                new_k = new_k.replace('sr.', 'sr.conv.')
+                new_k = new_k.replace('sr.', 'sr.')
             elif 'mlp.' in new_k:
                 string = f'{new_k}-'
                 new_k = new_k.replace('mlp.', 'ffn.layers.')
                 if 'fc1.weight' in new_k or 'fc2.weight' in new_k:
                     new_v = v.reshape((*v.shape, 1, 1))
-                new_k = new_k.replace('fc1.', '0.0.conv.')
-                new_k = new_k.replace('dwconv.dwconv.', '0.1.conv.conv.')
-                new_k = new_k.replace('fc2.', '1.conv.')
+                new_k = new_k.replace('fc1.', '0.')
+                new_k = new_k.replace('dwconv.dwconv.', '1.')
+                new_k = new_k.replace('fc2.', '4.')
                 string += f'{new_k} {v.shape}-{new_v.shape}'
                 # print(string)
         elif k.startswith('norm'):
