@@ -8,8 +8,8 @@ from mmseg.ops import resize
 
 
 @HEADS.register_module()
-class SegFormerHead(BaseDecodeHead):
-    """The MLP Head of segformer.
+class SegformerHead(BaseDecodeHead):
+    """The all mlp Head of segformer.
 
     Args:
         interpolate_mode: The interpolate mode of MLP head upsample operation.
@@ -17,8 +17,7 @@ class SegFormerHead(BaseDecodeHead):
     """
 
     def __init__(self, interpolate_mode='bilinear', **kwargs):
-        super(SegFormerHead, self).__init__(
-            input_transform='multiple_select', **kwargs)
+        super().__init__(input_transform='multiple_select', **kwargs)
 
         self.interpolate_mode = interpolate_mode
 
