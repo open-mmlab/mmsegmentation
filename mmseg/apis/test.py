@@ -1,9 +1,10 @@
-import mmcv
-import numpy as np
 import os.path as osp
 import pickle
 import shutil
 import tempfile
+
+import mmcv
+import numpy as np
 import torch
 import torch.distributed as dist
 from mmcv.image import tensor2imgs
@@ -129,7 +130,7 @@ def multi_gpu_test(
         gpu_collect (bool): Option to use either gpu or cpu to collect results.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
-        opacity(float): Opacity of painted segmentation map.
+        opacity (float): Opacity of painted segmentation map.
             Default 0.5.
             Must be in (0, 1] range.
 
