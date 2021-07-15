@@ -60,6 +60,8 @@ def single_gpu_test(model,
     results = []
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
+    if efficient_test:
+        mmcv.mkdir_or_exist('.efficient_test')
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, **data)
@@ -92,11 +94,11 @@ def single_gpu_test(model,
 
         if isinstance(result, list):
             if efficient_test:
-                result = [np2tmp(_, tmpdir=tmpdir) for _ in result]
+                result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
             results.extend(result)
         else:
             if efficient_test:
-                result = np2tmp(result)
+                result = np2tmp(result, tmpdir='.efficient_test')
             results.append(result)
 
         batch_size = len(result)
@@ -138,17 +140,19 @@ def multi_gpu_test(model,
     rank, world_size = get_dist_info()
     if rank == 0:
         prog_bar = mmcv.ProgressBar(len(dataset))
+    if efficient_test:
+        mmcv.mkdir_or_exist('.efficient_test')
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
 
         if isinstance(result, list):
             if efficient_test:
-                result = [np2tmp(_, tmpdir=tmpdir) for _ in result]
+                result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
             results.extend(result)
         else:
             if efficient_test:
-                result = np2tmp(result, tmpdir=tmpdir)
+                result = np2tmp(result, tmpdir='.efficient_test')
             results.append(result)
 
         if rank == 0:
