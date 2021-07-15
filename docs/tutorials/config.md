@@ -17,7 +17,7 @@ For example, if some modification is made base on DeepLabV3, user may first inhe
 
 If you are building an entirely new method that does not share the structure with any of the existing methods, you may create a folder `xxxnet` under `configs`,
 
-Please refer to [mmcv](https://mmcv.readthedocs.io/en/latest/utils.html#config) for detailed documentation.
+Please refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html) for detailed documentation.
 
 ## Config Name Style
 
@@ -238,12 +238,12 @@ lr_config = dict(
     policy='poly',  # The policy of scheduler, also support Step, CosineAnnealing, Cyclic, etc. Refer to details of supported LrUpdater from https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/lr_updater.py#L9.
     power=0.9,  # The power of polynomial decay.
     min_lr=0.0001,  # The minimum learning rate to stable the training.
-    by_epoch=False)  # Whethe count by epoch or not.
+    by_epoch=False)  # Whether count by epoch or not.
 runner = dict(
     type='IterBasedRunner', # Type of runner to use (i.e. IterBasedRunner or EpochBasedRunner)
     max_iters=40000) # Total number of iterations. For EpochBasedRunner use `max_epochs`
 checkpoint_config = dict(  # Config to set the checkpoint hook, Refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py for implementation.
-    by_epoch=False,  # Whethe count by epoch or not.
+    by_epoch=False,  # Whether count by epoch or not.
     interval=4000)  # The save interval.
 evaluation = dict(  # The config to build the evaluation hook. Please refer to mmseg/core/evaulation/eval_hook.py for details.
     interval=4000,  # The interval of evaluation.
@@ -257,7 +257,7 @@ evaluation = dict(  # The config to build the evaluation hook. Please refer to m
 ### Ignore some fields in the base configs
 
 Sometimes, you may set `_delete_=True` to ignore some of fields in base configs.
-You may refer to [mmcv](https://mmcv.readthedocs.io/en/latest/utils.html#inherit-from-base-config-with-ignored-fields) for simple inllustration.
+You may refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html#inherit-from-base-config-with-ignored-fields) for simple inllustration.
 
 In MMSegmentation, for example, to change the backbone of PSPNet with the following config.
 
@@ -321,7 +321,7 @@ model = dict(
     auxiliary_head=dict(...))
 ```
 
-The `_delete_=True` would replace all old keys in `backbone` field with new keys new keys.
+The `_delete_=True` would replace all old keys in `backbone` field with new keys.
 
 ### Use intermediate variables in configs
 
