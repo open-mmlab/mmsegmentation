@@ -30,13 +30,10 @@ class EvalHook(_EvalHook):
         if not self._should_evaluate(runner):
             return
 
-        tmpdir = osp.join(runner.work_dir, '.eval_hook')
-
         from mmseg.apis import single_gpu_test
         results = single_gpu_test(
             runner.model,
             self.dataloader,
-            tmpdir=tmpdir,
             show=False,
             efficient_test=self.efficient_test)
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)

@@ -35,8 +35,7 @@ def single_gpu_test(model,
                     show=False,
                     out_dir=None,
                     efficient_test=False,
-                    opacity=0.5,
-                    tmpdir=None):
+                    opacity=0.5):
     """Test with single GPU.
 
     Args:
@@ -50,8 +49,6 @@ def single_gpu_test(model,
         opacity(float): Opacity of painted segmentation map.
             Default 0.5.
             Must be in (0, 1] range.
-        tmpdir (str): Path of directory to save the temporary results for
-            efficient test.
     Returns:
         list: The prediction results.
     """
