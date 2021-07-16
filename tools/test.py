@@ -8,7 +8,8 @@ from mmcv.runner import (get_dist_info, init_dist, load_checkpoint,
                          wrap_fp16_model)
 from mmcv.utils import DictAction
 
-from mmseg.apis import multi_gpu_test, single_gpu_test
+from mmseg.apis import (multi_gpu_test, progressive_multi_gpu_test,
+                        progressive_single_gpu_test, single_gpu_test)
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
 
@@ -90,6 +91,8 @@ def main():
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
     if args.aug_test:
+        assert not (args.show or args.show_dir
+                    ), 'when aug test, it is not supported to show result.'
         # hard code index
         cfg.data.test.pipeline[1].img_ratios = [
             0.5, 0.75, 1.0, 1.25, 1.5, 1.75
@@ -134,20 +137,36 @@ def main():
         model.PALETTE = dataset.PALETTE
 
     efficient_test = False
+    only_pixel_count = False
     if args.eval_options is not None:
         efficient_test = args.eval_options.get('efficient_test', False)
+        only_pixel_count = args.eval_options.get('only_pixel_count', False)
+        assert not (args.format_only and only_pixel_count), 'format_only'
+        'and only_pixel_count can\'t be set at the same time.'
+        assert not (args.out and only_pixel_count), 'format_only'
+        'and only_pixel_count can\'t be set at the same time.'
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
-                                  efficient_test, args.opacity)
+        if only_pixel_count:
+            outputs = progressive_single_gpu_test(model, data_loader,
+                                                  args.show, args.show_dir,
+                                                  args.opacity)
+        else:
+            outputs = single_gpu_test(model, data_loader, args.show,
+                                      args.show_dir, efficient_test,
+                                      args.opacity)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        outputs = multi_gpu_test(model, data_loader, args.tmpdir,
-                                 args.gpu_collect, efficient_test)
+        if only_pixel_count:
+            outputs = progressive_multi_gpu_test(model, data_loader,
+                                                 args.gpu_collect)
+        else:
+            outputs = multi_gpu_test(model, data_loader, args.tmpdir,
+                                     args.gpu_collect, efficient_test)
 
     rank, _ = get_dist_info()
     if rank == 0:
@@ -158,7 +177,10 @@ def main():
         if args.format_only:
             dataset.format_results(outputs, **kwargs)
         if args.eval:
-            dataset.evaluate(outputs, args.eval, **kwargs)
+            if only_pixel_count:
+                dataset.progressive_evaluate(outputs, args.eval, **kwargs)
+            else:
+                dataset.evaluate(outputs, args.eval, **kwargs)
 
 
 if __name__ == '__main__':

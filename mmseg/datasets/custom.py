@@ -10,6 +10,7 @@ from prettytable import PrettyTable
 from torch.utils.data import Dataset
 
 from mmseg.core import eval_metrics
+from mmseg.core.evaluation.metrics import calculate_metrics
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -240,6 +241,13 @@ class CustomDataset(Dataset):
             gt_seg_maps.append(gt_seg_map)
         return gt_seg_maps
 
+    def get_gt_seg_map(self, idx):
+        """Get ground truth segmentation maps for evaluation."""
+        seg_map = osp.join(self.ann_dir, self.img_infos[idx]['ann']['seg_map'])
+        gt_seg_map = mmcv.imread(seg_map, flag='unchanged', backend='pillow')
+
+        return gt_seg_map
+
     def get_classes_and_palette(self, classes=None, palette=None):
         """Get class names of current dataset.
 
@@ -302,6 +310,82 @@ class CustomDataset(Dataset):
                 palette = self.PALETTE
 
         return palette
+
+    def progressive_evaluate(self,
+                             results,
+                             metric='mIoU',
+                             logger=None,
+                             **kwargs):
+        if isinstance(metric, str):
+            metric = [metric]
+        allowed_metrics = ['mIoU', 'mDice', 'mFscore']
+        if not set(metric).issubset(set(allowed_metrics)):
+            raise KeyError('metric {} is not supported'.format(metric))
+
+        eval_results = {}
+
+        total_area_intersect, total_area_union, total_area_pred_label, \
+            total_area_label = results
+
+        ret_metrics = calculate_metrics(total_area_intersect, total_area_union,
+                                        total_area_pred_label,
+                                        total_area_label, metric)
+
+        # Because dataset.CLASSES is required in progressive_single_gpu_test,
+        # progressive_multi_gpu_test, so it's necessary to keep
+        # dataset.CLASSES.
+        class_names = self.CLASSES
+
+        # summary table
+        ret_metrics_summary = OrderedDict({
+            ret_metric: np.round(np.nanmean(ret_metric_value) * 100, 2)
+            for ret_metric, ret_metric_value in ret_metrics.items()
+        })
+
+        # each class table
+        ret_metrics.pop('aAcc', None)
+        ret_metrics_class = OrderedDict({
+            ret_metric: np.round(ret_metric_value * 100, 2)
+            for ret_metric, ret_metric_value in ret_metrics.items()
+        })
+        ret_metrics_class.update({'Class': class_names})
+        ret_metrics_class.move_to_end('Class', last=False)
+
+        # for logger
+        class_table_data = PrettyTable()
+        for key, val in ret_metrics_class.items():
+            class_table_data.add_column(key, val)
+
+        summary_table_data = PrettyTable()
+        for key, val in ret_metrics_summary.items():
+            if key == 'aAcc':
+                summary_table_data.add_column(key, [val])
+            else:
+                summary_table_data.add_column('m' + key, [val])
+
+        print_log('per class results:', logger)
+        print_log('\n' + class_table_data.get_string(), logger=logger)
+        print_log('Summary:', logger)
+        print_log('\n' + summary_table_data.get_string(), logger=logger)
+
+        # each metric dict
+        for key, value in ret_metrics_summary.items():
+            if key == 'aAcc':
+                eval_results[key] = value / 100.0
+            else:
+                eval_results['m' + key] = value / 100.0
+
+        ret_metrics_class.pop('Class', None)
+        for key, value in ret_metrics_class.items():
+            eval_results.update({
+                key + '.' + str(name): value[idx] / 100.0
+                for idx, name in enumerate(class_names)
+            })
+
+        if mmcv.is_list_of(results, str):
+            for file_name in results:
+                os.remove(file_name)
+        return eval_results
 
     def evaluate(self,
                  results,
