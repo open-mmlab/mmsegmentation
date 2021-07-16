@@ -343,6 +343,7 @@ class MixVisionTransformer(BaseModule):
                 kernel_size=patch_sizes[i],
                 stride=strides[i],
                 padding=patch_sizes[i] // 2,
+                pad_to_patch_size=False,
                 norm_cfg=norm_cfg)
             layer = ModuleList([
                 TransformerEncoderLayer(
