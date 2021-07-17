@@ -5,7 +5,7 @@ from .custom import CustomDataset
 
 
 @DATASETS.register_module()
-class A2D2Dataset(CustomDataset):
+class A2D2Dataset35Classes(CustomDataset):
     """A2D2 dataset following the Cityscapes 'trainids' label format.
 
     The dataset features 41,280 frames with semantic segmentation in 35
@@ -56,6 +56,6 @@ class A2D2Dataset(CustomDataset):
                [0, 255, 0], [204, 255, 153], [255, 0, 128]]
 
     def __init__(self, **kwargs):
-        super(A2D2Dataset, self).__init__(
+        super(A2D2Dataset35Classes, self).__init__(
             img_suffix='.png', seg_map_suffix='_labelTrainIds.png', **kwargs)
         assert osp.exists(self.img_dir) is not None
