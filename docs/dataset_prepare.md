@@ -193,11 +193,11 @@ Finally, convert the A2D2 dataset to the MMSegmentation format using either segm
 python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic
 ```
 
-The default arguments will result in randomly splitted 'train' and 'val' sets, each consisting of 98% and 2% of all samples, respectively. Additionally, add `--nproc N` for multiprocessing using N threads.
+The default arguments result in the same experimental setup as described in the original A2D2 paper (ref: p.8 "4. Experiment: Semantic segmentation"). The original 38 semantic classes are merged into a set of 19 classes emulating the Cityscapes class taxonomy. Samples are randomly split into 'train', 'val' and 'test' sets, each consisting of 28,894 samples (70.0%), 4,252 samples (10.3%) and 8,131 samples (19.7%), respectively (ref: P.8 "4. Experiment: Semantic segmentation"). To use the original A2D2 semantic classes add the optional argument `--choice a2d2`. Add `--nproc N` for multiprocessing using N threads.
 
 The converted label images will be generated within the same directory as the original labels. The conversion process creates a new directory structure, where `img_dir/` and `label_dir/` contains symbolic links to camera and label images located within the original data folders.
 
-By default 35 of the original 38 semantic categories will be mapped into a `trainIds` integer. The following segmentation classes are ignored (i.e. trainIds 255):
+When using the original A2D2 semantic classes 35 of the original 38 semantic categories will be mapped into a `trainIds` integer by default. The following segmentation classes are ignored (i.e. trainIds 255):
 - Ego car:  A calibrated system should a priori know what input region corresponds to the ego vehicle.
 - Blurred area: Ambiguous semantic.
 - Rain dirt: Ambiguous semantic.
