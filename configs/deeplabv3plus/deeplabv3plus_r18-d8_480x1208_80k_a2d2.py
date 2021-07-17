@@ -1,4 +1,4 @@
-_base_ = './deeplabv3plus_r50-d8_512x1024_80k_a2d2.py'
+_base_ = './deeplabv3plus_r50-d8_480x1208_80k_a2d2.py'
 model = dict(
     pretrained='open-mmlab://resnet18_v1c',
     backbone=dict(depth=18),
