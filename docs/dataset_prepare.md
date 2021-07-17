@@ -183,7 +183,7 @@ To set up the A2D2 semantic segmentation dataset, first download 'Dataset - Sema
 Next, while in MMSegmentation directory root, create a symbolic link from `mmsegmentation/data/a2d2` to the dataset directory `a2d2/camera_lidar_semantic`.
 
 ```shell
-ln -s data/a2d2/ /absolute/path/to/a2d2/camera_lidar_semantic/
+ln -s /absolute/path/to/a2d2/camera_lidar_semantic/ data/a2d2/
 ```
 
 Finally, convert the A2D2 dataset to the MMSegmentation format using either segmentation category labels. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
