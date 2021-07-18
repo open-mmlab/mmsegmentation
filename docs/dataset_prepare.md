@@ -73,11 +73,11 @@ mmsegmentation
 |   |   ├── 20180807_145028
 |   |   ├── ...
 |   |   ├── 20181204_191844
-|   |   ├── ann_dir
+|   |   ├── annotations
 |   |   |   ├── test
 |   |   |   ├── train
 |   |   |   ├── val
-|   |   ├── img_dir
+|   |   ├── images
 |   |   |   ├── test
 |   |   |   ├── train
 |   |   |   ├── val
