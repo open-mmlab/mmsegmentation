@@ -57,5 +57,5 @@ class A2D2Dataset35Classes(CustomDataset):
 
     def __init__(self, **kwargs):
         super(A2D2Dataset35Classes, self).__init__(
-            img_suffix='.png', seg_map_suffix='_labelTrainIds.png', **kwargs)
+            img_suffix='.png', seg_map_suffix='_35LabelTrainIds.png', **kwargs)
         assert osp.exists(self.img_dir) is not None

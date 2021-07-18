@@ -1,11 +1,12 @@
 import argparse
 import glob
-import mmcv
-import numpy as np
 import os.path as osp
 import random
 from os import symlink
 from shutil import copyfile
+
+import mmcv
+import numpy as np
 
 random.seed(14)
 
@@ -138,10 +139,15 @@ SEG_COLOR_DICT_CITYSCAPES = {
 }
 
 
-def modify_label_filename(label_filepath):
+def modify_label_filename(label_filepath, label_choice):
     """Returns a mmsegmentation-combatible label filename."""
     label_filepath = label_filepath.replace('_label_', '_camera_')
-    label_filepath = label_filepath.replace('.png', '_labelTrainIds.png')
+    if label_choice == 'a2d2':
+        label_filepath = label_filepath.replace('.png', '_35LabelTrainIds.png')
+    elif label_choice == "cityscapes":
+        label_filepath = label_filepath.replace('.png', '_19LabelTrainIds.png')
+    else:
+        raise ValueError
     return label_filepath
 
 
@@ -175,7 +181,7 @@ def convert_a2d2_trainids(label_filepath, ignore_id=255):
         mod_label[mask] = SEG_COLOR_DICT_A2D2[seg_color]
 
     # Save new 'trainids' semantic label
-    label_filepath = modify_label_filename(label_filepath)
+    label_filepath = modify_label_filename(label_filepath, 'a2d2')
     label_img = mod_label.astype(np.uint8)
     mmcv.imwrite(label_img, label_filepath)
 
@@ -208,7 +214,7 @@ def convert_cityscapes_trainids(label_filepath, ignore_id=255):
         mod_label[mask] = SEG_COLOR_DICT_CITYSCAPES[seg_color]
 
     # Save new 'trainids' semantic label
-    label_filepath = modify_label_filename(label_filepath)
+    label_filepath = modify_label_filename(label_filepath, 'cityscapes')
     label_img = mod_label.astype(np.uint8)
     mmcv.imwrite(label_img, label_filepath)
 
@@ -301,7 +307,7 @@ def restructure_a2d2_directory(a2d2_path,
                       dataset directory. If false, files will be copied.
     """
     for r in [val_ratio, test_ratio]:
-        assert r >= 0. and r < 1., f'Invalid ratio {r}'
+        assert r >= 0. and r < 1., 'Invalid ratio {}'.format(r)
 
     # Create new directory structure (if not already exist)
     mmcv.mkdir_or_exist(osp.join(a2d2_path, 'img_dir'))
@@ -425,7 +431,7 @@ def main():
         The function 'convert_TYPE_trainids()' converts all instance
         segmentation to their corresponding categorical segmentation and saves
         them as new label image files..
-    
+
     The default arguments result in the same experimental setup as described in
     the original A2D2 paper (ref: p.8 "4. Experiment: Semantic segmentation").
     - The original 38 semantic classes are merged into a set of 19 classes
@@ -433,7 +439,7 @@ def main():
     - The total set of 40,030 samples are randomly split into 'train', 'val'
       and 'test' sets, each consisting of 28,015 samples (70.0%), 4,118 samples
       (10.3%) and 7,897 samples (19.7%), respectively.
-    
+
     Selecting --choice a2d2 results in the 35 A2D2 semantic class targets.
 
     NOTE: The following segmentation classes are ignored (i.e. trainIds 255):
