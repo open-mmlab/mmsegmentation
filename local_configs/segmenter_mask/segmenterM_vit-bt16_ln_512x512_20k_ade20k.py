@@ -13,9 +13,9 @@ model = dict(
         channels=192,
         num_layers=12,
         num_heads=3),
-    auxiliary_head=dict(num_classes=150))
+    auxiliary_head=dict(num_classes=150),
     # ensure image size can be divided by the patch size
-    #test_cfg=dict(mode='slide', crop_size=(256, 256), stride=(171, 171)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
