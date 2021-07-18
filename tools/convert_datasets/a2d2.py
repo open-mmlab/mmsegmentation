@@ -1,12 +1,11 @@
 import argparse
 import glob
+import mmcv
+import numpy as np
 import os.path as osp
 import random
 from os import symlink
 from shutil import copyfile
-
-import mmcv
-import numpy as np
 
 random.seed(14)
 
@@ -246,8 +245,8 @@ def create_split_dir(img_filepaths,
         img_filename = img_filepath.rpartition('/')[2]
         ann_filename = ann_filepath.rpartition('/')[2]
 
-        img_link_path = osp.join(root_path, 'img_dir', split, img_filename)
-        ann_link_path = osp.join(root_path, 'ann_dir', split, ann_filename)
+        img_link_path = osp.join(root_path, 'images', split, img_filename)
+        ann_link_path = osp.join(root_path, 'annotations', split, ann_filename)
 
         if use_symlinks:
             # NOTE: Can only create new symlinks if no priors ones exists
@@ -268,6 +267,7 @@ def create_split_dir(img_filepaths,
 def restructure_a2d2_directory(a2d2_path,
                                val_ratio,
                                test_ratio,
+                               label_choice,
                                train_on_val_and_test=False,
                                use_symlinks=True,
                                label_suffix='_labelTrainIds.png'):
@@ -277,7 +277,7 @@ def restructure_a2d2_directory(a2d2_path,
     expected dataset structure.
 
     my_dataset
-    └── img_dir
+    └── images
     │   ├── train
     │   │   ├── xxx{img_suffix}
     |   |   ...
@@ -285,13 +285,14 @@ def restructure_a2d2_directory(a2d2_path,
     │   │   ├── yyy{img_suffix}
     │   │   ...
     │   ...
-    └── ann_dir
+    └── annotations
         ├── train
         │   ├── xxx{seg_map_suffix}
         |   ...
         ├── val
         |   ├── yyy{seg_map_suffix}
-        ... ...
+        |   ...
+        ...
 
     Samples are randomly split into a 'train', 'validation', and 'test' split
     according to the argument sample ratios.
@@ -310,17 +311,24 @@ def restructure_a2d2_directory(a2d2_path,
         assert r >= 0. and r < 1., 'Invalid ratio {}'.format(r)
 
     # Create new directory structure (if not already exist)
-    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'img_dir'))
-    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'ann_dir'))
-    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'img_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'img_dir', 'val'))
-    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'img_dir', 'test'))
-    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'ann_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'ann_dir', 'val'))
-    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'ann_dir', 'test'))
+    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'images'))
+    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations'))
+    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'images', 'train'))
+    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'images', 'val'))
+    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'images', 'test'))
+    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations', 'train'))
+    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations', 'val'))
+    mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations', 'test'))
 
     # Lists containing all images and labels to symlinked
     img_filepaths = sorted(glob.glob(osp.join(a2d2_path, '*/camera/*/*.png')))
+
+    if label_choice == 'a2d2':
+        label_suffix = label_suffix.replace('_l', '_35L')
+    elif label_choice == 'cityscapes':
+        label_suffix = label_suffix.replace('_l', '_19L')
+    else:
+        raise ValueError
     ann_filepaths = sorted(
         glob.glob(osp.join(a2d2_path, '*/label/*/*{}'.format(label_suffix))))
 
@@ -489,7 +497,7 @@ def main():
 
     # Restructure directory structure into 'img_dir' and 'ann_dir'
     if args.restruct:
-        restructure_a2d2_directory(out_dir, args.val, args.test,
+        restructure_a2d2_directory(out_dir, args.val, args.test, args.choice,
                                    args.train_on_val, args.symlink)
 
 
