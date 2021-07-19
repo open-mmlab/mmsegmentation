@@ -118,8 +118,8 @@ class VisionTransformer(BaseModule):
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
         drop_path_rate (float): stochastic depth rate. Default 0.0
-        with_cls_token (bool): Whether concatenating class token into image tokens
-            as transformer input. Default: True.
+        with_cls_token (bool): Whether concatenating class token into image
+            tokens as transformer input. Default: True.
         output_cls_token (bool): Whether output the cls_token. If set True,
             `with_cls_token` must be True. Default: False.
         norm_cfg (dict): Config dict for normalization layer.
