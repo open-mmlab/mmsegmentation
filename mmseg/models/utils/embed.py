@@ -19,6 +19,8 @@ class PatchEmbed(BaseModule):
             Default: None (Default to be equal with kernel_size).
         padding (int): The padding length of embedding conv. Default: 0.
         dilation (int): The dilation rate of embedding conv. Default: 1.
+        pad_to_patch_size (bool, optional): Whether to pad feature map shape
+            to multiple patch size. Default: False.
         norm_cfg (dict, optional): Config dict for normalization layer.
         init_cfg (`mmcv.ConfigDict`, optional): The Config for initialization.
             Default: None.
@@ -32,6 +34,7 @@ class PatchEmbed(BaseModule):
                  stride=16,
                  padding=0,
                  dilation=1,
+                 pad_to_patch_size=False,
                  norm_cfg=None,
                  init_cfg=None):
         super(PatchEmbed, self).__init__()
@@ -42,7 +45,7 @@ class PatchEmbed(BaseModule):
         if stride is None:
             stride = kernel_size
 
-        self.overlapping = stride < kernel_size
+        self.pad_to_patch_size = pad_to_patch_size
 
         # The default setting of patch size is equal to kernel size.
         patch_size = kernel_size
@@ -77,7 +80,7 @@ class PatchEmbed(BaseModule):
         H, W = x.shape[2], x.shape[3]
 
         # TODO: Process overlapping op
-        if not self.overlapping:
+        if self.pad_to_patch_size:
             # Modify H, W to multiple of patch size.
             if H % self.patch_size[0] != 0:
                 x = F.pad(
