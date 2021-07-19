@@ -17,7 +17,7 @@ For example, if some modification is made base on DeepLabV3, user may first inhe
 
 If you are building an entirely new method that does not share the structure with any of the existing methods, you may create a folder `xxxnet` under `configs`,
 
-Please refer to [mmcv](https://mmcv.readthedocs.io/en/latest/utils.html#config) for detailed documentation.
+Please refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html) for detailed documentation.
 
 ## Config Name Style
 
@@ -257,7 +257,7 @@ evaluation = dict(  # The config to build the evaluation hook. Please refer to m
 ### Ignore some fields in the base configs
 
 Sometimes, you may set `_delete_=True` to ignore some of fields in base configs.
-You may refer to [mmcv](https://mmcv.readthedocs.io/en/latest/utils.html#inherit-from-base-config-with-ignored-fields) for simple inllustration.
+You may refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html#inherit-from-base-config-with-ignored-fields) for simple inllustration.
 
 In MMSegmentation, for example, to change the backbone of PSPNet with the following config.
 
