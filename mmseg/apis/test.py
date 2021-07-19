@@ -46,9 +46,9 @@ def single_gpu_test(model,
             the directory to save output results.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
-        opacity(float): Opacity of painted segmentation map.
-            Default 0.5.
-            Must be in (0, 1] range.
+        opacity(float): Opacity of painted segmentation map. Must be in (0, 1]
+            range. Default: 0.5.
+
     Returns:
         list: The prediction results.
     """
@@ -104,15 +104,13 @@ def single_gpu_test(model,
     return results
 
 
-def multi_gpu_test(
-    model,
-    data_loader,
-    out_dir=None,
-    tmpdir=None,
-    gpu_collect=False,
-    efficient_test=False,
-    opacity=0.5,
-):
+def multi_gpu_test(model,
+                   data_loader,
+                   out_dir=None,
+                   tmpdir=None,
+                   gpu_collect=False,
+                   efficient_test=False,
+                   opacity=0.5):
     """Test model with multiple gpus.
 
     This method tests model with multiple gpus and collects the results
@@ -132,9 +130,8 @@ def multi_gpu_test(
         gpu_collect (bool): Option to use either gpu or cpu to collect results.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
-        opacity (float): Opacity of painted segmentation map.
-            Default 0.5.
-            Must be in (0, 1] range.
+        opacity(float): Opacity of painted segmentation map. Must be in (0, 1]
+            range. Default: 0.5.
 
     Returns:
         list: The prediction results.
