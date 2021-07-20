@@ -4,8 +4,8 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
-                      kaiming_init, normal_init, trunc_normal_init)
+from mmcv.cnn import (build_norm_layer, constant_init, kaiming_init,
+                      normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
@@ -13,7 +13,7 @@ from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import vit_convert
+from ..utils import PatchEmbed, vit_convert
 
 
 class TransformerEncoderLayer(BaseModule):
@@ -93,49 +93,6 @@ class TransformerEncoderLayer(BaseModule):
         return x
 
 
-# Modified from pytorch-image-models
-class PatchEmbed(BaseModule):
-    """Image to Patch Embedding.
-
-    Args:
-        patch_size (int): The size of one patch
-        in_channels (int): The num of input channels.
-        embed_dims (int): The dimensions of embedding.
-        norm_cfg (dict, optional): Config dict for normalization layer.
-        conv_cfg (dict, optional): The config dict for conv layers.
-            Default: None.
-    """
-
-    def __init__(self,
-                 patch_size=16,
-                 in_channels=3,
-                 embed_dims=768,
-                 norm_cfg=None,
-                 conv_cfg=None):
-        super(PatchEmbed, self).__init__()
-
-        # Use conv layer to embed
-        self.projection = build_conv_layer(
-            conv_cfg,
-            in_channels,
-            embed_dims,
-            kernel_size=patch_size,
-            stride=patch_size)
-
-        if norm_cfg is not None:
-            self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
-        else:
-            self.norm = None
-
-    def forward(self, x):
-        x = self.projection(x).flatten(2).transpose(1, 2)
-
-        if self.norm is not None:
-            x = self.norm(x)
-
-        return x
-
-
 @BACKBONES.register_module()
 class VisionTransformer(BaseModule):
     """Vision Transformer.
@@ -184,8 +141,6 @@ class VisionTransformer(BaseModule):
             some memory while slowing down the training speed. Default: False.
         pretrain_style (str): Choose to use timm or mmcls pretrain weights.
             Default: timm.
-        with_spatial_size (bool): Whether append input image shape to output
-            feature vector when out_shape is not 'NCHW'. Default: False.
         pretrained (str, optional): model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
@@ -215,7 +170,6 @@ class VisionTransformer(BaseModule):
                  norm_eval=False,
                  with_cp=False,
                  pretrain_style='timm',
-                 with_spatial_size=False,
                  pretrained=None,
                  init_cfg=None):
         super(VisionTransformer, self).__init__()
@@ -249,10 +203,8 @@ class VisionTransformer(BaseModule):
         self.pretrain_style = pretrain_style
         self.pretrained = pretrained
         self.init_cfg = init_cfg
-        self.with_spatial_size = with_spatial_size
 
         self.patch_embed = PatchEmbed(
-            patch_size=patch_size,
             in_channels=in_channels,
             embed_dims=embed_dims,
             conv_type='Conv2d',

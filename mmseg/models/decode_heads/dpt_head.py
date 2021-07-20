@@ -20,7 +20,6 @@ class ReassembleBlocks(BaseModule):
         out_channels (List): output channels of each stage.
             Default: [96, 192, 384, 768].
         readout_type (str): Type of readout operation. Default: 'ignore'.
-        start_index (int): Start index of feature vector. Default: 1.
         patch_size (int): The patch size. Default: 16.
     """
 
@@ -28,13 +27,11 @@ class ReassembleBlocks(BaseModule):
                  in_channels=768,
                  out_channels=[96, 192, 384, 768],
                  readout_type='ignore',
-                 start_index=1,
                  patch_size=16):
         super(ReassembleBlocks, self).__init__()
 
         assert readout_type in ['ignore', 'add', 'project']
         self.readout_type = readout_type
-        self.start_index = start_index
         self.patch_size = patch_size
 
         self.projects = nn.ModuleList([
@@ -73,29 +70,41 @@ class ReassembleBlocks(BaseModule):
                     nn.Sequential(
                         nn.Linear(2 * in_channels, in_channels), nn.GELU()))
 
-    def forward(self, inputs, img_size):
+    def forward(self, inputs):
+        assert isinstance(inputs, list)
+        out = []
         for i, x in enumerate(inputs):
-            if self.readout_type == 'ignore':
-                x = x[:, self.start_index:]
+            x, cls_token = x[0], x[1]
+            feature_shape = x.shape
+            if self.readout_type == 'project':
+                x = x.flatten(2).permute((0, 2, 1))
+                readout = cls_token.unsqueeze(1).expand_as(x)
+                x = self.readout_projects[i](torch.cat((x, readout), -1))
+                x = x.permute(0, 2, 1).reshape(feature_shape)
             elif self.readout_type == 'add':
-                x = x[:, self.start_index:] + x[:, 0].unsqueeze(1)
+                x = x.flatten(2) + cls_token.unsqueeze(-1)
+                x = x.reshape(feature_shape)
             else:
-                readout = x[:, 0].unsqueeze(1).expand_as(x[:,
-                                                           self.start_index:])
-                x = torch.cat((x[:, self.start_index:], readout), -1)
-                x = self.readout_projects[i](x)
-            B, _, C = x.shape
-            x = x.reshape(B, img_size[0] // self.patch_size,
-                          img_size[1] // self.patch_size,
-                          C).permute(0, 3, 1, 2)
+                pass
             x = self.projects[i](x)
             x = self.resize_layers[i](x)
-            inputs[i] = x
-        return inputs
+            out.append(x)
+        return out
 
 
 class PreActResidualConvUnit(BaseModule):
-    """ResidualConvUnit, pre-activate residual unit."""
+    """ResidualConvUnit, pre-activate residual unit.
+
+    Args:
+        in_channels (int): number of channels in the input feature map.
+        act_cfg (dict): dictionary to construct and config norm layer.
+        norm_cfg (dict): dictionary to construct and config norm layer.
+        conv_cfg (dict): dictionary to construct and config conv layer.
+            Default: None.
+        stride (int): stride of the first block. Default: 1
+        dilation (int): dilation rate for convs layers. Default: 1.
+        init_cfg (dict, optional): Initialization config dict. Default: None.
+    """
 
     def __init__(self,
                  in_channels,
@@ -188,12 +197,12 @@ class FeatureFusionBlock(BaseModule):
         x = inputs[0]
         if len(inputs) == 2:
             if x.shape != inputs[1].shape:
-                x_ = resize(
+                inputs[1] = resize(
                     inputs[1],
                     size=(x.shape[2], x.shape[3]),
                     mode='bilinear',
                     align_corners=False)
-            x = x + self.res_conv_unit1(x_)
+            x = x + self.res_conv_unit1(inputs[1])
         x = self.res_conv_unit2(x)
         x = resize(
             x,
@@ -214,20 +223,19 @@ class DPTHead(BaseDecodeHead):
         post_process_channels (List): Out channels of post process conv
             layers. Default: [96, 192, 384, 768].
         readout_type (str): Type of readout operation. Default: 'ignore'.
-        patch_start_index (int): Start index of feature vector.
         patch_size (int): The patch size. Default: 16.
         expand_channels (bool): Whether expand the channels in post process
             block. Default: False.
         act_cfg (dict): The activation config for residual conv unit.
-            Defalut 'ReLU'.
-        norm_cfg (dict): Config dict for normalization layer. Default 'BN'.
+            Defalut dict(type='ReLU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN').
     """
 
     def __init__(self,
                  embed_dims=768,
                  post_process_channels=[96, 192, 384, 768],
                  readout_type='ignore',
-                 patch_start_index=1,
                  patch_size=16,
                  expand_channels=False,
                  act_cfg=dict(type='ReLU'),
@@ -239,16 +247,14 @@ class DPTHead(BaseDecodeHead):
         self.expand_channels = expand_channels
         self.reassemble_blocks = ReassembleBlocks(embed_dims,
                                                   post_process_channels,
-                                                  readout_type,
-                                                  patch_start_index,
-                                                  patch_size)
+                                                  readout_type, patch_size)
 
         self.post_process_channels = [
             channel * math.pow(2, i) if expand_channels else channel
             for i, channel in enumerate(post_process_channels)
         ]
         self.convs = nn.ModuleList()
-        for _, channel in enumerate(self.post_process_channels):
+        for channel in self.post_process_channels:
             self.convs.append(
                 ConvModule(
                     channel,
@@ -268,15 +274,19 @@ class DPTHead(BaseDecodeHead):
             kernel_size=3,
             padding=1,
             norm_cfg=norm_cfg)
+        self.num_fusion_blocks = len(self.fusion_blocks)
+        self.num_reassemble_blocks = len(self.reassemble_blocks.resize_layers)
+        self.num_post_process_channels = len(self.post_process_channels)
+        assert self.num_fusion_blocks == self.num_reassemble_blocks
+        assert self.num_reassemble_blocks == self.num_post_process_channels
 
     def forward(self, inputs):
+        assert len(inputs) == self.num_reassemble_blocks
         x = self._transform_inputs(inputs)
-        x, img_size = [i[0] for i in x], x[0][1]
-        x = self.reassemble_blocks(x, img_size)
+        x = self.reassemble_blocks(x)
         x = [self.convs[i](feature) for i, feature in enumerate(x)]
-
-        out = self.fusion_blocks[3](x[3])
-        for i in range(2, -1, -1):
+        out = self.fusion_blocks[-1](x[-1])
+        for i in reversed(range(len(self.fusion_blocks) - 1)):
             out = self.fusion_blocks[i](out, x[i])
         out = self.project(out)
         out = self.cls_seg(out)
