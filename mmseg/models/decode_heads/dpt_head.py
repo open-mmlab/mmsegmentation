@@ -199,12 +199,14 @@ class FeatureFusionBlock(BaseModule):
         x = inputs[0]
         if len(inputs) == 2:
             if x.shape != inputs[1].shape:
-                inputs[1] = resize(
+                x_ = resize(
                     inputs[1],
                     size=(x.shape[2], x.shape[3]),
                     mode='bilinear',
                     align_corners=False)
-            x = x + self.res_conv_unit1(inputs[1])
+            else:
+                x_ = inputs[1]
+            x = x + self.res_conv_unit1(x_)
         x = self.res_conv_unit2(x)
         x = resize(
             x,

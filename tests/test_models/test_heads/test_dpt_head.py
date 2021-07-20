@@ -21,7 +21,8 @@ def test_dpt_head():
         in_index=[0, 1, 2, 3],
         input_transform='multiple_select')
 
-    inputs = [[torch.randn(4, 5, 768), [32, 32]] for _ in range(4)]
+    inputs = [[torch.randn(4, 768, 2, 2),
+               torch.randn(4, 768)] for _ in range(4)]
     output = head(inputs)
     assert output.shape == torch.Size((4, 19, 16, 16))
 
