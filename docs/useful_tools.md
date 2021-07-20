@@ -254,3 +254,64 @@ Examples:
   ```shell
   python tools/analyze_logs.py log.json --keys loss --legend loss
   ```
+
+## Model Serving
+
+In order to serve an `MMSegmentation` model with [`TorchServe`](https://pytorch.org/serve/), you can follow the steps:
+
+### 1. Convert model from MMSegmentation to TorchServe
+
+```shell
+python tools/mmseg2torchserve.py ${CONFIG_FILE} ${CHECKPOINT_FILE} \
+--output-folder ${MODEL_STORE} \
+--model-name ${MODEL_NAME}
+```
+
+**Note**: ${MODEL_STORE} needs to be an absolute path to a folder.
+
+### 2. Build `mmseg-serve` docker image
+
+```shell
+docker build -t mmseg-serve:latest docker/serve/
+```
+
+### 3. Run `mmseg-serve`
+
+Check the official docs for [running TorchServe with docker](https://github.com/pytorch/serve/blob/master/docker/README.md#running-torchserve-in-a-production-docker-environment).
+
+In order to run in GPU, you need to install [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html). You can omit the `--gpus` argument in order to run in CPU.
+
+Example:
+
+```shell
+docker run --rm \
+--cpus 8 \
+--gpus device=0 \
+-p8080:8080 -p8081:8081 -p8082:8082 \
+--mount type=bind,source=$MODEL_STORE,target=/home/model-server/model-store \
+mmseg-serve:latest
+```
+
+[Read the docs](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) about the Inference (8080), Management (8081) and Metrics (8082) APis
+
+### 4. Test deployment
+
+```shell
+curl -O https://raw.githubusercontent.com/open-mmlab/mmsegmentation/master/resources/3dogs.jpg
+curl http://127.0.0.1:8080/predictions/${MODEL_NAME} -T 3dogs.jpg -o 3dogs_mask.png
+```
+
+The response will be a ".png" mask.
+
+You can visualize the output as follows:
+
+```python
+import matplotlib.pyplot as plt
+import mmcv
+plt.imshow(mmcv.imread("3dogs_mask.png", "grayscale"))
+plt.show()
+```
+
+You should see something similar to:
+
+![3dogs_mask](../resources/3dogs_mask.png)
