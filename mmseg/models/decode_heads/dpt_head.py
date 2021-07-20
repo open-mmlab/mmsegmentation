@@ -2,8 +2,8 @@ import math
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import (ConvModule, build_activation_layer, build_conv_layer,
-                      build_norm_layer)
+from mmcv.cnn import (ConvModule, Linear, build_activation_layer,
+                      build_conv_layer, build_norm_layer)
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
@@ -68,12 +68,14 @@ class ReassembleBlocks(BaseModule):
             for _ in range(len(self.projects)):
                 self.readout_projects.append(
                     nn.Sequential(
-                        nn.Linear(2 * in_channels, in_channels), nn.GELU()))
+                        Linear(2 * in_channels, in_channels),
+                        build_activation_layer(dict(type='GELU'))))
 
     def forward(self, inputs):
         assert isinstance(inputs, list)
         out = []
         for i, x in enumerate(inputs):
+            assert len(x) == 2
             x, cls_token = x[0], x[1]
             feature_shape = x.shape
             if self.readout_type == 'project':
