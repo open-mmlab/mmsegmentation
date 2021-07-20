@@ -99,7 +99,7 @@ class PreActResidualConvUnit(BaseModule):
 
     Args:
         in_channels (int): number of channels in the input feature map.
-        act_cfg (dict): dictionary to construct and config norm layer.
+        act_cfg (dict): dictionary to construct and config activation layer.
         norm_cfg (dict): dictionary to construct and config norm layer.
         conv_cfg (dict): dictionary to construct and config conv layer.
             Default: None.
