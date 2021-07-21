@@ -341,7 +341,8 @@ class CustomDataset(Dataset):
             self.ignore_index,
             metric,
             label_map=self.label_map,
-            reduce_zero_label=self.reduce_zero_label)
+            reduce_zero_label=self.reduce_zero_label,
+            **kwargs)
 
         if self.CLASSES is None:
             class_names = tuple(range(num_classes))
