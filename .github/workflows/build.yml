@@ -45,7 +45,7 @@ jobs:
       - name: Upgrade pip
         run: pip install pip --upgrade
       - name: Install Pillow
-        if: ${{matrix.torchvision < '0.5'}}
+        if: ${{matrix.torchvision == '0.4.1'}}
         run: pip install Pillow==6.2.2
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
@@ -113,9 +113,6 @@ jobs:
           export LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${CUDA_HOME}/include:${LD_LIBRARY_PATH}
           export PATH=${CUDA_HOME}/bin:${PATH}
           sudo apt-get install -y ninja-build
-      - name: Install Pillow
-        if: ${{matrix.torchvision < '0.5'}}
-        run: pip install Pillow==6.2.2
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
