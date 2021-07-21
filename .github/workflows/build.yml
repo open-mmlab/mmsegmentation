@@ -74,23 +74,23 @@ jobs:
           - torch: 1.5.0+cu101
             torch_version: torch1.5.0
             torchvision: 0.6.0+cu101
-            CUDA: 10.1.105-1
-            CUDA_SHORT: 10.1
+            cuda: 10.1.105-1
+            cuda_short: 10.1
           - torch: 1.7.0+cu101
             torch_version: torch1.7.0
             torchvision: 0.8.1+cu101
-            CUDA: 10.1.105-1
-            CUDA_SHORT: 10.1
+            cuda: 10.1.105-1
+            cuda_short: 10.1
           - torch: 1.8.0+cu101
             torch_version: torch1.8.0
             torchvision: 0.9.0+cu101
-            CUDA: 10.1.105-1
-            CUDA_SHORT: 10.1
+            cuda: 10.1.105-1
+            cuda_short: 10.1
           - torch: 1.9.0+cu102
             torch_version: torch1.9.0
             torchvision: 0.10.0+cu102
-            CUDA: 10.2.89-1
-            CUDA_SHORT: 10.2
+            cuda: 10.2.89-1
+            cuda_short: 10.2
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -101,15 +101,15 @@ jobs:
         run: pip install pip --upgrade
       - name: Install CUDA
         run: |
-          export INSTALLER=cuda-repo-${UBUNTU_VERSION}_${{matrix.CUDA}}_amd64.deb
+          export INSTALLER=cuda-repo-${UBUNTU_VERSION}_${{matrix.cuda}}_amd64.deb
           wget http://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${INSTALLER}
           sudo dpkg -i ${INSTALLER}
           wget https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/7fa2af80.pub
           sudo apt-key add 7fa2af80.pub
           sudo apt update -qq
-          sudo apt install -y cuda-${{matrix.CUDA_SHORT/./-}} cuda-cufft-dev-${{matrix.CUDA_SHORT/./-}}
+          sudo apt install -y cuda-${{matrix.cuda_short/./-}} cuda-cufft-dev-${{matrix.cuda_short/./-}}
           sudo apt clean
-          export CUDA_HOME=/usr/local/cuda-${{matrix.CUDA_SHORT}}
+          export CUDA_HOME=/usr/local/cuda-${{matrix.cuda_short}}
           export LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${CUDA_HOME}/include:${LD_LIBRARY_PATH}
           export PATH=${CUDA_HOME}/bin:${PATH}
           sudo apt-get install -y ninja-build
