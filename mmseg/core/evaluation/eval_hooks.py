@@ -19,8 +19,6 @@ class EvalHook(_EvalHook):
         list: The prediction results.
     """
 
-    greater_keys = ['mIoU', 'mAcc', 'aAcc']
-
     def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         self.efficient_test = efficient_test
@@ -55,8 +53,6 @@ class DistEvalHook(_DistEvalHook):
     Returns:
         list: The prediction results.
     """
-
-    greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
     def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
