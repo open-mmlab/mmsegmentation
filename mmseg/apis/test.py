@@ -1,14 +1,17 @@
 import os.path as osp
+import pickle
+import shutil
 import tempfile
 
 import mmcv
 import numpy as np
 import torch
+import torch.distributed as dist
 from mmcv.engine import collect_results_cpu, collect_results_gpu
 from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
 
-from mmseg.core.evaluation.metrics import intersect_and_union
+from mmseg.core.evaluation.metrics import ResultProcessor
 
 
 def np2tmp(array, temp_file_name=None, tmpdir=None):
@@ -169,23 +172,54 @@ def multi_gpu_test(model,
 
 def progressive_single_gpu_test(model,
                                 data_loader,
+                                middle_save=False,
                                 show=False,
                                 out_dir=None,
                                 opacity=0.5):
+    """Test with single GPU by progressive mode.
+
+    Args:
+        model (nn.Module): Model to be tested.
+        data_loader (utils.data.Dataloader): Pytorch data loader.
+        show (bool): Whether show results during inference. Default: False.
+        middle_save (bool, optional): Whether to save middle variables when
+            progressive test. Default: False.
+        out_dir (str, optional): If specified, the results will be dumped into
+            the directory to save output results.
+        opacity(float): Opacity of painted segmentation map.
+            Default 0.5.
+            Must be in (0, 1] range.
+    Returns:
+        list: The prediction results.
+    """
     model.eval()
     dataset = data_loader.dataset
-    num_classes = len(dataset.CLASSES)
     prog_bar = mmcv.ProgressBar(len(dataset))
 
-    total_area_intersect = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_union = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_pred_label = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_label = torch.zeros((num_classes, ), dtype=torch.float64)
+    if middle_save:
+        collector = ResultProcessor(
+            num_classes=len(dataset.CLASSES),
+            ignore_index=dataset.ignore_index,
+            collect_type='seg_map',
+            label_map=dataset.label_map,
+            reduce_zero_label=dataset.reduce_zero_label)
+    else:
+        collector = ResultProcessor(
+            num_classes=len(dataset.CLASSES),
+            ignore_index=dataset.ignore_index,
+            collect_type='pixels_count',
+            label_map=dataset.label_map,
+            reduce_zero_label=dataset.reduce_zero_label)
 
-    cur = 0
+    gt_maps_generator = dataset.get_gt_seg_maps()
+
     for _, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, **data)
+
+        gt_map = next(gt_maps_generator)
+        meta = data['img_metas'][0].data
+        collector.collect(result, gt_map, meta)
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -213,101 +247,163 @@ def progressive_single_gpu_test(model,
                     out_file=out_file,
                     opacity=opacity)
 
-        for i in range(len(result)):
-            gt_semantic_map = dataset.get_gt_seg_map(cur + i)
-
-            area_intersect, area_union, area_pred_label, area_label = \
-                intersect_and_union(
-                    result[i], gt_semantic_map, num_classes,
-                    dataset.ignore_index, dataset.label_map,
-                    dataset.reduce_zero_label)
-
-            total_area_intersect += area_intersect
-            total_area_union += area_union
-            total_area_pred_label += area_pred_label
-            total_area_label += area_label
-
-            print(total_area_intersect / total_area_union)
-
+        batch_size = len(result)
+        for _ in range(batch_size):
             prog_bar.update()
 
-            cur += len(result)
-
-    return total_area_intersect, total_area_union, total_area_pred_label, \
-        total_area_label
+    return collector
 
 
 # TODO: Support distributed test api
 def progressive_multi_gpu_test(model,
                                data_loader,
+                               middle_save=False,
                                tmpdir=None,
                                gpu_collect=False):
 
     model.eval()
     dataset = data_loader.dataset
-    num_classes = len(dataset.CLASSES)
+    if middle_save:
+        collector = ResultProcessor(
+            num_classes=len(dataset.CLASSES),
+            ignore_index=dataset.ignore_index,
+            collect_type='seg_map',
+            label_map=dataset.label_map,
+            reduce_zero_label=dataset.reduce_zero_label)
+    else:
+        collector = ResultProcessor(
+            num_classes=len(dataset.CLASSES),
+            ignore_index=dataset.ignore_index,
+            collect_type='pixelx_count',
+            label_map=dataset.label_map,
+            reduce_zero_label=dataset.reduce_zero_label)
+
     rank, world_size = get_dist_info()
     if rank == 0:
         prog_bar = mmcv.ProgressBar(len(dataset))
-
-    total_area_intersect = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_union = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_pred_label = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_label = torch.zeros((num_classes, ), dtype=torch.float64)
 
     cur = 0
     for _, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
 
-        for i in range(len(result)):
-            gt_semantic_map = dataset.get_gt_seg_map(cur + i * world_size)
+        gt_seg_map = dataset.index_gt_seg_maps(cur + rank)
+        meta = data['img_metas'][0].data
+        collector.collect(result, gt_seg_map, meta)
 
-            area_intersect, area_union, area_pred_label, area_label = \
-                intersect_and_union(
-                    result[i], gt_semantic_map, num_classes,
-                    dataset.ignore_index, dataset.label_map,
-                    dataset.reduce_zero_label)
-
-            total_area_intersect += area_intersect
-            total_area_union += area_union
-            total_area_pred_label += area_pred_label
-            total_area_label += area_label
-
-            if rank == 0:
-                for _ in range(len(result) * world_size):
-                    prog_bar.update()
+        if rank == 0:
+            for _ in range(len(result) * world_size):
+                prog_bar.update()
 
         cur += len(result) * world_size
 
-    pixel_count_matrix = [
-        total_area_intersect, total_area_union, total_area_pred_label,
-        total_area_label
-    ]
     # collect results from all ranks
     if gpu_collect:
-        results = collect_count_results_gpu(pixel_count_matrix, 4 * world_size)
+        collector = collect_collector_gpu(collector)
     else:
-        results = collect_count_results_cpu(pixel_count_matrix, 4 * world_size,
-                                            tmpdir)
-    return results
+        collector = collect_collector_cpu(collector, tmpdir)
+    return collector
 
 
-def collect_count_results_gpu(result_part, size):
-    """Collect pixel count matrix result under gpu mode.
+def collect_collector_gpu(collector):
+    """Collect result collectors under gpu mode.
 
     On gpu mode, this function will encode results to gpu tensors and use gpu
     communication for results collection.
 
     Args:
-        result_part (list[Tensor]): four type of pixel count matrix --
-            {area_intersect, area_union, area_pred_label, area_label}, These
-            four tensor shape of (num_classes, ).
-        size (int): Size of the results, commonly equal to length of
-            the results.
+        collector (object): Result collector containing predictions and labels
+            to be collected.
+    Returns:
+        object: The gathered collector.
     """
-    pass
+    rank, world_size = get_dist_info()
+    # dump result part to tensor with pickle
+    part_tensor = torch.tensor(
+        bytearray(pickle.dumps(collector)), dtype=torch.uint8, device='cuda')
+    # gather all result part tensor shape
+    shape_tensor = torch.tensor(part_tensor.shape, device='cuda')
+    shape_list = [shape_tensor.clone() for _ in range(world_size)]
+    dist.all_gather(shape_list, shape_tensor)
+    # padding result part tensor to max length
+    shape_max = torch.tensor(shape_list).max()
+    part_send = torch.zeros(shape_max, dtype=torch.uint8, device='cuda')
+    part_send[:shape_tensor[0]] = part_tensor
+    part_recv_list = [
+        part_tensor.new_zeros(shape_max) for _ in range(world_size)
+    ]
+    # gather all result part
+    dist.all_gather(part_recv_list, part_send)
+
+    if rank == 0:
+        # load results of all parts from tmp dir
+        main_collector = pickle.loads(
+            part_recv_list[0][:shape_list[0]].cpu().numpy().tobytes())
+        sub_collectors = []
+        for recv, shape in zip(part_recv_list, shape_list):
+            part_collector = pickle.loads(
+                recv[:shape[0]].cpu().numpy().tobytes())
+            # When data is severely insufficient, an empty part_result
+            # on a certain gpu could makes the overall outputs empty.
+            if part_collector:
+                sub_collectors.append(part_collector)
+        main_collector.merge(sub_collectors)
+        return main_collector
 
 
-def collect_count_results_cpu(result_part, size, tmpdir=None):
-    pass
+def collect_collector_cpu(collector, tmpdir=None):
+    """Collect result collectors under cpu mode.
+
+    On cpu mode, this function will save the result collectors on different
+    gpus to``tmpdir`` and collect them by the rank 0 worker.
+
+    Args:
+        collector (object): Result collector containing predictions and labels
+            to be collected.
+        tmpdir (str | None): temporal directory for collected results to
+            store. If set to None, it will create a random temporal directory
+            for it.
+
+    Returns:
+        object: The gathered collector.
+    """
+    rank, world_size = get_dist_info()
+    # create a tmp dir if it is not specified
+    if tmpdir is None:
+        MAX_LEN = 512
+        # 32 is whitespace
+        dir_tensor = torch.full((MAX_LEN, ),
+                                32,
+                                dtype=torch.uint8,
+                                device='cuda')
+        if rank == 0:
+            mmcv.mkdir_or_exist('.dist_test')
+            tmpdir = tempfile.mkdtemp(dir='.dist_test')
+            tmpdir = torch.tensor(
+                bytearray(tmpdir.encode()), dtype=torch.uint8, device='cuda')
+            dir_tensor[:len(tmpdir)] = tmpdir
+        dist.broadcast(dir_tensor, 0)
+        tmpdir = dir_tensor.cpu().numpy().tobytes().decode().rstrip()
+    else:
+        mmcv.mkdir_or_exist(tmpdir)
+    # dump the part result to the dir
+    mmcv.dump(collector, osp.join(tmpdir, f'part_{rank}.pkl'))
+    dist.barrier()
+    # collect all parts
+    if rank != 0:
+        return None
+    else:
+        # load results of all parts from tmp dir
+        main_collector = mmcv.load(osp.join(tmpdir, f'part_{0}.pkl'))
+        sub_collectors = []
+        for i in range(1, world_size):
+            part_file = osp.join(tmpdir, f'part_{i}.pkl')
+            part_collector = mmcv.load(part_file)
+            # When data is severely insufficient, an empty part_result
+            # on a certain gpu could makes the overall outputs empty.
+            if part_collector:
+                sub_collectors.append(part_collector)
+        main_collector.merge(sub_collectors)
+        # remove tmp dir
+        shutil.rmtree(tmpdir)
+        return main_collector

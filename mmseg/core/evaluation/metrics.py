@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import Iterable, OrderedDict
 
 import mmcv
 import numpy as np
@@ -390,3 +390,95 @@ def calculate_metrics(total_area_intersect,
             for metric, metric_value in ret_metrics.items()
         })
     return ret_metrics
+
+
+class ResultProcessor(object):
+    """Collect container when progressive evaluation."""
+
+    def __init__(self,
+                 num_classes,
+                 ignore_index=255,
+                 collect_type='pixels_count',
+                 label_map=dict(),
+                 reduce_zero_label=False):
+        self.num_classes = num_classes
+        self.collect_type = collect_type
+
+        self.ignore_index = ignore_index
+        self.label_map = label_map
+        self.reduce_zero_label = reduce_zero_label
+
+        assert collect_type.lower() in ['pixels_count', 'seg_map']
+
+        self.prediction_pool = []
+        self.label_pool = []
+        self.meta_pool = []
+
+        self.total_area_intersect = torch.zeros((self.num_classes, ),
+                                                dtype=torch.float64)
+        self.total_area_union = torch.zeros((self.num_classes, ),
+                                            dtype=torch.float64)
+        self.total_area_pred_label = torch.zeros((self.num_classes, ),
+                                                 dtype=torch.float64)
+        self.total_area_label = torch.zeros((self.num_classes, ),
+                                            dtype=torch.float64)
+
+    def collect(self, preds, labels, metas):
+        if not isinstance(preds, Iterable):
+            preds = [preds]
+        if not isinstance(labels, Iterable):
+            labels = [labels]
+        if not isinstance(metas, Iterable):
+            metas = [metas]
+
+        ret_value = total_intersect_and_union(
+            preds,
+            labels,
+            self.num_classes,
+            ignore_index=self.ignore_index,
+            label_map=self.label_map,
+            reduce_zero_label=self.reduce_zero_label)
+        self.total_area_intersect += ret_value[0]
+        self.total_area_union += ret_value[1]
+        self.total_area_pred_label += ret_value[2]
+        self.total_area_label += ret_value[3]
+
+        if self.collect_type == 'seg_map':
+            if isinstance(preds, Iterable):
+                self.prediction_pool.extend(preds)
+                self.label_pool.extend(labels)
+                self.meta_pool.extend(metas)
+            else:
+                self.prediction_pool.append(preds)
+                self.label_pool.append(labels)
+                self.meta_pool.append(metas)
+
+    def retrieval(self):
+        if self.collect_type == 'pixels_count':
+
+            return (self.total_area_intersect, self.total_area_union,
+                    self.total_area_pred_label, self.total_area_label)
+        elif self.collect_type == 'seg_map':
+            return self.prediction_pool, self.label_pool, self.meta_pool
+
+    def calculate(self, metrics):
+        return calculate_metrics(
+            self.total_area_intersect,
+            self.total_area_union,
+            self.total_area_pred_label,
+            self.total_area_label,
+            metrics=metrics)
+
+    def merge(self, collectors):
+        if not isinstance(collectors, Iterable):
+            collectors = [collectors]
+        for collector in collectors:
+            self.total_area_intersect += collector.total_area_intersect
+            self.total_area_union += collector.total_area_union
+            self.total_area_pred_label += collector.total_area_pred_label
+            self.total_area_label += collector.total_area_label
+
+            if self.collect_type == 'seg_map':
+                self.prediction_pool.extend(collector.prediction_pool)
+                self.label_pool.extend(collector.label_pool)
+                self.meta_pool.extend(collector.meta_pool)

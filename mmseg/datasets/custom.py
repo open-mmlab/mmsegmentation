@@ -1,7 +1,6 @@
 import os
 import os.path as osp
-from collections import OrderedDict
-from functools import reduce
+from collections import Iterable, OrderedDict
 
 import mmcv
 import numpy as np
@@ -9,8 +8,6 @@ from mmcv.utils import print_log
 from prettytable import PrettyTable
 from torch.utils.data import Dataset
 
-from mmseg.core import eval_metrics
-from mmseg.core.evaluation.metrics import calculate_metrics
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -228,25 +225,38 @@ class CustomDataset(Dataset):
     def format_results(self, results, **kwargs):
         """Place holder to format result to dataset specific output."""
 
-    def get_gt_seg_maps(self, efficient_test=False):
+    # def get_gt_seg_maps(self, efficient_test):
+    # """Get ground truth segmentation maps for evaluation."""
+    # gt_seg_maps = []
+    # for img_info in self.img_infos:
+    # seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
+    # if efficient_test:
+    # gt_seg_map = seg_map
+    # else:
+    # gt_seg_map = mmcv.imread(
+    # seg_map, flag='unchanged', backend='pillow')
+    # gt_seg_maps.append(gt_seg_map)
+    # return gt_seg_maps
+
+    def get_gt_seg_maps(self):
         """Get ground truth segmentation maps for evaluation."""
-        gt_seg_maps = []
         for img_info in self.img_infos:
             seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
-            if efficient_test:
-                gt_seg_map = seg_map
-            else:
-                gt_seg_map = mmcv.imread(
-                    seg_map, flag='unchanged', backend='pillow')
-            gt_seg_maps.append(gt_seg_map)
+            gt_seg_map = mmcv.imread(
+                seg_map, flag='unchanged', backend='pillow')
+            yield [gt_seg_map]
+
+    def index_gt_seg_maps(self, indexes):
+        """Get ground truth segmentation map by index for evaluation."""
+        if not isinstance(indexes, Iterable):
+            indexes = [indexes]
+        gt_seg_maps = []
+        for index in indexes:
+            seg_map = osp.join(self.ann_dir,
+                               self.img_infos[index]['ann']['seg_map'])
+            gt_seg_maps.append(
+                mmcv.imread(seg_map, flag='unchanged', backend='pillow'))
         return gt_seg_maps
-
-    def get_gt_seg_map(self, idx):
-        """Get ground truth segmentation maps for evaluation."""
-        seg_map = osp.join(self.ann_dir, self.img_infos[idx]['ann']['seg_map'])
-        gt_seg_map = mmcv.imread(seg_map, flag='unchanged', backend='pillow')
-
-        return gt_seg_map
 
     def get_classes_and_palette(self, classes=None, palette=None):
         """Get class names of current dataset.
@@ -311,88 +321,103 @@ class CustomDataset(Dataset):
 
         return palette
 
-    def progressive_evaluate(self,
-                             results,
-                             metric='mIoU',
-                             logger=None,
-                             **kwargs):
-        if isinstance(metric, str):
-            metric = [metric]
-        allowed_metrics = ['mIoU', 'mDice', 'mFscore']
-        if not set(metric).issubset(set(allowed_metrics)):
-            raise KeyError('metric {} is not supported'.format(metric))
+    # def evaluate(self,
+    #              results,
+    #              metric='mIoU',
+    #              logger=None,
+    #              efficient_test=False,
+    #              **kwargs):
+    #     """Evaluate the dataset.
 
-        eval_results = {}
+    #     Args:
+    #         results (list): Testing results of the dataset.
+    #         metric (str | list[str]): Metrics to be evaluated. 'mIoU',
+    #             'mDice' and 'mFscore' are supported.
+    #         logger (logging.Logger | None | str): Logger used for printing
+    #             related information during evaluation. Default: None.
 
-        total_area_intersect, total_area_union, total_area_pred_label, \
-            total_area_label = results
+    #     Returns:
+    #         dict[str, float]: Default metrics.
+    #     """
 
-        ret_metrics = calculate_metrics(total_area_intersect, total_area_union,
-                                        total_area_pred_label,
-                                        total_area_label, metric)
+    #     if isinstance(metric, str):
+    #         metric = [metric]
+    #     allowed_metrics = ['mIoU', 'mDice', 'mFscore']
+    #     if not set(metric).issubset(set(allowed_metrics)):
+    #         raise KeyError('metric {} is not supported'.format(metric))
+    #     eval_results = {}
+    #     gt_seg_maps = self.get_gt_seg_maps(efficient_test)
+    #     if self.CLASSES is None:
+    #         num_classes = len(
+    #             reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
+    #     else:
+    #         num_classes = len(self.CLASSES)
+    #     ret_metrics = eval_metrics(
+    #         results,
+    #         gt_seg_maps,
+    #         num_classes,
+    #         self.ignore_index,
+    #         metric,
+    #         label_map=self.label_map,
+    #         reduce_zero_label=self.reduce_zero_label)
 
-        # Because dataset.CLASSES is required in progressive_single_gpu_test,
-        # progressive_multi_gpu_test, so it's necessary to keep
-        # dataset.CLASSES.
-        class_names = self.CLASSES
+    #     if self.CLASSES is None:
+    #         class_names = tuple(range(num_classes))
+    #     else:
+    #         class_names = self.CLASSES
 
-        # summary table
-        ret_metrics_summary = OrderedDict({
-            ret_metric: np.round(np.nanmean(ret_metric_value) * 100, 2)
-            for ret_metric, ret_metric_value in ret_metrics.items()
-        })
+    #     # summary table
+    #     ret_metrics_summary = OrderedDict({
+    #         ret_metric: np.round(np.nanmean(ret_metric_value) * 100, 2)
+    #         for ret_metric, ret_metric_value in ret_metrics.items()
+    #     })
 
-        # each class table
-        ret_metrics.pop('aAcc', None)
-        ret_metrics_class = OrderedDict({
-            ret_metric: np.round(ret_metric_value * 100, 2)
-            for ret_metric, ret_metric_value in ret_metrics.items()
-        })
-        ret_metrics_class.update({'Class': class_names})
-        ret_metrics_class.move_to_end('Class', last=False)
+    #     # each class table
+    #     ret_metrics.pop('aAcc', None)
+    #     ret_metrics_class = OrderedDict({
+    #         ret_metric: np.round(ret_metric_value * 100, 2)
+    #         for ret_metric, ret_metric_value in ret_metrics.items()
+    #     })
+    #     ret_metrics_class.update({'Class': class_names})
+    #     ret_metrics_class.move_to_end('Class', last=False)
 
-        # for logger
-        class_table_data = PrettyTable()
-        for key, val in ret_metrics_class.items():
-            class_table_data.add_column(key, val)
+    #     # for logger
+    #     class_table_data = PrettyTable()
+    #     for key, val in ret_metrics_class.items():
+    #         class_table_data.add_column(key, val)
 
-        summary_table_data = PrettyTable()
-        for key, val in ret_metrics_summary.items():
-            if key == 'aAcc':
-                summary_table_data.add_column(key, [val])
-            else:
-                summary_table_data.add_column('m' + key, [val])
+    #     summary_table_data = PrettyTable()
+    #     for key, val in ret_metrics_summary.items():
+    #         if key == 'aAcc':
+    #             summary_table_data.add_column(key, [val])
+    #         else:
+    #             summary_table_data.add_column('m' + key, [val])
 
-        print_log('per class results:', logger)
-        print_log('\n' + class_table_data.get_string(), logger=logger)
-        print_log('Summary:', logger)
-        print_log('\n' + summary_table_data.get_string(), logger=logger)
+    #     print_log('per class results:', logger)
+    #     print_log('\n' + class_table_data.get_string(), logger=logger)
+    #     print_log('Summary:', logger)
+    #     print_log('\n' + summary_table_data.get_string(), logger=logger)
 
-        # each metric dict
-        for key, value in ret_metrics_summary.items():
-            if key == 'aAcc':
-                eval_results[key] = value / 100.0
-            else:
-                eval_results['m' + key] = value / 100.0
+    #     # each metric dict
+    #     for key, value in ret_metrics_summary.items():
+    #         if key == 'aAcc':
+    #             eval_results[key] = value / 100.0
+    #         else:
+    #             eval_results['m' + key] = value / 100.0
 
-        ret_metrics_class.pop('Class', None)
-        for key, value in ret_metrics_class.items():
-            eval_results.update({
-                key + '.' + str(name): value[idx] / 100.0
-                for idx, name in enumerate(class_names)
-            })
+    #     ret_metrics_class.pop('Class', None)
+    #     for key, value in ret_metrics_class.items():
+    #         eval_results.update({
+    #             key + '.' + str(name): value[idx] / 100.0
+    #             for idx, name in enumerate(class_names)
+    #         })
 
-        if mmcv.is_list_of(results, str):
-            for file_name in results:
-                os.remove(file_name)
-        return eval_results
+    #     if mmcv.is_list_of(results, str):
+    #         for file_name in results:
+    #             os.remove(file_name)
+    #     return eval_results
 
-    def evaluate(self,
-                 results,
-                 metric='mIoU',
-                 logger=None,
-                 efficient_test=False,
-                 **kwargs):
+    def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
 
         Args:
@@ -405,32 +430,19 @@ class CustomDataset(Dataset):
         Returns:
             dict[str, float]: Default metrics.
         """
-
         if isinstance(metric, str):
             metric = [metric]
         allowed_metrics = ['mIoU', 'mDice', 'mFscore']
         if not set(metric).issubset(set(allowed_metrics)):
             raise KeyError('metric {} is not supported'.format(metric))
-        eval_results = {}
-        gt_seg_maps = self.get_gt_seg_maps(efficient_test)
-        if self.CLASSES is None:
-            num_classes = len(
-                reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
-        else:
-            num_classes = len(self.CLASSES)
-        ret_metrics = eval_metrics(
-            results,
-            gt_seg_maps,
-            num_classes,
-            self.ignore_index,
-            metric,
-            label_map=self.label_map,
-            reduce_zero_label=self.reduce_zero_label)
 
-        if self.CLASSES is None:
-            class_names = tuple(range(num_classes))
-        else:
-            class_names = self.CLASSES
+        eval_results = {}
+        ret_metrics = results.calculate(metric)
+
+        # Because dataset.CLASSES is required in progressive_single_gpu_test,
+        # progressive_multi_gpu_test, so it's necessary to keep
+        # dataset.CLASSES.
+        class_names = self.CLASSES
 
         # summary table
         ret_metrics_summary = OrderedDict({

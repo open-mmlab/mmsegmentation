@@ -125,8 +125,7 @@ class CityscapesDataset(CustomDataset):
                  results,
                  metric='mIoU',
                  logger=None,
-                 imgfile_prefix=None,
-                 efficient_test=False):
+                 imgfile_prefix=None):
         """Evaluation in Cityscapes/default protocol.
 
         Args:
@@ -157,7 +156,7 @@ class CityscapesDataset(CustomDataset):
         if len(metrics) > 0:
             eval_results.update(
                 super(CityscapesDataset,
-                      self).evaluate(results, metrics, logger, efficient_test))
+                      self).evaluate(results, metrics, logger))
 
         return eval_results
 
