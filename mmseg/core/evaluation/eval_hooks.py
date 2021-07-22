@@ -38,6 +38,7 @@ class EvalHook(_EvalHook):
         # for name, val in eval_res.items():
         #     runner.log_buffer.output['eval_res'][name] = val
         runner.log_buffer.clear()
+        runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         for name, val in eval_res.items():
             runner.log_buffer.output[name] = val
         runner.log_buffer.ready = True
@@ -58,7 +59,6 @@ class EvalHook(_EvalHook):
         from mmseg.apis import progressive_single_gpu_test
         processor = progressive_single_gpu_test(
             runner.model, self.dataloader, False, show=False)
-        runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         key_score = self.progressive_evaluate(runner, processor)
         if self.save_best:
             self._save_ckpt(runner, key_score)
@@ -95,6 +95,7 @@ class DistEvalHook(_DistEvalHook):
         # for name, val in eval_res.items():
         #     runner.log_buffer.output['eval_res'][name] = val
         runner.log_buffer.clear()
+        runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         for name, val in eval_res.items():
             runner.log_buffer.output[name] = val
         runner.log_buffer.ready = True
@@ -138,7 +139,6 @@ class DistEvalHook(_DistEvalHook):
             gpu_collect=self.gpu_collect)
         if runner.rank == 0:
             print('\n')
-            runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
             key_score = self.progressive_evaluate(runner, processor)
 
             if self.save_best:
