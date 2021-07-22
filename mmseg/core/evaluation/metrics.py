@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import Iterable, OrderedDict
 
 import mmcv
 import numpy as np
@@ -390,3 +390,98 @@ def calculate_metrics(total_area_intersect,
             for metric, metric_value in ret_metrics.items()
         })
     return ret_metrics
+
+
+class ResultProcessor(object):
+    """collect and process results when progressive evaluation."""
+
+    def __init__(self,
+                 num_classes,
+                 ignore_index=255,
+                 collect_type='pixels_count',
+                 label_map=dict(),
+                 reduce_zero_label=False):
+        self.num_classes = num_classes
+        self.collect_type = collect_type
+
+        self.ignore_index = ignore_index
+        self.label_map = label_map
+        self.reduce_zero_label = reduce_zero_label
+
+        assert collect_type.lower() in ['pixels_count', 'seg_map']
+
+        self.prediction_ram = []
+        self.label_ram = []
+        self.meta_ram = []
+
+        self.total_area_intersect = torch.zeros((self.num_classes, ),
+                                                dtype=torch.float64)
+        self.total_area_union = torch.zeros((self.num_classes, ),
+                                            dtype=torch.float64)
+        self.total_area_pred_label = torch.zeros((self.num_classes, ),
+                                                 dtype=torch.float64)
+        self.total_area_label = torch.zeros((self.num_classes, ),
+                                            dtype=torch.float64)
+
+    def collect(self, preds, labels, metas):
+        """collect predictions, ground truth labels and meta information."""
+        if not isinstance(preds, Iterable):
+            preds = [preds]
+        if not isinstance(labels, Iterable):
+            labels = [labels]
+        if not isinstance(metas, Iterable):
+            metas = [metas]
+
+        ret_value = total_intersect_and_union(
+            preds,
+            labels,
+            self.num_classes,
+            ignore_index=self.ignore_index,
+            label_map=self.label_map,
+            reduce_zero_label=self.reduce_zero_label)
+        self.total_area_intersect += ret_value[0]
+        self.total_area_union += ret_value[1]
+        self.total_area_pred_label += ret_value[2]
+        self.total_area_label += ret_value[3]
+
+        if self.collect_type == 'seg_map':
+            if isinstance(preds, Iterable):
+                self.prediction_ram.extend(preds)
+                self.label_ram.extend(labels)
+                self.meta_ram.extend(metas)
+            else:
+                self.prediction_ram.append(preds)
+                self.label_ram.append(labels)
+                self.meta_ram.append(metas)
+
+    def retrieval(self):
+        """Get processor content by collect type."""
+        if self.collect_type == 'pixels_count':
+            return (self.total_area_intersect, self.total_area_union,
+                    self.total_area_pred_label, self.total_area_label)
+        elif self.collect_type == 'seg_map':
+            return self.prediction_ram, self.label_ram, self.meta_ram
+
+    def calculate(self, metrics):
+        """Calculate metric by using collected pixelx count matrix."""
+        return calculate_metrics(
+            self.total_area_intersect,
+            self.total_area_union,
+            self.total_area_pred_label,
+            self.total_area_label,
+            metrics=metrics)
+
+    def merge(self, processors):
+        """Merge other processors into this processor."""
+        if not isinstance(processors, Iterable):
+            processors = [processors]
+        for processor in processors:
+            self.total_area_intersect += processor.total_area_intersect
+            self.total_area_union += processor.total_area_union
+            self.total_area_pred_label += processor.total_area_pred_label
+            self.total_area_label += processor.total_area_label
+
+            if self.collect_type == 'seg_map':
+                self.prediction_ram.extend(processor.prediction_ram)
+                self.label_ram.extend(processor.label_ram)
+                self.meta_ram.extend(processor.meta_ram)
