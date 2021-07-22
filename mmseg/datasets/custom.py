@@ -407,14 +407,14 @@ class CustomDataset(Dataset):
         return eval_results
 
     def progressive_evaluate(self,
-                             results,
+                             processor,
                              metric='mIoU',
                              logger=None,
                              **kwargs):
         """Evaluate the dataset.
 
         Args:
-            results (list): Testing results of the dataset.
+            processor (object): The result processor for progressive mode.
             metric (str | list[str]): Metrics to be evaluated. 'mIoU',
                 'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
@@ -430,7 +430,7 @@ class CustomDataset(Dataset):
             raise KeyError('metric {} is not supported'.format(metric))
 
         eval_results = {}
-        ret_metrics = results.calculate(metric)
+        ret_metrics = processor.calculate(metric)
 
         # Because dataset.CLASSES is required in progressive_single_gpu_test,
         # progressive_multi_gpu_test, so it's necessary to keep
@@ -483,7 +483,4 @@ class CustomDataset(Dataset):
                 for idx, name in enumerate(class_names)
             })
 
-        if mmcv.is_list_of(results, str):
-            for file_name in results:
-                os.remove(file_name)
         return eval_results
