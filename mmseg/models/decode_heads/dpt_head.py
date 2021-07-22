@@ -39,6 +39,7 @@ class ReassembleBlocks(BaseModule):
                 in_channels=in_channels,
                 out_channels=out_channel,
                 kernel_size=1,
+                act_cfg=None,
             ) for out_channel in out_channels
         ])
 
@@ -188,7 +189,11 @@ class FeatureFusionBlock(BaseModule):
             self.out_channels = in_channels // 2
 
         self.project = ConvModule(
-            self.in_channels, self.out_channels, kernel_size=1)
+            self.in_channels,
+            self.out_channels,
+            kernel_size=1,
+            act_cfg=None,
+            bias=True)
 
         self.res_conv_unit1 = PreActResidualConvUnit(
             in_channels=self.in_channels, act_cfg=act_cfg, norm_cfg=norm_cfg)
@@ -199,21 +204,22 @@ class FeatureFusionBlock(BaseModule):
         x = inputs[0]
         if len(inputs) == 2:
             if x.shape != inputs[1].shape:
-                x_ = resize(
+                res = resize(
                     inputs[1],
                     size=(x.shape[2], x.shape[3]),
                     mode='bilinear',
                     align_corners=False)
             else:
-                x_ = inputs[1]
-            x = x + self.res_conv_unit1(x_)
+                res = inputs[1]
+            x = x + self.res_conv_unit1(res)
         x = self.res_conv_unit2(x)
         x = resize(
             x,
             scale_factor=2,
             mode='bilinear',
             align_corners=self.align_corners)
-        return self.project(x)
+        x = self.project(x)
+        return x
 
 
 @HEADS.register_module()
@@ -265,8 +271,8 @@ class DPTHead(BaseDecodeHead):
                     self.channels,
                     kernel_size=3,
                     padding=1,
+                    act_cfg=None,
                     bias=False))
-
         self.fusion_blocks = nn.ModuleList()
         for _ in range(len(self.convs)):
             self.fusion_blocks.append(
@@ -289,9 +295,9 @@ class DPTHead(BaseDecodeHead):
         x = self._transform_inputs(inputs)
         x = self.reassemble_blocks(x)
         x = [self.convs[i](feature) for i, feature in enumerate(x)]
-        out = self.fusion_blocks[-1](x[-1])
-        for i in reversed(range(len(self.fusion_blocks) - 1)):
-            out = self.fusion_blocks[i](out, x[i])
+        out = self.fusion_blocks[0](x[-1])
+        for i in range(1, len(self.fusion_blocks)):
+            out = self.fusion_blocks[i](out, x[-(i + 1)])
         out = self.project(out)
         out = self.cls_seg(out)
         return out
