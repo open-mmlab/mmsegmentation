@@ -139,7 +139,7 @@ def main():
     middle_save = False
     if args.eval_options is not None:
         # efficient_test = args.eval_options.get('efficient_test', False)
-        middle_save = args.eval_options.get('efficient_test', False)
+        middle_save = args.eval_options.get('middle_save', False)
 
     # clean gpu memory when starting a new evaluation.
     torch.cuda.empty_cache()
