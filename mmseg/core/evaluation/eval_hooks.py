@@ -13,27 +13,24 @@ class EvalHook(_EvalHook):
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
-        efficient_test (bool): Whether save the results as local numpy files to
-            save CPU memory during evaluation. Default: False.
     Returns:
         list: The prediction results.
     """
 
     greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
-    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
+    def __init__(self, *args, by_epoch=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
-        self.efficient_test = efficient_test
 
-    def progressive_evaluate(self, runner, results):
+    def progressive_evaluate(self, runner, processor):
         """Evaluate the results by progressive mode.
 
         Args:
             runner (:obj:`mmcv.Runner`): The underlined training runner.
-            results (list): Output results.
+            processor (object): Output processor.
         """
         eval_res = self.dataloader.dataset.progressive_evaluate(
-            results, logger=runner.logger, **self.eval_kwargs)
+            processor, logger=runner.logger, **self.eval_kwargs)
 
         # TODO: Blocked by mmcv pr: #1213
         # evaluation info specific buffer
@@ -59,10 +56,10 @@ class EvalHook(_EvalHook):
             return
 
         from mmseg.apis import progressive_single_gpu_test
-        results = progressive_single_gpu_test(
+        processor = progressive_single_gpu_test(
             runner.model, self.dataloader, False, show=False)
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
-        key_score = self.progressive_evaluate(runner, results)
+        key_score = self.progressive_evaluate(runner, processor)
         if self.save_best:
             self._save_ckpt(runner, key_score)
 
@@ -74,8 +71,6 @@ class DistEvalHook(_DistEvalHook):
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
-        efficient_test (bool): Whether save the results as local numpy files to
-            save CPU memory during evaluation. Default: False.
     Returns:
         list: The prediction results.
     """
@@ -85,15 +80,15 @@ class DistEvalHook(_DistEvalHook):
     def __init__(self, *args, by_epoch=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
 
-    def progressive_evaluate(self, runner, results):
+    def progressive_evaluate(self, runner, processor):
         """Evaluate the results by progressive mode.
 
         Args:
             runner (:obj:`mmcv.Runner`): The underlined training runner.
-            results (list): Output results.
+            processor (object): Output processor.
         """
         eval_res = self.dataloader.dataset.progressive_evaluate(
-            results, logger=runner.logger, **self.eval_kwargs)
+            processor, logger=runner.logger, **self.eval_kwargs)
         # TODO: Blocked by mmcv pr: #1213
         # evaluation info specific buffer
         # runner.log_buffer.output['eval_res'] = {}
@@ -135,7 +130,7 @@ class DistEvalHook(_DistEvalHook):
             tmpdir = osp.join(runner.work_dir, '.eval_hook')
 
         from mmseg.apis import progressive_multi_gpu_test
-        results = progressive_multi_gpu_test(
+        processor = progressive_multi_gpu_test(
             runner.model,
             self.dataloader,
             False,
@@ -144,7 +139,7 @@ class DistEvalHook(_DistEvalHook):
         if runner.rank == 0:
             print('\n')
             runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
-            key_score = self.progressive_evaluate(runner, results)
+            key_score = self.progressive_evaluate(runner, processor)
 
             if self.save_best:
                 self._save_ckpt(runner, key_score)
