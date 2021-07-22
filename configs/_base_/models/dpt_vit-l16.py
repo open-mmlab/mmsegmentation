@@ -1,7 +1,7 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='https://storage.googleapis.com/vit_models/augreg/L_16-i21k-300ep-lr_0.001-aug_medium1-wd_0.1-do_0.1-sd_0.1--imagenet2012-steps_20k-lr_0.01-res_384.npz', # noqa
+    pretrained='https://download.openmmlab.com/mmclassification/v0/vit/vit_large_patch16_384.pth', # noqa
     backbone=dict(
         type='VisionTransformer',
         img_size=384,
@@ -25,19 +25,7 @@ model = dict(
         norm_cfg=norm_cfg,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
-    auxiliary_head=dict(
-        type='FCNHead',
-        in_channels=768,
-        in_index=3,
-        channels=256,
-        num_convs=1,
-        concat_input=False,
-        dropout_ratio=0.1,
-        num_classes=19,
-        norm_cfg=norm_cfg,
-        align_corners=False,
-        loss_decode=dict(
-            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+    auxiliary_head=None,
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))  # yapf: disable
