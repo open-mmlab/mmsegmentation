@@ -25,19 +25,44 @@ class EvalHook(_EvalHook):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         self.efficient_test = efficient_test
 
+    def progressive_evaluate(self, runner, results):
+        """Evaluate the results by progressive mode.
+
+        Args:
+            runner (:obj:`mmcv.Runner`): The underlined training runner.
+            results (list): Output results.
+        """
+        eval_res = self.dataloader.dataset.progressive_evaluate(
+            results, logger=runner.logger, **self.eval_kwargs)
+
+        # TODO: Blocked by mmcv pr: #1213
+        # evaluation info specific buffer
+        # runner.log_buffer.output['eval_res'] = {}
+        # for name, val in eval_res.items():
+        #     runner.log_buffer.output['eval_res'][name] = val
+        runner.log_buffer.clear()
+        for name, val in eval_res.items():
+            runner.log_buffer.output[name] = val
+        runner.log_buffer.ready = True
+
+        if self.save_best is not None:
+            if self.key_indicator == 'auto':
+                # infer from eval_results
+                self._init_rule(self.rule, list(eval_res.keys())[0])
+            return eval_res[self.key_indicator]
+
+        return None
+
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
         if not self._should_evaluate(runner):
             return
 
-        from mmseg.apis import single_gpu_test
-        results = single_gpu_test(
-            runner.model,
-            self.dataloader,
-            show=False,
-            efficient_test=self.efficient_test)
+        from mmseg.apis import progressive_single_gpu_test
+        results = progressive_single_gpu_test(
+            runner.model, self.dataloader, False, show=False)
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
-        key_score = self.evaluate(runner, results)
+        key_score = self.progressive_evaluate(runner, results)
         if self.save_best:
             self._save_ckpt(runner, key_score)
 
@@ -57,9 +82,35 @@ class DistEvalHook(_DistEvalHook):
 
     greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
-    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
+    def __init__(self, *args, by_epoch=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
-        self.efficient_test = efficient_test
+
+    def progressive_evaluate(self, runner, results):
+        """Evaluate the results by progressive mode.
+
+        Args:
+            runner (:obj:`mmcv.Runner`): The underlined training runner.
+            results (list): Output results.
+        """
+        eval_res = self.dataloader.dataset.progressive_evaluate(
+            results, logger=runner.logger, **self.eval_kwargs)
+        # TODO: Blocked by mmcv pr: #1213
+        # evaluation info specific buffer
+        # runner.log_buffer.output['eval_res'] = {}
+        # for name, val in eval_res.items():
+        #     runner.log_buffer.output['eval_res'][name] = val
+        runner.log_buffer.clear()
+        for name, val in eval_res.items():
+            runner.log_buffer.output[name] = val
+        runner.log_buffer.ready = True
+
+        if self.save_best is not None:
+            if self.key_indicator == 'auto':
+                # infer from eval_results
+                self._init_rule(self.rule, list(eval_res.keys())[0])
+            return eval_res[self.key_indicator]
+
+        return None
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
@@ -83,17 +134,17 @@ class DistEvalHook(_DistEvalHook):
         if tmpdir is None:
             tmpdir = osp.join(runner.work_dir, '.eval_hook')
 
-        from mmseg.apis import multi_gpu_test
-        results = multi_gpu_test(
+        from mmseg.apis import progressive_multi_gpu_test
+        results = progressive_multi_gpu_test(
             runner.model,
             self.dataloader,
+            False,
             tmpdir=tmpdir,
-            gpu_collect=self.gpu_collect,
-            efficient_test=self.efficient_test)
+            gpu_collect=self.gpu_collect)
         if runner.rank == 0:
             print('\n')
             runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
-            key_score = self.evaluate(runner, results)
+            key_score = self.progressive_evaluate(runner, results)
 
             if self.save_best:
                 self._save_ckpt(runner, key_score)
