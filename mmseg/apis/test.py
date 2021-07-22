@@ -317,13 +317,13 @@ def progressive_multi_gpu_test(model,
         if rank == 0:
             batch_size = len(result)
             if cur + world_size >= len(dataset):
-                total_samples = cur + world_size + 1 - len(dataset)
+                total_samples = len(dataset) - cur
             else:
                 total_samples = batch_size * world_size
             for _ in range(total_samples):
                 prog_bar.update()
 
-        cur += len(result) * world_size
+            cur += len(result) * world_size
 
     # collect results from all ranks
     if gpu_collect:
