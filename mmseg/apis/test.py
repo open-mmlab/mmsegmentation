@@ -219,7 +219,7 @@ def progressive_single_gpu_test(model,
 
         # Collect meta to avoid sorting for results collected from multi gpu.
         gt_map = next(gt_maps_generator)
-        meta = data['img_metas'][0].data
+        meta = data['img_metas'][0].data[0]
         processor.collect(result, gt_map, meta)
 
         if show or out_dir:
@@ -309,12 +309,18 @@ def progressive_multi_gpu_test(model,
 
         # TODO: adapt samples_per_gpu > 1.
         # only samples_per_gpu=1 valid now
-        gt_seg_map = dataset.index_gt_seg_maps(cur + rank)
-        meta = data['img_metas'][0].data
-        processor.collect(result, gt_seg_map, meta)
+        if (cur + rank) < len(dataset):
+            gt_seg_map = dataset.index_gt_seg_maps(cur + rank)
+            meta = data['img_metas'][0].data[0]
+            processor.collect(result, gt_seg_map, meta)
 
         if rank == 0:
-            for _ in range(len(result) * world_size):
+            batch_size = len(result)
+            if cur + world_size >= len(dataset):
+                total_samples = cur + world_size + 1 - len(dataset)
+            else:
+                total_samples = batch_size * world_size
+            for _ in range(total_samples):
                 prog_bar.update()
 
         cur += len(result) * world_size
