@@ -20,7 +20,7 @@ class PatchEmbed(BaseModule):
         padding (int): The padding length of embedding conv. Default: 0.
         dilation (int): The dilation rate of embedding conv. Default: 1.
         pad_to_patch_size (bool, optional): Whether to pad feature map shape
-            to multiple patch size. Default: False.
+            to multiple patch size. Default: True.
         norm_cfg (dict, optional): Config dict for normalization layer.
         init_cfg (`mmcv.ConfigDict`, optional): The Config for initialization.
             Default: None.
@@ -34,7 +34,7 @@ class PatchEmbed(BaseModule):
                  stride=16,
                  padding=0,
                  dilation=1,
-                 pad_to_patch_size=False,
+                 pad_to_patch_size=True,
                  norm_cfg=None,
                  init_cfg=None):
         super(PatchEmbed, self).__init__()
