@@ -4,7 +4,8 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 
-model = dict(decode_head=dict(num_classes=150))
+model = dict(
+    pretrained='pretrain/mit_b0.pth', decode_head=dict(num_classes=150))
 
 # optimizer
 optimizer = dict(
