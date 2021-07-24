@@ -4,6 +4,8 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 
+model = dict(decode_head=dict(num_classes=150))
+
 # optimizer
 optimizer = dict(
     _delete_=True,

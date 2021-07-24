@@ -22,7 +22,6 @@ model = dict(
         type='SegformerHead',
         in_channels=[32, 64, 160, 256],
         in_index=[0, 1, 2, 3],
-        feature_strides=[4, 8, 16, 32],
         channels=256,
         dropout_ratio=0.1,
         num_classes=19,
