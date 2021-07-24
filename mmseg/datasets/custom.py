@@ -1,7 +1,5 @@
-import os
 import os.path as osp
-from collections import OrderedDict
-from functools import reduce
+from collections import Iterable, OrderedDict
 
 import mmcv
 import numpy as np
@@ -9,7 +7,6 @@ from mmcv.utils import print_log
 from prettytable import PrettyTable
 from torch.utils.data import Dataset
 
-from mmseg.core import eval_metrics
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -227,17 +224,24 @@ class CustomDataset(Dataset):
     def format_results(self, results, **kwargs):
         """Place holder to format result to dataset specific output."""
 
-    def get_gt_seg_maps(self, efficient_test=False):
+    def get_gt_seg_maps(self):
         """Get ground truth segmentation maps for evaluation."""
-        gt_seg_maps = []
         for img_info in self.img_infos:
             seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
-            if efficient_test:
-                gt_seg_map = seg_map
-            else:
-                gt_seg_map = mmcv.imread(
-                    seg_map, flag='unchanged', backend='pillow')
-            gt_seg_maps.append(gt_seg_map)
+            gt_seg_map = mmcv.imread(
+                seg_map, flag='unchanged', backend='pillow')
+            yield [gt_seg_map]
+
+    def index_gt_seg_maps(self, indexes):
+        """Get ground truth segmentation map by index for evaluation."""
+        if not isinstance(indexes, Iterable):
+            indexes = [indexes]
+        gt_seg_maps = []
+        for index in indexes:
+            seg_map = osp.join(self.ann_dir,
+                               self.img_infos[index]['ann']['seg_map'])
+            gt_seg_maps.append(
+                mmcv.imread(seg_map, flag='unchanged', backend='pillow'))
         return gt_seg_maps
 
     def get_classes_and_palette(self, classes=None, palette=None):
@@ -303,16 +307,11 @@ class CustomDataset(Dataset):
 
         return palette
 
-    def evaluate(self,
-                 results,
-                 metric='mIoU',
-                 logger=None,
-                 efficient_test=False,
-                 **kwargs):
+    def evaluate(self, processor, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
 
         Args:
-            results (list): Testing results of the dataset.
+            processor (object): The result processor for progressive mode.
             metric (str | list[str]): Metrics to be evaluated. 'mIoU',
                 'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
@@ -321,32 +320,19 @@ class CustomDataset(Dataset):
         Returns:
             dict[str, float]: Default metrics.
         """
-
         if isinstance(metric, str):
             metric = [metric]
         allowed_metrics = ['mIoU', 'mDice', 'mFscore']
         if not set(metric).issubset(set(allowed_metrics)):
             raise KeyError('metric {} is not supported'.format(metric))
-        eval_results = {}
-        gt_seg_maps = self.get_gt_seg_maps(efficient_test)
-        if self.CLASSES is None:
-            num_classes = len(
-                reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
-        else:
-            num_classes = len(self.CLASSES)
-        ret_metrics = eval_metrics(
-            results,
-            gt_seg_maps,
-            num_classes,
-            self.ignore_index,
-            metric,
-            label_map=self.label_map,
-            reduce_zero_label=self.reduce_zero_label)
 
-        if self.CLASSES is None:
-            class_names = tuple(range(num_classes))
-        else:
-            class_names = self.CLASSES
+        eval_results = {}
+        ret_metrics = processor.calculate(metric)
+
+        # Because dataset.CLASSES is required in single_gpu_test,
+        # multi_gpu_test, so it's necessary to keep
+        # dataset.CLASSES.
+        class_names = self.CLASSES
 
         # summary table
         ret_metrics_summary = OrderedDict({
@@ -394,7 +380,4 @@ class CustomDataset(Dataset):
                 for idx, name in enumerate(class_names)
             })
 
-        if mmcv.is_list_of(results, str):
-            for file_name in results:
-                os.remove(file_name)
         return eval_results

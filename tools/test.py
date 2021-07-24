@@ -90,6 +90,8 @@ def main():
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
     if args.aug_test:
+        assert not (args.show or args.show_dir
+                    ), 'when aug test, it is not supported to show result.'
         # hard code index
         cfg.data.test.pipeline[1].img_ratios = [
             0.5, 0.75, 1.0, 1.25, 1.5, 1.75
@@ -133,32 +135,37 @@ def main():
         print('"PALETTE" not found in meta, use dataset.PALETTE instead')
         model.PALETTE = dataset.PALETTE
 
-    efficient_test = False
+    middle_save = False
     if args.eval_options is not None:
-        efficient_test = args.eval_options.get('efficient_test', False)
+        middle_save = args.eval_options.get('middle_save', False)
+
+    # clean gpu memory when starting a new evaluation.
+    torch.cuda.empty_cache()
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
-                                  efficient_test, args.opacity)
+        processor = single_gpu_test(model, data_loader, middle_save, args.show,
+                                    args.show_dir, args.opacity)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        outputs = multi_gpu_test(model, data_loader, args.tmpdir,
-                                 args.gpu_collect, efficient_test)
+        processor = multi_gpu_test(model, data_loader, middle_save,
+                                   args.tmpdir, args.gpu_collect)
 
     rank, _ = get_dist_info()
     if rank == 0:
         if args.out:
             print(f'\nwriting results to {args.out}')
-            mmcv.dump(outputs, args.out)
+            mmcv.dump(processor.retrieval(), args.out)
         kwargs = {} if args.eval_options is None else args.eval_options
         if args.format_only:
-            dataset.format_results(outputs, **kwargs)
+            assert middle_save, 'When `middle_save` is True, the '
+            '`--format-only` is valid.'
+            dataset.format_results(processor.retrieval(), **kwargs)
         if args.eval:
-            dataset.evaluate(outputs, args.eval, **kwargs)
+            dataset.evaluate(processor, args.eval, **kwargs)
 
 
 if __name__ == '__main__':

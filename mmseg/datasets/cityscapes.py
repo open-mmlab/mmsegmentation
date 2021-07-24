@@ -88,6 +88,7 @@ class CityscapesDataset(CustomDataset):
 
         return result_files
 
+    # TODO: Use processor to format results.
     def format_results(self, results, imgfile_prefix=None, to_label_id=True):
         """Format the results into dir (standard format for Cityscapes
         evaluation).
@@ -125,8 +126,7 @@ class CityscapesDataset(CustomDataset):
                  results,
                  metric='mIoU',
                  logger=None,
-                 imgfile_prefix=None,
-                 efficient_test=False):
+                 imgfile_prefix=None):
         """Evaluation in Cityscapes/default protocol.
 
         Args:
@@ -157,7 +157,7 @@ class CityscapesDataset(CustomDataset):
         if len(metrics) > 0:
             eval_results.update(
                 super(CityscapesDataset,
-                      self).evaluate(results, metrics, logger, efficient_test))
+                      self).evaluate(results, metrics, logger))
 
         return eval_results
 

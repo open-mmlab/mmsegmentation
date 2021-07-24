@@ -227,24 +227,26 @@ def main():
     model.CLASSES = dataset.CLASSES
     model.PALETTE = dataset.PALETTE
 
-    efficient_test = False
+    middle_save = False
     if args.eval_options is not None:
-        efficient_test = args.eval_options.get('efficient_test', False)
+        middle_save = args.eval_options.get('middle_save', False)
 
     model = MMDataParallel(model, device_ids=[0])
-    outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
-                              efficient_test, args.opacity)
+    processor = single_gpu_test(model, data_loader, args.show, args.show_dir,
+                                middle_save, args.opacity)
 
     rank, _ = get_dist_info()
     if rank == 0:
         if args.out:
             print(f'\nwriting results to {args.out}')
-            mmcv.dump(outputs, args.out)
+            mmcv.dump(processor.retrieval(), args.out)
         kwargs = {} if args.eval_options is None else args.eval_options
         if args.format_only:
-            dataset.format_results(outputs, **kwargs)
+            assert middle_save, 'When `middle_save` is True, the '
+            '`--format-only` is valid.'
+            dataset.format_results(processor.retrieval(), **kwargs)
         if args.eval:
-            dataset.evaluate(outputs, args.eval, **kwargs)
+            dataset.evaluate(processor, args.eval, **kwargs)
 
 
 if __name__ == '__main__':
