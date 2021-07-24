@@ -1,6 +1,7 @@
 from .cgnet import CGNet
 from .fast_scnn import FastSCNN
 from .hrnet import HRNet
+from .litehrnet import LiteHRNet
 from .mit import MixVisionTransformer
 from .mobilenet_v2 import MobileNetV2
 from .mobilenet_v3 import MobileNetV3
@@ -14,5 +15,5 @@ from .vit import VisionTransformer
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
-    'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer'
+    'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer', 'LiteHRNet'
 ]
