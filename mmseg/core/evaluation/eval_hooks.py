@@ -22,14 +22,14 @@ class EvalHook(_EvalHook):
     def __init__(self, *args, by_epoch=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
 
-    def progressive_evaluate(self, runner, processor):
+    def evaluate(self, runner, processor):
         """Evaluate the results by progressive mode.
 
         Args:
             runner (:obj:`mmcv.Runner`): The underlined training runner.
             processor (object): Output processor.
         """
-        eval_res = self.dataloader.dataset.progressive_evaluate(
+        eval_res = self.dataloader.dataset.evaluate(
             processor, logger=runner.logger, **self.eval_kwargs)
 
         # TODO: Blocked by mmcv pr: #1213
@@ -37,7 +37,6 @@ class EvalHook(_EvalHook):
         # runner.log_buffer.output['eval_res'] = {}
         # for name, val in eval_res.items():
         #     runner.log_buffer.output['eval_res'][name] = val
-        runner.log_buffer.clear()
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         for name, val in eval_res.items():
             runner.log_buffer.output[name] = val
@@ -56,10 +55,13 @@ class EvalHook(_EvalHook):
         if not self._should_evaluate(runner):
             return
 
-        from mmseg.apis import progressive_single_gpu_test
-        processor = progressive_single_gpu_test(
+        from mmseg.apis import single_gpu_test
+        processor = single_gpu_test(
             runner.model, self.dataloader, False, show=False)
-        key_score = self.progressive_evaluate(runner, processor)
+
+        runner.log_buffer.clear()
+
+        key_score = self.evaluate(runner, processor)
         if self.save_best:
             self._save_ckpt(runner, key_score)
 
@@ -80,21 +82,20 @@ class DistEvalHook(_DistEvalHook):
     def __init__(self, *args, by_epoch=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
 
-    def progressive_evaluate(self, runner, processor):
+    def evaluate(self, runner, processor):
         """Evaluate the results by progressive mode.
 
         Args:
             runner (:obj:`mmcv.Runner`): The underlined training runner.
             processor (object): Output processor.
         """
-        eval_res = self.dataloader.dataset.progressive_evaluate(
+        eval_res = self.dataloader.dataset.evaluate(
             processor, logger=runner.logger, **self.eval_kwargs)
         # TODO: Blocked by mmcv pr: #1213
         # evaluation info specific buffer
         # runner.log_buffer.output['eval_res'] = {}
         # for name, val in eval_res.items():
         #     runner.log_buffer.output['eval_res'][name] = val
-        runner.log_buffer.clear()
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         for name, val in eval_res.items():
             runner.log_buffer.output[name] = val
@@ -130,16 +131,19 @@ class DistEvalHook(_DistEvalHook):
         if tmpdir is None:
             tmpdir = osp.join(runner.work_dir, '.eval_hook')
 
-        from mmseg.apis import progressive_multi_gpu_test
-        processor = progressive_multi_gpu_test(
+        from mmseg.apis import multi_gpu_test
+        processor = multi_gpu_test(
             runner.model,
             self.dataloader,
             False,
             tmpdir=tmpdir,
             gpu_collect=self.gpu_collect)
+
+        runner.log_buffer.clear()
+
         if runner.rank == 0:
             print('\n')
-            key_score = self.progressive_evaluate(runner, processor)
+            key_score = self.evaluate(runner, processor)
 
             if self.save_best:
                 self._save_ckpt(runner, key_score)
