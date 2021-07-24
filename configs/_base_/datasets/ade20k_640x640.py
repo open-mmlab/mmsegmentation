@@ -1,3 +1,4 @@
+# dataset settings
 dataset_type = 'ADE20KDataset'
 data_root = 'data/ade/ADEChallengeData2016'
 img_norm_cfg = dict(
@@ -20,10 +21,10 @@ test_pipeline = [
     dict(
         type='MultiScaleFlipAug',
         img_scale=(2048, 640),
-        # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
+        # img_ratios=[0.5640.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
-            dict(type='AlignedResize', keep_ratio=True, size_divisor=32),
+            dict(type='Resize', keep_ratio=True),
             dict(type='RandomFlip'),
             dict(type='Normalize', **img_norm_cfg),
             dict(type='ImageToTensor', keys=['img']),
