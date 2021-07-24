@@ -112,11 +112,7 @@ def test_epoch_eval_hook():
                                                       logger=runner.logger)
 
 
-def multi_gpu_test(model,
-                   data_loader,
-                   tmpdir=None,
-                   gpu_collect=False,
-                   efficient_test=False):
+def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     results = single_gpu_test(model, data_loader)
     return results
 

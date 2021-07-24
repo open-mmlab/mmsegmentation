@@ -130,6 +130,7 @@ class ADE20KDataset(CustomDataset):
 
         return result_files
 
+    # TODO: Use processor to format results.
     def format_results(self, results, imgfile_prefix=None, to_label_id=True):
         """Format the results into dir (standard format for ade20k evaluation).
 

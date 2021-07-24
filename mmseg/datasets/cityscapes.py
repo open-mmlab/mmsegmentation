@@ -88,6 +88,7 @@ class CityscapesDataset(CustomDataset):
 
         return result_files
 
+    # TODO: Use processor to format results.
     def format_results(self, results, imgfile_prefix=None, to_label_id=True):
         """Format the results into dir (standard format for Cityscapes
         evaluation).
@@ -125,8 +126,7 @@ class CityscapesDataset(CustomDataset):
                  results,
                  metric='mIoU',
                  logger=None,
-                 imgfile_prefix=None,
-                 efficient_test=False):
+                 imgfile_prefix=None):
         """Evaluation in Cityscapes/default protocol.
 
         Args:
@@ -157,83 +157,7 @@ class CityscapesDataset(CustomDataset):
         if len(metrics) > 0:
             eval_results.update(
                 super(CityscapesDataset,
-                      self).evaluate(results, metrics, logger, efficient_test))
-
-        return eval_results
-
-    # TODO: Use processor to format results.
-    def progressive_format_results(self,
-                                   results,
-                                   imgfile_prefix=None,
-                                   to_label_id=True):
-        """Format the results into dir (standard format for Cityscapes
-        evaluation).
-
-        Args:
-            results (list): Testing results of the dataset.
-            imgfile_prefix (str | None): The prefix of images files. It
-                includes the file path and the prefix of filename, e.g.,
-                "a/b/prefix". If not specified, a temp file will be created.
-                Default: None.
-            to_label_id (bool): whether convert output to label_id for
-                submission. Default: False
-
-        Returns:
-            tuple: (result_files, tmp_dir), result_files is a list containing
-                the image paths, tmp_dir is the temporal directory created
-                for saving json/png files when img_prefix is not specified.
-        """
-
-        assert isinstance(results, list), 'results must be a list'
-        assert len(results) == len(self), (
-            'The length of results is not equal to the dataset len: '
-            f'{len(results)} != {len(self)}')
-
-        if imgfile_prefix is None:
-            tmp_dir = tempfile.TemporaryDirectory()
-            imgfile_prefix = tmp_dir.name
-        else:
-            tmp_dir = None
-        result_files = self.results2img(results, imgfile_prefix, to_label_id)
-
-        return result_files, tmp_dir
-
-    def progressive_evaluate(self,
-                             results,
-                             metric='mIoU',
-                             logger=None,
-                             imgfile_prefix=None):
-        """Evaluation in Cityscapes/default protocol.
-
-        Args:
-            results (list): Testing results of the dataset.
-            metric (str | list[str]): Metrics to be evaluated.
-            logger (logging.Logger | None | str): Logger used for printing
-                related information during evaluation. Default: None.
-            imgfile_prefix (str | None): The prefix of output image file,
-                for cityscapes evaluation only. It includes the file path and
-                the prefix of filename, e.g., "a/b/prefix".
-                If results are evaluated with cityscapes protocol, it would be
-                the prefix of output png files. The output files would be
-                png images under folder "a/b/prefix/xxx.png", where "xxx" is
-                the image name of cityscapes. If not specified, a temp file
-                will be created for evaluation.
-                Default: None.
-
-        Returns:
-            dict[str, float]: Cityscapes/default metrics.
-        """
-
-        eval_results = dict()
-        metrics = metric.copy() if isinstance(metric, list) else [metric]
-        if 'cityscapes' in metrics:
-            eval_results.update(
-                self._evaluate_cityscapes(results, logger, imgfile_prefix))
-            metrics.remove('cityscapes')
-        if len(metrics) > 0:
-            eval_results.update(
-                super(CityscapesDataset,
-                      self).progressive_evaluate(results, metrics, logger))
+                      self).evaluate(results, metrics, logger))
 
         return eval_results
 
