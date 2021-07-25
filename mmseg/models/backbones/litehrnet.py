@@ -720,7 +720,8 @@ class LiteHRModule(BaseModule):
         if self.with_fuse:
             out_fuse = []
             for i in range(len(self.fuse_layers)):
-                # `y = 0` will lead to decreased accuracy (0.5~1 mAP)
+                # `y = 0` will lead to decreased accuracy (0.5~1 mAP) for pose
+                # eatimation (in mmpose).
                 y = out[0] if i == 0 else self.fuse_layers[i][0](out[0])
                 for j in range(self.num_branches):
                     if i == j:
