@@ -123,7 +123,7 @@ class HourglassNet(BaseModule):
             Default: `None`.
 
     Example:
-        >>> from mmdet.models import HourglassNet
+        >>> from mmseg.models import HourglassNet
         >>> import torch
         >>> self = HourglassNet()
         >>> self.eval()
