@@ -206,7 +206,7 @@ class Res2Net(ResNet):
             Default: None.
 
     Example:
-        >>> from mmdet.models import Res2Net
+        >>> from mmseg.models import Res2Net
         >>> import torch
         >>> self = Res2Net(depth=50, scales=4, base_width=26)
         >>> self.eval()
