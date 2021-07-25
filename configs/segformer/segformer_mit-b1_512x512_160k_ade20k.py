@@ -1,7 +1,6 @@
 _base_ = [
-    '../_base_/models/segformer_mit-b0.py',
-    '../_base_/datasets/ade20k_aligned.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/segformer_mit-b0.py', '../_base_/datasets/ade20k.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
 # model settings
