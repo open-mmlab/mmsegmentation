@@ -1,5 +1,6 @@
 from .cgnet import CGNet
 from .fast_scnn import FastSCNN
+from .hourglass import HourglassNet
 from .hrnet import HRNet
 from .mit import MixVisionTransformer
 from .mobilenet_v2 import MobileNetV2
@@ -14,5 +15,6 @@ from .vit import VisionTransformer
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
-    'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer'
+    'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
+    'HourglassNet'
 ]
