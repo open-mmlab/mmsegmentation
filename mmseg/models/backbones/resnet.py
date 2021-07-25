@@ -340,8 +340,7 @@ class ResNet(BaseModule):
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
         dcn (dict | None): Dictionary to construct and config DCN conv layer.
-            When dcn is not None, conv_cfg must be None.
-            Default: None.
+            When dcn is not None, conv_cfg must be None. Default: None.
         stage_with_dcn (Sequence[bool]): Whether to set DCN conv for each
             stage. The length of stage_with_dcn is equal to num_stages.
             Default: (False, False, False, False).
