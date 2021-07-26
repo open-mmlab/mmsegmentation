@@ -165,7 +165,7 @@ def multi_gpu_test(model,
             for _ in range(total_samples):
                 prog_bar.update()
 
-            cur += len(result) * world_size
+        cur += len(result) * world_size
 
     # collect results from all ranks
     if gpu_collect:
