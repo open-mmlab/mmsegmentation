@@ -628,6 +628,7 @@ class SwinTransformer(BaseModule):
             conv_type='Conv2d',
             kernel_size=patch_size,
             stride=strides[0],
+            pad_to_patch_size=True,
             norm_cfg=norm_cfg if patch_norm else None,
             init_cfg=None)
 
