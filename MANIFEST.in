@@ -2,4 +2,3 @@ include requirements/*.txt
 include mmseg/.mim/model-index.yml
 recursive-include mmseg/.mim/configs *.py *.yml
 recursive-include mmseg/.mim/tools *.py *.sh
-recursive-include mmseg/.mim/demo *.py
