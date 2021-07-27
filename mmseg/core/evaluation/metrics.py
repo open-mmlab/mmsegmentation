@@ -1,4 +1,4 @@
-from collections import Iterable, OrderedDict
+from collections import OrderedDict
 
 import mmcv
 import numpy as np
@@ -326,26 +326,18 @@ def eval_metrics(results,
     return ret_metrics
 
 
-def calculate_metrics(total_area_intersect,
-                      total_area_union,
-                      total_area_pred_label,
-                      total_area_label,
-                      metrics=['mIoU'],
-                      nan_to_num=None,
-                      beta=1):
-    """Calculate evaluation metrics
+def convert_pre_eval_results_metrics(pre_eval_results,
+                                     metrics=['mIoU'],
+                                     nan_to_num=None,
+                                     beta=1):
+    """Convert pre-eval results to metrics.
+
     Args:
-        results (list[ndarray] | list[str]): List of prediction segmentation
-            maps or list of prediction result filenames.
-        gt_seg_maps (list[ndarray] | list[str]): list of ground truth
-            segmentation maps or list of label filenames.
-        num_classes (int): Number of categories.
-        ignore_index (int): Index that will be ignored in evaluation.
+        pre_eval_results (tuple[torch.Tensor]): per image eval results for
+            computing evaluation metric
         metrics (list[str] | str): Metrics to be evaluated, 'mIoU' and 'mDice'.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
-        label_map (dict): Mapping old labels to new labels. Default: dict().
-        reduce_zero_label (bool): Wether ignore zero label. Default: False.
      Returns:
         float: Overall accuracy on all images.
         ndarray: Per category accuracy, shape (num_classes, ).
@@ -356,6 +348,18 @@ def calculate_metrics(total_area_intersect,
     allowed_metrics = ['mIoU', 'mDice', 'mFscore']
     if not set(metrics).issubset(set(allowed_metrics)):
         raise KeyError('metrics {} is not supported'.format(metrics))
+
+    # convert list of tuples to tuple of lists, e.g.
+    # [(A_1, B_1, C_1, D_1), ...,  (A_n, B_n, C_n, D_n)] to
+    # ([A_1, ..., A_n], ..., [D_1, ..., D_n])
+
+    pre_eval_results = tuple(zip(*pre_eval_results))
+    assert len(pre_eval_results) == 4
+
+    total_area_intersect = sum(pre_eval_results[0])
+    total_area_union = sum(pre_eval_results[1])
+    total_area_pred_label = sum(pre_eval_results[2])
+    total_area_label = sum(pre_eval_results[3])
 
     all_acc = total_area_intersect.sum() / total_area_label.sum()
     ret_metrics = OrderedDict({'aAcc': all_acc})
@@ -390,98 +394,3 @@ def calculate_metrics(total_area_intersect,
             for metric, metric_value in ret_metrics.items()
         })
     return ret_metrics
-
-
-class ResultProcessor(object):
-    """collect and process results when progressive evaluation."""
-
-    def __init__(self,
-                 num_classes,
-                 ignore_index=255,
-                 collect_type='pixels_count',
-                 label_map=dict(),
-                 reduce_zero_label=False):
-        self.num_classes = num_classes
-        self.collect_type = collect_type
-
-        self.ignore_index = ignore_index
-        self.label_map = label_map
-        self.reduce_zero_label = reduce_zero_label
-
-        assert collect_type.lower() in ['pixels_count', 'seg_map']
-
-        self.prediction_ram = []
-        self.label_ram = []
-        self.meta_ram = []
-
-        self.total_area_intersect = torch.zeros((self.num_classes, ),
-                                                dtype=torch.float64)
-        self.total_area_union = torch.zeros((self.num_classes, ),
-                                            dtype=torch.float64)
-        self.total_area_pred_label = torch.zeros((self.num_classes, ),
-                                                 dtype=torch.float64)
-        self.total_area_label = torch.zeros((self.num_classes, ),
-                                            dtype=torch.float64)
-
-    def collect(self, preds, labels, metas):
-        """collect predictions, ground truth labels and meta information."""
-        if not isinstance(preds, Iterable):
-            preds = [preds]
-        if not isinstance(labels, Iterable):
-            labels = [labels]
-        if not isinstance(metas, Iterable):
-            metas = [metas]
-
-        ret_value = total_intersect_and_union(
-            preds,
-            labels,
-            self.num_classes,
-            ignore_index=self.ignore_index,
-            label_map=self.label_map,
-            reduce_zero_label=self.reduce_zero_label)
-        self.total_area_intersect += ret_value[0]
-        self.total_area_union += ret_value[1]
-        self.total_area_pred_label += ret_value[2]
-        self.total_area_label += ret_value[3]
-
-        if self.collect_type == 'seg_map':
-            if isinstance(preds, Iterable):
-                self.prediction_ram.extend(preds)
-                self.label_ram.extend(labels)
-                self.meta_ram.extend(metas)
-            else:
-                self.prediction_ram.append(preds)
-                self.label_ram.append(labels)
-                self.meta_ram.append(metas)
-
-    def retrieval(self):
-        """Get processor content by collect type."""
-        if self.collect_type == 'pixels_count':
-            return (self.total_area_intersect, self.total_area_union,
-                    self.total_area_pred_label, self.total_area_label)
-        elif self.collect_type == 'seg_map':
-            return self.prediction_ram, self.label_ram, self.meta_ram
-
-    def calculate(self, metrics):
-        """Calculate metric by using collected pixelx count matrix."""
-        return calculate_metrics(
-            self.total_area_intersect,
-            self.total_area_union,
-            self.total_area_pred_label,
-            self.total_area_label,
-            metrics=metrics)
-
-    def merge(self, processors):
-        """Merge other processors into this processor."""
-        if not isinstance(processors, Iterable):
-            processors = [processors]
-        for processor in processors:
-            self.total_area_intersect += processor.total_area_intersect
-            self.total_area_union += processor.total_area_union
-            self.total_area_pred_label += processor.total_area_pred_label
-            self.total_area_label += processor.total_area_label
-
-            if self.collect_type == 'seg_map':
-                self.prediction_ram.extend(processor.prediction_ram)
-                self.label_ram.extend(processor.label_ram)
-                self.meta_ram.extend(processor.meta_ram)

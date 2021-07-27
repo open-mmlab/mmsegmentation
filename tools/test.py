@@ -135,37 +135,33 @@ def main():
         print('"PALETTE" not found in meta, use dataset.PALETTE instead')
         model.PALETTE = dataset.PALETTE
 
-    middle_save = False
-    if args.eval_options is not None:
-        middle_save = args.eval_options.get('middle_save', False)
-
     # clean gpu memory when starting a new evaluation.
     torch.cuda.empty_cache()
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        processor = single_gpu_test(model, data_loader, middle_save, args.show,
-                                    args.show_dir, args.opacity)
+        pre_eval_results = single_gpu_test(model, data_loader, args.show,
+                                           args.show_dir, args.opacity)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        processor = multi_gpu_test(model, data_loader, middle_save,
-                                   args.tmpdir, args.gpu_collect)
+        pre_eval_results = multi_gpu_test(model, data_loader, args.tmpdir,
+                                          args.gpu_collect)
 
     rank, _ = get_dist_info()
     if rank == 0:
-        if args.out:
-            print(f'\nwriting results to {args.out}')
-            mmcv.dump(processor.retrieval(), args.out)
+        # TODO: Move this to test api
+        # if args.out:
+        #     print(f'\nwriting results to {args.out}')
+        #     mmcv.dump(results, args.out)
         kwargs = {} if args.eval_options is None else args.eval_options
-        if args.format_only:
-            assert middle_save, 'When `middle_save` is True, the '
-            '`--format-only` is valid.'
-            dataset.format_results(processor.retrieval(), **kwargs)
+        # TODO: Move this to test api.
+        # if args.format_only:
+        #     dataset.format_results(results, **kwargs)
         if args.eval:
-            dataset.evaluate(processor, args.eval, **kwargs)
+            dataset.evaluate(pre_eval_results, args.eval, **kwargs)
 
 
 if __name__ == '__main__':
