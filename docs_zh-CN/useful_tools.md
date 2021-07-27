@@ -2,7 +2,7 @@
 
 除了训练和测试的脚本，我们在 `tools/` 目录下还提供许多有用的工具。
 
-### 计算参数量（ params ）和计算量（ FLOPs ）（试验性）
+### 计算参数量（params）和计算量（FLOPs）（试验性）
 
 我们基于 [flops-counter.pytorch](https://github.com/sovrasov/flops-counter.pytorch)
 提供了一个用于计算给定模型参数量和计算量的脚本。
@@ -30,7 +30,7 @@ Params: 48.98 M
 
 在您上传一个模型到云服务器之前，您需要做以下几步：
 （1）将模型权重转成 CPU 张量；
-（2）删除记录优化器状态（ optimizer states ）的相关信息；
+（2）删除记录优化器状态（optimizer states）的相关信息；
 （3）计算检查点文件（checkpoint file）的哈希编码（hash id），并将哈希编码附加到文件名中。
 
 ```shell
@@ -67,13 +67,13 @@ python tools/pytorch2onnx.py \
 各个参数的描述：
 
 - `config` ：模型配置文件的路径。
-- `--checkpoint` ：模型检查点文件的路径。
+- `--checkpoint` ：模型权重文件的路径。
 - `--output-file` ：输出的 ONNX 模型的路径。如果没有专门指定，它默认是 `tmp.onnx` 。
 - `--input-img` ：用来转换和可视化的一张输入图像的路径。
 - `--shape` ：模型的输入张量的高和宽。如果没有专门指定，它将被设置成 `test_pipeline` 的 `img_scale` 。
 - `--rescale-shape` ：重新调整输出的形状。设置这个值可以避免 OOM ，它仅在 `slide` 模式下工作。
 - `--show` ：是否打印输出模型的结构。如果没有被专门指定，它将被设置成 `False` 。
-- `--verify` ：是否验证一个输出模型的正确性（ correctness ）。如果没有被专门指定，它将被设置成 `False` 。
+- `--verify` ：是否验证一个输出模型的正确性（correctness）。如果没有被专门指定，它将被设置成 `False` 。
 - `--dynamic-export` ：是否导出形状变化的输入与输出的 ONNX 模型。如果没有被专门指定，它将被设置成 `False` 。
 - `--cfg-options` ：更新配置选项。
 
@@ -155,12 +155,12 @@ python tools/pytorch2torchscript.py \
 各个参数的描述：
 
 - `config` ：pytorch 模型的配置文件的路径。
-- `--checkpoint` ：pytorch 模型的检查点文件的路径。
+- `--checkpoint` ：pytorch 模型的模型权重文件的路径。
 - `--output-file` ：TorchScript 模型输出的路径。 如果没有被专门指定，它将被设置成 `tmp.pt` 。
 - `--input-img` ：用来转换和可视化的输入图像的路径。
 - `--shape` ：模型的输入张量的宽和高。如果没有被专门指定，它将被设置成 `512 512` 。
-- `--show` ：是否打印输出模型的追踪图（ traced graph ）。如果没有被专门指定，它将被设置成 `False` 。
-- `--verify` ：是否验证一个输出模型的正确性（ correctness ）。如果没有被专门指定，它将被设置成 `False` 。
+- `--show` ：是否打印输出模型的追踪图（traced graph）。如果没有被专门指定，它将被设置成 `False` 。
+- `--verify` ：是否验证一个输出模型的正确性（correctness）。如果没有被专门指定，它将被设置成 `False` 。
 
 **注意**：目前仅支持 PyTorch>=1.8.0 版本。
 
@@ -183,7 +183,7 @@ python tools/pytorch2torchscript.py \
 
 依赖：
 
-- 按照 [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) 和 [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md) ，用 ONNXRuntime 自定义运算 (custom ops) 和 TensorRT 插件安装 `mmcv-full`。
+- 按照 [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) 和 [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md) ，用 ONNXRuntime 自定义运算（custom ops）和 TensorRT 插件安装 `mmcv-full` 。
 - 使用 [pytorch2onnx](#convert-to-onnx-experimental) 将模型从 PyTorch 转成 ONNX。
 
 使用方法
@@ -208,14 +208,14 @@ python ${MMSEG_PATH}/tools/onnx2tensorrt.py \
 - `--max-shape` ：模型的输入的最大形状。
 - `--min-shape` ：模型的输入的最小形状。
 - `--fp16` ：启动 fp16 模型转换。
-- `--workspace-size` ：最大工作空间大小（ Max workspace size ），单位为 GiB 。
+- `--workspace-size` ：最大工作空间大小（Max workspace size），单位为 GiB 。
 - `--input-img` ：用来可视化的图像。
 - `--show` ：启用结果的可视化。
 - `--dataset` ：Palette provider，默认为 `CityscapesDataset` 。
 - `--verify` ：验证 ONNXRuntime 和 TensorRT 的输出。
 - `--verbose` ：当创建 TensorRT 引擎时，是否对日志信息进行详细说明。默认为 False 。
 
-**注意**：仅在全图测试模式（ whole mode ）下测试过。
+**注意**：仅在全图测试模式（whole mode）下测试过。
 
 ## 其他内容
 
@@ -233,10 +233,10 @@ python tools/print_config.py \
 各个参数的描述:
 
 - `config` ：pytorch 模型配置文件的路径。
-- `--graph` ：是否打印模型的图（ models graph ）。
+- `--graph` ：是否打印模型的图（models graph）。
 - `--options` ：替换配置文件的自定义选项。
 
-### 对训练日志（ training logs ）画图
+### 对训练日志（training logs）画图
 
 `tools/analyze_logs.py` 会根据给定的训练日志文件中的内容绘制 loss/mIoU 曲线，首先需要 `pip install seaborn` 安装依赖包。
 
