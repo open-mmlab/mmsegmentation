@@ -240,7 +240,7 @@ class CustomDataset(Dataset):
                                self.img_infos[index]['ann']['seg_map'])
             seg_map = mmcv.imread(seg_map, flag='unchanged', backend='pillow')
             pre_eval_results.append(
-                intersect_and_union(pred, seg_map, self.num_classes,
+                intersect_and_union(pred, seg_map, len(self.CLASSES),
                                     self.ignore_index, self.label_map,
                                     self.reduce_zero_label))
 
