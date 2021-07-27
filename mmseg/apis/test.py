@@ -23,7 +23,7 @@ def single_gpu_test(model, data_loader, show=False, out_dir=None, opacity=0.5):
         list: evaluation preparetion results.
     """
     model.eval()
-    eval_results = []
+    pre_eval_results = []
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
 
@@ -33,7 +33,7 @@ def single_gpu_test(model, data_loader, show=False, out_dir=None, opacity=0.5):
         with torch.no_grad():
             result = model(return_loss=False, **data)
 
-        eval_results.extend(dataset.pre_eval(result, [loader_indices[i]]))
+        pre_eval_results.extend(dataset.pre_eval(result, [loader_indices[i]]))
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -65,7 +65,7 @@ def single_gpu_test(model, data_loader, show=False, out_dir=None, opacity=0.5):
         for _ in range(batch_size):
             prog_bar.update()
 
-    return eval_results
+    return pre_eval_results
 
 
 def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
@@ -89,7 +89,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
         list: evaluation preparetion results.
     """
     model.eval()
-    eval_results = []
+    pre_eval_results = []
     dataset = data_loader.dataset
     loader_indices = data_loader.sampler
 
@@ -103,7 +103,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
 
         # TODO: adapt samples_per_gpu > 1.
         # only samples_per_gpu=1 valid now
-        eval_results.extend(dataset.pre_eval(result, [loader_indices[i]]))
+        pre_eval_results.extend(dataset.pre_eval(result, [loader_indices[i]]))
 
         if rank == 0:
             batch_size = len(result) * world_size
@@ -112,7 +112,8 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
 
     # collect results from all ranks
     if gpu_collect:
-        eval_results = collect_results_gpu(eval_results, len(dataset))
+        pre_eval_results = collect_results_gpu(pre_eval_results, len(dataset))
     else:
-        eval_results = collect_results_cpu(eval_results, len(dataset), tmpdir)
-    return eval_results
+        pre_eval_results = collect_results_cpu(pre_eval_results, len(dataset),
+                                               tmpdir)
+    return pre_eval_results

@@ -233,18 +233,18 @@ class CustomDataset(Dataset):
         if not isinstance(preds, list):
             preds = [preds]
 
-        eval_results = []
+        pre_eval_results = []
 
         for pred, index in zip(preds, indexes):
             seg_map = osp.join(self.ann_dir,
                                self.img_infos[index]['ann']['seg_map'])
             seg_map = mmcv.imread(seg_map, flag='unchanged', backend='pillow')
-            eval_results.append(
+            pre_eval_results.append(
                 intersect_and_union(pred, seg_map, self.num_classes,
                                     self.ignore_index, self.label_map,
                                     self.reduce_zero_label))
 
-        return eval_results
+        return pre_eval_results
 
     def get_classes_and_palette(self, classes=None, palette=None):
         """Get class names of current dataset.

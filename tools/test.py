@@ -140,15 +140,15 @@ def main():
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        eval_results = single_gpu_test(model, data_loader, args.show,
-                                       args.show_dir, args.opacity)
+        pre_eval_results = single_gpu_test(model, data_loader, args.show,
+                                           args.show_dir, args.opacity)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        eval_results = multi_gpu_test(model, data_loader, args.tmpdir,
-                                      args.gpu_collect)
+        pre_eval_results = multi_gpu_test(model, data_loader, args.tmpdir,
+                                          args.gpu_collect)
 
     rank, _ = get_dist_info()
     if rank == 0:
@@ -161,7 +161,7 @@ def main():
         # if args.format_only:
         #     dataset.format_results(results, **kwargs)
         if args.eval:
-            dataset.evaluate(eval_results, args.eval, **kwargs)
+            dataset.evaluate(pre_eval_results, args.eval, **kwargs)
 
 
 if __name__ == '__main__':

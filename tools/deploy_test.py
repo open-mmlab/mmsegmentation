@@ -228,8 +228,8 @@ def main():
     model.PALETTE = dataset.PALETTE
 
     model = MMDataParallel(model, device_ids=[0])
-    eval_results = single_gpu_test(model, data_loader, args.show,
-                                   args.show_dir, args.opacity)
+    pre_eval_results = single_gpu_test(model, data_loader, args.show,
+                                       args.show_dir, args.opacity)
 
     rank, _ = get_dist_info()
     if rank == 0:
@@ -242,7 +242,7 @@ def main():
         # if args.format_only:
         #     dataset.format_results(results, **kwargs)
         if args.eval:
-            dataset.evaluate(eval_results, args.eval, **kwargs)
+            dataset.evaluate(pre_eval_results, args.eval, **kwargs)
 
 
 if __name__ == '__main__':
