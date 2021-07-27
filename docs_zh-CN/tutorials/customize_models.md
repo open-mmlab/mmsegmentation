@@ -1,8 +1,8 @@
-# 教程 4: 自定义模型
+# 教程 4 : 自定义模型
 
-## 自定义优化器 (optimizer)
+## 自定义优化器（optimizer）
 
-假设您想增加一个新的名为 `MyOptimizer` 的优化器，它的参数分别为 `a`， `b`，和 `c`。您首先需要在一个文件中实现这个新的优化器，例如在 `mmseg/core/optimizer/my_optimizer.py` 中：
+假设您想增加一个新的名为 `MyOptimizer` 的优化器，它的参数分别为 `a` ， `b` ，和 `c` 。您首先需要在一个文件中实现这个新的优化器，例如在 `mmseg/core/optimizer/my_optimizer.py` 中：
 
 ```python
 from mmcv.runner import OPTIMIZERS
@@ -22,7 +22,7 @@ class MyOptimizer(Optimizer):
 from .my_optimizer import MyOptimizer
 ```
 
-之后您可以在配置文件的 `optimizer` 里使用 `MyOptimizer`。如下所示，在配置文件里，优化器是由 `optimizer` 定义的：
+之后您可以在配置文件的 `optimizer` 里使用 `MyOptimizer` 。如下所示，在配置文件里，优化器是由 `optimizer` 定义的：
 
 ```python
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
@@ -34,7 +34,7 @@ optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 optimizer = dict(type='MyOptimizer', a=a_value, b=b_value, c=c_value)
 ```
 
-我们已经支持 PyTorch 自带的全部优化器，唯一修改的地方是改变配置文件中的  `optimizer` 字段。例如，如果您想使用 `ADAM`，虽然性能会下降许多，但还是可以做如下修改：
+我们已经支持 PyTorch 自带的全部优化器，唯一修改的地方是改变配置文件中的  `optimizer` 字段。例如，如果您想使用 `ADAM` ，虽然性能会下降许多，但还是可以做如下修改：
 
 ```python
 optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
@@ -42,7 +42,7 @@ optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 
 使用者可以直接按照 PyTorch [文档教程](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim) 去设置参数。
 
-## 定制优化器的构造器 (optimizer constructor)
+## 定制优化器的构造器（optimizer constructor）
 
 一些模型可能有一些特定的优化参数设置，例如批归一化（BatchNorm）层里面的权重衰减 （weight decay）。使用者可以通过定制优化器的构造器来进行这些细粒度的参数调整。
 
@@ -66,16 +66,16 @@ class CocktailOptimizerConstructor(object):
 
 ## 开发和增加新的组件（Module）
 
-MMSegmentation 里主要有2种组件：
+MMSegmentation 里主要有 2 种组件：
 
-- 主干网络（backbone）：通常是堆叠的卷积网络，用于特征提取，例如 ResNet、HRNet。
+- 主干网络（backbone）：通常是堆叠的卷积网络，用于特征提取，例如 ResNet 、HRNet。
 - 解码头（decoder head）：用于语义分割图解码的组件（得到分割结果）。
 
 ### 添加新的主干网络
 
 这里我们以 MobileNet 为例，展示如何增加新的主干组件：
 
-1. 创建一个新的文件 `mmseg/models/backbones/mobilenet.py`.
+1. 创建一个新的文件 `mmseg/models/backbones/mobilenet.py` 。
 
 ```python
 import torch.nn as nn
@@ -118,7 +118,7 @@ model = dict(
 
 在 MMSegmentation 中，我们为所有的分割头提供了一个基类解码头 [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py) 。所有新实现的解码头都应该继承它。这里我们以 [PSPNet](https://arxiv.org/abs/1612.01105) 为例，说明如何开发和增加一个新的解码头组件。
 
-首先，在 `mmseg/models/decode_heads/psp_head.py` 中添加一个新的解码头。PSPNet 中实现了一个语义分割的解码头。为了实现一个解码头，基本上我们只需要在新构造的解码头中实现如下的3个函数：
+首先，在 `mmseg/models/decode_heads/psp_head.py` 中添加一个新的解码头。PSPNet 中实现了一个语义分割的解码头。为了实现一个解码头，基本上我们只需要在新构造的解码头中实现如下的 3 个函数：
 
 ```python
 @HEADS.register_module()
@@ -130,12 +130,11 @@ class PSPHead(BaseDecodeHead):
     def init_weights(self):
 
     def forward(self, inputs):
-
 ```
 
 接着，使用者需要在 `mmseg/models/decode_heads/__init__.py` 里面添加这个模块，这样对应的注册器（registry）可以找到并加载它们。
 
-PSPNet的配置文件如下所示：
+PSPNet 的配置文件如下所示：
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
