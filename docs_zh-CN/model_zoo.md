@@ -1,24 +1,24 @@
-# 基准与模型库
+# 基准测试与模型库
 
-## 共同设定
+## 常规设定
 
-* 我们默认使用 4 个GPU进行分布式训练
+* 我们默认使用 4 个 GPU 进行分布式训练。
 * 所有 PyTorch 风格的 ImageNet 预训练网络由我们自己训练，程序和 [论文](https://arxiv.org/pdf/1812.01187.pdf) 保持一致。
-  我们的 ResNet 风格的主干网络是基于 ResNetV1c 的变体，其中输入层的 7x7 卷积被 3个 3x3 替换。
-* 为了在不同的硬件上保持一致，我们将4个GPU在 `torch.backends.cudnn.benchmark=False` 的设置下通过`torch.cuda.max_memory_allocated()` 得到的最大值作为GPU占用率。注意，这通常比 `nvidia-smi` 显示的值要少。
-* 我们以网络 forward 和后处理的时间加和作为推理时间，不包括数据加载时间。我们使用脚本 `tools/benchmark.py` 来获取推理时间，该脚本在 `torch.backends.cudnn.benchmark=False` 的设定下，计算了 200 张图片的平均时间。
-* 在MMSegmentation框架中，有两种推理模式。
-  * `slide` 模式（滑动模式）：配置文件字段 `test_cfg` 会类似于 `dict(mode='slide', crop_size=(769, 769), stride=(513, 513))`。
+  我们的 ResNet 风格的主干网络是基于 ResNetV1c 变体，其中输入层的 7x7 卷积被 3 个 3x3 卷积替换。
+* 为了在不同的硬件之间保持一致，我们将 4 个 GPU 在 `torch.backends.cudnn.benchmark=False` 的设置下通过`torch.cuda.max_memory_allocated()` 得到的最大值作为 GPU 占用率。注意，这通常比 `nvidia-smi` 显示的值要小。
+* 我们以网络 forward 和后处理的时间加和作为推理时间，不包括数据加载时间。我们使用脚本 `tools/benchmark.py` 来获取推理时间，该脚本在 `torch.backends.cudnn.benchmark=False` 的设定下，计算 200 张图片的平均时间。
+* 在 MMSegmentation 框架中，有两种推理模式。
+  * `slide` 模式（滑动模式）：配置文件字段 `test_cfg` 会类似于 `dict(mode='slide', crop_size=(769, 769), stride=(513, 513))` 。
     在这个模式下，从原图中裁剪多个小图分别输入网络中进行推理。小图的大小和小图之间的距离由 `crop_size` 和 `stride` 决定，重叠区域的结果将通过取平均合并。
-  * `whole` 模式 （全图模式）：配置文件字段 `test_cfg` 会是 `dict(mode='whole')`。在这个模式下，全图会被直接输入到网络中进行推理。
-    对于 769x769 下训练的模型，我们默认使用 `slide` 进行推理，其余模型用 `whole` 进行推理。
-* 对于输入大小为 8x+1 （比如769）的模型，我们使用 `align_corners=True`。其余情况，对于输入大小为 8x (比如 512，1024)，我们使用 `align_corners=False`。
+  * `whole` 模式（全图模式）：配置文件字段 `test_cfg` 会是 `dict(mode='whole')` 。在这个模式下，全图会被直接输入到网络中进行推理。
+    对于 769x769 分辨率下训练的模型，我们默认使用 `slide` 模式进行推理，其余模型用 `whole` 模式进行推理。
+* 对于输入大小为 8x+1 （比如 769 ）的模型，按照传统做法，采用 `align_corners=True` 。对于输入大小为 8x （比如 512 ，1024 ），则采用 `align_corners=False` 。
 
 ## 基线
 
 ### FCN
 
-详情详情请参考 [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) 。
+详情请参考 [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) 。
 
 ### PSPNet
 
@@ -118,7 +118,23 @@
 
 ### Mixed Precision (FP16) Training
 
-详情请 [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fp16/README.md) 。
+详情请参考 [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fp16/README.md) 。
+
+### U-Net
+
+详情请参考 [U-Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/unet/README.md) 。
+
+### ViT
+
+详情请参考 [ViT](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/vit/README.md) 。
+
+### Swin
+
+详情请参考 [Swin](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/swin/README.md) 。
+
+### SETR
+
+详情请参考 [SETR](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/setr/README.md) 。
 
 ## 速度基准
 
@@ -148,4 +164,4 @@
 | [CASILVision](https://github.com/CSAILVision/semantic-segmentation-pytorch) | 1.15           | N/A          |
 | [vedaseg](https://github.com/Media-Smart/vedaseg)                           | 0.95           | 1.25       |
 
-注意：DeepLabV3+ 的输出步长为 8。
+注意：DeepLabV3+ 的输出步长为 8 。
