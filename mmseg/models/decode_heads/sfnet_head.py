@@ -4,82 +4,36 @@ from mmcv.cnn import ConvModule
 
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
-
-
-class PPM(nn.ModuleList):
-    """Pooling Pyramid Module used in PSPNet.
-
-    Args:
-        pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
-            Module.
-        in_channels (int): Input channels.
-        channels (int): Channels after modules, before conv_seg.
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
-        act_cfg (dict): Config of activation layers.
-        align_corners (bool): align_corners argument of F.interpolate.
-    """
-
-    def __init__(self, pool_scales, in_channels, channels, conv_cfg, norm_cfg,
-                 act_cfg, align_corners):
-        super(PPM, self).__init__()
-        self.pool_scales = pool_scales
-        self.align_corners = align_corners
-        self.in_channels = in_channels
-        self.channels = channels
-        self.conv_cfg = conv_cfg
-        self.norm_cfg = norm_cfg
-        self.act_cfg = act_cfg
-        for pool_scale in pool_scales:
-            self.append(
-                nn.Sequential(
-                    nn.AdaptiveAvgPool2d(pool_scale),
-                    ConvModule(
-                        self.in_channels,
-                        self.channels,
-                        1,
-                        bias=True,
-                        conv_cfg=self.conv_cfg,
-                        norm_cfg=self.norm_cfg,
-                        act_cfg=self.act_cfg)))
-
-    def forward(self, x):
-        """Forward function."""
-        ppm_outs = []
-        for ppm in self:
-            ppm_out = ppm(x)
-            upsampled_ppm_out = nn.functional.interpolate(
-                ppm_out,
-                size=x.size()[2:],
-                mode='bilinear',
-                align_corners=True)
-            ppm_outs.append(upsampled_ppm_out)
-        return ppm_outs
+from .psp_head import PPM
 
 
 @HEADS.register_module()
 class SFNetHead(BaseDecodeHead):
-    """Semantic Flow for Fast and Accurate Scene Parsing This head is the
-    implementation of `SFSegNet <https://arxiv.org/pdf/2002.10120>`_.
+    """Semantic Flow for Fast and Accurate SceneParsing.
+
+    This head is the implementation of
+    `SFSegNet <https://arxiv.org/pdf/2002.10120>`_.
 
     Args:
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
             Module. Default: (1, 2, 3, 6).
-    Args:
-        inplane (int): Input channels of PPM module.
-        num_class (int): The unique number of target classes.
-        fpn_inplanes (list): The feature channels from backbone.
+        fpn_inplanes (list):
+            The list of feature channels number from backbone.
         fpn_dim (int, optional):
-            The input channels of FAM module. Default: 256.
-        enable_auxiliary_loss (bool, optional):
-            A bool value indicates whether adding auxiliary loss.
-            Default: False.
+            The input channels of FAM module.
+            Default: 256 for ResNet50, 64 for ResNet18.
     """
 
-    def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
+    def __init__(self,
+                 pool_scales=(1, 2, 3, 6),
+                 fpn_inplanes=[256, 512, 1024, 2048],
+                 fpn_dim=256,
+                 **kwargs):
         super(SFNetHead, self).__init__(**kwargs)
         assert isinstance(pool_scales, (list, tuple))
         self.pool_scales = pool_scales
+        self.fpn_inplanes = fpn_inplanes
+        self.fpn_dim = fpn_dim
         self.psp_modules = PPM(
             self.pool_scales,
             self.in_channels,
@@ -98,53 +52,44 @@ class SFNetHead(BaseDecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
-        #
-        # For unitest, otherwise may raise "UnboundLocalError"
-        fpn_inplanes = [256, 512, 1024, 2048]
-        fpn_dim = 256
-        if self.channels == 256:
-            fpn_inplanes = [256, 512, 1024, 2048]
-            fpn_dim = 256
-        elif self.channels == 64:
-            fpn_inplanes = [64, 128, 256, 512]
-            fpn_dim = 64
-
         self.fpn_in = []
-        for fpn_inplane in fpn_inplanes[:-1]:
+        for fpn_inplane in self.fpn_inplanes[:-1]:
             self.fpn_in.append(
                 nn.Sequential(
-                    nn.Conv2d(fpn_inplane, fpn_dim, 1),
-                    nn.BatchNorm2d(fpn_dim), nn.ReLU(inplace=False)))
+                    nn.Conv2d(fpn_inplane, self.fpn_dim, 1),
+                    nn.BatchNorm2d(self.fpn_dim), nn.ReLU(inplace=False)))
         self.fpn_in = nn.ModuleList(self.fpn_in)
         self.fpn_out = []
         self.fpn_out_align = []
         self.dsn = []
-        for i in range(len(fpn_inplanes) - 1):
+        for i in range(len(self.fpn_inplanes) - 1):
             self.fpn_out.append(
                 nn.Sequential(
                     nn.Conv2d(
-                        fpn_dim,
-                        fpn_dim,
+                        self.fpn_dim,
+                        self.fpn_dim,
                         kernel_size=3,
                         stride=1,
                         padding=1,
                         bias=False),
-                    nn.BatchNorm2d(fpn_dim),
+                    nn.BatchNorm2d(self.fpn_dim),
                     nn.ReLU(inplace=True),
                 ))
             self.fpn_out_align.append(
-                AlignedModule(inplane=fpn_dim, outplane=fpn_dim // 2))
+                AlignedModule(
+                    inplane=self.fpn_dim, outplane=self.fpn_dim // 2))
 
         self.fpn_out = nn.ModuleList(self.fpn_out)
         self.fpn_out_align = nn.ModuleList(self.fpn_out_align)
         self.conv_last = nn.Sequential(
             nn.Conv2d(
-                len(fpn_inplanes) * fpn_dim,
-                fpn_dim,
+                len(self.fpn_inplanes) * self.fpn_dim,
+                self.fpn_dim,
                 kernel_size=3,
                 stride=1,
                 padding=1,
-                bias=False), nn.BatchNorm2d(fpn_dim), nn.ReLU(inplace=True))
+                bias=False), nn.BatchNorm2d(self.fpn_dim),
+            nn.ReLU(inplace=True))
 
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
