@@ -1,6 +1,7 @@
 import copy
 import platform
 import random
+from distutils.version import LooseVersion
 from functools import partial
 
 import numpy as np
@@ -133,7 +134,7 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    if torch.__version__ >= '1.8.0':
+    if LooseVersion(torch.__version__) >= LooseVersion('1.8.0'):
         data_loader = DataLoader(
             dataset,
             batch_size=batch_size,
