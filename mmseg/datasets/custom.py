@@ -226,16 +226,16 @@ class CustomDataset(Dataset):
     def format_results(self, results, **kwargs):
         """Place holder to format result to dataset specific output."""
 
-    def pre_eval(self, preds, indexes):
+    def pre_eval(self, preds, indices):
         # In order to compat with batch inference
-        if not isinstance(indexes, list):
-            indexes = [indexes]
+        if not isinstance(indices, list):
+            indices = [indices]
         if not isinstance(preds, list):
             preds = [preds]
 
         pre_eval_results = []
 
-        for pred, index in zip(preds, indexes):
+        for pred, index in zip(preds, indices):
             seg_map = osp.join(self.ann_dir,
                                self.img_infos[index]['ann']['seg_map'])
             seg_map = mmcv.imread(seg_map, flag='unchanged', backend='pillow')
