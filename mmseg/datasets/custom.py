@@ -1,5 +1,5 @@
 import os.path as osp
-from collections import Iterable, OrderedDict
+from collections import OrderedDict
 
 import mmcv
 import numpy as np
@@ -7,6 +7,8 @@ from mmcv.utils import print_log
 from prettytable import PrettyTable
 from torch.utils.data import Dataset
 
+from mmseg.core.evaluation.metrics import (convert_pre_eval_results_metrics,
+                                           intersect_and_union)
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -224,25 +226,25 @@ class CustomDataset(Dataset):
     def format_results(self, results, **kwargs):
         """Place holder to format result to dataset specific output."""
 
-    def get_gt_seg_maps(self):
-        """Get ground truth segmentation maps for evaluation."""
-        for img_info in self.img_infos:
-            seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
-            gt_seg_map = mmcv.imread(
-                seg_map, flag='unchanged', backend='pillow')
-            yield [gt_seg_map]
-
-    def index_gt_seg_maps(self, indexes):
-        """Get ground truth segmentation map by index for evaluation."""
-        if not isinstance(indexes, Iterable):
+    def pre_eval(self, preds, indexes):
+        # In order to compat with batch inference
+        if not isinstance(indexes, list):
             indexes = [indexes]
-        gt_seg_maps = []
-        for index in indexes:
+        if not isinstance(preds, list):
+            preds = [preds]
+
+        eval_results = []
+
+        for pred, index in zip(preds, indexes):
             seg_map = osp.join(self.ann_dir,
                                self.img_infos[index]['ann']['seg_map'])
-            gt_seg_maps.append(
-                mmcv.imread(seg_map, flag='unchanged', backend='pillow'))
-        return gt_seg_maps
+            seg_map = mmcv.imread(seg_map, flag='unchanged', backend='pillow')
+            eval_results.append(
+                intersect_and_union(pred, seg_map, self.num_classes,
+                                    self.ignore_index, self.label_map,
+                                    self.reduce_zero_label))
+
+        return eval_results
 
     def get_classes_and_palette(self, classes=None, palette=None):
         """Get class names of current dataset.
@@ -307,11 +309,12 @@ class CustomDataset(Dataset):
 
         return palette
 
-    def evaluate(self, processor, metric='mIoU', logger=None, **kwargs):
+    def evaluate(self, pre_eval_results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
 
         Args:
-            processor (object): The result processor for progressive mode.
+            pre_eval_results (tuple[torch.Tensor]): per image eval results for
+                computing evaluation metric
             metric (str | list[str]): Metrics to be evaluated. 'mIoU',
                 'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
@@ -327,7 +330,8 @@ class CustomDataset(Dataset):
             raise KeyError('metric {} is not supported'.format(metric))
 
         eval_results = {}
-        ret_metrics = processor.calculate(metric)
+        ret_metrics = convert_pre_eval_results_metrics(pre_eval_results,
+                                                       metric)
 
         # Because dataset.CLASSES is required in single_gpu_test,
         # multi_gpu_test, so it's necessary to keep
