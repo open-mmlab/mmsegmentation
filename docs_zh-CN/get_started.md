@@ -1,9 +1,9 @@
 ## 依赖
 
-- Linux or macOS （Windows系统处于试验性支持阶段）
+- Linux or macOS （ Windows 系统处于试验性支持阶段）
 - Python 3.6+
 - PyTorch 1.3+
-- CUDA 9.2+ （如果您基于源文件编译 PyTorch，CUDA 9.0也是兼容的）
+- CUDA 9.2+ （如果您基于源文件编译 PyTorch ，CUDA 9.0 也是兼容的）
 - GCC 5+
 - [MMCV](https://mmcv.readthedocs.io/en/latest/#installation)
 
@@ -24,7 +24,7 @@
 | 0.7.0               | mmcv-full>=1.1.2, <1.2.0 |
 | 0.6.0               | mmcv-full>=1.1.2, <1.2.0 |
 
-注意：如果您安装了 MMCV，您首先需要运行 `pip uninstall mmcv` 进行卸载。如果 mmcv 和 mmcv-full 并存于环境，会出现 `ModuleNotFoundError` 错误。
+注意：如果您安装了 MMCV ，您首先需要运行 `pip uninstall mmcv` 进行卸载。如果 mmcv 和 mmcv-full 并存于环境，会出现 `ModuleNotFoundError` 错误。
 
 ## 安装
 
@@ -35,15 +35,15 @@
    conda activate open-mmlab
    ```
 
-2. 按照 [官方教程](https://pytorch.org/) 安装 PyTorch 和 torchvision。这里以 PyTorch1.6.0 和 CUDA10.1 为例。您也可以通过指定版本号安装其他版本。
+2. 按照 [官方教程](https://pytorch.org/) 安装 PyTorch 和 torchvision 。这里以 PyTorch1.6.0 和 CUDA10.1 为例。您也可以通过指定其他版本号安装其他版本。
 
    ```shell
    conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
    ```
 
-3. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation) 安装 [MMCV](https://mmcv.readthedocs.io/en/latest/) 。`mmcv` 或 `mmcv-full` 都与 MMSegmentation 兼容，但对于像 CCNet 和 PSANet这样的方法，需要 `mmcv-full` 中的 CUDA 算子支持。
+3. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation) 安装 [MMCV](https://mmcv.readthedocs.io/en/latest/) 。`mmcv` 或 `mmcv-full` 都与 MMSegmentation 兼容，但对于像 CCNet 和 PSANet 这样的方法，需要 `mmcv-full` 中的 CUDA 算子支持。
 
-- **在 Linux 下安装 mmcv：**
+   **在 Linux 下安装 mmcv：**
 
    通过运行
 
@@ -51,13 +51,13 @@
    pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
    ```
 
-   可以安装预编译的 mmcv-full （PyTorch 1.6 和 CUDA 10.1） 。其他 PyTorch 和 CUDA 版本的 MMCV 的安装请参照[这里](https://mmcv.readthedocs.io/en/latest/get_started/installation.html)。
+   可以安装预编译的 mmcv-full （PyTorch 1.6 和 CUDA 10.1）。其他 PyTorch 和 CUDA 版本的 MMCV 的安装请参照[这里](https://mmcv.readthedocs.io/en/latest/get_started/installation.html)。
 
-- **在 Windows 下安装 mmcv （试验性）：**
+   **在 Windows 下安装 mmcv （试验性）：**
 
    对于 Windows，MMCV 的安装需要本地 C++ 编译工具，例如 cl.exe。 请将编译器路径添加到 %PATH%。
 
-   如果您已经在电脑上安装了Windows SDK 和 Visual Studio，cl.exe 的典型路径如下：
+   如果您已经在电脑上安装了 Windows SDK 和 Visual Studio ，cl.exe 的典型路径如下：
 
    ```shell
    C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.26.28801\bin\Hostx86\x64
@@ -81,7 +81,7 @@
 
    目前，在 Windows 上 mmcv-full 并不完全支持。
 
-4. 安装 MMSegmentation。
+4. 安装 MMSegmentation 。
 
    ```shell
    pip install mmsegmentation # 安装最新版本
@@ -93,7 +93,7 @@
    pip install git+https://github.com/open-mmlab/mmsegmentation.git # 安装 master 分支
    ```
 
-   此外，如果您想安装 `dev` 模式的 MMSegmentation，运行如下命令：
+   此外，如果您想安装 `dev` 模式的 MMSegmentation ，运行如下命令：
 
    ```shell
    git clone https://github.com/open-mmlab/mmsegmentation.git
@@ -101,13 +101,13 @@
    pip install -e .  # 或者 "python setup.py develop"
    ```
 
-   注意：
+注意：
 
-- 当在 windows 下训练和测试模型时，请确保所有路径中的 '\\' 都被替换成 '/'。在 python 代码里，凡是出现路径字符串的地方，都可以通过添加 `.replace('\\', '/')` 进行处理。
-- `version+git_hash` 也将被保存在训练好的模型的 meta 里，例如 0.5.0+c415a2e。
-- 当 MMsegmentation 以 `dev` 模式被安装时，本地对代码的修改将不需要重新安装即可产生作用。
+- 当在 Windows 下训练和测试模型时，请确保所有路径中的 '\\' 都被替换成 '/'。在 python 代码中，凡是出现路径字符串的地方，都可以通过添加 `.replace('\\', '/')` 进行处理。
+- `version+git_hash` 也将被保存在训练好的模型的 meta 里，例如 0.5.0+c415a2e 。
+- 当 MMsegmentation 以 `dev` 模式被安装时，本地对代码的修改将不需要被重新安装即可产生作用。
 - 如果您想使用 `opencv-python-headless` 而不是 `opencv-python`，您可以在安装 MMCV 之前安装它。
-- 一些依赖项是可选的。简单地运行 `pip install -e .` 将仅安装最必要的一些依赖。为了使用可选的依赖项，例如`cityscapessripts`，可以用 `pip install -r requirements/optional.txt` 手动安装，或者在调用pip时指定所需的额外参数（例如 `pip install -e .[optional]`， 其中选项可设置为 `all`, `tests`, `build`, 和 `optional`）。
+- 一些依赖项是可选的。简单地运行 `pip install -e .` 将仅安装最小运行依赖。为了使用可选的依赖项，例如 `cityscapessripts` ，可以使用 `pip install -r requirements/optional.txt` 进行手动安装，或者在调用 pip 时指定所需的额外参数（例如 `pip install -e .[optional]` ， 其中选项可设置为 `all` ， `tests` ，  `build` ， 和 `optional` ）。
 
 ### 完整的安装脚本
 
@@ -160,7 +160,7 @@ PYTHONPATH="$(dirname $0)/..":$PYTHONPATH
 
 ## 验证
 
-为了验证 MMSegmentation 和它所需要的环境是否正确安装，我们可以运行示例的 python 代码来初始化一个 segmentor 并推理一张 demo 图像。
+为了验证 MMSegmentation 和它所需要的环境是否正确安装，我们可以运行示例的 python 代码来初始化一个分割器（segmentor）并推理一张 demo 图像。
 
 ```python
 from mmseg.apis import inference_segmentor, init_segmentor
@@ -203,4 +203,4 @@ python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40
     checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --palette cityscapes
 ```
 
-notebook 格式的 demo 示例路径：[demo/inference_demo.ipynb](../demo/inference_demo.ipynb)。
+notebook 格式的 demo 示例路径： [demo/inference_demo.ipynb](../demo/inference_demo.ipynb) 。
