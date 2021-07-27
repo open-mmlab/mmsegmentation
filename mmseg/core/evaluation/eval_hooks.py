@@ -58,7 +58,7 @@ class EvalHook(_EvalHook):
 
         from mmseg.apis import single_gpu_test
         pre_eval_results = single_gpu_test(
-            runner.model, self.dataloader, False, show=False)
+            runner.model, self.dataloader, show=False)
 
         runner.log_buffer.clear()
 
@@ -136,7 +136,6 @@ class DistEvalHook(_DistEvalHook):
         pre_eval_results = multi_gpu_test(
             runner.model,
             self.dataloader,
-            False,
             tmpdir=tmpdir,
             gpu_collect=self.gpu_collect)
 

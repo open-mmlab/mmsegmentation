@@ -20,7 +20,6 @@ def parse_args():
     parser.add_argument('checkpoint', help='checkpoint file')
     parser.add_argument(
         '--aug-test', action='store_true', help='Use Flip and Multi scale aug')
-    parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
         '--format-only',
         action='store_true',
@@ -152,10 +151,6 @@ def main():
 
     rank, _ = get_dist_info()
     if rank == 0:
-        # TODO: Move this to test api
-        # if args.out:
-        #     print(f'\nwriting results to {args.out}')
-        #     mmcv.dump(results, args.out)
         kwargs = {} if args.eval_options is None else args.eval_options
         # TODO: Move this to test api.
         # if args.format_only:
