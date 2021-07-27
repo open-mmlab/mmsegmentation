@@ -21,7 +21,7 @@ class SFNetHead(BaseDecodeHead):
             The list of feature channels number from backbone.
         fpn_dim (int, optional):
             The input channels of FAM module.
-            Default: 256 for ResNet50, 64 for ResNet18.
+            Default: 256 for ResNet50, 128 for ResNet18.
     """
 
     def __init__(self,
