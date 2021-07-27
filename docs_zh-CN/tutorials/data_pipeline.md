@@ -1,14 +1,14 @@
-# 教程 3：自定义数据工作流
+# 教程 3：自定义数据流水线
 
-## 数据工作流的设计
+## 数据流水线的设计
 
-按照通常的惯例，我们使用 `Dataset` 和 `DataLoader` 来做多线程的数据加载。`Dataset` 返回与模型的前向方法的参数相对应的数据项的字典。由于在语义分割中，输入的图像数据可能具有不同的大小，我们在 MMCV 里引入一个新的 `DataContainer` 类型，以帮助收集和分发不同大小的输入数据。更多细节，请查看[这里](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py).
+按照通常的惯例，我们使用 `Dataset` 和 `DataLoader` 来做多线程的数据加载。`Dataset` 返回与模型的前向方法的参数相对应的数据项的字典。由于在语义分割中，输入的图像数据可能具有不同的大小，我们在 MMCV 里引入一个新的 `DataContainer` 类型，以帮助收集和分发不同大小的输入数据。更多细节，请查看 [这里](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) 。
 
-数据的准备工作流和数据集是解耦的。通常一个数据集定义了如何处理标注数据（annotations）信息，而一个数据工作流定义了准备一个数据字典的所有步骤。一个工作流包括了一系列操作，每个操作里都需要一个字典作为输入，然后再输出一个新的字典给下一个变换操作。
+数据的准备流水线和数据集是解耦的。通常一个数据集定义了如何处理标注数据（annotations）信息，而一个数据流水线定义了准备一个数据字典的所有步骤。一个流水线包括了一系列操作，每个操作里都需要一个字典作为输入，然后再输出一个新的字典给下一个变换操作。
 
 这些操作可分为数据加载（data loading），预处理 （pre-processing），格式变化 （formatting）和测试时数据增强（test-time augmentation）。
 
-下面是 PSPNet 的工作流程示例:
+下面是 PSPNet 的数据流水线示例：
 
 ```python
 img_norm_cfg = dict(
@@ -120,9 +120,9 @@ test_pipeline = [
 
 `MultiScaleFlipAug`
 
-## 拓展和使用自定义的工作流程
+## 拓展和使用自定义流水线
 
-1. 在任何一个文件里写一个新的工作流程，例如 `my_pipeline.py`。它接受一个字典作为输入并且输出一个字典。
+1. 在任何一个文件里写一个新的流水线，例如 `my_pipeline.py` 。它接受一个字典作为输入并且输出一个字典。
 
     ```python
     from mmseg.datasets import PIPELINES
@@ -135,13 +135,13 @@ test_pipeline = [
             return results
     ```
 
-2. 导入一个新类
+2. 导入一个新类。
 
     ```python
     from .my_pipeline import MyTransform
     ```
 
-3. 在配置文件里使用它
+3. 在配置文件里使用它。
 
     ```python
     img_norm_cfg = dict(
