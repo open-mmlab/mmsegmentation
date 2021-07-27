@@ -5,7 +5,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer, trunc_normal_init
-from mmcv.cnn.bricks.registry import ATTENTION
 from mmcv.cnn.bricks.transformer import FFN, build_dropout
 from mmcv.cnn.utils.weight_init import constant_init
 from mmcv.runner import _load_checkpoint
@@ -15,7 +14,7 @@ from torch.nn.modules.normalization import LayerNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from ...utils import get_root_logger
-from ..builder import BACKBONES
+from ..builder import ATTENTION, BACKBONES
 from ..utils import PatchEmbed, swin_convert
 
 
