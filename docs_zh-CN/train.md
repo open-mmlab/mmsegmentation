@@ -2,17 +2,17 @@
 
 MMSegmentation 实现了分布式训练和非分布式训练，分别使用 `MMDistributedDataParallel` 和 `MMDataParallel` 命令。
 
-所有的输出（日志文件 log 和检查点 checkpoints ）将被保存到工作路径文件夹里，该文件夹可以通过配置文件里的 `work_dir` 指定。
+所有的输出（日志文件和模型权重文件）将被保存到工作路径文件夹里，该文件夹可以通过配置文件里的 `work_dir` 进行指定。
 
-默认情况下，在一定迭代轮次后在验证集上评估模型表现。您可以在训练配置文件中添加间隔参数 `interval` 来改变评估间隔。
+默认情况下，在一定数量的迭代轮次后将在验证集上评估模型表现。您可以在训练配置文件中添加间隔参数 `interval` 来改变评估间隔。
 
 ```python
-evaluation = dict(interval=4000)  # 每 4000 iterations 评估一次模型的性能
+evaluation = dict(interval=4000)  # 每 4000 次迭代评估一次模型的性能。
 ```
 
-**重要**: 配置文件里的默认学习率是针对4个 GPU 和2张 图/GPU (此时 batchsize = 4x2 = 8)来设置的。等价地，您也可以使用8个 GPU 和 1张 图/GPU 的设置，因为所有的模型均使用 跨GPU 的 SyncBN 模式。
+**重要**：配置文件里的默认学习率是针对 4 个 GPU 和 2  图/GPU （此时 batchsize = 4x2 = 8）来设置的。等价地，您也可以使用 8 个 GPU 和 1 图/GPU 的设置，因为所有的模型均使用跨 GPU 的 SyncBN 模式。
 
-我们可以在训练速度和 GPU 显存之间做平衡。当模型或者 Batch Size 比较大的时，可以传递 `--options model.backbone.with_cp=True` ，使用 `with_cp` 来节省显存，但是速度会变慢，因为使用 `with_cp` 时，是逐层反向传播（Back Propagation， BP），不会保存所有的梯度。
+我们可以在训练速度和 GPU 显存之间做平衡。当模型或者 Batch Size 比较大的时，可以传递 `--options model.backbone.with_cp=True` ，使用 `with_cp` 来节省显存，但是速度会变慢，因为使用 `with_cp` 时，是逐层反向传播的，不会保存所有的梯度。
 
 ### 使用单个 GPU 训练
 
@@ -20,7 +20,7 @@ evaluation = dict(interval=4000)  # 每 4000 iterations 评估一次模型的性
 python tools/train.py ${配置文件} [可选参数]
 ```
 
-如果您想在命令里定义工作文件夹路径，您可以添加一个参数`--work-dir ${YOUR_WORK_DIR}`。
+如果您想在命令里定义工作文件夹路径，您可以添加一个参数 `--work-dir ${YOUR_WORK_DIR}` 。
 
 ### 使用多个 GPU 训练
 
@@ -28,27 +28,27 @@ python tools/train.py ${配置文件} [可选参数]
 ./tools/dist_train.sh ${配置文件} ${ GPU 个数} [可选参数]
 ```
 
-可选参数有:
+可选参数有：
 
-- `--no-validate` （**不推荐**）：默认情况下，代码库会在训练过程中每隔 k 轮迭代在验证集上进行评估。如果不需评估，请使用命令 `--no-validate`。
-- `--work-dir ${工作路径}`：在配置文件里重写工作路径文件夹。
-- `--resume-from ${检查点文件}`：从先前的检查点 （checkpoint） 文件恢复训练（继续训练过程）。
-- `--load-from ${检查点文件}`: 从一个检查点 (checkpoint) 文件里加载权重（对另一个任务进行微调）。
+- `--no-validate` （**不推荐**）：默认情况下，代码库会在训练过程中每隔 k 轮迭代在验证集上进行评估。如果不需评估，请使用参数 `--no-validate` 。
+- `--work-dir ${工作路径}` ：在配置文件里重写工作路径文件夹。
+- `--resume-from ${模型权重文件}` ：从先前的模型权重文件恢复训练（继续训练过程）。
+- `--load-from ${模型权重文件}` ：从一个模型权重文件里加载权重（对另一个任务进行微调）。
 
-`resume-from` 和 `load-from` 的区别:
+`resume-from` 和 `load-from` 的区别：
 
-- `resume-from`同时加载模型权重和迭代器状态，包括迭代轮数等。
-- `load-from` 仅加载模型权重，从第0轮重新开始训练。
+- `resume-from` 同时加载模型权重和迭代器状态，包括迭代轮数等。
+- `load-from` 仅加载模型权重，从第 0 次迭代重新开始训练。
 
 ### 使用多个机器训练
 
-如果您在一个用[slurm](https://slurm.schedmd.com/)管理的集群上以运行 MMSegmentation，您可以使用脚本 `slurm_train.sh`（这个脚本同样支持单个机器的训练）。
+如果您在一个用 [slurm](https://slurm.schedmd.com/) 管理的集群上运行 MMSegmentation ，您可以使用脚本 `slurm_train.sh`（这个脚本同样支持单个机器的训练）。
 
 ```shell
-[GPUS=${GPU 数量}] ./tools/slurm_train.sh ${分区} ${任务名称} ${配置文件} --work-dir ${工作路径}
+[GPUS=${ GPU 数量}] ./tools/slurm_train.sh ${分区} ${任务名称} ${配置文件} --work-dir ${工作路径}
 ```
 
-下面是一个使用使用16块 GPU  在dev 分区上训练 PSPNet 的例子。
+下面是一个使用使用 16 块 GPU 在 dev 分区上训练 PSPNet 的例子。
 
 ```shell
 GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py /nfs/xxxx/psp_r50_512x1024_40ki_cityscapes
@@ -60,7 +60,7 @@ GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_
 
 ### 在单个机器上启动多个任务
 
-如果您在单个机器上启动多个任务，例如，在一台 8 个 GPU 的机器上启动 2 个 4 卡 GPU 的训练任务，您需要特别对每个任务指定不同的端口（默认为29500）来避免通讯冲突。
+如果您在单个机器上启动多个任务，例如，在一台 8 个 GPU 的机器上启动 2 个 4 卡 GPU 的训练任务，您需要对每个任务指定不同的端口（默认为 29500 ）来避免通讯冲突。
 否则，将会出现报错信息： `RuntimeError: Address already in use` 。
 
 如果您使用命令 `dist_train.sh` 来启动一个训练任务，您可以在命令行中用环境变量 `PORT` 设置端口。
