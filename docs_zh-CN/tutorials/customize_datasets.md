@@ -1,6 +1,6 @@
-# 教程 2: 自定义数据集
+# 教程 2 : 自定义数据集
 
-## 通过重新组织数据来定制数据集
+## 通过重新组织数据来自定义数据集
 
 最简单的方法是转换您的数据集，将你的数据组织成文件夹的形式。
 
@@ -25,7 +25,7 @@
 
 一个训练对将由在 img_dir/ann_dir 里具有相同前缀的文件组成。
 
-如果给定 `split` 参数，只有 img_dir/ann_dir 中的部分指定的文件会被加载。我们可以在用于分割数据集的txt文件中指定希望加载的文件的前缀。
+如果给定 `split` 参数，只有 img_dir/ann_dir 中的部分指定的文件会被加载。我们可以在用于分割数据集的 txt 文件中指定希望加载的文件的前缀。
 
 更具体地说，一个 split 文本如下所示：
 
@@ -39,16 +39,16 @@ zzz
 `data/my_dataset/ann_dir/train/xxx{seg_map_suffix}`，
 `data/my_dataset/ann_dir/train/zzz{seg_map_suffix}` 将被加载。
 
-注意：标注是形状为 (H, W) 的图像，其中，像素值的范围是 `[0, num_classes - 1]`。
+注意：标注是形状为 (H, W) 的图像，其中，像素值的范围是 `[0, num_classes - 1]` 。
 您也可以使用 [pillow](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#palette) 的 `'P'` 模式去创建包含颜色的标注。
 
-## 通过混合数据集来定制数据集
+## 通过混合数据集来自定义数据集
 
-MMSegmentation 还支持混合数据集进行训练。当前它支持重复 （repeat）数据集 和 拼接（concat）数据集。
+MMSegmentation 还支持混合数据集进行训练。当前它支持重复 （repeat）数据集和拼接（concat）数据集。
 
 ### 重复数据集
 
-我们使用 `RepeatDataset` 作为包装（wrapper）来重复数据集。例如，假设原始数据集是 `Dataset_A`，为了重复它，配置文件如下：
+我们使用 `RepeatDataset` 作为包装（wrapper）来重复数据集。例如，假设原始数据集是 `Dataset_A` ，为了重复它，配置文件如下：
 
 ```python
 dataset_A_train = dict(
@@ -68,7 +68,7 @@ dataset_A_train = dict(
 
 1. 如果您想拼接的数据集是同样的类型，但有不同的标注文件，您可以按如下操作去拼接数据集的配置文件：
 
-    1. 您可以将两个标注文件夹 `ann_dir`拼接起来。
+    1. 您可以将两个标注文件夹 `ann_dir` 拼接起来。
 
         ```python
         dataset_A_train = dict(
@@ -103,7 +103,7 @@ dataset_A_train = dict(
         )
         ```
 
-        在这样的情况下， `ann_dir_1` 和 `ann_dir_2` 分别对应于 `split_1.txt` 和 `split_2.txt`。
+        在这样的情况下， `ann_dir_1` 和 `ann_dir_2` 分别对应于 `split_1.txt` 和 `split_2.txt` 。
 
 2. 如果您想拼接不同的数据集，您可以像下面这样去拼接数据集的配置文件：
 
