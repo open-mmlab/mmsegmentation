@@ -1,14 +1,13 @@
 import copy
 import platform
 import random
-from distutils.version import LooseVersion
 from functools import partial
 
 import numpy as np
 import torch
 from mmcv.parallel import collate
 from mmcv.runner import get_dist_info
-from mmcv.utils import Registry, build_from_cfg
+from mmcv.utils import Registry, build_from_cfg, digit_version
 from torch.utils.data import DataLoader, DistributedSampler
 
 if platform.system() != 'Windows':
@@ -134,7 +133,7 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    if LooseVersion(torch.__version__) >= LooseVersion('1.8.0'):
+    if digit_version(torch.__version__) >= digit_version('1.8.0'):
         data_loader = DataLoader(
             dataset,
             batch_size=batch_size,
