@@ -1,7 +1,9 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
+from mmcv.runner.base_module import BaseModule
 
+from mmseg.ops import resize
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
 from .psp_head import PPM
@@ -127,7 +129,13 @@ class SFNetHead(BaseDecodeHead):
         return output
 
 
-class AlignedModule(nn.Module):
+class AlignedModule(BaseModule):
+    """The implementation of Flow Alignment Module (FAM).
+
+    Args:
+       inplane (int): The number of FAM input channles.
+       outplane (int): The number of FAM output channles.
+    """
 
     def __init__(self, inplane, outplane, kernel_size=3):
         super(AlignedModule, self).__init__()
@@ -143,7 +151,7 @@ class AlignedModule(nn.Module):
         size = (h, w)
         low_feature = self.down_l(low_feature)
         h_feature = self.down_h(h_feature)
-        h_feature = nn.functional.interpolate(
+        h_feature = resize(
             h_feature, size=size, mode='bilinear', align_corners=True)
         flow = self.flow_make(torch.cat([h_feature, low_feature], 1))
         h_feature = self.flow_warp(h_feature_orign, flow, size=size)
@@ -151,18 +159,48 @@ class AlignedModule(nn.Module):
         return h_feature
 
     def flow_warp(self, input, flow, size):
+        """Implementation of Warp Procedure in Fig 3(b) of original paper,
+        which is between Flow Field and High Resolution Feature Map.
+
+        Args:
+            input (Tensor): High Resolution Feature Map.
+            flow (Tensor): Semantic Flow Field that will give dynamic
+            indication about how to align these two feature maps effectively.
+            size (Tuple): Shape of height and width of output.
+
+        For example, in cityscapes 1025x2048 dataset with ResNet18 config,
+        feature map from backbone is:
+        [[1, 64, 256, 512],
+        [1, 128, 128, 256],
+        [1, 256, 64, 128],
+        [1, 512, 32, 64]]
+
+        Thus, its inverse shape of [input, flow, size] is:
+        [[1, 128, 32, 64], [1, 2, 64, 128], (64, 128)],
+        [[1, 128, 64, 128], [1, 2, 128, 256], (128, 256)], and
+        [[1, 128, 128, 256], [1, 2, 256, 512], (256, 512)], respectively.
+
+        The final output is:
+        [[1, 128, 64, 128],
+        [1, 128, 128, 256],
+        [1, 128, 256, 512]], respectively.
+        """
+
         out_h, out_w = size
         n, c, h, w = input.size()
-        # n, c, h, w
-        # n, 2, h, w
 
+        # Warped offset in grid, from -1 to 1.
         norm = torch.tensor([[[[out_w,
                                 out_h]]]]).type_as(input).to(input.device)
         h = torch.linspace(-1.0, 1.0, out_h).view(-1, 1).repeat(1, out_w)
         w = torch.linspace(-1.0, 1.0, out_w).repeat(out_h, 1)
         grid = torch.cat((w.unsqueeze(2), h.unsqueeze(2)), 2)
         grid = grid.repeat(n, 1, 1, 1).type_as(input).to(input.device)
+
+        # Warped grid which is corrected the flow offset.
         grid = grid + flow.permute(0, 2, 3, 1) / norm
 
+        # Sampling mechanism interpolates the values of the 4-neighbors
+        # (top-left, top-right, bottom-left, and bottom-right) of input.
         output = nn.functional.grid_sample(input, grid, align_corners=True)
         return output
