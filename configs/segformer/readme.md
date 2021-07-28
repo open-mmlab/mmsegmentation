@@ -19,9 +19,20 @@
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU | mIoU(ms+flip) | config | download |
 | ------ | -------- | --------- | ------: | -------: | -------------- | ---: | ------------- | ------ | -------- |
-|Segformer | MIT-B0 | 512x512 | 160000 | - | - | 37.41 | - | [config]() | [model]() &#124; [log]() |
-|Segformer | MIT-B1 | 512x512 | 160000 | - | - | 41.05 | - | [config]() | [model]() &#124; [log]() |
-|Segformer | MIT-B2 | 512x512 | 160000 | - | - | 45.68 | - | [config]() | [model]() &#124; [log]() |
-|Segformer | MIT-B3 | 512x512 | 160000 | - | - | - | - | [config]() | [model]() &#124; [log]() |
+|Segformer | MIT-B0 | 512x512 | 160000 | - | - | 37.41 | 38.34 | [config]() | [model]() &#124; [log]() |
+|Segformer | MIT-B1 | 512x512 | 160000 | - | - | 40.97 | 42.54 | [config]() | [model]() &#124; [log]() |
+|Segformer | MIT-B2 | 512x512 | 160000 | - | - | 45.58 | - | [config]() | [model]() &#124; [log]() |
+|Segformer | MIT-B3 | 512x512 | 160000 | - | - | 47.82 | - | [config]() | [model]() &#124; [log]() |
 |Segformer | MIT-B4 | 512x512 | 160000 | - | - | - | - | [config]() | [model]() &#124; [log]() |
-|Segformer | MIT-B5 | 512x512 | 160000 | - | - | - | - | [config]() | [model]() &#124; [log]() |
+|Segformer | MIT-B5 | 512x512 | 160000 | - | - | 49.13 | - | [config]() | [model]() &#124; [log]() |
+
+Evaluation with AlignedResize:
+
+| Method | Backbone | Crop Size | Lr schd | mIoU | mIoU(ms+flip) |
+| ------ | -------- | --------- | ------: | ---: | ------------- |
+|Segformer | MIT-B0 | 512x512 | 160000 | 37.41 | 38.34 |
+|Segformer | MIT-B1 | 512x512 | 160000 | - | - |
+|Segformer | MIT-B2 | 512x512 | 160000 | - | - | 
+|Segformer | MIT-B3 | 512x512 | 160000 | - | - | 
+|Segformer | MIT-B4 | 512x512 | 160000 | - | - |
+|Segformer | MIT-B5 | 512x512 | 160000 | - | - |
