@@ -168,7 +168,7 @@ class AlignedModule(BaseModule):
             indication about how to align these two feature maps effectively.
             size (Tuple): Shape of height and width of output.
 
-        For example, in cityscapes 1025x2048 dataset with ResNet18 config,
+        For example, in cityscapes 1024x2048 dataset with ResNet18 config,
         feature map from backbone is:
         [[1, 64, 256, 512],
         [1, 128, 128, 256],

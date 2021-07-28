@@ -46,10 +46,21 @@ def test_sfnet_head():
     # test the config of ResNet18 backbone
     with pytest.raises(AssertionError):
         # pool_scales must be list|tuple
-        SFNetHead(in_channels=512, channels=128, num_classes=19, pool_scales=1)
+        SFNetHead(
+            in_channels=512,
+            channels=128,
+            num_classes=19,
+            pool_scales=1,
+            fpn_inplanes=[64, 128, 256, 512],
+            fpn_dim=128)
 
     # test no norm_cfg
-    head = SFNetHead(in_channels=512, channels=128, num_classes=19)
+    head = SFNetHead(
+        in_channels=512,
+        channels=128,
+        num_classes=19,
+        fpn_inplanes=[64, 128, 256, 512],
+        fpn_dim=128)
     assert not _conv_has_norm(head, sync_bn=False)
 
     # test with norm_cfg
@@ -57,7 +68,9 @@ def test_sfnet_head():
         in_channels=512,
         channels=128,
         num_classes=19,
-        norm_cfg=dict(type='SyncBN'))
+        norm_cfg=dict(type='SyncBN'),
+        fpn_inplanes=[64, 128, 256, 512],
+        fpn_dim=128)
     assert _conv_has_norm(head, sync_bn=True)
 
     inputs = [
@@ -70,7 +83,9 @@ def test_sfnet_head():
         in_channels=512,
         channels=128,
         num_classes=19,
-        pool_scales=(1, 2, 3, 6))
+        pool_scales=(1, 2, 3, 6),
+        fpn_inplanes=[64, 128, 256, 512],
+        fpn_dim=128)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
     assert head.psp_modules[0][0].output_size == 1
