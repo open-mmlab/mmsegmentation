@@ -7,12 +7,21 @@ from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
 
 
-def single_gpu_test(model, data_loader, show=False, out_dir=None, opacity=0.5):
+def single_gpu_test(model,
+                    data_loader,
+                    format_only=False,
+                    format_args={},
+                    show=False,
+                    out_dir=None,
+                    opacity=0.5):
     """Test with single GPU by progressive mode.
 
     Args:
         model (nn.Module): Model to be tested.
         data_loader (utils.data.Dataloader): Pytorch data loader.
+        format_only (bool): Only format result for results commit.
+            Default: False.
+        format_args (dict): The args for format_results. Default: {}.
         show (bool): Whether show results during inference. Default: False.
         out_dir (str, optional): If specified, the results will be dumped into
             the directory to save output results.
@@ -33,7 +42,10 @@ def single_gpu_test(model, data_loader, show=False, out_dir=None, opacity=0.5):
         with torch.no_grad():
             result = model(return_loss=False, **data)
 
-        pre_eval_results.extend(dataset.pre_eval(result, batch_indices))
+        if format_only:
+            dataset.format_results(result, batch_indices, **format_args)
+        else:
+            pre_eval_results.extend(dataset.pre_eval(result, batch_indices))
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -68,7 +80,12 @@ def single_gpu_test(model, data_loader, show=False, out_dir=None, opacity=0.5):
     return pre_eval_results
 
 
-def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
+def multi_gpu_test(model,
+                   data_loader,
+                   format_only=False,
+                   format_args={},
+                   tmpdir=None,
+                   gpu_collect=False):
     """Test model with multiple gpus by progressive mode.
 
     This method tests model with multiple gpus and collects the results
@@ -80,10 +97,14 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     Args:
         model (nn.Module): Model to be tested.
         data_loader (utils.data.Dataloader): Pytorch data loader.
+        format_only (bool): Only format result for results commit.
+            Default: False.
+        format_args (dict): The args for format_results. Default: {}.
         tmpdir (str): Path of directory to save the temporary results from
             different gpus under cpu mode. The same path is used for efficient
-            test.
+            test. Default: None.
         gpu_collect (bool): Option to use either gpu or cpu to collect results.
+            Default: False.
 
     Returns:
         list: evaluation preparetion results.
@@ -102,9 +123,12 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
 
-        # TODO: adapt samples_per_gpu > 1.
-        # only samples_per_gpu=1 valid now
-        pre_eval_results.extend(dataset.pre_eval(result, batch_indices))
+        if format_only:
+            dataset.format_results(result, batch_indices, **format_args)
+        else:
+            # TODO: adapt samples_per_gpu > 1.
+            # only samples_per_gpu=1 valid now
+            pre_eval_results.extend(dataset.pre_eval(result, batch_indices))
 
         if rank == 0:
             batch_size = len(result) * world_size
