@@ -21,7 +21,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x1024)
+      resolution: (512,1024)
     memory (GB): 1.7
   Results:
     Task: Semantic Segmentation
@@ -44,7 +44,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x1024)
+      resolution: (512,1024)
     memory (GB): 2.9
   Results:
     Task: Semantic Segmentation
@@ -67,7 +67,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x1024)
+      resolution: (512,1024)
     memory (GB): 6.2
   Results:
     Task: Semantic Segmentation
@@ -180,7 +180,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 3.8
   Results:
     Task: Semantic Segmentation
@@ -203,7 +203,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 4.9
   Results:
     Task: Semantic Segmentation
@@ -226,7 +226,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 8.2
   Results:
     Task: Semantic Segmentation
@@ -294,7 +294,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 1.8
   Results:
     Task: Semantic Segmentation
@@ -317,7 +317,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 2.9
   Results:
     Task: Semantic Segmentation
@@ -340,7 +340,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 6.2
   Results:
     Task: Semantic Segmentation
@@ -408,7 +408,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (480x480)
+      resolution: (480,480)
     memory (GB): 6.1
   Results:
     Task: Semantic Segmentation

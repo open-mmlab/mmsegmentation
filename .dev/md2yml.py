@@ -104,6 +104,8 @@ def parse_md(md_file):
                         fps_id] != '' else -1
                     mem = els[mem_id] if els[mem_id] != '-' and els[
                         mem_id] != '' else -1
+                    crop_size = els[crop_size_id].split('x')
+                    assert len(crop_size) == 2
                     model = {
                         'Name': model_name,
                         'In Collection': collection_name,
@@ -141,7 +143,7 @@ def parse_md(md_file):
                             'mode':
                             'FP32',
                             'resolution':
-                            f'({els[crop_size_id]})'
+                            f'({crop_size[0]},{crop_size[1]})'
                         }]
                     if mem != -1:
                         model['Metadata']['memory (GB)'] = float(mem)

@@ -18,7 +18,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x1024)
+      resolution: (512,1024)
     memory (GB): 3.4
   Results:
     Task: Semantic Segmentation
@@ -40,7 +40,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x1024)
+      resolution: (512,1024)
     memory (GB): 3.6
   Results:
     Task: Semantic Segmentation
@@ -62,7 +62,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x1024)
+      resolution: (512,1024)
     memory (GB): 3.9
   Results:
     Task: Semantic Segmentation
@@ -84,7 +84,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x1024)
+      resolution: (512,1024)
     memory (GB): 5.1
   Results:
     Task: Semantic Segmentation
@@ -106,7 +106,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 6.5
   Results:
     Task: Semantic Segmentation
@@ -128,7 +128,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 6.5
   Results:
     Task: Semantic Segmentation
@@ -150,7 +150,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 6.8
   Results:
     Task: Semantic Segmentation
@@ -172,7 +172,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512x512)
+      resolution: (512,512)
     memory (GB): 8.2
   Results:
     Task: Semantic Segmentation
