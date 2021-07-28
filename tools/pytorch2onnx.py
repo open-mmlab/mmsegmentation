@@ -16,6 +16,7 @@ from mmseg.apis import show_result_pyplot
 from mmseg.apis.inference import LoadImage
 from mmseg.datasets.pipelines import Compose
 from mmseg.models import build_segmentor
+from mmseg.ops import resize
 
 torch.manual_seed(3)
 
@@ -210,10 +211,7 @@ def pytorch2onnx(model,
 
         if dynamic_export and test_mode == 'whole':
             # scale image for dynamic shape test
-            img_list = [
-                nn.functional.interpolate(_, scale_factor=1.5)
-                for _ in img_list
-            ]
+            img_list = [resize(_, scale_factor=1.5) for _ in img_list]
             # concate flip image for batch test
             flip_img_list = [_.flip(-1) for _ in img_list]
             img_list = [

@@ -3,7 +3,6 @@ import warnings
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from mmcv.cnn import (build_norm_layer, constant_init, kaiming_init,
                       normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
@@ -11,6 +10,7 @@ from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
+from mmseg.ops import resize
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed, vit_convert
@@ -373,7 +373,7 @@ class VisionTransformer(BaseModule):
         pos_embed_weight = pos_embed[:, (-1 * pos_h * pos_w):]
         pos_embed_weight = pos_embed_weight.reshape(
             1, pos_h, pos_w, pos_embed.shape[2]).permute(0, 3, 1, 2)
-        pos_embed_weight = F.interpolate(
+        pos_embed_weight = resize(
             pos_embed_weight, size=input_shpae, align_corners=False, mode=mode)
         cls_token_weight = cls_token_weight.unsqueeze(1)
         pos_embed_weight = torch.flatten(pos_embed_weight, 2).transpose(1, 2)
