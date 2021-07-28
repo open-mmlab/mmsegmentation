@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
+from mmseg.ops import Upsample
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
 
@@ -46,7 +47,7 @@ class SETRMLAHead(BaseDecodeHead):
                         padding=1,
                         norm_cfg=self.norm_cfg,
                         act_cfg=self.act_cfg),
-                    nn.Upsample(
+                    Upsample(
                         scale_factor=up_scale,
                         mode='bilinear',
                         align_corners=self.align_corners)))
