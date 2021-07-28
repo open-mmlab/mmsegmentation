@@ -223,7 +223,7 @@ class CustomDataset(Dataset):
         self.pre_pipeline(results)
         return self.pipeline(results)
 
-    def format_results(self, results, **kwargs):
+    def format_results(self, results, indices, **kwargs):
         """Place holder to format result to dataset specific output."""
 
     def pre_eval(self, preds, indices):
