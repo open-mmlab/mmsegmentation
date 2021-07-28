@@ -32,7 +32,7 @@ Evaluation with AlignedResize:
 | ------ | -------- | --------- | ------: | ---: | ------------- |
 |Segformer | MIT-B0 | 512x512 | 160000 | 38.1  | 38.57 |
 |Segformer | MIT-B1 | 512x512 | 160000 | 41.64 | 42.76 |
-|Segformer | MIT-B2 | 512x512 | 160000 | - | 47.49 |
-|Segformer | MIT-B3 | 512x512 | 160000 | - | 49.14 |
+|Segformer | MIT-B2 | 512x512 | 160000 | 46.53 | 47.49 |
+|Segformer | MIT-B3 | 512x512 | 160000 | 48.46 | 49.14 |
 |Segformer | MIT-B4 | 512x512 | 160000 | - | - |
-|Segformer | MIT-B5 | 640x640 | 160000 | - | 50.72 |
+|Segformer | MIT-B5 | 640x640 | 160000 | 50.08 | 50.72 |
