@@ -136,27 +136,27 @@ def main():
 
     # clean gpu memory when starting a new evaluation.
     torch.cuda.empty_cache()
+    eval_args = {} if args.eval_options is None else args.eval_options
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        pre_eval_results = single_gpu_test(model, data_loader, args.show,
-                                           args.show_dir, args.opacity)
+        pre_eval_results = single_gpu_test(model, data_loader,
+                                           args.format_only, eval_args,
+                                           args.show, args.show_dir,
+                                           args.opacity)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        pre_eval_results = multi_gpu_test(model, data_loader, args.tmpdir,
+        pre_eval_results = multi_gpu_test(model, data_loader, args.format_only,
+                                          eval_args, args.tmpdir,
                                           args.gpu_collect)
 
     rank, _ = get_dist_info()
     if rank == 0:
-        kwargs = {} if args.eval_options is None else args.eval_options
-        # TODO: Move this to test api.
-        # if args.format_only:
-        #     dataset.format_results(results, **kwargs)
         if args.eval:
-            dataset.evaluate(pre_eval_results, args.eval, **kwargs)
+            dataset.evaluate(pre_eval_results, args.eval, **eval_args)
 
 
 if __name__ == '__main__':
