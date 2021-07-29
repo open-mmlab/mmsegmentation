@@ -1,5 +1,7 @@
 import os.path as osp
+import warnings
 from collections import OrderedDict
+from functools import reduce
 
 import mmcv
 import numpy as np
@@ -8,7 +10,7 @@ from prettytable import PrettyTable
 from torch.utils.data import Dataset
 
 from mmseg.core.evaluation.metrics import (convert_pre_eval_results_metrics,
-                                           intersect_and_union)
+                                           eval_metrics, intersect_and_union)
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -223,8 +225,22 @@ class CustomDataset(Dataset):
         self.pre_pipeline(results)
         return self.pipeline(results)
 
-    def format_results(self, results, indices, **kwargs):
+    def format_results(self, results, imgfile_prefix, indices=None, **kwargs):
         """Place holder to format result to dataset specific output."""
+        raise NotImplementedError
+
+    def get_gt_seg_maps(self, efficient_test=None):
+        """Get ground truth segmentation maps for evaluation."""
+        if efficient_test is not None:
+            warnings.warn(
+                'efficient_test argument has been deprecated, '
+                'it does not have effect.', UserWarning)
+
+        for img_info in self.img_infos:
+            seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
+            gt_seg_map = mmcv.imread(
+                seg_map, flag='unchanged', backend='pillow')
+            yield gt_seg_map
 
     def pre_eval(self, preds, indices):
         # In order to compat with batch inference
@@ -309,12 +325,13 @@ class CustomDataset(Dataset):
 
         return palette
 
-    def evaluate(self, pre_eval_results, metric='mIoU', logger=None, **kwargs):
+    def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
         """Evaluate the dataset.
 
         Args:
-            pre_eval_results (tuple[torch.Tensor]): per image eval results for
-                computing evaluation metric
+            results (list[tuple[torch.Tensor]] | list[str]): per image pre_eval
+                 results or predict segmentation map for computing evaluation
+                 metric.
             metric (str | list[str]): Metrics to be evaluated. 'mIoU',
                 'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
@@ -330,8 +347,25 @@ class CustomDataset(Dataset):
             raise KeyError('metric {} is not supported'.format(metric))
 
         eval_results = {}
-        ret_metrics = convert_pre_eval_results_metrics(pre_eval_results,
-                                                       metric)
+        # test a list of files
+        if mmcv.is_list_of(results, str):
+            gt_seg_maps = self.get_gt_seg_maps()
+            if self.CLASSES is None:
+                num_classes = len(
+                    reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
+            else:
+                num_classes = len(self.CLASSES)
+            ret_metrics = eval_metrics(
+                results,
+                gt_seg_maps,
+                num_classes,
+                self.ignore_index,
+                metric,
+                label_map=self.label_map,
+                reduce_zero_label=self.reduce_zero_label)
+        # test a list of pre_eval_results
+        else:
+            ret_metrics = convert_pre_eval_results_metrics(results, metric)
 
         # Because dataset.CLASSES is required in single_gpu_test,
         # multi_gpu_test, so it's necessary to keep
