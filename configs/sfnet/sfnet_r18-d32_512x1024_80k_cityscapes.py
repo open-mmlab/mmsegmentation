@@ -1,4 +1,4 @@
-_base_ = './sfnet_r50-d8_512x1024_80k_cityscapes.py'
+_base_ = './sfnet_r50-d32_512x1024_80k_cityscapes.py'
 model = dict(
     pretrained='open-mmlab://resnet18_v1c',
     backbone=dict(depth=18),

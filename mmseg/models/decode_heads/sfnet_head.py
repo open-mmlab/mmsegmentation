@@ -164,9 +164,14 @@ class AlignedModule(BaseModule):
 
         Args:
             input (Tensor): High Resolution Feature Map.
-            flow (Tensor): Semantic Flow Field that will give dynamic
-            indication about how to align these two feature maps effectively.
+            flow (Tensor): Semantic Flow Field that will give
+                dynamic indication about how to align these
+                two feature maps effectively.
             size (Tuple): Shape of height and width of output.
+
+        Returns:
+            output (Tensor): High Resolution Feature Map after
+                warped offset and bilinear interpolation.
 
         For example, in cityscapes 1024x2048 dataset with ResNet18 config,
         feature map from backbone is:
