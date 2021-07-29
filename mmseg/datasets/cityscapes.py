@@ -186,12 +186,7 @@ class CityscapesDataset(CustomDataset):
             msg = '\n' + msg
         print_log(msg, logger=logger)
 
-        result_files, tmp_dir = self.format_results(results, imgfile_prefix)
-
-        if tmp_dir is None:
-            result_dir = imgfile_prefix
-        else:
-            result_dir = tmp_dir.name
+        result_dir = imgfile_prefix
 
         eval_results = dict()
         print_log(f'Evaluating results under {result_dir} ...', logger=logger)
@@ -213,8 +208,5 @@ class CityscapesDataset(CustomDataset):
 
         eval_results.update(
             CSEval.evaluateImgLists(pred_list, seg_map_list, CSEval.args))
-
-        if tmp_dir is not None:
-            tmp_dir.cleanup()
 
         return eval_results
