@@ -24,7 +24,8 @@
 |Segformer | MIT-B2 | 512x512 | 160000 | - | - | 45.58 | 47.03 | [config]() | [model]() &#124; [log]() |
 |Segformer | MIT-B3 | 512x512 | 160000 | - | - | 47.82 | 48.81 | [config]() | [model]() &#124; [log]() |
 |Segformer | MIT-B4 | 512x512 | 160000 | - | - | 48.46 | 49.76 | [config]() | [model]() &#124; [log]() |
-|Segformer | MIT-B5 | 640x640 | 160000 | - | - | 49.13 | 50.22 | [config]() | [model]() &#124; [log]() |
+|Segformer | MIT-B5 | 512x512 | 160000 | - | - | 49.13 | 50.22 | [config]() | [model]() &#124; [log]() |
+|Segformer | MIT-B5 | 512x512 | 160000 | - | - | - | - | [config]() | [model]() &#124; [log]() |
 
 Evaluation with AlignedResize:
 
@@ -35,4 +36,5 @@ Evaluation with AlignedResize:
 |Segformer | MIT-B2 | 512x512 | 160000 | 46.53 | 47.49 |
 |Segformer | MIT-B3 | 512x512 | 160000 | 48.46 | 49.14 |
 |Segformer | MIT-B4 | 512x512 | 160000 | 49.34 | 50.29 |
-|Segformer | MIT-B5 | 640x640 | 160000 | 50.08 | 50.72 |
+|Segformer | MIT-B5 | 512x512 | 160000 | 50.08 | 50.72 |
+|Segformer | MIT-B5 | 512x512 | 160000 | - | - |
