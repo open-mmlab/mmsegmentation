@@ -1,11 +1,12 @@
 import argparse
 import glob
-import mmcv
-import numpy as np
 import os.path as osp
 import random
 from os import symlink
 from shutil import copyfile
+
+import mmcv
+import numpy as np
 
 random.seed(14)
 
@@ -80,58 +81,58 @@ SEG_COLOR_DICT_A2D2 = {
 # Cityscapes-like 'trainId' value
 #   key: RGB color, value: trainId (from Cityscapes)
 SEG_COLOR_DICT_CITYSCAPES = {
-    (255, 0, 0): 13,  # Car 1 --> Car
-    (200, 0, 0): 13,  # Car 2 --> Car
-    (150, 0, 0): 13,  # Car 3 --> Car
-    (128, 0, 0): 13,  # Car 4 --> Car
-    (182, 89, 6): 18,  # Bicycle 1 --> Bicycle
-    (150, 50, 4): 18,  # Bicycle 2 --> Bicycle
-    (90, 30, 1): 18,  # Bicycle 3 --> Bicycle
-    (90, 30, 30): 18,  # Bicycle 4 --> Bicycle
-    (204, 153, 255): 11,  # Pedestrian 1 --> Person
-    (189, 73, 155): 11,  # Pedestrian 2 --> Person
-    (239, 89, 191): 11,  # Pedestrian 3 --> Person
-    (255, 128, 0): 14,  # Truck 1 --> Truck
-    (200, 128, 0): 14,  # Truck 2 --> Truck
-    (150, 128, 0): 14,  # Truck 3 --> Truck
-    (0, 0, 100): 255,  # Tractor --> Dynamic (void)
-    (0, 255, 0): 17,  # Small vehicles 1 --> Motorcycle
-    (0, 200, 0): 17,  # Small vehicles 2 --> Motorcycle
-    (0, 150, 0): 17,  # Small vehicles 3 --> Motorcycle
+    (255, 0, 0): 12,  # Car 1 --> Car
+    (200, 0, 0): 12,  # Car 2 --> 19
+    (150, 0, 0): 12,  # Car 3 --> Car
+    (128, 0, 0): 12,  # Car 4 --> Car
+    (182, 89, 6): 16,  # Bicycle 1 --> Bicycle
+    (150, 50, 4): 16,  # Bicycle 2 --> Bicycle
+    (90, 30, 1): 16,  # Bicycle 3 --> Bicycle
+    (90, 30, 30): 16,  # Bicycle 4 --> Bicycle
+    (204, 153, 255): 10,  # Pedestrian 1 --> Person
+    (189, 73, 155): 10,  # Pedestrian 2 --> Person
+    (239, 89, 191): 10,  # Pedestrian 3 --> Person
+    (255, 128, 0): 13,  # Truck 1 --> Truck
+    (200, 128, 0): 13,  # Truck 2 --> Truck
+    (150, 128, 0): 13,  # Truck 3 --> Truck
+    (0, 0, 100): 14,  # Tractor --> Utility vehicle (*not in CS)
+    (0, 255, 0): 15,  # Small vehicles 1 --> Motorcycle
+    (0, 200, 0): 15,  # Small vehicles 2 --> Motorcycle
+    (0, 150, 0): 15,  # Small vehicles 3 --> Motorcycle
     (0, 128, 255): 6,  # Traffic signal 1 --> Traffic light
     (30, 28, 158): 6,  # Traffic signal 2 --> Traffic light
     (60, 28, 100): 6,  # Traffic signal 3 --> Traffic light
     (0, 255, 255): 7,  # Traffic sign 1 --> Traffic sign
     (30, 220, 220): 7,  # Traffic sign 2 --> Traffic sign
     (60, 157, 199): 7,  # Traffic sign 3 --> Traffic sign
-    (255, 255, 0): 255,  # Utility vehicle 1 --> Dynamic (void)
-    (255, 255, 200): 255,  # Utility vehicle 2 --> Dynamic (void)
+    (255, 255, 0): 14,  # Utility vehicle 1 --> Utility vehicle (*not in CS)
+    (255, 255, 200): 14,  # Utility vehicle 2 --> Utility vehicle (*not in CS)
     (233, 100, 0): 5,  # Sidebars --> Poles
     (110, 110, 0): 0,  # Speed bumper --> Road
     (128, 128, 0): 1,  # Curbstone --> Sidewalk
     (255, 193, 37): 0,  # Solid line --> Road
-    (64, 0, 64): 255,  # Irrelevant signs --> Static (void)
-    (185, 122, 87): 4,  # Road blocks --> Fence
-    (139, 99, 108): 255,  # Non-drivable street --> Ground (void)
+    (64, 0, 64): 17,  # Irrelevant signs --> Background (*not in CS)
+    (185, 122, 87): 3,  # Road blocks --> Wall
+    (139, 99, 108): 17,  # Non-drivable street --> Background (*not in CS)
     (210, 50, 115): 0,  # Zebra crossing --> Road
-    (255, 0, 128): 255,  # Obstacles / trash --> Dynamic (void)
+    (255, 0, 128): 17,  # Obstacles / trash --> Background (*not in CS)
     (255, 246, 143): 5,  # Poles --> Poles
     (150, 0, 150): 0,  # RD restricted area --> Road
-    (204, 255, 153): 255,  # Animals --> Dynamic (void)
+    (204, 255, 153): 11,  # Animals --> Animal (*not in CS)
     (238, 162, 173): 4,  # Grid structure --> Fence
     (33, 44, 177): 6,  # Signal corpus --> Traffic light
     (180, 50, 180): 0,  # Drivable cobblestone --> Road
-    (255, 70, 185): 255,  # Electronic traffic --> Static (void)
+    (255, 70, 185): 17,  # Electronic traffic --> Background (*not in CS)
     (238, 233, 191): 0,  # Slow drive area --> Road
     (147, 253, 194): 8,  # Nature object --> Vegetation
     (150, 150, 200): 0,  # Parking area --> Road
     (180, 150, 200): 1,  # Sidewalk --> Sidewalk
     (72, 209, 204): 255,  # Ego car --> Static (void)
     (200, 125, 210): 0,  # Painted driv. instr. --> Road
-    (159, 121, 238): 4,  # Traffic guide obj. --> Fence
+    (159, 121, 238): 3,  # Traffic guide obj. --> Wall
     (128, 0, 255): 0,  # Dashed line --> Road
     (255, 0, 255): 0,  # RD normal street --> Road
-    (135, 206, 255): 10,  # Sky --> Sky
+    (135, 206, 255): 9,  # Sky --> Sky
     (241, 230, 255): 2,  # Buildings --> Building
     (96, 69, 143): 255,  # Blurred area --> Static (void)
     (53, 46, 82): 255,  # Rain dirt --> Dynamic (void)
@@ -143,8 +144,8 @@ def modify_label_filename(label_filepath, label_choice):
     label_filepath = label_filepath.replace('_label_', '_camera_')
     if label_choice == 'a2d2':
         label_filepath = label_filepath.replace('.png', '_35LabelTrainIds.png')
-    elif label_choice == "cityscapes":
-        label_filepath = label_filepath.replace('.png', '_19LabelTrainIds.png')
+    elif label_choice == 'cityscapes':
+        label_filepath = label_filepath.replace('.png', '_18LabelTrainIds.png')
     else:
         raise ValueError
     return label_filepath
@@ -187,6 +188,7 @@ def convert_a2d2_trainids(label_filepath, ignore_id=255):
 
 def convert_cityscapes_trainids(label_filepath, ignore_id=255):
     """Saves a new semantic label following the Cityscapes 'trainids' format.
+
     The new image is saved into the same directory as the original image having
     an additional suffix.
     Args:
@@ -442,7 +444,7 @@ def main():
 
     The default arguments result in the same experimental setup as described in
     the original A2D2 paper (ref: p.8 "4. Experiment: Semantic segmentation").
-    - The original 38 semantic classes are merged into a set of 19 classes
+    - The original 38 semantic classes are merged into a set of 18 classes
       emulating the Cityscapes class taxonomy.
     - The total set of 40,030 samples are randomly split into 'train', 'val'
       and 'test' sets, each consisting of 28,015 samples (70.0%), 4,118 samples
