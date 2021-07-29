@@ -90,13 +90,12 @@ class ADE20KDataset(CustomDataset):
             reduce_zero_label=True,
             **kwargs)
 
-    def results2img(self, results, indices, imgfile_prefix, to_label_id):
+    def results2img(self, results, imgfile_prefix, to_label_id):
         """Write the segmentation results to images.
 
         Args:
             results (list[list | tuple | ndarray]): Testing results of the
                 dataset.
-            indices (list[int]): Indices of input results.
             imgfile_prefix (str): The filename prefix of the png files.
                 If the prefix is "somepath/xxx",
                 the png files will be named "somepath/xxx.png".
@@ -109,7 +108,9 @@ class ADE20KDataset(CustomDataset):
         """
         mmcv.mkdir_or_exist(imgfile_prefix)
         result_files = []
-        for result, idx in zip(results, indices):
+        prog_bar = mmcv.ProgressBar(len(self))
+        for idx in range(len(self)):
+            result = results[idx]
 
             filename = self.img_infos[idx]['filename']
             basename = osp.splitext(osp.basename(filename))[0]
@@ -125,18 +126,15 @@ class ADE20KDataset(CustomDataset):
             output.save(png_filename)
             result_files.append(png_filename)
 
+            prog_bar.update()
+
         return result_files
 
-    def format_results(self,
-                       results,
-                       indices,
-                       imgfile_prefix=None,
-                       to_label_id=True):
+    def format_results(self, results, imgfile_prefix=None, to_label_id=True):
         """Format the results into dir (standard format for ade20k evaluation).
 
         Args:
             results (list): Testing results of the dataset.
-            indices (list[int]): Indices of input results.
             imgfile_prefix (str | None): The prefix of images files. It
                 includes the file path and the prefix of filename, e.g.,
                 "a/b/prefix". If not specified, a temp file will be created.
@@ -150,8 +148,10 @@ class ADE20KDataset(CustomDataset):
                 for saving json/png files when img_prefix is not specified.
         """
 
-        assert isinstance(results, list), 'results must be a list.'
-        assert isinstance(indices, list), 'indices must be a list.'
+        assert isinstance(results, list), 'results must be a list'
+        assert len(results) == len(self), (
+            'The length of results is not equal to the dataset len: '
+            f'{len(results)} != {len(self)}')
 
         if imgfile_prefix is None:
             tmp_dir = tempfile.TemporaryDirectory()
@@ -159,6 +159,5 @@ class ADE20KDataset(CustomDataset):
         else:
             tmp_dir = None
 
-        result_files = self.results2img(results, indices, imgfile_prefix,
-                                        to_label_id)
+        result_files = self.results2img(results, imgfile_prefix, to_label_id)
         return result_files, tmp_dir

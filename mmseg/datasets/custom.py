@@ -1,5 +1,7 @@
+import os
 import os.path as osp
 from collections import OrderedDict
+from functools import reduce
 
 import mmcv
 import numpy as np
@@ -7,8 +9,7 @@ from mmcv.utils import print_log
 from prettytable import PrettyTable
 from torch.utils.data import Dataset
 
-from mmseg.core.evaluation.metrics import (convert_pre_eval_results_metrics,
-                                           intersect_and_union)
+from mmseg.core import eval_metrics
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -223,28 +224,21 @@ class CustomDataset(Dataset):
         self.pre_pipeline(results)
         return self.pipeline(results)
 
-    def format_results(self, results, indices, **kwargs):
+    def format_results(self, results, **kwargs):
         """Place holder to format result to dataset specific output."""
 
-    def pre_eval(self, preds, indices):
-        # In order to compat with batch inference
-        if not isinstance(indices, list):
-            indices = [indices]
-        if not isinstance(preds, list):
-            preds = [preds]
-
-        pre_eval_results = []
-
-        for pred, index in zip(preds, indices):
-            seg_map = osp.join(self.ann_dir,
-                               self.img_infos[index]['ann']['seg_map'])
-            seg_map = mmcv.imread(seg_map, flag='unchanged', backend='pillow')
-            pre_eval_results.append(
-                intersect_and_union(pred, seg_map, len(self.CLASSES),
-                                    self.ignore_index, self.label_map,
-                                    self.reduce_zero_label))
-
-        return pre_eval_results
+    def get_gt_seg_maps(self, efficient_test=False):
+        """Get ground truth segmentation maps for evaluation."""
+        gt_seg_maps = []
+        for img_info in self.img_infos:
+            seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
+            if efficient_test:
+                gt_seg_map = seg_map
+            else:
+                gt_seg_map = mmcv.imread(
+                    seg_map, flag='unchanged', backend='pillow')
+            gt_seg_maps.append(gt_seg_map)
+        return gt_seg_maps
 
     def get_classes_and_palette(self, classes=None, palette=None):
         """Get class names of current dataset.
@@ -309,12 +303,16 @@ class CustomDataset(Dataset):
 
         return palette
 
-    def evaluate(self, pre_eval_results, metric='mIoU', logger=None, **kwargs):
+    def evaluate(self,
+                 results,
+                 metric='mIoU',
+                 logger=None,
+                 efficient_test=False,
+                 **kwargs):
         """Evaluate the dataset.
 
         Args:
-            pre_eval_results (tuple[torch.Tensor]): per image eval results for
-                computing evaluation metric
+            results (list): Testing results of the dataset.
             metric (str | list[str]): Metrics to be evaluated. 'mIoU',
                 'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
@@ -323,20 +321,32 @@ class CustomDataset(Dataset):
         Returns:
             dict[str, float]: Default metrics.
         """
+
         if isinstance(metric, str):
             metric = [metric]
         allowed_metrics = ['mIoU', 'mDice', 'mFscore']
         if not set(metric).issubset(set(allowed_metrics)):
             raise KeyError('metric {} is not supported'.format(metric))
-
         eval_results = {}
-        ret_metrics = convert_pre_eval_results_metrics(pre_eval_results,
-                                                       metric)
+        gt_seg_maps = self.get_gt_seg_maps(efficient_test)
+        if self.CLASSES is None:
+            num_classes = len(
+                reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
+        else:
+            num_classes = len(self.CLASSES)
+        ret_metrics = eval_metrics(
+            results,
+            gt_seg_maps,
+            num_classes,
+            self.ignore_index,
+            metric,
+            label_map=self.label_map,
+            reduce_zero_label=self.reduce_zero_label)
 
-        # Because dataset.CLASSES is required in single_gpu_test,
-        # multi_gpu_test, so it's necessary to keep
-        # dataset.CLASSES.
-        class_names = self.CLASSES
+        if self.CLASSES is None:
+            class_names = tuple(range(num_classes))
+        else:
+            class_names = self.CLASSES
 
         # summary table
         ret_metrics_summary = OrderedDict({
@@ -384,4 +394,7 @@ class CustomDataset(Dataset):
                 for idx, name in enumerate(class_names)
             })
 
+        if mmcv.is_list_of(results, str):
+            for file_name in results:
+                os.remove(file_name)
         return eval_results

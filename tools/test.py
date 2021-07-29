@@ -20,6 +20,7 @@ def parse_args():
     parser.add_argument('checkpoint', help='checkpoint file')
     parser.add_argument(
         '--aug-test', action='store_true', help='Use Flip and Multi scale aug')
+    parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
         '--format-only',
         action='store_true',
@@ -89,8 +90,6 @@ def main():
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
     if args.aug_test:
-        assert not (args.show or args.show_dir
-                    ), 'when aug test, it is not supported to show result.'
         # hard code index
         cfg.data.test.pipeline[1].img_ratios = [
             0.5, 0.75, 1.0, 1.25, 1.5, 1.75
@@ -134,29 +133,32 @@ def main():
         print('"PALETTE" not found in meta, use dataset.PALETTE instead')
         model.PALETTE = dataset.PALETTE
 
-    # clean gpu memory when starting a new evaluation.
-    torch.cuda.empty_cache()
-    eval_args = {} if args.eval_options is None else args.eval_options
+    efficient_test = False
+    if args.eval_options is not None:
+        efficient_test = args.eval_options.get('efficient_test', False)
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        pre_eval_results = single_gpu_test(model, data_loader,
-                                           args.format_only, eval_args,
-                                           args.show, args.show_dir,
-                                           args.opacity)
+        outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
+                                  efficient_test, args.opacity)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        pre_eval_results = multi_gpu_test(model, data_loader, args.format_only,
-                                          eval_args, args.tmpdir,
-                                          args.gpu_collect)
+        outputs = multi_gpu_test(model, data_loader, args.tmpdir,
+                                 args.gpu_collect, efficient_test)
 
     rank, _ = get_dist_info()
     if rank == 0:
+        if args.out:
+            print(f'\nwriting results to {args.out}')
+            mmcv.dump(outputs, args.out)
+        kwargs = {} if args.eval_options is None else args.eval_options
+        if args.format_only:
+            dataset.format_results(outputs, **kwargs)
         if args.eval:
-            dataset.evaluate(pre_eval_results, args.eval, **eval_args)
+            dataset.evaluate(outputs, args.eval, **kwargs)
 
 
 if __name__ == '__main__':

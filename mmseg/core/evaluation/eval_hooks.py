@@ -13,43 +13,17 @@ class EvalHook(_EvalHook):
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
     Returns:
         list: The prediction results.
     """
 
     greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
-    def __init__(self, *args, by_epoch=False, **kwargs):
+    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
-
-    def evaluate(self, runner, pre_eval_results):
-        """Evaluate the results by progressive mode.
-
-        Args:
-            runner (:obj:`mmcv.Runner`): The underlined training runner.
-            pre_eval_results (tuple[torch.Tensor]): per image eval results for
-                computing evaluation metric
-        """
-        eval_res = self.dataloader.dataset.evaluate(
-            pre_eval_results, logger=runner.logger, **self.eval_kwargs)
-
-        # TODO: Blocked by mmcv pr: #1213
-        # evaluation info specific buffer
-        # runner.log_buffer.output['eval_res'] = {}
-        # for name, val in eval_res.items():
-        #     runner.log_buffer.output['eval_res'][name] = val
-        runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
-        for name, val in eval_res.items():
-            runner.log_buffer.output[name] = val
-        runner.log_buffer.ready = True
-
-        if self.save_best is not None:
-            if self.key_indicator == 'auto':
-                # infer from eval_results
-                self._init_rule(self.rule, list(eval_res.keys())[0])
-            return eval_res[self.key_indicator]
-
-        return None
+        self.efficient_test = efficient_test
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
@@ -57,12 +31,13 @@ class EvalHook(_EvalHook):
             return
 
         from mmseg.apis import single_gpu_test
-        pre_eval_results = single_gpu_test(
-            runner.model, self.dataloader, show=False)
-
-        runner.log_buffer.clear()
-
-        key_score = self.evaluate(runner, pre_eval_results)
+        results = single_gpu_test(
+            runner.model,
+            self.dataloader,
+            show=False,
+            efficient_test=self.efficient_test)
+        runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
+        key_score = self.evaluate(runner, results)
         if self.save_best:
             self._save_ckpt(runner, key_score)
 
@@ -74,41 +49,17 @@ class DistEvalHook(_DistEvalHook):
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
     Returns:
         list: The prediction results.
     """
 
     greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
-    def __init__(self, *args, by_epoch=False, **kwargs):
+    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
-
-    def evaluate(self, runner, pre_eval_results):
-        """Evaluate the results by progressive mode.
-
-        Args:
-            runner (:obj:`mmcv.Runner`): The underlined training runner.
-            processor (object): Output processor.
-        """
-        eval_res = self.dataloader.dataset.evaluate(
-            pre_eval_results, logger=runner.logger, **self.eval_kwargs)
-        # TODO: Blocked by mmcv pr: #1213
-        # evaluation info specific buffer
-        # runner.log_buffer.output['eval_res'] = {}
-        # for name, val in eval_res.items():
-        #     runner.log_buffer.output['eval_res'][name] = val
-        runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
-        for name, val in eval_res.items():
-            runner.log_buffer.output[name] = val
-        runner.log_buffer.ready = True
-
-        if self.save_best is not None:
-            if self.key_indicator == 'auto':
-                # infer from eval_results
-                self._init_rule(self.rule, list(eval_res.keys())[0])
-            return eval_res[self.key_indicator]
-
-        return None
+        self.efficient_test = efficient_test
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
@@ -133,17 +84,16 @@ class DistEvalHook(_DistEvalHook):
             tmpdir = osp.join(runner.work_dir, '.eval_hook')
 
         from mmseg.apis import multi_gpu_test
-        pre_eval_results = multi_gpu_test(
+        results = multi_gpu_test(
             runner.model,
             self.dataloader,
             tmpdir=tmpdir,
-            gpu_collect=self.gpu_collect)
-
-        runner.log_buffer.clear()
-
+            gpu_collect=self.gpu_collect,
+            efficient_test=self.efficient_test)
         if runner.rank == 0:
             print('\n')
-            key_score = self.evaluate(runner, pre_eval_results)
+            runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
+            key_score = self.evaluate(runner, results)
 
             if self.save_best:
                 self._save_ckpt(runner, key_score)
