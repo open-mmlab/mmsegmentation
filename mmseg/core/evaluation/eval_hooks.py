@@ -1,4 +1,5 @@
 import os.path as osp
+import warnings
 
 import torch.distributed as dist
 from mmcv.runner import DistEvalHook as _DistEvalHook
@@ -19,8 +20,11 @@ class EvalHook(_EvalHook):
 
     greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
-    def __init__(self, *args, by_epoch=False, **kwargs):
+    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
+        if efficient_test:
+            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+                          'please use "init_cfg" instead')
 
     def evaluate(self, runner, pre_eval_results):
         """Evaluate the results by progressive mode.
@@ -80,8 +84,11 @@ class DistEvalHook(_DistEvalHook):
 
     greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
-    def __init__(self, *args, by_epoch=False, **kwargs):
+    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
+        if efficient_test:
+            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+                          'please use "init_cfg" instead')
 
     def evaluate(self, runner, pre_eval_results):
         """Evaluate the results by progressive mode.

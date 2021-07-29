@@ -227,6 +227,18 @@ class CustomDataset(Dataset):
         """Place holder to format result to dataset specific output."""
 
     def pre_eval(self, preds, indices):
+        """Collect eval result from each iteration.
+
+        Args:
+            preds (list[torch.Tensor] | torch.Tensor): the segmentation logit
+                after argmax, shape (N, H, W).
+            indices (list[int] | int): the prediction related ground truth
+                indices.
+
+        Returns:
+            list[torch.Tensor]: (area_intersect, area_union, area_prediction,
+                area_ground_truth).
+        """
         # In order to compat with batch inference
         if not isinstance(indices, list):
             indices = [indices]

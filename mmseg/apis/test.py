@@ -36,6 +36,10 @@ def single_gpu_test(model,
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
 
+    # The pipeline about how the data_loader retrieval samples from dataset:
+    # sampler -> batch_sampler -> indices
+    # The indices are passed to dataset_fetcher to get data from dataset.
+    # data_fetcher -> collate_fn(dataset[index]) -> data_sample
     loader_indices = data_loader.batch_sampler
 
     for batch_indices, data in zip(loader_indices, data_loader):
@@ -113,6 +117,13 @@ def multi_gpu_test(model,
     pre_eval_results = []
     dataset = data_loader.dataset
 
+    # The pipeline about how the data_loader retrieval samples from dataset:
+    # sampler -> batch_sampler -> indices
+    # The indices are passed to dataset_fetcher to get data from dataset.
+    # data_fetcher -> collate_fn(dataset[index]) -> data_sample
+
+    # batch_sampler based on DistributedSampler, the indices only point to data
+    # samples of related machine.
     loader_indices = data_loader.batch_sampler
 
     rank, world_size = get_dist_info()
