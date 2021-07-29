@@ -1,4 +1,5 @@
 import os.path as osp
+import warnings
 
 import mmcv
 import torch
@@ -9,30 +10,36 @@ from mmcv.runner import get_dist_info
 
 def single_gpu_test(model,
                     data_loader,
-                    format_only=False,
-                    format_args={},
                     show=False,
                     out_dir=None,
-                    opacity=0.5):
+                    efficient_test=False,
+                    opacity=0.5,
+                    format_only=False,
+                    format_args={}):
     """Test with single GPU by progressive mode.
 
     Args:
         model (nn.Module): Model to be tested.
         data_loader (utils.data.Dataloader): Pytorch data loader.
-        format_only (bool): Only format result for results commit.
-            Default: False.
-        format_args (dict): The args for format_results. Default: {}.
         show (bool): Whether show results during inference. Default: False.
         out_dir (str, optional): If specified, the results will be dumped into
             the directory to save output results.
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
         opacity(float): Opacity of painted segmentation map.
             Default 0.5.
             Must be in (0, 1] range.
+        format_only (bool): Only format result for results commit.
+            Default: False.
+        format_args (dict): The args for format_results. Default: {}.
     Returns:
-        list: evaluation preparetion results.
+        list: list of evaluation pre-results or list of save file names.
     """
+    if efficient_test:
+        warnings.warn('DeprecationWarning: efficient_test is deprecated')
+
     model.eval()
-    pre_eval_results = []
+    results = []
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
 
@@ -47,11 +54,13 @@ def single_gpu_test(model,
             result = model(return_loss=False, **data)
 
         if format_only:
-            dataset.format_results(
-                result, indices=batch_indices, **format_args)
+            results.extend(
+                dataset.format_results(
+                    result, indices=batch_indices, **format_args))
         else:
-            pre_eval_results.extend(
-                dataset.pre_eval(result, indices=batch_indices))
+            # TODO: adapt samples_per_gpu > 1.
+            # only samples_per_gpu=1 valid now
+            results.extend(dataset.pre_eval(result, indices=batch_indices))
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -83,15 +92,16 @@ def single_gpu_test(model,
         for _ in range(batch_size):
             prog_bar.update()
 
-    return pre_eval_results
+    return results
 
 
 def multi_gpu_test(model,
                    data_loader,
-                   format_only=False,
-                   format_args={},
                    tmpdir=None,
-                   gpu_collect=False):
+                   gpu_collect=False,
+                   efficient_test=False,
+                   format_only=False,
+                   format_args={}):
     """Test model with multiple gpus by progressive mode.
 
     This method tests model with multiple gpus and collects the results
@@ -103,18 +113,23 @@ def multi_gpu_test(model,
     Args:
         model (nn.Module): Model to be tested.
         data_loader (utils.data.Dataloader): Pytorch data loader.
-        format_only (bool): Only format result for results commit.
-            Default: False.
-        format_args (dict): The args for format_results. Default: {}.
         tmpdir (str): Path of directory to save the temporary results from
             different gpus under cpu mode. The same path is used for efficient
             test. Default: None.
         gpu_collect (bool): Option to use either gpu or cpu to collect results.
             Default: False.
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
+        format_only (bool): Only format result for results commit.
+            Default: False.
+        format_args (dict): The args for format_results. Default: {}.
 
     Returns:
         list: list of evaluation pre-results or list of save file names.
     """
+    if efficient_test:
+        warnings.warn('DeprecationWarning: efficient_test is deprecated')
+
     model.eval()
     results = []
     dataset = data_loader.dataset
