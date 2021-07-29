@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 
 import mmcv
 import torch
@@ -20,6 +21,7 @@ def parse_args():
     parser.add_argument('checkpoint', help='checkpoint file')
     parser.add_argument(
         '--aug-test', action='store_true', help='Use Flip and Multi scale aug')
+    parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
         '--format-only',
         action='store_true',
@@ -136,27 +138,38 @@ def main():
 
     # clean gpu memory when starting a new evaluation.
     torch.cuda.empty_cache()
-    eval_args = {} if args.eval_options is None else args.eval_options
+    eval_kwargs = {} if args.eval_options is None else args.eval_options
+
+    eval_on_format_results = (
+        args.eval is not None and 'cityscapes' in args.eval)
+    if args.format_only or eval_on_format_results:
+        tmpdir = '.format_cityscapes'
+        mmcv.mkdir_or_exist(tmpdir)
+        eval_kwargs.setdefault('imgfile_prefix', tmpdir)
+    else:
+        tmpdir = None
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        pre_eval_results = single_gpu_test(model, data_loader,
-                                           args.format_only, eval_args,
-                                           args.show, args.show_dir,
-                                           args.opacity)
+        results = single_gpu_test(model, data_loader, args.format_only
+                                  or eval_on_format_results, eval_kwargs,
+                                  args.show, args.show_dir, args.opacity)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        pre_eval_results = multi_gpu_test(model, data_loader, args.format_only,
-                                          eval_args, args.tmpdir,
-                                          args.gpu_collect)
+        results = multi_gpu_test(model, data_loader, args.format_only
+                                 or eval_on_format_results, eval_kwargs,
+                                 args.tmpdir, args.gpu_collect)
 
     rank, _ = get_dist_info()
     if rank == 0:
         if args.eval:
-            dataset.evaluate(pre_eval_results, args.eval, **eval_args)
+            dataset.evaluate(results, args.eval, **eval_kwargs)
+        if tmpdir is not None:
+            # remove tmp dir
+            shutil.rmtree(tmpdir)
 
 
 if __name__ == '__main__':

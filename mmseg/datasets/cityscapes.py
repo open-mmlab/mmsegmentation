@@ -1,5 +1,4 @@
 import os.path as osp
-import tempfile
 
 import mmcv
 import numpy as np
@@ -47,23 +46,28 @@ class CityscapesDataset(CustomDataset):
 
         return result_copy
 
-    def results2img(self, results, indices, imgfile_prefix, to_label_id):
+    def results2img(self, results, imgfile_prefix, to_label_id, indices=None):
         """Write the segmentation results to images.
 
         Args:
             results (list[list | tuple | ndarray]): Testing results of the
                 dataset.
-            indices (list[int]): Indices of input results.
             imgfile_prefix (str): The filename prefix of the png files.
                 If the prefix is "somepath/xxx",
                 the png files will be named "somepath/xxx.png".
             to_label_id (bool): whether convert output to label_id for
-                submission
+                submission.
+            indices (list[int], optional): Indices of input results,
+                if not set, all the indices of the dataset will be used.
+                Default: None.
 
         Returns:
             list[str: str]: result txt files which contains corresponding
             semantic segmentation images.
         """
+        if indices is None:
+            indices = list(range(len(self)))
+
         mmcv.mkdir_or_exist(imgfile_prefix)
         result_files = []
         for result, idx in zip(results, indices):
@@ -88,40 +92,38 @@ class CityscapesDataset(CustomDataset):
 
     def format_results(self,
                        results,
-                       indices,
-                       imgfile_prefix=None,
-                       to_label_id=True):
+                       imgfile_prefix,
+                       to_label_id=True,
+                       indices=None):
         """Format the results into dir (standard format for Cityscapes
         evaluation).
 
         Args:
             results (list): Testing results of the dataset.
-            indices (list[int]): Indices of input results.
-            imgfile_prefix (str | None): The prefix of images files. It
+            imgfile_prefix (str): The prefix of images files. It
                 includes the file path and the prefix of filename, e.g.,
-                "a/b/prefix". If not specified, a temp file will be created.
-                Default: None.
+                "a/b/prefix".
             to_label_id (bool): whether convert output to label_id for
                 submission. Default: False
+            indices (list[int], optional): Indices of input results,
+                if not set, all the indices of the dataset will be used.
+                Default: None.
 
         Returns:
             tuple: (result_files, tmp_dir), result_files is a list containing
                 the image paths, tmp_dir is the temporal directory created
                 for saving json/png files when img_prefix is not specified.
         """
+        if indices is None:
+            indices = list(range(len(self)))
 
         assert isinstance(results, list), 'results must be a list.'
         assert isinstance(indices, list), 'indices must be a list.'
 
-        if imgfile_prefix is None:
-            tmp_dir = tempfile.TemporaryDirectory()
-            imgfile_prefix = tmp_dir.name
-        else:
-            tmp_dir = None
-        result_files = self.results2img(results, indices, imgfile_prefix,
-                                        to_label_id)
+        result_files = self.results2img(results, imgfile_prefix, to_label_id,
+                                        indices)
 
-        return result_files, tmp_dir
+        return result_files
 
     def evaluate(self,
                  results,
@@ -162,7 +164,6 @@ class CityscapesDataset(CustomDataset):
 
         return eval_results
 
-    # TODO: Compat with new test function.
     def _evaluate_cityscapes(self, results, logger, imgfile_prefix):
         """Evaluation in Cityscapes protocol.
 
@@ -185,12 +186,7 @@ class CityscapesDataset(CustomDataset):
             msg = '\n' + msg
         print_log(msg, logger=logger)
 
-        result_files, tmp_dir = self.format_results(results, imgfile_prefix)
-
-        if tmp_dir is None:
-            result_dir = imgfile_prefix
-        else:
-            result_dir = tmp_dir.name
+        result_dir = imgfile_prefix
 
         eval_results = dict()
         print_log(f'Evaluating results under {result_dir} ...', logger=logger)
@@ -212,8 +208,5 @@ class CityscapesDataset(CustomDataset):
 
         eval_results.update(
             CSEval.evaluateImgLists(pred_list, seg_map_list, CSEval.args))
-
-        if tmp_dir is not None:
-            tmp_dir.cleanup()
 
         return eval_results

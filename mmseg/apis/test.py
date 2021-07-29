@@ -47,9 +47,11 @@ def single_gpu_test(model,
             result = model(return_loss=False, **data)
 
         if format_only:
-            dataset.format_results(result, batch_indices, **format_args)
+            dataset.format_results(
+                result, indices=batch_indices, **format_args)
         else:
-            pre_eval_results.extend(dataset.pre_eval(result, batch_indices))
+            pre_eval_results.extend(
+                dataset.pre_eval(result, indices=batch_indices))
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -111,10 +113,10 @@ def multi_gpu_test(model,
             Default: False.
 
     Returns:
-        list: evaluation preparetion results.
+        list: list of evaluation pre-results or list of save file names.
     """
     model.eval()
-    pre_eval_results = []
+    results = []
     dataset = data_loader.dataset
 
     # The pipeline about how the data_loader retrieval samples from dataset:
@@ -135,11 +137,13 @@ def multi_gpu_test(model,
             result = model(return_loss=False, rescale=True, **data)
 
         if format_only:
-            dataset.format_results(result, batch_indices, **format_args)
+            results.extend(
+                dataset.format_results(
+                    result, indices=batch_indices, **format_args))
         else:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            pre_eval_results.extend(dataset.pre_eval(result, batch_indices))
+            results.extend(dataset.pre_eval(result, indices=batch_indices))
 
         if rank == 0:
             batch_size = len(result) * world_size
@@ -148,8 +152,7 @@ def multi_gpu_test(model,
 
     # collect results from all ranks
     if gpu_collect:
-        pre_eval_results = collect_results_gpu(pre_eval_results, len(dataset))
+        results = collect_results_gpu(results, len(dataset))
     else:
-        pre_eval_results = collect_results_cpu(pre_eval_results, len(dataset),
-                                               tmpdir)
-    return pre_eval_results
+        results = collect_results_cpu(results, len(dataset), tmpdir)
+    return results
