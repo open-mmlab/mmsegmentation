@@ -1,7 +1,7 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='https://download.openmmlab.com/mmclassification/v0/vit/vit_large_patch16_384.pth', # noqa
+    pretrained='pretrain/vit-l_timm.pth', # noqa
     backbone=dict(
         type='VisionTransformer',
         img_size=384,
@@ -11,7 +11,12 @@ model = dict(
         out_indices=(5, 11, 17, 23),
         final_norm=False,
         with_cls_token=True,
-        output_cls_token=True),
+        output_cls_token=True,
+        # init_cfg=dict(
+        #     type='Pretrained',
+        #     checkpoint='pretrain/vit-l_timm.pth',
+        #     prefix='backbone')
+        ),
     decode_head=dict(
         type='DPTHead',
         in_channels=(1024, 1024, 1024, 1024),
