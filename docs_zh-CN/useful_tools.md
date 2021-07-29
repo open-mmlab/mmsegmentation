@@ -78,7 +78,7 @@ python tools/pytorch2onnx.py \
 - `--dynamic-export`: 是否导出形状变化的输入与输出的 ONNX 模型。如果没有被专门指定，它将被设置成 `False`
 - `--cfg-options`: 更新配置选项
 
-**注意**: 这个工具仍然是试验性的，目前一些自定义操作还没有被支持。
+**注意**: 这个工具仍然是试验性的，目前一些自定义操作还没有被支持
 
 ### 评估 ONNX 模型
 
@@ -163,13 +163,13 @@ python tools/pytorch2torchscript.py \
 - `--show`: 是否打印输出模型的追踪图 (traced graph)，如果没有被专门指定，它将被设置成 `False`
 - `--verify`: 是否验证一个输出模型的正确性 (correctness)，如果没有被专门指定，它将被设置成 `False`
 
-**注意**: 目前仅支持 PyTorch>=1.8.0 版本。
+**注意**: 目前仅支持 PyTorch>=1.8.0 版本
 
-**注意**: 这个工具仍然是试验性的，一些自定义操作符目前还不被支持。
+**注意**: 这个工具仍然是试验性的，一些自定义操作符目前还不被支持
 
 例子:
 
-- 导出 PSPNet 在 cityscapes 数据集上的 pytorch 模型。
+- 导出 PSPNet 在 cityscapes 数据集上的 pytorch 模型
 
   ```shell
   python tools/pytorch2torchscript.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
@@ -180,12 +180,12 @@ python tools/pytorch2torchscript.py \
 
 ### 导出 TensorRT (试验性)
 
-一个导出 [ONNX](https://github.com/onnx/onnx) 模型成 [TensorRT](https://developer.nvidia.com/tensorrt) 格式的脚本。
+一个导出 [ONNX](https://github.com/onnx/onnx) 模型成 [TensorRT](https://developer.nvidia.com/tensorrt) 格式的脚本
 
 先决条件
 
-- 按照 [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) 和 [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md) ，用 ONNXRuntime 自定义运算 (custom ops) 和 TensorRT 插件安装 `mmcv-full`。
-- 使用 [pytorch2onnx](#convert-to-onnx-experimental) 将模型从 PyTorch 转成 ONNX。
+- 按照 [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) 和 [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md) ，用 ONNXRuntime 自定义运算 (custom ops) 和 TensorRT 插件安装 `mmcv-full`
+- 使用 [pytorch2onnx](#convert-to-onnx-experimental) 将模型从 PyTorch 转成 ONNX
 
 使用方法
 
@@ -216,7 +216,7 @@ python ${MMSEG_PATH}/tools/onnx2tensorrt.py \
 - `--verify` : 验证 ONNXRuntime 和 TensorRT 的输出
 - `--verbose` : 当创建 TensorRT 引擎时，是否详细做信息日志。默认为 False
 
-**注意**: 仅在全图测试模式 (whole mode) 下测试过。
+**注意**: 仅在全图测试模式 (whole mode) 下测试过
 
 ## 其他内容
 
