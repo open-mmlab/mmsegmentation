@@ -25,7 +25,10 @@ class EvalHook(_EvalHook):
     def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         if efficient_test:
-            warnings.warn('DeprecationWarning: efficient_test is deprecated.')
+            warnings.warn(
+                'DeprecationWarning: ``efficient_test`` has been deprecated '
+                'since MMSeg v0.16, the test pipeline is CPU memory '
+                'friendly by default. ')
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
@@ -59,7 +62,9 @@ class DistEvalHook(_DistEvalHook):
     def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         if efficient_test:
-            warnings.warn('DeprecationWarning: efficient_test is deprecated.')
+            warnings.warn('DeprecationWarning: ``efficient_test`` has been '
+                          'deprecated since MMSeg v0.16, the test pipeline is '
+                          'CPU memory friendly by default. ')
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""

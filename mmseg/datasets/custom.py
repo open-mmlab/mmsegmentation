@@ -9,8 +9,7 @@ from mmcv.utils import print_log
 from prettytable import PrettyTable
 from torch.utils.data import Dataset
 
-from mmseg.core.evaluation.metrics import (convert_pre_eval_results_metrics,
-                                           eval_metrics, intersect_and_union)
+from mmseg.core import eval_metrics, intersect_and_union, pre_eval_to_metrics
 from mmseg.utils import get_root_logger
 from .builder import DATASETS
 from .pipelines import Compose
@@ -233,8 +232,9 @@ class CustomDataset(Dataset):
         """Get ground truth segmentation maps for evaluation."""
         if efficient_test is not None:
             warnings.warn(
-                'efficient_test argument has been deprecated, '
-                'it does not have effect.', UserWarning)
+                'DeprecationWarning: ``efficient_test`` has been deprecated '
+                'since MMSeg v0.16, the test pipeline is CPU memory '
+                'friendly by default. ')
 
         for img_info in self.img_infos:
             seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
@@ -377,7 +377,7 @@ class CustomDataset(Dataset):
                 reduce_zero_label=self.reduce_zero_label)
         # test a list of pre_eval_results
         else:
-            ret_metrics = convert_pre_eval_results_metrics(results, metric)
+            ret_metrics = pre_eval_to_metrics(results, metric)
 
         # Because dataset.CLASSES is required in single_gpu_test,
         # multi_gpu_test, so it's necessary to keep

@@ -180,8 +180,11 @@ def main():
     if rank == 0:
         if args.out:
             warnings.warn(
-                'DeprecationWarning: output the results to pickle file is '
-                'deprecated')
+                'The behavior of ``args.out`` has been changed since MMSeg '
+                'v0.16, the pickled outputs are pre-eval results or file '
+                'paths for dataset.format_results().')
+            print(f'\nwriting results to {args.out}')
+            mmcv.dump(results, args.out)
         if args.eval:
             dataset.evaluate(results, args.eval, **eval_kwargs)
         if tmpdir is not None:

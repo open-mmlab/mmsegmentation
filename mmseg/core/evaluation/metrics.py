@@ -294,10 +294,10 @@ def eval_metrics(results,
     return ret_metrics
 
 
-def convert_pre_eval_results_metrics(pre_eval_results,
-                                     metrics=['mIoU'],
-                                     nan_to_num=None,
-                                     beta=1):
+def pre_eval_to_metrics(pre_eval_results,
+                        metrics=['mIoU'],
+                        nan_to_num=None,
+                        beta=1):
     """Convert pre-eval results to metrics.
 
     Args:

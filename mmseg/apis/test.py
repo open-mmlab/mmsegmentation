@@ -36,7 +36,10 @@ def single_gpu_test(model,
         list: list of evaluation pre-results or list of save file names.
     """
     if efficient_test:
-        warnings.warn('DeprecationWarning: efficient_test is deprecated')
+        warnings.warn(
+            'DeprecationWarning: ``efficient_test`` has been deprecated since '
+            'MMSeg v0.16, the test pipeline is CPU memory '
+            'friendly by default. ')
 
     model.eval()
     results = []
@@ -46,6 +49,7 @@ def single_gpu_test(model,
     # sampler -> batch_sampler -> indices
     # The indices are passed to dataset_fetcher to get data from dataset.
     # data_fetcher -> collate_fn(dataset[index]) -> data_sample
+    # we use batch_sampler to get correct data idx
     loader_indices = data_loader.batch_sampler
 
     for batch_indices, data in zip(loader_indices, data_loader):
@@ -127,7 +131,10 @@ def multi_gpu_test(model,
         list: list of evaluation pre-results or list of save file names.
     """
     if efficient_test:
-        warnings.warn('DeprecationWarning: efficient_test is deprecated')
+        warnings.warn(
+            'DeprecationWarning: ``efficient_test`` has been deprecated since '
+            'MMSeg v0.16, the test pipeline is CPU memory '
+            'friendly by default. ')
 
     model.eval()
     results = []
@@ -136,6 +143,7 @@ def multi_gpu_test(model,
     # sampler -> batch_sampler -> indices
     # The indices are passed to dataset_fetcher to get data from dataset.
     # data_fetcher -> collate_fn(dataset[index]) -> data_sample
+    # we use batch_sampler to get correct data idx
 
     # batch_sampler based on DistributedSampler, the indices only point to data
     # samples of related machine.
