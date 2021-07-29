@@ -14,6 +14,8 @@ class EvalHook(_EvalHook):
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
     Returns:
         list: The prediction results.
     """
@@ -78,6 +80,8 @@ class DistEvalHook(_DistEvalHook):
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
+        efficient_test (bool): Whether save the results as local numpy files to
+            save CPU memory during evaluation. Default: False.
     Returns:
         list: The prediction results.
     """
