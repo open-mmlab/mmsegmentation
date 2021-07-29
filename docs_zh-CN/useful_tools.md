@@ -126,7 +126,7 @@ python tools/deploy_test.py \
 
 #### 结果和模型
 
-|   模型    |                     配置文件                       |  数据集   |  评价指标 | PyTorch | ONNX 运行时间 | TensorRT-fp32 | TensorRT-fp16 |
+|   模型    |                     配置文件                       |  数据集   |  评价指标 | PyTorch | ONNXRuntime | TensorRT-fp32 | TensorRT-fp16 |
 | :--------: | :---------------------------------------------: | :--------: | :----: | :-----: | :---------: | :-----------: | :-----------: |
 |    FCN     |      fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |  mIoU  |  72.2   |    72.2     |     72.2      |     72.2      |
 |   PSPNet   |    pspnet_r50-d8_512x1024_40k_cityscapes.py     | cityscapes |  mIoU  |  77.8   |    77.8     |     77.8      |     77.8      |
