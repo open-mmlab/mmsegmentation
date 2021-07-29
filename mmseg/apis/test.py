@@ -42,7 +42,6 @@ def single_gpu_test(model,
     results = []
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
-
     # The pipeline about how the data_loader retrieval samples from dataset:
     # sampler -> batch_sampler -> indices
     # The indices are passed to dataset_fetcher to get data from dataset.
@@ -133,7 +132,6 @@ def multi_gpu_test(model,
     model.eval()
     results = []
     dataset = data_loader.dataset
-
     # The pipeline about how the data_loader retrieval samples from dataset:
     # sampler -> batch_sampler -> indices
     # The indices are passed to dataset_fetcher to get data from dataset.
