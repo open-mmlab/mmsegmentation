@@ -7,7 +7,6 @@ Models:
 - Name: ''
   In Collection: fastscnn
   Metadata:
-    method: Fast-SCNN
     backbone: Fast-SCNN
     crop size: 512x1024
     lr schd: 160000

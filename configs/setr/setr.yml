@@ -7,7 +7,6 @@ Models:
 - Name: setr_naive_512x512_160k_b16_ade20k
   In Collection: setr
   Metadata:
-    method: SETR-Naive
     backbone: ViT-L
     crop size: 512x512
     lr schd: 160000
@@ -30,7 +29,6 @@ Models:
 - Name: setr_pup_512x512_160k_b16_ade20k
   In Collection: setr
   Metadata:
-    method: SETR-PUP
     backbone: ViT-L
     crop size: 512x512
     lr schd: 160000
@@ -53,7 +51,6 @@ Models:
 - Name: setr_mla_512x512_160k_b8_ade20k
   In Collection: setr
   Metadata:
-    method: SETR-MLA
     backbone: ViT-L
     crop size: 512x512
     lr schd: 160000
@@ -69,7 +66,6 @@ Models:
 - Name: setr_mla_512x512_160k_b16_ade20k
   In Collection: setr
   Metadata:
-    method: SETR-MLA
     backbone: ViT-L
     crop size: 512x512
     lr schd: 160000

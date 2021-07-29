@@ -70,7 +70,6 @@ def parse_md(md_file):
             elif line[0] == '|' and (
                     i + 1) < len(lines) and lines[i + 1][:3] == '| -':
                 cols = [col.strip() for col in line.split('|')]
-                method_id = cols.index('Method')
                 backbone_id = cols.index('Backbone')
                 crop_size_id = cols.index('Crop Size')
                 lr_schd_id = cols.index('Lr schd')
@@ -110,7 +109,6 @@ def parse_md(md_file):
                         'Name': model_name,
                         'In Collection': collection_name,
                         'Metadata': {
-                            'method': els[method_id],
                             'backbone': els[backbone_id],
                             'crop size': els[crop_size_id],
                             'lr schd': int(els[lr_schd_id]),

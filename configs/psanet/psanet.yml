@@ -9,7 +9,6 @@ Models:
 - Name: psanet_r50-d8_512x1024_40k_cityscapes
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-50-D8
     crop size: 512x1024
     lr schd: 40000
@@ -32,7 +31,6 @@ Models:
 - Name: psanet_r101-d8_512x1024_40k_cityscapes
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 40000
@@ -55,7 +53,6 @@ Models:
 - Name: psanet_r50-d8_769x769_40k_cityscapes
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-50-D8
     crop size: 769x769
     lr schd: 40000
@@ -78,7 +75,6 @@ Models:
 - Name: psanet_r101-d8_769x769_40k_cityscapes
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-101-D8
     crop size: 769x769
     lr schd: 40000
@@ -101,7 +97,6 @@ Models:
 - Name: psanet_r50-d8_512x1024_80k_cityscapes
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-50-D8
     crop size: 512x1024
     lr schd: 80000
@@ -116,7 +111,6 @@ Models:
 - Name: psanet_r101-d8_512x1024_80k_cityscapes
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 80000
@@ -131,7 +125,6 @@ Models:
 - Name: psanet_r50-d8_769x769_80k_cityscapes
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-50-D8
     crop size: 769x769
     lr schd: 80000
@@ -146,7 +139,6 @@ Models:
 - Name: psanet_r101-d8_769x769_80k_cityscapes
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-101-D8
     crop size: 769x769
     lr schd: 80000
@@ -161,7 +153,6 @@ Models:
 - Name: psanet_r50-d8_512x512_80k_ade20k
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 80000
@@ -184,7 +175,6 @@ Models:
 - Name: psanet_r101-d8_512x512_80k_ade20k
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 80000
@@ -207,7 +197,6 @@ Models:
 - Name: psanet_r50-d8_512x512_160k_ade20k
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 160000
@@ -222,7 +211,6 @@ Models:
 - Name: psanet_r101-d8_512x512_160k_ade20k
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 160000
@@ -237,7 +225,6 @@ Models:
 - Name: psanet_r50-d8_512x512_20k_voc12aug
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 20000
@@ -260,7 +247,6 @@ Models:
 - Name: psanet_r101-d8_512x512_20k_voc12aug
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 20000
@@ -283,7 +269,6 @@ Models:
 - Name: psanet_r50-d8_512x512_40k_voc12aug
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 40000
@@ -298,7 +283,6 @@ Models:
 - Name: psanet_r101-d8_512x512_40k_voc12aug
   In Collection: psanet
   Metadata:
-    method: PSANet
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 40000

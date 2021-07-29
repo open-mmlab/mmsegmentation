@@ -7,7 +7,6 @@ Models:
 - Name: cgnet_680x680_60k_cityscapes
   In Collection: cgnet
   Metadata:
-    method: CGNet
     backbone: M3N21
     crop size: 680x680
     lr schd: 60000
@@ -30,7 +29,6 @@ Models:
 - Name: cgnet_512x1024_60k_cityscapes
   In Collection: cgnet
   Metadata:
-    method: CGNet
     backbone: M3N21
     crop size: 512x1024
     lr schd: 60000

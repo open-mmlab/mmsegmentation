@@ -7,7 +7,6 @@ Models:
 - Name: upernet_vit-b16_mln_512x512_80k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: ViT-B + MLN
     crop size: 512x512
     lr schd: 80000
@@ -30,7 +29,6 @@ Models:
 - Name: upernet_vit-b16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: ViT-B + MLN
     crop size: 512x512
     lr schd: 160000
@@ -53,7 +51,6 @@ Models:
 - Name: upernet_vit-b16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: ViT-B + LN + MLN
     crop size: 512x512
     lr schd: 160000
@@ -76,7 +73,6 @@ Models:
 - Name: upernet_deit-s16_512x512_80k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: DeiT-S
     crop size: 512x512
     lr schd: 80000
@@ -99,7 +95,6 @@ Models:
 - Name: upernet_deit-s16_512x512_160k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: DeiT-S
     crop size: 512x512
     lr schd: 160000
@@ -122,7 +117,6 @@ Models:
 - Name: upernet_deit-s16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: DeiT-S + MLN
     crop size: 512x512
     lr schd: 160000
@@ -145,7 +139,6 @@ Models:
 - Name: upernet_deit-s16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: DeiT-S + LN + MLN
     crop size: 512x512
     lr schd: 160000
@@ -168,7 +161,6 @@ Models:
 - Name: upernet_deit-b16_512x512_80k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: DeiT-B
     crop size: 512x512
     lr schd: 80000
@@ -191,7 +183,6 @@ Models:
 - Name: upernet_deit-b16_512x512_160k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: DeiT-B
     crop size: 512x512
     lr schd: 160000
@@ -214,7 +205,6 @@ Models:
 - Name: upernet_deit-b16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: DeiT-B + MLN
     crop size: 512x512
     lr schd: 160000
@@ -237,7 +227,6 @@ Models:
 - Name: upernet_deit-b16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
-    method: UPerNet
     backbone: DeiT-B + LN + MLN
     crop size: 512x512
     lr schd: 160000

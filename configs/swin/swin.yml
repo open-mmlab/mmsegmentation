@@ -7,7 +7,6 @@ Models:
 - Name: upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K
   In Collection: swin
   Metadata:
-    method: UperNet
     backbone: Swin-T
     crop size: 512x512
     lr schd: 160000
@@ -30,7 +29,6 @@ Models:
 - Name: upernet_swin_small_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K
   In Collection: swin
   Metadata:
-    method: UperNet
     backbone: Swin-S
     crop size: 512x512
     lr schd: 160000
@@ -53,7 +51,6 @@ Models:
 - Name: upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K
   In Collection: swin
   Metadata:
-    method: UperNet
     backbone: Swin-B
     crop size: 512x512
     lr schd: 160000
@@ -76,7 +73,6 @@ Models:
 - Name: upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_22K
   In Collection: swin
   Metadata:
-    method: UperNet
     backbone: Swin-B
     crop size: 512x512
     lr schd: 160000
@@ -91,7 +87,6 @@ Models:
 - Name: upernet_swin_base_patch4_window12_512x512_160k_ade20k_pretrain_384x384_1K
   In Collection: swin
   Metadata:
-    method: UperNet
     backbone: Swin-B
     crop size: 512x512
     lr schd: 160000
@@ -114,7 +109,6 @@ Models:
 - Name: upernet_swin_base_patch4_window12_512x512_160k_ade20k_pretrain_384x384_22K
   In Collection: swin
   Metadata:
-    method: UperNet
     backbone: Swin-B
     crop size: 512x512
     lr schd: 160000

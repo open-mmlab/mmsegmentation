@@ -8,7 +8,6 @@ Models:
 - Name: fcn_m-v2-d8_512x1024_80k_cityscapes
   In Collection: mobilenet_v2
   Metadata:
-    method: FCN
     backbone: M-V2-D8
     crop size: 512x1024
     lr schd: 80000
@@ -30,7 +29,6 @@ Models:
 - Name: pspnet_m-v2-d8_512x1024_80k_cityscapes
   In Collection: mobilenet_v2
   Metadata:
-    method: PSPNet
     backbone: M-V2-D8
     crop size: 512x1024
     lr schd: 80000
@@ -52,7 +50,6 @@ Models:
 - Name: deeplabv3_m-v2-d8_512x1024_80k_cityscapes
   In Collection: mobilenet_v2
   Metadata:
-    method: DeepLabV3
     backbone: M-V2-D8
     crop size: 512x1024
     lr schd: 80000
@@ -74,7 +71,6 @@ Models:
 - Name: deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes
   In Collection: mobilenet_v2
   Metadata:
-    method: DeepLabV3+
     backbone: M-V2-D8
     crop size: 512x1024
     lr schd: 80000
@@ -96,7 +92,6 @@ Models:
 - Name: fcn_m-v2-d8_512x512_160k_ade20k
   In Collection: mobilenet_v2
   Metadata:
-    method: FCN
     backbone: M-V2-D8
     crop size: 512x512
     lr schd: 160000
@@ -118,7 +113,6 @@ Models:
 - Name: pspnet_m-v2-d8_512x512_160k_ade20k
   In Collection: mobilenet_v2
   Metadata:
-    method: PSPNet
     backbone: M-V2-D8
     crop size: 512x512
     lr schd: 160000
@@ -140,7 +134,6 @@ Models:
 - Name: deeplabv3_m-v2-d8_512x512_160k_ade20k
   In Collection: mobilenet_v2
   Metadata:
-    method: DeepLabV3
     backbone: M-V2-D8
     crop size: 512x512
     lr schd: 160000
@@ -162,7 +155,6 @@ Models:
 - Name: deeplabv3plus_m-v2-d8_512x512_160k_ade20k
   In Collection: mobilenet_v2
   Metadata:
-    method: DeepLabV3+
     backbone: M-V2-D8
     crop size: 512x512
     lr schd: 160000

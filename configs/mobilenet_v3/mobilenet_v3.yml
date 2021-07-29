@@ -7,7 +7,6 @@ Models:
 - Name: lraspp_m-v3-d8_512x1024_320k_cityscapes
   In Collection: mobilenet_v3
   Metadata:
-    method: LRASPP
     backbone: M-V3-D8
     crop size: 512x1024
     lr schd: 320000
@@ -30,7 +29,6 @@ Models:
 - Name: lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes
   In Collection: mobilenet_v3
   Metadata:
-    method: LRASPP
     backbone: M-V3-D8 (scratch)
     crop size: 512x1024
     lr schd: 320000
@@ -53,7 +51,6 @@ Models:
 - Name: lraspp_m-v3s-d8_512x1024_320k_cityscapes
   In Collection: mobilenet_v3
   Metadata:
-    method: LRASPP
     backbone: M-V3s-D8
     crop size: 512x1024
     lr schd: 320000
@@ -76,7 +73,6 @@ Models:
 - Name: lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes
   In Collection: mobilenet_v3
   Metadata:
-    method: LRASPP
     backbone: M-V3s-D8 (scratch)
     crop size: 512x1024
     lr schd: 320000

@@ -7,7 +7,6 @@ Models:
 - Name: emanet_r50-d8_512x1024_80k_cityscapes
   In Collection: emanet
   Metadata:
-    method: EMANet
     backbone: R-50-D8
     crop size: 512x1024
     lr schd: 80000
@@ -30,7 +29,6 @@ Models:
 - Name: emanet_r101-d8_512x1024_80k_cityscapes
   In Collection: emanet
   Metadata:
-    method: EMANet
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 80000
@@ -53,7 +51,6 @@ Models:
 - Name: emanet_r50-d8_769x769_80k_cityscapes
   In Collection: emanet
   Metadata:
-    method: EMANet
     backbone: R-50-D8
     crop size: 769x769
     lr schd: 80000
@@ -76,7 +73,6 @@ Models:
 - Name: emanet_r101-d8_769x769_80k_cityscapes
   In Collection: emanet
   Metadata:
-    method: EMANet
     backbone: R-101-D8
     crop size: 769x769
     lr schd: 80000

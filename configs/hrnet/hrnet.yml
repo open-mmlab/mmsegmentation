@@ -11,7 +11,6 @@ Models:
 - Name: fcn_hr18s_512x1024_40k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18-Small
     crop size: 512x1024
     lr schd: 40000
@@ -34,7 +33,6 @@ Models:
 - Name: fcn_hr18_512x1024_40k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18
     crop size: 512x1024
     lr schd: 40000
@@ -57,7 +55,6 @@ Models:
 - Name: fcn_hr48_512x1024_40k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 512x1024
     lr schd: 40000
@@ -80,7 +77,6 @@ Models:
 - Name: fcn_hr18s_512x1024_80k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18-Small
     crop size: 512x1024
     lr schd: 80000
@@ -95,7 +91,6 @@ Models:
 - Name: fcn_hr18_512x1024_80k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18
     crop size: 512x1024
     lr schd: 80000
@@ -110,7 +105,6 @@ Models:
 - Name: fcn_hr48_512x1024_80k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 512x1024
     lr schd: 80000
@@ -125,7 +119,6 @@ Models:
 - Name: fcn_hr18s_512x1024_160k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18-Small
     crop size: 512x1024
     lr schd: 160000
@@ -140,7 +133,6 @@ Models:
 - Name: fcn_hr18_512x1024_160k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18
     crop size: 512x1024
     lr schd: 160000
@@ -155,7 +147,6 @@ Models:
 - Name: fcn_hr48_512x1024_160k_cityscapes
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 512x1024
     lr schd: 160000
@@ -170,7 +161,6 @@ Models:
 - Name: fcn_hr18s_512x512_80k_ade20k
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18-Small
     crop size: 512x512
     lr schd: 80000
@@ -193,7 +183,6 @@ Models:
 - Name: fcn_hr18_512x512_80k_ade20k
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18
     crop size: 512x512
     lr schd: 80000
@@ -216,7 +205,6 @@ Models:
 - Name: fcn_hr48_512x512_80k_ade20k
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 512x512
     lr schd: 80000
@@ -239,7 +227,6 @@ Models:
 - Name: fcn_hr18s_512x512_160k_ade20k
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18-Small
     crop size: 512x512
     lr schd: 160000
@@ -254,7 +241,6 @@ Models:
 - Name: fcn_hr18_512x512_160k_ade20k
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18
     crop size: 512x512
     lr schd: 160000
@@ -269,7 +255,6 @@ Models:
 - Name: fcn_hr48_512x512_160k_ade20k
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 512x512
     lr schd: 160000
@@ -284,7 +269,6 @@ Models:
 - Name: fcn_hr18s_512x512_20k_voc12aug
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18-Small
     crop size: 512x512
     lr schd: 20000
@@ -307,7 +291,6 @@ Models:
 - Name: fcn_hr18_512x512_20k_voc12aug
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18
     crop size: 512x512
     lr schd: 20000
@@ -330,7 +313,6 @@ Models:
 - Name: fcn_hr48_512x512_20k_voc12aug
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 512x512
     lr schd: 20000
@@ -353,7 +335,6 @@ Models:
 - Name: fcn_hr18s_512x512_40k_voc12aug
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18-Small
     crop size: 512x512
     lr schd: 40000
@@ -368,7 +349,6 @@ Models:
 - Name: fcn_hr18_512x512_40k_voc12aug
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W18
     crop size: 512x512
     lr schd: 40000
@@ -383,7 +363,6 @@ Models:
 - Name: fcn_hr48_512x512_40k_voc12aug
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 512x512
     lr schd: 40000
@@ -398,7 +377,6 @@ Models:
 - Name: fcn_hr48_480x480_40k_pascal_context
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 480x480
     lr schd: 40000
@@ -421,7 +399,6 @@ Models:
 - Name: fcn_hr48_480x480_80k_pascal_context
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 480x480
     lr schd: 80000
@@ -436,7 +413,6 @@ Models:
 - Name: fcn_hr48_480x480_40k_pascal_context_59
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 480x480
     lr schd: 40000
@@ -451,7 +427,6 @@ Models:
 - Name: fcn_hr48_480x480_80k_pascal_context_59
   In Collection: hrnet
   Metadata:
-    method: FCN
     backbone: HRNetV2p-W48
     crop size: 480x480
     lr schd: 80000

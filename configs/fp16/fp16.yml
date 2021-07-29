@@ -7,7 +7,6 @@ Models:
 - Name: fcn_r101-d8_512x1024_80k_fp16_cityscapes
   In Collection: fp16
   Metadata:
-    method: FCN
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 80000
@@ -29,7 +28,6 @@ Models:
 - Name: pspnet_r101-d8_512x1024_80k_fp16_cityscapes
   In Collection: fp16
   Metadata:
-    method: PSPNet
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 80000
@@ -51,7 +49,6 @@ Models:
 - Name: deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes
   In Collection: fp16
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 80000
@@ -73,7 +70,6 @@ Models:
 - Name: deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes
   In Collection: fp16
   Metadata:
-    method: DeepLabV3+
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 80000

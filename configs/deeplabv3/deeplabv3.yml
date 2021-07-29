@@ -11,7 +11,6 @@ Models:
 - Name: deeplabv3_r50-d8_512x1024_40k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50-D8
     crop size: 512x1024
     lr schd: 40000
@@ -34,7 +33,6 @@ Models:
 - Name: deeplabv3_r101-d8_512x1024_40k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 40000
@@ -57,7 +55,6 @@ Models:
 - Name: deeplabv3_r50-d8_769x769_40k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50-D8
     crop size: 769x769
     lr schd: 40000
@@ -80,7 +77,6 @@ Models:
 - Name: deeplabv3_r101-d8_769x769_40k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 769x769
     lr schd: 40000
@@ -103,7 +99,6 @@ Models:
 - Name: deeplabv3_r18-d8_512x1024_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-18-D8
     crop size: 512x1024
     lr schd: 80000
@@ -126,7 +121,6 @@ Models:
 - Name: deeplabv3_r50-d8_512x1024_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50-D8
     crop size: 512x1024
     lr schd: 80000
@@ -141,7 +135,6 @@ Models:
 - Name: deeplabv3_r101-d8_512x1024_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 80000
@@ -156,7 +149,6 @@ Models:
 - Name: deeplabv3_r18-d8_769x769_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-18-D8
     crop size: 769x769
     lr schd: 80000
@@ -179,7 +171,6 @@ Models:
 - Name: deeplabv3_r50-d8_769x769_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50-D8
     crop size: 769x769
     lr schd: 80000
@@ -194,7 +185,6 @@ Models:
 - Name: deeplabv3_r101-d8_769x769_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 769x769
     lr schd: 80000
@@ -209,7 +199,6 @@ Models:
 - Name: deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D16-MG124
     crop size: 512x1024
     lr schd: 80000
@@ -224,7 +213,6 @@ Models:
 - Name: deeplabv3_r18b-d8_512x1024_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-18b-D8
     crop size: 512x1024
     lr schd: 80000
@@ -247,7 +235,6 @@ Models:
 - Name: deeplabv3_r50b-d8_512x1024_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50b-D8
     crop size: 512x1024
     lr schd: 80000
@@ -270,7 +257,6 @@ Models:
 - Name: deeplabv3_r101b-d8_512x1024_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101b-D8
     crop size: 512x1024
     lr schd: 80000
@@ -293,7 +279,6 @@ Models:
 - Name: deeplabv3_r18b-d8_769x769_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-18b-D8
     crop size: 769x769
     lr schd: 80000
@@ -316,7 +301,6 @@ Models:
 - Name: deeplabv3_r50b-d8_769x769_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50b-D8
     crop size: 769x769
     lr schd: 80000
@@ -339,7 +323,6 @@ Models:
 - Name: deeplabv3_r101b-d8_769x769_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101b-D8
     crop size: 769x769
     lr schd: 80000
@@ -362,7 +345,6 @@ Models:
 - Name: deeplabv3_r50-d8_512x512_80k_ade20k
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 80000
@@ -385,7 +367,6 @@ Models:
 - Name: deeplabv3_r101-d8_512x512_80k_ade20k
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 80000
@@ -408,7 +389,6 @@ Models:
 - Name: deeplabv3_r50-d8_512x512_160k_ade20k
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 160000
@@ -423,7 +403,6 @@ Models:
 - Name: deeplabv3_r101-d8_512x512_160k_ade20k
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 160000
@@ -438,7 +417,6 @@ Models:
 - Name: deeplabv3_r50-d8_512x512_20k_voc12aug
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 20000
@@ -461,7 +439,6 @@ Models:
 - Name: deeplabv3_r101-d8_512x512_20k_voc12aug
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 20000
@@ -484,7 +461,6 @@ Models:
 - Name: deeplabv3_r50-d8_512x512_40k_voc12aug
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 40000
@@ -499,7 +475,6 @@ Models:
 - Name: deeplabv3_r101-d8_512x512_40k_voc12aug
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 40000
@@ -514,7 +489,6 @@ Models:
 - Name: deeplabv3_r101-d8_480x480_40k_pascal_context
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 480x480
     lr schd: 40000
@@ -537,7 +511,6 @@ Models:
 - Name: deeplabv3_r101-d8_480x480_80k_pascal_context
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 480x480
     lr schd: 80000
@@ -552,7 +525,6 @@ Models:
 - Name: deeplabv3_r101-d8_480x480_40k_pascal_context_59
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 480x480
     lr schd: 40000
@@ -567,7 +539,6 @@ Models:
 - Name: deeplabv3_r101-d8_480x480_80k_pascal_context_59
   In Collection: deeplabv3
   Metadata:
-    method: DeepLabV3
     backbone: R-101-D8
     crop size: 480x480
     lr schd: 80000

@@ -8,7 +8,6 @@ Models:
 - Name: apcnet_r50-d8_512x1024_40k_cityscapes
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-50-D8
     crop size: 512x1024
     lr schd: 40000
@@ -31,7 +30,6 @@ Models:
 - Name: apcnet_r101-d8_512x1024_40k_cityscapes
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 40000
@@ -54,7 +52,6 @@ Models:
 - Name: apcnet_r50-d8_769x769_40k_cityscapes
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-50-D8
     crop size: 769x769
     lr schd: 40000
@@ -77,7 +74,6 @@ Models:
 - Name: apcnet_r101-d8_769x769_40k_cityscapes
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-101-D8
     crop size: 769x769
     lr schd: 40000
@@ -100,7 +96,6 @@ Models:
 - Name: apcnet_r50-d8_512x1024_80k_cityscapes
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-50-D8
     crop size: 512x1024
     lr schd: 80000
@@ -115,7 +110,6 @@ Models:
 - Name: apcnet_r101-d8_512x1024_80k_cityscapes
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-101-D8
     crop size: 512x1024
     lr schd: 80000
@@ -130,7 +124,6 @@ Models:
 - Name: apcnet_r50-d8_769x769_80k_cityscapes
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-50-D8
     crop size: 769x769
     lr schd: 80000
@@ -145,7 +138,6 @@ Models:
 - Name: apcnet_r101-d8_769x769_80k_cityscapes
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-101-D8
     crop size: 769x769
     lr schd: 80000
@@ -160,7 +152,6 @@ Models:
 - Name: apcnet_r50-d8_512x512_80k_ade20k
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 80000
@@ -183,7 +174,6 @@ Models:
 - Name: apcnet_r101-d8_512x512_80k_ade20k
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 80000
@@ -206,7 +196,6 @@ Models:
 - Name: apcnet_r50-d8_512x512_160k_ade20k
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-50-D8
     crop size: 512x512
     lr schd: 160000
@@ -221,7 +210,6 @@ Models:
 - Name: apcnet_r101-d8_512x512_160k_ade20k
   In Collection: apcnet
   Metadata:
-    method: APCNet
     backbone: R-101-D8
     crop size: 512x512
     lr schd: 160000
