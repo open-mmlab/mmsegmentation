@@ -1,8 +1,9 @@
-# 教程 4 ：自定义模型
+# 教程 4: 自定义模型
 
-## 自定义优化器（optimizer）
+## 自定义优化器 (optimizer)
 
-假设您想增加一个新的名为 `MyOptimizer` 的优化器，它的参数分别为 `a` ， `b` ，和 `c` 。您首先需要在一个文件中实现这个新的优化器，例如在 `mmseg/core/optimizer/my_optimizer.py` 中：
+假设您想增加一个新的叫 `MyOptimizer` 的优化器，它的参数分别为 `a`, `b`, 和 `c`。
+您首先需要在一个文件里实现这个新的优化器，例如在 `mmseg/core/optimizer/my_optimizer.py` 里面：
 
 ```python
 from mmcv.runner import OPTIMIZERS
@@ -16,25 +17,26 @@ class MyOptimizer(Optimizer):
 
 ```
 
-然后在 `mmseg/core/optimizer/__init__.py` 中添加这个模块，这样注册器 （registry）将会找到这个新的模块并添加它：
+然后增加这个模块到 `mmseg/core/optimizer/__init__.py` 里面，这样注册器 (registry) 将会发现这个新的模块并添加它：
 
 ```python
 from .my_optimizer import MyOptimizer
 ```
 
-之后您可以在配置文件的 `optimizer` 里使用 `MyOptimizer` 。如下所示，在配置文件里，优化器是由 `optimizer` 定义的：
+之后您可以在配置文件的 `optimizer` 域里使用 `MyOptimizer`，
+如下所示，在配置文件里，优化器被 `optimizer` 域所定义：
 
 ```python
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 ```
 
-为了使用您自己的优化器，字段可以被修改为：
+为了使用您自己的优化器，域可以被修改为：
 
 ```python
 optimizer = dict(type='MyOptimizer', a=a_value, b=b_value, c=c_value)
 ```
 
-我们已经支持 PyTorch 自带的全部优化器，唯一修改的地方是改变配置文件中的  `optimizer` 字段。例如，如果您想使用 `ADAM` ，虽然性能会下降许多，但还是可以做如下修改：
+我们已经支持了 PyTorch 自带的全部优化器，唯一修改的地方是在配置文件里的 `optimizer` 域。例如，如果您想使用 `ADAM`，尽管数值表现会掉点，还是可以如下修改：
 
 ```python
 optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
@@ -42,9 +44,10 @@ optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 
 使用者可以直接按照 PyTorch [文档教程](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim) 去设置参数。
 
-## 定制优化器的构造器（optimizer constructor）
+## 定制优化器的构造器 (optimizer constructor)
 
-一些模型可能有一些特定的优化参数设置，例如批归一化（BatchNorm）层里面的权重衰减 （weight decay）。使用者可以通过定制优化器的构造器来进行这些细粒度的参数调整。
+对于优化，一些模型可能会有一些特别定义的参数，例如批归一化 (BatchNorm) 层里面的权重衰减 (weight decay)。
+使用者可以通过定制优化器的构造器来微调这些细粒度的优化器参数。
 
 ```python
 from mmcv.utils import build_from_cfg
@@ -66,16 +69,16 @@ class CocktailOptimizerConstructor(object):
 
 ## 开发和增加新的组件（Module）
 
-MMSegmentation 里主要有 2 种组件：
+MMSegmentation 里主要有2种组件：
 
-- 主干网络（backbone）：通常是堆叠的卷积网络，用于特征提取，例如 ResNet 、HRNet。
-- 解码头（decoder head）：用于语义分割图解码的组件（得到分割结果）。
+- 主干网络 (backbone): 通常是卷积网络的堆叠，来做特征提取，例如 ResNet, HRNet
+- 解码头 (decoder head): 用于语义分割图的解码的组件（得到分割结果）
 
 ### 添加新的主干网络
 
 这里我们以 MobileNet 为例，展示如何增加新的主干组件：
 
-1. 创建一个新的文件 `mmseg/models/backbones/mobilenet.py` 。
+1. 创建一个新的文件 `mmseg/models/backbones/mobilenet.py`
 
 ```python
 import torch.nn as nn
@@ -96,13 +99,13 @@ class MobileNet(nn.Module):
         pass
 ```
 
-2. 在 `mmseg/models/backbones/__init__.py` 里面导入模块。
+2. 在 `mmseg/models/backbones/__init__.py` 里面导入模块
 
 ```python
 from .mobilenet import MobileNet
 ```
 
-3. 在您的配置文件里使用它。
+3. 在您的配置文件里使用它
 
 ```python
 model = dict(
@@ -114,11 +117,14 @@ model = dict(
     ...
 ```
 
-### 增加新的解码头（decoder head）组件
+### 增加新的解码头 (decoder head)组件
 
-在 MMSegmentation 中，我们为所有的分割头提供了一个基类解码头 [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py) 。所有新实现的解码头都应该继承它。这里我们以 [PSPNet](https://arxiv.org/abs/1612.01105) 为例，说明如何开发和增加一个新的解码头组件。
+在 MMSegmentation 里面，对于所有的分割头，我们提供一个基类解码头 [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py) 。
+所有新建的解码头都应该继承它。这里我们以 [PSPNet](https://arxiv.org/abs/1612.01105) 为例，
+展示如何开发和增加一个新的解码头组件：
 
-首先，在 `mmseg/models/decode_heads/psp_head.py` 中添加一个新的解码头。PSPNet 中实现了一个语义分割的解码头。为了实现一个解码头，基本上我们只需要在新构造的解码头中实现如下的 3 个函数：
+首先，在 `mmseg/models/decode_heads/psp_head.py` 里添加一个新的解码头。
+PSPNet 中实现了一个语义分割的解码头。为了实现一个解码头，我们只需要在新构造的解码头中实现如下的3个函数：
 
 ```python
 @HEADS.register_module()
@@ -130,11 +136,12 @@ class PSPHead(BaseDecodeHead):
     def init_weights(self):
 
     def forward(self, inputs):
+
 ```
 
-接着，使用者需要在 `mmseg/models/decode_heads/__init__.py` 里面添加这个模块，这样对应的注册器（registry）可以找到并加载它们。
+接着，使用者需要在 `mmseg/models/decode_heads/__init__.py` 里面添加这个模块，这样对应的注册器 (registry) 可以查找并加载它们。
 
-PSPNet 的配置文件如下所示：
+PSPNet的配置文件如下所示：
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -169,7 +176,9 @@ model = dict(
 
 ### 增加新的损失函数
 
-假设您想添加一个新的损失函数 `MyLoss` 到语义分割解码器里。为了添加一个新的损失函数，使用者需要在 `mmseg/models/losses/my_loss.py` 中实现它。`weighted_loss` 可以在计算损失时对每个样本做加权。
+假设您想添加一个新的损失函数 `MyLoss` 到语义分割解码器里。
+为了添加一个新的损失函数，使用者需要在 `mmseg/models/losses/my_loss.py` 里面去实现它。
+`weighted_loss` 可以对计算损失时的每个样本做加权。
 
 ```python
 import torch
@@ -210,9 +219,10 @@ class MyLoss(nn.Module):
 
 ```python
 from .my_loss import MyLoss, my_loss
+
 ```
 
-为了使用它，修改 `loss_xxx` 字段。之后您需要在解码头组件里修改 `loss_decode` 字段。
+为了使用它，修改 `loss_xxx` 域。之后您需要在解码头组件里修改 `loss_decode` 域。
 `loss_weight` 可以被用来对不同的损失函数做加权。
 
 ```python

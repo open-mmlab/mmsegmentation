@@ -1,40 +1,42 @@
-# 教程 1 ：了解配置文件
+# 教程 1: 学习配置文件
 
-我们在配置系统中加入了模块化和继承性的设计，这为我们进行各种实验提供了方便。如果您想查看配置文件，您可以运行 `python tools/print_config.py /PATH/TO/CONFIG` 来查看完整的配置文件。您还可以传递参数 `--options xxx.yyy=zzz` 来查看更新的配置。
+我们整合了模块和继承设计到我们的配置里，这便于做很多实验。如果您想查看配置文件，您可以运行 `python tools/print_config.py /PATH/TO/CONFIG` 去查看完整的配置文件。您还可以传递参数
+`--options xxx.yyy=zzz` 去查看更新的配置。
 
 ## 配置文件的结构
 
-`config/_base_` 文件夹下有 4 种基本组件类型：数据集（dataset），模型（model），训练策略（schedule）和运行时的默认设置（default_runtime）。许多方法都可以方便地通过组合这些组件进行实现，比如 DeepLabV3 ，PSPNet 这样的模型可以很容易地被构建。由 `_base_` 下的组件组成的配置叫做 _原始配置 （primitive）_。
+在 `config/_base_` 文件夹下面有4种基本组件类型： 数据集(dataset)，模型(model)，训练策略(schedule)和运行时的默认设置(default runtime)。许多方法都可以方便地通过组合这些组件进行实现。
+这样，像 DeepLabV3, PSPNet 这样的模型可以容易地被构造。被来自 `_base_` 下的组件来构建的配置叫做 _原始配置 (primitive)_。
 
-对于同一个文件夹下的所有配置，建议**只有一个*原始配置***。所有其他的配置文件都应该继承自这个**原始配置**文件。这样就能保证配置文件的最大继承深度为 3。
+对于所有在同一个文件夹下的配置文件，推荐**只有一个**对应的**原始配置**文件。所有其他的配置文件都应该继承自这个**原始配置**文件。这样就能保证配置文件的最大继承深度为 3。
 
-为了便于理解，我们建议社区贡献者继承已有的方法的配置文件。例如，如果在  DeepLabV3 的基础上做一些修改，使用者可以首先通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py` 来继承 DeepLabV3 的基本结构，然后修改配置文件中的必要字段（配置项）。
+为了便于理解，我们推荐社区贡献者继承已有的方法配置文件。
+例如，如果一些修改是基于 DeepLabV3，使用者首先首先应该通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py`来继承基础 DeepLabV3 结构，再去修改配置文件里其他内容以完成继承。
 
-如果您正在构建一个全新的方法，并且不与任何现有的方法共享结构，您可以在 `configs` 下创建一个文件夹 `xxxnet` 。
-
+如果您正在构建一个完整的新模型，它完全没有和已有的方法共享一些结构，您可能需要在 `configs` 下面创建一个文件夹 `xxxnet`。
 更详细的文档，请参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html) 。
 
 ## 配置文件命名风格
 
-我们遵循以下风格来命名配置文件。建议社区贡献者遵循同样的风格。
+我们按照下面的风格去命名配置文件，社区贡献者被建议使用同样的风格。
 
 ```
 {model}_{backbone}_[misc]_[gpu x batch_per_gpu]_{resolution}_{schedule}_{dataset}
 ```
 
-`{xxx}` 是必填字段， `[yyy]` 是可选的。
+`{xxx}` 是被要求的文件 `[yyy]` 是可选的。
 
-- `{model}` ：模型种类，例如 `psp` ， `deeplabv3` 等等。
-- `{backbone}` ：主干网络类型，例如 `r50-d8` （下采样率为 8 的 ResNet-50 ）， `s101-d8` （下采样率为8的 ResNeSt-101 ）。
-- `[misc]` ：模型中杂项设置/插件，例如 `dconv`， `gcb`， `attention`， `mstrain`。
-- `[gpu x batch_per_gpu]` ：GPU数目乘以每个 GPU 的样本数， 默认为 `8x2` 。
-- `{resolution}` ：训练时输入图像的分辨率，如 `512x1024` 表示训练时输入图像的分辨率为 `[512, 1024]` 。
-- `{schedule}` ：训练策略，`20k` 表示 20k 迭代轮数.
-- `{dataset}` ：数据集，如 `cityscapes` ， `voc12aug` ， `ade` 。
+- `{model}`: 模型种类，例如 `psp`， `deeplabv3` 等等
+- `{backbone}`: 主干网络种类，例如 `r50` (ResNet-50)， `x101` (ResNeXt-101)
+- `[misc]`: 模型中各式各样的设置/插件，例如 `dconv`， `gcb`， `attention`， `mstrain`
+- `[gpu x batch_per_gpu]`: GPU数目 和每个 GPU 的样本数， 默认为 `8x2`
+- `{schedule}`: 训练方案， `20ki` 意思是 20k 迭代轮数
+- `{dataset}`: 数据集，如 `cityscapes`， `voc12aug`， `ade`
 
-## 示例——PSPNet
+## PSPNet 的一个例子
 
-为了帮助使用者熟悉这个流行的语义分割框架的完整配置文件和模块，我们在下面对使用 ResNet50V1c 的 PSPNet 的配置文件做了详细的注释说明。更详细的使用方法和每个模块的相应可选参数请参考 API 文档。
+为了帮助使用者熟悉这个流行的语义分割框架的完整配置文件和模块，我们在下面对使用 ResNet50V1c 的 PSPNet 的配置文件做了详细的注释说明。
+更多的详细使用和其他模块的替代项请参考 API 文档。
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)  # 分割框架通常使用 SyncBN
@@ -44,24 +46,24 @@ model = dict(
     backbone=dict(
         type='ResNetV1c',  # 主干网络的类别。 可用选项请参考 mmseg/backbone/resnet.py
         depth=50,  # 主干网络的深度。通常为 50 和 101。
-        num_stages=4,  # 主干网络阶段(stages)的数目，这些状态产生的特征图作为后续 head 的输入。
-        out_indices=(0, 1, 2, 3),  # 每个阶段产生的特征图输出的索引。
-        dilations=(1, 1, 2, 4),  # 每一层(layer)的扩张率(dilation rate)。
+        num_stages=4,  # 主干网络状态(stages)的数目，这些状态产生的特征图作为后续的 head 的输入。
+        out_indices=(0, 1, 2, 3),  # 每个状态产生的特征图输出的索引。
+        dilations=(1, 1, 2, 4),  # 每一层(layer)的空心率(dilation rate)。
         strides=(1, 2, 1, 1),  # 每一层(layer)的步长(stride)。
         norm_cfg=dict(  # 归一化层(norm layer)的配置项。
             type='SyncBN',  # 归一化层的类别。通常是 SyncBN。
             requires_grad=True),   # 是否训练归一化里的 gamma 和 beta。
         norm_eval=False,  # 是否冻结 BN 里的统计项。
         style='pytorch',  # 主干网络的风格，'pytorch' 意思是步长为2的层为 3x3 卷积， 'caffe' 意思是步长为2的层为 1x1 卷积。
-        contract_dilation=True),  # 当扩张率 > 1, 是否压缩第一个空洞层。
+        contract_dilation=True),  # 当空洞 > 1, 是否压缩第一个空洞层。
     decode_head=dict(
         type='PSPHead',  # 解码头(decode head)的类别。 可用选项请参考 mmseg/models/decode_heads。
         in_channels=2048,  # 解码头的输入通道数。
         in_index=3,  # 被选择的特征图(feature map)的索引。
-        channels=512,  # 解码头中间(intermediate)的通道数。
+        channels=512,  # 解码头中间态(intermediate)的通道数。
         pool_scales=(1, 2, 3, 6),  # PSPHead 平均池化(avg pooling)的规模(scales)。 细节请参考文章内容。
         dropout_ratio=0.1,  # 进入最后分类层(classification layer)之前的 dropout 比例。
-        num_classes=19,  # 分割前景的种类数目。 通常情况下，cityscapes为19，VOC为21，ADE20k为150。
+        num_classes=19,  # 分割前景的种类数目。 通常情况下，cityscapes 为19，VOC为21，ADE20k 为150。
         norm_cfg=dict(type='SyncBN', requires_grad=True),  # 归一化层的配置项。
         align_corners=False,  # 解码里调整大小(resize)的 align_corners 参数。
         loss_decode=dict(  # 解码头(decode_head)里的损失函数的配置项。
@@ -246,13 +248,14 @@ evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节
 
 ```
 
-## 常见问题
+## FAQ
 
-### 忽略基础配置文件中的一些字段
+### 忽略基础配置文件里的一些域内容。
 
-有时，您可以设置 `_delete_=True` 来忽略基础配置文件里的一些字段。您可以参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html#inherit-from-base-config-with-ignored-fields) 来获得一些简单的指导。
+有时，您也许会设置 `_delete_=True` 去忽略基础配置文件里的一些域内容。
+您也许可以参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html#inherit-from-base-config-with-ignored-fields) 来获得一些简单的指导。
 
-在 MMSegmentation 里，例如为了改变 PSPNet 的主干网络：
+在 MMSegmentation 里，例如为了改变 PSPNet 的主干网络的某些内容：
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -314,12 +317,13 @@ model = dict(
     auxiliary_head=dict(...))
 ```
 
-`_delete_=True` 将用新的键替换 `backbone` 字段内所有老的键。
+`_delete_=True` 将用新的键去替换 `backbone` 域内所有老的键。
 
 ### 使用配置文件里的中间变量
 
-配置文件里会使用一些中间变量，例如数据集里的 `train_pipeline`/`test_pipeline` 。
-需要注意的是，当修改子配置文件里的中间变量时，使用者需要再次传递这些变量给对应的字段。例如，我们想改变在训练或测试时，PSPNet 的多尺度策略（multi scale strategy），`train_pipeline`/`test_pipeline` 是我们想要修改的中间变量。
+配置文件里会使用一些中间变量，例如数据集里的 `train_pipeline`/`test_pipeline`。
+需要注意的是，在子配置文件里修改中间变量时，使用者需要再次传递这些变量给对应的域。
+例如，我们想改变在训练或测试时，PSPNet 的多尺度策略 (multi scale strategy)，`train_pipeline`/`test_pipeline` 是我们想要修改的中间变量。
 
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscapes.py'
@@ -361,7 +365,7 @@ data = dict(
 
 我们首先定义新的 `train_pipeline`/`test_pipeline` 然后传递到 `data` 里。
 
-同样的，如果我们想从 `SyncBN` 切换到 `BN` 或者 `MMSyncBN`，我们需要配置文件里的每一个 `norm_cfg` 。
+同样的，如果我们想从 `SyncBN` 切换到 `BN` 或者 `MMSyncBN`，我们需要配置文件里的每一个 `norm_cfg`。
 
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscpaes.py'
