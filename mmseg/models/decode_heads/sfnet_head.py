@@ -57,41 +57,48 @@ class SFNetHead(BaseDecodeHead):
         self.fpn_in = []
         for fpn_inplane in self.fpn_inplanes[:-1]:
             self.fpn_in.append(
-                nn.Sequential(
-                    nn.Conv2d(fpn_inplane, self.fpn_dim, 1),
-                    nn.BatchNorm2d(self.fpn_dim), nn.ReLU(inplace=False)))
+                ConvModule(
+                    fpn_inplane,
+                    self.fpn_dim,
+                    kernel_size=1,
+                    conv_cfg=self.conv_cfg,
+                    norm_cfg=self.norm_cfg,
+                    act_cfg=self.act_cfg,
+                    inplace=False))
         self.fpn_in = nn.ModuleList(self.fpn_in)
         self.fpn_out = []
         self.fpn_out_align = []
         self.dsn = []
         for i in range(len(self.fpn_inplanes) - 1):
             self.fpn_out.append(
-                nn.Sequential(
-                    nn.Conv2d(
-                        self.fpn_dim,
-                        self.fpn_dim,
-                        kernel_size=3,
-                        stride=1,
-                        padding=1,
-                        bias=False),
-                    nn.BatchNorm2d(self.fpn_dim),
-                    nn.ReLU(inplace=True),
-                ))
+                ConvModule(
+                    self.fpn_dim,
+                    self.fpn_dim,
+                    kernel_size=3,
+                    stride=1,
+                    padding=1,
+                    bias=False,
+                    conv_cfg=self.conv_cfg,
+                    norm_cfg=self.norm_cfg,
+                    act_cfg=self.act_cfg,
+                    inplace=True))
             self.fpn_out_align.append(
                 AlignedModule(
                     inplane=self.fpn_dim, outplane=self.fpn_dim // 2))
 
         self.fpn_out = nn.ModuleList(self.fpn_out)
         self.fpn_out_align = nn.ModuleList(self.fpn_out_align)
-        self.conv_last = nn.Sequential(
-            nn.Conv2d(
-                len(self.fpn_inplanes) * self.fpn_dim,
-                self.fpn_dim,
-                kernel_size=3,
-                stride=1,
-                padding=1,
-                bias=False), nn.BatchNorm2d(self.fpn_dim),
-            nn.ReLU(inplace=True))
+        self.conv_last = ConvModule(
+            len(self.fpn_inplanes) * self.fpn_dim,
+            self.fpn_dim,
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            bias=False,
+            conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg,
+            inplace=True)
 
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
