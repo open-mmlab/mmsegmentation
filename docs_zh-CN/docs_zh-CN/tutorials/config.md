@@ -29,7 +29,7 @@
 - `{model}`: 模型种类，例如 `psp`， `deeplabv3` 等等
 - `{backbone}`: 主干网络种类，例如 `r50` (ResNet-50)， `x101` (ResNeXt-101)
 - `[misc]`: 模型中各式各样的设置/插件，例如 `dconv`， `gcb`， `attention`， `mstrain`
-- `[gpu x batch_per_gpu]`: GPU数目 和每个 GPU 的样本数， 默认为 `8x2` 
+- `[gpu x batch_per_gpu]`: GPU数目 和每个 GPU 的样本数， 默认为 `8x2`
 - `{schedule}`: 训练方案， `20ki` 意思是 20k 迭代轮数
 - `{dataset}`: 数据集，如 `cityscapes`， `voc12aug`， `ade`
 

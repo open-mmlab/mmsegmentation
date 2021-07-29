@@ -45,7 +45,7 @@ b. 按照[官方教程](https://pytorch.org/) 安装 PyTorch 和 totchvision，
 conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
 ```
 
-c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation) 
+c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation)
 安装 [MMCV](https://mmcv.readthedocs.io/en/latest/) ，
 `mmcv` 或 `mmcv-full` 和 MMSegmentation 均兼容，但对于 CCNet 和 PSANet，`mmcv-full` 里的 CUDA 运算是必须的
 
@@ -116,7 +116,7 @@ pip install -e .  # 或者 "python setup.py develop"
 3. 当 MMsegmentation 以 `dev` 模式被安装时，本地对代码的修改将不需要重新安装即可产生作用
 4. 如果您想使用 `opencv-python-headless` 替换 `opencv-python`，您可以在安装 MMCV 前安装它
 5. 一些依赖项是可选的。简单的运行 `pip install -e .` 将仅安装最必要的一些依赖。为了使用可选的依赖项如`cityscapessripts`，
-   要么手动使用 `pip install -r requirements/optional.txt` 安装，要么专门从pip下安装(即 `pip install -e .[optional]`， 
+   要么手动使用 `pip install -r requirements/optional.txt` 安装，要么专门从pip下安装(即 `pip install -e .[optional]`，
    其中选项可设置为 `all`, `tests`, `build`, 和 `optional`)
 
 ### 完成的安装脚本

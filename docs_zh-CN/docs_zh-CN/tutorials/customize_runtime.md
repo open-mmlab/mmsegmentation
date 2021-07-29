@@ -108,8 +108,8 @@ class MyOptimizerConstructor(object):
 优化器没有实现的一些技巧应该通过优化器构造器 (optimizer constructor) 或者钩子 (hook) 去实现，如设置基于参数的学习率 (parameter-wise learning rates)。我们列出一些常见的设置，它们可以稳定或加速模型的训练。
 如果您有更多的设置，欢迎在 PR 和 issue 里面提交。
 
-- __使用梯度截断 (gradient clip) 去稳定训练__: 
-  
+- __使用梯度截断 (gradient clip) 去稳定训练__:
+
     一些模型需要梯度截断去稳定训练过程，如下所示
 
     ```python
@@ -120,7 +120,7 @@ class MyOptimizerConstructor(object):
     如果您的配置继承自已经设置了  `optimizer_config` 的基础配置 (base config)，您可能需要 `_delete_=True` 来重写那些不需要的设置。更多细节请参照 [配置文件文档](https://mmsegmentation.readthedocs.io/en/latest/config.html) 。
 
 - __使用动量计划表 (momentum schedule) 去加速模型收敛__:
-  
+
     我们支持动量计划表去让模型基于学习率修改动量，这样可能让模型收敛地更快。
     动量计划表经常和学习率计划表 (LR scheduler) 一起使用，例如如下配置文件就在 3D 检测里经常使用以加速收敛。
     更多细节请参考 [CyclicLrUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/lr_updater.py#L327) 和 [CyclicMomentumUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/momentum_updater.py#L130) 的实现。
