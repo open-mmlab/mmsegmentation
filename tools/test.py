@@ -1,6 +1,7 @@
 import argparse
 import os
 import shutil
+import warnings
 
 import mmcv
 import torch
@@ -91,8 +92,6 @@ def main():
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
     if args.aug_test:
-        assert not (args.show or args.show_dir
-                    ), 'when aug test, it is not supported to show result.'
         # hard code index
         cfg.data.test.pipeline[1].img_ratios = [
             0.5, 0.75, 1.0, 1.25, 1.5, 1.75
@@ -140,6 +139,9 @@ def main():
     torch.cuda.empty_cache()
     eval_kwargs = {} if args.eval_options is None else args.eval_options
 
+    # Deprecated
+    efficient_test = eval_kwargs.get('efficient_test', False)
+
     eval_on_format_results = (
         args.eval is not None and 'cityscapes' in args.eval)
     if args.format_only or eval_on_format_results:
@@ -151,20 +153,35 @@ def main():
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        results = single_gpu_test(model, data_loader, args.format_only
-                                  or eval_on_format_results, eval_kwargs,
-                                  args.show, args.show_dir, args.opacity)
+        results = single_gpu_test(
+            model,
+            data_loader,
+            args.show,
+            args.show_dir,
+            efficient_test,
+            args.opacity,
+            format_only=args.format_only or eval_on_format_results,
+            format_args=eval_kwargs)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        results = multi_gpu_test(model, data_loader, args.format_only
-                                 or eval_on_format_results, eval_kwargs,
-                                 args.tmpdir, args.gpu_collect)
+        results = multi_gpu_test(
+            model,
+            data_loader,
+            args.tmpdir,
+            args.gpu_collect,
+            efficient_test,
+            format_only=args.format_only or eval_on_format_results,
+            format_args=eval_kwargs)
 
     rank, _ = get_dist_info()
     if rank == 0:
+        if args.out:
+            warnings.warn(
+                'DeprecationWarning: output the results to pickle file is '
+                'deprecated')
         if args.eval:
             dataset.evaluate(results, args.eval, **eval_kwargs)
         if tmpdir is not None:
