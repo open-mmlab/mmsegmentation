@@ -9,7 +9,7 @@ Models:
   In Collection: point_rend
   Metadata:
     backbone: R-50
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 117.92
@@ -31,7 +31,7 @@ Models:
   In Collection: point_rend
   Metadata:
     backbone: R-101
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 142.86
@@ -53,7 +53,7 @@ Models:
   In Collection: point_rend
   Metadata:
     backbone: R-50
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 57.77
@@ -75,7 +75,7 @@ Models:
   In Collection: point_rend
   Metadata:
     backbone: R-101
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 64.52

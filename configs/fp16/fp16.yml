@@ -8,7 +8,7 @@ Models:
   In Collection: fp16
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 115.74
@@ -29,7 +29,7 @@ Models:
   In Collection: fp16
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 114.03
@@ -50,7 +50,7 @@ Models:
   In Collection: fp16
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 259.07
@@ -71,7 +71,7 @@ Models:
   In Collection: fp16
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 127.06

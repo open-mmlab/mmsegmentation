@@ -9,7 +9,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 390.62
@@ -30,7 +30,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 510.2
@@ -51,7 +51,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 666.67
@@ -73,7 +73,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 980.39
@@ -95,7 +95,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -108,7 +108,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -121,7 +121,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -135,7 +135,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -149,7 +149,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 48.4
@@ -171,7 +171,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 79.74
@@ -193,7 +193,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -207,7 +207,7 @@ Models:
   In Collection: dnlnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation

@@ -10,7 +10,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 269.54
@@ -32,7 +32,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 392.16
@@ -54,7 +54,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 588.24
@@ -76,7 +76,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 869.57
@@ -98,7 +98,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -112,7 +112,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -126,7 +126,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -140,7 +140,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -154,7 +154,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 47.6
@@ -176,7 +176,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 70.82
@@ -198,7 +198,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -212,7 +212,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -226,7 +226,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 47.8
@@ -248,7 +248,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 71.74
@@ -270,7 +270,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -284,7 +284,7 @@ Models:
   In Collection: ann
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation

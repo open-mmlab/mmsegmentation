@@ -12,7 +12,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 389.11
@@ -34,7 +34,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 520.83
@@ -56,7 +56,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 900.9
@@ -78,7 +78,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 1204.82
@@ -100,7 +100,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-18-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 72.57
@@ -122,7 +122,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -136,7 +136,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -150,7 +150,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-18-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 180.18
@@ -172,7 +172,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -186,7 +186,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -200,7 +200,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D16-MG124
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -214,7 +214,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-18b-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 71.79
@@ -236,7 +236,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50b-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 364.96
@@ -258,7 +258,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101b-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 552.49
@@ -280,7 +280,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-18b-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 172.71
@@ -302,7 +302,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50b-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 862.07
@@ -324,7 +324,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101b-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 1219.51
@@ -346,7 +346,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 67.75
@@ -368,7 +368,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 98.62
@@ -390,7 +390,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -404,7 +404,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -418,7 +418,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 72.05
@@ -440,7 +440,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 101.94
@@ -462,7 +462,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -476,7 +476,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -490,7 +490,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 40000
     inference time (ms/im):
     - value: 141.04
@@ -512,7 +512,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -526,7 +526,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -540,7 +540,7 @@ Models:
   In Collection: deeplabv3
   Metadata:
     backbone: R-101-D8
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation

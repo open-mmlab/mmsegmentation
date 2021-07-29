@@ -9,7 +9,7 @@ Models:
   In Collection: mobilenet_v2
   Metadata:
     backbone: M-V2-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 70.42
@@ -30,7 +30,7 @@ Models:
   In Collection: mobilenet_v2
   Metadata:
     backbone: M-V2-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 89.29
@@ -51,7 +51,7 @@ Models:
   In Collection: mobilenet_v2
   Metadata:
     backbone: M-V2-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 119.05
@@ -72,7 +72,7 @@ Models:
   In Collection: mobilenet_v2
   Metadata:
     backbone: M-V2-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 119.05
@@ -93,7 +93,7 @@ Models:
   In Collection: mobilenet_v2
   Metadata:
     backbone: M-V2-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 15.53
@@ -114,7 +114,7 @@ Models:
   In Collection: mobilenet_v2
   Metadata:
     backbone: M-V2-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 17.33
@@ -135,7 +135,7 @@ Models:
   In Collection: mobilenet_v2
   Metadata:
     backbone: M-V2-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 25.06
@@ -156,7 +156,7 @@ Models:
   In Collection: mobilenet_v2
   Metadata:
     backbone: M-V2-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 23.2

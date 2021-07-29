@@ -12,7 +12,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 239.81
@@ -34,7 +34,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 375.94
@@ -56,7 +56,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 555.56
@@ -78,7 +78,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 840.34
@@ -100,7 +100,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-18-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 68.26
@@ -122,7 +122,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -136,7 +136,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -150,7 +150,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-18-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 156.25
@@ -172,7 +172,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -186,7 +186,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -200,7 +200,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-18b-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 59.74
@@ -222,7 +222,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50b-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 238.1
@@ -244,7 +244,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101b-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 366.3
@@ -266,7 +266,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-18b-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 149.25
@@ -288,7 +288,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50b-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 549.45
@@ -310,7 +310,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101b-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 869.57
@@ -332,7 +332,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D16
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 97.85
@@ -354,7 +354,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D16
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 96.62
@@ -375,7 +375,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D16
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 239.81
@@ -397,7 +397,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D16
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 240.96
@@ -418,7 +418,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D16
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 124.38
@@ -440,7 +440,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D16
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 121.07
@@ -461,7 +461,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D16
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 320.51
@@ -483,7 +483,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D16
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 311.53
@@ -504,7 +504,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50b-D16
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 98.43
@@ -526,7 +526,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50b-D16
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 239.81
@@ -548,7 +548,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101b-D16
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 118.2
@@ -570,7 +570,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101b-D16
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 301.2
@@ -592,7 +592,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 42.57
@@ -614,7 +614,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 67.66
@@ -636,7 +636,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -650,7 +650,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -664,7 +664,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 42.96
@@ -686,7 +686,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 67.52
@@ -708,7 +708,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -722,7 +722,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -736,7 +736,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 40000
     inference time (ms/im):
     - value: 100.7
@@ -757,7 +757,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -771,7 +771,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -785,7 +785,7 @@ Models:
   In Collection: fcn
   Metadata:
     backbone: R-101-D8
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation

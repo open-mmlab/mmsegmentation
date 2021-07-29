@@ -8,7 +8,7 @@ Models:
   In Collection: swin
   Metadata:
     backbone: Swin-T
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 47.48
@@ -30,7 +30,7 @@ Models:
   In Collection: swin
   Metadata:
     backbone: Swin-S
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 67.93
@@ -52,7 +52,7 @@ Models:
   In Collection: swin
   Metadata:
     backbone: Swin-B
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 79.05
@@ -74,7 +74,7 @@ Models:
   In Collection: swin
   Metadata:
     backbone: Swin-B
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -88,7 +88,7 @@ Models:
   In Collection: swin
   Metadata:
     backbone: Swin-B
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 82.64
@@ -110,7 +110,7 @@ Models:
   In Collection: swin
   Metadata:
     backbone: Swin-B
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation

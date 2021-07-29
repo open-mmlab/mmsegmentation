@@ -9,7 +9,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 218.34
@@ -31,7 +31,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 375.94
@@ -53,7 +53,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 549.45
@@ -75,7 +75,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 793.65
@@ -97,7 +97,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -111,7 +111,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -125,7 +125,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -139,7 +139,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -153,7 +153,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 43.84
@@ -175,7 +175,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 67.25
@@ -197,7 +197,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -211,7 +211,7 @@ Models:
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation

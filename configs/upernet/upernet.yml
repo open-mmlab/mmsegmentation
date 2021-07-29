@@ -10,7 +10,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-50
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 235.29
@@ -32,7 +32,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-101
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 263.85
@@ -54,7 +54,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-50
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 568.18
@@ -76,7 +76,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-101
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 40000
     inference time (ms/im):
     - value: 641.03
@@ -98,7 +98,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-50
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -112,7 +112,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-101
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -126,7 +126,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-50
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -140,7 +140,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-101
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -154,7 +154,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-50
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 42.74
@@ -176,7 +176,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-101
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 49.16
@@ -198,7 +198,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-50
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -212,7 +212,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-101
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -226,7 +226,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-50
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 43.16
@@ -248,7 +248,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-101
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 50.05
@@ -270,7 +270,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-50
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -284,7 +284,7 @@ Models:
   In Collection: upernet
   Metadata:
     backbone: R-101
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation

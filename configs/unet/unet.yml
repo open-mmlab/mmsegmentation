@@ -11,7 +11,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 64x64
+    crop size: (64,64)
     lr schd: 40000
     memory (GB): 0.68
   Results:
@@ -25,7 +25,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 64x64
+    crop size: (64,64)
     lr schd: 40000
     memory (GB): 0.599
   Results:
@@ -39,7 +39,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 64x64
+    crop size: (64,64)
     lr schd: 40000
     memory (GB): 0.596
   Results:
@@ -53,7 +53,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 128x128
+    crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.968
   Results:
@@ -67,7 +67,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 128x128
+    crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.982
   Results:
@@ -81,7 +81,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 128x128
+    crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.999
   Results:
@@ -95,7 +95,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 128x128
+    crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.968
   Results:
@@ -109,7 +109,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 128x128
+    crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.982
   Results:
@@ -123,7 +123,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 128x128
+    crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.999
   Results:
@@ -137,7 +137,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 256x256
+    crop size: (256,256)
     lr schd: 40000
     memory (GB): 2.525
   Results:
@@ -151,7 +151,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 256x256
+    crop size: (256,256)
     lr schd: 40000
     memory (GB): 2.588
   Results:
@@ -165,7 +165,7 @@ Models:
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
-    crop size: 256x256
+    crop size: (256,256)
     lr schd: 40000
     memory (GB): 2.604
   Results:

@@ -8,7 +8,7 @@ Models:
   In Collection: emanet
   Metadata:
     backbone: R-50-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 218.34
@@ -30,7 +30,7 @@ Models:
   In Collection: emanet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 348.43
@@ -52,7 +52,7 @@ Models:
   In Collection: emanet
   Metadata:
     backbone: R-50-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 507.61
@@ -74,7 +74,7 @@ Models:
   In Collection: emanet
   Metadata:
     backbone: R-101-D8
-    crop size: 769x769
+    crop size: (769,769)
     lr schd: 80000
     inference time (ms/im):
     - value: 819.67

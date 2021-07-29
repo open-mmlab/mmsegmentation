@@ -8,7 +8,7 @@ Models:
   In Collection: cgnet
   Metadata:
     backbone: M3N21
-    crop size: 680x680
+    crop size: (680,680)
     lr schd: 60000
     inference time (ms/im):
     - value: 32.78
@@ -30,7 +30,7 @@ Models:
   In Collection: cgnet
   Metadata:
     backbone: M3N21
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 60000
     inference time (ms/im):
     - value: 32.11

@@ -8,7 +8,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: ViT-B + MLN
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 144.09
@@ -30,7 +30,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: ViT-B + MLN
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 131.93
@@ -52,7 +52,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: ViT-B + LN + MLN
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 146.63
@@ -74,7 +74,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: DeiT-S
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 33.5
@@ -96,7 +96,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: DeiT-S
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 34.26
@@ -118,7 +118,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: DeiT-S + MLN
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 89.45
@@ -140,7 +140,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: DeiT-S + LN + MLN
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 80.71
@@ -162,7 +162,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: DeiT-B
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 103.2
@@ -184,7 +184,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: DeiT-B
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 96.25
@@ -206,7 +206,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: DeiT-B + MLN
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 128.53
@@ -228,7 +228,7 @@ Models:
   In Collection: vit
   Metadata:
     backbone: DeiT-B + LN + MLN
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 129.03

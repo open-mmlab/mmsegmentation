@@ -8,7 +8,7 @@ Models:
   In Collection: fastscnn
   Metadata:
     backbone: Fast-SCNN
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 160000
     inference time (ms/im):
     - value: 17.71

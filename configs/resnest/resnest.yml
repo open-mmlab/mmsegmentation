@@ -9,7 +9,7 @@ Models:
   In Collection: resnest
   Metadata:
     backbone: S-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 418.41
@@ -31,7 +31,7 @@ Models:
   In Collection: resnest
   Metadata:
     backbone: S-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 396.83
@@ -53,7 +53,7 @@ Models:
   In Collection: resnest
   Metadata:
     backbone: S-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 531.91
@@ -75,7 +75,7 @@ Models:
   In Collection: resnest
   Metadata:
     backbone: S-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 423.73
@@ -97,7 +97,7 @@ Models:
   In Collection: resnest
   Metadata:
     backbone: S-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 77.76
@@ -119,7 +119,7 @@ Models:
   In Collection: resnest
   Metadata:
     backbone: S-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 76.8
@@ -141,7 +141,7 @@ Models:
   In Collection: resnest
   Metadata:
     backbone: S-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 107.76
@@ -163,7 +163,7 @@ Models:
   In Collection: resnest
   Metadata:
     backbone: S-101-D8
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 83.61

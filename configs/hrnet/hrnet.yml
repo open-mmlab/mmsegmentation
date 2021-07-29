@@ -12,7 +12,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 42.12
@@ -34,7 +34,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 77.1
@@ -56,7 +56,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 155.76
@@ -78,7 +78,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -92,7 +92,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -106,7 +106,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -120,7 +120,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -134,7 +134,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -148,7 +148,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -162,7 +162,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 25.87
@@ -184,7 +184,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 44.31
@@ -206,7 +206,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 47.1
@@ -228,7 +228,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -242,7 +242,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -256,7 +256,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -270,7 +270,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 23.06
@@ -292,7 +292,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 42.59
@@ -314,7 +314,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 45.35
@@ -336,7 +336,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -350,7 +350,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -364,7 +364,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -378,7 +378,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 40000
     inference time (ms/im):
     - value: 112.87
@@ -400,7 +400,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -414,7 +414,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -428,7 +428,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 480x480
+    crop size: (480,480)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation

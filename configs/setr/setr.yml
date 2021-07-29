@@ -8,7 +8,7 @@ Models:
   In Collection: setr
   Metadata:
     backbone: ViT-L
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 211.86
@@ -30,7 +30,7 @@ Models:
   In Collection: setr
   Metadata:
     backbone: ViT-L
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 222.22
@@ -52,7 +52,7 @@ Models:
   In Collection: setr
   Metadata:
     backbone: ViT-L
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     memory (GB): 10.96
   Results:
@@ -67,7 +67,7 @@ Models:
   In Collection: setr
   Metadata:
     backbone: ViT-L
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
     - value: 190.48

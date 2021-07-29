@@ -110,7 +110,7 @@ def parse_md(md_file):
                         'In Collection': collection_name,
                         'Metadata': {
                             'backbone': els[backbone_id],
-                            'crop size': els[crop_size_id],
+                            'crop size': f'({crop_size[0]},{crop_size[1]})',
                             'lr schd': int(els[lr_schd_id]),
                         },
                         'Results': {

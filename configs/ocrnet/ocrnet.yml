@@ -12,7 +12,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 95.69
@@ -34,7 +34,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 133.33
@@ -56,7 +56,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 236.97
@@ -78,7 +78,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -92,7 +92,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -106,7 +106,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
   Results:
     Task: Semantic Segmentation
@@ -120,7 +120,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -134,7 +134,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -148,7 +148,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -162,7 +162,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -175,7 +175,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 40000
     inference time (ms/im):
     - value: 331.13
@@ -196,7 +196,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: R-101-D8
-    crop size: 512x1024
+    crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
     - value: 331.13
@@ -217,7 +217,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 34.51
@@ -239,7 +239,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 52.83
@@ -261,7 +261,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 80000
     inference time (ms/im):
     - value: 58.86
@@ -283,7 +283,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -297,7 +297,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -311,7 +311,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 160000
   Results:
     Task: Semantic Segmentation
@@ -325,7 +325,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 31.7
@@ -347,7 +347,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 50.23
@@ -369,7 +369,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 20000
     inference time (ms/im):
     - value: 56.09
@@ -391,7 +391,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -405,7 +405,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
@@ -419,7 +419,7 @@ Models:
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: 512x512
+    crop size: (512,512)
     lr schd: 40000
   Results:
     Task: Semantic Segmentation
