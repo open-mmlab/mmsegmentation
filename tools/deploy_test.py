@@ -1,6 +1,7 @@
 import argparse
 import os
 import os.path as osp
+import shutil
 import warnings
 from typing import Any, Iterable
 
@@ -14,6 +15,7 @@ from mmcv.utils import DictAction
 from mmseg.apis import single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models.segmentors.base import BaseSegmentor
+from mmseg.ops import resize
 
 
 class ONNXRuntimeSegmentor(BaseSegmentor):
@@ -79,7 +81,7 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
         if not (ori_shape[0] == seg_pred.shape[-2]
                 and ori_shape[1] == seg_pred.shape[-1]):
             seg_pred = torch.from_numpy(seg_pred).float()
-            seg_pred = torch.nn.functional.interpolate(
+            seg_pred = resize(
                 seg_pred, size=tuple(ori_shape[:2]), mode='nearest')
             seg_pred = seg_pred.long().detach().cpu().numpy()
         seg_pred = seg_pred[0]
@@ -127,7 +129,7 @@ class TensorRTSegmentor(BaseSegmentor):
         if not (ori_shape[0] == seg_pred.shape[-2]
                 and ori_shape[1] == seg_pred.shape[-1]):
             seg_pred = torch.from_numpy(seg_pred).float()
-            seg_pred = torch.nn.functional.interpolate(
+            seg_pred = resize(
                 seg_pred, size=tuple(ori_shape[:2]), mode='nearest')
             seg_pred = seg_pred.long().detach().cpu().numpy()
         seg_pred = seg_pred[0]
@@ -227,17 +229,48 @@ def main():
     model.CLASSES = dataset.CLASSES
     model.PALETTE = dataset.PALETTE
 
-    eval_args = {} if args.eval_options is None else args.eval_options
+    # clean gpu memory when starting a new evaluation.
+    torch.cuda.empty_cache()
+    eval_kwargs = {} if args.eval_options is None else args.eval_options
+
+    # Deprecated
+    efficient_test = eval_kwargs.get('efficient_test', False)
+
+    eval_on_format_results = (
+        args.eval is not None and 'cityscapes' in args.eval)
+    if args.format_only or eval_on_format_results:
+        tmpdir = '.format_cityscapes'
+        mmcv.mkdir_or_exist(tmpdir)
+        eval_kwargs.setdefault('imgfile_prefix', tmpdir)
+    else:
+        tmpdir = None
 
     model = MMDataParallel(model, device_ids=[0])
-    pre_eval_results = single_gpu_test(model, data_loader, args.format_only,
-                                       eval_args, args.show, args.show_dir,
-                                       args.opacity)
+    outputs = single_gpu_test(
+        model,
+        data_loader,
+        args.show,
+        args.show_dir,
+        efficient_test,
+        args.opacity,
+        format_only=args.format_only or eval_on_format_results,
+        format_args=eval_kwargs)
 
     rank, _ = get_dist_info()
     if rank == 0:
+        if args.out:
+            warnings.warn(
+                'The behavior of ``args.out`` has been changed since MMSeg '
+                'v0.16, the pickled outputs are pre-eval results or file '
+                'paths for dataset.format_results().')
+            print(f'\nwriting results to {args.out}')
+            mmcv.dump(outputs, args.out)
+        kwargs = {} if args.eval_options is None else args.eval_options
         if args.eval:
-            dataset.evaluate(pre_eval_results, args.eval, **eval_args)
+            dataset.evaluate(outputs, args.eval, **kwargs)
+        if tmpdir is not None:
+            # remove tmp dir
+            shutil.rmtree(tmpdir)
 
 
 if __name__ == '__main__':
