@@ -144,6 +144,10 @@ def main():
 
     eval_on_format_results = (
         args.eval is not None and 'cityscapes' in args.eval)
+    if eval_on_format_results:
+        assert len(args.eval) == 1, 'eval on format results is not ' \
+                                    'applicable for metrics other than ' \
+                                    'cityscapes'
     if args.format_only or eval_on_format_results:
         tmpdir = '.format_cityscapes'
         mmcv.mkdir_or_exist(tmpdir)
@@ -160,6 +164,7 @@ def main():
             args.show_dir,
             efficient_test,
             args.opacity,
+            pre_eval=args.eval is not None and not eval_on_format_results,
             format_only=args.format_only or eval_on_format_results,
             format_args=eval_kwargs)
     else:
@@ -173,6 +178,7 @@ def main():
             args.tmpdir,
             args.gpu_collect,
             efficient_test,
+            pre_eval=args.eval is not None and not eval_on_format_results,
             format_only=args.format_only or eval_on_format_results,
             format_args=eval_kwargs)
 
@@ -181,8 +187,9 @@ def main():
         if args.out:
             warnings.warn(
                 'The behavior of ``args.out`` has been changed since MMSeg '
-                'v0.16, the pickled outputs are pre-eval results or file '
-                'paths for dataset.format_results().')
+                'v0.16, the pickled outputs could be seg map as type of '
+                'np.array, pre-eval results or file paths for '
+                '``dataset.format_results()``.')
             print(f'\nwriting results to {args.out}')
             mmcv.dump(results, args.out)
         if args.eval:

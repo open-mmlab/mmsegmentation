@@ -1,11 +1,33 @@
 import os.path as osp
+import tempfile
 import warnings
 
 import mmcv
+import numpy as np
 import torch
 from mmcv.engine import collect_results_cpu, collect_results_gpu
 from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
+
+
+def np2tmp(array, temp_file_name=None, tmpdir=None):
+    """Save ndarray to local numpy file.
+
+    Args:
+        array (ndarray): Ndarray to save.
+        temp_file_name (str): Numpy file name. If 'temp_file_name=None', this
+            function will generate a file name with tempfile.NamedTemporaryFile
+            to save ndarray. Default: None.
+        tmpdir (str): Temporary directory to save Ndarray files. Default: None.
+    Returns:
+        str: The numpy file name.
+    """
+
+    if temp_file_name is None:
+        temp_file_name = tempfile.NamedTemporaryFile(
+            suffix='.npy', delete=False, dir=tmpdir).name
+    np.save(temp_file_name, array)
+    return temp_file_name
 
 
 def single_gpu_test(model,
@@ -14,6 +36,7 @@ def single_gpu_test(model,
                     out_dir=None,
                     efficient_test=False,
                     opacity=0.5,
+                    pre_eval=False,
                     format_only=False,
                     format_args={}):
     """Test with single GPU by progressive mode.
@@ -29,6 +52,8 @@ def single_gpu_test(model,
         opacity(float): Opacity of painted segmentation map.
             Default 0.5.
             Must be in (0, 1] range.
+        pre_eval (bool): Use dataset.pre_eval() function to generate
+            pre_results for metric evaluation. Default: False.
         format_only (bool): Only format result for results commit.
             Default: False.
         format_args (dict): The args for format_results. Default: {}.
@@ -37,9 +62,13 @@ def single_gpu_test(model,
     """
     if efficient_test:
         warnings.warn(
-            'DeprecationWarning: ``efficient_test`` has been deprecated since '
-            'MMSeg v0.16, the test pipeline is CPU memory '
-            'friendly by default. ')
+            'DeprecationWarning: ``efficient_test`` will be deprecated, the '
+            'evaluation is CPU memory friendly with pre_eval=True')
+        assert not pre_eval, '``pre_eval`` and ``efficient_test`` are ' \
+                             'exclusive.'
+        mmcv.mkdir_or_exist('.efficient_test')
+    assert not (pre_eval and format_only), '``pre_eval`` and ' \
+                                           '``format_only`` are exclusive.'
 
     model.eval()
     results = []
@@ -56,14 +85,18 @@ def single_gpu_test(model,
         with torch.no_grad():
             result = model(return_loss=False, **data)
 
+        if efficient_test:
+            result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
+
         if format_only:
-            results.extend(
-                dataset.format_results(
-                    result, indices=batch_indices, **format_args))
-        else:
+            result = dataset.format_results(
+                result, indices=batch_indices, **format_args)
+        if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            results.extend(dataset.pre_eval(result, indices=batch_indices))
+            result = dataset.pre_eval(result, indices=batch_indices)
+
+        results.extend(result)
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -103,6 +136,7 @@ def multi_gpu_test(model,
                    tmpdir=None,
                    gpu_collect=False,
                    efficient_test=False,
+                   pre_eval=False,
                    format_only=False,
                    format_args={}):
     """Test model with multiple gpus by progressive mode.
@@ -123,6 +157,8 @@ def multi_gpu_test(model,
             Default: False.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
+        pre_eval (bool): Use dataset.pre_eval() function to generate
+            pre_results for metric evaluation. Default: False.
         format_only (bool): Only format result for results commit.
             Default: False.
         format_args (dict): The args for format_results. Default: {}.
@@ -132,9 +168,13 @@ def multi_gpu_test(model,
     """
     if efficient_test:
         warnings.warn(
-            'DeprecationWarning: ``efficient_test`` has been deprecated since '
-            'MMSeg v0.16, the test pipeline is CPU memory '
-            'friendly by default. ')
+            'DeprecationWarning: ``efficient_test`` will be deprecated, the '
+            'evaluation is CPU memory friendly with pre_eval=True')
+        assert not pre_eval, '``pre_eval`` and ``efficient_test`` are ' \
+                             'exclusive.'
+        mmcv.mkdir_or_exist('.efficient_test')
+    assert not (pre_eval and format_only), '``pre_eval`` and ' \
+                                           '``format_only`` are exclusive.'
 
     model.eval()
     results = []
@@ -157,14 +197,18 @@ def multi_gpu_test(model,
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
 
+        if efficient_test:
+            result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
+
         if format_only:
-            results.extend(
-                dataset.format_results(
-                    result, indices=batch_indices, **format_args))
-        else:
+            result = dataset.format_results(
+                result, indices=batch_indices, **format_args)
+        if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            results.extend(dataset.pre_eval(result, indices=batch_indices))
+            result = dataset.pre_eval(result, indices=batch_indices)
+
+        results.extend(result)
 
         if rank == 0:
             batch_size = len(result) * world_size

@@ -26,9 +26,10 @@ class EvalHook(_EvalHook):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         if efficient_test:
             warnings.warn(
-                'DeprecationWarning: ``efficient_test`` has been deprecated '
-                'since MMSeg v0.16, the test pipeline is CPU memory '
-                'friendly by default. ')
+                'DeprecationWarning: ``efficient_test`` for evaluation hook '
+                'is deprecated, the evaluation hook is CPU memory friendly '
+                'with ``pre_eval=True`` as argument for ``single_gpu_test()`` '
+                'function')
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
@@ -36,7 +37,8 @@ class EvalHook(_EvalHook):
             return
 
         from mmseg.apis import single_gpu_test
-        results = single_gpu_test(runner.model, self.dataloader, show=False)
+        results = single_gpu_test(
+            runner.model, self.dataloader, show=False, pre_eval=True)
         runner.log_buffer.clear()
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         key_score = self.evaluate(runner, results)
@@ -62,9 +64,11 @@ class DistEvalHook(_DistEvalHook):
     def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         if efficient_test:
-            warnings.warn('DeprecationWarning: ``efficient_test`` has been '
-                          'deprecated since MMSeg v0.16, the test pipeline is '
-                          'CPU memory friendly by default. ')
+            warnings.warn(
+                'DeprecationWarning: ``efficient_test`` for evaluation hook '
+                'is deprecated, the evaluation hook is CPU memory friendly '
+                'with ``pre_eval=True`` as argument for ``multi_gpu_test()`` '
+                'function')
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
@@ -93,7 +97,8 @@ class DistEvalHook(_DistEvalHook):
             runner.model,
             self.dataloader,
             tmpdir=tmpdir,
-            gpu_collect=self.gpu_collect)
+            gpu_collect=self.gpu_collect,
+            pre_eval=True)
 
         runner.log_buffer.clear()
 
