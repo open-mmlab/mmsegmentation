@@ -1,4 +1,4 @@
-from .a2d2_19cls import A2D2Dataset19Classes
+from .a2d2_18cls import A2D2Dataset18Classes
 from .a2d2_35cls import A2D2Dataset35Classes
 from .ade import ADE20KDataset
 from .builder import DATASETS, PIPELINES, build_dataloader, build_dataset
@@ -17,5 +17,5 @@ __all__ = [
     'DATASETS', 'build_dataset', 'PIPELINES', 'CityscapesDataset',
     'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
-    'STAREDataset', 'A2D2Dataset19Classes', 'A2D2Dataset35Classes'
+    'STAREDataset', 'A2D2Dataset18Classes', 'A2D2Dataset35Classes'
 ]
