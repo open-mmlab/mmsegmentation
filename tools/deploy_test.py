@@ -243,15 +243,22 @@ def main():
 
     eval_on_format_results = (
         args.eval is not None and 'cityscapes' in args.eval)
+    if eval_on_format_results:
+        assert len(args.eval) == 1, 'eval on format results is not ' \
+                                    'applicable for metrics other than ' \
+                                    'cityscapes'
     if args.format_only or eval_on_format_results:
-        tmpdir = '.format_cityscapes'
+        if 'imgfile_prefix' in eval_kwargs:
+            tmpdir = eval_kwargs['imgfile_prefix']
+        else:
+            tmpdir = '.format_cityscapes'
+            eval_kwargs.setdefault('imgfile_prefix', tmpdir)
         mmcv.mkdir_or_exist(tmpdir)
-        eval_kwargs.setdefault('imgfile_prefix', tmpdir)
     else:
         tmpdir = None
 
     model = MMDataParallel(model, device_ids=[0])
-    outputs = single_gpu_test(
+    results = single_gpu_test(
         model,
         data_loader,
         args.show,
@@ -266,15 +273,15 @@ def main():
         if args.out:
             warnings.warn(
                 'The behavior of ``args.out`` has been changed since MMSeg '
-                'v0.16, the pickled outputs are pre-eval results or file '
-                'paths for dataset.format_results().')
+                'v0.16, the pickled outputs could be seg map as type of '
+                'np.array, pre-eval results or file paths for '
+                '``dataset.format_results()``.')
             print(f'\nwriting results to {args.out}')
-            mmcv.dump(outputs, args.out)
-        kwargs = {} if args.eval_options is None else args.eval_options
+            mmcv.dump(results, args.out)
         if args.eval:
-            dataset.evaluate(outputs, args.eval, **kwargs)
-        if tmpdir is not None:
-            # remove tmp dir
+            dataset.evaluate(results, args.eval, **eval_kwargs)
+        if tmpdir is not None and eval_on_format_results:
+            # remove tmp dir when cityscapes evaluation
             shutil.rmtree(tmpdir)
 
 
