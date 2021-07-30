@@ -154,9 +154,12 @@ def main():
                                     'applicable for metrics other than ' \
                                     'cityscapes'
     if args.format_only or eval_on_format_results:
-        tmpdir = '.format_cityscapes'
+        if 'imgfile_prefix' in eval_kwargs:
+            tmpdir = eval_kwargs['imgfile_prefix']
+        else:
+            tmpdir = '.format_cityscapes'
+            eval_kwargs.setdefault('imgfile_prefix', tmpdir)
         mmcv.mkdir_or_exist(tmpdir)
-        eval_kwargs.setdefault('imgfile_prefix', tmpdir)
     else:
         tmpdir = None
 
