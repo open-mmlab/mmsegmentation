@@ -11,6 +11,9 @@ from mmseg.ops import resize
 class SegformerHead(BaseDecodeHead):
     """The all mlp Head of segformer.
 
+    This head is the implementation of
+    `Segformer <https://arxiv.org/abs/2105.15203>`
+
     Args:
         interpolate_mode: The interpolate mode of MLP head upsample operation.
             Default: 'bilinear'.
@@ -20,8 +23,9 @@ class SegformerHead(BaseDecodeHead):
         super().__init__(input_transform='multiple_select', **kwargs)
 
         self.interpolate_mode = interpolate_mode
-
         num_inputs = len(self.in_channels)
+
+        assert num_inputs == len(self.in_index)
 
         self.convs = nn.ModuleList()
         for i in range(num_inputs):
@@ -44,7 +48,9 @@ class SegformerHead(BaseDecodeHead):
         # Receive 4 stage backbone feature map: 1/4, 1/8, 1/16, 1/32
         inputs = self._transform_inputs(inputs)
         outs = []
-        for x, conv in zip(inputs, self.convs):
+        for idx in range(len(inputs)):
+            x = inputs[idx]
+            conv = self.convs[idx]
             outs.append(
                 resize(
                     input=conv(x),
