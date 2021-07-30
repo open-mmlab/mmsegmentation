@@ -48,13 +48,16 @@ def single_gpu_test(model,
         out_dir (str, optional): If specified, the results will be dumped into
             the directory to save output results.
         efficient_test (bool): Whether save the results as local numpy files to
-            save CPU memory during evaluation. Default: False.
+            save CPU memory during evaluation. Mutually exclusive with
+            pre_eval and format_results. Default: False.
         opacity(float): Opacity of painted segmentation map.
             Default 0.5.
             Must be in (0, 1] range.
         pre_eval (bool): Use dataset.pre_eval() function to generate
-            pre_results for metric evaluation. Default: False.
+            pre_results for metric evaluation. Mutually exclusive with
+            efficient_test and format_results. Default: False.
         format_only (bool): Only format result for results commit.
+            Mutually exclusive with pre_eval and efficient_test.
             Default: False.
         format_args (dict): The args for format_results. Default: {}.
     Returns:
@@ -64,11 +67,12 @@ def single_gpu_test(model,
         warnings.warn(
             'DeprecationWarning: ``efficient_test`` will be deprecated, the '
             'evaluation is CPU memory friendly with pre_eval=True')
-        assert not pre_eval, '``pre_eval`` and ``efficient_test`` are ' \
-                             'exclusive.'
         mmcv.mkdir_or_exist('.efficient_test')
-    assert not (pre_eval and format_only), '``pre_eval`` and ' \
-                                           '``format_only`` are exclusive.'
+    # when none of them is set true, return segmentation results as
+    # a list of np.array.
+    assert [efficient_test, pre_eval, format_only].count(True) <= 1, \
+        '``efficient_test``, ``pre_eval`` and ``format_only`` are mutually ' \
+        'exclusive, only one of them could be true .'
 
     model.eval()
     results = []
@@ -156,10 +160,13 @@ def multi_gpu_test(model,
         gpu_collect (bool): Option to use either gpu or cpu to collect results.
             Default: False.
         efficient_test (bool): Whether save the results as local numpy files to
-            save CPU memory during evaluation. Default: False.
+            save CPU memory during evaluation. Mutually exclusive with
+            pre_eval and format_results. Default: False.
         pre_eval (bool): Use dataset.pre_eval() function to generate
-            pre_results for metric evaluation. Default: False.
+            pre_results for metric evaluation. Mutually exclusive with
+            efficient_test and format_results. Default: False.
         format_only (bool): Only format result for results commit.
+            Mutually exclusive with pre_eval and efficient_test.
             Default: False.
         format_args (dict): The args for format_results. Default: {}.
 
@@ -170,11 +177,12 @@ def multi_gpu_test(model,
         warnings.warn(
             'DeprecationWarning: ``efficient_test`` will be deprecated, the '
             'evaluation is CPU memory friendly with pre_eval=True')
-        assert not pre_eval, '``pre_eval`` and ``efficient_test`` are ' \
-                             'exclusive.'
         mmcv.mkdir_or_exist('.efficient_test')
-    assert not (pre_eval and format_only), '``pre_eval`` and ' \
-                                           '``format_only`` are exclusive.'
+    # when none of them is set true, return segmentation results as
+    # a list of np.array.
+    assert [efficient_test, pre_eval, format_only].count(True) <= 1, \
+        '``efficient_test``, ``pre_eval`` and ``format_only`` are mutually ' \
+        'exclusive, only one of them could be true .'
 
     model.eval()
     results = []

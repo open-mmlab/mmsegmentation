@@ -141,6 +141,11 @@ def main():
 
     # Deprecated
     efficient_test = eval_kwargs.get('efficient_test', False)
+    if efficient_test:
+        warnings.warn(
+            '``efficient_test=True`` does not have effect in tools/test.py, '
+            'the evaluation and format results are CPU memory efficient by '
+            'default')
 
     eval_on_format_results = (
         args.eval is not None and 'cityscapes' in args.eval)
@@ -162,7 +167,7 @@ def main():
             data_loader,
             args.show,
             args.show_dir,
-            efficient_test,
+            False,
             args.opacity,
             pre_eval=args.eval is not None and not eval_on_format_results,
             format_only=args.format_only or eval_on_format_results,
@@ -177,7 +182,7 @@ def main():
             data_loader,
             args.tmpdir,
             args.gpu_collect,
-            efficient_test,
+            False,
             pre_eval=args.eval is not None and not eval_on_format_results,
             format_only=args.format_only or eval_on_format_results,
             format_args=eval_kwargs)
