@@ -1,6 +1,9 @@
+import os
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from inference_module import DenseSwAVModule, InferenceInterface
 
 from mmseg.core import add_prefix
 from mmseg.ops import resize
@@ -42,6 +45,29 @@ class EncoderDecoder(BaseSegmentor):
         self.test_cfg = test_cfg
 
         assert self.with_decode_head
+
+        ############################
+        #  Initialize VISSL model
+        ############################
+        vissl_dir = '/home/robin/projects/vissl/'
+        config_path = os.path.join(
+            vissl_dir,
+            '/home/robin/projects/vissl/configs/config/pretrain/swav/'
+            'dense_swav_8node_resnet_test.yaml')
+        checkpoint_path = os.path.join(vissl_dir,
+                                       'model_iteration470000.torch')
+        output_type = 'head'
+        default_config_path = os.path.join(
+            vissl_dir, '/home/robin/projects/vissl/vissl/config/defaults.yaml')
+
+        self.vissl_module = InferenceInterface(
+            DenseSwAVModule(
+                config_path,
+                default_config_path,
+                checkpoint_path,
+                output_type,
+                use_gpu=True,
+            ))
 
     def _init_decode_head(self, decode_head):
         """Initialize ``decode_head``"""
@@ -135,7 +161,11 @@ class EncoderDecoder(BaseSegmentor):
             dict[str, Tensor]: a dictionary of loss components
         """
 
-        x = self.extract_feat(img)
+        # VISSL model inference
+        with torch.no_grad():
+            z = self.vissl_module.forward(img)
+
+        x = self.extract_feat(z)
 
         losses = dict()
 
