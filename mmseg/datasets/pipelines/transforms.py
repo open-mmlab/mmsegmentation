@@ -34,8 +34,9 @@ class ResizeToMultiple(object):
             img.shape[0] / self.size_divisor)) * self.size_divisor
         align_w = int(np.ceil(
             img.shape[1] / self.size_divisor)) * self.size_divisor
-        return mmcv.imresize(img, (align_w, align_h),
-                             interpolation if interpolation else 'bilinear')
+        return mmcv.imresize(
+            img, (align_w, align_h),
+            interpolation=interpolation if interpolation else 'bilinear')
 
     def _align_img(self, results):
         """Align image to multiple of size divisor."""
