@@ -307,6 +307,7 @@ class CustomDataset(Dataset):
                  results,
                  metric='mIoU',
                  logger=None,
+                 gt_seg_maps=None,
                  efficient_test=False,
                  **kwargs):
         """Evaluate the dataset.
@@ -315,6 +316,7 @@ class CustomDataset(Dataset):
             results (list): Testing results of the dataset.
             metric (str | list[str]): Metrics to be evaluated. 'mIoU',
                 'mDice' and 'mFscore' are supported.
+            gt_seg_maps (list): Custom gt seg maps as input, used in concat dataset
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
 
@@ -328,7 +330,8 @@ class CustomDataset(Dataset):
         if not set(metric).issubset(set(allowed_metrics)):
             raise KeyError('metric {} is not supported'.format(metric))
         eval_results = {}
-        gt_seg_maps = self.get_gt_seg_maps(efficient_test)
+        if gt_seg_maps is None:
+            gt_seg_maps = self.get_gt_seg_maps(efficient_test)
         if self.CLASSES is None:
             num_classes = len(
                 reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))

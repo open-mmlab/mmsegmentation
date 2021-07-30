@@ -29,6 +29,7 @@ def _concat_dataset(cfg, default_args=None):
     img_dir = cfg['img_dir']
     ann_dir = cfg.get('ann_dir', None)
     split = cfg.get('split', None)
+    separate_eval = cfg.get('separate_eval', True)
     num_img_dir = len(img_dir) if isinstance(img_dir, (list, tuple)) else 1
     if ann_dir is not None:
         num_ann_dir = len(ann_dir) if isinstance(ann_dir, (list, tuple)) else 1
@@ -48,6 +49,9 @@ def _concat_dataset(cfg, default_args=None):
     datasets = []
     for i in range(num_dset):
         data_cfg = copy.deepcopy(cfg)
+        # pop 'separate_eval' since it is not a valid key for common datasets.
+        if 'separate_eval' in data_cfg:
+            data_cfg.pop('separate_eval')
         if isinstance(img_dir, (list, tuple)):
             data_cfg['img_dir'] = img_dir[i]
         if isinstance(ann_dir, (list, tuple)):
@@ -56,7 +60,7 @@ def _concat_dataset(cfg, default_args=None):
             data_cfg['split'] = split[i]
         datasets.append(build_dataset(data_cfg, default_args))
 
-    return ConcatDataset(datasets)
+    return ConcatDataset(datasets, separate_eval)
 
 
 def build_dataset(cfg, default_args=None):
