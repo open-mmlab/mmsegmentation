@@ -49,16 +49,15 @@ class EncoderDecoder(BaseSegmentor):
         ############################
         #  Initialize VISSL model
         ############################
-        vissl_dir = '/home/robin/projects/vissl/'
+        vissl_dir = '/home/r_karlsson/workspace5/vissl'
         config_path = os.path.join(
-            vissl_dir,
-            '/home/robin/projects/vissl/configs/config/pretrain/swav/'
+            vissl_dir, 'configs/config/pretrain/swav/'
             'dense_swav_8node_resnet_test.yaml')
         checkpoint_path = os.path.join(vissl_dir,
-                                       'model_iteration470000.torch')
+                                       'exp06/model_iteration470000.torch')
         output_type = 'head'
-        default_config_path = os.path.join(
-            vissl_dir, '/home/robin/projects/vissl/vissl/config/defaults.yaml')
+        default_config_path = os.path.join(vissl_dir,
+                                           'vissl/config/defaults.yaml')
 
         self.vissl_module = InferenceInterface(
             DenseSwAVModule(
@@ -95,7 +94,12 @@ class EncoderDecoder(BaseSegmentor):
     def encode_decode(self, img, img_metas):
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
-        x = self.extract_feat(img)
+
+        # VISSL model inference
+        with torch.no_grad():
+            z = self.vissl_module.forward(img)
+
+        x = self.extract_feat(z)
         out = self._decode_head_forward_test(x, img_metas)
         out = resize(
             input=out,
