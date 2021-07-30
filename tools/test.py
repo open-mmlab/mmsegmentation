@@ -202,8 +202,8 @@ def main():
             mmcv.dump(results, args.out)
         if args.eval:
             dataset.evaluate(results, args.eval, **eval_kwargs)
-        if tmpdir is not None:
-            # remove tmp dir
+        if tmpdir is not None and eval_on_format_results:
+            # remove tmp dir when cityscapes evaluation
             shutil.rmtree(tmpdir)
 
 
