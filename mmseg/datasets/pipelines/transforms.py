@@ -52,6 +52,7 @@ class ResizeToMultiple(object):
         for key in results.get('seg_fields', []):
             gt_seg = results[key]
             gt_seg = self._align(gt_seg, 'nearest')
+            results[key] = gt_seg
 
     def __call__(self, results):
         """Call function to resize images, semantic segmentation map to
