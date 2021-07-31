@@ -198,6 +198,7 @@ The default arguments result in the same experimental setup as described in the 
 The converted label images will be generated within the same directory as the original labels. The conversion process creates a new directory structure, where `img_dir/` and `label_dir/` contains symbolic links to camera and label images located within the original data folders.
 
 When using the original A2D2 semantic classes 35 of the original 38 semantic categories will be mapped into a `trainIds` integer by default. The following segmentation classes are ignored (i.e. trainIds 255):
+
 - Ego car:  A calibrated system should a priori know what input region corresponds to the ego vehicle.
 - Blurred area: Ambiguous semantic.
 - Rain dirt: Ambiguous semantic.
