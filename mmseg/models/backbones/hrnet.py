@@ -287,7 +287,7 @@ class HRNet(BaseModule):
                  norm_cfg=dict(type='BN', requires_grad=True),
                  norm_eval=False,
                  with_cp=False,
-                 frozen_stages=1,
+                 frozen_stages=-1,
                  zero_init_residual=False,
                  pretrained=None,
                  init_cfg=None):
