@@ -8,7 +8,7 @@ from .custom import CustomDataset
 class A2D2Dataset18Classes(CustomDataset):
     """A2D2 dataset following the Cityscapes 'trainids' label format.
 
-    The dataset features 41,280 frames with semantic segmentation in 35
+    The dataset features 41,280 frames with semantic segmentation in 18
     categories. Each pixel in an image is given a label describing the type of
     object it represents, e.g. pedestrian, car, vegetation, etc.
 
@@ -22,7 +22,7 @@ class A2D2Dataset18Classes(CustomDataset):
           The segmentation conversion is defined in the following file:
               tools/convert_datasets/a2d2.py
 
-          The color palette follows the coloring in 'class_list.json'.
+          The color palette approximately follows the Cityscapes coloring.
 
           The following segmentation classes are ignored (i.e. trainIds 255):
           - Ego car:  A calibrated system should a priori know what input

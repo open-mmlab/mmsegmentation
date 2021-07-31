@@ -10,6 +10,10 @@ import numpy as np
 
 random.seed(14)
 
+# Global variables for specifying label suffix according to class count
+LABEL_SUFFIX_18_CLS = '_18LabelTrainIds.png'
+LABEL_SUFFIX_34_CLS = '_34LabelTrainIds.png'
+
 # Dictionaries specifying which A2D2 segmentation color corresponds to
 
 # A2D2 'trainId' value
@@ -20,60 +24,62 @@ random.seed(14)
 #                 corresponds to the ego vehicle.
 # - Blurred area: Ambiguous semantic.
 # - Rain dirt:    Ambiguous semantic.
+# The following segmentation class is merged:
+# - Speed bumper --> RD normal street (50% of dataset contains only one sample)
 SEG_COLOR_DICT_A2D2 = {
-    (255, 0, 0): 28,  # Car 1
-    (200, 0, 0): 28,  # Car 2
-    (150, 0, 0): 28,  # Car 3
-    (128, 0, 0): 28,  # Car 4
-    (182, 89, 6): 27,  # Bicycle 1
-    (150, 50, 4): 27,  # Bicycle 2
-    (90, 30, 1): 27,  # Bicycle 3
-    (90, 30, 30): 27,  # Bicycle 4
-    (204, 153, 255): 26,  # Pedestrian 1
-    (189, 73, 155): 26,  # Pedestrian 2
-    (239, 89, 191): 26,  # Pedestrian 3
-    (255, 128, 0): 30,  # Truck 1
-    (200, 128, 0): 30,  # Truck 2
-    (150, 128, 0): 30,  # Truck 3
-    (0, 255, 0): 32,  # Small vehicles 1
-    (0, 200, 0): 32,  # Small vehicles 2
-    (0, 150, 0): 32,  # Small vehicles 3
-    (0, 128, 255): 19,  # Traffic signal 1
-    (30, 28, 158): 19,  # Traffic signal 2
-    (60, 28, 100): 19,  # Traffic signal 3
-    (0, 255, 255): 20,  # Traffic sign 1
-    (30, 220, 220): 20,  # Traffic sign 2
-    (60, 157, 199): 20,  # Traffic sign 3
-    (255, 255, 0): 29,  # Utility vehicle 1
-    (255, 255, 200): 29,  # Utility vehicle 2
-    (233, 100, 0): 16,  # Sidebars
-    (110, 110, 0): 12,  # Speed bumper
-    (128, 128, 0): 14,  # Curbstone
+    (255, 0, 0): 27,  # Car 1
+    (200, 0, 0): 27,  # Car 2
+    (150, 0, 0): 27,  # Car 3
+    (128, 0, 0): 27,  # Car 4
+    (182, 89, 6): 26,  # Bicycle 1
+    (150, 50, 4): 26,  # Bicycle 2
+    (90, 30, 1): 26,  # Bicycle 3
+    (90, 30, 30): 26,  # Bicycle 4
+    (204, 153, 255): 25,  # Pedestrian 1
+    (189, 73, 155): 25,  # Pedestrian 2
+    (239, 89, 191): 25,  # Pedestrian 3
+    (255, 128, 0): 29,  # Truck 1
+    (200, 128, 0): 29,  # Truck 2
+    (150, 128, 0): 29,  # Truck 3
+    (0, 255, 0): 31,  # Small vehicles 1
+    (0, 200, 0): 31,  # Small vehicles 2
+    (0, 150, 0): 31,  # Small vehicles 3
+    (0, 128, 255): 18,  # Traffic signal 1
+    (30, 28, 158): 18,  # Traffic signal 2
+    (60, 28, 100): 18,  # Traffic signal 3
+    (0, 255, 255): 19,  # Traffic sign 1
+    (30, 220, 220): 19,  # Traffic sign 2
+    (60, 157, 199): 19,  # Traffic sign 3
+    (255, 255, 0): 28,  # Utility vehicle 1
+    (255, 255, 200): 28,  # Utility vehicle 2
+    (233, 100, 0): 15,  # Sidebars
+    (110, 110, 0): 0,  # Speed bumper (*merged due to scarcity)
+    (128, 128, 0): 13,  # Curbstone
     (255, 193, 37): 6,  # Solid line
-    (64, 0, 64): 22,  # Irrelevant signs
-    (185, 122, 87): 17,  # Road blocks
-    (0, 0, 100): 31,  # Tractor
+    (64, 0, 64): 21,  # Irrelevant signs
+    (185, 122, 87): 16,  # Road blocks
+    (0, 0, 100): 30,  # Tractor
     (139, 99, 108): 1,  # Non-drivable street
     (210, 50, 115): 8,  # Zebra crossing
-    (255, 0, 128): 34,  # Obstacles / trash
-    (255, 246, 143): 18,  # Poles
+    (255, 0, 128): 33,  # Obstacles / trash
+    (255, 246, 143): 17,  # Poles
     (150, 0, 150): 2,  # RD restricted area
-    (204, 255, 153): 33,  # Animals
+    (204, 255, 153): 32,  # Animals
     (238, 162, 173): 9,  # Grid structure
-    (33, 44, 177): 21,  # Signal corpus
+    (33, 44, 177): 20,  # Signal corpus
     (180, 50, 180): 3,  # Drivable cobblestone
-    (255, 70, 185): 23,  # Electronic traffic
+    (255, 70, 185): 22,  # Electronic traffic
     (238, 233, 191): 4,  # Slow drive area
-    (147, 253, 194): 24,  # Nature object
+    (147, 253, 194): 23,  # Nature object
     (150, 150, 200): 5,  # Parking area
-    (180, 150, 200): 13,  # Sidewalk
+    (180, 150, 200): 12,  # Sidewalk
     (72, 209, 204): 255,  # Ego car <-- IGNORED
     (200, 125, 210): 11,  # Painted driv. instr.
     (159, 121, 238): 10,  # Traffic guide obj.
     (128, 0, 255): 7,  # Dashed line
     (255, 0, 255): 0,  # RD normal street
-    (135, 206, 255): 25,  # Sky
-    (241, 230, 255): 15,  # Buildings
+    (135, 206, 255): 24,  # Sky
+    (241, 230, 255): 14,  # Buildings
     (96, 69, 143): 255,  # Blurred area <-- IGNORED
     (53, 46, 82): 255,  # Rain dirt <-- IGNORED
 }
@@ -141,11 +147,15 @@ SEG_COLOR_DICT_CITYSCAPES = {
 
 def modify_label_filename(label_filepath, label_choice):
     """Returns a mmsegmentation-combatible label filename."""
+    # Ensure that label filenames are modified only once
+    if 'TrainIds.png' in label_filepath:
+        return label_filepath
+
     label_filepath = label_filepath.replace('_label_', '_camera_')
     if label_choice == 'a2d2':
-        label_filepath = label_filepath.replace('.png', '_35LabelTrainIds.png')
+        label_filepath = label_filepath.replace('.png', LABEL_SUFFIX_34_CLS)
     elif label_choice == 'cityscapes':
-        label_filepath = label_filepath.replace('.png', '_18LabelTrainIds.png')
+        label_filepath = label_filepath.replace('.png', LABEL_SUFFIX_18_CLS)
     else:
         raise ValueError
     return label_filepath
@@ -271,8 +281,7 @@ def restructure_a2d2_directory(a2d2_path,
                                test_ratio,
                                label_choice,
                                train_on_val_and_test=False,
-                               use_symlinks=True,
-                               label_suffix='_labelTrainIds.png'):
+                               use_symlinks=True):
     """Creates a new directory structure and link existing files into it.
 
     Required to make the A2D2 dataset conform to the mmsegmentation frameworks
@@ -326,9 +335,9 @@ def restructure_a2d2_directory(a2d2_path,
     img_filepaths = sorted(glob.glob(osp.join(a2d2_path, '*/camera/*/*.png')))
 
     if label_choice == 'a2d2':
-        label_suffix = label_suffix.replace('_l', '_35L')
+        label_suffix = LABEL_SUFFIX_34_CLS
     elif label_choice == 'cityscapes':
-        label_suffix = label_suffix.replace('_l', '_19L')
+        label_suffix = LABEL_SUFFIX_18_CLS
     else:
         raise ValueError
     ann_filepaths = sorted(
@@ -440,23 +449,32 @@ def main():
 
         The function 'convert_TYPE_trainids()' converts all instance
         segmentation to their corresponding categorical segmentation and saves
-        them as new label image files..
+        them as new label image files.
 
-    The default arguments result in the same experimental setup as described in
-    the original A2D2 paper (ref: p.8 "4. Experiment: Semantic segmentation").
+        Label choice 'a2d2' results in labels with 34 classes with the filename
+        suffix '_34LabelTrainIds.png'.
+
+        Label choice 'cityscapes' results in labels with 18 classes with the
+        filename suffix '_18LabelTrainIds.png'.
+
+    The default arguments result in a similar experimental setup as described
+    in the original A2D2 paper (p.8 "4. Experiment: Semantic segmentation").
     - The original 38 semantic classes are merged into a set of 18 classes
       emulating the Cityscapes class taxonomy.
     - The total set of 40,030 samples are randomly split into 'train', 'val'
       and 'test' sets, each consisting of 28,015 samples (70.0%), 4,118 samples
       (10.3%) and 7,897 samples (19.7%), respectively.
 
-    Selecting --choice a2d2 results in the 35 A2D2 semantic class targets.
+    Selecting --choice a2d2 results in the 34 A2D2 semantic class targets.
 
     NOTE: The following segmentation classes are ignored (i.e. trainIds 255):
           - Ego car:  A calibrated system should a priori know what input
                       region corresponds to the ego vehicle.
           - Blurred area: Ambiguous semantic.
           - Rain dirt: Ambiguous semantic.
+          The following segmentation class is merged:
+          - Speed bumper --> RD normal street (50% of dataset contains only one
+            sample)
 
     Directory restructuring:
         A2D2 files are not arranged in the required 'train/val/test' directory
