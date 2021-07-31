@@ -1,0 +1,50 @@
+Collections:
+- Name: cgnet
+  Metadata:
+    Training Data:
+    - Cityscapes
+Models:
+- Name: cgnet_680x680_60k_cityscapes
+  In Collection: cgnet
+  Metadata:
+    backbone: M3N21
+    crop size: (680,680)
+    lr schd: 60000
+    inference time (ms/im):
+    - value: 32.78
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (680,680)
+    memory (GB): 7.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 65.63
+      mIoU(ms+flip): 68.04
+  Config: configs/cgnet/cgnet_680x680_60k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth
+- Name: cgnet_512x1024_60k_cityscapes
+  In Collection: cgnet
+  Metadata:
+    backbone: M3N21
+    crop size: (512,1024)
+    lr schd: 60000
+    inference time (ms/im):
+    - value: 32.11
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 8.3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 68.27
+      mIoU(ms+flip): 70.33
+  Config: configs/cgnet/cgnet_512x1024_60k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes_20201101_110254-124ea03b.pth
