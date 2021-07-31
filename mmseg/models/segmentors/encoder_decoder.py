@@ -1,9 +1,6 @@
-import os
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from inference_module import DenseSwAVModule, InferenceInterface
 
 from mmseg.core import add_prefix
 from mmseg.ops import resize
@@ -46,28 +43,6 @@ class EncoderDecoder(BaseSegmentor):
 
         assert self.with_decode_head
 
-        ############################
-        #  Initialize VISSL model
-        ############################
-        vissl_dir = '/home/r_karlsson/workspace5/vissl'
-        config_path = os.path.join(
-            vissl_dir, 'configs/config/pretrain/swav/'
-            'dense_swav_8node_resnet_test.yaml')
-        checkpoint_path = os.path.join(vissl_dir,
-                                       'exp06/model_iteration470000.torch')
-        output_type = 'head'
-        default_config_path = os.path.join(vissl_dir,
-                                           'vissl/config/defaults.yaml')
-
-        self.vissl_module = InferenceInterface(
-            DenseSwAVModule(
-                config_path,
-                default_config_path,
-                checkpoint_path,
-                output_type,
-                use_gpu=True,
-            ))
-
     def _init_decode_head(self, decode_head):
         """Initialize ``decode_head``"""
         self.decode_head = builder.build_head(decode_head)
@@ -94,12 +69,7 @@ class EncoderDecoder(BaseSegmentor):
     def encode_decode(self, img, img_metas):
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
-
-        # VISSL model inference
-        with torch.no_grad():
-            z = self.vissl_module.forward(img)
-
-        x = self.extract_feat(z)
+        x = self.extract_feat(img)
         out = self._decode_head_forward_test(x, img_metas)
         out = resize(
             input=out,
@@ -164,12 +134,7 @@ class EncoderDecoder(BaseSegmentor):
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
-
-        # VISSL model inference
-        with torch.no_grad():
-            z = self.vissl_module.forward(img)
-
-        x = self.extract_feat(z)
+        x = self.extract_feat(img)
 
         losses = dict()
 
