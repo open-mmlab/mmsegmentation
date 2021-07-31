@@ -1,5 +1,5 @@
 from .a2d2_18cls import A2D2Dataset18Classes
-from .a2d2_35cls import A2D2Dataset34Classes
+from .a2d2_34cls import A2D2Dataset34Classes
 from .ade import ADE20KDataset
 from .builder import DATASETS, PIPELINES, build_dataloader, build_dataset
 from .chase_db1 import ChaseDB1Dataset
