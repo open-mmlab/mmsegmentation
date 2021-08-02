@@ -192,7 +192,9 @@ Finally, convert the A2D2 dataset label files to the MMSegmentation format. One 
 python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic
 ```
 
-The default arguments result in merging of the original 38 semantic classes into a Cityscapes-like 18 class label setup. The official A2D2 paper presents benchmark results in an unspecified but presumptively similar class taxonomy. (ref: p.8 "4. Experiment: Semantic segmentation"). Samples are randomly split into 'train', 'val' and 'test' sets, each consisting of 28,894 samples (70.0%), 4,252 samples (10.3%) and 8,131 samples (19.7%), respectively. Add the optional argument `--train-on-val-and-test` to train on the entire dataset.  Add `--choice a2d2` to use the original 34 A2D2 semantic classes. Add `--nproc N` for multiprocessing using N threads. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
+The default arguments result in merging of the original 38 semantic classes into a Cityscapes-like 18 class label setup. The official A2D2 paper presents benchmark results in an unspecified but presumptively similar class taxonomy. (ref: p.8 "4. Experiment: Semantic segmentation"). Add `--choice a2d2` to use the original 34 A2D2 semantic classes.
+
+Samples are randomly split into 'train', 'val' and 'test' sets, each consisting of 28,894 samples (70.0%), 4,252 samples (10.3%) and 8,131 samples (19.7%), respectively. Add the optional argument `--train-on-val-and-test` to train on the entire dataset.  Add `--nproc N` for multiprocessing using N threads. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
 
 The converted label images will be generated within the same directory as the original labels. The conversion process also creates a new directory structure, where `img_dir/` and `label_dir/` contains symbolic links to camera and label images located within the original data folders. The optional argument `--no-symlink` creates copies of the label images instead of symbolic links.
 
