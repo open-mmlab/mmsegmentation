@@ -180,25 +180,28 @@ The script will make directory structure automatically.
 
 To set up the A2D2 semantic segmentation dataset, first download 'Dataset - Semantic Segmentation' (`camera_lidar_semantic.tar`) from the official site ([a2d2.audi/a2d2/en/download.html](https://www.a2d2.audi/a2d2/en/download.html)). Extract the downloaded file as `a2d2/camera_lidar_semantic/`. Inside this directory, there will be 10 subdirectories, each containing separate `camera`, `label`, `lidar` subfolders.
 
-Next, while in MMSegmentation directory root, create a symbolic link from `mmsegmentation/data/a2d2` to the dataset directory `a2d2/camera_lidar_semantic`.
+Next, while in the MMSegmentation directory root, create a symbolic link from `mmsegmentation/data/a2d2` to the dataset directory `a2d2/camera_lidar_semantic`.
 
 ```shell
 ln -s /absolute/path/to/a2d2/camera_lidar_semantic/ data/a2d2/
 ```
 
-Finally, convert the A2D2 dataset to the MMSegmentation format using either segmentation category labels. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
+Finally, convert the A2D2 dataset label files to the MMSegmentation format. One can choose to generate Cityscape-like labels having 18 classes in total (default choice), as well as using the original A2D2 semantic segmentation category labels with 34 classes (reduced from 38 classes as explained bellow). The original label files will not be overwritten during conversion. It is possible to have both 18 and 34 class labels existing simultaneously.
 
 ```shell
-# For A2D2 semantic category labels
 python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic
 ```
 
-The default arguments result in the same experimental setup as described in the original A2D2 paper (ref: p.8 "4. Experiment: Semantic segmentation"). The original 38 semantic classes are merged into a set of 19 classes emulating the Cityscapes class taxonomy. Samples are randomly split into 'train', 'val' and 'test' sets, each consisting of 28,894 samples (70.0%), 4,252 samples (10.3%) and 8,131 samples (19.7%), respectively (ref: P.8 "4. Experiment: Semantic segmentation"). To use the original A2D2 semantic classes add the optional argument `--choice a2d2`. Add `--nproc N` for multiprocessing using N threads.
+The default arguments result in merging of the original 38 semantic classes into a Cityscapes-like 18 class label setup. The official A2D2 paper presents benchmark results in an unspecified but presumptively similar class taxonomy. (ref: p.8 "4. Experiment: Semantic segmentation"). Samples are randomly split into 'train', 'val' and 'test' sets, each consisting of 28,894 samples (70.0%), 4,252 samples (10.3%) and 8,131 samples (19.7%), respectively. Add the optional argument `--train-on-val-and-test` to train on the entire dataset.  Add `--choice a2d2` to use the original 34 A2D2 semantic classes. Add `--nproc N` for multiprocessing using N threads. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
 
-The converted label images will be generated within the same directory as the original labels. The conversion process creates a new directory structure, where `img_dir/` and `label_dir/` contains symbolic links to camera and label images located within the original data folders.
+The converted label images will be generated within the same directory as the original labels. The conversion process also creates a new directory structure, where `img_dir/` and `label_dir/` contains symbolic links to camera and label images located within the original data folders. The optional argument `--no-symlink` creates copies of the label images instead of symbolic links.
 
-When using the original A2D2 semantic classes 35 of the original 38 semantic categories will be mapped into a `trainIds` integer by default. The following segmentation classes are ignored (i.e. trainIds 255):
+When using the original A2D2 semantic classes 34 of the original 38 semantic categories will be mapped into a `trainIds` integer by default. The following segmentation classes are ignored (i.e. trainIds 255):
 
 - Ego car:  A calibrated system should a priori know what input region corresponds to the ego vehicle.
 - Blurred area: Ambiguous semantic.
 - Rain dirt: Ambiguous semantic.
+
+The following segmentation class is merged due to extreme rarity:
+
+- Speed bumper --> RD normal street (randomly parsing 50% of dataset results in only one sample containing the 'speed_bumper' semantic)

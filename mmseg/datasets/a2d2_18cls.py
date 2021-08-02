@@ -6,32 +6,31 @@ from .custom import CustomDataset
 
 @DATASETS.register_module()
 class A2D2Dataset18Classes(CustomDataset):
-    """A2D2 dataset following the Cityscapes 'trainids' label format.
+    """The A2D2 dataset following the Cityscapes 'trainids' label format.
 
-    The dataset features 41,280 frames with semantic segmentation in 18
-    categories. Each pixel in an image is given a label describing the type of
-    object it represents, e.g. pedestrian, car, vegetation, etc.
+    The dataset features 41,280 frames with semantic segmentations having 18
+    classes. This dataset configuration merges the original A2D2 classes into a
+    subset resembling the Cityscapes classes. The official A2D2 paper presents
+    benchmark results in an unspecified but presumptively similar
+    Cityscapes-like class taxonomy.
 
-    This dataset variation merges original A2D2 classes into a subset emulating
-    the classes found in Cityscapes.
+    The 18 class segmentation conversion is defined in the following file:
+        tools/convert_datasets/a2d2.py
 
-    NOTE: Instance segmentations and some segmentation classes are collapsed to
-          follow the categorical 'trainids' label format.
-          Ex: 'Car 1' and 'Car 2' --> 'Car'
+    Instance segmentations and some segmentation classes are merged to comply
+    with the categorical 'trainids' label format.
+        Ex: 'Car 1' and 'Car 2' --> 'Car'
 
-          The segmentation conversion is defined in the following file:
-              tools/convert_datasets/a2d2.py
+    The color palette approximately follows the Cityscapes coloring.
 
-          The color palette approximately follows the Cityscapes coloring.
-
-          The following segmentation classes are ignored (i.e. trainIds 255):
-          - Ego car:  A calibrated system should a priori know what input
-                      region corresponds to the ego vehicle.
-          - Blurred area: Ambiguous semantic.
-          - Rain dirt: Ambiguous semantic.
+    The following segmentation classes are ignored (i.e. trainIds 255):
+    - Ego car:  A calibrated system should a priori know what input
+                region corresponds to the ego vehicle.
+    - Blurred area: Ambiguous semantic.
+    - Rain dirt: Ambiguous semantic.
 
     The ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is
-    fixed to '_labelTrainIds.png' for A2D2 dataset.
+    fixed to '_18LabelTrainIds.png' for the 18 class A2D2 dataset.
 
     Ref: https://www.a2d2.audi/a2d2/en/dataset.html
     """

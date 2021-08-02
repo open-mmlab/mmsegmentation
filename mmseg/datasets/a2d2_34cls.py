@@ -6,32 +6,33 @@ from .custom import CustomDataset
 
 @DATASETS.register_module()
 class A2D2Dataset34Classes(CustomDataset):
-    """A2D2 dataset following the Cityscapes 'trainids' label format.
+    """The A2D2 dataset with the original semantic segmentation classes.
 
-    The dataset features 41,280 frames with semantic segmentation in 34
-    categories. Each pixel in an image is given a label describing the type of
-    object it represents, e.g. pedestrian, car, vegetation, etc.
+    The dataset features 41,280 frames with semantic segmentation having 34
+    classes. The original set of 38 classes are reduced to 34 for reasons
+    explained bellow.
 
-    NOTE: Instance segmentations and some segmentation classes are collapsed to
-          follow the categorical 'trainids' label format.
-          Ex: 'Car 1' and 'Car 2' --> 'Car'
+    The segmentation conversion is defined in the following file:
+        tools/convert_datasets/a2d2.py
 
-          The segmentation conversion is defined in the following file:
-              tools/convert_datasets/a2d2.py
+    Instance segmentations and some segmentation classes are collapsed to
+    follow the categorical 'trainids' label format.
+        Ex: 'Car 1' and 'Car 2' --> 'Car'
 
-          The color palette follows the coloring in 'class_list.json'.
+    The color palette follows the coloring in 'class_list.json'.
 
-          The following segmentation classes are ignored (i.e. trainIds 255):
-          - Ego car:  A calibrated system should a priori know what input
-                      region corresponds to the ego vehicle.
-          - Blurred area: Ambiguous semantic.
-          - Rain dirt: Ambiguous semantic.
-          The following segmentation class is merged:
-          - Speed bumper --> RD normal street (50% of dataset contains only one
-            sample)
+    The following segmentation classes are ignored (i.e. trainIds 255):
+    - Ego car:  A calibrated system should a priori know what input
+                region corresponds to the ego vehicle.
+    - Blurred area: Ambiguous semantic.
+    - Rain dirt: Ambiguous semantic.
+
+    The following segmentation class is merged due to rarity:
+    - Speed bumper --> RD normal street (randomly parsing 50% of dataset
+    results in only one sample containing the 'speed_bumper' semantic)
 
     The ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is
-    fixed to '_labelTrainIds.png' for A2D2 dataset.
+    fixed to '_34LabelTrainIds.png' for the 34 class A2D2 dataset.
 
     Ref: https://www.a2d2.audi/a2d2/en/dataset.html
     """

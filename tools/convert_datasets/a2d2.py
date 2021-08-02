@@ -312,8 +312,8 @@ def restructure_a2d2_directory(a2d2_path,
         a2d2_path: Absolute path to the A2D2 'camera_lidar_semantic' directory.
         val_ratio: Float value representing ratio of validation samples.
         test_ratio: Float value representing ratio of test samples.
-        train_on_val: Use validation and test samples as training samples if
-                      True.
+        train_on_val_and_test: Use validation and test samples as training
+                               samples if True.
         label_suffix: Label filename ending string.
         use_symlinks: Symbolically link existing files in the original A2D2
                       dataset directory. If false, files will be copied.
@@ -414,17 +414,18 @@ def parse_args():
     parser.add_argument(
         '--choice',
         default='cityscapes',
-        help='Label conversion type choice (\'cityscapes\' or \'a2d2\')')
+        help='Label conversion type choice: \'cityscapes\' (18 classes) or '
+        '\'a2d2\' (34 classes)')
     parser.add_argument(
         '--val', default=0.103, type=float, help='Validation set sample ratio')
     parser.add_argument(
         '--test', default=0.197, type=float, help='Test set sample ratio')
     parser.add_argument(
-        '--train-on-val',
-        dest='train_on_val',
+        '--train-on-val-and-test',
+        dest='train_on_val_and_test',
         action='store_true',
-        help='Use validation samples as training samples')
-    parser.set_defaults(train_on_val=False)
+        help='Use validation and test samples as training samples')
+    parser.set_defaults(train_on_val_and_test=False)
     parser.add_argument(
         '--nproc', default=1, type=int, help='Number of process')
     parser.add_argument(
@@ -438,7 +439,7 @@ def parse_args():
 
 
 def main():
-    """Program for making Audi's A2D2 dataset compatible with mmsegmentation.
+    """A script for making Audi's A2D2 dataset compatible with mmsegmentation.
 
     NOTE: The input argument path must be the ABSOLUTE PATH to the dataset
           - NOT the symbolically linked one (i.e. data/a2d2)
@@ -451,38 +452,46 @@ def main():
         segmentation to their corresponding categorical segmentation and saves
         them as new label image files.
 
+        Label choice 'cityscapes' (default) results in labels with 18 classes
+        with the filename suffix '_18LabelTrainIds.png'.
+
         Label choice 'a2d2' results in labels with 34 classes with the filename
         suffix '_34LabelTrainIds.png'.
 
-        Label choice 'cityscapes' results in labels with 18 classes with the
-        filename suffix '_18LabelTrainIds.png'.
+    The default arguments result in merging of the original 38 semantic classes
+    into a Cityscapes-like 18 class label setup. The official A2D2 paper
+    presents benchmark results in an unspecified but presumptively similar
+    class taxonomy. (ref: p.8 "4. Experiment: Semantic segmentation").
 
-    The default arguments result in a similar experimental setup as described
-    in the original A2D2 paper (p.8 "4. Experiment: Semantic segmentation").
-    - The original 38 semantic classes are merged into a set of 18 classes
-      emulating the Cityscapes class taxonomy.
-    - The total set of 40,030 samples are randomly split into 'train', 'val'
-      and 'test' sets, each consisting of 28,015 samples (70.0%), 4,118 samples
-      (10.3%) and 7,897 samples (19.7%), respectively.
+    Add `--choice a2d2` to use the original 34 A2D2 semantic classes.
 
-    Selecting --choice a2d2 results in the 34 A2D2 semantic class targets.
+    Samples are randomly split into 'train', 'val' and 'test' sets, each
+    consisting of 28,894 samples (70.0%), 4,252 samples (10.3%) and 8,131
+    samples (19.7%), respectively.
+
+    Add the optional argument `--train-on-val-and-test` to train on the entire
+    dataset.
+
+    Add `--nproc N` for multiprocessing using N threads.
 
     NOTE: The following segmentation classes are ignored (i.e. trainIds 255):
           - Ego car:  A calibrated system should a priori know what input
                       region corresponds to the ego vehicle.
           - Blurred area: Ambiguous semantic.
           - Rain dirt: Ambiguous semantic.
-          The following segmentation class is merged:
-          - Speed bumper --> RD normal street (50% of dataset contains only one
-            sample)
+
+          The following segmentation class is merged due to extreme rarity:
+          - Speed bumper --> RD normal street (randomly parsing 50% of dataset
+            results in only one sample containing the 'speed_bumper' semantic)
 
     Directory restructuring:
         A2D2 files are not arranged in the required 'train/val/test' directory
         structure.
 
         The function 'restructure_a2d2_directory' creates a new compatible
-        directory structure in the root directory, and fills it with symbolic
-        links or file copies to the input and segmentation label images.
+        directory structure in the root directory, The optional argument
+        `--no-symlink` creates copies of the label images instead of symbolic
+        links.
 
     Example usage:
         python tools/convert_datasets/a2d2.py path/to/camera_lidar_semantic
@@ -518,7 +527,7 @@ def main():
     # Restructure directory structure into 'img_dir' and 'ann_dir'
     if args.restruct:
         restructure_a2d2_directory(out_dir, args.val, args.test, args.choice,
-                                   args.train_on_val, args.symlink)
+                                   args.train_on_val_and_test, args.symlink)
 
 
 if __name__ == '__main__':
