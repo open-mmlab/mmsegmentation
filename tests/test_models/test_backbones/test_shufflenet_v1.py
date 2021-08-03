@@ -6,6 +6,7 @@ from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.models.backbones import ShuffleNetV1
 from mmseg.models.backbones.shufflenet_v1 import ShuffleUnit
+from .utils import check_norm_state, is_norm
 
 
 def is_block(modules):
@@ -13,22 +14,6 @@ def is_block(modules):
     if isinstance(modules, (ShuffleUnit, )):
         return True
     return False
-
-
-def is_norm(modules):
-    """Check if is one of the norms."""
-    if isinstance(modules, (GroupNorm, _BatchNorm)):
-        return True
-    return False
-
-
-def check_norm_state(modules, train_state):
-    """Check if norm layer is in correct train state."""
-    for mod in modules:
-        if isinstance(mod, _BatchNorm):
-            if mod.training != train_state:
-                return False
-    return True
 
 
 def test_shufflenetv1_shuffleuint():
