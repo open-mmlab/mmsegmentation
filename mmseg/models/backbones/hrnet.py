@@ -230,6 +230,8 @@ class HRNet(BaseModule):
             and its variants only.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
             memory while slowing down the training speed.
+        frozen_stages (int): Stages to be frozen (stop grad and set eval mode).
+            -1 means not freezing any parameters. Default: -1.
         zero_init_residual (bool): whether to use zero init for last norm layer
             in resblocks to let them behave as identity.
         pretrained (str, optional): model pretrained path. Default: None
@@ -285,6 +287,7 @@ class HRNet(BaseModule):
                  norm_cfg=dict(type='BN', requires_grad=True),
                  norm_eval=False,
                  with_cp=False,
+                 frozen_stages=-1,
                  zero_init_residual=False,
                  pretrained=None,
                  init_cfg=None):
@@ -315,6 +318,7 @@ class HRNet(BaseModule):
         self.norm_cfg = norm_cfg
         self.norm_eval = norm_eval
         self.with_cp = with_cp
+        self.frozen_stages = frozen_stages
 
         # stem net
         self.norm1_name, norm1 = build_norm_layer(self.norm_cfg, 64, postfix=1)
@@ -387,6 +391,8 @@ class HRNet(BaseModule):
                                                        num_channels)
         self.stage4, pre_stage_channels = self._make_stage(
             self.stage4_cfg, num_channels)
+
+        self._freeze_stages()
 
     @property
     def norm1(self):
@@ -534,6 +540,32 @@ class HRNet(BaseModule):
 
         return Sequential(*hr_modules), in_channels
 
+    def _freeze_stages(self):
+        """Freeze stages param and norm stats."""
+        if self.frozen_stages >= 0:
+
+            self.norm1.eval()
+            self.norm2.eval()
+            for m in [self.conv1, self.norm1, self.conv2, self.norm2]:
+                for param in m.parameters():
+                    param.requires_grad = False
+
+        for i in range(1, self.frozen_stages + 1):
+            if i == 1:
+                m = getattr(self, f'layer{i}')
+                t = getattr(self, f'transition{i}')
+            elif i == 4:
+                m = getattr(self, f'stage{i}')
+            else:
+                m = getattr(self, f'stage{i}')
+                t = getattr(self, f'transition{i}')
+            m.eval()
+            for param in m.parameters():
+                param.requires_grad = False
+            t.eval()
+            for param in t.parameters():
+                param.requires_grad = False
+
     def forward(self, x):
         """Forward function."""
 
@@ -575,6 +607,7 @@ class HRNet(BaseModule):
         """Convert the model into training mode will keeping the normalization
         layer freezed."""
         super(HRNet, self).train(mode)
+        self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():
                 # trick: eval have effect on BatchNorm only
