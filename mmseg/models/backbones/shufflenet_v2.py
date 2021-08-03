@@ -47,23 +47,14 @@ class InvertedResidual(BaseModule):
         # Protect mutable default arguments
         norm_cfg = copy.deepcopy(norm_cfg)
         act_cfg = copy.deepcopy(act_cfg)
+        self.in_channels = in_channels
+        self.out_channels = out_channels
         self.stride = stride
         self.dilation = dilation
         self.with_cp = with_cp
 
         branch_features = out_channels // 2
-        if self.stride == 1:
-            assert in_channels == branch_features * 2, (
-                f'in_channels ({in_channels}) should equal to '
-                f'branch_features * 2 ({branch_features * 2}) '
-                'when stride is 1')
-
-        if in_channels != branch_features * 2:
-            assert self.stride != 1, (
-                f'stride ({self.stride}) should not equal 1 when '
-                f'in_channels != branch_features * 2')
-
-        if self.stride > 1:
+        if in_channels != out_channels:
             self.branch1 = nn.Sequential(
                 ConvModule(
                     in_channels,
@@ -71,7 +62,7 @@ class InvertedResidual(BaseModule):
                     kernel_size=3,
                     stride=self.stride,
                     dilation=self.dilation,
-                    padding=1,
+                    padding=self.dilation,
                     groups=in_channels,
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
@@ -89,7 +80,8 @@ class InvertedResidual(BaseModule):
 
         self.branch2 = nn.Sequential(
             ConvModule(
-                in_channels if (self.stride > 1) else branch_features,
+                in_channels
+                if in_channels != out_channels else branch_features,
                 branch_features,
                 kernel_size=1,
                 stride=1,
@@ -103,7 +95,7 @@ class InvertedResidual(BaseModule):
                 kernel_size=3,
                 stride=self.stride,
                 dilation=self.dilation,
-                padding=1,
+                padding=self.dilation,
                 groups=branch_features,
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
@@ -121,7 +113,7 @@ class InvertedResidual(BaseModule):
     def forward(self, x):
 
         def _inner_forward(x):
-            if self.stride > 1:
+            if self.in_channels != self.out_channels:
                 out = torch.cat((self.branch1(x), self.branch2(x)), dim=1)
             else:
                 x1, x2 = x.chunk(2, dim=1)
