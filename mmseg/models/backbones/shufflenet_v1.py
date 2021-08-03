@@ -29,8 +29,9 @@ class ShuffleUnit(BaseModule):
             grouped 1x1 convolution.
         combine (str, optional): The ways to combine the input and output
             branches. Default: 'add'.
-        downsample (bool): Whether to downsample the feature map when combine
-            is 'concat'. Default: 'True'.
+        stride (int): Stride of the 3x3 depthwise convolution layer.
+            Default: 1.
+        dilation (int): Dilation of the 3x3 convolution layer. Default: 1.
         conv_cfg (dict): Config dict for convolution layer. Default: None,
             which means using conv2d.
         norm_cfg (dict): Config dict for normalization layer.
@@ -51,7 +52,8 @@ class ShuffleUnit(BaseModule):
                  groups=3,
                  first_block=True,
                  combine='add',
-                 downsample=True,
+                 stride=1,
+                 dilation=1,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
@@ -64,13 +66,13 @@ class ShuffleUnit(BaseModule):
         self.out_channels = out_channels
         self.first_block = first_block
         self.combine = combine
-        self.downsample = downsample
+        self.stride = stride
+        self.dilation = dilation
         self.groups = groups
         self.bottleneck_channels = self.out_channels // 4
         self.with_cp = with_cp
 
         if self.combine == 'add':
-            self.depthwise_stride = 1
             self._combine_func = self._add
             assert in_channels == out_channels, (
                 'in_channels must be equal to out_channels when combine '
@@ -78,11 +80,8 @@ class ShuffleUnit(BaseModule):
         elif self.combine == 'concat':
             self._combine_func = self._concat
             self.out_channels -= self.in_channels
-            if self.downsample:
-                self.depthwise_stride = 2
+            if stride == 2:
                 self.avgpool = nn.AvgPool2d(kernel_size=3, stride=2, padding=1)
-            else:
-                self.depthwise_stride = 1
         else:
             raise ValueError(f'Cannot combine tensors with {self.combine}. '
                              'Only "add" and "concat" are supported')
@@ -101,8 +100,9 @@ class ShuffleUnit(BaseModule):
             in_channels=self.bottleneck_channels,
             out_channels=self.bottleneck_channels,
             kernel_size=3,
-            stride=self.depthwise_stride,
-            padding=1,
+            stride=stride,
+            dilation=dilation,
+            padding=dilation,
             groups=self.bottleneck_channels,
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
@@ -143,7 +143,7 @@ class ShuffleUnit(BaseModule):
             out = self.g_conv_1x1_expand(out)
 
             if self.combine == 'concat':
-                if self.downsample:
+                if self.stride == 2:
                     residual = self.avgpool(residual)
                 out = self.act(out)
                 out = self._combine_func(residual, out)
@@ -169,13 +169,16 @@ class ShuffleNetV1(BaseModule):
             convolutions in each ShuffleUnit. Default: 3.
         widen_factor (float, optional): Width multiplier - adjusts the number
             of channels in each layer by this amount. Default: 1.0.
+        in_channels (int): Number of input image channels. Default: 3.
+        stem_channels (int): Number of stem channels. Default: 24.
         out_indices (Sequence[int]): Output from which stages.
             Default: (0, 1, 2).
         stage_blocks (Sequence[int]): The number of blocks in each stage.
             Default: (4, 8, 4).
-        downsamples (Sequence[bool]): Whether to downsample the feature map
-            at each stage when combine is 'concat' in the first ShuffleUnit.
-            Default: (True, True, True).
+        strides (Sequence[int]): Strides of the first block of each stage.
+            Default: (2, 2, 2).
+        dilations (Sequence[int]): Dilation of each stage.
+            Default: (1, 1, 1).
         frozen_stages (int): Stages to be frozen (all param fixed).
             Default: -1, which means not freezing any parameters.
         conv_cfg (dict): Config dict for convolution layer. Default: None,
@@ -187,6 +190,8 @@ class ShuffleNetV1(BaseModule):
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
+        contract_dilation (bool): Whether contract first dilation of each layer
+            Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
             memory while slowing down the training speed. Default: False.
         pretrained (str, optional): model pretrained path. Default: None.
@@ -197,40 +202,46 @@ class ShuffleNetV1(BaseModule):
     def __init__(self,
                  groups=3,
                  widen_factor=1.0,
+                 in_channels=3,
+                 stem_channels=24,
                  out_indices=(0, 1, 2),
                  stage_blocks=(4, 8, 4),
-                 downsamples=(True, True, True),
+                 strides=(2, 2, 2),
+                 dilations=(1, 1, 1),
                  frozen_stages=-1,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  norm_eval=False,
+                 contract_dilation=False,
                  with_cp=False,
                  pretrained=None,
                  init_cfg=None):
         super(ShuffleNetV1, self).__init__(init_cfg)
-        assert len(stage_blocks) == len(downsamples)
         self.pretrained = pretrained
         self.init_cfg = init_cfg
         # Protect mutable default arguments
         norm_cfg = copy.deepcopy(norm_cfg)
         act_cfg = copy.deepcopy(act_cfg)
         self.stage_blocks = stage_blocks
+        self.strides = strides
+        self.dilations = dilations
+        assert len(strides) == len(dilations) == len(stage_blocks)
+        self.out_indices = out_indices
+        self.frozen_stages = frozen_stages
+        self.contract_dilation = contract_dilation
         self.groups = groups
-        self.downsamples = downsamples
-
         for index in out_indices:
             if index not in range(len(stage_blocks)):
                 raise ValueError(
                     'the item in out_indices must in '
                     f'range(0, {len(stage_blocks)}). But received {index}')
 
-        if frozen_stages not in range(-1, len(stage_blocks)):
+        if frozen_stages not in range(-1, len(stage_blocks) + 1):
             raise ValueError(
-                f'frozen_stages must be in range(-1, {len(stage_blocks)}). '
+                f'frozen_stages must be in range(-1, {len(stage_blocks)+1}). '
                 f'But received {frozen_stages}')
-        self.out_indices = out_indices
-        self.frozen_stages = frozen_stages
+
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
@@ -253,10 +264,10 @@ class ShuffleNetV1(BaseModule):
 
         channels = [make_divisible(ch * widen_factor, 8) for ch in channels]
 
-        self.in_channels = int(24 * widen_factor)
+        self.in_channels = int(stem_channels * widen_factor)
 
         self.conv1 = ConvModule(
-            in_channels=3,
+            in_channels=in_channels,
             out_channels=self.in_channels,
             kernel_size=3,
             stride=2,
@@ -269,8 +280,8 @@ class ShuffleNetV1(BaseModule):
         self.layers = nn.ModuleList()
         for i, num_blocks in enumerate(self.stage_blocks):
             first_block = (i == 0)
-            layer = self.make_layer(channels[i], num_blocks, first_block,
-                                    downsamples[i])
+            layer = self.make_layer(channels[i], num_blocks, strides[i],
+                                    dilations[i], first_block)
             self.layers.append(layer)
 
     def _freeze_stages(self):
@@ -286,13 +297,16 @@ class ShuffleNetV1(BaseModule):
     def make_layer(self,
                    out_channels,
                    num_blocks,
-                   first_block=False,
-                   downsample=True):
+                   stride,
+                   dilation,
+                   first_block=False):
         """Stack ShuffleUnit blocks to make a layer.
 
         Args:
             out_channels (int): out_channels of the block.
             num_blocks (int): Number of blocks.
+            stride (int): Stride of the first block.
+            dilation (int): dilation of each block.
             first_block (bool, optional): Whether is the first ShuffleUnit of a
                 sequential ShuffleUnits. Default: True, which means not using
                 the grouped 1x1 convolution.
@@ -301,6 +315,11 @@ class ShuffleNetV1(BaseModule):
         for i in range(num_blocks):
             first_block = first_block if i == 0 else False
             combine_mode = 'concat' if i == 0 else 'add'
+            stride_ = stride if i == 0 else 1
+            if i == 0 and dilation > 1 and self.contract_dilation:
+                dilation_ = dilation // 2
+            else:
+                dilation_ = dilation
             layers.append(
                 ShuffleUnit(
                     self.in_channels,
@@ -308,7 +327,8 @@ class ShuffleNetV1(BaseModule):
                     groups=self.groups,
                     first_block=first_block,
                     combine=combine_mode,
-                    downsample=downsample,
+                    stride=stride_,
+                    dilation=dilation_,
                     conv_cfg=self.conv_cfg,
                     norm_cfg=self.norm_cfg,
                     act_cfg=self.act_cfg,
