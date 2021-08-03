@@ -106,7 +106,7 @@ def test_shufflenetv2_backbone():
         for param in layer.parameters():
             assert param.requires_grad is False
 
-    # Test ShuffleNetV2 with first stage frozen, frozen_stages=4
+    # Test ShuffleNetV2 with all stages frozen, frozen_stages=4
     frozen_stages = 4
     model = ShuffleNetV2(frozen_stages=frozen_stages)
     model.init_weights()

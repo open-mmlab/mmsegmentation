@@ -262,8 +262,10 @@ class ShuffleNetV2(BaseModule):
         """Stack blocks to make a layer.
 
         Args:
-            out_channels (int): out_channels of the block.
-            num_blocks (int): number of blocks.
+            out_channels (int): The number of output channels of this stage.
+            num_blocks (int): The number of blocks of this stage.
+            stride (int): Stride of the first block.
+            dilation (int): Dilation of each block.
         """
         layers = []
         for i in range(num_blocks):
