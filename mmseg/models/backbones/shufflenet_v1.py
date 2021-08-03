@@ -303,10 +303,10 @@ class ShuffleNetV1(BaseModule):
         """Stack ShuffleUnit blocks to make a layer.
 
         Args:
-            out_channels (int): out_channels of the block.
-            num_blocks (int): Number of blocks.
+            out_channels (int): The number of output channels of this stage.
+            num_blocks (int): The number of blocks of this stage.
             stride (int): Stride of the first block.
-            dilation (int): dilation of each block.
+            dilation (int): Dilation of each block.
             first_block (bool, optional): Whether is the first ShuffleUnit of a
                 sequential ShuffleUnits. Default: True, which means not using
                 the grouped 1x1 convolution.
