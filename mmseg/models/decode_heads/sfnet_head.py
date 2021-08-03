@@ -39,13 +39,14 @@ class SFNetHead(BaseDecodeHead):
         self.psp_modules = PPM(
             self.pool_scales,
             self.in_channels,
-            self.channels * 2,
+            self.in_channels // 4,
+            bias=True,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
-            align_corners=self.align_corners)
+            align_corners=True)
         self.bottleneck = ConvModule(
-            self.in_channels + len(pool_scales) * self.channels * 2,
+            self.in_channels * 2,
             self.channels,
             3,
             padding=1,
@@ -61,6 +62,7 @@ class SFNetHead(BaseDecodeHead):
                     fpn_inplane,
                     self.fpn_dim,
                     kernel_size=1,
+                    bias=True,
                     conv_cfg=self.conv_cfg,
                     norm_cfg=self.norm_cfg,
                     act_cfg=self.act_cfg,
