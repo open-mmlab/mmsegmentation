@@ -9,19 +9,6 @@
 - Support md2yml pre-commit hook
 - Support frozen stage for HRNet
 
-**Bug Fixes**
-
-- Fix ATTENTION registry ([#729](https://github.com/open-mmlab/mmsegmentation/pull/729))
-- Fix analyze log script ([#716](https://github.com/open-mmlab/mmsegmentation/pull/716))
-- Fix doc api display ([#725](https://github.com/open-mmlab/mmsegmentation/pull/725))
-- Fix patch_embed and pos_embed mismatch error ([#685](https://github.com/open-mmlab/mmsegmentation/pull/685))
-- Fix efficient test for multi-node ([#707](https://github.com/open-mmlab/mmsegmentation/pull/707))
-- Fix init_cfg in resnet backbone ([#697](https://github.com/open-mmlab/mmsegmentation/pull/697))
-- Fix efficient test bug ([#702](https://github.com/open-mmlab/mmsegmentation/pull/702))
-- Fix url error in config docs ([#680](https://github.com/open-mmlab/mmsegmentation/pull/680))
-- Fix mmcv installation ([#676](https://github.com/open-mmlab/mmsegmentation/pull/676))
-- Fix torch version ([#670](https://github.com/open-mmlab/mmsegmentation/pull/670))
-
 **New Features**
 
 - Support SegFormer backbone MiT ([#594](https://github.com/open-mmlab/mmsegmentation/pull/594))
@@ -38,6 +25,19 @@
 - Replace interpolate with resize ([#731](https://github.com/open-mmlab/mmsegmentation/pull/731))
 - Update resource limit ([#700](https://github.com/open-mmlab/mmsegmentation/pull/700))
 - Update config.md ([#678](https://github.com/open-mmlab/mmsegmentation/pull/678))
+
+**Bug Fixes**
+
+- Fix ATTENTION registry ([#729](https://github.com/open-mmlab/mmsegmentation/pull/729))
+- Fix analyze log script ([#716](https://github.com/open-mmlab/mmsegmentation/pull/716))
+- Fix doc api display ([#725](https://github.com/open-mmlab/mmsegmentation/pull/725))
+- Fix patch_embed and pos_embed mismatch error ([#685](https://github.com/open-mmlab/mmsegmentation/pull/685))
+- Fix efficient test for multi-node ([#707](https://github.com/open-mmlab/mmsegmentation/pull/707))
+- Fix init_cfg in resnet backbone ([#697](https://github.com/open-mmlab/mmsegmentation/pull/697))
+- Fix efficient test bug ([#702](https://github.com/open-mmlab/mmsegmentation/pull/702))
+- Fix url error in config docs ([#680](https://github.com/open-mmlab/mmsegmentation/pull/680))
+- Fix mmcv installation ([#676](https://github.com/open-mmlab/mmsegmentation/pull/676))
+- Fix torch version ([#670](https://github.com/open-mmlab/mmsegmentation/pull/670))
 
 **Contributors**
 
