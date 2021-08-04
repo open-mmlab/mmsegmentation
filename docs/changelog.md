@@ -5,7 +5,7 @@
 **Highlights**
 
 - Support PyTorch 1.9
-- Support Support SegFormer backbone MiT
+- Support SegFormer backbone MiT
 - Support md2yml pre-commit hook
 - Support frozen stage for HRNet
 
