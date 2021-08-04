@@ -40,6 +40,7 @@
 - Update config.md ([#678](https://github.com/open-mmlab/mmsegmentation/pull/678))
 
 **Contributors**
+
 @sshuair @xiexinch @Junjun2016 @mmeendez8 @xvjiarui @sennnnn @puhsu @BIGWangYuDong @keke1u @daavoo
 
 ### V0.15 (07/04/2021)
