@@ -30,10 +30,9 @@ class CityscapesDataset(CustomDataset):
                [0, 80, 100], [0, 0, 230], [119, 11, 32]]
 
     def __init__(self, **kwargs):
-        super(CityscapesDataset, self).__init__(
-            img_suffix='_leftImg8bit.png',
-            seg_map_suffix='_gtFine_labelTrainIds.png',
-            **kwargs)
+        kwargs.setdefault('img_suffix', '_leftImg8bit.png')
+        kwargs.setdefault('seg_map_suffix', '_gtFine_labelTrainIds.png')
+        super(CityscapesDataset, self).__init__(**kwargs)
 
     @staticmethod
     def _convert_to_label_id(result):
