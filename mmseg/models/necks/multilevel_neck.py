@@ -29,7 +29,7 @@ class MultiLevelNeck(nn.Module):
                  in_channels,
                  out_channels,
                  scales=[0.5, 1, 2, 4],
-                 resize_mode='bilinear'
+                 resize_mode='bilinear',
                  norm_cfg=None,
                  act_cfg=None):
         super(MultiLevelNeck, self).__init__()
@@ -53,11 +53,11 @@ class MultiLevelNeck(nn.Module):
                     norm_cfg=norm_cfg,
                     act_cfg=act_cfg))
         # to be noticed: the module below is absent for dpt
-        for _ in range(self.num_outs):
+        for i in range(self.num_outs):
             self.convs.append(
                 ConvModule(
-                    out_channels,
-                    out_channels,
+                    out_channels[i],
+                    out_channels[i],
                     kernel_size=3,
                     padding=1,
                     stride=1,
@@ -67,11 +67,11 @@ class MultiLevelNeck(nn.Module):
         # downsample use odd kernal size's ConvModule
         # upsample use even kernal size's nn.ConvTranspose2d
         # to be simple scale=1 means downsample using 1*1 conv
-        if resize_mode == 'conv':
-            self.resize_convs = nn.ModuleList()
+        self.resize_convs = nn.ModuleList()
+        if resize_mode == 'conv':           
             for i, scale in enumerate(self.scales):
                 if scale>1:
-                    resize_convs.append(
+                    self.resize_convs.append(
                         nn.ConvTranspose2d(
                             out_channels[i],
                             out_channels[i],
@@ -80,7 +80,7 @@ class MultiLevelNeck(nn.Module):
                             padding=0))
                 else:
                     scale=int(1/scale)
-                    resize_convs.append(
+                    self.resize_convs.append(
                         ConvModule(
                             out_channels[i],
                             out_channels[i],
@@ -95,7 +95,7 @@ class MultiLevelNeck(nn.Module):
                 xavier_init(m, distribution='uniform')
 
     def resize(self, x, scale_index, mode):
-        if resize_mode == 'conv':
+        if self.resize_mode == 'conv':
             x_resize=self.resize_convs[scale_index](x)
         else:
             x_resize=F.interpolate(

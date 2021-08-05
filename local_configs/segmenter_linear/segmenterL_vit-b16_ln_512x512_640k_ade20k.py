@@ -1,19 +1,14 @@
 _base_ = [
-    '../_base_/models/segmenterM_vit.py',
-    '../_base_/datasets/ade20k_256.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/segmenterL_vit.py',
+    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_640k.py'
 ]
 
 model = dict(
-    backbone=dict(img_size=(256, 256),drop_path_rate=0.1, final_norm=True),
-    decode_head=dict(
-        num_classes=150,
-        channels=768,
-        num_layers=12,
-        num_heads=12),
+    backbone=dict(drop_path_rate=0.1, final_norm=True),
+    decode_head=dict(num_classes=150),
     auxiliary_head=dict(num_classes=150),
-    # ensure image size can be divided by the patch size
-    test_cfg=dict(mode='slide', crop_size=(256, 256), stride=(171, 171)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -27,8 +22,7 @@ optimizer = dict(
         custom_keys={
             'pos_embed': dict(decay_mult=0.),
             'cls_token': dict(decay_mult=0.),
-            'norm': dict(decay_mult=0.),
-            'cls_embed': dict(decay_mult=0.)
+            'norm': dict(decay_mult=0.)
         }))
 
 lr_config = dict(
@@ -41,4 +35,5 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-#data = dict(samples_per_gpu=2)
+# By default, models are trained on 8 GPUs with 2 images per GPU
+data = dict(samples_per_gpu=2)

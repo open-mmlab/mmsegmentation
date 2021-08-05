@@ -22,10 +22,12 @@ from .setr_mla_head import SETRMLAHead
 from .setr_up_head import SETRUPHead
 from .uper_head import UPerHead
 from .segmenter_head import LinearTransformerHead, MaskTransformerHead
+from .dpt_head import DPTHead
+from .sf_head import SFHead
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
     'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
     'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead', 'SETRMLAHead',
-    'LinearTransformerHead','MaskTransformerHead'
+    'LinearTransformerHead','MaskTransformerHead','DPTHead','SFHead'
 ]

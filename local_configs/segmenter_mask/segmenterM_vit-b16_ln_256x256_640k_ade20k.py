@@ -1,7 +1,7 @@
 _base_ = [
     '../_base_/models/segmenterM_vit.py',
     '../_base_/datasets/ade20k_256.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_160k.py'
+    '../_base_/schedules/schedule_640k.py'
 ]
 
 model = dict(
