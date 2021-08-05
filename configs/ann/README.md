@@ -5,18 +5,15 @@
 <!-- [ALGORITHM] -->
 
 ```latex
-@inproceedings{annn,
-  author    = {Zhen Zhu and
-               Mengde Xu and
-               Song Bai and
-               Tengteng Huang and
-               Xiang Bai},
-  title     = {Asymmetric Non-local Neural Networks for Semantic Segmentation},
-  booktitle={International Conference on Computer Vision},
-  year      = {2019},
-  url       = {http://arxiv.org/abs/1908.07678},
+@inproceedings{zhu2019ann,
+  title={Asymmetric Non-local Neural Networks for Semantic Segmentation},
+  author={Zhu, Zhen and Xu, Mengde and Bai, Song and Huang, Tengteng and Bai, Xiang}
+  booktitle={ICCV},
+  year={2019}
 }
 ```
+
+
 
 ## Results and models
 
