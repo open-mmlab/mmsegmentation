@@ -5,10 +5,11 @@
 <!-- [ALGORITHM] -->
 
 ```latex
-@inproceedings{zhu2019ann,
-  title={Asymmetric Non-local Neural Networks for Semantic Segmentation},
+@inproceedings{zhu2019asymmetric,
+  title={Asymmetric non-local neural networks for semantic segmentation},
   author={Zhu, Zhen and Xu, Mengde and Bai, Song and Huang, Tengteng and Bai, Xiang},
-  booktitle={ICCV},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={593--602},
   year={2019}
 }
 ```
