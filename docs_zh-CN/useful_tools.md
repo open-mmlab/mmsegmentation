@@ -281,7 +281,7 @@ docker build -t mmseg-serve:latest docker/serve/
 
 ### 3. 运行 `mmseg-serve`
 
-请查阅官方文档: [使用容器运行 TorchServe](https://github.com/pytorch/serve/blob/master/docker/README.md#running-torchserve-in-a-production-docker-environment) 
+请查阅官方文档: [使用容器运行 TorchServe](https://github.com/pytorch/serve/blob/master/docker/README.md#running-torchserve-in-a-production-docker-environment)
 
 为了在 GPU 环境下使用, 您需要安装 [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html). 若在 CPU 环境下使用，您可以忽略添加 `--gpus` 参数。
 
