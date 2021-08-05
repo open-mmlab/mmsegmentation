@@ -1,0 +1,175 @@
+Collections:
+- Name: mobilenet_v2
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20k
+Models:
+- Name: fcn_m-v2-d8_512x1024_80k_cityscapes
+  In Collection: mobilenet_v2
+  Metadata:
+    backbone: M-V2-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 70.42
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 3.4
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 61.54
+  Config: configs/mobilenet_v2/fcn_m-v2-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x1024_80k_cityscapes/fcn_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-d24c28c1.pth
+- Name: pspnet_m-v2-d8_512x1024_80k_cityscapes
+  In Collection: mobilenet_v2
+  Metadata:
+    backbone: M-V2-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 89.29
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 3.6
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 70.23
+  Config: configs/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes/pspnet_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-19e81d51.pth
+- Name: deeplabv3_m-v2-d8_512x1024_80k_cityscapes
+  In Collection: mobilenet_v2
+  Metadata:
+    backbone: M-V2-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 119.05
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 3.9
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.84
+  Config: configs/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes/deeplabv3_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-bef03590.pth
+- Name: deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes
+  In Collection: mobilenet_v2
+  Metadata:
+    backbone: M-V2-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 119.05
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.2
+  Config: configs/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-d256dd4b.pth
+- Name: fcn_m-v2-d8_512x512_160k_ade20k
+  In Collection: mobilenet_v2
+  Metadata:
+    backbone: M-V2-D8
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 15.53
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 6.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20k
+    Metrics:
+      mIoU: 19.71
+  Config: configs/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k/fcn_m-v2-d8_512x512_160k_ade20k_20200825_214953-c40e1095.pth
+- Name: pspnet_m-v2-d8_512x512_160k_ade20k
+  In Collection: mobilenet_v2
+  Metadata:
+    backbone: M-V2-D8
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 17.33
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 6.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20k
+    Metrics:
+      mIoU: 29.68
+  Config: configs/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k/pspnet_m-v2-d8_512x512_160k_ade20k_20200825_214953-f5942f7a.pth
+- Name: deeplabv3_m-v2-d8_512x512_160k_ade20k
+  In Collection: mobilenet_v2
+  Metadata:
+    backbone: M-V2-D8
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 25.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 6.8
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20k
+    Metrics:
+      mIoU: 34.08
+  Config: configs/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k/deeplabv3_m-v2-d8_512x512_160k_ade20k_20200825_223255-63986343.pth
+- Name: deeplabv3plus_m-v2-d8_512x512_160k_ade20k
+  In Collection: mobilenet_v2
+  Metadata:
+    backbone: M-V2-D8
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 23.2
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 8.2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20k
+    Metrics:
+      mIoU: 34.02
+  Config: configs/mobilenet_v2/deeplabv3plus_m-v2-d8_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x512_160k_ade20k/deeplabv3plus_m-v2-d8_512x512_160k_ade20k_20200825_223255-465a01d4.pth

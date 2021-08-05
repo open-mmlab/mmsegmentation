@@ -1,7 +1,7 @@
 import torch.nn as nn
-import torch.nn.functional as F
 from mmcv.cnn import ConvModule, xavier_init
 
+from mmseg.ops import resize
 from ..builder import NECKS
 
 
@@ -70,7 +70,7 @@ class MultiLevelNeck(nn.Module):
             inputs = [inputs[0] for _ in range(self.num_outs)]
         outs = []
         for i in range(self.num_outs):
-            x_resize = F.interpolate(
+            x_resize = resize(
                 inputs[i], scale_factor=self.scales[i], mode='bilinear')
             outs.append(self.convs[i](x_resize))
         return tuple(outs)
