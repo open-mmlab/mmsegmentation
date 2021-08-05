@@ -7,7 +7,7 @@
 ```latex
 @inproceedings{zhu2019ann,
   title={Asymmetric Non-local Neural Networks for Semantic Segmentation},
-  author={Zhu, Zhen and Xu, Mengde and Bai, Song and Huang, Tengteng and Bai, Xiang}
+  author={Zhu, Zhen and Xu, Mengde and Bai, Song and Huang, Tengteng and Bai, Xiang},
   booktitle={ICCV},
   year={2019}
 }
