@@ -25,11 +25,12 @@
 | 0.7.0               | mmcv-full>=1.1.2, <1.2.0 |
 | 0.6.0               | mmcv-full>=1.1.2, <1.2.0 |
 
-注意: 如果您已经安装好 mmcv, 您首先需要运行 `pip uninstall mmcv`。如果 mmcv 和 mmcv-full 同时被安装，会报错 `ModuleNotFoundError`。
+注意: 如果您已经安装好 mmcv， 您首先需要运行 `pip uninstall mmcv`。
+如果 mmcv 和 mmcv-full 同时被安装，会报错 `ModuleNotFoundError`。
 
 ## 安装
 
-a. 创建一个 conda 虚拟环境并激活它。
+a. 创建一个 conda 虚拟环境并激活它
 
 ```shell
 conda create -n open-mmlab python=3.7 -y
@@ -37,18 +38,19 @@ conda activate open-mmlab
 
 ```
 
-b. 按照[官方教程](https://pytorch.org/) 安装 PyTorch 和 totchvision。
-这里我们使用 PyTorch1.6.0 和 CUDA10.1。
-您也可以切换至其他版本。
+b. 按照[官方教程](https://pytorch.org/) 安装 PyTorch 和 totchvision，
+这里我们使用 PyTorch1.6.0 和 CUDA10.1，
+您也可以切换至其他版本
 
 ```shell
 conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
 ```
 
-c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation) 安装 [MMCV](https://mmcv.readthedocs.io/en/latest/) 。
-`mmcv` 或 `mmcv-full` 和 MMSegmentation 均兼容，但对于 CCNet 和 PSANet，`mmcv-full` 里的 CUDA 运算是必须的。
+c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation)
+安装 [MMCV](https://mmcv.readthedocs.io/en/latest/) ，
+`mmcv` 或 `mmcv-full` 和 MMSegmentation 均兼容，但对于 CCNet 和 PSANet，`mmcv-full` 里的 CUDA 运算是必须的
 
-**在 Linux 下安装 mmcv:**
+**在 Linux 下安装 mmcv：**
 
 通过运行
 
@@ -59,9 +61,9 @@ pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.5
 可以安装好 mmcv-full (PyTorch 1.5 和 CUDA 10.1) 版本。
 其他 PyTorch 和 CUDA 版本的 MMCV 安装请参照[这里](https://mmcv.readthedocs.io/en/latest/#install-with-pip)
 
-**在 Windows 下安装 mmcv (有风险):**
+**在 Windows 下安装 mmcv (有风险)：**
 
-对于 Windows, MMCV 的安装需要本地 C++ 编译工具, 例如 cl.exe. 请添加编译工具至 %PATH%.
+对于 Windows， MMCV 的安装需要本地 C++ 编译工具， 例如 cl.exe。 请添加编译工具至 %PATH%。
 
 如果您已经在电脑上安装好Windows SDK 和 Visual Studio，cl.exe 的一个典型路径看起来如下：
 
@@ -87,7 +89,7 @@ pip install mmcv
 
 当前，mmcv-full 并不完全在 windows 上支持。
 
-d. 安装 MMSegmentation.
+d. 安装 MMSegmentation
 
 ```shell
 pip install mmsegmentation # 安装最新版本
@@ -109,11 +111,14 @@ pip install -e .  # 或者 "python setup.py develop"
 
 注意:
 
-1. 当在 windows 下训练和测试模型时，请确保路径下所有的'\\' 被替换成 '/'。在 python 代码里可以使用`.replace('\\', '/')`处理路径的字符串。
-2. `version+git_hash` 也将被保存进 meta 训练模型里，即0.5.0+c415a2e。
-3. 当 MMsegmentation 以 `dev` 模式被安装时，本地对代码的修改将不需要重新安装即可产生作用。
-4. 如果您想使用 `opencv-python-headless` 替换 `opencv-python`，您可以在安装 MMCV 前安装它。
-5. 一些依赖项是可选的。简单的运行 `pip install -e .` 将仅安装最必要的一些依赖。为了使用可选的依赖项如`cityscapessripts`，要么手动使用 `pip install -r requirements/optional.txt` 安装，要么专门从pip下安装(即 `pip install -e .[optional]`， 其中选项可设置为 `all`, `tests`, `build`, 和 `optional`).
+1. 当在 windows 下训练和测试模型时，请确保路径下所有的'\\' 被替换成 '/'，
+   在 python 代码里可以使用`.replace('\\', '/')`处理路径的字符串
+2. `version+git_hash` 也将被保存进 meta 训练模型里，即0.5.0+c415a2e
+3. 当 MMsegmentation 以 `dev` 模式被安装时，本地对代码的修改将不需要重新安装即可产生作用
+4. 如果您想使用 `opencv-python-headless` 替换 `opencv-python`，您可以在安装 MMCV 前安装它
+5. 一些依赖项是可选的。简单的运行 `pip install -e .` 将仅安装最必要的一些依赖。为了使用可选的依赖项如`cityscapessripts`，
+   要么手动使用 `pip install -r requirements/optional.txt` 安装，要么专门从pip下安装(即 `pip install -e .[optional]`，
+   其中选项可设置为 `all`, `tests`, `build`, 和 `optional`)
 
 ### 完成的安装脚本
 
@@ -135,9 +140,10 @@ mkdir data
 ln -s $DATA_ROOT data
 ```
 
-#### Windows(有风险)
+#### Windows (有风险)
 
-这里便是一个完整安装 MMSegmentation 的脚本，使用 conda 并链接了数据集的路径（以您的数据集路径为 %DATA_ROOT% 来安装）。注意：它必须是一个绝对路径。
+这里便是一个完整安装 MMSegmentation 的脚本，使用 conda 并链接了数据集的路径（以您的数据集路径为 %DATA_ROOT% 来安装）。
+注意：它必须是一个绝对路径。
 
 ```shell
 conda create -n open-mmlab python=3.7 -y
@@ -196,7 +202,7 @@ for frame in video:
 
 当您完成 MMSegmentation 的安装时，上述代码应该可以成功运行。
 
-我们还提供一个 demo 脚本去可视化单张图片
+我们还提供一个 demo 脚本去可视化单张图片。
 
 ```shell
 python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}]
@@ -209,4 +215,4 @@ python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40
     checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --palette cityscapes
 ```
 
-推理的 demo 文档可在此查询：[demo/inference_demo.ipynb](../demo/inference_demo.ipynb).
+推理的 demo 文档可在此查询：[demo/inference_demo.ipynb](../demo/inference_demo.ipynb) 。
