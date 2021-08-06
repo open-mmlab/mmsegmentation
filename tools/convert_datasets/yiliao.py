@@ -21,14 +21,11 @@ def parse_args():
         description='Convert 2021“SEED”第二届江苏大数据开发与应用大赛（华录杯）——医疗卫生赛道 dataset '
                     'to mmsegmentation format')
     parser.add_argument(
-        '--training_path', help='the training part of 医疗 dataset',
-        default='/mnt/data/yjh/datasets/train.zip')
+        '--training_path', help='the training part of 医疗 dataset')
     parser.add_argument(
-        '--testing_path', help='the testing part of 医疗 dataset',
-        default='/mnt/data/yjh/datasets/test.zip')
+        '--testing_path', help='the testing part of 医疗 dataset')
     parser.add_argument('--tmp_dir', help='path of the temporary directory')
-    parser.add_argument('-o', '--out_dir', help='output path',
-                        default='/mnt/data/yjh/datasets/yiliao')
+    parser.add_argument('-o', '--out_dir', help='output path')
     args = parser.parse_args()
     return args
 
@@ -69,15 +66,15 @@ def main():
         zip_file.extractall(tmp_dir)
 
         print('Generating training dataset...')
-        # now_dir = osp.join(tmp_dir, 'train', 'train_org_image')
-        # for img_name in os.listdir(now_dir):
-        #     img = mmcv.imread(osp.join(now_dir, img_name))
-        #     mmcv.imwrite(
-        #         img,
-        #         osp.join(
-        #             out_dir, 'images', 'training',
-        #             osp.splitext(img_name)[0] +
-        #             '.png'))
+        now_dir = osp.join(tmp_dir, 'train', 'train_org_image')
+        for img_name in os.listdir(now_dir):
+            img = mmcv.imread(osp.join(now_dir, img_name))
+            mmcv.imwrite(
+                img,
+                osp.join(
+                    out_dir, 'images', 'training',
+                    osp.splitext(img_name)[0] +
+                    '.png'))
 
         now_dir = osp.join(tmp_dir, 'train', 'train_mask')
         for img_name in os.listdir(now_dir):
