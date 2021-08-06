@@ -1,0 +1,94 @@
+Collections:
+- Name: emanet
+  Metadata:
+    Training Data:
+    - Cityscapes
+Models:
+- Name: emanet_r50-d8_512x1024_80k_cityscapes
+  In Collection: emanet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 218.34
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.4
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.59
+      mIoU(ms+flip): 79.44
+  Config: configs/emanet/emanet_r50-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes_20200901_100301-c43fcef1.pth
+- Name: emanet_r101-d8_512x1024_80k_cityscapes
+  In Collection: emanet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 348.43
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 6.2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.1
+      mIoU(ms+flip): 81.21
+  Config: configs/emanet/emanet_r101-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes_20200901_100301-2d970745.pth
+- Name: emanet_r50-d8_769x769_80k_cityscapes
+  In Collection: emanet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 507.61
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 8.9
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.33
+      mIoU(ms+flip): 80.49
+  Config: configs/emanet/emanet_r50-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes_20200901_100301-16f8de52.pth
+- Name: emanet_r101-d8_769x769_80k_cityscapes
+  In Collection: emanet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 819.67
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 10.1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.62
+      mIoU(ms+flip): 81.0
+  Config: configs/emanet/emanet_r101-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_769x769_80k_cityscapes/emanet_r101-d8_769x769_80k_cityscapes_20200901_100301-47a324ce.pth

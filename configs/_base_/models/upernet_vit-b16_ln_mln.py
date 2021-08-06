@@ -21,7 +21,6 @@ model = dict(
         norm_cfg=dict(type='LN', eps=1e-6),
         act_cfg=dict(type='GELU'),
         norm_eval=False,
-        out_shape='NCHW',
         interpolate_mode='bicubic'),
     neck=dict(
         type='MultiLevelNeck',

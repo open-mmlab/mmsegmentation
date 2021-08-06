@@ -15,7 +15,7 @@ optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 使用者可以参照 PyTorch 的 [API 文档](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim)
 直接设置参数。
 
-### 自定义 自己实现的优化器
+### 自定义自己实现的优化器
 
 #### 1. 定义一个新的优化器
 
@@ -42,15 +42,15 @@ class MyOptimizer(Optimizer):
 为了让上述定义的模块被框架发现，首先这个模块应该被导入到主命名空间 (main namespace) 里。
 有两种方式可以实现它。
 
-- 修改 `mmseg/core/optimizer/__init__.py` 来导入它。
+- 修改 `mmseg/core/optimizer/__init__.py` 来导入它
 
-    新的被定义的模块应该被导入到 `mmseg/core/optimizer/__init__.py` 这样注册表将会发现新的模块并添加它。
+    新的被定义的模块应该被导入到 `mmseg/core/optimizer/__init__.py` 这样注册表将会发现新的模块并添加它
 
 ```python
 from .my_optimizer import MyOptimizer
 ```
 
-- 在配置文件里使用 `custom_imports` 去手动导入它。
+- 在配置文件里使用 `custom_imports` 去手动导入它
 
 ```python
 custom_imports = dict(imports=['mmseg.core.optimizer.my_optimizer'], allow_failed_imports=False)
@@ -109,7 +109,8 @@ class MyOptimizerConstructor(object):
 如果您有更多的设置，欢迎在 PR 和 issue 里面提交。
 
 - __使用梯度截断 (gradient clip) 去稳定训练__:
-    一些模型需要梯度截断去稳定训练过程，如下所示：
+
+    一些模型需要梯度截断去稳定训练过程，如下所示
 
     ```python
     optimizer_config = dict(
@@ -119,6 +120,7 @@ class MyOptimizerConstructor(object):
     如果您的配置继承自已经设置了  `optimizer_config` 的基础配置 (base config)，您可能需要 `_delete_=True` 来重写那些不需要的设置。更多细节请参照 [配置文件文档](https://mmsegmentation.readthedocs.io/en/latest/config.html) 。
 
 - __使用动量计划表 (momentum schedule) 去加速模型收敛__:
+
     我们支持动量计划表去让模型基于学习率修改动量，这样可能让模型收敛地更快。
     动量计划表经常和学习率计划表 (LR scheduler) 一起使用，例如如下配置文件就在 3D 检测里经常使用以加速收敛。
     更多细节请参考 [CyclicLrUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/lr_updater.py#L327) 和 [CyclicMomentumUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/momentum_updater.py#L130) 的实现。
@@ -179,11 +181,11 @@ workflow = [('train', 1)]
 
 **注意**:
 
-1. 模型的参数在验证的阶段不会被自动更新。
-2. 配置文件里的关键词 `total_epochs` 仅控制训练的 epochs 数目，而不会影响验证时的工作流。
+1. 模型的参数在验证的阶段不会被自动更新
+2. 配置文件里的关键词 `total_epochs` 仅控制训练的 epochs 数目，而不会影响验证时的工作流
 3. 工作流 `[('train', 1), ('val', 1)]` 和 `[('train', 1)]` 将不会改变 `EvalHook` 的行为，因为 `EvalHook` 被 `after_train_epoch`
    调用而且验证的工作流仅仅影响通过调用 `after_val_epoch` 的钩子 (hooks)。因此， `[('train', 1), ('val', 1)]` 和 `[('train', 1)]`
-    的区别仅在于 runner 将在每次训练 epoch 结束后计算在验证集上的损失。
+    的区别仅在于 runner 将在每次训练 epoch 结束后计算在验证集上的损失
 
 ## 自定义钩 (hooks)
 

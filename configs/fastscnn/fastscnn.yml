@@ -1,0 +1,28 @@
+Collections:
+- Name: fastscnn
+  Metadata:
+    Training Data:
+    - Cityscapes
+Models:
+- Name: ''
+  In Collection: fastscnn
+  Metadata:
+    backbone: Fast-SCNN
+    crop size: (512,1024)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 17.71
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 3.3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 70.96
+      mIoU(ms+flip): 72.65
+  Config: ''
+  Weights: ''
