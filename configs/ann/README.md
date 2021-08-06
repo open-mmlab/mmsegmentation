@@ -14,8 +14,6 @@
 }
 ```
 
-
-
 ## Results and models
 
 ### Cityscapes
