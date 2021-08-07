@@ -1,3 +1,4 @@
+from .a2d2 import A2D2Dataset
 from .ade import ADE20KDataset
 from .builder import DATASETS, PIPELINES, build_dataloader, build_dataset
 from .chase_db1 import ChaseDB1Dataset
@@ -15,5 +16,5 @@ __all__ = [
     'DATASETS', 'build_dataset', 'PIPELINES', 'CityscapesDataset',
     'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
-    'STAREDataset'
+    'STAREDataset', 'A2D2Dataset'
 ]
