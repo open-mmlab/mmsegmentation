@@ -37,7 +37,7 @@ Evaluation with AlignedResize:
 |Segformer | MIT-B3 | 512x512 | 160000 | 48.46 | 49.14 |
 |Segformer | MIT-B4 | 512x512 | 160000 | 49.34 | 50.29 |
 |Segformer | MIT-B5 | 512x512 | 160000 | 50.08 | 50.72 |
-|Segformer | MIT-B5 | 640x640 | 160000 | - | - |
+|Segformer | MIT-B5 | 640x640 | 160000 | 50.58 | - |
 
 We replace `AlignedResize` in original implementatiuon to `Resize + ResizeToMultiple`. If you want to test by
 using `AlignedResize`, you can change the dataset pipeline like this:
