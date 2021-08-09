@@ -159,7 +159,13 @@ class EfficientMultiheadAttention(MultiheadAttention):
         if identity is None:
             identity = x_q
 
-        out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
+        # `need_weights=True` will let nn.MultiHeadAttention
+        # `return attn_output, attn_output_weights.sum(dim=1) / num_heads`
+        # The `attn_output_weights.sum(dim=1)` may cause cuda error. So, we set
+        # `need_weights=False` to ignore `attn_output_weights.sum(dim=1)`.
+        # This issue - `https://github.com/pytorch/pytorch/issues/37583` report
+        # the error that large scale tensor sum operation may cause cuda error.
+        out = self.attn(query=x_q, key=x_kv, value=x_kv, need_weights=False)[0]
 
         return identity + self.dropout_layer(self.proj_drop(out))
 
