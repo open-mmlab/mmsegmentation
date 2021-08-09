@@ -13,46 +13,13 @@ class ResizeToMultiple(object):
     Args:
         size_divisor (int): images and gt seg maps need to resize to multiple
             of size_divisor. Default: 32.
+        interpolation (str, optional): The interpolation mode of image resize.
+            Default: None
     """
 
-    def __init__(self, size_divisor=32):
+    def __init__(self, size_divisor=32, interpolation=None):
         self.size_divisor = size_divisor
-
-    def _align(self, img, interpolation=None):
-        """Resize input image to multiple of size divisor.
-
-        Args:
-            img (np.ndarray): the image which will be resize to multiple of
-                size divisor shapes like [H, W, C] or [H, W]
-            interpolation (str | optional): the interpolation mode of resize.
-                Default: None.
-
-        Returns:
-            np.ndarry: image after aligned resize.
-        """
-        align_h = int(np.ceil(
-            img.shape[0] / self.size_divisor)) * self.size_divisor
-        align_w = int(np.ceil(
-            img.shape[1] / self.size_divisor)) * self.size_divisor
-        return mmcv.imresize(
-            img, (align_w, align_h),
-            interpolation=interpolation if interpolation else 'bilinear')
-
-    def _align_img(self, results):
-        """Align image to multiple of size divisor."""
-        img = results['img']
-        img = self._align(img)
-        results['img'] = img
-        results['img_shape'] = img.shape
-        results['pad_shape'] = img.shape
-        return img
-
-    def _align_seg(self, results):
-        """Align segmentation map to multiple of size divisor."""
-        for key in results.get('seg_fields', []):
-            gt_seg = results[key]
-            gt_seg = self._align(gt_seg, 'nearest')
-            results[key] = gt_seg
+        self.interpolation = interpolation
 
     def __call__(self, results):
         """Call function to resize images, semantic segmentation map to
@@ -64,13 +31,31 @@ class ResizeToMultiple(object):
         Returns:
             dict: Resized results, 'img_shape', 'pad_shape' keys are updated.
         """
-        self._align_img(results)
-        self._align_seg(results)
+        # Align image to multiple of size divisor.
+        img = results['img']
+        img = mmcv.imresize_to_multiple(
+            img,
+            self.size_divisor,
+            interpolation=self.interpolation
+            if self.interpolation else 'bilinear')
+
+        results['img'] = img
+        results['img_shape'] = img.shape
+        results['pad_shape'] = img.shape
+
+        # Align segmentation map to multiple of size divisor.
+        for key in results.get('seg_fields', []):
+            gt_seg = results[key]
+            gt_seg = mmcv.imresize_to_multiple(
+                gt_seg, self.size_divisor, interpolation='nearest')
+            results[key] = gt_seg
+
         return results
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += (f'(size_divisor={self.size_divisor})')
+        repr_str += (f'(size_divisor={self.size_divisor}, '
+                     f'interpolation={self.interpolation})')
         return repr_str
 
 
