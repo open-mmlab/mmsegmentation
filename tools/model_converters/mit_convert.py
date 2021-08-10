@@ -70,12 +70,6 @@ if __name__ == '__main__':
     dst_path = args.dst
 
     ckpt = torch.load(src_path, map_location='cpu')
-    if 'state_dict' in ckpt:
-        ckpt = ckpt['state_dict']
-    elif 'model' in ckpt:
-        ckpt = ckpt['model']
-    else:
-        ckpt = ckpt
 
     ckpt = mit_convert(ckpt)
     torch.save(ckpt, dst_path)
