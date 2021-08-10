@@ -36,6 +36,7 @@ class ResizeToMultiple(object):
         img = mmcv.imresize_to_multiple(
             img,
             self.size_divisor,
+            scale_factor=1,
             interpolation=self.interpolation
             if self.interpolation else 'bilinear')
 
@@ -47,7 +48,10 @@ class ResizeToMultiple(object):
         for key in results.get('seg_fields', []):
             gt_seg = results[key]
             gt_seg = mmcv.imresize_to_multiple(
-                gt_seg, self.size_divisor, interpolation='nearest')
+                gt_seg,
+                self.size_divisor,
+                scale_factor=1,
+                interpolation='nearest')
             results[key] = gt_seg
 
         return results
