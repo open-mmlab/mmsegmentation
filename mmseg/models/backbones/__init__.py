@@ -10,9 +10,11 @@ from .resnext import ResNeXt
 from .swin import SwinTransformer
 from .unet import UNet
 from .vit import VisionTransformer
+from .deit import Deit
 
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
-    'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer'
+    'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
+    'Deit'
 ]

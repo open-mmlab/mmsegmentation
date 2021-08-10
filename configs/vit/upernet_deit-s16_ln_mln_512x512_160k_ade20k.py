@@ -3,6 +3,7 @@ _base_ = './upernet_vit-b16_mln_512x512_160k_ade20k.py'
 model = dict(
     pretrained='https://dl.fbaipublicfiles.com/deit/deit_small_patch16_224-cd65a155.pth',  # noqa
     backbone=dict(
+        type='Deit',
         num_heads=6,
         embed_dims=384,
         drop_path_rate=0.1,
