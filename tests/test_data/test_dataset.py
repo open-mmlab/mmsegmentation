@@ -154,7 +154,7 @@ def test_custom_dataset():
     gt_seg_maps = train_dataset.get_gt_seg_maps()
     assert len(gt_seg_maps) == 5
 
-    # evaluation
+    # test past evaluation
     pseudo_results = []
     for gt_seg_map in gt_seg_maps:
         h, w = gt_seg_map.shape
@@ -189,6 +189,51 @@ def test_custom_dataset():
 
     eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
     assert isinstance(eval_results, dict)
+    assert 'mDice' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mFscore')
+    assert isinstance(eval_results, dict)
+    assert 'mRecall' in eval_results
+    assert 'mPrecision' in eval_results
+    assert 'mFscore' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(
+        pseudo_results, metric=['mIoU', 'mDice', 'mFscore'])
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
+    assert 'mDice' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+    assert 'mFscore' in eval_results
+    assert 'mPrecision' in eval_results
+    assert 'mRecall' in eval_results
+
+    # test evaluation with pre-eval and the dataset.CLASSES is necessary
+    train_dataset.CLASSES = tuple(['a'] * 7)
+    pseudo_results = []
+    for idx in range(len(train_dataset)):
+        h, w = gt_seg_maps[idx].shape
+        pseudo_result = np.random.randint(low=0, high=7, size=(h, w))
+        pseudo_results.extend(train_dataset.pre_eval([pseudo_result], [idx]))
+    eval_results = train_dataset.evaluate(pseudo_results, metric=['mIoU'])
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
+    assert isinstance(eval_results, dict)
+    assert 'mDice' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(
+        pseudo_results, metric=['mDice', 'mIoU'])
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
     assert 'mDice' in eval_results
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results

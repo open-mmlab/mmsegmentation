@@ -235,12 +235,13 @@ class CustomDataset(Dataset):
                 'DeprecationWarning: ``efficient_test`` has been deprecated '
                 'since MMSeg v0.16, the ``get_gt_seg_maps()`` is CPU memory '
                 'friendly by default. ')
-
+        gt_seg_maps = []
         for img_info in self.img_infos:
             seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
             gt_seg_map = mmcv.imread(
                 seg_map, flag='unchanged', backend='pillow')
-            yield gt_seg_map
+            gt_seg_maps.append(gt_seg_map)
+        return gt_seg_maps
 
     def pre_eval(self, preds, indices):
         """Collect eval result from each iteration.
@@ -360,7 +361,7 @@ class CustomDataset(Dataset):
 
         eval_results = {}
         # test a list of files
-        if mmcv.is_list_of(results, str):
+        if mmcv.is_list_of(results, np.ndarray):
             gt_seg_maps = self.get_gt_seg_maps()
             if self.CLASSES is None:
                 num_classes = len(
@@ -379,10 +380,11 @@ class CustomDataset(Dataset):
         else:
             ret_metrics = pre_eval_to_metrics(results, metric)
 
-        # Because dataset.CLASSES is required in single_gpu_test,
-        # multi_gpu_test, so it's necessary to keep
-        # dataset.CLASSES.
-        class_names = self.CLASSES
+        # Because dataset.CLASSES is required for per-eval.
+        if self.CLASSES is None:
+            class_names = tuple(range(num_classes))
+        else:
+            class_names = self.CLASSES
 
         # summary table
         ret_metrics_summary = OrderedDict({
