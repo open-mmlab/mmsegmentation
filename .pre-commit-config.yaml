@@ -38,3 +38,12 @@ repos:
     hooks:
       - id: docformatter
         args: ["--in-place", "--wrap-descriptions", "79"]
+  - repo: local
+    hooks:
+      - id: update-model-index
+        name: update-model-index
+        description: Collect model information and update model-index.yml
+        entry: .dev/md2yml.py
+        additional_dependencies: [mmcv]
+        language: python
+        files: ^configs/.*\.md$

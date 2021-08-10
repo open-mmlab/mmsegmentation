@@ -5,13 +5,13 @@
 按照通常的惯例，我们使用 `Dataset` 和 `DataLoader` 做多线程的数据加载。`Dataset` 返回一个数据内容的字典，里面对应于模型前传方法的各个参数。
 因为在语义分割中，输入的图像数据具有不同的大小，我们在 MMCV 里引入一个新的 `DataContainer` 类别去帮助收集和分发不同大小的输入数据。
 
-更多细节，请查看[这里](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py).
+更多细节，请查看[这里](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) 。
 
 数据的准备流程和数据集是解耦的。通常一个数据集定义了如何处理标注数据（annotations）信息，而一个数据流程定义了准备一个数据字典的所有步骤。一个流程包括了一系列操作，每个操作里都把一个字典作为输入，然后再输出一个新的字典给下一个变换操作。
 
 这些操作可分为数据加载 (data loading)，预处理 (pre-processing)，格式变化 (formatting) 和测试时数据增强 (test-time augmentation) 。
 
-下面的例子就是 PSPNet 的一个流程:
+下面的例子就是 PSPNet 的一个流程：
 
 ```python
 img_norm_cfg = dict(
@@ -96,19 +96,19 @@ test_pipeline = [
 
 `ToTensor`
 
-- 更新: 由 `keys` 指定.
+- 更新: 由 `keys` 指定
 
 `ImageToTensor`
 
-- 更新: 由 `keys` 指定.
+- 更新: 由 `keys` 指定
 
 `Transpose`
 
-- 更新: 由 `keys` 指定.
+- 更新: 由 `keys` 指定
 
 `ToDataContainer`
 
-- 更新: 由 `keys` 指定.
+- 更新: 由 `keys` 指定
 
 `DefaultFormatBundle`
 
@@ -125,7 +125,7 @@ test_pipeline = [
 
 ## 拓展和使用自定义的流程
 
-1. 在任何一个文件里写一个新的流程，例如 `my_pipeline.py`。它以一个字典作为输入并且输出一个字典。
+1. 在任何一个文件里写一个新的流程，例如 `my_pipeline.py`，它以一个字典作为输入并且输出一个字典
 
     ```python
     from mmseg.datasets import PIPELINES

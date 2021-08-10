@@ -1,0 +1,797 @@
+Collections:
+- Name: fcn
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+    - Pascal Context
+    - Pascal Context 59
+Models:
+- Name: fcn_r50-d8_512x1024_40k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 239.81
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.7
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 72.25
+      mIoU(ms+flip): 73.36
+  Config: configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth
+- Name: fcn_r101-d8_512x1024_40k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 375.94
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 9.2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.45
+      mIoU(ms+flip): 76.58
+  Config: configs/fcn/fcn_r101-d8_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_40k_cityscapes/fcn_r101-d8_512x1024_40k_cityscapes_20200604_181852-a883d3a1.pth
+- Name: fcn_r50-d8_769x769_40k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (769,769)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 555.56
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 6.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 71.47
+      mIoU(ms+flip): 72.54
+  Config: configs/fcn/fcn_r50-d8_769x769_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_40k_cityscapes/fcn_r50-d8_769x769_40k_cityscapes_20200606_113104-977b5d02.pth
+- Name: fcn_r101-d8_769x769_40k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (769,769)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 840.34
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 10.4
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.93
+      mIoU(ms+flip): 75.14
+  Config: configs/fcn/fcn_r101-d8_769x769_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_40k_cityscapes/fcn_r101-d8_769x769_40k_cityscapes_20200606_113208-7d4ab69c.pth
+- Name: fcn_r18-d8_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-18-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 68.26
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 1.7
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 71.11
+      mIoU(ms+flip): 72.91
+  Config: configs/fcn/fcn_r18-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth
+- Name: fcn_r50-d8_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.61
+      mIoU(ms+flip): 74.24
+  Config: configs/fcn/fcn_r50-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019-03aa804d.pth
+- Name: fcn_r101-d8_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.13
+      mIoU(ms+flip): 75.94
+  Config: configs/fcn/fcn_r101-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038-3fb937eb.pth
+- Name: fcn_r18-d8_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-18-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 156.25
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 1.9
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 70.8
+      mIoU(ms+flip): 73.16
+  Config: configs/fcn/fcn_r18-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes_20201225_021451-9739d1b8.pth
+- Name: fcn_r50-d8_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (769,769)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 72.64
+      mIoU(ms+flip): 73.32
+  Config: configs/fcn/fcn_r50-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749-f5caeabc.pth
+- Name: fcn_r101-d8_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (769,769)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.52
+      mIoU(ms+flip): 76.61
+  Config: configs/fcn/fcn_r101-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354-45cbac68.pth
+- Name: fcn_r18b-d8_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-18b-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 59.74
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 1.6
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 70.24
+      mIoU(ms+flip): 72.77
+  Config: configs/fcn/fcn_r18b-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_512x1024_80k_cityscapes/fcn_r18b-d8_512x1024_80k_cityscapes_20201225_230143-92c0f445.pth
+- Name: fcn_r50b-d8_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50b-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 238.1
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.6
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.65
+      mIoU(ms+flip): 77.59
+  Config: configs/fcn/fcn_r50b-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_512x1024_80k_cityscapes/fcn_r50b-d8_512x1024_80k_cityscapes_20201225_094221-82957416.pth
+- Name: fcn_r101b-d8_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101b-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 366.3
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 9.1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.37
+      mIoU(ms+flip): 78.77
+  Config: configs/fcn/fcn_r101b-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_512x1024_80k_cityscapes/fcn_r101b-d8_512x1024_80k_cityscapes_20201226_160213-4543858f.pth
+- Name: fcn_r18b-d8_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-18b-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 149.25
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 1.7
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 69.66
+      mIoU(ms+flip): 72.07
+  Config: configs/fcn/fcn_r18b-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_769x769_80k_cityscapes/fcn_r18b-d8_769x769_80k_cityscapes_20201226_004430-32d504e5.pth
+- Name: fcn_r50b-d8_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50b-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 549.45
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 6.3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.83
+      mIoU(ms+flip): 76.6
+  Config: configs/fcn/fcn_r50b-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_769x769_80k_cityscapes/fcn_r50b-d8_769x769_80k_cityscapes_20201225_094223-94552d38.pth
+- Name: fcn_r101b-d8_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101b-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 869.57
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 10.3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.02
+      mIoU(ms+flip): 78.67
+  Config: configs/fcn/fcn_r101b-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_769x769_80k_cityscapes/fcn_r101b-d8_769x769_80k_cityscapes_20201226_170012-82be37e2.pth
+- Name: fcn_d6_r50-d16_512x1024_40k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D16
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 97.85
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 3.4
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.06
+      mIoU(ms+flip): 78.85
+  Config: configs/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
+- Name: fcn_d6_r50-d16_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D16
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 96.62
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.27
+      mIoU(ms+flip): 78.88
+  Config: configs/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
+- Name: fcn_d6_r50-d16_769x769_40k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D16
+    crop size: (769,769)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 239.81
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 3.7
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.82
+      mIoU(ms+flip): 78.22
+  Config: configs/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes-1aab18ed.pth
+- Name: fcn_d6_r50-d16_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D16
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 240.96
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.04
+      mIoU(ms+flip): 78.4
+  Config: configs/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes-109d88eb.pth
+- Name: fcn_d6_r101-d16_512x1024_40k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D16
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 124.38
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 4.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.36
+      mIoU(ms+flip): 79.18
+  Config: configs/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes-9cf2b450.pth
+- Name: fcn_d6_r101-d16_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D16
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 121.07
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.46
+      mIoU(ms+flip): 80.42
+  Config: configs/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes-cb336445.pth
+- Name: fcn_d6_r101-d16_769x769_40k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D16
+    crop size: (769,769)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 320.51
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 5.0
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.28
+      mIoU(ms+flip): 78.95
+  Config: configs/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes-60b114e9.pth
+- Name: fcn_d6_r101-d16_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D16
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 311.53
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.06
+      mIoU(ms+flip): 79.58
+  Config: configs/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes-e33adc4f.pth
+- Name: fcn_d6_r50b-d16_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50b-D16
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 98.43
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 3.2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.99
+      mIoU(ms+flip): 79.03
+  Config: configs/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_512x1024_80k_cityscapes/fcn_d6_r50b_d16_512x1024_80k_cityscapes-6a0b62e9.pth
+- Name: fcn_d6_r50b-d16_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-50b-D16
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 239.81
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 3.6
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.86
+      mIoU(ms+flip): 78.52
+  Config: configs/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_769x769_80k_cityscapes/fcn_d6_r50b_d16_769x769_80k_cityscapes-d665f231.pth
+- Name: fcn_d6_r101b-d16_512x1024_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101b-D16
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 118.2
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 4.3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.72
+      mIoU(ms+flip): 79.53
+  Config: configs/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_512x1024_80k_cityscapes/fcn_d6_r101b_d16_512x1024_80k_cityscapes-3f2eb5b4.pth
+- Name: fcn_d6_r101b-d16_769x769_80k_cityscapes
+  In Collection: fcn
+  Metadata:
+    backbone: R-101b-D16
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 301.2
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 4.8
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.34
+      mIoU(ms+flip): 78.91
+  Config: configs/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_769x769_80k_cityscapes/fcn_d6_r101b_d16_769x769_80k_cityscapes-c4d8bfbc.pth
+- Name: fcn_r50-d8_512x512_80k_ade20k
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 42.57
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 8.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 35.94
+      mIoU(ms+flip): 37.94
+  Config: configs/fcn/fcn_r50-d8_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
+- Name: fcn_r101-d8_512x512_80k_ade20k
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 67.66
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 12.0
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 39.61
+      mIoU(ms+flip): 40.83
+  Config: configs/fcn/fcn_r101-d8_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_80k_ade20k/fcn_r101-d8_512x512_80k_ade20k_20200615_014143-bc1809f7.pth
+- Name: fcn_r50-d8_512x512_160k_ade20k
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 36.1
+      mIoU(ms+flip): 38.08
+  Config: configs/fcn/fcn_r50-d8_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_160k_ade20k/fcn_r50-d8_512x512_160k_ade20k_20200615_100713-4edbc3b4.pth
+- Name: fcn_r101-d8_512x512_160k_ade20k
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 39.91
+      mIoU(ms+flip): 41.4
+  Config: configs/fcn/fcn_r101-d8_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816-fd192bd5.pth
+- Name: fcn_r50-d8_512x512_20k_voc12aug
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 42.96
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 5.7
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 67.08
+      mIoU(ms+flip): 69.94
+  Config: configs/fcn/fcn_r50-d8_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715-52dc5306.pth
+- Name: fcn_r101-d8_512x512_20k_voc12aug
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 67.52
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 9.2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 71.16
+      mIoU(ms+flip): 73.57
+  Config: configs/fcn/fcn_r101-d8_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_20k_voc12aug/fcn_r101-d8_512x512_20k_voc12aug_20200617_010842-0bb4e798.pth
+- Name: fcn_r50-d8_512x512_40k_voc12aug
+  In Collection: fcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 66.97
+      mIoU(ms+flip): 69.04
+  Config: configs/fcn/fcn_r50-d8_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_40k_voc12aug/fcn_r50-d8_512x512_40k_voc12aug_20200613_161222-5e2dbf40.pth
+- Name: fcn_r101-d8_512x512_40k_voc12aug
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 69.91
+      mIoU(ms+flip): 72.38
+  Config: configs/fcn/fcn_r101-d8_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240-4c8bcefd.pth
+- Name: fcn_r101-d8_480x480_40k_pascal_context
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,480)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 100.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,480)
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 44.43
+      mIoU(ms+flip): 45.63
+  Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20210421_154757-b5e97937.pth
+- Name: fcn_r101-d8_480x480_80k_pascal_context
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,480)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 44.13
+      mIoU(ms+flip): 45.26
+  Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context-20210421_163310-4711813f.pth
+- Name: fcn_r101-d8_480x480_40k_pascal_context_59
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,480)
+    lr schd: 40000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 48.42
+      mIoU(ms+flip): 50.4
+  Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context_59.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context_59/fcn_r101-d8_480x480_40k_pascal_context_59_20210415_230724-8cf83682.pth
+- Name: fcn_r101-d8_480x480_80k_pascal_context_59
+  In Collection: fcn
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,480)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 49.35
+      mIoU(ms+flip): 51.38
+  Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context_59.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context_59/fcn_r101-d8_480x480_80k_pascal_context_59_20210416_110804-9a6f2c94.pth

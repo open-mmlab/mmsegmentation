@@ -1,0 +1,90 @@
+Collections:
+- Name: fp16
+  Metadata:
+    Training Data:
+    - Cityscapes
+Models:
+- Name: fcn_r101-d8_512x1024_80k_fp16_cityscapes
+  In Collection: fp16
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 115.74
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.37
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.8
+  Config: configs/fp16/fcn_r101-d8_512x1024_80k_fp16_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/fcn_r101-d8_512x1024_80k_fp16_cityscapes/fcn_r101-d8_512x1024_80k_fp16_cityscapes-50245227.pth
+- Name: pspnet_r101-d8_512x1024_80k_fp16_cityscapes
+  In Collection: fp16
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 114.03
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.34
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.46
+  Config: configs/fp16/pspnet_r101-d8_512x1024_80k_fp16_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/pspnet_r101-d8_512x1024_80k_fp16_cityscapes/pspnet_r101-d8_512x1024_80k_fp16_cityscapes-ade37931.pth
+- Name: deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes
+  In Collection: fp16
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 259.07
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.75
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.48
+  Config: configs/fp16/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes-bc86dc84.pth
+- Name: deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes
+  In Collection: fp16
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 127.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 6.35
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.46
+  Config: configs/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes-cc58bc8d.pth

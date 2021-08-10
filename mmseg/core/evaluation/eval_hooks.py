@@ -31,7 +31,11 @@ class EvalHook(_EvalHook):
             return
 
         from mmseg.apis import single_gpu_test
-        results = single_gpu_test(runner.model, self.dataloader, show=False)
+        results = single_gpu_test(
+            runner.model,
+            self.dataloader,
+            show=False,
+            efficient_test=self.efficient_test)
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         key_score = self.evaluate(runner, results)
         if self.save_best:
@@ -84,7 +88,8 @@ class DistEvalHook(_DistEvalHook):
             runner.model,
             self.dataloader,
             tmpdir=tmpdir,
-            gpu_collect=self.gpu_collect)
+            gpu_collect=self.gpu_collect,
+            efficient_test=self.efficient_test)
         if runner.rank == 0:
             print('\n')
             runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)

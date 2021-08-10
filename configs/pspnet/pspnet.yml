@@ -1,0 +1,538 @@
+Collections:
+- Name: pspnet
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+    - Pascal Context
+    - Pascal Context 59
+Models:
+- Name: pspnet_r50-d8_512x1024_40k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 245.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 6.1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.85
+      mIoU(ms+flip): 79.18
+  Config: configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth
+- Name: pspnet_r101-d8_512x1024_40k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 373.13
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 9.6
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.34
+      mIoU(ms+flip): 79.74
+  Config: configs/pspnet/pspnet_r101-d8_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_40k_cityscapes/pspnet_r101-d8_512x1024_40k_cityscapes_20200604_232751-467e7cf4.pth
+- Name: pspnet_r50-d8_769x769_40k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (769,769)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 568.18
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 6.9
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.26
+      mIoU(ms+flip): 79.88
+  Config: configs/pspnet/pspnet_r50-d8_769x769_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_769x769_40k_cityscapes/pspnet_r50-d8_769x769_40k_cityscapes_20200606_112725-86638686.pth
+- Name: pspnet_r101-d8_769x769_40k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (769,769)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 869.57
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 10.9
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.08
+      mIoU(ms+flip): 80.28
+  Config: configs/pspnet/pspnet_r101-d8_769x769_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_40k_cityscapes/pspnet_r101-d8_769x769_40k_cityscapes_20200606_112753-61c6f5be.pth
+- Name: pspnet_r18-d8_512x1024_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-18-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 63.65
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 1.7
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 74.87
+      mIoU(ms+flip): 76.04
+  Config: configs/pspnet/pspnet_r18-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_512x1024_80k_cityscapes/pspnet_r18-d8_512x1024_80k_cityscapes_20201225_021458-09ffa746.pth
+- Name: pspnet_r50-d8_512x1024_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.55
+      mIoU(ms+flip): 79.79
+  Config: configs/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_512x1024_80k_cityscapes_20200606_112131-2376f12b.pth
+- Name: pspnet_r101-d8_512x1024_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.76
+      mIoU(ms+flip): 81.01
+  Config: configs/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes/pspnet_r101-d8_512x1024_80k_cityscapes_20200606_112211-e1e1100f.pth
+- Name: pspnet_r18-d8_769x769_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-18-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 161.29
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 1.9
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.9
+      mIoU(ms+flip): 77.86
+  Config: configs/pspnet/pspnet_r18-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_769x769_80k_cityscapes/pspnet_r18-d8_769x769_80k_cityscapes_20201225_021458-3deefc62.pth
+- Name: pspnet_r50-d8_769x769_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (769,769)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.59
+      mIoU(ms+flip): 80.69
+  Config: configs/pspnet/pspnet_r50-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_769x769_80k_cityscapes/pspnet_r50-d8_769x769_80k_cityscapes_20200606_210121-5ccf03dd.pth
+- Name: pspnet_r101-d8_769x769_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (769,769)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.77
+      mIoU(ms+flip): 81.06
+  Config: configs/pspnet/pspnet_r101-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_80k_cityscapes/pspnet_r101-d8_769x769_80k_cityscapes_20200606_225055-dba412fa.pth
+- Name: pspnet_r18b-d8_512x1024_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-18b-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 61.43
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 1.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 74.23
+      mIoU(ms+flip): 75.79
+  Config: configs/pspnet/pspnet_r18b-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18b-d8_512x1024_80k_cityscapes/pspnet_r18b-d8_512x1024_80k_cityscapes_20201226_063116-26928a60.pth
+- Name: pspnet_r50b-d8_512x1024_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50b-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 232.56
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 6.0
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.22
+      mIoU(ms+flip): 79.46
+  Config: configs/pspnet/pspnet_r50b-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d8_512x1024_80k_cityscapes/pspnet_r50b-d8_512x1024_80k_cityscapes_20201225_094315-6344287a.pth
+- Name: pspnet_r101b-d8_512x1024_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101b-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 362.32
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 9.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.69
+      mIoU(ms+flip): 80.79
+  Config: configs/pspnet/pspnet_r101b-d8_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101b-d8_512x1024_80k_cityscapes/pspnet_r101b-d8_512x1024_80k_cityscapes_20201226_170012-3a4d38ab.pth
+- Name: pspnet_r18b-d8_769x769_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-18b-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 156.01
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 1.7
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 74.92
+      mIoU(ms+flip): 76.9
+  Config: configs/pspnet/pspnet_r18b-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18b-d8_769x769_80k_cityscapes/pspnet_r18b-d8_769x769_80k_cityscapes_20201226_080942-bf98d186.pth
+- Name: pspnet_r50b-d8_769x769_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50b-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 531.91
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 6.8
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.5
+      mIoU(ms+flip): 79.96
+  Config: configs/pspnet/pspnet_r50b-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d8_769x769_80k_cityscapes/pspnet_r50b-d8_769x769_80k_cityscapes_20201225_094316-4c643cf6.pth
+- Name: pspnet_r101b-d8_769x769_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101b-D8
+    crop size: (769,769)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 854.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (769,769)
+    memory (GB): 10.8
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.87
+      mIoU(ms+flip): 80.04
+  Config: configs/pspnet/pspnet_r101b-d8_769x769_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101b-d8_769x769_80k_cityscapes/pspnet_r101b-d8_769x769_80k_cityscapes_20201226_171823-f0e7c293.pth
+- Name: pspnet_r50-d8_512x512_80k_ade20k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 42.5
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 8.5
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.13
+      mIoU(ms+flip): 41.94
+  Config: configs/pspnet/pspnet_r50-d8_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_ade20k/pspnet_r50-d8_512x512_80k_ade20k_20200615_014128-15a8b914.pth
+- Name: pspnet_r101-d8_512x512_80k_ade20k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 65.36
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 12.0
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.57
+      mIoU(ms+flip): 44.35
+  Config: configs/pspnet/pspnet_r101-d8_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_80k_ade20k/pspnet_r101-d8_512x512_80k_ade20k_20200614_031423-b6e782f0.pth
+- Name: pspnet_r50-d8_512x512_160k_ade20k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.48
+      mIoU(ms+flip): 43.44
+  Config: configs/pspnet/pspnet_r50-d8_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_160k_ade20k/pspnet_r50-d8_512x512_160k_ade20k_20200615_184358-1890b0bd.pth
+- Name: pspnet_r101-d8_512x512_160k_ade20k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.39
+      mIoU(ms+flip): 45.35
+  Config: configs/pspnet/pspnet_r101-d8_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_160k_ade20k/pspnet_r101-d8_512x512_160k_ade20k_20200615_100650-967c316f.pth
+- Name: pspnet_r50-d8_512x512_20k_voc12aug
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 42.39
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 6.1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.78
+      mIoU(ms+flip): 77.61
+  Config: configs/pspnet/pspnet_r50-d8_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_20k_voc12aug/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958-ed5dfbd9.pth
+- Name: pspnet_r101-d8_512x512_20k_voc12aug
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 66.58
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 9.6
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 78.47
+      mIoU(ms+flip): 79.25
+  Config: configs/pspnet/pspnet_r101-d8_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_20k_voc12aug/pspnet_r101-d8_512x512_20k_voc12aug_20200617_102003-4aef3c9a.pth
+- Name: pspnet_r50-d8_512x512_40k_voc12aug
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.29
+      mIoU(ms+flip): 78.48
+  Config: configs/pspnet/pspnet_r50-d8_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_40k_voc12aug/pspnet_r50-d8_512x512_40k_voc12aug_20200613_161222-ae9c1b8c.pth
+- Name: pspnet_r101-d8_512x512_40k_voc12aug
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 78.52
+      mIoU(ms+flip): 79.57
+  Config: configs/pspnet/pspnet_r101-d8_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_40k_voc12aug/pspnet_r101-d8_512x512_40k_voc12aug_20200613_161222-bc933b18.pth
+- Name: pspnet_r101-d8_480x480_40k_pascal_context
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,480)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 103.31
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,480)
+    memory (GB): 8.8
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 46.6
+      mIoU(ms+flip): 47.78
+  Config: configs/pspnet/pspnet_r101-d8_480x480_40k_pascal_context.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context/pspnet_r101-d8_480x480_40k_pascal_context_20200911_211210-bf0f5d7c.pth
+- Name: pspnet_r101-d8_480x480_80k_pascal_context
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,480)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 46.03
+      mIoU(ms+flip): 47.15
+  Config: configs/pspnet/pspnet_r101-d8_480x480_80k_pascal_context.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context/pspnet_r101-d8_480x480_80k_pascal_context_20200911_190530-c86d6233.pth
+- Name: pspnet_r101-d8_480x480_40k_pascal_context_59
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,480)
+    lr schd: 40000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 52.02
+      mIoU(ms+flip): 53.54
+  Config: configs/pspnet/pspnet_r101-d8_480x480_40k_pascal_context_59.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context_59/pspnet_r101-d8_480x480_40k_pascal_context_59_20210416_114524-86d44cd4.pth
+- Name: pspnet_r101-d8_480x480_80k_pascal_context_59
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,480)
+    lr schd: 80000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 52.47
+      mIoU(ms+flip): 53.99
+  Config: configs/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59/pspnet_r101-d8_480x480_80k_pascal_context_59_20210416_114418-fa6caaa2.pth
