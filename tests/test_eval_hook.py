@@ -52,6 +52,7 @@ def test_iter_eval_hook():
         EvalHook(data_loader)
 
     test_dataset = ExampleDataset()
+    test_dataset.pre_eval = MagicMock(return_value=[torch.tensor([1])])
     test_dataset.evaluate = MagicMock(return_value=dict(test='success'))
     loader = DataLoader(test_dataset, batch_size=1)
     model = ExampleModel()
@@ -89,6 +90,7 @@ def test_epoch_eval_hook():
         EvalHook(data_loader, by_epoch=True)
 
     test_dataset = ExampleDataset()
+    test_dataset.pre_eval = MagicMock(return_value=[torch.tensor([1])])
     test_dataset.evaluate = MagicMock(return_value=dict(test='success'))
     loader = DataLoader(test_dataset, batch_size=1)
     model = ExampleModel()
@@ -112,8 +114,13 @@ def test_epoch_eval_hook():
                                                       logger=runner.logger)
 
 
-def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
-    results = single_gpu_test(model, data_loader)
+def multi_gpu_test(model,
+                   data_loader,
+                   tmpdir=None,
+                   gpu_collect=False,
+                   pre_eval=False):
+    # Pre eval is set by default when training.
+    results = single_gpu_test(model, data_loader, pre_eval=True)
     return results
 
 
@@ -132,6 +139,7 @@ def test_dist_eval_hook():
         DistEvalHook(data_loader)
 
     test_dataset = ExampleDataset()
+    test_dataset.pre_eval = MagicMock(return_value=[torch.tensor([1])])
     test_dataset.evaluate = MagicMock(return_value=dict(test='success'))
     loader = DataLoader(test_dataset, batch_size=1)
     model = ExampleModel()
@@ -170,6 +178,7 @@ def test_dist_eval_hook_epoch():
         DistEvalHook(data_loader)
 
     test_dataset = ExampleDataset()
+    test_dataset.pre_eval = MagicMock(return_value=[torch.tensor([1])])
     test_dataset.evaluate = MagicMock(return_value=dict(test='success'))
     loader = DataLoader(test_dataset, batch_size=1)
     model = ExampleModel()
