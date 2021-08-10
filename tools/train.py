@@ -13,6 +13,7 @@ from mmseg import __version__
 from mmseg.apis import set_random_seed, train_segmentor
 from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
+from mmseg.ops import revert_sync_batchnorm
 from mmseg.utils import collect_env, get_root_logger
 
 
@@ -132,6 +133,10 @@ def main():
         train_cfg=cfg.get('train_cfg'),
         test_cfg=cfg.get('test_cfg'))
     model.init_weights()
+
+    # SyncBN is not support for single gpu
+    if not distributed:
+        model = revert_sync_batchnorm(model)
 
     logger.info(model)
 
