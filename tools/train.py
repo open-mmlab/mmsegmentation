@@ -3,6 +3,7 @@ import copy
 import os
 import os.path as osp
 import time
+import warnings
 
 import mmcv
 import torch
@@ -13,7 +14,7 @@ from mmseg import __version__
 from mmseg.apis import set_random_seed, train_segmentor
 from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
-from mmseg.ops import revert_sync_batchnorm
+from mmseg.models.utils import revert_sync_batchnorm
 from mmseg.utils import collect_env, get_root_logger
 
 
@@ -136,6 +137,10 @@ def main():
 
     # SyncBN is not support for single gpu
     if not distributed:
+        warnings.warn(
+            'SyncBN only support DDP. In order to compat with DP, we convert '
+            'SyncBN tp BN. Please to use dist_train.py which has official '
+            'support to avoid this problem.')
         model = revert_sync_batchnorm(model)
 
     logger.info(model)
