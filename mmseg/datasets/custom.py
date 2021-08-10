@@ -360,7 +360,8 @@ class CustomDataset(Dataset):
 
         eval_results = {}
         # test a list of files
-        if mmcv.is_list_of(results, np.ndarray):
+        if mmcv.is_list_of(results, np.ndarray) or mmcv.is_list_of(
+                results, str):
             gt_seg_maps = self.get_gt_seg_maps()
             if self.CLASSES is None:
                 num_classes = len(

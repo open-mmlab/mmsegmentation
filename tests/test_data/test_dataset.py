@@ -220,7 +220,7 @@ def test_custom_dataset():
     for idx in range(len(train_dataset)):
         h, w = gt_seg_maps[idx].shape
         pseudo_result = np.random.randint(low=0, high=7, size=(h, w))
-        pseudo_results.extend(train_dataset.pre_eval([pseudo_result], [idx]))
+        pseudo_results.extend(train_dataset.pre_eval(pseudo_result, idx))
     eval_results = train_dataset.evaluate(pseudo_results, metric=['mIoU'])
     assert isinstance(eval_results, dict)
     assert 'mIoU' in eval_results
