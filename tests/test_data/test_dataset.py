@@ -1,4 +1,5 @@
 import os.path as osp
+from typing import Generator
 from unittest.mock import MagicMock, patch
 
 import numpy as np
@@ -152,6 +153,8 @@ def test_custom_dataset():
 
     # get gt seg map
     gt_seg_maps = train_dataset.get_gt_seg_maps()
+    assert isinstance(gt_seg_maps, Generator)
+    gt_seg_maps = list(gt_seg_maps)
     assert len(gt_seg_maps) == 5
 
     # test past evaluation
@@ -179,7 +182,7 @@ def test_custom_dataset():
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results
 
-    # evaluation with CLASSES
+    # test past evaluation with CLASSES
     train_dataset.CLASSES = tuple(['a'] * 7)
     eval_results = train_dataset.evaluate(pseudo_results, metric='mIoU')
     assert isinstance(eval_results, dict)
@@ -226,14 +229,6 @@ def test_custom_dataset():
 
     eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
     assert isinstance(eval_results, dict)
-    assert 'mDice' in eval_results
-    assert 'mAcc' in eval_results
-    assert 'aAcc' in eval_results
-
-    eval_results = train_dataset.evaluate(
-        pseudo_results, metric=['mDice', 'mIoU'])
-    assert isinstance(eval_results, dict)
-    assert 'mIoU' in eval_results
     assert 'mDice' in eval_results
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results

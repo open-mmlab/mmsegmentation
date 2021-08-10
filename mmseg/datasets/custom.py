@@ -235,13 +235,12 @@ class CustomDataset(Dataset):
                 'DeprecationWarning: ``efficient_test`` has been deprecated '
                 'since MMSeg v0.16, the ``get_gt_seg_maps()`` is CPU memory '
                 'friendly by default. ')
-        gt_seg_maps = []
+
         for img_info in self.img_infos:
             seg_map = osp.join(self.ann_dir, img_info['ann']['seg_map'])
             gt_seg_map = mmcv.imread(
                 seg_map, flag='unchanged', backend='pillow')
-            gt_seg_maps.append(gt_seg_map)
-        return gt_seg_maps
+            yield gt_seg_map
 
     def pre_eval(self, preds, indices):
         """Collect eval result from each iteration.
@@ -368,6 +367,8 @@ class CustomDataset(Dataset):
                     reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
             else:
                 num_classes = len(self.CLASSES)
+            # reset generator
+            gt_seg_maps = self.get_gt_seg_maps()
             ret_metrics = eval_metrics(
                 results,
                 gt_seg_maps,
