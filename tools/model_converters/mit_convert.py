@@ -69,7 +69,7 @@ if __name__ == '__main__':
     src_path = args.src
     dst_path = args.dst
 
-    ckpt = torch.load(src_path)
+    ckpt = torch.load(src_path, map_location='cpu')
     if 'state_dict' in ckpt:
         ckpt = ckpt['state_dict']
     elif 'model' in ckpt:

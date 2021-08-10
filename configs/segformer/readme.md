@@ -62,4 +62,12 @@ test_pipeline = [
 ]
 ```
 
-Because the MixVisionTransformer is not supported by mmcls, we just can get backbone weights from official repo. We provide convert script to convert official weights in `tools/model_converters/mit_convert.py`. After converting, you need to modify `pretrained` of model config.
+## How to use segformer official pretrain weights
+
+We convert the backbone weights from the official repo (https://github.com/NVlabs/SegFormer) with `tools/model_converters/mit_convert.py`.
+
+You may follow below steps to start segformer training preparation:
+
+1. Download segformer pretrain weights (Suggest put in `pretrain/`);
+2. Run convert script to convert official pretrain weights: `python tools/model_converters/mit_convert.py pretrain/mit_b0.pth pretrain/mit_b0.pth`;
+3. Modify `pretrained` of segformer model config, for example, `pretrained` of `segformer_mit-b0_512x512_160k_ade20k.py` is set to `pretrain/mit_b0.pth`;

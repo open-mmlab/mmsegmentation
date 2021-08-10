@@ -393,8 +393,6 @@ class MixVisionTransformer(BaseModule):
                 self.pretrained, logger=logger, map_location='cpu')
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
-            elif 'model' in checkpoint:
-                state_dict = checkpoint['model']
             else:
                 state_dict = checkpoint
 
