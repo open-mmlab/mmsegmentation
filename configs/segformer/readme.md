@@ -52,7 +52,7 @@ test_pipeline = [
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),
-            # resize image to multiple of 32, improve SegFormer by xx mIoU.
+            # resize image to multiple of 32, improve SegFormer by 0.5-1.0 mIoU.
             dict(type='ResizeToMultiple', size_divisor=32),
             dict(type='RandomFlip'),
             dict(type='Normalize', **img_norm_cfg),
@@ -61,3 +61,5 @@ test_pipeline = [
         ])
 ]
 ```
+
+Because the MixVisionTransformer is not supported by mmcls, we just can get backbone weights from official repo. We provide convert script to convert official weights in `tools/model_converters/mit_convert.py`. After converting, you need to modify `pretrained` of model config.

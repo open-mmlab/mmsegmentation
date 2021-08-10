@@ -11,7 +11,7 @@ from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed, mit_convert, nchw_to_nlc, nlc_to_nchw
+from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw
 
 
 class MixFFN(BaseModule):
@@ -397,12 +397,6 @@ class MixVisionTransformer(BaseModule):
                 state_dict = checkpoint['model']
             else:
                 state_dict = checkpoint
-
-            if self.pretrain_style == 'official':
-                # Because segformer backbone is not support by mmcls,
-                # so we need to convert pretrain weights to match this
-                # implementation.
-                state_dict = mit_convert(state_dict)
 
             self.load_state_dict(state_dict, False)
 
