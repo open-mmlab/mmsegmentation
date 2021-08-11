@@ -6,7 +6,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import (build_norm_layer, constant_init, kaiming_init,
                       normal_init, trunc_normal_init)
-from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
@@ -14,7 +13,6 @@ from torch.nn.modules.utils import _pair as to_2tuple
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed, vit_convert, TransformerEncoderLayer
-
 
 
 @BACKBONES.register_module()

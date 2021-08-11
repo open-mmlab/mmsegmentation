@@ -1,14 +1,13 @@
 _base_ = [
-    '../_base_/models/segmenterL_vit.py',
-    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/segmenterL_vit.py', '../_base_/datasets/ade20k.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
 model = dict(
     backbone=dict(drop_path_rate=0.1, final_norm=True),
     decode_head=dict(num_classes=150),
     auxiliary_head=dict(num_classes=150),
-    test_cfg=dict(mode='slide', crop_size=(512,512), stride=(341,341)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone

@@ -1,18 +1,14 @@
 _base_ = [
-    '../_base_/models/segmenterM_vit.py',
-    '../_base_/datasets/ade20k_256.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/segmenterM_vit.py', '../_base_/datasets/ade20k_256.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
 model = dict(
-    backbone=dict(img_size=(256,256), drop_path_rate=0.1, final_norm=True),
+    backbone=dict(img_size=(256, 256), drop_path_rate=0.1, final_norm=True),
     decode_head=dict(
-        num_classes=150,
-        channels=768,
-        num_layers=12,
-        num_heads=12),
+        num_classes=150, channels=768, num_layers=12, num_heads=12),
     auxiliary_head=dict(num_classes=150),
-    test_cfg=dict(mode='slide', crop_size=(256,256), stride=(171,171)))
+    test_cfg=dict(mode='slide', crop_size=(256, 256), stride=(171, 171)))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -39,7 +35,6 @@ lr_config = dict(
     power=1.0,
     min_lr=0.0,
     by_epoch=False)
-
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)

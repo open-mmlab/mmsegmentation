@@ -1,13 +1,13 @@
-import math
 import torch
 import torch.nn as nn
 
-from mmcv.cnn import  trunc_normal_init
-from mmcv.runner.base_module import BaseModule, ModuleList
+from mmcv.cnn import trunc_normal_init
+from mmcv.runner.base_module import ModuleList
 
 from ..builder import HEADS
 from ..utils import TransformerEncoderLayer
 from .decode_head import BaseDecodeHead
+
 
 def init_weights(m):
     if isinstance(m, nn.Linear):
@@ -18,6 +18,7 @@ def init_weights(m):
         nn.init.constant_(m.bias, 0)
         nn.init.constant_(m.weight, 1.0)
 
+
 @HEADS.register_module()
 class LinearTransformerHead(BaseDecodeHead):
     """ Segmenter-Linear
@@ -27,6 +28,7 @@ class LinearTransformerHead(BaseDecodeHead):
     Inspiration from
         https://github.com/rstrudel/segmenter
     """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -38,9 +40,11 @@ class LinearTransformerHead(BaseDecodeHead):
         H, W = x.shape[2], x.shape[3]
         x = x.flatten(2).transpose(1, 2)
         x = self.head(x)
-        output = x.view(-1, H, W, self.num_classes).permute(0, 3, 1, 2).contiguous()
+        output = x.view(-1, H, W, self.num_classes).permute(0, 3, 1,
+                                                            2).contiguous()
 
         return output
+
 
 @HEADS.register_module()
 class MaskTransformerHead(BaseDecodeHead):
@@ -72,26 +76,26 @@ class MaskTransformerHead(BaseDecodeHead):
             (batch, n, embed_dim)
             or (n, batch, embed_dim). Default: True.
     """
-    def __init__(
-        self,
-        num_layers=12,
-        num_heads=12,
-        mlp_ratio=4,
-        drop_rate=0.,
-        attn_drop_rate=0.,
-        drop_path_rate=0.1,
-        num_fcs=2,
-        qkv_bias=True,
-        act_cfg=dict(type='GELU'),
-        norm_cfg=dict(type='LN'),
-        batch_first=True,
-        **kwargs
-    ):
+
+    def __init__(self,
+                 num_layers=12,
+                 num_heads=12,
+                 mlp_ratio=4,
+                 drop_rate=0.,
+                 attn_drop_rate=0.,
+                 drop_path_rate=0.1,
+                 num_fcs=2,
+                 qkv_bias=True,
+                 act_cfg=dict(type='GELU'),
+                 norm_cfg=dict(type='LN'),
+                 batch_first=True,
+                 **kwargs):
         super().__init__(**kwargs)
-        self.scale = self.channels ** -0.5
+        self.scale = self.channels**-0.5
 
         self.proj = nn.Linear(self.in_channels, self.channels)
-        self.cls_embed = nn.Parameter(torch.randn(1, self.num_classes, self.channels))
+        self.cls_embed = nn.Parameter(
+            torch.randn(1, self.num_classes, self.channels))
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, num_layers)]
         self.blocks = ModuleList()
@@ -110,8 +114,10 @@ class MaskTransformerHead(BaseDecodeHead):
                     norm_cfg=norm_cfg,
                     batch_first=True))
 
-        self.proj_patch = nn.Parameter(self.scale * torch.randn(self.channels, self.channels))
-        self.proj_classes = nn.Parameter(self.scale * torch.randn(self.channels, self.channels))
+        self.proj_patch = nn.Parameter(
+            self.scale * torch.randn(self.channels, self.channels))
+        self.proj_classes = nn.Parameter(
+            self.scale * torch.randn(self.channels, self.channels))
 
         self.decoder_norm = nn.LayerNorm(self.channels)
         self.mask_norm = nn.LayerNorm(self.num_classes)
@@ -131,7 +137,8 @@ class MaskTransformerHead(BaseDecodeHead):
             x = blk(x)
         x = self.decoder_norm(x)
 
-        patches, cls_seg_feat = x[:, : -self.num_classes], x[:, -self.num_classes :]
+        patches, cls_seg_feat = x[:, :-self.num_classes], x[:,
+                                                            -self.num_classes:]
         patches = patches @ self.proj_patch
         cls_seg_feat = cls_seg_feat @ self.proj_classes
 
@@ -140,6 +147,7 @@ class MaskTransformerHead(BaseDecodeHead):
 
         masks = patches @ cls_seg_feat.transpose(1, 2)
         masks = self.mask_norm(masks)
-        output = masks.view(-1, H, W, self.num_classes).permute(0, 3, 1, 2).contiguous()
+        output = masks.view(-1, H, W,
+                            self.num_classes).permute(0, 3, 1, 2).contiguous()
 
         return output
