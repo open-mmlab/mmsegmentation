@@ -107,7 +107,10 @@ def train_segmentor(model,
         eval_cfg = cfg.get('evaluation', {})
         eval_cfg['by_epoch'] = cfg.runner['type'] != 'IterBasedRunner'
         eval_hook = DistEvalHook if distributed else EvalHook
-        runner.register_hook(eval_hook(val_dataloader, **eval_cfg))
+        # In this PR (https://github.com/open-mmlab/mmcv/pull/1193), the
+        # priority of IterTimerHook has been modified from 'NORMAL' to 'LOW'.
+        runner.register_hook(
+            eval_hook(val_dataloader, **eval_cfg), priority='LOW')
 
     if cfg.resume_from:
         runner.resume(cfg.resume_from)

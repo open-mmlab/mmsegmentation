@@ -1,10 +1,10 @@
 import pytest
 import torch
 from mmcv.cnn import ConvModule
-from torch import nn
 
 from mmseg.models.backbones.unet import (BasicConvBlock, DeconvModule,
                                          InterpConv, UNet, UpConvBlock)
+from mmseg.ops import Upsample
 from .utils import check_norm_state
 
 
@@ -145,7 +145,7 @@ def test_interp_conv():
     block = InterpConv(64, 32, conv_first=False)
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
-    assert isinstance(block.interp_upsample[0], nn.Upsample)
+    assert isinstance(block.interp_upsample[0], Upsample)
     assert isinstance(block.interp_upsample[1], ConvModule)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
@@ -154,7 +154,7 @@ def test_interp_conv():
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
     assert isinstance(block.interp_upsample[0], ConvModule)
-    assert isinstance(block.interp_upsample[1], nn.Upsample)
+    assert isinstance(block.interp_upsample[1], Upsample)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
 
     # test InterpConv with bilinear upsample for upsample 2X.
@@ -166,7 +166,7 @@ def test_interp_conv():
             scale_factor=2, mode='bilinear', align_corners=False))
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
-    assert isinstance(block.interp_upsample[0], nn.Upsample)
+    assert isinstance(block.interp_upsample[0], Upsample)
     assert isinstance(block.interp_upsample[1], ConvModule)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
     assert block.interp_upsample[0].mode == 'bilinear'
@@ -179,7 +179,7 @@ def test_interp_conv():
         upsample_cfg=dict(scale_factor=2, mode='nearest'))
     x = torch.randn(1, 64, 128, 128)
     x_out = block(x)
-    assert isinstance(block.interp_upsample[0], nn.Upsample)
+    assert isinstance(block.interp_upsample[0], Upsample)
     assert isinstance(block.interp_upsample[1], ConvModule)
     assert x_out.shape == torch.Size([1, 32, 256, 256])
     assert block.interp_upsample[0].mode == 'nearest'
