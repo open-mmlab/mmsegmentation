@@ -11,12 +11,7 @@ model = dict(
         out_indices=(5, 11, 17, 23),
         final_norm=False,
         with_cls_token=True,
-        output_cls_token=True,
-        # init_cfg=dict(
-        #     type='Pretrained',
-        #     checkpoint='pretrain/vit-l_timm.pth',
-        #     prefix='backbone')
-        ),
+        output_cls_token=True),
     decode_head=dict(
         type='DPTHead',
         in_channels=(1024, 1024, 1024, 1024),

@@ -277,7 +277,7 @@ class DPTHead(BaseDecodeHead):
         for _ in range(len(self.convs)):
             self.fusion_blocks.append(
                 FeatureFusionBlock(self.channels, act_cfg, norm_cfg))
-
+        self.fusion_blocks[0].res_conv_unit1 = None
         self.project = ConvModule(
             self.channels,
             self.channels,
