@@ -10,6 +10,8 @@ from mmcv.runner import get_dist_info
 from mmcv.utils import Registry, build_from_cfg
 from torch.utils.data import DataLoader, DistributedSampler
 
+from mmseg import digit_version
+
 if platform.system() != 'Windows':
     # https://github.com/pytorch/pytorch/issues/973
     import resource
@@ -133,7 +135,7 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    if torch.__version__ >= '1.8.0':
+    if digit_version(torch.__version__) >= digit_version('1.8.0'):
         data_loader = DataLoader(
             dataset,
             batch_size=batch_size,
