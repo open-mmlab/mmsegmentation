@@ -11,6 +11,8 @@ class EvalHook(_EvalHook):
     """Single GPU EvalHook, with efficient test support.
 
     Args:
+        pre_eval (bool): Whether to use progressive mode to evaluate model.
+            Default: False.
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
@@ -56,6 +58,8 @@ class DistEvalHook(_DistEvalHook):
     """Distributed EvalHook, with efficient test support.
 
     Args:
+        pre_eval (bool): Whether to use progressive mode to evaluate model.
+            Default: False.
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
