@@ -1,0 +1,34 @@
+Collections:
+- Name: dpt
+  Metadata:
+    Training Data:
+    - ADE20K
+Models:
+- Name: dpt_vit-b16_512x512_160k_ade20k
+  In Collection: dpt
+  Metadata:
+    backbone: ViT-B
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.97
+      mIoU(ms+flip): 48.34
+  Config: configs/dpt/dpt_vit-b16_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dpt/dpt_vit-b16_512x512_160k_ade20k/dpt_vit-b16_512x512_160k_ade20k-db31cf52.pth
+- Name: dpt_vit-l16_512x512_160k_ade20k
+  In Collection: dpt
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.19
+      mIoU(ms+flip): 46.97
+  Config: configs/dpt/dpt_vit-l16_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dpt/dpt_vit-l16_512x512_160k_ade20k/dpt_vit-l16_512x512_160k_ade20k-7b753ca6.pth
