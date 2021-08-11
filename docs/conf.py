@@ -46,7 +46,9 @@ extensions = [
     'sphinx_markdown_tables',
 ]
 
-autodoc_mock_imports = ['matplotlib', 'pycocotools', 'mmseg.version']
+autodoc_mock_imports = [
+    'matplotlib', 'pycocotools', 'mmseg.version', 'mmcv.ops'
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -79,7 +81,7 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-language = 'zh_CN'
+language = 'en'
 
 
 def builder_inited_handler(app):

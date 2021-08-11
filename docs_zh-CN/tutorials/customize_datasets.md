@@ -75,7 +75,7 @@ dataset_A_train = dict(
 1. 如果您想拼接的数据集是同样的类型，但有不同的标注文件，
     您可以按如下操作去拼接数据集的配置文件：
 
-    1. 您也许可以拼接两个标注文件夹 `ann_dir`。
+    1. 您也许可以拼接两个标注文件夹 `ann_dir`
 
         ```python
         dataset_A_train = dict(
@@ -86,7 +86,7 @@ dataset_A_train = dict(
         )
         ```
 
-    2. 您也可以去拼接两个 `split` 文件列表。
+    2. 您也可以去拼接两个 `split` 文件列表
 
         ```python
         dataset_A_train = dict(
@@ -98,7 +98,7 @@ dataset_A_train = dict(
         )
         ```
 
-    3. 您也可以同时拼接 `ann_dir` 文件夹和 `split` 文件列表。
+    3. 您也可以同时拼接 `ann_dir` 文件夹和 `split` 文件列表
 
         ```python
         dataset_A_train = dict(
@@ -110,7 +110,7 @@ dataset_A_train = dict(
         )
         ```
 
-        在这样的情况下， `ann_dir_1` 和 `ann_dir_2` 分别对应于 `split_1.txt` 和 `split_2.txt`。
+        在这样的情况下， `ann_dir_1` 和 `ann_dir_2` 分别对应于 `split_1.txt` 和 `split_2.txt`
 
 2. 如果您想拼接不同的数据集，您可以如下去拼接数据集的配置文件：
 
@@ -130,7 +130,7 @@ dataset_A_train = dict(
         )
     ```
 
-一个更复杂的例子如下：分别重复 `Dataset_A` 和 `Dataset_B` N 次和 M 次，然后再去拼接重复后的数据集。
+一个更复杂的例子如下：分别重复 `Dataset_A` 和 `Dataset_B` N 次和 M 次，然后再去拼接重复后的数据集
 
 ```python
 dataset_A_train = dict(
