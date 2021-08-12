@@ -10,6 +10,14 @@ Models:
     backbone: ViT-B
     crop size: (512,512)
     lr schd: 160000
+    inference time (ms/im):
+    - value: 96.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 8.09
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
@@ -24,6 +32,14 @@ Models:
     backbone: ViT-L
     crop size: (512,512)
     lr schd: 160000
+    inference time (ms/im):
+    - value: 229.36
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 18.37
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
