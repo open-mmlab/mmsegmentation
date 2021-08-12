@@ -255,6 +255,30 @@ Examples:
   python tools/analyze_logs.py log.json --keys loss --legend loss
   ```
 
+### Model conversion
+
+We provide scripts to convert pretrain models provided by other repos to MMSegmentation format.
+
+#### vit/mit/swin models
+
+- timm vit
+
+  ```shell
+  python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
+  ```
+
+- official swin
+
+  ```shell
+  python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
+  ```
+
+- segformer
+
+  ```shell
+  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
+  ```
+
 ## Model Serving
 
 In order to serve an `MMSegmentation` model with [`TorchServe`](https://pytorch.org/serve/), you can follow the steps:
