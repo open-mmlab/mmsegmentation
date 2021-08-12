@@ -54,7 +54,8 @@ def mit_convert(ckpt):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        'Convert official segformer backbone weights to mmseg style.')
     parser.add_argument(
         'src', help='Source path of official segformer backbone weights.')
     parser.add_argument(
