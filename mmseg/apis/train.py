@@ -106,7 +106,7 @@ def train_segmentor(model,
             shuffle=False)
         eval_cfg = cfg.get('evaluation', {})
         eval_cfg['pre_eval'] = cfg.runner[
-            'pre_eval'] if 'pre_eval' in cfg.runner else True
+            'pre_eval'] if 'pre_eval' in cfg.runner else False
         eval_cfg['by_epoch'] = cfg.runner['type'] != 'IterBasedRunner'
         eval_hook = DistEvalHook if distributed else EvalHook
         # In this PR (https://github.com/open-mmlab/mmcv/pull/1193), the
