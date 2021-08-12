@@ -12,7 +12,7 @@ class SegformerHead(BaseDecodeHead):
     """The all mlp Head of segformer.
 
     This head is the implementation of
-    `Segformer <https://arxiv.org/abs/2105.15203>`
+    `Segformer <https://arxiv.org/abs/2105.15203>` _.
 
     Args:
         interpolate_mode: The interpolate mode of MLP head upsample operation.
