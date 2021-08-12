@@ -296,7 +296,7 @@ docker run --rm \
 mmseg-serve:latest
 ```
 
-阅读关于推理 (8080), 管理 (8081) 和指标 (8082) APis 的 [文档](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) 。
+阅读关于推理 (8080), 管理 (8081) 和指标 (8082) APIs 的 [文档](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) 。
 
 ### 4. 测试部署
 
