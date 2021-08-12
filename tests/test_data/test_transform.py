@@ -10,7 +10,7 @@ from PIL import Image
 from mmseg.datasets.builder import PIPELINES
 
 
-def test_align():
+def test_resize_to_multiple():
     transform = dict(type='ResizeToMultiple', size_divisor=32)
     transform = build_from_cfg(transform, PIPELINES)
 
