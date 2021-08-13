@@ -312,25 +312,38 @@ class ResNet(BaseModule):
 
     Args:
         depth (int): Depth of resnet, from {18, 34, 50, 101, 152}.
-        in_channels (int): Number of input image channels. Default" 3.
+        in_channels (int): Number of input image channels. Default: 3.
         stem_channels (int): Number of stem channels. Default: 64.
         base_channels (int): Number of base channels of res layer. Default: 64.
-        num_stages (int): Resnet stages, normally 4.
+        num_stages (int): Resnet stages, normally 4. Default: 4.
         strides (Sequence[int]): Strides of the first block of each stage.
+            Default: (1, 2, 2, 2).
         dilations (Sequence[int]): Dilation of each stage.
+            Default: (1, 1, 1, 1).
         out_indices (Sequence[int]): Output from which stages.
+            Default: (0, 1, 2, 3).
         style (str): `pytorch` or `caffe`. If set to "pytorch", the stride-two
             layer is the 3x3 conv layer, otherwise the stride-two layer is
-            the first 1x1 conv layer.
-        deep_stem (bool): Replace 7x7 conv in input stem with 3 3x3 conv
+            the first 1x1 conv layer. Default: 'pytorch'.
+        deep_stem (bool): Replace 7x7 conv in input stem with 3 3x3 conv.
+            Default: False.
         avg_down (bool): Use AvgPool instead of stride conv when
-            downsampling in the bottleneck.
+            downsampling in the bottleneck. Default: False.
         frozen_stages (int): Stages to be frozen (stop grad and set eval mode).
-            -1 means not freezing any parameters.
+            -1 means not freezing any parameters. Default: -1.
+        conv_cfg (dict | None): Dictionary to construct and config conv layer.
+            When conv_cfg is None, cfg will be set to dict(type='Conv2d').
+            Default: None.
         norm_cfg (dict): Dictionary to construct and config norm layer.
+            Default: dict(type='BN', requires_grad=True).
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
-            and its variants only.
+            and its variants only. Default: False.
+        dcn (dict | None): Dictionary to construct and config DCN conv layer.
+            When dcn is not None, conv_cfg must be None. Default: None.
+        stage_with_dcn (Sequence[bool]): Whether to set DCN conv for each
+            stage. The length of stage_with_dcn is equal to num_stages.
+            Default: (False, False, False, False).
         plugins (list[dict]): List of plugins for stages, each dict contains:
 
             - cfg (dict, required): Cfg dict to build plugin.
@@ -339,18 +352,19 @@ class ResNet(BaseModule):
             options: 'after_conv1', 'after_conv2', 'after_conv3'.
 
             - stages (tuple[bool], optional): Stages to apply plugin, length
-            should be same as 'num_stages'
+            should be same as 'num_stages'.
+            Default: None.
         multi_grid (Sequence[int]|None): Multi grid dilation rates of last
-            stage. Default: None
+            stage. Default: None.
         contract_dilation (bool): Whether contract first dilation of each layer
-            Default: False
+            Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
-            memory while slowing down the training speed.
+            memory while slowing down the training speed. Default: False.
         zero_init_residual (bool): Whether to use zero init for last norm layer
-            in resblocks to let them behave as identity.
-        pretrained (str, optional): model pretrained path. Default: None
+            in resblocks to let them behave as identity. Default: True.
+        pretrained (str, optional): model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
-            Default: None
+            Default: None.
 
     Example:
         >>> from mmseg.models import ResNet

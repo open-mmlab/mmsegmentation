@@ -1,0 +1,87 @@
+Collections:
+- Name: setr
+  Metadata:
+    Training Data:
+    - ADE20K
+Models:
+- Name: setr_naive_512x512_160k_b16_ade20k
+  In Collection: setr
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 211.86
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 18.4
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.28
+      mIoU(ms+flip): 49.56
+  Config: configs/setr/setr_naive_512x512_160k_b16_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_naive_512x512_160k_b16_ade20k/setr_naive_512x512_160k_b16_ade20k_20210619_191258-061f24f5.pth
+- Name: setr_pup_512x512_160k_b16_ade20k
+  In Collection: setr
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 222.22
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 19.54
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.24
+      mIoU(ms+flip): 49.99
+  Config: configs/setr/setr_pup_512x512_160k_b16_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_pup_512x512_160k_b16_ade20k/setr_pup_512x512_160k_b16_ade20k_20210619_191343-7e0ce826.pth
+- Name: setr_mla_512x512_160k_b8_ade20k
+  In Collection: setr
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+    memory (GB): 10.96
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.34
+      mIoU(ms+flip): 49.05
+  Config: configs/setr/setr_mla_512x512_160k_b8_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_mla_512x512_160k_b8_ade20k/setr_mla_512x512_160k_b8_ade20k_20210619_191118-c6d21df0.pth
+- Name: setr_mla_512x512_160k_b16_ade20k
+  In Collection: setr
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 190.48
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 17.3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.54
+      mIoU(ms+flip): 49.37
+  Config: configs/setr/setr_mla_512x512_160k_b16_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_mla_512x512_160k_b16_ade20k/setr_mla_512x512_160k_b16_ade20k_20210619_191057-f9741de7.pth

@@ -14,6 +14,7 @@ from mmcv.utils import DictAction
 from mmseg.apis import single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models.segmentors.base import BaseSegmentor
+from mmseg.ops import resize
 
 
 class ONNXRuntimeSegmentor(BaseSegmentor):
@@ -52,6 +53,7 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
             self.io_binding.bind_output(name)
         self.cfg = cfg
         self.test_mode = cfg.model.test_cfg.mode
+        self.is_cuda_available = is_cuda_available
 
     def extract_feat(self, imgs):
         raise NotImplementedError('This method is not implemented.')
@@ -64,6 +66,10 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
 
     def simple_test(self, img: torch.Tensor, img_meta: Iterable,
                     **kwargs) -> list:
+        if not self.is_cuda_available:
+            img = img.detach().cpu()
+        elif self.device_id >= 0:
+            img = img.cuda(self.device_id)
         device_type = img.device.type
         self.io_binding.bind_input(
             name='input',
@@ -79,7 +85,7 @@ class ONNXRuntimeSegmentor(BaseSegmentor):
         if not (ori_shape[0] == seg_pred.shape[-2]
                 and ori_shape[1] == seg_pred.shape[-1]):
             seg_pred = torch.from_numpy(seg_pred).float()
-            seg_pred = torch.nn.functional.interpolate(
+            seg_pred = resize(
                 seg_pred, size=tuple(ori_shape[:2]), mode='nearest')
             seg_pred = seg_pred.long().detach().cpu().numpy()
         seg_pred = seg_pred[0]
@@ -127,7 +133,7 @@ class TensorRTSegmentor(BaseSegmentor):
         if not (ori_shape[0] == seg_pred.shape[-2]
                 and ori_shape[1] == seg_pred.shape[-1]):
             seg_pred = torch.from_numpy(seg_pred).float()
-            seg_pred = torch.nn.functional.interpolate(
+            seg_pred = resize(
                 seg_pred, size=tuple(ori_shape[:2]), mode='nearest')
             seg_pred = seg_pred.long().detach().cpu().numpy()
         seg_pred = seg_pred[0]
