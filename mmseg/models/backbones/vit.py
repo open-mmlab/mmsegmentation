@@ -118,10 +118,13 @@ class VisionTransformer(BaseModule):
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
         drop_path_rate (float): stochastic depth rate. Default 0.0
+        deit (bool): Whether ViT with distillation token. Default: False
         with_cls_token (bool): Whether concatenating class token into image
-            tokens as transformer input. Default: True.
-        output_cls_token (bool): Whether output the cls_token. If set True,
-            `with_cls_token` must be True. Default: False.
+            tokens as transformer input. When `deit` is True, cls_token
+            means class token and distillation token. Default: True.
+        output_cls_token (bool): Whether output the cls_token. When `deit`
+            is True, cls_token means class token and distillation token.
+            If set True, `with_cls_token` must be True. Default: False.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
@@ -159,6 +162,7 @@ class VisionTransformer(BaseModule):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
+                 deit=False,
                  with_cls_token=True,
                  output_cls_token=False,
                  norm_cfg=dict(type='LN'),
@@ -203,6 +207,7 @@ class VisionTransformer(BaseModule):
         self.pretrain_style = pretrain_style
         self.pretrained = pretrained
         self.init_cfg = init_cfg
+        self.deit = deit
 
         self.patch_embed = PatchEmbed(
             in_channels=in_channels,
@@ -221,8 +226,13 @@ class VisionTransformer(BaseModule):
         self.with_cls_token = with_cls_token
         self.output_cls_token = output_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
-        self.pos_embed = nn.Parameter(
-            torch.zeros(1, num_patches + 1, embed_dims))
+        if deit:
+            self.dist_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
+            self.pos_embed = nn.Parameter(
+                torch.zeros(1, num_patches + 2, embed_dims))
+        else:
+            self.pos_embed = nn.Parameter(
+                torch.zeros(1, num_patches + 1, embed_dims))
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
         if isinstance(out_indices, int):
@@ -293,7 +303,7 @@ class VisionTransformer(BaseModule):
                     state_dict['pos_embed'] = self.resize_pos_embed(
                         state_dict['pos_embed'],
                         (h // self.patch_size, w // self.patch_size),
-                        (pos_size, pos_size), self.interpolate_mode)
+                        (pos_size, pos_size), self.interpolate_mode, self.deit)
 
             self.load_state_dict(state_dict, False)
 
@@ -338,7 +348,7 @@ class VisionTransformer(BaseModule):
         x_len, pos_len = patched_img.shape[1], pos_embed.shape[1]
         if x_len != pos_len:
             if pos_len == (self.img_size[0] // self.patch_size) * (
-                    self.img_size[1] // self.patch_size) + 1:
+                    self.img_size[1] // self.patch_size) + 1 + self.deit:
                 pos_h = self.img_size[0] // self.patch_size
                 pos_w = self.img_size[1] // self.patch_size
             else:
@@ -347,11 +357,11 @@ class VisionTransformer(BaseModule):
                         pos_embed.shape))
             pos_embed = self.resize_pos_embed(pos_embed, hw_shape,
                                               (pos_h, pos_w),
-                                              self.interpolate_mode)
+                                              self.interpolate_mode, self.deit)
         return self.drop_after_pos(patched_img + pos_embed)
 
     @staticmethod
-    def resize_pos_embed(pos_embed, input_shpae, pos_shape, mode):
+    def resize_pos_embed(pos_embed, input_shpae, pos_shape, mode, deit=False):
         """Resize pos_embed weights.
 
         Resize pos_embed using bicubic interpolate method.
@@ -377,7 +387,12 @@ class VisionTransformer(BaseModule):
             pos_embed_weight, size=input_shpae, align_corners=False, mode=mode)
         cls_token_weight = cls_token_weight.unsqueeze(1)
         pos_embed_weight = torch.flatten(pos_embed_weight, 2).transpose(1, 2)
-        pos_embed = torch.cat((cls_token_weight, pos_embed_weight), dim=1)
+        if deit:
+            dist_token_weight = pos_embed[:, 1:2]
+            pos_embed = torch.cat(
+                (cls_token_weight, dist_token_weight, pos_embed_weight), dim=1)
+        else:
+            pos_embed = torch.cat((cls_token_weight, pos_embed_weight), dim=1)
         return pos_embed
 
     def forward(self, inputs):
@@ -387,12 +402,16 @@ class VisionTransformer(BaseModule):
                                                  self.patch_embed.DW)
         # stole cls_tokens impl from Phil Wang, thanks
         cls_tokens = self.cls_token.expand(B, -1, -1)
-        x = torch.cat((cls_tokens, x), dim=1)
+        if self.deit:
+            dist_tokens = self.dist_token.expand(B, -1, -1)
+            x = torch.cat((cls_tokens, dist_tokens, x), dim=1)
+        else:
+            x = torch.cat((cls_tokens, x), dim=1)
         x = self._pos_embeding(x, hw_shape, self.pos_embed)
 
         if not self.with_cls_token:
             # Remove class token for transformer encoder input
-            x = x[:, 1:]
+            x = x[:, 1 + self.deit:]
 
         outs = []
         for i, layer in enumerate(self.layers):
@@ -403,7 +422,7 @@ class VisionTransformer(BaseModule):
             if i in self.out_indices:
                 if self.with_cls_token:
                     # Remove class token and reshape token for decoder head
-                    out = x[:, 1:]
+                    out = x[:, 1 + self.deit:]
                 else:
                     out = x
                 B, _, C = out.shape
