@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
-from mmcv.cnn import ConvModule, build_upsample_layer
+from mmcv.cnn import ConvModule
+
+from ..builder import build_upsample_layer
 
 
 class UpConvBlock(nn.Module):
