@@ -5,7 +5,7 @@ import torch
 from mmcv.runner import _load_checkpoint
 
 
-def mit_convert(ckpt):
+def convert_mit(ckpt):
     new_ckpt = OrderedDict()
     # Process the concat between q linear weights and kv linear weights
     for k, v in ckpt.items():
@@ -53,7 +53,9 @@ def mit_convert(ckpt):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Convert model keys')
+    parser = argparse.ArgumentParser(
+        description='Convert keys in official pretrained mit models to'
+        'MMSegmentation style.')
     parser.add_argument('src', help='src segmentation model path')
     # The dst path must be a full path of the new checkpoint.
     parser.add_argument('dst', help='save path')
@@ -66,7 +68,7 @@ def main():
         state_dict = checkpoint['model']
     else:
         state_dict = checkpoint
-    weight = mit_convert(state_dict)
+    weight = convert_mit(state_dict)
     with open(args.dst, 'wb') as f:
         torch.save(weight, f)
 

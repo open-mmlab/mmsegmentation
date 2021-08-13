@@ -5,7 +5,7 @@ import torch
 from mmcv.runner import _load_checkpoint
 
 
-def swin_convert(ckpt):
+def convert_swin(ckpt):
     new_ckpt = OrderedDict()
 
     def correct_unfold_reduction_order(x):
@@ -60,7 +60,9 @@ def swin_convert(ckpt):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Convert model keys')
+    parser = argparse.ArgumentParser(
+        description='Convert keys in official pretrained swin models to'
+        'MMSegmentation style.')
     parser.add_argument('src', help='src segmentation model path')
     # The dst path must be a full path of the new checkpoint.
     parser.add_argument('dst', help='save path')
@@ -73,7 +75,7 @@ def main():
         state_dict = checkpoint['model']
     else:
         state_dict = checkpoint
-    weight = swin_convert(state_dict)
+    weight = convert_swin(state_dict)
     with open(args.dst, 'wb') as f:
         torch.save(weight, f)
 

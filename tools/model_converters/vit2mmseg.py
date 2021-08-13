@@ -5,7 +5,7 @@ import torch
 from mmcv.runner import _load_checkpoint
 
 
-def vit_convert(ckpt):
+def convert_vit(ckpt):
 
     new_ckpt = OrderedDict()
 
@@ -41,7 +41,9 @@ def vit_convert(ckpt):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Convert model keys')
+    parser = argparse.ArgumentParser(
+        description='Convert keys in timm pretrained vit models to '
+        'MMSegmentation style.')
     parser.add_argument('src', help='src segmentation model path')
     # The dst path must be a full path of the new checkpoint.
     parser.add_argument('dst', help='save path')
@@ -56,7 +58,7 @@ def main():
         state_dict = checkpoint['model']
     else:
         state_dict = checkpoint
-    weight = vit_convert(state_dict)
+    weight = convert_vit(state_dict)
     with open(args.dst, 'wb') as f:
         torch.save(weight, f)
 

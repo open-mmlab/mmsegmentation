@@ -263,7 +263,7 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
 
 `tools/model_converters/` 提供了若干个预训练权重转换脚本，支持将其他仓库的预训练权重的 key 转换为与 MMSegmentation 相匹配的 key。
 
-#### vit/swin/mit 转换脚本
+#### ViT Swin MiT Transformer 模型
 
 - timm vit
 
