@@ -10,7 +10,7 @@ from .decode_head import BaseDecodeHead
 class SETRUPHead(BaseDecodeHead):
     """Naive upsampling head and Progressive upsampling head of SETR.
 
-    Naive or PUP head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`.
+    Naive or PUP head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`_.
 
     Args:
         norm_layer (dict): Config dict for input normalization.
