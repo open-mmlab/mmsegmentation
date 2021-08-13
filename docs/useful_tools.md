@@ -259,9 +259,11 @@ Examples:
 
 We provide scripts to convert pretrain models provided by other repos to MMSegmentation format.
 
-#### vit/mit/swin models
+#### vit/swin/mit models
 
 - timm vit
+
+  `tools/model_converters/vit2mmseg.py` convert keys in timm pretrained vit models to MMSegmentation style.
 
   ```shell
   python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
@@ -269,11 +271,15 @@ We provide scripts to convert pretrain models provided by other repos to MMSegme
 
 - official swin
 
+  `tools/model_converters/swin2mmseg.py` convert keys in official pretrained swin models to MMSegmentation style.
+
   ```shell
   python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
   ```
 
 - segformer
+
+  `tools/model_converters/mit2mmseg.py` convert keys in official pretrained mit models to MMSegmentation style.
 
   ```shell
   python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
