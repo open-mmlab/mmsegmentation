@@ -2,7 +2,6 @@ import argparse
 from collections import OrderedDict
 
 import torch
-from mmcv.runner import _load_checkpoint
 
 
 def convert_swin(ckpt):
@@ -68,7 +67,7 @@ def main():
     parser.add_argument('dst', help='save path')
     args = parser.parse_args()
 
-    checkpoint = _load_checkpoint(args.src, map_location='cpu')
+    checkpoint = torch.load(args.src, map_location='cpu')
     if 'state_dict' in checkpoint:
         state_dict = checkpoint['state_dict']
     elif 'model' in checkpoint:
