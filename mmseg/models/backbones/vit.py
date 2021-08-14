@@ -13,7 +13,7 @@ from torch.nn.modules.utils import _pair as to_2tuple
 from mmseg.ops import resize
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed, vit_convert
+from ..utils import PatchEmbed
 
 
 class TransformerEncoderLayer(BaseModule):
@@ -271,16 +271,8 @@ class VisionTransformer(BaseModule):
                 self.pretrained, logger=logger, map_location='cpu')
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
-            elif 'model' in checkpoint:
-                state_dict = checkpoint['model']
             else:
                 state_dict = checkpoint
-
-            if self.pretrain_style == 'timm':
-                # Because the refactor of vit is blocked by mmcls,
-                # so we firstly use timm pretrain weights to train
-                # downstream model.
-                state_dict = vit_convert(state_dict)
 
             if 'pos_embed' in state_dict.keys():
                 if self.pos_embed.shape != state_dict['pos_embed'].shape:

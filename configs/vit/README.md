@@ -13,6 +13,18 @@
 }
 ```
 
+## Usage
+
+To use other repos' pre-trained models, convert keys is necessary.
+
+We provide a script `vit2mmseg.py` in the tools directory to convert the key of models from [timm](https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py) to MMSegmentation style.
+
+```bash
+python tools/model_converters/vit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
+```
+
+This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
+
 ## Results and models
 
 ### ADE20K
