@@ -277,12 +277,6 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
   python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
   ```
 
-- segformer
-
-  ```shell
-  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
-  ```
-
 ## 模型服务
 
 为了用 [`TorchServe`](https://pytorch.org/serve/) 服务 `MMSegmentation` 的模型 ， 您可以遵循如下流程:

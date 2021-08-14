@@ -277,14 +277,6 @@ We provide scripts to convert pretrain models provided by other repos to MMSegme
   python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
   ```
 
-- SegFormer
-
-  `tools/model_converters/mit2mmseg.py` convert keys in official pretrained mit models to MMSegmentation style.
-
-  ```shell
-  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
-  ```
-
 ## Model Serving
 
 In order to serve an `MMSegmentation` model with [`TorchServe`](https://pytorch.org/serve/), you can follow the steps:
