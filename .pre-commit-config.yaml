@@ -47,3 +47,4 @@ repos:
         additional_dependencies: [mmcv]
         language: python
         files: ^configs/.*\.md$
+        require_serial: true
