@@ -24,7 +24,7 @@ class LinearTransformerHead(BaseDecodeHead):
     """ Segmenter-Linear
     A PyTorch implement of : `Segmenter: Transformer for Semantic Segmentation`
         https://arxiv.org/abs/2105.05633
-        
+
     Inspiration from
         https://github.com/rstrudel/segmenter
     """
@@ -58,7 +58,7 @@ class MaskTransformerHead(BaseDecodeHead):
     Args:
         num_layers (int): depth of transformer in decoder part. Default: 12.
         num_heads (int): Parallel attention heads. Default: 12.
-        mlp_ratio (int): ratio of mlp hidden dim to embedding dim(self.channels).
+        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
             Default: 4.
         drop_rate (float): Probability of an element to be zeroed
             after the feed forward layer. Default: 0.0.
