@@ -265,16 +265,22 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
 
 #### ViT Swin MiT Transformer 模型
 
-- timm vit
+- ViT
 
   ```shell
   python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
   ```
 
-- official swin
+- Swin
 
   ```shell
   python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
+  ```
+
+- MiT
+
+  ```shell
+  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
   ```
 
 ## 模型服务

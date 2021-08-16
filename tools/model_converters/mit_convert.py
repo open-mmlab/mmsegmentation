@@ -4,7 +4,7 @@ from collections import OrderedDict
 import torch
 
 
-def mit_convert(ckpt):
+def convert_mit(ckpt):
     new_ckpt = OrderedDict()
     # Process the concat between q linear weights and kv linear weights
     for k, v in ckpt.items():
@@ -72,5 +72,5 @@ if __name__ == '__main__':
 
     ckpt = torch.load(src_path, map_location='cpu')
 
-    ckpt = mit_convert(ckpt)
+    ckpt = convert_mit(ckpt)
     torch.save(ckpt, dst_path)
