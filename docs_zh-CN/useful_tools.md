@@ -267,17 +267,23 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
 
 - ViT
 
+`tools/model_converters/vit2mmseg.py` 将 timm 预训练模型转换到 MMSegmentation。
+
   ```shell
   python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
   ```
 
 - Swin
 
+  `tools/model_converters/swin2mmseg.py` 将官方预训练模型转换到 MMSegmentation。
+
   ```shell
   python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
   ```
 
 - SegFormer
+
+  `tools/model_converters/mit2mmseg.py` 将官方预训练模型转换到 MMSegmentation。
 
   ```shell
   python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
