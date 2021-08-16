@@ -277,7 +277,7 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
   python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
   ```
 
-- Segformer
+- SegFormer
 
   ```shell
   python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
