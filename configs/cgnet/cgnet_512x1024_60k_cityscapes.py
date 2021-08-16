@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = ['../_base_/models/cgnet.py', '../_base_/default_runtime.py']
 
 # optimizer

@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = './ocrnet_hr18_512x512_40k_voc12aug.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(

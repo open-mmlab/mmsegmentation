@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # model settings
 norm_cfg = dict(type='SyncBN', eps=1e-03, requires_grad=True)
 model = dict(

@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # dataset settings
 dataset_type = 'PascalContextDataset59'
 data_root = 'data/VOCdevkit/VOC2010/'

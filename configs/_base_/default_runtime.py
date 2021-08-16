@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # yapf:disable
 log_config = dict(
     interval=50,

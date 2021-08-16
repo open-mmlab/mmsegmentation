@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # dataset settings
 dataset_type = 'DRIVEDataset'
 data_root = 'data/DRIVE'
