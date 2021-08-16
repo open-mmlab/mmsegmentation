@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/deeplabv3plus_r50-d8.py',
     '../_base_/datasets/pascal_context_59.py', '../_base_/default_runtime.py',

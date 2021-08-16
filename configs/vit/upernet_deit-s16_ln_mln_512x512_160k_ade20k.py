@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = './upernet_vit-b16_mln_512x512_160k_ade20k.py'
 
 model = dict(

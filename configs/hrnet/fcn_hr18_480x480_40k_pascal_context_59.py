@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/fcn_hr18.py', '../_base_/datasets/pascal_context_59.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'

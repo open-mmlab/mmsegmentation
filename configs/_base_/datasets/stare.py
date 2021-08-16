@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 # dataset settings
 dataset_type = 'STAREDataset'
 data_root = 'data/STARE'

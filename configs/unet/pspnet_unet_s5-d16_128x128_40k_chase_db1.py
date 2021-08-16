@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/pspnet_unet_s5-d16.py',
     '../_base_/datasets/chase_db1.py', '../_base_/default_runtime.py',

@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 # dataset settings
 dataset_type = 'ChaseDB1Dataset'
 data_root = 'data/CHASE_DB1'

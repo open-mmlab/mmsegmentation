@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 # dataset settings
 dataset_type = 'ADE20KDataset'
 data_root = 'data/ade/ADEChallengeData2016'

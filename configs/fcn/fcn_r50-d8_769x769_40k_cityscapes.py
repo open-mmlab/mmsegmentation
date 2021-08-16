@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/fcn_r50-d8.py',
     '../_base_/datasets/cityscapes_769x769.py', '../_base_/default_runtime.py',

@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     './upernet_swin_base_patch4_window12_512x512_160k_ade20k_'
     'pretrain_384x384_1K.py'

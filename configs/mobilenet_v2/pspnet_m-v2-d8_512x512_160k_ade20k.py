@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = '../pspnet/pspnet_r101-d8_512x512_160k_ade20k.py'
 model = dict(
     pretrained='mmcls://mobilenet_v2',
