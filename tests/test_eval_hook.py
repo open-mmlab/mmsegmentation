@@ -64,7 +64,7 @@ def test_iter_eval_hook():
 
     # test EvalHook
     with tempfile.TemporaryDirectory() as tmpdir:
-        eval_hook = EvalHook(data_loader, by_epoch=False)
+        eval_hook = EvalHook(data_loader, by_epoch=False, efficient_test=True)
         runner = mmcv.runner.IterBasedRunner(
             model=model,
             optimizer=optimizer,
@@ -151,7 +151,8 @@ def test_dist_eval_hook():
 
     # test DistEvalHook
     with tempfile.TemporaryDirectory() as tmpdir:
-        eval_hook = DistEvalHook(data_loader, by_epoch=False)
+        eval_hook = DistEvalHook(
+            data_loader, by_epoch=False, efficient_test=True)
         runner = mmcv.runner.IterBasedRunner(
             model=model,
             optimizer=optimizer,
