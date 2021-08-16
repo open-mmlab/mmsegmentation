@@ -277,7 +277,7 @@ Examples:
   python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
   ```
 
-- Segformer
+- SegFormer
 
   `tools/model_converters/mit2mmseg.py` convert keys in official pretrained mit models to MMSegmentation style.
 
