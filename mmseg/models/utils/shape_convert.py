@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 def nlc_to_nchw(x, hw_shape):
     """Convert [N, L, C] shape tensor to [N, C, H, W] shape tensor.
 

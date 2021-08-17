@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.cnn import ConvModule
 from torch import nn
 from torch.utils import checkpoint as cp
