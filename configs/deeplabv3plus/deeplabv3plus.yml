@@ -1,574 +1,574 @@
 Collections:
-- Name: deeplabv3plus
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
     - ' Pascal VOC 2012 + Aug'
     - ' Pascal Context'
     - ' Pascal Context 59'
+  Name: deeplabv3plus
 Models:
-- Name: deeplabv3plus_r50-d8_512x1024_40k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 253.81
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 253.81
+    lr schd: 40000
     memory (GB): 7.5
+  Name: deeplabv3plus_r50-d8_512x1024_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.61
       mIoU(ms+flip): 81.01
-  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes/deeplabv3plus_r50-d8_512x1024_40k_cityscapes_20200605_094610-d222ffcd.pth
-- Name: deeplabv3plus_r101-d8_512x1024_40k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 384.62
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 384.62
+    lr schd: 40000
     memory (GB): 11.0
+  Name: deeplabv3plus_r101-d8_512x1024_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.21
       mIoU(ms+flip): 81.82
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes/deeplabv3plus_r101-d8_512x1024_40k_cityscapes_20200605_094614-3769eecf.pth
-- Name: deeplabv3plus_r50-d8_769x769_40k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 581.4
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 581.4
+    lr schd: 40000
     memory (GB): 8.5
+  Name: deeplabv3plus_r50-d8_769x769_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.97
       mIoU(ms+flip): 80.46
-  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes/deeplabv3plus_r50-d8_769x769_40k_cityscapes_20200606_114143-1dcb0e3c.pth
-- Name: deeplabv3plus_r101-d8_769x769_40k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 869.57
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 869.57
+    lr schd: 40000
     memory (GB): 12.5
+  Name: deeplabv3plus_r101-d8_769x769_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.46
       mIoU(ms+flip): 80.5
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes/deeplabv3plus_r101-d8_769x769_40k_cityscapes_20200606_114304-ff414b9e.pth
-- Name: deeplabv3plus_r18-d8_512x1024_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-18-D8
     crop size: (512,1024)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 70.08
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 70.08
+    lr schd: 80000
     memory (GB): 2.2
+  Name: deeplabv3plus_r18-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.89
       mIoU(ms+flip): 78.76
-  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes/deeplabv3plus_r18-d8_512x1024_80k_cityscapes_20201226_080942-cff257fe.pth
-- Name: deeplabv3plus_r50-d8_512x1024_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
     lr schd: 80000
+  Name: deeplabv3plus_r50-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.09
       mIoU(ms+flip): 81.13
-  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes/deeplabv3plus_r50-d8_512x1024_80k_cityscapes_20200606_114049-f9fb496d.pth
-- Name: deeplabv3plus_r101-d8_512x1024_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
     lr schd: 80000
+  Name: deeplabv3plus_r101-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.97
       mIoU(ms+flip): 82.03
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_20200606_114143-068fcfe9.pth
-- Name: deeplabv3plus_r18-d8_769x769_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_769x769_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-18-D8
     crop size: (769,769)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 174.22
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 174.22
+    lr schd: 80000
     memory (GB): 2.5
+  Name: deeplabv3plus_r18-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.26
       mIoU(ms+flip): 77.91
-  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_769x769_80k_cityscapes/deeplabv3plus_r18-d8_769x769_80k_cityscapes_20201226_083346-f326e06a.pth
-- Name: deeplabv3plus_r50-d8_769x769_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
     lr schd: 80000
+  Name: deeplabv3plus_r50-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.83
       mIoU(ms+flip): 81.48
-  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes/deeplabv3plus_r50-d8_769x769_80k_cityscapes_20200606_210233-0e9dfdc4.pth
-- Name: deeplabv3plus_r101-d8_769x769_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
     lr schd: 80000
+  Name: deeplabv3plus_r101-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.98
       mIoU(ms+flip): 82.18
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20200607_000405-a7573d20.pth
-- Name: deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D16-MG124
     crop size: (512,1024)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 133.69
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 133.69
+    lr schd: 40000
     memory (GB): 5.8
+  Name: deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.09
       mIoU(ms+flip): 80.36
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes_20200908_005644-cf9ce186.pth
-- Name: deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D16-MG124
     crop size: (512,1024)
     lr schd: 80000
     memory (GB): 9.9
+  Name: deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.9
       mIoU(ms+flip): 81.33
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes_20200908_005644-ee6158e0.pth
-- Name: deeplabv3plus_r18b-d8_512x1024_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-18b-D8
     crop size: (512,1024)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 66.89
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 66.89
+    lr schd: 80000
     memory (GB): 2.1
+  Name: deeplabv3plus_r18b-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.87
       mIoU(ms+flip): 77.52
-  Config: configs/deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes_20201226_090828-e451abd9.pth
-- Name: deeplabv3plus_r50b-d8_512x1024_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50b-D8
     crop size: (512,1024)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 253.81
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 253.81
+    lr schd: 80000
     memory (GB): 7.4
+  Name: deeplabv3plus_r50b-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.28
       mIoU(ms+flip): 81.44
-  Config: configs/deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes_20201225_213645-a97e4e43.pth
-- Name: deeplabv3plus_r101b-d8_512x1024_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101b-D8
     crop size: (512,1024)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 384.62
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 384.62
+    lr schd: 80000
     memory (GB): 10.9
+  Name: deeplabv3plus_r101b-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.16
       mIoU(ms+flip): 81.41
-  Config: configs/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes_20201226_190843-9c3c93a4.pth
-- Name: deeplabv3plus_r18b-d8_769x769_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-18b-D8
     crop size: (769,769)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 167.79
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 167.79
+    lr schd: 80000
     memory (GB): 2.4
+  Name: deeplabv3plus_r18b-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.36
       mIoU(ms+flip): 78.24
-  Config: configs/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes_20201226_151312-2c868aff.pth
-- Name: deeplabv3plus_r50b-d8_769x769_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r50b-d8_769x769_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50b-D8
     crop size: (769,769)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 581.4
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 581.4
+    lr schd: 80000
     memory (GB): 8.4
+  Name: deeplabv3plus_r50b-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.41
       mIoU(ms+flip): 80.56
-  Config: configs/deeplabv3plus/deeplabv3plus_r50b-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_769x769_80k_cityscapes/deeplabv3plus_r50b-d8_769x769_80k_cityscapes_20201225_224655-8b596d1c.pth
-- Name: deeplabv3plus_r101b-d8_769x769_80k_cityscapes
+- Config: configs/deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101b-D8
     crop size: (769,769)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 909.09
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 909.09
+    lr schd: 80000
     memory (GB): 12.3
+  Name: deeplabv3plus_r101b-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.88
       mIoU(ms+flip): 81.46
-  Config: configs/deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes/deeplabv3plus_r101b-d8_769x769_80k_cityscapes_20201226_205041-227cdf7c.pth
-- Name: deeplabv3plus_r50-d8_512x512_80k_ade20k
+- Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 47.6
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 47.6
+    lr schd: 80000
     memory (GB): 10.6
+  Name: deeplabv3plus_r50-d8_512x512_80k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.72
       mIoU(ms+flip): 43.75
-  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028-bf1400d8.pth
-- Name: deeplabv3plus_r101-d8_512x512_80k_ade20k
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 70.62
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 70.62
+    lr schd: 80000
     memory (GB): 14.1
+  Name: deeplabv3plus_r101-d8_512x512_80k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 44.6
       mIoU(ms+flip): 46.06
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k/deeplabv3plus_r101-d8_512x512_80k_ade20k_20200615_014139-d5730af7.pth
-- Name: deeplabv3plus_r50-d8_512x512_160k_ade20k
+- Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 160000
+  Name: deeplabv3plus_r50-d8_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.95
       mIoU(ms+flip): 44.93
-  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k/deeplabv3plus_r50-d8_512x512_160k_ade20k_20200615_124504-6135c7e0.pth
-- Name: deeplabv3plus_r101-d8_512x512_160k_ade20k
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 160000
+  Name: deeplabv3plus_r101-d8_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.47
       mIoU(ms+flip): 46.35
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k/deeplabv3plus_r101-d8_512x512_160k_ade20k_20200615_123232-38ed86bb.pth
-- Name: deeplabv3plus_r50-d8_512x512_20k_voc12aug
+- Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
-    lr schd: 20000
     inference time (ms/im):
-    - value: 47.62
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 47.62
+    lr schd: 20000
     memory (GB): 7.6
+  Name: deeplabv3plus_r50-d8_512x512_20k_voc12aug
   Results:
-    Task: Semantic Segmentation
     Dataset: ' Pascal VOC 2012 + Aug'
     Metrics:
       mIoU: 75.93
       mIoU(ms+flip): 77.5
-  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug/deeplabv3plus_r50-d8_512x512_20k_voc12aug_20200617_102323-aad58ef1.pth
-- Name: deeplabv3plus_r101-d8_512x512_20k_voc12aug
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
-    lr schd: 20000
     inference time (ms/im):
-    - value: 72.05
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 72.05
+    lr schd: 20000
     memory (GB): 11.0
+  Name: deeplabv3plus_r101-d8_512x512_20k_voc12aug
   Results:
-    Task: Semantic Segmentation
     Dataset: ' Pascal VOC 2012 + Aug'
     Metrics:
       mIoU: 77.22
       mIoU(ms+flip): 78.59
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug/deeplabv3plus_r101-d8_512x512_20k_voc12aug_20200617_102345-c7ff3d56.pth
-- Name: deeplabv3plus_r50-d8_512x512_40k_voc12aug
+- Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 40000
+  Name: deeplabv3plus_r50-d8_512x512_40k_voc12aug
   Results:
-    Task: Semantic Segmentation
     Dataset: ' Pascal VOC 2012 + Aug'
     Metrics:
       mIoU: 76.81
       mIoU(ms+flip): 77.57
-  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug/deeplabv3plus_r50-d8_512x512_40k_voc12aug_20200613_161759-e1b43aa9.pth
-- Name: deeplabv3plus_r101-d8_512x512_40k_voc12aug
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 40000
+  Name: deeplabv3plus_r101-d8_512x512_40k_voc12aug
   Results:
-    Task: Semantic Segmentation
     Dataset: ' Pascal VOC 2012 + Aug'
     Metrics:
       mIoU: 78.62
       mIoU(ms+flip): 79.53
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug/deeplabv3plus_r101-d8_512x512_40k_voc12aug_20200613_205333-faf03387.pth
-- Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 110.01
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (480,480)
+      value: 110.01
+    lr schd: 40000
+  Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context
   Results:
-    Task: Semantic Segmentation
     Dataset: ' Pascal Context'
     Metrics:
       mIoU: 47.3
       mIoU(ms+flip): 48.47
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context/deeplabv3plus_r101-d8_480x480_40k_pascal_context_20200911_165459-d3c8a29e.pth
-- Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
     lr schd: 80000
+  Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context
   Results:
-    Task: Semantic Segmentation
     Dataset: ' Pascal Context'
     Metrics:
       mIoU: 47.23
       mIoU(ms+flip): 48.26
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context/deeplabv3plus_r101-d8_480x480_80k_pascal_context_20200911_155322-145d3ee8.pth
-- Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context_59
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
     lr schd: 40000
+  Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context_59
   Results:
-    Task: Semantic Segmentation
     Dataset: ' Pascal Context 59'
     Metrics:
       mIoU: 52.86
       mIoU(ms+flip): 54.54
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59_20210416_111233-ed937f15.pth
-- Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context_59
+- Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59.py
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
     lr schd: 80000
+  Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context_59
   Results:
-    Task: Semantic Segmentation
     Dataset: ' Pascal Context 59'
     Metrics:
       mIoU: 53.2
       mIoU(ms+flip): 54.67
-  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59_20210416_111127-7ca0331d.pth

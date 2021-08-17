@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from .ann_head import ANNHead
 from .apc_head import APCHead
 from .aspp_head import ASPPHead

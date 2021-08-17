@@ -1,28 +1,28 @@
 Collections:
-- Name: fastscnn
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
+  Name: fastscnn
 Models:
-- Name: fast_scnn_lr0.12_8x4_160k_cityscapes
+- Config: configs/fastscnn/fast_scnn_lr0.12_8x4_160k_cityscapes.py
   In Collection: fastscnn
   Metadata:
     backbone: Fast-SCNN
     crop size: (512,1024)
-    lr schd: 160000
     inference time (ms/im):
-    - value: 17.71
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 17.71
+    lr schd: 160000
     memory (GB): 3.3
+  Name: fast_scnn_lr0.12_8x4_160k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 70.96
       mIoU(ms+flip): 72.65
-  Config: configs/fastscnn/fast_scnn_lr0.12_8x4_160k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_8x4_160k_lr0.12_cityscapes-0cec9937.pth

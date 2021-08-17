@@ -1,95 +1,95 @@
 Collections:
-- Name: point_rend
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
+  Name: point_rend
 Models:
-- Name: pointrend_r50_512x1024_80k_cityscapes
+- Config: configs/point_rend/pointrend_r50_512x1024_80k_cityscapes.py
   In Collection: point_rend
   Metadata:
     backbone: R-50
     crop size: (512,1024)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 117.92
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 117.92
+    lr schd: 80000
     memory (GB): 3.1
+  Name: pointrend_r50_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.47
       mIoU(ms+flip): 78.13
-  Config: configs/point_rend/pointrend_r50_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r50_512x1024_80k_cityscapes/pointrend_r50_512x1024_80k_cityscapes_20200711_015821-bb1ff523.pth
-- Name: pointrend_r101_512x1024_80k_cityscapes
+- Config: configs/point_rend/pointrend_r101_512x1024_80k_cityscapes.py
   In Collection: point_rend
   Metadata:
     backbone: R-101
     crop size: (512,1024)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 142.86
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 142.86
+    lr schd: 80000
     memory (GB): 4.2
+  Name: pointrend_r101_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.3
       mIoU(ms+flip): 79.97
-  Config: configs/point_rend/pointrend_r101_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r101_512x1024_80k_cityscapes/pointrend_r101_512x1024_80k_cityscapes_20200711_170850-d0ca84be.pth
-- Name: pointrend_r50_512x512_160k_ade20k
+- Config: configs/point_rend/pointrend_r50_512x512_160k_ade20k.py
   In Collection: point_rend
   Metadata:
     backbone: R-50
     crop size: (512,512)
-    lr schd: 160000
     inference time (ms/im):
-    - value: 57.77
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 57.77
+    lr schd: 160000
     memory (GB): 5.1
+  Name: pointrend_r50_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 37.64
       mIoU(ms+flip): 39.17
-  Config: configs/point_rend/pointrend_r50_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r50_512x512_160k_ade20k/pointrend_r50_512x512_160k_ade20k_20200807_232644-ac3febf2.pth
-- Name: pointrend_r101_512x512_160k_ade20k
+- Config: configs/point_rend/pointrend_r101_512x512_160k_ade20k.py
   In Collection: point_rend
   Metadata:
     backbone: R-101
     crop size: (512,512)
-    lr schd: 160000
     inference time (ms/im):
-    - value: 64.52
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 64.52
+    lr schd: 160000
     memory (GB): 6.1
+  Name: pointrend_r101_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 40.02
       mIoU(ms+flip): 41.6
-  Config: configs/point_rend/pointrend_r101_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r101_512x512_160k_ade20k/pointrend_r101_512x512_160k_ade20k_20200808_030852-8834902a.pth

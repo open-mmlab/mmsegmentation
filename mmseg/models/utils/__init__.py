@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from .ckpt_convert import swin_convert, vit_convert
 from .embed import PatchEmbed
 from .inverted_residual import InvertedResidual, InvertedResidualV3

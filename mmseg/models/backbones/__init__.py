@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from .cgnet import CGNet
 from .fast_scnn import FastSCNN
 from .hrnet import HRNet
