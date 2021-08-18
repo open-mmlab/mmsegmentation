@@ -23,11 +23,11 @@ from .sep_fcn_head import DepthwiseSeparableFCNHead
 from .setr_mla_head import SETRMLAHead
 from .setr_up_head import SETRUPHead
 from .uper_head import UPerHead
-
+from .psp_crf_head import PSPCRFHead
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
     'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
     'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
-    'SETRMLAHead', 'SegformerHead'
+    'SETRMLAHead', 'SegformerHead','PSPCRFHead'
 ]
