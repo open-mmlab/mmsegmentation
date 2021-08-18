@@ -1,296 +1,296 @@
 Collections:
-- Name: ann
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
     - Pascal VOC 2012 + Aug
+  Name: ann
 Models:
-- Name: ann_r50-d8_512x1024_40k_cityscapes
+- Config: configs/ann/ann_r50-d8_512x1024_40k_cityscapes.py
   In Collection: ann
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 269.54
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 269.54
+    lr schd: 40000
     memory (GB): 6.0
+  Name: ann_r50-d8_512x1024_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.4
       mIoU(ms+flip): 78.57
-  Config: configs/ann/ann_r50-d8_512x1024_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth
-- Name: ann_r101-d8_512x1024_40k_cityscapes
+- Config: configs/ann/ann_r101-d8_512x1024_40k_cityscapes.py
   In Collection: ann
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 392.16
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 392.16
+    lr schd: 40000
     memory (GB): 9.5
+  Name: ann_r101-d8_512x1024_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.55
       mIoU(ms+flip): 78.85
-  Config: configs/ann/ann_r101-d8_512x1024_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243-adf6eece.pth
-- Name: ann_r50-d8_769x769_40k_cityscapes
+- Config: configs/ann/ann_r50-d8_769x769_40k_cityscapes.py
   In Collection: ann
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 588.24
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 588.24
+    lr schd: 40000
     memory (GB): 6.8
+  Name: ann_r50-d8_769x769_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.89
       mIoU(ms+flip): 80.46
-  Config: configs/ann/ann_r50-d8_769x769_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712-2b46b04d.pth
-- Name: ann_r101-d8_769x769_40k_cityscapes
+- Config: configs/ann/ann_r101-d8_769x769_40k_cityscapes.py
   In Collection: ann
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 869.57
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 869.57
+    lr schd: 40000
     memory (GB): 10.7
+  Name: ann_r101-d8_769x769_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.32
       mIoU(ms+flip): 80.94
-  Config: configs/ann/ann_r101-d8_769x769_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720-059bff28.pth
-- Name: ann_r50-d8_512x1024_80k_cityscapes
+- Config: configs/ann/ann_r50-d8_512x1024_80k_cityscapes.py
   In Collection: ann
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
     lr schd: 80000
+  Name: ann_r50-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.34
       mIoU(ms+flip): 78.65
-  Config: configs/ann/ann_r50-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911-5a9ad545.pth
-- Name: ann_r101-d8_512x1024_80k_cityscapes
+- Config: configs/ann/ann_r101-d8_512x1024_80k_cityscapes.py
   In Collection: ann
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
     lr schd: 80000
+  Name: ann_r101-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.14
       mIoU(ms+flip): 78.81
-  Config: configs/ann/ann_r101-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728-aceccc6e.pth
-- Name: ann_r50-d8_769x769_80k_cityscapes
+- Config: configs/ann/ann_r50-d8_769x769_80k_cityscapes.py
   In Collection: ann
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
     lr schd: 80000
+  Name: ann_r50-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.88
       mIoU(ms+flip): 80.57
-  Config: configs/ann/ann_r50-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426-cc7ff323.pth
-- Name: ann_r101-d8_769x769_80k_cityscapes
+- Config: configs/ann/ann_r101-d8_769x769_80k_cityscapes.py
   In Collection: ann
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
     lr schd: 80000
+  Name: ann_r101-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.8
       mIoU(ms+flip): 80.34
-  Config: configs/ann/ann_r101-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713-a9d4be8d.pth
-- Name: ann_r50-d8_512x512_80k_ade20k
+- Config: configs/ann/ann_r50-d8_512x512_80k_ade20k.py
   In Collection: ann
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 47.6
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 47.6
+    lr schd: 80000
     memory (GB): 9.1
+  Name: ann_r50-d8_512x512_80k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.01
       mIoU(ms+flip): 42.3
-  Config: configs/ann/ann_r50-d8_512x512_80k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818-26f75e11.pth
-- Name: ann_r101-d8_512x512_80k_ade20k
+- Config: configs/ann/ann_r101-d8_512x512_80k_ade20k.py
   In Collection: ann
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 70.82
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 70.82
+    lr schd: 80000
     memory (GB): 12.5
+  Name: ann_r101-d8_512x512_80k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.94
       mIoU(ms+flip): 44.18
-  Config: configs/ann/ann_r101-d8_512x512_80k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818-c0153543.pth
-- Name: ann_r50-d8_512x512_160k_ade20k
+- Config: configs/ann/ann_r50-d8_512x512_160k_ade20k.py
   In Collection: ann
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 160000
+  Name: ann_r50-d8_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.74
       mIoU(ms+flip): 42.62
-  Config: configs/ann/ann_r50-d8_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733-892247bc.pth
-- Name: ann_r101-d8_512x512_160k_ade20k
+- Config: configs/ann/ann_r101-d8_512x512_160k_ade20k.py
   In Collection: ann
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 160000
+  Name: ann_r101-d8_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.94
       mIoU(ms+flip): 44.06
-  Config: configs/ann/ann_r101-d8_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733-955eb1ec.pth
-- Name: ann_r50-d8_512x512_20k_voc12aug
+- Config: configs/ann/ann_r50-d8_512x512_20k_voc12aug.py
   In Collection: ann
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
-    lr schd: 20000
     inference time (ms/im):
-    - value: 47.8
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 47.8
+    lr schd: 20000
     memory (GB): 6.0
+  Name: ann_r50-d8_512x512_20k_voc12aug
   Results:
-    Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 74.86
       mIoU(ms+flip): 76.13
-  Config: configs/ann/ann_r50-d8_512x512_20k_voc12aug.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246-dfcb1c62.pth
-- Name: ann_r101-d8_512x512_20k_voc12aug
+- Config: configs/ann/ann_r101-d8_512x512_20k_voc12aug.py
   In Collection: ann
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
-    lr schd: 20000
     inference time (ms/im):
-    - value: 71.74
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 71.74
+    lr schd: 20000
     memory (GB): 9.5
+  Name: ann_r101-d8_512x512_20k_voc12aug
   Results:
-    Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.47
       mIoU(ms+flip): 78.7
-  Config: configs/ann/ann_r101-d8_512x512_20k_voc12aug.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246-2fad0042.pth
-- Name: ann_r50-d8_512x512_40k_voc12aug
+- Config: configs/ann/ann_r50-d8_512x512_40k_voc12aug.py
   In Collection: ann
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 40000
+  Name: ann_r50-d8_512x512_40k_voc12aug
   Results:
-    Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.56
       mIoU(ms+flip): 77.51
-  Config: configs/ann/ann_r50-d8_512x512_40k_voc12aug.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314-b5dac322.pth
-- Name: ann_r101-d8_512x512_40k_voc12aug
+- Config: configs/ann/ann_r101-d8_512x512_40k_voc12aug.py
   In Collection: ann
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 40000
+  Name: ann_r101-d8_512x512_40k_voc12aug
   Results:
-    Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.7
       mIoU(ms+flip): 78.06
-  Config: configs/ann/ann_r101-d8_512x512_40k_voc12aug.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314-bd205bbe.pth

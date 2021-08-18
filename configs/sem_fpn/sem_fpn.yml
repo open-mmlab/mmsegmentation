@@ -1,95 +1,95 @@
 Collections:
-- Name: sem_fpn
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
+  Name: sem_fpn
 Models:
-- Name: fpn_r50_512x1024_80k_cityscapes
+- Config: configs/sem_fpn/fpn_r50_512x1024_80k_cityscapes.py
   In Collection: sem_fpn
   Metadata:
     backbone: R-50
     crop size: (512,1024)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 73.86
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 73.86
+    lr schd: 80000
     memory (GB): 2.8
+  Name: fpn_r50_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.52
       mIoU(ms+flip): 76.08
-  Config: configs/sem_fpn/fpn_r50_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x1024_80k_cityscapes/fpn_r50_512x1024_80k_cityscapes_20200717_021437-94018a0d.pth
-- Name: fpn_r101_512x1024_80k_cityscapes
+- Config: configs/sem_fpn/fpn_r101_512x1024_80k_cityscapes.py
   In Collection: sem_fpn
   Metadata:
     backbone: R-101
     crop size: (512,1024)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 97.18
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 97.18
+    lr schd: 80000
     memory (GB): 3.9
+  Name: fpn_r101_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.8
       mIoU(ms+flip): 77.4
-  Config: configs/sem_fpn/fpn_r101_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x1024_80k_cityscapes/fpn_r101_512x1024_80k_cityscapes_20200717_012416-c5800d4c.pth
-- Name: fpn_r50_512x512_160k_ade20k
+- Config: configs/sem_fpn/fpn_r50_512x512_160k_ade20k.py
   In Collection: sem_fpn
   Metadata:
     backbone: R-50
     crop size: (512,512)
-    lr schd: 160000
     inference time (ms/im):
-    - value: 17.93
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 17.93
+    lr schd: 160000
     memory (GB): 4.9
+  Name: fpn_r50_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 37.49
       mIoU(ms+flip): 39.09
-  Config: configs/sem_fpn/fpn_r50_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x512_160k_ade20k/fpn_r50_512x512_160k_ade20k_20200718_131734-5b5a6ab9.pth
-- Name: fpn_r101_512x512_160k_ade20k
+- Config: configs/sem_fpn/fpn_r101_512x512_160k_ade20k.py
   In Collection: sem_fpn
   Metadata:
     backbone: R-101
     crop size: (512,512)
-    lr schd: 160000
     inference time (ms/im):
-    - value: 24.64
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 24.64
+    lr schd: 160000
     memory (GB): 5.9
+  Name: fpn_r101_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.35
       mIoU(ms+flip): 40.72
-  Config: configs/sem_fpn/fpn_r101_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x512_160k_ade20k/fpn_r101_512x512_160k_ade20k_20200718_131734-306b5004.pth
