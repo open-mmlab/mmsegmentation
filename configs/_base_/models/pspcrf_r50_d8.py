@@ -21,7 +21,7 @@ model = dict(
         upsample_cfg=dict(type='InterpConv'),
         norm_eval=False),
     decode_head=dict(
-        type='PSPCRFHead',
+        type='PSPHead',
         in_channels=64,
         in_index=4,
         channels=16,
