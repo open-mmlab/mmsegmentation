@@ -309,8 +309,7 @@ def eval_metrics(results,
         elif metric == 'mFscore':
             precision = total_area_intersect / total_area_pred_label
             recall = total_area_intersect / total_area_label
-            f_value = torch.tensor(
-                [f_score(x[0], x[1], beta) for x in zip(precision, recall)])
+            f_value = f_score(precision, recall, beta)
             ret_metrics['Fscore'] = f_value
             ret_metrics['Precision'] = precision
             ret_metrics['Recall'] = recall

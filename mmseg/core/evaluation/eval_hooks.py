@@ -20,8 +20,6 @@ class EvalHook(_EvalHook):
         list: The prediction results.
     """
 
-    greater_keys = ['mIoU', 'mAcc', 'aAcc']
-
     def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         self.efficient_test = efficient_test
@@ -32,6 +30,7 @@ class EvalHook(_EvalHook):
             return
 
         from mmseg.apis import single_gpu_test
+        runner.log_buffer.clear()
         results = single_gpu_test(
             runner.model,
             self.dataloader,
@@ -55,8 +54,6 @@ class DistEvalHook(_DistEvalHook):
     Returns:
         list: The prediction results.
     """
-
-    greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
     def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
@@ -85,6 +82,7 @@ class DistEvalHook(_DistEvalHook):
             tmpdir = osp.join(runner.work_dir, '.eval_hook')
 
         from mmseg.apis import multi_gpu_test
+        runner.log_buffer.clear()
         results = multi_gpu_test(
             runner.model,
             self.dataloader,
