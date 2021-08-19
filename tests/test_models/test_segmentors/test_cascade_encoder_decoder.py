@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmcv import ConfigDict
 
 from mmseg.models import build_segmentor

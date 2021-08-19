@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import os.path as osp
 
@@ -8,6 +9,26 @@ from mmcv.utils import build_from_cfg
 from PIL import Image
 
 from mmseg.datasets.builder import PIPELINES
+
+
+def test_resize_to_multiple():
+    transform = dict(type='ResizeToMultiple', size_divisor=32)
+    transform = build_from_cfg(transform, PIPELINES)
+
+    img = np.random.randn(213, 232, 3)
+    seg = np.random.randint(0, 19, (213, 232))
+    results = dict()
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['pad_shape'] = img.shape
+
+    results = transform(results)
+    assert results['img'].shape == (224, 256, 3)
+    assert results['gt_semantic_seg'].shape == (224, 256)
+    assert results['img_shape'] == (224, 256, 3)
+    assert results['pad_shape'] == (224, 256, 3)
 
 
 def test_resize():
