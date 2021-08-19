@@ -160,7 +160,7 @@ class PreActResidualConvUnit(BaseModule):
 
 
 class FeatureFusionBlock(BaseModule):
-    """FeatureFusionBlock, merge feature map from different stage.
+    """FeatureFusionBlock, merge feature map from different stages.
 
     Args:
         in_channels (int): Input channels.
@@ -230,6 +230,7 @@ class DPTHead(BaseDecodeHead):
 
     Args:
         embed_dims (int): The embed dimension of the ViT backbone.
+            Default: 768.
         post_process_channels (List): Out channels of post process conv
             layers. Default: [96, 192, 384, 768].
         readout_type (str): Type of readout operation. Default: 'ignore'.
