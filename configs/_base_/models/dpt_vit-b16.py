@@ -11,7 +11,6 @@ model = dict(
         out_indices=(2, 5, 8, 11),
         final_norm=False,
         with_cls_token=True,
-        with_cp=True,
         output_cls_token=True),
     decode_head=dict(
         type='DPTHead',
