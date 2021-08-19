@@ -1,36 +1,24 @@
-_base_ = [
-    '../_base_/models/dpt_vit-l16.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
-]
+_base_ = './dpt_vit-b16_512x512_160k_ade20k.py'
 
-model = dict(decode_head=dict(num_classes=150))
-
-# AdamW optimizer, no weight decay for position embedding & layer norm
-# in backbone
-optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=0.00006,
-    betas=(0.9, 0.999),
-    weight_decay=0.01,
-    paramwise_cfg=dict(
-        custom_keys={
-            'pos_embed': dict(decay_mult=0.),
-            'cls_token': dict(decay_mult=0.),
-            'norm': dict(decay_mult=0.)
-        }))
-
-lr_config = dict(
-    _delete_=True,
-    policy='poly',
-    warmup='linear',
-    warmup_iters=1500,
-    warmup_ratio=1e-6,
-    power=1.0,
-    min_lr=0.0,
-    by_epoch=False)
-
-# By default, models are trained on 8 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=2)
-
-cudnn_benchmark = False
+model = dict(
+    type='EncoderDecoder',
+    pretrained='pretrain/vit-l16_p16_384.pth', # noqa
+    backbone=dict(
+        type='VisionTransformer',
+        img_size=384,
+        embed_dims=1024,
+        num_heads=16,
+        num_layers=24,
+        out_indices=(5, 11, 17, 23),
+        final_norm=False,
+        with_cls_token=True,
+        output_cls_token=True),
+    decode_head=dict(
+        type='DPTHead',
+        in_channels=(1024, 1024, 1024, 1024),
+        channels=256,
+        embed_dims=1024,
+        post_process_channels=[256, 512, 1024, 1024]),
+    # model training and testing settings
+    train_cfg=dict(),
+    test_cfg=dict(mode='whole'))  # yapf: disable
