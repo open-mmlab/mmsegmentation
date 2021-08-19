@@ -11,13 +11,13 @@ class EvalHook(_EvalHook):
     """Single GPU EvalHook, with efficient test support.
 
     Args:
-        pre_eval (bool): Whether to use progressive mode to evaluate model.
-            Default: False.
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
+        pre_eval (bool): Whether to use progressive mode to evaluate model.
+            Default: False.
     Returns:
         list: The prediction results.
     """
@@ -26,9 +26,9 @@ class EvalHook(_EvalHook):
 
     def __init__(self,
                  *args,
-                 pre_eval=False,
                  by_epoch=False,
                  efficient_test=False,
+                 pre_eval=False,
                  **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         self.pre_eval = pre_eval
@@ -58,13 +58,13 @@ class DistEvalHook(_DistEvalHook):
     """Distributed EvalHook, with efficient test support.
 
     Args:
-        pre_eval (bool): Whether to use progressive mode to evaluate model.
-            Default: False.
         by_epoch (bool): Determine perform evaluation by epoch or by iteration.
             If set to True, it will perform by epoch. Otherwise, by iteration.
             Default: False.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
+        pre_eval (bool): Whether to use progressive mode to evaluate model.
+            Default: False.
     Returns:
         list: The prediction results.
     """
@@ -73,9 +73,9 @@ class DistEvalHook(_DistEvalHook):
 
     def __init__(self,
                  *args,
-                 pre_eval=False,
                  by_epoch=False,
                  efficient_test=False,
+                 pre_eval=False,
                  **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         self.pre_eval = pre_eval

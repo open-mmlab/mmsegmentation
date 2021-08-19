@@ -42,7 +42,7 @@ def test_single_gpu():
     )
     model = ExampleModel()
 
-    # Test efficient test compatibility (deprecated)
+    # Test efficient test compatibility (will be deprecated)
     results = single_gpu_test(model, data_loader, efficient_test=True)
     assert len(results) == 1
     pred = np.load(results[0])
