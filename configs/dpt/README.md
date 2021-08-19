@@ -20,15 +20,15 @@
 }
 ```
 
-## How to use ViT pretrain weights
+## How to use ViT pretrained weights
 
-We convert the backbone weights from the pytorch-image-models repo (https://github.com/rwightman/pytorch-image-models) with `tools/model_converters/vit_convert.py`.
+We convert the backbone weights from the pytorch-image-models repository (https://github.com/rwightman/pytorch-image-models) with `tools/model_converters/vit_convert.py`.
 
-You may follow below steps to start segformer training preparation:
+You may follow below steps to start DPT training preparation:
 
-1. Download segformer pretrain weights (Suggest put in `pretrain/`);
-2. Run convert script to convert official pretrain weights: `python tools/model_converters/vit_convert.py pretrain/vit_timm.pth pretrain/vit-b16__p16_224.pth`;
-3. Modify `pretrained` of VisionTransformer model config, for example, `pretrained` of `dpt_vit-b16.py` is set to `pretrain/vit-b16_p16_224.pth`;
+1. Download ViT pretrained weights (Suggest put in `pretrain/`);
+2. Run convert script to convert official pretrained weights: `python tools/model_converters/vit_convert.py pretrain/vit-timm.pth pretrain/vit-mmseg.pth`;
+3. Modify `pretrained` of VisionTransformer model config, for example, `pretrained` of `dpt_vit-b16.py` is set to `pretrain/vit-mmseg.pth`;
 
 ## Results and models
 
