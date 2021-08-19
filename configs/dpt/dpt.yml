@@ -1,50 +1,50 @@
 Collections:
-- Name: dpt
-  Metadata:
+- Metadata:
     Training Data:
     - ADE20K
+  Name: dpt
 Models:
-- Name: dpt_vit-b16_512x512_160k_ade20k
+- Config: configs/dpt/dpt_vit-b16_512x512_160k_ade20k.py
   In Collection: dpt
   Metadata:
     backbone: ViT-B
     crop size: (512,512)
-    lr schd: 160000
     inference time (ms/im):
-    - value: 96.06
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 96.06
+    lr schd: 160000
     memory (GB): 8.09
+  Name: dpt_vit-b16_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 46.97
       mIoU(ms+flip): 48.34
-  Config: configs/dpt/dpt_vit-b16_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dpt/dpt_vit-b16_512x512_160k_ade20k/dpt_vit-b16_512x512_160k_ade20k-db31cf52.pth
-- Name: dpt_vit-l16_512x512_160k_ade20k
+- Config: configs/dpt/dpt_vit-l16_512x512_160k_ade20k.py
   In Collection: dpt
   Metadata:
     backbone: ViT-L
     crop size: (512,512)
-    lr schd: 160000
     inference time (ms/im):
-    - value: 229.36
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 229.36
+    lr schd: 160000
     memory (GB): 18.37
+  Name: dpt_vit-l16_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 46.19
       mIoU(ms+flip): 46.97
-  Config: configs/dpt/dpt_vit-l16_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dpt/dpt_vit-l16_512x512_160k_ade20k/dpt_vit-l16_512x512_160k_ade20k-7b753ca6.pth
