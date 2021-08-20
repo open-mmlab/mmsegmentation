@@ -17,7 +17,7 @@ def parse_args():
     parser.add_argument(
         '--out',
         type=str,
-        default='batch_test_metric_info.json',
+        default='benchmark_evaluation_info.json',
         help='output path of gathered metrics and compared '
         'results to be stored')
 
