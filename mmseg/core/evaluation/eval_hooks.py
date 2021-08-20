@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
+import warnings
 
 import torch.distributed as dist
 from mmcv.runner import DistEvalHook as _DistEvalHook
@@ -16,15 +17,28 @@ class EvalHook(_EvalHook):
             Default: False.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
+        pre_eval (bool): Whether to use progressive mode to evaluate model.
+            Default: False.
     Returns:
         list: The prediction results.
     """
 
     greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
-    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
+    def __init__(self,
+                 *args,
+                 by_epoch=False,
+                 efficient_test=False,
+                 pre_eval=False,
+                 **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
-        self.efficient_test = efficient_test
+        self.pre_eval = pre_eval
+        if efficient_test:
+            warnings.warn(
+                'DeprecationWarning: ``efficient_test`` for evaluation hook '
+                'is deprecated, the evaluation hook is CPU memory friendly '
+                'with ``pre_eval=True`` as argument for ``single_gpu_test()`` '
+                'function')
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
@@ -33,10 +47,8 @@ class EvalHook(_EvalHook):
 
         from mmseg.apis import single_gpu_test
         results = single_gpu_test(
-            runner.model,
-            self.dataloader,
-            show=False,
-            efficient_test=self.efficient_test)
+            runner.model, self.dataloader, show=False, pre_eval=self.pre_eval)
+        runner.log_buffer.clear()
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         key_score = self.evaluate(runner, results)
         if self.save_best:
@@ -52,15 +64,28 @@ class DistEvalHook(_DistEvalHook):
             Default: False.
         efficient_test (bool): Whether save the results as local numpy files to
             save CPU memory during evaluation. Default: False.
+        pre_eval (bool): Whether to use progressive mode to evaluate model.
+            Default: False.
     Returns:
         list: The prediction results.
     """
 
     greater_keys = ['mIoU', 'mAcc', 'aAcc']
 
-    def __init__(self, *args, by_epoch=False, efficient_test=False, **kwargs):
+    def __init__(self,
+                 *args,
+                 by_epoch=False,
+                 efficient_test=False,
+                 pre_eval=False,
+                 **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
-        self.efficient_test = efficient_test
+        self.pre_eval = pre_eval
+        if efficient_test:
+            warnings.warn(
+                'DeprecationWarning: ``efficient_test`` for evaluation hook '
+                'is deprecated, the evaluation hook is CPU memory friendly '
+                'with ``pre_eval=True`` as argument for ``multi_gpu_test()`` '
+                'function')
 
     def _do_evaluate(self, runner):
         """perform evaluation and save ckpt."""
@@ -90,7 +115,10 @@ class DistEvalHook(_DistEvalHook):
             self.dataloader,
             tmpdir=tmpdir,
             gpu_collect=self.gpu_collect,
-            efficient_test=self.efficient_test)
+            pre_eval=self.pre_eval)
+
+        runner.log_buffer.clear()
+
         if runner.rank == 0:
             print('\n')
             runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
