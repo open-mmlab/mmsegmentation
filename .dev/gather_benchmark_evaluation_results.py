@@ -8,7 +8,7 @@ from mmcv import Config
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Gather benchmarked model results')
+        description='Gather benchmarked model evaluation results')
     parser.add_argument('config', help='test config file path')
     parser.add_argument(
         'root',
