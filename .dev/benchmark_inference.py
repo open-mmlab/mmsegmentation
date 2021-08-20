@@ -86,6 +86,9 @@ def inference_model(config_name, checkpoint, args, logger=None):
 def main(args):
     config = Config.fromfile(args.config)
 
+    if not os.path.exists(args.checkpoint_root):
+        os.makedirs(args.checkpoint_root, 0o775)
+
     # test single model
     if args.model_name:
         if args.model_name in config:
