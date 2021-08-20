@@ -13,16 +13,6 @@ def parse_args():
         'txt_path', type=str, help='txt path output by benchmark_filter')
     parser.add_argument('--port', type=int, default=24727, help='dist port')
     parser.add_argument(
-        '--partition',
-        type=str,
-        default='openmmlab',
-        help='slurm partition name')
-    parser.add_argument(
-        '--max-keep-ckpts',
-        type=int,
-        default=1,
-        help='The maximum checkpoints to keep')
-    parser.add_argument(
         '--run', action='store_true', help='run script directly')
     parser.add_argument(
         '--out',
@@ -32,6 +22,35 @@ def parse_args():
 
     args = parser.parse_args()
     return args
+
+
+def create_train_bash_info(commands, config, script_name, partition, port):
+    cfg = config.strip()
+
+    # print cfg name
+    echo_info = f'echo \'{cfg}\' &'
+    commands.append(echo_info)
+    commands.append('\n')
+
+    fname, _ = osp.splitext(osp.basename(cfg))
+    # default setting
+    if cfg in config_8gpu_list:
+        command_info = f'GPUS=8  GPUS_PER_NODE=8  ' \
+                        f'CPUS_PER_TASK=2 {script_name} '
+    else:
+        command_info = f'GPUS=4  GPUS_PER_NODE=4  ' \
+                        f'CPUS_PER_TASK=2 {script_name} '
+    command_info += f'{partition} '
+    command_info += f'{fname} '
+    command_info += f'{cfg} '
+    command_info += f'--options ' \
+                    f'checkpoint_config.max_keep_ckpts=1 ' \
+                    f'dist_params.port={port} '
+    # Let the script shut up
+    command_info += '>/dev/null &'
+
+    commands.append(command_info)
+    commands.append('\n')
 
 
 def main():
@@ -44,52 +63,21 @@ def main():
         ('Please specify at least one operation (save/run/ the '
          'script) with the argument "--out" or "--run"')
 
-    partition = args.partition  # cluster name
-
     root_name = './tools'
-    train_script_name = osp.join(root_name, 'slurm_train.sh')
+    script_name = osp.join(root_name, 'slurm_train.sh')
     port = args.port
-    # stdout is no output
-    stdout_cfg = '>/dev/null'
-
-    max_keep_ckpts = args.max_keep_ckpts
+    partition_name = 'PARTITION=$1'
 
     commands = []
+    commands.append(partition_name)
+    commands.append('\n')
+    commands.append('\n')
+
     with open(args.txt_path, 'r') as f:
         model_cfgs = f.readlines()
         for i, cfg in enumerate(model_cfgs):
-            cfg = cfg.strip()
-            if len(cfg) == 0:
-                continue
-            # print cfg name
-            echo_info = f'echo \'{cfg}\' &'
-            commands.append(echo_info)
-            commands.append('\n')
-
-            fname, _ = osp.splitext(osp.basename(cfg))
-            # default setting
-            if cfg in config_8gpu_list:
-                command_info = f'GPUS=8  GPUS_PER_NODE=8  ' \
-                               f'CPUS_PER_TASK=2 {train_script_name} '
-            else:
-                command_info = f'GPUS=4  GPUS_PER_NODE=4  ' \
-                               f'CPUS_PER_TASK=2 {train_script_name} '
-            command_info += f'{partition} '
-            command_info += f'{fname} '
-            command_info += f'{cfg} '
-            if max_keep_ckpts:
-                command_info += f'--options ' \
-                                f'checkpoint_config.max_keep_ckpts=' \
-                                f'{max_keep_ckpts} ' \
-                                f'dist_params.port=' \
-                                f'{port} '
-            command_info += f'{stdout_cfg} &'
-
-            commands.append(command_info)
-
-            if i < len(model_cfgs):
-                commands.append('\n')
-
+            create_train_bash_info(commands, cfg, script_name, '$PARTITION',
+                                   port)
             port += 1
 
         command_str = ''.join(commands)

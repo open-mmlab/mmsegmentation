@@ -1,6 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import os
 import os.path as osp
 
 from mmcv import Config
@@ -15,8 +14,6 @@ def parse_args():
         '--work-dir',
         default='.dev/benchmark_test',
         help='the dir to save metric')
-    parser.add_argument(
-        '--run', action='store_true', help='run script directly')
     parser.add_argument(
         '--out',
         type=str,
@@ -111,8 +108,6 @@ def main():
             port += 1
 
     command_str = ''.join(commands)
-    if args.run:
-        os.system(command_str)
     if args.out:
         with open(args.out, 'w') as f:
             f.write(command_str + '\n')
