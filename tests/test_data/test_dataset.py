@@ -1,9 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
+import shutil
+from typing import Generator
 from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
+from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
@@ -152,10 +155,16 @@ def test_custom_dataset():
     assert isinstance(test_data, dict)
 
     # get gt seg map
-    gt_seg_maps = train_dataset.get_gt_seg_maps()
+    gt_seg_maps = train_dataset.get_gt_seg_maps(efficient_test=True)
+    assert isinstance(gt_seg_maps, Generator)
+    gt_seg_maps = list(gt_seg_maps)
     assert len(gt_seg_maps) == 5
 
-    # evaluation
+    # format_results not implemented
+    with pytest.raises(NotImplementedError):
+        test_dataset.format_results([], '')
+
+    # test past evaluation
     pseudo_results = []
     for gt_seg_map in gt_seg_maps:
         h, w = gt_seg_map.shape
@@ -180,7 +189,7 @@ def test_custom_dataset():
     assert 'mAcc' in eval_results
     assert 'aAcc' in eval_results
 
-    # evaluation with CLASSES
+    # test past evaluation with CLASSES
     train_dataset.CLASSES = tuple(['a'] * 7)
     eval_results = train_dataset.evaluate(pseudo_results, metric='mIoU')
     assert isinstance(eval_results, dict)
@@ -211,6 +220,95 @@ def test_custom_dataset():
     assert 'mFscore' in eval_results
     assert 'mPrecision' in eval_results
     assert 'mRecall' in eval_results
+
+    # test evaluation with pre-eval and the dataset.CLASSES is necessary
+    train_dataset.CLASSES = tuple(['a'] * 7)
+    pseudo_results = []
+    for idx in range(len(train_dataset)):
+        h, w = gt_seg_maps[idx].shape
+        pseudo_result = np.random.randint(low=0, high=7, size=(h, w))
+        pseudo_results.extend(train_dataset.pre_eval(pseudo_result, idx))
+    eval_results = train_dataset.evaluate(pseudo_results, metric=['mIoU'])
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
+    assert isinstance(eval_results, dict)
+    assert 'mDice' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(pseudo_results, metric='mFscore')
+    assert isinstance(eval_results, dict)
+    assert 'mRecall' in eval_results
+    assert 'mPrecision' in eval_results
+    assert 'mFscore' in eval_results
+    assert 'aAcc' in eval_results
+
+    eval_results = train_dataset.evaluate(
+        pseudo_results, metric=['mIoU', 'mDice', 'mFscore'])
+    assert isinstance(eval_results, dict)
+    assert 'mIoU' in eval_results
+    assert 'mDice' in eval_results
+    assert 'mAcc' in eval_results
+    assert 'aAcc' in eval_results
+    assert 'mFscore' in eval_results
+    assert 'mPrecision' in eval_results
+    assert 'mRecall' in eval_results
+
+
+def test_ade():
+    test_dataset = ADE20KDataset(
+        pipeline=[],
+        img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'))
+    assert len(test_dataset) == 5
+
+    # Test format_results
+    pseudo_results = []
+    for _ in range(len(test_dataset)):
+        h, w = (2, 2)
+        pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
+
+    file_paths = test_dataset.format_results(pseudo_results, '.format_ade')
+    assert len(file_paths) == len(test_dataset)
+    temp = np.array(Image.open(file_paths[0]))
+    assert np.allclose(temp, pseudo_results[0] + 1)
+
+    shutil.rmtree('.format_ade')
+
+
+def test_cityscapes():
+    test_dataset = CityscapesDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_cityscapes_dataset/leftImg8bit'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_cityscapes_dataset/gtFine'))
+    assert len(test_dataset) == 1
+
+    gt_seg_maps = list(test_dataset.get_gt_seg_maps())
+
+    # Test format_results
+    pseudo_results = []
+    for idx in range(len(test_dataset)):
+        h, w = gt_seg_maps[idx].shape
+        pseudo_results.append(np.random.randint(low=0, high=19, size=(h, w)))
+
+    file_paths = test_dataset.format_results(pseudo_results, '.format_city')
+    assert len(file_paths) == len(test_dataset)
+    temp = np.array(Image.open(file_paths[0]))
+    assert np.allclose(temp,
+                       test_dataset._convert_to_label_id(pseudo_results[0]))
+
+    # Test cityscapes evaluate
+
+    test_dataset.evaluate(
+        pseudo_results, metric='cityscapes', imgfile_prefix='.format_city')
+
+    shutil.rmtree('.format_city')
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
