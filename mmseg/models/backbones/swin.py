@@ -17,7 +17,7 @@ from torch.nn.modules.utils import _pair as to_2tuple
 from mmseg.ops import resize
 from ...utils import get_root_logger
 from ..builder import ATTENTION, BACKBONES
-from ..utils import PatchEmbed
+from ..utils import PatchEmbed, swin_convert
 
 
 class PatchMerging(BaseModule):
@@ -708,8 +708,13 @@ class SwinTransformer(BaseModule):
                 self.pretrained, logger=logger, map_location='cpu')
             if 'state_dict' in ckpt:
                 state_dict = ckpt['state_dict']
+            elif 'model' in ckpt:
+                state_dict = ckpt['model']
             else:
                 state_dict = ckpt
+
+            if self.pretrain_style == 'official':
+                state_dict = swin_convert(state_dict)
 
             # strip prefix of state_dict
             if list(state_dict.keys())[0].startswith('module.'):
