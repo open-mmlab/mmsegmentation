@@ -16,7 +16,10 @@ def parse_args():
     parser.add_argument(
         'txt_path', type=str, help='txt path output by benchmark_filter')
     parser.add_argument(
-        '--out', type=str, help='output path of gathered metrics to be stored')
+        '--out',
+        type=str,
+        default='benchmark_train_info.json',
+        help='output path of gathered metrics to be stored')
 
     args = parser.parse_args()
     return args
@@ -31,58 +34,49 @@ if __name__ == '__main__':
     result_dict = {}
     with open(args.txt_path, 'r') as f:
         model_cfgs = f.readlines()
-        for i, config in enumerate(model_cfgs):
+        for _, config in enumerate(model_cfgs):
             config = config.strip()
-            if len(config) == 0:
+
+            # benchmark train dir
+            model_name = osp.split(osp.dirname(config))[1]
+            config_name = osp.splitext(osp.basename(config))[0]
+            exp_dir = osp.join(root_path, model_name, config_name)
+            if not osp.exists(exp_dir):
+                print(f'{config} hasn\'t {exp_dir}')
                 continue
 
-            config_name = osp.split(config)[-1]
-            config_name = osp.splitext(config_name)[0]
-            result_path = osp.join(root_path, config_name)
-            if osp.exists(result_path):
-                # 1 read config
-                cfg = mmcv.Config.fromfile(config)
-                total_epochs = cfg.runner.max_epochs
-                final_results = cfg.evaluation.metric
-                if not isinstance(final_results, list):
-                    final_results = [final_results]
-                final_results_out = []
-                for key in final_results:
-                    if 'proposal_fast' in key:
-                        final_results_out.append('AR@1000')  # RPN
-                    elif 'mAP' not in key:
-                        final_results_out.append(key + '_mAP')
+            # parse config
+            cfg = mmcv.Config.fromfile(config)
+            total_iters = cfg.runner.max_iters
+            exp_metric = cfg.evaluation.metric
+            if not isinstance(exp_metric, list):
+                exp_metrics = [exp_metric]
 
-                # 2 determine whether total_epochs ckpt exists
-                ckpt_path = f'epoch_{total_epochs}.pth'
-                if osp.exists(osp.join(result_path, ckpt_path)):
-                    log_json_path = list(
-                        sorted(glob.glob(osp.join(result_path,
-                                                  '*.log.json'))))[-1]
+            # determine whether total_iters ckpt exists
+            ckpt_path = f'iter_{total_iters}.pth'
+            if not osp.exists(osp.join(exp_dir, ckpt_path)):
+                print(f'{config} hasn\'t {ckpt_path}')
+                continue
 
-                    # 3 read metric
-                    model_performance = get_final_results(
-                        log_json_path, total_epochs, final_results_out)
-                    if model_performance is None:
-                        print(f'log file error: {log_json_path}')
-                        continue
-                    for performance in model_performance:
-                        if performance in ['AR@1000', 'bbox_mAP', 'segm_mAP']:
-                            metric = round(
-                                model_performance[performance] * 100, 1)
-                            model_performance[performance] = metric
-                    result_dict[config] = model_performance
+            # only the last log json counts
+            log_json_path = list(
+                sorted(glob.glob(osp.join(exp_dir, '*.log.json'))))[-1]
 
-                else:
-                    print(f'{config} not exist: {ckpt_path}')
-            else:
-                print(f'not exist: {config}')
+            # extract metric value
+            model_performance = get_final_results(log_json_path, total_iters)
+            if model_performance is None:
+                print(f'log file error: {log_json_path}')
+                continue
+
+            for performance in model_performance:
+                if performance in ['mIoU', 'mAcc', 'aAcc']:
+                    metric = round(model_performance[performance] * 100, 1)
+                    model_performance[performance] = metric
+            result_dict[config] = model_performance
 
         # 4 save or print results
         if metrics_out:
-            mmcv.mkdir_or_exist(metrics_out)
-            mmcv.dump(result_dict,
-                      osp.join(metrics_out, 'model_metric_info.json'))
+            mmcv.dump(result_dict, metrics_out, indent=4)
         print('===================================')
         for config_name, metrics in result_dict.items():
             print(config_name, metrics)

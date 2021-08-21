@@ -31,10 +31,10 @@ GPUS=4  GPUS_PER_NODE=4  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION deepl
 echo 'configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes.py' &
 GPUS=4  GPUS_PER_NODE=4  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION deeplabv3plus_r50-d8_769x769_80k_cityscapes configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes.py --options checkpoint_config.max_keep_ckpts=1 dist_params.port=24741 >/dev/null &
 echo 'configs/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k.py' &
-GPUS=4  GPUS_PER_NODE=4  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION upernet_vit-b16_ln_mln_512x512_160k_ade20k configs/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k.py --options checkpoint_config.max_keep_ckpts=1 dist_params.port=24742 >/dev/null &
+GPUS=8  GPUS_PER_NODE=8  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION upernet_vit-b16_ln_mln_512x512_160k_ade20k configs/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k.py --options checkpoint_config.max_keep_ckpts=1 dist_params.port=24742 >/dev/null &
 echo 'configs/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k.py' &
-GPUS=4  GPUS_PER_NODE=4  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION upernet_deit-s16_ln_mln_512x512_160k_ade20k configs/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k.py --options checkpoint_config.max_keep_ckpts=1 dist_params.port=24743 >/dev/null &
+GPUS=8  GPUS_PER_NODE=8  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION upernet_deit-s16_ln_mln_512x512_160k_ade20k configs/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k.py --options checkpoint_config.max_keep_ckpts=1 dist_params.port=24743 >/dev/null &
 echo 'configs/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes.py' &
 GPUS=4  GPUS_PER_NODE=4  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes configs/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes.py --options checkpoint_config.max_keep_ckpts=1 dist_params.port=24744 >/dev/null &
 echo 'configs/swin/upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K.py' &
-GPUS=4  GPUS_PER_NODE=4  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K configs/swin/upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K.py --options checkpoint_config.max_keep_ckpts=1 dist_params.port=24745 >/dev/null &
+GPUS=8  GPUS_PER_NODE=8  CPUS_PER_TASK=2 ./tools/slurm_train.sh $PARTITION upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K configs/swin/upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K.py --options checkpoint_config.max_keep_ckpts=1 dist_params.port=24745 >/dev/null &

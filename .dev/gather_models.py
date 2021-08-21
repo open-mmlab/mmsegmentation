@@ -51,6 +51,7 @@ def get_final_iter(config):
 
 def get_final_results(log_json_path, iter_num):
     result_dict = dict()
+    last_iter = 0
     with open(log_json_path, 'r') as f:
         for line in f.readlines():
             log_line = json.loads(line)
@@ -60,12 +61,16 @@ def get_final_results(log_json_path, iter_num):
             if log_line['mode'] == 'train' and log_line['iter'] == iter_num:
                 result_dict['memory'] = log_line['memory']
 
-            if log_line['iter'] == iter_num:
+            # When evaluation, the 'iter' of new log json is the evaluation
+            # steps on single gpu.
+            if log_line['iter'] == iter_num or last_iter == iter_num - 50:
                 result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
                 })
                 return result_dict
+
+            last_iter = log_line['iter']
 
 
 def parse_args():

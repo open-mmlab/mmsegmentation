@@ -3,7 +3,11 @@ import os
 import os.path as osp
 
 # Default using 4 gpu when training
-config_8gpu_list = []
+config_8gpu_list = [
+    'configs/swin/upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K.py',  # noqa
+    'configs/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k.py',
+    'configs/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k.py',
+]
 
 
 def parse_args():
