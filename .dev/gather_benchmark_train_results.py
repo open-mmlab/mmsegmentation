@@ -10,11 +10,11 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Gather benchmarked models train results')
     parser.add_argument(
+        'txt_path', type=str, help='txt path output by benchmark_filter')
+    parser.add_argument(
         'root',
         type=str,
         help='root path of benchmarked models to be gathered')
-    parser.add_argument(
-        'txt_path', type=str, help='txt path output by benchmark_filter')
     parser.add_argument(
         '--out',
         type=str,

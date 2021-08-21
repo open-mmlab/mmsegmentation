@@ -12,7 +12,7 @@ def parse_args():
     parser.add_argument('--port', type=int, default=28171, help='dist port')
     parser.add_argument(
         '--work-dir',
-        default='.dev/benchmark_test',
+        default='.dev/benchmark_evaluation',
         help='the dir to save metric')
     parser.add_argument(
         '--out',
@@ -77,9 +77,6 @@ def main():
         out_suffix = args.out.split('.')[-1]
         assert args.out.endswith('.sh'), \
             f'Expected out file path suffix is .sh, but get .{out_suffix}'
-    assert args.out or args.run, \
-        ('Please specify at least one operation (save/run/ the '
-         'script) with the argument "--out" or "--run"')
 
     commands = []
     partition_name = 'PARTITION=$1'

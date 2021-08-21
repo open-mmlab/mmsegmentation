@@ -1,5 +1,5 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import os
 import os.path as osp
 
 # Default using 4 gpu when training
@@ -16,8 +16,6 @@ def parse_args():
     parser.add_argument(
         'txt_path', type=str, help='txt path output by benchmark_filter')
     parser.add_argument('--port', type=int, default=24727, help='dist port')
-    parser.add_argument(
-        '--run', action='store_true', help='run script directly')
     parser.add_argument(
         '--out',
         type=str,
@@ -63,9 +61,6 @@ def main():
         out_suffix = args.out.split('.')[-1]
         assert args.out.endswith('.sh'), \
             f'Expected out file path suffix is .sh, but get .{out_suffix}'
-    assert args.out or args.run, \
-        ('Please specify at least one operation (save/run/ the '
-         'script) with the argument "--out" or "--run"')
 
     root_name = './tools'
     script_name = osp.join(root_name, 'slurm_train.sh')
@@ -88,8 +83,6 @@ def main():
         if args.out:
             with open(args.out, 'w') as f:
                 f.write(command_str)
-        if args.run:
-            os.system(command_str)
 
 
 if __name__ == '__main__':

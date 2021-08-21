@@ -112,7 +112,7 @@ def main(args):
 
     # test all model
     logger = get_root_logger(
-        log_file='benchmark_test_image.log', log_level=logging.ERROR)
+        log_file='benchmark_inference_image.log', log_level=logging.ERROR)
 
     for model_name in config:
         model_infos = config[model_name]
