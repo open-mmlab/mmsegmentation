@@ -21,7 +21,7 @@ def test_fastscnn_backbone():
     model = BiSeNetV2()
     model.init_weights()
     model.train()
-    batch_size = 4
+    batch_size = 2
     imgs = torch.randn(batch_size, 3, 1024, 2048)
     feat = model(imgs)
 
