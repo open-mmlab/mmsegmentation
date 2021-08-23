@@ -19,7 +19,7 @@ model = dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     auxiliary_head=[
         dict(
-            type='FCNHead1',
+            type='FCNHead',
             in_channels=16,
             channels=16,
             num_convs=2,
@@ -31,7 +31,7 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
         dict(
-            type='FCNHead1',
+            type='FCNHead',
             in_channels=32,
             channels=64,
             num_convs=2,
@@ -43,7 +43,7 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
         dict(
-            type='FCNHead1',
+            type='FCNHead',
             in_channels=64,
             channels=256,
             num_convs=2,
@@ -55,7 +55,7 @@ model = dict(
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
         dict(
-            type='FCNHead1',
+            type='FCNHead',
             in_channels=128,
             channels=1024,
             num_convs=2,
