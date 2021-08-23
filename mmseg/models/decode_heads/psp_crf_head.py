@@ -9,8 +9,9 @@ import numpy as np
 from tqdm import tqdm
 import torch.nn.functional as F
 
+
 class PPM(nn.ModuleList):
-    """Pooling Pyramid Module used in PSPNet.
+    """Pooling Pyramid Module used in PSPCRF.
     Args:
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
             Module.
@@ -88,7 +89,8 @@ class PSPCRFHead(BaseDecodeHead):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
-        self.crf = CRF(n_spatial_dims= 2)
+        self.crf = CRF(n_spatial_dims=2)
+
     def forward(self, inputs):
         """Forward function."""
         x = self._transform_inputs(inputs)
@@ -100,9 +102,11 @@ class PSPCRFHead(BaseDecodeHead):
         output = self.crf(output)
         return output
 
+
 class CRF(nn.Module):
     """
-    Class for learning and inference in conditional random field model using mean field approximation
+    Class for learning and inference in conditional random field model
+    using mean field approximation
     and convolutional approximation in pairwise potentials term.
     Parameters
     ----------
@@ -120,12 +124,14 @@ class CRF(nn.Module):
     smoothness_weight : float
         Initial weight of smoothness kernel.
     smoothness_theta : float or sequence of floats
-        Initial bandwidths for each spatial feature in the gaussian smoothness kernel.
+        Initial bandwidths for each spatial feature
+        in the gaussian smoothness kernel.
         If it is a sequence its length must be equal to ``n_spatial_dims``.
     """
 
-    def __init__(self, n_spatial_dims, filter_size=11, n_iter=5, requires_grad=True,
-                 returns='logits', smoothness_weight=1, smoothness_theta=1):
+    def __init__(self, n_spatial_dims, filter_size=11, n_iter=5,
+                 requires_grad=True, returns='logits', smoothness_weight=1,
+                 smoothness_theta=1):
         super().__init__()
         self.n_spatial_dims = n_spatial_dims
         self.n_iter = n_iter
@@ -134,20 +140,27 @@ class CRF(nn.Module):
         self.requires_grad = requires_grad
 
         self._set_param('smoothness_weight', smoothness_weight)
-        self._set_param('inv_smoothness_theta', 1 / np.broadcast_to(smoothness_theta, n_spatial_dims))
+        self._set_param('inv_smoothness_theta',
+                        1 / np.broadcast_to(smoothness_theta, n_spatial_dims))
 
     def _set_param(self, name, init_value):
-        setattr(self, name, nn.Parameter(torch.tensor(init_value, dtype=torch.float, requires_grad=self.requires_grad)))
+        setattr(self, name, nn.Parameter(torch.tensor(
+            init_value, dtype=torch.float, requires_grad=self.requires_grad)))
 
     def forward(self, x, spatial_spacings=None, verbose=False):
         """
         Parameters
         ----------
         x : torch.tensor
-            Tensor of shape ``(batch_size, n_classes, *spatial)`` with negative unary potentials, e.g. the CNN's output.
+            Tensor of shape ``(batch_size, n_classes, *spatial)``
+            with negative unary potentials,
+            e.g. the CNN's output.
         spatial_spacings : array of floats or None
-            Array of shape ``(batch_size, len(spatial))`` with spatial spacings of tensors in batch ``x``.
-            None is equivalent to all ones. Used to adapt spatial gaussian filters to different inputs' resolutions.
+            Array of shape ``(batch_size, len(spatial))``
+            with spatial spacings of tensors in batch ``x``.
+            None is equivalent to all ones.
+            Used to adapt spatial gaussian filters
+            to different inputs' resolutions.
         verbose : bool
             Whether to display the iterations using tqdm-bar.
         Returns
@@ -173,7 +186,8 @@ class CRF(nn.Module):
             x = F.softmax(x, dim=1)
 
             # message passing
-            x = self.smoothness_weight * self._smoothing_filter(x, spatial_spacings)
+            x = self.smoothness_weight * self._smoothing_filter(
+                x, spatial_spacings)
 
             # compatibility transform
             x = self._compatibility_transform(x)
@@ -182,34 +196,39 @@ class CRF(nn.Module):
             x = negative_unary - x
 
         if self.returns == 'logits':
-            output = x
+            ou = x
         elif self.returns == 'proba':
-            output = F.softmax(x, dim=1)
+            ou = F.softmax(x, dim=1)
         elif self.returns == 'log-proba':
-            output = F.log_softmax(x, dim=1)
+            ou = F.log_softmax(x, dim=1)
         else:
-            raise ValueError("Attribute ``returns`` must be 'logits', 'proba' or 'log-proba'.")
+            raise ValueError(
+                "Attribute returns must be logits, 'proba' or 'log-proba'.")
 
         if n_classes == 1:
-            output = output[:, 0] - output[:, 1] if self.returns == 'logits' else output[:, 0]
-            output.unsqueeze_(1)
+            out = ou[:, 0] - ou[:, 1] if self.returns == 'logits' else ou[:, 0]
+            out.unsqueeze_(1)
 
-        return output
+        return out
 
     def _smoothing_filter(self, x, spatial_spacings):
         """
         Parameters
         ----------
         x : torch.tensor
-            Tensor of shape ``(batch_size, n_classes, *spatial)`` with negative unary potentials, e.g. logits.
+            Tensor of shape ``(batch_size, n_classes, *spatial)``
+            with negative unary potentials, e.g. logits.
         spatial_spacings : torch.tensor or None
-            Tensor of shape ``(batch_size, len(spatial))`` with spatial spacings of tensors in batch ``x``.
+            Tensor of shape ``(batch_size, len(spatial))``
+            with spatial spacings of tensors in batch ``x``.
         Returns
         -------
         output : torch.tensor
             Tensor of shape ``(batch_size, n_classes, *spatial)``.
         """
-        return torch.stack([self._single_smoothing_filter(x[i], spatial_spacings[i]) for i in range(x.shape[0])])
+        return torch.stack([
+            self._single_smoothing_filter(
+                x[i], spatial_spacings[i]) for i in range(x.shape[0])])
 
     @staticmethod
     def _pad(x, filter_size):
@@ -239,12 +258,14 @@ class CRF(nn.Module):
             x = x.flatten(0, -2).unsqueeze(1)
 
             # 1d gaussian filtering
-            kernel = self._create_gaussian_kernel1d(self.inv_smoothness_theta[i], spatial_spacing[i],
-                                                   self.filter_size[i]).view(1, 1, -1).to(x)
+            kernel = self._create_gaussian_kernel1d(
+                self.inv_smoothness_theta[i], spatial_spacing[i],
+                self.filter_size[i]).view(1, 1, -1).to(x)
             x = F.conv1d(x, kernel)
 
             # reshape back to (n, *spatial)
-            x = x.squeeze(1).view(*shape_before_flatten, x.shape[-1]).transpose(-1, dim)
+            x = x.squeeze(1).view(*shape_before_flatten,
+                                  x.shape[-1]).transpose(-1, dim)
 
         return x
 
@@ -262,7 +283,9 @@ class CRF(nn.Module):
         kernel : torch.tensor
             Tensor of shape ``(filter_size,)``.
         """
-        distances = spacing * torch.arange(-(filter_size // 2), filter_size // 2 + 1).to(inverse_theta)
+        distances = spacing * torch.arange(
+            -(filter_size // 2), filter_size // 2 + 1
+        ).to(inverse_theta)
         kernel = torch.exp(-(distances * inverse_theta) ** 2 / 2)
         zero_center = torch.ones(filter_size).to(kernel)
         zero_center[filter_size // 2] = 0
@@ -278,7 +301,9 @@ class CRF(nn.Module):
         output : torch.tensor of shape ``(batch_size, n_classes, *spatial)``.
         """
         labels = torch.arange(x.shape[1])
-        compatibility_matrix = self._compatibility_function(labels, labels.unsqueeze(1)).to(x)
+        compatibility_matrix = self._compatibility_function(labels,
+                                                            labels.unsqueeze(
+                                                                1)).to(x)
         return torch.einsum('ij..., jk -> ik...', x, compatibility_matrix)
 
     @staticmethod
