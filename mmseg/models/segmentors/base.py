@@ -1,4 +1,4 @@
-import logging
+# Copyright (c) OpenMMLab. All rights reserved.
 import warnings
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
@@ -7,17 +7,14 @@ import mmcv
 import numpy as np
 import torch
 import torch.distributed as dist
-import torch.nn as nn
-from mmcv.runner import auto_fp16
+from mmcv.runner import BaseModule, auto_fp16
 
 
-class BaseSegmentor(nn.Module):
+class BaseSegmentor(BaseModule, metaclass=ABCMeta):
     """Base class for segmentors."""
 
-    __metaclass__ = ABCMeta
-
-    def __init__(self):
-        super(BaseSegmentor, self).__init__()
+    def __init__(self, init_cfg=None):
+        super(BaseSegmentor, self).__init__(init_cfg)
         self.fp16_enabled = False
 
     @property
@@ -61,17 +58,6 @@ class BaseSegmentor(nn.Module):
     def aug_test(self, imgs, img_metas, **kwargs):
         """Placeholder for augmentation test."""
         pass
-
-    def init_weights(self, pretrained=None):
-        """Initialize the weights in segmentor.
-
-        Args:
-            pretrained (str, optional): Path to pre-trained weights.
-                Defaults to None.
-        """
-        if pretrained is not None:
-            logger = logging.getLogger()
-            logger.info(f'load model from: {pretrained}')
 
     def forward_test(self, imgs, img_metas, **kwargs):
         """
@@ -155,7 +141,7 @@ class BaseSegmentor(nn.Module):
         outputs = dict(
             loss=loss,
             log_vars=log_vars,
-            num_samples=len(data_batch['img'].data))
+            num_samples=len(data_batch['img_metas']))
 
         return outputs
 
@@ -212,7 +198,8 @@ class BaseSegmentor(nn.Module):
                     win_name='',
                     show=False,
                     wait_time=0,
-                    out_file=None):
+                    out_file=None,
+                    opacity=0.5):
         """Draw `result` over `img`.
 
         Args:
@@ -229,7 +216,9 @@ class BaseSegmentor(nn.Module):
                 Default: False.
             out_file (str or None): The filename to write the image.
                 Default: None.
-
+            opacity(float): Opacity of painted segmentation map.
+                Default 0.5.
+                Must be in (0, 1] range.
         Returns:
             img (Tensor): Only if not `show` or `out_file`
         """
@@ -246,13 +235,14 @@ class BaseSegmentor(nn.Module):
         assert palette.shape[0] == len(self.CLASSES)
         assert palette.shape[1] == 3
         assert len(palette.shape) == 2
+        assert 0 < opacity <= 1.0
         color_seg = np.zeros((seg.shape[0], seg.shape[1], 3), dtype=np.uint8)
         for label, color in enumerate(palette):
             color_seg[seg == label, :] = color
         # convert to BGR
         color_seg = color_seg[..., ::-1]
 
-        img = img * 0.5 + color_seg * 0.5
+        img = img * (1 - opacity) + color_seg * opacity
         img = img.astype(np.uint8)
         # if out_file specified, do not show image in window
         if out_file is not None:

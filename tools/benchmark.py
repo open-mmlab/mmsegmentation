@@ -1,10 +1,11 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import time
 
 import torch
 from mmcv import Config
 from mmcv.parallel import MMDataParallel
-from mmcv.runner import load_checkpoint
+from mmcv.runner import load_checkpoint, wrap_fp16_model
 
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
@@ -40,7 +41,11 @@ def main():
         shuffle=False)
 
     # build the model and load checkpoint
-    model = build_segmentor(cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
+    cfg.model.train_cfg = None
+    model = build_segmentor(cfg.model, test_cfg=cfg.get('test_cfg'))
+    fp16_cfg = cfg.get('fp16', None)
+    if fp16_cfg is not None:
+        wrap_fp16_model(model)
     load_checkpoint(model, args.checkpoint, map_location='cpu')
 
     model = MMDataParallel(model, device_ids=[0])

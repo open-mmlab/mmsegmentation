@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
 
 import mmcv
@@ -91,7 +92,7 @@ class LoadAnnotations(object):
     """Load annotations for semantic segmentation.
 
     Args:
-        reduct_zero_label (bool): Whether reduce all label value by 1.
+        reduce_zero_label (bool): Whether reduce all label value by 1.
             Usually used for datasets where 0 is background label.
             Default: False.
         file_client_args (dict): Arguments to instantiate a FileClient.
@@ -132,6 +133,10 @@ class LoadAnnotations(object):
         gt_semantic_seg = mmcv.imfrombytes(
             img_bytes, flag='unchanged',
             backend=self.imdecode_backend).squeeze().astype(np.uint8)
+        # modify if custom classes
+        if results.get('label_map', None) is not None:
+            for old_id, new_id in results['label_map'].items():
+                gt_semantic_seg[gt_semantic_seg == old_id] = new_id
         # reduce zero_label
         if self.reduce_zero_label:
             # avoid using underflow conversion

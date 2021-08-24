@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 """pytest tests/test_forward.py."""
 import copy
 from os.path import dirname, exists, join
@@ -76,12 +77,9 @@ def _get_segmentor_cfg(fname):
     These are deep copied to allow for safe modification of parameters without
     influencing other tests.
     """
-    import mmcv
     config = _get_config_module(fname)
     model = copy.deepcopy(config.model)
-    train_cfg = mmcv.Config(copy.deepcopy(config.train_cfg))
-    test_cfg = mmcv.Config(copy.deepcopy(config.test_cfg))
-    return model, train_cfg, test_cfg
+    return model
 
 
 def test_pspnet_forward():
@@ -153,6 +151,30 @@ def test_encnet_forward():
         'encnet/encnet_r50-d8_512x1024_40k_cityscapes.py')
 
 
+def test_sem_fpn_forward():
+    _test_encoder_decoder_forward('sem_fpn/fpn_r50_512x1024_80k_cityscapes.py')
+
+
+def test_point_rend_forward():
+    _test_encoder_decoder_forward(
+        'point_rend/pointrend_r50_512x1024_80k_cityscapes.py')
+
+
+def test_mobilenet_v2_forward():
+    _test_encoder_decoder_forward(
+        'mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes.py')
+
+
+def test_dnlnet_forward():
+    _test_encoder_decoder_forward(
+        'dnlnet/dnl_r50-d8_512x1024_40k_cityscapes.py')
+
+
+def test_emanet_forward():
+    _test_encoder_decoder_forward(
+        'emanet/emanet_r50-d8_512x1024_80k_cityscapes.py')
+
+
 def get_world_size(process_group):
 
     return 1
@@ -188,12 +210,13 @@ def _convert_batchnorm(module):
        _check_input_dim)
 @patch('torch.distributed.get_world_size', get_world_size)
 def _test_encoder_decoder_forward(cfg_file):
-    model, train_cfg, test_cfg = _get_segmentor_cfg(cfg_file)
+    model = _get_segmentor_cfg(cfg_file)
     model['pretrained'] = None
-    test_cfg['mode'] = 'whole'
+    model['test_cfg']['mode'] = 'whole'
 
     from mmseg.models import build_segmentor
-    segmentor = build_segmentor(model, train_cfg=train_cfg, test_cfg=test_cfg)
+    segmentor = build_segmentor(model)
+    segmentor.init_weights()
 
     if isinstance(segmentor.decode_head, nn.ModuleList):
         num_classes = segmentor.decode_head[-1].num_classes

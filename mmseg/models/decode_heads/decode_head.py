@@ -1,9 +1,9 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from abc import ABCMeta, abstractmethod
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import normal_init
-from mmcv.runner import auto_fp16, force_fp32
+from mmcv.runner import BaseModule, auto_fp16, force_fp32
 
 from mmseg.core import build_pixel_sampler
 from mmseg.ops import resize
@@ -11,7 +11,7 @@ from ..builder import build_loss
 from ..losses import accuracy
 
 
-class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
+class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
     """Base class for BaseDecodeHead.
 
     Args:
@@ -35,11 +35,13 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
             Default: None.
         loss_decode (dict): Config of decode loss.
             Default: dict(type='CrossEntropyLoss').
-        ignore_index (int): The label index to be ignored. Default: 255
+        ignore_index (int | None): The label index to be ignored. When using
+            masked BCE loss, ignore_index should be set to None. Default: 255
         sampler (dict|None): The config of segmentation map sampler.
             Default: None.
         align_corners (bool): align_corners argument of F.interpolate.
             Default: False.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
     """
 
     def __init__(self,
@@ -59,8 +61,10 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
                      loss_weight=1.0),
                  ignore_index=255,
                  sampler=None,
-                 align_corners=False):
-        super(BaseDecodeHead, self).__init__()
+                 align_corners=False,
+                 init_cfg=dict(
+                     type='Normal', std=0.01, override=dict(name='conv_seg'))):
+        super(BaseDecodeHead, self).__init__(init_cfg)
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
         self.num_classes = num_classes
@@ -128,10 +132,6 @@ class BaseDecodeHead(nn.Module, metaclass=ABCMeta):
             assert isinstance(in_channels, int)
             assert isinstance(in_index, int)
             self.in_channels = in_channels
-
-    def init_weights(self):
-        """Initialize weights of classification layer."""
-        normal_init(self.conv_seg, mean=0, std=0.01)
 
     def _transform_inputs(self, inputs):
         """Transform inputs for decoder.

@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 
 
@@ -44,7 +45,7 @@ def accuracy(pred, target, topk=1, thresh=None):
         correct = correct & (pred_value > thresh).t()
     res = []
     for k in topk:
-        correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
+        correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
         res.append(correct_k.mul_(100.0 / target.numel()))
     return res[0] if return_single else res
 

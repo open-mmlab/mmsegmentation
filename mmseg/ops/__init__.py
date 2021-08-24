@@ -1,5 +1,5 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from .encoding import Encoding
-from .separable_conv_module import DepthwiseSeparableConvModule
-from .wrappers import resize
+from .wrappers import Upsample, resize
 
-__all__ = ['resize', 'DepthwiseSeparableConvModule', 'Encoding']
+__all__ = ['Upsample', 'resize', 'Encoding']
