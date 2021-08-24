@@ -15,8 +15,6 @@ class SelfAttentionBlock(_SelfAttentionBlock):
     Args:
         in_channels (int): Input channels of key/query feature.
         channels (int): Output channels of key/query transform.
-        share_key_query (bool): Whether share projection weight between key
-            and query projection.
         conv_cfg (dict|None): Config of conv layers.
         norm_cfg (dict|None): Config of norm layers.
         act_cfg (dict|None): Config of activation layers.
