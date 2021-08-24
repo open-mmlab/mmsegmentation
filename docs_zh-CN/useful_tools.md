@@ -259,6 +259,36 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
   python tools/analyze_logs.py log.json --keys loss --legend loss
   ```
 
+### 转换其他仓库的权重
+
+`tools/model_converters/` 提供了若干个预训练权重转换脚本，支持将其他仓库的预训练权重的 key 转换为与 MMSegmentation 相匹配的 key。
+
+#### ViT Swin MiT Transformer 模型
+
+- ViT
+
+`tools/model_converters/vit2mmseg.py` 将 timm 预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
+  ```
+
+- Swin
+
+  `tools/model_converters/swin2mmseg.py` 将官方预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
+  ```
+
+- SegFormer
+
+  `tools/model_converters/mit2mmseg.py` 将官方预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
+  ```
+
 ## 模型服务
 
 为了用 [`TorchServe`](https://pytorch.org/serve/) 服务 `MMSegmentation` 的模型 ， 您可以遵循如下流程:

@@ -23,6 +23,7 @@ Import:
 - configs/psanet/psanet.yml
 - configs/pspnet/pspnet.yml
 - configs/resnest/resnest.yml
+- configs/segformer/segformer.yml
 - configs/sem_fpn/sem_fpn.yml
 - configs/setr/setr.yml
 - configs/swin/swin.yml

@@ -29,15 +29,15 @@
 
 Evaluation with AlignedResize:
 
-| Method | Backbone | Crop Size | Lr schd | mIoU | mIoU(ms+flip) |
-| ------ | -------- | --------- | ------: | ---: | ------------- |
-|Segformer | MIT-B0 | 512x512 | 160000 | 38.1  | 38.57 |
-|Segformer | MIT-B1 | 512x512 | 160000 | 41.64 | 42.76 |
-|Segformer | MIT-B2 | 512x512 | 160000 | 46.53 | 47.49 |
-|Segformer | MIT-B3 | 512x512 | 160000 | 48.46 | 49.14 |
-|Segformer | MIT-B4 | 512x512 | 160000 | 49.34 | 50.29 |
-|Segformer | MIT-B5 | 512x512 | 160000 | 50.08 | 50.72 |
-|Segformer | MIT-B5 | 640x640 | 160000 | 50.58 | 50.8  |
+  | Method | Backbone | Crop Size | Lr schd | mIoU | mIoU(ms+flip) |
+  | ------ | -------- | --------- | ------: | ---: | ------------- |
+  |Segformer | MIT-B0 | 512x512 | 160000 | 38.1  | 38.57 |
+  |Segformer | MIT-B1 | 512x512 | 160000 | 41.64 | 42.76 |
+  |Segformer | MIT-B2 | 512x512 | 160000 | 46.53 | 47.49 |
+  |Segformer | MIT-B3 | 512x512 | 160000 | 48.46 | 49.14 |
+  |Segformer | MIT-B4 | 512x512 | 160000 | 49.34 | 50.29 |
+  |Segformer | MIT-B5 | 512x512 | 160000 | 50.08 | 50.72 |
+  |Segformer | MIT-B5 | 640x640 | 160000 | 50.58 | 50.8  |
 
 We replace `AlignedResize` in original implementatiuon to `Resize + ResizeToMultiple`. If you want to test by
 using `AlignedResize`, you can change the dataset pipeline like this:
