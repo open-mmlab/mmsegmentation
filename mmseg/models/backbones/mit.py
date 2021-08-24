@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import math
 import warnings
 
@@ -11,7 +12,7 @@ from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed, mit_convert, nchw_to_nlc, nlc_to_nchw
+from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw
 
 
 class MixFFN(BaseModule):
@@ -159,7 +160,13 @@ class EfficientMultiheadAttention(MultiheadAttention):
         if identity is None:
             identity = x_q
 
-        out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
+        # `need_weights=True` will let nn.MultiHeadAttention
+        # `return attn_output, attn_output_weights.sum(dim=1) / num_heads`
+        # The `attn_output_weights.sum(dim=1)` may cause cuda error. So, we set
+        # `need_weights=False` to ignore `attn_output_weights.sum(dim=1)`.
+        # This issue - `https://github.com/pytorch/pytorch/issues/37583` report
+        # the error that large scale tensor sum operation may cause cuda error.
+        out = self.attn(query=x_q, key=x_kv, value=x_kv, need_weights=False)[0]
 
         return identity + self.dropout_layer(self.proj_drop(out))
 
@@ -387,16 +394,8 @@ class MixVisionTransformer(BaseModule):
                 self.pretrained, logger=logger, map_location='cpu')
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
-            elif 'model' in checkpoint:
-                state_dict = checkpoint['model']
             else:
                 state_dict = checkpoint
-
-            if self.pretrain_style == 'official':
-                # Because segformer backbone is not support by mmcls,
-                # so we need to convert pretrain weights to match this
-                # implementation.
-                state_dict = mit_convert(state_dict)
 
             self.load_state_dict(state_dict, False)
 

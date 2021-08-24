@@ -1,223 +1,223 @@
 Collections:
-- Name: apcnet
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
+  Name: apcnet
 Models:
-- Name: apcnet_r50-d8_512x1024_40k_cityscapes
+- Config: configs/apcnet/apcnet_r50-d8_512x1024_40k_cityscapes.py
   In Collection: apcnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 280.11
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 280.11
+    lr schd: 40000
     memory (GB): 7.7
+  Name: apcnet_r50-d8_512x1024_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.02
       mIoU(ms+flip): 79.26
-  Config: configs/apcnet/apcnet_r50-d8_512x1024_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x1024_40k_cityscapes/apcnet_r50-d8_512x1024_40k_cityscapes_20201214_115717-5e88fa33.pth
-- Name: apcnet_r101-d8_512x1024_40k_cityscapes
+- Config: configs/apcnet/apcnet_r101-d8_512x1024_40k_cityscapes.py
   In Collection: apcnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 465.12
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,1024)
+      value: 465.12
+    lr schd: 40000
     memory (GB): 11.2
+  Name: apcnet_r101-d8_512x1024_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.08
       mIoU(ms+flip): 80.34
-  Config: configs/apcnet/apcnet_r101-d8_512x1024_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x1024_40k_cityscapes/apcnet_r101-d8_512x1024_40k_cityscapes_20201214_115716-abc9d111.pth
-- Name: apcnet_r50-d8_769x769_40k_cityscapes
+- Config: configs/apcnet/apcnet_r50-d8_769x769_40k_cityscapes.py
   In Collection: apcnet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 657.89
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 657.89
+    lr schd: 40000
     memory (GB): 8.7
+  Name: apcnet_r50-d8_769x769_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.89
       mIoU(ms+flip): 79.75
-  Config: configs/apcnet/apcnet_r50-d8_769x769_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_769x769_40k_cityscapes/apcnet_r50-d8_769x769_40k_cityscapes_20201214_115717-2a2628d7.pth
-- Name: apcnet_r101-d8_769x769_40k_cityscapes
+- Config: configs/apcnet/apcnet_r101-d8_769x769_40k_cityscapes.py
   In Collection: apcnet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
-    lr schd: 40000
     inference time (ms/im):
-    - value: 970.87
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (769,769)
+      value: 970.87
+    lr schd: 40000
     memory (GB): 12.7
+  Name: apcnet_r101-d8_769x769_40k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.96
       mIoU(ms+flip): 79.24
-  Config: configs/apcnet/apcnet_r101-d8_769x769_40k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_769x769_40k_cityscapes/apcnet_r101-d8_769x769_40k_cityscapes_20201214_115718-b650de90.pth
-- Name: apcnet_r50-d8_512x1024_80k_cityscapes
+- Config: configs/apcnet/apcnet_r50-d8_512x1024_80k_cityscapes.py
   In Collection: apcnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
     lr schd: 80000
+  Name: apcnet_r50-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.96
       mIoU(ms+flip): 79.94
-  Config: configs/apcnet/apcnet_r50-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x1024_80k_cityscapes/apcnet_r50-d8_512x1024_80k_cityscapes_20201214_115716-987f51e3.pth
-- Name: apcnet_r101-d8_512x1024_80k_cityscapes
+- Config: configs/apcnet/apcnet_r101-d8_512x1024_80k_cityscapes.py
   In Collection: apcnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
     lr schd: 80000
+  Name: apcnet_r101-d8_512x1024_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.64
       mIoU(ms+flip): 80.61
-  Config: configs/apcnet/apcnet_r101-d8_512x1024_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x1024_80k_cityscapes/apcnet_r101-d8_512x1024_80k_cityscapes_20201214_115705-b1ff208a.pth
-- Name: apcnet_r50-d8_769x769_80k_cityscapes
+- Config: configs/apcnet/apcnet_r50-d8_769x769_80k_cityscapes.py
   In Collection: apcnet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
     lr schd: 80000
+  Name: apcnet_r50-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.79
       mIoU(ms+flip): 80.35
-  Config: configs/apcnet/apcnet_r50-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_769x769_80k_cityscapes/apcnet_r50-d8_769x769_80k_cityscapes_20201214_115718-7ea9fa12.pth
-- Name: apcnet_r101-d8_769x769_80k_cityscapes
+- Config: configs/apcnet/apcnet_r101-d8_769x769_80k_cityscapes.py
   In Collection: apcnet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
     lr schd: 80000
+  Name: apcnet_r101-d8_769x769_80k_cityscapes
   Results:
-    Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.45
       mIoU(ms+flip): 79.91
-  Config: configs/apcnet/apcnet_r101-d8_769x769_80k_cityscapes.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_769x769_80k_cityscapes/apcnet_r101-d8_769x769_80k_cityscapes_20201214_115716-a7fbc2ab.pth
-- Name: apcnet_r50-d8_512x512_80k_ade20k
+- Config: configs/apcnet/apcnet_r50-d8_512x512_80k_ade20k.py
   In Collection: apcnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 50.99
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 50.99
+    lr schd: 80000
     memory (GB): 10.1
+  Name: apcnet_r50-d8_512x512_80k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.2
       mIoU(ms+flip): 43.3
-  Config: configs/apcnet/apcnet_r50-d8_512x512_80k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x512_80k_ade20k/apcnet_r50-d8_512x512_80k_ade20k_20201214_115705-a8626293.pth
-- Name: apcnet_r101-d8_512x512_80k_ade20k
+- Config: configs/apcnet/apcnet_r101-d8_512x512_80k_ade20k.py
   In Collection: apcnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
-    lr schd: 80000
     inference time (ms/im):
-    - value: 76.34
-      hardware: V100
-      backend: PyTorch
+    - backend: PyTorch
       batch size: 1
+      hardware: V100
       mode: FP32
       resolution: (512,512)
+      value: 76.34
+    lr schd: 80000
     memory (GB): 13.6
+  Name: apcnet_r101-d8_512x512_80k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.54
       mIoU(ms+flip): 46.65
-  Config: configs/apcnet/apcnet_r101-d8_512x512_80k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x512_80k_ade20k/apcnet_r101-d8_512x512_80k_ade20k_20201214_115704-c656c3fb.pth
-- Name: apcnet_r50-d8_512x512_160k_ade20k
+- Config: configs/apcnet/apcnet_r50-d8_512x512_160k_ade20k.py
   In Collection: apcnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 160000
+  Name: apcnet_r50-d8_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.4
       mIoU(ms+flip): 43.94
-  Config: configs/apcnet/apcnet_r50-d8_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x512_160k_ade20k/apcnet_r50-d8_512x512_160k_ade20k_20201214_115706-25fb92c2.pth
-- Name: apcnet_r101-d8_512x512_160k_ade20k
+- Config: configs/apcnet/apcnet_r101-d8_512x512_160k_ade20k.py
   In Collection: apcnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 160000
+  Name: apcnet_r101-d8_512x512_160k_ade20k
   Results:
-    Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.41
       mIoU(ms+flip): 46.63
-  Config: configs/apcnet/apcnet_r101-d8_512x512_160k_ade20k.py
+    Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x512_160k_ade20k/apcnet_r101-d8_512x512_160k_ade20k_20201214_115705-73f9a8d7.pth

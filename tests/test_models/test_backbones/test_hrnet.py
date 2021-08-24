@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.models.backbones import HRNet
