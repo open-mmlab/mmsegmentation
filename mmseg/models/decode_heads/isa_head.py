@@ -15,9 +15,9 @@ class SelfAttentionBlock(_SelfAttentionBlock):
     Args:
         in_channels (int): Input channels of key/query feature.
         channels (int): Output channels of key/query transform.
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
-        act_cfg (dict|None): Config of activation layers.
+        conv_cfg (dict | None): Config of conv layers.
+        norm_cfg (dict | None): Config of norm layers.
+        act_cfg (dict | None): Config of activation layers.
     """
 
     def __init__(self, in_channels, channels, conv_cfg, norm_cfg, act_cfg):
