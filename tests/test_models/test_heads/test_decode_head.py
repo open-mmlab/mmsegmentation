@@ -74,3 +74,54 @@ def test_decode_head():
     assert head.input_transform == 'resize_concat'
     transformed_inputs = head._transform_inputs(inputs)
     assert transformed_inputs.shape == (1, 48, 45, 45)
+
+    # test multi-loss, loss_decode is dict
+    inputs = torch.randn(2, 19, 8, 8).float()
+    target = torch.ones(2, 1, 64, 64).long()
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss = head.losses(seg_logit=inputs, seg_label=target)
+    assert 'loss_seg' in loss
+
+    # test multi-loss, loss_decode is list of dict
+    inputs = torch.randn(2, 19, 8, 8).float()
+    target = torch.ones(2, 1, 64, 64).long()
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=[
+            dict(type='CrossEntropyLoss', name='ce_1'),
+            dict(type='CrossEntropyLoss', name='ce_2')
+        ])
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss = head.losses(seg_logit=inputs, seg_label=target)
+    assert 'loss_ce_1' in loss
+    assert 'loss_ce_2' in loss
+
+    # test multi-loss, loss_decode is list of dict
+    inputs = torch.randn(2, 19, 8, 8).float()
+    target = torch.ones(2, 1, 64, 64).long()
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=(dict(type='CrossEntropyLoss', name='ce_1'),
+                     dict(type='CrossEntropyLoss', name='ce_2'),
+                     dict(type='CrossEntropyLoss', name='ce_3')))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss = head.losses(seg_logit=inputs, seg_label=target)
+    assert 'loss_ce_1' in loss
+    assert 'loss_ce_2' in loss
+    assert 'loss_ce_3' in loss
