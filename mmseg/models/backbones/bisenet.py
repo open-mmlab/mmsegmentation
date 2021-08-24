@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import warnings
 
 import torch
@@ -32,8 +33,9 @@ class DetailBranch(BaseModule):
                  db_channels,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU')):
-        super(DetailBranch, self).__init__()
+                 act_cfg=dict(type='ReLU'),
+                 init_cfg=None):
+        super(DetailBranch, self).__init__(init_cfg)
 
         C1, C2, C3 = db_channels
 
@@ -160,8 +162,9 @@ class StemBlock(BaseModule):
                  out_channels,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU')):
-        super(StemBlock, self).__init__()
+                 act_cfg=dict(type='ReLU'),
+                 init_cfg=None):
+        super(StemBlock, self).__init__(init_cfg)
 
         self.conv = ConvModule(
             in_channels=in_channels,
@@ -243,8 +246,9 @@ class GELayerS1(BaseModule):
                  exp_ratio=6,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU')):
-        super(GELayerS1, self).__init__()
+                 act_cfg=dict(type='ReLU'),
+                 init_cfg=None):
+        super(GELayerS1, self).__init__(init_cfg)
         mid_channel = in_channels * exp_ratio
         self.conv1 = ConvModule(
             in_channels=in_channels,
@@ -320,8 +324,9 @@ class GELayerS2(BaseModule):
                  exp_ratio=6,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU')):
-        super(GELayerS2, self).__init__()
+                 act_cfg=dict(type='ReLU'),
+                 init_cfg=None):
+        super(GELayerS2, self).__init__(init_cfg)
 
         mid_channel = in_channels * exp_ratio
         self.conv1 = ConvModule(
@@ -426,8 +431,9 @@ class CEBlock(BaseModule):
                  out_channels,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU')):
-        super(CEBlock, self).__init__()
+                 act_cfg=dict(type='ReLU'),
+                 init_cfg=None):
+        super(CEBlock, self).__init__(init_cfg)
         self.in_channels = in_channels
         self.out_channels = out_channels
 
@@ -483,8 +489,8 @@ class SemanticBranch(BaseModule):
         Bilateral Guided Aggregation Layer.
     """
 
-    def __init__(self, sb_channels, exp_ratio=6):
-        super(SemanticBranch, self).__init__()
+    def __init__(self, sb_channels, exp_ratio=6,init_cfg=None):
+        super(SemanticBranch, self).__init__(init_cfg)
 
         C1, C3, C4, C5 = sb_channels
 
@@ -542,8 +548,9 @@ class BGALayer(BaseModule):
                  align_corners,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU')):
-        super(BGALayer, self).__init__()
+                 act_cfg=dict(type='ReLU'),
+                 init_cfg=None):
+        super(BGALayer, self).__init__(init_cfg)
 
         self.out_channels = out_channels
         self.align_corners = align_corners
@@ -670,17 +677,21 @@ class BiSeNetV2(BaseModule):
                  middle_channels=128,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
-                 init_cfg=None,
+                 init_cfg=[
+                dict(type='Kaiming', layer='Conv2d'),
+                dict(
+                    type='Constant', val=1, layer=['_BatchNorm', 'GroupNorm'])
+            ],
                  **kwargs):
-        super(BiSeNetV2, self).__init__(**kwargs)
-
+        super(BiSeNetV2, self).__init__(init_cfg, **kwargs)
+        '''
         if init_cfg is None:
             self.init_cfg = [
                 dict(type='Kaiming', layer='Conv2d'),
                 dict(
                     type='Constant', val=1, layer=['_BatchNorm', 'GroupNorm'])
             ]
-
+        '''
         if isinstance(pretrained, str) or pretrained is None:
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
                           'please use "init_cfg" instead')
@@ -707,6 +718,7 @@ class BiSeNetV2(BaseModule):
         self.segment = SemanticBranch(sb_channels, self.expansion_ratio)
         self.bga = BGALayer(self.middle_channels, self.align_corners)
 
+    #'''
     def init_weights(self):
         if self.pretrained is None:
             for m in self.modules():
@@ -730,6 +742,7 @@ class BiSeNetV2(BaseModule):
             else:
                 state_dict = checkpoint
             self.load_state_dict(state_dict, False)
+    #'''
 
     def forward(self, x):
         feat_d = self.detail(x)
