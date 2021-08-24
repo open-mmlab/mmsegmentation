@@ -60,6 +60,7 @@ class ISAHead(BaseDecodeHead):
 
     Args:
         isa_channels (int): The channels of ISA Module.
+        down_factor (tuple[int]): The local group size of ISA.
     """
 
     def __init__(self, isa_channels, down_factor=(8, 8), **kwargs):
@@ -98,36 +99,41 @@ class ISAHead(BaseDecodeHead):
         """Forward function."""
         x_ = self._transform_inputs(inputs)
         x = self.in_conv(x_)
+        residual = x
 
         n, c, h, w = x.size()
-        P_h, P_w = self.down_factor
-        Q_h, Q_w = math.ceil(h / P_h), math.ceil(w / P_w)
-        pad_h, pad_w = Q_h * P_h - h, Q_w * P_w - w
+        loc_h, loc_w = self.down_factor  # size of local group in H- and W-axes
+        glb_h, glb_w = math.ceil(h / loc_h), math.ceil(w / loc_w)
+        pad_h, pad_w = glb_h * loc_h - h, glb_w * loc_w - w
         if pad_h > 0 or pad_w > 0:  # pad if the size is not divisible
             padding = (pad_w // 2, pad_w - pad_w // 2, pad_h // 2,
                        pad_h - pad_h // 2)
-            feat = F.pad(x, padding)
-        else:
-            feat = x
+            x = F.pad(x, padding)
 
         # global relation
-        feat = feat.view(n, c, Q_h, P_h, Q_w, P_w)
-        feat = feat.permute(0, 3, 5, 1, 2, 4).reshape(-1, c, Q_h, Q_w)
-        feat = self.global_relation(feat)
+        x = x.view(n, c, glb_h, loc_h, glb_w, loc_w)
+        # do permutation to gather global group
+        x = x.permute(0, 3, 5, 1, 2, 4)  # (n, loc_h, loc_w, c, glb_h, glb_w)
+        x = x.reshape(-1, c, glb_h, glb_w)
+        # apply attention within each global group
+        x = self.global_relation(x)  # (n * loc_h * loc_w, c, glb_h, glb_w)
 
         # local relation
-        feat = feat.view(n, P_h, P_w, c, Q_h, Q_w)
-        feat = feat.permute(0, 4, 5, 3, 1, 2).reshape(-1, c, P_h, P_w)
-        feat = self.local_relation(feat)
+        x = x.view(n, loc_h, loc_w, c, glb_h, glb_w)
+        # do permutation to gather local group
+        x = x.permute(0, 4, 5, 3, 1, 2)  # (n, glb_h, glb_w, c, loc_h, loc_w)
+        x = x.reshape(-1, c, loc_h, loc_w)
+        # apply attention within each local group
+        x = self.local_relation(x)  # (n * glb_h * glb_w, c, loc_h, loc_w)
 
-        feat = feat.view(n, Q_h, Q_w, c, P_h, P_w)
-        feat = feat.permute(0, 3, 1, 4, 2, 5).reshape(n, c, P_h * Q_h,
-                                                      P_w * Q_w)
+        # permute each pixel back to its original position
+        x = x.view(n, glb_h, glb_w, c, loc_h, loc_w)
+        x = x.permute(0, 3, 1, 4, 2, 5)  # (n, c, glb_h, loc_h, glb_w, loc_w)
+        x = x.reshape(n, c, glb_h * loc_h, glb_w * loc_w)
         if pad_h > 0 or pad_w > 0:  # remove padding
-            feat = feat[:, :, pad_h // 2:pad_h // 2 + h,
-                        pad_w // 2:pad_w // 2 + w]
+            x = x[:, :, pad_h // 2:pad_h // 2 + h, pad_w // 2:pad_w // 2 + w]
 
-        feat = self.out_conv(torch.cat([feat, x], dim=1))
-        out = self.cls_seg(feat)
+        x = self.out_conv(torch.cat([x, residual], dim=1))
+        out = self.cls_seg(x)
 
         return out

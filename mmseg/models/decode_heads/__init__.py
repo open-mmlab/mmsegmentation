@@ -14,18 +14,7 @@ from .sep_aspp_head import DepthwiseSeparableASPPHead
 from .uper_head import UPerHead
 
 __all__ = [
-    'FCNHead',
-    'PSPHead',
-    'ASPPHead',
-    'PSAHead',
-    'NLHead',
-    'GCHead',
-    'CCHead',
-    'UPerHead',
-    'DepthwiseSeparableASPPHead',
-    'ANNHead',
-    'DAHead',
-    'OCRHead',
-    'EncHead',
-    'ISAHead',
+    'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
+    'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
+    'EncHead', 'ISAHead'
 ]
