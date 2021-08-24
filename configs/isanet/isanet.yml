@@ -1,0 +1,8 @@
+Collections:
+- Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+  Name: isanet
+Models: []
