@@ -21,14 +21,16 @@ class ReassembleBlocks(BaseModule):
             Default: [96, 192, 384, 768].
         readout_type (str): Type of readout operation. Default: 'ignore'.
         patch_size (int): The patch size. Default: 16.
+        init_cfg (dict, optional): Initialization config dict. Default: None.
     """
 
     def __init__(self,
                  in_channels=768,
                  out_channels=[96, 192, 384, 768],
                  readout_type='ignore',
-                 patch_size=16):
-        super(ReassembleBlocks, self).__init__()
+                 patch_size=16,
+                 init_cfg=None):
+        super(ReassembleBlocks, self).__init__(init_cfg)
 
         assert readout_type in ['ignore', 'add', 'project']
         self.readout_type = readout_type
@@ -170,6 +172,7 @@ class FeatureFusionBlock(BaseModule):
             Default: False.
         align_corners (bool): align_corner setting for bilinear upsample.
             Default: True.
+        init_cfg (dict, optional): Initialization config dict. Default: None.
     """
 
     def __init__(self,
@@ -177,8 +180,9 @@ class FeatureFusionBlock(BaseModule):
                  act_cfg,
                  norm_cfg,
                  expand=False,
-                 align_corners=True):
-        super(FeatureFusionBlock, self).__init__()
+                 align_corners=True,
+                 init_cfg=None):
+        super(FeatureFusionBlock, self).__init__(init_cfg)
 
         self.in_channels = in_channels
         self.expand = expand

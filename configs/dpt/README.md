@@ -20,15 +20,23 @@
 }
 ```
 
-## How to use ViT pretrained weights
+## Usage
 
-We convert the backbone weights from the pytorch-image-models repository (https://github.com/rwightman/pytorch-image-models) with `tools/model_converters/vit_convert.py`.
+To use other repositories' pre-trained models, it is necessary to convert keys.
 
-You may follow below steps to start DPT training preparation:
+We provide a script [`vit2mmseg.py`](../../tools/model_converters/vit2mmseg.py) in the tools directory to convert the key of models from [timm](https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py) to MMSegmentation style.
 
-1. Download ViT pretrained weights (Suggest put in `pretrain/`);
-2. Run convert script to convert official pretrained weights: `python tools/model_converters/vit_convert.py pretrain/vit-timm.pth pretrain/vit-mmseg.pth`;
-3. Modify `pretrained` of VisionTransformer model config, for example, `pretrained` of `dpt_vit-b16.py` is set to `pretrain/vit-mmseg.pth`;
+```shell
+python tools/model_converters/vit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
+```
+
+E.g.
+
+```shell
+python tools/model_converters/vit2mmseg.py https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth pretrain/jx_vit_base_p16_224-80ecf9dd.pth
+```
+
+This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
 
 ## Results and models
 
