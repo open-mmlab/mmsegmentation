@@ -1,7 +1,8 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
-import torch.nn.functional as F
 from mmcv.cnn import ConvModule, xavier_init
 
+from mmseg.ops import resize
 from ..builder import NECKS
 
 
@@ -114,7 +115,7 @@ class MultiLevelNeck(nn.Module):
 
         outs = []
         for i in range(self.num_outs):            
-            x_resize = self.resize(
+            x_resize = resize(
                 inputs[i], i, mode=self.resize_mode)
             outs.append(self.convs[i](x_resize))
         return tuple(outs)

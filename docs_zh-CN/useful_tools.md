@@ -43,7 +43,7 @@ python tools/publish_model.py ${INPUT_FILENAME} ${OUTPUT_FILENAME}
 python tools/publish_model.py work_dirs/pspnet/latest.pth psp_r50_hszhao_200ep.pth
 ```
 
-最终输出文件将是 `psp_r50_512x1024_40ki_cityscapes-{hash id}.pth`.
+最终输出文件将是 `psp_r50_512x1024_40ki_cityscapes-{hash id}.pth`。
 
 ### 导出 ONNX (试验性)
 
@@ -67,18 +67,18 @@ python tools/pytorch2onnx.py \
 
 各个参数的描述:
 
-- `config` : 模型配置文件的路径。
-- `--checkpoint` : 模型检查点文件的路径。
-- `--output-file`: 输出的 ONNX 模型的路径。如果没有专门指定，它默认是 `tmp.onnx`。
-- `--input-img` : 用来转换和可视化的一张输入图像的路径。
-- `--shape`: 模型的输入张量的高和宽。如果没有专门指定，它将被设置成 `test_pipeline` 的 `img_scale`。
-- `--rescale-shape`: 改变输出的形状。设置这个值来避免 OOM，它仅在 `slide` 模式下可以用。
-- `--show`: 是否打印输出模型的结构。如果没有被专门指定，它将被设置成 `False`。
-- `--verify`: 是否验证一个输出模型的正确性 (correctness)。如果没有被专门指定，它将被设置成 `False`。
-- `--dynamic-export`: 是否导出形状变化的输入与输出的 ONNX 模型。如果没有被专门指定，它将被设置成 `False`。
-- `--cfg-options`: 更新配置选项。
+- `config` : 模型配置文件的路径
+- `--checkpoint` : 模型检查点文件的路径
+- `--output-file`: 输出的 ONNX 模型的路径。如果没有专门指定，它默认是 `tmp.onnx`
+- `--input-img` : 用来转换和可视化的一张输入图像的路径
+- `--shape`: 模型的输入张量的高和宽。如果没有专门指定，它将被设置成 `test_pipeline` 的 `img_scale`
+- `--rescale-shape`: 改变输出的形状。设置这个值来避免 OOM，它仅在 `slide` 模式下可以用
+- `--show`: 是否打印输出模型的结构。如果没有被专门指定，它将被设置成 `False`
+- `--verify`: 是否验证一个输出模型的正确性 (correctness)。如果没有被专门指定，它将被设置成 `False`
+- `--dynamic-export`: 是否导出形状变化的输入与输出的 ONNX 模型。如果没有被专门指定，它将被设置成 `False`
+- `--cfg-options`: 更新配置选项
 
-**注意**: 这个工具仍然是试验性的，目前一些自定义操作还没有被支持。
+**注意**: 这个工具仍然是试验性的，目前一些自定义操作还没有被支持
 
 ### 评估 ONNX 模型
 
@@ -92,7 +92,7 @@ python tools/pytorch2onnx.py \
   pip install onnx onnxruntime-gpu
   ```
 
-- 参考 [如何在 MMCV 里构建 tensorrt 插件](https://mmcv.readthedocs.io/en/latest/tensorrt_plugin.html#how-to-build-tensorrt-plugins-in-mmcv) 安装TensorRT (可选)。
+- 参考 [如何在 MMCV 里构建 tensorrt 插件](https://mmcv.readthedocs.io/en/latest/tensorrt_plugin.html#how-to-build-tensorrt-plugins-in-mmcv) 安装TensorRT (可选)
 
 #### 使用方法
 
@@ -112,21 +112,21 @@ python tools/deploy_test.py \
 
 各个参数的描述:
 
-- `config`: 模型配置文件的路径。
-- `model`: 被转换的模型文件的路径。
-- `backend`: 推理的后端，可选项：`onnxruntime`， `tensorrt`。
-- `--out`: 输出结果成 pickle 格式文件的路径。
+- `config`: 模型配置文件的路径
+- `model`: 被转换的模型文件的路径
+- `backend`: 推理的后端，可选项：`onnxruntime`， `tensorrt`
+- `--out`: 输出结果成 pickle 格式文件的路径
 - `--format-only` : 不评估直接给输出结果的格式。通常用在当您想把结果输出成一些测试服务器需要的特定格式时。如果没有被专门指定，它将被设置成 `False`。 注意这个参数是用 `--eval` 来 **手动添加**
-- `--eval`: 评估指标，取决于每个数据集的要求，例如 "mIoU" 是大多数据集的指标而 "cityscapes" 仅针对 Cityscapes 数据集。注意这个参数是用 `--format-only` 来 **手动添加**。
+- `--eval`: 评估指标，取决于每个数据集的要求，例如 "mIoU" 是大多数据集的指标而 "cityscapes" 仅针对 Cityscapes 数据集。注意这个参数是用 `--format-only` 来 **手动添加**
 - `--show`: 是否展示结果
-- `--show-dir`: 涂上结果的图像被保存的文件夹的路径。
-- `--options`: 重写配置文件里的一些设置。`xxx=yyy` 格式的键值对将被覆盖到配置文件里。
-- `--eval-options`: 自定义的评估的选项。 `xxx=yyy` 格式的键值对将成为  `dataset.evaluate()` 函数的参数变量。
-- `--opacity`: 涂上结果的分割图的透明度。范围在 (0, 1] 之间。
+- `--show-dir`: 涂上结果的图像被保存的文件夹的路径
+- `--options`: 重写配置文件里的一些设置，`xxx=yyy` 格式的键值对将被覆盖到配置文件里
+- `--eval-options`: 自定义的评估的选项， `xxx=yyy` 格式的键值对将成为  `dataset.evaluate()` 函数的参数变量
+- `--opacity`: 涂上结果的分割图的透明度，范围在 (0, 1] 之间
 
 #### 结果和模型
 
-|   模型    |                     配置文件                       |  数据集   |  评价指标 | PyTorch | ONNX 运行时间 | TensorRT-fp32 | TensorRT-fp16 |
+|   模型    |                     配置文件                       |  数据集   |  评价指标 | PyTorch | ONNXRuntime | TensorRT-fp32 | TensorRT-fp16 |
 | :--------: | :---------------------------------------------: | :--------: | :----: | :-----: | :---------: | :-----------: | :-----------: |
 |    FCN     |      fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |  mIoU  |  72.2   |    72.2     |     72.2      |     72.2      |
 |   PSPNet   |    pspnet_r50-d8_512x1024_40k_cityscapes.py     | cityscapes |  mIoU  |  77.8   |    77.8     |     77.8      |     77.8      |
@@ -155,21 +155,21 @@ python tools/pytorch2torchscript.py \
 
 各个参数的描述:
 
-- `config` : pytorch 模型的配置文件的路径。
-- `--checkpoint` : pytorch 模型的检查点文件的路径。
-- `--output-file`: TorchScript 模型输出的路径。 如果没有被专门指定，它将被设置成 `tmp.pt`。
-- `--input-img` : 用来转换和可视化的输入图像的路径。
-- `--shape`: 模型的输入张量的宽和高。如果没有被专门指定，它将被设置成 `512 512`。
-- `--show`: 是否打印输出模型的追踪图 (traced graph)。如果没有被专门指定，它将被设置成 `False`。
-- `--verify`: 是否验证一个输出模型的正确性 (correctness)。如果没有被专门指定，它将被设置成 `False`。
+- `config` : pytorch 模型的配置文件的路径
+- `--checkpoint` : pytorch 模型的检查点文件的路径
+- `--output-file`: TorchScript 模型输出的路径，如果没有被专门指定，它将被设置成 `tmp.pt`
+- `--input-img` : 用来转换和可视化的输入图像的路径
+- `--shape`: 模型的输入张量的宽和高。如果没有被专门指定，它将被设置成 `512 512`
+- `--show`: 是否打印输出模型的追踪图 (traced graph)，如果没有被专门指定，它将被设置成 `False`
+- `--verify`: 是否验证一个输出模型的正确性 (correctness)，如果没有被专门指定，它将被设置成 `False`
 
-**注意**: 目前仅支持 PyTorch>=1.8.0 版本.
+**注意**: 目前仅支持 PyTorch>=1.8.0 版本
 
-**注意**: 这个工具仍然是试验性的，一些自定义操作符目前还不被支持。
+**注意**: 这个工具仍然是试验性的，一些自定义操作符目前还不被支持
 
 例子:
 
-- 导出 PSPNet 在 cityscapes 数据集上的 pytorch 模型。
+- 导出 PSPNet 在 cityscapes 数据集上的 pytorch 模型
 
   ```shell
   python tools/pytorch2torchscript.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
@@ -180,12 +180,12 @@ python tools/pytorch2torchscript.py \
 
 ### 导出 TensorRT (试验性)
 
-一个导出 [ONNX](https://github.com/onnx/onnx) 模型成 [TensorRT](https://developer.nvidia.com/tensorrt) 格式的脚本。
+一个导出 [ONNX](https://github.com/onnx/onnx) 模型成 [TensorRT](https://developer.nvidia.com/tensorrt) 格式的脚本
 
 先决条件
 
-- 按照 [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) 和 [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md) ，用 ONNXRuntime 自定义运算 (custom ops) 和 TensorRT 插件安装 `mmcv-full`。
-- 使用 [pytorch2onnx](#convert-to-onnx-experimental) 将模型从 PyTorch 转成 ONNX。
+- 按照 [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) 和 [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md) ，用 ONNXRuntime 自定义运算 (custom ops) 和 TensorRT 插件安装 `mmcv-full`
+- 使用 [pytorch2onnx](#convert-to-onnx-experimental) 将模型从 PyTorch 转成 ONNX
 
 使用方法
 
@@ -203,20 +203,20 @@ python ${MMSEG_PATH}/tools/onnx2tensorrt.py \
 
 各个参数的描述:
 
-- `config` : 模型的配置文件。
-- `model` : 输入的 ONNX 模型的路径。
-- `--trt-file` : 输出的 TensorRT 引擎的路径。
-- `--max-shape` : 模型的输入的最大形状。
-- `--min-shape` : 模型的输入的最小形状。
-- `--fp16` : 做 fp16 模型转换。
-- `--workspace-size` : 在 GiB 里的最大工作空间大小 (Max workspace size)。
-- `--input-img` : 用来可视化的图像。
-- `--show` : 做结果的可视化。
-- `--dataset` : Palette provider, 默认为 `CityscapesDataset`。
-- `--verify` : 验证 ONNXRuntime 和 TensorRT 的输出。
-- `--verbose` : 当创建 TensorRT 引擎时，是否详细做信息日志。默认为 False。
+- `config` : 模型的配置文件
+- `model` : 输入的 ONNX 模型的路径
+- `--trt-file` : 输出的 TensorRT 引擎的路径
+- `--max-shape` : 模型的输入的最大形状
+- `--min-shape` : 模型的输入的最小形状
+- `--fp16` : 做 fp16 模型转换
+- `--workspace-size` : 在 GiB 里的最大工作空间大小 (Max workspace size)
+- `--input-img` : 用来可视化的图像
+- `--show` : 做结果的可视化
+- `--dataset` : Palette provider, 默认为 `CityscapesDataset`
+- `--verify` : 验证 ONNXRuntime 和 TensorRT 的输出
+- `--verbose` : 当创建 TensorRT 引擎时，是否详细做信息日志。默认为 False
 
-**注意**: 仅在全图测试模式 (whole mode) 下测试过。
+**注意**: 仅在全图测试模式 (whole mode) 下测试过
 
 ## 其他内容
 
@@ -233,9 +233,9 @@ python tools/print_config.py \
 
 各个参数的描述:
 
-- `config` : pytorch 模型的配置文件的路径。
-- `--graph` : 是否打印模型的图 (models graph)。
-- `--options`: 自定义替换配置文件的选项。
+- `config` : pytorch 模型的配置文件的路径
+- `--graph` : 是否打印模型的图 (models graph)
+- `--options`: 自定义替换配置文件的选项
 
 ### 对训练日志 (training logs) 画图
 
@@ -247,14 +247,105 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
 
 示例:
 
-- 对 mIoU, mAcc, aAcc 指标画图。
+- 对 mIoU, mAcc, aAcc 指标画图
 
   ```shell
   python tools/analyze_logs.py log.json --keys mIoU mAcc aAcc --legend mIoU mAcc aAcc
   ```
 
-- 对 loss 指标画图。
+- 对 loss 指标画图
 
   ```shell
   python tools/analyze_logs.py log.json --keys loss --legend loss
   ```
+
+### 转换其他仓库的权重
+
+`tools/model_converters/` 提供了若干个预训练权重转换脚本，支持将其他仓库的预训练权重的 key 转换为与 MMSegmentation 相匹配的 key。
+
+#### ViT Swin MiT Transformer 模型
+
+- ViT
+
+`tools/model_converters/vit2mmseg.py` 将 timm 预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
+  ```
+
+- Swin
+
+  `tools/model_converters/swin2mmseg.py` 将官方预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
+  ```
+
+- SegFormer
+
+  `tools/model_converters/mit2mmseg.py` 将官方预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
+  ```
+
+## 模型服务
+
+为了用 [`TorchServe`](https://pytorch.org/serve/) 服务 `MMSegmentation` 的模型 ， 您可以遵循如下流程:
+
+### 1. 将 model 从　MMSegmentation 转换到 TorchServe
+
+```shell
+python tools/mmseg2torchserve.py ${CONFIG_FILE} ${CHECKPOINT_FILE} \
+--output-folder ${MODEL_STORE} \
+--model-name ${MODEL_NAME}
+```
+
+**注意**: ${MODEL_STORE} 需要设置为某个文件夹的绝对路径
+
+### 2. 构建 `mmseg-serve` 容器镜像 (docker image)
+
+```shell
+docker build -t mmseg-serve:latest docker/serve/
+```
+
+### 3. 运行 `mmseg-serve`
+
+请查阅官方文档: [使用容器运行 TorchServe](https://github.com/pytorch/serve/blob/master/docker/README.md#running-torchserve-in-a-production-docker-environment)
+
+为了在 GPU 环境下使用, 您需要安装 [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html). 若在 CPU 环境下使用，您可以忽略添加 `--gpus` 参数。
+
+示例:
+
+```shell
+docker run --rm \
+--cpus 8 \
+--gpus device=0 \
+-p8080:8080 -p8081:8081 -p8082:8082 \
+--mount type=bind,source=$MODEL_STORE,target=/home/model-server/model-store \
+mmseg-serve:latest
+```
+
+阅读关于推理 (8080), 管理 (8081) 和指标 (8082) APIs 的 [文档](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) 。
+
+### 4. 测试部署
+
+```shell
+curl -O https://raw.githubusercontent.com/open-mmlab/mmsegmentation/master/resources/3dogs.jpg
+curl http://127.0.0.1:8080/predictions/${MODEL_NAME} -T 3dogs.jpg -o 3dogs_mask.png
+```
+
+得到的响应将是一个 ".png" 的分割掩码.
+
+您可以按照如下方法可视化输出:
+
+```python
+import matplotlib.pyplot as plt
+import mmcv
+plt.imshow(mmcv.imread("3dogs_mask.png", "grayscale"))
+plt.show()
+```
+
+看到的东西将会和下图类似:
+
+![3dogs_mask](../resources/3dogs_mask.png)

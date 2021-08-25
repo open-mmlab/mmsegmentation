@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.cnn import DepthwiseSeparableConvModule
 
 from ..builder import HEADS

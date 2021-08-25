@@ -5,8 +5,8 @@ import torch.nn as nn
 from mmcv.cnn import  trunc_normal_init
 from mmcv.runner.base_module import BaseModule, ModuleList
 
-from ..utils import VitBlock
 from ..builder import HEADS
+from ..utils import TransformerEncoderLayer
 from .decode_head import BaseDecodeHead
 
 def init_weights(m):
@@ -97,7 +97,7 @@ class MaskTransformerHead(BaseDecodeHead):
         self.blocks = ModuleList()
         for i in range(num_layers):
             self.blocks.append(
-                VitBlock(
+                TransformerEncoderLayer(
                     embed_dims=self.channels,
                     num_heads=num_heads,
                     feedforward_channels=mlp_ratio * self.channels,
