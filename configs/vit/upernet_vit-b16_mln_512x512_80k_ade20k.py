@@ -5,7 +5,7 @@ _base_ = [
 ]
 
 model = dict(
-    pretrained='pretrain/vit.pth',
+    pretrained='pretrain/vit_base_patch16_224.pth',
     decode_head=dict(num_classes=150),
     auxiliary_head=dict(num_classes=150))
 
