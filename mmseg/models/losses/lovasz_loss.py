@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 """Modified from https://github.com/bermanmaxim/LovaszSoftmax/blob/master/pytor
 ch/lovasz_losses.py Lovasz-Softmax and Jaccard hinge loss in PyTorch Maxim
 Berman 2018 ESAT-PSI KU Leuven (MIT License)"""

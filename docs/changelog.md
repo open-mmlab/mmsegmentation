@@ -1,5 +1,48 @@
 ## Changelog
 
+### V0.16 (08/04/2021)
+
+**Highlights**
+
+- Support PyTorch 1.9
+- Support SegFormer backbone MiT
+- Support md2yml pre-commit hook
+- Support frozen stage for HRNet
+
+**New Features**
+
+- Support SegFormer backbone MiT ([#594](https://github.com/open-mmlab/mmsegmentation/pull/594))
+- Support md2yml pre-commit hook ([#732](https://github.com/open-mmlab/mmsegmentation/pull/732))
+- Support mim ([#717](https://github.com/open-mmlab/mmsegmentation/pull/717))
+- Add mmseg2torchserve tool ([#552](https://github.com/open-mmlab/mmsegmentation/pull/552))
+
+**Improvements**
+
+- Support hrnet frozen stage ([#743](https://github.com/open-mmlab/mmsegmentation/pull/743))
+- Add template of reimplementation questions ([#741](https://github.com/open-mmlab/mmsegmentation/pull/741))
+- Output pdf and epub formats for readthedocs ([#742](https://github.com/open-mmlab/mmsegmentation/pull/742))
+- Refine the docstring of ResNet ([#723](https://github.com/open-mmlab/mmsegmentation/pull/723))
+- Replace interpolate with resize ([#731](https://github.com/open-mmlab/mmsegmentation/pull/731))
+- Update resource limit ([#700](https://github.com/open-mmlab/mmsegmentation/pull/700))
+- Update config.md ([#678](https://github.com/open-mmlab/mmsegmentation/pull/678))
+
+**Bug Fixes**
+
+- Fix ATTENTION registry ([#729](https://github.com/open-mmlab/mmsegmentation/pull/729))
+- Fix analyze log script ([#716](https://github.com/open-mmlab/mmsegmentation/pull/716))
+- Fix doc api display ([#725](https://github.com/open-mmlab/mmsegmentation/pull/725))
+- Fix patch_embed and pos_embed mismatch error ([#685](https://github.com/open-mmlab/mmsegmentation/pull/685))
+- Fix efficient test for multi-node ([#707](https://github.com/open-mmlab/mmsegmentation/pull/707))
+- Fix init_cfg in resnet backbone ([#697](https://github.com/open-mmlab/mmsegmentation/pull/697))
+- Fix efficient test bug ([#702](https://github.com/open-mmlab/mmsegmentation/pull/702))
+- Fix url error in config docs ([#680](https://github.com/open-mmlab/mmsegmentation/pull/680))
+- Fix mmcv installation ([#676](https://github.com/open-mmlab/mmsegmentation/pull/676))
+- Fix torch version ([#670](https://github.com/open-mmlab/mmsegmentation/pull/670))
+
+**Contributors**
+
+@sshuair @xiexinch @Junjun2016 @mmeendez8 @xvjiarui @sennnnn @puhsu @BIGWangYuDong @keke1u @daavoo
+
 ### V0.15 (07/04/2021)
 
 **Highlights**

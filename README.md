@@ -48,7 +48,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.15.0 was released in 07/04/2021.
+v0.16.0 was released in 08/04/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -142,3 +142,4 @@ and develop their own new semantic segmentation methods.
 - [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab image and video editing toolbox.
 - [MMOCR](https://github.com/open-mmlab/mmocr): A Comprehensive Toolbox for Text Detection, Recognition and Understanding.
 - [MMGeneration](https://github.com/open-mmlab/mmgeneration): A powerful toolkit for generative models.
+- [MIM](https://github.com/open-mmlab/mim): MIM Installs OpenMMLab Packages.
