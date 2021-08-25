@@ -1,22 +1,19 @@
+# Copyright (c) OpenMMLab. All rights reserved.
+import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from mmcv.cnn import ConvModule
+from tqdm import tqdm
 
 from mmseg.ops import resize
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
-import numpy as np
-from tqdm import tqdm
-import torch.nn.functional as F
 
-<<<<<<< HEAD
 
-class PPM(nn.ModuleList):
-    """Pooling Pyramid Module used in PSPCRF.
-=======
 class PPM(nn.ModuleList):
     """Pooling Pyramid Module used in PSPNet.
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
+
     Args:
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
             Module.
@@ -29,7 +26,7 @@ class PPM(nn.ModuleList):
     """
 
     def __init__(self, pool_scales, in_channels, channels, conv_cfg, norm_cfg,
-                 act_cfg, align_corners):
+                 act_cfg, align_corners, **kwargs):
         super(PPM, self).__init__()
         self.pool_scales = pool_scales
         self.align_corners = align_corners
@@ -48,7 +45,8 @@ class PPM(nn.ModuleList):
                         1,
                         conv_cfg=self.conv_cfg,
                         norm_cfg=self.norm_cfg,
-                        act_cfg=self.act_cfg)))
+                        act_cfg=self.act_cfg,
+                        **kwargs)))
 
     def forward(self, x):
         """Forward function."""
@@ -65,17 +63,19 @@ class PPM(nn.ModuleList):
 
 
 @HEADS.register_module()
-class PSPCRFHead(BaseDecodeHead):
+class PSPCrfHead(BaseDecodeHead):
     """Pyramid Scene Parsing Network.
+
     This head is the implementation of
     `PSPNet <https://arxiv.org/abs/1612.01105>`_.
+
     Args:
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
             Module. Default: (1, 2, 3, 6).
     """
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
-        super(PSPCRFHead, self).__init__(**kwargs)
+        super(PSPCrfHead, self).__init__(**kwargs)
         assert isinstance(pool_scales, (list, tuple))
         self.pool_scales = pool_scales
         self.psp_modules = PPM(
@@ -94,12 +94,8 @@ class PSPCRFHead(BaseDecodeHead):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
-<<<<<<< HEAD
         self.crf = CRF(n_spatial_dims=2)
 
-=======
-        self.crf = CRF(n_spatial_dims= 2)
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
     def forward(self, inputs):
         """Forward function."""
         x = self._transform_inputs(inputs)
@@ -111,17 +107,11 @@ class PSPCRFHead(BaseDecodeHead):
         output = self.crf(output)
         return output
 
-<<<<<<< HEAD
 
 class CRF(nn.Module):
     """
-    Class for learning and inference in conditional random field model
-    using mean field approximation
-=======
-class CRF(nn.Module):
-    """
-    Class for learning and inference in conditional random field model using mean field approximation
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
+    Class for learning and inference in
+    conditional random field model using mean field approximation
     and convolutional approximation in pairwise potentials term.
     Parameters
     ----------
@@ -139,66 +129,51 @@ class CRF(nn.Module):
     smoothness_weight : float
         Initial weight of smoothness kernel.
     smoothness_theta : float or sequence of floats
-<<<<<<< HEAD
-        Initial bandwidths for each spatial feature
-        in the gaussian smoothness kernel.
+        Initial bandwidths for each spatial feature in the
+        gaussian smoothness kernel.
         If it is a sequence its length must be equal to ``n_spatial_dims``.
     """
 
-    def __init__(self, n_spatial_dims, filter_size=11, n_iter=5,
-                 requires_grad=True, returns='logits', smoothness_weight=1,
+    def __init__(self,
+                 n_spatial_dims,
+                 filter_size=11,
+                 n_iter=5,
+                 requires_grad=True,
+                 returns='logits',
+                 smoothness_weight=1,
                  smoothness_theta=1):
-=======
-        Initial bandwidths for each spatial feature in the gaussian smoothness kernel.
-        If it is a sequence its length must be equal to ``n_spatial_dims``.
-    """
-
-    def __init__(self, n_spatial_dims, filter_size=11, n_iter=5, requires_grad=True,
-                 returns='logits', smoothness_weight=1, smoothness_theta=1):
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
         super().__init__()
         self.n_spatial_dims = n_spatial_dims
         self.n_iter = n_iter
         self.filter_size = np.broadcast_to(filter_size, n_spatial_dims)
         self.returns = returns
-        self.requires_grad = requires_grad
+        self.requ_grad = requires_grad
 
         self._set_param('smoothness_weight', smoothness_weight)
-<<<<<<< HEAD
         self._set_param('inv_smoothness_theta',
                         1 / np.broadcast_to(smoothness_theta, n_spatial_dims))
 
     def _set_param(self, name, init_value):
-        setattr(self, name, nn.Parameter(torch.tensor(
-            init_value, dtype=torch.float, requires_grad=self.requires_grad)))
-=======
-        self._set_param('inv_smoothness_theta', 1 / np.broadcast_to(smoothness_theta, n_spatial_dims))
-
-    def _set_param(self, name, init_value):
-        setattr(self, name, nn.Parameter(torch.tensor(init_value, dtype=torch.float, requires_grad=self.requires_grad)))
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
+        setattr(
+            self, name,
+            nn.Parameter(
+                torch.tensor(
+                    init_value,
+                    dtype=torch.float,
+                    requires_grad=self.requ_grad)))
 
     def forward(self, x, spatial_spacings=None, verbose=False):
         """
         Parameters
         ----------
         x : torch.tensor
-<<<<<<< HEAD
             Tensor of shape ``(batch_size, n_classes, *spatial)``
-            with negative unary potentials,
-            e.g. the CNN's output.
+            with negative unary potentials, e.g. the CNN's output.
         spatial_spacings : array of floats or None
             Array of shape ``(batch_size, len(spatial))``
             with spatial spacings of tensors in batch ``x``.
-            None is equivalent to all ones.
-            Used to adapt spatial gaussian filters
-            to different inputs' resolutions.
-=======
-            Tensor of shape ``(batch_size, n_classes, *spatial)`` with negative unary potentials, e.g. the CNN's output.
-        spatial_spacings : array of floats or None
-            Array of shape ``(batch_size, len(spatial))`` with spatial spacings of tensors in batch ``x``.
-            None is equivalent to all ones. Used to adapt spatial gaussian filters to different inputs' resolutions.
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
+            None is equivalent to all ones. Used to adapt
+            spatial gaussian filters to different inputs' resolutions.
         verbose : bool
             Whether to display the iterations using tqdm-bar.
         Returns
@@ -224,12 +199,8 @@ class CRF(nn.Module):
             x = F.softmax(x, dim=1)
 
             # message passing
-<<<<<<< HEAD
             x = self.smoothness_weight * self._smoothing_filter(
                 x, spatial_spacings)
-=======
-            x = self.smoothness_weight * self._smoothing_filter(x, spatial_spacings)
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
 
             # compatibility transform
             x = self._compatibility_transform(x)
@@ -238,7 +209,6 @@ class CRF(nn.Module):
             x = negative_unary - x
 
         if self.returns == 'logits':
-<<<<<<< HEAD
             ou = x
         elif self.returns == 'proba':
             ou = F.softmax(x, dim=1)
@@ -246,57 +216,33 @@ class CRF(nn.Module):
             ou = F.log_softmax(x, dim=1)
         else:
             raise ValueError(
-                "Attribute returns must be logits, 'proba' or 'log-proba'.")
+                "Attribute returns must be logits, proba or 'log-proba'.")
 
         if n_classes == 1:
             out = ou[:, 0] - ou[:, 1] if self.returns == 'logits' else ou[:, 0]
             out.unsqueeze_(1)
 
         return out
-=======
-            output = x
-        elif self.returns == 'proba':
-            output = F.softmax(x, dim=1)
-        elif self.returns == 'log-proba':
-            output = F.log_softmax(x, dim=1)
-        else:
-            raise ValueError("Attribute ``returns`` must be 'logits', 'proba' or 'log-proba'.")
-
-        if n_classes == 1:
-            output = output[:, 0] - output[:, 1] if self.returns == 'logits' else output[:, 0]
-            output.unsqueeze_(1)
-
-        return output
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
 
     def _smoothing_filter(self, x, spatial_spacings):
         """
         Parameters
         ----------
         x : torch.tensor
-<<<<<<< HEAD
-            Tensor of shape ``(batch_size, n_classes, *spatial)``
-            with negative unary potentials, e.g. logits.
+            Tensor of shape ``(batch_size, n_classes,
+            *spatial)`` with negative unary potentials, e.g. logits.
         spatial_spacings : torch.tensor or None
             Tensor of shape ``(batch_size, len(spatial))``
             with spatial spacings of tensors in batch ``x``.
-=======
-            Tensor of shape ``(batch_size, n_classes, *spatial)`` with negative unary potentials, e.g. logits.
-        spatial_spacings : torch.tensor or None
-            Tensor of shape ``(batch_size, len(spatial))`` with spatial spacings of tensors in batch ``x``.
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
         Returns
         -------
         output : torch.tensor
             Tensor of shape ``(batch_size, n_classes, *spatial)``.
         """
-<<<<<<< HEAD
         return torch.stack([
-            self._single_smoothing_filter(
-                x[i], spatial_spacings[i]) for i in range(x.shape[0])])
-=======
-        return torch.stack([self._single_smoothing_filter(x[i], spatial_spacings[i]) for i in range(x.shape[0])])
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
+            self._single_smoothing_filter(x[i], spatial_spacings[i])
+            for i in range(x.shape[0])
+        ])
 
     @staticmethod
     def _pad(x, filter_size):
@@ -326,7 +272,6 @@ class CRF(nn.Module):
             x = x.flatten(0, -2).unsqueeze(1)
 
             # 1d gaussian filtering
-<<<<<<< HEAD
             kernel = self._create_gaussian_kernel1d(
                 self.inv_smoothness_theta[i], spatial_spacing[i],
                 self.filter_size[i]).view(1, 1, -1).to(x)
@@ -335,14 +280,6 @@ class CRF(nn.Module):
             # reshape back to (n, *spatial)
             x = x.squeeze(1).view(*shape_before_flatten,
                                   x.shape[-1]).transpose(-1, dim)
-=======
-            kernel = self._create_gaussian_kernel1d(self.inv_smoothness_theta[i], spatial_spacing[i],
-                                                   self.filter_size[i]).view(1, 1, -1).to(x)
-            x = F.conv1d(x, kernel)
-
-            # reshape back to (n, *spatial)
-            x = x.squeeze(1).view(*shape_before_flatten, x.shape[-1]).transpose(-1, dim)
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
 
         return x
 
@@ -360,14 +297,9 @@ class CRF(nn.Module):
         kernel : torch.tensor
             Tensor of shape ``(filter_size,)``.
         """
-<<<<<<< HEAD
         distances = spacing * torch.arange(
-            -(filter_size // 2), filter_size // 2 + 1
-        ).to(inverse_theta)
-=======
-        distances = spacing * torch.arange(-(filter_size // 2), filter_size // 2 + 1).to(inverse_theta)
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
-        kernel = torch.exp(-(distances * inverse_theta) ** 2 / 2)
+            -(filter_size // 2), filter_size // 2 + 1).to(inverse_theta)
+        kernel = torch.exp(-(distances * inverse_theta)**2 / 2)
         zero_center = torch.ones(filter_size).to(kernel)
         zero_center[filter_size // 2] = 0
         return kernel * zero_center
@@ -382,13 +314,8 @@ class CRF(nn.Module):
         output : torch.tensor of shape ``(batch_size, n_classes, *spatial)``.
         """
         labels = torch.arange(x.shape[1])
-<<<<<<< HEAD
-        compatibility_matrix = self._compatibility_function(labels,
-                                                            labels.unsqueeze(
-                                                                1)).to(x)
-=======
-        compatibility_matrix = self._compatibility_function(labels, labels.unsqueeze(1)).to(x)
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
+        compatibility_matrix = self._compatibility_function(
+            labels, labels.unsqueeze(1)).to(x)
         return torch.einsum('ij..., jk -> ik...', x, compatibility_matrix)
 
     @staticmethod
@@ -403,8 +330,4 @@ class CRF(nn.Module):
         -------
         compatibility : torch.Tensor
         """
-<<<<<<< HEAD
         return -(label1 == label2).float()
-=======
-        return -(label1 == label2).float()
->>>>>>> b43daef3f77dfd65ae93a024c872657f75782fb5
