@@ -1,7 +1,7 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='pretrain/vit-b16_p16_224.pth', # noqa
+    pretrained='pretrain/vit-b16_p16_224-80ecf9dd.pth', # noqa
     backbone=dict(
         type='VisionTransformer',
         img_size=224,
