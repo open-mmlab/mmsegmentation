@@ -8,10 +8,6 @@ from mmseg.models.backbones import SwinTransformer
 def test_swin_transformer():
     """Test Swin Transformer backbone."""
 
-    with pytest.raises(AssertionError):
-        # We only support 'official' or 'mmcls' for this arg.
-        model = SwinTransformer(pretrain_style='swin')
-
     with pytest.raises(TypeError):
         # Pretrained arg must be str or None.
         model = SwinTransformer(pretrained=123)

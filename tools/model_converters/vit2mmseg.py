@@ -1,7 +1,11 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
+import os.path as osp
 from collections import OrderedDict
 
+import mmcv
 import torch
+from mmcv.runner import CheckpointLoader
 
 
 def convert_vit(ckpt):
@@ -43,12 +47,12 @@ def main():
     parser = argparse.ArgumentParser(
         description='Convert keys in timm pretrained vit models to '
         'MMSegmentation style.')
-    parser.add_argument('src', help='src segmentation model path')
+    parser.add_argument('src', help='src model path or url')
     # The dst path must be a full path of the new checkpoint.
     parser.add_argument('dst', help='save path')
     args = parser.parse_args()
 
-    checkpoint = torch.load(args.src, map_location='cpu')
+    checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')
     if 'state_dict' in checkpoint:
         # timm checkpoint
         state_dict = checkpoint['state_dict']
@@ -58,8 +62,8 @@ def main():
     else:
         state_dict = checkpoint
     weight = convert_vit(state_dict)
-    with open(args.dst, 'wb') as f:
-        torch.save(weight, f)
+    mmcv.mkdir_or_exist(osp.dirname(args.dst))
+    torch.save(weight, args.dst)
 
 
 if __name__ == '__main__':
