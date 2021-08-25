@@ -2,7 +2,7 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained=None,
+    pretrained='pretrain/jx_vit_base_p16_224-80ecf9dd.pth',
     backbone=dict(
         type='VisionTransformer',
         img_size=(512, 512),

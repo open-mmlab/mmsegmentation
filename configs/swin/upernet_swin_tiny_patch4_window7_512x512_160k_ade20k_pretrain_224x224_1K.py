@@ -3,7 +3,7 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 model = dict(
-    pretrained='pretrain/swin.pth',
+    pretrained='pretrain/swin_tiny_patch4_window7_224.pth',
     backbone=dict(
         embed_dims=96,
         depths=[2, 2, 6, 2],

@@ -3,7 +3,7 @@ backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained=None,
+    pretrained='pretrain/jx_vit_large_p16_384-b3be5167.pth',
     backbone=dict(
         type='VisionTransformer',
         img_size=(768, 768),
