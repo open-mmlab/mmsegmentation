@@ -131,6 +131,22 @@ Please refer to [CGNet](https://github.com/open-mmlab/mmsegmentation/blob/master
 
 Please refer [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fp16) for details.
 
+### U-Net
+
+Please refer to [U-Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/unet/README.md) for details.
+
+### ViT
+
+Please refer to [ViT](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/vit/README.md) for details.
+
+### Swin
+
+Please refer to [Swin](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/swin/README.md) for details.
+
+### SETR
+
+Please refer to [SETR](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/setr/README.md) for details.
+
 ## Speed benchmark
 
 ### Hardware

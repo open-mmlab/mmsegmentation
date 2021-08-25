@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import numpy as np
 
 from mmseg.core.evaluation import (eval_metrics, mean_dice, mean_fscore,

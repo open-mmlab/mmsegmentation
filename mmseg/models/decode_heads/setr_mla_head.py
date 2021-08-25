@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
@@ -11,7 +12,7 @@ from .decode_head import BaseDecodeHead
 class SETRMLAHead(BaseDecodeHead):
     """Multi level feature aggretation head of SETR.
 
-    MLA head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`.
+    MLA head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`_.
 
     Args:
         mlahead_channels (int): Channels of conv-conv-4x of multi-level feature

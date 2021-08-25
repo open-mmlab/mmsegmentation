@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+# Copyright (c) OpenMMLab. All rights reserved.
 # This tool is used to update model-index.yml which is required by MIM, and
 # will be automatically called as a pre-commit hook. The updating will be
 # triggered if any change of model information (.md files in configs/) has been
@@ -25,17 +26,23 @@ def dump_yaml_and_check_difference(obj, filename):
     Returns:
         Bool: If the target YAML file is different from the original.
     """
-    original = None
+
+    str_dump = mmcv.dump(obj, None, file_format='yaml', sort_keys=True)
     if osp.isfile(filename):
+        file_exists = True
         with open(filename, 'r', encoding='utf-8') as f:
-            original = f.read()
-    with open(filename, 'w', encoding='utf-8') as f:
-        mmcv.dump(obj, f, file_format='yaml', sort_keys=False)
-    is_different = True
-    if original is not None:
-        with open(filename, 'r') as f:
-            new = f.read()
-        is_different = (original != new)
+            str_orig = f.read()
+    else:
+        file_exists = False
+        str_orig = None
+
+    if file_exists and str_orig == str_dump:
+        is_different = False
+    else:
+        is_different = True
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(str_dump)
+
     return is_different
 
 
@@ -183,11 +190,11 @@ def update_model_index():
 if __name__ == '__main__':
     file_list = [fn for fn in sys.argv[1:] if osp.basename(fn) == 'README.md']
     if not file_list:
-        exit(0)
+        sys.exit(0)
     file_modified = False
     for fn in file_list:
         file_modified |= parse_md(fn)
 
     file_modified |= update_model_index()
 
-    exit(1 if file_modified else 0)
+    sys.exit(1 if file_modified else 0)
