@@ -63,7 +63,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
-- [x] [Swin Transformer (arXiV'2021)](configs/swin)
+- [x] [Swin Transformer (ArXiv'2021)](configs/swin)
 
 已支持的算法：
 
@@ -91,6 +91,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
+- [x] [SegFormer (ArXiv'2021)](configs/segformer)
 
 ## 安装
 
@@ -100,7 +101,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 请参考[训练教程](docs_zh-CN/train.md)和[测试教程](docs_zh-CN/inference.md)学习 MMSegmentation 的基本使用。
 我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs_zh-CN/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs_zh-CN/tutorials/data_pipeline.md)，[增加自定义模型](docs_zh-CN/tutorials/customize_models.md)，[增加自定义的运行时配置](docs_zh-CN/tutorials/customize_runtime.md)。
-除此之外，我们也提供了很多实用的[训练技巧说明](docs_zh-CN/tutorials/training_tricks.md)。
+除此之外，我们也提供了很多实用的[训练技巧说明](docs_zh-CN/tutorials/training_tricks.md)和模型部署相关的[有用的工具](docs_zh-CN/useful_tools.md)。
 
 同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb)。
 
