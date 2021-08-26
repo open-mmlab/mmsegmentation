@@ -92,7 +92,7 @@ Supported methods:
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
-- [x] [Segformer (ArXiv'2021)](configs/segformer)
+- [x] [SegFormer (ArXiv'2021)](configs/segformer)
 
 ## Installation
 
