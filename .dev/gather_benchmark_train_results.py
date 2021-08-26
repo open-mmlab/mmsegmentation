@@ -4,6 +4,7 @@ import os.path as osp
 
 import mmcv
 from gather_models import get_final_results
+from mmcv import Config
 
 
 def parse_args():
@@ -15,6 +16,7 @@ def parse_args():
         'root',
         type=str,
         help='root path of benchmarked models to be gathered')
+    parser.add_argument('config', help='test config file path')
     parser.add_argument(
         '--out',
         type=str,
@@ -31,6 +33,8 @@ if __name__ == '__main__':
     root_path = args.root
     metrics_out = args.out
 
+    cfg = Config.fromfile(args.config)
+
     result_dict = {}
     with open(args.txt_path, 'r') as f:
         model_cfgs = f.readlines()
@@ -40,6 +44,7 @@ if __name__ == '__main__':
             # benchmark train dir
             model_name = osp.split(osp.dirname(config))[1]
             config_name = osp.splitext(osp.basename(config))[0]
+            model_info = cfg[model_name][config_name]
             exp_dir = osp.join(root_path, model_name, config_name)
             if not osp.exists(exp_dir):
                 print(f'{config} hasn\'t {exp_dir}')
@@ -68,11 +73,23 @@ if __name__ == '__main__':
                 print(f'log file error: {log_json_path}')
                 continue
 
+            differential_results = dict()
+            old_performance = dict()
             for performance in model_performance:
-                if performance in ['mIoU', 'mAcc', 'aAcc']:
+                if performance in ['mIoU']:
                     metric = round(model_performance[performance] * 100, 1)
+                    old_metric = model_info[performance]
+                    old_performance[performance] = old_metric
                     model_performance[performance] = metric
-            result_dict[config] = model_performance
+                    differential = metric - old_metric
+                    flag = '+' if differential > 0 else '-'
+                    differential_results[
+                        performance] = f'{flag}{abs(differential):.2f}'
+            result_dict[config] = dict(
+                differential_results=differential_results,
+                old_results=old_performance,
+                new_results=model_performance,
+            )
 
         # 4 save or print results
         if metrics_out:
