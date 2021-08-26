@@ -521,7 +521,7 @@ Models:
       mIoU: 76.99
       mIoU(ms+flip): 79.03
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_512x1024_80k_cityscapes/fcn_d6_r50b_d16_512x1024_80k_cityscapes_20210311_125550-6a0b62e9.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes/fcn_d6_r50b-d16_512x1024_80k_cityscapes_20210311_125550-6a0b62e9.pth
 - Config: configs/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -543,7 +543,7 @@ Models:
       mIoU: 76.86
       mIoU(ms+flip): 78.52
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_769x769_80k_cityscapes/fcn_d6_r50b_d16_769x769_80k_cityscapes_20210311_131012-d665f231.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes/fcn_d6_r50b-d16_769x769_80k_cityscapes_20210311_131012-d665f231.pth
 - Config: configs/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -565,7 +565,7 @@ Models:
       mIoU: 77.72
       mIoU(ms+flip): 79.53
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_512x1024_80k_cityscapes/fcn_d6_r101b_d16_512x1024_80k_cityscapes_20210311_144305-3f2eb5b4.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes/fcn_d6_r101b-d16_512x1024_80k_cityscapes_20210311_144305-3f2eb5b4.pth
 - Config: configs/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -587,7 +587,7 @@ Models:
       mIoU: 77.34
       mIoU(ms+flip): 78.91
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_769x769_80k_cityscapes/fcn_d6_r101b_d16_769x769_80k_cityscapes_20210311_154527-c4d8bfbc.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes/fcn_d6_r101b-d16_769x769_80k_cityscapes_20210311_154527-c4d8bfbc.pth
 - Config: configs/fcn/fcn_r50-d8_512x512_80k_ade20k.py
   In Collection: fcn
   Metadata:
