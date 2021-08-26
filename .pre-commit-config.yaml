@@ -48,3 +48,9 @@ repos:
         language: python
         files: ^configs/.*\.md$
         require_serial: true
+      - id: update-copyright
+        name: update-copyright
+        description: Add OpenMMLab copyright header to files
+        entry: .dev/update_copyright.py
+        language: python
+        files: ^(demo|docs|docs_zh-CN|mmseg|tests|tools|\.dev_scripts)/.*\.(py|c|cpp|cu|sh)$

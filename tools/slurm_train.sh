@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Copyright (c) OpenMMLab. All rights reserved.
 
 set -x
 
