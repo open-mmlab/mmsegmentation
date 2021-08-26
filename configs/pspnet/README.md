@@ -67,3 +67,16 @@
 | ------ | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | PSPNet | R-101-D8 | 480x480   |   40000 | -      | -           | 52.02 |         53.54 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r101-d8_480x480_40k_pascal_context_59.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context_59/pspnet_r101-d8_480x480_40k_pascal_context_59_20210416_114524-86d44cd4.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context_59/pspnet_r101-d8_480x480_40k_pascal_context_59-20210416_114524.log.json) |
 | PSPNet | R-101-D8 | 480x480   |   80000 | -        | -              | 52.47 |         53.99 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59/pspnet_r101-d8_480x480_80k_pascal_context_59_20210416_114418-fa6caaa2.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59/pspnet_r101-d8_480x480_80k_pascal_context_59-20210416_114418.log.json) |
+
+### Dark Zurich and Nighttime Driving
+
+We support evaluate models' performance on these two datasets.
+
+  |Method|Backbone |dataset          |mIoU |config|
+  |----- |-----    |-----            |-----|-----|
+  |PSPNet|R-50-D8  |Dark Zurich      |10.91|[config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r50-d8_512x1024_40k_dark.py)|
+  |PSPNet|R-101-D8 |Dark Zurich      |10.16|[config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r101-d8_512x1024_40k_dark.py)|
+  |PSPNet|R-101b-D8|Dark Zurich      |15.54|[config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r101b-d8_512x1024_80k_dark.py)|
+  |PSPNet|R-50-D8  |Nighttime Driving|23.02|[config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r50-d8_512x1024_40k_night_driving.py)|
+  |PSPNet|R-101-D8 |Nighttime Driving|20.25|[config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r101-d8_512x1024_40k_night_driving.py)|
+  |PSPNet|R-101b-D8|Nighttime Driving|22.25|[config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r101b-d8_512x1024_80k_night_driving.py)|
