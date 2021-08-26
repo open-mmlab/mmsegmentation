@@ -370,7 +370,7 @@ Models:
       mIoU: 77.27
       mIoU(ms+flip): 78.88
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_80k_cityscapes-133c292f.pth
 - Config: configs/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes.py
   In Collection: fcn
   Metadata:
