@@ -5,7 +5,6 @@ import torch.nn as nn
 from mmcv.cnn import  trunc_normal_init
 from mmcv.runner.base_module import BaseModule, ModuleList
 
-from ..utils import VitBlock
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
 
