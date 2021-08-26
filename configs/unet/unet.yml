@@ -20,7 +20,7 @@ Models:
     Metrics:
       mIoU: 78.67
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_64x64_40k_drive/unet_s5-d16_64x64_40k_drive_20201223_191051-5daf6d3b.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_64x64_40k_drive/fcn_unet_s5-d16_64x64_40k_drive_20201223_191051-5daf6d3b.pth
 - Config: configs/unet/pspnet_unet_s5-d16_64x64_40k_drive.py
   In Collection: unet
   Metadata:
@@ -62,7 +62,7 @@ Models:
     Metrics:
       mIoU: 81.02
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_128x128_40k_stare/unet_s5-d16_128x128_40k_stare_20201223_191051-7d77e78b.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_128x128_40k_stare/fcn_unet_s5-d16_128x128_40k_stare_20201223_191051-7d77e78b.pth
 - Config: configs/unet/pspnet_unet_s5-d16_128x128_40k_stare.py
   In Collection: unet
   Metadata:
@@ -104,7 +104,7 @@ Models:
     Metrics:
       mIoU: 80.24
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_128x128_40k_chase_db1/unet_s5-d16_128x128_40k_chase_db1_20201223_191051-11543527.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_128x128_40k_chase_db1/fcn_unet_s5-d16_128x128_40k_chase_db1_20201223_191051-11543527.pth
 - Config: configs/unet/pspnet_unet_s5-d16_128x128_40k_chase_db1.py
   In Collection: unet
   Metadata:
@@ -146,7 +146,7 @@ Models:
     Metrics:
       mIoU: 79.45
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_256x256_40k_hrf/unet_s5-d16_256x256_40k_hrf_20201223_173724-d89cf1ed.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_256x256_40k_hrf/fcn_unet_s5-d16_256x256_40k_hrf_20201223_173724-d89cf1ed.pth
 - Config: configs/unet/pspnet_unet_s5-d16_256x256_40k_hrf.py
   In Collection: unet
   Metadata:
