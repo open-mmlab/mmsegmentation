@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import glob
 import os
 from os.path import dirname, exists, isdir, join, relpath

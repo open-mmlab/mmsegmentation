@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import matplotlib.pyplot as plt
 import mmcv
 import torch
