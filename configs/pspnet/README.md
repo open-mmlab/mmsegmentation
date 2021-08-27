@@ -70,7 +70,7 @@
 
 ### Dark Zurich and Nighttime Driving
 
-We support evaluation results on these two datasets using models above trained on Cityscapes training set. 
+We support evaluation results on these two datasets using models above trained on Cityscapes training set.
 
   |Method|Backbone |Training Dataset |Test Dataset          |mIoU |config|download|
   |------ |------  |------ |-----            |-----|-----|-----|
