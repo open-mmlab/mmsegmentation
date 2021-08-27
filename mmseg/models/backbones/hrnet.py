@@ -235,10 +235,12 @@ class HRNet(BaseModule):
                     The length must be equal to num_branches.
         in_channels (int): Number of input image channels. Normally 3.
         conv_cfg (dict): Dictionary to construct and config conv layer.
+            Default: None.
         norm_cfg (dict): Dictionary to construct and config norm layer.
+            Use `BN` by default.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
-            and its variants only. Default: True.
+            and its variants only. Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
             memory while slowing down the training speed. Default: False.
         frozen_stages (int): Stages to be frozen (stop grad and set eval mode).
