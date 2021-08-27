@@ -72,7 +72,7 @@
 
 We support evaluation results on these two datasets using models above trained on Cityscapes training set.
 
-  |Method|Backbone |Training Dataset |Test Dataset          |mIoU |config|download|
+  |Method|Backbone |Training Dataset |Test Dataset          |mIoU |config| evaluation checkpoint|
   |------ |------  |------ |-----            |-----|-----|-----|
   |PSPNet|R-50-D8  |Cityscapes Training set |Dark Zurich      |10.91|[config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r50-d8_512x1024_40k_dark.py)|[model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338.log.json) |
   |PSPNet|R-50-D8  |Cityscapes Training set |Nighttime Driving|23.02|[config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r50-d8_512x1024_40k_night_driving.py)| [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338.log.json) |
