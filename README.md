@@ -93,6 +93,18 @@ Supported methods:
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
 
+Supported datasets:
+
+- [x] Cityscapes
+- [x] ADE20K
+- [x] PASCAL VOC
+- [x] CHASE_DB1
+- [x] DRIVE
+- [x] HRF
+- [x] STARE
+- [x] Dark Zurich
+- [x] Nighttime Driving
+
 ## Installation
 
 Please refer to [get_started.md](docs/get_started.md#installation) for installation and [dataset_prepare.md](docs/dataset_prepare.md#prepare-datasets) for dataset preparation.

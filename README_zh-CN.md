@@ -92,6 +92,18 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
 
+已支持的数据集：
+
+- [x] Cityscapes
+- [x] ADE20K
+- [x] PASCAL VOC
+- [x] CHASE_DB1
+- [x] DRIVE
+- [x] HRF
+- [x] STARE
+- [x] Dark Zurich
+- [x] Nighttime Driving
+
 ## 安装
 
 请参考[快速入门文档](docs_zh-CN/get_started.md#installation)进行安装和数据集准备。
