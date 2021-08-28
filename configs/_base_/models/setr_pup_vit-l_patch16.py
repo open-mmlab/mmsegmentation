@@ -3,8 +3,7 @@ backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained=\
-    'https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_large_p16_384-b3be5167.pth',  # noqa
+    pretrained='pretrain/jx_vit_large_p16_384-b3be5167.pth',
     backbone=dict(
         type='VisionTransformer',
         img_size=(768, 768),
@@ -27,9 +26,9 @@ model = dict(
         num_classes=19,
         dropout_ratio=0,
         norm_cfg=norm_cfg,
-        num_convs=1,
-        up_scale=4,
-        kernel_size=1,
+        num_convs=4,
+        up_scale=2,
+        kernel_size=3,
         align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
@@ -44,7 +43,7 @@ model = dict(
             norm_cfg=norm_cfg,
             num_convs=1,
             up_scale=4,
-            kernel_size=1,
+            kernel_size=3,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -58,7 +57,7 @@ model = dict(
             norm_cfg=norm_cfg,
             num_convs=1,
             up_scale=4,
-            kernel_size=1,
+            kernel_size=3,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -72,10 +71,10 @@ model = dict(
             norm_cfg=norm_cfg,
             num_convs=1,
             up_scale=4,
-            kernel_size=1,
+            kernel_size=3,
             align_corners=False,
             loss_decode=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4))
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
     ],
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))

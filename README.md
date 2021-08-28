@@ -64,7 +64,7 @@ Supported backbones:
 - [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
-- [x] [Swin Transformer (arXiV'2021)](configs/swin)
+- [x] [Swin Transformer (ArXiv'2021)](configs/swin)
 
 Supported methods:
 
@@ -92,6 +92,7 @@ Supported methods:
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
+- [x] [SegFormer (ArXiv'2021)](configs/segformer)
 
 ## Installation
 
@@ -101,7 +102,7 @@ Please refer to [get_started.md](docs/get_started.md#installation) for installat
 
 Please see [train.md](docs/train.md) and [inference.md](docs/inference.md) for the basic usage of MMSegmentation.
 There are also tutorials for [customizing dataset](docs/tutorials/customize_datasets.md), [designing data pipeline](docs/tutorials/data_pipeline.md), [customizing modules](docs/tutorials/customize_models.md), and [customizing runtime](docs/tutorials/customize_runtime.md).
-We also provide many [training tricks](docs/tutorials/training_tricks.md).
+We also provide many [training tricks](docs/tutorials/training_tricks.md) for better training and [usefule tools](docs/useful_tools.md) for deployment.
 
 A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 

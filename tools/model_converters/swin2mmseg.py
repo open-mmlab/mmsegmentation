@@ -1,7 +1,11 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
+import os.path as osp
 from collections import OrderedDict
 
+import mmcv
 import torch
+from mmcv.runner import CheckpointLoader
 
 
 def convert_swin(ckpt):
@@ -62,12 +66,12 @@ def main():
     parser = argparse.ArgumentParser(
         description='Convert keys in official pretrained swin models to'
         'MMSegmentation style.')
-    parser.add_argument('src', help='src segmentation model path')
+    parser.add_argument('src', help='src model path or url')
     # The dst path must be a full path of the new checkpoint.
     parser.add_argument('dst', help='save path')
     args = parser.parse_args()
 
-    checkpoint = torch.load(args.src, map_location='cpu')
+    checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')
     if 'state_dict' in checkpoint:
         state_dict = checkpoint['state_dict']
     elif 'model' in checkpoint:
@@ -75,8 +79,8 @@ def main():
     else:
         state_dict = checkpoint
     weight = convert_swin(state_dict)
-    with open(args.dst, 'wb') as f:
-        torch.save(weight, f)
+    mmcv.mkdir_or_exist(osp.dirname(args.dst))
+    torch.save(weight, args.dst)
 
 
 if __name__ == '__main__':

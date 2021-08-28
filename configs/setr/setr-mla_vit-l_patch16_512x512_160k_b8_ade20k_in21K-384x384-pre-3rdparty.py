@@ -1,6 +1,7 @@
 _base_ = [
-    '../_base_/models/setr_pup.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/setr-mla_vit-l_patch16.py',
+    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_160k.py'
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
@@ -8,44 +9,62 @@ model = dict(
     decode_head=dict(num_classes=150),
     auxiliary_head=[
         dict(
-            type='SETRUPHead',
-            in_channels=1024,
+            type='FCNHead',
+            in_channels=256,
             channels=256,
             in_index=0,
-            num_classes=150,
             dropout_ratio=0,
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
-            num_convs=2,
-            kernel_size=3,
+            num_convs=0,
+            kernel_size=1,
+            concat_input=False,
+            num_classes=150,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
-            type='SETRUPHead',
-            in_channels=1024,
+            type='FCNHead',
+            in_channels=256,
             channels=256,
             in_index=1,
-            num_classes=150,
             dropout_ratio=0,
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
-            num_convs=2,
-            kernel_size=3,
+            num_convs=0,
+            kernel_size=1,
+            concat_input=False,
+            num_classes=150,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
         dict(
-            type='SETRUPHead',
-            in_channels=1024,
+            type='FCNHead',
+            in_channels=256,
             channels=256,
             in_index=2,
-            num_classes=150,
             dropout_ratio=0,
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
-            num_convs=2,
-            kernel_size=3,
+            num_convs=0,
+            kernel_size=1,
+            concat_input=False,
+            num_classes=150,
+            align_corners=False,
+            loss_decode=dict(
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+        dict(
+            type='FCNHead',
+            in_channels=256,
+            channels=256,
+            in_index=3,
+            dropout_ratio=0,
+            norm_cfg=norm_cfg,
+            act_cfg=dict(type='ReLU'),
+            num_convs=0,
+            kernel_size=1,
+            concat_input=False,
+            num_classes=150,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -58,5 +77,5 @@ optimizer = dict(
     weight_decay=0.0,
     paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}))
 
-# num_gpus: 8 -> batch_size: 16
-data = dict(samples_per_gpu=2)
+# num_gpus: 8 -> batch_size: 8
+data = dict(samples_per_gpu=1)

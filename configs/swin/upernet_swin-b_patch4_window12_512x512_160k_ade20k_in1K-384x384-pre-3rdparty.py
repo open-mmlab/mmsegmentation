@@ -1,10 +1,9 @@
 _base_ = [
-    'upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_'
-    'pretrain_224x224_1K.py'
+    'upernet_swin-t_patch4_window7_512x512_160k_ade20k_'
+    'in1K-224x224-pre-3rdparty.py'
 ]
 model = dict(
-    pretrained=\
-    'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window12_384.pth', # noqa
+    pretrained='pretrain/swin_base_patch4_window12_384.pth',
     backbone=dict(
         pretrain_img_size=384,
         embed_dims=128,

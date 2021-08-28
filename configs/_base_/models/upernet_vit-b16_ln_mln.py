@@ -2,7 +2,7 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',  # noqa
+    pretrained='pretrain/jx_vit_base_p16_224-80ecf9dd.pth',
     backbone=dict(
         type='VisionTransformer',
         img_size=(512, 512),
