@@ -76,6 +76,8 @@ def get_final_results(log_json_path, iter_num):
 def parse_args():
     parser = argparse.ArgumentParser(description='Gather benchmarked models')
     parser.add_argument(
+        '-m', '--model_name', type=str, help='Process the selected model.')
+    parser.add_argument(
         '-w',
         '--work_dir',
         default='work_dirs/',
@@ -98,6 +100,7 @@ def main():
     args = parse_args()
     work_dir = args.work_dir
     collect_dir = args.collect_dir
+    selected_model_name = args.model_name
     mmcv.mkdir_or_exist(collect_dir)
 
     # find all models in the root directory to be gathered
@@ -109,7 +112,9 @@ def main():
         model_name = osp.split(osp.dirname(raw_config))[1]
         config_name = osp.splitext(osp.basename(raw_config))[0]
         if osp.exists(osp.join(work_dir, model_name, config_name)):
-            used_configs.append(raw_config)
+            if (selected_model_name is None
+                    or selected_model_name == model_name):
+                used_configs.append(raw_config)
     print(f'Find {len(used_configs)} models to be gathered')
 
     # find final_ckpt and log file for trained each config
