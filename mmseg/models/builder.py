@@ -3,10 +3,12 @@ import warnings
 
 from mmcv.cnn import MODELS as MMCV_MODELS
 from mmcv.cnn.bricks.registry import ATTENTION as MMCV_ATTENTION
+from mmcv.cnn.bricks.registry import UPSAMPLE_LAYERS as MMCV_UPSAMPLE_LAYERS
 from mmcv.utils import Registry
 
 MODELS = Registry('models', parent=MMCV_MODELS)
 ATTENTION = Registry('attention', parent=MMCV_ATTENTION)
+UPSAMPLE_LAYERS = Registry('upsample layer', parent=MMCV_UPSAMPLE_LAYERS)
 
 BACKBONES = MODELS
 NECKS = MODELS
@@ -47,3 +49,8 @@ def build_segmentor(cfg, train_cfg=None, test_cfg=None):
         'test_cfg specified in both outer field and model field '
     return SEGMENTORS.build(
         cfg, default_args=dict(train_cfg=train_cfg, test_cfg=test_cfg))
+
+
+def build_upsample_layer(cfg, *args, **kwargs):
+    """Build upsample layer."""
+    return UPSAMPLE_LAYERS.build(cfg, *args, **kwargs)
