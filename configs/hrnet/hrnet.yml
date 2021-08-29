@@ -198,10 +198,9 @@ Models:
   Results:
     Dataset: ADE20K
     Metrics:
-      mIoU: 35.51
-      mIoU(ms+flip): 36.8
+      mIoU: 36.27
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20200614_185145-66f20cb7.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20210827_114910-6c9382c0.pth
 - Config: configs/hrnet/fcn_hr48_512x512_80k_ade20k.py
   In Collection: hrnet
   Metadata:
