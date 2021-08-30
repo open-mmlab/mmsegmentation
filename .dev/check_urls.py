@@ -21,7 +21,7 @@ def check_url(url):
     flag = True
     r = requests.head(url)
     status_code = r.status_code
-    if status_code == 403 or 404:
+    if status_code == 403 or status_code == 404:
         flag = False
 
     return status_code, flag
