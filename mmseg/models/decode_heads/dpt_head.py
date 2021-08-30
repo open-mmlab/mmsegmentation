@@ -1,4 +1,3 @@
-import copy
 import math
 
 import torch
@@ -141,7 +140,7 @@ class PreActResidualConvUnit(BaseModule):
             order=('act', 'conv', 'norm'))
 
     def forward(self, inputs):
-        inputs_ = copy.deepcopy(inputs)
+        inputs_ = inputs.clone()
         x = self.conv1(inputs)
         x = self.conv2(x)
         return x + inputs_
