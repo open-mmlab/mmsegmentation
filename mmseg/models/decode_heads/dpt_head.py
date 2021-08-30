@@ -1,3 +1,4 @@
+import copy
 import math
 
 import torch
@@ -140,9 +141,10 @@ class PreActResidualConvUnit(BaseModule):
             order=('act', 'conv', 'norm'))
 
     def forward(self, inputs):
+        inputs_ = copy.deepcopy(inputs)
         x = self.conv1(inputs)
         x = self.conv2(x)
-        return x + inputs
+        return x + inputs_
 
 
 class FeatureFusionBlock(BaseModule):
