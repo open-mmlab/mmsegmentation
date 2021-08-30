@@ -69,7 +69,27 @@ mmsegmentation
 │   │   ├── annotations
 │   │   │   ├── training
 │   │   │   ├── validation
-
+|   ├── dark_zurich
+|   │   ├── gps
+|   │   │   ├── val
+|   │   │   └── val_ref
+|   │   ├── gt
+|   │   │   └── val
+|   │   ├── LICENSE.txt
+|   │   ├── lists_file_names
+|   │   │   ├── val_filenames.txt
+|   │   │   └── val_ref_filenames.txt
+|   │   ├── README.md
+|   │   └── rgb_anon
+|   │   |   ├── val
+|   │   |   └── val_ref
+|   ├── NighttimeDrivingTest
+|   |   ├── gtCoarse_daytime_trainvaltest
+|   |   │   └── test
+|   |   │       └── night
+|   |   └── leftImg8bit
+|   |   |   └── test
+|   |   |       └── night
 ```
 
 ### Cityscapes
@@ -163,3 +183,11 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 ```
 
 The script will make directory structure automatically.
+
+### Dark Zurich
+
+Since we only support test models on this dataset, you may only download [the validation set](https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip).
+
+### Nighttime Driving
+
+Since we only support test models on this dataset, you may only download [the test set](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip).
