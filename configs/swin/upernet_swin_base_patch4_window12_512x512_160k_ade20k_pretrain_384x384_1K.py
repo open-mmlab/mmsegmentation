@@ -3,8 +3,7 @@ _base_ = [
     'pretrain_224x224_1K.py'
 ]
 model = dict(
-    pretrained=\
-    'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window12_384.pth', # noqa
+    pretrained='pretrain/swin_base_patch4_window12_384.pth',
     backbone=dict(
         pretrain_img_size=384,
         embed_dims=128,

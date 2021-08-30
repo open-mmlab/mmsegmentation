@@ -1,14 +1,7 @@
 _base_ = [
-    '../_base_/models/upernet_vit-b16_ln_mln.py',
-    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/dpt_vit-b16.py', '../_base_/datasets/ade20k.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
-
-model = dict(
-    pretrained='pretrain/vit_base_patch16_224.pth',
-    backbone=dict(drop_path_rate=0.1, final_norm=True),
-    decode_head=dict(num_classes=150),
-    auxiliary_head=dict(num_classes=150))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -36,4 +29,4 @@ lr_config = dict(
     by_epoch=False)
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=2)
+data = dict(samples_per_gpu=2, workers_per_gpu=2)
