@@ -2,8 +2,7 @@ import math
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import (ConvModule, Linear, build_activation_layer,
-                      build_conv_layer, build_norm_layer)
+from mmcv.cnn import ConvModule, Linear, build_activation_layer
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
@@ -104,8 +103,6 @@ class PreActResidualConvUnit(BaseModule):
         in_channels (int): number of channels in the input feature map.
         act_cfg (dict): dictionary to construct and config activation layer.
         norm_cfg (dict): dictionary to construct and config norm layer.
-        conv_cfg (dict): dictionary to construct and config conv layer.
-            Default: None.
         stride (int): stride of the first block. Default: 1
         dilation (int): dilation rate for convs layers. Default: 1.
         init_cfg (dict, optional): Initialization config dict. Default: None.
@@ -115,49 +112,36 @@ class PreActResidualConvUnit(BaseModule):
                  in_channels,
                  act_cfg,
                  norm_cfg,
-                 conv_cfg=None,
                  stride=1,
                  dilation=1,
                  init_cfg=None):
         super(PreActResidualConvUnit, self).__init__(init_cfg)
 
-        self.norm1_name, norm1 = build_norm_layer(
-            norm_cfg, in_channels, postfix=1)
-        self.norm2_name, norm2 = build_norm_layer(
-            norm_cfg, in_channels, postfix=2)
-
-        self.conv1 = build_conv_layer(
-            conv_cfg,
+        self.conv1 = ConvModule(
             in_channels,
             in_channels,
             3,
             stride=stride,
             padding=dilation,
             dilation=dilation,
-            bias=False)
-        self.add_module(self.norm1_name, norm1)
-        self.conv2 = build_conv_layer(
-            conv_cfg, in_channels, in_channels, 3, padding=1, bias=False)
-        self.add_module(self.norm2_name, norm2)
-        self.activate = build_activation_layer(act_cfg)
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg,
+            bias=False,
+            order=('act', 'conv', 'norm'))
 
-    @property
-    def norm1(self):
-        """nn.Module: normalization layer after the first convolution layer"""
-        return getattr(self, self.norm1_name)
-
-    @property
-    def norm2(self):
-        """nn.Module: normalization layer after the second convolution layer"""
-        return getattr(self, self.norm2_name)
+        self.conv2 = ConvModule(
+            in_channels,
+            in_channels,
+            3,
+            padding=1,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg,
+            bias=False,
+            order=('act', 'conv', 'norm'))
 
     def forward(self, inputs):
-        x = self.activate(inputs)
-        x = self.conv1(x)
-        x = self.norm1(x)
-        x = self.activate(x)
+        x = self.conv1(inputs)
         x = self.conv2(x)
-        x = self.norm2(x)
         return x + inputs
 
 
