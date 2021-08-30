@@ -58,12 +58,11 @@ def get_final_results(log_json_path, iter_num):
             if 'mode' not in log_line.keys():
                 continue
 
-            if log_line['mode'] == 'train' and log_line['iter'] == iter_num:
-                result_dict['memory'] = log_line['memory']
-
             # When evaluation, the 'iter' of new log json is the evaluation
             # steps on single gpu.
-            if log_line['iter'] == iter_num or last_iter == iter_num - 50:
+            flag1 = 'aAcc' in log_line
+            flag2 = last_iter == iter_num - 50 or last_iter == iter_num
+            if flag1 and flag2:
                 result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
@@ -77,6 +76,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Gather benchmarked models')
     parser.add_argument(
         '-m', '--model_name', type=str, help='Process the selected model.')
+    parser.add_argument(
+        '-c', '--config_name', type=str, help='Process the selected config.')
     parser.add_argument(
         '-w',
         '--work_dir',
@@ -101,6 +102,7 @@ def main():
     work_dir = args.work_dir
     collect_dir = args.collect_dir
     selected_model_name = args.model_name
+    selected_config_name = args.config_name
     mmcv.mkdir_or_exist(collect_dir)
 
     # find all models in the root directory to be gathered
@@ -114,7 +116,9 @@ def main():
         if osp.exists(osp.join(work_dir, model_name, config_name)):
             if (selected_model_name is None
                     or selected_model_name == model_name):
-                used_configs.append(raw_config)
+                if (selected_config_name is None
+                        or selected_config_name == config_name):
+                    used_configs.append(raw_config)
     print(f'Find {len(used_configs)} models to be gathered')
 
     # find final_ckpt and log file for trained each config
