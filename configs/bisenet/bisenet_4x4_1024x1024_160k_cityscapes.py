@@ -11,4 +11,5 @@ checkpoint_config = dict(by_epoch=False, interval=4000)
 evaluation = dict(interval=4000, metric='mIoU', pre_eval=True)
 data = dict(
     samples_per_gpu=4,
-    workers_per_gpu=4,)
+    workers_per_gpu=4,
+)

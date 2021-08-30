@@ -3,7 +3,15 @@ norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
     pretrained=None,
-    backbone=dict(type='BiSeNetV2', init_cfg=None),
+    backbone=dict(
+        type='BiSeNetV2',
+        out_indices=(0, 1, 2, 3, 4),
+        detail_channels=(64, 64, 128),
+        semantic_channels=(16, 32, 64, 128),
+        semantic_expansion_ratio=6,
+        bga_channels=128,
+        init_cfg=None,
+        align_corners=False),
     decode_head=dict(
         type='FCNHead',
         in_channels=128,
