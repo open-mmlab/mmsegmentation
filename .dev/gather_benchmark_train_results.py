@@ -77,7 +77,7 @@ if __name__ == '__main__':
             new_results = dict()
             for metric_key in model_performance:
                 if metric_key in ['mIoU']:
-                    metric = round(model_performance[metric_key] * 100, 1)
+                    metric = round(model_performance[metric_key] * 100, 2)
                     old_metric = model_info['metric'][metric_key]
                     old_results[metric_key] = old_metric
                     new_results[metric_key] = metric

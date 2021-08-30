@@ -60,8 +60,8 @@ def get_final_results(log_json_path, iter_num):
 
             # When evaluation, the 'iter' of new log json is the evaluation
             # steps on single gpu.
-            flag1 = 'aAcc' in log_line
-            flag2 = last_iter == iter_num - 50 or last_iter == iter_num
+            flag1 = ('aAcc' in log_line) or (log_line['mode'] == 'val')
+            flag2 = (last_iter == iter_num - 50) or (last_iter == iter_num)
             if flag1 and flag2:
                 result_dict.update({
                     key: log_line[key]
@@ -75,18 +75,18 @@ def get_final_results(log_json_path, iter_num):
 def parse_args():
     parser = argparse.ArgumentParser(description='Gather benchmarked models')
     parser.add_argument(
-        '-m', '--model_name', type=str, help='Process the selected model.')
+        '-m', '--model-name', type=str, help='Process the selected model.')
     parser.add_argument(
-        '-c', '--config_name', type=str, help='Process the selected config.')
+        '-c', '--config-name', type=str, help='Process the selected config.')
     parser.add_argument(
         '-w',
-        '--work_dir',
+        '--work-dir',
         default='work_dirs/',
         type=str,
         help='Ckpt storage root folder of benchmarked models to be gathered.')
     parser.add_argument(
         '-c',
-        '--collect_dir',
+        '--collect-dir',
         default='work_dirs/gather',
         type=str,
         help='Ckpt collect root folder of gathered models.')
