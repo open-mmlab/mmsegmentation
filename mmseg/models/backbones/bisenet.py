@@ -537,14 +537,14 @@ class BGALayer(BaseModule):
         semantic_dwconv = self.semantic_dwconv(x_s)
         semantic_conv = resize(
             input=semantic_conv,
-            scale_factor=4,
+            size=detail_dwconv.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
         fuse_1 = detail_dwconv * torch.sigmoid(semantic_conv)
         fuse_2 = detail_down * torch.sigmoid(semantic_dwconv)
         fuse_2 = resize(
             input=fuse_2,
-            scale_factor=4,
+            size=fuse_1.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
         output = self.conv(fuse_1 + fuse_2)
