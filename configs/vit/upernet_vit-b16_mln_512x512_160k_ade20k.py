@@ -5,7 +5,9 @@ _base_ = [
 ]
 
 model = dict(
-    decode_head=dict(num_classes=150), auxiliary_head=dict(num_classes=150))
+    pretrained='pretrain/vit_base_patch16_224.pth',
+    decode_head=dict(num_classes=150),
+    auxiliary_head=dict(num_classes=150))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone

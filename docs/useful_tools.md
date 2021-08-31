@@ -255,6 +255,36 @@ Examples:
   python tools/analyze_logs.py log.json --keys loss --legend loss
   ```
 
+### Model conversion
+
+`tools/model_converters/` provide several scripts to convert pretrain models released by other repos to MMSegmentation style.
+
+#### ViT Swin MiT Transformer Models
+
+- ViT
+
+  `tools/model_converters/vit2mmseg.py` convert keys in timm pretrained vit models to MMSegmentation style.
+
+  ```shell
+  python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
+  ```
+
+- Swin
+
+  `tools/model_converters/swin2mmseg.py` convert keys in official pretrained swin models to MMSegmentation style.
+
+  ```shell
+  python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
+  ```
+
+- SegFormer
+
+  `tools/model_converters/mit2mmseg.py` convert keys in official pretrained mit models to MMSegmentation style.
+
+  ```shell
+  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
+  ```
+
 ## Model Serving
 
 In order to serve an `MMSegmentation` model with [`TorchServe`](https://pytorch.org/serve/), you can follow the steps:
@@ -292,7 +322,7 @@ docker run --rm \
 mmseg-serve:latest
 ```
 
-[Read the docs](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) about the Inference (8080), Management (8081) and Metrics (8082) APis
+[Read the docs](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) about the Inference (8080), Management (8081) and Metrics (8082) APIs
 
 ### 4. Test deployment
 

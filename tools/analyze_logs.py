@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 """Modified from https://github.com/open-
 mmlab/mmdetection/blob/master/tools/analysis_tools/analyze_logs.py."""
 import argparse
