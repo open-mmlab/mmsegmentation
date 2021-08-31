@@ -59,9 +59,9 @@ For loss calculation, we support multiple losses training concurrently. Here is 
 _base_ = './fcn_unet_s5-d16_64x64_40k_drive.py'
 model = dict(
     decode_head=dict(loss_decode=[dict(type='CrossEntropyLoss', name='CE', loss_weight=1.0),
-            dict(type='DiceLoss', name='DiCE', loss_weight=3.0)]),
+            dict(type='DiceLoss', name='Dice', loss_weight=3.0)]),
     auxiliary_head=dict(loss_decode=[dict(type='CrossEntropyLoss', name='CE',loss_weight=1.0),
-            dict(type='DiceLoss', name='DiCE', loss_weight=3.0)]),
+            dict(type='DiceLoss', name='Dice', loss_weight=3.0)]),
     )
 ```
 

@@ -59,10 +59,10 @@ model=dict(
 _base_ = './fcn_unet_s5-d16_64x64_40k_drive.py'
 model = dict(
     decode_head=dict(loss_decode=[dict(type='CrossEntropyLoss', name='CE', loss_weight=1.0),
-            dict(type='DiceLoss', name='DiCE', loss_weight=3.0)]),
+            dict(type='DiceLoss', name='Dice', loss_weight=3.0)]),
     auxiliary_head=dict(loss_decode=[dict(type='CrossEntropyLoss', name='CE',loss_weight=1.0),
-            dict(type='DiceLoss', name='DiCE', loss_weight=3.0)]),
+            dict(type='DiceLoss', name='Dice', loss_weight=3.0)]),
     )
 ```
 
-通过这种方式，确定损失函数的权重 `loss_weight` 和在训练日志里的名字 `name`。
+通过这种方式，确定训练过程中损失函数的权重 `loss_weight` 和在训练日志里的名字 `name`。

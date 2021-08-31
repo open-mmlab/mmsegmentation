@@ -108,6 +108,10 @@ def test_decode_head():
     assert 'loss_ce_1' in loss
     assert 'loss_ce_2' in loss
 
+    # 'loss_decode' must be a dict or sequence of dict
+    with pytest.raises(TypeError):
+        BaseDecodeHead(3, 16, num_classes=19, loss_decode=['CrossEntropyLoss'])
+
     # test multi-loss, loss_decode is list of dict
     inputs = torch.randn(2, 19, 8, 8).float()
     target = torch.ones(2, 1, 64, 64).long()
