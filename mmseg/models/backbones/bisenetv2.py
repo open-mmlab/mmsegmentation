@@ -1,6 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import warnings
-
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_activation_layer, build_norm_layer
@@ -18,7 +16,7 @@ class DetailBranch(BaseModule):
         detail_channels (Tuple[int]): Size of channel numbers of each stage
             in Detail Branch, in paper it has 3 stages.
             Default: (64, 64, 128).
-        in_channel (int): Channel of input image. Default: 3
+        in_channel (int): Channel of input image. Default: 3.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
         norm_cfg (dict | None): Config of norm layers.
@@ -31,7 +29,7 @@ class DetailBranch(BaseModule):
     """
 
     def __init__(self,
-                 detail_channels,
+                 detail_channels=(64, 64, 128),
                  in_channel=3,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
@@ -154,8 +152,7 @@ class StemBlock(BaseModule):
                 padding=1,
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
-                act_cfg=act_cfg)
-        )
+                act_cfg=act_cfg))
         self.pool_right = nn.MaxPool2d(
             kernel_size=3, stride=2, padding=1, ceil_mode=False)
         self.fuse_last = ConvModule(
@@ -281,7 +278,7 @@ class GELayer(BaseModule):
                 padding=0,
                 bias=False),
             build_norm_layer(norm_cfg, out_channels)[1])
-        self.relu = build_activation_layer(act_cfg)
+        self.act = build_activation_layer(act_cfg)
 
     def forward(self, x):
         identity = x
@@ -293,7 +290,7 @@ class GELayer(BaseModule):
             x = x + shortcut
         else:
             x = x + identity
-        x = self.relu(x)
+        x = self.act(x)
         return x
 
 
@@ -317,8 +314,8 @@ class CEBlock(BaseModule):
     """
 
     def __init__(self,
-                 in_channel,
-                 out_channels,
+                 in_channel=3,
+                 out_channels=16,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
@@ -364,7 +361,7 @@ class SemanticBranch(BaseModule):
 
     Args:
         semantic_channels(Tuple[int]): Size of channel numbers of
-            Stage 1, Stage 3, Stage 4 and Stage 5 in Semantic Branch.
+            various stages in Semantic Branch.
             Default: (16, 32, 64, 128).
         in_channel(int): Channel of input image. Default: 3.
         exp_ratio (int): Expansion ratio for middle channels.
@@ -377,7 +374,7 @@ class SemanticBranch(BaseModule):
     """
 
     def __init__(self,
-                 semantic_channels,
+                 semantic_channels=(16, 32, 64, 128),
                  in_channel=3,
                  exp_ratio=6,
                  init_cfg=None):
@@ -446,8 +443,8 @@ class BGALayer(BaseModule):
     """
 
     def __init__(self,
-                 out_channels,
-                 align_corners,
+                 out_channels=128,
+                 align_corners=False,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
@@ -550,13 +547,12 @@ class BGALayer(BaseModule):
 @BACKBONES.register_module()
 class BiSeNetV2(BaseModule):
     """BiSeNetV2: Bilateral Network with Guided Aggregation for
-        Real-time Semantic Segmentation
+    Real-time Semantic Segmentation
 
-        This backbone is the implementation of
-        `BiSeNetV2 <https://arxiv.org/abs/2004.02147>`_.
+    This backbone is the implementation of
+    `BiSeNetV2 <https://arxiv.org/abs/2004.02147>`_.
 
     Args:
-        pretrained (str, optional): The model pretrained path. Default: None.
         out_indices (Tuple[int] | int, optional): Output from which stages.
             Default: (0, 1, 2, 3, 4).
         detail_channels (Tuple[int], optional): Channels of each stage
@@ -584,7 +580,6 @@ class BiSeNetV2(BaseModule):
     """
 
     def __init__(self,
-                 pretrained=None,
                  out_indices=(0, 1, 2, 3, 4),
                  detail_channels=(64, 64, 128),
                  semantic_channels=(16, 32, 64, 128),
@@ -597,15 +592,13 @@ class BiSeNetV2(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None,
                  **kwargs):
-        super(BiSeNetV2, self).__init__(init_cfg, **kwargs)
-
-        if isinstance(pretrained, str) or pretrained is None:
-            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
-                          'please use "init_cfg" instead')
-        else:
-            raise TypeError('pretrained must be a str or None')
-
-        self.pretrained = pretrained
+        super(BiSeNetV2, self).__init__(init_cfg=init_cfg, **kwargs)
+        if init_cfg is None:
+            self.init_cfg = [
+                dict(type='Kaiming', layer='Conv2d'),
+                dict(
+                    type='Constant', val=1, layer=['_BatchNorm', 'GroupNorm'])
+            ]
         self.out_indices = out_indices
         self.detail_channels = detail_channels
         self.semantic_channels = semantic_channels
@@ -616,24 +609,6 @@ class BiSeNetV2(BaseModule):
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
-
-        assert not (init_cfg and pretrained), \
-            'init_cfg and pretrained cannot be setting at the same time'
-        if isinstance(pretrained, str):
-            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
-                          'please use "init_cfg" instead')
-            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
-        elif pretrained is None:
-            if init_cfg is None:
-                self.init_cfg = [
-                    dict(type='Kaiming', layer='Conv2d'),
-                    dict(
-                        type='Constant',
-                        val=1,
-                        layer=['_BatchNorm', 'GroupNorm'])
-                ]
-        else:
-            raise TypeError('pretrained must be a str or None')
 
         self.detail = DetailBranch(self.detail_channels, self.in_channel)
         self.semantic = SemanticBranch(self.semantic_channels, self.in_channel,

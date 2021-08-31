@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from .bisenet import BiSeNetV2
+from .bisenetv2 import BiSeNetV2
 from .cgnet import CGNet
 from .fast_scnn import FastSCNN
 from .hrnet import HRNet

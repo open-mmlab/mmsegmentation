@@ -1,22 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import pytest
 import torch
 
 from mmseg.models.backbones import BiSeNetV2
 
 
-def test_fastscnn_backbone():
-    # BiSeNetV2 wrong pretrained path
-    with pytest.raises(TypeError):
-        BiSeNetV2(
-            pretrained=0,
-            out_indices=(0, 1, 2, 3, 4),
-            detail_branch_channels=(64, 64, 128),
-            channel_ratio=0.25,
-            expansion_ratio=6,
-            align_corners=False,
-            middle_channels=128)
-
+def test_bisenetv2_backbone():
     # Test BiSeNetV2 Standard Forward
     model = BiSeNetV2()
     model.init_weights()
