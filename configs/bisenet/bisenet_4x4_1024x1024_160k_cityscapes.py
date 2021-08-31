@@ -6,7 +6,6 @@ _base_ = [
 
 lr_config = dict(warmup='linear', warmup_iters=1000)
 optimizer = dict(type='SGD', lr=0.05, momentum=0.9, weight_decay=0.0005)
-runner = dict(type='IterBasedRunner', max_iters=160000)
 checkpoint_config = dict(by_epoch=False, interval=4000)
 evaluation = dict(interval=4000, metric='mIoU', pre_eval=True)
 data = dict(

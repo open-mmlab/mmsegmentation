@@ -15,8 +15,8 @@ class DetailBranch(BaseModule):
     details and generate high-resolution feature representation.
 
     Args:
-        detail_channels (Tuple[int]): Size of channel numbers of Stage 1,
-            Stage 2 and Stage 3 in Detail Branch.
+        detail_channels (Tuple[int]): Size of channel numbers of each stage
+            in Detail Branch, in paper it has 3 stages.
             Default: (64, 64, 128)
         in_channel (int): Channel of input image. Default: 3
         conv_cfg (dict | None): Config of conv layers.
@@ -27,7 +27,7 @@ class DetailBranch(BaseModule):
             Default: dict(type='ReLU')
 
     Returns:
-        feat (Tensor): Feature map of Detail Branch.
+        x (Tensor): Feature map of Detail Branch.
     """
 
     def __init__(self,
@@ -37,7 +37,7 @@ class DetailBranch(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(DetailBranch, self).__init__(init_cfg)
+        super(DetailBranch, self).__init__(init_cfg=init_cfg)
         detail_branch = []
         for i in range(len(detail_channels)):
             if i == 0:
@@ -49,7 +49,6 @@ class DetailBranch(BaseModule):
                             kernel_size=3,
                             stride=2,
                             padding=1,
-                            bias=False,
                             conv_cfg=conv_cfg,
                             norm_cfg=norm_cfg,
                             act_cfg=act_cfg),
@@ -59,7 +58,6 @@ class DetailBranch(BaseModule):
                             kernel_size=3,
                             stride=1,
                             padding=1,
-                            bias=False,
                             conv_cfg=conv_cfg,
                             norm_cfg=norm_cfg,
                             act_cfg=act_cfg)))
@@ -72,7 +70,6 @@ class DetailBranch(BaseModule):
                             kernel_size=3,
                             stride=2,
                             padding=1,
-                            bias=False,
                             conv_cfg=conv_cfg,
                             norm_cfg=norm_cfg,
                             act_cfg=act_cfg),
@@ -82,7 +79,6 @@ class DetailBranch(BaseModule):
                             kernel_size=3,
                             stride=1,
                             padding=1,
-                            bias=False,
                             conv_cfg=conv_cfg,
                             norm_cfg=norm_cfg,
                             act_cfg=act_cfg),
@@ -92,7 +88,6 @@ class DetailBranch(BaseModule):
                             kernel_size=3,
                             stride=1,
                             padding=1,
-                            bias=False,
                             conv_cfg=conv_cfg,
                             norm_cfg=norm_cfg,
                             act_cfg=act_cfg)))
@@ -101,19 +96,11 @@ class DetailBranch(BaseModule):
     def forward(self, x):
         for stage in self.detail_branch:
             x = stage(x)
-        feat = x
-        return feat
+        return x
 
 
 class StemBlock(BaseModule):
     """Stem Block is the module at the beginning of Semantic Branch.
-
-        It uses two different downsampling manners to shrink the
-        feature representation. As illustrated in Fig. 4 (a),
-        the left branch is two ConvModules and the right is
-        MaxPooling. The output feature of both branches are
-        concatenated as the output.
-
 
     Args:
         in_channel (int): Number of input channels.
@@ -132,13 +119,13 @@ class StemBlock(BaseModule):
     """
 
     def __init__(self,
-                 in_channel,
-                 out_channels,
+                 in_channel=3,
+                 out_channels=16,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(StemBlock, self).__init__(init_cfg)
+        super(StemBlock, self).__init__(init_cfg=init_cfg)
 
         self.conv_first = ConvModule(
             in_channels=in_channel,
@@ -146,7 +133,6 @@ class StemBlock(BaseModule):
             kernel_size=3,
             stride=2,
             padding=1,
-            bias=False,
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
@@ -157,7 +143,6 @@ class StemBlock(BaseModule):
                 kernel_size=1,
                 stride=1,
                 padding=0,
-                bias=False,
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg),
@@ -167,7 +152,6 @@ class StemBlock(BaseModule):
                 kernel_size=3,
                 stride=2,
                 padding=1,
-                bias=False,
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg),
@@ -180,32 +164,27 @@ class StemBlock(BaseModule):
             kernel_size=3,
             stride=1,
             padding=1,
-            bias=False,
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
 
     def forward(self, x):
-        feat = self.conv_first(x)
-        feat_left = self.conv_left(feat)
-        feat_right = self.pool_right(feat)
-        feat = self.fuse_last(torch.cat([feat_left, feat_right], dim=1))
-        return feat
+        x = self.conv_first(x)
+        feat_left = self.conv_left(x)
+        feat_right = self.pool_right(x)
+        x = self.fuse_last(torch.cat([feat_left, feat_right], dim=1))
+        return x
 
 
 class GELayer(BaseModule):
     """Gather-and-Expansion Layer with Stride 2.
 
-        As illustrated in Fig. 5 (c), when stride=2, two 3x3 depth-wise
-        convolution and one 3x3 separable convolution are adopted
-        as shortcut in the bottleneck structure.
-
     Args:
         in_channels (int): Number of input channels.
         out_channels (int): Number of output channels.
         exp_ratio (int): Expansion ratio for middle channels.
-            Default: 6.
-        stride (int): Stride of GELayer.
+            Default: 6
+        stride (int): Stride of GELayer. Default: 1
         conv_cfg (dict | None): Config of conv layers.
             Default: None
         norm_cfg (dict | None): Config of norm layers.
@@ -221,13 +200,13 @@ class GELayer(BaseModule):
     def __init__(self,
                  in_channels,
                  out_channels,
-                 exp_ratio,
-                 stride,
+                 exp_ratio=6,
+                 stride=1,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(GELayer, self).__init__(init_cfg)
+        super(GELayer, self).__init__(init_cfg=init_cfg)
         mid_channel = in_channels * exp_ratio
         self.conv1 = ConvModule(
             in_channels=in_channels,
@@ -235,7 +214,6 @@ class GELayer(BaseModule):
             kernel_size=3,
             stride=1,
             padding=1,
-            bias=False,
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
@@ -280,7 +258,7 @@ class GELayer(BaseModule):
                     in_channels=in_channels,
                     out_channels=in_channels,
                     kernel_size=3,
-                    stride=2,
+                    stride=stride,
                     padding=1,
                     groups=in_channels,
                     bias=False),
@@ -303,27 +281,24 @@ class GELayer(BaseModule):
                 padding=0,
                 bias=False),
             build_norm_layer(norm_cfg, out_channels)[1])
-        self.conv2[1].last_bn = True
         self.relu = build_activation_layer(act_cfg)
 
     def forward(self, x):
-        feat = self.conv1(x)
-        feat = self.dwconv(feat)
-        feat = self.conv2(feat)
+        identity = x
+        x = self.conv1(x)
+        x = self.dwconv(x)
+        x = self.conv2(x)
         if self.shortcut is not None:
-            shortcut = self.shortcut(x)
-            feat = feat + shortcut
+            shortcut = self.shortcut(identity)
+            x = x + shortcut
         else:
-            feat = feat + x
-        feat = self.relu(feat)
-        return feat
+            x = x + identity
+        x = self.relu(x)
+        return x
 
 
 class CEBlock(BaseModule):
     """Context Embedding Block for large receptive filed in Semantic Branch.
-
-    As illustrated in Fig. 4 (b), it is designed with the global average
-    pooling to embed the global contextual information.
 
     Args:
         in_channel (int): Number of input channels.
@@ -348,10 +323,10 @@ class CEBlock(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(CEBlock, self).__init__(init_cfg)
+        super(CEBlock, self).__init__(init_cfg=init_cfg)
         self.in_channels = in_channel
         self.out_channels = out_channels
-        self.gapool = nn.Sequential(
+        self.gap = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
             build_norm_layer(norm_cfg, self.in_channels)[1])
         self.conv_gap = ConvModule(
@@ -360,7 +335,6 @@ class CEBlock(BaseModule):
             kernel_size=1,
             stride=1,
             padding=0,
-            bias=False,
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
@@ -371,17 +345,17 @@ class CEBlock(BaseModule):
             kernel_size=3,
             stride=1,
             padding=1,
-            bias=False,
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
 
     def forward(self, x):
-        feat = self.gapool(x)
-        feat = self.conv_gap(feat)
-        feat = feat + x
-        feat = self.conv_last(feat)
-        return feat
+        identity = x
+        x = self.gap(x)
+        x = self.conv_gap(x)
+        x = identity + x
+        x = self.conv_last(x)
+        return x
 
 
 class SemanticBranch(BaseModule):
@@ -409,7 +383,7 @@ class SemanticBranch(BaseModule):
                  in_channel=3,
                  exp_ratio=6,
                  init_cfg=None):
-        super(SemanticBranch, self).__init__(init_cfg)
+        super(SemanticBranch, self).__init__(init_cfg=init_cfg)
         self.in_channels = in_channel
         self.semantic_channels = semantic_channels
         self.semantic_stages = []
@@ -482,7 +456,7 @@ class BGALayer(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(BGALayer, self).__init__(init_cfg)
+        super(BGALayer, self).__init__(init_cfg=init_cfg)
 
         self.out_channels = out_channels
         self.align_corners = align_corners
@@ -550,7 +524,6 @@ class BGALayer(BaseModule):
             kernel_size=3,
             stride=1,
             padding=1,
-            bias=False,
             inplace=True,
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
@@ -669,9 +642,9 @@ class BiSeNetV2(BaseModule):
 
     def forward(self, x):
         #  stole refactoring code from Coin Cheung, thanks
-        feat_detail = self.detail(x)
-        feat_semantic_lst = self.semantic(x)
-        feat_head = self.bga(feat_detail, feat_semantic_lst[-1])
-        outs = [feat_head] + feat_semantic_lst[:-1]
+        x_detail = self.detail(x)
+        x_semantic_lst = self.semantic(x)
+        x_head = self.bga(x_detail, x_semantic_lst[-1])
+        outs = [x_head] + x_semantic_lst[:-1]
         outs = [outs[i] for i in self.out_indices]
         return tuple(outs)
