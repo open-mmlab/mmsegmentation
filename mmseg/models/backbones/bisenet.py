@@ -17,17 +17,17 @@ class DetailBranch(BaseModule):
     Args:
         detail_channels (Tuple[int]): Size of channel numbers of each stage
             in Detail Branch, in paper it has 3 stages.
-            Default: (64, 64, 128)
+            Default: (64, 64, 128).
         in_channel (int): Channel of input image. Default: 3
         conv_cfg (dict | None): Config of conv layers.
-            Default: None
+            Default: None.
         norm_cfg (dict | None): Config of norm layers.
-            Default: dict(type='BN')
+            Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
-            Default: dict(type='ReLU')
+            Default: dict(type='ReLU').
 
     Returns:
-        x (Tensor): Feature map of Detail Branch.
+        x (torch.Tensor): Feature map of Detail Branch.
     """
 
     def __init__(self,
@@ -100,22 +100,22 @@ class DetailBranch(BaseModule):
 
 
 class StemBlock(BaseModule):
-    """Stem Block is the module at the beginning of Semantic Branch.
+    """Stem Block at the beginning of Semantic Branch.
 
     Args:
         in_channel (int): Number of input channels.
-            Default: 3
+            Default: 3.
         out_channels (int): Number of output channels.
-            Default: 16
+            Default: 16.
         conv_cfg (dict | None): Config of conv layers.
-            Default: None
+            Default: None.
         norm_cfg (dict | None): Config of norm layers.
-            Default: dict(type='BN')
+            Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
-            Default: dict(type='ReLU')
+            Default: dict(type='ReLU').
 
     Returns:
-        x (Tensor): First feature map in Semantic Branch.
+        x (torch.Tensor): First feature map in Semantic Branch.
     """
 
     def __init__(self,
@@ -177,23 +177,23 @@ class StemBlock(BaseModule):
 
 
 class GELayer(BaseModule):
-    """Gather-and-Expansion Layer with Stride 2.
+    """Gather-and-Expansion Layer.
 
     Args:
         in_channels (int): Number of input channels.
         out_channels (int): Number of output channels.
         exp_ratio (int): Expansion ratio for middle channels.
-            Default: 6
+            Default: 6.
         stride (int): Stride of GELayer. Default: 1
         conv_cfg (dict | None): Config of conv layers.
-            Default: None
+            Default: None.
         norm_cfg (dict | None): Config of norm layers.
-            Default: dict(type='BN')
+            Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
-            Default: dict(type='ReLU')
+            Default: dict(type='ReLU').
 
     Returns:
-        x (Tensor): Intermidiate feature map in
+        x (torch.Tensor): Intermidiate feature map in
             Semantic Branch.
     """
 
@@ -302,18 +302,18 @@ class CEBlock(BaseModule):
 
     Args:
         in_channel (int): Number of input channels.
-            Default: 3
+            Default: 3.
         out_channels (int): Number of output channels.
-            Default: 16
+            Default: 16.
         conv_cfg (dict | None): Config of conv layers.
-            Default: None
+            Default: None.
         norm_cfg (dict | None): Config of norm layers.
-            Default: dict(type='BN')
+            Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
-            Default: dict(type='ReLU')
+            Default: dict(type='ReLU').
 
     Returns:
-        x (Tensor): Last feature map in Semantic Branch.
+        x (torch.Tensor): Last feature map in Semantic Branch.
     """
 
     def __init__(self,
@@ -360,9 +360,7 @@ class CEBlock(BaseModule):
 
 class SemanticBranch(BaseModule):
     """Semantic Branch which is lightweight with narrow channels and deep
-    layers to obtain　high-level semantic context. As illustrated in Fig. 4 (b),
-    it is designed with　the global average pooling to embed the global
-    contextual information.
+    layers to obtain　high-level semantic context.
 
     Args:
         semantic_channels(Tuple[int]): Size of channel numbers of
@@ -373,7 +371,7 @@ class SemanticBranch(BaseModule):
             Default: 6.
 
     Returns:
-        semantic_outs (List[Tensor]): List of several feature maps
+        semantic_outs (List[torch.Tensor]): List of several feature maps
             for auxiliary heads (Booster) and Bilateral
             Guided Aggregation Layer.
     """
@@ -429,9 +427,7 @@ class SemanticBranch(BaseModule):
 
 class BGALayer(BaseModule):
     """Bilateral Guided Aggregation Layer to fuse the complementary information
-    from both Detail Branch and Semantic Branch. As illustrated in Fig. 3 & 6,
-    this layer employs the contextual information of Semantic Branch to guide
-    the feature response of Detail Branch.
+    from both Detail Branch and Semantic Branch.
 
     Args:
         out_channels (int): Number of output channels.
@@ -439,14 +435,14 @@ class BGALayer(BaseModule):
         align_corners (bool): align_corners argument of F.interpolate.
             Default: False.
         conv_cfg (dict | None): Config of conv layers.
-            Default: None
+            Default: None.
         norm_cfg (dict | None): Config of norm layers.
-            Default: dict(type='BN')
+            Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
-            Default: dict(type='ReLU')
+            Default: dict(type='ReLU').
 
     Returns:
-        output (Tensor): Output feature map for Segment heads.
+        output (torch.Tensor): Output feature map for Segment heads.
     """
 
     def __init__(self,
@@ -563,24 +559,26 @@ class BiSeNetV2(BaseModule):
         pretrained (str, optional): The model pretrained path. Default: None.
         out_indices (Sequence[int] | int, optional): Output from which stages.
             Default: (0, 1, 2, 3).
-        detail_channels (Sequence[int], optional): Channels of S1, S2
-            and S3 in Detail Branch, respectively. Default: (64, 64, 128).
-        semantic_channels (Sequence[int], optional): Channels of S1, S3, S4
-            and S5 in Semantic Branch, respectively.
-            Default: (16, 32, 64, 128).
+        detail_channels (Sequence[int], optional): Channels of each stage
+            in Detail Branch. Default: (64, 64, 128).
+        semantic_channels (Sequence[int], optional): Channels of each stage
+            in Semantic Branch. Default: (16, 32, 64, 128).
             See Table 1 and Figure 3 of paper for more details.
         in_channel(int): Channel of input image. Default: 3.
         semantic_expansion_ratio (int, optional): The expansion factor
             expanding channel number of middle channels in Semantic Branch.
-            Default: 6
+            Default: 6.
         align_corners (bool, optional): The align_corners argument of
-            F.interpolate. Default: False.
+            resize operation in Bilateral Guided Aggregation Layer.
+            Default: False.
         bga_channels (int, optional): Number of middle channels in
             Bilateral Guided Aggregation Layer. Default: 128.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
         norm_cfg (dict | None): Config of norm layers.
             Default: dict(type='BN').
+        act_cfg (dict): Config of activation layers.
+            Default: dict(type='ReLU').
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     """
@@ -596,6 +594,7 @@ class BiSeNetV2(BaseModule):
                  bga_channels=128,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
+                 act_cfg=dict(type='ReLU'),
                  init_cfg=None,
                  **kwargs):
         super(BiSeNetV2, self).__init__(init_cfg, **kwargs)
@@ -616,6 +615,7 @@ class BiSeNetV2(BaseModule):
         self.bga_channels = bga_channels
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
+        self.act_cfg = act_cfg
 
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be setting at the same time'
