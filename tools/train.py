@@ -77,9 +77,8 @@ def main():
         cfg.work_dir = args.work_dir
     elif cfg.get('work_dir', None) is None:
         # use config filename as default work_dir if cfg.work_dir is None
-        config_dir = osp.split(osp.dirname(args.config))[1]
-        config_name = osp.splitext(osp.basename(args.config))[0]
-        cfg.work_dir = osp.join('./work_dirs', config_dir, config_name)
+        cfg.work_dir = osp.join('./work_dirs',
+                                osp.splitext(osp.basename(args.config))[0])
 
     if args.load_from is not None:
         cfg.load_from = args.load_from
