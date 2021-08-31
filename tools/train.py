@@ -135,12 +135,12 @@ def main():
         test_cfg=cfg.get('test_cfg'))
     model.init_weights()
 
-    # SyncBN is not support for single gpu
+    # SyncBN is not support for DP
     if not distributed:
         warnings.warn(
             'SyncBN only support DDP. In order to compat with DP, we convert '
-            'SyncBN tp BN. Please to use dist_train.py which has official '
-            'support to avoid this problem.')
+            'SyncBN to BN. Please use dist_train.sh which can '
+            'avoid this error.')
         model = revert_sync_batchnorm(model)
 
     logger.info(model)
