@@ -76,6 +76,10 @@ def test_decode_head():
     assert transformed_inputs.shape == (1, 48, 45, 45)
 
     # test multi-loss, loss_decode is dict
+    with pytest.raises(TypeError):
+        # f'loss_decode' must be a dict or sequence of dict.
+        BaseDecodeHead(3, 16, num_classes=19, loss_decode=['CrossEntropyLoss'])
+
     inputs = torch.randn(2, 19, 8, 8).float()
     target = torch.ones(2, 1, 64, 64).long()
     head = BaseDecodeHead(

@@ -35,9 +35,9 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             Default: None.
         loss_decode (dict | Sequence[dict]): Config of decode loss.
              e.g. dict(type='CrossEntropyLoss'),
-             [dict(type='LossName_1', name='loss_1'),
-              dict(type='LossName_2', name='loss_2')]
-            Default: dict(type='CrossEntropyLoss', name='ce').
+             [dict(type='CrossEntropyLoss', name='CrossEntropy'),
+              dict(type='DiceLoss', name='Dice')]
+            Default: dict(type='CrossEntropyLoss').
         ignore_index (int | None): The label index to be ignored. When using
             masked BCE loss, ignore_index should be set to None. Default: 255
         sampler (dict|None): The config of segmentation map sampler.
@@ -82,11 +82,18 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         self.loss_decode = nn.ModuleList()
         self.loss_names = []
         if isinstance(loss_decode, dict):
+            if 'name' in loss_decode:
+                name = loss_decode.pop('name')
+            else:
+                name = 'loss_seg'
             self.loss_decode.append(build_loss(loss_decode))
-            self.loss_names.append('loss_seg')
+            self.loss_names.append(name)
         elif isinstance(loss_decode, (list, tuple)):
-            for loss in loss_decode:
-                name = loss.pop('name')
+            for i, loss in enumerate(loss_decode):
+                if name in loss:
+                    name = loss.pop('name')
+                else:
+                    name = str(i)
                 self.loss_decode.append(build_loss(loss))
                 self.loss_names.append('loss_' + name)
         else:
