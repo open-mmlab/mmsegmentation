@@ -154,7 +154,7 @@ class StemBlock(BaseModule):
                 padding=1,
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
-                act_cfg=act_cfg),
+                act_cfg=act_cfg)
         )
         self.pool_right = nn.MaxPool2d(
             kernel_size=3, stride=2, padding=1, ceil_mode=False)
@@ -557,11 +557,11 @@ class BiSeNetV2(BaseModule):
 
     Args:
         pretrained (str, optional): The model pretrained path. Default: None.
-        out_indices (Sequence[int] | int, optional): Output from which stages.
-            Default: (0, 1, 2, 3).
-        detail_channels (Sequence[int], optional): Channels of each stage
+        out_indices (Tuple[int] | int, optional): Output from which stages.
+            Default: (0, 1, 2, 3, 4).
+        detail_channels (Tuple[int], optional): Channels of each stage
             in Detail Branch. Default: (64, 64, 128).
-        semantic_channels (Sequence[int], optional): Channels of each stage
+        semantic_channels (Tuple[int], optional): Channels of each stage
             in Semantic Branch. Default: (16, 32, 64, 128).
             See Table 1 and Figure 3 of paper for more details.
         in_channel(int): Channel of input image. Default: 3.
