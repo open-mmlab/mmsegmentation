@@ -115,7 +115,7 @@ class StemBlock(BaseModule):
             Default: dict(type='ReLU')
 
     Returns:
-        feat (Tensor): First feature map in Semantic Branch.
+        x (Tensor): First feature map in Semantic Branch.
     """
 
     def __init__(self,
@@ -170,9 +170,9 @@ class StemBlock(BaseModule):
 
     def forward(self, x):
         x = self.conv_first(x)
-        feat_left = self.conv_left(x)
-        feat_right = self.pool_right(x)
-        x = self.fuse_last(torch.cat([feat_left, feat_right], dim=1))
+        x_left = self.conv_left(x)
+        x_right = self.pool_right(x)
+        x = self.fuse_last(torch.cat([x_left, x_right], dim=1))
         return x
 
 
@@ -193,7 +193,7 @@ class GELayer(BaseModule):
             Default: dict(type='ReLU')
 
     Returns:
-        feat (Tensor): Intermidiate feature map in
+        x (Tensor): Intermidiate feature map in
             Semantic Branch.
     """
 
@@ -219,17 +219,17 @@ class GELayer(BaseModule):
             act_cfg=act_cfg)
         if stride == 1:
             self.dwconv = nn.Sequential(
-                nn.Conv2d(
+                # ReLu in ConvModule not shown in paper
+                ConvModule(
                     in_channels=in_channels,
                     out_channels=mid_channel,
                     kernel_size=3,
                     stride=1,
                     padding=1,
                     groups=in_channels,
-                    bias=False),
-                build_norm_layer(norm_cfg, mid_channel)[1],
-                build_activation_layer(act_cfg)  # not shown in paper
-            )
+                    conv_cfg=conv_cfg,
+                    norm_cfg=norm_cfg,
+                    act_cfg=act_cfg))
             self.shortcut = None
         else:
             self.dwconv = nn.Sequential(
@@ -242,17 +242,17 @@ class GELayer(BaseModule):
                     groups=in_channels,
                     bias=False),
                 build_norm_layer(norm_cfg, mid_channel)[1],
-                nn.Conv2d(
+                # ReLu in ConvModule not shown in paper
+                ConvModule(
                     in_channels=mid_channel,
                     out_channels=mid_channel,
                     kernel_size=3,
                     stride=1,
                     padding=1,
                     groups=mid_channel,
-                    bias=False),
-                build_norm_layer(norm_cfg, mid_channel)[1],
-                build_activation_layer(act_cfg),  # not shown in paper
-            )
+                    conv_cfg=conv_cfg,
+                    norm_cfg=norm_cfg,
+                    act_cfg=act_cfg))
             self.shortcut = nn.Sequential(
                 nn.Conv2d(
                     in_channels=in_channels,
@@ -313,7 +313,7 @@ class CEBlock(BaseModule):
             Default: dict(type='ReLU')
 
     Returns:
-        feat (Tensor): Last feature map in Semantic Branch.
+        x (Tensor): Last feature map in Semantic Branch.
     """
 
     def __init__(self,
@@ -446,7 +446,7 @@ class BGALayer(BaseModule):
             Default: dict(type='ReLU')
 
     Returns:
-        feat (Tensor): Output feature map for Segment heads.
+        output (Tensor): Output feature map for Segment heads.
     """
 
     def __init__(self,
