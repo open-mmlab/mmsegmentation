@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
+
 from mmseg.models.backbones import BiSeNetV2
 
 
@@ -24,6 +25,7 @@ def test_bisenetv2_backbone():
     # for auxiliary head 4
     assert feat[4].shape == torch.Size([batch_size, 128, 16, 32])
 
+
 def test_bisenetv2_backone2():
     # Test input with rare shape
     model = BiSeNetV2()
@@ -32,4 +34,3 @@ def test_bisenetv2_backone2():
     imgs = torch.randn(batch_size, 3, 527, 952)
     feat = model(imgs)
     assert len(feat) == 5
-
