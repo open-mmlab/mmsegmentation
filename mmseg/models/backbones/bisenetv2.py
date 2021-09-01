@@ -1,7 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
-from mmcv.cnn import ConvModule, build_activation_layer, build_norm_layer
+from mmcv.cnn import (ConvModule, DepthwiseSeparableConvModule,
+                      build_activation_layer, build_norm_layer)
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
@@ -230,15 +231,17 @@ class GELayer(BaseModule):
             self.shortcut = None
         else:
             self.dwconv = nn.Sequential(
-                nn.Conv2d(
+                ConvModule(
                     in_channels=in_channels,
                     out_channels=mid_channel,
                     kernel_size=3,
                     stride=stride,
                     padding=1,
                     groups=in_channels,
-                    bias=False),
-                build_norm_layer(norm_cfg, mid_channel)[1],
+                    bias=False,
+                    conv_cfg=conv_cfg,
+                    norm_cfg=norm_cfg,
+                    act_cfg=None),
                 # ReLu in ConvModule not shown in paper
                 ConvModule(
                     in_channels=mid_channel,
@@ -249,35 +252,34 @@ class GELayer(BaseModule):
                     groups=mid_channel,
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
-                    act_cfg=act_cfg))
+                    act_cfg=act_cfg),
+            )
             self.shortcut = nn.Sequential(
-                nn.Conv2d(
+                DepthwiseSeparableConvModule(
                     in_channels=in_channels,
-                    out_channels=in_channels,
+                    out_channels=out_channels,
                     kernel_size=3,
                     stride=stride,
                     padding=1,
-                    groups=in_channels,
-                    bias=False),
-                build_norm_layer(norm_cfg, in_channels)[1],
-                nn.Conv2d(
-                    in_channels=in_channels,
-                    out_channels=out_channels,
-                    kernel_size=1,
-                    stride=1,
-                    padding=0,
-                    bias=False),
-                build_norm_layer(norm_cfg, out_channels)[1])
+                    dw_norm_cfg=norm_cfg,
+                    dw_act_cfg=None,
+                    pw_norm_cfg=norm_cfg,
+                    pw_act_cfg=None,
+                ))
 
         self.conv2 = nn.Sequential(
-            nn.Conv2d(
+            ConvModule(
                 in_channels=mid_channel,
                 out_channels=out_channels,
                 kernel_size=1,
                 stride=1,
                 padding=0,
-                bias=False),
-            build_norm_layer(norm_cfg, out_channels)[1])
+                bias=False,
+                conv_cfg=conv_cfg,
+                norm_cfg=norm_cfg,
+                act_cfg=None,
+            ))
+
         self.act = build_activation_layer(act_cfg)
 
     def forward(self, x):
@@ -454,62 +456,52 @@ class BGALayer(BaseModule):
         self.out_channels = out_channels
         self.align_corners = align_corners
         self.detail_dwconv = nn.Sequential(
-            nn.Conv2d(
+            DepthwiseSeparableConvModule(
                 in_channels=self.out_channels,
                 out_channels=self.out_channels,
                 kernel_size=3,
                 stride=1,
                 padding=1,
-                groups=self.out_channels,
-                bias=False),
-            build_norm_layer(norm_cfg, self.out_channels)[1],
-            nn.Conv2d(
-                in_channels=self.out_channels,
-                out_channels=self.out_channels,
-                kernel_size=1,
-                stride=1,
-                padding=0,
-                bias=False),
-        )
+                dw_norm_cfg=norm_cfg,
+                dw_act_cfg=None,
+                pw_norm_cfg=None,
+                pw_act_cfg=None,
+            ))
         self.detail_down = nn.Sequential(
-            nn.Conv2d(
+            ConvModule(
                 in_channels=self.out_channels,
                 out_channels=self.out_channels,
                 kernel_size=3,
                 stride=2,
                 padding=1,
-                bias=False),
-            build_norm_layer(norm_cfg, self.out_channels)[1],
+                bias=False,
+                conv_cfg=conv_cfg,
+                norm_cfg=norm_cfg,
+                act_cfg=None),
             nn.AvgPool2d(kernel_size=3, stride=2, padding=1, ceil_mode=False))
         self.semantic_conv = nn.Sequential(
-            nn.Conv2d(
+            ConvModule(
                 in_channels=self.out_channels,
                 out_channels=self.out_channels,
                 kernel_size=3,
                 stride=1,
                 padding=1,
-                bias=False),
-            build_norm_layer(norm_cfg, self.out_channels)[1],
-        )
+                bias=False,
+                conv_cfg=conv_cfg,
+                norm_cfg=norm_cfg,
+                act_cfg=None))
         self.semantic_dwconv = nn.Sequential(
-            nn.Conv2d(
+            DepthwiseSeparableConvModule(
                 in_channels=self.out_channels,
                 out_channels=self.out_channels,
                 kernel_size=3,
                 stride=1,
                 padding=1,
-                groups=self.out_channels,
-                bias=False),
-            build_norm_layer(norm_cfg, self.out_channels)[1],
-            nn.Conv2d(
-                in_channels=self.out_channels,
-                out_channels=self.out_channels,
-                kernel_size=1,
-                stride=1,
-                padding=0,
-                bias=False),
-        )
-
+                dw_norm_cfg=norm_cfg,
+                dw_act_cfg=None,
+                pw_norm_cfg=None,
+                pw_act_cfg=None,
+            ))
         # TODO: does this really has no relu?
         self.conv = ConvModule(
             in_channels=self.out_channels,
