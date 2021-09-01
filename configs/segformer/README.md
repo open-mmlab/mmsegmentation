@@ -13,6 +13,18 @@
 }
 ```
 
+## Usage
+
+To use other repositories' pre-trained models, it is necessary to convert keys.
+
+We provide a script [`mit2mmseg.py`](../../tools/model_converters/mit2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/NVlabs/SegFormer) to MMSegmentation style.
+
+```shell
+python tools/model_converters/swin2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
+```
+
+This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
+
 ## Results and models
 
 ### ADE20k
@@ -61,13 +73,3 @@ test_pipeline = [
         ])
 ]
 ```
-
-## How to use segformer official pretrain weights
-
-We convert the backbone weights from the official repo (https://github.com/NVlabs/SegFormer) with `tools/model_converters/mit_convert.py`.
-
-You may follow below steps to start segformer training preparation:
-
-1. Download segformer pretrain weights (Suggest put in `pretrain/`);
-2. Run convert script to convert official pretrain weights: `python tools/model_converters/mit_convert.py pretrain/mit_b0.pth pretrain/mit_b0.pth`;
-3. Modify `pretrained` of segformer model config, for example, `pretrained` of `segformer_mit-b0_512x512_160k_ade20k.py` is set to `pretrain/mit_b0.pth`;
