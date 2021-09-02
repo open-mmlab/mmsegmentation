@@ -213,6 +213,14 @@ def test_custom_dataset():
     assert 'mPrecision' in eval_results
     assert 'mRecall' in eval_results
 
+    assert not np.isnan(eval_results['mIoU'])
+    assert not np.isnan(eval_results['mDice'])
+    assert not np.isnan(eval_results['mAcc'])
+    assert not np.isnan(eval_results['aAcc'])
+    assert not np.isnan(eval_results['mFscore'])
+    assert not np.isnan(eval_results['mPrecision'])
+    assert not np.isnan(eval_results['mRecall'])
+
     # test evaluation with pre-eval and the dataset.CLASSES is necessary
     train_dataset.CLASSES = tuple(['a'] * 7)
     pseudo_results = []
@@ -249,6 +257,14 @@ def test_custom_dataset():
     assert 'mFscore' in eval_results
     assert 'mPrecision' in eval_results
     assert 'mRecall' in eval_results
+
+    assert not np.isnan(eval_results['mIoU'])
+    assert not np.isnan(eval_results['mDice'])
+    assert not np.isnan(eval_results['mAcc'])
+    assert not np.isnan(eval_results['aAcc'])
+    assert not np.isnan(eval_results['mFscore'])
+    assert not np.isnan(eval_results['mPrecision'])
+    assert not np.isnan(eval_results['mRecall'])
 
 
 @pytest.mark.parametrize('separate_eval', [True, False])
