@@ -311,6 +311,9 @@ class Bottleneck(BaseModule):
 class ResNet(BaseModule):
     """ResNet backbone.
 
+    This backbone is the improved implementation of `Deep Residual Learning
+    for Image Recognition <https://arxiv.org/abs/1512.03385>`_.
+
     Args:
         depth (int): Depth of resnet, from {18, 34, 50, 101, 152}.
         in_channels (int): Number of input image channels. Default: 3.
