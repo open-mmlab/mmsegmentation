@@ -12,7 +12,7 @@ def parse_args():
     parser.add_argument('--port', type=int, default=28171, help='dist port')
     parser.add_argument(
         '--work-dir',
-        default='.dev/benchmark_evaluation',
+        default='work_dirs/benchmark_evaluation',
         help='the dir to save metric')
     parser.add_argument(
         '--out',
