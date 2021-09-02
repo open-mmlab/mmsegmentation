@@ -342,7 +342,12 @@ class CustomDataset(Dataset):
 
         return palette
 
-    def evaluate(self, results, metric='mIoU', logger=None, gt_seg_maps=None, **kwargs):
+    def evaluate(self,
+                 results,
+                 metric='mIoU',
+                 logger=None,
+                 gt_seg_maps=None,
+                 **kwargs):
         """Evaluate the dataset.
 
         Args:
@@ -353,7 +358,7 @@ class CustomDataset(Dataset):
                 'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
-            gt_seg_maps (generator(ndarray)): Custom gt seg maps as input,
+            gt_seg_maps (generator[ndarray]): Custom gt seg maps as input,
                 used in ConcatDataset
 
         Returns:
