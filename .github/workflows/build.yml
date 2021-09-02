@@ -4,7 +4,7 @@ on: [ push, pull_request ]
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
@@ -22,7 +22,7 @@ jobs:
           pip install interrogate
           interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --exclude mmseg/ops --ignore-regex "__repr__" --fail-under 80 mmseg
   build_cpu:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         python-version: [3.7]
@@ -63,7 +63,7 @@ jobs:
           coverage report -m
 
   build_cuda:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     env:
       UBUNTU_VERSION: ubuntu1804
     strategy:
