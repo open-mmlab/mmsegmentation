@@ -11,7 +11,7 @@ from PIL import Image
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
                             ConcatDataset, CustomDataset, PascalVOCDataset,
-                            RepeatDataset)
+                            RepeatDataset, build_dataset)
 
 
 def test_classes():
@@ -143,7 +143,8 @@ def test_custom_dataset():
         test_pipeline,
         img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'),
         img_suffix='img.jpg',
-        test_mode=True)
+        test_mode=True,
+        classes=('pseudo_class', ))
     assert len(test_dataset) == 5
 
     # training data get
@@ -164,30 +165,34 @@ def test_custom_dataset():
     with pytest.raises(NotImplementedError):
         test_dataset.format_results([], '')
 
-    # test past evaluation
     pseudo_results = []
     for gt_seg_map in gt_seg_maps:
         h, w = gt_seg_map.shape
         pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
-    eval_results = train_dataset.evaluate(pseudo_results, metric=['mIoU'])
-    assert isinstance(eval_results, dict)
-    assert 'mIoU' in eval_results
-    assert 'mAcc' in eval_results
-    assert 'aAcc' in eval_results
 
-    eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
-    assert isinstance(eval_results, dict)
-    assert 'mDice' in eval_results
-    assert 'mAcc' in eval_results
-    assert 'aAcc' in eval_results
+    # test past evaluation, CLASSES should not be None
+    with pytest.raises(TypeError):
+        eval_results = train_dataset.evaluate(pseudo_results, metric=['mIoU'])
+        assert isinstance(eval_results, dict)
+        assert 'mIoU' in eval_results
+        assert 'mAcc' in eval_results
+        assert 'aAcc' in eval_results
 
-    eval_results = train_dataset.evaluate(
-        pseudo_results, metric=['mDice', 'mIoU'])
-    assert isinstance(eval_results, dict)
-    assert 'mIoU' in eval_results
-    assert 'mDice' in eval_results
-    assert 'mAcc' in eval_results
-    assert 'aAcc' in eval_results
+    with pytest.raises(TypeError):
+        eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
+        assert isinstance(eval_results, dict)
+        assert 'mDice' in eval_results
+        assert 'mAcc' in eval_results
+        assert 'aAcc' in eval_results
+
+    with pytest.raises(TypeError):
+        eval_results = train_dataset.evaluate(
+            pseudo_results, metric=['mDice', 'mIoU'])
+        assert isinstance(eval_results, dict)
+        assert 'mIoU' in eval_results
+        assert 'mDice' in eval_results
+        assert 'mAcc' in eval_results
+        assert 'aAcc' in eval_results
 
     # test past evaluation with CLASSES
     train_dataset.CLASSES = tuple(['a'] * 7)
@@ -259,6 +264,142 @@ def test_custom_dataset():
     assert 'mRecall' in eval_results
 
 
+@pytest.mark.parametrize('separate_eval', [True, False])
+def test_eval_concat_custom_dataset(separate_eval):
+    img_norm_cfg = dict(
+        mean=[123.675, 116.28, 103.53],
+        std=[58.395, 57.12, 57.375],
+        to_rgb=True)
+    test_pipeline = [
+        dict(type='LoadImageFromFile'),
+        dict(
+            type='MultiScaleFlipAug',
+            img_scale=(128, 256),
+            # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
+            flip=False,
+            transforms=[
+                dict(type='Resize', keep_ratio=True),
+                dict(type='RandomFlip'),
+                dict(type='Normalize', **img_norm_cfg),
+                dict(type='ImageToTensor', keys=['img']),
+                dict(type='Collect', keys=['img']),
+            ])
+    ]
+    data_root = osp.join(osp.dirname(__file__), '../data/pseudo_dataset')
+    img_dir = 'imgs/'
+    ann_dir = 'gts/'
+
+    cfg1 = dict(
+        type='CustomDataset',
+        pipeline=test_pipeline,
+        data_root=data_root,
+        img_dir=img_dir,
+        ann_dir=ann_dir,
+        img_suffix='img.jpg',
+        seg_map_suffix='gt.png',
+        classes=tuple(['a'] * 7))
+    dataset1 = build_dataset(cfg1)
+    assert len(dataset1) == 5
+    # get gt seg map
+    gt_seg_maps = dataset1.get_gt_seg_maps(efficient_test=True)
+    assert isinstance(gt_seg_maps, Generator)
+    gt_seg_maps = list(gt_seg_maps)
+    assert len(gt_seg_maps) == 5
+
+    # test past evaluation
+    pseudo_results = []
+    for gt_seg_map in gt_seg_maps:
+        h, w = gt_seg_map.shape
+        pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
+    eval_results1 = dataset1.evaluate(
+        pseudo_results, metric=['mIoU', 'mDice', 'mFscore'])
+
+    # We use same dir twice for simplicity
+    # with ann_dir
+    cfg2 = dict(
+        type='CustomDataset',
+        pipeline=test_pipeline,
+        data_root=data_root,
+        img_dir=[img_dir, img_dir],
+        ann_dir=[ann_dir, ann_dir],
+        img_suffix='img.jpg',
+        seg_map_suffix='gt.png',
+        classes=tuple(['a'] * 7),
+        separate_eval=separate_eval)
+    dataset2 = build_dataset(cfg2)
+    assert isinstance(dataset2, ConcatDataset)
+    assert len(dataset2) == 10
+
+    eval_results2 = dataset2.evaluate(
+        pseudo_results * 2, metric=['mIoU', 'mDice', 'mFscore'])
+
+    if separate_eval:
+        assert eval_results1['mIoU'] == eval_results2[
+            '0_mIoU'] == eval_results2['1_mIoU']
+        assert eval_results1['mDice'] == eval_results2[
+            '0_mDice'] == eval_results2['1_mDice']
+        assert eval_results1['mAcc'] == eval_results2[
+            '0_mAcc'] == eval_results2['1_mAcc']
+        assert eval_results1['aAcc'] == eval_results2[
+            '0_aAcc'] == eval_results2['1_aAcc']
+        assert eval_results1['mFscore'] == eval_results2[
+            '0_mFscore'] == eval_results2['1_mFscore']
+        assert eval_results1['mPrecision'] == eval_results2[
+            '0_mPrecision'] == eval_results2['1_mPrecision']
+        assert eval_results1['mRecall'] == eval_results2[
+            '0_mRecall'] == eval_results2['1_mRecall']
+    else:
+        assert eval_results1['mIoU'] == eval_results2['mIoU']
+        assert eval_results1['mDice'] == eval_results2['mDice']
+        assert eval_results1['mAcc'] == eval_results2['mAcc']
+        assert eval_results1['aAcc'] == eval_results2['aAcc']
+        assert eval_results1['mFscore'] == eval_results2['mFscore']
+        assert eval_results1['mPrecision'] == eval_results2['mPrecision']
+        assert eval_results1['mRecall'] == eval_results2['mRecall']
+
+    # test evaluation with pre-eval and the dataset.CLASSES is necessary
+    pseudo_results = []
+    eval_results1 = []
+    for idx in range(len(dataset1)):
+        h, w = gt_seg_maps[idx].shape
+        pseudo_result = np.random.randint(low=0, high=7, size=(h, w))
+        pseudo_results.append(pseudo_result)
+        eval_results1.extend(dataset1.pre_eval(pseudo_result, idx))
+    eval_results1 = dataset1.evaluate(
+        eval_results1, metric=['mIoU', 'mDice', 'mFscore'])
+
+    pseudo_results = pseudo_results * 2
+    eval_results2 = []
+    for idx in range(len(dataset2)):
+        eval_results2.extend(dataset2.pre_eval(pseudo_results[idx], idx))
+    eval_results2 = dataset2.evaluate(
+        eval_results2, metric=['mIoU', 'mDice', 'mFscore'])
+
+    if separate_eval:
+        assert eval_results1['mIoU'] == eval_results2[
+            '0_mIoU'] == eval_results2['1_mIoU']
+        assert eval_results1['mDice'] == eval_results2[
+            '0_mDice'] == eval_results2['1_mDice']
+        assert eval_results1['mAcc'] == eval_results2[
+            '0_mAcc'] == eval_results2['1_mAcc']
+        assert eval_results1['aAcc'] == eval_results2[
+            '0_aAcc'] == eval_results2['1_aAcc']
+        assert eval_results1['mFscore'] == eval_results2[
+            '0_mFscore'] == eval_results2['1_mFscore']
+        assert eval_results1['mPrecision'] == eval_results2[
+            '0_mPrecision'] == eval_results2['1_mPrecision']
+        assert eval_results1['mRecall'] == eval_results2[
+            '0_mRecall'] == eval_results2['1_mRecall']
+    else:
+        assert eval_results1['mIoU'] == eval_results2['mIoU']
+        assert eval_results1['mDice'] == eval_results2['mDice']
+        assert eval_results1['mAcc'] == eval_results2['mAcc']
+        assert eval_results1['aAcc'] == eval_results2['aAcc']
+        assert eval_results1['mFscore'] == eval_results2['mFscore']
+        assert eval_results1['mPrecision'] == eval_results2['mPrecision']
+        assert eval_results1['mRecall'] == eval_results2['mRecall']
+
+
 def test_ade():
     test_dataset = ADE20KDataset(
         pipeline=[],
@@ -273,6 +414,30 @@ def test_ade():
 
     file_paths = test_dataset.format_results(pseudo_results, '.format_ade')
     assert len(file_paths) == len(test_dataset)
+    temp = np.array(Image.open(file_paths[0]))
+    assert np.allclose(temp, pseudo_results[0] + 1)
+
+    shutil.rmtree('.format_ade')
+
+
+@pytest.mark.parametrize('separate_eval', [True, False])
+def test_concat_ade(separate_eval):
+    test_dataset = ADE20KDataset(
+        pipeline=[],
+        img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'))
+    assert len(test_dataset) == 5
+
+    concat_dataset = ConcatDataset([test_dataset, test_dataset],
+                                   separate_eval=separate_eval)
+    assert len(concat_dataset) == 10
+    # Test format_results
+    pseudo_results = []
+    for _ in range(len(concat_dataset)):
+        h, w = (2, 2)
+        pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
+
+    file_paths = concat_dataset.format_results(pseudo_results, '.format_ade')
+    assert len(file_paths) == len(concat_dataset)
     temp = np.array(Image.open(file_paths[0]))
     assert np.allclose(temp, pseudo_results[0] + 1)
 
@@ -360,14 +525,23 @@ def test_custom_classes_override_default(dataset, classes):
     assert custom_dataset.CLASSES == [classes[0]]
 
     # Test default behavior
-    custom_dataset = dataset_class(
-        pipeline=[],
-        img_dir=MagicMock(),
-        split=MagicMock(),
-        classes=None,
-        test_mode=True)
+    if dataset_class is CustomDataset:
+        with pytest.raises(AssertionError):
+            custom_dataset = dataset_class(
+                pipeline=[],
+                img_dir=MagicMock(),
+                split=MagicMock(),
+                classes=None,
+                test_mode=True)
+    else:
+        custom_dataset = dataset_class(
+            pipeline=[],
+            img_dir=MagicMock(),
+            split=MagicMock(),
+            classes=None,
+            test_mode=True)
 
-    assert custom_dataset.CLASSES == original_classes
+        assert custom_dataset.CLASSES == original_classes
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
