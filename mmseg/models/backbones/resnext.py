@@ -88,8 +88,9 @@ class Bottleneck(_Bottleneck):
 class ResNeXt(ResNet):
     """ResNeXt backbone.
 
-    This backbone is the implementation of `ResNeSt:
-    Split-Attention Networks <https://arxiv.org/abs/1611.05431>`_.
+    This backbone is the implementation of `Aggregated
+    Residual Transformations for Deep Neural
+    Networks <https://arxiv.org/abs/1611.05431>`_.
 
     Args:
         depth (int): Depth of resnet, from {18, 34, 50, 101, 152}.

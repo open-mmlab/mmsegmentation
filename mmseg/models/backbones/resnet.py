@@ -693,7 +693,8 @@ class ResNetV1c(ResNet):
     in the input stem with three 3x3 convs.
 
     References:
-        .. [1] https://arxiv.org/pdf/1812.01187.pdf
+        .. [1]  `Bag of Tricks for Image Classification with
+        Convolutional Neural Networks <https://arxiv.org/abs/1812.01187>`_.
     """
 
     def __init__(self, **kwargs):
