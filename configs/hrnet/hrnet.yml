@@ -198,10 +198,10 @@ Models:
   Results:
     Dataset: ADE20K
     Metrics:
-      mIoU: 35.51
-      mIoU(ms+flip): 36.8
+      mIoU: 36.27
+      mIoU(ms+flip): 37.28
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20200614_185145-66f20cb7.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20210827_114910-6c9382c0.pth
 - Config: configs/hrnet/fcn_hr48_512x512_80k_ade20k.py
   In Collection: hrnet
   Metadata:
@@ -234,10 +234,10 @@ Models:
   Results:
     Dataset: ADE20K
     Metrics:
-      mIoU: 33.0
-      mIoU(ms+flip): 34.55
+      mIoU: 33.07
+      mIoU(ms+flip): 34.56
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_160k_ade20k/fcn_hr18s_512x512_160k_ade20k_20200614_214413-870f65ac.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_160k_ade20k/fcn_hr18s_512x512_160k_ade20k_20210829_174739-f1e7c2e7.pth
 - Config: configs/hrnet/fcn_hr18_512x512_160k_ade20k.py
   In Collection: hrnet
   Metadata:
@@ -284,10 +284,10 @@ Models:
   Results:
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
-      mIoU: 65.2
-      mIoU(ms+flip): 68.55
+      mIoU: 65.5
+      mIoU(ms+flip): 68.89
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20200617_224503-56e36088.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20210829_174910-0aceadb4.pth
 - Config: configs/hrnet/fcn_hr18_512x512_20k_voc12aug.py
   In Collection: hrnet
   Metadata:
