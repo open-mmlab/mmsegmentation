@@ -133,12 +133,20 @@ class ConcatDataset(_ConcatDataset):
             dataset_idx, sample_idx = self.get_dataset_idx_and_sample_idx(
                 indice)
             res = self.datasets[dataset_idx].format_results(
-                [results[i]], imgfile_prefix, indices=[sample_idx], **kwargs)
+                [results[i]],
+                imgfile_prefix + f'/{dataset_idx}',
+                indices=[sample_idx],
+                **kwargs)
             ret_res.append(res)
         return sum(ret_res, [])
 
     def pre_eval(self, preds, indices):
         """do pre eval for every sample of ConcatDataset."""
+        # In order to compat with batch inference
+        if not isinstance(indices, list):
+            indices = [indices]
+        if not isinstance(preds, list):
+            preds = [preds]
         ret_res = []
         for i, indice in enumerate(indices):
             dataset_idx, sample_idx = self.get_dataset_idx_and_sample_idx(
