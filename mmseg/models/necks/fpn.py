@@ -12,8 +12,8 @@ from ..builder import NECKS
 class FPN(BaseModule):
     """Feature Pyramid Network.
 
-    This is an implementation of - Feature Pyramid Networks for Object
-    Detection (https://arxiv.org/abs/1612.03144)
+    This neck is the implementation of `Feature Pyramid Networks for Object
+    Detection <https://arxiv.org/abs/1612.03144>`_.
 
     Args:
         in_channels (List[int]): Number of input channels per scale.

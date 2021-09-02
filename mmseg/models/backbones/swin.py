@@ -522,13 +522,12 @@ class SwinBlockSequence(BaseModule):
 
 @BACKBONES.register_module()
 class SwinTransformer(BaseModule):
-    """ Swin Transformer
-    A PyTorch implement of : `Swin Transformer:
-    Hierarchical Vision Transformer using Shifted Windows`  -
-        https://arxiv.org/abs/2103.14030
+    """Swin Transformer backbone.
 
-    Inspiration from
-    https://github.com/microsoft/Swin-Transformer
+    This backbone is the implementation of `Swin Transformer:
+    Hierarchical Vision Transformer using Shifted
+    Windows <https://arxiv.org/abs/2103.14030>`_.
+    Inspiration from https://github.com/microsoft/Swin-Transformer.
 
     Args:
         pretrain_img_size (int | tuple[int]): The size of input image when

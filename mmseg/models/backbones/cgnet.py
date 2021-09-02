@@ -187,8 +187,8 @@ class InputInjection(nn.Module):
 class CGNet(BaseModule):
     """CGNet backbone.
 
-    A Light-weight Context Guided Network for Semantic Segmentation
-    arXiv: https://arxiv.org/abs/1811.08201
+    This backbone is the implementation of `A Light-weight Context Guided
+    Network for Semantic Segmentation <https://arxiv.org/abs/1811.08201>`_.
 
     Args:
         in_channels (int): Number of input image channels. Normally 3.
