@@ -34,7 +34,8 @@ def create_train_bash_info(commands, config, script_name, partition, port):
     commands.append(echo_info)
     commands.append('\n')
 
-    fname, _ = osp.splitext(osp.basename(cfg))
+    _, model_name = osp.split(osp.dirname(cfg))
+    config_name, _ = osp.splitext(osp.basename(cfg))
     # default setting
     if cfg in config_8gpu_list:
         command_info = f'GPUS=8  GPUS_PER_NODE=8  ' \
@@ -43,11 +44,12 @@ def create_train_bash_info(commands, config, script_name, partition, port):
         command_info = f'GPUS=4  GPUS_PER_NODE=4  ' \
                         f'CPUS_PER_TASK=2 {script_name} '
     command_info += f'{partition} '
-    command_info += f'{fname} '
+    command_info += f'{config_name} '
     command_info += f'{cfg} '
     command_info += f'--options ' \
                     f'checkpoint_config.max_keep_ckpts=1 ' \
                     f'dist_params.port={port} '
+    command_info += f'--work-dir work_dirs/{model_name}/{config_name} '
     # Let the script shut up
     command_info += '>/dev/null &'
 
