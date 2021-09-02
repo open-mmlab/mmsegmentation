@@ -1,6 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import base64
-import io
 import os
 
 import cv2
@@ -9,6 +8,27 @@ import torch
 from ts.torch_handler.base_handler import BaseHandler
 
 from mmseg.apis import inference_segmentor, init_segmentor
+
+
+def _convert_batchnorm(module):
+    module_output = module
+    if isinstance(module, torch.nn.SyncBatchNorm):
+        module_output = torch.nn.BatchNorm2d(module.num_features, module.eps,
+                                             module.momentum, module.affine,
+                                             module.track_running_stats)
+        if module.affine:
+            module_output.weight.data = module.weight.data.clone().detach()
+            module_output.bias.data = module.bias.data.clone().detach()
+            # keep requires_grad unchanged
+            module_output.weight.requires_grad = module.weight.requires_grad
+            module_output.bias.requires_grad = module.bias.requires_grad
+        module_output.running_mean = module.running_mean
+        module_output.running_var = module.running_var
+        module_output.num_batches_tracked = module.num_batches_tracked
+    for name, child in module.named_children():
+        module_output.add_module(name, _convert_batchnorm(child))
+    del module
+    return module_output
 
 
 class MMsegHandler(BaseHandler):
@@ -27,6 +47,7 @@ class MMsegHandler(BaseHandler):
         self.config_file = os.path.join(model_dir, 'config.py')
 
         self.model = init_segmentor(self.config_file, checkpoint, self.device)
+        self.model = _convert_batchnorm(self.model)
         self.initialized = True
 
     def preprocess(self, data):
@@ -47,8 +68,10 @@ class MMsegHandler(BaseHandler):
 
     def postprocess(self, data):
         output = []
+
         for image_result in data:
-            buffer = io.BytesIO()
             _, buffer = cv2.imencode('.png', image_result[0].astype('uint8'))
-            output.append(buffer.tobytes())
+            bast64_data = base64.b64encode(buffer.tobytes())
+            bast64_str = str(bast64_data, 'utf-8')
+            output.append(bast64_str)
         return output
