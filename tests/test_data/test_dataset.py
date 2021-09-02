@@ -170,29 +170,16 @@ def test_custom_dataset():
         h, w = gt_seg_map.shape
         pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
 
-    # test past evaluation, CLASSES should not be None
+    # test past evaluation without CLASSES
     with pytest.raises(TypeError):
         eval_results = train_dataset.evaluate(pseudo_results, metric=['mIoU'])
-        assert isinstance(eval_results, dict)
-        assert 'mIoU' in eval_results
-        assert 'mAcc' in eval_results
-        assert 'aAcc' in eval_results
 
     with pytest.raises(TypeError):
         eval_results = train_dataset.evaluate(pseudo_results, metric='mDice')
-        assert isinstance(eval_results, dict)
-        assert 'mDice' in eval_results
-        assert 'mAcc' in eval_results
-        assert 'aAcc' in eval_results
 
     with pytest.raises(TypeError):
         eval_results = train_dataset.evaluate(
             pseudo_results, metric=['mDice', 'mIoU'])
-        assert isinstance(eval_results, dict)
-        assert 'mIoU' in eval_results
-        assert 'mDice' in eval_results
-        assert 'mAcc' in eval_results
-        assert 'aAcc' in eval_results
 
     # test past evaluation with CLASSES
     train_dataset.CLASSES = tuple(['a'] * 7)
