@@ -24,7 +24,6 @@ class DetailBranch(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
-
     Returns:
         x (torch.Tensor): Feature map of Detail Branch.
     """
@@ -112,7 +111,6 @@ class StemBlock(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
-
     Returns:
         x (torch.Tensor): First feature map in Semantic Branch.
     """
@@ -189,7 +187,6 @@ class GELayer(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
-
     Returns:
         x (torch.Tensor): Intermidiate feature map in
             Semantic Branch.
@@ -217,7 +214,7 @@ class GELayer(BaseModule):
             act_cfg=act_cfg)
         if stride == 1:
             self.dwconv = nn.Sequential(
-                # ReLu in ConvModule not shown in paper
+                # ReLU in ConvModule not shown in paper
                 ConvModule(
                     in_channels=in_channels,
                     out_channels=mid_channel,
@@ -242,7 +239,7 @@ class GELayer(BaseModule):
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
                     act_cfg=None),
-                # ReLu in ConvModule not shown in paper
+                # ReLU in ConvModule not shown in paper
                 ConvModule(
                     in_channels=mid_channel,
                     out_channels=mid_channel,
@@ -310,7 +307,6 @@ class CEBlock(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
-
     Returns:
         x (torch.Tensor): Last feature map in Semantic Branch.
     """
@@ -368,7 +364,6 @@ class SemanticBranch(BaseModule):
         in_channel(int): Channel of input image. Default: 3.
         exp_ratio (int): Expansion ratio for middle channels.
             Default: 6.
-
     Returns:
         semantic_outs (List[torch.Tensor]): List of several feature maps
             for auxiliary heads (Booster) and Bilateral
@@ -439,7 +434,6 @@ class BGALayer(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
-
     Returns:
         output (torch.Tensor): Output feature map for Segment heads.
     """
@@ -582,9 +576,8 @@ class BiSeNetV2(BaseModule):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
-                 init_cfg=None,
-                 **kwargs):
-        super(BiSeNetV2, self).__init__(init_cfg=init_cfg, **kwargs)
+                 init_cfg=None):
+        super(BiSeNetV2, self).__init__(init_cfg=init_cfg)
         if init_cfg is None:
             self.init_cfg = [
                 dict(type='Kaiming', layer='Conv2d'),
