@@ -75,8 +75,6 @@ def get_final_results(log_json_path, iter_num):
 def parse_args():
     parser = argparse.ArgumentParser(description='Gather benchmarked models')
     parser.add_argument(
-        '-m', '--model-name', type=str, help='Process the selected model.')
-    parser.add_argument(
         '-c', '--config-name', type=str, help='Process the selected config.')
     parser.add_argument(
         '-w',
@@ -101,7 +99,6 @@ def main():
     args = parse_args()
     work_dir = args.work_dir
     collect_dir = args.collect_dir
-    selected_model_name = args.model_name
     selected_config_name = args.config_name
     mmcv.mkdir_or_exist(collect_dir)
 
@@ -111,23 +108,19 @@ def main():
     # filter configs that is not trained in the experiments dir
     used_configs = []
     for raw_config in raw_configs:
-        model_name = osp.split(osp.dirname(raw_config))[1]
         config_name = osp.splitext(osp.basename(raw_config))[0]
-        if osp.exists(osp.join(work_dir, model_name, config_name)):
-            if (selected_model_name is None
-                    or selected_model_name == model_name):
-                if (selected_config_name is None
-                        or selected_config_name == config_name):
-                    used_configs.append(raw_config)
+        if osp.exists(osp.join(work_dir, config_name)):
+            if (selected_config_name is None
+                    or selected_config_name == config_name):
+                used_configs.append(raw_config)
     print(f'Find {len(used_configs)} models to be gathered')
 
     # find final_ckpt and log file for trained each config
     # and parse the best performance
     model_infos = []
     for used_config in used_configs:
-        model_name = osp.split(osp.dirname(used_config))[1]
         config_name = osp.splitext(osp.basename(used_config))[0]
-        exp_dir = osp.join(work_dir, model_name, config_name)
+        exp_dir = osp.join(work_dir, config_name)
         # check whether the exps is finished
         final_iter = get_final_iter(used_config)
         final_model = 'iter_{}.pth'.format(final_iter)
@@ -155,7 +148,6 @@ def main():
         model_time = osp.split(log_json_path)[-1].split('.')[0]
         model_infos.append(
             dict(
-                model_name=model_name,
                 config_name=config_name,
                 results=model_performance,
                 iters=final_iter,
@@ -165,13 +157,12 @@ def main():
     # publish model for each checkpoint
     publish_model_infos = []
     for model in model_infos:
-        model_name = model['model_name']
         config_name = model['config_name']
-        model_publish_dir = osp.join(collect_dir, model_name, config_name)
+        model_publish_dir = osp.join(collect_dir, config_name)
 
         publish_model_path = osp.join(model_publish_dir,
                                       config_name + '_' + model['model_time'])
-        trained_model_path = osp.join(work_dir, model_name, config_name,
+        trained_model_path = osp.join(work_dir, config_name,
                                       'iter_{}.pth'.format(model['iters']))
         if osp.exists(model_publish_dir):
             for file in os.listdir(model_publish_dir):
@@ -194,20 +185,19 @@ def main():
         new_json_path = f'{config_name}_{model["log_json_path"]}'
         # copy log
         shutil.copy(
-            osp.join(work_dir, model_name, config_name,
-                     model['log_json_path']),
+            osp.join(work_dir, config_name, model['log_json_path']),
             osp.join(model_publish_dir, new_json_path))
 
         if args.all:
             new_txt_path = new_json_path.rstrip('.json')
             shutil.copy(
-                osp.join(work_dir, model_name, config_name,
+                osp.join(work_dir, config_name,
                          model['log_json_path'].rstrip('.json')),
                 osp.join(model_publish_dir, new_txt_path))
 
         if args.all:
             # copy config to guarantee reproducibility
-            raw_config = osp.join('./configs', model_name, f'{config_name}.py')
+            raw_config = osp.join('./configs', f'{config_name}.py')
             mmcv.Config.fromfile(raw_config).dump(
                 osp.join(model_publish_dir, osp.basename(raw_config)))
 
