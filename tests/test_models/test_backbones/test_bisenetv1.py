@@ -4,7 +4,7 @@ import torch
 from mmseg.models.backbones import BiSeNetV1
 
 
-def test_bisenetv2_backbone():
+def test_bisenetv1_backbone():
     # Test BiSeNetV1 Standard Forward
     backbone_cfg = dict(
         type='ResNet',

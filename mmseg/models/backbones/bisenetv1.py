@@ -264,6 +264,17 @@ class BiSeNetV1(BaseModule):
     Segmentation <https://arxiv.org/abs/1808.00897>`_.
 
     Args:
+        in_channel(int): Channel of input image. Default: 3.
+        backbone_cfg:(dict | None): Config of backbone of
+            Context Path.
+        spatial_channels (Tuple[int]): Size of channel numbers of
+            various layers in Spatial Path.
+            Default: (64, 64, 64, 128).
+        context_channels (Tuple[int]): Size of channel numbers of
+            various modules in Context Path.
+            Default: (128, 256, 512).
+        out_indices (Tuple[int] | int, optional): Output from which stages.
+            Default: (0, 1, 2).
         align_corners (bool, optional): The align_corners argument of
             resize operation in Bilateral Guided Aggregation Layer.
             Default: False.
