@@ -1,18 +1,18 @@
 # dataset settings
-dataset_type = 'VaihingenDataset'
-data_root = 'G:/Datasets/Vaihingen'
+dataset_type = 'NYUv2Dataset'
+data_root = 'G:/Datasets/nyu_v2'
 img_norm_cfg = dict(
-    mean=[120.476, 81.7993, 81.1927, 30.672],
-    std=[54.8465, 39.3214, 37.9183, 38.0866],
+    mean=[122.4310, 104.7333, 99.9269, 70.836],
+    std=[73.6316, 75.2685, 78.5215, 35.358],
     to_rgb=False)
 crop_size = (256, 256)
 train_pipeline = [
     dict(type='LoadImageFromFile', color_type='unchanged'),
     dict(type='LoadAnnotations', reduce_zero_label=True),
-    dict(type='Resize', img_scale=(2048, 1536), ratio_range=(0.5, 2.0)),
+    #dict(type='Resize', img_scale=(2048, 1536), ratio_range=(0.5, 2.0)),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
-    #dict(type='RandomRotate', prob=1, degree=30, auto_bound=True),
+    #dict(type='PhotoMetricDistortion'),
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
     dict(type='DefaultFormatBundle'),
@@ -22,7 +22,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile', color_type='unchanged'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(2048, 1536),
+        img_scale=(640, 480),
         #img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
@@ -39,18 +39,18 @@ data = dict(
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='ndsm/training',
+        img_dir='images/training',
         ann_dir='annotations/training',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='ndsm/validation',
+        img_dir='images/validation',
         ann_dir='annotations/validation',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='ndsm/validation',
+        img_dir='images/validation',
         ann_dir='annotations/validation',
         pipeline=test_pipeline))
