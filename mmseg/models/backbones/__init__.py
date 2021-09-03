@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from .bisenetv1 import BiSeNetV1
 from .cgnet import CGNet
 from .fast_scnn import FastSCNN
 from .hrnet import HRNet
@@ -15,5 +16,5 @@ from .vit import VisionTransformer
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
-    'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer'
+    'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer', 'BiSeNetV1'
 ]
