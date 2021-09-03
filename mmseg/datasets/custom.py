@@ -147,6 +147,8 @@ class CustomDataset(Dataset):
                     img_infos.append(img_info)
         else:
             for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
+                if '.ipynb_checkpoints' in img:
+                    continue  # skip tmp files
                 img_info = dict(filename=img)
                 if ann_dir is not None:
                     seg_map = img.replace(img_suffix, seg_map_suffix)
