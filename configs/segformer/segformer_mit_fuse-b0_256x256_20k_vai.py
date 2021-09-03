@@ -1,11 +1,12 @@
 _base_ = [
-    '../_base_/models/segformer_mit-b0.py', '../_base_/datasets/Vaihingen_ndsm.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
+    '../_base_/models/segformer_mit-b0.py',
+    '../_base_/datasets/Vaihingen_ndsm.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_80k.py'
 ]
 
 model = dict(
-    pretrained='pretrain/mit_b0.pth', 
-    backbone=dict(type='MitFuse',in_channels=4),
+    pretrained='pretrain/mit_b0.pth',
+    backbone=dict(type='MitFuse', in_channels=4),
     decode_head=dict(num_classes=6))
 
 # optimizer
@@ -33,3 +34,4 @@ lr_config = dict(
     by_epoch=False)
 
 data = dict(samples_per_gpu=2, workers_per_gpu=2)
+evaluation = dict(metric=['mIoU', 'mFscore'], save_best='aAcc')
