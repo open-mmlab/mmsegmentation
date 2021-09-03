@@ -13,47 +13,48 @@ class SpatialPath(BaseModule):
     and encode affluent spatial information.
 
     Args:
-        spatial_channels (Tuple[int]): Size of channel numbers of
-            various layers in Spatial Path.
+        num_channels (Tuple[int]): The number of channels of
+            each layers in Spatial Path.
             Default: (64, 64, 64, 128).
-        in_channel(int): Channel of input image. Default: 3.
+        in_channels(int): The number of channels of input
+            image. Default: 3.
     Returns:
         x (torch.Tensor): Feature map for Feature Fusion Module.
     """
 
     def __init__(self,
-                 spatial_channels=(64, 64, 64, 128),
-                 in_channel=3,
+                 num_channels=(64, 64, 64, 128),
+                 in_channels=3,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
         super(SpatialPath, self).__init__(init_cfg=init_cfg)
-        self.layer_stages = []
-        for i in range(len(spatial_channels)):
+        self.layers = []
+        for i in range(len(num_channels)):
             layer_name = f'layer{i + 1}'
-            self.layer_stages.append(layer_name)
+            self.layers.append(layer_name)
             if i == 0:
                 self.add_module(
                     layer_name,
                     ConvModule(
-                        in_channels=in_channel,
-                        out_channels=spatial_channels[i],
+                        in_channels=in_channels,
+                        out_channels=num_channels[i],
                         kernel_size=7,
                         stride=2,
                         padding=3,
                         conv_cfg=conv_cfg,
                         norm_cfg=norm_cfg,
                         act_cfg=act_cfg))
-            elif i != len(spatial_channels) - 1:
+            elif i == len(num_channels) - 1:
                 self.add_module(
                     layer_name,
                     ConvModule(
-                        in_channels=spatial_channels[i - 1],
-                        out_channels=spatial_channels[i],
-                        kernel_size=3,
-                        stride=2,
-                        padding=1,
+                        in_channels=num_channels[i - 1],
+                        out_channels=num_channels[i],
+                        kernel_size=1,
+                        stride=1,
+                        padding=0,
                         conv_cfg=conv_cfg,
                         norm_cfg=norm_cfg,
                         act_cfg=act_cfg))
@@ -61,17 +62,17 @@ class SpatialPath(BaseModule):
                 self.add_module(
                     layer_name,
                     ConvModule(
-                        in_channels=spatial_channels[i - 1],
-                        out_channels=spatial_channels[i],
-                        kernel_size=1,
-                        stride=1,
-                        padding=0,
+                        in_channels=num_channels[i - 1],
+                        out_channels=num_channels[i],
+                        kernel_size=3,
+                        stride=2,
+                        padding=1,
                         conv_cfg=conv_cfg,
                         norm_cfg=norm_cfg,
                         act_cfg=act_cfg))
 
     def forward(self, x):
-        for i, layer_name in enumerate(self.layer_stages):
+        for i, layer_name in enumerate(self.layers):
             layer_stage = getattr(self, layer_name)
             x = layer_stage(x)
         return x
@@ -81,14 +82,14 @@ class AttentionRefinementModule(BaseModule):
     """Attention Refinement Module (ARM) to refine the features of each stage.
 
     Args:
-        in_channel (int): Number of input channels.
-        out_channels (int): Number of output channels.
+        in_channels (int): The number of input channels.
+        out_channels (int): The number of output channels.
     Returns:
         x_out (torch.Tensor): Feature map of Attention Refinement Module.
     """
 
     def __init__(self,
-                 in_channel,
+                 in_channels,
                  out_channel,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
@@ -96,7 +97,7 @@ class AttentionRefinementModule(BaseModule):
                  init_cfg=None):
         super(AttentionRefinementModule, self).__init__(init_cfg=init_cfg)
         self.conv_layer = ConvModule(
-            in_channels=in_channel,
+            in_channels=in_channels,
             out_channels=out_channel,
             kernel_size=3,
             stride=1,
@@ -118,7 +119,7 @@ class AttentionRefinementModule(BaseModule):
     def forward(self, x):
         x = self.conv_layer(x)
         x_atten = self.atten_conv_layer(x)
-        x_out = torch.mul(x, x_atten)
+        x_out = x * x_atten
         return x_out
 
 
@@ -126,16 +127,18 @@ class ContextPath(BaseModule):
     """Context Path to provide sufficient receptive field.
 
     Args:
-        backbone_cfg:(dict | None): Config of backbone of
+        backbone_cfg:(dict): Config of backbone of
             Context Path.
-        context_channels (Tuple[int]): Size of channel numbers of
-            various modules in Context Path.
+        context_channels (Tuple[int]): The number of channel numbers
+            of various modules in Context Path.
             Default: (128, 256, 512).
         align_corners (bool, optional): The align_corners argument of
             resize operation. Default: False.
     Returns:
-        [x_16_up, x_32_up] (List[torch.Tensor]): List of two feature
-            maps for Feature Fusion Module and Auxiliary Head.
+        x_16_up, x_32_up (torch.Tensor, torch.Tensor): Two feature maps
+            undergoing upsampling from 1/16 and 1/32 downsampling
+            feature maps. These two feature maps are used for Feature
+            Fusion Module and Auxiliary Head.
     """
 
     def __init__(self,
@@ -198,7 +201,7 @@ class ContextPath(BaseModule):
         x_16_up = resize(input=x_16_sum, size=x_8.shape[2:], mode='nearest')
         x_16_up = self.conv_head16(x_16_up)
 
-        return [x_16_up, x_32_up]
+        return x_16_up, x_32_up
 
 
 class FeatureFusionModule(BaseModule):
@@ -206,8 +209,8 @@ class FeatureFusionModule(BaseModule):
     and high level output feature of Context Path.
 
     Args:
-        in_channels (int): Number of input channels.
-        out_channels (int): Number of output channels.
+        in_channels (int): The number of input channels.
+        out_channels (int): The number of output channels.
     Returns:
         x_out (torch.Tensor): Feature map of Feature Fusion Module.
     """
@@ -230,8 +233,6 @@ class FeatureFusionModule(BaseModule):
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
         self.gap = nn.AdaptiveAvgPool2d((1, 1))
-        #  use conv-bn instead of 2 layer mlp,
-        #  so that tensorrt 7.2.3.4 can work for fp16
         self.conv_atten = nn.Sequential(
             ConvModule(
                 in_channels=out_channels,
@@ -250,7 +251,7 @@ class FeatureFusionModule(BaseModule):
         x_atten = self.gap(x_fuse)
         # TODO: No BN and more 1x1 conv in paper.
         x_atten = self.conv_atten(x_atten)
-        x_atten = torch.mul(x_fuse, x_atten)
+        x_atten = x_fuse * x_atten
         x_out = x_atten + x_fuse
         return x_out
 
@@ -264,9 +265,10 @@ class BiSeNetV1(BaseModule):
     Segmentation <https://arxiv.org/abs/1808.00897>`_.
 
     Args:
-        in_channel(int): Channel of input image. Default: 3.
-        backbone_cfg:(dict | None): Config of backbone of
+        backbone_cfg:(dict): Config of backbone of
             Context Path.
+        in_channels(int): The number of channels of input
+            image. Default: 3.
         spatial_channels (Tuple[int]): Size of channel numbers of
             various layers in Spatial Path.
             Default: (64, 64, 64, 128).
@@ -278,36 +280,47 @@ class BiSeNetV1(BaseModule):
         align_corners (bool, optional): The align_corners argument of
             resize operation in Bilateral Guided Aggregation Layer.
             Default: False.
+        out_channels(int): The number of channels of output.
+            It must be the same with `in_channels` of decode_head.
+            Default: 256.
     """
 
     def __init__(self,
-                 in_channel=3,
-                 backbone_cfg=None,
+                 backbone_cfg,
+                 in_channels=3,
                  spatial_channels=(64, 64, 64, 128),
                  context_channels=(128, 256, 512),
                  out_indices=(0, 1, 2),
                  align_corners=False,
+                 out_channels=256,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN', requires_grad=True),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
 
         super(BiSeNetV1, self).__init__(init_cfg=init_cfg)
+        if len(spatial_channels) != 4:
+            raise AssertionError('Length of input channels of Spatial \
+                                 Path must be 4!')
+        if len(context_channels) != 3:
+            raise AssertionError('Length of input channels of Context \
+                                 Path must be 3!')
         self.out_indices = out_indices
         self.align_corners = align_corners
         self.context_path = ContextPath(backbone_cfg, context_channels,
                                         self.align_corners)
-        self.spatial_path = SpatialPath(spatial_channels, in_channel)
-        self.ffm = FeatureFusionModule(256, 256)
+        self.spatial_path = SpatialPath(spatial_channels, in_channels)
+        self.ffm = FeatureFusionModule(context_channels[1], out_channels)
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
 
     def forward(self, x):
+        # stole refactoring code from Coin Cheung, thanks
         x_context8, x_context16 = self.context_path(x)
         x_spatial = self.spatial_path(x)
         x_fuse = self.ffm(x_spatial, x_context8)
 
-        outs = [x_fuse] + [x_context8, x_context16]
+        outs = [x_fuse, x_context8, x_context16]
         outs = [outs[i] for i in self.out_indices]
         return tuple(outs)
