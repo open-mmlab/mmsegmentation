@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
+import torch
 from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
@@ -360,6 +361,19 @@ def test_eval_concat_custom_dataset(separate_eval):
         assert eval_results1['mPrecision'] == eval_results2['mPrecision']
         assert eval_results1['mRecall'] == eval_results2['mRecall']
 
+    # test get dataset_idx and sample_idx from ConcateDataset
+    dataset_idx, sample_idx = dataset2.get_dataset_idx_and_sample_idx(3)
+    assert dataset_idx == 0
+    assert sample_idx == 3
+
+    dataset_idx, sample_idx = dataset2.get_dataset_idx_and_sample_idx(7)
+    assert dataset_idx == 1
+    assert sample_idx == 2
+
+    dataset_idx, sample_idx = dataset2.get_dataset_idx_and_sample_idx(-7)
+    assert dataset_idx == 0
+    assert sample_idx == 3
+
     # test evaluation with pre-eval and the dataset.CLASSES is necessary
     pseudo_results = []
     eval_results1 = []
@@ -368,6 +382,12 @@ def test_eval_concat_custom_dataset(separate_eval):
         pseudo_result = np.random.randint(low=0, high=7, size=(h, w))
         pseudo_results.append(pseudo_result)
         eval_results1.extend(dataset1.pre_eval(pseudo_result, idx))
+
+    assert len(eval_results1) == len(dataset1)
+    assert isinstance(eval_results1[0], tuple)
+    assert len(eval_results1[0]) == 4
+    assert isinstance(eval_results1[0][0], torch.Tensor)
+
     eval_results1 = dataset1.evaluate(
         eval_results1, metric=['mIoU', 'mDice', 'mFscore'])
 
@@ -375,6 +395,48 @@ def test_eval_concat_custom_dataset(separate_eval):
     eval_results2 = []
     for idx in range(len(dataset2)):
         eval_results2.extend(dataset2.pre_eval(pseudo_results[idx], idx))
+
+    assert len(eval_results2) == len(dataset2)
+    assert isinstance(eval_results2[0], tuple)
+    assert len(eval_results2[0]) == 4
+    assert isinstance(eval_results2[0][0], torch.Tensor)
+
+    eval_results2 = dataset2.evaluate(
+        eval_results2, metric=['mIoU', 'mDice', 'mFscore'])
+
+    if separate_eval:
+        assert eval_results1['mIoU'] == eval_results2[
+            '0_mIoU'] == eval_results2['1_mIoU']
+        assert eval_results1['mDice'] == eval_results2[
+            '0_mDice'] == eval_results2['1_mDice']
+        assert eval_results1['mAcc'] == eval_results2[
+            '0_mAcc'] == eval_results2['1_mAcc']
+        assert eval_results1['aAcc'] == eval_results2[
+            '0_aAcc'] == eval_results2['1_aAcc']
+        assert eval_results1['mFscore'] == eval_results2[
+            '0_mFscore'] == eval_results2['1_mFscore']
+        assert eval_results1['mPrecision'] == eval_results2[
+            '0_mPrecision'] == eval_results2['1_mPrecision']
+        assert eval_results1['mRecall'] == eval_results2[
+            '0_mRecall'] == eval_results2['1_mRecall']
+    else:
+        assert eval_results1['mIoU'] == eval_results2['mIoU']
+        assert eval_results1['mDice'] == eval_results2['mDice']
+        assert eval_results1['mAcc'] == eval_results2['mAcc']
+        assert eval_results1['aAcc'] == eval_results2['aAcc']
+        assert eval_results1['mFscore'] == eval_results2['mFscore']
+        assert eval_results1['mPrecision'] == eval_results2['mPrecision']
+        assert eval_results1['mRecall'] == eval_results2['mRecall']
+
+    # test batch_indices for pre eval
+    eval_results2 = dataset2.pre_eval(pseudo_results,
+                                      list(range(len(pseudo_results))))
+
+    assert len(eval_results2) == len(dataset2)
+    assert isinstance(eval_results2[0], tuple)
+    assert len(eval_results2[0]) == 4
+    assert isinstance(eval_results2[0][0], torch.Tensor)
+
     eval_results2 = dataset2.evaluate(
         eval_results2, metric=['mIoU', 'mDice', 'mFscore'])
 
@@ -439,6 +501,20 @@ def test_concat_ade(separate_eval):
         h, w = (2, 2)
         pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
 
+    # test format per image
+    file_paths = []
+    for i in range(len(pseudo_results)):
+        file_paths.extend(
+            concat_dataset.format_results([pseudo_results[i]],
+                                          '.format_ade',
+                                          indices=[i]))
+    assert len(file_paths) == len(concat_dataset)
+    temp = np.array(Image.open(file_paths[0]))
+    assert np.allclose(temp, pseudo_results[0] + 1)
+
+    shutil.rmtree('.format_ade')
+
+    # test default argument
     file_paths = concat_dataset.format_results(pseudo_results, '.format_ade')
     assert len(file_paths) == len(concat_dataset)
     temp = np.array(Image.open(file_paths[0]))
