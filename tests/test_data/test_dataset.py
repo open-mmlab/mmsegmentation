@@ -374,6 +374,18 @@ def test_eval_concat_custom_dataset(separate_eval):
     assert dataset_idx == 0
     assert sample_idx == 3
 
+    # test negative indice exceed length of dataset
+    with pytest.raises(ValueError):
+        dataset_idx, sample_idx = dataset2.get_dataset_idx_and_sample_idx(-11)
+
+    # test negative indice value
+    indice = -6
+    dataset_idx1, sample_idx1 = dataset2.get_dataset_idx_and_sample_idx(indice)
+    dataset_idx2, sample_idx2 = dataset2.get_dataset_idx_and_sample_idx(
+        len(dataset2) + indice)
+    assert dataset_idx1 == dataset_idx2
+    assert sample_idx1 == sample_idx2
+
     # test evaluation with pre-eval and the dataset.CLASSES is necessary
     pseudo_results = []
     eval_results1 = []
@@ -553,6 +565,28 @@ def test_cityscapes():
         pseudo_results, metric='cityscapes', imgfile_prefix='.format_city')
 
     shutil.rmtree('.format_city')
+
+
+@pytest.mark.parametrize('separate_eval', [True, False])
+def test_concat_cityscapes(separate_eval):
+    cityscape_dataset = CityscapesDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_cityscapes_dataset/leftImg8bit'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_cityscapes_dataset/gtFine'))
+    assert len(cityscape_dataset) == 1
+    with pytest.raises(NotImplementedError):
+        _ = ConcatDataset([cityscape_dataset, cityscape_dataset],
+                          separate_eval=separate_eval)
+    ade_dataset = ADE20KDataset(
+        pipeline=[],
+        img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'))
+    assert len(ade_dataset) == 5
+    with pytest.raises(NotImplementedError):
+        _ = ConcatDataset([cityscape_dataset, ade_dataset],
+                          separate_eval=separate_eval)
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
