@@ -31,21 +31,22 @@ class ConcatDataset(_ConcatDataset):
         self.separate_eval = separate_eval
         if any([isinstance(ds, CityscapesDataset) for ds in datasets]):
             raise NotImplementedError(
-                'Evaluating ConcatDataset containing CityscapesDataset is not supported!'
-            )
+                'Evaluating ConcatDataset containing CityscapesDataset'
+                'is not supported!')
 
     def evaluate(self, results, logger=None, **kwargs):
         """Evaluate the results.
 
         Args:
-            results (list[tuple[torch.Tensor]] | list[str]]): per image pre_eval
-                 results or predict segmentation map for computing evaluation
-                 metric.
+            results (list[tuple[torch.Tensor]] | list[str]]): per image
+                pre_eval results or predict segmentation map for
+                computing evaluation metric.
             logger (logging.Logger | str | None): Logger used for printing
                 related information during evaluation. Default: None.
 
         Returns:
-            dict[str: float]: evaluate results of the total dataset or each separate
+            dict[str: float]: evaluate results of the total dataset
+                or each separate
             dataset if `self.separate_eval=True`.
         """
         assert len(results) == self.cumulative_sizes[-1], \
@@ -81,8 +82,8 @@ class ConcatDataset(_ConcatDataset):
 
         if len(set([type(ds) for ds in self.datasets])) != 1:
             raise NotImplementedError(
-                'All the datasets should have same types when self.separate_eval=False'
-            )
+                'All the datasets should have same types when '
+                'self.separate_eval=False')
         else:
             if mmcv.is_list_of(results, np.ndarray) or mmcv.is_list_of(
                     results, str):

@@ -2,7 +2,6 @@
 import os.path as osp
 import warnings
 from collections import OrderedDict
-from functools import reduce
 
 import mmcv
 import numpy as np
