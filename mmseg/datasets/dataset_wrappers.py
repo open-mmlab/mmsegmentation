@@ -29,6 +29,9 @@ class ConcatDataset(_ConcatDataset):
         self.CLASSES = datasets[0].CLASSES
         self.PALETTE = datasets[0].PALETTE
         self.separate_eval = separate_eval
+        assert separate_eval in [True, False], \
+            f'separate_eval can only be True or False,' \
+            f'but get {separate_eval}'
         if any([isinstance(ds, CityscapesDataset) for ds in datasets]):
             raise NotImplementedError(
                 'Evaluating ConcatDataset containing CityscapesDataset'
