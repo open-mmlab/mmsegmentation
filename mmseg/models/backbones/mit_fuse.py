@@ -105,15 +105,19 @@ class DepthDownsample(BaseModule):
                  in_channels,
                  embed_dims=64,
                  num_stages=4,
+                 num_heads=[1, 2, 4, 8],
                  patch_sizes=[7, 3, 3, 3],
                  strides=[4, 2, 2, 2],
-                 norm_cfg=None):
+                 norm_cfg=dict(type='LN', eps=1e-6),
+                 pretrained=None):
         super(DepthDownsample, self).__init__()
         assert (in_channels == 1)
 
+        self.pretrained = pretrained
+        self.num_heads = num_heads
         self.layers = ModuleList()
         for i in range(num_stages):
-            embed_dims_i = embed_dims * (1 << i)
+            embed_dims_i = embed_dims * self.num_heads[i]
             self.layers.append(
                 PatchEmbed(
                     in_channels=in_channels,
@@ -123,6 +127,7 @@ class DepthDownsample(BaseModule):
                     padding=patch_sizes[i] // 2,
                     pad_to_patch_size=False,
                     norm_cfg=norm_cfg))
+            in_channels = embed_dims_i
 
     def init_weights(self):
         if self.pretrained is None:
@@ -155,7 +160,8 @@ class DepthDownsample(BaseModule):
     def forward(self, x):
         outs = []
         for downsample in self.layers:
-            x = downsample(x)
+            x, H, W = downsample(x), downsample.DH, downsample.DW
+            x = nlc_to_nchw(x, (H, W))
             outs.append(x)
         return outs
 
@@ -170,15 +176,21 @@ class MitFuse(BaseModule):
         self.num_heads = kwargs["num_heads"]
         self.num_stages = kwargs["num_stages"]
         self.color = MixVisionTransformer(3, **kwargs)
-        self.depth = MixVisionTransformer(1, **kwargs)
-        #self.depth = DepthDownsample(1, norm_cfg=kwargs["norm_cfg"])
+        # self.depth = MixVisionTransformer(1, **kwargs)
+        self.depth = DepthDownsample(
+            1,
+            embed_dims=kwargs["embed_dims"],
+            num_heads=self.num_heads,
+            pretrained=kwargs["pretrained"]
+            if "pretrained" in kwargs.keys() else None)
 
         self.dams = ModuleList()
         self.dfms = ModuleList()
         for i in range(self.num_stages):
             embed_dims_i = kwargs["embed_dims"] * self.num_heads[i]
-            self.dams.append(DepthAlignModule(embed_dims_i))
-            self.dfms.append(DepthFusionModule(embed_dims_i, 1 << i))
+            # self.dams.append(DepthAlignModule(embed_dims_i))
+            self.dfms.append(
+                DepthFusionModule(embed_dims_i, self.num_heads[i]))
 
     def init_weights(self):
         self.color.init_weights()
