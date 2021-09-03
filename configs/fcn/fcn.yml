@@ -349,7 +349,7 @@ Models:
       mIoU: 77.06
       mIoU(ms+flip): 78.85
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes_20210305_130133-98d5d1bc.pth
 - Config: configs/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -370,7 +370,7 @@ Models:
       mIoU: 77.27
       mIoU(ms+flip): 78.88
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_80k_cityscapes_20210306_115604-133c292f.pth
 - Config: configs/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -392,7 +392,7 @@ Models:
       mIoU: 76.82
       mIoU(ms+flip): 78.22
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes-1aab18ed.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes_20210305_185744-1aab18ed.pth
 - Config: configs/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -413,7 +413,7 @@ Models:
       mIoU: 77.04
       mIoU(ms+flip): 78.4
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes-109d88eb.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes_20210305_200413-109d88eb.pth
 - Config: configs/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -435,7 +435,7 @@ Models:
       mIoU: 77.36
       mIoU(ms+flip): 79.18
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes-9cf2b450.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes_20210305_130337-9cf2b450.pth
 - Config: configs/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -456,7 +456,7 @@ Models:
       mIoU: 78.46
       mIoU(ms+flip): 80.42
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes-cb336445.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes_20210308_102747-cb336445.pth
 - Config: configs/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -478,7 +478,7 @@ Models:
       mIoU: 77.28
       mIoU(ms+flip): 78.95
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes-60b114e9.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes_20210308_102453-60b114e9.pth
 - Config: configs/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -499,7 +499,7 @@ Models:
       mIoU: 78.06
       mIoU(ms+flip): 79.58
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes-e33adc4f.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes_20210306_120016-e33adc4f.pth
 - Config: configs/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -521,7 +521,7 @@ Models:
       mIoU: 76.99
       mIoU(ms+flip): 79.03
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_512x1024_80k_cityscapes/fcn_d6_r50b_d16_512x1024_80k_cityscapes-6a0b62e9.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes/fcn_d6_r50b-d16_512x1024_80k_cityscapes_20210311_125550-6a0b62e9.pth
 - Config: configs/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -543,7 +543,7 @@ Models:
       mIoU: 76.86
       mIoU(ms+flip): 78.52
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_769x769_80k_cityscapes/fcn_d6_r50b_d16_769x769_80k_cityscapes-d665f231.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes/fcn_d6_r50b-d16_769x769_80k_cityscapes_20210311_131012-d665f231.pth
 - Config: configs/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -565,7 +565,7 @@ Models:
       mIoU: 77.72
       mIoU(ms+flip): 79.53
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_512x1024_80k_cityscapes/fcn_d6_r101b_d16_512x1024_80k_cityscapes-3f2eb5b4.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes/fcn_d6_r101b-d16_512x1024_80k_cityscapes_20210311_144305-3f2eb5b4.pth
 - Config: configs/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes.py
   In Collection: fcn
   Metadata:
@@ -587,7 +587,7 @@ Models:
       mIoU: 77.34
       mIoU(ms+flip): 78.91
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_769x769_80k_cityscapes/fcn_d6_r101b_d16_769x769_80k_cityscapes-c4d8bfbc.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes/fcn_d6_r101b-d16_769x769_80k_cityscapes_20210311_154527-c4d8bfbc.pth
 - Config: configs/fcn/fcn_r50-d8_512x512_80k_ade20k.py
   In Collection: fcn
   Metadata:
@@ -752,7 +752,7 @@ Models:
       mIoU: 44.43
       mIoU(ms+flip): 45.63
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20210421_154757-b5e97937.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context_20210421_154757-b5e97937.pth
 - Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context.py
   In Collection: fcn
   Metadata:
@@ -766,7 +766,7 @@ Models:
       mIoU: 44.13
       mIoU(ms+flip): 45.26
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context-20210421_163310-4711813f.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context_20210421_163310-4711813f.pth
 - Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context_59.py
   In Collection: fcn
   Metadata:
