@@ -1,5 +1,6 @@
 import base64
 from argparse import ArgumentParser
+from io import BytesIO
 
 import matplotlib.pyplot as plt
 import mmcv
@@ -19,9 +20,13 @@ def parse_args():
         default='127.0.0.1:8080',
         help='Address and port of the inference server')
     parser.add_argument(
-        '--device', default='cuda:0', help='Device used for inference')
+        '--result-image',
+        type=str,
+        default=None,
+        help='save server output in result-image')
     parser.add_argument(
-        '--score-thr', type=float, default=0.5, help='bbox score threshold')
+        '--device', default='cuda:0', help='Device used for inference')
+
     args = parser.parse_args()
     return args
 
@@ -30,12 +35,16 @@ def main(args):
     url = 'http://' + args.inference_addr + '/predictions/' + args.model_name
     with open(args.img, 'rb') as image:
         tmp_res = requests.post(url, image)
-    with open('server_result.png', 'wb') as out_image:
-        base64_str = tmp_res.content
-        buffer = base64.b64decode(base64_str)
-        out_image.write(buffer)
-    plt.imshow(mmcv.imread('server_result.png', 'grayscale'))
-    plt.show()
+    base64_str = tmp_res.content
+    buffer = base64.b64decode(base64_str)
+    if args.result_image:
+        with open(args.result_image, 'wb') as out_image:
+            out_image.write(buffer)
+        plt.imshow(mmcv.imread(args.result_image, 'grayscale'))
+        plt.show()
+    else:
+        plt.imshow(plt.imread(BytesIO(buffer)))
+        plt.show()
     model = init_segmentor(args.config, args.checkpoint, args.device)
     image = mmcv.imread(args.img)
     result = inference_segmentor(model, image)
