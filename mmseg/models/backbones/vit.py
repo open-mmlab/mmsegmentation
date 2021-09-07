@@ -211,7 +211,7 @@ class VisionTransformer(BaseModule):
             conv_type='Conv2d',
             kernel_size=patch_size,
             stride=patch_size,
-            pad_to_patch_size=True,
+            padding='corner',
             norm_cfg=norm_cfg if patch_norm else None,
             init_cfg=None,
         )
