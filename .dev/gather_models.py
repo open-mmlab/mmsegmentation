@@ -1,17 +1,25 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import glob
+import hashlib
 import json
 import os
 import os.path as osp
 import shutil
-import subprocess
 
 import mmcv
 import torch
 
 # build schedule look-up table to automatically find the final model
 RESULTS_LUT = ['mIoU', 'mAcc', 'aAcc']
+
+
+def calculate_file_sha256(file_path):
+    """calculate file sha256 hash code."""
+    with open(file_path, 'rb') as fp:
+        sha256_cal = hashlib.sha256()
+        sha256_cal.update(fp.read())
+        return sha256_cal.hexdigest()
 
 
 def process_checkpoint(in_file, out_file):
@@ -22,10 +30,17 @@ def process_checkpoint(in_file, out_file):
     # if it is necessary to remove some sensitive data in checkpoint['meta'],
     # add the code here.
     torch.save(checkpoint, out_file)
-    sha = subprocess.check_output(['sha256sum', out_file]).decode()
+    # The hash code calculation and rename command differ on different system
+    # platform.
+    sha = calculate_file_sha256(out_file)
     final_file = out_file.rstrip('.pth') + '-{}.pth'.format(sha[:8])
-    subprocess.Popen(['mv', out_file, final_file])
-    return final_file
+    os.rename(out_file, final_file)
+
+    # Remove prefix and suffix
+    final_file_name = osp.split(final_file)[1]
+    final_file_name = osp.splitext(final_file_name)[0]
+
+    return final_file_name
 
 
 def get_final_iter(config):
@@ -36,40 +51,43 @@ def get_final_iter(config):
 
 def get_final_results(log_json_path, iter_num):
     result_dict = dict()
+    last_iter = 0
     with open(log_json_path, 'r') as f:
         for line in f.readlines():
             log_line = json.loads(line)
             if 'mode' not in log_line.keys():
                 continue
 
-            if log_line['mode'] == 'train' and log_line['iter'] == iter_num:
-                result_dict['memory'] = log_line['memory']
-
-            if log_line['iter'] == iter_num:
+            # When evaluation, the 'iter' of new log json is the evaluation
+            # steps on single gpu.
+            flag1 = ('aAcc' in log_line) or (log_line['mode'] == 'val')
+            flag2 = (last_iter == iter_num - 50) or (last_iter == iter_num)
+            if flag1 and flag2:
                 result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
                 })
                 return result_dict
 
+            last_iter = log_line['iter']
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Gather benchmarked models')
     parser.add_argument(
-        'root',
-        type=str,
-        help='root path of benchmarked models to be gathered')
+        '-c', '--config-name', type=str, help='Process the selected config.')
     parser.add_argument(
-        'config',
+        '-w',
+        '--work-dir',
+        default='work_dirs/',
         type=str,
-        help='root path of benchmarked configs to be gathered')
+        help='Ckpt storage root folder of benchmarked models to be gathered.')
     parser.add_argument(
-        'out_dir',
+        '-c',
+        '--collect-dir',
+        default='work_dirs/gather',
         type=str,
-        help='output path of gathered models to be stored')
-    parser.add_argument('out_file', type=str, help='the output json file name')
-    parser.add_argument(
-        '--filter', type=str, nargs='+', default=[], help='config filter')
+        help='Ckpt collect root folder of gathered models.')
     parser.add_argument(
         '--all', action='store_true', help='whether include .py and .log')
 
@@ -79,34 +97,30 @@ def parse_args():
 
 def main():
     args = parse_args()
-    models_root = args.root
-    models_out = args.out_dir
-    config_name = args.config
-    mmcv.mkdir_or_exist(models_out)
+    work_dir = args.work_dir
+    collect_dir = args.collect_dir
+    selected_config_name = args.config_name
+    mmcv.mkdir_or_exist(collect_dir)
 
     # find all models in the root directory to be gathered
-    raw_configs = list(mmcv.scandir(config_name, '.py', recursive=True))
+    raw_configs = list(mmcv.scandir('./configs', '.py', recursive=True))
 
     # filter configs that is not trained in the experiments dir
     used_configs = []
     for raw_config in raw_configs:
-        work_dir = osp.splitext(osp.basename(raw_config))[0]
-        if osp.exists(osp.join(models_root, work_dir)):
-            used_configs.append((work_dir, raw_config))
+        config_name = osp.splitext(osp.basename(raw_config))[0]
+        if osp.exists(osp.join(work_dir, config_name)):
+            if (selected_config_name is None
+                    or selected_config_name == config_name):
+                used_configs.append(raw_config)
     print(f'Find {len(used_configs)} models to be gathered')
 
     # find final_ckpt and log file for trained each config
     # and parse the best performance
     model_infos = []
-    for used_config, raw_config in used_configs:
-        bypass = True
-        for p in args.filter:
-            if p in used_config:
-                bypass = False
-                break
-        if bypass:
-            continue
-        exp_dir = osp.join(models_root, used_config)
+    for used_config in used_configs:
+        config_name = osp.splitext(osp.basename(used_config))[0]
+        exp_dir = osp.join(work_dir, config_name)
         # check whether the exps is finished
         final_iter = get_final_iter(used_config)
         final_model = 'iter_{}.pth'.format(final_iter)
@@ -134,8 +148,7 @@ def main():
         model_time = osp.split(log_json_path)[-1].split('.')[0]
         model_infos.append(
             dict(
-                config=used_config,
-                raw_config=raw_config,
+                config_name=config_name,
                 results=model_performance,
                 iters=final_iter,
                 model_time=model_time,
@@ -144,13 +157,12 @@ def main():
     # publish model for each checkpoint
     publish_model_infos = []
     for model in model_infos:
-        model_publish_dir = osp.join(models_out,
-                                     model['raw_config'].rstrip('.py'))
-        model_name = osp.split(model['config'])[-1].split('.')[0]
+        config_name = model['config_name']
+        model_publish_dir = osp.join(collect_dir, config_name)
 
         publish_model_path = osp.join(model_publish_dir,
-                                      model_name + '_' + model['model_time'])
-        trained_model_path = osp.join(models_root, model['config'],
+                                      config_name + '_' + model['model_time'])
+        trained_model_path = osp.join(work_dir, config_name,
                                       'iter_{}.pth'.format(model['iters']))
         if osp.exists(model_publish_dir):
             for file in os.listdir(model_publish_dir):
@@ -170,28 +182,29 @@ def main():
                                                   publish_model_path)
             model['model_path'] = final_model_path
 
-        new_json_path = f'{model_name}-{model["log_json_path"]}'
+        new_json_path = f'{config_name}_{model["log_json_path"]}'
         # copy log
         shutil.copy(
-            osp.join(models_root, model['config'], model['log_json_path']),
+            osp.join(work_dir, config_name, model['log_json_path']),
             osp.join(model_publish_dir, new_json_path))
+
         if args.all:
             new_txt_path = new_json_path.rstrip('.json')
             shutil.copy(
-                osp.join(models_root, model['config'],
+                osp.join(work_dir, config_name,
                          model['log_json_path'].rstrip('.json')),
                 osp.join(model_publish_dir, new_txt_path))
 
         if args.all:
             # copy config to guarantee reproducibility
-            raw_config = osp.join(config_name, model['raw_config'])
+            raw_config = osp.join('./configs', f'{config_name}.py')
             mmcv.Config.fromfile(raw_config).dump(
                 osp.join(model_publish_dir, osp.basename(raw_config)))
 
         publish_model_infos.append(model)
 
     models = dict(models=publish_model_infos)
-    mmcv.dump(models, osp.join(models_out, args.out_file))
+    mmcv.dump(models, osp.join(collect_dir, 'model_infos.json'), indent=4)
 
 
 if __name__ == '__main__':
