@@ -87,6 +87,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [ANN (ICCV'2019)](configs/ann)
 - [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
 - [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
+- [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
 - [x] [OCRNet (ECCV'2020)](configs/ocrnet)
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
