@@ -370,8 +370,8 @@ class VisionTransformer(BaseModule):
     def forward(self, inputs):
         B = inputs.shape[0]
 
-        x, hw_shape = self.patch_embed(inputs), (self.patch_embed.DH,
-                                                 self.patch_embed.DW)
+        x, hw_shape = self.patch_embed(inputs)
+
         # stole cls_tokens impl from Phil Wang, thanks
         cls_tokens = self.cls_token.expand(B, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)

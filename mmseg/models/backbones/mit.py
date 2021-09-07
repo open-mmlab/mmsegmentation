@@ -402,8 +402,7 @@ class MixVisionTransformer(BaseModule):
         outs = []
 
         for i, layer in enumerate(self.layers):
-            x, H, W = layer[0](x), layer[0].DH, layer[0].DW
-            hw_shape = (H, W)
+            x, hw_shape = layer[0](x)
             for block in layer[1]:
                 x = block(x, hw_shape)
             x = layer[2](x)
