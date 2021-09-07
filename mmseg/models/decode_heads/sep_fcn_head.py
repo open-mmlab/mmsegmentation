@@ -10,7 +10,9 @@ class DepthwiseSeparableFCNHead(FCNHead):
     """Depthwise-Separable Fully Convolutional Network for Semantic
     Segmentation.
 
-    This head is implemented according to Fast-SCNN paper.
+    This head is implemented according to `Fast-SCNN: Fast Semantic
+    Segmentation Network <https://arxiv.org/abs/1902.04502>`_.
+
     Args:
         in_channels(int): Number of output channels of FFM.
         channels(int): Number of middle-stage channels in the decode head.

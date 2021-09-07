@@ -214,10 +214,10 @@ Models:
   Results:
     Dataset: ADE20K
     Metrics:
-      mIoU: 43.36
-      mIoU(ms+flip): 44.83
+      mIoU: 44.63
+      mIoU(ms+flip): 45.79
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20200616_003422-affd0f8d.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20210827_221502-7881aa1a.pth
 - Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug.py
   In Collection: nonlocal_net
   Metadata:

@@ -224,8 +224,9 @@ class InterpConv(nn.Module):
 @BACKBONES.register_module()
 class UNet(BaseModule):
     """UNet backbone.
-    U-Net: Convolutional Networks for Biomedical Image Segmentation.
-    https://arxiv.org/pdf/1505.04597.pdf
+
+    This backbone is the implementation of `U-Net: Convolutional Networks
+    for Biomedical Image Segmentation <https://arxiv.org/abs/1505.04597>`_.
 
     Args:
         in_channels (int): Number of input image channels. Default" 3.
@@ -277,7 +278,6 @@ class UNet(BaseModule):
         The input image size should be divisible by the whole downsample rate
         of the encoder. More detail of the whole downsample rate can be found
         in UNet._check_input_divisible.
-
     """
 
     def __init__(self,

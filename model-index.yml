@@ -8,6 +8,7 @@ Import:
 - configs/deeplabv3plus/deeplabv3plus.yml
 - configs/dmnet/dmnet.yml
 - configs/dnlnet/dnlnet.yml
+- configs/dpt/dpt.yml
 - configs/emanet/emanet.yml
 - configs/encnet/encnet.yml
 - configs/fastscnn/fastscnn.yml
