@@ -24,7 +24,7 @@ Models:
     Metrics:
       mIoU: 76.8
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/fcn_r101-d8_512x1024_80k_fp16_cityscapes/fcn_r101-d8_512x1024_80k_fp16_cityscapes-50245227.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/fcn_r101-d8_512x1024_80k_fp16_cityscapes/fcn_r101-d8_512x1024_80k_fp16_cityscapes_20200717_230921-50245227.pth
 - Config: configs/fp16/pspnet_r101-d8_512x1024_80k_fp16_cityscapes.py
   In Collection: fp16
   Metadata:
@@ -45,7 +45,7 @@ Models:
     Metrics:
       mIoU: 79.46
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/pspnet_r101-d8_512x1024_80k_fp16_cityscapes/pspnet_r101-d8_512x1024_80k_fp16_cityscapes-ade37931.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/pspnet_r101-d8_512x1024_80k_fp16_cityscapes/pspnet_r101-d8_512x1024_80k_fp16_cityscapes_20200717_230919-ade37931.pth
 - Config: configs/fp16/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes.py
   In Collection: fp16
   Metadata:
@@ -66,7 +66,7 @@ Models:
     Metrics:
       mIoU: 80.48
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes-bc86dc84.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes/deeplabv3_r101-d8_512x1024_80k_fp16_cityscapes_20200717_230920-bc86dc84.pth
 - Config: configs/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes.py
   In Collection: fp16
   Metadata:
@@ -87,4 +87,4 @@ Models:
     Metrics:
       mIoU: 80.46
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes-cc58bc8d.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes_20200717_230920-cc58bc8d.pth
