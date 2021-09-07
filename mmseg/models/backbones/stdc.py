@@ -250,12 +250,12 @@ class StdcNet(BaseModule):
     """
 
     arch_settings = {
-        50: [(2, 1), (2, 1), (2, 1)],
-        75: [(2, 1, 1, 1), (2, 1, 1, 1, 1), (2, 1, 1)]
+        'STDCNet813': [(2, 1), (2, 1), (2, 1)],
+        'STDCNet1446': [(2, 1, 1, 1), (2, 1, 1, 1, 1), (2, 1, 1)]
     }
 
     def __init__(self,
-                 depth,
+                 stdc_type,
                  in_channels,
                  channels,
                  bottleneck_type,
@@ -267,8 +267,8 @@ class StdcNet(BaseModule):
                  pretrained=None,
                  init_cfg=None):
         super().__init__(init_cfg)
-        if depth not in self.arch_settings:
-            raise KeyError(f'invalid depth {depth} for stdcnet')
+        if stdc_type not in self.arch_settings:
+            raise KeyError(f'invalid depth {stdc_type} for stdcnet')
 
         assert bottleneck_type in ['add', 'cat'],\
             f'bottleneck_type must be `add` or `cat`, got {bottleneck_type}'
@@ -277,7 +277,7 @@ class StdcNet(BaseModule):
 
         self.in_channels = in_channels
         self.channels = channels
-        self.stage_strides = self.arch_settings[depth]
+        self.stage_strides = self.arch_settings[stdc_type]
         self.prtrained = pretrained
         self.stdc_num_convs = stdc_num_convs
         self.with_final_conv = with_final_conv
