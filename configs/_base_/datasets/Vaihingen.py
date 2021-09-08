@@ -2,10 +2,12 @@
 dataset_type = 'VaihingenDataset'
 data_root = 'G:/Datasets/Vaihingen'
 img_norm_cfg = dict(
-    mean=[120.476, 81.7993, 81.1927], std=[54.8465, 39.3214, 37.9183], to_rgb=False)
+    mean=[120.476, 81.7993, 81.1927],
+    std=[54.8465, 39.3214, 37.9183],
+    to_rgb=False)
 crop_size = (256, 256)
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', color_type='unchanged'),
     dict(type='LoadAnnotations', reduce_zero_label=True),
     dict(type='Resize', img_scale=(2048, 1536), ratio_range=(0.5, 2.0)),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
@@ -52,4 +54,3 @@ data = dict(
         img_dir='images/validation',
         ann_dir='annotations/validation',
         pipeline=test_pipeline))
-

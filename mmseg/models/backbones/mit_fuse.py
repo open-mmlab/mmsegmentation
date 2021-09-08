@@ -13,7 +13,7 @@ from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw
+from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw, SelfAttentionBlock
 
 from .mit import MixVisionTransformer
 
@@ -99,6 +99,38 @@ class DepthFusionModule(MultiheadAttention):
         return color
 
 
+class DepthFusionModule2(SelfAttentionBlock):
+
+    def __init__(self, embed_dims, num_heads):
+        super(DepthFusionModule2, self).__init__(
+            key_in_channels=embed_dims,
+            query_in_channels=embed_dims,
+            channels=embed_dims,
+            out_channels=embed_dims,
+            share_key_query=False,
+            query_downsample=None,
+            key_downsample=None,
+            key_query_num_convs=1,
+            key_query_norm=False,
+            value_out_num_convs=1,
+            value_out_norm=False,
+            matmul_norm=False,
+            with_out=False,
+            conv_cfg=None,
+            norm_cfg=None,
+            act_cfg=None)
+        self.gamma = Scale(0)
+        self.spatial_gap = nn.Conv2d(embed_dims, 1, kernel_size=1, bias=True)
+
+    def forward(self, x, d):
+        """Forward function."""
+        d = self.spatial_gap(d)
+        out = super(DepthFusionModule2, self).forward(x, x, d)
+
+        out = self.gamma(out) + x
+        return out
+
+
 class DepthDownsample(BaseModule):
 
     def __init__(self,
@@ -176,21 +208,21 @@ class MitFuse(BaseModule):
         self.num_heads = kwargs["num_heads"]
         self.num_stages = kwargs["num_stages"]
         self.color = MixVisionTransformer(3, **kwargs)
-        # self.depth = MixVisionTransformer(1, **kwargs)
-        self.depth = DepthDownsample(
-            1,
-            embed_dims=kwargs["embed_dims"],
-            num_heads=self.num_heads,
-            pretrained=kwargs["pretrained"]
-            if "pretrained" in kwargs.keys() else None)
+        self.depth = MixVisionTransformer(1, **kwargs)
+        # self.depth = DepthDownsample(
+        #     1,
+        #     embed_dims=kwargs["embed_dims"],
+        #     num_heads=self.num_heads,
+        #     pretrained=kwargs["pretrained"]
+        #     if "pretrained" in kwargs.keys() else None)
 
         self.dams = ModuleList()
         self.dfms = ModuleList()
         for i in range(self.num_stages):
             embed_dims_i = kwargs["embed_dims"] * self.num_heads[i]
             # self.dams.append(DepthAlignModule(embed_dims_i))
-            self.dfms.append(
-                DepthFusionModule(embed_dims_i, self.num_heads[i]))
+            # self.dfms.append(
+            #     DepthFusionModule2(embed_dims_i, self.num_heads[i]))
 
     def init_weights(self):
         self.color.init_weights()
