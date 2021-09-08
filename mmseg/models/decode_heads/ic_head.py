@@ -15,7 +15,7 @@ class CascadeFeatureFusion(BaseModule):
                  low_channels,
                  high_channels,
                  out_channels,
-                 nclass,
+                 num_classes,
                  conv_cfg,
                  norm_cfg,
                  act_cfg,
@@ -41,7 +41,7 @@ class CascadeFeatureFusion(BaseModule):
             act_cfg=act_cfg)
 
         self.conv_low_cls = build_conv_layer(
-            conv_cfg, out_channels, nclass, kernel_size=1, bias=False)
+            conv_cfg, out_channels, num_classes, kernel_size=1, bias=False)
 
     def forward(self, x_low, x_high):
         x_low = resize(
