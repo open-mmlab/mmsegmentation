@@ -19,8 +19,8 @@ model = dict(
         ffm_cfg=dict(in_channels=384, out_channels=256, scale_factor=4)),
     decode_head=dict(
         type='FCNHead',
-        in_channels=128,
-        in_index=4,
+        in_channels=256,
+        in_index=3,
         channels=256,
         num_convs=1,
         concat_input=False,

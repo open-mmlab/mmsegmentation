@@ -148,12 +148,7 @@ class AttentionRefinementModule(BaseModule):
                  init_cfg=None):
         super().__init__(init_cfg)
         self.conv = ConvModule(
-            in_channels,
-            out_channels,
-            3,
-            padding=1,
-            norm_cfg=norm_cfg,
-            act_cfg=None)
+            in_channels, out_channels, 3, padding=1, norm_cfg=norm_cfg)
         self.conv_attn = ConvModule(
             out_channels, out_channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
 
@@ -313,9 +308,8 @@ class StdcNet(BaseModule):
                 self.channels[-1],
                 max(1024, self.channels[-1]),
                 1,
-                padding=1,
                 norm_cfg=norm_cfg,
-                act_cfg=None)
+                act_cfg=act_cfg)
 
     def _make_stage(self, in_channels, out_channels, strides, norm_cfg,
                     act_cfg, bottleneck_type):
@@ -360,7 +354,7 @@ class STDCContextPathNet(BaseModule):
         upsample_mode (str): Algorithm used for upsampling:
                 ``'nearest'`` | ``'linear'`` | ``'bilinear'`` | ``'bicubic'`` |
                 ``'trilinear'``. Default: ``'nearest'``
-        align_corners (bool): align_corners argument of F.interpolate.
+        align_corners (str): align_corners argument of F.interpolate.
             Default: False.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
@@ -374,7 +368,7 @@ class STDCContextPathNet(BaseModule):
                      in_channels=512, out_channels=256, scale_factor=4),
                  norm_cfg=dict(type='BN'),
                  upsample_mode='nearest',
-                 align_corners=False,
+                 align_corners=None,
                  init_cfg=None):
         super().__init__(init_cfg)
         self.backbone = build_backbone(stdc_cfg)
@@ -398,6 +392,10 @@ class STDCContextPathNet(BaseModule):
         self.align_corners = align_corners
 
     def forward(self, x):
+        # import mmcv
+        # img = mmcv.imread('./demo/demo.png')
+        # x = torch.from_numpy(img).
+        #   unsqueeze(0).permute(0, 3, 1, 2).float().cuda()
         outs = list(self.backbone(x))
         prev_stages_out = outs[:3]
         outs = outs[2:]
@@ -406,6 +404,7 @@ class STDCContextPathNet(BaseModule):
         assert len(outs) == 3
         avg = F.avg_pool2d(outs[-1], outs[-1].shape[2:])
         avg = self.conv_avg(avg)
+
         feature_up = resize(
             avg,
             size=outs[-1].shape[2:],
@@ -419,6 +418,7 @@ class STDCContextPathNet(BaseModule):
                 size=outs[i].shape[2:],
                 mode=self.upsample_mode,
                 align_corners=self.align_corners)
+            feature_up = self.convs[i](feature_up)
             arms_out.append(feature_up)
         # feature maps shape: (x2, x4, x8, x8, x8, x16)
         # the last two feature maps's channel will be equal to
