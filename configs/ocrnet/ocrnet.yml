@@ -170,7 +170,7 @@ Models:
     Metrics:
       mIoU: 80.09
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes-02ac0f13.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes_20200717_110721-02ac0f13.pth
 - Config: configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes.py
   In Collection: ocrnet
   Metadata:
@@ -191,7 +191,7 @@ Models:
     Metrics:
       mIoU: 80.3
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes-db500f80.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes_20200723_193726-db500f80.pth
 - Config: configs/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes.py
   In Collection: ocrnet
   Metadata:
@@ -212,7 +212,7 @@ Models:
     Metrics:
       mIoU: 80.81
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes-78688424.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes_20200723_192421-78688424.pth
 - Config: configs/ocrnet/ocrnet_hr18s_512x512_80k_ade20k.py
   In Collection: ocrnet
   Metadata:

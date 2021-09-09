@@ -1,0 +1,28 @@
+Collections:
+- Metadata:
+    Training Data:
+    - ADE20K
+  Name: dpt
+Models:
+- Config: configs/dpt/dpt_vit-b16_512x512_160k_ade20k.py
+  In Collection: dpt
+  Metadata:
+    backbone: ViT-B
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 96.06
+    lr schd: 160000
+    memory (GB): 8.09
+  Name: dpt_vit-b16_512x512_160k_ade20k
+  Results:
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.97
+      mIoU(ms+flip): 48.34
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dpt/dpt_vit-b16_512x512_160k_ade20k/dpt_vit-b16_512x512_160k_ade20k-db31cf52.pth

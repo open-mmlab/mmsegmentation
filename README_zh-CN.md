@@ -3,6 +3,7 @@
 </div>
 <br />
 
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mmsegmentation)](https://pypi.org/project/mmsegmentation/)
 [![PyPI](https://img.shields.io/pypi/v/mmsegmentation)](https://pypi.org/project/mmsegmentation)
 [![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/zh_CN/latest/)
 [![badge](https://github.com/open-mmlab/mmsegmentation/workflows/build/badge.svg)](https://github.com/open-mmlab/mmsegmentation/actions)
@@ -47,7 +48,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新的月度版本 v0.16.0 在 2021.08.04 发布。
+最新的月度版本 v0.17.0 在 2021.09.01 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/changelog.md)。
 
 ## 基准测试和模型库
@@ -86,6 +87,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [ANN (ICCV'2019)](configs/ann)
 - [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
 - [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
+- [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
 - [x] [OCRNet (ECCV'2020)](configs/ocrnet)
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
@@ -93,9 +95,22 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [SETR (CVPR'2021)](configs/setr)
 - [x] [SegFormer (ArXiv'2021)](configs/segformer)
 
+已支持的数据集：
+
+- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#cityscapes)
+- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-voc)
+- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#ade20k)
+- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-context)
+- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#chase-db1)
+- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#drive)
+- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#hrf)
+- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#stare)
+- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#dark-zurich)
+- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#nighttime-driving)
+
 ## 安装
 
-请参考[快速入门文档](docs_zh-CN/get_started.md#installation)进行安装和数据集准备。
+请参考[快速入门文档](docs_zh-CN/get_started.md#installation)进行安装，参考[数据集准备](docs_zh-CN/dataset_prepare.md)处理数据。
 
 ## 快速入门
 

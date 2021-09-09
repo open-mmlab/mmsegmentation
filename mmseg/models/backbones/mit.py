@@ -246,9 +246,9 @@ class TransformerEncoderLayer(BaseModule):
 class MixVisionTransformer(BaseModule):
     """The backbone of Segformer.
 
-    A PyTorch implement of : `SegFormer: Simple and Efficient Design for
-    Semantic Segmentation with Transformers` -
-        https://arxiv.org/pdf/2105.15203.pdf
+    This backbone is the implementation of `SegFormer: Simple and
+    Efficient Design for Semantic Segmentation with
+    Transformers <https://arxiv.org/abs/2105.15203>`_.
 
     Args:
         in_channels (int): Number of input channels. Default: 3.

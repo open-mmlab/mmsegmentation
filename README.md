@@ -3,6 +3,7 @@
 </div>
 <br />
 
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mmsegmentation)](https://pypi.org/project/mmsegmentation/)
 [![PyPI](https://img.shields.io/pypi/v/mmsegmentation)](https://pypi.org/project/mmsegmentation)
 [![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/en/latest/)
 [![badge](https://github.com/open-mmlab/mmsegmentation/workflows/build/badge.svg)](https://github.com/open-mmlab/mmsegmentation/actions)
@@ -48,7 +49,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.16.0 was released in 08/04/2021.
+v0.17.0 was released in 09/01/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -87,12 +88,26 @@ Supported methods:
 - [x] [ANN (ICCV'2019)](configs/ann)
 - [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
 - [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
+- [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
 - [x] [OCRNet (ECCV'2020)](configs/ocrnet)
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
 - [x] [SegFormer (ArXiv'2021)](configs/segformer)
+
+Supported datasets:
+
+- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#cityscapes)
+- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-voc)
+- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#ade20k)
+- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-context)
+- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#chase-db1)
+- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#drive)
+- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#hrf)
+- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#stare)
+- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#dark-zurich)
+- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#nighttime-driving)
 
 ## Installation
 
