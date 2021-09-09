@@ -16,6 +16,9 @@ RUN apt-get update && apt-get install -y git ninja-build libglib2.0-0 libsm6 lib
 RUN conda clean --all
 
 # Install MMCV
+ARG PYTORCH
+ARG CUDA
+ARG MMCV
 RUN pip install mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html
 
 # Install MMSegmentation
