@@ -218,8 +218,8 @@ class HRModule(BaseModule):
 class HRNet(BaseModule):
     """HRNet backbone.
 
-    `High-Resolution Representations for Labeling Pixels and Regions
-    arXiv: <https://arxiv.org/abs/1904.04514>`_.
+    This backbone is the implementation of `High-Resolution Representations
+    for Labeling Pixels and Regions <https://arxiv.org/abs/1904.04514>`_.
 
     Args:
         extra (dict): Detailed configuration for each stage of HRNet.

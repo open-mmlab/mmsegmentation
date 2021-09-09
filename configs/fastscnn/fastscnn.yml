@@ -25,4 +25,4 @@ Models:
       mIoU: 70.96
       mIoU(ms+flip): 72.65
     Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_8x4_160k_lr0.12_cityscapes-0cec9937.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853-0cec9937.pth
