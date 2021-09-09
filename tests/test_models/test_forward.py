@@ -8,8 +8,7 @@ import numpy as np
 import pytest
 import torch
 import torch.nn as nn
-
-from mmseg.models.utils import revert_sync_batchnorm
+from mmcv.cnn.utils import revert_sync_batchnorm
 
 
 def _demo_mm_inputs(input_shape=(2, 3, 8, 16), num_classes=10):

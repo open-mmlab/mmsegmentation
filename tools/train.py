@@ -8,6 +8,7 @@ import warnings
 
 import mmcv
 import torch
+from mmcv.cnn.utils import revert_sync_batchnorm
 from mmcv.runner import init_dist
 from mmcv.utils import Config, DictAction, get_git_hash
 
@@ -15,7 +16,6 @@ from mmseg import __version__
 from mmseg.apis import set_random_seed, train_segmentor
 from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
-from mmseg.models.utils import revert_sync_batchnorm
 from mmseg.utils import collect_env, get_root_logger
 
 
