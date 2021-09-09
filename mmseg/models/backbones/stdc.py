@@ -392,10 +392,6 @@ class STDCContextPathNet(BaseModule):
         self.align_corners = align_corners
 
     def forward(self, x):
-        # import mmcv
-        # img = mmcv.imread('./demo/demo.png')
-        # x = torch.from_numpy(img).
-        #   unsqueeze(0).permute(0, 3, 1, 2).float().cuda()
         outs = list(self.backbone(x))
         prev_stages_out = outs[:3]
         outs = outs[2:]
