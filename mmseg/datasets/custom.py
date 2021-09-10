@@ -87,7 +87,7 @@ class CustomDataset(Dataset):
                  reduce_zero_label=False,
                  classes=None,
                  palette=None,
-                 gt_seg_map_loader_conf=None):
+                 gt_seg_map_loader_cfg=None):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
         self.img_suffix = img_suffix
@@ -102,8 +102,8 @@ class CustomDataset(Dataset):
         self.CLASSES, self.PALETTE = self.get_classes_and_palette(
             classes, palette)
         self.gt_seg_map_loader = LoadAnnotations(
-        ) if gt_seg_map_loader_conf is None else LoadAnnotations(
-            **gt_seg_map_loader_conf)
+        ) if gt_seg_map_loader_cfg is None else LoadAnnotations(
+            **gt_seg_map_loader_cfg)
 
         if test_mode:
             assert self.CLASSES is not None, \
