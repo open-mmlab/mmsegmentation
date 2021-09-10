@@ -5,7 +5,7 @@ from torch import nn as nn
 from torch.nn import functional as F
 
 
-def euDistanceWeight(depth):
+def euDistanceWeight(depth,a):
     """ depth weigth matrix"""
     depth = depth.reshape(*depth.shape[:2], -1)
     depth = depth.permute(0, 2, 1).contiguous()
@@ -15,7 +15,7 @@ def euDistanceWeight(depth):
 
     deptht = depth.permute(0, 2, 1).contiguous()
     weight = torch.sub(depth, deptht)
-    weight = torch.exp(torch.abs(weight))
+    weight = torch.exp(-a*torch.abs(weight))
     return weight
 
 
@@ -143,7 +143,7 @@ class SelfAttentionBlock(nn.Module):
             convs = convs[0]
         return convs
 
-    def forward(self, query_feats, key_feats, depth=None):
+    def forward(self, query_feats, key_feats, depth=None,a=1.0):
         """Forward function."""
         batch_size = query_feats.size(0)
         query = self.query_project(query_feats)
@@ -163,7 +163,7 @@ class SelfAttentionBlock(nn.Module):
 
         sim_map = torch.matmul(query, key)
         if depth is not None:
-            sim_map = torch.mul(sim_map, euDistanceWeight(depth))
+            sim_map = torch.mul(sim_map, euDistanceWeight(depth,a))
         if self.matmul_norm:
             sim_map = (self.channels**-.5) * sim_map
         sim_map = F.softmax(sim_map, dim=-1)

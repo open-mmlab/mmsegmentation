@@ -13,7 +13,7 @@ from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw, SelfAttentionBlock
+from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw, SelfAttentionBlock, CBAM
 
 from .mit import MixVisionTransformer
 
@@ -65,7 +65,7 @@ class DepthAlignModule(BaseModule):
         return color, depth
 
 
-class DepthFusionModule(MultiheadAttention):
+class DepthFusionModule1(MultiheadAttention):
 
     def __init__(self,
                  embed_dims,
@@ -131,6 +131,20 @@ class DepthFusionModule2(SelfAttentionBlock):
         return out
 
 
+class DepthFusionModule3(CBAM):
+
+    def __init__(self, embed_dims, num_heads):
+        super(DepthFusionModule3,self).__init__(embed_dims * 2)
+        self.embed_dims = embed_dims
+        self.gamma = Scale(0)
+
+    def forward(self, color, depth):
+        x = torch.cat([color, depth], dim=1)
+        out = super(DepthFusionModule3, self).forward(x)[:, :self.embed_dims]
+        out = self.gamma(out) + color
+        return color
+
+
 class DepthDownsample(BaseModule):
 
     def __init__(self,
@@ -162,23 +176,7 @@ class DepthDownsample(BaseModule):
             in_channels = embed_dims_i
 
     def init_weights(self):
-        if self.pretrained is None:
-            for m in self.modules():
-                if isinstance(m, nn.Linear):
-                    trunc_normal_init(m.weight, std=.02)
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
-                elif isinstance(m, nn.LayerNorm):
-                    constant_init(m.bias, 0)
-                    constant_init(m.weight, 1.0)
-                elif isinstance(m, nn.Conv2d):
-                    fan_out = m.kernel_size[0] * m.kernel_size[
-                        1] * m.out_channels
-                    fan_out //= m.groups
-                    normal_init(m.weight, 0, math.sqrt(2.0 / fan_out))
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
-        elif isinstance(self.pretrained, str):
+        if isinstance(self.pretrained, str):
             logger = get_root_logger()
             checkpoint = _load_checkpoint(
                 self.pretrained, logger=logger, map_location='cpu')
@@ -221,10 +219,25 @@ class MitFuse(BaseModule):
         for i in range(self.num_stages):
             embed_dims_i = kwargs["embed_dims"] * self.num_heads[i]
             # self.dams.append(DepthAlignModule(embed_dims_i))
-            # self.dfms.append(
-            #     DepthFusionModule2(embed_dims_i, self.num_heads[i]))
+            self.dfms.append(
+                DepthFusionModule2(embed_dims_i, self.num_heads[i]))
 
     def init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                trunc_normal_init(m.weight, std=.02)
+                if m.bias is not None:
+                    constant_init(m.bias, 0)
+            elif isinstance(m, nn.LayerNorm):
+                constant_init(m.bias, 0)
+                constant_init(m.weight, 1.0)
+            elif isinstance(m, nn.Conv2d):
+                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                fan_out //= m.groups
+                normal_init(m.weight, 0, math.sqrt(2.0 / fan_out))
+                if m.bias is not None:
+                    constant_init(m.bias, 0)
+        # load pretrained model if exists
         self.color.init_weights()
         self.depth.init_weights()
 
