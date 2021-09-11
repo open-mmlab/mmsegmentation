@@ -66,7 +66,7 @@ class CustomDataset(Dataset):
             The palette of segmentation map. If None is given, and
             self.PALETTE is None, random palette will be generated.
             Default: None
-        gt_seg_map_loader_conf (dict, optional): build LoadAnnotations to
+        gt_seg_map_loader_cfg (dict, optional): build LoadAnnotations to
             load gt for evaluation, load from disk by default. Default: None.
     """
 
