@@ -142,8 +142,8 @@ def main():
     # SyncBN is not support for DP
     if not distributed:
         warnings.warn(
-            'SyncBN only support DDP. In order to compat with DP, we convert '
-            'SyncBN to BN. Please use dist_train.sh which can '
+            'SyncBN is only supported with DDP. To be compatible with DP, '
+            'we convert SyncBN to BN. Please use dist_train.sh which can '
             'avoid this error.')
         model = revert_sync_batchnorm(model)
 
