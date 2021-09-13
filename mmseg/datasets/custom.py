@@ -239,7 +239,7 @@ class CustomDataset(Dataset):
         """Place holder to format result to dataset specific output."""
         raise NotImplementedError
 
-    def get_one_gt_seg_map(self, index):
+    def get_gt_seg_map_by_idx(self, index):
         """Get one ground truth segmentation map for evaluation."""
         ann_info = self.get_ann_info(index)
         results = dict(ann_info=ann_info)
@@ -284,7 +284,7 @@ class CustomDataset(Dataset):
         pre_eval_results = []
 
         for pred, index in zip(preds, indices):
-            seg_map = self.get_one_gt_seg_map(index)
+            seg_map = self.get_gt_seg_map_by_idx(index)
             pre_eval_results.append(
                 intersect_and_union(pred, seg_map, len(self.CLASSES),
                                     self.ignore_index, self.label_map,
