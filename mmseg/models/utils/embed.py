@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer, build_norm_layer
 from mmcv.runner.base_module import BaseModule
-from torch.nn.modules.utils import _pair as to_2tuple
+from mmcv.utils import to_2tuple
 
 
 class AdaptivePadding(nn.Module):
