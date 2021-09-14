@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 """pytest tests/test_forward.py."""
 import copy
 from os.path import dirname, exists, join
@@ -172,6 +173,11 @@ def test_dnlnet_forward():
 def test_emanet_forward():
     _test_encoder_decoder_forward(
         'emanet/emanet_r50-d8_512x1024_80k_cityscapes.py')
+
+
+def test_isanet_forward():
+    _test_encoder_decoder_forward(
+        'isanet/isanet_r50-d8_512x1024_40k_cityscapes.py')
 
 
 def get_world_size(process_group):

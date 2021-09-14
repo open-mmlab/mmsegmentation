@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import math
 
 import torch
@@ -269,6 +270,9 @@ class Bottleneck(_Bottleneck):
 @BACKBONES.register_module()
 class ResNeSt(ResNetV1d):
     """ResNeSt backbone.
+
+    This backbone is the implementation of `ResNeSt:
+    Split-Attention Networks <https://arxiv.org/abs/2004.08955>`_.
 
     Args:
         groups (int): Number of groups of Bottleneck. Default: 1

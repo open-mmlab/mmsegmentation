@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 """Modified from https://github.com/LikeLy-Journey/SegmenTron/blob/master/
 segmentron/solver/loss.py (Apache-2.0 License)"""
 import torch

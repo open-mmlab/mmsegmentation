@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - name: "MMSegmentation Contributors"
+title: "OpenMMLab Semantic Segmentation Toolbox and Benchmark"
+date-released: 2020-07-10
+url: "https://github.com/open-mmlab/mmsegmentation"
+license: Apache-2.0

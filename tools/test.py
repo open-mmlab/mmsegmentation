@@ -1,5 +1,10 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import os
+import os.path as osp
+import shutil
+import time
+import warnings
 
 import mmcv
 import torch
@@ -18,6 +23,10 @@ def parse_args():
         description='mmseg test (and eval) a model')
     parser.add_argument('config', help='test config file path')
     parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument(
+        '--work-dir',
+        help=('if specified, the evaluation metric results will be dumped'
+              'into the directory as json'))
     parser.add_argument(
         '--aug-test', action='store_true', help='Use Flip and Multi scale aug')
     parser.add_argument('--out', help='output result file in pickle format')
@@ -105,6 +114,13 @@ def main():
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
 
+    rank, _ = get_dist_info()
+    # allows not to create
+    if args.work_dir is not None and rank == 0:
+        mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
+        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+        json_file = osp.join(args.work_dir, f'eval_{timestamp}.json')
+
     # build the dataloader
     # TODO: support multiple images per gpu (only minor changes are needed)
     dataset = build_dataset(cfg.data.test)
@@ -133,32 +149,80 @@ def main():
         print('"PALETTE" not found in meta, use dataset.PALETTE instead')
         model.PALETTE = dataset.PALETTE
 
-    efficient_test = False
-    if args.eval_options is not None:
-        efficient_test = args.eval_options.get('efficient_test', False)
+    # clean gpu memory when starting a new evaluation.
+    torch.cuda.empty_cache()
+    eval_kwargs = {} if args.eval_options is None else args.eval_options
+
+    # Deprecated
+    efficient_test = eval_kwargs.get('efficient_test', False)
+    if efficient_test:
+        warnings.warn(
+            '``efficient_test=True`` does not have effect in tools/test.py, '
+            'the evaluation and format results are CPU memory efficient by '
+            'default')
+
+    eval_on_format_results = (
+        args.eval is not None and 'cityscapes' in args.eval)
+    if eval_on_format_results:
+        assert len(args.eval) == 1, 'eval on format results is not ' \
+                                    'applicable for metrics other than ' \
+                                    'cityscapes'
+    if args.format_only or eval_on_format_results:
+        if 'imgfile_prefix' in eval_kwargs:
+            tmpdir = eval_kwargs['imgfile_prefix']
+        else:
+            tmpdir = '.format_cityscapes'
+            eval_kwargs.setdefault('imgfile_prefix', tmpdir)
+        mmcv.mkdir_or_exist(tmpdir)
+    else:
+        tmpdir = None
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
-                                  efficient_test, args.opacity)
+        results = single_gpu_test(
+            model,
+            data_loader,
+            args.show,
+            args.show_dir,
+            False,
+            args.opacity,
+            pre_eval=args.eval is not None and not eval_on_format_results,
+            format_only=args.format_only or eval_on_format_results,
+            format_args=eval_kwargs)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        outputs = multi_gpu_test(model, data_loader, args.tmpdir,
-                                 args.gpu_collect, efficient_test)
+        results = multi_gpu_test(
+            model,
+            data_loader,
+            args.tmpdir,
+            args.gpu_collect,
+            False,
+            pre_eval=args.eval is not None and not eval_on_format_results,
+            format_only=args.format_only or eval_on_format_results,
+            format_args=eval_kwargs)
 
     rank, _ = get_dist_info()
     if rank == 0:
         if args.out:
+            warnings.warn(
+                'The behavior of ``args.out`` has been changed since MMSeg '
+                'v0.16, the pickled outputs could be seg map as type of '
+                'np.array, pre-eval results or file paths for '
+                '``dataset.format_results()``.')
             print(f'\nwriting results to {args.out}')
-            mmcv.dump(outputs, args.out)
-        kwargs = {} if args.eval_options is None else args.eval_options
-        if args.format_only:
-            dataset.format_results(outputs, **kwargs)
+            mmcv.dump(results, args.out)
         if args.eval:
-            dataset.evaluate(outputs, args.eval, **kwargs)
+            eval_kwargs.update(metric=args.eval)
+            metric = dataset.evaluate(results, **eval_kwargs)
+            metric_dict = dict(config=args.config, metric=metric)
+            if args.work_dir is not None and rank == 0:
+                mmcv.dump(metric_dict, json_file, indent=4)
+            if tmpdir is not None and eval_on_format_results:
+                # remove tmp dir when cityscapes evaluation
+                shutil.rmtree(tmpdir)
 
 
 if __name__ == '__main__':

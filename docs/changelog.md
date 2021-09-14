@@ -1,5 +1,79 @@
 ## Changelog
 
+### V0.17 (09/01/2021)
+
+**Highlights**
+
+- Support SegFormer
+- Support DPT
+- Support Dark Zurich and Nighttime Driving datasets
+- Support progressive evaluation
+
+**New Features**
+
+- Support SegFormer ([#599](https://github.com/open-mmlab/mmsegmentation/pull/599))
+- Support DPT ([#605](https://github.com/open-mmlab/mmsegmentation/pull/605))
+- Support Dark Zurich and Nighttime Driving datasets ([#815](https://github.com/open-mmlab/mmsegmentation/pull/815))
+- Support progressive evaluation ([#709](https://github.com/open-mmlab/mmsegmentation/pull/709))
+
+**Improvements**
+
+- Add multiscale_output interface and unittests for HRNet ([#830](https://github.com/open-mmlab/mmsegmentation/pull/830))
+- Support inherit cityscapes dataset ([#750](https://github.com/open-mmlab/mmsegmentation/pull/750))
+- Fix some typos in README.md ([#824](https://github.com/open-mmlab/mmsegmentation/pull/824))
+- Delete convert function and add instruction to ViT/Swin README.md ([#791](https://github.com/open-mmlab/mmsegmentation/pull/791))
+- Add vit/swin/mit convert weight scripts ([#783](https://github.com/open-mmlab/mmsegmentation/pull/783))
+- Add copyright files ([#796](https://github.com/open-mmlab/mmsegmentation/pull/796))
+
+**Bug Fixes**
+
+- Fix invalid checkpoint link in inference_demo.ipynb ([#814](https://github.com/open-mmlab/mmsegmentation/pull/814))
+- Ensure that items in dataset have the same order across multi machine ([#780](https://github.com/open-mmlab/mmsegmentation/pull/780))
+- Fix the log error ([#766](https://github.com/open-mmlab/mmsegmentation/pull/766))
+
+### V0.16 (08/04/2021)
+
+**Highlights**
+
+- Support PyTorch 1.9
+- Support SegFormer backbone MiT
+- Support md2yml pre-commit hook
+- Support frozen stage for HRNet
+
+**New Features**
+
+- Support SegFormer backbone MiT ([#594](https://github.com/open-mmlab/mmsegmentation/pull/594))
+- Support md2yml pre-commit hook ([#732](https://github.com/open-mmlab/mmsegmentation/pull/732))
+- Support mim ([#717](https://github.com/open-mmlab/mmsegmentation/pull/717))
+- Add mmseg2torchserve tool ([#552](https://github.com/open-mmlab/mmsegmentation/pull/552))
+
+**Improvements**
+
+- Support hrnet frozen stage ([#743](https://github.com/open-mmlab/mmsegmentation/pull/743))
+- Add template of reimplementation questions ([#741](https://github.com/open-mmlab/mmsegmentation/pull/741))
+- Output pdf and epub formats for readthedocs ([#742](https://github.com/open-mmlab/mmsegmentation/pull/742))
+- Refine the docstring of ResNet ([#723](https://github.com/open-mmlab/mmsegmentation/pull/723))
+- Replace interpolate with resize ([#731](https://github.com/open-mmlab/mmsegmentation/pull/731))
+- Update resource limit ([#700](https://github.com/open-mmlab/mmsegmentation/pull/700))
+- Update config.md ([#678](https://github.com/open-mmlab/mmsegmentation/pull/678))
+
+**Bug Fixes**
+
+- Fix ATTENTION registry ([#729](https://github.com/open-mmlab/mmsegmentation/pull/729))
+- Fix analyze log script ([#716](https://github.com/open-mmlab/mmsegmentation/pull/716))
+- Fix doc api display ([#725](https://github.com/open-mmlab/mmsegmentation/pull/725))
+- Fix patch_embed and pos_embed mismatch error ([#685](https://github.com/open-mmlab/mmsegmentation/pull/685))
+- Fix efficient test for multi-node ([#707](https://github.com/open-mmlab/mmsegmentation/pull/707))
+- Fix init_cfg in resnet backbone ([#697](https://github.com/open-mmlab/mmsegmentation/pull/697))
+- Fix efficient test bug ([#702](https://github.com/open-mmlab/mmsegmentation/pull/702))
+- Fix url error in config docs ([#680](https://github.com/open-mmlab/mmsegmentation/pull/680))
+- Fix mmcv installation ([#676](https://github.com/open-mmlab/mmsegmentation/pull/676))
+- Fix torch version ([#670](https://github.com/open-mmlab/mmsegmentation/pull/670))
+
+**Contributors**
+
+@sshuair @xiexinch @Junjun2016 @mmeendez8 @xvjiarui @sennnnn @puhsu @BIGWangYuDong @keke1u @daavoo
+
 ### V0.15 (07/04/2021)
 
 **Highlights**
