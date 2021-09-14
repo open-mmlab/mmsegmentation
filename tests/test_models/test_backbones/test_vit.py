@@ -3,7 +3,6 @@ import pytest
 import torch
 
 from mmseg.models.backbones.vit import VisionTransformer
-from .utils import check_norm_state
 
 
 def test_vit_backbone():
@@ -56,8 +55,6 @@ def test_vit_backbone():
     model = VisionTransformer()
     model.init_weights()
     model.train()
-
-    assert check_norm_state(model.modules(), True)
 
     # Test normal size input image
     imgs = torch.randn(1, 3, 224, 224)
