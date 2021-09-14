@@ -87,34 +87,3 @@ def test_vit_backbone():
     imgs = torch.randn(1, 3, 234, 345)
     feat = model(imgs)
     assert feat[-1].shape == (1, 768, 15, 22)
-
-    # Test with_cp=True
-    model = VisionTransformer(with_cp=True)
-    imgs = torch.randn(1, 3, 224, 224)
-    feat = model(imgs)
-    assert feat[-1].shape == (1, 768, 14, 14)
-
-    # Test with_cls_token=False
-    model = VisionTransformer(with_cls_token=False)
-    imgs = torch.randn(1, 3, 224, 224)
-    feat = model(imgs)
-    assert feat[-1].shape == (1, 768, 14, 14)
-
-    # Test final norm
-    model = VisionTransformer(final_norm=True)
-    imgs = torch.randn(1, 3, 224, 224)
-    feat = model(imgs)
-    assert feat[-1].shape == (1, 768, 14, 14)
-
-    # Test patch norm
-    model = VisionTransformer(patch_norm=True)
-    imgs = torch.randn(1, 3, 224, 224)
-    feat = model(imgs)
-    assert feat[-1].shape == (1, 768, 14, 14)
-
-    # Test output_cls_token
-    model = VisionTransformer(with_cls_token=True, output_cls_token=True)
-    imgs = torch.randn(1, 3, 224, 224)
-    feat = model(imgs)
-    assert feat[0][0].shape == (1, 768, 14, 14)
-    assert feat[0][1].shape == (1, 768)

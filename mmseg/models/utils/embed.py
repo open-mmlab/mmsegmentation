@@ -198,7 +198,8 @@ class PatchEmbed(BaseModule):
 
         if self.adap_padding:
             x = self.adap_padding(x)
-
+        print(x.shape)
+        print('#' * 20)
         x = self.projection(x)
         out_size = (x.shape[2], x.shape[3])
         x = x.flatten(2).transpose(1, 2)
