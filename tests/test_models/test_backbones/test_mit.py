@@ -7,10 +7,6 @@ from mmseg.models.backbones.mit import EfficientMultiheadAttention, MixFFN
 
 
 def test_mit():
-    with pytest.raises(AssertionError):
-        # It's only support official style and mmcls style now.
-        MixVisionTransformer(pretrain_style='timm')
-
     with pytest.raises(TypeError):
         # Pretrained represents pretrain url and must be str or None.
         MixVisionTransformer(pretrained=123)
