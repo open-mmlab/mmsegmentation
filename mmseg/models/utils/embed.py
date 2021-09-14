@@ -48,7 +48,6 @@ class AdaptivePadding(nn.Module):
 
         kernel_size = to_2tuple(kernel_size)
         stride = to_2tuple(stride)
-        padding = to_2tuple(padding)
         dilation = to_2tuple(dilation)
 
         self.padding = padding
