@@ -55,6 +55,7 @@ class AdaptivePadding(nn.Module):
 
     def forward(self, x):
         pad_h, pad_w = self.get_pad_shape(x.size()[-2:])
+        self.pad_h, self.pad_w = pad_h, pad_w
         if pad_h > 0 or pad_w > 0:
             if self.padding == 'corner':
                 x = F.pad(x, [0, pad_w, 0, pad_h])
