@@ -215,7 +215,8 @@ def main():
             print(f'\nwriting results to {args.out}')
             mmcv.dump(results, args.out)
         if args.eval:
-            metric = dataset.evaluate(results, args.eval, **eval_kwargs)
+            eval_kwargs.update(metric=args.eval)
+            metric = dataset.evaluate(results, **eval_kwargs)
             metric_dict = dict(config=args.config, metric=metric)
             if args.work_dir is not None and rank == 0:
                 mmcv.dump(metric_dict, json_file, indent=4)

@@ -16,6 +16,7 @@ Import:
 - configs/fp16/fp16.yml
 - configs/gcnet/gcnet.yml
 - configs/hrnet/hrnet.yml
+- configs/isanet/isanet.yml
 - configs/mobilenet_v2/mobilenet_v2.yml
 - configs/mobilenet_v3/mobilenet_v3.yml
 - configs/nonlocal_net/nonlocal_net.yml
