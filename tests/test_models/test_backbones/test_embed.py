@@ -19,7 +19,9 @@ def test_adaptive_padding():
             padding=padding)
         out = pool(input)
         assert (pool.pad_h, pool.pad_w) == (1, 15)
+        assert isinstance(pool.padding, str)
         assert pool.padding == padding
+
         # padding to divisible by 16
         assert (out.shape[2], out.shape[3]) == (16, 32)
         input = torch.rand(1, 1, 16, 17)
