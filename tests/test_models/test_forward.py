@@ -175,6 +175,11 @@ def test_emanet_forward():
         'emanet/emanet_r50-d8_512x1024_80k_cityscapes.py')
 
 
+def test_isanet_forward():
+    _test_encoder_decoder_forward(
+        'isanet/isanet_r50-d8_512x1024_40k_cityscapes.py')
+
+
 def get_world_size(process_group):
 
     return 1
