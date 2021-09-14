@@ -2,7 +2,6 @@
 import os.path as osp
 import warnings
 from collections import OrderedDict
-from functools import reduce
 
 import mmcv
 import numpy as np
@@ -99,6 +98,9 @@ class CustomDataset(Dataset):
         self.label_map = None
         self.CLASSES, self.PALETTE = self.get_classes_and_palette(
             classes, palette)
+        if test_mode:
+            assert self.CLASSES is not None, \
+                '`cls.CLASSES` or `classes` should be specified when testing'
 
         # join paths if data_root is specified
         if self.data_root is not None:
@@ -339,7 +341,12 @@ class CustomDataset(Dataset):
 
         return palette
 
-    def evaluate(self, results, metric='mIoU', logger=None, **kwargs):
+    def evaluate(self,
+                 results,
+                 metric='mIoU',
+                 logger=None,
+                 gt_seg_maps=None,
+                 **kwargs):
         """Evaluate the dataset.
 
         Args:
@@ -350,6 +357,8 @@ class CustomDataset(Dataset):
                 'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
+            gt_seg_maps (generator[ndarray]): Custom gt seg maps as input,
+                used in ConcatDataset
 
         Returns:
             dict[str, float]: Default metrics.
@@ -364,14 +373,9 @@ class CustomDataset(Dataset):
         # test a list of files
         if mmcv.is_list_of(results, np.ndarray) or mmcv.is_list_of(
                 results, str):
-            gt_seg_maps = self.get_gt_seg_maps()
-            if self.CLASSES is None:
-                num_classes = len(
-                    reduce(np.union1d, [np.unique(_) for _ in gt_seg_maps]))
-            else:
-                num_classes = len(self.CLASSES)
-            # reset generator
-            gt_seg_maps = self.get_gt_seg_maps()
+            if gt_seg_maps is None:
+                gt_seg_maps = self.get_gt_seg_maps()
+            num_classes = len(self.CLASSES)
             ret_metrics = eval_metrics(
                 results,
                 gt_seg_maps,
