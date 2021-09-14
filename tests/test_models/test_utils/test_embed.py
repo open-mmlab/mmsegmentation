@@ -12,16 +12,16 @@ def test_adaptive_padding():
         stride = 16
         dilation = 1
         input = torch.rand(1, 1, 15, 17)
-        pool = AdaptivePadding(
+        adap_pool = AdaptivePadding(
             kernel_size=kernel_size,
             stride=stride,
             dilation=dilation,
             padding=padding)
-        out = pool(input)
+        out = adap_pool(input)
         # padding to divisible by 16
         assert (out.shape[2], out.shape[3]) == (16, 32)
         input = torch.rand(1, 1, 16, 17)
-        out = pool(input)
+        out = adap_pool(input)
         # padding to divisible by 16
         assert (out.shape[2], out.shape[3]) == (16, 32)
 

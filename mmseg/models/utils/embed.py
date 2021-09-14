@@ -19,7 +19,7 @@ class AdaptivePadding(nn.Module):
         kernel_size (int | tuple): Size of the kernel:
         stride (int | tuple): Stride of the filter. Default: 1:
         dilation (int | tuple): Spacing between kernel elements.
-            Default: 1
+            Default: 1.
         padding (str): Support "same" and "corner", "corner" mode
             would pad zero to bottom right, and "same" mode would
             pad zero around input. Default: "corner".
@@ -89,9 +89,9 @@ class PatchEmbed(BaseModule):
         in_channels (int): The num of input channels. Default: 3
         embed_dims (int): The dimensions of embedding. Default: 768
         conv_type (str): The config dict for embedding
-            conv layer type selection. Default: "Conv2d.
+            conv layer type selection. Default: "Conv2d".
         kernel_size (int): The kernel_size of embedding conv. Default: 16.
-        stride (int): The slide stride of embedding conv.
+        stride (int, optional): The slide stride of embedding conv.
             Default: None (Would be set as `kernel_size`).
         padding (int | tuple | string ): The padding length of
             embedding conv. When it is a string, it means the mode
@@ -108,20 +108,18 @@ class PatchEmbed(BaseModule):
             Default: None.
     """
 
-    def __init__(
-        self,
-        in_channels=3,
-        embed_dims=768,
-        conv_type='Conv2d',
-        kernel_size=16,
-        stride=16,
-        padding='corner',
-        dilation=1,
-        bias=True,
-        norm_cfg=None,
-        input_size=None,
-        init_cfg=None,
-    ):
+    def __init__(self,
+                 in_channels=3,
+                 embed_dims=768,
+                 conv_type='Conv2d',
+                 kernel_size=16,
+                 stride=None,
+                 padding='corner',
+                 dilation=1,
+                 bias=True,
+                 norm_cfg=None,
+                 input_size=None,
+                 init_cfg=None):
         super(PatchEmbed, self).__init__(init_cfg=init_cfg)
 
         self.embed_dims = embed_dims
@@ -216,8 +214,6 @@ class PatchMerging(BaseModule):
 
     Args:
         in_channels (int): The num of input channels.
-            to gets fully covered by filter and stride you specified..
-            Default: True.
         out_channels (int): The num of output channels.
         kernel_size (int | tuple, optional): the kernel size in the unfold
             layer. Defaults to 2.
