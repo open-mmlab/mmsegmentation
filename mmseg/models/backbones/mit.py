@@ -278,8 +278,6 @@ class MixVisionTransformer(BaseModule):
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
             Defalut: dict(type='GELU').
-        pretrain_style (str): Choose to use official or mmcls pretrain weights.
-            Default: official.
         pretrained (str, optional): model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
@@ -302,14 +300,9 @@ class MixVisionTransformer(BaseModule):
                  drop_path_rate=0.,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN', eps=1e-6),
-                 pretrain_style='official',
                  pretrained=None,
                  init_cfg=None):
         super().__init__()
-
-        assert pretrain_style in [
-            'official', 'mmcls'
-        ], 'we only support official weights or mmcls weights.'
 
         if isinstance(pretrained, str) or pretrained is None:
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
@@ -330,7 +323,6 @@ class MixVisionTransformer(BaseModule):
 
         self.out_indices = out_indices
         assert max(out_indices) < self.num_stages
-        self.pretrain_style = pretrain_style
         self.pretrained = pretrained
         self.init_cfg = init_cfg
 
