@@ -133,7 +133,7 @@ class StemBlock(BaseModule):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
-        self.conv_left = nn.Sequential(
+        self.convs = nn.Sequential(
             ConvModule(
                 in_channels=out_channels,
                 out_channels=out_channels // 2,
@@ -152,7 +152,7 @@ class StemBlock(BaseModule):
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg))
-        self.pool_right = nn.MaxPool2d(
+        self.pool = nn.MaxPool2d(
             kernel_size=3, stride=2, padding=1, ceil_mode=False)
         self.fuse_last = ConvModule(
             in_channels=out_channels * 2,
@@ -166,8 +166,8 @@ class StemBlock(BaseModule):
 
     def forward(self, x):
         x = self.conv_first(x)
-        x_left = self.conv_left(x)
-        x_right = self.pool_right(x)
+        x_left = self.convs(x)
+        x_right = self.pool(x)
         x = self.fuse_last(torch.cat([x_left, x_right], dim=1))
         return x
 
@@ -577,13 +577,13 @@ class BiSeNetV2(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(BiSeNetV2, self).__init__(init_cfg=init_cfg)
         if init_cfg is None:
             self.init_cfg = [
                 dict(type='Kaiming', layer='Conv2d'),
                 dict(
                     type='Constant', val=1, layer=['_BatchNorm', 'GroupNorm'])
             ]
+        super(BiSeNetV2, self).__init__(init_cfg=init_cfg)
         self.out_indices = out_indices
         self.detail_channels = detail_channels
         self.semantic_channels = semantic_channels
