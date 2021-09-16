@@ -15,7 +15,9 @@
 
 ## Results and models
 
-Note: `D-8` here corresponding to the output stride 8 setting for DeepLab series.
+:::{note}
+`D-8` here corresponding to the output stride 8 setting for DeepLab series.
+:::
 
 ### Cityscapes
 
