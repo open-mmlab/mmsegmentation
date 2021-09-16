@@ -1,0 +1,6 @@
+.header-logo {
+    background-image: url("../images/mmsegmentation.png");
+    background-size: 110px 40px;
+    height: 40px;
+    width: 110px;
+}
