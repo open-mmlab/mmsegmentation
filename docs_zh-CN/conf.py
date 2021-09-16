@@ -78,18 +78,18 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'pytorch_sphinx_theme'
 html_theme_path = [pytorch_sphinx_theme.get_html_theme_path()]
 html_theme_options = {
-    # 'logo_url': 'https://mmocr.readthedocs.io/en/latest/',
+    # 'logo_url': 'https://mmsegmentation.readthedocs.io/en/latest/',
     'menu': [
         {
             'name':
             'Tutorial',
             'url':
-            'https://colab.research.google.com/github/'
-            'open-mmlab/mmocr/blob/main/demo/MMOCR_Tutorial.ipynb'
+            'https://github.com/open-mmlab/mmsegmentation/blob/master/'
+            'demo/MMSegmentation_Tutorial.ipynb'
         },
         {
             'name': 'GitHub',
-            'url': 'https://github.com/open-mmlab/mmocr'
+            'url': 'https://github.com/open-mmlab/mmsegmentation'
         },
         {
             'name':
@@ -99,11 +99,6 @@ html_theme_options = {
                     'name': 'MMCV',
                     'url': 'https://github.com/open-mmlab/mmcv',
                     'description': 'Foundational library for computer vision'
-                },
-                {
-                    'name': 'MMDetection',
-                    'url': 'https://github.com/open-mmlab/mmdetection',
-                    'description': 'Object detection toolbox and benchmark'
                 },
             ]
         },
@@ -120,8 +115,8 @@ html_theme_options = {
                     'url': 'https://github.com/open-mmlab/mmclassification',
                 },
                 {
-                    'name': 'MMSegmentation',
-                    'url': 'https://github.com/open-mmlab/mmsegmentation',
+                    'name': 'MMOCR',
+                    'url': 'https://github.com/open-mmlab/mmocr',
                 },
                 {
                     'name': 'MMDetection3D',
