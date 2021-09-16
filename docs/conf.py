@@ -119,8 +119,8 @@ html_theme_options = {
                     'url': 'https://github.com/open-mmlab/mmocr',
                 },
                 {
-                    'name': 'MMDetection3D',
-                    'url': 'https://github.com/open-mmlab/mmdetection3d',
+                    'name': 'MMDetection',
+                    'url': 'https://github.com/open-mmlab/mmdetection',
                 },
                 {
                     'name': 'MMEditing',
