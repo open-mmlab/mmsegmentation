@@ -95,7 +95,6 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
 - [x] [SegFormer (ArXiv'2021)](configs/segformer)
-- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
 
 已支持的数据集：
 

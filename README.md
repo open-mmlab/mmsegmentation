@@ -96,7 +96,6 @@ Supported methods:
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
 - [x] [SegFormer (ArXiv'2021)](configs/segformer)
-- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
 
 Supported datasets:
 
