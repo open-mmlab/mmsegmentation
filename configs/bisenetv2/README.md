@@ -1,4 +1,4 @@
-# Dynamic Multi-scale Filters for Semantic Segmentation
+# Bilateral network with guided aggregation for real-time semantic segmentation
 
 ## Introduction
 

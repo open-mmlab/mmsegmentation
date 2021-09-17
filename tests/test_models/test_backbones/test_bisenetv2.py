@@ -3,6 +3,8 @@ import torch
 from mmcv.cnn import ConvModule
 
 from mmseg.models.backbones import BiSeNetV2
+from mmseg.models.backbones.bisenetv2 import (BGALayer, DetailBranch,
+                                              SemanticBranch)
 
 
 def test_bisenetv2_backbone():
@@ -32,8 +34,24 @@ def test_bisenetv2_backbone():
     feat = model(imgs)
     assert len(feat) == 5
 
-    # Add unittests for modules in bisenetv2
-    backbone = BiSeNetV2()
-    assert isinstance(backbone.detail.detail_branch[0][0], ConvModule)
-    assert backbone.semantic.stage1.pool.stride == 2
-    assert isinstance(backbone.bga.conv, ConvModule)
+
+def test_bisenetv2_DetailBranch():
+    x = torch.randn(1, 3, 512, 1024)
+    detail_branch = DetailBranch(detail_channels=(64, 64, 128))
+    assert isinstance(detail_branch.detail_branch[0][0], ConvModule)
+    x_out = detail_branch(x)
+    assert x_out.shape == torch.Size([1, 128, 64, 128])
+
+
+def test_bisenetv2_SemanticBranch():
+    semantic_branch = SemanticBranch(semantic_channels=(16, 32, 64, 128))
+    assert semantic_branch.stage1.pool.stride == 2
+
+def test_bisenetv2_BGALayer():
+    x_a = torch.randn(1, 128, 64, 128)
+    x_b = torch.randn(1, 128, 16, 32)
+    bga = BGALayer()
+    assert isinstance(bga.conv, ConvModule)
+    x_out = bga(x_a, x_b)
+    assert x_out.shape == torch.Size([1, 128, 64, 128])
+
