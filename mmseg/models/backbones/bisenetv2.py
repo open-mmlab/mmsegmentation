@@ -458,7 +458,6 @@ class BGALayer(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
         super(BGALayer, self).__init__(init_cfg=init_cfg)
-
         self.out_channels = out_channels
         self.align_corners = align_corners
         self.detail_dwconv = nn.Sequential(
