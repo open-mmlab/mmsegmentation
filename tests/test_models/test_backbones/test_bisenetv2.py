@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
+from mmcv.cnn import ConvModule
 
 from mmseg.models.backbones import BiSeNetV2
 
@@ -30,3 +31,9 @@ def test_bisenetv2_backbone():
     imgs = torch.randn(batch_size, 3, 527, 952)
     feat = model(imgs)
     assert len(feat) == 5
+
+    # Add unittests for modules in bisenetv2
+    backbone = BiSeNetV2()
+    assert isinstance(backbone.detail.detail_branch[0][0], ConvModule)
+    assert backbone.semantic.stage1.pool.stride == 2
+    assert isinstance(backbone.bga.conv, ConvModule)

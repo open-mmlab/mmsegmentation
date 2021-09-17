@@ -17,20 +17,22 @@ class DetailBranch(BaseModule):
         detail_channels (Tuple[int]): Size of channel numbers of each stage
             in Detail Branch, in paper it has 3 stages.
             Default: (64, 64, 128).
-        in_channel (int): Channel of input image. Default: 3.
+        in_channels (int): The number of channels of input image. Default: 3.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
         norm_cfg (dict | None): Config of norm layers.
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     Returns:
         x (torch.Tensor): Feature map of Detail Branch.
     """
 
     def __init__(self,
                  detail_channels=(64, 64, 128),
-                 in_channel=3,
+                 in_channels=3,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
@@ -42,7 +44,7 @@ class DetailBranch(BaseModule):
                 detail_branch.append(
                     nn.Sequential(
                         ConvModule(
-                            in_channels=in_channel,
+                            in_channels=in_channels,
                             out_channels=detail_channels[i],
                             kernel_size=3,
                             stride=2,
@@ -101,7 +103,7 @@ class StemBlock(BaseModule):
     """Stem Block at the beginning of Semantic Branch.
 
     Args:
-        in_channel (int): Number of input channels.
+        in_channels (int): Number of input channels.
             Default: 3.
         out_channels (int): Number of output channels.
             Default: 16.
@@ -111,12 +113,14 @@ class StemBlock(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     Returns:
         x (torch.Tensor): First feature map in Semantic Branch.
     """
 
     def __init__(self,
-                 in_channel=3,
+                 in_channels=3,
                  out_channels=16,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
@@ -125,7 +129,7 @@ class StemBlock(BaseModule):
         super(StemBlock, self).__init__(init_cfg=init_cfg)
 
         self.conv_first = ConvModule(
-            in_channels=in_channel,
+            in_channels=in_channels,
             out_channels=out_channels,
             kernel_size=3,
             stride=2,
@@ -187,6 +191,8 @@ class GELayer(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     Returns:
         x (torch.Tensor): Intermidiate feature map in
             Semantic Branch.
@@ -297,7 +303,7 @@ class CEBlock(BaseModule):
     """Context Embedding Block for large receptive filed in Semantic Branch.
 
     Args:
-        in_channel (int): Number of input channels.
+        in_channels (int): Number of input channels.
             Default: 3.
         out_channels (int): Number of output channels.
             Default: 16.
@@ -307,19 +313,21 @@ class CEBlock(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     Returns:
         x (torch.Tensor): Last feature map in Semantic Branch.
     """
 
     def __init__(self,
-                 in_channel=3,
+                 in_channels=3,
                  out_channels=16,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
         super(CEBlock, self).__init__(init_cfg=init_cfg)
-        self.in_channels = in_channel
+        self.in_channels = in_channels
         self.out_channels = out_channels
         self.gap = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
@@ -333,7 +341,7 @@ class CEBlock(BaseModule):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
-        # TODO: in paper here is naive conv2d, no bn-relu
+        # Note: in paper here is naive conv2d, no bn-relu
         self.conv_last = ConvModule(
             in_channels=self.out_channels,
             out_channels=self.out_channels,
@@ -364,6 +372,8 @@ class SemanticBranch(BaseModule):
         in_channel(int): Channel of input image. Default: 3.
         exp_ratio (int): Expansion ratio for middle channels.
             Default: 6.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     Returns:
         semantic_outs (List[torch.Tensor]): List of several feature maps
             for auxiliary heads (Booster) and Bilateral
@@ -434,6 +444,8 @@ class BGALayer(BaseModule):
             Default: dict(type='BN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     Returns:
         output (torch.Tensor): Output feature map for Segment heads.
     """
@@ -496,7 +508,6 @@ class BGALayer(BaseModule):
                 pw_norm_cfg=None,
                 pw_act_cfg=None,
             ))
-        # TODO: does this really has no relu?
         self.conv = ConvModule(
             in_channels=self.out_channels,
             out_channels=self.out_channels,
@@ -533,7 +544,7 @@ class BGALayer(BaseModule):
 @BACKBONES.register_module()
 class BiSeNetV2(BaseModule):
     """BiSeNetV2: Bilateral Network with Guided Aggregation for
-    Real-time Semantic Segmentation
+    Real-time Semantic Segmentation.
 
     This backbone is the implementation of
     `BiSeNetV2 <https://arxiv.org/abs/2004.02147>`_.
@@ -578,7 +589,7 @@ class BiSeNetV2(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
         if init_cfg is None:
-            self.init_cfg = [
+            init_cfg = [
                 dict(type='Kaiming', layer='Conv2d'),
                 dict(
                     type='Constant', val=1, layer=['_BatchNorm', 'GroupNorm'])
