@@ -75,7 +75,7 @@ def get_final_results(log_json_path, iter_num):
 def parse_args():
     parser = argparse.ArgumentParser(description='Gather benchmarked models')
     parser.add_argument(
-        '-c', '--config-name', type=str, help='Process the selected config.')
+        '-f', '--config-name', type=str, help='Process the selected config.')
     parser.add_argument(
         '-w',
         '--work-dir',
