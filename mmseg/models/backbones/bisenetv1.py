@@ -249,7 +249,7 @@ class FeatureFusionModule(BaseModule):
         x_concat = torch.cat([x_sp, x_cp], dim=1)
         x_fuse = self.conv1(x_concat)
         x_atten = self.gap(x_fuse)
-        # TODO: No BN and more 1x1 conv in paper.
+        # Note: No BN and more 1x1 conv in paper.
         x_atten = self.conv_atten(x_atten)
         x_atten = x_fuse * x_atten
         x_out = x_atten + x_fuse
@@ -299,12 +299,12 @@ class BiSeNetV1(BaseModule):
                  init_cfg=None):
 
         super(BiSeNetV1, self).__init__(init_cfg=init_cfg)
-        if len(spatial_channels) != 4:
-            raise AssertionError('Length of input channels of Spatial \
-                                 Path must be 4!')
-        if len(context_channels) != 3:
-            raise AssertionError('Length of input channels of Context \
-                                 Path must be 3!')
+        assert len(spatial_channels) == 4, 'Length of input channels \
+                                           of Spatial Path must be 4!'
+
+        assert len(context_channels) == 3, 'Length of input channels \
+                                           of Context Path must be 3!'
+
         self.out_indices = out_indices
         self.align_corners = align_corners
         self.context_path = ContextPath(backbone_cfg, context_channels,
