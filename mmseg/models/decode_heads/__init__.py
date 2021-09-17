@@ -6,11 +6,13 @@ from .cc_head import CCHead
 from .da_head import DAHead
 from .dm_head import DMHead
 from .dnl_head import DNLHead
+from .dpt_head import DPTHead
 from .ema_head import EMAHead
 from .enc_head import EncHead
 from .fcn_head import FCNHead
 from .fpn_head import FPNHead
 from .gc_head import GCHead
+from .isa_head import ISAHead
 from .lraspp_head import LRASPPHead
 from .nl_head import NLHead
 from .ocr_head import OCRHead
@@ -29,5 +31,5 @@ __all__ = [
     'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
     'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
-    'SETRMLAHead', 'SegformerHead'
+    'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegformerHead', 'ISAHead'
 ]

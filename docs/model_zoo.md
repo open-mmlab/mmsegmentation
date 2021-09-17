@@ -176,4 +176,6 @@ The training speed is reported as followed, in terms of second per iter (s/iter)
 | [CASILVision](https://github.com/CSAILVision/semantic-segmentation-pytorch) | 1.15           | N/A          |
 | [vedaseg](https://github.com/Media-Smart/vedaseg)                           | 0.95           | 1.25       |
 
-Note: The output stride of DeepLabV3+ is 8.
+:::{note}
+The output stride of DeepLabV3+ is 8.
+:::

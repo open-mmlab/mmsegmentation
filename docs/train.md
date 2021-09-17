@@ -19,6 +19,14 @@ To trade speed with GPU memory, you may pass in `--options model.backbone.with_c
 
 ### Train with a single GPU
 
+official support:
+
+```shell
+./tools/dist_train.sh ${CONFIG_FILE} 1 [optional arguments]
+```
+
+experimental support (Convert SyncBN to BN):
+
 ```shell
 python tools/train.py ${CONFIG_FILE} [optional arguments]
 ```

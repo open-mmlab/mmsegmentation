@@ -1,6 +1,3 @@
-API Reference
-==============
-
 mmseg.apis
 --------------
 .. automodule:: mmseg.apis

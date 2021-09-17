@@ -36,6 +36,8 @@ def calculate_uncertainty(seg_logits):
 class PointHead(BaseCascadeDecodeHead):
     """A mask point head use in PointRend.
 
+    This head is implemented of `PointRend: Image Segmentation as
+    Rendering <https://arxiv.org/abs/1912.08193>`_.
     ``PointHead`` use shared multi-layer perceptron (equivalent to
     nn.Conv1d) to predict the logit of input points. The fine-grained feature
     and coarse feature will be concatenate together for predication.
