@@ -47,6 +47,7 @@ def test_bisenetv2_SemanticBranch():
     semantic_branch = SemanticBranch(semantic_channels=(16, 32, 64, 128))
     assert semantic_branch.stage1.pool.stride == 2
 
+
 def test_bisenetv2_BGALayer():
     x_a = torch.randn(1, 128, 64, 128)
     x_b = torch.randn(1, 128, 16, 32)
@@ -54,4 +55,3 @@ def test_bisenetv2_BGALayer():
     assert isinstance(bga.conv, ConvModule)
     x_out = bga(x_a, x_b)
     assert x_out.shape == torch.Size([1, 128, 64, 128])
-
