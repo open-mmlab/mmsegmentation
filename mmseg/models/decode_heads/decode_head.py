@@ -80,22 +80,12 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         self.ignore_index = ignore_index
         self.align_corners = align_corners
         self.loss_decode = nn.ModuleList()
-        self.loss_names = []
+
         if isinstance(loss_decode, dict):
-            if 'name' in loss_decode:
-                name = loss_decode.pop('name')
-            else:
-                name = 'loss_seg'
             self.loss_decode.append(build_loss(loss_decode))
-            self.loss_names.append(name)
         elif isinstance(loss_decode, (list, tuple)):
-            for i, loss in enumerate(loss_decode):
-                if 'name' in loss:
-                    name = loss.pop('name')
-                else:
-                    name = str(i)
+            for loss in loss_decode:
                 self.loss_decode.append(build_loss(loss))
-                self.loss_names.append('loss_' + name)
         else:
             raise TypeError(f'loss_decode must be a dict or sequence of dict,\
                 but got {type(loss_decode)}')
@@ -248,11 +238,12 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
-        for loss_name, loss_decode in zip(self.loss_names, self.loss_decode):
-            loss[loss_name] = loss_decode(
+        for loss_decode in self.loss_decode:
+            loss[loss_decode.loss_name] = loss_decode(
                 seg_logit,
                 seg_label,
                 weight=seg_weight,
                 ignore_index=self.ignore_index)
+
         loss['acc_seg'] = accuracy(seg_logit, seg_label)
         return loss

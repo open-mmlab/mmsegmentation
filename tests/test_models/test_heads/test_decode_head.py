@@ -92,7 +92,7 @@ def test_decode_head():
         head, inputs = to_cuda(head, inputs)
         head, target = to_cuda(head, target)
     loss = head.losses(seg_logit=inputs, seg_label=target)
-    assert 'loss_seg' in loss
+    assert 'loss_ce' in loss
 
     # test multi-loss, loss_decode is list of dict
     inputs = torch.randn(2, 19, 8, 8).float()
@@ -109,8 +109,8 @@ def test_decode_head():
         head, inputs = to_cuda(head, inputs)
         head, target = to_cuda(head, target)
     loss = head.losses(seg_logit=inputs, seg_label=target)
-    assert 'loss_ce_1' in loss
-    assert 'loss_ce_2' in loss
+    assert 'ce_1' in loss
+    assert 'ce_2' in loss
 
     # 'loss_decode' must be a dict or sequence of dict
     with pytest.raises(TypeError):
@@ -130,6 +130,6 @@ def test_decode_head():
         head, inputs = to_cuda(head, inputs)
         head, target = to_cuda(head, target)
     loss = head.losses(seg_logit=inputs, seg_label=target)
-    assert 'loss_ce_1' in loss
-    assert 'loss_ce_2' in loss
-    assert 'loss_ce_3' in loss
+    assert 'ce_1' in loss
+    assert 'ce_2' in loss
+    assert 'ce_3' in loss
