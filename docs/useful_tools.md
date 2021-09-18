@@ -349,7 +349,7 @@ You should see something similar to:
 And you can use `test_torchserver.py` to compare result of torchserver and pytorch, and visualize them.
 
 ```shell
-python tools/deployment/test_torchserver.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} ${MODEL_NAME}
+python tools/test_torchserver.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} ${MODEL_NAME}
 [--inference-addr ${INFERENCE_ADDR}] [--result-image ${RESULT_IMAGE}] [--device ${DEVICE}]
 ```
 
