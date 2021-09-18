@@ -50,6 +50,10 @@ autodoc_mock_imports = [
     'matplotlib', 'pycocotools', 'mmseg.version', 'mmcv.ops'
 ]
 
+# Ignore >>> when copying code
+copybutton_prompt_text = r'>>> |\.\.\. '
+copybutton_prompt_is_regexp = True
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -78,7 +82,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'pytorch_sphinx_theme'
 html_theme_path = [pytorch_sphinx_theme.get_html_theme_path()]
 html_theme_options = {
-    # 'logo_url': 'https://mmsegmentation.readthedocs.io/en/latest/',
+    'logo_url':
+    'https://mmsegmentation.readthedocs.io/en/latest/',
     'menu': [
         {
             'name':
@@ -155,6 +160,14 @@ html_theme_options = {
                 {
                     'name': 'GitHub',
                     'url': 'https://github.com/open-mmlab/'
+                },
+                {
+                    'name': 'Twitter',
+                    'url': 'https://twitter.com/OpenMMLab'
+                },
+                {
+                    'name': 'Zhihu',
+                    'url': 'https://zhihu.com/people/openmmlab'
                 },
             ]
         },
