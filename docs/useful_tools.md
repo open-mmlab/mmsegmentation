@@ -345,3 +345,20 @@ plt.show()
 You should see something similar to:
 
 ![3dogs_mask](../resources/3dogs_mask.png)
+
+And you can use `test_torchserver.py` to compare result of torchserver and pytorch, and visualize them.
+
+```shell
+python tools/deployment/test_torchserver.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} ${MODEL_NAME}
+[--inference-addr ${INFERENCE_ADDR}] [--result-image ${RESULT_IMAGE}] [--device ${DEVICE}]
+```
+
+Example:
+
+```shell
+python tools/deployment/test_torchserver.py \
+demo.jpg \
+configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py \
+checkpoint/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth \
+fcn
+```
