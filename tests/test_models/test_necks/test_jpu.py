@@ -22,4 +22,4 @@ def test_fastfcn_neck():
     assert feat[0].shape == torch.Size([batch_size, 256, 128, 256])
     assert feat[1].shape == torch.Size([batch_size, 512, 64, 128])
     assert feat[2].shape == torch.Size([batch_size, 1024, 32, 64])
-    assert feat[3].shape == torch.Size([batch_size, 2048, 16, 32])
+    assert feat[3].shape == torch.Size([batch_size, 2048, 64, 128])
