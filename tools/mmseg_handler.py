@@ -5,6 +5,7 @@ import os
 import cv2
 import mmcv
 import torch
+from mmcv.cnn.utils.sync_bn import revert_sync_batchnorm
 from ts.torch_handler.base_handler import BaseHandler
 
 from mmseg.apis import inference_segmentor, init_segmentor
@@ -26,7 +27,7 @@ class MMsegHandler(BaseHandler):
         self.config_file = os.path.join(model_dir, 'config.py')
 
         self.model = init_segmentor(self.config_file, checkpoint, self.device)
-        self.model = mmcv.revert_sync_batchnorm(self.model)
+        self.model = revert_sync_batchnorm(self.model)
         self.initialized = True
 
     def preprocess(self, data):
