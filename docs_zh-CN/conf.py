@@ -50,6 +50,10 @@ autodoc_mock_imports = [
     'matplotlib', 'pycocotools', 'mmseg.version', 'mmcv.ops'
 ]
 
+# Ignore >>> when copying code
+copybutton_prompt_text = r'>>> |\.\.\. '
+copybutton_prompt_is_regexp = True
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -78,11 +82,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'pytorch_sphinx_theme'
 html_theme_path = [pytorch_sphinx_theme.get_html_theme_path()]
 html_theme_options = {
-    # 'logo_url': 'https://mmsegmentation.readthedocs.io/en/latest/',
+    'logo_url':
+    'https://mmsegmentation.readthedocs.io/zh-CN/latest/',
     'menu': [
         {
             'name':
-            'Tutorial',
+            '教程',
             'url':
             'https://github.com/open-mmlab/mmsegmentation/blob/master/'
             'demo/MMSegmentation_Tutorial.ipynb'
@@ -93,18 +98,18 @@ html_theme_options = {
         },
         {
             'name':
-            'Upstream',
+            '上游库',
             'children': [
                 {
                     'name': 'MMCV',
                     'url': 'https://github.com/open-mmlab/mmcv',
-                    'description': 'Foundational library for computer vision'
+                    'description': '基础视觉库'
                 },
             ]
         },
         {
             'name':
-            'Projects',
+            '算法库',
             'children': [
                 {
                     'name': 'MMAction2',
@@ -149,12 +154,20 @@ html_theme_options = {
             'OpenMMLab',
             'children': [
                 {
-                    'name': 'Homepage',
+                    'name': '官网',
                     'url': 'https://openmmlab.com/'
                 },
                 {
                     'name': 'GitHub',
                     'url': 'https://github.com/open-mmlab/'
+                },
+                {
+                    'name': '推特',
+                    'url': 'https://twitter.com/OpenMMLab'
+                },
+                {
+                    'name': '知乎',
+                    'url': 'https://zhihu.com/people/openmmlab'
                 },
             ]
         },
