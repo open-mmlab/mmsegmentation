@@ -369,7 +369,7 @@ class SemanticBranch(BaseModule):
         semantic_channels(Tuple[int]): Size of channel numbers of
             various stages in Semantic Branch.
             Default: (16, 32, 64, 128).
-        in_channel(int): Channel of input image. Default: 3.
+        in_channels (int): Channel of input image. Default: 3.
         exp_ratio (int): Expansion ratio for middle channels.
             Default: 6.
         init_cfg (dict or list[dict], optional): Initialization config dict.
@@ -382,11 +382,11 @@ class SemanticBranch(BaseModule):
 
     def __init__(self,
                  semantic_channels=(16, 32, 64, 128),
-                 in_channel=3,
+                 in_channels=3,
                  exp_ratio=6,
                  init_cfg=None):
         super(SemanticBranch, self).__init__(init_cfg=init_cfg)
-        self.in_channels = in_channel
+        self.in_channels = in_channels
         self.semantic_channels = semantic_channels
         self.semantic_stages = []
         for i in range(len(semantic_channels)):
@@ -422,7 +422,7 @@ class SemanticBranch(BaseModule):
 
     def forward(self, x):
         semantic_outs = []
-        for i, stage_name in enumerate(self.semantic_stages):
+        for stage_name in self.semantic_stages:
             semantic_stage = getattr(self, stage_name)
             x = semantic_stage(x)
             semantic_outs.append(x)
@@ -549,22 +549,22 @@ class BiSeNetV2(BaseModule):
     `BiSeNetV2 <https://arxiv.org/abs/2004.02147>`_.
 
     Args:
-        out_indices (Tuple[int] | int, optional): Output from which stages.
-            Default: (0, 1, 2, 3, 4).
+        in_channels (int): Channel of input image. Default: 3.
         detail_channels (Tuple[int], optional): Channels of each stage
             in Detail Branch. Default: (64, 64, 128).
         semantic_channels (Tuple[int], optional): Channels of each stage
             in Semantic Branch. Default: (16, 32, 64, 128).
             See Table 1 and Figure 3 of paper for more details.
-        in_channel(int): Channel of input image. Default: 3.
         semantic_expansion_ratio (int, optional): The expansion factor
             expanding channel number of middle channels in Semantic Branch.
             Default: 6.
+        bga_channels (int, optional): Number of middle channels in
+            Bilateral Guided Aggregation Layer. Default: 128.
+        out_indices (Tuple[int] | int, optional): Output from which stages.
+            Default: (0, 1, 2, 3, 4).
         align_corners (bool, optional): The align_corners argument of
             resize operation in Bilateral Guided Aggregation Layer.
             Default: False.
-        bga_channels (int, optional): Number of middle channels in
-            Bilateral Guided Aggregation Layer. Default: 128.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
         norm_cfg (dict | None): Config of norm layers.
@@ -576,13 +576,13 @@ class BiSeNetV2(BaseModule):
     """
 
     def __init__(self,
-                 out_indices=(0, 1, 2, 3, 4),
+                 in_channels=3,
                  detail_channels=(64, 64, 128),
                  semantic_channels=(16, 32, 64, 128),
-                 in_channel=3,
                  semantic_expansion_ratio=6,
-                 align_corners=False,
                  bga_channels=128,
+                 out_indices=(0, 1, 2, 3, 4),
+                 align_corners=False,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
@@ -594,19 +594,20 @@ class BiSeNetV2(BaseModule):
                     type='Constant', val=1, layer=['_BatchNorm', 'GroupNorm'])
             ]
         super(BiSeNetV2, self).__init__(init_cfg=init_cfg)
+        self.in_channels = in_channels
         self.out_indices = out_indices
         self.detail_channels = detail_channels
         self.semantic_channels = semantic_channels
-        self.in_channel = in_channel
         self.semantic_expansion_ratio = semantic_expansion_ratio
-        self.align_corners = align_corners
         self.bga_channels = bga_channels
+        self.align_corners = align_corners
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
 
-        self.detail = DetailBranch(self.detail_channels, self.in_channel)
-        self.semantic = SemanticBranch(self.semantic_channels, self.in_channel,
+        self.detail = DetailBranch(self.detail_channels, self.in_channels)
+        self.semantic = SemanticBranch(self.semantic_channels,
+                                       self.in_channels,
                                        self.semantic_expansion_ratio)
         self.bga = BGALayer(self.bga_channels, self.align_corners)
 

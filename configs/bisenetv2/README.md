@@ -1,4 +1,4 @@
-# Bilateral network with guided aggregation for real-time semantic segmentation
+# Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic Segmentation
 
 ## Introduction
 
