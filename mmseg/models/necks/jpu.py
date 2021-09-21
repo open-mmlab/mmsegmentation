@@ -81,6 +81,21 @@ class JPU(BaseModule):
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg))
+
+        for i in range(3):
+            conv_name = f'conv{i+3}'
+            conv_layer = nn.Sequential(
+            ConvModule(
+                self.in_channels[i-3],
+                self.out_channels,
+                kernel_size=3,
+                padding=1,
+                bias=False,
+                conv_cfg=conv_cfg,
+                norm_cfg=norm_cfg,
+                act_cfg=act_cfg))
+            self.add_module(conv_name, conv_layer)
+
         self.dilation1 = nn.Sequential(
             DepthwiseSeparableConvModule(
                 in_channels=3 * self.out_channels,
@@ -136,6 +151,7 @@ class JPU(BaseModule):
         x_16 = inputs[2]
         x_32 = inputs[3]
         feats = [self.conv5(x_32), self.conv4(x_16), self.conv3(x_8)]
+        
         _, _, h, w = feats[-1].size()
         feats[-2] = resize(
             feats[-2],
