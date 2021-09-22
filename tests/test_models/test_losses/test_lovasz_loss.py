@@ -18,13 +18,18 @@ def test_lovasz_loss():
 
     # reduction should be 'none' when per_image is False.
     with pytest.raises(AssertionError):
-        loss_cfg = dict(type='LovaszLoss', loss_type='multi_class',
-                        loss_name='loss_lovasz')
+        loss_cfg = dict(
+            type='LovaszLoss',
+            loss_type='multi_class',
+            loss_name='loss_lovasz')
         build_loss(loss_cfg)
 
     # test lovasz loss with loss_type = 'multi_class' and per_image = False
-    loss_cfg = dict(type='LovaszLoss', reduction='none', loss_weight=1.0,
-                    loss_name='loss_lovasz')
+    loss_cfg = dict(
+        type='LovaszLoss',
+        reduction='none',
+        loss_weight=1.0,
+        loss_name='loss_lovasz')
     lovasz_loss = build_loss(loss_cfg)
     logits = torch.rand(1, 3, 4, 4)
     labels = (torch.rand(1, 4, 4) * 2).long()
