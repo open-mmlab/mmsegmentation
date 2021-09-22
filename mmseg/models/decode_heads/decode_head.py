@@ -238,12 +238,20 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
-        for loss_decode in self.loss_decode:
-            loss[loss_decode.loss_name] = loss_decode(
-                seg_logit,
-                seg_label,
-                weight=seg_weight,
-                ignore_index=self.ignore_index)
+        for i, loss_decode in enumerate(self.loss_decode):
+            if loss_decode.loss_name not in loss:
+                loss[loss_decode.loss_name] = loss_decode(
+                    seg_logit,
+                    seg_label,
+                    weight=seg_weight,
+                    ignore_index=self.ignore_index)
+            else:
+                loss_name = 'loss_' + str(i)
+                loss[loss_name] = loss_decode(
+                    seg_logit,
+                    seg_label,
+                    weight=seg_weight,
+                    ignore_index=self.ignore_index)
 
         loss['acc_seg'] = accuracy(seg_logit, seg_label)
         return loss

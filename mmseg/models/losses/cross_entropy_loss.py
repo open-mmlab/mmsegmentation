@@ -161,7 +161,7 @@ class CrossEntropyLoss(nn.Module):
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0,
-                 name='loss_ce'):
+                 loss_name='loss_ce'):
         super(CrossEntropyLoss, self).__init__()
         assert (use_sigmoid is False) or (use_mask is False)
         self.use_sigmoid = use_sigmoid
@@ -176,7 +176,7 @@ class CrossEntropyLoss(nn.Module):
             self.cls_criterion = mask_cross_entropy
         else:
             self.cls_criterion = cross_entropy
-        self._loss_name = name
+        self._loss_name = loss_name
 
     def forward(self,
                 cls_score,

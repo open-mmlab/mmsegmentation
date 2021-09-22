@@ -58,11 +58,11 @@ For loss calculation, we support multiple losses training concurrently. Here is 
 ```python
 _base_ = './fcn_unet_s5-d16_64x64_40k_drive.py'
 model = dict(
-    decode_head=dict(loss_decode=[dict(type='CrossEntropyLoss', name='CE', loss_weight=1.0),
-            dict(type='DiceLoss', name='Dice', loss_weight=3.0)]),
-    auxiliary_head=dict(loss_decode=[dict(type='CrossEntropyLoss', name='CE',loss_weight=1.0),
-            dict(type='DiceLoss', name='Dice', loss_weight=3.0)]),
+    decode_head=dict(loss_decode=[dict(type='CrossEntropyLoss', loss_name='CE', loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='Dice', loss_weight=3.0)]),
+    auxiliary_head=dict(loss_decode=[dict(type='CrossEntropyLoss', loss_name='CE',loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='Dice', loss_weight=3.0)]),
     )
 ```
 
-In this way, `loss_weight` and `name` will be weight and name in training log of corresponding loss, respectively.
+In this way, `loss_weight` and `loss_name` will be weight and name in training log of corresponding loss, respectively.

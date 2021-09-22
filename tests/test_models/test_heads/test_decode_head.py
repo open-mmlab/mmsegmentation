@@ -102,8 +102,8 @@ def test_decode_head():
         16,
         num_classes=19,
         loss_decode=[
-            dict(type='CrossEntropyLoss', name='ce_1'),
-            dict(type='CrossEntropyLoss', name='ce_2')
+            dict(type='CrossEntropyLoss', loss_name='ce_1'),
+            dict(type='CrossEntropyLoss', loss_name='ce_2')
         ])
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
@@ -115,6 +115,8 @@ def test_decode_head():
     # 'loss_decode' must be a dict or sequence of dict
     with pytest.raises(TypeError):
         BaseDecodeHead(3, 16, num_classes=19, loss_decode=['CrossEntropyLoss'])
+    with pytest.raises(TypeError):
+        BaseDecodeHead(3, 16, num_classes=19, loss_decode=[0])
 
     # test multi-loss, loss_decode is list of dict
     inputs = torch.randn(2, 19, 8, 8).float()
@@ -123,9 +125,9 @@ def test_decode_head():
         3,
         16,
         num_classes=19,
-        loss_decode=(dict(type='CrossEntropyLoss', name='ce_1'),
-                     dict(type='CrossEntropyLoss', name='ce_2'),
-                     dict(type='CrossEntropyLoss', name='ce_3')))
+        loss_decode=(dict(type='CrossEntropyLoss', loss_name='ce_1'),
+                     dict(type='CrossEntropyLoss', loss_name='ce_2'),
+                     dict(type='CrossEntropyLoss', loss_name='ce_3')))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
         head, target = to_cuda(head, target)
@@ -133,3 +135,21 @@ def test_decode_head():
     assert 'ce_1' in loss
     assert 'ce_2' in loss
     assert 'ce_3' in loss
+
+    # test multi-loss, loss_decode is list of dict, names of them are identical
+    inputs = torch.randn(2, 19, 8, 8).float()
+    target = torch.ones(2, 1, 64, 64).long()
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=(dict(type='CrossEntropyLoss', loss_name='loss_ce'),
+                     dict(type='CrossEntropyLoss', loss_name='loss_ce'),
+                     dict(type='CrossEntropyLoss', loss_name='loss_ce')))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss = head.losses(seg_logit=inputs, seg_label=target)
+    assert 'loss_ce' in loss
+    assert 'loss_1' in loss
+    assert 'loss_2' in loss
