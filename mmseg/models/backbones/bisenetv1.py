@@ -30,6 +30,9 @@ class SpatialPath(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
         super(SpatialPath, self).__init__(init_cfg=init_cfg)
+        assert len(num_channels) == 4, 'Length of input channels \
+                                        of Spatial Path must be 4!'
+
         self.layers = []
         for i in range(len(num_channels)):
             layer_name = f'layer{i + 1}'
@@ -150,6 +153,9 @@ class ContextPath(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
         super(ContextPath, self).__init__(init_cfg=init_cfg)
+        assert len(context_channels) == 3, 'Length of input channels \
+                                           of Context Path must be 3!'
+
         self.backbone = build_backbone(backbone_cfg)
 
         self.align_corners = align_corners
@@ -267,7 +273,7 @@ class BiSeNetV1(BaseModule):
     Args:
         backbone_cfg:(dict): Config of backbone of
             Context Path.
-        in_channels(int): The number of channels of input
+        in_channels (int): The number of channels of input
             image. Default: 3.
         spatial_channels (Tuple[int]): Size of channel numbers of
             various layers in Spatial Path.
