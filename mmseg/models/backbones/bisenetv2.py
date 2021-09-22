@@ -396,12 +396,16 @@ class SemanticBranch(BaseModule):
                 self.add_module(
                     stage_name,
                     StemBlock(self.in_channels, semantic_channels[i]))
-            elif i != (len(semantic_channels) - 1):
+            elif i == (len(semantic_channels) - 1):
                 self.add_module(
                     stage_name,
                     nn.Sequential(
                         GELayer(semantic_channels[i - 1], semantic_channels[i],
                                 exp_ratio, 2),
+                        GELayer(semantic_channels[i], semantic_channels[i],
+                                exp_ratio, 1),
+                        GELayer(semantic_channels[i], semantic_channels[i],
+                                exp_ratio, 1),
                         GELayer(semantic_channels[i], semantic_channels[i],
                                 exp_ratio, 1)))
             else:
@@ -411,11 +415,8 @@ class SemanticBranch(BaseModule):
                         GELayer(semantic_channels[i - 1], semantic_channels[i],
                                 exp_ratio, 2),
                         GELayer(semantic_channels[i], semantic_channels[i],
-                                exp_ratio, 1),
-                        GELayer(semantic_channels[i], semantic_channels[i],
-                                exp_ratio, 1),
-                        GELayer(semantic_channels[i], semantic_channels[i],
                                 exp_ratio, 1)))
+
         self.add_module(f'stage{len(semantic_channels)}_CEBlock',
                         CEBlock(semantic_channels[-1], semantic_channels[-1]))
         self.semantic_stages.append(f'stage{len(semantic_channels)}_CEBlock')
