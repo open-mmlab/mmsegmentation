@@ -17,6 +17,7 @@ model = dict(
         type='JPU',
         in_channels=(256, 512, 1024, 2048),
         out_channels=512,
+        dilations=(1, 2, 4, 8),
         align_corners=False,
         out_indices=(0, 1, 2, 3),
         norm_cfg=norm_cfg),
