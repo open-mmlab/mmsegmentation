@@ -34,9 +34,11 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             None: Only one select feature map is allowed.
             Default: None.
         loss_decode (dict | Sequence[dict]): Config of decode loss.
+            The `loss_name` is property of corresponding loss function which
+            could be shown in training log.
              e.g. dict(type='CrossEntropyLoss'),
-             [dict(type='CrossEntropyLoss', name='CrossEntropy'),
-              dict(type='DiceLoss', name='Dice')]
+             [dict(type='CrossEntropyLoss', loss_name='CE'),
+              dict(type='DiceLoss', loss_name='Dice')]
             Default: dict(type='CrossEntropyLoss').
         ignore_index (int | None): The label index to be ignored. When using
             masked BCE loss, ignore_index should be set to None. Default: 255
