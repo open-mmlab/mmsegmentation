@@ -10,7 +10,9 @@ from mmseg.apis import inference_segmentor, init_segmentor
 
 
 def parse_args():
-    parser = ArgumentParser()
+    parser = ArgumentParser(
+        description='Compare result of torchserver and pytorch,'
+        'and visualize them.')
     parser.add_argument('img', help='Image file')
     parser.add_argument('config', help='Config file')
     parser.add_argument('checkpoint', help='Checkpoint file')
