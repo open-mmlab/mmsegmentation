@@ -13,18 +13,18 @@ class SpatialPath(BaseModule):
     and encode affluent spatial information.
 
     Args:
+        in_channels(int): The number of channels of input
+            image. Default: 3.
         num_channels (Tuple[int]): The number of channels of
             each layers in Spatial Path.
             Default: (64, 64, 64, 128).
-        in_channels(int): The number of channels of input
-            image. Default: 3.
     Returns:
         x (torch.Tensor): Feature map for Feature Fusion Module.
     """
 
     def __init__(self,
-                 num_channels=(64, 64, 64, 128),
                  in_channels=3,
+                 num_channels=(64, 64, 64, 128),
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
@@ -315,7 +315,7 @@ class BiSeNetV1(BaseModule):
         self.align_corners = align_corners
         self.context_path = ContextPath(backbone_cfg, context_channels,
                                         self.align_corners)
-        self.spatial_path = SpatialPath(spatial_channels, in_channels)
+        self.spatial_path = SpatialPath(in_channels, spatial_channels)
         self.ffm = FeatureFusionModule(context_channels[1], out_channels)
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
