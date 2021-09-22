@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/tensorflow/models/tree/master/research/deeplab">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1801.04381">MobileNetV2 (CVPR'2018)</a></summary>
+
 ```latex
 @inproceedings{sandler2018mobilenetv2,
   title={Mobilenetv2: Inverted residuals and linear bottlenecks},

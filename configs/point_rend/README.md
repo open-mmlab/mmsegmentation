@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://
+github.com/facebookresearch/detectron2/
+tree/master/projects/PointRend">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1912.08193">PointRend (CVPR'2020)</a></summary>
+
 ```
 @inproceedings{kirillov2020pointrend,
   title={Pointrend: Image segmentation as rendering},

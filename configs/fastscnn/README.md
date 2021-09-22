@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1902.04502">Fast-SCNN (ArXiv'2019)</a></summary>
+
 ```latex
 @article{poudel2019fast,
   title={Fast-scnn: Fast semantic segmentation network},

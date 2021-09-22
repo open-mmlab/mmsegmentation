@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/junfu1115/DANet/">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1809.02983">DANet (CVPR'2019)</a></summary>
+
 ```latex
 @article{fu2018dual,
   title={Dual Attention Network for Scene Segmentation},

@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/hszhao/PSPNet">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1612.01105">PSPNet (CVPR'2017)</a></summary>
+
 ```latex
 @inproceedings{zhao2017pspnet,
   title={Pyramid Scene Parsing Network},

@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/NVlabs/SegFormer">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/2105.15203">SegFormer (ArXiv'2021)</a></summary>
+
 ```latex
 @article{xie2021segformer,
   title={SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers},

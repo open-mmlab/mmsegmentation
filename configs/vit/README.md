@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/google-research/vision_transformer">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/pdf/2010.11929.pdf">Vision Transformer (ICLR'2021)</a></summary>
+
 ```latex
 @article{dosoViTskiy2020,
   title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},

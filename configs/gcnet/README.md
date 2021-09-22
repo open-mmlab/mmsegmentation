@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/xvjiarui/GCNet">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1904.11492">GCNet (ICCVW'2019/TPAMI'2020)</a></summary>
+
 ```latex
 @inproceedings{cao2019gcnet,
   title={Gcnet: Non-local networks meet squeeze-excitation networks and beyond},

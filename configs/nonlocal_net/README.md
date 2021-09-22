@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/facebookresearch/video-nonlocal-net">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1711.07971">NonLocal Net (CVPR'2018)</a></summary>
+
 ```latex
 @inproceedings{wang2018non,
   title={Non-local neural networks},

@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/zhanghang1989/ResNeSt">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/2004.08955">ResNeSt (ArXiv'2020)</a></summary>
+
 ```latex
 @article{zhang2020resnest,
 title={ResNeSt: Split-Attention Networks},

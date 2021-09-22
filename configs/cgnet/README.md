@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/wutianyiRosun/CGNet">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/pdf/1811.08201.pdf">CGNet (TIP'2020)</a></summary>
+
 ```latext
 @article{wu2020cgnet,
   title={Cgnet: A light-weight context guided network for semantic segmentation},

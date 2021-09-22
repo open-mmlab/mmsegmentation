@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/CSAILVision/unifiedparsing">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/pdf/1807.10221.pdf">UPerNet (ECCV'2018)</a></summary>
+
 ```latex
 @inproceedings{xiao2018unified,
   title={Unified perceptual parsing for scene understanding},

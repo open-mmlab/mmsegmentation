@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/tensorflow/models/tree/master/research/deeplab">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1706.05587">DeepLabV3 (ArXiv'2017)</a></summary>
+
 ```latext
 @article{chen2017rethinking,
   title={Rethinking atrous convolution for semantic image segmentation},

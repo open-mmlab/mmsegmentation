@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://xialipku.github.io/EMANet">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1907.13426">EMANet (ICCV'2019)</a></summary>
+
 ```latex
 @inproceedings{li2019expectation,
   title={Expectation-maximization attention networks for semantic segmentation},

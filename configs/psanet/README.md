@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/hszhao/PSANet">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://openaccess.thecvf.com/content_ECCV_2018/papers/Hengshuang_Zhao_PSANet_Point-wise_Spatial_ECCV_2018_paper.pdf">PSANet (ECCV'2018)</a></summary>
+
 ```latex
 @inproceedings{zhao2018psanet,
   title={Psanet: Point-wise spatial attention network for scene parsing},

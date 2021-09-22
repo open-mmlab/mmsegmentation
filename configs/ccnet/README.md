@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/speedinghzl/CCNet">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1811.11721">CCNet (ICCV'2019)</a></summary>
+
 ```latex
 @article{huang2018ccnet,
     title={CCNet: Criss-Cross Attention for Semantic Segmentation},

@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/MendelXu/ANN">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1908.07678">ANN (ICCV'2019)</a></summary>
+
 ```latex
 @inproceedings{zhu2019asymmetric,
   title={Asymmetric non-local neural networks for semantic segmentation},

@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/BVLC/caffe/wiki/Model-Zoo#fcn">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1411.4038">FCN (CVPR'2015/TPAMI'2017)</a></summary>
+
 ```latex
 @article{shelhamer2017fully,
   title={Fully convolutional networks for semantic segmentation},

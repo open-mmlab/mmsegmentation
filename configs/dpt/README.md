@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/isl-org/DPT">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/2103.13413">DPT (ArXiv'2021)</a></summary>
+
 ```latex
 @article{dosoViTskiy2020,
   title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},

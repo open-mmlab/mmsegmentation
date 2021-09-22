@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html">APCNet (CVPR'2019)</a></summary>
+
 ```latex
 @InProceedings{He_2019_CVPR,
 author = {He, Junjun and Deng, Zhongying and Zhou, Lei and Wang, Yali and Qiao, Yu},

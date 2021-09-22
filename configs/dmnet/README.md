@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/Junjun2016/DMNet">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf">DMNet (ICCV'2019)</a></summary>
+
 ```latex
 @InProceedings{He_2019_ICCV,
 author = {He, Junjun and Deng, Zhongying and Qiao, Yu},

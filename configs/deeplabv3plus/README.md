@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/tensorflow/models/tree/master/research/deeplab">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1802.02611">DeepLabV3+ (CVPR'2018)</a></summary>
+
 ```latex
 @inproceedings{deeplabv3plus2018,
   title={Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation},

@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/facebookresearch/detectron2">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/1901.02446">Semantic FPN (CVPR'2019)</a></summary>
+
 ```latex
 @article{Kirillov_2019,
    title={Panoptic Feature Pyramid Networks},

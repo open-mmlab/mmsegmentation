@@ -4,6 +4,11 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/yinmh17/DNL-Semantic-Segmentation">Official Repo</a>
+
+<details>
+<summary align="middle"><a href="https://arxiv.org/abs/2006.06668">DNLNet (ECCV'2020)</a></summary>
+
 This example is to reproduce ["Disentangled Non-Local Neural Networks"](https://arxiv.org/abs/2006.06668) for semantic segmentation. It is still in progress.
 
 ## Citation
