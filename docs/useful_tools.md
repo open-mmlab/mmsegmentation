@@ -304,7 +304,7 @@ In order to serve an `MMSegmentation` model with [`TorchServe`](https://pytorch.
 ### 1. Convert model from MMSegmentation to TorchServe
 
 ```shell
-python tools/torchserver/mmseg2torchserve.py ${CONFIG_FILE} ${CHECKPOINT_FILE} \
+python tools/torchserve/mmseg2torchserve.py ${CONFIG_FILE} ${CHECKPOINT_FILE} \
 --output-folder ${MODEL_STORE} \
 --model-name ${MODEL_NAME}
 ```
@@ -360,17 +360,17 @@ You should see something similar to:
 
 ![3dogs_mask](../resources/3dogs_mask.png)
 
-And you can use `test_torchserver.py` to compare result of torchserver and pytorch, and visualize them.
+And you can use `test_torchserve.py` to compare result of torchserve and pytorch, and visualize them.
 
 ```shell
-python tools/torchserver/test_torchserver.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} ${MODEL_NAME}
+python tools/torchserve/test_torchserve.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} ${MODEL_NAME}
 [--inference-addr ${INFERENCE_ADDR}] [--result-image ${RESULT_IMAGE}] [--device ${DEVICE}]
 ```
 
 Example:
 
 ```shell
-python tools/torchserver/test_torchserver.py \
+python tools/torchserve/test_torchserve.py \
 demo/demo.png \
 configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py \
 checkpoint/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth \
