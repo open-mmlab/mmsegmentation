@@ -27,7 +27,7 @@ class JPU(BaseModule):
         end_level (int): Index of the end input backbone level (exclusive) to
             build the feature pyramid. Default: -1, which means the last level.
         dilations (tuple[int]): Dilation rate of each Depthwise
-            Separable ConvModule.
+            Separable ConvModule. Default: (1, 2, 4, 8).
         out_indices (Tuple[int] | int, optional): Output from which stages.
             Default: (0, 1, 2).
         align_corners (bool, optional): The align_corners argument of
