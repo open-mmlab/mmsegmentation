@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import warnings
 
 import torch.nn as nn
@@ -217,24 +218,41 @@ class HRModule(BaseModule):
 class HRNet(BaseModule):
     """HRNet backbone.
 
-    High-Resolution Representations for Labeling Pixels and Regions
-    arXiv: https://arxiv.org/abs/1904.04514
+    This backbone is the implementation of `High-Resolution Representations
+    for Labeling Pixels and Regions <https://arxiv.org/abs/1904.04514>`_.
 
     Args:
-        extra (dict): detailed configuration for each stage of HRNet.
+        extra (dict): Detailed configuration for each stage of HRNet.
+            There must be 4 stages, the configuration for each stage must have
+            5 keys:
+
+                - num_modules (int): The number of HRModule in this stage.
+                - num_branches (int): The number of branches in the HRModule.
+                - block (str): The type of convolution block.
+                - num_blocks (tuple): The number of blocks in each branch.
+                    The length must be equal to num_branches.
+                - num_channels (tuple): The number of channels in each branch.
+                    The length must be equal to num_branches.
         in_channels (int): Number of input image channels. Normally 3.
-        conv_cfg (dict): dictionary to construct and config conv layer.
-        norm_cfg (dict): dictionary to construct and config norm layer.
+        conv_cfg (dict): Dictionary to construct and config conv layer.
+            Default: None.
+        norm_cfg (dict): Dictionary to construct and config norm layer.
+            Use `BN` by default.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
-            and its variants only.
+            and its variants only. Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
-            memory while slowing down the training speed.
-        zero_init_residual (bool): whether to use zero init for last norm layer
-            in resblocks to let them behave as identity.
-        pretrained (str, optional): model pretrained path. Default: None
+            memory while slowing down the training speed. Default: False.
+        frozen_stages (int): Stages to be frozen (stop grad and set eval mode).
+            -1 means not freezing any parameters. Default: -1.
+        zero_init_residual (bool): Whether to use zero init for last norm layer
+            in resblocks to let them behave as identity. Default: False.
+        multiscale_output (bool): Whether to output multi-level features
+            produced by multiple branches. If False, only the first level
+            feature will be output. Default: True.
+        pretrained (str, optional): Model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
-            Default: None
+            Default: None.
 
     Example:
         >>> from mmseg.models import HRNet
@@ -285,7 +303,9 @@ class HRNet(BaseModule):
                  norm_cfg=dict(type='BN', requires_grad=True),
                  norm_eval=False,
                  with_cp=False,
+                 frozen_stages=-1,
                  zero_init_residual=False,
+                 multiscale_output=True,
                  pretrained=None,
                  init_cfg=None):
         super(HRNet, self).__init__(init_cfg)
@@ -295,7 +315,7 @@ class HRNet(BaseModule):
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be setting at the same time'
         if isinstance(pretrained, str):
-            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+            warnings.warn('DeprecationWarning: pretrained is deprecated, '
                           'please use "init_cfg" instead')
             self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
         elif pretrained is None:
@@ -310,11 +330,22 @@ class HRNet(BaseModule):
         else:
             raise TypeError('pretrained must be a str or None')
 
+        # Assert configurations of 4 stages are in extra
+        assert 'stage1' in extra and 'stage2' in extra \
+               and 'stage3' in extra and 'stage4' in extra
+        # Assert whether the length of `num_blocks` and `num_channels` are
+        # equal to `num_branches`
+        for i in range(4):
+            cfg = extra[f'stage{i + 1}']
+            assert len(cfg['num_blocks']) == cfg['num_branches'] and \
+                   len(cfg['num_channels']) == cfg['num_branches']
+
         self.extra = extra
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.norm_eval = norm_eval
         self.with_cp = with_cp
+        self.frozen_stages = frozen_stages
 
         # stem net
         self.norm1_name, norm1 = build_norm_layer(self.norm_cfg, 64, postfix=1)
@@ -386,7 +417,9 @@ class HRNet(BaseModule):
         self.transition3 = self._make_transition_layer(pre_stage_channels,
                                                        num_channels)
         self.stage4, pre_stage_channels = self._make_stage(
-            self.stage4_cfg, num_channels)
+            self.stage4_cfg, num_channels, multiscale_output=multiscale_output)
+
+        self._freeze_stages()
 
     @property
     def norm1(self):
@@ -534,6 +567,32 @@ class HRNet(BaseModule):
 
         return Sequential(*hr_modules), in_channels
 
+    def _freeze_stages(self):
+        """Freeze stages param and norm stats."""
+        if self.frozen_stages >= 0:
+
+            self.norm1.eval()
+            self.norm2.eval()
+            for m in [self.conv1, self.norm1, self.conv2, self.norm2]:
+                for param in m.parameters():
+                    param.requires_grad = False
+
+        for i in range(1, self.frozen_stages + 1):
+            if i == 1:
+                m = getattr(self, f'layer{i}')
+                t = getattr(self, f'transition{i}')
+            elif i == 4:
+                m = getattr(self, f'stage{i}')
+            else:
+                m = getattr(self, f'stage{i}')
+                t = getattr(self, f'transition{i}')
+            m.eval()
+            for param in m.parameters():
+                param.requires_grad = False
+            t.eval()
+            for param in t.parameters():
+                param.requires_grad = False
+
     def forward(self, x):
         """Forward function."""
 
@@ -575,6 +634,7 @@ class HRNet(BaseModule):
         """Convert the model into training mode will keeping the normalization
         layer freezed."""
         super(HRNet, self).train(mode)
+        self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():
                 # trick: eval have effect on BatchNorm only

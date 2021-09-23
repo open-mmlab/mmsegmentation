@@ -15,9 +15,10 @@
 
 ## Results and models
 
-Note:
+:::{note}
 `D-8`/`D-16` here corresponding to the output stride 8/16 setting for DeepLab series.
 `MG-124` stands for multi-grid dilation in the last stage of ResNet.
+:::
 
 ### Cityscapes
 

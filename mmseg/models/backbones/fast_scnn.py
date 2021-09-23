@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
@@ -270,6 +271,9 @@ class FeatureFusionModule(nn.Module):
 @BACKBONES.register_module()
 class FastSCNN(BaseModule):
     """Fast-SCNN Backbone.
+
+    This backbone is the implementation of `Fast-SCNN: Fast Semantic
+    Segmentation Network <https://arxiv.org/abs/1902.04502>`_.
 
     Args:
         in_channels (int): Number of input image channels. Default: 3.

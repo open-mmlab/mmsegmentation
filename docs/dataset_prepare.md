@@ -41,6 +41,24 @@ mmsegmentation
 │   │   │   ├── images
 │   │   │   │   ├── training
 │   │   │   │   ├── validation
+│   ├── coco_stuff10k
+│   │   ├── images
+│   │   │   ├── train2014
+│   │   │   ├── test2014
+│   │   ├── annotations
+│   │   │   ├── train2014
+│   │   │   ├── test2014
+│   │   ├── imagesLists
+│   │   │   ├── train.txt
+│   │   │   ├── test.txt
+│   │   │   ├── all.txt
+│   ├── coco_stuff164k
+│   │   ├── images
+│   │   │   ├── train2017
+│   │   │   ├── val2017
+│   │   ├── annotations
+│   │   │   ├── train2017
+│   │   │   ├── val2017
 │   ├── CHASE_DB1
 │   │   ├── images
 │   │   │   ├── training
@@ -69,7 +87,39 @@ mmsegmentation
 │   │   ├── annotations
 │   │   │   ├── training
 │   │   │   ├── validation
-
+|   ├── dark_zurich
+|   │   ├── gps
+|   │   │   ├── val
+|   │   │   └── val_ref
+|   │   ├── gt
+|   │   │   └── val
+|   │   ├── LICENSE.txt
+|   │   ├── lists_file_names
+|   │   │   ├── val_filenames.txt
+|   │   │   └── val_ref_filenames.txt
+|   │   ├── README.md
+|   │   └── rgb_anon
+|   │   |   ├── val
+|   │   |   └── val_ref
+|   ├── NighttimeDrivingTest
+|   |   ├── gtCoarse_daytime_trainvaltest
+|   |   │   └── test
+|   |   │       └── night
+|   |   └── leftImg8bit
+|   |   |   └── test
+|   |   |       └── night
+│   ├── A2D2
+|   |   ├── 20180807_145028
+|   |   ├── ...
+|   |   ├── 20181204_191844
+|   |   ├── annotations
+|   |   |   ├── test
+|   |   |   ├── train
+|   |   |   └── val
+|   |   └── images
+|   |   |   ├── test
+|   |   |   ├── train
+|   |   |   └── val
 ```
 
 ### Cityscapes
@@ -115,6 +165,50 @@ If you would like to use Pascal Context dataset, please install [Detail](https:/
 ```shell
 python tools/convert_datasets/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
 ```
+
+### COCO Stuff 10k
+
+The data could be downloaded [here](http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip) by wget.
+
+For COCO Stuff 10k dataset, please run the following commands to download and convert the dataset.
+
+```shell
+# download
+mkdir coco_stuff10k && cd coco_stuff10k
+wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip
+
+# unzip
+unzip cocostuff-10k-v1.1.zip
+
+# --nproc means 8 process for conversion, which could be omitted as well.
+python tools/convert_datasets/coco_stuff10k.py /path/to/coco_stuff10k --nproc 8
+```
+
+By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2014/*_labelTrainIds.png` are used for COCO Stuff 10k training and testing.
+
+### COCO Stuff 164k
+
+For COCO Stuff 164k dataset, please run the following commands to download and convert the augmented dataset.
+
+```shell
+# download
+mkdir coco_stuff164k && cd coco_stuff164k
+wget http://images.cocodataset.org/zips/train2017.zip
+wget http://images.cocodataset.org/zips/val2017.zip
+wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/stuffthingmaps_trainval2017.zip
+
+# unzip
+unzip train2017.zip -d images/
+unzip val2017.zip -d images/
+unzip stuffthingmaps_trainval2017.zip -d annotations/
+
+# --nproc means 8 process for conversion, which could be omitted as well.
+python tools/convert_datasets/coco_stuff164k.py /path/to/coco_stuff164k --nproc 8
+```
+
+By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2017/*_labelTrainIds.png` are used for COCO Stuff 164k training and testing.
+
+The details of this dataset could be found at [here](https://github.com/nightrome/cocostuff#downloads).
 
 ### CHASE DB1
 
@@ -163,3 +257,43 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 ```
 
 The script will make directory structure automatically.
+
+### Dark Zurich
+
+Since we only support test models on this dataset, you may only download [the validation set](https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip).
+
+### Nighttime Driving
+
+Since we only support test models on this dataset, you may only download [the test set](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip).
+
+### A2D2
+
+To set up the A2D2 semantic segmentation dataset, first download 'Dataset - Semantic Segmentation' (`camera_lidar_semantic.tar`) from the official site ([a2d2.audi/a2d2/en/download.html](https://www.a2d2.audi/a2d2/en/download.html)). Extract the downloaded file as `a2d2/camera_lidar_semantic/`. Inside this directory, there will be 10 subdirectories, each containing separate `camera`, `label`, `lidar` subfolders.
+
+Next, while in the MMSegmentation directory root, create a symbolic link from `mmsegmentation/data/a2d2` to the dataset directory `a2d2/camera_lidar_semantic`.
+
+```shell
+ln -s /absolute/path/to/a2d2/camera_lidar_semantic/ data/a2d2/
+```
+
+Finally, convert the A2D2 dataset label files to the MMSegmentation format. One can choose to generate Cityscape-like labels having 18 classes in total (default choice), as well as using the original A2D2 semantic segmentation category labels with 34 classes (reduced from 38 classes as explained bellow). The original label files will not be overwritten during conversion. It is possible to have both 18 and 34 class labels existing simultaneously.
+
+```shell
+python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic
+```
+
+The default arguments result in merging of the original 38 semantic classes into a Cityscapes-like 18 class label setup. The official A2D2 paper presents benchmark results in an unspecified but presumptively similar class taxonomy. (ref: p.8 "4. Experiment: Semantic segmentation"). Add `--choice a2d2` to use the original 34 A2D2 semantic classes.
+
+Samples are randomly split into 'train', 'val' and 'test' sets, each consisting of 28,894 samples (70.0%), 4,252 samples (10.3%) and 8,131 samples (19.7%), respectively. Add the optional argument `--train-on-val-and-test` to train on the entire dataset.  Add `--nproc N` for multiprocessing using N threads. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
+
+The converted label images will be generated within the same directory as the original labels. The conversion process also creates a new directory structure, where `img_dir/` and `label_dir/` contains symbolic links to camera and label images located within the original data folders. The optional argument `--no-symlink` creates copies of the label images instead of symbolic links.
+
+When using the original A2D2 semantic classes 34 of the original 38 semantic categories will be mapped into a `trainIds` integer by default. The following segmentation classes are ignored (i.e. trainIds 255):
+
+- Ego car:  A calibrated system should a priori know what input region corresponds to the ego vehicle.
+- Blurred area: Ambiguous semantic.
+- Rain dirt: Ambiguous semantic.
+
+The following segmentation class is merged due to extreme rarity:
+
+- Speed bumper --> RD normal street (randomly parsing 50% of dataset results in only one sample containing the 'speed_bumper' semantic)
