@@ -248,8 +248,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
             else:
-                loss_name = 'loss_' + str(i)
-                loss[loss_name] = loss_decode(
+                loss[loss_decode.loss_name] += loss_decode(
                     seg_logit,
                     seg_label,
                     weight=seg_weight,

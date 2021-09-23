@@ -151,5 +151,3 @@ def test_decode_head():
         head, target = to_cuda(head, target)
     loss = head.losses(seg_logit=inputs, seg_label=target)
     assert 'loss_ce' in loss
-    assert 'loss_1' in loss
-    assert 'loss_2' in loss
