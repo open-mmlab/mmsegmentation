@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import pytest
 import torch
 
 from mmseg.models.necks import JPU
@@ -23,3 +24,7 @@ def test_fastfcn_neck():
     assert feat[1].shape == torch.Size([batch_size, 512, 64, 128])
     assert feat[2].shape == torch.Size([batch_size, 1024, 32, 64])
     assert feat[3].shape == torch.Size([batch_size, 2048, 64, 128])
+
+    with pytest.raises(AssertionError):
+        # FastFCN input and in_channels constraints.
+        JPU(in_channels=(128, 256, 512, 1024), start_level=1, end_level=5)
