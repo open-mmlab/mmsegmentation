@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import warnings
 
 import torch.nn as nn
@@ -7,6 +8,7 @@ from mmcv.cnn import (UPSAMPLE_LAYERS, ConvModule, build_activation_layer,
 from mmcv.runner import BaseModule
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
+from mmseg.ops import Upsample
 from ..builder import BACKBONES
 from ..utils import UpConvBlock
 
@@ -203,7 +205,7 @@ class InterpConv(nn.Module):
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
-        upsample = nn.Upsample(**upsample_cfg)
+        upsample = Upsample(**upsample_cfg)
         if conv_first:
             self.interp_upsample = nn.Sequential(conv, upsample)
         else:
@@ -222,8 +224,9 @@ class InterpConv(nn.Module):
 @BACKBONES.register_module()
 class UNet(BaseModule):
     """UNet backbone.
-    U-Net: Convolutional Networks for Biomedical Image Segmentation.
-    https://arxiv.org/pdf/1505.04597.pdf
+
+    This backbone is the implementation of `U-Net: Convolutional Networks
+    for Biomedical Image Segmentation <https://arxiv.org/abs/1505.04597>`_.
 
     Args:
         in_channels (int): Number of input image channels. Default" 3.
@@ -275,7 +278,6 @@ class UNet(BaseModule):
         The input image size should be divisible by the whole downsample rate
         of the encoder. More detail of the whole downsample rate can be found
         in UNet._check_input_divisible.
-
     """
 
     def __init__(self,

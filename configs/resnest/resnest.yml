@@ -1,0 +1,183 @@
+Collections:
+- Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20k
+  Name: resnest
+Models:
+- Config: configs/resnest/fcn_s101-d8_512x1024_80k_cityscapes.py
+  In Collection: resnest
+  Metadata:
+    backbone: S-101-D8
+    crop size: (512,1024)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,1024)
+      value: 418.41
+    lr schd: 80000
+    memory (GB): 11.4
+  Name: fcn_s101-d8_512x1024_80k_cityscapes
+  Results:
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.56
+      mIoU(ms+flip): 78.98
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x1024_80k_cityscapes/fcn_s101-d8_512x1024_80k_cityscapes_20200807_140631-f8d155b3.pth
+- Config: configs/resnest/pspnet_s101-d8_512x1024_80k_cityscapes.py
+  In Collection: resnest
+  Metadata:
+    backbone: S-101-D8
+    crop size: (512,1024)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,1024)
+      value: 396.83
+    lr schd: 80000
+    memory (GB): 11.8
+  Name: pspnet_s101-d8_512x1024_80k_cityscapes
+  Results:
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.57
+      mIoU(ms+flip): 79.19
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x1024_80k_cityscapes/pspnet_s101-d8_512x1024_80k_cityscapes_20200807_140631-c75f3b99.pth
+- Config: configs/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes.py
+  In Collection: resnest
+  Metadata:
+    backbone: S-101-D8
+    crop size: (512,1024)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,1024)
+      value: 531.91
+    lr schd: 80000
+    memory (GB): 11.9
+  Name: deeplabv3_s101-d8_512x1024_80k_cityscapes
+  Results:
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.67
+      mIoU(ms+flip): 80.51
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes_20200807_144429-b73c4270.pth
+- Config: configs/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes.py
+  In Collection: resnest
+  Metadata:
+    backbone: S-101-D8
+    crop size: (512,1024)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,1024)
+      value: 423.73
+    lr schd: 80000
+    memory (GB): 13.2
+  Name: deeplabv3plus_s101-d8_512x1024_80k_cityscapes
+  Results:
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.62
+      mIoU(ms+flip): 80.27
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes_20200807_144429-1239eb43.pth
+- Config: configs/resnest/fcn_s101-d8_512x512_160k_ade20k.py
+  In Collection: resnest
+  Metadata:
+    backbone: S-101-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 77.76
+    lr schd: 160000
+    memory (GB): 14.2
+  Name: fcn_s101-d8_512x512_160k_ade20k
+  Results:
+    Dataset: ADE20k
+    Metrics:
+      mIoU: 45.62
+      mIoU(ms+flip): 46.16
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x512_160k_ade20k/fcn_s101-d8_512x512_160k_ade20k_20200807_145416-d3160329.pth
+- Config: configs/resnest/pspnet_s101-d8_512x512_160k_ade20k.py
+  In Collection: resnest
+  Metadata:
+    backbone: S-101-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 76.8
+    lr schd: 160000
+    memory (GB): 14.2
+  Name: pspnet_s101-d8_512x512_160k_ade20k
+  Results:
+    Dataset: ADE20k
+    Metrics:
+      mIoU: 45.44
+      mIoU(ms+flip): 46.28
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x512_160k_ade20k/pspnet_s101-d8_512x512_160k_ade20k_20200807_145416-a6daa92a.pth
+- Config: configs/resnest/deeplabv3_s101-d8_512x512_160k_ade20k.py
+  In Collection: resnest
+  Metadata:
+    backbone: S-101-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 107.76
+    lr schd: 160000
+    memory (GB): 14.6
+  Name: deeplabv3_s101-d8_512x512_160k_ade20k
+  Results:
+    Dataset: ADE20k
+    Metrics:
+      mIoU: 45.71
+      mIoU(ms+flip): 46.59
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x512_160k_ade20k/deeplabv3_s101-d8_512x512_160k_ade20k_20200807_144503-17ecabe5.pth
+- Config: configs/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k.py
+  In Collection: resnest
+  Metadata:
+    backbone: S-101-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 83.61
+    lr schd: 160000
+    memory (GB): 16.2
+  Name: deeplabv3plus_s101-d8_512x512_160k_ade20k
+  Results:
+    Dataset: ADE20k
+    Metrics:
+      mIoU: 46.47
+      mIoU(ms+flip): 47.27
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k_20200807_144503-27b26226.pth

@@ -11,7 +11,10 @@ The compatible MMSegmentation and MMCV versions are as below. Please install the
 
 | MMSegmentation version |    MMCV version     |
 |:-------------------:|:-------------------:|
-| master              | mmcv-full>=1.3.7, <1.4.0 |
+| master              | mmcv-full>=1.3.13, <1.4.0 |
+| 0.17.0              | mmcv-full>=1.3.7, <1.4.0 |
+| 0.16.0              | mmcv-full>=1.3.7, <1.4.0 |
+| 0.15.0              | mmcv-full>=1.3.7, <1.4.0 |
 | 0.14.1              | mmcv-full>=1.3.7, <1.4.0 |
 | 0.14.0              | mmcv-full>=1.3.1, <1.3.2 |
 | 0.13.0              | mmcv-full>=1.3.1, <1.3.2 |
@@ -23,8 +26,10 @@ The compatible MMSegmentation and MMCV versions are as below. Please install the
 | 0.7.0               | mmcv-full>=1.1.2, <1.2.0 |
 | 0.6.0               | mmcv-full>=1.1.2, <1.2.0 |
 
-Note: You need to run `pip uninstall mmcv` first if you have mmcv installed.
+:::{note}
+You need to run `pip uninstall mmcv` first if you have mmcv installed.
 If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
+:::
 
 ## Installation
 
@@ -48,10 +53,10 @@ Either `mmcv` or `mmcv-full` is compatible with MMSegmentation, but for methods 
 
 **Install mmcv for Linux:**
 
-The pre-build mmcv-full (with PyTorch 1.5 and CUDA 10.1) can be installed by running: (other available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
+The pre-build mmcv-full (with PyTorch 1.6 and CUDA 10.1) can be installed by running: (other available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.5.0/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
 ```
 
 **Install mmcv for Windows (Experimental):**
@@ -102,7 +107,7 @@ cd mmsegmentation
 pip install -e .  # or "python setup.py develop"
 ```
 
-Note:
+:::{note}
 
 1. When training or testing models on Windows, please ensure that all the '\\' in paths are replaced with '/'. Add .replace('\\', '/') to your python code wherever path strings occur.
 2. The `version+git_hash` will also be saved in trained models meta, e.g. 0.5.0+c415a2e.
@@ -111,6 +116,7 @@ Note:
    you can install it before installing MMCV.
 5. Some dependencies are optional. Simply running `pip install -e .` will only install the minimum runtime requirements.
    To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
+:::
 
 ### A from-scratch setup script
 
@@ -123,7 +129,7 @@ conda create -n open-mmlab python=3.7 -y
 conda activate open-mmlab
 
 conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
-pip install mmcv-full==latest+torch1.5.0+cu101 -f https://download.openmmlab.com/mmcv/dist/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
 git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -e .  # or "python setup.py develop"

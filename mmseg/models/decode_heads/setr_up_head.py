@@ -1,6 +1,8 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 
+from mmseg.ops import Upsample
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
 
@@ -9,7 +11,7 @@ from .decode_head import BaseDecodeHead
 class SETRUPHead(BaseDecodeHead):
     """Naive upsampling head and Progressive upsampling head of SETR.
 
-    Naive or PUP head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`.
+    Naive or PUP head of `SETR  <https://arxiv.org/pdf/2012.15840.pdf>`_.
 
     Args:
         norm_layer (dict): Config dict for input normalization.
@@ -59,7 +61,7 @@ class SETRUPHead(BaseDecodeHead):
                         padding=int(kernel_size - 1) // 2,
                         norm_cfg=self.norm_cfg,
                         act_cfg=self.act_cfg),
-                    nn.Upsample(
+                    Upsample(
                         scale_factor=up_scale,
                         mode='bilinear',
                         align_corners=self.align_corners)))

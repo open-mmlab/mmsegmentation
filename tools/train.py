@@ -1,12 +1,15 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import copy
 import os
 import os.path as osp
 import time
+import warnings
 
 import mmcv
 import torch
-from mmcv.runner import init_dist
+from mmcv.cnn.utils import revert_sync_batchnorm
+from mmcv.runner import get_dist_info, init_dist
 from mmcv.utils import Config, DictAction, get_git_hash
 
 from mmseg import __version__
@@ -93,6 +96,9 @@ def main():
     else:
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
+        # gpu_ids is used to calculate iter when resuming checkpoint,
+        _, world_size = get_dist_info()
+        cfg.gpu_ids = range(world_size)
 
     # create work_dir
     mmcv.mkdir_or_exist(osp.abspath(cfg.work_dir))
@@ -132,6 +138,14 @@ def main():
         train_cfg=cfg.get('train_cfg'),
         test_cfg=cfg.get('test_cfg'))
     model.init_weights()
+
+    # SyncBN is not support for DP
+    if not distributed:
+        warnings.warn(
+            'SyncBN is only supported with DDP. To be compatible with DP, '
+            'we convert SyncBN to BN. Please use dist_train.sh which can '
+            'avoid this error.')
+        model = revert_sync_batchnorm(model)
 
     logger.info(model)
 

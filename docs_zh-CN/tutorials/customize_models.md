@@ -71,14 +71,14 @@ class CocktailOptimizerConstructor(object):
 
 MMSegmentation 里主要有2种组件：
 
-- 主干网络 (backbone): 通常是卷积网络的堆叠，来做特征提取，例如 ResNet, HRNet。
-- 解码头 (decoder head): 用于语义分割图的解码的组件（得到分割结果）。
+- 主干网络 (backbone): 通常是卷积网络的堆叠，来做特征提取，例如 ResNet, HRNet
+- 解码头 (decoder head): 用于语义分割图的解码的组件（得到分割结果）
 
 ### 添加新的主干网络
 
 这里我们以 MobileNet 为例，展示如何增加新的主干组件：
 
-1. 创建一个新的文件 `mmseg/models/backbones/mobilenet.py`.
+1. 创建一个新的文件 `mmseg/models/backbones/mobilenet.py`
 
 ```python
 import torch.nn as nn
@@ -99,13 +99,13 @@ class MobileNet(nn.Module):
         pass
 ```
 
-2. 在 `mmseg/models/backbones/__init__.py` 里面导入模块。
+2. 在 `mmseg/models/backbones/__init__.py` 里面导入模块
 
 ```python
 from .mobilenet import MobileNet
 ```
 
-3. 在您的配置文件里使用它。
+3. 在您的配置文件里使用它
 
 ```python
 model = dict(

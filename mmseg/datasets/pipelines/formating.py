@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from collections.abc import Sequence
 
 import mmcv
@@ -248,9 +249,9 @@ class Collect(object):
         keys (Sequence[str]): Keys of results to be collected in ``data``.
         meta_keys (Sequence[str], optional): Meta keys to be converted to
             ``mmcv.DataContainer`` and collected in ``data[img_metas]``.
-            Default: ``('filename', 'ori_filename', 'ori_shape', 'img_shape',
-            'pad_shape', 'scale_factor', 'flip', 'flip_direction',
-            'img_norm_cfg')``
+            Default: (``filename``, ``ori_filename``, ``ori_shape``,
+            ``img_shape``, ``pad_shape``, ``scale_factor``, ``flip``,
+            ``flip_direction``, ``img_norm_cfg``)
     """
 
     def __init__(self,

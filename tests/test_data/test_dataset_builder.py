@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import math
 import os.path as osp
 
@@ -77,7 +78,8 @@ def test_build_dataset():
         pipeline=[],
         data_root=data_root,
         img_dir=[img_dir, img_dir],
-        test_mode=True)
+        test_mode=True,
+        classes=('pseudo_class', ))
     dataset = build_dataset(cfg)
     assert isinstance(dataset, ConcatDataset)
     assert len(dataset) == 10
@@ -89,7 +91,8 @@ def test_build_dataset():
         data_root=data_root,
         img_dir=[img_dir, img_dir],
         split=['splits/val.txt', 'splits/val.txt'],
-        test_mode=True)
+        test_mode=True,
+        classes=('pseudo_class', ))
     dataset = build_dataset(cfg)
     assert isinstance(dataset, ConcatDataset)
     assert len(dataset) == 2

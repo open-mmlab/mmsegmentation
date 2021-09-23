@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from argparse import ArgumentParser
 
 from mmseg.apis import inference_segmentor, init_segmentor, show_result_pyplot

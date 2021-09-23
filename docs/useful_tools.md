@@ -19,7 +19,9 @@ Params: 48.98 M
 ==============================
 ```
 
-**Note**: This tool is still experimental and we do not guarantee that the number is correct. You may well use the result for simple comparisons, but double check it before you adopt it in technical reports or papers.
+:::{note}
+This tool is still experimental and we do not guarantee that the number is correct. You may well use the result for simple comparisons, but double check it before you adopt it in technical reports or papers.
+:::
 
 (1) FLOPs are related to the input shape while parameters are not. The default input shape is (1, 3, 1280, 800).
 (2) Some operators are not counted into FLOPs like GN and custom operators.
@@ -74,7 +76,9 @@ Description of arguments:
 - `--dynamic-export`: Determines whether to export ONNX model with dynamic input and output shapes. If not specified, it will be set to `False`.
 - `--cfg-options`:Update config options.
 
-**Note**: This tool is still experimental. Some customized operators are not supported for now.
+:::{note}
+This tool is still experimental. Some customized operators are not supported for now.
+:::
 
 ### Evaluate ONNX model
 
@@ -132,7 +136,9 @@ Description of all arguments
 | deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py    | cityscapes |  mIoU  |  78.5   |    78.3     |               |               |
 | deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py  | cityscapes |  mIoU  |  78.9   |    78.7     |               |               |
 
-**Note**: TensorRT is only available on configs with `whole mode`.
+:::{note}
+TensorRT is only available on configs with `whole mode`.
+:::
 
 ### Convert to TorchScript (experimental)
 
@@ -158,9 +164,13 @@ Description of arguments:
 - `--show`: Determines whether to print the traced graph of the exported model. If not specified, it will be set to `False`.
 - `--verify`: Determines whether to verify the correctness of an exported model. If not specified, it will be set to `False`.
 
-**Note**: It's only support PyTorch>=1.8.0 for now.
+:::{note}
+It's only support PyTorch>=1.8.0 for now.
+:::
 
-**Note**: This tool is still experimental. Some customized operators are not supported for now.
+:::{note}
+This tool is still experimental. Some customized operators are not supported for now.
+:::
 
 Examples:
 
@@ -211,7 +221,9 @@ Description of all arguments
 - `--verify` : Verify the outputs of ONNXRuntime and TensorRT.
 - `--verbose` : Whether to verbose logging messages while creating TensorRT engine. Defaults to False.
 
-**Note**: Only tested on whole mode.
+:::{note}
+Only tested on whole mode.
+:::
 
 ## Miscellaneous
 
@@ -254,3 +266,96 @@ Examples:
   ```shell
   python tools/analyze_logs.py log.json --keys loss --legend loss
   ```
+
+### Model conversion
+
+`tools/model_converters/` provide several scripts to convert pretrain models released by other repos to MMSegmentation style.
+
+#### ViT Swin MiT Transformer Models
+
+- ViT
+
+  `tools/model_converters/vit2mmseg.py` convert keys in timm pretrained vit models to MMSegmentation style.
+
+  ```shell
+  python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
+  ```
+
+- Swin
+
+  `tools/model_converters/swin2mmseg.py` convert keys in official pretrained swin models to MMSegmentation style.
+
+  ```shell
+  python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
+  ```
+
+- SegFormer
+
+  `tools/model_converters/mit2mmseg.py` convert keys in official pretrained mit models to MMSegmentation style.
+
+  ```shell
+  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
+  ```
+
+## Model Serving
+
+In order to serve an `MMSegmentation` model with [`TorchServe`](https://pytorch.org/serve/), you can follow the steps:
+
+### 1. Convert model from MMSegmentation to TorchServe
+
+```shell
+python tools/mmseg2torchserve.py ${CONFIG_FILE} ${CHECKPOINT_FILE} \
+--output-folder ${MODEL_STORE} \
+--model-name ${MODEL_NAME}
+```
+
+:::{note}
+${MODEL_STORE} needs to be an absolute path to a folder.
+:::
+
+### 2. Build `mmseg-serve` docker image
+
+```shell
+docker build -t mmseg-serve:latest docker/serve/
+```
+
+### 3. Run `mmseg-serve`
+
+Check the official docs for [running TorchServe with docker](https://github.com/pytorch/serve/blob/master/docker/README.md#running-torchserve-in-a-production-docker-environment).
+
+In order to run in GPU, you need to install [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html). You can omit the `--gpus` argument in order to run in CPU.
+
+Example:
+
+```shell
+docker run --rm \
+--cpus 8 \
+--gpus device=0 \
+-p8080:8080 -p8081:8081 -p8082:8082 \
+--mount type=bind,source=$MODEL_STORE,target=/home/model-server/model-store \
+mmseg-serve:latest
+```
+
+[Read the docs](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) about the Inference (8080), Management (8081) and Metrics (8082) APIs
+
+### 4. Test deployment
+
+```shell
+curl -O https://raw.githubusercontent.com/open-mmlab/mmsegmentation/master/resources/3dogs.jpg
+curl http://127.0.0.1:8080/predictions/${MODEL_NAME} -T 3dogs.jpg -o 3dogs_mask.png
+```
+
+The response will be a ".png" mask.
+
+You can visualize the output as follows:
+
+```python
+import matplotlib.pyplot as plt
+import mmcv
+plt.imshow(mmcv.imread("3dogs_mask.png", "grayscale"))
+plt.show()
+```
+
+You should see something similar to:
+
+![3dogs_mask](../resources/3dogs_mask.png)
