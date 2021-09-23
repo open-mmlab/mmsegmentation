@@ -19,15 +19,17 @@ class JPU(BaseModule):
     Args:
         in_channels (Tuple[int], optional): The number of input channels
             for each convolution operations before upsampling.
-            Default: (256, 512, 1024, 2048).
+            Default: (512, 1024, 2048).
+        mid_channels (int): The number of output channels of JPU.
+            Default: 512.
         start_level (int): Index of the start input backbone level used to
-            build the feature pyramid. Default: 1.
+            build the feature pyramid. Default: 0.
         end_level (int): Index of the end input backbone level (exclusive) to
             build the feature pyramid. Default: -1, which means the last level.
         dilations (tuple[int]): Dilation rate of each Depthwise
             Separable ConvModule.
         out_indices (Tuple[int] | int, optional): Output from which stages.
-            Default: (0, 1, 2, 3).
+            Default: (0, 1, 2).
         align_corners (bool, optional): The align_corners argument of
             resize operation. Default: False.
         conv_cfg (dict | None): Config of conv layers.
@@ -41,11 +43,12 @@ class JPU(BaseModule):
     """
 
     def __init__(self,
-                 in_channels=(256, 512, 1024, 2048),
-                 start_level=1,
+                 in_channels=(512, 1024, 2048),
+                 mid_channels=512,
+                 start_level=0,
                  end_level=-1,
                  dilations=(1, 2, 4, 8),
-                 out_indices=(0, 1, 2, 3),
+                 out_indices=(0, 1, 2),
                  align_corners=False,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
@@ -55,7 +58,7 @@ class JPU(BaseModule):
         assert isinstance(in_channels, tuple)
         assert isinstance(dilations, tuple)
         self.in_channels = in_channels
-        self.out_channels = in_channels[start_level]
+        self.mid_channels = mid_channels
         self.start_level = start_level
         self.num_ins = len(in_channels)
         if end_level == -1:
@@ -70,14 +73,13 @@ class JPU(BaseModule):
 
         self.conv_layers = nn.ModuleList()
         self.dilation_layers = nn.ModuleList()
-        for i in range(self.start_level, self.backbone_end_level):
+        for i in range(len(in_channels)):
             conv_layer = nn.Sequential(
                 ConvModule(
                     self.in_channels[i],
-                    self.out_channels,
+                    self.mid_channels,
                     kernel_size=3,
                     padding=1,
-                    bias=False,
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
                     act_cfg=act_cfg))
@@ -85,8 +87,8 @@ class JPU(BaseModule):
         for i in range(len(dilations)):
             dilation_layer = nn.Sequential(
                 DepthwiseSeparableConvModule(
-                    in_channels=(len(in_channels) - 1) * self.out_channels,
-                    out_channels=self.out_channels,
+                    in_channels=len(in_channels) * self.mid_channels,
+                    out_channels=self.mid_channels,
                     kernel_size=3,
                     stride=1,
                     padding=dilations[i],
@@ -102,15 +104,12 @@ class JPU(BaseModule):
         assert len(inputs) == len(self.in_channels), 'Length of inputs must \
                                            be the same with self.in_channels!'
 
-        feats = [
-            self.conv_layers[i](inputs[i + 1])
-            for i in range(len(self.in_channels) - 1)
-        ]
+        feats = [self.conv_layers[i](inputs[i]) for i in range(len(inputs))]
 
-        _, _, h, w = feats[0].size()
-        for i in range(len(feats) - 1):
-            feats[i + 1] = resize(
-                feats[i + 1],
+        h, w = feats[0].shape[2:]
+        for i in range(1, len(feats)):
+            feats[i] = resize(
+                feats[i],
                 size=(h, w),
                 mode='bilinear',
                 align_corners=self.align_corners)
