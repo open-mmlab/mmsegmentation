@@ -35,10 +35,12 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             Default: None.
         loss_decode (dict | Sequence[dict]): Config of decode loss.
             The `loss_name` is property of corresponding loss function which
-            could be shown in training log.
+            could be shown in training log. If you want this loss
+            item to be included into the backward graph, `loss_` must be the
+            prefix of the name. Defaults to 'loss_ce'.
              e.g. dict(type='CrossEntropyLoss'),
-             [dict(type='CrossEntropyLoss', loss_name='CE'),
-              dict(type='DiceLoss', loss_name='Dice')]
+             [dict(type='CrossEntropyLoss', loss_name='loss_ce'),
+              dict(type='DiceLoss', loss_name='loss_dice')]
             Default: dict(type='CrossEntropyLoss').
         ignore_index (int | None): The label index to be ignored. When using
             masked BCE loss, ignore_index should be set to None. Default: 255
@@ -240,7 +242,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
-        for i, loss_decode in enumerate(self.loss_decode):
+        for loss_decode in self.loss_decode:
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
                     seg_logit,
