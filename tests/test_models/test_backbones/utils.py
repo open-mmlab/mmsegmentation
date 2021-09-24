@@ -3,13 +3,14 @@ import torch
 from torch.nn.modules import GroupNorm
 from torch.nn.modules.batchnorm import _BatchNorm
 
+from mmseg.models.backbones.res2net import Bottle2neck
 from mmseg.models.backbones.resnet import BasicBlock, Bottleneck
 from mmseg.models.backbones.resnext import Bottleneck as BottleneckX
 
 
 def is_block(modules):
     """Check if is ResNet building block."""
-    if isinstance(modules, (BasicBlock, Bottleneck, BottleneckX)):
+    if isinstance(modules, (BasicBlock, Bottleneck, BottleneckX, Bottle2neck)):
         return True
     return False
 

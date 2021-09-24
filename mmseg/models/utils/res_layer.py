@@ -82,6 +82,14 @@ class ResLayer(Sequential):
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 **kwargs))
+
+        # In order to be compatible with Res2Net.
+        # stage_type='stage' should be set in the first Bottle2neck in each
+        # stage, stage_type='normal' should be set in the following
+        # Bottle2neck. The defalut setting of stage_type in Bottle2neck is
+        # 'normal'
+        if 'stage_type' in kwargs:
+            kwargs.pop('stage_type')
         inplanes = planes * block.expansion
         for i in range(1, num_blocks):
             layers.append(
