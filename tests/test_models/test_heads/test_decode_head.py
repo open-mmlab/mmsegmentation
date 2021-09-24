@@ -116,7 +116,7 @@ def test_decode_head():
     with pytest.raises(TypeError):
         BaseDecodeHead(3, 16, num_classes=19, loss_decode=['CrossEntropyLoss'])
     with pytest.raises(TypeError):
-        BaseDecodeHead(3, 16, num_classes=19, loss_decode=[0])
+        BaseDecodeHead(3, 16, num_classes=19, loss_decode=0)
 
     # test multi-loss, loss_decode is list of dict
     inputs = torch.randn(2, 19, 8, 8).float()
