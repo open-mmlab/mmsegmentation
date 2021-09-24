@@ -145,7 +145,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
 
         return outputs
 
-    def val_step(self, data_batch, **kwargs):
+    def val_step(self, data_batch,optimizer=None, **kwargs):
         """The iteration step during validation.
 
         This method shares the same signature as :func:`train_step`, but used
