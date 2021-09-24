@@ -12,7 +12,6 @@ from .enc_head import EncHead
 from .fcn_head import FCNHead
 from .fpn_head import FPNHead
 from .gc_head import GCHead
-from .ic_head import ICHead
 from .isa_head import ISAHead
 from .lraspp_head import LRASPPHead
 from .nl_head import NLHead
@@ -28,10 +27,31 @@ from .setr_up_head import SETRUPHead
 from .uper_head import UPerHead
 
 __all__ = [
-    'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
-    'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
-    'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
-    'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
-    'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegformerHead', 'ISAHead',
-    'ICHead'
+    'FCNHead',
+    'PSPHead',
+    'ASPPHead',
+    'PSAHead',
+    'NLHead',
+    'GCHead',
+    'CCHead',
+    'UPerHead',
+    'DepthwiseSeparableASPPHead',
+    'ANNHead',
+    'DAHead',
+    'OCRHead',
+    'EncHead',
+    'DepthwiseSeparableFCNHead',
+    'FPNHead',
+    'EMAHead',
+    'DNLHead',
+    'PointHead',
+    'APCHead',
+    'DMHead',
+    'LRASPPHead',
+    'SETRUPHead',
+    'SETRMLAHead',
+    'DPTHead',
+    'SETRMLAHead',
+    'SegformerHead',
+    'ISAHead',
 ]

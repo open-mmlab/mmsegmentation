@@ -1,0 +1,121 @@
+import torch.nn.functional as F
+from mmcv.cnn import ConvModule
+from mmcv.runner import BaseModule
+
+from mmseg.ops import resize
+from ..builder import NECKS
+
+
+class CascadeFeatureFusion(BaseModule):
+    """Cascade Feature Fusion Unit in ICNet.
+
+    Args:
+        low_channels (int): The number of input channels for
+            low resolution feature map.
+        high_channels (int): The number of input channels for
+            high resolution feature map.
+        out_channels (int): The number of output channels.
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+        align_corners (bool): align_corners argument of resize.
+
+    Returns:
+        x (Tensor): The output tensor of shape (N, out_channels, H, W).
+        x_low_cls (Tensor): The output tensor of shape (N, num_classes, H, W)
+            for Cascade Label Guidance.
+    """
+
+    def __init__(self,
+                 low_channels,
+                 high_channels,
+                 out_channels,
+                 conv_cfg,
+                 norm_cfg,
+                 act_cfg,
+                 align_corners=False,
+                 init_cfg=None):
+        super(CascadeFeatureFusion, self).__init__(init_cfg=init_cfg)
+        self.align_corners = align_corners
+        self.conv_low = ConvModule(
+            low_channels,
+            out_channels,
+            3,
+            padding=2,
+            dilation=2,
+            conv_cfg=conv_cfg,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg)
+        self.conv_high = ConvModule(
+            high_channels,
+            out_channels,
+            1,
+            conv_cfg=conv_cfg,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg)
+
+    def forward(self, x_low, x_high):
+        x_low = resize(
+            x_low,
+            size=x_high.size()[2:],
+            mode='bilinear',
+            align_corners=self.align_corners)
+        x_low = self.conv_low(x_low)
+        x_high = self.conv_high(x_high)
+        x = x_low + x_high
+        x = F.relu(x, inplace=True)
+        return x, x_low
+
+
+@NECKS.register_module()
+class ICNeck(BaseModule):
+    """ICNet for Real-Time Semantic Segmentation on High-Resolution Images.
+
+    This head is the implementation of `ICHead
+    <https://arxiv.org/abs/1704.08545>`_.
+    """
+
+    def __init__(self,
+                 in_channels=(64, 256, 256),
+                 in_index=(0, 1, 2),
+                 channels=128,
+                 conv_cfg=None,
+                 norm_cfg=dict(type='BN'),
+                 act_cfg=dict(type='ReLU'),
+                 align_corners=False,
+                 **kwargs):
+        super(ICNeck, self).__init__(**kwargs)
+        self.in_channels = in_channels
+        self.in_index = in_index
+        self.channels = channels
+        self.conv_cfg = conv_cfg
+        self.norm_cfg = norm_cfg
+        self.act_cfg = act_cfg
+        self.align_corners = align_corners
+        self.cff_24 = CascadeFeatureFusion(
+            self.in_channels[2],
+            self.in_channels[1],
+            self.channels,
+            conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg,
+            align_corners=self.align_corners)
+
+        self.cff_12 = CascadeFeatureFusion(
+            self.channels,
+            self.in_channels[0],
+            self.channels,
+            conv_cfg=self.conv_cfg,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg,
+            align_corners=self.align_corners)
+
+    def forward(self, inputs):
+        x_sub1, x_sub2, x_sub4 = inputs
+        outputs = list()
+        x_cff_24, x_24 = self.cff_24(x_sub4, x_sub2)
+        outputs.append(x_24)
+        x_cff_12, x_12 = self.cff_12(x_cff_24, x_sub1)
+        outputs.append(x_12)
+        outputs.append(x_cff_12)
+        return outputs
