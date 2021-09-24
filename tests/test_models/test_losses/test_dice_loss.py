@@ -11,7 +11,8 @@ def test_dice_lose():
         reduction='none',
         class_weight=[1.0, 2.0, 3.0],
         loss_weight=1.0,
-        ignore_index=1)
+        ignore_index=1,
+        loss_name='loss_dice')
     dice_loss = build_loss(loss_cfg)
     logits = torch.rand(8, 3, 4, 4)
     labels = (torch.rand(8, 4, 4) * 3).long()
@@ -30,7 +31,8 @@ def test_dice_lose():
         reduction='none',
         class_weight=f'{tmp_file.name}.pkl',
         loss_weight=1.0,
-        ignore_index=1)
+        ignore_index=1,
+        loss_name='loss_dice')
     dice_loss = build_loss(loss_cfg)
     dice_loss(logits, labels, ignore_index=None)
 
@@ -40,7 +42,8 @@ def test_dice_lose():
         reduction='none',
         class_weight=f'{tmp_file.name}.pkl',
         loss_weight=1.0,
-        ignore_index=1)
+        ignore_index=1,
+        loss_name='loss_dice')
     dice_loss = build_loss(loss_cfg)
     dice_loss(logits, labels, ignore_index=None)
     tmp_file.close()
@@ -54,8 +57,21 @@ def test_dice_lose():
         exponent=3,
         reduction='sum',
         loss_weight=1.0,
-        ignore_index=0)
+        ignore_index=0,
+        loss_name='loss_dice')
     dice_loss = build_loss(loss_cfg)
     logits = torch.rand(8, 2, 4, 4)
     labels = (torch.rand(8, 4, 4) * 2).long()
     dice_loss(logits, labels)
+
+    # test dice loss has name `loss_dice`
+    loss_cfg = dict(
+        type='DiceLoss',
+        smooth=2,
+        exponent=3,
+        reduction='sum',
+        loss_weight=1.0,
+        ignore_index=0,
+        loss_name='loss_dice')
+    dice_loss = build_loss(loss_cfg)
+    assert dice_loss.loss_name == 'loss_dice'
