@@ -104,3 +104,14 @@ def test_lovasz_loss():
     logits = torch.rand(2, 4, 4)
     labels = (torch.rand(2, 4, 4)).long()
     lovasz_loss(logits, labels, ignore_index=None)
+
+    # test lovasz loss has name `loss_lovasz`
+    loss_cfg = dict(
+        type='LovaszLoss',
+        loss_type='binary',
+        per_image=True,
+        reduction='mean',
+        loss_weight=1.0,
+        loss_name='loss_lovasz')
+    lovasz_loss = build_loss(loss_cfg)
+    assert lovasz_loss.loss_name == 'loss_lovasz'

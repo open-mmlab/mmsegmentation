@@ -77,7 +77,7 @@ def test_decode_head():
 
     # test multi-loss, loss_decode is dict
     with pytest.raises(TypeError):
-        # f'loss_decode' must be a dict or sequence of dict.
+        # loss_decode must be a dict or sequence of dict.
         BaseDecodeHead(3, 16, num_classes=19, loss_decode=['CrossEntropyLoss'])
 
     inputs = torch.randn(2, 19, 8, 8).float()

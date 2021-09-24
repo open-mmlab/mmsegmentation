@@ -63,3 +63,15 @@ def test_dice_lose():
     logits = torch.rand(8, 2, 4, 4)
     labels = (torch.rand(8, 4, 4) * 2).long()
     dice_loss(logits, labels)
+
+    # test dice loss has name `loss_dice`
+    loss_cfg = dict(
+        type='DiceLoss',
+        smooth=2,
+        exponent=3,
+        reduction='sum',
+        loss_weight=1.0,
+        ignore_index=0,
+        loss_name='loss_dice')
+    dice_loss = build_loss(loss_cfg)
+    assert dice_loss.loss_name == 'loss_dice'
