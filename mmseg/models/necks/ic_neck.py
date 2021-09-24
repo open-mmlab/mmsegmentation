@@ -15,24 +15,30 @@ class CascadeFeatureFusion(BaseModule):
         high_channels (int): The number of input channels for
             high resolution feature map.
         out_channels (int): The number of output channels.
-        conv_cfg (dict|None): Config of conv layers.
-        norm_cfg (dict|None): Config of norm layers.
-        act_cfg (dict): Config of activation layers.
-        align_corners (bool): align_corners argument of resize.
+        conv_cfg (dict): Dictionary to construct and config conv layer.
+            Default: None.
+        norm_cfg (dict): Dictionary to construct and config norm layer.
+            Default: dict(type='BN').
+        act_cfg (dict): Dictionary to construct and config act layer.
+            Default: dict(type='ReLU').
+        align_corners (bool): align_corners argument of F.interpolate.
+            Default: False.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
 
     Returns:
         x (Tensor): The output tensor of shape (N, out_channels, H, W).
-        x_low_cls (Tensor): The output tensor of shape (N, num_classes, H, W)
-            for Cascade Label Guidance.
+        x_low (Tensor): The output tensor of shape (N, out_channels, H, W)
+            for Cascade Label Guidance in auxiliary heads.
     """
 
     def __init__(self,
                  low_channels,
                  high_channels,
                  out_channels,
-                 conv_cfg,
-                 norm_cfg,
-                 act_cfg,
+                 conv_cfg=None,
+                 norm_cfg=dict(type='BN'),
+                 act_cfg=dict(type='ReLU'),
                  align_corners=False,
                  init_cfg=None):
         super(CascadeFeatureFusion, self).__init__(init_cfg=init_cfg)
@@ -73,21 +79,38 @@ class ICNeck(BaseModule):
 
     This head is the implementation of `ICHead
     <https://arxiv.org/abs/1704.08545>`_.
+
+    Args:
+        in_channels (int): The number of input image channels. Default: 3.
+        in_index (int|Sequence[int]): Input feature index.
+            Default: (0, 1, 2).
+        out_channels (int): The numbers of output feature channels.
+            Default: 128.
+        conv_cfg (dict): Dictionary to construct and config conv layer.
+            Default: None.
+        norm_cfg (dict): Dictionary to construct and config norm layer.
+            Default: dict(type='BN').
+        act_cfg (dict): Dictionary to construct and config act layer.
+            Default: dict(type='ReLU').
+        align_corners (bool): align_corners argument of F.interpolate.
+            Default: False.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     """
 
     def __init__(self,
                  in_channels=(64, 256, 256),
                  in_index=(0, 1, 2),
-                 channels=128,
+                 out_channels=128,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  align_corners=False,
-                 **kwargs):
-        super(ICNeck, self).__init__(**kwargs)
+                 init_cfg=None):
+        super(ICNeck, self).__init__(init_cfg=init_cfg)
         self.in_channels = in_channels
         self.in_index = in_index
-        self.channels = channels
+        self.out_channels = out_channels
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
@@ -95,16 +118,16 @@ class ICNeck(BaseModule):
         self.cff_24 = CascadeFeatureFusion(
             self.in_channels[2],
             self.in_channels[1],
-            self.channels,
+            self.out_channels,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,
             align_corners=self.align_corners)
 
         self.cff_12 = CascadeFeatureFusion(
-            self.channels,
+            self.out_channels,
             self.in_channels[0],
-            self.channels,
+            self.out_channels,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg,

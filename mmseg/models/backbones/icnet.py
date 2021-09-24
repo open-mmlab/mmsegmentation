@@ -16,6 +16,8 @@ class ICNet(BaseModule):
     `ICNet <https://arxiv.org/abs/1704.08545>`_.
 
     Args:
+        backbone_cfg (dict): Config dict to build backbone. Usually it is
+            ResNet but it can also be other backbones.
         in_channels (int): The number of input image channels. Default: 3.
         layer_channels (Sequence[int]): The numbers of feature channels at
             layer 2 and layer 4 in ResNet. It can also be other backbones.
@@ -26,8 +28,6 @@ class ICNet(BaseModule):
             module. Default: 512.
         out_channels (Sequence[int]): The numbers of output feature channels
             at each branches. Default: (64, 256, 256).
-        backbone_cfg (dict): Config dict to build backbone. Usually it is
-            ResNet but it can also be other backbones. Default: None.
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
             Module. Default: (1, 2, 3, 6).
         conv_cfg (dict): Dictionary to construct and config conv layer.
@@ -43,12 +43,12 @@ class ICNet(BaseModule):
     """
 
     def __init__(self,
+                 backbone_cfg,
                  in_channels=3,
                  layer_channels=(512, 2048),
                  light_branch_middle_channels=32,
                  psp_out_channels=512,
                  out_channels=(64, 256, 256),
-                 backbone_cfg=None,
                  pool_scales=(1, 2, 3, 6),
                  conv_cfg=None,
                  norm_cfg=dict(type='BN', requires_grad=True),

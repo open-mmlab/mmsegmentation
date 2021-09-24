@@ -1,4 +1,4 @@
-# Icnet for real-time semantic segmentation on high-resolution images
+# ICNet for Real-time Semantic Segmentation on High-resolution Images
 
 ## Introduction
 
