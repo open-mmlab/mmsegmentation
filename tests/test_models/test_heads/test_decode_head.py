@@ -74,3 +74,92 @@ def test_decode_head():
     assert head.input_transform == 'resize_concat'
     transformed_inputs = head._transform_inputs(inputs)
     assert transformed_inputs.shape == (1, 48, 45, 45)
+
+    # test multi-loss, loss_decode is dict
+    with pytest.raises(TypeError):
+        # loss_decode must be a dict or sequence of dict.
+        BaseDecodeHead(3, 16, num_classes=19, loss_decode=['CrossEntropyLoss'])
+
+    inputs = torch.randn(2, 19, 8, 8).float()
+    target = torch.ones(2, 1, 64, 64).long()
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss = head.losses(seg_logit=inputs, seg_label=target)
+    assert 'loss_ce' in loss
+
+    # test multi-loss, loss_decode is list of dict
+    inputs = torch.randn(2, 19, 8, 8).float()
+    target = torch.ones(2, 1, 64, 64).long()
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=[
+            dict(type='CrossEntropyLoss', loss_name='loss_1'),
+            dict(type='CrossEntropyLoss', loss_name='loss_2')
+        ])
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss = head.losses(seg_logit=inputs, seg_label=target)
+    assert 'loss_1' in loss
+    assert 'loss_2' in loss
+
+    # 'loss_decode' must be a dict or sequence of dict
+    with pytest.raises(TypeError):
+        BaseDecodeHead(3, 16, num_classes=19, loss_decode=['CrossEntropyLoss'])
+    with pytest.raises(TypeError):
+        BaseDecodeHead(3, 16, num_classes=19, loss_decode=0)
+
+    # test multi-loss, loss_decode is list of dict
+    inputs = torch.randn(2, 19, 8, 8).float()
+    target = torch.ones(2, 1, 64, 64).long()
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=(dict(type='CrossEntropyLoss', loss_name='loss_1'),
+                     dict(type='CrossEntropyLoss', loss_name='loss_2'),
+                     dict(type='CrossEntropyLoss', loss_name='loss_3')))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss = head.losses(seg_logit=inputs, seg_label=target)
+    assert 'loss_1' in loss
+    assert 'loss_2' in loss
+    assert 'loss_3' in loss
+
+    # test multi-loss, loss_decode is list of dict, names of them are identical
+    inputs = torch.randn(2, 19, 8, 8).float()
+    target = torch.ones(2, 1, 64, 64).long()
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=(dict(type='CrossEntropyLoss', loss_name='loss_ce'),
+                     dict(type='CrossEntropyLoss', loss_name='loss_ce'),
+                     dict(type='CrossEntropyLoss', loss_name='loss_ce')))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss_3 = head.losses(seg_logit=inputs, seg_label=target)
+
+    head = BaseDecodeHead(
+        3,
+        16,
+        num_classes=19,
+        loss_decode=(dict(type='CrossEntropyLoss', loss_name='loss_ce')))
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+        head, target = to_cuda(head, target)
+    loss = head.losses(seg_logit=inputs, seg_label=target)
+    assert 'loss_ce' in loss
+    assert 'loss_ce' in loss_3
+    assert loss_3['loss_ce'] == 3 * loss['loss_ce']
