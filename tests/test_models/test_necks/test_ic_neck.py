@@ -10,7 +10,7 @@ def test_ic_neck():
     neck = ICNeck(
         in_channels=(64, 256, 256),
         in_index=(0, 1, 2),
-        channels=128,
+        out_channels=128,
         norm_cfg=dict(type='SyncBN'),
         align_corners=False)
     assert _conv_has_norm(neck, sync_bn=True)
@@ -23,7 +23,7 @@ def test_ic_neck():
     neck = ICNeck(
         in_channels=(64, 256, 256),
         in_index=(0, 1, 2),
-        channels=128,
+        out_channels=128,
         norm_cfg=dict(type='BN', requires_grad=True),
         align_corners=False)
     if torch.cuda.is_available():
