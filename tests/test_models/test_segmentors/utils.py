@@ -101,6 +101,14 @@ def _segmentor_forward_train_test(segmentor):
         imgs, img_metas, gt_semantic_seg=gt_semantic_seg, return_loss=True)
     assert isinstance(losses, dict)
 
+    # Test val_step
+    with torch.no_grad():
+        segmentor.eval()
+        data_batch = dict(
+            img=imgs, img_metas=img_metas, gt_semantic_seg=gt_semantic_seg)
+        outputs = segmentor.val_step(data_batch)
+        assert isinstance(outputs, dict)
+
     # Test forward simple test
     with torch.no_grad():
         segmentor.eval()
