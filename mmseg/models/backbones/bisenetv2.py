@@ -17,7 +17,7 @@ class DetailBranch(BaseModule):
         detail_channels (Tuple[int]): Size of channel numbers of each stage
             in Detail Branch, in paper it has 3 stages.
             Default: (64, 64, 128).
-        in_channels (int): The number of channels of input image. Default: 3.
+        in_channels (int): Number of channels of input image. Default: 3.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
         norm_cfg (dict | None): Config of norm layers.
@@ -369,7 +369,7 @@ class SemanticBranch(BaseModule):
         semantic_channels(Tuple[int]): Size of channel numbers of
             various stages in Semantic Branch.
             Default: (16, 32, 64, 128).
-        in_channels (int): Channel of input image. Default: 3.
+        in_channels (int): Number of channels of input image. Default: 3.
         exp_ratio (int): Expansion ratio for middle channels.
             Default: 6.
         init_cfg (dict or list[dict], optional): Initialization config dict.
@@ -550,7 +550,7 @@ class BiSeNetV2(BaseModule):
     `BiSeNetV2 <https://arxiv.org/abs/2004.02147>`_.
 
     Args:
-        in_channels (int): Channel of input image. Default: 3.
+        in_channels (int): Number of channel of input image. Default: 3.
         detail_channels (Tuple[int], optional): Channels of each stage
             in Detail Branch. Default: (64, 64, 128).
         semantic_channels (Tuple[int], optional): Channels of each stage
