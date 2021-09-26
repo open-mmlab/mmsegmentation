@@ -89,6 +89,13 @@ mmsegmentation
 |   |   └── leftImg8bit
 |   |   |   └── test
 |   |   |       └── night
+|   ├── DUTS
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -195,3 +202,13 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 ### Nighttime Driving
 
 因为我们只支持在此数据集上测试模型，所以您只需下载[测试集](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip)。
+
+### DUTS
+
+首先，下载 [DUTS-TR.zip](http://saliencydetection.net/duts/download/DUTS-TR.zip) 和 [DUTS-TE.zip](http://saliencydetection.net/duts/download/DUTS-TE.zip) 。
+
+为了将 DUTS 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/duts.py /path/to/DUTS-TR.zip /path/to/DUTS-TE.zip
+```
