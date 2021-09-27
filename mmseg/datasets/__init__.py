@@ -8,6 +8,7 @@ from .custom import CustomDataset
 from .dark_zurich import DarkZurichDataset
 from .dataset_wrappers import ConcatDataset, RepeatDataset
 from .drive import DRIVEDataset
+from .dut_omron import DUTOMRONDataset
 from .duts import DUTSDataset
 from .hrf import HRFDataset
 from .night_driving import NightDrivingDataset
@@ -21,5 +22,5 @@ __all__ = [
     'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
-    'COCOStuffDataset', 'DUTSDataset'
+    'COCOStuffDataset', 'DUTSDataset', 'DUTOMRONDataset'
 ]

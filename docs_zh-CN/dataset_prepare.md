@@ -96,6 +96,11 @@ mmsegmentation
 │   │   ├── annotations
 │   │   │   ├── training
 │   │   │   ├── validation
+|   ├── DUT-OMRON
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -211,4 +216,16 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 
 ```shell
 python tools/convert_datasets/duts.py /path/to/DUTS-TR.zip /path/to/DUTS-TE.zip
+```
+
+### DUT-OMRON
+
+显著性检测（SOD）任务中 DUT-OMRON 仅作为测试集。
+
+首先，下载 [DUT-OMRON-image.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-image.zip) 和 [DUT-OMRON-gt-pixelwise.zip.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-gt-pixelwise.zip.zip) 。
+
+为了将 DUT-OMRON 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/dut_omron.py /path/to/DUT-OMRON-image.zip /path/to/DUT-OMRON-gt-pixelwise.zip.zip
 ```

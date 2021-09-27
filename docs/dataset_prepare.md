@@ -108,6 +108,18 @@ mmsegmentation
 |   |   └── leftImg8bit
 |   |   |   └── test
 |   |   |       └── night
+|   ├── DUTS
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+|   ├── DUT-OMRON
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -253,3 +265,25 @@ Since we only support test models on this dataset, you may only download [the va
 ### Nighttime Driving
 
 Since we only support test models on this dataset, you may only download [the test set](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip).
+
+### DUTS
+
+First，download [DUTS-TR.zip](http://saliencydetection.net/duts/download/DUTS-TR.zip) and [DUTS-TE.zip](http://saliencydetection.net/duts/download/DUTS-TE.zip) 。
+
+To convert DUTS dataset to MMSegmentation format, you should run the following command:
+
+```shell
+python tools/convert_datasets/duts.py /path/to/DUTS-TR.zip /path/to/DUTS-TE.zip
+```
+
+### DUT-OMRON
+
+In salient object detection (SOD), DUT-OMRON is used for evaluation.
+
+First，download [DUT-OMRON-image.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-image.zip) and [DUT-OMRON-gt-pixelwise.zip.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-gt-pixelwise.zip.zip) 。
+
+To convert DUT-OMRON dataset to MMSegmentation format, you should run the following command:
+
+```shell
+python tools/convert_datasets/dut_omron.py /path/to/DUT-OMRON-image.zip /path/to/DUT-OMRON-gt-pixelwise.zip.zip
+```
