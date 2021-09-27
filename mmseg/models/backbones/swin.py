@@ -25,6 +25,7 @@ class PatchMerging(BaseModule):
 
     This layer use nn.Unfold to group feature map by kernel_size, and use norm
     and linear layer to embed grouped feature map.
+
     Args:
         in_channels (int): The num of input channels.
         out_channels (int): The num of output channels.

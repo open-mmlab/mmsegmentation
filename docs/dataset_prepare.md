@@ -41,6 +41,24 @@ mmsegmentation
 │   │   │   ├── images
 │   │   │   │   ├── training
 │   │   │   │   ├── validation
+│   ├── coco_stuff10k
+│   │   ├── images
+│   │   │   ├── train2014
+│   │   │   ├── test2014
+│   │   ├── annotations
+│   │   │   ├── train2014
+│   │   │   ├── test2014
+│   │   ├── imagesLists
+│   │   │   ├── train.txt
+│   │   │   ├── test.txt
+│   │   │   ├── all.txt
+│   ├── coco_stuff164k
+│   │   ├── images
+│   │   │   ├── train2017
+│   │   │   ├── val2017
+│   │   ├── annotations
+│   │   │   ├── train2017
+│   │   │   ├── val2017
 │   ├── CHASE_DB1
 │   │   ├── images
 │   │   │   ├── training
@@ -135,6 +153,50 @@ If you would like to use Pascal Context dataset, please install [Detail](https:/
 ```shell
 python tools/convert_datasets/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
 ```
+
+### COCO Stuff 10k
+
+The data could be downloaded [here](http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip) by wget.
+
+For COCO Stuff 10k dataset, please run the following commands to download and convert the dataset.
+
+```shell
+# download
+mkdir coco_stuff10k && cd coco_stuff10k
+wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip
+
+# unzip
+unzip cocostuff-10k-v1.1.zip
+
+# --nproc means 8 process for conversion, which could be omitted as well.
+python tools/convert_datasets/coco_stuff10k.py /path/to/coco_stuff10k --nproc 8
+```
+
+By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2014/*_labelTrainIds.png` are used for COCO Stuff 10k training and testing.
+
+### COCO Stuff 164k
+
+For COCO Stuff 164k dataset, please run the following commands to download and convert the augmented dataset.
+
+```shell
+# download
+mkdir coco_stuff164k && cd coco_stuff164k
+wget http://images.cocodataset.org/zips/train2017.zip
+wget http://images.cocodataset.org/zips/val2017.zip
+wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/stuffthingmaps_trainval2017.zip
+
+# unzip
+unzip train2017.zip -d images/
+unzip val2017.zip -d images/
+unzip stuffthingmaps_trainval2017.zip -d annotations/
+
+# --nproc means 8 process for conversion, which could be omitted as well.
+python tools/convert_datasets/coco_stuff164k.py /path/to/coco_stuff164k --nproc 8
+```
+
+By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2017/*_labelTrainIds.png` are used for COCO Stuff 164k training and testing.
+
+The details of this dataset could be found at [here](https://github.com/nightrome/cocostuff#downloads).
 
 ### CHASE DB1
 

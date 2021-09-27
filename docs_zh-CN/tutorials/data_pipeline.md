@@ -9,7 +9,7 @@
 
 数据的准备流程和数据集是解耦的。通常一个数据集定义了如何处理标注数据（annotations）信息，而一个数据流程定义了准备一个数据字典的所有步骤。一个流程包括了一系列操作，每个操作里都把一个字典作为输入，然后再输出一个新的字典给下一个变换操作。
 
-这些操作可分为数据加载 (data loading)，预处理 (pre-processing)，格式变化 (formatting) 和测试时数据增强 (test-time augmentation) 。
+这些操作可分为数据加载 (data loading)，预处理 (pre-processing)，格式变化 (formatting) 和测试时数据增强 (test-time augmentation)。
 
 下面的例子就是 PSPNet 的一个流程：
 

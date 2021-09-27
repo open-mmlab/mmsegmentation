@@ -63,8 +63,10 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
         4 --out results.pkl --eval mIoU cityscapes
     ```
 
-   Note: There is some gap (~0.1%) between cityscapes mIoU and our mIoU. The reason is that cityscapes average each class with class size by default.
+ :::{note}
+ There is some gap (~0.1%) between cityscapes mIoU and our mIoU. The reason is that cityscapes average each class with class size by default.
    We use the simple version without average for all datasets.
+:::
 
 5. Test PSPNet on cityscapes test split with 4 GPUs, and generate the png files to be submit to the official evaluation server.
 

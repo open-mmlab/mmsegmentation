@@ -6,6 +6,8 @@ Collections:
     - Pascal VOC 2012 + Aug
     - Pascal Context
     - Pascal Context 59
+    - COCO-Stuff 10k
+    - COCO-Stuff 164k
   Name: deeplabv3
 Models:
 - Config: configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes.py
@@ -550,3 +552,175 @@ Models:
       mIoU(ms+flip): 54.09
     Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context_59/deeplabv3_r101-d8_480x480_80k_pascal_context_59_20210416_113002-26303993.pth
+- Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_4x4_20k_coco-stuff10k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 92.59
+    lr schd: 20000
+    memory (GB): 9.6
+  Name: deeplabv3_r50-d8_512x512_4x4_20k_coco-stuff10k
+  Results:
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 34.66
+      mIoU(ms+flip): 36.08
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_20k_coco-stuff10k/deeplabv3_r50-d8_512x512_4x4_20k_coco-stuff10k_20210821_043025-b35f789d.pth
+- Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_4x4_20k_coco-stuff10k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 114.94
+    lr schd: 20000
+    memory (GB): 13.2
+  Name: deeplabv3_r101-d8_512x512_4x4_20k_coco-stuff10k
+  Results:
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 37.3
+      mIoU(ms+flip): 38.42
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_20k_coco-stuff10k/deeplabv3_r101-d8_512x512_4x4_20k_coco-stuff10k_20210821_043025-c49752cb.pth
+- Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_4x4_40k_coco-stuff10k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Name: deeplabv3_r50-d8_512x512_4x4_40k_coco-stuff10k
+  Results:
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 35.73
+      mIoU(ms+flip): 37.09
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_40k_coco-stuff10k/deeplabv3_r50-d8_512x512_4x4_40k_coco-stuff10k_20210821_043305-dc76f3ff.pth
+- Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_4x4_40k_coco-stuff10k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Name: deeplabv3_r101-d8_512x512_4x4_40k_coco-stuff10k
+  Results:
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 37.81
+      mIoU(ms+flip): 38.8
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_40k_coco-stuff10k/deeplabv3_r101-d8_512x512_4x4_40k_coco-stuff10k_20210821_043305-636cb433.pth
+- Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_4x4_80k_coco-stuff164k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 92.59
+    lr schd: 80000
+    memory (GB): 9.6
+  Name: deeplabv3_r50-d8_512x512_4x4_80k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 39.38
+      mIoU(ms+flip): 40.03
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_80k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_80k_coco-stuff164k_20210709_163016-88675c24.pth
+- Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_4x4_80k_coco-stuff164k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 114.94
+    lr schd: 80000
+    memory (GB): 13.2
+  Name: deeplabv3_r101-d8_512x512_4x4_80k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 40.87
+      mIoU(ms+flip): 41.5
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_80k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_80k_coco-stuff164k_20210709_201252-13600dc2.pth
+- Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_4x4_160k_coco-stuff164k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Name: deeplabv3_r50-d8_512x512_4x4_160k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 41.09
+      mIoU(ms+flip): 41.69
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_160k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_160k_coco-stuff164k_20210709_163016-49f2812b.pth
+- Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Name: deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 41.82
+      mIoU(ms+flip): 42.49
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k_20210709_155402-f035acfd.pth
+- Config: configs/deeplabv3/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 320000
+  Name: deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 41.37
+      mIoU(ms+flip): 42.22
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k_20210709_155403-51b21115.pth
+- Config: configs/deeplabv3/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k.py
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 320000
+  Name: deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 42.61
+      mIoU(ms+flip): 43.42
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k_20210709_155402-3cbca14d.pth
