@@ -1,15 +1,11 @@
 # model settings
-_base_ = './fastfcn_r50-d8_d1124_jpu_psp_4x4_cityscapes.py'
+_base_ = './fastfcn-jpu_psp_512x1024_80k_cityscapes.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
-    backbone=dict(
-        dilations=(1, 1, 2, 4),
-        strides=(1, 2, 1, 1),
-    ),
     decode_head=dict(
         type='EncHead',
         in_channels=[512, 1024, 2048],
-        in_index=(1, 2, 3),
+        in_index=(0, 1, 2),
         channels=512,
         num_codes=32,
         use_se_loss=True,

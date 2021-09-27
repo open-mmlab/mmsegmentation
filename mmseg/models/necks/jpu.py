@@ -114,7 +114,7 @@ class JPU(BaseModule):
                 mode='bilinear',
                 align_corners=self.align_corners)
 
-        feat = torch.cat(feats[::-1], dim=1)
+        feat = torch.cat(feats, dim=1)
         feat = torch.cat([
             self.dilation_layers[i](feat) for i in range(len(self.dilations))
         ],
