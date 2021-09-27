@@ -120,6 +120,11 @@ mmsegmentation
 │   │   │   ├── validation
 │   │   ├── annotations
 │   │   │   ├── validation
+|   ├── ECSSD
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -268,7 +273,7 @@ Since we only support test models on this dataset, you may only download [the te
 
 ### DUTS
 
-First，download [DUTS-TR.zip](http://saliencydetection.net/duts/download/DUTS-TR.zip) and [DUTS-TE.zip](http://saliencydetection.net/duts/download/DUTS-TE.zip) 。
+First，download [DUTS-TR.zip](http://saliencydetection.net/duts/download/DUTS-TR.zip) and [DUTS-TE.zip](http://saliencydetection.net/duts/download/DUTS-TE.zip) .
 
 To convert DUTS dataset to MMSegmentation format, you should run the following command:
 
@@ -280,10 +285,22 @@ python tools/convert_datasets/duts.py /path/to/DUTS-TR.zip /path/to/DUTS-TE.zip
 
 In salient object detection (SOD), DUT-OMRON is used for evaluation.
 
-First，download [DUT-OMRON-image.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-image.zip) and [DUT-OMRON-gt-pixelwise.zip.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-gt-pixelwise.zip.zip) 。
+First，download [DUT-OMRON-image.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-image.zip) and [DUT-OMRON-gt-pixelwise.zip.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-gt-pixelwise.zip.zip) .
 
 To convert DUT-OMRON dataset to MMSegmentation format, you should run the following command:
 
 ```shell
 python tools/convert_datasets/dut_omron.py /path/to/DUT-OMRON-image.zip /path/to/DUT-OMRON-gt-pixelwise.zip.zip
+```
+
+### ECSSD
+
+In salient object detection (SOD), ECSSD is used for evaluation.
+
+First，download [images.zip](https://www.cse.cuhk.edu.hk/leojia/projects/hsaliency/data/ECSSD/images.zip) and [ground_truth_mask.zip](https://www.cse.cuhk.edu.hk/leojia/projects/hsaliency/data/ECSSD/ground_truth_mask.zip) .
+
+To convert ECSSD dataset to MMSegmentation format, you should run the following command:
+
+```shell
+python tools/convert_datasets/ecssd.py /path/to/images.zip /path/to/ground_truth_mask.zip
 ```

@@ -101,6 +101,11 @@ mmsegmentation
 │   │   │   ├── validation
 │   │   ├── annotations
 │   │   │   ├── validation
+|   ├── ECSSD
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -228,4 +233,16 @@ python tools/convert_datasets/duts.py /path/to/DUTS-TR.zip /path/to/DUTS-TE.zip
 
 ```shell
 python tools/convert_datasets/dut_omron.py /path/to/DUT-OMRON-image.zip /path/to/DUT-OMRON-gt-pixelwise.zip.zip
+```
+
+### ECSSD
+
+显著性检测（SOD）任务中 ECSSD 仅作为测试集。
+
+首先，下载 [images.zip](https://www.cse.cuhk.edu.hk/leojia/projects/hsaliency/data/ECSSD/images.zip) 和 [ground_truth_mask.zip](https://www.cse.cuhk.edu.hk/leojia/projects/hsaliency/data/ECSSD/ground_truth_mask.zip) 。
+
+为了将 ECSSD 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/ecssd.py /path/to/images.zip /path/to/ground_truth_mask.zip
 ```
