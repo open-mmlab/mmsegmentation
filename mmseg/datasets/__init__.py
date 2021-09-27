@@ -11,6 +11,7 @@ from .drive import DRIVEDataset
 from .dut_omron import DUTOMRONDataset
 from .duts import DUTSDataset
 from .ecssd import ECSSDDataset
+from .hku_is import HKUISDataset
 from .hrf import HRFDataset
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
@@ -23,5 +24,6 @@ __all__ = [
     'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
-    'COCOStuffDataset', 'DUTSDataset', 'DUTOMRONDataset', 'ECSSDDataset'
+    'COCOStuffDataset', 'DUTSDataset', 'DUTOMRONDataset', 'ECSSDDataset',
+    'HKUISDataset'
 ]

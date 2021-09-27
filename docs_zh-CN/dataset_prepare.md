@@ -106,6 +106,11 @@ mmsegmentation
 │   │   │   ├── validation
 │   │   ├── annotations
 │   │   │   ├── validation
+|   ├── HKU-IS
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -245,4 +250,16 @@ python tools/convert_datasets/dut_omron.py /path/to/DUT-OMRON-image.zip /path/to
 
 ```shell
 python tools/convert_datasets/ecssd.py /path/to/images.zip /path/to/ground_truth_mask.zip
+```
+
+### HKU-IS
+
+显著性检测（SOD）任务中 HKU-IS 仅作为测试集。
+
+首先，下载 [HKU-IS.rar](https://sites.google.com/site/ligb86/mdfsaliency/) 。
+
+为了将 HKU-IS 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/hku_is.py /path/to/HKU-IS.rar
 ```

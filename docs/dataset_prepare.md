@@ -125,6 +125,11 @@ mmsegmentation
 │   │   │   ├── validation
 │   │   ├── annotations
 │   │   │   ├── validation
+|   ├── HKU-IS
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -303,4 +308,16 @@ To convert ECSSD dataset to MMSegmentation format, you should run the following 
 
 ```shell
 python tools/convert_datasets/ecssd.py /path/to/images.zip /path/to/ground_truth_mask.zip
+```
+
+### HKU-IS
+
+In salient object detection (SOD), HKU-IS is used for evaluation.
+
+First，download [HKU-IS.rar](https://sites.google.com/site/ligb86/mdfsaliency/).
+
+To convert HKU-IS dataset to MMSegmentation format, you should run the following command:
+
+```shell
+python tools/convert_datasets/hku_is.py /path/to/HKU-IS.rar
 ```
