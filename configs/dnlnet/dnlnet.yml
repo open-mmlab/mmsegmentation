@@ -12,7 +12,6 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
     Version: v0.17.0
   Converted From:
-    Weights: ''
     Code: https://github.com/yinmh17/DNL-Semantic-Segmentation
 Models:
 - Name: dnl_r50-d8_512x1024_40k_cityscapes
@@ -30,7 +29,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 7.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.61
@@ -51,7 +50,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 10.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.31
@@ -72,7 +71,7 @@ Models:
       resolution: (769,769)
     memory (GB): 9.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.44
@@ -94,7 +93,7 @@ Models:
       resolution: (769,769)
     memory (GB): 12.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.39
@@ -108,7 +107,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.33
@@ -121,7 +120,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.41
@@ -134,7 +133,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.36
@@ -148,7 +147,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.41
@@ -170,7 +169,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.76
@@ -192,7 +191,7 @@ Models:
       resolution: (512,512)
     memory (GB): 12.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.76
@@ -206,7 +205,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.87
@@ -220,7 +219,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 44.25

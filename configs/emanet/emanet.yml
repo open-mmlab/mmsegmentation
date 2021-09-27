@@ -11,7 +11,6 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80
     Version: v0.17.0
   Converted From:
-    Weights: ''
     Code: https://xialipku.github.io/EMANet
 Models:
 - Name: emanet_r50-d8_512x1024_80k_cityscapes
@@ -29,7 +28,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 5.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.59
@@ -51,7 +50,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 6.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.1
@@ -73,7 +72,7 @@ Models:
       resolution: (769,769)
     memory (GB): 8.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.33
@@ -95,7 +94,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.62

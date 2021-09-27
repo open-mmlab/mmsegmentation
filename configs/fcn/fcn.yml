@@ -15,7 +15,6 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
     Version: v0.17.0
   Converted From:
-    Weights: ''
     Code: https://github.com/BVLC/caffe/wiki/Model-Zoo#fcn
 Models:
 - Name: fcn_r50-d8_512x1024_40k_cityscapes
@@ -33,7 +32,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 5.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 72.25
@@ -55,7 +54,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.45
@@ -77,7 +76,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 71.47
@@ -99,7 +98,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 73.93
@@ -121,7 +120,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 71.11
@@ -135,7 +134,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 73.61
@@ -149,7 +148,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.13
@@ -171,7 +170,7 @@ Models:
       resolution: (769,769)
     memory (GB): 1.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 70.8
@@ -185,7 +184,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 72.64
@@ -199,7 +198,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.52
@@ -221,7 +220,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 70.24
@@ -243,7 +242,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 5.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.65
@@ -265,7 +264,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.37
@@ -287,7 +286,7 @@ Models:
       resolution: (769,769)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 69.66
@@ -309,7 +308,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 73.83
@@ -331,7 +330,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.02
@@ -353,7 +352,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.06
@@ -374,7 +373,7 @@ Models:
       mode: FP32
       resolution: (512,1024)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.27
@@ -396,7 +395,7 @@ Models:
       resolution: (769,769)
     memory (GB): 3.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.82
@@ -417,7 +416,7 @@ Models:
       mode: FP32
       resolution: (769,769)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.04
@@ -439,7 +438,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 4.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.36
@@ -460,7 +459,7 @@ Models:
       mode: FP32
       resolution: (512,1024)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.46
@@ -482,7 +481,7 @@ Models:
       resolution: (769,769)
     memory (GB): 5.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.28
@@ -503,7 +502,7 @@ Models:
       mode: FP32
       resolution: (769,769)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.06
@@ -525,7 +524,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.99
@@ -547,7 +546,7 @@ Models:
       resolution: (769,769)
     memory (GB): 3.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.86
@@ -569,7 +568,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 4.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.72
@@ -591,7 +590,7 @@ Models:
       resolution: (769,769)
     memory (GB): 4.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.34
@@ -613,7 +612,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 35.94
@@ -635,7 +634,7 @@ Models:
       resolution: (512,512)
     memory (GB): 12.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.61
@@ -649,7 +648,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 36.1
@@ -663,7 +662,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.91
@@ -685,7 +684,7 @@ Models:
       resolution: (512,512)
     memory (GB): 5.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 67.08
@@ -707,7 +706,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 71.16
@@ -721,7 +720,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 66.97
@@ -735,7 +734,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 69.91
@@ -756,7 +755,7 @@ Models:
       mode: FP32
       resolution: (480,480)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 44.43
@@ -770,7 +769,7 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 44.13
@@ -784,7 +783,7 @@ Models:
     crop size: (480,480)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 48.42
@@ -798,7 +797,7 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 49.35

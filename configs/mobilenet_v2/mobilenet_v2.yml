@@ -12,7 +12,6 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
     Version: v0.17.0
   Converted From:
-    Weights: ''
     Code: https://github.com/tensorflow/models/tree/master/research/deeplab
 Models:
 - Name: fcn_m-v2-d8_512x1024_80k_cityscapes
@@ -30,7 +29,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 61.54
@@ -51,7 +50,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 70.23
@@ -72,7 +71,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 73.84
@@ -93,7 +92,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 5.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.2
@@ -114,7 +113,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 19.71
@@ -135,7 +134,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 29.68
@@ -156,7 +155,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 34.08
@@ -177,7 +176,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 34.02

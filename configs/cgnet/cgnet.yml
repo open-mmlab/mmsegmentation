@@ -11,7 +11,6 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/cgnet.py#L187
     Version: v0.17.0
   Converted From:
-    Weights: ''
     Code: https://github.com/wutianyiRosun/CGNet
 Models:
 - Name: cgnet_680x680_60k_cityscapes
@@ -29,7 +28,7 @@ Models:
       resolution: (680,680)
     memory (GB): 7.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 65.63
@@ -51,7 +50,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 8.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 68.27

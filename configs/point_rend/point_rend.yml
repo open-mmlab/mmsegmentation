@@ -12,7 +12,6 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36
     Version: v0.17.0
   Converted From:
-    Weights: ''
     Code: https://github.com/facebookresearch/detectron2/tree/master/projects/PointRend
 Models:
 - Name: pointrend_r50_512x1024_80k_cityscapes
@@ -30,7 +29,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.47
@@ -52,7 +51,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 4.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.3
@@ -74,7 +73,7 @@ Models:
       resolution: (512,512)
     memory (GB): 5.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 37.64
@@ -96,7 +95,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 40.02

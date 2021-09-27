@@ -18,7 +18,6 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psp_head.py#L63
     Version: v0.17.0
   Converted From:
-    Weights: ''
     Code: https://github.com/hszhao/PSPNet
 Models:
 - Name: pspnet_r50-d8_512x1024_40k_cityscapes
@@ -36,7 +35,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 6.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.85
@@ -58,7 +57,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.34
@@ -80,7 +79,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.26
@@ -102,7 +101,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.08
@@ -124,7 +123,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.87
@@ -138,7 +137,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.55
@@ -152,7 +151,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.76
@@ -174,7 +173,7 @@ Models:
       resolution: (769,769)
     memory (GB): 1.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.9
@@ -188,7 +187,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.59
@@ -202,7 +201,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.77
@@ -224,7 +223,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.23
@@ -246,7 +245,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 6.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.22
@@ -268,7 +267,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.69
@@ -290,7 +289,7 @@ Models:
       resolution: (769,769)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.92
@@ -312,7 +311,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.5
@@ -334,7 +333,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.87
@@ -356,7 +355,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.13
@@ -378,7 +377,7 @@ Models:
       resolution: (512,512)
     memory (GB): 12.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.57
@@ -392,7 +391,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.48
@@ -406,7 +405,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 44.39
@@ -428,7 +427,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.78
@@ -450,7 +449,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.47
@@ -464,7 +463,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.29
@@ -478,7 +477,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.52
@@ -500,7 +499,7 @@ Models:
       resolution: (480,480)
     memory (GB): 8.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 46.6
@@ -514,7 +513,7 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 46.03
@@ -528,7 +527,7 @@ Models:
     crop size: (480,480)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 52.02
@@ -542,7 +541,7 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 52.47
@@ -564,7 +563,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 10k
     Metrics:
       mIoU: 35.69
@@ -586,7 +585,7 @@ Models:
       resolution: (512,512)
     memory (GB): 13.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 10k
     Metrics:
       mIoU: 37.26
@@ -600,7 +599,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 10k
     Metrics:
       mIoU: 36.33
@@ -614,7 +613,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 10k
     Metrics:
       mIoU: 37.76
@@ -636,7 +635,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
     Metrics:
       mIoU: 38.8
@@ -658,7 +657,7 @@ Models:
       resolution: (512,512)
     memory (GB): 13.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
     Metrics:
       mIoU: 40.34
@@ -672,7 +671,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
     Metrics:
       mIoU: 39.64
@@ -686,7 +685,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
     Metrics:
       mIoU: 41.28
@@ -700,7 +699,7 @@ Models:
     crop size: (512,512)
     lr schd: 320000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
     Metrics:
       mIoU: 40.53
@@ -714,7 +713,7 @@ Models:
     crop size: (512,512)
     lr schd: 320000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
     Metrics:
       mIoU: 41.95

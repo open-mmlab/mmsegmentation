@@ -14,7 +14,6 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
     Version: v0.17.0
   Converted From:
-    Weights: ''
     Code: http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net
 Models:
 - Name: fcn_unet_s5-d16_64x64_40k_drive
@@ -25,7 +24,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.68
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.67
@@ -39,7 +38,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.599
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.62
@@ -53,7 +52,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.596
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.69
@@ -67,7 +66,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.968
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 81.02
@@ -81,7 +80,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.982
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 81.22
@@ -95,7 +94,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.999
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 80.93
@@ -109,7 +108,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.968
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.24
@@ -123,7 +122,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.982
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.36
@@ -137,7 +136,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.999
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.47
@@ -151,7 +150,7 @@ Models:
     lr schd: 40000
     memory (GB): 2.525
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 79.45
@@ -165,7 +164,7 @@ Models:
     lr schd: 40000
     memory (GB): 2.588
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 80.07
@@ -179,7 +178,7 @@ Models:
     lr schd: 40000
     memory (GB): 2.604
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 80.21

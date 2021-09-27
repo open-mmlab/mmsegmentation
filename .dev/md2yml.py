@@ -111,7 +111,6 @@ def parse_md(md_file):
                     else:
                         # HACK: fp16 related yaml may be hacky.
                         code_version = 'v0.17.0'
-                # TODO: official code repo url process
                 elif node.text == 'Official Repo':
                     repo_url = node.get('href', None)
                     assert repo_url is not None, (
@@ -167,22 +166,28 @@ def parse_md(md_file):
                     crop_size = els[crop_size_id].split('x')
                     assert len(crop_size) == 2
                     model = {
-                        'Name': model_name,
-                        'In Collection': collection_name,
+                        'Name':
+                        model_name,
+                        'In Collection':
+                        collection_name,
                         'Metadata': {
                             'backbone': els[backbone_id],
                             'crop size': f'({crop_size[0]},{crop_size[1]})',
                             'lr schd': int(els[lr_schd_id]),
                         },
-                        'Results': {
-                            'Task': 'Semantic Segmentation',
-                            'Dataset': current_dataset,
-                            'Metrics': {
-                                'mIoU': float(els[ss_id]),
+                        'Results': [
+                            {
+                                'Task': 'Semantic Segmentation',
+                                'Dataset': current_dataset,
+                                'Metrics': {
+                                    'mIoU': float(els[ss_id]),
+                                },
                             },
-                        },
-                        'Config': config,
-                        'Weights': weight,
+                        ],
+                        'Config':
+                        config,
+                        'Weights':
+                        weight,
                     }
                     if fps != -1:
                         try:
@@ -206,15 +211,18 @@ def parse_md(md_file):
                         }]
                     if mem != -1:
                         model['Metadata']['memory (GB)'] = float(mem)
+                    # Only have semantic segmentation now
                     if ms_id and els[ms_id] != '-' and els[ms_id] != '':
-                        model['Results']['Metrics']['mIoU(ms+flip)'] = float(
-                            els[ms_id])
+                        model['Results'][0]['Metrics'][
+                            'mIoU(ms+flip)'] = float(els[ms_id])
                     models.append(model)
                     j += 1
                 i = j
             else:
                 i += 1
-    assert code_url is not None, f'{collection_name} readme error'
+    flag = (code_url is not None) and (paper_url is not None) and (repo_url
+                                                                   is not None)
+    assert flag, f'{collection_name} readme error'
     collection['Metadata']['Training Data'] = datasets
     collection['Code']['URL'] = code_url
     collection['Code']['Version'] = code_version
@@ -222,6 +230,19 @@ def parse_md(md_file):
     collection['Paper']['Title'] = paper_title
     collection['Converted From']['Code'] = repo_url
     # ['Converted From']['Weights] miss
+    # remove empty attribute
+    check_key_list = ['Code', 'Paper', 'Converted From']
+    for check_key in check_key_list:
+        key_list = list(collection[check_key].keys())
+        for key in key_list:
+            if check_key not in collection:
+                break
+            if collection[check_key][key] == '':
+                if len(collection[check_key].keys()) == 1:
+                    collection.pop(check_key)
+                else:
+                    collection[check_key].pop(key)
+
     result = {'Collections': [collection], 'Models': models}
     yml_file = f'{md_file[:-9]}{collection_name}.yml'
     return dump_yaml_and_check_difference(result, yml_file)

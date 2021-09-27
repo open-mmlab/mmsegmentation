@@ -10,9 +10,6 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/fast_scnn.py#L272
     Version: v0.17.0
-  Converted From:
-    Weights: ''
-    Code: ''
 Models:
 - Name: fast_scnn_lr0.12_8x4_160k_cityscapes
   In Collection: fastscnn
@@ -29,7 +26,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 70.96
