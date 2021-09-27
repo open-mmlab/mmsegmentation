@@ -5,6 +5,7 @@
 <!-- [ALGORITHM] -->
 
 <a href="https://github.com/facebookresearch/detectron2">Official Repo</a>
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12">Code Snippet</a>
 
 <details>
 <summary align="middle"><a href="https://arxiv.org/abs/1901.02446">Semantic FPN (CVPR'2019)</a></summary>

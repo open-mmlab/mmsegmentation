@@ -5,6 +5,7 @@
 <!-- [ALGORITHM] -->
 
 <a href="https://github.com/facebookresearch/video-nonlocal-net">Official Repo</a>
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10">Code Snippet</a>
 
 <details>
 <summary align="middle"><a href="https://arxiv.org/abs/1711.07971">NonLocal Net (CVPR'2018)</a></summary>

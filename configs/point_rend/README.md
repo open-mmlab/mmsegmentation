@@ -7,6 +7,7 @@
 <a href="https://
 github.com/facebookresearch/detectron2/
 tree/master/projects/PointRend">Official Repo</a>
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36">Code Snippet</a>
 
 <details>
 <summary align="middle"><a href="https://arxiv.org/abs/1912.08193">PointRend (CVPR'2020)</a></summary>
