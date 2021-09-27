@@ -7,6 +7,8 @@ Collections:
     - Pascal Context
     - Pascal Context 59
     - Dark Zurich and Nighttime Driving
+    - COCO-Stuff 10k
+    - COCO-Stuff 164k
   Name: pspnet
 Models:
 - Config: configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py
@@ -537,3 +539,175 @@ Models:
       mIoU(ms+flip): 53.99
     Task: Semantic Segmentation
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59/pspnet_r101-d8_480x480_80k_pascal_context_59_20210416_114418-fa6caaa2.pth
+- Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 48.78
+    lr schd: 20000
+    memory (GB): 9.6
+  Name: pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k
+  Results:
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 35.69
+      mIoU(ms+flip): 36.62
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k_20210820_203258-b88df27f.pth
+- Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 90.09
+    lr schd: 20000
+    memory (GB): 13.2
+  Name: pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k
+  Results:
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 37.26
+      mIoU(ms+flip): 38.52
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k_20210820_232135-76aae482.pth
+- Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Name: pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k
+  Results:
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 36.33
+      mIoU(ms+flip): 37.24
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k_20210821_030857-92e2902b.pth
+- Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Name: pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k
+  Results:
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 37.76
+      mIoU(ms+flip): 38.86
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k_20210821_014022-831aec95.pth
+- Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 48.78
+    lr schd: 80000
+    memory (GB): 9.6
+  Name: pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 38.8
+      mIoU(ms+flip): 39.19
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k_20210707_152034-0e41b2db.pth
+- Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    inference time (ms/im):
+    - backend: PyTorch
+      batch size: 1
+      hardware: V100
+      mode: FP32
+      resolution: (512,512)
+      value: 90.09
+    lr schd: 80000
+    memory (GB): 13.2
+  Name: pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 40.34
+      mIoU(ms+flip): 40.79
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k_20210707_152034-7eb41789.pth
+- Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Name: pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 39.64
+      mIoU(ms+flip): 39.97
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k_20210707_152004-51276a57.pth
+- Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Name: pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 41.28
+      mIoU(ms+flip): 41.66
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k_20210707_152004-4af9621b.pth
+- Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 320000
+  Name: pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 40.53
+      mIoU(ms+flip): 40.75
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-be9610cc.pth
+- Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k.py
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 320000
+  Name: pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k
+  Results:
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 41.95
+      mIoU(ms+flip): 42.42
+    Task: Semantic Segmentation
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-72220c60.pth
