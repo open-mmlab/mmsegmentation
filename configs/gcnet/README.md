@@ -5,6 +5,7 @@
 <!-- [ALGORITHM] -->
 
 <a href="https://github.com/xvjiarui/GCNet">Official Repo</a>
+
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10">Code Snippet</a>
 
 <details>

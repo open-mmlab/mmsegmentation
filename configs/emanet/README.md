@@ -5,6 +5,7 @@
 <!-- [ALGORITHM] -->
 
 <a href="https://xialipku.github.io/EMANet">Official Repo</a>
+
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80">Code Snippet</a>
 
 <details>

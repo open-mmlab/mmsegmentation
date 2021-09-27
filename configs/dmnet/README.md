@@ -5,6 +5,7 @@
 <!-- [ALGORITHM] -->
 
 <a href="https://github.com/Junjun2016/DMNet">Official Repo</a>
+
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93">Code Snippet</a>
 
 <details>

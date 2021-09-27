@@ -5,6 +5,7 @@
 <!-- [ALGORITHM] -->
 
 <a href="https://github.com/yinmh17/DNL-Semantic-Segmentation">Official Repo</a>
+
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88">Code Snippet</a>
 
 <details>

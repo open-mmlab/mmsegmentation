@@ -5,6 +5,7 @@
 <!-- [ALGORITHM] -->
 
 <a href="https://github.com/zhanghang1989/ResNeSt">Official Repo</a>
+
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271">Code Snippet</a>
 
 <details>

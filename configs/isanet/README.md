@@ -5,6 +5,7 @@
 <!-- [ALGORITHM] -->
 
 <a href="https://github.com/openseg-group/openseg.pytorch">Official Repo</a>
+
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111">Code Snippet</a>
 
 <details>
