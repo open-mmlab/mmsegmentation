@@ -9,9 +9,11 @@
 import glob
 import os
 import os.path as osp
+import re
 import sys
 
 import mmcv
+from lxml import etree
 
 MMSEG_ROOT = osp.dirname(osp.dirname((osp.dirname(__file__))))
 
@@ -57,7 +59,17 @@ def parse_md(md_file):
     collection_name = osp.dirname(md_file).split('/')[-1]
     configs = os.listdir(osp.dirname(md_file))
 
-    collection = dict(Name=collection_name, Metadata={'Training Data': []})
+    collection = dict(
+        Name=collection_name,
+        Metadata={'Training Data': []},
+        Paper={
+            'URL': '',
+            'Title': ''
+        },
+        Code={
+            'URL': '',
+            'Version': ''
+        })
     models = []
     datasets = []
 
@@ -70,7 +82,33 @@ def parse_md(md_file):
             if len(line) == 0:
                 i += 1
                 continue
-            if line[:3] == '###':
+            if line[:2] == '# ':
+                paper_title = line.replace('# ', '')
+                i += 1
+            elif line[:3] == '<a ':
+                content = etree.HTML(line)
+                node = content.xpath('//a')[0]
+                if node.text == 'Code Snippet':
+                    code_url = node.get('href', None)
+                    assert code_url is not None, (
+                        f'{collection_name} hasn\'t code snippet url.')
+                    # version extraction
+                    filter_str = r'blob/(.*)/mmseg'
+                    pattern = re.compile(filter_str)
+                    code_version = pattern.findall(code_url)
+                    assert len(code_version) == 1, (
+                        f'false regular expression ({filter_str}) use.')
+                    code_version = code_version[0]
+                # TODO: official code repo url process
+                i += 1
+            elif line[:9] == '<summary ':
+                content = etree.HTML(line)
+                nodes = content.xpath('//a')
+                assert len(nodes) == 1, (
+                    'summary tag should only have single a tag.')
+                paper_url = nodes[0].get('href', None)
+                i += 1
+            elif line[:4] == '### ':
                 datasets.append(line[4:])
                 current_dataset = line[4:]
                 i += 2
@@ -161,6 +199,10 @@ def parse_md(md_file):
             else:
                 i += 1
     collection['Metadata']['Training Data'] = datasets
+    collection['Code']['URL'] = code_url
+    collection['Code']['Version'] = code_version
+    collection['Paper']['URL'] = paper_url
+    collection['Paper']['Title'] = paper_title
     result = {'Collections': [collection], 'Models': models}
     yml_file = f'{md_file[:-9]}{collection_name}.yml'
     return dump_yaml_and_check_difference(result, yml_file)
