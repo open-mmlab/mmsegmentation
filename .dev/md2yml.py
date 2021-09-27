@@ -75,11 +75,11 @@ def parse_md(md_file):
     collection.update({'Converted From': {'Weights': '', 'Code': ''}})
     models = []
     datasets = []
-    paper_url = ''
-    paper_title = ''
-    code_url = ''
-    code_version = ''
-    repo_url = ''
+    paper_url = None
+    paper_title = None
+    code_url = None
+    code_version = None
+    repo_url = None
 
     with open(md_file, 'r') as md:
         lines = md.readlines()
@@ -214,6 +214,7 @@ def parse_md(md_file):
                 i = j
             else:
                 i += 1
+    assert code_url is not None, f'{collection_name} readme error'
     collection['Metadata']['Training Data'] = datasets
     collection['Code']['URL'] = code_url
     collection['Code']['Version'] = code_version
