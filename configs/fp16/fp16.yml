@@ -6,7 +6,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/1710.03740
     Title: Mixed Precision Training
-  README: configs\fp16\README.md
+  README: configs/fp16/README.md
   Code:
     URL: https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/optimizer.py#L134
     Version: v0.17.0

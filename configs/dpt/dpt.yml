@@ -6,7 +6,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/2103.13413
     Title: Vision Transformer for Dense Prediction
-  README: configs\dpt\README.md
+  README: configs/dpt/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dpt_head.py#L215
     Version: v0.17.0

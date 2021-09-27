@@ -7,7 +7,7 @@ Collections:
     URL: https://arxiv.org/abs/2004.02147
     Title: 'Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic
       Segmentation'
-  README: configs\bisenetv2\README.md
+  README: configs/bisenetv2/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/backbones/bisenetv2.py#L545
     Version: master

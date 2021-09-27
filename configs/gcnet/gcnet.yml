@@ -8,7 +8,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/1904.11492
     Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
-  README: configs\gcnet\README.md
+  README: configs/gcnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
     Version: v0.17.0

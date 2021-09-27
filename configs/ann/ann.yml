@@ -8,7 +8,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/1908.07678
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
-  README: configs\ann\README.md
+  README: configs/ann/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
     Version: v0.17.0

@@ -6,7 +6,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/2105.15203
     Title: resize image to multiple of 32, improve SegFormer by 0.5-1.0 mIoU.
-  README: configs\segformer\README.md
+  README: configs/segformer/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
     Version: v0.17.0

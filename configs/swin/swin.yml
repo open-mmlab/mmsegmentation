@@ -6,7 +6,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/2103.14030
     Title: 'Swin Transformer: Hierarchical Vision Transformer using Shifted Windows'
-  README: configs\swin\README.md
+  README: configs/swin/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/swin.py#L524
     Version: v0.17.0

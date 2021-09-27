@@ -6,7 +6,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/1801.04381
     Title: Searching for MobileNetV3
-  README: configs\mobilenet_v3\README.md
+  README: configs/mobilenet_v3/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15
     Version: v0.17.0

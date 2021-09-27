@@ -12,7 +12,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/1706.05587
     Title: Rethinking atrous convolution for semantic image segmentation
-  README: configs\deeplabv3\README.md
+  README: configs/deeplabv3/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/aspp_head.py#L54
     Version: v0.17.0

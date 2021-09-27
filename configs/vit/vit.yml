@@ -6,7 +6,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/pdf/2010.11929.pdf
     Title: Vision Transformer
-  README: configs\vit\README.md
+  README: configs/vit/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
     Version: v0.17.0

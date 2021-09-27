@@ -6,7 +6,7 @@ Collections:
   Paper:
     URL: https://arxiv.org/abs/1907.13426
     Title: Expectation-Maximization Attention Networks for Semantic Segmentation
-  README: configs\emanet\README.md
+  README: configs/emanet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80
     Version: v0.17.0
