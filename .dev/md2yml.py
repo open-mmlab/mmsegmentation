@@ -18,18 +18,19 @@ from lxml import etree
 MMSEG_ROOT = osp.dirname(osp.dirname((osp.dirname(__file__))))
 
 
-def dump_yaml_and_check_difference(obj, filename):
+def dump_yaml_and_check_difference(obj, filename, sort_keys=False):
     """Dump object to a yaml file, and check if the file content is different
     from the original.
 
     Args:
         obj (any): The python object to be dumped.
         filename (str): YAML filename to dump the object to.
+        sort_keys (str); Sort key by dictionary order.
     Returns:
         Bool: If the target YAML file is different from the original.
     """
 
-    str_dump = mmcv.dump(obj, None, file_format='yaml', sort_keys=True)
+    str_dump = mmcv.dump(obj, None, file_format='yaml', sort_keys=sort_keys)
     if osp.isfile(filename):
         file_exists = True
         with open(filename, 'r', encoding='utf-8') as f:
@@ -56,7 +57,7 @@ def parse_md(md_file):
     Returns:
         Bool: If the target YAML file is different from the original.
     """
-    collection_name = osp.dirname(md_file).split('/')[-1]
+    collection_name = osp.split(osp.dirname(md_file))[1]
     configs = os.listdir(osp.dirname(md_file))
 
     collection = dict(
@@ -66,6 +67,7 @@ def parse_md(md_file):
             'URL': '',
             'Title': ''
         },
+        README=md_file,
         Code={
             'URL': '',
             'Version': ''
@@ -96,9 +98,13 @@ def parse_md(md_file):
                     filter_str = r'blob/(.*)/mmseg'
                     pattern = re.compile(filter_str)
                     code_version = pattern.findall(code_url)
-                    assert len(code_version) == 1, (
-                        f'false regular expression ({filter_str}) use.')
-                    code_version = code_version[0]
+                    if collection_name != 'fp16':
+                        assert len(code_version) == 1, (
+                            f'false regular expression ({filter_str}) use.')
+                        code_version = code_version[0]
+                    else:
+                        # HACK: fp16 related yaml may be hacky.
+                        code_version = 'v0.17.0'
                 # TODO: official code repo url process
                 i += 1
             elif line[:9] == '<summary ':
