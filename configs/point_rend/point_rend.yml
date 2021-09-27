@@ -11,6 +11,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/facebookresearch/detectron2/tree/master/projects/PointRend
 Models:
 - Name: pointrend_r50_512x1024_80k_cityscapes
   In Collection: point_rend

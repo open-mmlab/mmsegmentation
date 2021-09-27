@@ -11,6 +11,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/facebookresearch/detectron2
 Models:
 - Name: fpn_r50_512x1024_80k_cityscapes
   In Collection: sem_fpn

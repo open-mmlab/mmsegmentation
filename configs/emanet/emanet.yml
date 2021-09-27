@@ -10,6 +10,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://xialipku.github.io/EMANet
 Models:
 - Name: emanet_r50-d8_512x1024_80k_cityscapes
   In Collection: emanet

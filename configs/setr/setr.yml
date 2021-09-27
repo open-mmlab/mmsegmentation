@@ -11,6 +11,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/setr_up_head.py#L11
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/fudan-zvg/SETR
 Models:
 - Name: setr_naive_512x512_160k_b16_ade20k
   In Collection: setr

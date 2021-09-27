@@ -10,6 +10,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/google-research/vision_transformer
 Models:
 - Name: upernet_vit-b16_mln_512x512_80k_ade20k
   In Collection: vit

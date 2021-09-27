@@ -14,6 +14,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/hrnet.py#L218
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/HRNet/HRNet-Semantic-Segmentation
 Models:
 - Name: fcn_hr18s_512x1024_40k_cityscapes
   In Collection: hrnet

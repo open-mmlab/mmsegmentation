@@ -11,6 +11,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/Junjun2016/DMNet
 Models:
 - Name: dmnet_r50-d8_512x1024_40k_cityscapes
   In Collection: dmnet

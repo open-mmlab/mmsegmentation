@@ -13,6 +13,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net
 Models:
 - Name: fcn_unet_s5-d16_64x64_40k_drive
   In Collection: unet

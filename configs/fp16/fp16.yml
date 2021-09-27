@@ -10,6 +10,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/optimizer.py#L134
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/baidu-research/DeepBench
 Models:
 - Name: fcn_r101-d8_512x1024_80k_fp16_cityscapes
   In Collection: fp16

@@ -10,6 +10,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/cgnet.py#L187
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/wutianyiRosun/CGNet
 Models:
 - Name: cgnet_680x680_60k_cityscapes
   In Collection: cgnet

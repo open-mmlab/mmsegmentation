@@ -11,6 +11,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/zhanghang1989/ResNeSt
 Models:
 - Name: fcn_s101-d8_512x1024_80k_cityscapes
   In Collection: resnest

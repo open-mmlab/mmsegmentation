@@ -12,6 +12,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ocr_head.py#L86
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/openseg-group/OCNet.pytorch
 Models:
 - Name: ocrnet_hr18s_512x1024_40k_cityscapes
   In Collection: ocrnet

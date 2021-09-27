@@ -11,6 +11,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/tensorflow/models/tree/master/research/deeplab
 Models:
 - Name: fcn_m-v2-d8_512x1024_80k_cityscapes
   In Collection: mobilenet_v2

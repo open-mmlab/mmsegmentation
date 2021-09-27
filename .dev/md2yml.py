@@ -72,6 +72,7 @@ def parse_md(md_file):
             'URL': '',
             'Version': ''
         })
+    collection.update({'Converted From': {'Weights': '', 'Code': ''}})
     models = []
     datasets = []
 
@@ -106,6 +107,10 @@ def parse_md(md_file):
                         # HACK: fp16 related yaml may be hacky.
                         code_version = 'v0.17.0'
                 # TODO: official code repo url process
+                elif node.text == 'Official Repo':
+                    repo_url = node.get('href', None)
+                    assert repo_url is not None, (
+                        f'{collection_name} hasn\'t official repo url.')
                 i += 1
             elif line[:9] == '<summary ':
                 content = etree.HTML(line)
@@ -209,6 +214,8 @@ def parse_md(md_file):
     collection['Code']['Version'] = code_version
     collection['Paper']['URL'] = paper_url
     collection['Paper']['Title'] = paper_title
+    collection['Converted From']['Code'] = repo_url
+    # ['Converted From']['Weights] miss
     result = {'Collections': [collection], 'Models': models}
     yml_file = f'{md_file[:-9]}{collection_name}.yml'
     return dump_yaml_and_check_difference(result, yml_file)

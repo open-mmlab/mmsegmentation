@@ -12,6 +12,9 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
     Version: v0.17.0
+  Converted From:
+    Weights: ''
+    Code: https://github.com/CSAILVision/unifiedparsing
 Models:
 - Name: upernet_r50_512x1024_40k_cityscapes
   In Collection: upernet
