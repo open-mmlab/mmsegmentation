@@ -75,6 +75,11 @@ def parse_md(md_file):
     collection.update({'Converted From': {'Weights': '', 'Code': ''}})
     models = []
     datasets = []
+    paper_url = ''
+    paper_title = ''
+    code_url = ''
+    code_version = ''
+    repo_url = ''
 
     with open(md_file, 'r') as md:
         lines = md.readlines()
