@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/BVLC/caffe/wiki/Model-Zoo#fcn">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1411.4038">FCN (CVPR'2015/TPAMI'2017)</a></summary>
+
 ```latex
 @article{shelhamer2017fully,
   title={Fully convolutional networks for semantic segmentation},
@@ -16,6 +23,8 @@
   publisher={IEEE Trans Pattern Anal Mach Intell}
 }
 ```
+
+</details>
 
 ## Results and models
 

@@ -1,248 +1,257 @@
 Collections:
-- Metadata:
+- Name: vit
+  Metadata:
     Training Data:
     - ADE20K
-  Name: vit
+  Paper:
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+    Title: Vision Transformer
+  README: configs/vit/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/google-research/vision_transformer
 Models:
-- Config: configs/vit/upernet_vit-b16_mln_512x512_80k_ade20k.py
+- Name: upernet_vit-b16_mln_512x512_80k_ade20k
   In Collection: vit
   Metadata:
     backbone: ViT-B + MLN
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 144.09
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 144.09
-    lr schd: 80000
     memory (GB): 9.2
-  Name: upernet_vit-b16_mln_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 47.71
       mIoU(ms+flip): 49.51
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_vit-b16_mln_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_80k_ade20k/upernet_vit-b16_mln_512x512_80k_ade20k_20210624_130547-0403cee1.pth
-- Config: configs/vit/upernet_vit-b16_mln_512x512_160k_ade20k.py
+- Name: upernet_vit-b16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
     backbone: ViT-B + MLN
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 131.93
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 131.93
-    lr schd: 160000
     memory (GB): 9.2
-  Name: upernet_vit-b16_mln_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 46.75
       mIoU(ms+flip): 48.46
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_vit-b16_mln_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_160k_ade20k/upernet_vit-b16_mln_512x512_160k_ade20k_20210624_130547-852fa768.pth
-- Config: configs/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k.py
+- Name: upernet_vit-b16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
     backbone: ViT-B + LN + MLN
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 146.63
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 146.63
-    lr schd: 160000
     memory (GB): 9.21
-  Name: upernet_vit-b16_ln_mln_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 47.73
       mIoU(ms+flip): 49.95
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k/upernet_vit-b16_ln_mln_512x512_160k_ade20k_20210621_172828-f444c077.pth
-- Config: configs/vit/upernet_deit-s16_512x512_80k_ade20k.py
+- Name: upernet_deit-s16_512x512_80k_ade20k
   In Collection: vit
   Metadata:
     backbone: DeiT-S
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 33.5
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 33.5
-    lr schd: 80000
     memory (GB): 4.68
-  Name: upernet_deit-s16_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.96
       mIoU(ms+flip): 43.79
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_deit-s16_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_80k_ade20k/upernet_deit-s16_512x512_80k_ade20k_20210624_095228-afc93ec2.pth
-- Config: configs/vit/upernet_deit-s16_512x512_160k_ade20k.py
+- Name: upernet_deit-s16_512x512_160k_ade20k
   In Collection: vit
   Metadata:
     backbone: DeiT-S
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 34.26
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 34.26
-    lr schd: 160000
     memory (GB): 4.68
-  Name: upernet_deit-s16_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.87
       mIoU(ms+flip): 43.79
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_deit-s16_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_160k_ade20k/upernet_deit-s16_512x512_160k_ade20k_20210621_160903-5110d916.pth
-- Config: configs/vit/upernet_deit-s16_mln_512x512_160k_ade20k.py
+- Name: upernet_deit-s16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
     backbone: DeiT-S + MLN
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 89.45
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 89.45
-    lr schd: 160000
     memory (GB): 5.69
-  Name: upernet_deit-s16_mln_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.82
       mIoU(ms+flip): 45.07
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_deit-s16_mln_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_mln_512x512_160k_ade20k/upernet_deit-s16_mln_512x512_160k_ade20k_20210621_161021-fb9a5dfb.pth
-- Config: configs/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k.py
+- Name: upernet_deit-s16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
     backbone: DeiT-S + LN + MLN
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 80.71
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 80.71
-    lr schd: 160000
     memory (GB): 5.69
-  Name: upernet_deit-s16_ln_mln_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.52
       mIoU(ms+flip): 45.01
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k/upernet_deit-s16_ln_mln_512x512_160k_ade20k_20210621_161021-c0cd652f.pth
-- Config: configs/vit/upernet_deit-b16_512x512_80k_ade20k.py
+- Name: upernet_deit-b16_512x512_80k_ade20k
   In Collection: vit
   Metadata:
     backbone: DeiT-B
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 103.2
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 103.2
-    lr schd: 80000
     memory (GB): 7.75
-  Name: upernet_deit-b16_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.24
       mIoU(ms+flip): 46.73
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_deit-b16_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_80k_ade20k/upernet_deit-b16_512x512_80k_ade20k_20210624_130529-1e090789.pth
-- Config: configs/vit/upernet_deit-b16_512x512_160k_ade20k.py
+- Name: upernet_deit-b16_512x512_160k_ade20k
   In Collection: vit
   Metadata:
     backbone: DeiT-B
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 96.25
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 96.25
-    lr schd: 160000
     memory (GB): 7.75
-  Name: upernet_deit-b16_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.36
       mIoU(ms+flip): 47.16
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_deit-b16_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_160k_ade20k/upernet_deit-b16_512x512_160k_ade20k_20210621_180100-828705d7.pth
-- Config: configs/vit/upernet_deit-b16_mln_512x512_160k_ade20k.py
+- Name: upernet_deit-b16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
     backbone: DeiT-B + MLN
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 128.53
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 128.53
-    lr schd: 160000
     memory (GB): 9.21
-  Name: upernet_deit-b16_mln_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.46
       mIoU(ms+flip): 47.16
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_deit-b16_mln_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_mln_512x512_160k_ade20k/upernet_deit-b16_mln_512x512_160k_ade20k_20210621_191949-4e1450f3.pth
-- Config: configs/vit/upernet_deit-b16_ln_mln_512x512_160k_ade20k.py
+- Name: upernet_deit-b16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
     backbone: DeiT-B + LN + MLN
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 129.03
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 129.03
-    lr schd: 160000
     memory (GB): 9.21
-  Name: upernet_deit-b16_ln_mln_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.37
       mIoU(ms+flip): 47.23
-    Task: Semantic Segmentation
+  Config: configs/vit/upernet_deit-b16_ln_mln_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_ln_mln_512x512_160k_ade20k/upernet_deit-b16_ln_mln_512x512_160k_ade20k_20210623_153535-8a959c14.pth
