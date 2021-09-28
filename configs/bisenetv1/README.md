@@ -39,4 +39,4 @@ Note:
 
 - `4x8`: Using 4 GPUs with 8 samples per GPU in training.
 - Default setting is 4 GPUs with 4 samples per GPU in training.
--  `No Pretrain` means the model is trained from scratch.
+- `No Pretrain` means the model is trained from scratch.
