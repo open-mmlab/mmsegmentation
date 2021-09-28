@@ -11,7 +11,6 @@ def test_ic_neck():
     # test with norm_cfg
     neck = ICNeck(
         in_channels=(64, 256, 256),
-        in_index=(0, 1, 2),
         out_channels=128,
         norm_cfg=dict(type='SyncBN'),
         align_corners=False)
@@ -24,7 +23,6 @@ def test_ic_neck():
     ]
     neck = ICNeck(
         in_channels=(64, 256, 256),
-        in_index=(0, 1, 2),
         out_channels=128,
         norm_cfg=dict(type='BN', requires_grad=True),
         align_corners=False)
@@ -50,7 +48,6 @@ def test_ic_neck_input_channels():
         # ICNet Neck input channel constraints.
         ICNeck(
             in_channels=(64, 256, 256, 256),
-            in_index=(0, 1, 2),
             out_channels=128,
             norm_cfg=dict(type='BN', requires_grad=True),
             align_corners=False)

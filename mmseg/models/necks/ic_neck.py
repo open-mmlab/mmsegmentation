@@ -98,7 +98,6 @@ class ICNeck(BaseModule):
 
     def __init__(self,
                  in_channels=(64, 256, 256),
-                 in_index=(0, 1, 2),
                  out_channels=128,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
