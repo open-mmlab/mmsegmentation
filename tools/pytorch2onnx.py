@@ -169,6 +169,7 @@ def pytorch2onnx(model,
     imgs = mm_inputs.pop('imgs')
     img_metas = mm_inputs.pop('img_metas')
 
+    img_list = [img[None, :].type(torch.uint8) for img in imgs]
     img_meta_list = [[img_meta] for img_meta in img_metas]
     # update img_meta
     img_list, img_meta_list = _update_input_img(img_list, img_meta_list)
