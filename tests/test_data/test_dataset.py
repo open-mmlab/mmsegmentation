@@ -59,8 +59,8 @@ def test_classes_file_path():
 
     os.remove(classes_path)
     assert not osp.exists(classes_path)
-        
-        
+
+
 def test_palette():
     assert CityscapesDataset.PALETTE == get_palette('cityscapes')
     assert PascalVOCDataset.PALETTE == get_palette('voc') == get_palette(
