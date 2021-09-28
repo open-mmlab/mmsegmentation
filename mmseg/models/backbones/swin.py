@@ -46,13 +46,12 @@ class WindowMSA(BaseModule):
                  proj_drop_rate=0.,
                  init_cfg=None):
 
-        super().__init__()
+        super().__init__(init_cfg=init_cfg)
         self.embed_dims = embed_dims
         self.window_size = window_size  # Wh, Ww
         self.num_heads = num_heads
         head_embed_dims = embed_dims // num_heads
         self.scale = qk_scale or head_embed_dims**-0.5
-        self.init_cfg = init_cfg
 
         # define a parameter table of relative position bias
         self.relative_position_bias_table = nn.Parameter(
@@ -157,7 +156,7 @@ class ShiftWindowMSA(BaseModule):
                  proj_drop_rate=0,
                  dropout_layer=dict(type='DropPath', drop_prob=0.),
                  init_cfg=None):
-        super().__init__(init_cfg)
+        super().__init__(init_cfg=init_cfg)
 
         self.window_size = window_size
         self.shift_size = shift_size
@@ -324,9 +323,8 @@ class SwinBlock(BaseModule):
                  with_cp=False,
                  init_cfg=None):
 
-        super(SwinBlock, self).__init__()
+        super(SwinBlock, self).__init__(init_cfg=init_cfg)
 
-        self.init_cfg = init_cfg
         self.with_cp = with_cp
 
         self.norm1 = build_norm_layer(norm_cfg, embed_dims)[1]
