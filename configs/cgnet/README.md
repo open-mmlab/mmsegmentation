@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/cgnet.py#L187">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/pdf/1811.08201.pdf">CGNet (TIP'2020)</a></summary>
+<summary align="right"><a href="https://arxiv.org/pdf/1811.08201.pdf">CGNet (TIP'2020)</a></summary>
 
 ```latext
 @article{wu2020cgnet,
@@ -22,6 +22,8 @@
   publisher={IEEE}
 }
 ```
+
+</details>
 
 ## Results and models
 
