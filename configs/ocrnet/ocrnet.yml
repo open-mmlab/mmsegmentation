@@ -1,431 +1,438 @@
 Collections:
-- Metadata:
+- Name: ocrnet
+  Metadata:
     Training Data:
     - Cityscapes
-    - ' HRNet backbone'
-    - ' ResNet backbone'
     - ADE20K
     - Pascal VOC 2012 + Aug
-  Name: ocrnet
+  Paper:
+    URL: https://arxiv.org/abs/1909.11065
+    Title: Object-Contextual Representations for Semantic Segmentation
+  README: configs/ocrnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ocr_head.py#L86
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/openseg-group/OCNet.pytorch
 Models:
-- Config: configs/ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes.py
+- Name: ocrnet_hr18s_512x1024_40k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 95.69
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 95.69
-    lr schd: 40000
     memory (GB): 3.5
-  Name: ocrnet_hr18s_512x1024_40k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 74.3
       mIoU(ms+flip): 75.95
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes/ocrnet_hr18s_512x1024_40k_cityscapes_20200601_033304-fa2436c2.pth
-- Config: configs/ocrnet/ocrnet_hr18_512x1024_40k_cityscapes.py
+- Name: ocrnet_hr18_512x1024_40k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 133.33
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 133.33
-    lr schd: 40000
     memory (GB): 4.7
-  Name: ocrnet_hr18_512x1024_40k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 77.72
       mIoU(ms+flip): 79.49
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_40k_cityscapes/ocrnet_hr18_512x1024_40k_cityscapes_20200601_033320-401c5bdd.pth
-- Config: configs/ocrnet/ocrnet_hr48_512x1024_40k_cityscapes.py
+- Name: ocrnet_hr48_512x1024_40k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 236.97
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 236.97
-    lr schd: 40000
     memory (GB): 8.0
-  Name: ocrnet_hr48_512x1024_40k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.58
       mIoU(ms+flip): 81.79
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr48_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_40k_cityscapes/ocrnet_hr48_512x1024_40k_cityscapes_20200601_033336-55b32491.pth
-- Config: configs/ocrnet/ocrnet_hr18s_512x1024_80k_cityscapes.py
+- Name: ocrnet_hr18s_512x1024_80k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,1024)
     lr schd: 80000
-  Name: ocrnet_hr18s_512x1024_80k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 77.16
       mIoU(ms+flip): 78.66
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18s_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_80k_cityscapes/ocrnet_hr18s_512x1024_80k_cityscapes_20200601_222735-55979e63.pth
-- Config: configs/ocrnet/ocrnet_hr18_512x1024_80k_cityscapes.py
+- Name: ocrnet_hr18_512x1024_80k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,1024)
     lr schd: 80000
-  Name: ocrnet_hr18_512x1024_80k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 78.57
       mIoU(ms+flip): 80.46
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_80k_cityscapes/ocrnet_hr18_512x1024_80k_cityscapes_20200614_230521-c2e1dd4a.pth
-- Config: configs/ocrnet/ocrnet_hr48_512x1024_80k_cityscapes.py
+- Name: ocrnet_hr48_512x1024_80k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,1024)
     lr schd: 80000
-  Name: ocrnet_hr48_512x1024_80k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.7
       mIoU(ms+flip): 81.87
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr48_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_80k_cityscapes/ocrnet_hr48_512x1024_80k_cityscapes_20200601_222752-9076bcdf.pth
-- Config: configs/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes.py
+- Name: ocrnet_hr18s_512x1024_160k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,1024)
     lr schd: 160000
-  Name: ocrnet_hr18s_512x1024_160k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 78.45
       mIoU(ms+flip): 79.97
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_160k_cityscapes/ocrnet_hr18s_512x1024_160k_cityscapes_20200602_191005-f4a7af28.pth
-- Config: configs/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes.py
+- Name: ocrnet_hr18_512x1024_160k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,1024)
     lr schd: 160000
-  Name: ocrnet_hr18_512x1024_160k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 79.47
       mIoU(ms+flip): 80.91
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x1024_160k_cityscapes/ocrnet_hr18_512x1024_160k_cityscapes_20200602_191001-b9172d0c.pth
-- Config: configs/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes.py
+- Name: ocrnet_hr48_512x1024_160k_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,1024)
     lr schd: 160000
-  Name: ocrnet_hr48_512x1024_160k_cityscapes
   Results:
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 81.35
       mIoU(ms+flip): 82.7
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x1024_160k_cityscapes/ocrnet_hr48_512x1024_160k_cityscapes_20200602_191037-dfbf1b0c.pth
-- Config: configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes.py
+- Name: ocrnet_r101-d8_512x1024_40k_b8_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
     lr schd: 40000
-  Name: ocrnet_r101-d8_512x1024_40k_b8_cityscapes
   Results:
-    Dataset: ' ResNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.09
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes_20200717_110721-02ac0f13.pth
-- Config: configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes.py
+- Name: ocrnet_r101-d8_512x1024_40k_b16_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 331.13
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 331.13
-    lr schd: 40000
     memory (GB): 8.8
-  Name: ocrnet_r101-d8_512x1024_40k_b16_cityscapes
   Results:
-    Dataset: ' ResNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.3
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes_20200723_193726-db500f80.pth
-- Config: configs/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes.py
+- Name: ocrnet_r101-d8_512x1024_80k_b16_cityscapes
   In Collection: ocrnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 331.13
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 331.13
-    lr schd: 80000
     memory (GB): 8.8
-  Name: ocrnet_r101-d8_512x1024_80k_b16_cityscapes
   Results:
-    Dataset: ' ResNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.81
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes_20200723_192421-78688424.pth
-- Config: configs/ocrnet/ocrnet_hr18s_512x512_80k_ade20k.py
+- Name: ocrnet_hr18s_512x512_80k_ade20k
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 34.51
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 34.51
-    lr schd: 80000
     memory (GB): 6.7
-  Name: ocrnet_hr18s_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 35.06
       mIoU(ms+flip): 35.8
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18s_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_80k_ade20k/ocrnet_hr18s_512x512_80k_ade20k_20200615_055600-e80b62af.pth
-- Config: configs/ocrnet/ocrnet_hr18_512x512_80k_ade20k.py
+- Name: ocrnet_hr18_512x512_80k_ade20k
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 52.83
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 52.83
-    lr schd: 80000
     memory (GB): 7.9
-  Name: ocrnet_hr18_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 37.79
       mIoU(ms+flip): 39.16
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_80k_ade20k/ocrnet_hr18_512x512_80k_ade20k_20200615_053157-d173d83b.pth
-- Config: configs/ocrnet/ocrnet_hr48_512x512_80k_ade20k.py
+- Name: ocrnet_hr48_512x512_80k_ade20k
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 58.86
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 58.86
-    lr schd: 80000
     memory (GB): 11.2
-  Name: ocrnet_hr48_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.0
       mIoU(ms+flip): 44.3
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr48_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_80k_ade20k/ocrnet_hr48_512x512_80k_ade20k_20200615_021518-d168c2d1.pth
-- Config: configs/ocrnet/ocrnet_hr18s_512x512_160k_ade20k.py
+- Name: ocrnet_hr18s_512x512_160k_ade20k
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
     lr schd: 160000
-  Name: ocrnet_hr18s_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 37.19
       mIoU(ms+flip): 38.4
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18s_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_160k_ade20k/ocrnet_hr18s_512x512_160k_ade20k_20200615_184505-8e913058.pth
-- Config: configs/ocrnet/ocrnet_hr18_512x512_160k_ade20k.py
+- Name: ocrnet_hr18_512x512_160k_ade20k
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
     lr schd: 160000
-  Name: ocrnet_hr18_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.32
       mIoU(ms+flip): 40.8
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_160k_ade20k/ocrnet_hr18_512x512_160k_ade20k_20200615_200940-d8fcd9d1.pth
-- Config: configs/ocrnet/ocrnet_hr48_512x512_160k_ade20k.py
+- Name: ocrnet_hr48_512x512_160k_ade20k
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
     lr schd: 160000
-  Name: ocrnet_hr48_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.25
       mIoU(ms+flip): 44.88
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr48_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_160k_ade20k/ocrnet_hr48_512x512_160k_ade20k_20200615_184705-a073726d.pth
-- Config: configs/ocrnet/ocrnet_hr18s_512x512_20k_voc12aug.py
+- Name: ocrnet_hr18s_512x512_20k_voc12aug
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 31.7
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 31.7
-    lr schd: 20000
     memory (GB): 3.5
-  Name: ocrnet_hr18s_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 71.7
       mIoU(ms+flip): 73.84
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18s_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_20k_voc12aug/ocrnet_hr18s_512x512_20k_voc12aug_20200617_233913-02b04fcb.pth
-- Config: configs/ocrnet/ocrnet_hr18_512x512_20k_voc12aug.py
+- Name: ocrnet_hr18_512x512_20k_voc12aug
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 50.23
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 50.23
-    lr schd: 20000
     memory (GB): 4.7
-  Name: ocrnet_hr18_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 74.75
       mIoU(ms+flip): 77.11
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_20k_voc12aug/ocrnet_hr18_512x512_20k_voc12aug_20200617_233932-8954cbb7.pth
-- Config: configs/ocrnet/ocrnet_hr48_512x512_20k_voc12aug.py
+- Name: ocrnet_hr48_512x512_20k_voc12aug
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 56.09
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 56.09
-    lr schd: 20000
     memory (GB): 8.1
-  Name: ocrnet_hr48_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.72
       mIoU(ms+flip): 79.87
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr48_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_20k_voc12aug/ocrnet_hr48_512x512_20k_voc12aug_20200617_233932-9e82080a.pth
-- Config: configs/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug.py
+- Name: ocrnet_hr18s_512x512_40k_voc12aug
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
     lr schd: 40000
-  Name: ocrnet_hr18s_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 72.76
       mIoU(ms+flip): 74.6
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x512_40k_voc12aug/ocrnet_hr18s_512x512_40k_voc12aug_20200614_002025-42b587ac.pth
-- Config: configs/ocrnet/ocrnet_hr18_512x512_40k_voc12aug.py
+- Name: ocrnet_hr18_512x512_40k_voc12aug
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
     lr schd: 40000
-  Name: ocrnet_hr18_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 74.98
       mIoU(ms+flip): 77.4
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr18_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18_512x512_40k_voc12aug/ocrnet_hr18_512x512_40k_voc12aug_20200614_015958-714302be.pth
-- Config: configs/ocrnet/ocrnet_hr48_512x512_40k_voc12aug.py
+- Name: ocrnet_hr48_512x512_40k_voc12aug
   In Collection: ocrnet
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
     lr schd: 40000
-  Name: ocrnet_hr48_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.14
       mIoU(ms+flip): 79.71
-    Task: Semantic Segmentation
+  Config: configs/ocrnet/ocrnet_hr48_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr48_512x512_40k_voc12aug/ocrnet_hr48_512x512_40k_voc12aug_20200614_015958-255bc5ce.pth

@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/hszhao/PSPNet">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psp_head.py#L63">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1612.01105">PSPNet (CVPR'2017)</a></summary>
+
 ```latex
 @inproceedings{zhao2017pspnet,
   title={Pyramid Scene Parsing Network},
@@ -12,6 +19,8 @@
   year={2017}
 }
 ```
+
+</details>
 
 ## Results and models
 

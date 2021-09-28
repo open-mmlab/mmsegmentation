@@ -4,6 +4,17 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/fudan-zvg/SETR">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/setr_up_head.py#L11">Code Snippet</a>
+
+```None
+This head has two version head.
+```
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/2012.15840">SETR (CVPR'2021)</a></summary>
+
 ```latex
 @article{zheng2020rethinking,
   title={Rethinking Semantic Segmentation from a Sequence-to-Sequence Perspective with Transformers},
@@ -12,6 +23,8 @@
   year={2020}
 }
 ```
+
+</details>
 
 ## Results and models
 

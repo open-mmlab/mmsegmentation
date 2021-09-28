@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/isl-org/DPT">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dpt_head.py#L215">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/2103.13413">DPT (ArXiv'2021)</a></summary>
+
 ```latex
 @article{dosoViTskiy2020,
   title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
@@ -19,6 +26,8 @@
   year      = {2021},
 }
 ```
+
+</details>
 
 ## Usage
 
