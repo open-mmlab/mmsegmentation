@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/Junjun2016/DMNet">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf">DMNet (ICCV'2019)</a></summary>
+
 ```latex
 @InProceedings{He_2019_ICCV,
 author = {He, Junjun and Deng, Zhongying and Qiao, Yu},
@@ -13,6 +20,8 @@ month = {October},
 year = {2019}
 }
 ```
+
+</details>
 
 ## Results and models
 

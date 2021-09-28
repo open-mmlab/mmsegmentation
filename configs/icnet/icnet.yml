@@ -1,198 +1,207 @@
 Collections:
-- Metadata:
+- Name: icnet
+  Metadata:
     Training Data:
     - Cityscapes
-  Name: icnet
+  Paper:
+    URL: https://arxiv.org/abs/1704.08545
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+  README: configs/icnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+    Version: v0.18.0
+  Converted From:
+    Code: https://github.com/hszhao/ICNet
 Models:
-- Config: configs/icnet/icnet_r18-d8_832x832_80k_cityscapes.py
+- Name: icnet_r18-d8_832x832_80k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-18-D8
     crop size: (832,832)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 36.87
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (832,832)
-      value: 31.14
-    lr schd: 80000
-    memory (GB): 1.87
-  Name: icnet_r18-d8_832x832_80k_cityscapes
+    memory (GB): 1.7
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 66.92
-      mIoU(ms+flip): 69.43
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth
-- Config: configs/icnet/icnet_r18-d8_832x832_160k_cityscapes.py
+      mIoU: 68.14
+      mIoU(ms+flip): 70.16
+  Config: configs/icnet/icnet_r18-d8_832x832_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_80k_cityscapes/icnet_r18-d8_832x832_80k_cityscapes_20210925_225521-2e36638d.pth
+- Name: icnet_r18-d8_832x832_160k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-18-D8
     crop size: (832,832)
     lr schd: 160000
-  Name: icnet_r18-d8_832x832_160k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 71.77
-      mIoU(ms+flip): 74.71
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_40k_cityscapes/fcn_r101-d8_512x1024_40k_cityscapes_20200604_181852-a883d3a1.pth
-- Config: configs/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes.py
+      mIoU: 71.64
+      mIoU(ms+flip): 74.18
+  Config: configs/icnet/icnet_r18-d8_832x832_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_160k_cityscapes/icnet_r18-d8_832x832_160k_cityscapes_20210925_230153-2c6eb6e0.pth
+- Name: icnet_r18-d8_in1k-pre_832x832_80k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-18-D8
     crop size: (832,832)
     lr schd: 80000
-  Name: icnet_r18-d8_in1k-pre_832x832_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 73.16
-      mIoU(ms+flip): 75.31
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_40k_cityscapes/fcn_r50-d8_769x769_40k_cityscapes_20200606_113104-977b5d02.pth
-- Config: configs/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes.py
+      mIoU: 72.51
+      mIoU(ms+flip): 74.78
+  Config: configs/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes_20210925_230354-1cbe3022.pth
+- Name: icnet_r18-d8_in1k-pre_832x832_160k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-18-D8
     crop size: (832,832)
     lr schd: 160000
-  Name: icnet_r18-d8_in1k-pre_832x832_160k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 71.28
-      mIoU(ms+flip): 73.58
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_40k_cityscapes/fcn_r101-d8_769x769_40k_cityscapes_20200606_113208-7d4ab69c.pth
-- Config: configs/icnet/icnet_r50-d8_832x832_80k_cityscapes.py
+      mIoU: 74.43
+      mIoU(ms+flip): 76.72
+  Config: configs/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes_20210926_052702-619c8ae1.pth
+- Name: icnet_r50-d8_832x832_80k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-50-D8
     crop size: (832,832)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 49.8
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (832,832)
-      value: 51.39
-    lr schd: 80000
-    memory (GB): 2.41
-  Name: icnet_r50-d8_832x832_80k_cityscapes
+    memory (GB): 2.53
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 69.66
-      mIoU(ms+flip): 71.69
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth
-- Config: configs/icnet/icnet_r50-d8_832x832_160k_cityscapes.py
+      mIoU: 68.91
+      mIoU(ms+flip): 69.72
+  Config: configs/icnet/icnet_r50-d8_832x832_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_80k_cityscapes/icnet_r50-d8_832x832_80k_cityscapes_20210926_044625-c6407341.pth
+- Name: icnet_r50-d8_832x832_160k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-50-D8
     crop size: (832,832)
     lr schd: 160000
-  Name: icnet_r50-d8_832x832_160k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 72.38
-      mIoU(ms+flip): 74.37
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019-03aa804d.pth
-- Config: configs/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes.py
+      mIoU: 73.82
+      mIoU(ms+flip): 75.67
+  Config: configs/icnet/icnet_r50-d8_832x832_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_160k_cityscapes/icnet_r50-d8_832x832_160k_cityscapes_20210925_232612-a95f0d4e.pth
+- Name: icnet_r50-d8_in1k-pre_832x832_80k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-50-D8
     crop size: (832,832)
     lr schd: 80000
-  Name: icnet_r50-d8_in1k-pre_832x832_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 74.1
-      mIoU(ms+flip): 76.52
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038-3fb937eb.pth
-- Config: configs/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes.py
+      mIoU: 74.58
+      mIoU(ms+flip): 76.41
+  Config: configs/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes_20210926_032943-1743dc7b.pth
+- Name: icnet_r50-d8_in1k-pre_832x832_160k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-50-D8
     crop size: (832,832)
     lr schd: 160000
-  Name: icnet_r50-d8_in1k-pre_832x832_160k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 70.08
-      mIoU(ms+flip): 77.49
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes_20201225_021451-9739d1b8.pth
-- Config: configs/icnet/icnet_r101-d8_832x832_80k_cityscapes.py
+      mIoU: 76.29
+      mIoU(ms+flip): 78.09
+  Config: configs/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes_20210926_042715-ce310aea.pth
+- Name: icnet_r101-d8_832x832_80k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-101-D8
     crop size: (832,832)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 59.0
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (832,832)
-      value: 66.18
-    lr schd: 80000
-    memory (GB): 3.26
-  Name: icnet_r101-d8_832x832_80k_cityscapes
+    memory (GB): 3.08
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 70.34
-      mIoU(ms+flip): 72.39
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth
-- Config: configs/icnet/icnet_r101-d8_832x832_160k_cityscapes.py
+      mIoU: 70.28
+      mIoU(ms+flip): 71.95
+  Config: configs/icnet/icnet_r101-d8_832x832_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_80k_cityscapes/icnet_r101-d8_832x832_80k_cityscapes_20210926_072447-b52f936e.pth
+- Name: icnet_r101-d8_832x832_160k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-101-D8
     crop size: (832,832)
     lr schd: 160000
-  Name: icnet_r101-d8_832x832_160k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 73.19
-      mIoU(ms+flip): 75.72
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019-03aa804d.pth
-- Config: configs/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes.py
+      mIoU: 73.8
+      mIoU(ms+flip): 76.1
+  Config: configs/icnet/icnet_r101-d8_832x832_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_160k_cityscapes/icnet_r101-d8_832x832_160k_cityscapes_20210926_092350-3a1ebf1a.pth
+- Name: icnet_r101-d8_in1k-pre_832x832_80k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-101-D8
     crop size: (832,832)
     lr schd: 80000
-  Name: icnet_r101-d8_in1k-pre_832x832_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 75.19
-      mIoU(ms+flip): 77.82
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038-3fb937eb.pth
-- Config: configs/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes.py
+      mIoU: 75.57
+      mIoU(ms+flip): 77.86
+  Config: configs/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes_20210926_020414-7ceb12c5.pth
+- Name: icnet_r101-d8_in1k-pre_832x832_160k_cityscapes
   In Collection: icnet
   Metadata:
     backbone: R-101-D8
     crop size: (832,832)
     lr schd: 160000
-  Name: icnet_r101-d8_in1k-pre_832x832_160k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 75.16
-      mIoU(ms+flip): 77.32
-    Task: Semantic Segmentation
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes_20201225_021451-9739d1b8.pth
+      mIoU: 76.15
+      mIoU(ms+flip): 77.98
+  Config: configs/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes_20210925_232612-9484ae8a.pth

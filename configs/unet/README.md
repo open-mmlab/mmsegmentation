@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1505.04597">UNet (MICCAI'2016/Nat. Methods'2019)</a></summary>
+
 ```latex
 @inproceedings{ronneberger2015u,
   title={U-net: Convolutional networks for biomedical image segmentation},
@@ -14,6 +21,8 @@
   organization={Springer}
 }
 ```
+
+</details>
 
 ## Results and models
 
