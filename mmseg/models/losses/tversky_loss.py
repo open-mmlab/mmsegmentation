@@ -44,7 +44,6 @@ def binary_tversky_loss(pred,
                         target,
                         valid_mask,
                         smooth=1,
-                        exponent=2,
                         alpha=0.3,
                         beta=0.7,
                         **kwards):
@@ -66,12 +65,13 @@ class TverskyLoss(nn.Module):
     """TverskyLoss. This loss is proposed in `Tversky loss function for image
     segmentation using 3D fully convolutional deep networks.
 
-    <https://arxiv.org/abs/1706.05721>`
+    <https://arxiv.org/abs/1706.05721>`_.
+
     Args:
         loss_type (str, optional): Binary or multi-class loss.
             Default: 'multi_class'. Options are "binary" and "multi_class".
         smooth (float): A float number to smooth loss, and avoid NaN error.
-            Default: 1
+            Default: 1.
         exponent (float): An float number to calculate denominator
             value: \\sum{x^exponent} + \\sum{y^exponent}. Default: 2.
         reduction (str, optional): The method used to reduce the loss. Options
@@ -82,10 +82,10 @@ class TverskyLoss(nn.Module):
         loss_weight (float, optional): Weight of the loss. Default to 1.0.
         ignore_index (int | None): The label index to be ignored. Default: 255.
         alpha(float, in [0, 1]):
-            The coefficient of false positives. Default: 0.3
+            The coefficient of false positives. Default: 0.3.
         beta (float, in [0, 1]):
-            The coefficient of false negatives. Default: 0.7
-            Note: alpha + beta = 1
+            The coefficient of false negatives. Default: 0.7.
+            Note: alpha + beta = 1.
         loss_name (str, optional): Name of the loss item. If you want this loss
             item to be included into the backward graph, `loss_` must be the
             prefix of the name. Defaults to 'loss_tversky'.
