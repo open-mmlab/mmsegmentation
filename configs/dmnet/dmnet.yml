@@ -1,223 +1,232 @@
 Collections:
-- Metadata:
+- Name: dmnet
+  Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
-  Name: dmnet
+  Paper:
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+  README: configs/dmnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/Junjun2016/DMNet
 Models:
-- Config: configs/dmnet/dmnet_r50-d8_512x1024_40k_cityscapes.py
+- Name: dmnet_r50-d8_512x1024_40k_cityscapes
   In Collection: dmnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 273.22
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 273.22
-    lr schd: 40000
     memory (GB): 7.0
-  Name: dmnet_r50-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.78
       mIoU(ms+flip): 79.14
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x1024_40k_cityscapes/dmnet_r50-d8_512x1024_40k_cityscapes_20201215_042326-615373cf.pth
-- Config: configs/dmnet/dmnet_r101-d8_512x1024_40k_cityscapes.py
+- Name: dmnet_r101-d8_512x1024_40k_cityscapes
   In Collection: dmnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 393.7
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 393.7
-    lr schd: 40000
     memory (GB): 10.6
-  Name: dmnet_r101-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.37
       mIoU(ms+flip): 79.72
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x1024_40k_cityscapes/dmnet_r101-d8_512x1024_40k_cityscapes_20201215_043100-8291e976.pth
-- Config: configs/dmnet/dmnet_r50-d8_769x769_40k_cityscapes.py
+- Name: dmnet_r50-d8_769x769_40k_cityscapes
   In Collection: dmnet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 636.94
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 636.94
-    lr schd: 40000
     memory (GB): 7.9
-  Name: dmnet_r50-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.49
       mIoU(ms+flip): 80.27
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_769x769_40k_cityscapes/dmnet_r50-d8_769x769_40k_cityscapes_20201215_093706-e7f0e23e.pth
-- Config: configs/dmnet/dmnet_r101-d8_769x769_40k_cityscapes.py
+- Name: dmnet_r101-d8_769x769_40k_cityscapes
   In Collection: dmnet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 990.1
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 990.1
-    lr schd: 40000
     memory (GB): 12.0
-  Name: dmnet_r101-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.62
       mIoU(ms+flip): 78.94
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_769x769_40k_cityscapes/dmnet_r101-d8_769x769_40k_cityscapes_20201215_081348-a74261f6.pth
-- Config: configs/dmnet/dmnet_r50-d8_512x1024_80k_cityscapes.py
+- Name: dmnet_r50-d8_512x1024_80k_cityscapes
   In Collection: dmnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
     lr schd: 80000
-  Name: dmnet_r50-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.07
       mIoU(ms+flip): 80.22
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x1024_80k_cityscapes/dmnet_r50-d8_512x1024_80k_cityscapes_20201215_053728-3c8893b9.pth
-- Config: configs/dmnet/dmnet_r101-d8_512x1024_80k_cityscapes.py
+- Name: dmnet_r101-d8_512x1024_80k_cityscapes
   In Collection: dmnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
     lr schd: 80000
-  Name: dmnet_r101-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.64
       mIoU(ms+flip): 80.67
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x1024_80k_cityscapes/dmnet_r101-d8_512x1024_80k_cityscapes_20201215_031718-fa081cb8.pth
-- Config: configs/dmnet/dmnet_r50-d8_769x769_80k_cityscapes.py
+- Name: dmnet_r50-d8_769x769_80k_cityscapes
   In Collection: dmnet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
     lr schd: 80000
-  Name: dmnet_r50-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.22
       mIoU(ms+flip): 80.55
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_769x769_80k_cityscapes/dmnet_r50-d8_769x769_80k_cityscapes_20201215_034006-6060840e.pth
-- Config: configs/dmnet/dmnet_r101-d8_769x769_80k_cityscapes.py
+- Name: dmnet_r101-d8_769x769_80k_cityscapes
   In Collection: dmnet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
     lr schd: 80000
-  Name: dmnet_r101-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.19
       mIoU(ms+flip): 80.65
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_769x769_80k_cityscapes/dmnet_r101-d8_769x769_80k_cityscapes_20201215_082810-7f0de59a.pth
-- Config: configs/dmnet/dmnet_r50-d8_512x512_80k_ade20k.py
+- Name: dmnet_r50-d8_512x512_80k_ade20k
   In Collection: dmnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 47.73
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 47.73
-    lr schd: 80000
     memory (GB): 9.4
-  Name: dmnet_r50-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.37
       mIoU(ms+flip): 43.62
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x512_80k_ade20k/dmnet_r50-d8_512x512_80k_ade20k_20201215_144744-f89092a6.pth
-- Config: configs/dmnet/dmnet_r101-d8_512x512_80k_ade20k.py
+- Name: dmnet_r101-d8_512x512_80k_ade20k
   In Collection: dmnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 72.05
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 72.05
-    lr schd: 80000
     memory (GB): 13.0
-  Name: dmnet_r101-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.34
       mIoU(ms+flip): 46.13
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x512_80k_ade20k/dmnet_r101-d8_512x512_80k_ade20k_20201215_104812-bfa45311.pth
-- Config: configs/dmnet/dmnet_r50-d8_512x512_160k_ade20k.py
+- Name: dmnet_r50-d8_512x512_160k_ade20k
   In Collection: dmnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 160000
-  Name: dmnet_r50-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.15
       mIoU(ms+flip): 44.17
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x512_160k_ade20k/dmnet_r50-d8_512x512_160k_ade20k_20201215_115313-025ab3f9.pth
-- Config: configs/dmnet/dmnet_r101-d8_512x512_160k_ade20k.py
+- Name: dmnet_r101-d8_512x512_160k_ade20k
   In Collection: dmnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 160000
-  Name: dmnet_r101-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.42
       mIoU(ms+flip): 46.76
-    Task: Semantic Segmentation
+  Config: configs/dmnet/dmnet_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x512_160k_ade20k/dmnet_r101-d8_512x512_160k_ade20k_20201215_111145-a0bc02ef.pth

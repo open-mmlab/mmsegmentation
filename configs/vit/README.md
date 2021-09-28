@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/google-research/vision_transformer">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/pdf/2010.11929.pdf">Vision Transformer (ICLR'2021)</a></summary>
+
 ```latex
 @article{dosoViTskiy2020,
   title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
@@ -12,6 +19,8 @@
   year={2020}
 }
 ```
+
+</details>
 
 ## Usage
 

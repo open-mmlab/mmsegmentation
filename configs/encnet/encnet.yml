@@ -1,223 +1,232 @@
 Collections:
-- Metadata:
+- Name: encnet
+  Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
-  Name: encnet
+  Paper:
+    URL: https://arxiv.org/abs/1803.08904
+    Title: Context Encoding for Semantic Segmentation
+  README: configs/encnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/enc_head.py#L63
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/zhanghang1989/PyTorch-Encoding
 Models:
-- Config: configs/encnet/encnet_r50-d8_512x1024_40k_cityscapes.py
+- Name: encnet_r50-d8_512x1024_40k_cityscapes
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 218.34
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 218.34
-    lr schd: 40000
     memory (GB): 8.6
-  Name: encnet_r50-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.67
       mIoU(ms+flip): 77.08
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_40k_cityscapes/encnet_r50-d8_512x1024_40k_cityscapes_20200621_220958-68638a47.pth
-- Config: configs/encnet/encnet_r101-d8_512x1024_40k_cityscapes.py
+- Name: encnet_r101-d8_512x1024_40k_cityscapes
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 375.94
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 375.94
-    lr schd: 40000
     memory (GB): 12.1
-  Name: encnet_r101-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.81
       mIoU(ms+flip): 77.21
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x1024_40k_cityscapes/encnet_r101-d8_512x1024_40k_cityscapes_20200621_220933-35e0a3e8.pth
-- Config: configs/encnet/encnet_r50-d8_769x769_40k_cityscapes.py
+- Name: encnet_r50-d8_769x769_40k_cityscapes
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 549.45
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 549.45
-    lr schd: 40000
     memory (GB): 9.8
-  Name: encnet_r50-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.24
       mIoU(ms+flip): 77.85
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_769x769_40k_cityscapes/encnet_r50-d8_769x769_40k_cityscapes_20200621_220958-3bcd2884.pth
-- Config: configs/encnet/encnet_r101-d8_769x769_40k_cityscapes.py
+- Name: encnet_r101-d8_769x769_40k_cityscapes
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 793.65
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 793.65
-    lr schd: 40000
     memory (GB): 13.7
-  Name: encnet_r101-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.25
       mIoU(ms+flip): 76.25
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_40k_cityscapes/encnet_r101-d8_769x769_40k_cityscapes_20200621_220933-2fafed55.pth
-- Config: configs/encnet/encnet_r50-d8_512x1024_80k_cityscapes.py
+- Name: encnet_r50-d8_512x1024_80k_cityscapes
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
     lr schd: 80000
-  Name: encnet_r50-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.94
       mIoU(ms+flip): 79.13
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_80k_cityscapes/encnet_r50-d8_512x1024_80k_cityscapes_20200622_003554-fc5c5624.pth
-- Config: configs/encnet/encnet_r101-d8_512x1024_80k_cityscapes.py
+- Name: encnet_r101-d8_512x1024_80k_cityscapes
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
     lr schd: 80000
-  Name: encnet_r101-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.55
       mIoU(ms+flip): 79.47
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x1024_80k_cityscapes/encnet_r101-d8_512x1024_80k_cityscapes_20200622_003555-1de64bec.pth
-- Config: configs/encnet/encnet_r50-d8_769x769_80k_cityscapes.py
+- Name: encnet_r50-d8_769x769_80k_cityscapes
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
     lr schd: 80000
-  Name: encnet_r50-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.44
       mIoU(ms+flip): 78.72
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_769x769_80k_cityscapes/encnet_r50-d8_769x769_80k_cityscapes_20200622_003554-55096dcb.pth
-- Config: configs/encnet/encnet_r101-d8_769x769_80k_cityscapes.py
+- Name: encnet_r101-d8_769x769_80k_cityscapes
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
     lr schd: 80000
-  Name: encnet_r101-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.1
       mIoU(ms+flip): 76.97
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_80k_cityscapes/encnet_r101-d8_769x769_80k_cityscapes_20200622_003555-470ef79d.pth
-- Config: configs/encnet/encnet_r50-d8_512x512_80k_ade20k.py
+- Name: encnet_r50-d8_512x512_80k_ade20k
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 43.84
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 43.84
-    lr schd: 80000
     memory (GB): 10.1
-  Name: encnet_r50-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.53
       mIoU(ms+flip): 41.17
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_80k_ade20k/encnet_r50-d8_512x512_80k_ade20k_20200622_042412-44b46b04.pth
-- Config: configs/encnet/encnet_r101-d8_512x512_80k_ade20k.py
+- Name: encnet_r101-d8_512x512_80k_ade20k
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 67.25
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 67.25
-    lr schd: 80000
     memory (GB): 13.6
-  Name: encnet_r101-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.11
       mIoU(ms+flip): 43.61
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x512_80k_ade20k/encnet_r101-d8_512x512_80k_ade20k_20200622_101128-dd35e237.pth
-- Config: configs/encnet/encnet_r50-d8_512x512_160k_ade20k.py
+- Name: encnet_r50-d8_512x512_160k_ade20k
   In Collection: encnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 160000
-  Name: encnet_r50-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 40.1
       mIoU(ms+flip): 41.71
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_160k_ade20k/encnet_r50-d8_512x512_160k_ade20k_20200622_101059-b2db95e0.pth
-- Config: configs/encnet/encnet_r101-d8_512x512_160k_ade20k.py
+- Name: encnet_r101-d8_512x512_160k_ade20k
   In Collection: encnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 160000
-  Name: encnet_r101-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.61
       mIoU(ms+flip): 44.01
-    Task: Semantic Segmentation
+  Config: configs/encnet/encnet_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x512_160k_ade20k/encnet_r101-d8_512x512_160k_ade20k_20200622_073348-7989641f.pth
