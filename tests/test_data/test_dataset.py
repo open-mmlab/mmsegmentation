@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os
 import os.path as osp
 import shutil
 from typing import Generator
@@ -26,6 +27,40 @@ def test_classes():
         get_classes('unsupported')
 
 
+def test_classes_file_path():
+    train_pipeline = [dict(type='LoadImageFromFile')]
+    classes_path = '../data/classes.txt'
+
+    # classes.txt with full categories
+    categories = get_classes('cityscapes')
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+
+    kwargs = dict(
+        pipeline=train_pipeline,
+        img_dir='./',
+        classes=classes_path
+    )
+    assert list(CityscapesDataset(**kwargs).CLASSES) == categories
+
+    # classes.txt with sub categories
+    categories = ['road', 'sidewalk', 'building']
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+    assert list(CityscapesDataset(**kwargs).CLASSES) == categories
+
+    # classes.txt with unknown categories
+    categories = ['road', 'sidewalk', 'unknown']
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+
+    with pytest.raises(ValueError):
+        CityscapesDataset(**kwargs)
+
+    os.remove(classes_path)
+    assert not osp.exists(classes_path)
+        
+        
 def test_palette():
     assert CityscapesDataset.PALETTE == get_palette('cityscapes')
     assert PascalVOCDataset.PALETTE == get_palette('voc') == get_palette(
