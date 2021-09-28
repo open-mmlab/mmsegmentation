@@ -1,6 +1,7 @@
 _base_ = [
-    '../_base_/models/upernet_swin.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/upernet_swin-t_patch4_window7.py',
+    '../_base_/datasets/cityscapes.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_80k.py'
 ]
 model = dict(
     pretrained='pretrain/swin_tiny_patch4_window7_224.pth',
@@ -11,8 +12,7 @@ model = dict(
         window_size=7,
         use_abs_pos_embed=False,
         drop_path_rate=0.3,
-        patch_norm=True,
-        pretrain_style='official'),
+        patch_norm=True),
     decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=150),
     auxiliary_head=dict(in_channels=384, num_classes=150))
 

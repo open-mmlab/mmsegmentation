@@ -1,12 +1,13 @@
 _base_ = [
-    '../_base_/models/setr_mla.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/setr-mla_vit-l_patch16.py',
+    '../_base_/datasets/cityscapes_768x768.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_80k.py'
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     pretrained='pretrain/vit_large_patch16_384.pth',
-    backbone=dict(img_size=(512, 512), drop_rate=0.),
-    decode_head=dict(num_classes=150),
+    backbone=dict(img_size=(768, 768), drop_rate=0.),
+    decode_head=dict(num_classes=19),
     auxiliary_head=[
         dict(
             type='FCNHead',
@@ -19,7 +20,7 @@ model = dict(
             num_convs=0,
             kernel_size=1,
             concat_input=False,
-            num_classes=150,
+            num_classes=19,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -34,7 +35,7 @@ model = dict(
             num_convs=0,
             kernel_size=1,
             concat_input=False,
-            num_classes=150,
+            num_classes=19,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -49,7 +50,7 @@ model = dict(
             num_convs=0,
             kernel_size=1,
             concat_input=False,
-            num_classes=150,
+            num_classes=19,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
@@ -64,12 +65,12 @@ model = dict(
             num_convs=0,
             kernel_size=1,
             concat_input=False,
-            num_classes=150,
+            num_classes=19,
             align_corners=False,
             loss_decode=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
     ],
-    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)),
+    test_cfg=dict(mode='slide', crop_size=(768, 768), stride=(512, 512)),
 )
 
 optimizer = dict(
