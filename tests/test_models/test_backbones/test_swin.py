@@ -76,7 +76,24 @@ def test_swin_transformer():
     assert outs[2].shape == (1, 384, 7, 9)
     assert outs[3].shape == (1, 768, 4, 5)
 
+    # Test frozen
     model = SwinTransformer(frozen_stages=4)
     model.train()
     for p in model.parameters():
         assert not p.requires_grad
+
+    # Test absolute position embedding frozen
+    model = SwinTransformer(frozen_stages=4, use_abs_pos_embed=True)
+    model.train()
+    for p in model.parameters():
+        assert not p.requires_grad
+
+    # Test Swin with checkpoint forward
+    temp = torch.randn((1, 3, 224, 224))
+    model = SwinTransformer(with_cp=True)
+    for m in model.modules():
+        if isinstance(m, SwinBlock):
+            assert m.with_cp
+    model.init_weights()
+    model.train()
+    model(temp)

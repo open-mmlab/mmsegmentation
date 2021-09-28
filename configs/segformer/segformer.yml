@@ -1,160 +1,169 @@
 Collections:
-- Metadata:
+- Name: segformer
+  Metadata:
     Training Data:
     - ADE20k
-  Name: segformer
+  Paper:
+    URL: https://arxiv.org/abs/2105.15203
+    Title: resize image to multiple of 32, improve SegFormer by 0.5-1.0 mIoU.
+  README: configs/segformer/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/NVlabs/SegFormer
 Models:
-- Config: configs/segformer/segformer_mit-b0_512x512_160k_ade20k.py
+- Name: segformer_mit-b0_512x512_160k_ade20k
   In Collection: segformer
   Metadata:
     backbone: MIT-B0
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 19.49
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 19.49
-    lr schd: 160000
     memory (GB): 2.1
-  Name: segformer_mit-b0_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 37.41
       mIoU(ms+flip): 38.34
-    Task: Semantic Segmentation
+  Config: configs/segformer/segformer_mit-b0_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530-8ffa8fda.pth
-- Config: configs/segformer/segformer_mit-b1_512x512_160k_ade20k.py
+- Name: segformer_mit-b1_512x512_160k_ade20k
   In Collection: segformer
   Metadata:
     backbone: MIT-B1
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 20.98
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 20.98
-    lr schd: 160000
     memory (GB): 2.6
-  Name: segformer_mit-b1_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 40.97
       mIoU(ms+flip): 42.54
-    Task: Semantic Segmentation
+  Config: configs/segformer/segformer_mit-b1_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20210726_112106-d70e859d.pth
-- Config: configs/segformer/segformer_mit-b2_512x512_160k_ade20k.py
+- Name: segformer_mit-b2_512x512_160k_ade20k
   In Collection: segformer
   Metadata:
     backbone: MIT-B2
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 32.38
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 32.38
-    lr schd: 160000
     memory (GB): 3.6
-  Name: segformer_mit-b2_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 45.58
       mIoU(ms+flip): 47.03
-    Task: Semantic Segmentation
+  Config: configs/segformer/segformer_mit-b2_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20210726_112103-cbd414ac.pth
-- Config: configs/segformer/segformer_mit-b3_512x512_160k_ade20k.py
+- Name: segformer_mit-b3_512x512_160k_ade20k
   In Collection: segformer
   Metadata:
     backbone: MIT-B3
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 45.23
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 45.23
-    lr schd: 160000
     memory (GB): 4.8
-  Name: segformer_mit-b3_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 47.82
       mIoU(ms+flip): 48.81
-    Task: Semantic Segmentation
+  Config: configs/segformer/segformer_mit-b3_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20210726_081410-962b98d2.pth
-- Config: configs/segformer/segformer_mit-b4_512x512_160k_ade20k.py
+- Name: segformer_mit-b4_512x512_160k_ade20k
   In Collection: segformer
   Metadata:
     backbone: MIT-B4
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 64.72
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 64.72
-    lr schd: 160000
     memory (GB): 6.1
-  Name: segformer_mit-b4_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 48.46
       mIoU(ms+flip): 49.76
-    Task: Semantic Segmentation
+  Config: configs/segformer/segformer_mit-b4_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20210728_183055-7f509d7d.pth
-- Config: configs/segformer/segformer_mit-b5_512x512_160k_ade20k.py
+- Name: segformer_mit-b5_512x512_160k_ade20k
   In Collection: segformer
   Metadata:
     backbone: MIT-B5
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 84.1
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 84.1
-    lr schd: 160000
     memory (GB): 7.2
-  Name: segformer_mit-b5_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 49.13
       mIoU(ms+flip): 50.22
-    Task: Semantic Segmentation
+  Config: configs/segformer/segformer_mit-b5_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235-94cedf59.pth
-- Config: configs/segformer/segformer_mit-b5_640x640_160k_ade20k.py
+- Name: segformer_mit-b5_640x640_160k_ade20k
   In Collection: segformer
   Metadata:
     backbone: MIT-B5
     crop size: (640,640)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 88.5
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (640,640)
-      value: 88.5
-    lr schd: 160000
     memory (GB): 11.5
-  Name: segformer_mit-b5_640x640_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 49.62
       mIoU(ms+flip): 50.36
-    Task: Semantic Segmentation
+  Config: configs/segformer/segformer_mit-b5_640x640_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20210801_121243-41d2845b.pth

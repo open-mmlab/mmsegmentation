@@ -42,8 +42,10 @@ Only
 `data/my_dataset/ann_dir/train/xxx{seg_map_suffix}`,
 `data/my_dataset/ann_dir/train/zzz{seg_map_suffix}` will be loaded.
 
-Note: The annotations are images of shape (H, W), the value pixel should fall in range `[0, num_classes - 1]`.
+:::{note}
+The annotations are images of shape (H, W), the value pixel should fall in range `[0, num_classes - 1]`.
 You may use `'P'` mode of [pillow](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#palette) to create your annotation image with color.
+:::
 
 ## Customize datasets by mixing dataset
 
