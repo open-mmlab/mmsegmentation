@@ -1,0 +1,199 @@
+Collections:
+- Name: fastfcn
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    URL: https://arxiv.org/abs/1903.11816
+    Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
+  README: configs/fastfcn/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+    Version: v0.18.0
+  Converted From:
+    Code: https://github.com/wuhuikai/FastFCN
+Models:
+- Name: ''
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 389.11
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 6.1
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.32
+      mIoU(ms+flip): 80.57
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 1.0
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 999.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 0.0
+      mIoU(ms+flip): 0.0
+  Config: ''
+  Weights: ''
+- Name: fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 378.79
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 9.79
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.52
+      mIoU(ms+flip): 80.91
+  Config: configs/fastfcn/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes_20210924_214357-c2b06737.pth
+- Name: ''
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 245.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 6.1
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.55
+      mIoU(ms+flip): 79.79
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 227.27
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.67
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.26
+      mIoU(ms+flip): 80.86
+  Config: ''
+  Weights: ''
+- Name: fastfcn-jpu_psp_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    memory (GB): 9.94
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.76
+      mIoU(ms+flip): 80.03
+  Config: configs/fastfcn/fastfcn-jpu_psp_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_psp_512x1024_80k_cityscapes/fastfcn-jpu_psp_512x1024_80k_cityscapes_20210925_061841-b07c5e32.pth
+- Name: ''
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 218.34
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 8.6
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.94
+      mIoU(ms+flip): 79.13
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 209.64
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 8.15
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.97
+      mIoU(ms+flip): 79.92
+  Config: ''
+  Weights: ''
+- Name: fastfcn-jpu_enc_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    memory (GB): 15.45
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.6
+      mIoU(ms+flip): 80.25
+  Config: configs/fastfcn/fastfcn-jpu_enc_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_enc_512x1024_80k_cityscapes/fastfcn-jpu_enc_512x1024_80k_cityscapes_20210926_093217-c2e5d0fd.pth
