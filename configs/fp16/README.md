@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/optimizer.py#L134">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/1710.03740">Mixed Precision (FP16) Training (ArXiv'2017)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1710.03740">Mixed Precision (FP16) Training (ArXiv'2017)</a></summary>
 
 ```latex
 @article{micikevicius2017mixed,
@@ -19,6 +19,8 @@
   year={2017}
 }
 ```
+
+</details>
 
 ## Results and models
 

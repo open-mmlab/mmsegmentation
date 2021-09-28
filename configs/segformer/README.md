@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/2105.15203">SegFormer (ArXiv'2021)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/2105.15203">SegFormer (ArXiv'2021)</a></summary>
 
 ```latex
 @article{xie2021segformer,
@@ -19,6 +19,8 @@
   year={2021}
 }
 ```
+
+</details>
 
 ## Usage
 

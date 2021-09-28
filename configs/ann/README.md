@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/1908.07678">ANN (ICCV'2019)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1908.07678">ANN (ICCV'2019)</a></summary>
 
 ```latex
 @inproceedings{zhu2019asymmetric,
@@ -20,6 +20,8 @@
   year={2019}
 }
 ```
+
+</details>
 
 ## Results and models
 

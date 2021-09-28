@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/1907.12273">ISANet (ArXiv'2019/IJCV'2021)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1907.12273">ISANet (ArXiv'2019/IJCV'2021)</a></summary>
 
 ```
 @article{huang2019isa,
@@ -29,6 +29,8 @@ The technical report above is also presented at:
   publisher={Springer}
 }
 ```
+
+</details>
 
 ## Results and models
 

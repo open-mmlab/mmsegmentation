@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/fast_scnn.py#L272">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/1902.04502">Fast-SCNN (ArXiv'2019)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1902.04502">Fast-SCNN (ArXiv'2019)</a></summary>
 
 ```latex
 @article{poudel2019fast,
@@ -19,6 +19,8 @@
   year={2019}
 }
 ```
+
+</details>
 
 ## Results and models
 

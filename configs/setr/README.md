@@ -13,7 +13,7 @@ This head has two version head.
 ```
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/2012.15840">SETR (CVPR'2021)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/2012.15840">SETR (CVPR'2021)</a></summary>
 
 ```latex
 @article{zheng2020rethinking,
@@ -23,6 +23,8 @@ This head has two version head.
   year={2020}
 }
 ```
+
+</details>
 
 ## Results and models
 

@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/hrnet.py#L218">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/1908.07919">HRNet (CVPR'2019)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1908.07919">HRNet (CVPR'2019)</a></summary>
 
 ```latext
 @inproceedings{SunXLW19,
@@ -19,6 +19,8 @@
   year={2019}
 }
 ```
+
+</details>
 
 ## Results and models
 

@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/1912.08193">PointRend (CVPR'2020)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1912.08193">PointRend (CVPR'2020)</a></summary>
 
 ```
 @inproceedings{kirillov2020pointrend,
@@ -20,6 +20,8 @@
   year={2020}
 }
 ```
+
+</details>
 
 ## Results and models
 

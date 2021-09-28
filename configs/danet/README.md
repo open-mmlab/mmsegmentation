@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/1809.02983">DANet (CVPR'2019)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1809.02983">DANet (CVPR'2019)</a></summary>
 
 ```latex
 @article{fu2018dual,
@@ -19,6 +19,8 @@
   year={2019}
 }
 ```
+
+</details>
 
 ## Results and models
 

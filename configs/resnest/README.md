@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/2004.08955">ResNeSt (ArXiv'2020)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/2004.08955">ResNeSt (ArXiv'2020)</a></summary>
 
 ```latex
 @article{zhang2020resnest,
@@ -19,6 +19,8 @@ journal={arXiv preprint arXiv:2004.08955},
 year={2020}
 }
 ```
+
+</details>
 
 ## Results and models
 

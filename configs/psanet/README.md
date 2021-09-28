@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psa_head.py#L18">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://openaccess.thecvf.com/content_ECCV_2018/papers/Hengshuang_Zhao_PSANet_Point-wise_Spatial_ECCV_2018_paper.pdf">PSANet (ECCV'2018)</a></summary>
+<summary align="right"><a href="https://openaccess.thecvf.com/content_ECCV_2018/papers/Hengshuang_Zhao_PSANet_Point-wise_Spatial_ECCV_2018_paper.pdf">PSANet (ECCV'2018)</a></summary>
 
 ```latex
 @inproceedings{zhao2018psanet,
@@ -20,6 +20,8 @@
   year={2018}
 }
 ```
+
+</details>
 
 ## Results and models
 

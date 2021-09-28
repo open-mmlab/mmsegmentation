@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/backbones/bisenetv2.py#L545">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/2004.02147">BiSeNetV2 (IJCV'2021)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/2004.02147">BiSeNetV2 (IJCV'2021)</a></summary>
 
 ```latex
 @article{yu2021bisenet,
@@ -21,6 +21,8 @@
   publisher={Springer}
 }
 ```
+
+</details>
 
 ## Results and models
 

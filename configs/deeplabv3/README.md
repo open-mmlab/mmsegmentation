@@ -9,7 +9,7 @@
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/aspp_head.py#L54">Code Snippet</a>
 
 <details>
-<summary align="middle"><a href="https://arxiv.org/abs/1706.05587">DeepLabV3 (ArXiv'2017)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1706.05587">DeepLabV3 (ArXiv'2017)</a></summary>
 
 ```latext
 @article{chen2017rethinking,
@@ -19,6 +19,8 @@
   year={2017}
 }
 ```
+
+</details>
 
 ## Results and models
 
