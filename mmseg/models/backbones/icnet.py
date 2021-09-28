@@ -66,6 +66,8 @@ class ICNet(BaseModule):
         super(ICNet, self).__init__(init_cfg=init_cfg)
         self.align_corners = align_corners
         self.backbone = build_backbone(backbone_cfg)
+        # Note: Default `ceil_mode` is false in nn.MaxPool2d, set
+        # `ceil_mode=True` to keep information in the corner of feature map.
         self.backbone.maxpool = nn.MaxPool2d(
             kernel_size=3, stride=2, padding=1, ceil_mode=True)
 

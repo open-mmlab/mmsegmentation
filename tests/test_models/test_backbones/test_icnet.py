@@ -30,11 +30,19 @@ def test_icnet_backbone():
             norm_eval=False,
             style='pytorch',
             contract_dilation=True), )
+    assert hasattr(model.backbone,
+                   'maxpool') and model.backbone.maxpool.ceil_mode is True
     model.init_weights()
     model.train()
     batch_size = 2
     imgs = torch.randn(batch_size, 3, 512, 1024)
     feat = model(imgs)
+
+    assert model.psp_modules[0][0].output_size == 1
+    assert model.psp_modules[1][0].output_size == 2
+    assert model.psp_modules[2][0].output_size == 3
+    assert model.psp_bottleneck.padding == 1
+    assert model.conv_sub1[0].padding == 1
 
     assert len(feat) == 3
     assert feat[0].shape == torch.Size([batch_size, 64, 64, 128])

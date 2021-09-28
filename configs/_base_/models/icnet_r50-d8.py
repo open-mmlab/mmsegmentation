@@ -27,7 +27,6 @@ model = dict(
     neck=dict(
         type='ICNeck',
         in_channels=(64, 256, 256),
-        in_index=(0, 1, 2),
         out_channels=128,
         norm_cfg=norm_cfg,
         align_corners=False),

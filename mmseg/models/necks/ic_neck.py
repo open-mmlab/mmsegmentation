@@ -82,8 +82,6 @@ class ICNeck(BaseModule):
 
     Args:
         in_channels (int): The number of input image channels. Default: 3.
-        in_index (int|Sequence[int]): Input feature index.
-            Default: (0, 1, 2).
         out_channels (int): The numbers of output feature channels.
             Default: 128.
         conv_cfg (dict): Dictionary to construct and config conv layer.
@@ -108,8 +106,10 @@ class ICNeck(BaseModule):
                  align_corners=False,
                  init_cfg=None):
         super(ICNeck, self).__init__(init_cfg=init_cfg)
+        assert len(in_channels) == 3, 'Length of input channels \
+                                        must be 3!'
+
         self.in_channels = in_channels
-        self.in_index = in_index
         self.out_channels = out_channels
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
@@ -134,6 +134,9 @@ class ICNeck(BaseModule):
             align_corners=self.align_corners)
 
     def forward(self, inputs):
+        assert len(inputs) == 3, 'Length of input feature \
+                                        maps must be 3!'
+
         x_sub1, x_sub2, x_sub4 = inputs
         outputs = list()
         x_cff_24, x_24 = self.cff_24(x_sub4, x_sub2)
