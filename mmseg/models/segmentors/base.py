@@ -104,6 +104,15 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         should be double nested (i.e.  List[Tensor], List[List[dict]]), with
         the outer list indicating test time augmentations.
         """
+        if torch.onnx.is_in_onnx_export():
+            assert len(img_metas) == 1
+            img_norm_cfg = img_metas[0][0].get('img_norm_cfg', None)
+            if img_norm_cfg:
+                mean = torch.tensor(img_norm_cfg['mean'])[None, ..., None,
+                                                          None]
+                std = torch.tensor(img_norm_cfg['std'])[None, ..., None, None]
+                img[0] = (img[0] - mean) / std
+
         if return_loss:
             return self.forward_train(img, img_metas, **kwargs)
         else:

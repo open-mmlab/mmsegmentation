@@ -1,4 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+# import sys
+# sys.path.insert(0, '/nicholasbergh/mmsegmentation/mmseg')
+
 import argparse
 from functools import partial
 
@@ -76,11 +79,16 @@ def _demo_mm_inputs(input_shape, num_classes):
 def _prepare_input_img(img_path,
                        test_pipeline,
                        shape=None,
-                       rescale_shape=None):
+                       rescale_shape=None,
+                       normalize_in_graph=False):
     # build the data pipeline
     if shape is not None:
         test_pipeline[1]['img_scale'] = (shape[1], shape[0])
     test_pipeline[1]['transforms'][0]['keep_ratio'] = False
+    if normalize_in_graph:
+        for transform in test_pipeline[1]['transforms']:
+            if transform['type'] is 'Normalize':
+                transform.normalize_in_graph = True
     test_pipeline = [LoadImage()] + test_pipeline[1:]
     test_pipeline = Compose(test_pipeline)
     # prepare data
@@ -121,6 +129,8 @@ def _update_input_img(img_list, img_meta_list, update_ori_shape=False):
         (img_shape[1] / ori_shape[1], img_shape[0] / ori_shape[0]) * 2,
         'flip':
         False,
+        'img_norm_cfg':
+        img_meta['img_norm_cfg']
     } for _ in range(N)]]
 
     return img_list, new_img_meta_list
@@ -159,7 +169,6 @@ def pytorch2onnx(model,
     imgs = mm_inputs.pop('imgs')
     img_metas = mm_inputs.pop('img_metas')
 
-    img_list = [img[None, :] for img in imgs]
     img_meta_list = [[img_meta] for img_meta in img_metas]
     # update img_meta
     img_list, img_meta_list = _update_input_img(img_list, img_meta_list)
@@ -322,6 +331,10 @@ def parse_args():
         '--dynamic-export',
         action='store_true',
         help='Whether to export onnx with dynamic axis.')
+    parser.add_argument(
+        '--normalize-in-graph',
+        action='store_true',
+        help='Whether to include image normalization in ONNX graph.')
     args = parser.parse_args()
     return args
 
@@ -372,7 +385,8 @@ if __name__ == '__main__':
             args.input_img,
             cfg.data.test.pipeline,
             shape=preprocess_shape,
-            rescale_shape=rescale_shape)
+            rescale_shape=rescale_shape,
+            normalize_in_graph=args.normalize_in_graph)
     else:
         if isinstance(segmentor.decode_head, nn.ModuleList):
             num_classes = segmentor.decode_head[-1].num_classes
