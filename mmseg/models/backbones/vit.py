@@ -33,7 +33,7 @@ class TransformerEncoderLayer(BaseModule):
             Default: 2.
         qkv_bias (bool): enable bias for qkv if True. Default: True
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         batch_first (bool): Key, Query and Value are shape of
@@ -126,7 +126,7 @@ class VisionTransformer(BaseModule):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            default: dict(type='GELU').
         patch_norm (bool): Whether to add a norm in PatchEmbed Block.
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
