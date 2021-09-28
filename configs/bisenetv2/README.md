@@ -6,7 +6,7 @@
 
 <a href="">Official Repo</a>
 
-<a href="https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/backbones/bisenetv2.py#L545">Code Snippet</a>
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv2.py#L545">Code Snippet</a>
 
 <details>
 <summary align="right"><a href="https://arxiv.org/abs/2004.02147">BiSeNetV2 (IJCV'2021)</a></summary>

@@ -10,8 +10,8 @@ Collections:
     Title: Interlaced Sparse Self-Attention for Semantic Segmentation
   README: configs/isanet/README.md
   Code:
-    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
-    Version: v0.17.0
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/decode_heads/isa_head.py#L58
+    Version: v0.18.0
   Converted From:
     Code: https://github.com/openseg-group/openseg.pytorch
 Models:

@@ -101,16 +101,12 @@ def parse_md(md_file):
                     assert code_url is not None, (
                         f'{collection_name} hasn\'t code snippet url.')
                     # version extraction
-                    filter_str = r'blob/(.*)/mmseg'
+                    filter_str = r'blob/(.*)/mm'
                     pattern = re.compile(filter_str)
                     code_version = pattern.findall(code_url)
-                    if collection_name != 'fp16':
-                        assert len(code_version) == 1, (
-                            f'false regular expression ({filter_str}) use.')
-                        code_version = code_version[0]
-                    else:
-                        # HACK: fp16 related yaml may be hacky.
-                        code_version = 'v0.17.0'
+                    assert len(code_version) == 1, (
+                        f'false regular expression ({filter_str}) use.')
+                    code_version = code_version[0]
                 elif node.text == 'Official Repo':
                     repo_url = node.get('href', None)
                     assert repo_url is not None, (

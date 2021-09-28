@@ -8,8 +8,8 @@ Collections:
     Title: Mixed Precision Training
   README: configs/fp16/README.md
   Code:
-    URL: https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/optimizer.py#L134
-    Version: v0.17.0
+    URL: https://github.com/open-mmlab/mmcv/blob/v1.3.14/mmcv/runner/hooks/optimizer.py#L134
+    Version: v1.3.14
   Converted From:
     Code: https://github.com/baidu-research/DeepBench
 Models:

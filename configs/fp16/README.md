@@ -6,7 +6,7 @@
 
 <a href="https://github.com/baidu-research/DeepBench">Official Repo</a>
 
-<a href="https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/optimizer.py#L134">Code Snippet</a>
+<a href="https://github.com/open-mmlab/mmcv/blob/v1.3.14/mmcv/runner/hooks/optimizer.py#L134">Code Snippet</a>
 
 <details>
 <summary align="right"><a href="https://arxiv.org/abs/1710.03740">Mixed Precision (FP16) Training (ArXiv'2017)</a></summary>
