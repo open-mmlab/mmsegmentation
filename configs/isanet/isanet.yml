@@ -1,360 +1,369 @@
 Collections:
-- Metadata:
+- Name: isanet
+  Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
     - Pascal VOC 2012 + Aug
-  Name: isanet
+  Paper:
+    URL: https://arxiv.org/abs/1907.12273
+    Title: Interlaced Sparse Self-Attention for Semantic Segmentation
+  README: configs/isanet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/decode_heads/isa_head.py#L58
+    Version: v0.18.0
+  Converted From:
+    Code: https://github.com/openseg-group/openseg.pytorch
 Models:
-- Config: configs/isanet/isanet_r50-d8_512x1024_40k_cityscapes.py
+- Name: isanet_r50-d8_512x1024_40k_cityscapes
   In Collection: isanet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 343.64
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 343.64
-    lr schd: 40000
     memory (GB): 5.869
-  Name: isanet_r50-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.49
       mIoU(ms+flip): 79.44
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x1024_40k_cityscapes/isanet_r50-d8_512x1024_40k_cityscapes_20210901_054739-981bd763.pth
-- Config: configs/isanet/isanet_r50-d8_512x1024_80k_cityscapes.py
+- Name: isanet_r50-d8_512x1024_80k_cityscapes
   In Collection: isanet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 343.64
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 343.64
-    lr schd: 80000
     memory (GB): 5.869
-  Name: isanet_r50-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.68
       mIoU(ms+flip): 80.25
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x1024_80k_cityscapes/isanet_r50-d8_512x1024_80k_cityscapes_20210901_074202-89384497.pth
-- Config: configs/isanet/isanet_r50-d8_769x769_40k_cityscapes.py
+- Name: isanet_r50-d8_769x769_40k_cityscapes
   In Collection: isanet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 649.35
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 649.35
-    lr schd: 40000
     memory (GB): 6.759
-  Name: isanet_r50-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.7
       mIoU(ms+flip): 80.28
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_769x769_40k_cityscapes/isanet_r50-d8_769x769_40k_cityscapes_20210903_050200-4ae7e65b.pth
-- Config: configs/isanet/isanet_r50-d8_769x769_80k_cityscapes.py
+- Name: isanet_r50-d8_769x769_80k_cityscapes
   In Collection: isanet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 649.35
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 649.35
-    lr schd: 80000
     memory (GB): 6.759
-  Name: isanet_r50-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.29
       mIoU(ms+flip): 80.53
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_769x769_80k_cityscapes/isanet_r50-d8_769x769_80k_cityscapes_20210903_101126-99b54519.pth
-- Config: configs/isanet/isanet_r101-d8_512x1024_40k_cityscapes.py
+- Name: isanet_r101-d8_512x1024_40k_cityscapes
   In Collection: isanet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 425.53
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 425.53
-    lr schd: 40000
     memory (GB): 9.425
-  Name: isanet_r101-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.58
       mIoU(ms+flip): 81.05
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x1024_40k_cityscapes/isanet_r101-d8_512x1024_40k_cityscapes_20210901_145553-293e6bd6.pth
-- Config: configs/isanet/isanet_r101-d8_512x1024_80k_cityscapes.py
+- Name: isanet_r101-d8_512x1024_80k_cityscapes
   In Collection: isanet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 425.53
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 425.53
-    lr schd: 80000
     memory (GB): 9.425
-  Name: isanet_r101-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.32
       mIoU(ms+flip): 81.58
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x1024_80k_cityscapes/isanet_r101-d8_512x1024_80k_cityscapes_20210901_145243-5b99c9b2.pth
-- Config: configs/isanet/isanet_r101-d8_769x769_40k_cityscapes.py
+- Name: isanet_r101-d8_769x769_40k_cityscapes
   In Collection: isanet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 1086.96
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 1086.96
-    lr schd: 40000
     memory (GB): 10.815
-  Name: isanet_r101-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.68
       mIoU(ms+flip): 80.95
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_769x769_40k_cityscapes/isanet_r101-d8_769x769_40k_cityscapes_20210903_111320-509e7224.pth
-- Config: configs/isanet/isanet_r101-d8_769x769_80k_cityscapes.py
+- Name: isanet_r101-d8_769x769_80k_cityscapes
   In Collection: isanet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 1086.96
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 1086.96
-    lr schd: 80000
     memory (GB): 10.815
-  Name: isanet_r101-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.61
       mIoU(ms+flip): 81.59
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_769x769_80k_cityscapes/isanet_r101-d8_769x769_80k_cityscapes_20210903_111319-24f71dfa.pth
-- Config: configs/isanet/isanet_r50-d8_512x512_80k_ade20k.py
+- Name: isanet_r50-d8_512x512_80k_ade20k
   In Collection: isanet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 44.35
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 44.35
-    lr schd: 80000
     memory (GB): 9.0
-  Name: isanet_r50-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.12
       mIoU(ms+flip): 42.35
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x512_80k_ade20k/isanet_r50-d8_512x512_80k_ade20k_20210903_124557-6ed83a0c.pth
-- Config: configs/isanet/isanet_r50-d8_512x512_160k_ade20k.py
+- Name: isanet_r50-d8_512x512_160k_ade20k
   In Collection: isanet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 44.35
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 44.35
-    lr schd: 160000
     memory (GB): 9.0
-  Name: isanet_r50-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.59
       mIoU(ms+flip): 43.07
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x512_160k_ade20k/isanet_r50-d8_512x512_160k_ade20k_20210903_104850-f752d0a3.pth
-- Config: configs/isanet/isanet_r101-d8_512x512_80k_ade20k.py
+- Name: isanet_r101-d8_512x512_80k_ade20k
   In Collection: isanet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 94.7
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 94.7
-    lr schd: 80000
     memory (GB): 12.562
-  Name: isanet_r101-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.51
       mIoU(ms+flip): 44.38
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x512_80k_ade20k/isanet_r101-d8_512x512_80k_ade20k_20210903_162056-68b235c2.pth
-- Config: configs/isanet/isanet_r101-d8_512x512_160k_ade20k.py
+- Name: isanet_r101-d8_512x512_160k_ade20k
   In Collection: isanet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 160000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 94.7
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 94.7
-    lr schd: 160000
     memory (GB): 12.562
-  Name: isanet_r101-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.8
       mIoU(ms+flip): 45.4
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x512_160k_ade20k/isanet_r101-d8_512x512_160k_ade20k_20210903_211431-a7879dcd.pth
-- Config: configs/isanet/isanet_r50-d8_512x512_20k_voc12aug.py
+- Name: isanet_r50-d8_512x512_20k_voc12aug
   In Collection: isanet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 43.33
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 43.33
-    lr schd: 20000
     memory (GB): 5.9
-  Name: isanet_r50-d8_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.78
       mIoU(ms+flip): 77.79
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x512_20k_voc12aug/isanet_r50-d8_512x512_20k_voc12aug_20210901_164838-79d59b80.pth
-- Config: configs/isanet/isanet_r50-d8_512x512_40k_voc12aug.py
+- Name: isanet_r50-d8_512x512_40k_voc12aug
   In Collection: isanet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 43.33
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 43.33
-    lr schd: 40000
     memory (GB): 5.9
-  Name: isanet_r50-d8_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.2
       mIoU(ms+flip): 77.22
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x512_40k_voc12aug/isanet_r50-d8_512x512_40k_voc12aug_20210901_151349-7d08a54e.pth
-- Config: configs/isanet/isanet_r101-d8_512x512_20k_voc12aug.py
+- Name: isanet_r101-d8_512x512_20k_voc12aug
   In Collection: isanet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 134.77
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 134.77
-    lr schd: 20000
     memory (GB): 9.465
-  Name: isanet_r101-d8_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.46
       mIoU(ms+flip): 79.16
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x512_20k_voc12aug/isanet_r101-d8_512x512_20k_voc12aug_20210901_115805-3ccbf355.pth
-- Config: configs/isanet/isanet_r101-d8_512x512_40k_voc12aug.py
+- Name: isanet_r101-d8_512x512_40k_voc12aug
   In Collection: isanet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 134.77
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 134.77
-    lr schd: 40000
     memory (GB): 9.465
-  Name: isanet_r101-d8_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.12
       mIoU(ms+flip): 79.04
-    Task: Semantic Segmentation
+  Config: configs/isanet/isanet_r101-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x512_40k_voc12aug/isanet_r101-d8_512x512_40k_voc12aug_20210901_145814-bc71233b.pth

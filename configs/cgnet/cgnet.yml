@@ -1,50 +1,59 @@
 Collections:
-- Metadata:
+- Name: cgnet
+  Metadata:
     Training Data:
     - Cityscapes
-  Name: cgnet
+  Paper:
+    URL: https://arxiv.org/pdf/1811.08201.pdf
+    Title: 'CGNet: A Light-weight Context Guided Network for Semantic Segmentation'
+  README: configs/cgnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/cgnet.py#L187
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/wutianyiRosun/CGNet
 Models:
-- Config: configs/cgnet/cgnet_680x680_60k_cityscapes.py
+- Name: cgnet_680x680_60k_cityscapes
   In Collection: cgnet
   Metadata:
     backbone: M3N21
     crop size: (680,680)
+    lr schd: 60000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 32.78
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (680,680)
-      value: 32.78
-    lr schd: 60000
     memory (GB): 7.5
-  Name: cgnet_680x680_60k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 65.63
       mIoU(ms+flip): 68.04
-    Task: Semantic Segmentation
+  Config: configs/cgnet/cgnet_680x680_60k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth
-- Config: configs/cgnet/cgnet_512x1024_60k_cityscapes.py
+- Name: cgnet_512x1024_60k_cityscapes
   In Collection: cgnet
   Metadata:
     backbone: M3N21
     crop size: (512,1024)
+    lr schd: 60000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 32.11
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 32.11
-    lr schd: 60000
     memory (GB): 8.3
-  Name: cgnet_512x1024_60k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 68.27
       mIoU(ms+flip): 70.33
-    Task: Semantic Segmentation
+  Config: configs/cgnet/cgnet_512x1024_60k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes_20201101_110254-124ea03b.pth
