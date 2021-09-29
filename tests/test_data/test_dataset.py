@@ -30,7 +30,7 @@ def test_classes_file_path():
     import os
     import tempfile
     tmp_file = tempfile.NamedTemporaryFile()
-    classes_path = f"{tmp_file.name}.txt"
+    classes_path = f'{tmp_file.name}.txt'
     train_pipeline = [dict(type='LoadImageFromFile')]
     kwargs = dict(pipeline=train_pipeline, img_dir='./', classes=classes_path)
 
