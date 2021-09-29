@@ -85,10 +85,9 @@ def _prepare_input_img(img_path,
     if shape is not None:
         test_pipeline[1]['img_scale'] = (shape[1], shape[0])
     test_pipeline[1]['transforms'][0]['keep_ratio'] = False
-    if normalize_in_graph:
-        for transform in test_pipeline[1]['transforms']:
-            if transform['type'] is 'Normalize':
-                transform.normalize_in_graph = True
+    for transform in test_pipeline[1]['transforms']:
+        if transform['type'] is 'Normalize':
+            transform.normalize_in_graph = normalize_in_graph
     test_pipeline = [LoadImage()] + test_pipeline[1:]
     test_pipeline = Compose(test_pipeline)
     # prepare data
@@ -200,6 +199,7 @@ def pytorch2onnx(model,
             }
 
     register_extra_symbolics(opset_version)
+    # import pdb; pdb.set_trace()
     with torch.no_grad():
         torch.onnx.export(
             model, (img_list, ),
@@ -229,15 +229,12 @@ def pytorch2onnx(model,
                 torch.cat((ori_img, flip_img), 0)
                 for ori_img, flip_img in zip(img_list, flip_img_list)
             ]
-
-            # update img_meta
-            img_list, img_meta_list = _update_input_img(
-                img_list, img_meta_list, test_mode == 'whole')
-
+        # import pdb; pdb.set_trace()
         # check the numerical value
         # get pytorch output
         with torch.no_grad():
-            pytorch_result = model(img_list, img_meta_list, return_loss=False)
+            img_list_clone = [tensor.clone() for tensor in img_list] # in case img needs to be normalized
+            pytorch_result = model(img_list_clone, img_meta_list, return_loss=False, do_norm=args.normalize_in_graph)
             pytorch_result = np.stack(pytorch_result, 0)
 
         # get onnx output
