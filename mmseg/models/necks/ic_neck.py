@@ -66,6 +66,9 @@ class CascadeFeatureFusion(BaseModule):
             size=x_high.size()[2:],
             mode='bilinear',
             align_corners=self.align_corners)
+        # Note: Different from original paper, `x_low` is underwent
+        # `self.conv_low` rather than another 1x1 conv classifier
+        #  before being used for auxiliary head.
         x_low = self.conv_low(x_low)
         x_high = self.conv_high(x_high)
         x = x_low + x_high
@@ -139,4 +142,6 @@ class ICNeck(BaseModule):
         x_sub1, x_sub2, x_sub4 = inputs
         x_cff_24, x_24 = self.cff_24(x_sub4, x_sub2)
         x_cff_12, x_12 = self.cff_12(x_cff_24, x_sub1)
+        # Note: `x_cff_12` is used for decode_head,
+        # `x_24` and `x_12` are used for auxiliary head.
         return x_24, x_12, x_cff_12
