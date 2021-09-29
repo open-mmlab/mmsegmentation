@@ -319,7 +319,7 @@ class CustomDataset(Dataset):
             raise ValueError(f'Unsupported type {type(classes)} of classes.')
 
         if self.CLASSES:
-            if not set(classes).issubset(self.CLASSES):
+            if not set(class_names).issubset(self.CLASSES):
                 raise ValueError('classes is not a subset of CLASSES.')
 
             # dictionary, its keys are the old label ids and its values
@@ -330,7 +330,7 @@ class CustomDataset(Dataset):
                 if c not in class_names:
                     self.label_map[i] = -1
                 else:
-                    self.label_map[i] = classes.index(c)
+                    self.label_map[i] = class_names.index(c)
 
         palette = self.get_palette_for_custom_classes(class_names, palette)
 
