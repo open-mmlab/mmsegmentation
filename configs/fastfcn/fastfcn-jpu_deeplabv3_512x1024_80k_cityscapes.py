@@ -17,7 +17,3 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
-data = dict(
-    samples_per_gpu=4,
-    workers_per_gpu=4,
-)

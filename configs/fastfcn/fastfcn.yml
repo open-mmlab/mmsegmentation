@@ -35,28 +35,6 @@ Models:
       mIoU(ms+flip): 80.57
   Config: ''
   Weights: ''
-- Name: ''
-  In Collection: fastfcn
-  Metadata:
-    backbone: R-50-D32
-    crop size: (512,1024)
-    lr schd: 80000
-    inference time (ms/im):
-    - value: 1.0
-      hardware: V100
-      backend: PyTorch
-      batch size: 1
-      mode: FP32
-      resolution: (512,1024)
-    memory (GB): 999.0
-  Results:
-  - Task: Semantic Segmentation
-    Dataset: Cityscapes
-    Metrics:
-      mIoU: 0.0
-      mIoU(ms+flip): 0.0
-  Config: ''
-  Weights: ''
 - Name: fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes
   In Collection: fastfcn
   Metadata:
@@ -70,6 +48,21 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
+    memory (GB): 5.67
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.12
+      mIoU(ms+flip): 80.58
+  Config: configs/fastfcn/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes_20210928_053722-a1cd65ef.pth
+- Name: fastfcn-jpu_deeplabv3_4x4_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
     memory (GB): 9.79
   Results:
   - Task: Semantic Segmentation
@@ -77,8 +70,8 @@ Models:
     Metrics:
       mIoU: 79.52
       mIoU(ms+flip): 80.91
-  Config: configs/fastfcn/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes/fastfcn-jpu_deeplabv3_512x1024_80k_cityscapes_20210924_214357-c2b06737.pth
+  Config: configs/fastfcn/fastfcn-jpu_deeplabv3_4x4_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_deeplabv3_4x4_512x1024_80k_cityscapes/fastfcn-jpu_deeplabv3_4x4_512x1024_80k_cityscapes_20210924_214357-662842be.pth
 - Name: ''
   In Collection: fastfcn
   Metadata:
@@ -101,7 +94,7 @@ Models:
       mIoU(ms+flip): 79.79
   Config: ''
   Weights: ''
-- Name: ''
+- Name: fastfcn-jpu_psp_512x1024_80k_cityscapes
   In Collection: fastfcn
   Metadata:
     backbone: R-50-D32
@@ -121,9 +114,9 @@ Models:
     Metrics:
       mIoU: 79.26
       mIoU(ms+flip): 80.86
-  Config: ''
-  Weights: ''
-- Name: fastfcn-jpu_psp_512x1024_80k_cityscapes
+  Config: configs/fastfcn/fastfcn-jpu_psp_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_psp_512x1024_80k_cityscapes/fastfcn-jpu_psp_512x1024_80k_cityscapes_20210928_053722-2b76380f.pth
+- Name: fastfcn-jpu_psp_4x4_512x1024_80k_cityscapes
   In Collection: fastfcn
   Metadata:
     backbone: R-50-D32
@@ -136,8 +129,8 @@ Models:
     Metrics:
       mIoU: 78.76
       mIoU(ms+flip): 80.03
-  Config: configs/fastfcn/fastfcn-jpu_psp_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_psp_512x1024_80k_cityscapes/fastfcn-jpu_psp_512x1024_80k_cityscapes_20210925_061841-b07c5e32.pth
+  Config: configs/fastfcn/fastfcn-jpu_psp_4x4_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_psp_4x4_512x1024_80k_cityscapes/fastfcn-jpu_psp_4x4_512x1024_80k_cityscapes_20210925_061841-4a59425c.pth
 - Name: ''
   In Collection: fastfcn
   Metadata:
@@ -160,7 +153,7 @@ Models:
       mIoU(ms+flip): 79.13
   Config: ''
   Weights: ''
-- Name: ''
+- Name: fastfcn-jpu_enc_512x1024_80k_cityscapes
   In Collection: fastfcn
   Metadata:
     backbone: R-50-D32
@@ -180,9 +173,9 @@ Models:
     Metrics:
       mIoU: 77.97
       mIoU(ms+flip): 79.92
-  Config: ''
-  Weights: ''
-- Name: fastfcn-jpu_enc_512x1024_80k_cityscapes
+  Config: configs/fastfcn/fastfcn-jpu_enc_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_enc_512x1024_80k_cityscapes/fastfcn-jpu_enc_512x1024_80k_cityscapes_20210928_030036-f07a8ca0.pth
+- Name: fastfcn-jpu_enc_4x4_512x1024_80k_cityscapes
   In Collection: fastfcn
   Metadata:
     backbone: R-50-D32
@@ -195,5 +188,5 @@ Models:
     Metrics:
       mIoU: 78.6
       mIoU(ms+flip): 80.25
-  Config: configs/fastfcn/fastfcn-jpu_enc_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_enc_512x1024_80k_cityscapes/fastfcn-jpu_enc_512x1024_80k_cityscapes_20210926_093217-c2e5d0fd.pth
+  Config: configs/fastfcn/fastfcn-jpu_enc_4x4_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn-jpu_enc_4x4_512x1024_80k_cityscapes/fastfcn-jpu_enc_4x4_512x1024_80k_cityscapes_20210926_093217-47a1e5e6.pth

@@ -28,8 +28,6 @@ class JPU(BaseModule):
             build the feature pyramid. Default: -1, which means the last level.
         dilations (tuple[int]): Dilation rate of each Depthwise
             Separable ConvModule. Default: (1, 2, 4, 8).
-        out_indices (Tuple[int] | int, optional): Output from which stages.
-            Default: (0, 1, 2).
         align_corners (bool, optional): The align_corners argument of
             resize operation. Default: False.
         conv_cfg (dict | None): Config of conv layers.
@@ -48,7 +46,6 @@ class JPU(BaseModule):
                  start_level=0,
                  end_level=-1,
                  dilations=(1, 2, 4, 8),
-                 out_indices=(0, 1, 2),
                  align_corners=False,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
@@ -69,7 +66,6 @@ class JPU(BaseModule):
 
         self.dilations = dilations
         self.align_corners = align_corners
-        self.out_indices = out_indices
 
         self.conv_layers = nn.ModuleList()
         self.dilation_layers = nn.ModuleList()
@@ -115,14 +111,17 @@ class JPU(BaseModule):
                 align_corners=self.align_corners)
 
         feat = torch.cat(feats, dim=1)
-        feat = torch.cat([
+        concat_feat = torch.cat([
             self.dilation_layers[i](feat) for i in range(len(self.dilations))
         ],
-                         dim=1)
+                                dim=1)
 
         outs = []
+
+        # Default: outs[2] is the output of JPU for decoder head, outs[1] is
+        # the feature map from backbone for auxiliary head. Additionally,
+        # outs[0] can also be used for auxiliary head.
         for i in range(len(inputs) - 1):
             outs.append(inputs[i])
-        outs.append(feat)
-        outs = [outs[i] for i in self.out_indices]
+        outs.append(concat_feat)
         return tuple(outs)

@@ -22,7 +22,6 @@ model = dict(
         end_level=-1,
         dilations=(1, 2, 4, 8),
         align_corners=False,
-        out_indices=(0, 1, 2),
         norm_cfg=norm_cfg),
     decode_head=dict(
         type='PSPHead',
