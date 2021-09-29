@@ -50,22 +50,22 @@ def test_swin_transformer():
     model(temp)
 
     # Test normal inference
-    temp = torch.randn((1, 3, 512, 512))
+    temp = torch.randn((1, 3, 256, 256))
     model = SwinTransformer()
     outs = model(temp)
-    assert outs[0].shape == (1, 96, 128, 128)
-    assert outs[1].shape == (1, 192, 64, 64)
-    assert outs[2].shape == (1, 384, 32, 32)
-    assert outs[3].shape == (1, 768, 16, 16)
+    assert outs[0].shape == (1, 96, 64, 64)
+    assert outs[1].shape == (1, 192, 32, 32)
+    assert outs[2].shape == (1, 384, 16, 16)
+    assert outs[3].shape == (1, 768, 8, 8)
 
     # Test abnormal inference size
-    temp = torch.randn((1, 3, 511, 511))
+    temp = torch.randn((1, 3, 255, 255))
     model = SwinTransformer()
     outs = model(temp)
-    assert outs[0].shape == (1, 96, 128, 128)
-    assert outs[1].shape == (1, 192, 64, 64)
-    assert outs[2].shape == (1, 384, 32, 32)
-    assert outs[3].shape == (1, 768, 16, 16)
+    assert outs[0].shape == (1, 96, 64, 64)
+    assert outs[1].shape == (1, 192, 32, 32)
+    assert outs[2].shape == (1, 384, 16, 16)
+    assert outs[3].shape == (1, 768, 8, 8)
 
     # Test abnormal inference size
     temp = torch.randn((1, 3, 112, 137))
@@ -89,7 +89,7 @@ def test_swin_transformer():
         assert not p.requires_grad
 
     # Test Swin with checkpoint forward
-    temp = torch.randn((1, 3, 224, 224))
+    temp = torch.randn((1, 3, 112, 112))
     model = SwinTransformer(with_cp=True)
     for m in model.modules():
         if isinstance(m, SwinBlock):
