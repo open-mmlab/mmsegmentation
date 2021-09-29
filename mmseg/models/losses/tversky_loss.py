@@ -15,7 +15,6 @@ def tversky_loss(pred,
                  target,
                  valid_mask,
                  smooth=1,
-                 exponent=2,
                  class_weight=None,
                  ignore_index=255,
                  alpha=0.3,
@@ -30,7 +29,6 @@ def tversky_loss(pred,
                 target[..., i],
                 valid_mask=valid_mask,
                 smooth=smooth,
-                exponent=exponent,
                 alpha=alpha,
                 beta=beta)
             if class_weight is not None:
@@ -45,8 +43,7 @@ def binary_tversky_loss(pred,
                         valid_mask,
                         smooth=1,
                         alpha=0.3,
-                        beta=0.7,
-                        **kwards):
+                        beta=0.7):
     assert pred.shape[0] == target.shape[0]
     pred = pred.reshape(pred.shape[0], -1)
     target = target.reshape(target.shape[0], -1)
@@ -68,12 +65,8 @@ class TverskyLoss(nn.Module):
     <https://arxiv.org/abs/1706.05721>`_.
 
     Args:
-        loss_type (str, optional): Binary or multi-class loss.
-            Default: 'multi_class'. Options are "binary" and "multi_class".
         smooth (float): A float number to smooth loss, and avoid NaN error.
             Default: 1.
-        exponent (float): An float number to calculate denominator
-            value: \\sum{x^exponent} + \\sum{y^exponent}. Default: 2.
         reduction (str, optional): The method used to reduce the loss. Options
             are "none", "mean" and "sum". This parameter only works when
             per_image is True. Default: 'mean'.
@@ -93,18 +86,15 @@ class TverskyLoss(nn.Module):
 
     def __init__(self,
                  smooth=1,
-                 exponent=2,
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0,
                  ignore_index=255,
                  alpha=0.3,
                  beta=0.7,
-                 loss_name='loss_tversky',
-                 **kwards):
+                 loss_name='loss_tversky'):
         super(TverskyLoss, self).__init__()
         self.smooth = smooth
-        self.exponent = exponent
         self.reduction = reduction
         self.class_weight = get_class_weight(class_weight)
         self.loss_weight = loss_weight
@@ -118,7 +108,7 @@ class TverskyLoss(nn.Module):
                 target,
                 avg_factor=None,
                 reduction_override=None,
-                **kwards):
+                **kwargs):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
@@ -141,7 +131,6 @@ class TverskyLoss(nn.Module):
             reduction=reduction,
             avg_factor=avg_factor,
             smooth=self.smooth,
-            exponent=self.exponent,
             class_weight=class_weight,
             ignore_index=self.ignore_index,
             alpha=self.alpha,

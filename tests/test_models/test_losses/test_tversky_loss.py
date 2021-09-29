@@ -53,7 +53,6 @@ def test_tversky_lose():
     loss_cfg = dict(
         type='TverskyLoss',
         smooth=2,
-        exponent=3,
         reduction='sum',
         loss_weight=1.0,
         ignore_index=0,
@@ -69,7 +68,6 @@ def test_tversky_lose():
     loss_cfg = dict(
         type='TverskyLoss',
         smooth=2,
-        exponent=3,
         reduction='sum',
         loss_weight=1.0,
         ignore_index=0,
