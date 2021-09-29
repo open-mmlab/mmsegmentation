@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os
 import os.path as osp
 import shutil
 from typing import Generator
@@ -28,19 +27,17 @@ def test_classes():
 
 
 def test_classes_file_path():
+    import os
+    import tempfile
+    tmp_file = tempfile.NamedTemporaryFile()
+    classes_path = f"{tmp_file.name}.txt"
     train_pipeline = [dict(type='LoadImageFromFile')]
-    classes_path = '../data/classes.txt'
+    kwargs = dict(pipeline=train_pipeline, img_dir='./', classes=classes_path)
 
     # classes.txt with full categories
     categories = get_classes('cityscapes')
     with open(classes_path, 'w') as f:
         f.write('\n'.join(categories))
-
-    kwargs = dict(
-        pipeline=train_pipeline,
-        img_dir='./',
-        classes=classes_path
-    )
     assert list(CityscapesDataset(**kwargs).CLASSES) == categories
 
     # classes.txt with sub categories
@@ -57,6 +54,7 @@ def test_classes_file_path():
     with pytest.raises(ValueError):
         CityscapesDataset(**kwargs)
 
+    tmp_file.close()
     os.remove(classes_path)
     assert not osp.exists(classes_path)
 
