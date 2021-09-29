@@ -66,6 +66,7 @@ Supported backbones:
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ArXiv'2021)](configs/swin)
+- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
 
 Supported methods:
 
@@ -74,6 +75,7 @@ Supported methods:
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
 - [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
+- [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
 - [x] [UPerNet (ECCV'2018)](configs/upernet)
@@ -94,7 +96,7 @@ Supported methods:
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
-- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
+- [x] [DPT (ArXiv'2021)](configs/dpt)
 - [x] [SegFormer (ArXiv'2021)](configs/segformer)
 
 Supported datasets:

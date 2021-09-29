@@ -11,8 +11,7 @@ model = dict(
         window_size=7,
         use_abs_pos_embed=False,
         drop_path_rate=0.3,
-        patch_norm=True,
-        pretrain_style='official'),
+        patch_norm=True),
     decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=150),
     auxiliary_head=dict(in_channels=384, num_classes=150))
 

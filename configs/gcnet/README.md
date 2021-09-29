@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/xvjiarui/GCNet">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1904.11492">GCNet (ICCVW'2019/TPAMI'2020)</a></summary>
+
 ```latex
 @inproceedings{cao2019gcnet,
   title={Gcnet: Non-local networks meet squeeze-excitation networks and beyond},
@@ -13,6 +20,8 @@
   year={2019}
 }
 ```
+
+</details>
 
 ## Results and models
 
