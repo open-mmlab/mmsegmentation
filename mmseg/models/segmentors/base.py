@@ -111,7 +111,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
                 mean = torch.tensor(img_norm_cfg['mean'])[None, ..., None,
                                                           None]
                 std = torch.tensor(img_norm_cfg['std'])[None, ..., None, None]
-                img = (img - mean) / std
+                img[0] = (img[0] - mean) / std
 
         if return_loss:
             return self.forward_train(img, img_metas, **kwargs)

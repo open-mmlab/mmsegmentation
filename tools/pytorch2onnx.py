@@ -1,7 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-# import sys
-# sys.path.insert(0, '/nicholasbergh/mmsegmentation/mmseg')
-
 import argparse
 from functools import partial
 
@@ -199,7 +196,6 @@ def pytorch2onnx(model,
             }
 
     register_extra_symbolics(opset_version)
-    # import pdb; pdb.set_trace()
     with torch.no_grad():
         torch.onnx.export(
             model, (img_list, ),
@@ -215,6 +211,7 @@ def pytorch2onnx(model,
     model.forward = origin_forward
 
     if verify:
+        assert not args.normalize_in_graph, "verify not supported with normalize_in_graph yet"
         # check by onnx
         import onnx
         onnx_model = onnx.load(output_file)
@@ -229,7 +226,6 @@ def pytorch2onnx(model,
                 torch.cat((ori_img, flip_img), 0)
                 for ori_img, flip_img in zip(img_list, flip_img_list)
             ]
-        # import pdb; pdb.set_trace()
         # check the numerical value
         # get pytorch output
         with torch.no_grad():
