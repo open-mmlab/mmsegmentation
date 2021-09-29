@@ -137,10 +137,6 @@ class ICNeck(BaseModule):
                                         maps must be 3!'
 
         x_sub1, x_sub2, x_sub4 = inputs
-        outputs = list()
         x_cff_24, x_24 = self.cff_24(x_sub4, x_sub2)
-        outputs.append(x_24)
         x_cff_12, x_12 = self.cff_12(x_cff_24, x_sub1)
-        outputs.append(x_12)
-        outputs.append(x_cff_12)
-        return outputs
+        return x_24, x_12, x_cff_12
