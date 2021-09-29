@@ -126,7 +126,7 @@ class VisionTransformer(BaseModule):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
-            default: dict(type='GELU').
+            Default: dict(type='GELU').
         patch_norm (bool): Whether to add a norm in PatchEmbed Block.
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
