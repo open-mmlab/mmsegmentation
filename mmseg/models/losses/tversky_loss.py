@@ -107,8 +107,7 @@ class TverskyLoss(nn.Module):
                 pred,
                 target,
                 avg_factor=None,
-                reduction_override=None,
-                **kwargs):
+                reduction_override=None):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
