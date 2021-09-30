@@ -69,7 +69,7 @@ class JPU(BaseModule):
 
         self.conv_layers = nn.ModuleList()
         self.dilation_layers = nn.ModuleList()
-        for i in range(len(in_channels)):
+        for i in range(self.start_level, len(in_channels)):
             conv_layer = nn.Sequential(
                 ConvModule(
                     self.in_channels[i],
