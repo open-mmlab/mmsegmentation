@@ -73,7 +73,6 @@ class TverskyLoss(nn.Module):
         class_weight (list[float] | str, optional): Weight of each class. If in
             str format, read them from a file. Defaults to None.
         loss_weight (float, optional): Weight of the loss. Default to 1.0.
-        ignore_index (int | None): The label index to be ignored. Default: 255.
         alpha(float, in [0, 1]):
             The coefficient of false positives. Default: 0.3.
         beta (float, in [0, 1]):
@@ -89,7 +88,6 @@ class TverskyLoss(nn.Module):
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0,
-                 ignore_index=255,
                  alpha=0.3,
                  beta=0.7,
                  loss_name='loss_tversky'):
@@ -98,7 +96,6 @@ class TverskyLoss(nn.Module):
         self.reduction = reduction
         self.class_weight = get_class_weight(class_weight)
         self.loss_weight = loss_weight
-        self.ignore_index = ignore_index
         self.alpha = alpha
         self.beta = beta
         self._loss_name = loss_name
@@ -108,6 +105,7 @@ class TverskyLoss(nn.Module):
                 target,
                 avg_factor=None,
                 reduction_override=None,
+                ignore_index=255,
                 **kwargs):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
@@ -122,7 +120,7 @@ class TverskyLoss(nn.Module):
         one_hot_target = F.one_hot(
             torch.clamp(target.long(), 0, num_classes - 1),
             num_classes=num_classes)
-        valid_mask = (target != self.ignore_index).long()
+        valid_mask = (target != ignore_index).long()
 
         loss = self.loss_weight * tversky_loss(
             pred,
