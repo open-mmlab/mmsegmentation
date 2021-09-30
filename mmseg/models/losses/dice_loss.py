@@ -118,7 +118,7 @@ class DiceLoss(nn.Module):
             smooth=self.smooth,
             exponent=self.exponent,
             class_weight=class_weight,
-            ignore_index=self.ignore_index)
+            **kwargs)
         return loss
 
     @property

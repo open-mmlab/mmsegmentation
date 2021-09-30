@@ -16,9 +16,9 @@ def tversky_loss(pred,
                  valid_mask,
                  smooth=1,
                  class_weight=None,
-                 ignore_index=255,
                  alpha=0.3,
-                 beta=0.7):
+                 beta=0.7,
+                 ignore_index=255):
     assert pred.shape[0] == target.shape[0]
     total_loss = 0
     num_classes = pred.shape[1]
@@ -132,9 +132,9 @@ class TverskyLoss(nn.Module):
             avg_factor=avg_factor,
             smooth=self.smooth,
             class_weight=class_weight,
-            ignore_index=self.ignore_index,
             alpha=self.alpha,
-            beta=self.beta)
+            beta=self.beta,
+            **kwargs)
         return loss
 
     @property
