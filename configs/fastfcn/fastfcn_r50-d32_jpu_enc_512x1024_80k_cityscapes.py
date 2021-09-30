@@ -3,6 +3,7 @@ _base_ = './fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     decode_head=dict(
+        _delete_=True,
         type='EncHead',
         in_channels=[512, 1024, 2048],
         in_index=(0, 1, 2),
