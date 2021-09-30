@@ -13,20 +13,24 @@ from .utils import get_class_weight, weighted_loss
 @weighted_loss
 def tversky_loss(pred,
                  target,
-                 valid_mask,
                  smooth=1,
                  class_weight=None,
                  alpha=0.3,
                  beta=0.7,
                  ignore_index=255):
-    assert pred.shape[0] == target.shape[0]
+    num_classes = pred.shape[1]
+    one_hot_target = F.one_hot(
+        torch.clamp(target.long(), 0, num_classes - 1),
+        num_classes=num_classes)
+    valid_mask = (target != ignore_index).long()
+    assert pred.shape[0] == one_hot_target.shape[0]
     total_loss = 0
     num_classes = pred.shape[1]
     for i in range(num_classes):
         if i != ignore_index:
             tversky_loss = binary_tversky_loss(
                 pred[:, i],
-                target[..., i],
+                one_hot_target[..., i],
                 valid_mask=valid_mask,
                 smooth=smooth,
                 alpha=alpha,
@@ -116,16 +120,10 @@ class TverskyLoss(nn.Module):
             class_weight = None
 
         pred = F.softmax(pred, dim=1)
-        num_classes = pred.shape[1]
-        one_hot_target = F.one_hot(
-            torch.clamp(target.long(), 0, num_classes - 1),
-            num_classes=num_classes)
-        valid_mask = (target != ignore_index).long()
 
         loss = self.loss_weight * tversky_loss(
             pred,
-            one_hot_target,
-            valid_mask=valid_mask,
+            target,
             reduction=reduction,
             avg_factor=avg_factor,
             smooth=self.smooth,
