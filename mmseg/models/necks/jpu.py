@@ -83,7 +83,8 @@ class JPU(BaseModule):
         for i in range(len(dilations)):
             dilation_layer = nn.Sequential(
                 DepthwiseSeparableConvModule(
-                    in_channels=len(in_channels) * self.mid_channels,
+                    in_channels=(self.backbone_end_level - self.start_level) *
+                    self.mid_channels,
                     out_channels=self.mid_channels,
                     kernel_size=3,
                     stride=1,
@@ -100,7 +101,10 @@ class JPU(BaseModule):
         assert len(inputs) == len(self.in_channels), 'Length of inputs must \
                                            be the same with self.in_channels!'
 
-        feats = [self.conv_layers[i - self.start_level](inputs[i]) for i in range(self.start_level, self.backbone_end_level)]
+        feats = [
+            self.conv_layers[i - self.start_level](inputs[i])
+            for i in range(self.start_level, self.backbone_end_level)
+        ]
 
         h, w = feats[0].shape[2:]
         for i in range(1, len(feats)):
