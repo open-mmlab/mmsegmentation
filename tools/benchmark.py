@@ -4,7 +4,7 @@ import time
 
 import torch
 from mmcv import Config
-from mmcv.parallel import MMDataParallel
+from mmcv.parallel import scatter
 from mmcv.runner import load_checkpoint, wrap_fp16_model
 
 from mmseg.datasets import build_dataloader, build_dataset
@@ -49,7 +49,8 @@ def main():
         wrap_fp16_model(model)
     load_checkpoint(model, args.checkpoint, map_location='cpu')
 
-    model = MMDataParallel(model, device_ids=[0])
+    model = model.cuda()
+    device = next(model.parameters()).device  # model device
 
     model.eval()
 
@@ -64,6 +65,7 @@ def main():
 
         data = next(data_loader_iter)
 
+        data = scatter(data, [device])[0]
         torch.cuda.synchronize()
         start_time = time.perf_counter()
 
