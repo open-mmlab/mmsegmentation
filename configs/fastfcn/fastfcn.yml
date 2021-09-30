@@ -13,28 +13,6 @@ Collections:
   Converted From:
     Code: https://github.com/wuhuikai/FastFCN
 Models:
-- Name: ''
-  In Collection: fastfcn
-  Metadata:
-    backbone: R-50-D8
-    crop size: (512,1024)
-    lr schd: 80000
-    inference time (ms/im):
-    - value: 389.11
-      hardware: V100
-      backend: PyTorch
-      batch size: 1
-      mode: FP32
-      resolution: (512,1024)
-    memory (GB): 6.1
-  Results:
-  - Task: Semantic Segmentation
-    Dataset: Cityscapes
-    Metrics:
-      mIoU: 79.32
-      mIoU(ms+flip): 80.57
-  Config: ''
-  Weights: ''
 - Name: fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes
   In Collection: fastfcn
   Metadata:
@@ -72,28 +50,6 @@ Models:
       mIoU(ms+flip): 80.91
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes_20210924_214357-72220849.pth
-- Name: ''
-  In Collection: fastfcn
-  Metadata:
-    backbone: R-50-D8
-    crop size: (512,1024)
-    lr schd: 80000
-    inference time (ms/im):
-    - value: 245.7
-      hardware: V100
-      backend: PyTorch
-      batch size: 1
-      mode: FP32
-      resolution: (512,1024)
-    memory (GB): 6.1
-  Results:
-  - Task: Semantic Segmentation
-    Dataset: Cityscapes
-    Metrics:
-      mIoU: 78.55
-      mIoU(ms+flip): 79.79
-  Config: ''
-  Weights: ''
 - Name: fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes
   In Collection: fastfcn
   Metadata:
@@ -131,28 +87,6 @@ Models:
       mIoU(ms+flip): 80.03
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes_20210925_061841-77e87b0a.pth
-- Name: ''
-  In Collection: fastfcn
-  Metadata:
-    backbone: R-50-D8
-    crop size: (512,1024)
-    lr schd: 80000
-    inference time (ms/im):
-    - value: 218.34
-      hardware: V100
-      backend: PyTorch
-      batch size: 1
-      mode: FP32
-      resolution: (512,1024)
-    memory (GB): 8.6
-  Results:
-  - Task: Semantic Segmentation
-    Dataset: Cityscapes
-    Metrics:
-      mIoU: 77.94
-      mIoU(ms+flip): 79.13
-  Config: ''
-  Weights: ''
 - Name: fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes
   In Collection: fastfcn
   Metadata:
