@@ -38,4 +38,4 @@ year={2019}
 Note:
 
 - `4x4` means 4 GPUs with 4 samples per GPU in training, default setting is 4 GPUs with 2 samples per GPU in training.
-- Results of [DeepLabV3 (mIoU: 79.32)](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3), [PSPNet (mIoU: 78.55)](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) and [ENCNet (mIoU: 77.94)](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) can be found in each original repo.
+- Results of [DeepLabV3 (mIoU: 79.32)](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3), [PSPNet (mIoU: 78.55)](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) and [ENCNet (mIoU: 77.94)](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) can be found in each original repository.
