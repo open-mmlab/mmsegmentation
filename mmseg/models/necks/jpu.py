@@ -69,7 +69,7 @@ class JPU(BaseModule):
 
         self.conv_layers = nn.ModuleList()
         self.dilation_layers = nn.ModuleList()
-        for i in range(self.start_level, len(in_channels)):
+        for i in range(self.start_level, self.backbone_end_level):
             conv_layer = nn.Sequential(
                 ConvModule(
                     self.in_channels[i],
@@ -100,7 +100,7 @@ class JPU(BaseModule):
         assert len(inputs) == len(self.in_channels), 'Length of inputs must \
                                            be the same with self.in_channels!'
 
-        feats = [self.conv_layers[i](inputs[i]) for i in range(len(inputs))]
+        feats = [self.conv_layers[i - self.start_level](inputs[i]) for i in range(self.start_level, self.backbone_end_level)]
 
         h, w = feats[0].shape[2:]
         for i in range(1, len(feats)):
@@ -121,7 +121,7 @@ class JPU(BaseModule):
         # Default: outs[2] is the output of JPU for decoder head, outs[1] is
         # the feature map from backbone for auxiliary head. Additionally,
         # outs[0] can also be used for auxiliary head.
-        for i in range(len(inputs) - 1):
+        for i in range(self.start_level, self.backbone_end_level - 1):
             outs.append(inputs[i])
         outs.append(concat_feat)
         return tuple(outs)
