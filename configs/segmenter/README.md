@@ -6,13 +6,12 @@
 
 <a href="https://github.com/rstrudel/segmenter">Official Repo</a>
 
-
 <details>
-<summary align="right"><a href="https://arxiv.org/abs/2105.05633">Segmenter: Transformer for semantic segmentation (ICCV'2021)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/2105.05633">Segmenter: Transformer for Semantic Segmentation (ICCV'2021)</a></summary>
 
 ```latex
 @article{strudel2021Segmenter,
-  title={Segmenter: Transformer for semantic segmentation},
+  title={Segmenter: Transformer for Semantic Segmentation},
   author={Strudel, Robin and Ricardo, Garcia, and Laptev, Ivan and Schmid, Cordelia},
   journal={arXiv preprint arXiv:2105.05633},
   year={2021}
