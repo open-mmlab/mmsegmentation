@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os
+import tempfile
 import os.path as osp
 import shutil
 from typing import Generator
@@ -27,8 +29,6 @@ def test_classes():
 
 
 def test_classes_file_path():
-    import os
-    import tempfile
     tmp_file = tempfile.NamedTemporaryFile()
     classes_path = f'{tmp_file.name}.txt'
     train_pipeline = [dict(type='LoadImageFromFile')]
