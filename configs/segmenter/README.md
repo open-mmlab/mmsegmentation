@@ -1,4 +1,4 @@
-# Swin Transformer: Hierarchical Vision Transformer using Shifted Windows
+# Segmenter: Transformer for Semantic Segmentation
 
 ## Introduction
 
