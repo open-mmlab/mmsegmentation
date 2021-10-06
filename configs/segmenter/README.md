@@ -24,7 +24,7 @@
 
 To use other repositories' pre-trained models, it is necessary to convert keys.
 
-We provide a script [`swin2mmseg.py`](../../tools/model_converters/vitjax2mmseg.py) in the tools directory to convert the key of models from [ViT-AugReg](https://github.com/google-research/vision_transformer) to MMSegmentation style.
+We provide a script [`vitjax2mmseg.py`](../../tools/model_converters/vitjax2mmseg.py) in the tools directory to convert the key of models from [ViT-AugReg](https://github.com/google-research/vision_transformer) to MMSegmentation style.
 
 ```shell
 python tools/model_converters/vitjax2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
