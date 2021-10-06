@@ -46,7 +46,7 @@ This script convert model from `PRETRAIN_PATH` and store the converted model in 
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config | download |
 | ------ | -------- | --------- | ---------- | ------- | -------- | --- | --- | -------------- | ----- |
-| Segmenter-Linear | ViT-S/16 | 160000   | mem        | fps              | ? | ?            | [config]()  | [model]() &#124; [log]()     |
-| Segmenter-Mask | ViT-S/16 | 160000   | mem        | fps              | 45.96 | 46.51            | [config]()  | [model]() &#124; [log]()     |
-| Segmenter-Linear | ViT-B/16 | 160000   | mem        | fps              | 48.69 | 48.71            | [config]()  | [model]() &#124; [log]()     |
-| Segmenter-Mask | ViT-B/16 | 160000   | mem        | fps              | 48.69 | 49.51            | [config]()  | [model]() &#124; [log]()     |
+| Segmenter-Linear | ViT-S/16 | 512x512 | 160000   | mem        | fps              | ? | ?            | [config]()  | [model]() &#124; [log]()     |
+| Segmenter-Mask | ViT-S/16 | 512x512 | 160000   | mem        | fps              | 45.96 | 46.51            | [config]()  | [model]() &#124; [log]()     |
+| Segmenter-Linear | ViT-B/16 | 512x512 | 160000   | mem        | fps              | 48.69 | 48.71            | [config]()  | [model]() &#124; [log]()     |
+| Segmenter-Mask | ViT-B/16 |512x512 |  160000   | mem        | fps              | 48.69 | 49.51            | [config]()  | [model]() &#124; [log]()     |
