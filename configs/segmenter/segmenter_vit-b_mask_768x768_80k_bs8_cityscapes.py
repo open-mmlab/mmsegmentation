@@ -16,3 +16,6 @@ optimizer = dict(lr=0.01, weight_decay=0.0)
 
 # num_gpus: 8 -> batch_size: 8
 data = dict(samples_per_gpu=1, )
+
+# TODO: handle img_norm_cfg
+# img_norm_cfg = dict(mean=[127.5, 127.5, 127.5], std=[127.5, 127.5, 127.5], to_rgb=True)
