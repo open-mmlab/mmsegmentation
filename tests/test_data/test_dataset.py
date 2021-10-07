@@ -1,6 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os
 import os.path as osp
 import shutil
+import tempfile
 from typing import Generator
 from unittest.mock import MagicMock, patch
 
@@ -24,6 +26,37 @@ def test_classes():
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
+
+
+def test_classes_file_path():
+    tmp_file = tempfile.NamedTemporaryFile()
+    classes_path = f'{tmp_file.name}.txt'
+    train_pipeline = [dict(type='LoadImageFromFile')]
+    kwargs = dict(pipeline=train_pipeline, img_dir='./', classes=classes_path)
+
+    # classes.txt with full categories
+    categories = get_classes('cityscapes')
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+    assert list(CityscapesDataset(**kwargs).CLASSES) == categories
+
+    # classes.txt with sub categories
+    categories = ['road', 'sidewalk', 'building']
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+    assert list(CityscapesDataset(**kwargs).CLASSES) == categories
+
+    # classes.txt with unknown categories
+    categories = ['road', 'sidewalk', 'unknown']
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+
+    with pytest.raises(ValueError):
+        CityscapesDataset(**kwargs)
+
+    tmp_file.close()
+    os.remove(classes_path)
+    assert not osp.exists(classes_path)
 
 
 def test_palette():
