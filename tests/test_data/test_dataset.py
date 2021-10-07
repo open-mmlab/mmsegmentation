@@ -1,8 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os
-import tempfile
 import os.path as osp
 import shutil
+import tempfile
 from typing import Generator
 from unittest.mock import MagicMock, patch
 
