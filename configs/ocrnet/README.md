@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/openseg-group/OCNet.pytorch">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ocr_head.py#L86">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1909.11065">OCRNet (ECCV'2020)</a></summary>
+
 ```latex
 @article{YuanW18,
   title={Ocnet: Object context network for scene parsing},
@@ -19,6 +26,8 @@
   year={2020}
 }
 ```
+
+</details>
 
 ## Results and models
 

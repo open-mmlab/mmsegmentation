@@ -48,7 +48,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新的月度版本 v0.17.0 在 2021.09.01 发布。
+最新的月度版本 v0.18.0 在 2021.10.07 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/changelog.md)。
 
 ## 基准测试和模型库
@@ -65,6 +65,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ArXiv'2021)](configs/swin)
+- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
 
 已支持的算法：
 
@@ -73,9 +74,11 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
 - [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
+- [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
 - [x] [UPerNet (ECCV'2018)](configs/upernet)
+- [x] [ICNet (ECCV'2018)](configs/icnet)
 - [x] [NonLocal Net (CVPR'2018)](configs/nonlocal_net)
 - [x] [EncNet (CVPR'2018)](configs/encnet)
 - [x] [Semantic FPN (CVPR'2019)](configs/sem_fpn)
@@ -86,6 +89,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [DMNet (ICCV'2019)](configs/dmnet)
 - [x] [ANN (ICCV'2019)](configs/ann)
 - [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
+- [x] [FastFCN (ArXiv'2019)](configs/fastfcn)
 - [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
 - [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
 - [x] [OCRNet (ECCV'2020)](configs/ocrnet)
@@ -93,6 +97,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [SETR (CVPR'2021)](configs/setr)
+- [x] [DPT (ArXiv'2021)](configs/dpt)
 - [x] [SegFormer (ArXiv'2021)](configs/segformer)
 
 已支持的数据集：
@@ -101,6 +106,8 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-voc)
 - [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#ade20k)
 - [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-context)
+- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#coco-stuff-10k)
+- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#coco-stuff-164k)
 - [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#chase-db1)
 - [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#drive)
 - [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#hrf)

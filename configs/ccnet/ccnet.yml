@@ -1,296 +1,305 @@
 Collections:
-- Metadata:
+- Name: ccnet
+  Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
     - Pascal VOC 2012 + Aug
-  Name: ccnet
+  Paper:
+    URL: https://arxiv.org/abs/1811.11721
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+  README: configs/ccnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/speedinghzl/CCNet
 Models:
-- Config: configs/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes.py
+- Name: ccnet_r50-d8_512x1024_40k_cityscapes
   In Collection: ccnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 301.2
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 301.2
-    lr schd: 40000
     memory (GB): 6.0
-  Name: ccnet_r50-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.76
       mIoU(ms+flip): 78.87
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes/ccnet_r50-d8_512x1024_40k_cityscapes_20200616_142517-4123f401.pth
-- Config: configs/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes.py
+- Name: ccnet_r101-d8_512x1024_40k_cityscapes
   In Collection: ccnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 432.9
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 432.9
-    lr schd: 40000
     memory (GB): 9.5
-  Name: ccnet_r101-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.35
       mIoU(ms+flip): 78.19
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes/ccnet_r101-d8_512x1024_40k_cityscapes_20200616_142540-a3b84ba6.pth
-- Config: configs/ccnet/ccnet_r50-d8_769x769_40k_cityscapes.py
+- Name: ccnet_r50-d8_769x769_40k_cityscapes
   In Collection: ccnet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 699.3
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 699.3
-    lr schd: 40000
     memory (GB): 6.8
-  Name: ccnet_r50-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.46
       mIoU(ms+flip): 79.93
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_769x769_40k_cityscapes/ccnet_r50-d8_769x769_40k_cityscapes_20200616_145125-76d11884.pth
-- Config: configs/ccnet/ccnet_r101-d8_769x769_40k_cityscapes.py
+- Name: ccnet_r101-d8_769x769_40k_cityscapes
   In Collection: ccnet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 990.1
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 990.1
-    lr schd: 40000
     memory (GB): 10.7
-  Name: ccnet_r101-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.94
       mIoU(ms+flip): 78.62
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_769x769_40k_cityscapes/ccnet_r101-d8_769x769_40k_cityscapes_20200617_101428-4f57c8d0.pth
-- Config: configs/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes.py
+- Name: ccnet_r50-d8_512x1024_80k_cityscapes
   In Collection: ccnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
     lr schd: 80000
-  Name: ccnet_r50-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.03
       mIoU(ms+flip): 80.16
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes/ccnet_r50-d8_512x1024_80k_cityscapes_20200617_010421-869a3423.pth
-- Config: configs/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes.py
+- Name: ccnet_r101-d8_512x1024_80k_cityscapes
   In Collection: ccnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
     lr schd: 80000
-  Name: ccnet_r101-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.87
       mIoU(ms+flip): 79.9
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes/ccnet_r101-d8_512x1024_80k_cityscapes_20200617_203935-ffae8917.pth
-- Config: configs/ccnet/ccnet_r50-d8_769x769_80k_cityscapes.py
+- Name: ccnet_r50-d8_769x769_80k_cityscapes
   In Collection: ccnet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
     lr schd: 80000
-  Name: ccnet_r50-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.29
       mIoU(ms+flip): 81.08
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_769x769_80k_cityscapes/ccnet_r50-d8_769x769_80k_cityscapes_20200617_010421-73eed8ca.pth
-- Config: configs/ccnet/ccnet_r101-d8_769x769_80k_cityscapes.py
+- Name: ccnet_r101-d8_769x769_80k_cityscapes
   In Collection: ccnet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
     lr schd: 80000
-  Name: ccnet_r101-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.45
       mIoU(ms+flip): 80.66
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_769x769_80k_cityscapes/ccnet_r101-d8_769x769_80k_cityscapes_20200618_011502-ad3cd481.pth
-- Config: configs/ccnet/ccnet_r50-d8_512x512_80k_ade20k.py
+- Name: ccnet_r50-d8_512x512_80k_ade20k
   In Collection: ccnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 47.87
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 47.87
-    lr schd: 80000
     memory (GB): 8.8
-  Name: ccnet_r50-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.78
       mIoU(ms+flip): 42.98
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_80k_ade20k/ccnet_r50-d8_512x512_80k_ade20k_20200615_014848-aa37f61e.pth
-- Config: configs/ccnet/ccnet_r101-d8_512x512_80k_ade20k.py
+- Name: ccnet_r101-d8_512x512_80k_ade20k
   In Collection: ccnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 70.87
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 70.87
-    lr schd: 80000
     memory (GB): 12.2
-  Name: ccnet_r101-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.97
       mIoU(ms+flip): 45.13
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_80k_ade20k/ccnet_r101-d8_512x512_80k_ade20k_20200615_014848-1f4929a3.pth
-- Config: configs/ccnet/ccnet_r50-d8_512x512_160k_ade20k.py
+- Name: ccnet_r50-d8_512x512_160k_ade20k
   In Collection: ccnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 160000
-  Name: ccnet_r50-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.08
       mIoU(ms+flip): 43.13
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_160k_ade20k/ccnet_r50-d8_512x512_160k_ade20k_20200616_084435-7c97193b.pth
-- Config: configs/ccnet/ccnet_r101-d8_512x512_160k_ade20k.py
+- Name: ccnet_r101-d8_512x512_160k_ade20k
   In Collection: ccnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 160000
-  Name: ccnet_r101-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.71
       mIoU(ms+flip): 45.04
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_160k_ade20k/ccnet_r101-d8_512x512_160k_ade20k_20200616_000644-e849e007.pth
-- Config: configs/ccnet/ccnet_r50-d8_512x512_20k_voc12aug.py
+- Name: ccnet_r50-d8_512x512_20k_voc12aug
   In Collection: ccnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 48.9
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 48.9
-    lr schd: 20000
     memory (GB): 6.0
-  Name: ccnet_r50-d8_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.17
       mIoU(ms+flip): 77.51
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_20k_voc12aug/ccnet_r50-d8_512x512_20k_voc12aug_20200617_193212-fad81784.pth
-- Config: configs/ccnet/ccnet_r101-d8_512x512_20k_voc12aug.py
+- Name: ccnet_r101-d8_512x512_20k_voc12aug
   In Collection: ccnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 73.31
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 73.31
-    lr schd: 20000
     memory (GB): 9.5
-  Name: ccnet_r101-d8_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.27
       mIoU(ms+flip): 79.02
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_20k_voc12aug/ccnet_r101-d8_512x512_20k_voc12aug_20200617_193212-0007b61d.pth
-- Config: configs/ccnet/ccnet_r50-d8_512x512_40k_voc12aug.py
+- Name: ccnet_r50-d8_512x512_40k_voc12aug
   In Collection: ccnet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 40000
-  Name: ccnet_r50-d8_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 75.96
       mIoU(ms+flip): 77.04
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_40k_voc12aug/ccnet_r50-d8_512x512_40k_voc12aug_20200613_232127-c2a15f02.pth
-- Config: configs/ccnet/ccnet_r101-d8_512x512_40k_voc12aug.py
+- Name: ccnet_r101-d8_512x512_40k_voc12aug
   In Collection: ccnet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 40000
-  Name: ccnet_r101-d8_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.87
       mIoU(ms+flip): 78.9
-    Task: Semantic Segmentation
+  Config: configs/ccnet/ccnet_r101-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_40k_voc12aug/ccnet_r101-d8_512x512_40k_voc12aug_20200613_232127-c30da577.pth

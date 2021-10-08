@@ -1,177 +1,186 @@
 Collections:
-- Metadata:
+- Name: unet
+  Metadata:
     Training Data:
     - DRIVE
     - STARE
     - CHASE_DB1
     - HRF
-  Name: unet
+  Paper:
+    URL: https://arxiv.org/abs/1505.04597
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+  README: configs/unet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+    Version: v0.17.0
+  Converted From:
+    Code: http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net
 Models:
-- Config: configs/unet/fcn_unet_s5-d16_64x64_40k_drive.py
+- Name: fcn_unet_s5-d16_64x64_40k_drive
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (64,64)
     lr schd: 40000
     memory (GB): 0.68
-  Name: fcn_unet_s5-d16_64x64_40k_drive
   Results:
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.67
-    Task: Semantic Segmentation
+  Config: configs/unet/fcn_unet_s5-d16_64x64_40k_drive.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_64x64_40k_drive/fcn_unet_s5-d16_64x64_40k_drive_20201223_191051-5daf6d3b.pth
-- Config: configs/unet/pspnet_unet_s5-d16_64x64_40k_drive.py
+- Name: pspnet_unet_s5-d16_64x64_40k_drive
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (64,64)
     lr schd: 40000
     memory (GB): 0.599
-  Name: pspnet_unet_s5-d16_64x64_40k_drive
   Results:
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.62
-    Task: Semantic Segmentation
+  Config: configs/unet/pspnet_unet_s5-d16_64x64_40k_drive.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_64x64_40k_drive/pspnet_unet_s5-d16_64x64_40k_drive_20201227_181818-aac73387.pth
-- Config: configs/unet/deeplabv3_unet_s5-d16_64x64_40k_drive.py
+- Name: deeplabv3_unet_s5-d16_64x64_40k_drive
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (64,64)
     lr schd: 40000
     memory (GB): 0.596
-  Name: deeplabv3_unet_s5-d16_64x64_40k_drive
   Results:
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.69
-    Task: Semantic Segmentation
+  Config: configs/unet/deeplabv3_unet_s5-d16_64x64_40k_drive.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_64x64_40k_drive/deeplabv3_unet_s5-d16_64x64_40k_drive_20201226_094047-0671ff20.pth
-- Config: configs/unet/fcn_unet_s5-d16_128x128_40k_stare.py
+- Name: fcn_unet_s5-d16_128x128_40k_stare
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.968
-  Name: fcn_unet_s5-d16_128x128_40k_stare
   Results:
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 81.02
-    Task: Semantic Segmentation
+  Config: configs/unet/fcn_unet_s5-d16_128x128_40k_stare.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_128x128_40k_stare/fcn_unet_s5-d16_128x128_40k_stare_20201223_191051-7d77e78b.pth
-- Config: configs/unet/pspnet_unet_s5-d16_128x128_40k_stare.py
+- Name: pspnet_unet_s5-d16_128x128_40k_stare
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.982
-  Name: pspnet_unet_s5-d16_128x128_40k_stare
   Results:
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 81.22
-    Task: Semantic Segmentation
+  Config: configs/unet/pspnet_unet_s5-d16_128x128_40k_stare.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_128x128_40k_stare/pspnet_unet_s5-d16_128x128_40k_stare_20201227_181818-3c2923c4.pth
-- Config: configs/unet/deeplabv3_unet_s5-d16_128x128_40k_stare.py
+- Name: deeplabv3_unet_s5-d16_128x128_40k_stare
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.999
-  Name: deeplabv3_unet_s5-d16_128x128_40k_stare
   Results:
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 80.93
-    Task: Semantic Segmentation
+  Config: configs/unet/deeplabv3_unet_s5-d16_128x128_40k_stare.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_128x128_40k_stare/deeplabv3_unet_s5-d16_128x128_40k_stare_20201226_094047-93dcb93c.pth
-- Config: configs/unet/fcn_unet_s5-d16_128x128_40k_chase_db1.py
+- Name: fcn_unet_s5-d16_128x128_40k_chase_db1
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.968
-  Name: fcn_unet_s5-d16_128x128_40k_chase_db1
   Results:
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.24
-    Task: Semantic Segmentation
+  Config: configs/unet/fcn_unet_s5-d16_128x128_40k_chase_db1.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_128x128_40k_chase_db1/fcn_unet_s5-d16_128x128_40k_chase_db1_20201223_191051-11543527.pth
-- Config: configs/unet/pspnet_unet_s5-d16_128x128_40k_chase_db1.py
+- Name: pspnet_unet_s5-d16_128x128_40k_chase_db1
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.982
-  Name: pspnet_unet_s5-d16_128x128_40k_chase_db1
   Results:
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.36
-    Task: Semantic Segmentation
+  Config: configs/unet/pspnet_unet_s5-d16_128x128_40k_chase_db1.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_128x128_40k_chase_db1/pspnet_unet_s5-d16_128x128_40k_chase_db1_20201227_181818-68d4e609.pth
-- Config: configs/unet/deeplabv3_unet_s5-d16_128x128_40k_chase_db1.py
+- Name: deeplabv3_unet_s5-d16_128x128_40k_chase_db1
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
     memory (GB): 0.999
-  Name: deeplabv3_unet_s5-d16_128x128_40k_chase_db1
   Results:
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.47
-    Task: Semantic Segmentation
+  Config: configs/unet/deeplabv3_unet_s5-d16_128x128_40k_chase_db1.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_128x128_40k_chase_db1/deeplabv3_unet_s5-d16_128x128_40k_chase_db1_20201226_094047-4c5aefa3.pth
-- Config: configs/unet/fcn_unet_s5-d16_256x256_40k_hrf.py
+- Name: fcn_unet_s5-d16_256x256_40k_hrf
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (256,256)
     lr schd: 40000
     memory (GB): 2.525
-  Name: fcn_unet_s5-d16_256x256_40k_hrf
   Results:
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 79.45
-    Task: Semantic Segmentation
+  Config: configs/unet/fcn_unet_s5-d16_256x256_40k_hrf.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_256x256_40k_hrf/fcn_unet_s5-d16_256x256_40k_hrf_20201223_173724-d89cf1ed.pth
-- Config: configs/unet/pspnet_unet_s5-d16_256x256_40k_hrf.py
+- Name: pspnet_unet_s5-d16_256x256_40k_hrf
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (256,256)
     lr schd: 40000
     memory (GB): 2.588
-  Name: pspnet_unet_s5-d16_256x256_40k_hrf
   Results:
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 80.07
-    Task: Semantic Segmentation
+  Config: configs/unet/pspnet_unet_s5-d16_256x256_40k_hrf.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_256x256_40k_hrf/pspnet_unet_s5-d16_256x256_40k_hrf_20201227_181818-fdb7e29b.pth
-- Config: configs/unet/deeplabv3_unet_s5-d16_256x256_40k_hrf.py
+- Name: deeplabv3_unet_s5-d16_256x256_40k_hrf
   In Collection: unet
   Metadata:
     backbone: UNet-S5-D16
     crop size: (256,256)
     lr schd: 40000
     memory (GB): 2.604
-  Name: deeplabv3_unet_s5-d16_256x256_40k_hrf
   Results:
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 80.21
-    Task: Semantic Segmentation
+  Config: configs/unet/deeplabv3_unet_s5-d16_256x256_40k_hrf.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_256x256_40k_hrf/deeplabv3_unet_s5-d16_256x256_40k_hrf_20201226_094047-3a1fdf85.pth

@@ -1,6 +1,8 @@
 Import:
 - configs/ann/ann.yml
 - configs/apcnet/apcnet.yml
+- configs/bisenetv1/bisenetv1.yml
+- configs/bisenetv2/bisenetv2.yml
 - configs/ccnet/ccnet.yml
 - configs/cgnet/cgnet.yml
 - configs/danet/danet.yml
@@ -11,11 +13,13 @@ Import:
 - configs/dpt/dpt.yml
 - configs/emanet/emanet.yml
 - configs/encnet/encnet.yml
+- configs/fastfcn/fastfcn.yml
 - configs/fastscnn/fastscnn.yml
 - configs/fcn/fcn.yml
 - configs/fp16/fp16.yml
 - configs/gcnet/gcnet.yml
 - configs/hrnet/hrnet.yml
+- configs/icnet/icnet.yml
 - configs/isanet/isanet.yml
 - configs/mobilenet_v2/mobilenet_v2.yml
 - configs/mobilenet_v3/mobilenet_v3.yml
