@@ -7,6 +7,15 @@ Collections:
     - Pascal VOC 2012 + Aug
     - Pascal Context
     - Pascal Context 59
+  Paper:
+    URL: https://arxiv.org/abs/1411.4038
+    Title: Fully Convolutional Networks for Semantic Segmentation
+  README: configs/fcn/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/BVLC/caffe/wiki/Model-Zoo#fcn
 Models:
 - Name: fcn_r50-d8_512x1024_40k_cityscapes
   In Collection: fcn
@@ -23,7 +32,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 5.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 72.25
@@ -45,7 +54,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.45
@@ -67,7 +76,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 71.47
@@ -89,7 +98,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 73.93
@@ -111,7 +120,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 71.11
@@ -125,7 +134,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 73.61
@@ -139,7 +148,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.13
@@ -161,7 +170,7 @@ Models:
       resolution: (769,769)
     memory (GB): 1.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 70.8
@@ -175,7 +184,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 72.64
@@ -189,7 +198,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.52
@@ -211,7 +220,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 70.24
@@ -233,7 +242,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 5.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.65
@@ -255,7 +264,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.37
@@ -277,7 +286,7 @@ Models:
       resolution: (769,769)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 69.66
@@ -299,7 +308,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 73.83
@@ -321,7 +330,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.02
@@ -343,13 +352,13 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.06
       mIoU(ms+flip): 78.85
   Config: configs/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes_20210305_130133-98d5d1bc.pth
 - Name: fcn_d6_r50-d16_512x1024_80k_cityscapes
   In Collection: fcn
   Metadata:
@@ -364,13 +373,13 @@ Models:
       mode: FP32
       resolution: (512,1024)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.27
       mIoU(ms+flip): 78.88
   Config: configs/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-98d5d1bc.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_80k_cityscapes_20210306_115604-133c292f.pth
 - Name: fcn_d6_r50-d16_769x769_40k_cityscapes
   In Collection: fcn
   Metadata:
@@ -386,13 +395,13 @@ Models:
       resolution: (769,769)
     memory (GB): 3.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.82
       mIoU(ms+flip): 78.22
   Config: configs/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes-1aab18ed.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes_20210305_185744-1aab18ed.pth
 - Name: fcn_d6_r50-d16_769x769_80k_cityscapes
   In Collection: fcn
   Metadata:
@@ -407,13 +416,13 @@ Models:
       mode: FP32
       resolution: (769,769)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.04
       mIoU(ms+flip): 78.4
   Config: configs/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes-109d88eb.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes_20210305_200413-109d88eb.pth
 - Name: fcn_d6_r101-d16_512x1024_40k_cityscapes
   In Collection: fcn
   Metadata:
@@ -429,13 +438,13 @@ Models:
       resolution: (512,1024)
     memory (GB): 4.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.36
       mIoU(ms+flip): 79.18
   Config: configs/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes-9cf2b450.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes_20210305_130337-9cf2b450.pth
 - Name: fcn_d6_r101-d16_512x1024_80k_cityscapes
   In Collection: fcn
   Metadata:
@@ -450,13 +459,13 @@ Models:
       mode: FP32
       resolution: (512,1024)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.46
       mIoU(ms+flip): 80.42
   Config: configs/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes-cb336445.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes_20210308_102747-cb336445.pth
 - Name: fcn_d6_r101-d16_769x769_40k_cityscapes
   In Collection: fcn
   Metadata:
@@ -472,13 +481,13 @@ Models:
       resolution: (769,769)
     memory (GB): 5.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.28
       mIoU(ms+flip): 78.95
   Config: configs/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes-60b114e9.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes_20210308_102453-60b114e9.pth
 - Name: fcn_d6_r101-d16_769x769_80k_cityscapes
   In Collection: fcn
   Metadata:
@@ -493,13 +502,13 @@ Models:
       mode: FP32
       resolution: (769,769)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.06
       mIoU(ms+flip): 79.58
   Config: configs/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes-e33adc4f.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes_20210306_120016-e33adc4f.pth
 - Name: fcn_d6_r50b-d16_512x1024_80k_cityscapes
   In Collection: fcn
   Metadata:
@@ -515,13 +524,13 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.99
       mIoU(ms+flip): 79.03
   Config: configs/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_512x1024_80k_cityscapes/fcn_d6_r50b_d16_512x1024_80k_cityscapes-6a0b62e9.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes/fcn_d6_r50b-d16_512x1024_80k_cityscapes_20210311_125550-6a0b62e9.pth
 - Name: fcn_d6_r50b-d16_769x769_80k_cityscapes
   In Collection: fcn
   Metadata:
@@ -537,13 +546,13 @@ Models:
       resolution: (769,769)
     memory (GB): 3.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.86
       mIoU(ms+flip): 78.52
   Config: configs/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_769x769_80k_cityscapes/fcn_d6_r50b_d16_769x769_80k_cityscapes-d665f231.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes/fcn_d6_r50b-d16_769x769_80k_cityscapes_20210311_131012-d665f231.pth
 - Name: fcn_d6_r101b-d16_512x1024_80k_cityscapes
   In Collection: fcn
   Metadata:
@@ -559,13 +568,13 @@ Models:
       resolution: (512,1024)
     memory (GB): 4.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.72
       mIoU(ms+flip): 79.53
   Config: configs/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_512x1024_80k_cityscapes/fcn_d6_r101b_d16_512x1024_80k_cityscapes-3f2eb5b4.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes/fcn_d6_r101b-d16_512x1024_80k_cityscapes_20210311_144305-3f2eb5b4.pth
 - Name: fcn_d6_r101b-d16_769x769_80k_cityscapes
   In Collection: fcn
   Metadata:
@@ -581,13 +590,13 @@ Models:
       resolution: (769,769)
     memory (GB): 4.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.34
       mIoU(ms+flip): 78.91
   Config: configs/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_769x769_80k_cityscapes/fcn_d6_r101b_d16_769x769_80k_cityscapes-c4d8bfbc.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes/fcn_d6_r101b-d16_769x769_80k_cityscapes_20210311_154527-c4d8bfbc.pth
 - Name: fcn_r50-d8_512x512_80k_ade20k
   In Collection: fcn
   Metadata:
@@ -603,7 +612,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 35.94
@@ -625,7 +634,7 @@ Models:
       resolution: (512,512)
     memory (GB): 12.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.61
@@ -639,7 +648,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 36.1
@@ -653,7 +662,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.91
@@ -675,7 +684,7 @@ Models:
       resolution: (512,512)
     memory (GB): 5.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 67.08
@@ -697,7 +706,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 71.16
@@ -711,7 +720,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 66.97
@@ -725,7 +734,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 69.91
@@ -746,13 +755,13 @@ Models:
       mode: FP32
       resolution: (480,480)
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 44.43
       mIoU(ms+flip): 45.63
   Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20210421_154757-b5e97937.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context_20210421_154757-b5e97937.pth
 - Name: fcn_r101-d8_480x480_80k_pascal_context
   In Collection: fcn
   Metadata:
@@ -760,13 +769,13 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 44.13
       mIoU(ms+flip): 45.26
   Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context-20210421_163310-4711813f.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context_20210421_163310-4711813f.pth
 - Name: fcn_r101-d8_480x480_40k_pascal_context_59
   In Collection: fcn
   Metadata:
@@ -774,7 +783,7 @@ Models:
     crop size: (480,480)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 48.42
@@ -788,7 +797,7 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 49.35

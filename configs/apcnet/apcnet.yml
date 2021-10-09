@@ -4,6 +4,15 @@ Collections:
     Training Data:
     - Cityscapes
     - ADE20K
+  Paper:
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+  README: configs/apcnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/Junjun2016/APCNet
 Models:
 - Name: apcnet_r50-d8_512x1024_40k_cityscapes
   In Collection: apcnet
@@ -20,7 +29,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 7.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.02
@@ -42,7 +51,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 11.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.08
@@ -64,7 +73,7 @@ Models:
       resolution: (769,769)
     memory (GB): 8.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.89
@@ -86,7 +95,7 @@ Models:
       resolution: (769,769)
     memory (GB): 12.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.96
@@ -100,7 +109,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.96
@@ -114,7 +123,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.64
@@ -128,7 +137,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.79
@@ -142,7 +151,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.45
@@ -164,7 +173,7 @@ Models:
       resolution: (512,512)
     memory (GB): 10.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.2
@@ -186,7 +195,7 @@ Models:
       resolution: (512,512)
     memory (GB): 13.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.54
@@ -200,7 +209,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.4
@@ -214,7 +223,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.41

@@ -5,6 +5,15 @@ Collections:
     - Cityscapes
     - ADE20K
     - Pascal VOC 2012 + Aug
+  Paper:
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+    Title: Unified Perceptual Parsing for Scene Understanding
+  README: configs/upernet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/CSAILVision/unifiedparsing
 Models:
 - Name: upernet_r50_512x1024_40k_cityscapes
   In Collection: upernet
@@ -21,7 +30,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 6.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.1
@@ -43,7 +52,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 7.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.69
@@ -65,7 +74,7 @@ Models:
       resolution: (769,769)
     memory (GB): 7.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.98
@@ -87,7 +96,7 @@ Models:
       resolution: (769,769)
     memory (GB): 8.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.03
@@ -101,7 +110,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.19
@@ -115,7 +124,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.4
@@ -129,7 +138,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.39
@@ -143,7 +152,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.1
@@ -165,7 +174,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 40.7
@@ -187,7 +196,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.91
@@ -201,7 +210,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.05
@@ -215,7 +224,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.82
@@ -237,7 +246,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 74.82
@@ -259,7 +268,7 @@ Models:
       resolution: (512,512)
     memory (GB): 7.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.1
@@ -273,7 +282,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 75.92
@@ -287,7 +296,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.43

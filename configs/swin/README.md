@@ -2,7 +2,14 @@
 
 ## Introduction
 
-[ALGORITHM]
+<!-- [ALGORITHM] -->
+
+<a href="https://github.com/microsoft/Swin-Transformer">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/swin.py#L524">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/2103.14030">Swin Transformer (arXiv'2021)</a></summary>
 
 ```latex
 @article{liu2021Swin,
@@ -12,6 +19,26 @@
   year={2021}
 }
 ```
+
+</details>
+
+## Usage
+
+To use other repositories' pre-trained models, it is necessary to convert keys.
+
+We provide a script [`swin2mmseg.py`](../../tools/model_converters/swin2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/SwinTransformer/Swin-Transformer-Semantic-Segmentation) to MMSegmentation style.
+
+```shell
+python tools/model_converters/swin2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
+```
+
+E.g.
+
+```shell
+python tools/model_converters/swin2mmseg.py https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224.pth pretrain/swin_base_patch4_window7_224.pth
+```
+
+This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
 
 ## Results and models
 

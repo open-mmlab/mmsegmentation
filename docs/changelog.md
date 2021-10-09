@@ -1,5 +1,67 @@
 ## Changelog
 
+### V0.18 (10/07/2021)
+
+**Highlights**
+
+- Support three real-time segmentation models (ICNet [#884](https://github.com/open-mmlab/mmsegmentation/pull/884), BiSeNetV1 [#851](https://github.com/open-mmlab/mmsegmentation/pull/851), and BiSeNetV2 [#804](https://github.com/open-mmlab/mmsegmentation/pull/804))
+- Support one efficient segmentation model (FastFCN [#885](https://github.com/open-mmlab/mmsegmentation/pull/885))
+- Support one efficient non-local/self-attention based segmentation model (ISANet [#70](https://github.com/open-mmlab/mmsegmentation/pull/70))
+- Support COCO-Stuff 10k and 164k datasets ([#625](https://github.com/open-mmlab/mmsegmentation/pull/625))
+- Support evaluate concated dataset separately ([#833](https://github.com/open-mmlab/mmsegmentation/pull/833))
+- Support loading GT for evaluation from multi-file backend ([#867](https://github.com/open-mmlab/mmsegmentation/pull/867))
+
+**New Features**
+
+- Support three real-time segmentation models (ICNet [#884](https://github.com/open-mmlab/mmsegmentation/pull/884), BiSeNetV1 [#851](https://github.com/open-mmlab/mmsegmentation/pull/851), and BiSeNetV2 [#804](https://github.com/open-mmlab/mmsegmentation/pull/804))
+- Support one efficient segmentation model (FastFCN [#885](https://github.com/open-mmlab/mmsegmentation/pull/885))
+- Support one efficient non-local/self-attention based segmentation model (ISANet [#70](https://github.com/open-mmlab/mmsegmentation/pull/70))
+- Support COCO-Stuff 10k and 164k datasets ([#625](https://github.com/open-mmlab/mmsegmentation/pull/625))
+- Support evaluate concated dataset separately ([#833](https://github.com/open-mmlab/mmsegmentation/pull/833))
+
+**Improvements**
+
+- Support loading GT for evaluation from multi-file backend ([#867](https://github.com/open-mmlab/mmsegmentation/pull/867))
+- Auto-convert SyncBN to BN when training on DP automatly([#772](https://github.com/open-mmlab/mmsegmentation/pull/772))
+- Refactor Swin-Transformer ([#800](https://github.com/open-mmlab/mmsegmentation/pull/800))
+
+**Bug Fixes**
+
+- Update mmcv installation in dockerfile ([#860](https://github.com/open-mmlab/mmsegmentation/pull/860))
+- Fix number of iteration bug when resuming checkpoint in distributed train ([#866](https://github.com/open-mmlab/mmsegmentation/pull/866))
+- Fix parsing parse in val_step ([#906](https://github.com/open-mmlab/mmsegmentation/pull/906))
+
+### V0.17 (09/01/2021)
+
+**Highlights**
+
+- Support SegFormer
+- Support DPT
+- Support Dark Zurich and Nighttime Driving datasets
+- Support progressive evaluation
+
+**New Features**
+
+- Support SegFormer ([#599](https://github.com/open-mmlab/mmsegmentation/pull/599))
+- Support DPT ([#605](https://github.com/open-mmlab/mmsegmentation/pull/605))
+- Support Dark Zurich and Nighttime Driving datasets ([#815](https://github.com/open-mmlab/mmsegmentation/pull/815))
+- Support progressive evaluation ([#709](https://github.com/open-mmlab/mmsegmentation/pull/709))
+
+**Improvements**
+
+- Add multiscale_output interface and unittests for HRNet ([#830](https://github.com/open-mmlab/mmsegmentation/pull/830))
+- Support inherit cityscapes dataset ([#750](https://github.com/open-mmlab/mmsegmentation/pull/750))
+- Fix some typos in README.md ([#824](https://github.com/open-mmlab/mmsegmentation/pull/824))
+- Delete convert function and add instruction to ViT/Swin README.md ([#791](https://github.com/open-mmlab/mmsegmentation/pull/791))
+- Add vit/swin/mit convert weight scripts ([#783](https://github.com/open-mmlab/mmsegmentation/pull/783))
+- Add copyright files ([#796](https://github.com/open-mmlab/mmsegmentation/pull/796))
+
+**Bug Fixes**
+
+- Fix invalid checkpoint link in inference_demo.ipynb ([#814](https://github.com/open-mmlab/mmsegmentation/pull/814))
+- Ensure that items in dataset have the same order across multi machine ([#780](https://github.com/open-mmlab/mmsegmentation/pull/780))
+- Fix the log error ([#766](https://github.com/open-mmlab/mmsegmentation/pull/766))
+
 ### V0.16 (08/04/2021)
 
 **Highlights**

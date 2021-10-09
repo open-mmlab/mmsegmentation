@@ -4,6 +4,15 @@ Collections:
     Training Data:
     - Cityscapes
     - ADE20K
+  Paper:
+    URL: https://arxiv.org/abs/1901.02446
+    Title: Panoptic Feature Pyramid Networks
+  README: configs/sem_fpn/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/facebookresearch/detectron2
 Models:
 - Name: fpn_r50_512x1024_80k_cityscapes
   In Collection: sem_fpn
@@ -20,7 +29,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 2.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.52
@@ -42,7 +51,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.8
@@ -64,7 +73,7 @@ Models:
       resolution: (512,512)
     memory (GB): 4.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 37.49
@@ -86,7 +95,7 @@ Models:
       resolution: (512,512)
     memory (GB): 5.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.35

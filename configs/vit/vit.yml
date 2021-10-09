@@ -3,6 +3,15 @@ Collections:
   Metadata:
     Training Data:
     - ADE20K
+  Paper:
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+    Title: Vision Transformer
+  README: configs/vit/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/google-research/vision_transformer
 Models:
 - Name: upernet_vit-b16_mln_512x512_80k_ade20k
   In Collection: vit
@@ -19,13 +28,13 @@ Models:
       resolution: (512,512)
     memory (GB): 9.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 47.71
       mIoU(ms+flip): 49.51
   Config: configs/vit/upernet_vit-b16_mln_512x512_80k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_80k_ade20k/upernet_vit-b16_mln_512x512_80k_ade20k-0403cee1.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_80k_ade20k/upernet_vit-b16_mln_512x512_80k_ade20k_20210624_130547-0403cee1.pth
 - Name: upernet_vit-b16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
@@ -41,13 +50,13 @@ Models:
       resolution: (512,512)
     memory (GB): 9.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 46.75
       mIoU(ms+flip): 48.46
   Config: configs/vit/upernet_vit-b16_mln_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_160k_ade20k/upernet_vit-b16_mln_512x512_160k_ade20k-852fa768.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_160k_ade20k/upernet_vit-b16_mln_512x512_160k_ade20k_20210624_130547-852fa768.pth
 - Name: upernet_vit-b16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
@@ -63,13 +72,13 @@ Models:
       resolution: (512,512)
     memory (GB): 9.21
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 47.73
       mIoU(ms+flip): 49.95
   Config: configs/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k/upernet_vit-b16_ln_mln_512x512_160k_ade20k-f444c077.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k/upernet_vit-b16_ln_mln_512x512_160k_ade20k_20210621_172828-f444c077.pth
 - Name: upernet_deit-s16_512x512_80k_ade20k
   In Collection: vit
   Metadata:
@@ -85,13 +94,13 @@ Models:
       resolution: (512,512)
     memory (GB): 4.68
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.96
       mIoU(ms+flip): 43.79
   Config: configs/vit/upernet_deit-s16_512x512_80k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_80k_ade20k/upernet_deit-s16_512x512_80k_ade20k-afc93ec2.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_80k_ade20k/upernet_deit-s16_512x512_80k_ade20k_20210624_095228-afc93ec2.pth
 - Name: upernet_deit-s16_512x512_160k_ade20k
   In Collection: vit
   Metadata:
@@ -107,13 +116,13 @@ Models:
       resolution: (512,512)
     memory (GB): 4.68
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.87
       mIoU(ms+flip): 43.79
   Config: configs/vit/upernet_deit-s16_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_160k_ade20k/upernet_deit-s16_512x512_160k_ade20k-5110d916.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_160k_ade20k/upernet_deit-s16_512x512_160k_ade20k_20210621_160903-5110d916.pth
 - Name: upernet_deit-s16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
@@ -129,13 +138,13 @@ Models:
       resolution: (512,512)
     memory (GB): 5.69
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.82
       mIoU(ms+flip): 45.07
   Config: configs/vit/upernet_deit-s16_mln_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_mln_512x512_160k_ade20k/upernet_deit-s16_mln_512x512_160k_ade20k-fb9a5dfb.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_mln_512x512_160k_ade20k/upernet_deit-s16_mln_512x512_160k_ade20k_20210621_161021-fb9a5dfb.pth
 - Name: upernet_deit-s16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
@@ -151,13 +160,13 @@ Models:
       resolution: (512,512)
     memory (GB): 5.69
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.52
       mIoU(ms+flip): 45.01
   Config: configs/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k/upernet_deit-s16_ln_mln_512x512_160k_ade20k-c0cd652f.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k/upernet_deit-s16_ln_mln_512x512_160k_ade20k_20210621_161021-c0cd652f.pth
 - Name: upernet_deit-b16_512x512_80k_ade20k
   In Collection: vit
   Metadata:
@@ -173,13 +182,13 @@ Models:
       resolution: (512,512)
     memory (GB): 7.75
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.24
       mIoU(ms+flip): 46.73
   Config: configs/vit/upernet_deit-b16_512x512_80k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_80k_ade20k/upernet_deit-b16_512x512_80k_ade20k-1e090789.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_80k_ade20k/upernet_deit-b16_512x512_80k_ade20k_20210624_130529-1e090789.pth
 - Name: upernet_deit-b16_512x512_160k_ade20k
   In Collection: vit
   Metadata:
@@ -195,13 +204,13 @@ Models:
       resolution: (512,512)
     memory (GB): 7.75
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.36
       mIoU(ms+flip): 47.16
   Config: configs/vit/upernet_deit-b16_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_160k_ade20k/upernet_deit-b16_512x512_160k_ade20k-828705d7.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_160k_ade20k/upernet_deit-b16_512x512_160k_ade20k_20210621_180100-828705d7.pth
 - Name: upernet_deit-b16_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
@@ -217,13 +226,13 @@ Models:
       resolution: (512,512)
     memory (GB): 9.21
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.46
       mIoU(ms+flip): 47.16
   Config: configs/vit/upernet_deit-b16_mln_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_mln_512x512_160k_ade20k/upernet_deit-b16_mln_512x512_160k_ade20k-4e1450f3.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_mln_512x512_160k_ade20k/upernet_deit-b16_mln_512x512_160k_ade20k_20210621_191949-4e1450f3.pth
 - Name: upernet_deit-b16_ln_mln_512x512_160k_ade20k
   In Collection: vit
   Metadata:
@@ -239,10 +248,10 @@ Models:
       resolution: (512,512)
     memory (GB): 9.21
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 45.37
       mIoU(ms+flip): 47.23
   Config: configs/vit/upernet_deit-b16_ln_mln_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_ln_mln_512x512_160k_ade20k/upernet_deit-b16_ln_mln_512x512_160k_ade20k-8a959c14.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_ln_mln_512x512_160k_ade20k/upernet_deit-b16_ln_mln_512x512_160k_ade20k_20210623_153535-8a959c14.pth

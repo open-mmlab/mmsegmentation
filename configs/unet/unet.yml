@@ -6,6 +6,15 @@ Collections:
     - STARE
     - CHASE_DB1
     - HRF
+  Paper:
+    URL: https://arxiv.org/abs/1505.04597
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+  README: configs/unet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+    Version: v0.17.0
+  Converted From:
+    Code: http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net
 Models:
 - Name: fcn_unet_s5-d16_64x64_40k_drive
   In Collection: unet
@@ -15,12 +24,12 @@ Models:
     lr schd: 40000
     memory (GB): 0.68
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.67
   Config: configs/unet/fcn_unet_s5-d16_64x64_40k_drive.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_64x64_40k_drive/unet_s5-d16_64x64_40k_drive_20201223_191051-5daf6d3b.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_64x64_40k_drive/fcn_unet_s5-d16_64x64_40k_drive_20201223_191051-5daf6d3b.pth
 - Name: pspnet_unet_s5-d16_64x64_40k_drive
   In Collection: unet
   Metadata:
@@ -29,7 +38,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.599
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.62
@@ -43,7 +52,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.596
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: DRIVE
     Metrics:
       mIoU: 78.69
@@ -57,12 +66,12 @@ Models:
     lr schd: 40000
     memory (GB): 0.968
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 81.02
   Config: configs/unet/fcn_unet_s5-d16_128x128_40k_stare.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_128x128_40k_stare/unet_s5-d16_128x128_40k_stare_20201223_191051-7d77e78b.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_128x128_40k_stare/fcn_unet_s5-d16_128x128_40k_stare_20201223_191051-7d77e78b.pth
 - Name: pspnet_unet_s5-d16_128x128_40k_stare
   In Collection: unet
   Metadata:
@@ -71,7 +80,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.982
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 81.22
@@ -85,7 +94,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.999
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: STARE
     Metrics:
       mIoU: 80.93
@@ -99,12 +108,12 @@ Models:
     lr schd: 40000
     memory (GB): 0.968
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.24
   Config: configs/unet/fcn_unet_s5-d16_128x128_40k_chase_db1.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_128x128_40k_chase_db1/unet_s5-d16_128x128_40k_chase_db1_20201223_191051-11543527.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_128x128_40k_chase_db1/fcn_unet_s5-d16_128x128_40k_chase_db1_20201223_191051-11543527.pth
 - Name: pspnet_unet_s5-d16_128x128_40k_chase_db1
   In Collection: unet
   Metadata:
@@ -113,7 +122,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.982
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.36
@@ -127,7 +136,7 @@ Models:
     lr schd: 40000
     memory (GB): 0.999
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: CHASE_DB1
     Metrics:
       mIoU: 80.47
@@ -141,12 +150,12 @@ Models:
     lr schd: 40000
     memory (GB): 2.525
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 79.45
   Config: configs/unet/fcn_unet_s5-d16_256x256_40k_hrf.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_256x256_40k_hrf/unet_s5-d16_256x256_40k_hrf_20201223_173724-d89cf1ed.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_256x256_40k_hrf/fcn_unet_s5-d16_256x256_40k_hrf_20201223_173724-d89cf1ed.pth
 - Name: pspnet_unet_s5-d16_256x256_40k_hrf
   In Collection: unet
   Metadata:
@@ -155,7 +164,7 @@ Models:
     lr schd: 40000
     memory (GB): 2.588
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 80.07
@@ -169,7 +178,7 @@ Models:
     lr schd: 40000
     memory (GB): 2.604
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: HRF
     Metrics:
       mIoU: 80.21

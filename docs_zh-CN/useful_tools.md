@@ -258,3 +258,94 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
   ```shell
   python tools/analyze_logs.py log.json --keys loss --legend loss
   ```
+
+### 转换其他仓库的权重
+
+`tools/model_converters/` 提供了若干个预训练权重转换脚本，支持将其他仓库的预训练权重的 key 转换为与 MMSegmentation 相匹配的 key。
+
+#### ViT Swin MiT Transformer 模型
+
+- ViT
+
+`tools/model_converters/vit2mmseg.py` 将 timm 预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
+  ```
+
+- Swin
+
+  `tools/model_converters/swin2mmseg.py` 将官方预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/swin2mmseg.py ${SRC} ${DST}
+  ```
+
+- SegFormer
+
+  `tools/model_converters/mit2mmseg.py` 将官方预训练模型转换到 MMSegmentation。
+
+  ```shell
+  python tools/model_converters/mit2mmseg.py ${SRC} ${DST}
+  ```
+
+## 模型服务
+
+为了用 [`TorchServe`](https://pytorch.org/serve/) 服务 `MMSegmentation` 的模型 ， 您可以遵循如下流程:
+
+### 1. 将 model 从　MMSegmentation 转换到 TorchServe
+
+```shell
+python tools/mmseg2torchserve.py ${CONFIG_FILE} ${CHECKPOINT_FILE} \
+--output-folder ${MODEL_STORE} \
+--model-name ${MODEL_NAME}
+```
+
+**注意**: ${MODEL_STORE} 需要设置为某个文件夹的绝对路径
+
+### 2. 构建 `mmseg-serve` 容器镜像 (docker image)
+
+```shell
+docker build -t mmseg-serve:latest docker/serve/
+```
+
+### 3. 运行 `mmseg-serve`
+
+请查阅官方文档: [使用容器运行 TorchServe](https://github.com/pytorch/serve/blob/master/docker/README.md#running-torchserve-in-a-production-docker-environment)
+
+为了在 GPU 环境下使用, 您需要安装 [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html). 若在 CPU 环境下使用，您可以忽略添加 `--gpus` 参数。
+
+示例:
+
+```shell
+docker run --rm \
+--cpus 8 \
+--gpus device=0 \
+-p8080:8080 -p8081:8081 -p8082:8082 \
+--mount type=bind,source=$MODEL_STORE,target=/home/model-server/model-store \
+mmseg-serve:latest
+```
+
+阅读关于推理 (8080), 管理 (8081) 和指标 (8082) APIs 的 [文档](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) 。
+
+### 4. 测试部署
+
+```shell
+curl -O https://raw.githubusercontent.com/open-mmlab/mmsegmentation/master/resources/3dogs.jpg
+curl http://127.0.0.1:8080/predictions/${MODEL_NAME} -T 3dogs.jpg -o 3dogs_mask.png
+```
+
+得到的响应将是一个 ".png" 的分割掩码.
+
+您可以按照如下方法可视化输出:
+
+```python
+import matplotlib.pyplot as plt
+import mmcv
+plt.imshow(mmcv.imread("3dogs_mask.png", "grayscale"))
+plt.show()
+```
+
+看到的东西将会和下图类似:
+
+![3dogs_mask](../resources/3dogs_mask.png)

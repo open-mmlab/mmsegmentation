@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import platform
 import random
@@ -7,7 +8,7 @@ import numpy as np
 import torch
 from mmcv.parallel import collate
 from mmcv.runner import get_dist_info
-from mmcv.utils import Registry, build_from_cfg
+from mmcv.utils import Registry, build_from_cfg, digit_version
 from torch.utils.data import DataLoader, DistributedSampler
 
 if platform.system() != 'Windows':
@@ -29,6 +30,8 @@ def _concat_dataset(cfg, default_args=None):
     img_dir = cfg['img_dir']
     ann_dir = cfg.get('ann_dir', None)
     split = cfg.get('split', None)
+    # pop 'separate_eval' since it is not a valid key for common datasets.
+    separate_eval = cfg.pop('separate_eval', True)
     num_img_dir = len(img_dir) if isinstance(img_dir, (list, tuple)) else 1
     if ann_dir is not None:
         num_ann_dir = len(ann_dir) if isinstance(ann_dir, (list, tuple)) else 1
@@ -56,7 +59,7 @@ def _concat_dataset(cfg, default_args=None):
             data_cfg['split'] = split[i]
         datasets.append(build_dataset(data_cfg, default_args))
 
-    return ConcatDataset(datasets)
+    return ConcatDataset(datasets, separate_eval)
 
 
 def build_dataset(cfg, default_args=None):
@@ -133,7 +136,7 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    if torch.__version__ >= '1.8.0':
+    if digit_version(torch.__version__) >= digit_version('1.8.0'):
         data_loader = DataLoader(
             dataset,
             batch_size=batch_size,

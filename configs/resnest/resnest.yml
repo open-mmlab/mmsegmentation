@@ -4,6 +4,15 @@ Collections:
     Training Data:
     - Cityscapes
     - ADE20k
+  Paper:
+    URL: https://arxiv.org/abs/2004.08955
+    Title: 'ResNeSt: Split-Attention Networks'
+  README: configs/resnest/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/zhanghang1989/ResNeSt
 Models:
 - Name: fcn_s101-d8_512x1024_80k_cityscapes
   In Collection: resnest
@@ -20,7 +29,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 11.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.56
@@ -42,7 +51,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 11.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.57
@@ -64,7 +73,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 11.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.67
@@ -86,7 +95,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 13.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.62
@@ -108,7 +117,7 @@ Models:
       resolution: (512,512)
     memory (GB): 14.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 45.62
@@ -130,7 +139,7 @@ Models:
       resolution: (512,512)
     memory (GB): 14.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 45.44
@@ -152,7 +161,7 @@ Models:
       resolution: (512,512)
     memory (GB): 14.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 45.71
@@ -174,7 +183,7 @@ Models:
       resolution: (512,512)
     memory (GB): 16.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20k
     Metrics:
       mIoU: 46.47

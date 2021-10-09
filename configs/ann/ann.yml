@@ -5,6 +5,15 @@ Collections:
     - Cityscapes
     - ADE20K
     - Pascal VOC 2012 + Aug
+  Paper:
+    URL: https://arxiv.org/abs/1908.07678
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+  README: configs/ann/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/MendelXu/ANN
 Models:
 - Name: ann_r50-d8_512x1024_40k_cityscapes
   In Collection: ann
@@ -21,7 +30,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 6.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.4
@@ -43,7 +52,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.55
@@ -65,7 +74,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.89
@@ -87,7 +96,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.32
@@ -101,7 +110,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.34
@@ -115,7 +124,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.14
@@ -129,7 +138,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.88
@@ -143,7 +152,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.8
@@ -165,7 +174,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.01
@@ -187,7 +196,7 @@ Models:
       resolution: (512,512)
     memory (GB): 12.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.94
@@ -201,7 +210,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.74
@@ -215,7 +224,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.94
@@ -237,7 +246,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 74.86
@@ -259,7 +268,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.47
@@ -273,7 +282,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.56
@@ -287,7 +296,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.7

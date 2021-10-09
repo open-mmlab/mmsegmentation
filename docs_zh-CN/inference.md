@@ -20,11 +20,11 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
 
 可选参数:
 
-- `RESULT_FILE`: pickle 格式的输出结果的文件名，如果不专门指定，结果将不会被专门保存成文件
-- `EVAL_METRICS`: 在结果里将被评估的指标，这主要取决于数据集，  `mIoU`  对于所有数据集都可获得，像 Cityscapes 数据集可以通过 `cityscapes` 命令来专门评估，就像标准的 `mIoU`一样
-- `--show`: 如果被指定，分割结果将会在一张图像里画出来并且在另一个窗口展示，它仅仅是用来调试与可视化，并且仅针对单卡 GPU 测试，请确认 GUI 在您的环境里可用，否则您也许会遇到报错 `cannot connect to X server`
-- `--show-dir`: 如果被指定，分割结果将会在一张图像里画出来并且保存在指定文件夹里，它仅仅是用来调试与可视化，并且仅针对单卡GPU测试，使用该参数时，您的环境不需要 GUI
-- `--eval-options`: 评估时的可选参数，当设置 `efficient_test=True` 时，它将会保存中间结果至本地文件里以节约 CPU 内存，请确认您本地硬盘有足够的存储空间（大于20GB）
+- `RESULT_FILE`: pickle 格式的输出结果的文件名，如果不专门指定，结果将不会被专门保存成文件。（MMseg v0.17 之后，args.out 将只会保存评估时的中间结果或者是分割图的保存路径。）
+- `EVAL_METRICS`: 在结果里将被评估的指标。这主要取决于数据集，  `mIoU`  对于所有数据集都可获得，像 Cityscapes 数据集可以通过 `cityscapes` 命令来专门评估，就像标准的 `mIoU`一样。
+- `--show`: 如果被指定，分割结果将会在一张图像里画出来并且在另一个窗口展示。它仅仅是用来调试与可视化，并且仅针对单卡 GPU 测试。请确认 GUI 在您的环境里可用，否则您也许会遇到报错 `cannot connect to X server`
+- `--show-dir`: 如果被指定，分割结果将会在一张图像里画出来并且保存在指定文件夹里。它仅仅是用来调试与可视化，并且仅针对单卡GPU测试。使用该参数时，您的环境不需要 GUI。
+- `--eval-options`: 评估时的可选参数，当设置 `efficient_test=True` 时，它将会保存中间结果至本地文件里以节约 CPU 内存。请确认您本地硬盘有足够的存储空间（大于20GB）。（MMseg v0.17 之后，`efficient_test` 不再生效，我们重构了 test api，通过使用一种渐近式的方式来提升评估和保存结果的效率。）
 
 例子:
 
@@ -96,4 +96,4 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
     --eval mIoU
     ```
 
-    使用 ```pmap``` 可查看 CPU 内存情况,  ```efficient_test=True``` 会使用约 2.25GB 的 CPU 内存， ```efficient_test=False``` 会使用约 11.06GB 的 CPU 内存。 这个可选参数可以节约很多 CPU 内存。
+    使用 ```pmap``` 可查看 CPU 内存情况,  ```efficient_test=True``` 会使用约 2.25GB 的 CPU 内存， ```efficient_test=False``` 会使用约 11.06GB 的 CPU 内存。 这个可选参数可以节约很多 CPU 内存。（MMseg v0.17 之后, `efficient_test` 参数将不再生效, 我们使用了一种渐近的方式来更加有效快速地评估和保存结果。）

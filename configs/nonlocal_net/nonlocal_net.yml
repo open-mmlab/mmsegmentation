@@ -5,6 +5,15 @@ Collections:
     - Cityscapes
     - ADE20K
     - Pascal VOC 2012 + Aug
+  Paper:
+    URL: https://arxiv.org/abs/1711.07971
+    Title: Non-local Neural Networks
+  README: configs/nonlocal_net/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/facebookresearch/video-nonlocal-net
 Models:
 - Name: nonlocal_r50-d8_512x1024_40k_cityscapes
   In Collection: nonlocal_net
@@ -21,7 +30,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 7.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.24
@@ -42,7 +51,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 10.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.66
@@ -63,7 +72,7 @@ Models:
       resolution: (769,769)
     memory (GB): 8.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.33
@@ -85,7 +94,7 @@ Models:
       resolution: (769,769)
     memory (GB): 12.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.57
@@ -99,7 +108,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.01
@@ -112,7 +121,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.93
@@ -125,7 +134,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.05
@@ -139,7 +148,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.4
@@ -161,7 +170,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 40.75
@@ -183,7 +192,7 @@ Models:
       resolution: (512,512)
     memory (GB): 12.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.9
@@ -197,7 +206,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.03
@@ -211,13 +220,13 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 43.36
-      mIoU(ms+flip): 44.83
+      mIoU: 44.63
+      mIoU(ms+flip): 45.79
   Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20200616_003422-affd0f8d.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20210827_221502-7881aa1a.pth
 - Name: nonlocal_r50-d8_512x512_20k_voc12aug
   In Collection: nonlocal_net
   Metadata:
@@ -233,7 +242,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.2
@@ -255,7 +264,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.15
@@ -269,7 +278,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.65
@@ -283,7 +292,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.27

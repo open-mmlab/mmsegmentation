@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import numpy as np
 import torch
 from torch import nn
@@ -99,6 +100,26 @@ def _segmentor_forward_train_test(segmentor):
     losses = segmentor.forward(
         imgs, img_metas, gt_semantic_seg=gt_semantic_seg, return_loss=True)
     assert isinstance(losses, dict)
+
+    # Test train_step
+    data_batch = dict(
+        img=imgs, img_metas=img_metas, gt_semantic_seg=gt_semantic_seg)
+    outputs = segmentor.train_step(data_batch, None)
+    assert isinstance(outputs, dict)
+    assert 'loss' in outputs
+    assert 'log_vars' in outputs
+    assert 'num_samples' in outputs
+
+    # Test val_step
+    with torch.no_grad():
+        segmentor.eval()
+        data_batch = dict(
+            img=imgs, img_metas=img_metas, gt_semantic_seg=gt_semantic_seg)
+        outputs = segmentor.val_step(data_batch, None)
+        assert isinstance(outputs, dict)
+        assert 'loss' in outputs
+        assert 'log_vars' in outputs
+        assert 'num_samples' in outputs
 
     # Test forward simple test
     with torch.no_grad():

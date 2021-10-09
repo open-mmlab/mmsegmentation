@@ -3,6 +3,16 @@ Collections:
   Metadata:
     Training Data:
     - ADE20K
+  Paper:
+    URL: https://arxiv.org/abs/2012.15840
+    Title: Rethinking Semantic Segmentation from a Sequence-to-Sequence Perspective
+      with Transformers
+  README: configs/setr/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/setr_up_head.py#L11
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/fudan-zvg/SETR
 Models:
 - Name: setr_naive_512x512_160k_b16_ade20k
   In Collection: setr
@@ -19,7 +29,7 @@ Models:
       resolution: (512,512)
     memory (GB): 18.4
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 48.28
@@ -41,7 +51,7 @@ Models:
       resolution: (512,512)
     memory (GB): 19.54
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 48.24
@@ -56,7 +66,7 @@ Models:
     lr schd: 160000
     memory (GB): 10.96
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 47.34
@@ -78,7 +88,7 @@ Models:
       resolution: (512,512)
     memory (GB): 17.3
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 47.54

@@ -7,6 +7,15 @@ Collections:
     - Pascal VOC 2012 + Aug
     - Pascal Context
     - Pascal Context 59
+  Paper:
+    URL: https://arxiv.org/abs/1908.07919
+    Title: Deep High-Resolution Representation Learning for Human Pose Estimation
+  README: configs/hrnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/hrnet.py#L218
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/HRNet/HRNet-Semantic-Segmentation
 Models:
 - Name: fcn_hr18s_512x1024_40k_cityscapes
   In Collection: hrnet
@@ -23,7 +32,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 73.86
@@ -45,7 +54,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 2.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.19
@@ -67,7 +76,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 6.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.48
@@ -81,7 +90,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.31
@@ -95,7 +104,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.65
@@ -109,7 +118,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.93
@@ -123,7 +132,7 @@ Models:
     crop size: (512,1024)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 76.31
@@ -137,7 +146,7 @@ Models:
     crop size: (512,1024)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.8
@@ -151,7 +160,7 @@ Models:
     crop size: (512,1024)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.65
@@ -173,7 +182,7 @@ Models:
       resolution: (512,512)
     memory (GB): 3.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 31.38
@@ -195,13 +204,13 @@ Models:
       resolution: (512,512)
     memory (GB): 4.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 35.51
-      mIoU(ms+flip): 36.8
+      mIoU: 36.27
+      mIoU(ms+flip): 37.28
   Config: configs/hrnet/fcn_hr18_512x512_80k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20200614_185145-66f20cb7.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20210827_114910-6c9382c0.pth
 - Name: fcn_hr48_512x512_80k_ade20k
   In Collection: hrnet
   Metadata:
@@ -217,7 +226,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.9
@@ -231,13 +240,13 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 33.0
-      mIoU(ms+flip): 34.55
+      mIoU: 33.07
+      mIoU(ms+flip): 34.56
   Config: configs/hrnet/fcn_hr18s_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_160k_ade20k/fcn_hr18s_512x512_160k_ade20k_20200614_214413-870f65ac.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_160k_ade20k/fcn_hr18s_512x512_160k_ade20k_20210829_174739-f1e7c2e7.pth
 - Name: fcn_hr18_512x512_160k_ade20k
   In Collection: hrnet
   Metadata:
@@ -245,7 +254,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 36.79
@@ -259,7 +268,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.02
@@ -281,13 +290,13 @@ Models:
       resolution: (512,512)
     memory (GB): 1.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
-      mIoU: 65.2
-      mIoU(ms+flip): 68.55
+      mIoU: 65.5
+      mIoU(ms+flip): 68.89
   Config: configs/hrnet/fcn_hr18s_512x512_20k_voc12aug.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20200617_224503-56e36088.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20210829_174910-0aceadb4.pth
 - Name: fcn_hr18_512x512_20k_voc12aug
   In Collection: hrnet
   Metadata:
@@ -303,7 +312,7 @@ Models:
       resolution: (512,512)
     memory (GB): 2.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 72.3
@@ -325,7 +334,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 75.87
@@ -339,7 +348,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 66.61
@@ -353,7 +362,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 72.9
@@ -367,7 +376,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.24
@@ -389,7 +398,7 @@ Models:
       resolution: (480,480)
     memory (GB): 6.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 45.14
@@ -403,7 +412,7 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 45.84
@@ -417,7 +426,7 @@ Models:
     crop size: (480,480)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 50.33
@@ -431,7 +440,7 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 51.12

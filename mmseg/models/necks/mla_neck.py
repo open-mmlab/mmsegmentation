@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 
@@ -62,8 +63,8 @@ class MLAModule(nn.Module):
 class MLANeck(nn.Module):
     """Multi-level Feature Aggregation.
 
-    The Multi-level Feature Aggregation construction of SETR:
-    https://arxiv.org/pdf/2012.15840.pdf
+    This neck is `The Multi-level Feature Aggregation construction of
+    SETR <https://arxiv.org/abs/2012.15840>`_.
 
 
     Args:

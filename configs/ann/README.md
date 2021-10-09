@@ -4,19 +4,24 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/MendelXu/ANN">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1908.07678">ANN (ICCV'2019)</a></summary>
+
 ```latex
-@inproceedings{annn,
-  author    = {Zhen Zhu and
-               Mengde Xu and
-               Song Bai and
-               Tengteng Huang and
-               Xiang Bai},
-  title     = {Asymmetric Non-local Neural Networks for Semantic Segmentation},
-  booktitle={International Conference on Computer Vision},
-  year      = {2019},
-  url       = {http://arxiv.org/abs/1908.07678},
+@inproceedings{zhu2019asymmetric,
+  title={Asymmetric non-local neural networks for semantic segmentation},
+  author={Zhu, Zhen and Xu, Mengde and Bai, Song and Huang, Tengteng and Bai, Xiang},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={593--602},
+  year={2019}
 }
 ```
+
+</details>
 
 ## Results and models
 

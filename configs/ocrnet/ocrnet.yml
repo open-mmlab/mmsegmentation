@@ -3,10 +3,17 @@ Collections:
   Metadata:
     Training Data:
     - Cityscapes
-    - ' HRNet backbone'
-    - ' ResNet backbone'
     - ADE20K
     - Pascal VOC 2012 + Aug
+  Paper:
+    URL: https://arxiv.org/abs/1909.11065
+    Title: Object-Contextual Representations for Semantic Segmentation
+  README: configs/ocrnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ocr_head.py#L86
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/openseg-group/OCNet.pytorch
 Models:
 - Name: ocrnet_hr18s_512x1024_40k_cityscapes
   In Collection: ocrnet
@@ -23,8 +30,8 @@ Models:
       resolution: (512,1024)
     memory (GB): 3.5
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 74.3
       mIoU(ms+flip): 75.95
@@ -45,8 +52,8 @@ Models:
       resolution: (512,1024)
     memory (GB): 4.7
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 77.72
       mIoU(ms+flip): 79.49
@@ -67,8 +74,8 @@ Models:
       resolution: (512,1024)
     memory (GB): 8.0
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.58
       mIoU(ms+flip): 81.79
@@ -81,8 +88,8 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 77.16
       mIoU(ms+flip): 78.66
@@ -95,8 +102,8 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 78.57
       mIoU(ms+flip): 80.46
@@ -109,8 +116,8 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.7
       mIoU(ms+flip): 81.87
@@ -123,8 +130,8 @@ Models:
     crop size: (512,1024)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 78.45
       mIoU(ms+flip): 79.97
@@ -137,8 +144,8 @@ Models:
     crop size: (512,1024)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 79.47
       mIoU(ms+flip): 80.91
@@ -151,8 +158,8 @@ Models:
     crop size: (512,1024)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' HRNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 81.35
       mIoU(ms+flip): 82.7
@@ -165,12 +172,12 @@ Models:
     crop size: (512,1024)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' ResNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.09
   Config: configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes-02ac0f13.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes_20200717_110721-02ac0f13.pth
 - Name: ocrnet_r101-d8_512x1024_40k_b16_cityscapes
   In Collection: ocrnet
   Metadata:
@@ -186,12 +193,12 @@ Models:
       resolution: (512,1024)
     memory (GB): 8.8
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' ResNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.3
   Config: configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes-db500f80.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes_20200723_193726-db500f80.pth
 - Name: ocrnet_r101-d8_512x1024_80k_b16_cityscapes
   In Collection: ocrnet
   Metadata:
@@ -207,12 +214,12 @@ Models:
       resolution: (512,1024)
     memory (GB): 8.8
   Results:
-    Task: Semantic Segmentation
-    Dataset: ' ResNet backbone'
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
     Metrics:
       mIoU: 80.81
   Config: configs/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes-78688424.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes_20200723_192421-78688424.pth
 - Name: ocrnet_hr18s_512x512_80k_ade20k
   In Collection: ocrnet
   Metadata:
@@ -228,7 +235,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 35.06
@@ -250,7 +257,7 @@ Models:
       resolution: (512,512)
     memory (GB): 7.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 37.79
@@ -272,7 +279,7 @@ Models:
       resolution: (512,512)
     memory (GB): 11.2
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.0
@@ -286,7 +293,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 37.19
@@ -300,7 +307,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 39.32
@@ -314,7 +321,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.25
@@ -336,7 +343,7 @@ Models:
       resolution: (512,512)
     memory (GB): 3.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 71.7
@@ -358,7 +365,7 @@ Models:
       resolution: (512,512)
     memory (GB): 4.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 74.75
@@ -380,7 +387,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.72
@@ -394,7 +401,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 72.76
@@ -408,7 +415,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 74.98
@@ -422,7 +429,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.14

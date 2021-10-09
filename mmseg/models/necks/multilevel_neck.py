@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 from mmcv.cnn import ConvModule, xavier_init
 
@@ -10,6 +11,7 @@ class MultiLevelNeck(nn.Module):
     """MultiLevelNeck.
 
     A neck structure connect vit backbone and decoder_heads.
+
     Args:
         in_channels (List[int]): Number of input channels per scale.
         out_channels (int): Number of output channels (used at each scale).

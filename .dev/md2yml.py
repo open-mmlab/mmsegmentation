@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+# Copyright (c) OpenMMLab. All rights reserved.
 # This tool is used to update model-index.yml which is required by MIM, and
 # will be automatically called as a pre-commit hook. The updating will be
 # triggered if any change of model information (.md files in configs/) has been
@@ -8,34 +9,43 @@
 import glob
 import os
 import os.path as osp
+import re
 import sys
 
 import mmcv
+from lxml import etree
 
 MMSEG_ROOT = osp.dirname(osp.dirname((osp.dirname(__file__))))
 
 
-def dump_yaml_and_check_difference(obj, filename):
+def dump_yaml_and_check_difference(obj, filename, sort_keys=False):
     """Dump object to a yaml file, and check if the file content is different
     from the original.
 
     Args:
         obj (any): The python object to be dumped.
         filename (str): YAML filename to dump the object to.
+        sort_keys (str); Sort key by dictionary order.
     Returns:
         Bool: If the target YAML file is different from the original.
     """
-    original = None
+
+    str_dump = mmcv.dump(obj, None, file_format='yaml', sort_keys=sort_keys)
     if osp.isfile(filename):
+        file_exists = True
         with open(filename, 'r', encoding='utf-8') as f:
-            original = f.read()
-    with open(filename, 'w', encoding='utf-8') as f:
-        mmcv.dump(obj, f, file_format='yaml', sort_keys=False)
-    is_different = True
-    if original is not None:
-        with open(filename, 'r') as f:
-            new = f.read()
-        is_different = (original != new)
+            str_orig = f.read()
+    else:
+        file_exists = False
+        str_orig = None
+
+    if file_exists and str_orig == str_dump:
+        is_different = False
+    else:
+        is_different = True
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(str_dump)
+
     return is_different
 
 
@@ -47,12 +57,29 @@ def parse_md(md_file):
     Returns:
         Bool: If the target YAML file is different from the original.
     """
-    collection_name = osp.dirname(md_file).split('/')[-1]
+    collection_name = osp.split(osp.dirname(md_file))[1]
     configs = os.listdir(osp.dirname(md_file))
 
-    collection = dict(Name=collection_name, Metadata={'Training Data': []})
+    collection = dict(
+        Name=collection_name,
+        Metadata={'Training Data': []},
+        Paper={
+            'URL': '',
+            'Title': ''
+        },
+        README=md_file,
+        Code={
+            'URL': '',
+            'Version': ''
+        })
+    collection.update({'Converted From': {'Weights': '', 'Code': ''}})
     models = []
     datasets = []
+    paper_url = None
+    paper_title = None
+    code_url = None
+    code_version = None
+    repo_url = None
 
     with open(md_file, 'r') as md:
         lines = md.readlines()
@@ -63,7 +90,36 @@ def parse_md(md_file):
             if len(line) == 0:
                 i += 1
                 continue
-            if line[:3] == '###':
+            if line[:2] == '# ':
+                paper_title = line.replace('# ', '')
+                i += 1
+            elif line[:3] == '<a ':
+                content = etree.HTML(line)
+                node = content.xpath('//a')[0]
+                if node.text == 'Code Snippet':
+                    code_url = node.get('href', None)
+                    assert code_url is not None, (
+                        f'{collection_name} hasn\'t code snippet url.')
+                    # version extraction
+                    filter_str = r'blob/(.*)/mm'
+                    pattern = re.compile(filter_str)
+                    code_version = pattern.findall(code_url)
+                    assert len(code_version) == 1, (
+                        f'false regular expression ({filter_str}) use.')
+                    code_version = code_version[0]
+                elif node.text == 'Official Repo':
+                    repo_url = node.get('href', None)
+                    assert repo_url is not None, (
+                        f'{collection_name} hasn\'t official repo url.')
+                i += 1
+            elif line[:9] == '<summary ':
+                content = etree.HTML(line)
+                nodes = content.xpath('//a')
+                assert len(nodes) == 1, (
+                    'summary tag should only have single a tag.')
+                paper_url = nodes[0].get('href', None)
+                i += 1
+            elif line[:4] == '### ':
                 datasets.append(line[4:])
                 current_dataset = line[4:]
                 i += 2
@@ -106,22 +162,28 @@ def parse_md(md_file):
                     crop_size = els[crop_size_id].split('x')
                     assert len(crop_size) == 2
                     model = {
-                        'Name': model_name,
-                        'In Collection': collection_name,
+                        'Name':
+                        model_name,
+                        'In Collection':
+                        collection_name,
                         'Metadata': {
                             'backbone': els[backbone_id],
                             'crop size': f'({crop_size[0]},{crop_size[1]})',
                             'lr schd': int(els[lr_schd_id]),
                         },
-                        'Results': {
-                            'Task': 'Semantic Segmentation',
-                            'Dataset': current_dataset,
-                            'Metrics': {
-                                'mIoU': float(els[ss_id]),
+                        'Results': [
+                            {
+                                'Task': 'Semantic Segmentation',
+                                'Dataset': current_dataset,
+                                'Metrics': {
+                                    'mIoU': float(els[ss_id]),
+                                },
                             },
-                        },
-                        'Config': config,
-                        'Weights': weight,
+                        ],
+                        'Config':
+                        config,
+                        'Weights':
+                        weight,
                     }
                     if fps != -1:
                         try:
@@ -145,15 +207,38 @@ def parse_md(md_file):
                         }]
                     if mem != -1:
                         model['Metadata']['memory (GB)'] = float(mem)
+                    # Only have semantic segmentation now
                     if ms_id and els[ms_id] != '-' and els[ms_id] != '':
-                        model['Results']['Metrics']['mIoU(ms+flip)'] = float(
-                            els[ms_id])
+                        model['Results'][0]['Metrics'][
+                            'mIoU(ms+flip)'] = float(els[ms_id])
                     models.append(model)
                     j += 1
                 i = j
             else:
                 i += 1
+    flag = (code_url is not None) and (paper_url is not None) and (repo_url
+                                                                   is not None)
+    assert flag, f'{collection_name} readme error'
     collection['Metadata']['Training Data'] = datasets
+    collection['Code']['URL'] = code_url
+    collection['Code']['Version'] = code_version
+    collection['Paper']['URL'] = paper_url
+    collection['Paper']['Title'] = paper_title
+    collection['Converted From']['Code'] = repo_url
+    # ['Converted From']['Weights] miss
+    # remove empty attribute
+    check_key_list = ['Code', 'Paper', 'Converted From']
+    for check_key in check_key_list:
+        key_list = list(collection[check_key].keys())
+        for key in key_list:
+            if check_key not in collection:
+                break
+            if collection[check_key][key] == '':
+                if len(collection[check_key].keys()) == 1:
+                    collection.pop(check_key)
+                else:
+                    collection[check_key].pop(key)
+
     result = {'Collections': [collection], 'Models': models}
     yml_file = f'{md_file[:-9]}{collection_name}.yml'
     return dump_yaml_and_check_difference(result, yml_file)
@@ -183,11 +268,11 @@ def update_model_index():
 if __name__ == '__main__':
     file_list = [fn for fn in sys.argv[1:] if osp.basename(fn) == 'README.md']
     if not file_list:
-        exit(0)
+        sys.exit(0)
     file_modified = False
     for fn in file_list:
         file_modified |= parse_md(fn)
 
     file_modified |= update_model_index()
 
-    exit(1 if file_modified else 0)
+    sys.exit(1 if file_modified else 0)

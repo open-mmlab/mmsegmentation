@@ -7,6 +7,18 @@ Collections:
     - Pascal VOC 2012 + Aug
     - Pascal Context
     - Pascal Context 59
+    - Dark Zurich and Nighttime Driving
+    - COCO-Stuff 10k
+    - COCO-Stuff 164k
+  Paper:
+    URL: https://arxiv.org/abs/1612.01105
+    Title: Pyramid Scene Parsing Network
+  README: configs/pspnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psp_head.py#L63
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/hszhao/PSPNet
 Models:
 - Name: pspnet_r50-d8_512x1024_40k_cityscapes
   In Collection: pspnet
@@ -23,7 +35,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 6.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 77.85
@@ -45,7 +57,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.34
@@ -67,7 +79,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.26
@@ -89,7 +101,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.08
@@ -111,7 +123,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.87
@@ -125,7 +137,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.55
@@ -139,7 +151,7 @@ Models:
     crop size: (512,1024)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.76
@@ -161,7 +173,7 @@ Models:
       resolution: (769,769)
     memory (GB): 1.9
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 75.9
@@ -175,7 +187,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.59
@@ -189,7 +201,7 @@ Models:
     crop size: (769,769)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.77
@@ -211,7 +223,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 1.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.23
@@ -233,7 +245,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 6.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.22
@@ -255,7 +267,7 @@ Models:
       resolution: (512,1024)
     memory (GB): 9.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.69
@@ -277,7 +289,7 @@ Models:
       resolution: (769,769)
     memory (GB): 1.7
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 74.92
@@ -299,7 +311,7 @@ Models:
       resolution: (769,769)
     memory (GB): 6.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.5
@@ -321,7 +333,7 @@ Models:
       resolution: (769,769)
     memory (GB): 10.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.87
@@ -343,7 +355,7 @@ Models:
       resolution: (512,512)
     memory (GB): 8.5
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 41.13
@@ -365,7 +377,7 @@ Models:
       resolution: (512,512)
     memory (GB): 12.0
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 43.57
@@ -379,7 +391,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.48
@@ -393,7 +405,7 @@ Models:
     crop size: (512,512)
     lr schd: 160000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 44.39
@@ -415,7 +427,7 @@ Models:
       resolution: (512,512)
     memory (GB): 6.1
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.78
@@ -437,7 +449,7 @@ Models:
       resolution: (512,512)
     memory (GB): 9.6
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.47
@@ -451,7 +463,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.29
@@ -465,7 +477,7 @@ Models:
     crop size: (512,512)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.52
@@ -487,7 +499,7 @@ Models:
       resolution: (480,480)
     memory (GB): 8.8
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 46.6
@@ -501,7 +513,7 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context
     Metrics:
       mIoU: 46.03
@@ -515,7 +527,7 @@ Models:
     crop size: (480,480)
     lr schd: 40000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 52.02
@@ -529,10 +541,182 @@ Models:
     crop size: (480,480)
     lr schd: 80000
   Results:
-    Task: Semantic Segmentation
+  - Task: Semantic Segmentation
     Dataset: Pascal Context 59
     Metrics:
       mIoU: 52.47
       mIoU(ms+flip): 53.99
   Config: configs/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59/pspnet_r101-d8_480x480_80k_pascal_context_59_20210416_114418-fa6caaa2.pth
+- Name: pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 48.78
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 9.6
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 35.69
+      mIoU(ms+flip): 36.62
+  Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k_20210820_203258-b88df27f.pth
+- Name: pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 90.09
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 13.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 37.26
+      mIoU(ms+flip): 38.52
+  Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k_20210820_232135-76aae482.pth
+- Name: pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 36.33
+      mIoU(ms+flip): 37.24
+  Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k_20210821_030857-92e2902b.pth
+- Name: pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 10k
+    Metrics:
+      mIoU: 37.76
+      mIoU(ms+flip): 38.86
+  Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k_20210821_014022-831aec95.pth
+- Name: pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 48.78
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 9.6
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 38.8
+      mIoU(ms+flip): 39.19
+  Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k_20210707_152034-0e41b2db.pth
+- Name: pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 90.09
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 13.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 40.34
+      mIoU(ms+flip): 40.79
+  Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k_20210707_152034-7eb41789.pth
+- Name: pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 39.64
+      mIoU(ms+flip): 39.97
+  Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k_20210707_152004-51276a57.pth
+- Name: pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 41.28
+      mIoU(ms+flip): 41.66
+  Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k_20210707_152004-4af9621b.pth
+- Name: pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 320000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 40.53
+      mIoU(ms+flip): 40.75
+  Config: configs/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-be9610cc.pth
+- Name: pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 320000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 41.95
+      mIoU(ms+flip): 42.42
+  Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-72220c60.pth
