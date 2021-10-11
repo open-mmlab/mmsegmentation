@@ -57,5 +57,5 @@ __all__ = [
     'SegmenterLinearHead',
     'SegmenterMaskTransformerHead',
     'SegformerHead',
-    'ISAHead',
+    'ISAHead'
 ]
