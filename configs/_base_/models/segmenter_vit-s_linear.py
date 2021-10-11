@@ -2,8 +2,7 @@
 backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained=
-    '/gpfswork/rech/eta/ufz72sf/mmseg_pretrain/vit_small_p16_384.pth',
+    pretrained='pretrain/vit_small_p16_384.pth',
     backbone=dict(
         type='VisionTransformer',
         img_size=(512, 512),
