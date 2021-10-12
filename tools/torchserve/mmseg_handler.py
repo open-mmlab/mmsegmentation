@@ -51,7 +51,6 @@ class MMsegHandler(BaseHandler):
 
         for image_result in data:
             _, buffer = cv2.imencode('.png', image_result[0].astype('uint8'))
-            bast64_data = base64.b64encode(buffer.tobytes())
-            bast64_str = str(bast64_data, 'utf-8')
-            output.append(bast64_str)
+            content = buffer.tobytes()
+            output.append(content)
         return output
