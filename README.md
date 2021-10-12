@@ -49,7 +49,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.17.0 was released in 09/01/2021.
+v0.18.0 was released in 10/07/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -79,6 +79,7 @@ Supported methods:
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
 - [x] [UPerNet (ECCV'2018)](configs/upernet)
+- [x] [ICNet (ECCV'2018)](configs/icnet)
 - [x] [NonLocal Net (CVPR'2018)](configs/nonlocal_net)
 - [x] [EncNet (CVPR'2018)](configs/encnet)
 - [x] [Semantic FPN (CVPR'2019)](configs/sem_fpn)
@@ -89,6 +90,7 @@ Supported methods:
 - [x] [DMNet (ICCV'2019)](configs/dmnet)
 - [x] [ANN (ICCV'2019)](configs/ann)
 - [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
+- [x] [FastFCN (ArXiv'2019)](configs/fastfcn)
 - [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
 - [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
 - [x] [OCRNet (ECCV'2020)](configs/ocrnet)

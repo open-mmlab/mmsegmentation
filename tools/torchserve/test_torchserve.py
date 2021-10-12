@@ -1,4 +1,3 @@
-import base64
 from argparse import ArgumentParser
 from io import BytesIO
 
@@ -37,15 +36,14 @@ def main(args):
     url = 'http://' + args.inference_addr + '/predictions/' + args.model_name
     with open(args.img, 'rb') as image:
         tmp_res = requests.post(url, image)
-    base64_str = tmp_res.content
-    buffer = base64.b64decode(base64_str)
+    content = tmp_res.content
     if args.result_image:
         with open(args.result_image, 'wb') as out_image:
-            out_image.write(buffer)
+            out_image.write(content)
         plt.imshow(mmcv.imread(args.result_image, 'grayscale'))
         plt.show()
     else:
-        plt.imshow(plt.imread(BytesIO(buffer)))
+        plt.imshow(plt.imread(BytesIO(content)))
         plt.show()
     model = init_segmentor(args.config, args.checkpoint, args.device)
     image = mmcv.imread(args.img)
