@@ -8,8 +8,6 @@ find_unused_parameters = True
 model = dict(
     backbone=dict(img_size=(512, 512)),
     decode_head=dict(num_classes=150),
-    auxiliary_head=[],
-    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(512, 512)),
 )
 
 optimizer = dict(lr=0.001, weight_decay=0.0)
