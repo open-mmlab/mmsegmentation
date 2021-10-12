@@ -43,6 +43,6 @@ model = dict(
 optimizer = dict(lr=0.001, weight_decay=0.0)
 
 # num_gpus: 8 -> batch_size: 8
-data = dict(samples_per_gpu=1, )
+data = dict(samples_per_gpu=1)
 
 # TODO: handle img_norm_cfg
