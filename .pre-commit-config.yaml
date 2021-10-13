@@ -34,6 +34,10 @@ repos:
     hooks:
       - id: markdownlint
         args: ["-r", "~MD002,~MD013,~MD029,~MD033,~MD034,~MD036"]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
   - repo: https://github.com/myint/docformatter
     rev: v1.3.1
     hooks:
