@@ -10,7 +10,7 @@ def test_erf_head():
     assert head.output_conv.in_channels == 16
     assert head.output_conv.out_channels == 19
 
-    inputs = torch.randn(1, 16, 45, 45).cuda()
+    inputs = [torch.randn(1, 16, 45, 45)]
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
     outputs = head(inputs)

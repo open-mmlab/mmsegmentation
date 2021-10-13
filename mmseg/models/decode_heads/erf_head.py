@@ -29,5 +29,6 @@ class ERFHead(BaseDecodeHead):
 
     def forward(self, inputs):
         """Forward function."""
-        output = self.output_conv(inputs)
+        x = self._transform_inputs(inputs)
+        output = self.output_conv(x)
         return output

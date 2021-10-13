@@ -342,4 +342,4 @@ class ERFNet(BaseModule):
             x = enc(x)
         for dec in self.decoder:
             x = dec(x)
-        return x
+        return [x]

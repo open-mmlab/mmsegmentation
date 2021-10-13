@@ -27,13 +27,13 @@ def test_erfnet_backbone():
     output = model(imgs)
 
     # output for segment Head
-    assert output.shape == torch.Size([batch_size, 16, 128, 256])
+    assert output[0].shape == torch.Size([batch_size, 16, 128, 256])
 
     # Test input with rare shape
     batch_size = 2
     imgs = torch.randn(batch_size, 3, 527, 279)
     output = model(imgs)
-    assert len(output) == batch_size
+    assert len(output[0]) == batch_size
 
     with pytest.raises(AssertionError):
         # Number of encoder downsample block and decoder upsample block.
