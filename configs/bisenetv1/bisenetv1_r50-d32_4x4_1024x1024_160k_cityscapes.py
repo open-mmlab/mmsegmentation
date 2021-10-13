@@ -11,11 +11,7 @@ model = dict(
         context_channels=(512, 1024, 2048),
         spatial_channels=(256, 256, 256, 512),
         out_channels=1024,
-        backbone_cfg=dict(
-            init_cfg=dict(
-                type='Pretrained', checkpoint='open-mmlab://resnet50_v1c'),
-            type='ResNet',
-            depth=50)),
+        backbone_cfg=dict(type='ResNet', depth=50)),
     decode_head=dict(
         type='FCNHead', in_channels=1024, in_index=0, channels=1024),
     auxiliary_head=[
