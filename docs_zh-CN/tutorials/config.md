@@ -241,7 +241,7 @@ runner = dict(
 checkpoint_config = dict(  # 设置检查点钩子 (checkpoint hook) 的配置文件。执行时请参考 https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py。
     by_epoch=False,  # 是否按照每个 epoch 去算 runner。
     interval=4000)  # 保存的间隔
-evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节请参考 mmseg/core/evaulation/eval_hook.py。
+evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节请参考 mmseg/core/evaluation/eval_hook.py。
     interval=4000,  # 评估的间歇点
     metric='mIoU')  # 评估的指标
 
