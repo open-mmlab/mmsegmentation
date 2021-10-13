@@ -211,7 +211,6 @@ def pytorch2onnx(model,
     model.forward = origin_forward
 
     if verify:
-        assert not args.normalize_in_graph, "verify not supported with normalize_in_graph yet"
         # check by onnx
         import onnx
         onnx_model = onnx.load(output_file)
@@ -226,6 +225,10 @@ def pytorch2onnx(model,
                 torch.cat((ori_img, flip_img), 0)
                 for ori_img, flip_img in zip(img_list, flip_img_list)
             ]
+
+            img_list, img_meta_list = _update_input_img(
+                img_list, img_meta_list, test_mode == 'whole')
+
         # check the numerical value
         # get pytorch output
         with torch.no_grad():
