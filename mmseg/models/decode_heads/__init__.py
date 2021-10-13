@@ -9,6 +9,7 @@ from .dnl_head import DNLHead
 from .dpt_head import DPTHead
 from .ema_head import EMAHead
 from .enc_head import EncHead
+from .erf_head import ERFHead
 from .fcn_head import FCNHead
 from .fpn_head import FPNHead
 from .gc_head import GCHead
@@ -31,5 +32,6 @@ __all__ = [
     'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
     'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
-    'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegformerHead', 'ISAHead'
+    'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegformerHead', 'ISAHead',
+    'ERFHead'
 ]
