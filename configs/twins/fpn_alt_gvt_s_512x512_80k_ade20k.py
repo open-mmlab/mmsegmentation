@@ -19,3 +19,6 @@ model = dict(
 
 optimizer = dict(type='AdamW', lr=0.0001, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
+
+data = dict(
+    samples_per_gpu=8)
