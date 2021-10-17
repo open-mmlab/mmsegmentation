@@ -242,7 +242,10 @@ class EncoderDecoder(BaseSegmentor):
         if return_logit:
             output = seg_logit
         else:
-            output = F.softmax(seg_logit, dim=1)
+            if seg_logit.shape[1] >= 2:
+                output = F.softmax(seg_logit, dim=1)
+            else:
+                output = F.sigmoid(seg_logit)
         flip = img_meta[0]['flip']
         if flip:
             flip_direction = img_meta[0]['flip_direction']
@@ -258,9 +261,13 @@ class EncoderDecoder(BaseSegmentor):
         """Simple test with single image."""
         seg_logit = self.inference(img, img_meta, rescale, return_logit)
         if return_logit:
-            seg_pred = seg_logit.squeeze(1)
+            seg_pred = seg_logit
         else:
-            seg_pred = seg_logit.argmax(dim=1)
+            if seg_logit.shape[1] >= 2:
+                seg_pred = seg_logit.argmax(dim=1)
+            else:
+                seg_pred = seg_logit.squeeze(1)
+                seg_pred = (seg_pred > 0.5).int()
         if torch.onnx.is_in_onnx_export():
             # our inference backend only support 4D output
             seg_pred = seg_pred.unsqueeze(0)
