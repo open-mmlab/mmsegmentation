@@ -2,11 +2,11 @@
 import os.path as osp
 
 from .builder import DATASETS
-from .custom import CustomDataset
+from .sod_custom import SODCustomDataset
 
 
 @DATASETS.register_module()
-class DUTSDataset(CustomDataset):
+class DUTSDataset(SODCustomDataset):
     """DUTS dataset.
 
     In saliency map annotation for DUTS, 0 stands for background.

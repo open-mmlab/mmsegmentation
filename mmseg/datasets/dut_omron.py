@@ -1,12 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
 
+from .sod_custom import SODCustomDataset
 from .builder import DATASETS
-from .custom import CustomDataset
 
 
 @DATASETS.register_module()
-class DUTOMRONDataset(CustomDataset):
+class DUTOMRONDataset(SODCustomDataset):
     """DUT-OMRON dataset.
 
     In saliency map annotation for DUT-OMRON, 0 stands for background.
