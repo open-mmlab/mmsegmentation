@@ -36,7 +36,8 @@ def calc_adaptive_fm(pred_label, label, beta=0.3):
     else:
         precision = area_intersection / torch.count_nonzero(binary_pred_label)
         recall = area_intersection / torch.count_nonzero(label)
-        adaptive_fm = (1 + beta) * precision * recall / (beta * precision + recall)
+        adaptive_fm = (1 + beta) * precision * recall / (
+                beta * precision + recall)
     return adaptive_fm
 
 
@@ -310,8 +311,7 @@ def eval_metrics(results,
     return ret_metrics
 
 
-def calc_sod_metrics(pred_label,
-                     label):
+def calc_sod_metrics(pred_label, label):
     if isinstance(pred_label, str):
         pred_label = torch.from_numpy(np.load(pred_label))
     else:
@@ -323,8 +323,10 @@ def calc_sod_metrics(pred_label,
     else:
         label = torch.from_numpy(label)
 
+    pred_label = pred_label.float()
     if pred_label.max() != pred_label.min():
-        pred_label = (pred_label - pred_label.min()) / (pred_label.max() - pred_label.min())
+        pred_label = (pred_label - pred_label.min()) / (
+                pred_label.max() - pred_label.min())
 
     mae = calc_mae(pred_label, label)
     adaptive_fm = calc_adaptive_fm(pred_label, label)
@@ -332,18 +334,14 @@ def calc_sod_metrics(pred_label,
     return mae, adaptive_fm
 
 
-def pre_eval_to_sod_metrics(pre_eval_results,
-                            nan_to_num=None):
+def pre_eval_to_sod_metrics(pre_eval_results, nan_to_num=None):
     pre_eval_results = tuple(zip(*pre_eval_results))
     assert len(pre_eval_results) == 2
 
     mae = sum(pre_eval_results[0]) / len(pre_eval_results[0])
     adp_fm = sum(pre_eval_results[1]) / len(pre_eval_results[1])
 
-    ret_metrics = OrderedDict({
-        'MAE': mae.numpy(),
-        'adpFm': adp_fm.numpy()
-    })
+    ret_metrics = OrderedDict({'MAE': mae.numpy(), 'adpFm': adp_fm.numpy()})
     if nan_to_num is not None:
         ret_metrics = OrderedDict({
             metric: np.nan_to_num(metric_value, nan=nan_to_num)
@@ -352,9 +350,7 @@ def pre_eval_to_sod_metrics(pre_eval_results,
     return ret_metrics
 
 
-def eval_sod_metrics(results,
-                     gt_seg_maps,
-                     nan_to_num=None):
+def eval_sod_metrics(results, gt_seg_maps, nan_to_num=None):
     maes = []
     adp_fms = []
 

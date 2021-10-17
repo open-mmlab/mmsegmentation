@@ -36,14 +36,14 @@ def cross_entropy(pred,
 def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
     """Expand onehot labels to match the size of prediction."""
     bin_labels = labels.new_zeros(target_shape)
-    valid_mask = (labels > 0) & (labels != ignore_index)
+    valid_mask = (labels >= 0) & (labels != ignore_index)
     inds = torch.nonzero(valid_mask, as_tuple=True)
 
     if inds[0].numel() > 0:
         if labels.dim() == 3:
-            bin_labels[inds[0], labels[valid_mask] - 1, inds[1], inds[2]] = 1
+            bin_labels[inds[0], labels[valid_mask], inds[1], inds[2]] = 1
         else:
-            bin_labels[inds[0], labels[valid_mask] - 1] = 1
+            bin_labels[inds[0], labels[valid_mask]] = 1
 
     valid_mask = valid_mask.unsqueeze(1).expand(target_shape).float()
     if label_weights is None:
@@ -83,8 +83,11 @@ def binary_cross_entropy(pred,
                 pred.dim() == 4 and label.dim() == 3), \
             'Only pred shape [N, C], label shape [N] or pred shape [N, C, ' \
             'H, W], label shape [N, H, W] are supported'
-        label, weight = _expand_onehot_labels(label, weight, pred.shape,
-                                              ignore_index)
+        if pred.shape[1] == 1:
+            pred = pred.squeeze(1)
+        else:
+            label, weight = _expand_onehot_labels(label, weight, pred.shape,
+                                                  ignore_index)
 
     # weighted element-wise losses
     if weight is not None:

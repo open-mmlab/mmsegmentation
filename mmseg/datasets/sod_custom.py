@@ -3,11 +3,12 @@ from collections import OrderedDict
 
 import mmcv
 import numpy as np
+import torch.nn.functional as F
 from mmcv.utils import print_log
 from prettytable import PrettyTable
 
-from mmseg.core import calc_sod_metrics, eval_sod_metrics, \
-    pre_eval_to_sod_metrics
+from mmseg.core import (calc_sod_metrics, eval_sod_metrics,
+                        pre_eval_to_sod_metrics)
 from . import CustomDataset
 from .builder import DATASETS
 
@@ -21,7 +22,7 @@ class SODCustomDataset(CustomDataset):
     def __init__(self, **kwargs):
         super(SODCustomDataset, self).__init__(**kwargs)
 
-    def pre_eval(self, preds, indices):
+    def pre_eval(self, preds, indices, return_logit=False):
         """Collect eval result from each iteration.
 
         Args:
@@ -43,15 +44,22 @@ class SODCustomDataset(CustomDataset):
         pre_eval_results = []
 
         for pred, index in zip(preds, indices):
+            if return_logit:
+                if pred.shape[0] >= 2:
+                    pred = F.softmax(pred, dim=0)
+                    pred = pred[1]
+                else:
+                    pred = F.sigmoid(pred)
+                    pred = pred.squeeze(0)
             seg_map = self.get_gt_seg_map_by_idx(index)
-            pre_eval_results.append(
-                calc_sod_metrics(pred, seg_map))
+            pre_eval_results.append(calc_sod_metrics(pred, seg_map))
 
         return pre_eval_results
 
     def evaluate(self,
                  results,
                  logger=None,
+                 return_logit=False,
                  gt_seg_maps=None,
                  **kwargs):
         """Evaluate the dataset.
@@ -77,9 +85,7 @@ class SODCustomDataset(CustomDataset):
                 results, str):
             if gt_seg_maps is None:
                 gt_seg_maps = self.get_gt_seg_maps()
-            ret_metrics = eval_sod_metrics(
-                results,
-                gt_seg_maps)
+            ret_metrics = eval_sod_metrics(results, gt_seg_maps)
         # test a list of pre_eval_results
         else:
             ret_metrics = pre_eval_to_sod_metrics(results)
