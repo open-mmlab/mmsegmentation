@@ -12,11 +12,11 @@ class DownsamplerBlock(BaseModule):
     """Downsampler block of ERFNet.
 
     This module is a little different from basical ConvModule. Concatenation
-    of Conv and MaxPool will be used before Batch Norm.
+    of Conv and MaxPool will be used before BatchNorm.
 
     Args:
         in_channels (int): Number of input channels.
-        out_channels (int): The number of output channels.
+        out_channels (int): Number of output channels.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
         norm_cfg (dict | None): Config of norm layers.
@@ -45,8 +45,7 @@ class DownsamplerBlock(BaseModule):
             out_channels - in_channels,
             kernel_size=3,
             stride=2,
-            padding=1,
-            bias=True)
+            padding=1)
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
         self.bn = build_norm_layer(self.norm_cfg, out_channels)[1]
         self.act = build_activation_layer(self.act_cfg)
@@ -65,14 +64,14 @@ class DownsamplerBlock(BaseModule):
         return output
 
 
-class non_bottleneck_1d(BaseModule):
+class NonBottleneck1d(BaseModule):
     """Non-bottleneck block of ERFNet.
 
     Args:
         channels (int): Number of channels in Non-bottleneck block.
         drop_rate (float): Probability of an element to be zeroed.
             Default 0.
-        dilation (int): Dilation parameter for last two conv layers.
+        dilation (int): Dilation rate for last two conv layers.
             Default 1.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
@@ -92,7 +91,7 @@ class non_bottleneck_1d(BaseModule):
                  norm_cfg=dict(type='BN', eps=1e-3),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(non_bottleneck_1d, self).__init__(init_cfg=init_cfg)
+        super(NonBottleneck1d, self).__init__(init_cfg=init_cfg)
 
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
@@ -133,7 +132,7 @@ class non_bottleneck_1d(BaseModule):
             channels,
             kernel_size=(1, 3),
             stride=1,
-            padding=(0, 1 * dilation),
+            padding=(0, dilation),
             bias=True,
             dilation=(1, dilation))
 
@@ -163,7 +162,7 @@ class UpsamplerBlock(BaseModule):
 
     Args:
         in_channels (int): Number of input channels.
-        out_channels (int): The number of output channels.
+        out_channels (int): Number of output channels.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
         norm_cfg (dict | None): Config of norm layers.
@@ -223,7 +222,7 @@ class ERFNet(BaseModule):
             Default: (5, 8).
         enc_non_bottleneck_dilations (Tuple[int]): Dilation rate of each
             stage of Non-bottleneck block of encoder.
-            Default: (1, 2, 4, 8, 16).
+            Default: (2, 4, 8, 16).
         enc_non_bottleneck_channels (Tuple[int]): Size of channel
             numbers of various Non-bottleneck block in encoder.
             Default: (64, 128).
@@ -305,37 +304,34 @@ class ERFNet(BaseModule):
             self.encoder.append(
                 DownsamplerBlock(enc_downsample_channels[i],
                                  enc_downsample_channels[i + 1]))
-            # Last part of encoder is some dilated non_bottleneck_1d blocks.
+            # Last part of encoder is some dilated NonBottleneck1d blocks.
             if i == len(enc_downsample_channels) - 2:
                 iteration_times = int(enc_num_stages_non_bottleneck[-1] /
                                       len(enc_non_bottleneck_dilations))
                 for j in range(iteration_times):
                     for k in range(len(enc_non_bottleneck_dilations)):
                         self.encoder.append(
-                            non_bottleneck_1d(enc_downsample_channels[-1],
-                                              self.dropout_ratio,
-                                              enc_non_bottleneck_dilations[k]))
+                            NonBottleneck1d(enc_downsample_channels[-1],
+                                            self.dropout_ratio,
+                                            enc_non_bottleneck_dilations[k]))
             else:
                 for j in range(enc_num_stages_non_bottleneck[i]):
                     self.encoder.append(
-                        non_bottleneck_1d(enc_downsample_channels[i + 1],
-                                          self.dropout_ratio))
+                        NonBottleneck1d(enc_downsample_channels[i + 1],
+                                        self.dropout_ratio))
 
         for i in range(len(dec_upsample_channels)):
             if i == 0:
                 self.decoder.append(
                     UpsamplerBlock(enc_downsample_channels[-1],
                                    dec_non_bottleneck_channels[i]))
-                for j in range(dec_num_stages_non_bottleneck[i]):
-                    self.decoder.append(
-                        non_bottleneck_1d(dec_non_bottleneck_channels[i]))
             else:
                 self.decoder.append(
                     UpsamplerBlock(dec_non_bottleneck_channels[i - 1],
                                    dec_non_bottleneck_channels[i]))
-                for j in range(dec_num_stages_non_bottleneck[i]):
-                    self.decoder.append(
-                        non_bottleneck_1d(dec_non_bottleneck_channels[i]))
+            for j in range(dec_num_stages_non_bottleneck[i]):
+                self.decoder.append(
+                    NonBottleneck1d(dec_non_bottleneck_channels[i]))
 
     def forward(self, x):
         for enc in self.encoder:

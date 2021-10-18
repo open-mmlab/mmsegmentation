@@ -3,8 +3,8 @@ import pytest
 import torch
 
 from mmseg.models.backbones import ERFNet
-from mmseg.models.backbones.erfnet import (DownsamplerBlock, UpsamplerBlock,
-                                           non_bottleneck_1d)
+from mmseg.models.backbones.erfnet import (DownsamplerBlock, NonBottleneck1d,
+                                           UpsamplerBlock)
 
 
 def test_erfnet_backbone():
@@ -127,7 +127,7 @@ def test_erfnet_downsampler_block():
 
 
 def test_erfnet_non_bottleneck_1d():
-    x_nb1d = non_bottleneck_1d(16, 0, 1)
+    x_nb1d = NonBottleneck1d(16, 0, 1)
     assert x_nb1d.conv3x1_1.in_channels == 16
     assert x_nb1d.conv3x1_1.out_channels == 16
     assert x_nb1d.conv1x3_1.in_channels == 16
