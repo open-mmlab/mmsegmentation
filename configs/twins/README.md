@@ -23,7 +23,7 @@
 
 ## Usage
 
-
+``pip install timm==0.3.2``
 #### Training
 
 To train Twins-SVT-B on ImageNet  using 8 gpus for 300 epochs, run
