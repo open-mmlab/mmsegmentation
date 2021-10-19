@@ -100,16 +100,19 @@ class LoadAnnotations(object):
             Defaults to ``dict(backend='disk')``.
         imdecode_backend (str): Backend for :func:`mmcv.imdecode`. Default:
             'pillow'
+        label_dtype (dtype): data type of labels. Default: np.uint8.
     """
 
     def __init__(self,
                  reduce_zero_label=False,
                  file_client_args=dict(backend='disk'),
-                 imdecode_backend='pillow'):
+                 imdecode_backend='pillow',
+                 label_dtype=np.uint8):
         self.reduce_zero_label = reduce_zero_label
         self.file_client_args = file_client_args.copy()
         self.file_client = None
         self.imdecode_backend = imdecode_backend
+        self.label_dtype = label_dtype
 
     def __call__(self, results):
         """Call function to load multiple types annotations.
@@ -132,7 +135,7 @@ class LoadAnnotations(object):
         img_bytes = self.file_client.get(filename)
         gt_semantic_seg = mmcv.imfrombytes(
             img_bytes, flag='unchanged',
-            backend=self.imdecode_backend).squeeze().astype(np.uint8)
+            backend=self.imdecode_backend).squeeze().astype(self.label_dtype)
         # modify if custom classes
         if results.get('label_map', None) is not None:
             for old_id, new_id in results['label_map'].items():
