@@ -272,6 +272,9 @@ class FeatureFusionModule(nn.Module):
 class FastSCNN(BaseModule):
     """Fast-SCNN Backbone.
 
+    This backbone is the implementation of `Fast-SCNN: Fast Semantic
+    Segmentation Network <https://arxiv.org/abs/1902.04502>`_.
+
     Args:
         in_channels (int): Number of input image channels. Default: 3.
         downsample_dw_channels (tuple[int]): Number of output channels after

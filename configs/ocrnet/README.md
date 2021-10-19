@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/openseg-group/OCNet.pytorch">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ocr_head.py#L86">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1909.11065">OCRNet (ECCV'2020)</a></summary>
+
 ```latex
 @article{YuanW18,
   title={Ocnet: Object context network for scene parsing},
@@ -19,6 +26,8 @@
   year={2020}
 }
 ```
+
+</details>
 
 ## Results and models
 
@@ -42,9 +51,9 @@
 
 | Method | Backbone | Crop Size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config                                                                                                                          | download                                                                                                                                                                                                                                                                                                                                                     |
 | ------ | -------- | --------- | ---------- | ------- | -------- | -------------- | ----- | ------------: | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| OCRNet | R-101-D8 | 512x1024  | 8          | 40000   | -        | -              | 80.09 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes-02ac0f13.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes_20200717_110721.log.json)     |
-| OCRNet | R-101-D8 | 512x1024  | 16         | 40000   | 8.8      | 3.02           | 80.30 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes-db500f80.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes_20200723_193726.log.json) |
-| OCRNet | R-101-D8 | 512x1024  | 16         | 80000   | 8.8      | 3.02           | 80.81 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes-78688424.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes_20200723_192421.log.json) |
+| OCRNet | R-101-D8 | 512x1024  | 8          | 40000   | -        | -              | 80.09 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes_20200717_110721-02ac0f13.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b8_cityscapes/ocrnet_r101-d8_512x1024_40k_b8_cityscapes_20200717_110721.log.json)     |
+| OCRNet | R-101-D8 | 512x1024  | 16         | 40000   | 8.8      | 3.02           | 80.30 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes_20200723_193726-db500f80.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_40k_b16_cityscapes/ocrnet_r101-d8_512x1024_40k_b16_cityscapes_20200723_193726.log.json) |
+| OCRNet | R-101-D8 | 512x1024  | 16         | 80000   | 8.8      | 3.02           | 80.81 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes_20200723_192421-78688424.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_r101-d8_512x1024_80k_b16_cityscapes/ocrnet_r101-d8_512x1024_80k_b16_cityscapes_20200723_192421.log.json) |
 
 ### ADE20K
 

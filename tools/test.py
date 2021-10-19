@@ -1,7 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import os
+import os.path as osp
 import shutil
+import time
 import warnings
 
 import mmcv
@@ -21,6 +23,10 @@ def parse_args():
         description='mmseg test (and eval) a model')
     parser.add_argument('config', help='test config file path')
     parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument(
+        '--work-dir',
+        help=('if specified, the evaluation metric results will be dumped'
+              'into the directory as json'))
     parser.add_argument(
         '--aug-test', action='store_true', help='Use Flip and Multi scale aug')
     parser.add_argument('--out', help='output result file in pickle format')
@@ -107,6 +113,13 @@ def main():
     else:
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
+
+    rank, _ = get_dist_info()
+    # allows not to create
+    if args.work_dir is not None and rank == 0:
+        mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
+        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+        json_file = osp.join(args.work_dir, f'eval_{timestamp}.json')
 
     # build the dataloader
     # TODO: support multiple images per gpu (only minor changes are needed)
@@ -202,10 +215,14 @@ def main():
             print(f'\nwriting results to {args.out}')
             mmcv.dump(results, args.out)
         if args.eval:
-            dataset.evaluate(results, args.eval, **eval_kwargs)
-        if tmpdir is not None and eval_on_format_results:
-            # remove tmp dir when cityscapes evaluation
-            shutil.rmtree(tmpdir)
+            eval_kwargs.update(metric=args.eval)
+            metric = dataset.evaluate(results, **eval_kwargs)
+            metric_dict = dict(config=args.config, metric=metric)
+            if args.work_dir is not None and rank == 0:
+                mmcv.dump(metric_dict, json_file, indent=4)
+            if tmpdir is not None and eval_on_format_results:
+                # remove tmp dir when cityscapes evaluation
+                shutil.rmtree(tmpdir)
 
 
 if __name__ == '__main__':

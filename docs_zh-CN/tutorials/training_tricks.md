@@ -49,3 +49,22 @@ model=dict(
 ```
 
 `class_weight` 将被作为 `weight` 参数，传递给 `CrossEntropyLoss`。详细信息请参照 [PyTorch 文档](https://pytorch.org/docs/stable/nn.html?highlight=crossentropy#torch.nn.CrossEntropyLoss) 。
+
+## 同时使用多种损失函数 (Multiple Losses)
+
+对于训练时损失函数的计算，我们目前支持多个损失函数同时使用。 以 `unet` 使用 `DRIVE` 数据集训练为例，
+使用 `CrossEntropyLoss` 和 `DiceLoss` 的 `1:3` 的加权和作为损失函数。配置文件写为:
+
+```python
+_base_ = './fcn_unet_s5-d16_64x64_40k_drive.py'
+model = dict(
+    decode_head=dict(loss_decode=[dict(type='CrossEntropyLoss', loss_name='loss_ce', loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
+    auxiliary_head=dict(loss_decode=[dict(type='CrossEntropyLoss', loss_name='loss_ce',loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
+    )
+```
+
+通过这种方式，确定训练过程中损失函数的权重 `loss_weight` 和在训练日志里的名字 `loss_name`。
+
+注意： `loss_name` 的名字必须带有 `loss_` 前缀，这样它才能被包括在反传的图里。

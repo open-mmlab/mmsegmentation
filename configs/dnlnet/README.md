@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/yinmh17/DNL-Semantic-Segmentation">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/2006.06668">DNLNet (ECCV'2020)</a></summary>
+
 This example is to reproduce ["Disentangled Non-Local Neural Networks"](https://arxiv.org/abs/2006.06668) for semantic segmentation. It is still in progress.
 
 ## Citation
@@ -16,6 +23,8 @@ This example is to reproduce ["Disentangled Non-Local Neural Networks"](https://
     booktitle={ECCV}
 }
 ```
+
+</details>
 
 ## Results and models (in progress)
 

@@ -33,7 +33,7 @@ class TransformerEncoderLayer(BaseModule):
             Default: 2.
         qkv_bias (bool): enable bias for qkv if True. Default: True
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         batch_first (bool): Key, Query and Value are shape of
@@ -98,9 +98,9 @@ class TransformerEncoderLayer(BaseModule):
 class VisionTransformer(BaseModule):
     """Vision Transformer.
 
-    A PyTorch implement of : `An Image is Worth 16x16 Words:
-    Transformers for Image Recognition at Scale` -
-        https://arxiv.org/abs/2010.11929
+    This backbone is the implementation of `An Image is Worth 16x16 Words:
+    Transformers for Image Recognition at
+    Scale <https://arxiv.org/abs/2010.11929>`_.
 
     Args:
         img_size (int | tuple): Input image size. Default: 224.
@@ -126,7 +126,7 @@ class VisionTransformer(BaseModule):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            Default: dict(type='GELU').
         patch_norm (bool): Whether to add a norm in PatchEmbed Block.
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
@@ -205,7 +205,7 @@ class VisionTransformer(BaseModule):
             conv_type='Conv2d',
             kernel_size=patch_size,
             stride=patch_size,
-            pad_to_patch_size=True,
+            padding='corner',
             norm_cfg=norm_cfg if patch_norm else None,
             init_cfg=None,
         )
@@ -370,8 +370,8 @@ class VisionTransformer(BaseModule):
     def forward(self, inputs):
         B = inputs.shape[0]
 
-        x, hw_shape = self.patch_embed(inputs), (self.patch_embed.DH,
-                                                 self.patch_embed.DW)
+        x, hw_shape = self.patch_embed(inputs)
+
         # stole cls_tokens impl from Phil Wang, thanks
         cls_tokens = self.cls_token.expand(B, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)

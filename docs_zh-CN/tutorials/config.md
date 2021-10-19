@@ -44,7 +44,7 @@ model = dict(
     type='EncoderDecoder',  # 分割器(segmentor)的名字
     pretrained='open-mmlab://resnet50_v1c',  # 将被加载的 ImageNet 预训练主干网络
     backbone=dict(
-        type='ResNetV1c',  # 主干网络的类别。 可用选项请参考 mmseg/backbone/resnet.py
+        type='ResNetV1c',  # 主干网络的类别。 可用选项请参考 mmseg/models/backbones/resnet.py
         depth=50,  # 主干网络的深度。通常为 50 和 101。
         num_stages=4,  # 主干网络状态(stages)的数目，这些状态产生的特征图作为后续的 head 的输入。
         out_indices=(0, 1, 2, 3),  # 每个状态产生的特征图输出的索引。
@@ -241,7 +241,7 @@ runner = dict(
 checkpoint_config = dict(  # 设置检查点钩子 (checkpoint hook) 的配置文件。执行时请参考 https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py。
     by_epoch=False,  # 是否按照每个 epoch 去算 runner。
     interval=4000)  # 保存的间隔
-evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节请参考 mmseg/core/evaulation/eval_hook.py。
+evaluation = dict(  # 构建评估钩 (evaluation hook) 的配置文件。细节请参考 mmseg/core/evaluation/eval_hook.py。
     interval=4000,  # 评估的间歇点
     metric='mIoU')  # 评估的指标
 

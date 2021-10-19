@@ -113,7 +113,7 @@ Tricks not implemented by the optimizer should be implemented through optimizer 
         _delete_=True, grad_clip=dict(max_norm=35, norm_type=2))
     ```
 
-    If your config inherits the base config which already sets the `optimizer_config`, you might need `_delete_=True` to overide the unnecessary settings. See the [config documenetation](https://mmsegmentation.readthedocs.io/en/latest/config.html) for more details.
+    If your config inherits the base config which already sets the `optimizer_config`, you might need `_delete_=True` to override the unnecessary settings. See the [config documentation](https://mmsegmentation.readthedocs.io/en/latest/config.html) for more details.
 
 - __Use momentum schedule to accelerate model convergence__:
     We support momentum scheduler to modify model's momentum according to learning rate, which could make the model converge in a faster way.
@@ -176,11 +176,13 @@ In such case, we can set the workflow as
 
 so that 1 epoch for training and 1 epoch for validation will be run iteratively.
 
-**Note**:
+:::{note}
 
 1. The parameters of model will not be updated during val epoch.
 2. Keyword `total_epochs` in the config only controls the number of training epochs and will not affect the validation workflow.
 3. Workflows `[('train', 1), ('val', 1)]` and `[('train', 1)]` will not change the behavior of `EvalHook` because `EvalHook` is called by `after_train_epoch` and validation workflow only affect hooks that are called through `after_val_epoch`. Therefore, the only difference between `[('train', 1), ('val', 1)]` and `[('train', 1)]` is that the runner will calculate losses on validation set after each training epoch.
+
+:::
 
 ## Customize hooks
 
@@ -196,7 +198,7 @@ custom_hooks = [
 
 ### Modify default runtime hooks
 
-There are some common hooks that are not registerd through `custom_hooks`, they are
+There are some common hooks that are not registered through `custom_hooks`, they are
 
 - log_config
 - checkpoint_config

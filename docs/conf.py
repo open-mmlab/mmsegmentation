@@ -15,6 +15,8 @@ import os
 import subprocess
 import sys
 
+import pytorch_sphinx_theme
+
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
@@ -40,16 +42,17 @@ release = get_version()
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode',
-    'recommonmark',
-    'sphinx_markdown_tables',
+    'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode',
+    'sphinx_markdown_tables', 'sphinx_copybutton', 'myst_parser'
 ]
 
 autodoc_mock_imports = [
     'matplotlib', 'pycocotools', 'mmseg.version', 'mmcv.ops'
 ]
+
+# Ignore >>> when copying code
+copybutton_prompt_text = r'>>> |\.\.\. '
+copybutton_prompt_is_regexp = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -75,12 +78,110 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+# html_theme = 'sphinx_rtd_theme'
+html_theme = 'pytorch_sphinx_theme'
+html_theme_path = [pytorch_sphinx_theme.get_html_theme_path()]
+html_theme_options = {
+    'logo_url':
+    'https://mmsegmentation.readthedocs.io/en/latest/',
+    'menu': [
+        {
+            'name':
+            'Tutorial',
+            'url':
+            'https://github.com/open-mmlab/mmsegmentation/blob/master/'
+            'demo/MMSegmentation_Tutorial.ipynb'
+        },
+        {
+            'name': 'GitHub',
+            'url': 'https://github.com/open-mmlab/mmsegmentation'
+        },
+        {
+            'name':
+            'Upstream',
+            'children': [
+                {
+                    'name': 'MMCV',
+                    'url': 'https://github.com/open-mmlab/mmcv',
+                    'description': 'Foundational library for computer vision'
+                },
+            ]
+        },
+        {
+            'name':
+            'Projects',
+            'children': [
+                {
+                    'name': 'MMAction2',
+                    'url': 'https://github.com/open-mmlab/mmaction2',
+                },
+                {
+                    'name': 'MMClassification',
+                    'url': 'https://github.com/open-mmlab/mmclassification',
+                },
+                {
+                    'name': 'MMOCR',
+                    'url': 'https://github.com/open-mmlab/mmocr',
+                },
+                {
+                    'name': 'MMDetection',
+                    'url': 'https://github.com/open-mmlab/mmdetection',
+                },
+                {
+                    'name': 'MMEditing',
+                    'url': 'https://github.com/open-mmlab/mmediting',
+                },
+                {
+                    'name': 'MMDetection3D',
+                    'url': 'https://github.com/open-mmlab/mmdetection3d',
+                },
+                {
+                    'name': 'MMPose',
+                    'url': 'https://github.com/open-mmlab/mmpose',
+                },
+                {
+                    'name': 'MMTracking',
+                    'url': 'https://github.com/open-mmlab/mmtracking',
+                },
+                {
+                    'name': 'MMGeneration',
+                    'url': 'https://github.com/open-mmlab/mmgeneration',
+                },
+            ]
+        },
+        {
+            'name':
+            'OpenMMLab',
+            'children': [
+                {
+                    'name': 'Homepage',
+                    'url': 'https://openmmlab.com/'
+                },
+                {
+                    'name': 'GitHub',
+                    'url': 'https://github.com/open-mmlab/'
+                },
+                {
+                    'name': 'Twitter',
+                    'url': 'https://twitter.com/OpenMMLab'
+                },
+                {
+                    'name': 'Zhihu',
+                    'url': 'https://zhihu.com/people/openmmlab'
+                },
+            ]
+        },
+    ]
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_css_files = ['css/readthedocs.css']
+
+# Enable ::: for my_st
+myst_enable_extensions = ['colon_fence']
 
 language = 'en'
 

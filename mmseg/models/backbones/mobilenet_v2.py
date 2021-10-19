@@ -14,6 +14,10 @@ from ..utils import InvertedResidual, make_divisible
 class MobileNetV2(BaseModule):
     """MobileNetV2 backbone.
 
+    This backbone is the implementation of
+    `MobileNetV2: Inverted Residuals and Linear Bottlenecks
+    <https://arxiv.org/abs/1801.04381>`_.
+
     Args:
         widen_factor (float): Width multiplier, multiply number of
             channels in each layer by this amount. Default: 1.0.

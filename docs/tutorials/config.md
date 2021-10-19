@@ -48,7 +48,7 @@ model = dict(
     type='EncoderDecoder',  # Name of segmentor
     pretrained='open-mmlab://resnet50_v1c',  # The ImageNet pretrained backbone to be loaded
     backbone=dict(
-        type='ResNetV1c',  # The type of backbone. Please refer to mmseg/backbone/resnet.py for details.
+        type='ResNetV1c',  # The type of backbone. Please refer to mmseg/models/backbones/resnet.py for details.
         depth=50,  # Depth of backbone. Normally 50, 101 are used.
         num_stages=4,  # Number of stages of backbone.
         out_indices=(0, 1, 2, 3),  # The index of output feature maps produced in each stages.
@@ -67,7 +67,7 @@ model = dict(
         channels=512,  # The intermediate channels of decode head.
         pool_scales=(1, 2, 3, 6),  # The avg pooling scales of PSPHead. Please refer to paper for details.
         dropout_ratio=0.1,  # The dropout ratio before final classification layer.
-        num_classes=19,  # Number of segmentation classs. Usually 19 for cityscapes, 21 for VOC, 150 for ADE20k.
+        num_classes=19,  # Number of segmentation class. Usually 19 for cityscapes, 21 for VOC, 150 for ADE20k.
         norm_cfg=dict(type='SyncBN', requires_grad=True),  # The configuration of norm layer.
         align_corners=False,  # The align_corners argument for resize in decoding.
         loss_decode=dict(  # Config of loss function for the decode_head.
@@ -82,7 +82,7 @@ model = dict(
         num_convs=1,  # Number of convs in FCNHead. It is usually 1 in auxiliary head.
         concat_input=False,  # Whether concat output of convs with input before classification layer.
         dropout_ratio=0.1,  # The dropout ratio before final classification layer.
-        num_classes=19,  # Number of segmentation classs. Usually 19 for cityscapes, 21 for VOC, 150 for ADE20k.
+        num_classes=19,  # Number of segmentation class. Usually 19 for cityscapes, 21 for VOC, 150 for ADE20k.
         norm_cfg=dict(type='SyncBN', requires_grad=True),  # The configuration of norm layer.
         align_corners=False,  # The align_corners argument for resize in decoding.
         loss_decode=dict(  # Config of loss function for the decode_head.
@@ -132,7 +132,7 @@ test_pipeline = [
         flip=False,  # Whether to flip images during testing
         transforms=[
             dict(type='Resize',  # Use resize augmentation
-                 keep_ratio=True),  # Whether to keep the ratio between height and width, the img_scale set here will be supressed by the img_scale set above.
+                 keep_ratio=True),  # Whether to keep the ratio between height and width, the img_scale set here will be suppressed by the img_scale set above.
             dict(type='RandomFlip'),  # Thought RandomFlip is added in pipeline, it is not used when flip=False
             dict(
                 type='Normalize',  # Normalization config, the values are from img_norm_cfg
@@ -245,7 +245,7 @@ runner = dict(
 checkpoint_config = dict(  # Config to set the checkpoint hook, Refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py for implementation.
     by_epoch=False,  # Whether count by epoch or not.
     interval=4000)  # The save interval.
-evaluation = dict(  # The config to build the evaluation hook. Please refer to mmseg/core/evaulation/eval_hook.py for details.
+evaluation = dict(  # The config to build the evaluation hook. Please refer to mmseg/core/evaluation/eval_hook.py for details.
     interval=4000,  # The interval of evaluation.
     metric='mIoU')  # The evaluation metric.
 

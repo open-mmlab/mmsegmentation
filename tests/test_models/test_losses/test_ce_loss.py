@@ -20,7 +20,8 @@ def test_ce_loss():
         type='CrossEntropyLoss',
         use_sigmoid=False,
         class_weight=[0.8, 0.2],
-        loss_weight=1.0)
+        loss_weight=1.0,
+        loss_name='loss_ce')
     loss_cls = build_loss(loss_cls_cfg)
     fake_pred = torch.Tensor([[100, -100]])
     fake_label = torch.Tensor([1]).long()
@@ -38,7 +39,8 @@ def test_ce_loss():
         type='CrossEntropyLoss',
         use_sigmoid=False,
         class_weight=f'{tmp_file.name}.pkl',
-        loss_weight=1.0)
+        loss_weight=1.0,
+        loss_name='loss_ce')
     loss_cls = build_loss(loss_cls_cfg)
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
 
@@ -47,7 +49,8 @@ def test_ce_loss():
         type='CrossEntropyLoss',
         use_sigmoid=False,
         class_weight=f'{tmp_file.name}.npy',
-        loss_weight=1.0)
+        loss_weight=1.0,
+        loss_name='loss_ce')
     loss_cls = build_loss(loss_cls_cfg)
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
     tmp_file.close()
@@ -74,4 +77,12 @@ def test_ce_loss():
         torch.tensor(0.9354),
         atol=1e-4)
 
+    # test cross entropy loss has name `loss_ce`
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        loss_weight=1.0,
+        loss_name='loss_ce')
+    loss_cls = build_loss(loss_cls_cfg)
+    assert loss_cls.loss_name == 'loss_ce'
     # TODO test use_mask
