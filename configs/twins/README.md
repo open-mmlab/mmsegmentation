@@ -6,7 +6,6 @@
 
 <a href="https://github.com/Meituan-AutoML/Twins">Official Repo</a>
 
-
 <details>
 <summary align="right"><a href="https://arxiv.org/pdf/2104.13840.pdf">Twins (arXiv'2021)</a></summary>
 
@@ -33,13 +32,11 @@ python -m torch.distributed.launch --nproc_per_node=8 --use_env main.py --model 
 ```
 
 #### Evaluation
-
 To evaluate the performance of Twins-SVT-L on ImageNet using one GPU, run
 
 ```python
 python main.py --eval --resume alt_gvt_large.pth  --model alt_gvt_large --data-path path_to_imagenet
 ```
-
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
 

@@ -3,7 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from functools import partial
 
-from timm.models.layers import DropPath, to_2tuple, trunc_normal_
+from torch.nn.modules.utils import _pair as to_2tuple
+from timm.models.layers import DropPath, trunc_normal_
 from timm.models.registry import register_model
 from timm.models.vision_transformer import _cfg
 from mmseg.models.builder import BACKBONES
