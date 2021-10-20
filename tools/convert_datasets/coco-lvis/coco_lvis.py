@@ -4,6 +4,7 @@ import os
 import os.path as osp
 import shutil
 import mmcv
+from mmcv.utils.logging import print_log
 import numpy as np
 import imageio as io
 from lvis.lvis import LVIS
@@ -48,6 +49,7 @@ def main():
 
     img2info = pickle.load(
         open('tools/convert_datasets/coco-lvis/img2info.pkl', 'rb'))
+    del img2info[429995]
     img2info_val = pickle.load(
         open('tools/convert_datasets/coco-lvis/img2info_val.pkl', 'rb'))
 
@@ -66,11 +68,31 @@ def main():
     val_process()
 
     new_images_path = f'{root}/images'
-    if not osp.exists(new_images_path):
-        os.makedirs(new_images_path)
-    shutil.move(f'{root}/train2017', f'{new_images_path}/train2017')
-    shutil.move(f'{root}/val2017', f'{new_images_path}/val2017')
-    shutil.move(f'{root}/test2017', f'{new_images_path}/test2017')
+    train_image_path = f'{new_images_path}/train2017'
+    val_image_path = f'{new_images_path}/val2017'
+    new_image_paths = [new_images_path, train_image_path, val_image_path]
+    for path in new_image_paths:
+        if not osp.exists(path):
+            os.makedirs(path)
+
+    # move train images
+    for k, ann in img2info.items():
+        path = ann['path']
+        # shutil.move(f'{root}/{path}', f'{new_images_path}/{path}')
+        try:
+            shutil.move(f'{root}/{path}', f'{new_images_path}/{path}')
+        except FileNotFoundError:
+            print_log(f'image id {k}, file: {path} not found!')
+    # move val images
+    for k, ann in img2info_val.items():
+        path = ann['path']
+        pre_path = path
+        if 'train' in path:
+            path = path.replace('train', 'val')
+        try:
+            shutil.move(f'{root}/{pre_path}', f'{new_images_path}/{path}')
+        except FileNotFoundError:
+            print_log(f'image id {k}, file: {pre_path} not found!')
 
 
 class Processor:
@@ -98,6 +120,7 @@ class Processor:
         self.no_annotations = []
         self.img2info = img2info
         self.nproc = nproc
+        self.image_paths = []
 
     def __call__(self):
         if self.nproc > 1:
@@ -107,10 +130,6 @@ class Processor:
             mmcv.track_progress(self.process_one_img, self.lvis_images)
 
     def process_one_img(self, img):
-        lvis_mask_dir = f'{self.root}/lvis_mask'
-        path = self.img2info[img]['path'].replace('jpg', 'png')
-        if osp.exists(f'{lvis_mask_dir}/{path}'):
-            return
 
         if not self.coco_val_images:
             if img not in self.coco_images:
@@ -143,7 +162,7 @@ class Processor:
                 coco_ann_ids = self.coco.getAnnIds(imgIds=[img])
                 in_train = True
         if len(coco_ann_ids) == 0:
-            logger.error(img)
+            logger.error(f'image id {img} not in coco annotations')
 
         has_coco = False
         for i, idx in enumerate(coco_ann_ids):
@@ -194,6 +213,8 @@ class Processor:
             io.imwrite(f'{lvis_mask_dir}/{path}', mask_array)
         else:
             path = self.img2info[img]['path'].replace('jpg', 'png')
+            if 'train' in path:
+                path = path.replace('train', 'val')
             if not osp.exists(f'{lvis_mask_dir}/val2017'):
                 os.makedirs(f'{lvis_mask_dir}/val2017')
             io.imwrite(f'{lvis_mask_dir}/{path}', mask_array)
