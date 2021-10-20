@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from functools import partial
 
 from torch.nn.modules.utils import _pair as to_2tuple
+from mmcv.cnn import (trunc_normal_init)
 from timm.models.layers import DropPath, trunc_normal_
 from timm.models.registry import register_model
 from timm.models.vision_transformer import _cfg
@@ -298,7 +299,7 @@ class PyramidVisionTransformer(nn.Module):
 
         # init weights
         for pos_emb in self.pos_embeds:
-            trunc_normal_(pos_emb, std=.02)
+            trunc_normal_init(pos_emb, std=.02)
         self.apply(self._init_weights)
 
     def reset_drop_path(self, drop_path_rate):
@@ -311,7 +312,7 @@ class PyramidVisionTransformer(nn.Module):
 
     def _init_weights(self, m):
         if isinstance(m, nn.Linear):
-            trunc_normal_(m.weight, std=.02)
+            trunc_normal_init(m.weight, std=.02)
             if isinstance(m, nn.Linear) and m.bias is not None:
                 nn.init.constant_(m.bias, 0)
         elif isinstance(m, nn.LayerNorm):
@@ -410,7 +411,7 @@ class CPVTV2(PyramidVisionTransformer):
     def _init_weights(self, m):
         import math
         if isinstance(m, nn.Linear):
-            trunc_normal_(m.weight, std=.02)
+            trunc_normal_init(m.weight, std=.02)
             if isinstance(m, nn.Linear) and m.bias is not None:
                 nn.init.constant_(m.bias, 0)
         elif isinstance(m, nn.LayerNorm):
