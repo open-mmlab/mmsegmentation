@@ -5,14 +5,11 @@ from functools import partial
 
 from torch.nn.modules.utils import _pair as to_2tuple
 from mmcv.cnn import (trunc_normal_init)
-from timm.models.layers import DropPath, trunc_normal_
-from timm.models.registry import register_model
-from timm.models.vision_transformer import _cfg
+from mmcv.cnn.bricks.drop import build_dropout
 from mmseg.models.builder import BACKBONES
 from mmseg.utils import get_root_logger
 from mmcv.runner import load_checkpoint
 from timm.models.vision_transformer import Block as TimmBlock
-from timm.models.vision_transformer import Attention as TimmAttention
 
 
 class Mlp(nn.Module):
@@ -185,7 +182,10 @@ class Block(nn.Module):
             num_heads=num_heads, qkv_bias=qkv_bias, qk_scale=qk_scale,
             attn_drop=attn_drop, proj_drop=drop, sr_ratio=sr_ratio)
         # NOTE: drop path for stochastic depth, we shall see if this is better than dropout here
-        self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
+
+        self.drop_path = build_dropout(dict(type='DropPath', drop_prob=drop_path)) \
+            if drop_path > 0. else nn.Identity()
+
         self.norm2 = norm_layer(dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=act_layer, drop=drop)
