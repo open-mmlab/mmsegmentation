@@ -197,7 +197,7 @@ class Block(nn.Module):
         return x
 
 
-class SBlock(TimmBlock):
+class SBlock(Block):
     def __init__(self, dim, num_heads, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop=0., attn_drop=0.,
                  drop_path=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm, sr_ratio=1):
         super(SBlock, self).__init__(dim, num_heads, mlp_ratio, qkv_bias, qk_scale, drop, attn_drop,
@@ -207,7 +207,7 @@ class SBlock(TimmBlock):
         return super(SBlock, self).forward(x)
 
 
-class GroupBlock(TimmBlock):
+class GroupBlock(Block):
     def __init__(self, dim, num_heads, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop=0., attn_drop=0.,
                  drop_path=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm, sr_ratio=1, ws=1):
         super(GroupBlock, self).__init__(dim, num_heads, mlp_ratio, qkv_bias, qk_scale, drop, attn_drop,
