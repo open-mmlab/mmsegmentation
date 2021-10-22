@@ -3,9 +3,9 @@ from functools import partial
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import trunc_normal_init
+from mmcv.cnn import (trunc_normal_init, build_norm_layer)
 from mmcv.cnn.bricks.drop import build_dropout
-from mmcv.runner import load_checkpoint
+from mmcv.runner import load_checkpoint, BaseModule, ModuleList
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.models.builder import BACKBONES
@@ -186,6 +186,7 @@ class Attention(nn.Module):
             self.norm = nn.LayerNorm(dim)
 
     def forward(self, x, H, W):
+        import pdb; pdb.set_trace()
         B, N, C = x.shape
         q = self.q(x).reshape(B, N, self.num_heads,
                               C // self.num_heads).permute(0, 2, 1, 3)
@@ -258,6 +259,87 @@ class Block(nn.Module):
         x = x + self.drop_path(self.mlp(self.norm2(x)))
 
         return x
+
+#
+# class TransformerEncoderLayer(BaseModule):
+#     """Implements one encoder layer in Vision Transformer.
+#
+#     Args:
+#         embed_dims (int): The feature dimension.
+#         num_heads (int): Parallel attention heads.
+#         feedforward_channels (int): The hidden dimension for FFNs.
+#         drop_rate (float): Probability of an element to be zeroed
+#             after the feed forward layer. Default: 0.0.
+#         attn_drop_rate (float): The drop out rate for attention layer.
+#             Default: 0.0.
+#         drop_path_rate (float): stochastic depth rate. Default 0.0.
+#         num_fcs (int): The number of fully-connected layers for FFNs.
+#             Default: 2.
+#         qkv_bias (bool): enable bias for qkv if True. Default: True
+#         act_cfg (dict): The activation config for FFNs.
+#             Defalut: dict(type='GELU').
+#         norm_cfg (dict): Config dict for normalization layer.
+#             Default: dict(type='LN').
+#         batch_first (bool): Key, Query and Value are shape of
+#             (batch, n, embed_dim)
+#             or (n, batch, embed_dim). Default: True.
+#     """
+#
+#     def __init__(self,
+#                  embed_dims,
+#                  num_heads,
+#                  feedforward_channels,
+#                  drop_rate=0.,
+#                  attn_drop_rate=0.,
+#                  drop_path_rate=0.,   # ori drop_path
+#                  num_fcs=2,
+#                  qkv_bias=True,
+#                  act_cfg=dict(type='GELU'),
+#                  norm_cfg=dict(type='LN'),
+#                  batch_first=True):
+#         super(TransformerEncoderLayer, self).__init__()
+#
+#         self.norm1_name, norm1 = build_norm_layer(
+#             norm_cfg, embed_dims, postfix=1)
+#         self.add_module(self.norm1_name, norm1)
+#
+#         self.attn = MultiheadAttention(
+#             embed_dims=embed_dims,
+#             num_heads=num_heads,
+#             attn_drop=attn_drop_rate,
+#             proj_drop=drop_rate,
+#             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+#             batch_first=batch_first,
+#             bias=qkv_bias)
+#
+#         self.drop_path = build_dropout(
+#             dict(type='DropPath',
+#                  drop_prob=drop_path_rate)) if drop_path_rate > 0. else nn.Identity()
+#
+#         self.norm2_name, norm2 = build_norm_layer(
+#             norm_cfg, embed_dims, postfix=2)
+#         self.add_module(self.norm2_name, norm2)
+#
+#         self.ffn = FFN(
+#             embed_dims=embed_dims,
+#             feedforward_channels=feedforward_channels,
+#             num_fcs=num_fcs,
+#             ffn_drop=drop_rate,
+#             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+#             act_cfg=act_cfg)
+#
+#     @property
+#     def norm1(self):
+#         return getattr(self, self.norm1_name)
+#
+#     @property
+#     def norm2(self):
+#         return getattr(self, self.norm2_name)
+#
+#     def forward(self, x):
+#         x = self.drop_path(self.attn(self.norm1(x), identity=x))
+#         x = self.drop_path(self.ffn(self.norm2(x), identity=x))
+#         return x
 
 
 class SBlock(Block):
