@@ -3,9 +3,9 @@ from functools import partial
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import (trunc_normal_init, build_norm_layer)
+from mmcv.cnn import build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.drop import build_dropout
-from mmcv.runner import load_checkpoint, BaseModule, ModuleList
+from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.models.builder import BACKBONES
@@ -186,8 +186,7 @@ class Attention(nn.Module):
             self.norm = nn.LayerNorm(dim)
 
     def forward(self, x, H, W):
-        import pdb; pdb.set_trace()
-        B, N, C = x.shape
+        B, N, C = x.shape # 1, 21760, 64
         q = self.q(x).reshape(B, N, self.num_heads,
                               C // self.num_heads).permute(0, 2, 1, 3)
 
@@ -259,6 +258,7 @@ class Block(nn.Module):
         x = x + self.drop_path(self.mlp(self.norm2(x)))
 
         return x
+
 
 #
 # class TransformerEncoderLayer(BaseModule):
