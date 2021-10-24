@@ -195,7 +195,6 @@ jobs:
         run: |
           python -V
           python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.mmcv_link}}/index.html
-          python -m pip install pycocotools
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
