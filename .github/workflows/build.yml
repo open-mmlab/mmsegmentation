@@ -129,9 +129,6 @@ jobs:
         if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install dependencies for compiling onnx when python=3.9
-        run: python -m pip install protobuf && apt-get install libprotobuf-dev protobuf-compiler
-        if: ${{matrix.python-version == '3.9'}}
       - name: Install mmseg dependencies
         run: |
           python -V
@@ -164,7 +161,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9-dev]
+        python-version: [3.6, 3.7, 3.8, 3.9]
         torch: [1.9.0+cu102]
         include:
           - torch: 1.9.0+cu102
@@ -178,9 +175,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install python-dev
-        run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
-        if: ${{matrix.python-version != '3.9-dev'}}
       - name: Install system dependencies
         run: |
           apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
@@ -191,14 +185,10 @@ jobs:
         if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install dependencies for compiling onnx when python=3.9
-        run: python -m pip install protobuf && apt-get update && apt-get -y install libprotobuf-dev protobuf-compiler cmake
-        if: ${{matrix.python-version == '3.9-dev'}}
       - name: Install mmseg dependencies
         run: |
           python -V
           python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.mmcv_link}}/index.html
-          python -m pip install pycocotools
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
