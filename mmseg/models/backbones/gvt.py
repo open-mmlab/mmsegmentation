@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.drop import build_dropout
+from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from timm.models.vision_transformer import Block as TimmBlock
 from torch.nn.modules.utils import _pair as to_2tuple
@@ -261,9 +262,6 @@ class Block(nn.Module):
         return x
 
 
-from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
-
-
 class TransformerEncoderLayer(BaseModule):
     """Implements one encoder layer in Vision Transformer.
 
@@ -339,7 +337,6 @@ class TransformerEncoderLayer(BaseModule):
         x = self.attn(self.norm1(x), identity=x)
         x = self.ffn(self.norm2(x), identity=x)
         return x
-
 
 
 class GroupBlock(TimmBlock):
@@ -453,7 +450,6 @@ class PyramidVisionTransformer(nn.Module):
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]  # stochastic depth decay rule
         cur = 0
-
 
         for k in range(len(depths)):
             _block = nn.ModuleList([

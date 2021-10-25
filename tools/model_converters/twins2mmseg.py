@@ -24,6 +24,7 @@ def main():
     else:
         state_dict = checkpoint
 
+    import pdb; pdb.set_trace()
     weight = state_dict
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
     torch.save(weight, args.dst)
