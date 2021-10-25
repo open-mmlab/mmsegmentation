@@ -466,8 +466,7 @@ class PyramidVisionTransformer(nn.Module):
                     qkv_bias=qkv_bias,
                     act_cfg=dict(type='GELU'),
                     norm_cfg=dict(type='LN'),
-                    batch_first=True)
-                    for i in range(depths[k])
+                    batch_first=True) for i in range(depths[k])
             ])
             self.blocks.append(_block)
             cur += depths[k]
