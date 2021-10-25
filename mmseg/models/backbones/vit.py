@@ -395,7 +395,7 @@ class VisionTransformer(BaseModule):
                     out = x
                 B, _, C = out.shape
                 out = out.reshape(B, hw_shape[0], hw_shape[1],
-                                  C).permute(0, 3, 1, 2)
+                                  C).permute(0, 3, 1, 2).contiguous()
                 if self.output_cls_token:
                     out = [out, x[:, 0]]
                 outs.append(out)
