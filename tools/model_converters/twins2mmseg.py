@@ -28,6 +28,8 @@ def convert_vit(ckpt):
             if 'norm' in k:
                 new_k = k.replace('norm', 'ln')
             elif 'attn.ln' in k:
+                import pdb
+                pdb.set_trace()
                 new_k = k.replace('attn.ln', 'attn.norm')
             elif 'mlp.fc1' in k:
                 new_k = k.replace('mlp.fc1', 'ffn.layers.0.0')
@@ -64,8 +66,6 @@ def main():
     else:
         state_dict = checkpoint
 
-    import pdb
-    pdb.set_trace()
     weight = convert_vit(state_dict)
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
     torch.save(weight, args.dst)
