@@ -7,11 +7,13 @@ import mmcv
 import torch
 from mmcv.runner import CheckpointLoader
 
+
 def convert_vit(ckpt):
 
     new_ckpt = OrderedDict()
 
     for k, v in ckpt.items():
+        import pdb; pdb.set_trace()
         if k.startswith('head'):
             continue
         # if k.startswith('norm'):
@@ -40,7 +42,6 @@ def convert_vit(ckpt):
         new_ckpt[new_k] = v
 
     return new_ckpt
-
 
 
 def main():
