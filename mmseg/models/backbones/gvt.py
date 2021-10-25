@@ -6,6 +6,7 @@ import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
+from timm.models.vision_transformer import Block as TimmBlock
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.models.builder import BACKBONES
@@ -186,7 +187,7 @@ class Attention(nn.Module):
             self.norm = nn.LayerNorm(dim)
 
     def forward(self, x, H, W):
-        B, N, C = x.shape # 1, 21760, 64
+        B, N, C = x.shape  # 1, 21760, 64
         q = self.q(x).reshape(B, N, self.num_heads,
                               C // self.num_heads).permute(0, 2, 1, 3)
 
@@ -260,111 +261,88 @@ class Block(nn.Module):
         return x
 
 
-#
-# class TransformerEncoderLayer(BaseModule):
-#     """Implements one encoder layer in Vision Transformer.
-#
-#     Args:
-#         embed_dims (int): The feature dimension.
-#         num_heads (int): Parallel attention heads.
-#         feedforward_channels (int): The hidden dimension for FFNs.
-#         drop_rate (float): Probability of an element to be zeroed
-#             after the feed forward layer. Default: 0.0.
-#         attn_drop_rate (float): The drop out rate for attention layer.
-#             Default: 0.0.
-#         drop_path_rate (float): stochastic depth rate. Default 0.0.
-#         num_fcs (int): The number of fully-connected layers for FFNs.
-#             Default: 2.
-#         qkv_bias (bool): enable bias for qkv if True. Default: True
-#         act_cfg (dict): The activation config for FFNs.
-#             Defalut: dict(type='GELU').
-#         norm_cfg (dict): Config dict for normalization layer.
-#             Default: dict(type='LN').
-#         batch_first (bool): Key, Query and Value are shape of
-#             (batch, n, embed_dim)
-#             or (n, batch, embed_dim). Default: True.
-#     """
-#
-#     def __init__(self,
-#                  embed_dims,
-#                  num_heads,
-#                  feedforward_channels,
-#                  drop_rate=0.,
-#                  attn_drop_rate=0.,
-#                  drop_path_rate=0.,   # ori drop_path
-#                  num_fcs=2,
-#                  qkv_bias=True,
-#                  act_cfg=dict(type='GELU'),
-#                  norm_cfg=dict(type='LN'),
-#                  batch_first=True):
-#         super(TransformerEncoderLayer, self).__init__()
-#
-#         self.norm1_name, norm1 = build_norm_layer(
-#             norm_cfg, embed_dims, postfix=1)
-#         self.add_module(self.norm1_name, norm1)
-#
-#         self.attn = MultiheadAttention(
-#             embed_dims=embed_dims,
-#             num_heads=num_heads,
-#             attn_drop=attn_drop_rate,
-#             proj_drop=drop_rate,
-#             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
-#             batch_first=batch_first,
-#             bias=qkv_bias)
-#
-#         self.drop_path = build_dropout(
-#             dict(type='DropPath',
-#                  drop_prob=drop_path_rate)) if drop_path_rate > 0. else nn.Identity()
-#
-#         self.norm2_name, norm2 = build_norm_layer(
-#             norm_cfg, embed_dims, postfix=2)
-#         self.add_module(self.norm2_name, norm2)
-#
-#         self.ffn = FFN(
-#             embed_dims=embed_dims,
-#             feedforward_channels=feedforward_channels,
-#             num_fcs=num_fcs,
-#             ffn_drop=drop_rate,
-#             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
-#             act_cfg=act_cfg)
-#
-#     @property
-#     def norm1(self):
-#         return getattr(self, self.norm1_name)
-#
-#     @property
-#     def norm2(self):
-#         return getattr(self, self.norm2_name)
-#
-#     def forward(self, x):
-#         x = self.drop_path(self.attn(self.norm1(x), identity=x))
-#         x = self.drop_path(self.ffn(self.norm2(x), identity=x))
-#         return x
+from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 
 
-class SBlock(Block):
+class TransformerEncoderLayer(BaseModule):
+    """Implements one encoder layer in Vision Transformer.
+
+    Args:
+        embed_dims (int): The feature dimension.
+        num_heads (int): Parallel attention heads.
+        feedforward_channels (int): The hidden dimension for FFNs.
+        drop_rate (float): Probability of an element to be zeroed
+            after the feed forward layer. Default: 0.0.
+        attn_drop_rate (float): The drop out rate for attention layer.
+            Default: 0.0.
+        drop_path_rate (float): stochastic depth rate. Default 0.0.
+        num_fcs (int): The number of fully-connected layers for FFNs.
+            Default: 2.
+        qkv_bias (bool): enable bias for qkv if True. Default: True
+        act_cfg (dict): The activation config for FFNs.
+            Defalut: dict(type='GELU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN').
+        batch_first (bool): Key, Query and Value are shape of
+            (batch, n, embed_dim)
+            or (n, batch, embed_dim). Default: True.
+    """
 
     def __init__(self,
-                 dim,
+                 embed_dims,
                  num_heads,
-                 mlp_ratio=4.,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 drop=0.,
-                 attn_drop=0.,
-                 drop_path=0.,
-                 act_layer=nn.GELU,
-                 norm_layer=nn.LayerNorm,
-                 sr_ratio=1):
-        super(SBlock,
-              self).__init__(dim, num_heads, mlp_ratio, qkv_bias, qk_scale,
-                             drop, attn_drop, drop_path, act_layer, norm_layer)
+                 feedforward_channels,
+                 drop_rate=0.,
+                 attn_drop_rate=0.,
+                 drop_path_rate=0.,
+                 num_fcs=2,
+                 qkv_bias=True,
+                 act_cfg=dict(type='GELU'),
+                 norm_cfg=dict(type='LN'),
+                 batch_first=True):
+        super(TransformerEncoderLayer, self).__init__()
 
-    def forward(self, x, H, W):
-        return super(SBlock, self).forward(x)
+        self.norm1_name, norm1 = build_norm_layer(
+            norm_cfg, embed_dims, postfix=1)
+        self.add_module(self.norm1_name, norm1)
+
+        self.attn = MultiheadAttention(
+            embed_dims=embed_dims,
+            num_heads=num_heads,
+            attn_drop=attn_drop_rate,
+            proj_drop=drop_rate,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+            batch_first=batch_first,
+            bias=qkv_bias)
+
+        self.norm2_name, norm2 = build_norm_layer(
+            norm_cfg, embed_dims, postfix=2)
+        self.add_module(self.norm2_name, norm2)
+
+        self.ffn = FFN(
+            embed_dims=embed_dims,
+            feedforward_channels=feedforward_channels,
+            num_fcs=num_fcs,
+            ffn_drop=drop_rate,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+            act_cfg=act_cfg)
+
+    @property
+    def norm1(self):
+        return getattr(self, self.norm1_name)
+
+    @property
+    def norm2(self):
+        return getattr(self, self.norm2_name)
+
+    def forward(self, x):
+        x = self.attn(self.norm1(x), identity=x)
+        x = self.ffn(self.norm2(x), identity=x)
+        return x
 
 
-class GroupBlock(Block):
+
+class GroupBlock(TimmBlock):
 
     def __init__(self,
                  dim,
@@ -475,19 +453,22 @@ class PyramidVisionTransformer(nn.Module):
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]  # stochastic depth decay rule
         cur = 0
+
+
         for k in range(len(depths)):
             _block = nn.ModuleList([
-                block_cls(
-                    dim=embed_dims[k],
+                TransformerEncoderLayer(
+                    embed_dims=embed_dims[k],
                     num_heads=num_heads[k],
-                    mlp_ratio=mlp_ratios[k],
+                    feedforward_channels=mlp_ratios[k] * embed_dims[k],
+                    attn_drop_rate=attn_drop_rate,
+                    drop_rate=drop_rate,
+                    drop_path_rate=dpr[cur + i],
+                    num_fcs=2,
                     qkv_bias=qkv_bias,
-                    qk_scale=qk_scale,
-                    drop=drop_rate,
-                    attn_drop=attn_drop_rate,
-                    drop_path=dpr[cur + i],
-                    norm_layer=norm_layer,
-                    sr_ratio=sr_ratios[k]) for i in range(depths[k])
+                    act_cfg=dict(type='GELU'),
+                    norm_cfg=dict(type='LN'),
+                    batch_first=True)
             ])
             self.blocks.append(_block)
             cur += depths[k]
@@ -712,7 +693,7 @@ class PCPVT(CPVTV2):
                  norm_layer=nn.LayerNorm,
                  depths=[4, 4, 4],
                  sr_ratios=[4, 2, 1],
-                 block_cls=SBlock,
+                 block_cls=TransformerEncoderLayer,
                  F4=False,
                  extra_norm=False):
         super(PCPVT,
