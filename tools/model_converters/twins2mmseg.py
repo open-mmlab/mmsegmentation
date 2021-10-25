@@ -31,8 +31,8 @@ def convert_vit(ckpt):
                 new_k = k.replace('mlp.fc1', 'ffn.layers.0.0')
             elif 'mlp.fc2' in k:
                 new_k = k.replace('mlp.fc2', 'ffn.layers.1')
-            elif 'attn.proj' in k:
-                new_k = k.replace('attn.proj', 'attn.attn.out_proj')
+            # elif 'attn.proj' in k:
+            #     new_k = k.replace('attn.proj', 'attn.attn.out_proj')
             # elif 'attn.qkv' in k:
             #     new_k = k.replace('attn.qkv.', 'attn.attn.in_proj_')
             else:
@@ -62,7 +62,8 @@ def main():
     else:
         state_dict = checkpoint
 
-    import pdb; pdb.set_trace()
+    import pdb
+    pdb.set_trace()
     weight = convert_vit(state_dict)
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
     torch.save(weight, args.dst)

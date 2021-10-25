@@ -216,6 +216,85 @@ class Attention(nn.Module):
         return x
 
 
+
+class Attention(BaseModule):
+    """Window based multi-head self-attention (W-MSA) module with relative
+    position bias.
+
+    Args:
+        embed_dims (int): Number of input channels.
+        num_heads (int): Number of attention heads.
+        window_size (tuple[int]): The height and width of the window.
+        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
+            Default: True.
+        qk_scale (float | None, optional): Override default qk scale of
+            head_dim ** -0.5 if set. Default: None.
+        attn_drop_rate (float, optional): Dropout ratio of attention weight.
+            Default: 0.0
+        proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
+        init_cfg (dict | None, optional): The Config for initialization.
+            Default: None.
+    """
+    def __init__(self,
+                 dim,
+                 num_heads=8,
+                 qkv_bias=False,
+                 qk_scale=None,
+                 attn_drop=0.,
+                 proj_drop=0.,
+                 sr_ratio=1,
+                 init_cfg=None):
+        super().__init__(init_cfg=init_cfg)
+        assert dim % num_heads == 0, f'dim {dim} should be divided by ' \
+                                     f'num_heads {num_heads}.'
+
+        self.dim = dim
+        self.num_heads = num_heads
+        head_dim = dim // num_heads
+        self.scale = qk_scale or head_dim**-0.5
+
+        self.q = nn.Linear(dim, dim, bias=qkv_bias)
+        self.kv = nn.Linear(dim, dim * 2, bias=qkv_bias)
+        self.attn_drop = nn.Dropout(attn_drop)
+        self.proj = nn.Linear(dim, dim)
+        self.proj_drop = nn.Dropout(proj_drop)
+
+        self.sr_ratio = sr_ratio
+        if sr_ratio > 1:
+            self.sr = nn.Conv2d(
+                dim, dim, kernel_size=sr_ratio, stride=sr_ratio)
+            self.norm = nn.LayerNorm(dim)
+
+    def forward(self, x, H, W):
+        B, N, C = x.shape  # 1, 21760, 64
+        q = self.q(x).reshape(B, N, self.num_heads,
+                              C // self.num_heads).permute(0, 2, 1, 3)
+
+        if self.sr_ratio > 1:
+            x_ = x.permute(0, 2, 1).reshape(B, C, H, W)
+            x_ = self.sr(x_).reshape(B, C, -1).permute(0, 2, 1)
+            x_ = self.norm(x_)
+            kv = self.kv(x_).reshape(B, -1, 2, self.num_heads,
+                                     C // self.num_heads).permute(
+                                         2, 0, 3, 1, 4)
+        else:
+            kv = self.kv(x).reshape(B, -1, 2, self.num_heads,
+                                    C // self.num_heads).permute(
+                                        2, 0, 3, 1, 4)
+        k, v = kv[0], kv[1]
+
+        attn = (q @ k.transpose(-2, -1)) * self.scale
+        attn = attn.softmax(dim=-1)
+        attn = self.attn_drop(attn)
+
+        x = (attn @ v).transpose(1, 2).reshape(B, N, C)
+        x = self.proj(x)
+        x = self.proj_drop(x)
+
+        return x
+
+
+
 class Block(nn.Module):
 
     def __init__(self,
@@ -325,6 +404,10 @@ class TransformerEncoderLayer(BaseModule):
             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
             act_cfg=act_cfg)
 
+        self.drop_path = build_dropout(
+            dict(type='DropPath',
+                 drop_prob=drop_path_rate)) if drop_path_rate > 0. else nn.Identity()
+
     @property
     def norm1(self):
         return getattr(self, self.norm1_name)
@@ -334,8 +417,8 @@ class TransformerEncoderLayer(BaseModule):
         return getattr(self, self.norm2_name)
 
     def forward(self, x):
-        x = self.attn(self.norm1(x), identity=x)
-        x = self.ffn(self.norm2(x), identity=x)
+        x = x + self.drop_path(self.attn(self.norm1(x), identity=x))
+        x = x + self.drop_path(self.ffn(self.norm2(x), identity=x))
         return x
 
 
