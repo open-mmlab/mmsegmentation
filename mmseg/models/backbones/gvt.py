@@ -451,7 +451,8 @@ class PyramidVisionTransformer(nn.Module):
         ]  # stochastic depth decay rule
         cur = 0
 
-        import pdb; pdb.set_trace()
+        import pdb
+        pdb.set_trace()
         for k in range(len(depths)):
             _block = nn.ModuleList([
                 TransformerEncoderLayer(
@@ -466,6 +467,7 @@ class PyramidVisionTransformer(nn.Module):
                     act_cfg=dict(type='GELU'),
                     norm_cfg=dict(type='LN'),
                     batch_first=True)
+                    for i in range(depths[k])
             ])
             self.blocks.append(_block)
             cur += depths[k]
