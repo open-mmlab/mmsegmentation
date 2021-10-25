@@ -27,6 +27,8 @@ def convert_vit(ckpt):
         elif k.startswith('backbone.blocks'):
             if 'norm' in k:
                 new_k = k.replace('norm', 'ln')
+            elif 'attn.ln' in k:
+                new_k = k.replace('attn.ln', 'attn.norm')
             elif 'mlp.fc1' in k:
                 new_k = k.replace('mlp.fc1', 'ffn.layers.0.0')
             elif 'mlp.fc2' in k:

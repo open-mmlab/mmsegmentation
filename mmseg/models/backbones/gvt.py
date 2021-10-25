@@ -375,7 +375,7 @@ class TransformerEncoderLayer(BaseModule):
                  qkv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 sr_ratio = 1.,
+                 sr_ratio=1.,
                  batch_first=True):
         super(TransformerEncoderLayer, self).__init__()
 
@@ -550,8 +550,7 @@ class PyramidVisionTransformer(nn.Module):
                     act_cfg=dict(type='GELU'),
                     norm_cfg=dict(type='LN'),
                     batch_first=True,
-                    sr_ratio=sr_ratios[k])
-                    for i in range(depths[k])
+                    sr_ratio=sr_ratios[k]) for i in range(depths[k])
             ])
             self.blocks.append(_block)
             cur += depths[k]
