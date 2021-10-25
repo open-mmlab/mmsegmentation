@@ -96,63 +96,48 @@ class NonBottleneck1d(BaseModule):
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
-        self.conv3x1_1 = build_conv_layer(
-            self.conv_cfg,
-            channels,
-            channels,
-            kernel_size=(3, 1),
-            stride=1,
-            padding=(1, 0),
-            bias=True)
-
-        self.conv1x3_1 = build_conv_layer(
-            self.conv_cfg,
-            channels,
-            channels,
-            kernel_size=(1, 3),
-            stride=1,
-            padding=(0, 1),
-            bias=True)
-
-        self.bn1 = build_norm_layer(self.norm_cfg, channels)[1]
-
-        self.conv3x1_2 = build_conv_layer(
-            self.conv_cfg,
-            channels,
-            channels,
-            kernel_size=(3, 1),
-            stride=1,
-            padding=(1 * dilation, 0),
-            bias=True,
-            dilation=(dilation, 1))
-
-        self.conv1x3_2 = build_conv_layer(
-            self.conv_cfg,
-            channels,
-            channels,
-            kernel_size=(1, 3),
-            stride=1,
-            padding=(0, dilation),
-            bias=True,
-            dilation=(1, dilation))
-
-        self.bn2 = build_norm_layer(self.norm_cfg, channels)[1]
         self.act = build_activation_layer(self.act_cfg)
-        self.dropout = nn.Dropout(p=drop_rate)
+
+        self.convs_layer = nn.ModuleList()
+        for conv_layer in range(2):
+            conv_first_padding = (1, 0) if conv_layer == 0 else (1 * dilation,
+                                                                 0)
+            conv_first_dilation = 1 if conv_layer == 0 else (dilation, 1)
+            conv_second_padding = (0, 1) if conv_layer == 0 else (0, dilation)
+            conv_second_dilation = 1 if conv_layer == 0 else (1, dilation)
+
+            self.convs_layer.append(
+                build_conv_layer(
+                    self.conv_cfg,
+                    channels,
+                    channels,
+                    kernel_size=(3, 1),
+                    stride=1,
+                    padding=conv_first_padding,
+                    bias=True,
+                    dilation=conv_first_dilation))
+            self.convs_layer.append(self.act)
+            self.convs_layer.append(
+                build_conv_layer(
+                    self.conv_cfg,
+                    channels,
+                    channels,
+                    kernel_size=(1, 3),
+                    stride=1,
+                    padding=conv_second_padding,
+                    bias=True,
+                    dilation=conv_second_dilation))
+            self.convs_layer.append(
+                build_norm_layer(self.norm_cfg, channels)[1])
+            if conv_layer == 0:
+                self.convs_layer.append(self.act)
+            else:
+                self.convs_layer.append(nn.Dropout(p=drop_rate))
 
     def forward(self, input):
-        output = self.conv3x1_1(input)
-        output = self.act(output)
-        output = self.conv1x3_1(output)
-        output = self.bn1(output)
-        output = self.act(output)
-
-        output = self.conv3x1_2(output)
-        output = self.act(output)
-        output = self.conv1x3_2(output)
-        output = self.bn2(output)
-
-        output = self.dropout(output)
+        output = input
+        for op in self.convs_layer:
+            output = op(output)
         output = self.act(output + input)
         return output
 

@@ -128,15 +128,15 @@ def test_erfnet_downsampler_block():
 
 def test_erfnet_non_bottleneck_1d():
     x_nb1d = NonBottleneck1d(16, 0, 1)
-    assert x_nb1d.conv3x1_1.in_channels == 16
-    assert x_nb1d.conv3x1_1.out_channels == 16
-    assert x_nb1d.conv1x3_1.in_channels == 16
-    assert x_nb1d.conv1x3_1.out_channels == 16
-    assert x_nb1d.conv3x1_2.in_channels == 16
-    assert x_nb1d.conv3x1_2.out_channels == 16
-    assert x_nb1d.conv1x3_2.in_channels == 16
-    assert x_nb1d.conv1x3_2.out_channels == 16
-    assert x_nb1d.dropout.p == 0
+    assert x_nb1d.convs_layer[0].in_channels == 16
+    assert x_nb1d.convs_layer[0].out_channels == 16
+    assert x_nb1d.convs_layer[2].in_channels == 16
+    assert x_nb1d.convs_layer[2].out_channels == 16
+    assert x_nb1d.convs_layer[5].in_channels == 16
+    assert x_nb1d.convs_layer[5].out_channels == 16
+    assert x_nb1d.convs_layer[7].in_channels == 16
+    assert x_nb1d.convs_layer[7].out_channels == 16
+    assert x_nb1d.convs_layer[9].p == 0
 
 
 def test_erfnet_upsampler_block():
