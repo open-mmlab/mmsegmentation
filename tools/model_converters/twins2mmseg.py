@@ -28,6 +28,7 @@ def convert_vit(ckpt):
             if 'norm' in k:
                 new_k = k.replace('norm', 'ln')
             elif 'attn.ln' in k:
+
                 import pdb
                 pdb.set_trace()
                 new_k = k.replace('attn.ln', 'attn.norm')
