@@ -13,7 +13,8 @@ def convert_vit(ckpt):
     new_ckpt = OrderedDict()
 
     for k, v in ckpt.items():
-        import pdb; pdb.set_trace()
+        # import pdb
+        # pdb.set_trace()
         if k.startswith('head'):
             continue
         # if k.startswith('norm'):
@@ -23,7 +24,7 @@ def convert_vit(ckpt):
         #         new_k = k.replace('proj', 'projection')
         #     else:
         #         new_k = k
-        elif k.startswith('blocks'):
+        elif k.startswith('backbone.blocks'):
             if 'norm' in k:
                 new_k = k.replace('norm', 'ln')
             elif 'mlp.fc1' in k:
