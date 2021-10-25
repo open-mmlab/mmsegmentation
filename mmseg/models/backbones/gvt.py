@@ -216,7 +216,6 @@ class Attention(nn.Module):
         return x
 
 
-
 class Attention(BaseModule):
     """Window based multi-head self-attention (W-MSA) module with relative
     position bias.
@@ -235,6 +234,7 @@ class Attention(BaseModule):
         init_cfg (dict | None, optional): The Config for initialization.
             Default: None.
     """
+
     def __init__(self,
                  dim,
                  num_heads=8,
@@ -292,7 +292,6 @@ class Attention(BaseModule):
         x = self.proj_drop(x)
 
         return x
-
 
 
 class Block(nn.Module):
@@ -376,6 +375,7 @@ class TransformerEncoderLayer(BaseModule):
                  qkv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
+                 sr_ratio = 1.,
                  batch_first=True):
         super(TransformerEncoderLayer, self).__init__()
 
@@ -383,14 +383,14 @@ class TransformerEncoderLayer(BaseModule):
             norm_cfg, embed_dims, postfix=1)
         self.add_module(self.norm1_name, norm1)
 
-        self.attn = MultiheadAttention(
-            embed_dims=embed_dims,
+        self.attn = Attention(
+            embed_dims,
             num_heads=num_heads,
+            qkv_bias=qkv_bias,
+            qk_scale=None,
             attn_drop=attn_drop_rate,
             proj_drop=drop_rate,
-            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
-            batch_first=batch_first,
-            bias=qkv_bias)
+            sr_ratio=sr_ratio)
 
         self.norm2_name, norm2 = build_norm_layer(
             norm_cfg, embed_dims, postfix=2)
@@ -405,8 +405,8 @@ class TransformerEncoderLayer(BaseModule):
             act_cfg=act_cfg)
 
         self.drop_path = build_dropout(
-            dict(type='DropPath',
-                 drop_prob=drop_path_rate)) if drop_path_rate > 0. else nn.Identity()
+            dict(type='DropPath', drop_prob=drop_path_rate)
+        ) if drop_path_rate > 0. else nn.Identity()
 
     @property
     def norm1(self):
@@ -549,7 +549,9 @@ class PyramidVisionTransformer(nn.Module):
                     qkv_bias=qkv_bias,
                     act_cfg=dict(type='GELU'),
                     norm_cfg=dict(type='LN'),
-                    batch_first=True) for i in range(depths[k])
+                    batch_first=True,
+                    sr_ratio=sr_ratios[k])
+                    for i in range(depths[k])
             ])
             self.blocks.append(_block)
             cur += depths[k]
