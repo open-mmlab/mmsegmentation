@@ -25,6 +25,7 @@ def convert_vit(ckpt):
         #     else:
         #         new_k = k
         elif k.startswith('backbone.blocks'):
+            import pdb; pdb.set_trace()
             if 'norm1' in k:
                 new_k = k.replace('norm1', 'ln1')
             elif 'norm2' in k:
