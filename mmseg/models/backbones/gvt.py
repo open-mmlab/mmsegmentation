@@ -417,7 +417,7 @@ class TransformerEncoderLayer(BaseModule):
         return getattr(self, self.norm2_name)
 
     def forward(self, x):
-        x = x + self.drop_path(self.attn(self.norm1(x), identity=x))
+        x = x + self.drop_path(self.attn(self.norm1(x)))
         x = x + self.drop_path(self.ffn(self.norm2(x), identity=x))
         return x
 
