@@ -65,9 +65,9 @@ def main():
     checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')
 
     state_dict = checkpoint
-    # if 'state_dict' in checkpoint:
-    #     # timm checkpoint
-    #     state_dict = checkpoint['state_dict']
+    if 'state_dict' in checkpoint:
+        # timm checkpoint
+        state_dict = checkpoint['state_dict']
     # else:
     #     state_dict = checkpoint
 
