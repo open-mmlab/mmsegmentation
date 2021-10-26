@@ -416,8 +416,8 @@ class TransformerEncoderLayer(BaseModule):
     def norm2(self):
         return getattr(self, self.norm2_name)
 
-    def forward(self, x):
-        x = x + self.drop_path(self.attn(self.norm1(x)))
+    def forward(self, x, H, W):
+        x = x + self.drop_path(self.attn(self.norm1(x), H, W))
         x = x + self.drop_path(self.ffn(self.norm2(x), identity=x))
         return x
 
@@ -735,7 +735,7 @@ class CPVTV2(PyramidVisionTransformer):
             x, (H, W) = self.patch_embeds[i](x)
             x = self.pos_drops[i](x)
             for j, blk in enumerate(self.blocks[i]):
-                x = blk(x)
+                x = blk(x, H, W)
                 if j == 0:
                     x = self.pos_block[i](x, H, W)
             if self.extra_norm:
