@@ -156,7 +156,6 @@ class GroupAttention(nn.Module):
         return x
 
 
-
 class Attention(BaseModule):
     """Window based multi-head self-attention (W-MSA) module with relative
     position bias.
