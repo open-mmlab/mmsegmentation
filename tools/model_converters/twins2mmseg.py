@@ -66,8 +66,9 @@ def main():
         state_dict = checkpoint
 
     weight = convert_vit(state_dict)
+    checkpoint['state_dict'] = weight
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
-    torch.save(weight, args.dst)
+    torch.save(checkpoint, args.dst)
 
 
 if __name__ == '__main__':
