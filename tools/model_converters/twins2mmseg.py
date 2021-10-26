@@ -27,10 +27,10 @@ def convert_vit(ckpt):
                 new_k = k.replace('norm1', 'ln1')
             elif 'norm2' in k:
                 new_k = k.replace('norm2', 'ln2')
-            elif 'mlp.fc1' in k:
-                new_k = k.replace('mlp.fc1', 'ffn.layers.0.0')
-            elif 'mlp.fc2' in k:
-                new_k = k.replace('mlp.fc2', 'ffn.layers.1')
+            # elif 'mlp.fc1' in k:
+            #     new_k = k.replace('mlp.fc1', 'ffn.layers.0.0')
+            # elif 'mlp.fc2' in k:
+            #     new_k = k.replace('mlp.fc2', 'ffn.layers.1')
             # elif 'attn.ln' in k:
             #     import pdb
             #     pdb.set_trace()
