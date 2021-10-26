@@ -13,8 +13,6 @@ def convert_vit(ckpt):
     new_ckpt = OrderedDict()
 
     for k, v in ckpt.items():
-        # import pdb
-        # pdb.set_trace()
         if k.startswith('head'):
             continue
         # if k.startswith('norm'):
@@ -25,8 +23,6 @@ def convert_vit(ckpt):
         #     else:
         #         new_k = k
         elif k.startswith('backbone.blocks'):
-            import pdb
-            pdb.set_trace()
             if 'norm1' in k:
                 new_k = k.replace('norm1', 'ln1')
             elif 'norm2' in k:
@@ -66,11 +62,13 @@ def main():
     if 'state_dict' in checkpoint:
         # timm checkpoint
         state_dict = checkpoint['state_dict']
-    # else:
-    #     state_dict = checkpoint
+    else:
+        state_dict = checkpoint
 
     weight = convert_vit(state_dict)
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
+    import pdb
+    pdb.set_trace()
     torch.save(weight, args.dst)
 
 
