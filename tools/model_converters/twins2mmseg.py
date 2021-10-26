@@ -67,8 +67,6 @@ def main():
 
     weight = convert_vit(state_dict)
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
-    import pdb
-    pdb.set_trace()
     torch.save(weight, args.dst)
 
 
