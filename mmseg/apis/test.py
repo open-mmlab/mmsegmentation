@@ -87,6 +87,7 @@ def single_gpu_test(model,
     loader_indices = data_loader.batch_sampler
 
     for batch_indices, data in zip(loader_indices, data_loader):
+        import pdb; pdb.set_trace()
         with torch.no_grad():
             result = model(return_loss=False, **data)
 
