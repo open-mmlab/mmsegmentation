@@ -338,13 +338,18 @@ class TransformerEncoderLayer(BaseModule):
             norm_cfg, embed_dims, postfix=2)
         self.add_module(self.norm2_name, norm2)
 
-        self.ffn = FFN(
-            embed_dims=embed_dims,
-            feedforward_channels=feedforward_channels,
-            num_fcs=num_fcs,
-            ffn_drop=drop_rate,
-            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
-            act_cfg=act_cfg)
+        self.mlp = Mlp(
+            in_features=embed_dims,
+            hidden_features=feedforward_channels,
+            act_layer=nn.GELU,
+            drop=drop_rate)
+        # self.ffn = FFN(
+        #     embed_dims=embed_dims,
+        #     feedforward_channels=feedforward_channels,
+        #     num_fcs=num_fcs,
+        #     ffn_drop=drop_rate,
+        #     dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+        #     act_cfg=act_cfg)
 
         self.drop_path = build_dropout(
             dict(type='DropPath', drop_prob=drop_path_rate)
