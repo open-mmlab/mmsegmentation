@@ -71,16 +71,13 @@ jobs:
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
         run: |
-          pip install timm
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
         if: ${{matrix.torch >= '1.6.0'}}
-      - name: Run unittests and generate coverage report and skip timm unittests
+      - name: Run unittests and skip timm unittests
         run: |
-          coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
-          coverage xml
-          coverage report -m
+          pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
         if: ${{matrix.torch < '1.6.0'}}
 
   build_cuda101:
@@ -150,16 +147,13 @@ jobs:
           TORCH_CUDA_ARCH_LIST=7.0 pip install .
       - name: Run unittests and generate coverage report
         run: |
-          pip install timm
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
         if: ${{matrix.torch >= '1.6.0'}}
-      - name: Run unittests and generate coverage report and skip timm unittests
+      - name: Run unittests and skip timm unittests
         run: |
-          coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
-          coverage xml
-          coverage report -m
+          pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
         if: ${{matrix.torch < '1.6.0'}}
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.10
