@@ -106,15 +106,15 @@ def test_timm_backbone():
         features_only=True,
         pretrained=False,
         output_stride=8)
-    imgs = torch.randn(1, 3, 32, 32)
+    imgs = torch.randn(1, 3, 16, 16)
     feats = model(imgs)
     feats = [feat.shape for feat in feats]
     assert len(feats) == 5
-    assert feats[0] == torch.Size((1, 192, 16, 16))
-    assert feats[1] == torch.Size((1, 768, 8, 8))
-    assert feats[2] == torch.Size((1, 1536, 4, 4))
-    assert feats[3] == torch.Size((1, 3072, 4, 4))
-    assert feats[4] == torch.Size((1, 6144, 4, 4))
+    assert feats[0] == torch.Size((1, 192, 8, 8))
+    assert feats[1] == torch.Size((1, 768, 4, 4))
+    assert feats[2] == torch.Size((1, 1536, 2, 2))
+    assert feats[3] == torch.Size((1, 3072, 2, 2))
+    assert feats[4] == torch.Size((1, 6144, 2, 2))
 
     # Test resnetv2_101x1_bitm from timm, features_only=True, output_stride=8
     model = TIMMBackbone(
@@ -122,15 +122,15 @@ def test_timm_backbone():
         features_only=True,
         pretrained=False,
         output_stride=8)
-    imgs = torch.randn(1, 3, 32, 32)
+    imgs = torch.randn(1, 3, 16, 16)
     feats = model(imgs)
     feats = [feat.shape for feat in feats]
     assert len(feats) == 5
-    assert feats[0] == torch.Size((1, 64, 16, 16))
-    assert feats[1] == torch.Size((1, 256, 8, 8))
-    assert feats[2] == torch.Size((1, 512, 4, 4))
-    assert feats[3] == torch.Size((1, 1024, 4, 4))
-    assert feats[4] == torch.Size((1, 2048, 4, 4))
+    assert feats[0] == torch.Size((1, 64, 8, 8))
+    assert feats[1] == torch.Size((1, 256, 4, 4))
+    assert feats[2] == torch.Size((1, 512, 2, 2))
+    assert feats[3] == torch.Size((1, 1024, 2, 2))
+    assert feats[4] == torch.Size((1, 2048, 2, 2))
 
     # Test resnetv2_101x3_bitm from timm, features_only=True, output_stride=8
     model = TIMMBackbone(
@@ -138,15 +138,15 @@ def test_timm_backbone():
         features_only=True,
         pretrained=False,
         output_stride=8)
-    imgs = torch.randn(1, 3, 32, 32)
+    imgs = torch.randn(1, 3, 16, 16)
     feats = model(imgs)
     feats = [feat.shape for feat in feats]
     assert len(feats) == 5
-    assert feats[0] == torch.Size((1, 192, 16, 16))
-    assert feats[1] == torch.Size((1, 768, 8, 8))
-    assert feats[2] == torch.Size((1, 1536, 4, 4))
-    assert feats[3] == torch.Size((1, 3072, 4, 4))
-    assert feats[4] == torch.Size((1, 6144, 4, 4))
+    assert feats[0] == torch.Size((1, 192, 8, 8))
+    assert feats[1] == torch.Size((1, 768, 4, 4))
+    assert feats[2] == torch.Size((1, 1536, 2, 2))
+    assert feats[3] == torch.Size((1, 3072, 2, 2))
+    assert feats[4] == torch.Size((1, 6144, 2, 2))
 
     # Test resnetv2_152x2_bitm from timm, features_only=True, output_stride=8
     model = TIMMBackbone(
@@ -154,15 +154,15 @@ def test_timm_backbone():
         features_only=True,
         pretrained=False,
         output_stride=8)
-    imgs = torch.randn(1, 3, 32, 32)
+    imgs = torch.randn(1, 3, 16, 16)
     feats = model(imgs)
     feats = [feat.shape for feat in feats]
     assert len(feats) == 5
-    assert feats[0] == torch.Size((1, 128, 16, 16))
-    assert feats[1] == torch.Size((1, 512, 8, 8))
-    assert feats[2] == torch.Size((1, 1024, 4, 4))
-    assert feats[3] == torch.Size((1, 2048, 4, 4))
-    assert feats[4] == torch.Size((1, 4096, 4, 4))
+    assert feats[0] == torch.Size((1, 128, 8, 8))
+    assert feats[1] == torch.Size((1, 512, 4, 4))
+    assert feats[2] == torch.Size((1, 1024, 2, 2))
+    assert feats[3] == torch.Size((1, 2048, 2, 2))
+    assert feats[4] == torch.Size((1, 4096, 2, 2))
 
     # Test resnetv2_152x4_bitm from timm, features_only=True, output_stride=8
     model = TIMMBackbone(
@@ -170,12 +170,12 @@ def test_timm_backbone():
         features_only=True,
         pretrained=False,
         output_stride=8)
-    imgs = torch.randn(1, 3, 32, 32)
+    imgs = torch.randn(1, 3, 16, 16)
     feats = model(imgs)
     feats = [feat.shape for feat in feats]
     assert len(feats) == 5
-    assert feats[0] == torch.Size((1, 256, 16, 16))
-    assert feats[1] == torch.Size((1, 1024, 8, 8))
-    assert feats[2] == torch.Size((1, 2048, 4, 4))
-    assert feats[3] == torch.Size((1, 4096, 4, 4))
-    assert feats[4] == torch.Size((1, 8192, 4, 4))
+    assert feats[0] == torch.Size((1, 256, 8, 8))
+    assert feats[1] == torch.Size((1, 1024, 4, 4))
+    assert feats[2] == torch.Size((1, 2048, 2, 2))
+    assert feats[3] == torch.Size((1, 4096, 2, 2))
+    assert feats[4] == torch.Size((1, 8192, 2, 2))
