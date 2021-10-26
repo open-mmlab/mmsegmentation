@@ -15,8 +15,6 @@ def convert_vit(ckpt):
     for k, v in ckpt.items():
         # import pdb
         # pdb.set_trace()
-        import pdb
-        pdb.set_trace()
         if k.startswith('head'):
             continue
         # if k.startswith('norm'):
