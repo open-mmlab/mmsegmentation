@@ -60,11 +60,12 @@ def main():
 
     checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')
 
-    if 'state_dict' in checkpoint:
-        # timm checkpoint
-        state_dict = checkpoint['state_dict']
-    else:
-        state_dict = checkpoint
+    state_dict = checkpoint
+    # if 'state_dict' in checkpoint:
+    #     # timm checkpoint
+    #     state_dict = checkpoint['state_dict']
+    # else:
+    #     state_dict = checkpoint
 
     weight = convert_vit(state_dict)
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
