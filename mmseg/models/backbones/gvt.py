@@ -335,7 +335,7 @@ class GroupBlock(TransformerEncoderLayer):
             dim,
             num_heads,
             mlp_ratio * dim,
-            qkv_bias,
+            qkv_bias=qkv_bias,
             drop_rate=drop,
             attn_drop_rate=attn_drop,
             drop_path_rate=drop_path,
