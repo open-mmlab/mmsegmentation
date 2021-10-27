@@ -170,7 +170,7 @@ class VisionTransformer(BaseModule):
                  with_cp=False,
                  pretrained=None,
                  init_cfg=None):
-        super(VisionTransformer, self).__init__(init_cfg)
+        super(VisionTransformer, self).__init__(init_cfg=init_cfg)
 
         if isinstance(img_size, int):
             img_size = to_2tuple(img_size)
@@ -263,8 +263,8 @@ class VisionTransformer(BaseModule):
 
     def init_weights(self):
         if (isinstance(self.pretrained, str)
-                or isinstance(self.init_cfg, dict) and 'type' in self.init_cfg
-                and self.init_cfg['type'] == 'Pretrained'):
+                or (isinstance(self.init_cfg, dict)
+                    and self.init_cfg.get('type') == 'Pretrained')):
             logger = get_root_logger()
             if self.pretrained:
                 checkpoint = _load_checkpoint(
