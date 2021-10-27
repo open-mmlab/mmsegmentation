@@ -3,30 +3,29 @@ from functools import partial
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import build_norm_layer, trunc_normal_init
+from mmcv.cnn import Linear, build_activation_layer, build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from timm.models.vision_transformer import Block as TimmBlock
 from torch.nn.modules.utils import _pair as to_2tuple
-
 from mmseg.models.builder import BACKBONES
 from mmseg.utils import get_root_logger
 
 
-class Mlp(nn.Module):
+class Mlp(BaseModule):
 
     def __init__(self,
                  in_features,
                  hidden_features=None,
                  out_features=None,
-                 act_layer=nn.GELU,
+                 act_cfg=dict(type='ReLU', inplace=True),
                  drop=0.):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = nn.Linear(in_features, hidden_features)
-        self.act = act_layer()
+        self.act = build_activation_layer(act_cfg)
         self.fc2 = nn.Linear(hidden_features, out_features)
         self.drop = nn.Dropout(drop)
 
@@ -170,6 +169,7 @@ class Attention(BaseModule):
             head_dim ** -0.5 if set. Default: None.
         attn_drop_rate (float, optional): Dropout ratio of attention weight.
             Default: 0.0
+         # TODO: fix  sr_ratio
         proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
         init_cfg (dict | None, optional): The Config for initialization.
             Default: None.
@@ -230,52 +230,6 @@ class Attention(BaseModule):
         x = (attn @ v).transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
         x = self.proj_drop(x)
-
-        return x
-
-
-class Block(nn.Module):
-
-    def __init__(self,
-                 dim,
-                 num_heads,
-                 mlp_ratio=4.,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 drop=0.,
-                 attn_drop=0.,
-                 drop_path=0.,
-                 act_layer=nn.GELU,
-                 norm_layer=nn.LayerNorm,
-                 sr_ratio=1):
-        super().__init__()
-        self.norm1 = norm_layer(dim)
-        self.attn = Attention(
-            dim,
-            num_heads=num_heads,
-            qkv_bias=qkv_bias,
-            qk_scale=qk_scale,
-            attn_drop=attn_drop,
-            proj_drop=drop,
-            sr_ratio=sr_ratio)
-        # NOTE: drop path for stochastic depth, we shall see if this is better
-        # than dropout here
-
-        self.drop_path = build_dropout(
-            dict(type='DropPath',
-                 drop_prob=drop_path)) if drop_path > 0. else nn.Identity()
-
-        self.norm2 = norm_layer(dim)
-        mlp_hidden_dim = int(dim * mlp_ratio)
-        self.mlp = Mlp(
-            in_features=dim,
-            hidden_features=mlp_hidden_dim,
-            act_layer=act_layer,
-            drop=drop)
-
-    def forward(self, x, H, W):
-        x = x + self.drop_path(self.attn(self.norm1(x), H, W))
-        x = x + self.drop_path(self.mlp(self.norm2(x)))
 
         return x
 
@@ -341,15 +295,8 @@ class TransformerEncoderLayer(BaseModule):
         self.mlp = Mlp(
             in_features=embed_dims,
             hidden_features=feedforward_channels,
-            act_layer=nn.GELU,
+            act_cfg=act_cfg,
             drop=drop_rate)
-        # self.ffn = FFN(
-        #     embed_dims=embed_dims,
-        #     feedforward_channels=feedforward_channels,
-        #     num_fcs=num_fcs,
-        #     ffn_drop=drop_rate,
-        #     dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
-        #     act_cfg=act_cfg)
 
         self.drop_path = build_dropout(
             dict(type='DropPath', drop_prob=drop_path_rate)
