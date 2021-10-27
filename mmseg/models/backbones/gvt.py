@@ -578,7 +578,7 @@ class CPVTV2(PyramidVisionTransformer):
                  norm_layer=nn.LayerNorm,
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
-                 block_cls=Block,
+                 block_cls=TransformerEncoderLayer,
                  F4=False,
                  extra_norm=False):
         super(CPVTV2, self).__init__(img_size, patch_size, in_chans,
