@@ -3,12 +3,14 @@ from functools import partial
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import Linear, build_activation_layer, build_norm_layer, trunc_normal_init
+from mmcv.cnn import (Linear, build_activation_layer, build_norm_layer,
+                      trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from timm.models.vision_transformer import Block as TimmBlock
 from torch.nn.modules.utils import _pair as to_2tuple
+
 from mmseg.models.builder import BACKBONES
 from mmseg.utils import get_root_logger
 
@@ -396,7 +398,7 @@ class PyramidVisionTransformer(nn.Module):
                  norm_layer=nn.LayerNorm,
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
-                 block_cls=Block):
+                 block_cls=TransformerEncoderLayer):
         super().__init__()
         print('drop_path_rate: --- ', drop_path_rate)
         self.num_classes = num_classes
