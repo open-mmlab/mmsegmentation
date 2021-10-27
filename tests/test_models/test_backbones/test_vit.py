@@ -118,3 +118,37 @@ def test_vit_backbone():
     feat = model(imgs)
     assert feat[0][0].shape == (1, 768, 14, 14)
     assert feat[0][1].shape == (1, 768)
+
+
+def test_vit_init():
+    model = VisionTransformer(pretrained=None, init_cfg=None)
+    assert model.init_cfg is None
+
+    model = VisionTransformer(
+        pretrained=None, init_cfg=dict(type='Pretrained', checkpoint='test'))
+    assert model.init_cfg == dict(type='Pretrained', checkpoint='test')
+
+    model = VisionTransformer(pretrained=None, init_cfg=123)
+    with pytest.raises(TypeError):
+        model.init_weights()
+
+    model = VisionTransformer(pretrained='test', init_cfg=None)
+    assert model.init_cfg == dict(type='Pretrained', checkpoint='test')
+
+    with pytest.raises(AssertionError):
+        model = VisionTransformer(
+            pretrained='test',
+            init_cfg=dict(type='Pretrained', checkpoint='test'))
+    with pytest.raises(AssertionError):
+        model = VisionTransformer(pretrained='test', init_cfg=123)
+
+    with pytest.raises(TypeError):
+        model = VisionTransformer(pretrained=123, init_cfg=None)
+
+    with pytest.raises(AssertionError):
+        model = VisionTransformer(
+            pretrained=123,
+            init_cfg=dict(type='Pretrained', checkpoint='test'))
+
+    with pytest.raises(AssertionError):
+        model = VisionTransformer(pretrained=123, init_cfg=123)
