@@ -40,7 +40,7 @@ class Mlp(BaseModule):
         return x
 
 
-class GroupAttention(nn.Module):
+class GroupAttention(BaseModule):
 
     def __init__(self,
                  dim,
@@ -61,8 +61,6 @@ class GroupAttention(nn.Module):
         head_dim = dim // num_heads
         self.scale = qk_scale or head_dim**-0.5
 
-        # self.q = nn.Linear(dim, dim, bias=qkv_bias)
-        # self.kv = nn.Linear(dim, dim * 2, bias=qkv_bias)
         self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop)
         self.proj = nn.Linear(dim, dim)
@@ -318,7 +316,7 @@ class TransformerEncoderLayer(BaseModule):
         return x
 
 
-class GroupBlock(TimmBlock):
+class GroupBlock(TransformerEncoderLayer):
 
     def __init__(self,
                  dim,
@@ -329,13 +327,16 @@ class GroupBlock(TimmBlock):
                  drop=0.,
                  attn_drop=0.,
                  drop_path=0.,
-                 act_layer=nn.GELU,
-                 norm_layer=nn.LayerNorm,
+                 act_cfg=dict(type='GELU'),
+                 norm_cfg=dict(type='LN'),
                  sr_ratio=1,
-                 ws=1):
+                 ws=1
+    ):
         super(GroupBlock,
-              self).__init__(dim, num_heads, mlp_ratio, qkv_bias, qk_scale,
-                             drop, attn_drop, drop_path, act_layer, norm_layer)
+              self).__init__(dim, num_heads, mlp_ratio*dim, qkv_bias, qk_scale,
+                             drop_rate=drop, attn_drop_rate=attn_drop, drop_path_rate=drop_path,
+                             act_cfg=act_cfg, norm_cfg=norm_cfg)
+
         del self.attn
         if ws == 1:
             self.attn = Attention(dim, num_heads, qkv_bias, qk_scale,
@@ -734,7 +735,7 @@ class ALTGVT(PCPVT):
                     drop=drop_rate,
                     attn_drop=attn_drop_rate,
                     drop_path=dpr[cur + i],
-                    norm_layer=norm_layer,
+                    norm_cfg=dict(type='LN'),
                     sr_ratio=sr_ratios[k],
                     ws=1 if i % 2 == 1 else wss[k]) for i in range(depths[k])
             ])
