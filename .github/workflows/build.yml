@@ -76,9 +76,11 @@ jobs:
           coverage xml
           coverage report -m
         if: ${{matrix.torch >= '1.5.0'}}
-      - name: Run unittests and skip timm unittests
+      - name: Skip timm unittests and generate coverage report
         run: |
-          pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+          coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+          coverage xml
+          coverage report -m
         if: ${{matrix.torch < '1.5.0'}}
 
   build_cuda101:
@@ -153,9 +155,11 @@ jobs:
           coverage xml
           coverage report -m
         if: ${{matrix.torch >= '1.5.0'}}
-      - name: Run unittests and skip timm unittests
+      - name: Skip timm unittests and generate coverage report
         run: |
-          pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+          coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+          coverage xml
+          coverage report -m
         if: ${{matrix.torch < '1.5.0'}}
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.10
