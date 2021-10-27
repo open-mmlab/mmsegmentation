@@ -121,34 +121,41 @@ def test_vit_backbone():
 
 
 def test_vit_init():
+    path = 'PATH_THAT_DO_NOT_EXIST'
+    # Test all combinations of pretrained and init_cfg
     model = VisionTransformer(pretrained=None, init_cfg=None)
     assert model.init_cfg is None
+    model.init_weights()
 
     model = VisionTransformer(
-        pretrained=None, init_cfg=dict(type='Pretrained', checkpoint='test'))
-    assert model.init_cfg == dict(type='Pretrained', checkpoint='test')
+        pretrained=None, init_cfg=dict(type='Pretrained', checkpoint=path))
+    assert model.init_cfg == dict(type='Pretrained', checkpoint=path)
+    # Test loading a checkpoint from an non-existent file
+    with pytest.raises(OSError):
+        model.init_weights()
 
     model = VisionTransformer(pretrained=None, init_cfg=123)
     with pytest.raises(TypeError):
         model.init_weights()
 
-    model = VisionTransformer(pretrained='test', init_cfg=None)
-    assert model.init_cfg == dict(type='Pretrained', checkpoint='test')
+    model = VisionTransformer(pretrained=path, init_cfg=None)
+    assert model.init_cfg == dict(type='Pretrained', checkpoint=path)
+    # Test loading a checkpoint from an non-existent file
+    with pytest.raises(OSError):
+        model.init_weights()
 
     with pytest.raises(AssertionError):
         model = VisionTransformer(
-            pretrained='test',
-            init_cfg=dict(type='Pretrained', checkpoint='test'))
+            pretrained=path, init_cfg=dict(type='Pretrained', checkpoint=path))
     with pytest.raises(AssertionError):
-        model = VisionTransformer(pretrained='test', init_cfg=123)
+        model = VisionTransformer(pretrained=path, init_cfg=123)
 
     with pytest.raises(TypeError):
         model = VisionTransformer(pretrained=123, init_cfg=None)
 
     with pytest.raises(AssertionError):
         model = VisionTransformer(
-            pretrained=123,
-            init_cfg=dict(type='Pretrained', checkpoint='test'))
+            pretrained=123, init_cfg=dict(type='Pretrained', checkpoint=path))
 
     with pytest.raises(AssertionError):
         model = VisionTransformer(pretrained=123, init_cfg=123)
