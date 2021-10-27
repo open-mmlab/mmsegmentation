@@ -330,12 +330,17 @@ class GroupBlock(TransformerEncoderLayer):
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  sr_ratio=1,
-                 ws=1
-    ):
-        super(GroupBlock,
-              self).__init__(dim, num_heads, mlp_ratio*dim, qkv_bias, qk_scale,
-                             drop_rate=drop, attn_drop_rate=attn_drop, drop_path_rate=drop_path,
-                             act_cfg=act_cfg, norm_cfg=norm_cfg)
+                 ws=1):
+        super(GroupBlock, self).__init__(
+            dim,
+            num_heads,
+            mlp_ratio * dim,
+            qkv_bias,
+            drop_rate=drop,
+            attn_drop_rate=attn_drop,
+            drop_path_rate=drop_path,
+            act_cfg=act_cfg,
+            norm_cfg=norm_cfg)
 
         del self.attn
         if ws == 1:
