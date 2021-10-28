@@ -53,7 +53,9 @@ def test_point_head_multiple_loss():
     output = point_head.forward_test(inputs, prev_output, None, test_cfg)
     assert output.shape == (1, point_head.num_classes, 180, 180)
 
-    fake_label = torch.ones([1, 180, 180], dtype=torch.long).cuda()
+    fake_label = torch.ones([1, 180, 180], dtype=torch.long)
+    if torch.cuda.is_available():
+        fake_label = fake_label.cuda()
     loss = point_head.losses(output, fake_label)
     assert 'pointloss_1' in loss
     assert 'pointloss_2' in loss
