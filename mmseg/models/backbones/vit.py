@@ -262,18 +262,11 @@ class VisionTransformer(BaseModule):
         return getattr(self, self.norm1_name)
 
     def init_weights(self):
-        if (isinstance(self.pretrained, str)
-                or (isinstance(self.init_cfg, dict)
-                    and self.init_cfg.get('type') == 'Pretrained')):
+        if (isinstance(self.init_cfg, dict)
+                and self.init_cfg.get('type') == 'Pretrained'):
             logger = get_root_logger()
-            if self.pretrained:
-                checkpoint = _load_checkpoint(
-                    self.pretrained, logger=logger, map_location='cpu')
-            else:
-                checkpoint = _load_checkpoint(
-                    self.init_cfg['checkpoint'],
-                    logger=logger,
-                    map_location='cpu')
+            checkpoint = _load_checkpoint(
+                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
 
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
@@ -294,9 +287,9 @@ class VisionTransformer(BaseModule):
                         (pos_size, pos_size), self.interpolate_mode)
 
             self.load_state_dict(state_dict, False)
-
-        elif self.pretrained is None:
+        elif self.init_cfg is not None:
             super(VisionTransformer, self).init_weights()
+        else:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
             trunc_normal_init(self.pos_embed, std=.02)
