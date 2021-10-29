@@ -63,8 +63,7 @@ class OHEMPixelSampler(BasePixelSampler):
                 threshold = max(min_threshold, self.thresh)
                 valid_seg_weight[seg_prob[valid_mask] < threshold] = 1.
             else:
-                if isinstance(self.context.loss_decode,
-                              nn.modules.container.ModuleList):
+                if isinstance(self.context.loss_decode, nn.ModuleList):
                     losses = 0.0
                     for loss_module in self.context.loss_decode:
                         losses += loss_module(

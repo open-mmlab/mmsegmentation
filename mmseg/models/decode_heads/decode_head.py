@@ -243,7 +243,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             seg_weight = None
         seg_label = seg_label.squeeze(1)
 
-        if isinstance(self.loss_decode, nn.modules.container.ModuleList):
+        if isinstance(self.loss_decode, nn.ModuleList):
             for loss_decode in self.loss_decode:
                 if loss_decode.loss_name not in loss:
                     loss[loss_decode.loss_name] = loss_decode(
