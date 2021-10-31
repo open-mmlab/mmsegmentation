@@ -208,7 +208,7 @@ mkdir loveda && cd loveda
 wget https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing
 
 # unzip
-unzip \*.zip
+unzip '*.zip'
 
 # Convert into segmentation splits
 mkdir -p img_dir/train img_dir/val img_dir/test ann_dir/train ann_dir/val
