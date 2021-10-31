@@ -253,3 +253,31 @@ Since we only support test models on this dataset, you may only download [the va
 ### Nighttime Driving
 
 Since we only support test models on this dataset, you may only download [the test set](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip).
+
+
+### LoveDA
+The data could be downloaded [here](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing)
+
+For LoveDA dataset, please run the following command to download and re-organize the dataset.
+
+```shell
+# download
+mkdir loveda && cd loveda
+wget https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing
+
+# unzip
+unzip \*.zip
+
+# Convert into segmentation splits
+mkdir -p img_dir/train img_dir/val img_dir/test ann_dir/train ann_dir/val
+mv Train\Rural\images_png\* img_dir\train
+mv Train\Urban\images_png\* img_dir\train
+mv Val\Rural\images_png\* img_dir\val
+mv Val\Uban\images_png\* img_dir\val
+mv Test\Rural\images_png\* img_dir\val
+mv Test\Uban\images_png\* img_dir\val
+mv Train\Rural\masks_png\* ann_dir\train
+mv Train\Uban\masks_png\* ann_dir\train
+mv Val\Rural\masks_png\* ann_dir\val
+mv Val\Uban\masks_png\* ann_dir\val
+```
