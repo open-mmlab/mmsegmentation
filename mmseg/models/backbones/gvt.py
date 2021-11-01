@@ -6,9 +6,7 @@ import torch.nn.functional as F
 from mmcv.cnn import (Linear, build_activation_layer, build_norm_layer,
                       trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
-from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
-from timm.models.vision_transformer import Block as TimmBlock
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.models.builder import BACKBONES
@@ -203,7 +201,8 @@ class Attention(BaseModule):
         if sr_ratio > 1:
             self.sr = nn.Conv2d(
                 dim, dim, kernel_size=sr_ratio, stride=sr_ratio)
-            self.norm = nn.LayerNorm(dim)
+            norm_cfg = dict(type='LN')
+            self.norm = build_norm_layer(norm_cfg, dim)[1]
 
     def forward(self, x, H, W):
         B, N, C = x.shape  # 1, 21760, 64
@@ -356,7 +355,7 @@ class GroupBlock(TransformerEncoderLayer):
         return x
 
 
-class PatchEmbed(nn.Module):
+class PatchEmbed(BaseModule):
     """Image to Patch Embedding."""
 
     def __init__(self, img_size=224, patch_size=16, in_chans=3, embed_dim=768):
@@ -374,7 +373,8 @@ class PatchEmbed(nn.Module):
         self.num_patches = self.H * self.W
         self.proj = nn.Conv2d(
             in_chans, embed_dim, kernel_size=patch_size, stride=patch_size)
-        self.norm = nn.LayerNorm(embed_dim)
+        norm_cfg = dict(type='LN')
+        self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
 
     def forward(self, x):
         B, C, H, W = x.shape
@@ -386,7 +386,7 @@ class PatchEmbed(nn.Module):
         return x, (H, W)
 
 
-class PyramidVisionTransformer(nn.Module):
+class PyramidVisionTransformer(BaseModule):
 
     def __init__(self,
                  img_size=224,
@@ -401,7 +401,7 @@ class PyramidVisionTransformer(nn.Module):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 norm_layer=nn.LayerNorm,
+                 norm_cfg=dict(type='LN'),
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
                  block_cls=TransformerEncoderLayer):
@@ -411,10 +411,10 @@ class PyramidVisionTransformer(nn.Module):
         self.depths = depths
 
         # patch_embed
-        self.patch_embeds = nn.ModuleList()
+        self.patch_embeds = ModuleList()
         self.pos_embeds = nn.ParameterList()
-        self.pos_drops = nn.ModuleList()
-        self.blocks = nn.ModuleList()
+        self.pos_drops = ModuleList()
+        self.blocks = ModuleList()
 
         for i in range(len(depths)):
             if i == 0:
@@ -437,7 +437,7 @@ class PyramidVisionTransformer(nn.Module):
         cur = 0
 
         for k in range(len(depths)):
-            _block = nn.ModuleList([
+            _block = ModuleList([
                 TransformerEncoderLayer(
                     embed_dims=embed_dims[k],
                     num_heads=num_heads[k],
@@ -455,7 +455,8 @@ class PyramidVisionTransformer(nn.Module):
             self.blocks.append(_block)
             cur += depths[k]
 
-        self.norm = norm_layer(embed_dims[-1])
+        self.norm_name, norm = build_norm_layer(
+            norm_cfg, embed_dims[-1], postfix=1)
 
         # cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims[-1]))
@@ -581,7 +582,7 @@ class CPVTV2(PyramidVisionTransformer):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 norm_layer=nn.LayerNorm,
+                 norm_cfg=dict(type='LN'),
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
                  block_cls=TransformerEncoderLayer,
@@ -590,17 +591,17 @@ class CPVTV2(PyramidVisionTransformer):
         super(CPVTV2, self).__init__(img_size, patch_size, in_chans,
                                      num_classes, embed_dims, num_heads,
                                      mlp_ratios, qkv_bias, qk_scale, drop_rate,
-                                     attn_drop_rate, drop_path_rate,
-                                     norm_layer, depths, sr_ratios, block_cls)
+                                     attn_drop_rate, drop_path_rate, norm_cfg,
+                                     depths, sr_ratios, block_cls)
         self.F4 = F4
         self.extra_norm = extra_norm
         if self.extra_norm:
-            self.norm_list = nn.ModuleList()
+            self.norm_list = ModuleList()
             for dim in embed_dims:
-                self.norm_list.append(norm_layer(dim))
+                self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
         del self.pos_embeds
         del self.cls_token
-        self.pos_block = nn.ModuleList(
+        self.pos_block = ModuleList(
             [PosCNN(embed_dim, embed_dim) for embed_dim in embed_dims])
         self.apply(self._init_weights)
 
@@ -672,7 +673,7 @@ class PCPVT(CPVTV2):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 norm_layer=nn.LayerNorm,
+                 norm_cfg=dict(type='LN'),
                  depths=[4, 4, 4],
                  sr_ratios=[4, 2, 1],
                  block_cls=TransformerEncoderLayer,
@@ -682,7 +683,7 @@ class PCPVT(CPVTV2):
               self).__init__(img_size, patch_size, in_chans, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
                              qk_scale, drop_rate, attn_drop_rate,
-                             drop_path_rate, norm_layer, depths, sr_ratios,
+                             drop_path_rate, norm_cfg, depths, sr_ratios,
                              block_cls, F4, extra_norm)
 
 
@@ -701,7 +702,7 @@ class ALTGVT(PCPVT):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.2,
-                 norm_layer=nn.LayerNorm,
+                 norm_cfg=dict(type='LN'),
                  depths=[4, 4, 4],
                  sr_ratios=[4, 2, 1],
                  block_cls=GroupBlock,
@@ -709,28 +710,27 @@ class ALTGVT(PCPVT):
                  F4=False,
                  extra_norm=False,
                  strides=(2, 2, 2)):
-        super(ALTGVT,
-              self).__init__(img_size, patch_size, in_chans, num_classes,
-                             embed_dims, num_heads, mlp_ratios, qkv_bias,
-                             qk_scale, drop_rate, attn_drop_rate,
-                             drop_path_rate, norm_layer, depths, sr_ratios,
-                             block_cls, F4)
+        super(ALTGVT, self).__init__(img_size, patch_size, in_chans,
+                                     num_classes, embed_dims, num_heads,
+                                     mlp_ratios, qkv_bias, qk_scale, drop_rate,
+                                     attn_drop_rate, drop_path_rate, norm_cfg,
+                                     depths, sr_ratios, block_cls, F4)
         del self.blocks
         self.wss = wss
         self.extra_norm = extra_norm
         self.strides = strides
         if self.extra_norm:
-            self.norm_list = nn.ModuleList()
+            self.norm_list = ModuleList()
             for dim in embed_dims:
-                self.norm_list.append(norm_layer(dim))
+                self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
         # transformer encoder
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]  # stochastic depth decay rule
         cur = 0
-        self.blocks = nn.ModuleList()
+        self.blocks = ModuleList()
         for k in range(len(depths)):
-            _block = nn.ModuleList([
+            _block = ModuleList([
                 block_cls(
                     dim=embed_dims[k],
                     num_heads=num_heads[k],
@@ -749,7 +749,7 @@ class ALTGVT(PCPVT):
 
         if strides != (2, 2, 2):
             del self.patch_embeds
-            self.patch_embeds = nn.ModuleList()
+            self.patch_embeds = ModuleList()
             s = 1
             for i in range(len(depths)):
                 if i == 0:
@@ -806,7 +806,7 @@ class pcpvt_small_v0(CPVTV2):
             num_heads=[1, 2, 5, 8],
             mlp_ratios=[8, 8, 4, 4],
             qkv_bias=True,
-            norm_layer=partial(nn.LayerNorm, eps=1e-6),
+            norm_cfg=dict(type='LN'),
             depths=[3, 4, 6, 3],
             sr_ratios=[8, 4, 2, 1],
             drop_rate=0.0,
@@ -823,7 +823,7 @@ class pcpvt_base_v0(CPVTV2):
             num_heads=[1, 2, 5, 8],
             mlp_ratios=[8, 8, 4, 4],
             qkv_bias=True,
-            norm_layer=partial(nn.LayerNorm, eps=1e-6),
+            norm_cfg=dict(type='LN'),
             depths=[3, 4, 18, 3],
             sr_ratios=[8, 4, 2, 1],
             drop_rate=0.0,
@@ -840,7 +840,7 @@ class pcpvt_large(CPVTV2):
             num_heads=[1, 2, 5, 8],
             mlp_ratios=[8, 8, 4, 4],
             qkv_bias=True,
-            norm_layer=partial(nn.LayerNorm, eps=1e-6),
+            norm_cfg=dict(type='LN'),
             depths=[3, 8, 27, 3],
             sr_ratios=[8, 4, 2, 1],
             drop_rate=0.0,
@@ -857,7 +857,7 @@ class alt_gvt_small(ALTGVT):
             num_heads=[2, 4, 8, 16],
             mlp_ratios=[4, 4, 4, 4],
             qkv_bias=True,
-            norm_layer=partial(nn.LayerNorm, eps=1e-6),
+            norm_cfg=dict(type='LN'),
             depths=[2, 2, 10, 4],
             wss=[7, 7, 7, 7],
             sr_ratios=[8, 4, 2, 1],
@@ -876,7 +876,7 @@ class alt_gvt_base(ALTGVT):
             num_heads=[3, 6, 12, 24],
             mlp_ratios=[4, 4, 4, 4],
             qkv_bias=True,
-            norm_layer=partial(nn.LayerNorm, eps=1e-6),
+            norm_cfg=dict(type='LN'),
             depths=[2, 2, 18, 2],
             wss=[7, 7, 7, 7],
             sr_ratios=[8, 4, 2, 1],
@@ -895,7 +895,7 @@ class alt_gvt_large(ALTGVT):
             num_heads=[4, 8, 16, 32],
             mlp_ratios=[4, 4, 4, 4],
             qkv_bias=True,
-            norm_layer=partial(nn.LayerNorm, eps=1e-6),
+            norm_cfg=dict(type='LN'),
             depths=[2, 2, 18, 2],
             wss=[7, 7, 7, 7],
             sr_ratios=[8, 4, 2, 1],
