@@ -49,8 +49,7 @@ def test_ohem_sampler():
     assert seg_weight.shape[1:] == seg_logit.shape[2:]
     assert seg_weight.sum() == 200
 
-
-def test_ohem_sampler_multiple_loss():
+    # test multiple losses case
     with pytest.raises(AssertionError):
         # seg_logit and seg_label must be of the same size
         sampler = OHEMPixelSampler(context=_context_for_ohem_multiple_loss())
@@ -58,7 +57,7 @@ def test_ohem_sampler_multiple_loss():
         seg_label = torch.randint(0, 19, size=(1, 1, 89, 89))
         sampler.sample(seg_logit, seg_label)
 
-    # test with thresh
+    # test with thresh in multiple losses case
     sampler = OHEMPixelSampler(
         context=_context_for_ohem_multiple_loss(), thresh=0.7, min_kept=200)
     seg_logit = torch.randn(1, 19, 45, 45)
@@ -68,7 +67,7 @@ def test_ohem_sampler_multiple_loss():
     assert seg_weight.shape[1:] == seg_logit.shape[2:]
     assert seg_weight.sum() > 200
 
-    # test w.o thresh
+    # test w.o thresh in multiple losses case
     sampler = OHEMPixelSampler(
         context=_context_for_ohem_multiple_loss(), min_kept=200)
     seg_logit = torch.randn(1, 19, 45, 45)
