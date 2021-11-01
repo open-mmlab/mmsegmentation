@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 
 from ..builder import PIXEL_SAMPLERS
@@ -62,14 +63,19 @@ class OHEMPixelSampler(BasePixelSampler):
                 threshold = max(min_threshold, self.thresh)
                 valid_seg_weight[seg_prob[valid_mask] < threshold] = 1.
             else:
+                if not isinstance(self.context.loss_decode, nn.ModuleList):
+                    losses_decode = [self.context.loss_decode]
+                else:
+                    losses_decode = self.context.loss_decode
                 losses = 0.0
-                for loss_module in self.context.loss_decode:
+                for loss_module in losses_decode:
                     losses += loss_module(
                         seg_logit,
                         seg_label,
                         weight=None,
                         ignore_index=self.context.ignore_index,
                         reduction_override='none')
+
                 # faster than topk according to https://github.com/pytorch/pytorch/issues/22812  # noqa
                 _, sort_indices = losses[valid_mask].sort(descending=True)
                 valid_seg_weight[sort_indices[:batch_kept]] = 1.
