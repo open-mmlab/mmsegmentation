@@ -562,7 +562,7 @@ class PosCNN(nn.Module):
                 out_channels=embed_dim,
                 kernel_size=3,
                 stride=s,
-                dilation=1,
+                padding=1,
                 bias=True,
                 groups=embed_dim))
         self.s = s
