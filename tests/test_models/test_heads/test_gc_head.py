@@ -6,11 +6,11 @@ from .utils import to_cuda
 
 
 def test_gc_head():
-    head = GCHead(in_channels=32, channels=16, num_classes=19)
+    head = GCHead(in_channels=4, channels=4, num_classes=19)
     assert len(head.convs) == 2
     assert hasattr(head, 'gc_block')
-    inputs = [torch.randn(1, 32, 45, 45)]
+    inputs = [torch.randn(1, 4, 23, 23)]
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
     outputs = head(inputs)
-    assert outputs.shape == (1, head.num_classes, 45, 45)
+    assert outputs.shape == (1, head.num_classes, 23, 23)

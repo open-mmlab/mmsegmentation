@@ -16,17 +16,27 @@ def test_fastscnn_backbone():
             lower_in_channels=128)
 
     # Test FastSCNN Standard Forward
-    model = FastSCNN()
+    model = FastSCNN(
+        in_channels=3,
+        downsample_dw_channels=(4, 6),
+        global_in_channels=8,
+        global_block_channels=(8, 12, 16),
+        global_block_strides=(2, 2, 1),
+        global_out_channels=16,
+        higher_in_channels=8,
+        lower_in_channels=16,
+        fusion_out_channels=16,
+    )
     model.init_weights()
     model.train()
     batch_size = 4
-    imgs = torch.randn(batch_size, 3, 512, 1024)
+    imgs = torch.randn(batch_size, 3, 64, 128)
     feat = model(imgs)
 
     assert len(feat) == 3
     # higher-res
-    assert feat[0].shape == torch.Size([batch_size, 64, 64, 128])
+    assert feat[0].shape == torch.Size([batch_size, 8, 8, 16])
     # lower-res
-    assert feat[1].shape == torch.Size([batch_size, 128, 16, 32])
+    assert feat[1].shape == torch.Size([batch_size, 16, 2, 4])
     # FFM output
-    assert feat[2].shape == torch.Size([batch_size, 128, 64, 128])
+    assert feat[2].shape == torch.Size([batch_size, 16, 8, 16])

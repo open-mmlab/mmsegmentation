@@ -10,13 +10,13 @@ def test_dpt_head():
         # input_transform must be 'multiple_select'
         head = DPTHead(
             in_channels=[768, 768, 768, 768],
-            channels=256,
+            channels=4,
             num_classes=19,
             in_index=[0, 1, 2, 3])
 
     head = DPTHead(
         in_channels=[768, 768, 768, 768],
-        channels=256,
+        channels=4,
         num_classes=19,
         in_index=[0, 1, 2, 3],
         input_transform='multiple_select')
@@ -29,7 +29,7 @@ def test_dpt_head():
     # test readout operation
     head = DPTHead(
         in_channels=[768, 768, 768, 768],
-        channels=256,
+        channels=4,
         num_classes=19,
         in_index=[0, 1, 2, 3],
         input_transform='multiple_select',
@@ -39,7 +39,7 @@ def test_dpt_head():
 
     head = DPTHead(
         in_channels=[768, 768, 768, 768],
-        channels=256,
+        channels=4,
         num_classes=19,
         in_index=[0, 1, 2, 3],
         input_transform='multiple_select',

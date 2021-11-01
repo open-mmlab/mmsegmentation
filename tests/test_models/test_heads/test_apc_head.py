@@ -10,25 +10,25 @@ def test_apc_head():
 
     with pytest.raises(AssertionError):
         # pool_scales must be list|tuple
-        APCHead(in_channels=32, channels=16, num_classes=19, pool_scales=1)
+        APCHead(in_channels=8, channels=2, num_classes=19, pool_scales=1)
 
     # test no norm_cfg
-    head = APCHead(in_channels=32, channels=16, num_classes=19)
+    head = APCHead(in_channels=8, channels=2, num_classes=19)
     assert not _conv_has_norm(head, sync_bn=False)
 
     # test with norm_cfg
     head = APCHead(
-        in_channels=32,
-        channels=16,
+        in_channels=8,
+        channels=2,
         num_classes=19,
         norm_cfg=dict(type='SyncBN'))
     assert _conv_has_norm(head, sync_bn=True)
 
     # fusion=True
-    inputs = [torch.randn(1, 32, 45, 45)]
+    inputs = [torch.randn(1, 8, 45, 45)]
     head = APCHead(
-        in_channels=32,
-        channels=16,
+        in_channels=8,
+        channels=2,
         num_classes=19,
         pool_scales=(1, 2, 3),
         fusion=True)
@@ -42,10 +42,10 @@ def test_apc_head():
     assert outputs.shape == (1, head.num_classes, 45, 45)
 
     # fusion=False
-    inputs = [torch.randn(1, 32, 45, 45)]
+    inputs = [torch.randn(1, 8, 45, 45)]
     head = APCHead(
-        in_channels=32,
-        channels=16,
+        in_channels=8,
+        channels=2,
         num_classes=19,
         pool_scales=(1, 2, 3),
         fusion=False)

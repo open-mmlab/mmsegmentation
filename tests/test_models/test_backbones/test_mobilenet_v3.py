@@ -32,24 +32,24 @@ def test_mobilenet_v3():
     model.init_weights()
     model.train()
 
-    imgs = torch.randn(2, 3, 224, 224)
+    imgs = torch.randn(2, 3, 56, 56)
     feat = model(imgs)
     assert len(feat) == 3
-    assert feat[0].shape == (2, 16, 112, 112)
-    assert feat[1].shape == (2, 16, 56, 56)
-    assert feat[2].shape == (2, 576, 28, 28)
+    assert feat[0].shape == (2, 16, 28, 28)
+    assert feat[1].shape == (2, 16, 14, 14)
+    assert feat[2].shape == (2, 576, 7, 7)
 
     # Test MobileNetV3 with arch = 'large'
     model = MobileNetV3(arch='large', out_indices=(1, 3, 16))
     model.init_weights()
     model.train()
 
-    imgs = torch.randn(2, 3, 224, 224)
+    imgs = torch.randn(2, 3, 56, 56)
     feat = model(imgs)
     assert len(feat) == 3
-    assert feat[0].shape == (2, 16, 112, 112)
-    assert feat[1].shape == (2, 24, 56, 56)
-    assert feat[2].shape == (2, 960, 28, 28)
+    assert feat[0].shape == (2, 16, 28, 28)
+    assert feat[1].shape == (2, 24, 14, 14)
+    assert feat[2].shape == (2, 960, 7, 7)
 
     # Test MobileNetV3 with norm_eval True, with_cp True and frozen_stages=5
     model = MobileNetV3(norm_eval=True, with_cp=True, frozen_stages=5)
@@ -59,9 +59,9 @@ def test_mobilenet_v3():
     model.init_weights()
     model.train()
 
-    imgs = torch.randn(2, 3, 224, 224)
+    imgs = torch.randn(2, 3, 56, 56)
     feat = model(imgs)
     assert len(feat) == 3
-    assert feat[0].shape == (2, 16, 112, 112)
-    assert feat[1].shape == (2, 16, 56, 56)
-    assert feat[2].shape == (2, 576, 28, 28)
+    assert feat[0].shape == (2, 16, 28, 28)
+    assert feat[1].shape == (2, 16, 14, 14)
+    assert feat[2].shape == (2, 576, 7, 7)
