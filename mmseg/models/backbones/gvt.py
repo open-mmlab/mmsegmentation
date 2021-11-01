@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import (Linear, build_activation_layer, build_norm_layer,
-                      trunc_normal_init)
+                      trunc_normal_init, build_conv_layer)
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from torch.nn.modules.utils import _pair as to_2tuple
@@ -19,7 +19,7 @@ class Mlp(BaseModule):
                  in_features,
                  hidden_features=None,
                  out_features=None,
-                 act_cfg=dict(type='ReLU', inplace=True),
+                 act_cfg=dict(type='GELU'),
                  drop=0.):
         super().__init__()
         out_features = out_features or in_features
@@ -199,8 +199,12 @@ class Attention(BaseModule):
 
         self.sr_ratio = sr_ratio
         if sr_ratio > 1:
-            self.sr = nn.Conv2d(
-                dim, dim, kernel_size=sr_ratio, stride=sr_ratio)
+            self.sr = build_conv_layer(
+                dict(type='Conv2d'),
+                in_channels=dim,
+                out_channels=dim,
+                kernel_size=sr_ratio,
+                stride=sr_ratio)
             norm_cfg = dict(type='LN')
             self.norm = build_norm_layer(norm_cfg, dim)[1]
 
@@ -371,8 +375,12 @@ class PatchEmbed(BaseModule):
         self.H, self.W = img_size[0] // patch_size[0], img_size[
             1] // patch_size[1]
         self.num_patches = self.H * self.W
-        self.proj = nn.Conv2d(
-            in_chans, embed_dim, kernel_size=patch_size, stride=patch_size)
+        self.sr = build_conv_layer(
+            dict(type='Conv2d'),
+            in_channels=in_chans,
+            out_channels=embed_dim,
+            kernel_size=patch_size,
+            stride=patch_size)
         norm_cfg = dict(type='LN')
         self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
 
@@ -548,8 +556,15 @@ class PosCNN(nn.Module):
     def __init__(self, in_chans, embed_dim=768, s=1):
         super(PosCNN, self).__init__()
         self.proj = nn.Sequential(
-            nn.Conv2d(
-                in_chans, embed_dim, 3, s, 1, bias=True, groups=embed_dim))
+            build_conv_layer(
+            dict(type='Conv2d'),
+            in_channels=in_chans,
+            out_channels=embed_dim,
+            kernel_size=3,
+            stride=s,
+            dilation=1,
+            bias=True,
+            groups=embed_dim))
         self.s = s
 
     def forward(self, x, H, W):
