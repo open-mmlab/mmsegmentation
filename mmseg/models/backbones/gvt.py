@@ -3,8 +3,8 @@ from functools import partial
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import (Linear, build_activation_layer, build_norm_layer,
-                      trunc_normal_init, build_conv_layer)
+from mmcv.cnn import (Linear, build_activation_layer, build_conv_layer,
+                      build_norm_layer, trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from torch.nn.modules.utils import _pair as to_2tuple
@@ -375,7 +375,7 @@ class PatchEmbed(BaseModule):
         self.H, self.W = img_size[0] // patch_size[0], img_size[
             1] // patch_size[1]
         self.num_patches = self.H * self.W
-        self.sr = build_conv_layer(
+        self.proj = build_conv_layer(
             dict(type='Conv2d'),
             in_channels=in_chans,
             out_channels=embed_dim,
@@ -557,14 +557,14 @@ class PosCNN(nn.Module):
         super(PosCNN, self).__init__()
         self.proj = nn.Sequential(
             build_conv_layer(
-            dict(type='Conv2d'),
-            in_channels=in_chans,
-            out_channels=embed_dim,
-            kernel_size=3,
-            stride=s,
-            dilation=1,
-            bias=True,
-            groups=embed_dim))
+                dict(type='Conv2d'),
+                in_channels=in_chans,
+                out_channels=embed_dim,
+                kernel_size=3,
+                stride=s,
+                dilation=1,
+                bias=True,
+                groups=embed_dim))
         self.s = s
 
     def forward(self, x, H, W):
