@@ -6,13 +6,13 @@ from mmseg.models.backbones.swin import SwinBlock, SwinTransformer
 
 def test_swin_block():
     # test SwinBlock structure and forward
-    block = SwinBlock(embed_dims=64, num_heads=4, feedforward_channels=256)
-    assert block.ffn.embed_dims == 64
+    block = SwinBlock(embed_dims=32, num_heads=4, feedforward_channels=128)
+    assert block.ffn.embed_dims == 32
     assert block.attn.w_msa.num_heads == 4
-    assert block.ffn.feedforward_channels == 256
-    x = torch.randn(1, 56 * 56, 64)
+    assert block.ffn.feedforward_channels == 128
+    x = torch.randn(1, 56 * 56, 32)
     x_out = block(x, (56, 56))
-    assert x_out.shape == torch.Size([1, 56 * 56, 64])
+    assert x_out.shape == torch.Size([1, 56 * 56, 32])
 
     # Test BasicBlock with checkpoint forward
     block = SwinBlock(
@@ -37,11 +37,11 @@ def test_swin_transformer():
 
     # test pretrained image size
     with pytest.raises(AssertionError):
-        SwinTransformer(pretrain_img_size=(224, 224, 224))
+        SwinTransformer(pretrain_img_size=(112, 112, 112))
 
     # Test absolute position embedding
-    temp = torch.randn((1, 3, 224, 224))
-    model = SwinTransformer(pretrain_img_size=224, use_abs_pos_embed=True)
+    temp = torch.randn((1, 3, 112, 112))
+    model = SwinTransformer(pretrain_img_size=112, use_abs_pos_embed=True)
     model.init_weights()
     model(temp)
 
@@ -89,7 +89,7 @@ def test_swin_transformer():
         assert not p.requires_grad
 
     # Test Swin with checkpoint forward
-    temp = torch.randn((1, 3, 112, 112))
+    temp = torch.randn((1, 3, 56, 56))
     model = SwinTransformer(with_cp=True)
     for m in model.modules():
         if isinstance(m, SwinBlock):
