@@ -76,7 +76,7 @@ class DepthFusionModule1(MultiheadAttention):
                  init_cfg=None,
                  batch_first=True,
                  qkv_bias=False,
-                 norm_cfg=dict(type='LN')):
+                 norm_cfg=dict(type='LN', eps=1e-6)):
         super().__init__(
             embed_dims * 2,
             num_heads,
@@ -88,6 +88,7 @@ class DepthFusionModule1(MultiheadAttention):
             bias=qkv_bias)
         self.embed_dims = embed_dims
         self.gamma = Scale(0)
+        self.norm=build_norm_layer(norm_cfg, embed_dims*2)[1]
 
     def forward(self, color, depth):
         h, w = color.size(2), color.size(3)
@@ -95,13 +96,13 @@ class DepthFusionModule1(MultiheadAttention):
         qkv = nchw_to_nlc(qkv)
         out = self.attn(query=qkv, key=qkv, value=qkv, need_weights=False)[0]
         out = self.gamma(out) + qkv
-        color = nlc_to_nchw(out, (h, w))[:, :self.embed_dims]
+        color = nlc_to_nchw(self.norm(out), (h, w))[:, :self.embed_dims]
         return color
 
 
 class DepthFusionModule2(SelfAttentionBlock):
 
-    def __init__(self, embed_dims, num_heads):
+    def __init__(self, embed_dims, num_heads,norm_cfg=dict(type='BN')):
         super(DepthFusionModule2, self).__init__(
             key_in_channels=embed_dims,
             query_in_channels=embed_dims,
@@ -114,12 +115,13 @@ class DepthFusionModule2(SelfAttentionBlock):
             key_query_norm=False,
             value_out_num_convs=1,
             value_out_norm=False,
-            matmul_norm=False,
+            matmul_norm=True,
             with_out=False,
             conv_cfg=None,
             norm_cfg=None,
             act_cfg=None)
         self.gamma = Scale(0)
+        self.norm=build_norm_layer(norm_cfg, embed_dims)[1]
         self.spatial_gap = nn.Conv2d(embed_dims, 1, kernel_size=1, bias=True)
 
     def forward(self, x, d):
@@ -128,13 +130,13 @@ class DepthFusionModule2(SelfAttentionBlock):
         out = super(DepthFusionModule2, self).forward(x, x, d)
 
         out = self.gamma(out) + x
-        return out
+        return self.norm(out)
 
 
 class DepthFusionModule3(CBAM):
 
     def __init__(self, embed_dims, num_heads):
-        super(DepthFusionModule3,self).__init__(embed_dims * 2)
+        super(DepthFusionModule3, self).__init__(embed_dims * 2)
         self.embed_dims = embed_dims
         self.gamma = Scale(0)
 
@@ -147,15 +149,17 @@ class DepthFusionModule3(CBAM):
 
 class DepthDownsample(BaseModule):
 
-    def __init__(self,
-                 in_channels,
-                 embed_dims=64,
-                 num_stages=4,
-                 num_heads=[1, 2, 4, 8],
-                 patch_sizes=[7, 3, 3, 3],
-                 strides=[4, 2, 2, 2],
-                 norm_cfg=dict(type='LN', eps=1e-6),
-                 pretrained=None):
+    def __init__(
+            self,
+            in_channels,
+            embed_dims=64,
+            num_stages=4,
+            num_heads=[1, 2, 4, 8],
+            patch_sizes=[7, 3, 3, 3],
+            # patch_sizes=[4, 2, 2, 2],
+            strides=[4, 2, 2, 2],
+            norm_cfg=dict(type='LN', eps=1e-6),
+            pretrained=None):
         super(DepthDownsample, self).__init__()
         assert (in_channels == 1)
 
@@ -171,8 +175,11 @@ class DepthDownsample(BaseModule):
                     kernel_size=patch_sizes[i],
                     stride=strides[i],
                     padding=patch_sizes[i] // 2,
+                    # padding=0,
                     pad_to_patch_size=False,
-                    norm_cfg=norm_cfg))
+                    norm_cfg=norm_cfg,
+                    # concat=True
+                    ))
             in_channels = embed_dims_i
 
     def init_weights(self):
@@ -206,13 +213,13 @@ class MitFuse(BaseModule):
         self.num_heads = kwargs["num_heads"]
         self.num_stages = kwargs["num_stages"]
         self.color = MixVisionTransformer(3, **kwargs)
-        self.depth = MixVisionTransformer(1, **kwargs)
-        # self.depth = DepthDownsample(
-        #     1,
-        #     embed_dims=kwargs["embed_dims"],
-        #     num_heads=self.num_heads,
-        #     pretrained=kwargs["pretrained"]
-        #     if "pretrained" in kwargs.keys() else None)
+        # self.depth = MixVisionTransformer(1, **kwargs)
+        self.depth = DepthDownsample(
+            1,
+            embed_dims=kwargs["embed_dims"],
+            num_heads=self.num_heads,
+            pretrained=kwargs["pretrained"]
+            if "pretrained" in kwargs.keys() else None)
 
         self.dams = ModuleList()
         self.dfms = ModuleList()
@@ -239,7 +246,7 @@ class MitFuse(BaseModule):
                     constant_init(m.bias, 0)
         # load pretrained model if exists
         self.color.init_weights()
-        self.depth.init_weights()
+        # self.depth.init_weights()
 
     def forward(self, x):
         c = x[:, :3]

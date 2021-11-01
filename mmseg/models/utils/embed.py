@@ -37,7 +37,8 @@ class PatchEmbed(BaseModule):
                  dilation=1,
                  pad_to_patch_size=True,
                  norm_cfg=None,
-                 init_cfg=None):
+                 init_cfg=None,
+                 concat=False):
         super(PatchEmbed, self).__init__()
 
         self.embed_dims = embed_dims
@@ -63,10 +64,12 @@ class PatchEmbed(BaseModule):
 
         # Use conv layer to embed
         conv_type = conv_type or 'Conv2d'
+        self.embed_dims = embed_dims
+        self.concat = concat
         self.projection = build_conv_layer(
             dict(type=conv_type),
             in_channels=in_channels,
-            out_channels=embed_dims,
+            out_channels=1 if self.concat else embed_dims,
             kernel_size=kernel_size,
             stride=stride,
             padding=padding,
@@ -91,6 +94,9 @@ class PatchEmbed(BaseModule):
                     x, (0, self.patch_size[1] - W % self.patch_size[1], 0, 0))
 
         x = self.projection(x)
+        if self.concat:
+            x = x.repeat(1, self.embed_dims, 1, 1)
+
         self.DH, self.DW = x.shape[2], x.shape[3]
         x = x.flatten(2).transpose(1, 2)
 
