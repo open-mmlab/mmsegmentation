@@ -249,9 +249,14 @@ class PointHead(BaseCascadeDecodeHead):
     def losses(self, point_logits, point_label):
         """Compute segmentation loss."""
         loss = dict()
-        for loss_module in self.loss_decode:
+        if not isinstance(self.loss_decode, nn.ModuleList):
+            losses_decode = [self.loss_decode]
+        else:
+            losses_decode = self.loss_decode
+        for loss_module in losses_decode:
             loss['point' + loss_module.loss_name] = loss_module(
                 point_logits, point_label, ignore_index=self.ignore_index)
+
         loss['acc_point'] = accuracy(point_logits, point_label)
         return loss
 
