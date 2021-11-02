@@ -334,9 +334,6 @@ class STDCNet(BaseModule):
             outs.append(x)
         if self.with_final_conv:
             outs[-1] = self.final_conv(outs[-1])
-        # Size of feature maps in `outs`:
-        # [1/2, 1/4, 1/8, 1/16, 1/32] of input image.
-        # Channels will be matched with the parameter `channels`.
         return tuple(outs)
 
 
@@ -352,13 +349,13 @@ class STDCContextPathNet(BaseModule):
             Default: 128.
         ffm_cfg (dict): Config dict for Feature Fusion Module. Default:
             dict(in_channels=512, out_channels=256, scale_factor=4).
-        norm_cfg (dict): Config dict for normalization layer.
-            Default: dict(type='BN').
         upsample_mode (str): Algorithm used for upsampling:
                 ``'nearest'`` | ``'linear'`` | ``'bilinear'`` | ``'bicubic'`` |
                 ``'trilinear'``. Default: ``'nearest'``.
         align_corners (str): align_corners argument of F.interpolate.
             Default: False.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN').
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     """
@@ -369,9 +366,9 @@ class STDCContextPathNet(BaseModule):
                  out_channels=128,
                  ffm_cfg=dict(
                      in_channels=512, out_channels=256, scale_factor=4),
-                 norm_cfg=dict(type='BN'),
                  upsample_mode='nearest',
                  align_corners=None,
+                 norm_cfg=dict(type='BN'),
                  init_cfg=None):
         super().__init__(init_cfg)
         self.backbone = build_backbone(stdc_cfg)
@@ -393,7 +390,6 @@ class STDCContextPathNet(BaseModule):
 
         self.upsample_mode = upsample_mode
         self.align_corners = align_corners
-        self.scale = 0.5
 
     def forward(self, x):
         outs = list(self.backbone(x))
@@ -418,4 +414,4 @@ class STDCContextPathNet(BaseModule):
             feature_up = self.convs[i](feature_up)
             arms_out.append(feature_up)
         feat_fuse = self.ffm(outs[0], arms_out[1])
-        return [feat_fuse] + list(reversed(arms_out)) + [prev_stages_out[-1]]
+        return [prev_stages_out[-1]] + list(reversed(arms_out)) + [feat_fuse]
