@@ -7,7 +7,8 @@ model = dict(
             type='STDCNet',
             stdc_type='STDCNet1446',
             init_cfg=dict(
-                type='Pretrained', checkpoint='./pretrained/pretrained_stdc-1446.pth'),
+                type='Pretrained',
+                checkpoint='./pretrained/pretrained_stdc-1446.pth'),
             in_channels=3,
             channels=(32, 64, 256, 512, 1024),
             bottleneck_type='cat',
