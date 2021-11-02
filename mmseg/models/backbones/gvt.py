@@ -394,8 +394,70 @@ class PatchEmbed(BaseModule):
         return x, (H, W)
 
 
+# borrow from PVT https://github.com/whai362/PVT.git
 class PyramidVisionTransformer(BaseModule):
+    """Pyramid Vision Transformer.
 
+    borrow from PVT https://github.com/whai362/PVT.git
+    Scale <https://arxiv.org/abs/2010.11929>`_.
+
+    Args:
+        img_size (int | tuple): Input image size. Default: 224.
+        patch_size (int): The patch size. Default: 16.
+        in_chans (int): Number of input channels. Default: 3.
+        num_classes (int):
+        embed_dims (list): embedding dimension. Default: [64, 128, 256, 512].
+
+
+                 num_heads=[1, 2, 4, 8],
+                 mlp_ratios=[4, 4, 4, 4],
+                 qkv_bias=False,
+                 qk_scale=None,
+                 drop_rate=0.,
+                 attn_drop_rate=0.,
+                 drop_path_rate=0.,
+                 norm_cfg=dict(type='LN'),
+                 depths=[3, 4, 6, 3],
+                 sr_ratios=[8, 4, 2, 1],
+                 block_cls=TransformerEncoderLayer
+
+        num_layers (int): depth of transformer. Default: 12.
+        num_heads (int): number of attention heads. Default: 12.
+        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+            Default: 4.
+        out_indices (list | tuple | int): Output from which stages.
+            Default: -1.
+        qkv_bias (bool): enable bias for qkv if True. Default: True.
+        drop_rate (float): Probability of an element to be zeroed.
+            Default 0.0
+        attn_drop_rate (float): The drop out rate for attention layer.
+            Default 0.0
+        drop_path_rate (float): stochastic depth rate. Default 0.0
+        with_cls_token (bool): Whether concatenating class token into image
+            tokens as transformer input. Default: True.
+        output_cls_token (bool): Whether output the cls_token. If set True,
+            `with_cls_token` must be True. Default: False.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN')
+        act_cfg (dict): The activation config for FFNs.
+            Defalut: dict(type='GELU').
+        patch_norm (bool): Whether to add a norm in PatchEmbed Block.
+            Default: False.
+        final_norm (bool): Whether to add a additional layer to normalize
+            final feature map. Default: False.
+        interpolate_mode (str): Select the interpolate mode for position
+            embeding vector resize. Default: bicubic.
+        num_fcs (int): The number of fully-connected layers for FFNs.
+            Default: 2.
+        norm_eval (bool): Whether to set norm layers to eval mode, namely,
+            freeze running stats (mean and var). Note: Effect on Batch Norm
+            and its variants only. Default: False.
+        with_cp (bool): Use checkpoint or not. Using checkpoint will save
+            some memory while slowing down the training speed. Default: False.
+        pretrained (str, optional): model pretrained path. Default: None.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
+    """
     def __init__(self,
                  img_size=224,
                  patch_size=16,
@@ -415,6 +477,7 @@ class PyramidVisionTransformer(BaseModule):
                  block_cls=TransformerEncoderLayer):
         super().__init__()
         print('drop_path_rate: --- ', drop_path_rate)
+        import pdb; pdb.set_trace()
         self.num_classes = num_classes
         self.depths = depths
 
@@ -583,7 +646,12 @@ class PosCNN(nn.Module):
 
 
 class CPVTV2(PyramidVisionTransformer):
-
+    """
+       Use useful results from CPVT. PEG and GAP.
+       Therefore, cls token is no longer required.
+       PEG is used to encode the absolute position on the fly, which greatly affects the performance when input resolution
+       changes during the training (such as segmentation, detection)
+    """
     def __init__(self,
                  img_size=224,
                  patch_size=4,
