@@ -17,23 +17,13 @@ class Mlp(BaseModule):
     """feed forward network in Attention Module.
 
     Args:
-        in_features The feature dimension. Defaults: 256.
-            hidden_features=None,
-                 out_features=None,
-                 act_cfg=dict(type='GELU'),
-                 drop=0.
-        dim (int): Number of input channels.
-        num_heads (int): Number of attention heads. Default: 8
-        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
-            Default: False.
-        qk_scale (float | None, optional): Override default qk scale of
-            head_dim ** -0.5 if set. Default: None.
-        attn_drop (float, optional): Dropout ratio of attention weight.
-            Default: 0.0
-        proj_drop (float, optional): Dropout ratio of output. Default: 0.
-        sr_ratio (float): kernel_size of conv. Default: 1.
-        init_cfg (dict | None, optional): The Config for initialization.
+        in_features (int): The feature dimension.
+        hidden_features (int/None): The feature dimension of hidden layer.
             Default: None.
+        out_features(int/None): he feature dimension of output layer.
+            Default: None.
+        act_cfg(dict): The activation config for FFNs. Default: dict(type='GELU').
+        drop(float, optional): Dropout ratio of output. Default: 0.
     """
 
     def __init__(self,
@@ -43,8 +33,6 @@ class Mlp(BaseModule):
                  act_cfg=dict(type='GELU'),
                  drop=0.):
         super().__init__()
-        import pdb
-        pdb.set_trace()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = nn.Linear(in_features, hidden_features)
@@ -469,8 +457,6 @@ class PyramidVisionTransformer(BaseModule):
                  block_cls=TransformerEncoderLayer):
         super().__init__()
         print('drop_path_rate: --- ', drop_path_rate)
-        import pdb
-        pdb.set_trace()
         self.num_classes = num_classes
         self.depths = depths
 
