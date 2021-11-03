@@ -26,11 +26,10 @@ class STDCHead(FCNHead):
             torch.tensor([-1, -1, -1, -1, 8, -1, -1, -1, -1],
                          dtype=torch.float32).requires_grad_(False).reshape(
                              (1, 1, 3, 3)))
-
         self.fuse_kernel = torch.nn.Parameter(
             torch.tensor([[6. / 10], [3. / 10], [1. / 10]],
                          dtype=torch.float32).reshape(1, 3, 1,
-                                                      1).requires_grad_(False))
+                                                      1)).requires_grad_(False)
 
     def losses(self, seg_logit, seg_label):
         """Compute Detail Aggregation Loss."""
