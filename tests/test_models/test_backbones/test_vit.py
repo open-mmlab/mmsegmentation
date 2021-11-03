@@ -128,6 +128,8 @@ def test_vit_init():
     assert model.init_cfg is None
     model.init_weights()
 
+    # pretrained=None
+    # init_cfg loads pretrain from an non-existent file
     model = VisionTransformer(
         pretrained=None, init_cfg=dict(type='Pretrained', checkpoint=path))
     assert model.init_cfg == dict(type='Pretrained', checkpoint=path)
@@ -135,28 +137,40 @@ def test_vit_init():
     with pytest.raises(OSError):
         model.init_weights()
 
+    # pretrained=None
+    # init_cfg=123, whose type is unsupported
     model = VisionTransformer(pretrained=None, init_cfg=123)
     with pytest.raises(TypeError):
         model.init_weights()
 
+    # pretrained loads pretrain from an non-existent file
+    # init_cfg=None
     model = VisionTransformer(pretrained=path, init_cfg=None)
     assert model.init_cfg == dict(type='Pretrained', checkpoint=path)
     # Test loading a checkpoint from an non-existent file
     with pytest.raises(OSError):
         model.init_weights()
 
+    # pretrained loads pretrain from an non-existent file
+    # init_cfg loads pretrain from an non-existent file
     with pytest.raises(AssertionError):
         model = VisionTransformer(
             pretrained=path, init_cfg=dict(type='Pretrained', checkpoint=path))
     with pytest.raises(AssertionError):
         model = VisionTransformer(pretrained=path, init_cfg=123)
 
+    # pretrain=123, whose type is unsupported
+    # init_cfg=None
     with pytest.raises(TypeError):
         model = VisionTransformer(pretrained=123, init_cfg=None)
 
+    # pretrain=123, whose type is unsupported
+    # init_cfg loads pretrain from an non-existent file
     with pytest.raises(AssertionError):
         model = VisionTransformer(
             pretrained=123, init_cfg=dict(type='Pretrained', checkpoint=path))
 
+    # pretrain=123, whose type is unsupported
+    # init_cfg=123, whose type is unsupported
     with pytest.raises(AssertionError):
         model = VisionTransformer(pretrained=123, init_cfg=123)
