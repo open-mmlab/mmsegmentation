@@ -95,21 +95,21 @@ def test_hrnet_backbone():
     model.init_weights()
     model.train()
 
-    imgs = torch.randn(1, 3, 256, 256)
+    imgs = torch.randn(1, 3, 64, 64)
     feats = model(imgs)
     assert len(feats) == 4
-    assert feats[0].shape == torch.Size([1, 32, 64, 64])
-    assert feats[3].shape == torch.Size([1, 256, 8, 8])
+    assert feats[0].shape == torch.Size([1, 32, 16, 16])
+    assert feats[3].shape == torch.Size([1, 256, 2, 2])
 
     # Test single scale output
     model = HRNet(extra=extra, multiscale_output=False)
     model.init_weights()
     model.train()
 
-    imgs = torch.randn(1, 3, 256, 256)
+    imgs = torch.randn(1, 3, 64, 64)
     feats = model(imgs)
     assert len(feats) == 1
-    assert feats[0].shape == torch.Size([1, 32, 64, 64])
+    assert feats[0].shape == torch.Size([1, 32, 16, 16])
 
     # Test HRNET with two stage frozen
     frozen_stages = 2
