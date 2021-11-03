@@ -14,6 +14,27 @@ from mmseg.utils import get_root_logger
 
 
 class Mlp(BaseModule):
+    """feed forward network in Attention Module.
+
+    Args:
+        in_features The feature dimension. Defaults: 256.
+            hidden_features=None,
+                 out_features=None,
+                 act_cfg=dict(type='GELU'),
+                 drop=0.
+        dim (int): Number of input channels.
+        num_heads (int): Number of attention heads. Default: 8
+        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
+            Default: False.
+        qk_scale (float | None, optional): Override default qk scale of
+            head_dim ** -0.5 if set. Default: None.
+        attn_drop (float, optional): Dropout ratio of attention weight.
+            Default: 0.0
+        proj_drop (float, optional): Dropout ratio of output. Default: 0.
+        sr_ratio (float): kernel_size of conv. Default: 1.
+        init_cfg (dict | None, optional): The Config for initialization.
+            Default: None.
+    """
 
     def __init__(self,
                  in_features,
@@ -22,6 +43,8 @@ class Mlp(BaseModule):
                  act_cfg=dict(type='GELU'),
                  drop=0.):
         super().__init__()
+        import pdb
+        pdb.set_trace()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = nn.Linear(in_features, hidden_features)
@@ -158,17 +181,16 @@ class Attention(BaseModule):
     position bias.
 
     Args:
-        embed_dims (int): Number of input channels.
-        num_heads (int): Number of attention heads.
-        window_size (tuple[int]): The height and width of the window.
+        dim (int): Number of input channels.
+        num_heads (int): Number of attention heads. Default: 8
         qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
-            Default: True.
+            Default: False.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
-        attn_drop_rate (float, optional): Dropout ratio of attention weight.
+        attn_drop (float, optional): Dropout ratio of attention weight.
             Default: 0.0
-         # TODO: fix  sr_ratio
-        proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
+        proj_drop (float, optional): Dropout ratio of output. Default: 0.
+        sr_ratio (float): kernel_size of conv. Default: 1.
         init_cfg (dict | None, optional): The Config for initialization.
             Default: None.
     """
@@ -256,8 +278,7 @@ class TransformerEncoderLayer(BaseModule):
             Defalut: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
-            # TODO: fix  sr_ratio
-        sr_ratio (float):
+        sr_ratio (float): kernel_size of conv in Attention modules. Default: 1.
         batch_first (bool): Key, Query and Value are shape of
             (batch, n, embed_dim)
             or (n, batch, embed_dim). Default: True.
@@ -360,7 +381,14 @@ class GroupBlock(TransformerEncoderLayer):
 
 
 class PatchEmbed(BaseModule):
-    """Image to Patch Embedding."""
+    """Image to Patch Embedding.
+
+    Args:
+       img_size (int): Input image size. Default: 224.
+       patch_size (int): The patch size. Default: 16.
+       in_chans (int): Number of input channels. Default: 3.
+       embed_dim (int): The feature dimension. Default: 768
+    """
 
     def __init__(self, img_size=224, patch_size=16, in_chans=3, embed_dim=768):
         super().__init__()
@@ -399,7 +427,6 @@ class PyramidVisionTransformer(BaseModule):
     """Pyramid Vision Transformer.
 
     borrow from PVT https://github.com/whai362/PVT.git
-    Scale <https://arxiv.org/abs/2010.11929>`_.
 
     Args:
         img_size (int | tuple): Input image size. Default: 224.
@@ -418,10 +445,10 @@ class PyramidVisionTransformer(BaseModule):
         drop_path_rate (float): stochastic depth rate. Default 0.0
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
-        depths . Default   *********
-        sr_ratios . Default [8, 4, 2, 1]   ***********
+        depths (list): depths of each stage. Default [3, 4, 6, 3]
+        sr_ratios (list): kernel_size of conv in each Attn module in
+            Transformer encoder layer. Default: 1.
         block_cls (BaseModule): Transformer Encoder. Default TransformerEncoderLayer
-
     """
 
     def __init__(self,
@@ -638,11 +665,11 @@ class CPVTV2(PyramidVisionTransformer):
                  block_cls=TransformerEncoderLayer,
                  F4=False,
                  extra_norm=False):
-        super(CPVTV2, self).__init__(img_size, patch_size, in_chans,
-                                     num_classes, embed_dims, num_heads,
-                                     mlp_ratios, qkv_bias, drop_rate,
-                                     attn_drop_rate, drop_path_rate, norm_cfg,
-                                     depths, sr_ratios, block_cls)
+        super(CPVTV2,
+              self).__init__(img_size, patch_size, in_chans, num_classes,
+                             embed_dims, num_heads, mlp_ratios, qkv_bias,
+                             drop_rate, attn_drop_rate, drop_path_rate,
+                             norm_cfg, depths, sr_ratios, block_cls)
         self.F4 = F4
         self.extra_norm = extra_norm
         if self.extra_norm:
@@ -731,9 +758,9 @@ class PCPVT(CPVTV2):
         super(PCPVT,
               self).__init__(img_size, patch_size, in_chans, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
-                             drop_rate, attn_drop_rate,
-                             drop_path_rate, norm_cfg, depths, sr_ratios,
-                             block_cls, F4, extra_norm)
+                             drop_rate, attn_drop_rate, drop_path_rate,
+                             norm_cfg, depths, sr_ratios, block_cls, F4,
+                             extra_norm)
 
 
 class ALTGVT(PCPVT):
@@ -759,11 +786,11 @@ class ALTGVT(PCPVT):
                  F4=False,
                  extra_norm=False,
                  strides=(2, 2, 2)):
-        super(ALTGVT, self).__init__(img_size, patch_size, in_chans,
-                                     num_classes, embed_dims, num_heads,
-                                     mlp_ratios, qkv_bias, drop_rate,
-                                     attn_drop_rate, drop_path_rate, norm_cfg,
-                                     depths, sr_ratios, block_cls, F4)
+        super(ALTGVT,
+              self).__init__(img_size, patch_size, in_chans, num_classes,
+                             embed_dims, num_heads, mlp_ratios, qkv_bias,
+                             drop_rate, attn_drop_rate, drop_path_rate,
+                             norm_cfg, depths, sr_ratios, block_cls, F4)
         del self.blocks
         self.wss = wss
         self.extra_norm = extra_norm

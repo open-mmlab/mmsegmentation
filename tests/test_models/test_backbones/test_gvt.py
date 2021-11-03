@@ -1,10 +1,10 @@
 import pytest
 import torch
 
-from mmseg.models.backbones.gvt import (pcpvt_small_v0, pcpvt_base_v0,
-                                        pcpvt_large, alt_gvt_small,
-                                        alt_gvt_base, alt_gvt_large,
-                                        PyramidVisionTransformer)
+from mmseg.models.backbones.gvt import (PyramidVisionTransformer, alt_gvt_base,
+                                        alt_gvt_large, alt_gvt_small,
+                                        pcpvt_base_v0, pcpvt_large,
+                                        pcpvt_small_v0)
 
 
 def test_PyramidVisionTransformer():
@@ -118,5 +118,3 @@ def test_alt_gvt_large():
     # Test convertible img_size
     imgs = torch.randn(1, 3, 128, 128)
     model(imgs)
-
-
