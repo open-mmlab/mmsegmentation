@@ -123,6 +123,7 @@ def test_vit_backbone():
 def test_vit_init():
     path = 'PATH_THAT_DO_NOT_EXIST'
     # Test all combinations of pretrained and init_cfg
+    # pretrained=None, init_cfg=None
     model = VisionTransformer(pretrained=None, init_cfg=None)
     assert model.init_cfg is None
     model.init_weights()
