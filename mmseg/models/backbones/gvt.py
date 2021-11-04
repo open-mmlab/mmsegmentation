@@ -91,18 +91,12 @@ class GroupAttention(BaseModule):
         self.ws = ws
 
     def forward(self, x, H, W):
-        """
-        There are two implementations for this function, zero padding or mask.
+        """There are two implementations for this function, zero padding or
+        mask.
+
         We don't observe obvious difference for both. You can choose any one,
         we recommend forward_padding because it's neat. However, the masking
         implementation is more reasonable and accurate.
-        Args:
-            x:
-            H:
-            W:
-
-        Returns:
-
         """
         return self.forward_mask(x, H, W)
 
@@ -277,7 +271,7 @@ class TransformerEncoderLayer(BaseModule):
             Default: 2.
         qkv_bias (bool): enable bias for qkv if True. Default: True
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         sr_ratio (float): kernel_size of conv in Attention modules. Default: 1.
@@ -358,7 +352,7 @@ class GroupBlock(TransformerEncoderLayer):
            Default: 0.0
        drop_path (float): stochastic depth rate. Default 0.0.
        act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            Default: dict(type='GELU').
        norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
        sr_ratio (float): kernel_size of conv in Attention modules. Default: 1.
