@@ -1,5 +1,45 @@
 ## Changelog
 
+### V0.19 (11/02/2021)
+
+**Highlights**
+
+- Support TIMMBackbone wrapper ([#998](https://github.com/open-mmlab/mmsegmentation/pull/998))
+- Support custom hook ([#428](https://github.com/open-mmlab/mmsegmentation/pull/428))
+- Add codespell pre-commit hook ([#920](https://github.com/open-mmlab/mmsegmentation/pull/920))
+- Add FastFCN benchmark on ADE20K ([#972](https://github.com/open-mmlab/mmsegmentation/pull/972))
+
+**New Features**
+
+- Support TIMMBackbone wrapper ([#998](https://github.com/open-mmlab/mmsegmentation/pull/998))
+- Support custom hook ([#428](https://github.com/open-mmlab/mmsegmentation/pull/428))
+- Add FastFCN benchmark on ADE20K ([#972](https://github.com/open-mmlab/mmsegmentation/pull/972))
+- Add codespell pre-commit hook and fix typos ([#920](https://github.com/open-mmlab/mmsegmentation/pull/920))
+
+**Improvements**
+
+- Make inputs & channels smaller in unittests ([#1004](https://github.com/open-mmlab/mmsegmentation/pull/1004))
+- Change `self.loss_decode` back to `dict` in Single Loss situation ([#1002](https://github.com/open-mmlab/mmsegmentation/pull/1002))
+
+**Bug Fixes**
+
+- Fix typo in usage example ([#1003](https://github.com/open-mmlab/mmsegmentation/pull/1003))
+- Add contiguous after permutation in ViT ([#992](https://github.com/open-mmlab/mmsegmentation/pull/992))
+- Fix the invalid link ([#985](https://github.com/open-mmlab/mmsegmentation/pull/985))
+- Fix bug in CI with python 3.9 ([#994](https://github.com/open-mmlab/mmsegmentation/pull/994))
+- Fix bug when loading class name form file in custom dataset ([#923](https://github.com/open-mmlab/mmsegmentation/pull/923))
+
+**Contributors**
+
+- @ShoupingShan made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/923
+- @RockeyCoss made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/954
+- @HarborYuan made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/992
+- @lkm2835 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1003
+- @gszh made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/428
+- @VVsssssk
+- @MengzhangLI
+- @Junjun2016
+
 ### V0.18 (10/07/2021)
 
 **Highlights**

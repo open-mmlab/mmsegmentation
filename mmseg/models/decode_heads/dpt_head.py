@@ -227,7 +227,7 @@ class DPTHead(BaseDecodeHead):
         expand_channels (bool): Whether expand the channels in post process
             block. Default: False.
         act_cfg (dict): The activation config for residual conv unit.
-            Defalut dict(type='ReLU').
+            Default dict(type='ReLU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='BN').
     """

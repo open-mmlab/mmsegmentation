@@ -29,7 +29,7 @@ To use other repositories' pre-trained models, it is necessary to convert keys.
 We provide a script [`mit2mmseg.py`](../../tools/model_converters/mit2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/NVlabs/SegFormer) to MMSegmentation style.
 
 ```shell
-python tools/model_converters/swin2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
+python tools/model_converters/mit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
 ```
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
