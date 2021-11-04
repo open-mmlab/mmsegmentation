@@ -13,7 +13,7 @@ from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
-                            ConcatDataset, CustomDataset, PascalVOCDataset, LoveDADataset,
+                            ConcatDataset, CustomDataset, PascalVOCDataset,
                             RepeatDataset, build_dataset)
 
 
