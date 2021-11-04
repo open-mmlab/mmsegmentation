@@ -21,7 +21,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile', color_type='unchanged'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(6000, 6000),
+        img_scale=(3000, 3000),
         #img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
@@ -37,8 +37,8 @@ data = dict(
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='ndsm/training',
-        ann_dir='annotations/training',
+        img_dir='ndsm/training/block',
+        ann_dir='annotations/training/block',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,

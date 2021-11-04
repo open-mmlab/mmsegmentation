@@ -6,7 +6,13 @@ _base_ = [
 
 model = dict(
     pretrained='pretrain/mit_b0.pth',
-    backbone=dict(type='MitFuse', in_channels=4),
+    backbone=dict(
+        type='MitFuse',
+        in_channels=4,
+        weight=0.8,
+        overlap=True,
+        dsa_mode='concat',
+        same_branch=False),
     decode_head=dict(num_classes=6))
 
 # optimizer

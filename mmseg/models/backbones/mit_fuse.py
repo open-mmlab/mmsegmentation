@@ -88,7 +88,7 @@ class DepthFusionModule1(MultiheadAttention):
             bias=qkv_bias)
         self.embed_dims = embed_dims
         self.gamma = Scale(0)
-        self.norm=build_norm_layer(norm_cfg, embed_dims*2)[1]
+        self.norm = build_norm_layer(norm_cfg, embed_dims * 2)[1]
 
     def forward(self, color, depth):
         h, w = color.size(2), color.size(3)
@@ -102,7 +102,11 @@ class DepthFusionModule1(MultiheadAttention):
 
 class DepthFusionModule2(SelfAttentionBlock):
 
-    def __init__(self, embed_dims, num_heads,norm_cfg=dict(type='BN')):
+    def __init__(self,
+                 embed_dims,
+                 num_heads,
+                 norm_cfg=dict(type='BN'),
+                 weight=1.0):
         super(DepthFusionModule2, self).__init__(
             key_in_channels=embed_dims,
             query_in_channels=embed_dims,
@@ -121,13 +125,14 @@ class DepthFusionModule2(SelfAttentionBlock):
             norm_cfg=None,
             act_cfg=None)
         self.gamma = Scale(0)
-        self.norm=build_norm_layer(norm_cfg, embed_dims)[1]
+        self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
         self.spatial_gap = nn.Conv2d(embed_dims, 1, kernel_size=1, bias=True)
+        self.weight = weight
 
     def forward(self, x, d):
         """Forward function."""
         d = self.spatial_gap(d)
-        out = super(DepthFusionModule2, self).forward(x, x, d)
+        out = super(DepthFusionModule2, self).forward(x, x, d, self.weight)
 
         out = self.gamma(out) + x
         return self.norm(out)
@@ -149,20 +154,19 @@ class DepthFusionModule3(CBAM):
 
 class DepthDownsample(BaseModule):
 
-    def __init__(
-            self,
-            in_channels,
-            embed_dims=64,
-            num_stages=4,
-            num_heads=[1, 2, 4, 8],
-            patch_sizes=[7, 3, 3, 3],
-            # patch_sizes=[4, 2, 2, 2],
-            strides=[4, 2, 2, 2],
-            norm_cfg=dict(type='LN', eps=1e-6),
-            pretrained=None):
+    def __init__(self,
+                 in_channels,
+                 embed_dims=64,
+                 num_stages=4,
+                 num_heads=[1, 2, 4, 8],
+                 strides=[4, 2, 2, 2],
+                 overlap=True,
+                 norm_cfg=dict(type='LN', eps=1e-6),
+                 pretrained=None):
         super(DepthDownsample, self).__init__()
         assert (in_channels == 1)
 
+        patch_sizes = [7, 3, 3, 3] if overlap else [4, 2, 2, 2]
         self.pretrained = pretrained
         self.num_heads = num_heads
         self.layers = ModuleList()
@@ -174,12 +178,11 @@ class DepthDownsample(BaseModule):
                     embed_dims=embed_dims_i,
                     kernel_size=patch_sizes[i],
                     stride=strides[i],
-                    padding=patch_sizes[i] // 2,
-                    # padding=0,
+                    padding=patch_sizes[i] // 2 if overlap else 0,
                     pad_to_patch_size=False,
                     norm_cfg=norm_cfg,
                     # concat=True
-                    ))
+                ))
             in_channels = embed_dims_i
 
     def init_weights(self):
@@ -212,22 +215,36 @@ class MitFuse(BaseModule):
 
         self.num_heads = kwargs["num_heads"]
         self.num_stages = kwargs["num_stages"]
+        self.weight = kwargs["weight"]
+        self.overlap = kwargs["overlap"]
+        self.dsa_mode = kwargs["dsa_mode"]
+        self.same_branch = kwargs["same_branch"]
+        kwargs.pop("weight")
+        kwargs.pop("overlap")
+        kwargs.pop("dsa_mode")
+        kwargs.pop("same_branch")
+
         self.color = MixVisionTransformer(3, **kwargs)
-        # self.depth = MixVisionTransformer(1, **kwargs)
         self.depth = DepthDownsample(
             1,
             embed_dims=kwargs["embed_dims"],
             num_heads=self.num_heads,
-            pretrained=kwargs["pretrained"]
-            if "pretrained" in kwargs.keys() else None)
+            overlap=self.overlap,
+            pretrained=kwargs["pretrained"] if "pretrained" in kwargs.keys()
+            else None) if not self.same_branch else MixVisionTransformer(
+                1, **kwargs)
 
         self.dams = ModuleList()
         self.dfms = ModuleList()
         for i in range(self.num_stages):
             embed_dims_i = kwargs["embed_dims"] * self.num_heads[i]
             # self.dams.append(DepthAlignModule(embed_dims_i))
-            self.dfms.append(
-                DepthFusionModule2(embed_dims_i, self.num_heads[i]))
+            if self.dsa_mode != 'none':
+                self.dfms.append(
+                    DepthFusionModule2(
+                        embed_dims_i, self.num_heads[i], weight=self.weight
+                    ) if self.dsa_mode == 'add' else DepthFusionModule1(
+                        embed_dims_i, self.num_heads[i]))
 
     def init_weights(self):
         for m in self.modules():
