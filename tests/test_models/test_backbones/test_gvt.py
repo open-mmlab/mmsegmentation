@@ -53,7 +53,10 @@ def test_ALTGVT():
 
 def test_pcpvt_small():
     # test pcpvt_small_v0 structure and forward
-
+    imgs = torch.randn(1, 3, 224, 224)
+    model = alt_gvt_small()
+    model.init_weights()
+    model(imgs)
 
 
 def test_pcpvt_base():
@@ -64,11 +67,6 @@ def test_pcpvt_base():
     model.init_weights()
     model(imgs)
 
-    # Test convertible img_size
-    imgs = torch.randn(1, 3, 128, 128)
-    model(imgs)
-
-
 
 def test_pcpvt_large():
     # Test img_size isinstance tuple
@@ -76,11 +74,6 @@ def test_pcpvt_large():
     model = pcpvt_large()
     model.init_weights()
     model(imgs)
-
-    # Test convertible img_size
-    imgs = torch.randn(1, 3, 128, 128)
-    model(imgs)
-
 
 
 def test_alt_gvt_small():
@@ -90,11 +83,6 @@ def test_alt_gvt_small():
     model.init_weights()
     model(imgs)
 
-    # Test convertible img_size
-    imgs = torch.randn(1, 3, 128, 128)
-    model(imgs)
-
-
 
 def test_alt_gvt_base():
     # Test img_size isinstance tuple
@@ -103,18 +91,10 @@ def test_alt_gvt_base():
     model.init_weights()
     model(imgs)
 
-    # Test convertible img_size
-    imgs = torch.randn(1, 3, 128, 128)
-    model(imgs)
-
 
 def test_alt_gvt_large():
     # Test img_size isinstance tuple
     imgs = torch.randn(1, 3, 224, 224)
     model = alt_gvt_large()
     model.init_weights()
-    model(imgs)
-
-    # Test convertible img_size
-    imgs = torch.randn(1, 3, 128, 128)
     model(imgs)

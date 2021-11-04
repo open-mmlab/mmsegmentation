@@ -1,9 +1,7 @@
-from functools import partial
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import (Linear, build_activation_layer, build_conv_layer,
+from mmcv.cnn import (build_activation_layer, build_conv_layer,
                       build_norm_layer, trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
@@ -22,7 +20,8 @@ class Mlp(BaseModule):
             Default: None.
         out_features(int/None): he feature dimension of output layer.
             Default: None.
-        act_cfg(dict): The activation config for FFNs. Default: dict(type='GELU').
+        act_cfg(dict): The activation config for FFNs.
+            Default: dict(type='GELU').
         drop(float, optional): Dropout ratio of output. Default: 0.
     """
 
@@ -50,6 +49,21 @@ class Mlp(BaseModule):
 
 
 class GroupAttention(BaseModule):
+    """implementation of proposed Locally-grouped self-attention(LSA).
+
+    Args:
+        dim (int): Number of input channels.
+        num_heads (int): Number of attention heads. Default: 8
+        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
+            Default: False.
+        qk_scale (float | None, optional): Override default qk scale of
+            head_dim ** -0.5 if set. Default: None.
+        attn_drop (float, optional): Dropout ratio of attention weight.
+            Default: 0.0
+        proj_drop (float, optional): Dropout ratio of output. Default: 0.
+        ws (int): the use of LSA or GSA. Default: 1.
+        sr_ratio (float): kernel_size of conv. Default: 1.
+    """
 
     def __init__(self,
                  dim,
@@ -248,7 +262,7 @@ class Attention(BaseModule):
 
 
 class TransformerEncoderLayer(BaseModule):
-    """Implements one encoder layer in Twins.
+    """Implements one encoder layer in Twins-PCPVT.
 
     Args:
         embed_dims (int): The feature dimension.
@@ -329,6 +343,27 @@ class TransformerEncoderLayer(BaseModule):
 
 
 class GroupBlock(TransformerEncoderLayer):
+    """Implements one encoder layer in Twins-ALTGVT.
+
+    Args:
+       dim (int): The feature dimension.
+       num_heads (int): Parallel attention heads.
+       mlp_ratio (float): The hidden dimension for FFNs.
+       qkv_bias (bool): enable bias for qkv if True. Default: True
+       qk_scale (float | None, optional): Override default qk scale of
+           head_dim ** -0.5 if set. Default: None.
+       drop (float): Probability of an element to be zeroed
+            after the feed forward layer. Default: 0.0.
+       attn_drop (float, optional): Dropout ratio of attention weight.
+           Default: 0.0
+       drop_path (float): stochastic depth rate. Default 0.0.
+       act_cfg (dict): The activation config for FFNs.
+            Defalut: dict(type='GELU').
+       norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN').
+       sr_ratio (float): kernel_size of conv in Attention modules. Default: 1.
+       ws (int): the use of LSA or GSA. Default: 1.
+    """
 
     def __init__(self,
                  dim,
@@ -435,8 +470,9 @@ class PyramidVisionTransformer(BaseModule):
             Default: dict(type='LN')
         depths (list): depths of each stage. Default [3, 4, 6, 3]
         sr_ratios (list): kernel_size of conv in each Attn module in
-            Transformer encoder layer. Default: 1.
-        block_cls (BaseModule): Transformer Encoder. Default TransformerEncoderLayer
+            Transformer encoder layer. Default: [8, 4, 2, 1].
+        block_cls (BaseModule): Transformer Encoder.
+            Default TransformerEncoderLayer
     """
 
     def __init__(self,
@@ -593,7 +629,14 @@ class PyramidVisionTransformer(BaseModule):
         return x
 
 
-class PosCNN(nn.Module):
+class PosCNN(BaseModule):
+    """Default Patch Embedding of CPVTV2.
+
+    Args:
+       in_chans (int): Number of input channels. Default: 3.
+       embed_dim (int): The feature dimension. Default: 768.
+       s (int): stride of cobnv layer. Default: 1.
+    """
 
     def __init__(self, in_chans, embed_dim=768, s=1):
         super(PosCNN, self).__init__()
@@ -631,6 +674,31 @@ class CPVTV2(PyramidVisionTransformer):
     encode the absolute position on the fly, which greatly affects the
     performance when input resolution changes during the training (such as
     segmentation, detection)
+
+    Args:
+        img_size (int | tuple): Input image size. Default: 224.
+        patch_size (int): The patch size. Default: 4.
+        in_chans (int): Number of input channels. Default: 3.
+        num_classes (int): Number of num_classes. Default: 1000
+        embed_dims (list): embedding dimension. Default: [64, 128, 256, 512].
+        num_heads (int): number of attention heads. Default: [1, 2, 4, 8].
+        mlp_ratios (int): ratio of mlp hidden dim to embedding dim.
+            Default: [4, 4, 4, 4].
+        qkv_bias (bool): enable bias for qkv if True. Default: False.
+        drop_rate (float): Probability of an element to be zeroed.
+            Default 0.
+        attn_drop_rate (float): The drop out rate for attention layer.
+            Default 0.0
+        drop_path_rate (float): stochastic depth rate. Default 0.0
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN')
+        depths (list): depths of each stage. Default [3, 4, 6, 3]
+        sr_ratios (list): kernel_size of conv in each Attn module in
+            Transformer encoder layer. Default: [8, 4, 2, 1].
+        block_cls (BaseModule): Transformer Encoder.
+            Default TransformerEncoderLayer
+        F4=False（bool): input features need slice.
+        extra_norm（bool): add extra norm. Default False.
     """
 
     def __init__(self,
@@ -722,6 +790,34 @@ class CPVTV2(PyramidVisionTransformer):
 
 
 class PCPVT(CPVTV2):
+    """Add applicable positional encodings to CPVT. The implementation of our
+    first proposed architecture: Twins-PCPVT.
+
+    Args:
+         img_size (int | tuple): Input image size. Default: 224.
+         patch_size (int): The patch size. Default: 4.
+         in_chans (int): Number of input channels. Default: 3.
+         num_classes (int): Number of num_classes. Default: 1000
+         embed_dims (list): embedding dimension. Default: [64, 128, 256].
+         num_heads (int): number of attention heads. Default: [1, 2, 4].
+         mlp_ratios (int): ratio of mlp hidden dim to embedding dim.
+             Default: [4, 4, 4].
+         qkv_bias (bool): enable bias for qkv if True. Default: False.
+         drop_rate (float): Probability of an element to be zeroed.
+             Default 0.
+         attn_drop_rate (float): The drop out rate for attention layer.
+             Default 0.0
+         drop_path_rate (float): stochastic depth rate. Default 0.0
+         norm_cfg (dict): Config dict for normalization layer.
+             Default: dict(type='LN')
+         depths (list): depths of each stage. Default [4, 4, 4].
+         sr_ratios (list): kernel_size of conv in each Attn module in
+             Transformer encoder layer. Default: [4, 2, 1].
+         block_cls (BaseModule): Transformer Encoder.
+            Default TransformerEncoderLayer
+         F4=False（bool): input features need slice.
+         extra_norm（bool): add extra norm. Default False.
+    """
 
     def __init__(self,
                  img_size=224,
@@ -750,6 +846,39 @@ class PCPVT(CPVTV2):
 
 
 class ALTGVT(PCPVT):
+    """Use useful results from CPVT.
+
+    PEG and GAP. Therefore, cls token is no longer required. PEG is used to
+    encode the absolute position on the fly, which greatly affects the
+    performance when input resolution changes during the training (such as
+    segmentation, detection)
+
+    Args:
+        img_size (int | tuple): Input image size. Default: 224.
+        patch_size (int): The patch size. Default: 4.
+        in_chans (int): Number of input channels. Default: 3.
+        num_classes (int): Number of num_classes. Default: 1000
+        embed_dims (list): embedding dimension. Default: [64, 128, 256].
+        num_heads (int): number of attention heads. Default: [1, 2, 4].
+        mlp_ratios (int): ratio of mlp hidden dim to embedding dim.
+            Default: [4, 4, 4].
+        qkv_bias (bool): enable bias for qkv if True. Default: False.
+        drop_rate (float): Probability of an element to be zeroed.
+            Default 0.
+        attn_drop_rate (float): The drop out rate for attention layer.
+            Default 0.0
+        drop_path_rate (float): stochastic depth rate. Default 0.2.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN')
+        depths (list): depths of each stage. Default [4, 4, 4].
+        sr_ratios (list): kernel_size of conv in each Attn module in
+            Transformer encoder layer. Default: [4, 2, 1].
+        block_cls (BaseModule): Transformer Encoder. Default GroupBlock.
+        wss=[7, 7, 7],
+        F4=False（bool): input features need slice.
+        extra_norm（bool): add extra norm. Default False.
+        strides=(2, 2, 2)
+    """
 
     def __init__(self,
                  img_size=224,
