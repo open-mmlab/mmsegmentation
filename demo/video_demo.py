@@ -1,8 +1,9 @@
 from argparse import ArgumentParser
 
+import cv2
+
 from mmseg.apis import inference_segmentor, init_segmentor
 from mmseg.core.evaluation import get_palette
-import cv2
 
 
 def main():
@@ -17,7 +18,7 @@ def main():
         default='cityscapes',
         help='Color palette used for segmentation map')
     parser.add_argument(
-        '--show', action="store_true", help="Whether to show draw result")
+        '--show', action='store_true', help='Whether to show draw result')
     parser.add_argument(
         '--show-wait-time', default=1, type=int, help='Wait time after imshow')
     parser.add_argument(
@@ -46,7 +47,8 @@ def main():
         help='Opacity of painted segmentation map. In (0, 1] range.')
     args = parser.parse_args()
 
-    assert args.show or args.output_file, 'At least one output should be enabled.'
+    assert args.show or args.output_file, \
+        'At least one output should be enabled.'
 
     # build the model from a config file and a checkpoint file
     model = init_segmentor(args.config, args.checkpoint, device=args.device)
@@ -92,7 +94,7 @@ def main():
             opacity=args.opacity)
 
         if args.show:
-            cv2.imshow("video_demo", draw_img)
+            cv2.imshow('video_demo', draw_img)
             cv2.waitKey(args.show_wait_time)
         if writer:
             if draw_img.shape[0] != output_height or draw_img.shape[
