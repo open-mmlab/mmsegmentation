@@ -196,7 +196,6 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 
 因为我们只支持在此数据集上测试模型，所以您只需下载[测试集](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip)。
 
-
 ### LoveDA
 
 下载[LoveDA数据集](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing)。
@@ -204,13 +203,16 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 对于 LoveDA 数据集，请运行以下命令下载并组织数据集
 ```shell
 # download
+
 mkdir loveda && cd loveda
 wget https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing
 
 # unzip
+
 unzip '*.zip'
 
 # Convert into segmentation splits
+
 mkdir -p img_dir/train img_dir/val img_dir/test ann_dir/train ann_dir/val
 mv Train/Rural/images_png/* img_dir/train
 mv Train/Urban/images_png/* img_dir/train
@@ -223,3 +225,5 @@ mv Train/Urban/masks_png/* ann_dir/train
 mv Val/Rural/masks_png/* ann_dir/val
 mv Val/Urban/masks_png/* ann_dir/val
 ```
+
+关于 LoveDA 的更多细节可以在[这里](https://github.com/Junjue-Wang/LoveDA)找到。
