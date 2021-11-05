@@ -5,7 +5,19 @@ _base_ = [
 model = dict(
     type='EncoderDecoder',
     pretrained='pretrained/pcpvt_large.pth',
-    backbone=dict(type='pcpvt_large', drop_path_rate=0.3, style='pytorch'),
+    backbone=dict(
+        type='Twins_pcpvt',
+        patch_size=4,
+        embed_dims=[64, 128, 320, 512],
+        num_heads=[1, 2, 5, 8],
+        mlp_ratios=[8, 8, 4, 4],
+        qkv_bias=True,
+        norm_cfg=dict(type='LN'),
+        depths=[3, 8, 27, 3],
+        sr_ratios=[8, 4, 2, 1],
+        drop_rate=0.0,
+        drop_path_rate=0.3,
+        style='pytorch'),
     decode_head=dict(num_classes=150, in_channels=[64, 128, 320, 512]),
     auxiliary_head=dict(num_classes=150, in_channels=320))
 

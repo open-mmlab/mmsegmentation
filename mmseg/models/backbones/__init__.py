@@ -22,7 +22,6 @@ __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
     'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
-    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'pcpvt_small_v0',
-    'pcpvt_base_v0', 'pcpvt_large', 'alt_gvt_small', 'alt_gvt_base',
-    'alt_gvt_large'
+    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone',
+    'Twins_pcpvt', 'Twins_alt_gvt'
 ]

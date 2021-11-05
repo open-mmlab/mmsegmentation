@@ -982,10 +982,11 @@ def _conv_filter(state_dict, patch_size=16):
 
 
 @BACKBONES.register_module()
-class pcpvt_small_v0(CPVTV2):
-
+class Twins_pcpvt(CPVTV2):
+    """ Implements of Twins-PCPVT.
+    """
     def __init__(self, **kwargs):
-        super(pcpvt_small_v0, self).__init__(
+        super(Twins_pcpvt, self).__init__(
             patch_size=4,
             embed_dims=[64, 128, 320, 512],
             num_heads=[1, 2, 5, 8],
@@ -999,44 +1000,11 @@ class pcpvt_small_v0(CPVTV2):
 
 
 @BACKBONES.register_module()
-class pcpvt_base_v0(CPVTV2):
-
+class Twins_alt_gvt(ALTGVT):
+    """ Implements of Twins-ALTGVT.
+    """
     def __init__(self, **kwargs):
-        super(pcpvt_base_v0, self).__init__(
-            patch_size=4,
-            embed_dims=[64, 128, 320, 512],
-            num_heads=[1, 2, 5, 8],
-            mlp_ratios=[8, 8, 4, 4],
-            qkv_bias=True,
-            norm_cfg=dict(type='LN'),
-            depths=[3, 4, 18, 3],
-            sr_ratios=[8, 4, 2, 1],
-            drop_rate=0.0,
-            drop_path_rate=0.2)
-
-
-@BACKBONES.register_module()
-class pcpvt_large(CPVTV2):
-
-    def __init__(self, **kwargs):
-        super(pcpvt_large, self).__init__(
-            patch_size=4,
-            embed_dims=[64, 128, 320, 512],
-            num_heads=[1, 2, 5, 8],
-            mlp_ratios=[8, 8, 4, 4],
-            qkv_bias=True,
-            norm_cfg=dict(type='LN'),
-            depths=[3, 8, 27, 3],
-            sr_ratios=[8, 4, 2, 1],
-            drop_rate=0.0,
-            drop_path_rate=0.2)
-
-
-@BACKBONES.register_module()
-class alt_gvt_small(ALTGVT):
-
-    def __init__(self, **kwargs):
-        super(alt_gvt_small, self).__init__(
+        super(Twins_alt_gvt, self).__init__(
             patch_size=4,
             embed_dims=[64, 128, 256, 512],
             num_heads=[2, 4, 8, 16],
@@ -1048,42 +1016,4 @@ class alt_gvt_small(ALTGVT):
             sr_ratios=[8, 4, 2, 1],
             extra_norm=True,
             drop_path_rate=0.2,
-        )
-
-
-@BACKBONES.register_module()
-class alt_gvt_base(ALTGVT):
-
-    def __init__(self, **kwargs):
-        super(alt_gvt_base, self).__init__(
-            patch_size=4,
-            embed_dims=[96, 192, 384, 768],
-            num_heads=[3, 6, 12, 24],
-            mlp_ratios=[4, 4, 4, 4],
-            qkv_bias=True,
-            norm_cfg=dict(type='LN'),
-            depths=[2, 2, 18, 2],
-            wss=[7, 7, 7, 7],
-            sr_ratios=[8, 4, 2, 1],
-            extra_norm=True,
-            drop_path_rate=0.2,
-        )
-
-
-@BACKBONES.register_module()
-class alt_gvt_large(ALTGVT):
-
-    def __init__(self, **kwargs):
-        super(alt_gvt_large, self).__init__(
-            patch_size=4,
-            embed_dims=[128, 256, 512, 1024],
-            num_heads=[4, 8, 16, 32],
-            mlp_ratios=[4, 4, 4, 4],
-            qkv_bias=True,
-            norm_cfg=dict(type='LN'),
-            depths=[2, 2, 18, 2],
-            wss=[7, 7, 7, 7],
-            sr_ratios=[8, 4, 2, 1],
-            extra_norm=True,
-            drop_path_rate=0.3,
         )
