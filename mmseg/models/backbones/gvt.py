@@ -983,8 +983,8 @@ def _conv_filter(state_dict, patch_size=16):
 
 @BACKBONES.register_module()
 class Twins_pcpvt(CPVTV2):
-    """ Implements of Twins-PCPVT.
-    """
+    """Implements of Twins-PCPVT."""
+
     def __init__(self, **kwargs):
         super(Twins_pcpvt, self).__init__(
             patch_size=4,
@@ -1001,8 +1001,8 @@ class Twins_pcpvt(CPVTV2):
 
 @BACKBONES.register_module()
 class Twins_alt_gvt(ALTGVT):
-    """ Implements of Twins-ALTGVT.
-    """
+    """Implements of Twins-ALTGVT."""
+
     def __init__(self, **kwargs):
         super(Twins_alt_gvt, self).__init__(
             patch_size=4,

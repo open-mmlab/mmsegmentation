@@ -3,8 +3,7 @@ from .bisenetv1 import BiSeNetV1
 from .bisenetv2 import BiSeNetV2
 from .cgnet import CGNet
 from .fast_scnn import FastSCNN
-from .gvt import (alt_gvt_base, alt_gvt_large, alt_gvt_small, pcpvt_base_v0,
-                  pcpvt_large, pcpvt_small_v0)
+from .gvt import Twins_pcpvt, Twins_alt_gvt
 from .hrnet import HRNet
 from .icnet import ICNet
 from .mit import MixVisionTransformer
@@ -22,6 +21,6 @@ __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
     'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
-    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone',
-    'Twins_pcpvt', 'Twins_alt_gvt'
+    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'Twins_pcpvt',
+    'Twins_alt_gvt'
 ]

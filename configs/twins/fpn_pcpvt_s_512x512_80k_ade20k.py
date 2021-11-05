@@ -25,7 +25,7 @@ model = dict(
         out_channels=256,
         num_outs=4),
     decode_head=dict(num_classes=150),
-    )
+)
 
 optimizer = dict(type='AdamW', lr=0.0001, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
