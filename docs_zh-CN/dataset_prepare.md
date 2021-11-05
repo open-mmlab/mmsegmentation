@@ -117,7 +117,7 @@ Pascal VOC 2012 可以在 [这里](http://host.robots.ox.ac.uk/pascal/VOC/voc201
 python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-关于如何拼接数据集 (concatenate) 并一起训练它们，更多细节请参考 [拼接连接数据集](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/tutorials/new_dataset.md#concatenate-dataset) 。
+关于如何拼接数据集 (concatenate) 并一起训练它们，更多细节请参考 [拼接连接数据集](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/tutorials/customize_datasets.md#%E6%8B%BC%E6%8E%A5%E6%95%B0%E6%8D%AE%E9%9B%86) 。
 
 ### ADE20K
 

@@ -23,8 +23,7 @@ model = dict(
         drop_path_rate=0.3,
         use_abs_pos_embed=False,
         act_cfg=dict(type='GELU'),
-        norm_cfg=backbone_norm_cfg,
-        pretrain_style='official'),
+        norm_cfg=backbone_norm_cfg),
     decode_head=dict(
         type='UPerHead',
         in_channels=[96, 192, 384, 768],

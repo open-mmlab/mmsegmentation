@@ -4,6 +4,13 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/NVlabs/SegFormer">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246">Code Snippet</a>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/2105.15203">SegFormer (ArXiv'2021)</a></summary>
+
 ```latex
 @article{xie2021segformer,
   title={SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers},
@@ -13,6 +20,8 @@
 }
 ```
 
+</details>
+
 ## Usage
 
 To use other repositories' pre-trained models, it is necessary to convert keys.
@@ -20,7 +29,7 @@ To use other repositories' pre-trained models, it is necessary to convert keys.
 We provide a script [`mit2mmseg.py`](../../tools/model_converters/mit2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/NVlabs/SegFormer) to MMSegmentation style.
 
 ```shell
-python tools/model_converters/swin2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
+python tools/model_converters/mit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
 ```
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.

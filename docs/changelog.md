@@ -1,5 +1,76 @@
 ## Changelog
 
+### V0.19 (11/02/2021)
+
+**Highlights**
+
+- Support TIMMBackbone wrapper ([#998](https://github.com/open-mmlab/mmsegmentation/pull/998))
+- Support custom hook ([#428](https://github.com/open-mmlab/mmsegmentation/pull/428))
+- Add codespell pre-commit hook ([#920](https://github.com/open-mmlab/mmsegmentation/pull/920))
+- Add FastFCN benchmark on ADE20K ([#972](https://github.com/open-mmlab/mmsegmentation/pull/972))
+
+**New Features**
+
+- Support TIMMBackbone wrapper ([#998](https://github.com/open-mmlab/mmsegmentation/pull/998))
+- Support custom hook ([#428](https://github.com/open-mmlab/mmsegmentation/pull/428))
+- Add FastFCN benchmark on ADE20K ([#972](https://github.com/open-mmlab/mmsegmentation/pull/972))
+- Add codespell pre-commit hook and fix typos ([#920](https://github.com/open-mmlab/mmsegmentation/pull/920))
+
+**Improvements**
+
+- Make inputs & channels smaller in unittests ([#1004](https://github.com/open-mmlab/mmsegmentation/pull/1004))
+- Change `self.loss_decode` back to `dict` in Single Loss situation ([#1002](https://github.com/open-mmlab/mmsegmentation/pull/1002))
+
+**Bug Fixes**
+
+- Fix typo in usage example ([#1003](https://github.com/open-mmlab/mmsegmentation/pull/1003))
+- Add contiguous after permutation in ViT ([#992](https://github.com/open-mmlab/mmsegmentation/pull/992))
+- Fix the invalid link ([#985](https://github.com/open-mmlab/mmsegmentation/pull/985))
+- Fix bug in CI with python 3.9 ([#994](https://github.com/open-mmlab/mmsegmentation/pull/994))
+- Fix bug when loading class name form file in custom dataset ([#923](https://github.com/open-mmlab/mmsegmentation/pull/923))
+
+**Contributors**
+
+- @ShoupingShan made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/923
+- @RockeyCoss made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/954
+- @HarborYuan made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/992
+- @lkm2835 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1003
+- @gszh made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/428
+- @VVsssssk
+- @MengzhangLI
+- @Junjun2016
+
+### V0.18 (10/07/2021)
+
+**Highlights**
+
+- Support three real-time segmentation models (ICNet [#884](https://github.com/open-mmlab/mmsegmentation/pull/884), BiSeNetV1 [#851](https://github.com/open-mmlab/mmsegmentation/pull/851), and BiSeNetV2 [#804](https://github.com/open-mmlab/mmsegmentation/pull/804))
+- Support one efficient segmentation model (FastFCN [#885](https://github.com/open-mmlab/mmsegmentation/pull/885))
+- Support one efficient non-local/self-attention based segmentation model (ISANet [#70](https://github.com/open-mmlab/mmsegmentation/pull/70))
+- Support COCO-Stuff 10k and 164k datasets ([#625](https://github.com/open-mmlab/mmsegmentation/pull/625))
+- Support evaluate concated dataset separately ([#833](https://github.com/open-mmlab/mmsegmentation/pull/833))
+- Support loading GT for evaluation from multi-file backend ([#867](https://github.com/open-mmlab/mmsegmentation/pull/867))
+
+**New Features**
+
+- Support three real-time segmentation models (ICNet [#884](https://github.com/open-mmlab/mmsegmentation/pull/884), BiSeNetV1 [#851](https://github.com/open-mmlab/mmsegmentation/pull/851), and BiSeNetV2 [#804](https://github.com/open-mmlab/mmsegmentation/pull/804))
+- Support one efficient segmentation model (FastFCN [#885](https://github.com/open-mmlab/mmsegmentation/pull/885))
+- Support one efficient non-local/self-attention based segmentation model (ISANet [#70](https://github.com/open-mmlab/mmsegmentation/pull/70))
+- Support COCO-Stuff 10k and 164k datasets ([#625](https://github.com/open-mmlab/mmsegmentation/pull/625))
+- Support evaluate concated dataset separately ([#833](https://github.com/open-mmlab/mmsegmentation/pull/833))
+
+**Improvements**
+
+- Support loading GT for evaluation from multi-file backend ([#867](https://github.com/open-mmlab/mmsegmentation/pull/867))
+- Auto-convert SyncBN to BN when training on DP automatly([#772](https://github.com/open-mmlab/mmsegmentation/pull/772))
+- Refactor Swin-Transformer ([#800](https://github.com/open-mmlab/mmsegmentation/pull/800))
+
+**Bug Fixes**
+
+- Update mmcv installation in dockerfile ([#860](https://github.com/open-mmlab/mmsegmentation/pull/860))
+- Fix number of iteration bug when resuming checkpoint in distributed train ([#866](https://github.com/open-mmlab/mmsegmentation/pull/866))
+- Fix parsing parse in val_step ([#906](https://github.com/open-mmlab/mmsegmentation/pull/906))
+
 ### V0.17 (09/01/2021)
 
 **Highlights**

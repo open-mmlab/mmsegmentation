@@ -7,10 +7,6 @@ from mmseg.models.backbones.mit import EfficientMultiheadAttention, MixFFN
 
 
 def test_mit():
-    with pytest.raises(AssertionError):
-        # It's only support official style and mmcls style now.
-        MixVisionTransformer(pretrain_style='timm')
-
     with pytest.raises(TypeError):
         # Pretrained represents pretrain url and must be str or None.
         MixVisionTransformer(pretrained=123)
@@ -28,7 +24,7 @@ def test_mit():
     assert outs[3].shape == (1, 256, H // 32, W // 32)
 
     # Test non-squared input
-    H, W = (224, 320)
+    H, W = (224, 256)
     temp = torch.randn((1, 3, H, W))
     outs = model(temp)
     assert outs[0].shape == (1, 32, H // 4, W // 4)
@@ -37,25 +33,25 @@ def test_mit():
     assert outs[3].shape == (1, 256, H // 32, W // 32)
 
     # Test MixFFN
-    FFN = MixFFN(128, 512)
+    FFN = MixFFN(64, 128)
     hw_shape = (32, 32)
     token_len = 32 * 32
-    temp = torch.randn((1, token_len, 128))
+    temp = torch.randn((1, token_len, 64))
     # Self identity
     out = FFN(temp, hw_shape)
-    assert out.shape == (1, token_len, 128)
+    assert out.shape == (1, token_len, 64)
     # Out identity
     outs = FFN(temp, hw_shape, temp)
-    assert out.shape == (1, token_len, 128)
+    assert out.shape == (1, token_len, 64)
 
     # Test EfficientMHA
-    MHA = EfficientMultiheadAttention(128, 2)
+    MHA = EfficientMultiheadAttention(64, 2)
     hw_shape = (32, 32)
     token_len = 32 * 32
-    temp = torch.randn((1, token_len, 128))
+    temp = torch.randn((1, token_len, 64))
     # Self identity
     out = MHA(temp, hw_shape)
-    assert out.shape == (1, token_len, 128)
+    assert out.shape == (1, token_len, 64)
     # Out identity
     outs = MHA(temp, hw_shape, temp)
-    assert out.shape == (1, token_len, 128)
+    assert out.shape == (1, token_len, 64)

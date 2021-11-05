@@ -186,7 +186,7 @@ class TransformerEncoderLayer(BaseModule):
         qkv_bias (bool): enable bias for qkv if True.
             Default: True.
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         batch_first (bool): Key, Query and Value are shape of
@@ -277,9 +277,7 @@ class MixVisionTransformer(BaseModule):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
-        pretrain_style (str): Choose to use official or mmcls pretrain weights.
-            Default: official.
+            Default: dict(type='GELU').
         pretrained (str, optional): model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
@@ -302,14 +300,9 @@ class MixVisionTransformer(BaseModule):
                  drop_path_rate=0.,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN', eps=1e-6),
-                 pretrain_style='official',
                  pretrained=None,
                  init_cfg=None):
         super().__init__()
-
-        assert pretrain_style in [
-            'official', 'mmcls'
-        ], 'we only support official weights or mmcls weights.'
 
         if isinstance(pretrained, str) or pretrained is None:
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
@@ -330,7 +323,6 @@ class MixVisionTransformer(BaseModule):
 
         self.out_indices = out_indices
         assert max(out_indices) < self.num_stages
-        self.pretrain_style = pretrain_style
         self.pretrained = pretrained
         self.init_cfg = init_cfg
 
@@ -350,7 +342,6 @@ class MixVisionTransformer(BaseModule):
                 kernel_size=patch_sizes[i],
                 stride=strides[i],
                 padding=patch_sizes[i] // 2,
-                pad_to_patch_size=False,
                 norm_cfg=norm_cfg)
             layer = ModuleList([
                 TransformerEncoderLayer(
@@ -403,8 +394,7 @@ class MixVisionTransformer(BaseModule):
         outs = []
 
         for i, layer in enumerate(self.layers):
-            x, H, W = layer[0](x), layer[0].DH, layer[0].DW
-            hw_shape = (H, W)
+            x, hw_shape = layer[0](x)
             for block in layer[1]:
                 x = block(x, hw_shape)
             x = layer[2](x)

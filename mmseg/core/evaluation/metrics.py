@@ -7,7 +7,7 @@ import torch
 
 
 def f_score(precision, recall, beta=1):
-    """calcuate the f-score value.
+    """calculate the f-score value.
 
     Args:
         precision (float | torch.Tensor): The precision value.
@@ -40,7 +40,7 @@ def intersect_and_union(pred_label,
         ignore_index (int): Index that will be ignored in evaluation.
         label_map (dict): Mapping old labels to new labels. The parameter will
             work only when label is str. Default: dict().
-        reduce_zero_label (bool): Wether ignore zero label. The parameter will
+        reduce_zero_label (bool): Whether ignore zero label. The parameter will
             work only when label is str. Default: False.
 
      Returns:
@@ -102,7 +102,7 @@ def total_intersect_and_union(results,
         num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
         label_map (dict): Mapping old labels to new labels. Default: dict().
-        reduce_zero_label (bool): Wether ignore zero label. Default: False.
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
 
      Returns:
          ndarray: The intersection of prediction and ground truth histogram
@@ -148,7 +148,7 @@ def mean_iou(results,
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
         label_map (dict): Mapping old labels to new labels. Default: dict().
-        reduce_zero_label (bool): Wether ignore zero label. Default: False.
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
 
      Returns:
         dict[str, float | ndarray]:
@@ -187,7 +187,7 @@ def mean_dice(results,
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
         label_map (dict): Mapping old labels to new labels. Default: dict().
-        reduce_zero_label (bool): Wether ignore zero label. Default: False.
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
 
      Returns:
         dict[str, float | ndarray]: Default metrics.
@@ -228,7 +228,7 @@ def mean_fscore(results,
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
         label_map (dict): Mapping old labels to new labels. Default: dict().
-        reduce_zero_label (bool): Wether ignore zero label. Default: False.
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
         beta (int): Determines the weight of recall in the combined score.
             Default: False.
 
@@ -274,7 +274,7 @@ def eval_metrics(results,
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
         label_map (dict): Mapping old labels to new labels. Default: dict().
-        reduce_zero_label (bool): Wether ignore zero label. Default: False.
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
      Returns:
         float: Overall accuracy on all images.
         ndarray: Per category accuracy, shape (num_classes, ).

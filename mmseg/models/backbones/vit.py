@@ -33,7 +33,7 @@ class TransformerEncoderLayer(BaseModule):
             Default: 2.
         qkv_bias (bool): enable bias for qkv if True. Default: True
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         batch_first (bool): Key, Query and Value are shape of
@@ -126,7 +126,7 @@ class VisionTransformer(BaseModule):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            Default: dict(type='GELU').
         patch_norm (bool): Whether to add a norm in PatchEmbed Block.
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
@@ -170,7 +170,7 @@ class VisionTransformer(BaseModule):
                  with_cp=False,
                  pretrained=None,
                  init_cfg=None):
-        super(VisionTransformer, self).__init__()
+        super(VisionTransformer, self).__init__(init_cfg=init_cfg)
 
         if isinstance(img_size, int):
             img_size = to_2tuple(img_size)
@@ -185,10 +185,13 @@ class VisionTransformer(BaseModule):
             assert with_cls_token is True, f'with_cls_token must be True if' \
                 f'set output_cls_token to True, but got {with_cls_token}'
 
-        if isinstance(pretrained, str) or pretrained is None:
-            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+        assert not (init_cfg and pretrained), \
+            'init_cfg and pretrained cannot be set at the same time'
+        if isinstance(pretrained, str):
+            warnings.warn('DeprecationWarning: pretrained is deprecated, '
                           'please use "init_cfg" instead')
-        else:
+            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
+        elif pretrained is not None:
             raise TypeError('pretrained must be a str or None')
 
         self.img_size = img_size
@@ -197,7 +200,6 @@ class VisionTransformer(BaseModule):
         self.norm_eval = norm_eval
         self.with_cp = with_cp
         self.pretrained = pretrained
-        self.init_cfg = init_cfg
 
         self.patch_embed = PatchEmbed(
             in_channels=in_channels,
@@ -205,7 +207,7 @@ class VisionTransformer(BaseModule):
             conv_type='Conv2d',
             kernel_size=patch_size,
             stride=patch_size,
-            pad_to_patch_size=True,
+            padding='corner',
             norm_cfg=norm_cfg if patch_norm else None,
             init_cfg=None,
         )
@@ -260,10 +262,12 @@ class VisionTransformer(BaseModule):
         return getattr(self, self.norm1_name)
 
     def init_weights(self):
-        if isinstance(self.pretrained, str):
+        if (isinstance(self.init_cfg, dict)
+                and self.init_cfg.get('type') == 'Pretrained'):
             logger = get_root_logger()
             checkpoint = _load_checkpoint(
-                self.pretrained, logger=logger, map_location='cpu')
+                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
+
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
             else:
@@ -283,9 +287,9 @@ class VisionTransformer(BaseModule):
                         (pos_size, pos_size), self.interpolate_mode)
 
             self.load_state_dict(state_dict, False)
-
-        elif self.pretrained is None:
+        elif self.init_cfg is not None:
             super(VisionTransformer, self).init_weights()
+        else:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
             trunc_normal_init(self.pos_embed, std=.02)
@@ -370,8 +374,8 @@ class VisionTransformer(BaseModule):
     def forward(self, inputs):
         B = inputs.shape[0]
 
-        x, hw_shape = self.patch_embed(inputs), (self.patch_embed.DH,
-                                                 self.patch_embed.DW)
+        x, hw_shape = self.patch_embed(inputs)
+
         # stole cls_tokens impl from Phil Wang, thanks
         cls_tokens = self.cls_token.expand(B, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
@@ -395,7 +399,7 @@ class VisionTransformer(BaseModule):
                     out = x
                 B, _, C = out.shape
                 out = out.reshape(B, hw_shape[0], hw_shape[1],
-                                  C).permute(0, 3, 1, 2)
+                                  C).permute(0, 3, 1, 2).contiguous()
                 if self.output_cls_token:
                     out = [out, x[:, 0]]
                 outs.append(out)

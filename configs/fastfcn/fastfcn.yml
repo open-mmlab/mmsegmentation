@@ -1,0 +1,235 @@
+Collections:
+- Name: fastfcn
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+  Paper:
+    URL: https://arxiv.org/abs/1903.11816
+    Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
+  README: configs/fastfcn/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+    Version: v0.18.0
+  Converted From:
+    Code: https://github.com/wuhuikai/FastFCN
+Models:
+- Name: fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 378.79
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.67
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.12
+      mIoU(ms+flip): 80.58
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes_20210928_053722-5d1a2648.pth
+- Name: fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    memory (GB): 9.79
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.52
+      mIoU(ms+flip): 80.91
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes_20210924_214357-72220849.pth
+- Name: fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 227.27
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.67
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.26
+      mIoU(ms+flip): 80.86
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes_20210928_053722-57749bed.pth
+- Name: fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    memory (GB): 9.94
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.76
+      mIoU(ms+flip): 80.03
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes_20210925_061841-77e87b0a.pth
+- Name: fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 209.64
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 8.15
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.97
+      mIoU(ms+flip): 79.92
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes_20210928_030036-78da5046.pth
+- Name: fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    memory (GB): 15.45
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.6
+      mIoU(ms+flip): 80.25
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes_20210926_093217-e1eb6dbb.pth
+- Name: fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 82.92
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 8.46
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.88
+      mIoU(ms+flip): 42.91
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k_20211013_190619-3aa40f2d.pth
+- Name: fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.58
+      mIoU(ms+flip): 44.92
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k_20211008_152246-27036aee.pth
+- Name: fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 52.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 8.02
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.4
+      mIoU(ms+flip): 42.12
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k_20210930_225137-993d07c8.pth
+- Name: fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.63
+      mIoU(ms+flip): 43.71
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k_20211008_105455-e8f5a2fd.pth
+- Name: fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 58.04
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 9.67
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 40.88
+      mIoU(ms+flip): 42.36
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k_20210930_225214-65aef6dd.pth
+- Name: fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k
+  In Collection: fastfcn
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,1024)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.5
+      mIoU(ms+flip): 44.21
+  Config: configs/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k_20211008_105456-d875ce3c.pth

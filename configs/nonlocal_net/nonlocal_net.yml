@@ -1,292 +1,301 @@
 Collections:
-- Metadata:
+- Name: nonlocal_net
+  Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
     - Pascal VOC 2012 + Aug
-  Name: nonlocal_net
+  Paper:
+    URL: https://arxiv.org/abs/1711.07971
+    Title: Non-local Neural Networks
+  README: configs/nonlocal_net/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/facebookresearch/video-nonlocal-net
 Models:
-- Config: configs/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes.py
+- Name: nonlocal_r50-d8_512x1024_40k_cityscapes
   In Collection: nonlocal_net
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 367.65
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 367.65
-    lr schd: 40000
     memory (GB): 7.4
-  Name: nonlocal_r50-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.24
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes/nonlocal_r50-d8_512x1024_40k_cityscapes_20200605_210748-c75e81e3.pth
-- Config: configs/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes.py
+- Name: nonlocal_r101-d8_512x1024_40k_cityscapes
   In Collection: nonlocal_net
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 512.82
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,1024)
-      value: 512.82
-    lr schd: 40000
     memory (GB): 10.9
-  Name: nonlocal_r101-d8_512x1024_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.66
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes/nonlocal_r101-d8_512x1024_40k_cityscapes_20200605_210748-d63729fa.pth
-- Config: configs/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes.py
+- Name: nonlocal_r50-d8_769x769_40k_cityscapes
   In Collection: nonlocal_net
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 657.89
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 657.89
-    lr schd: 40000
     memory (GB): 8.9
-  Name: nonlocal_r50-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.33
       mIoU(ms+flip): 79.92
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes/nonlocal_r50-d8_769x769_40k_cityscapes_20200530_045243-82ef6749.pth
-- Config: configs/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes.py
+- Name: nonlocal_r101-d8_769x769_40k_cityscapes
   In Collection: nonlocal_net
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
+    lr schd: 40000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 952.38
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (769,769)
-      value: 952.38
-    lr schd: 40000
     memory (GB): 12.8
-  Name: nonlocal_r101-d8_769x769_40k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.57
       mIoU(ms+flip): 80.29
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes/nonlocal_r101-d8_769x769_40k_cityscapes_20200530_045348-8fe9a9dc.pth
-- Config: configs/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes.py
+- Name: nonlocal_r50-d8_512x1024_80k_cityscapes
   In Collection: nonlocal_net
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
     lr schd: 80000
-  Name: nonlocal_r50-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.01
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes/nonlocal_r50-d8_512x1024_80k_cityscapes_20200607_193518-d6839fae.pth
-- Config: configs/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes.py
+- Name: nonlocal_r101-d8_512x1024_80k_cityscapes
   In Collection: nonlocal_net
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
     lr schd: 80000
-  Name: nonlocal_r101-d8_512x1024_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.93
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes/nonlocal_r101-d8_512x1024_80k_cityscapes_20200607_183411-32700183.pth
-- Config: configs/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes.py
+- Name: nonlocal_r50-d8_769x769_80k_cityscapes
   In Collection: nonlocal_net
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
     lr schd: 80000
-  Name: nonlocal_r50-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.05
       mIoU(ms+flip): 80.68
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes/nonlocal_r50-d8_769x769_80k_cityscapes_20200607_193506-1f9792f6.pth
-- Config: configs/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes.py
+- Name: nonlocal_r101-d8_769x769_80k_cityscapes
   In Collection: nonlocal_net
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
     lr schd: 80000
-  Name: nonlocal_r101-d8_769x769_80k_cityscapes
   Results:
+  - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.4
       mIoU(ms+flip): 80.85
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes/nonlocal_r101-d8_769x769_80k_cityscapes_20200607_183428-0e1fa4f9.pth
-- Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k.py
+- Name: nonlocal_r50-d8_512x512_80k_ade20k
   In Collection: nonlocal_net
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 46.79
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 46.79
-    lr schd: 80000
     memory (GB): 9.1
-  Name: nonlocal_r50-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 40.75
       mIoU(ms+flip): 42.05
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k/nonlocal_r50-d8_512x512_80k_ade20k_20200615_015801-5ae0aa33.pth
-- Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k.py
+- Name: nonlocal_r101-d8_512x512_80k_ade20k
   In Collection: nonlocal_net
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 80000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 71.58
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 71.58
-    lr schd: 80000
     memory (GB): 12.6
-  Name: nonlocal_r101-d8_512x512_80k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.9
       mIoU(ms+flip): 44.27
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k/nonlocal_r101-d8_512x512_80k_ade20k_20200615_015758-24105919.pth
-- Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k.py
+- Name: nonlocal_r50-d8_512x512_160k_ade20k
   In Collection: nonlocal_net
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 160000
-  Name: nonlocal_r50-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 42.03
       mIoU(ms+flip): 43.04
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k/nonlocal_r50-d8_512x512_160k_ade20k_20200616_005410-baef45e3.pth
-- Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k.py
+- Name: nonlocal_r101-d8_512x512_160k_ade20k
   In Collection: nonlocal_net
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 160000
-  Name: nonlocal_r101-d8_512x512_160k_ade20k
   Results:
+  - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
       mIoU: 44.63
       mIoU(ms+flip): 45.79
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20210827_221502-7881aa1a.pth
-- Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug.py
+- Name: nonlocal_r50-d8_512x512_20k_voc12aug
   In Collection: nonlocal_net
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 47.15
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 47.15
-    lr schd: 20000
     memory (GB): 6.4
-  Name: nonlocal_r50-d8_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.2
       mIoU(ms+flip): 77.12
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug/nonlocal_r50-d8_512x512_20k_voc12aug_20200617_222613-07f2a57c.pth
-- Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug.py
+- Name: nonlocal_r101-d8_512x512_20k_voc12aug
   In Collection: nonlocal_net
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
+    lr schd: 20000
     inference time (ms/im):
-    - backend: PyTorch
-      batch size: 1
+    - value: 71.38
       hardware: V100
+      backend: PyTorch
+      batch size: 1
       mode: FP32
       resolution: (512,512)
-      value: 71.38
-    lr schd: 20000
     memory (GB): 9.8
-  Name: nonlocal_r101-d8_512x512_20k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.15
       mIoU(ms+flip): 78.86
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug/nonlocal_r101-d8_512x512_20k_voc12aug_20200617_222615-948c68ab.pth
-- Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug.py
+- Name: nonlocal_r50-d8_512x512_40k_voc12aug
   In Collection: nonlocal_net
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
     lr schd: 40000
-  Name: nonlocal_r50-d8_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.65
       mIoU(ms+flip): 77.47
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug/nonlocal_r50-d8_512x512_40k_voc12aug_20200614_000028-0139d4a9.pth
-- Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_40k_voc12aug.py
+- Name: nonlocal_r101-d8_512x512_40k_voc12aug
   In Collection: nonlocal_net
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
     lr schd: 40000
-  Name: nonlocal_r101-d8_512x512_40k_voc12aug
   Results:
+  - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.27
       mIoU(ms+flip): 79.12
-    Task: Semantic Segmentation
+  Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_40k_voc12aug/nonlocal_r101-d8_512x512_40k_voc12aug_20200614_000028-7e5ff470.pth
