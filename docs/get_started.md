@@ -9,24 +9,24 @@
 
 The compatible MMSegmentation and MMCV versions are as below. Please install the correct version of MMCV to avoid installation issues.
 
-| MMSegmentation version |    MMCV version     |
-|:-------------------:|:-------------------:|
-| master              | mmcv-full>=1.3.13, <1.4.0 |
-| 0.19.0              | mmcv-full>=1.3.13, <1.4.0 |
-| 0.18.0              | mmcv-full>=1.3.13, <1.4.0 |
-| 0.17.0              | mmcv-full>=1.3.7, <1.4.0 |
-| 0.16.0              | mmcv-full>=1.3.7, <1.4.0 |
-| 0.15.0              | mmcv-full>=1.3.7, <1.4.0 |
-| 0.14.1              | mmcv-full>=1.3.7, <1.4.0 |
-| 0.14.0              | mmcv-full>=1.3.1, <1.3.2 |
-| 0.13.0              | mmcv-full>=1.3.1, <1.3.2 |
-| 0.12.0              | mmcv-full>=1.1.4, <1.3.2 |
-| 0.11.0              | mmcv-full>=1.1.4, <1.3.0 |
-| 0.10.0              | mmcv-full>=1.1.4, <1.3.0 |
-| 0.9.0               | mmcv-full>=1.1.4, <1.3.0 |
-| 0.8.0               | mmcv-full>=1.1.4, <1.2.0 |
-| 0.7.0               | mmcv-full>=1.1.2, <1.2.0 |
-| 0.6.0               | mmcv-full>=1.1.2, <1.2.0 |
+| MMSegmentation version |       MMCV version        |
+| :--------------------: | :-----------------------: |
+|         master         | mmcv-full>=1.3.13, <1.4.0 |
+|         0.19.0         | mmcv-full>=1.3.13, <1.4.0 |
+|         0.18.0         | mmcv-full>=1.3.13, <1.4.0 |
+|         0.17.0         | mmcv-full>=1.3.7, <1.4.0  |
+|         0.16.0         | mmcv-full>=1.3.7, <1.4.0  |
+|         0.15.0         | mmcv-full>=1.3.7, <1.4.0  |
+|         0.14.1         | mmcv-full>=1.3.7, <1.4.0  |
+|         0.14.0         | mmcv-full>=1.3.1, <1.3.2  |
+|         0.13.0         | mmcv-full>=1.3.1, <1.3.2  |
+|         0.12.0         | mmcv-full>=1.1.4, <1.3.2  |
+|         0.11.0         | mmcv-full>=1.1.4, <1.3.0  |
+|         0.10.0         | mmcv-full>=1.1.4, <1.3.0  |
+|         0.9.0          | mmcv-full>=1.1.4, <1.3.0  |
+|         0.8.0          | mmcv-full>=1.1.4, <1.2.0  |
+|         0.7.0          | mmcv-full>=1.1.2, <1.2.0  |
+|         0.6.0          | mmcv-full>=1.1.2, <1.2.0  |
 
 :::{note}
 You need to run `pip uninstall mmcv` first if you have mmcv installed.
@@ -216,3 +216,19 @@ python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40
 ```
 
 A notebook demo can be found in [demo/inference_demo.ipynb](../demo/inference_demo.ipynb).
+
+Now we also provide a demo script to test a single video.
+
+```shell
+python demo/video_demo.py ${VIDEO_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}] \
+    [--show] [--show-wait-time {SHOW_WAIT_TIME}] [--output-file {OUTPUT_FILE}] [--output-fps {OUTPUT_FPS}] \
+    [--output-height {OUTPUT_HEIGHT}] [--output-width {OUTPUT_WIDTH}] [--opacity {OPACITY}]
+```
+
+Examples:
+
+```shell
+python demo/video_demo.py demo/demo.mp4 configs/cgnet/cgnet_680x680_60k_cityscapes.py \
+    checkpoints/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth \
+    --device cuda:0 --palette cityscapes --show
+```
