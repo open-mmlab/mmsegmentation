@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os.path as osp
-import tempfile
-import warnings
-
 import mmcv
 import numpy as np
+import os.path as osp
+import tempfile
 import torch
+import warnings
 from mmcv.engine import collect_results_cpu, collect_results_gpu
 from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info

@@ -19,10 +19,10 @@ def test_dice_lose():
     dice_loss(logits, labels)
 
     # test loss with class weights from file
-    import os
-    import tempfile
     import mmcv
     import numpy as np
+    import os
+    import tempfile
     tmp_file = tempfile.NamedTemporaryFile()
 
     mmcv.dump([1.0, 2.0, 3.0], f'{tmp_file.name}.pkl', 'pkl')  # from pkl file

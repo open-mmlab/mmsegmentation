@@ -1,12 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
+import cv2
+import mmcv
 import os
 import os.path as osp
 import tempfile
 import zipfile
-
-import cv2
-import mmcv
 
 
 def parse_args():

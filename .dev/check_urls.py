@@ -1,10 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import logging
 import os
-from argparse import ArgumentParser
-
 import requests
 import yaml as yml
+from argparse import ArgumentParser
 
 from mmseg.utils import get_root_logger
 

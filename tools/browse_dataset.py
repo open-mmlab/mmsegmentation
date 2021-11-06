@@ -1,11 +1,10 @@
 import argparse
-import os
-import warnings
-from pathlib import Path
-
 import mmcv
 import numpy as np
+import os
+import warnings
 from mmcv import Config
+from pathlib import Path
 
 from mmseg.datasets.builder import build_dataset
 

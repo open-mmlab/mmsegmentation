@@ -1,6 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-
 import mmcv
 import numpy as np
 import torch

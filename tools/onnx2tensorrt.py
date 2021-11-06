@@ -1,17 +1,16 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import os
-import os.path as osp
-from typing import Iterable, Optional, Union
-
 import matplotlib.pyplot as plt
 import mmcv
 import numpy as np
 import onnxruntime as ort
+import os
+import os.path as osp
 import torch
 from mmcv.ops import get_onnxruntime_op_path
 from mmcv.tensorrt import (TRTWraper, is_tensorrt_plugin_loaded, onnx2trt,
                            save_trt_engine)
+from typing import Iterable, Optional, Union
 
 from mmseg.apis.inference import LoadImage
 from mmseg.datasets import DATASETS

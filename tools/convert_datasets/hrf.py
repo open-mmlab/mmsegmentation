@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
+import mmcv
 import os
 import os.path as osp
 import tempfile
 import zipfile
-
-import mmcv
 
 HRF_LEN = 15
 TRAINING_LEN = 5

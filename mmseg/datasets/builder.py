@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
+import numpy as np
 import platform
 import random
-from functools import partial
-
-import numpy as np
 import torch
+from functools import partial
 from mmcv.parallel import collate
 from mmcv.runner import get_dist_info
 from mmcv.utils import Registry, build_from_cfg, digit_version

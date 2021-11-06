@@ -1,10 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from setuptools import find_packages, setup
+
 import os
 import os.path as osp
 import shutil
 import sys
 import warnings
-from setuptools import find_packages, setup
 
 
 def readme():

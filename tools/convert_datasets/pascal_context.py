@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import os.path as osp
-from functools import partial
-
 import mmcv
 import numpy as np
+import os.path as osp
 from detail import Detail
+from functools import partial
 from PIL import Image
 
 _mapping = np.sort(

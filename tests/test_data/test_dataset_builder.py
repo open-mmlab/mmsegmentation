@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import math
 import os.path as osp
-
 import pytest
 from torch.utils.data import (DistributedSampler, RandomSampler,
                               SequentialSampler)

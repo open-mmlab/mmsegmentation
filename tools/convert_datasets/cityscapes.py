@@ -1,8 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import os.path as osp
-
 import mmcv
+import os.path as osp
 from cityscapesscripts.preparation.json2labelImg import json2labelImg
 
 

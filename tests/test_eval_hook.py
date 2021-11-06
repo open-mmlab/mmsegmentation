@@ -1,14 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import logging
-import tempfile
-from unittest.mock import MagicMock, patch
-
 import mmcv.runner
 import pytest
+import tempfile
 import torch
 import torch.nn as nn
 from mmcv.runner import obj_from_dict
 from torch.utils.data import DataLoader, Dataset
+from unittest.mock import MagicMock, patch
 
 from mmseg.apis import single_gpu_test
 from mmseg.core import DistEvalHook, EvalHook

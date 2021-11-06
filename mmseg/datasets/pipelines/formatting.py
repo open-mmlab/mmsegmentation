@@ -1,9 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from collections.abc import Sequence
-
 import mmcv
 import numpy as np
 import torch
+from collections.abc import Sequence
 from mmcv.parallel import DataContainer as DC
 
 from ..builder import PIPELINES

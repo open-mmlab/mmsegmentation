@@ -1,9 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from collections import OrderedDict
-
 import mmcv
 import numpy as np
 import torch
+from collections import OrderedDict
 
 
 def f_score(precision, recall, beta=1):

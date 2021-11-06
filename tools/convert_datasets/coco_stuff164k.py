@@ -1,11 +1,10 @@
 import argparse
+import mmcv
+import numpy as np
 import os.path as osp
 import shutil
 from functools import partial
 from glob import glob
-
-import mmcv
-import numpy as np
 from PIL import Image
 
 COCO_LEN = 123287

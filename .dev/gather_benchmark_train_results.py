@@ -1,8 +1,7 @@
 import argparse
 import glob
-import os.path as osp
-
 import mmcv
+import os.path as osp
 from gather_models import get_final_results
 from mmcv import Config
 

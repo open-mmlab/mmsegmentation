@@ -1,8 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from unittest.mock import patch
-
 import pytest
 import torch
+from unittest.mock import patch
 
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from .utils import to_cuda

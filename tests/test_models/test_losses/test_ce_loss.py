@@ -28,10 +28,10 @@ def test_ce_loss():
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
 
     # test loss with class weights from file
-    import os
-    import tempfile
     import mmcv
     import numpy as np
+    import os
+    import tempfile
     tmp_file = tempfile.NamedTemporaryFile()
 
     mmcv.dump([0.8, 0.2], f'{tmp_file.name}.pkl', 'pkl')  # from pkl file

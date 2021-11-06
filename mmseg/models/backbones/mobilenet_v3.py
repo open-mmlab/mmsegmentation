@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import warnings
-
 import mmcv
+import warnings
 from mmcv.cnn import ConvModule
 from mmcv.cnn.bricks import Conv2dAdaptivePadding
 from mmcv.runner import BaseModule

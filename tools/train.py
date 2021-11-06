@@ -1,13 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import copy
+import mmcv
 import os
 import os.path as osp
 import time
-import warnings
-
-import mmcv
 import torch
+import warnings
 from mmcv.cnn.utils import revert_sync_batchnorm
 from mmcv.runner import get_dist_info, init_dist
 from mmcv.utils import Config, DictAction, get_git_hash

@@ -2,7 +2,6 @@
 import argparse
 import os
 import os.path as osp
-
 import oss2
 
 ACCESS_KEY_ID = os.getenv('OSS_ACCESS_KEY_ID', None)

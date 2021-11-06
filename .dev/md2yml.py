@@ -7,12 +7,11 @@
 # detected before a commit.
 
 import glob
+import mmcv
 import os
 import os.path as osp
 import re
 import sys
-
-import mmcv
 from lxml import etree
 
 MMSEG_ROOT = osp.dirname(osp.dirname((osp.dirname(__file__))))

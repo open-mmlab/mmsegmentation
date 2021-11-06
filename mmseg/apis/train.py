@@ -1,9 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import random
-import warnings
-
 import numpy as np
+import random
 import torch
+import warnings
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import HOOKS, build_optimizer, build_runner
 from mmcv.utils import build_from_cfg

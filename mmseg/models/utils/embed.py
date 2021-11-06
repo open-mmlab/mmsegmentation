@@ -1,12 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import math
-from typing import Sequence
-
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer, build_norm_layer
 from mmcv.runner.base_module import BaseModule
 from mmcv.utils import to_2tuple
+from typing import Sequence
 
 
 class AdaptivePadding(nn.Module):

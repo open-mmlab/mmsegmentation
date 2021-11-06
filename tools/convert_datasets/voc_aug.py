@@ -1,10 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import os.path as osp
-from functools import partial
-
 import mmcv
 import numpy as np
+import os.path as osp
+from functools import partial
 from PIL import Image
 from scipy.io import loadmat
 

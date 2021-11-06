@@ -1,12 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import gzip
+import mmcv
 import os
 import os.path as osp
 import tarfile
 import tempfile
-
-import mmcv
 
 STARE_LEN = 20
 TRAINING_LEN = 10

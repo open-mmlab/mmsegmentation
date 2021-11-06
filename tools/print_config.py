@@ -1,6 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-
 from mmcv import Config, DictAction
 
 from mmseg.apis import init_segmentor
