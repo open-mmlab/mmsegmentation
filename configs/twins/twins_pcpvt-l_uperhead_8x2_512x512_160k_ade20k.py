@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/upernet_r50.py', '../_base_/datasets/ade20k.py',
+    '../_base_/models/twins_upernet.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', 'twins_schedule_160k.py'
 ]
 model = dict(
