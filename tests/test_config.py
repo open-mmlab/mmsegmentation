@@ -1,8 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import glob
 import os
-from mmcv import Config
 from os.path import dirname, exists, isdir, join, relpath
+
+from mmcv import Config
 from torch import nn
 
 from mmseg.models import build_segmentor
@@ -65,10 +66,9 @@ def test_config_data_pipeline():
     CommandLine:
         xdoctest -m tests/test_config.py test_config_build_data_pipeline
     """
-    import numpy as np
     from mmcv import Config
-
     from mmseg.datasets.pipelines import Compose
+    import numpy as np
 
     config_dpath = _get_config_directory()
     print('Found config_dpath = {!r}'.format(config_dpath))

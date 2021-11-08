@@ -1,7 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os.path as osp
+
 import mmcv
 import numpy as np
-import os.path as osp
 from mmcv.utils import print_log
 from PIL import Image
 

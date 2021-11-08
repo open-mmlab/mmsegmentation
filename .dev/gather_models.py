@@ -3,10 +3,11 @@ import argparse
 import glob
 import hashlib
 import json
-import mmcv
 import os
 import os.path as osp
 import shutil
+
+import mmcv
 import torch
 
 # build schedule look-up table to automatically find the final model

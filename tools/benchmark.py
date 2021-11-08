@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import time
+
 import torch
 from mmcv import Config
 from mmcv.parallel import MMDataParallel

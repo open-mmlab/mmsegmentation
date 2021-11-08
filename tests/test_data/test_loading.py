@@ -1,9 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-import mmcv
-import numpy as np
 import os.path as osp
 import tempfile
+
+import mmcv
+import numpy as np
 
 from mmseg.datasets.pipelines import LoadAnnotations, LoadImageFromFile
 

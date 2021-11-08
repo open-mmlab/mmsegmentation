@@ -1,14 +1,15 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import numpy as np
 import os
 import os.path as osp
-import pytest
 import shutil
 import tempfile
-import torch
-from PIL import Image
 from typing import Generator
 from unittest.mock import MagicMock, patch
+
+import numpy as np
+import pytest
+import torch
+from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,

@@ -1,7 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
-import torch.distributed as dist
 import warnings
+
+import torch.distributed as dist
 from mmcv.runner import DistEvalHook as _DistEvalHook
 from mmcv.runner import EvalHook as _EvalHook
 from torch.nn.modules.batchnorm import _BatchNorm

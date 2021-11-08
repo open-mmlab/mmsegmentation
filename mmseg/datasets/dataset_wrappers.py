@@ -1,8 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import bisect
+from itertools import chain
+
 import mmcv
 import numpy as np
-from itertools import chain
 from mmcv.utils import print_log
 from torch.utils.data.dataset import ConcatDataset as _ConcatDataset
 

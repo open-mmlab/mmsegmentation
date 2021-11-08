@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import mmcv
 import os.path as osp
+
+import mmcv
 
 from mmseg.apis import inference_segmentor, init_segmentor
 

@@ -1,8 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import glob
-import mmcv
 import os.path as osp
+
+import mmcv
 from mmcv import Config
 
 

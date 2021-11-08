@@ -1,8 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import base64
+import os
+
 import cv2
 import mmcv
-import os
 import torch
 from mmcv.cnn.utils.sync_bn import revert_sync_batchnorm
 from ts.torch_handler.base_handler import BaseHandler

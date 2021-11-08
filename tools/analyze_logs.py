@@ -3,9 +3,10 @@
 mmlab/mmdetection/blob/master/tools/analysis_tools/analyze_logs.py."""
 import argparse
 import json
+from collections import defaultdict
+
 import matplotlib.pyplot as plt
 import seaborn as sns
-from collections import defaultdict
 
 
 def plot_curve(log_dicts, args):

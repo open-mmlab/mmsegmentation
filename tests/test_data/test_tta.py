@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import mmcv
 import os.path as osp
+
+import mmcv
 import pytest
 from mmcv.utils import build_from_cfg
 

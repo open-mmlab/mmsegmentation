@@ -1,12 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
+from functools import partial
+
 import mmcv
 import numpy as np
 import onnxruntime as rt
 import torch
 import torch._C
 import torch.serialization
-from functools import partial
 from mmcv import DictAction
 from mmcv.onnx import register_extra_symbolics
 from mmcv.runner import load_checkpoint

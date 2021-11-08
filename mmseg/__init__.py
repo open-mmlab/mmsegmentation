@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import mmcv
 import warnings
+
+import mmcv
 from packaging.version import parse
 
 from .version import __version__, version_info

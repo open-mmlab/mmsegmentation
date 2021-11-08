@@ -1,10 +1,11 @@
+import shutil
+from unittest.mock import MagicMock
+
 import numpy as np
 import pytest
-import shutil
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset, dataloader
-from unittest.mock import MagicMock
 
 from mmseg.apis import single_gpu_test
 

@@ -3,9 +3,10 @@ import hashlib
 import logging
 import os
 import os.path as osp
-import requests
 import warnings
 from argparse import ArgumentParser
+
+import requests
 from mmcv import Config
 
 from mmseg.apis import inference_segmentor, init_segmentor, show_result_pyplot

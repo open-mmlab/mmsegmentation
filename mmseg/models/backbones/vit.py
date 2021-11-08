@@ -1,8 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import math
+import warnings
+
 import torch
 import torch.nn as nn
-import warnings
 from mmcv.cnn import (build_norm_layer, constant_init, kaiming_init,
                       normal_init, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention

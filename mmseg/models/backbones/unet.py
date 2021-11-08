@@ -1,7 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import warnings
+
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-import warnings
 from mmcv.cnn import (UPSAMPLE_LAYERS, ConvModule, build_activation_layer,
                       build_norm_layer)
 from mmcv.runner import BaseModule

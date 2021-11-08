@@ -1,9 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import mmcv
 import os.path as osp
-import torch
 from collections import OrderedDict
+
+import mmcv
+import torch
 from mmcv.runner import CheckpointLoader
 
 

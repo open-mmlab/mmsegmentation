@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import mmcv
 import warnings
+
+import mmcv
 
 from ..builder import PIPELINES
 from .compose import Compose

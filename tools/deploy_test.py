@@ -1,16 +1,17 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import mmcv
-import numpy as np
 import os
 import os.path as osp
 import shutil
-import torch
 import warnings
+from typing import Any, Iterable
+
+import mmcv
+import numpy as np
+import torch
 from mmcv.parallel import MMDataParallel
 from mmcv.runner import get_dist_info
 from mmcv.utils import DictAction
-from typing import Any, Iterable
 
 from mmseg.apis import single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
