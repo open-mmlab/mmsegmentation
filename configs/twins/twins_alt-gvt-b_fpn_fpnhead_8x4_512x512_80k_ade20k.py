@@ -1,6 +1,4 @@
-_base_ = [
-    'twins_alt-gvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k.py'
-]
+_base_ = ['twins_alt-gvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k.py']
 
 model = dict(
     type='EncoderDecoder',
@@ -10,9 +8,7 @@ model = dict(
         embed_dims=[96, 192, 384, 768],
         num_heads=[3, 6, 12, 24],
         depths=[2, 2, 18, 2]),
-    neck=dict(
-        type='FPN',
-        in_channels=[96, 192, 384, 768]),
+    neck=dict(type='FPN', in_channels=[96, 192, 384, 768]),
     decode_head=dict(num_classes=150),
 )
 

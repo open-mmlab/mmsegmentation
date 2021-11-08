@@ -24,5 +24,3 @@ lr_config = dict(
     power=1.0,
     min_lr=0.0,
     by_epoch=False)
-
-

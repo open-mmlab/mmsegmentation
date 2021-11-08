@@ -6,9 +6,7 @@ model = dict(
     type='EncoderDecoder',
     pretrained='pretrained/pcpvt_large.pth',
     backbone=dict(
-        type='Twins_pcpvt',
-        depths=[3, 8, 27, 3],
-        drop_path_rate=0.3))
+        type='Twins_pcpvt', depths=[3, 8, 27, 3], drop_path_rate=0.3))
 
 optimizer = dict(
     _delete_=True,
