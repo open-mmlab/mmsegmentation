@@ -988,36 +988,58 @@ def _conv_filter(state_dict, patch_size=16):
 class Twins_pcpvt(CPVTV2):
     """Implements of Twins-PCPVT."""
 
-    def __init__(self, **kwargs):
+    def __init__(self,
+                 patch_size=4,
+                 embed_dims=[64, 128, 320, 512],
+                 num_heads=[1, 2, 5, 8],
+                 mlp_ratios=[8, 8, 4, 4],
+                 qkv_bias=True,
+                 norm_cfg=dict(type='LN'),
+                 depths=[3, 4, 6, 3],
+                 sr_ratios=[8, 4, 2, 1],
+                 drop_rate=0.0,
+                 drop_path_rate=0.2
+                 ):
         super(Twins_pcpvt, self).__init__(
-            patch_size=4,
-            embed_dims=[64, 128, 320, 512],
-            num_heads=[1, 2, 5, 8],
-            mlp_ratios=[8, 8, 4, 4],
-            qkv_bias=True,
-            norm_cfg=dict(type='LN'),
-            depths=[3, 4, 6, 3],
-            sr_ratios=[8, 4, 2, 1],
-            drop_rate=0.0,
-            drop_path_rate=0.2)
-        import pdb; pdb.set_trace()
+            patch_size=patch_size,
+            embed_dims=embed_dims,
+            num_heads=num_heads,
+            mlp_ratios=mlp_ratios,
+            qkv_bias=qkv_bias,
+            norm_cfg=norm_cfg,
+            depths=depths,
+            sr_ratios=sr_ratios,
+            drop_rate=drop_rate,
+            drop_path_rate=drop_path_rate)
 
 
 @BACKBONES.register_module()
 class Twins_alt_gvt(ALTGVT):
     """Implements of Twins-ALTGVT."""
 
-    def __init__(self, **kwargs):
+    def __init__(self,
+                 patch_size=4,
+                 embed_dims=[64, 128, 256, 512],
+                 num_heads=[2, 4, 8, 16],
+                 mlp_ratios=[4, 4, 4, 4],
+                 qkv_bias=True,
+                 norm_cfg=dict(type='LN'),
+                 depths=[2, 2, 10, 4],
+                 wss=[7, 7, 7, 7],
+                 sr_ratios=[8, 4, 2, 1],
+                 extra_norm=True,
+                 drop_path_rate=0.2,
+                 ):
         super(Twins_alt_gvt, self).__init__(
-            patch_size=4,
-            embed_dims=[64, 128, 256, 512],
-            num_heads=[2, 4, 8, 16],
-            mlp_ratios=[4, 4, 4, 4],
-            qkv_bias=True,
-            norm_cfg=dict(type='LN'),
-            depths=[2, 2, 10, 4],
-            wss=[7, 7, 7, 7],
-            sr_ratios=[8, 4, 2, 1],
-            extra_norm=True,
-            drop_path_rate=0.2,
+            patch_size=patch_size,
+            embed_dims=embed_dims,
+            num_heads=num_heads,
+            mlp_ratios=mlp_ratios,
+            qkv_bias=qkv_bias,
+            norm_cfg=norm_cfg,
+            depths=depths,
+            wss=wss,
+            sr_ratios=sr_ratios,
+            extra_norm=extra_norm,
+            drop_path_rate=drop_path_rate,
         )
