@@ -63,6 +63,7 @@ class GroupAttention(BaseModule):
         proj_drop (float, optional): Dropout ratio of output. Default: 0.
         ws (int): the use of LSA or GSA. Default: 1.
         sr_ratio (float): kernel_size of conv. Default: 1.
+        forward padding
     """
 
     def __init__(self,

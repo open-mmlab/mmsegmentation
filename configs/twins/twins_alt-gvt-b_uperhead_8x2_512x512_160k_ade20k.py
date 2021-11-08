@@ -1,26 +1,16 @@
 _base_ = [
-    '../_base_/models/upernet_r50.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', 'twins_schedule_160k.py'
+    'twins_alt-gvt-s_uperhead_8x2_512x512_160k_ade20k.py'
 ]
 model = dict(
     type='EncoderDecoder',
     pretrained='pretrained/alt_gvt_base.pth',
     backbone=dict(
         type='Twins_alt_gvt',
-        patch_size=4,
         embed_dims=[96, 192, 384, 768],
         num_heads=[3, 6, 12, 24],
-        mlp_ratios=[4, 4, 4, 4],
-        qkv_bias=True,
-        norm_cfg=dict(type='LN'),
-        depths=[2, 2, 18, 2],
-        wss=[7, 7, 7, 7],
-        sr_ratios=[8, 4, 2, 1],
-        extra_norm=True,
-        drop_path_rate=0.2,
-        style='pytorch'),
-    decode_head=dict(num_classes=150, in_channels=[96, 192, 384, 768]),
-    auxiliary_head=dict(num_classes=150, in_channels=384))
+        depths=[2, 2, 18, 2]),
+    decode_head=dict(in_channels=[96, 192, 384, 768]),
+    auxiliary_head=dict(in_channels=384))
 
 optimizer = dict(
     _delete_=True,

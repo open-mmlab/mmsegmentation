@@ -19,8 +19,8 @@ model = dict(
         extra_norm=True,
         drop_path_rate=0.2,
         style='pytorch'),
-    decode_head=dict(num_classes=150, in_channels=[64, 128, 256, 512]),
-    auxiliary_head=dict(num_classes=150, in_channels=256))
+    decode_head=dict(in_channels=[64, 128, 256, 512]),
+    auxiliary_head=dict(in_channels=256))
 
 optimizer = dict(
     _delete_=True,
