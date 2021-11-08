@@ -5,4 +5,5 @@ _base_ = [
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 data = dict(
     samples_per_gpu=4,
-    workers_per_gpu=4,)
+    workers_per_gpu=4,
+)
