@@ -7,10 +7,10 @@ from .utils import to_cuda
 
 def test_ann_head():
 
-    inputs = [torch.randn(1, 16, 45, 45), torch.randn(1, 32, 21, 21)]
+    inputs = [torch.randn(1, 4, 45, 45), torch.randn(1, 8, 21, 21)]
     head = ANNHead(
-        in_channels=[16, 32],
-        channels=16,
+        in_channels=[4, 8],
+        channels=2,
         num_classes=19,
         in_index=[-2, -1],
         project_channels=8)

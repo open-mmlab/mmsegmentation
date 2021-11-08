@@ -43,21 +43,21 @@ def test_resnet_basic_block():
     # Test BasicBlock with checkpoint forward
     block = BasicBlock(16, 16, with_cp=True)
     assert block.with_cp
-    x = torch.randn(1, 16, 56, 56)
+    x = torch.randn(1, 16, 28, 28)
     x_out = block(x)
-    assert x_out.shape == torch.Size([1, 16, 56, 56])
+    assert x_out.shape == torch.Size([1, 16, 28, 28])
 
     # test BasicBlock structure and forward
-    block = BasicBlock(64, 64)
-    assert block.conv1.in_channels == 64
-    assert block.conv1.out_channels == 64
+    block = BasicBlock(32, 32)
+    assert block.conv1.in_channels == 32
+    assert block.conv1.out_channels == 32
     assert block.conv1.kernel_size == (3, 3)
-    assert block.conv2.in_channels == 64
-    assert block.conv2.out_channels == 64
+    assert block.conv2.in_channels == 32
+    assert block.conv2.out_channels == 32
     assert block.conv2.kernel_size == (3, 3)
-    x = torch.randn(1, 64, 56, 56)
+    x = torch.randn(1, 32, 28, 28)
     x_out = block(x)
-    assert x_out.shape == torch.Size([1, 64, 56, 56])
+    assert x_out.shape == torch.Size([1, 32, 28, 28])
 
 
 def test_resnet_bottleneck():
@@ -293,37 +293,37 @@ def test_resnet_backbone():
 
     with pytest.raises(AssertionError):
         # In ResNet: 1 <= num_stages <= 4
-        ResNet(50, num_stages=5)
+        ResNet(18, num_stages=5)
 
     with pytest.raises(AssertionError):
         # len(strides) == len(dilations) == num_stages
-        ResNet(50, strides=(1, ), dilations=(1, 1), num_stages=3)
+        ResNet(18, strides=(1, ), dilations=(1, 1), num_stages=3)
 
     with pytest.raises(TypeError):
         # pretrained must be a string path
-        model = ResNet(50, pretrained=0)
+        model = ResNet(18, pretrained=0)
         model.init_weights()
 
     with pytest.raises(AssertionError):
         # Style must be in ['pytorch', 'caffe']
         ResNet(50, style='tensorflow')
 
-    # Test ResNet50 norm_eval=True
-    model = ResNet(50, norm_eval=True)
+    # Test ResNet18 norm_eval=True
+    model = ResNet(18, norm_eval=True)
     model.init_weights()
     model.train()
     assert check_norm_state(model.modules(), False)
 
-    # Test ResNet50 with torchvision pretrained weight
+    # Test ResNet18 with torchvision pretrained weight
     model = ResNet(
-        depth=50, norm_eval=True, pretrained='torchvision://resnet50')
+        depth=18, norm_eval=True, pretrained='torchvision://resnet18')
     model.init_weights()
     model.train()
     assert check_norm_state(model.modules(), False)
 
-    # Test ResNet50 with first stage frozen
+    # Test ResNet18 with first stage frozen
     frozen_stages = 1
-    model = ResNet(50, frozen_stages=frozen_stages)
+    model = ResNet(18, frozen_stages=frozen_stages)
     model.init_weights()
     model.train()
     assert model.norm1.training is False
@@ -338,8 +338,8 @@ def test_resnet_backbone():
         for param in layer.parameters():
             assert param.requires_grad is False
 
-    # Test ResNet50V1d with first stage frozen
-    model = ResNetV1d(depth=50, frozen_stages=frozen_stages)
+    # Test ResNet18V1d with first stage frozen
+    model = ResNetV1d(depth=18, frozen_stages=frozen_stages)
     assert len(model.stem) == 9
     model.init_weights()
     model.train()
@@ -367,8 +367,8 @@ def test_resnet_backbone():
     assert feat[2].shape == torch.Size([1, 256, 14, 14])
     assert feat[3].shape == torch.Size([1, 512, 7, 7])
 
-    # Test ResNet50 with BatchNorm forward
-    model = ResNet(50)
+    # Test ResNet18 with BatchNorm forward
+    model = ResNet(18)
     for m in model.modules():
         if is_norm(m):
             assert isinstance(m, _BatchNorm)
@@ -378,22 +378,22 @@ def test_resnet_backbone():
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert len(feat) == 4
-    assert feat[0].shape == torch.Size([1, 256, 56, 56])
-    assert feat[1].shape == torch.Size([1, 512, 28, 28])
-    assert feat[2].shape == torch.Size([1, 1024, 14, 14])
-    assert feat[3].shape == torch.Size([1, 2048, 7, 7])
+    assert feat[0].shape == torch.Size([1, 64, 56, 56])
+    assert feat[1].shape == torch.Size([1, 128, 28, 28])
+    assert feat[2].shape == torch.Size([1, 256, 14, 14])
+    assert feat[3].shape == torch.Size([1, 512, 7, 7])
 
-    # Test ResNet50 with layers 1, 2, 3 out forward
-    model = ResNet(50, out_indices=(0, 1, 2))
+    # Test ResNet18 with layers 1, 2, 3 out forward
+    model = ResNet(18, out_indices=(0, 1, 2))
     model.init_weights()
     model.train()
 
-    imgs = torch.randn(1, 3, 224, 224)
+    imgs = torch.randn(1, 3, 112, 112)
     feat = model(imgs)
     assert len(feat) == 3
-    assert feat[0].shape == torch.Size([1, 256, 56, 56])
-    assert feat[1].shape == torch.Size([1, 512, 28, 28])
-    assert feat[2].shape == torch.Size([1, 1024, 14, 14])
+    assert feat[0].shape == torch.Size([1, 64, 28, 28])
+    assert feat[1].shape == torch.Size([1, 128, 14, 14])
+    assert feat[2].shape == torch.Size([1, 256, 7, 7])
 
     # Test ResNet18 with checkpoint forward
     model = ResNet(18, with_cp=True)
@@ -411,8 +411,8 @@ def test_resnet_backbone():
     assert feat[2].shape == torch.Size([1, 256, 14, 14])
     assert feat[3].shape == torch.Size([1, 512, 7, 7])
 
-    # Test ResNet50 with checkpoint forward
-    model = ResNet(50, with_cp=True)
+    # Test ResNet18 with checkpoint forward
+    model = ResNet(18, with_cp=True)
     for m in model.modules():
         if is_block(m):
             assert m.with_cp
@@ -422,14 +422,14 @@ def test_resnet_backbone():
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert len(feat) == 4
-    assert feat[0].shape == torch.Size([1, 256, 56, 56])
-    assert feat[1].shape == torch.Size([1, 512, 28, 28])
-    assert feat[2].shape == torch.Size([1, 1024, 14, 14])
-    assert feat[3].shape == torch.Size([1, 2048, 7, 7])
+    assert feat[0].shape == torch.Size([1, 64, 56, 56])
+    assert feat[1].shape == torch.Size([1, 128, 28, 28])
+    assert feat[2].shape == torch.Size([1, 256, 14, 14])
+    assert feat[3].shape == torch.Size([1, 512, 7, 7])
 
-    # Test ResNet50 with GroupNorm forward
+    # Test ResNet18 with GroupNorm forward
     model = ResNet(
-        50, norm_cfg=dict(type='GN', num_groups=32, requires_grad=True))
+        18, norm_cfg=dict(type='GN', num_groups=32, requires_grad=True))
     for m in model.modules():
         if is_norm(m):
             assert isinstance(m, GroupNorm)
@@ -439,10 +439,10 @@ def test_resnet_backbone():
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert len(feat) == 4
-    assert feat[0].shape == torch.Size([1, 256, 56, 56])
-    assert feat[1].shape == torch.Size([1, 512, 28, 28])
-    assert feat[2].shape == torch.Size([1, 1024, 14, 14])
-    assert feat[3].shape == torch.Size([1, 2048, 7, 7])
+    assert feat[0].shape == torch.Size([1, 64, 56, 56])
+    assert feat[1].shape == torch.Size([1, 128, 28, 28])
+    assert feat[2].shape == torch.Size([1, 256, 14, 14])
+    assert feat[3].shape == torch.Size([1, 512, 7, 7])
 
     # Test ResNet50 with 1 GeneralizedAttention after conv2, 1 NonLocal2d
     # after conv2, 1 ContextBlock after conv3 in layers 2, 3, 4
@@ -543,8 +543,8 @@ def test_resnet_backbone():
     assert feat[2].shape == torch.Size([1, 1024, 14, 14])
     assert feat[3].shape == torch.Size([1, 2048, 7, 7])
 
-    # Test ResNet50 zero initialization of residual
-    model = ResNet(50, zero_init_residual=True)
+    # Test ResNet18 zero initialization of residual
+    model = ResNet(18, zero_init_residual=True)
     model.init_weights()
     for m in model.modules():
         if isinstance(m, Bottleneck):
@@ -556,20 +556,20 @@ def test_resnet_backbone():
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert len(feat) == 4
-    assert feat[0].shape == torch.Size([1, 256, 56, 56])
-    assert feat[1].shape == torch.Size([1, 512, 28, 28])
-    assert feat[2].shape == torch.Size([1, 1024, 14, 14])
-    assert feat[3].shape == torch.Size([1, 2048, 7, 7])
+    assert feat[0].shape == torch.Size([1, 64, 56, 56])
+    assert feat[1].shape == torch.Size([1, 128, 28, 28])
+    assert feat[2].shape == torch.Size([1, 256, 14, 14])
+    assert feat[3].shape == torch.Size([1, 512, 7, 7])
 
     # Test ResNetV1d forward
-    model = ResNetV1d(depth=50)
+    model = ResNetV1d(depth=18)
     model.init_weights()
     model.train()
 
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert len(feat) == 4
-    assert feat[0].shape == torch.Size([1, 256, 56, 56])
-    assert feat[1].shape == torch.Size([1, 512, 28, 28])
-    assert feat[2].shape == torch.Size([1, 1024, 14, 14])
-    assert feat[3].shape == torch.Size([1, 2048, 7, 7])
+    assert feat[0].shape == torch.Size([1, 64, 56, 56])
+    assert feat[1].shape == torch.Size([1, 128, 28, 28])
+    assert feat[2].shape == torch.Size([1, 256, 14, 14])
+    assert feat[3].shape == torch.Size([1, 512, 7, 7])
