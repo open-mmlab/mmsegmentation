@@ -761,8 +761,6 @@ class CPVTV2(PyramidVisionTransformer):
         B = x.shape[0]
 
         for i in range(len(self.depths)):
-            import pdb
-            pdb.set_trace()
             x, (H, W) = self.patch_embeds[i](x)
             x = self.pos_drops[i](x)
             for j, blk in enumerate(self.blocks[i]):
