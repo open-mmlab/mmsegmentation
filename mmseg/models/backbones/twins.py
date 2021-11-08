@@ -761,7 +761,8 @@ class CPVTV2(PyramidVisionTransformer):
         B = x.shape[0]
 
         for i in range(len(self.depths)):
-            import pdb; pdb.set_trace()
+            import pdb
+            pdb.set_trace()
             x, (H, W) = self.patch_embeds[i](x)
             x = self.pos_drops[i](x)
             for j, blk in enumerate(self.blocks[i]):
@@ -999,6 +1000,7 @@ class Twins_pcpvt(CPVTV2):
             sr_ratios=[8, 4, 2, 1],
             drop_rate=0.0,
             drop_path_rate=0.2)
+        import pdb; pdb.set_trace()
 
 
 @BACKBONES.register_module()

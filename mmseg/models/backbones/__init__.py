@@ -3,7 +3,6 @@ from .bisenetv1 import BiSeNetV1
 from .bisenetv2 import BiSeNetV2
 from .cgnet import CGNet
 from .fast_scnn import FastSCNN
-from .twins import Twins_alt_gvt, Twins_pcpvt
 from .hrnet import HRNet
 from .icnet import ICNet
 from .mit import MixVisionTransformer
@@ -14,6 +13,7 @@ from .resnet import ResNet, ResNetV1c, ResNetV1d
 from .resnext import ResNeXt
 from .swin import SwinTransformer
 from .timm_backbone import TIMMBackbone
+from .twins import Twins_alt_gvt, Twins_pcpvt
 from .unet import UNet
 from .vit import VisionTransformer
 
