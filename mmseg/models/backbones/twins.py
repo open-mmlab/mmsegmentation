@@ -1018,18 +1018,18 @@ class Twins_alt_gvt(ALTGVT):
     """Implements of Twins-ALTGVT."""
 
     def __init__(self,
-                patch_size=4,
-                embed_dims=[64, 128, 256, 512],
-                num_heads=[2, 4, 8, 16],
-                mlp_ratios=[4, 4, 4, 4],
-                qkv_bias=True,
-                norm_cfg=dict(type='LN'),
-                depths=[2, 2, 10, 4],
-                wss=[7, 7, 7, 7],
-                sr_ratios=[8, 4, 2, 1],
-                extra_norm=True,
-                drop_path_rate=0.2,
-                **kwargs):
+                 patch_size=4,
+                 embed_dims=[64, 128, 256, 512],
+                 num_heads=[2, 4, 8, 16],
+                 mlp_ratios=[4, 4, 4, 4],
+                 qkv_bias=True,
+                 norm_cfg=dict(type='LN'),
+                 depths=[2, 2, 10, 4],
+                 wss=[7, 7, 7, 7],
+                 sr_ratios=[8, 4, 2, 1],
+                 extra_norm=True,
+                 drop_path_rate=0.2,
+                 **kwargs):
         super(Twins_alt_gvt, self).__init__(
             patch_size=patch_size,
             embed_dims=embed_dims,
