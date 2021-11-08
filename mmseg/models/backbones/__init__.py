@@ -3,7 +3,7 @@ from .bisenetv1 import BiSeNetV1
 from .bisenetv2 import BiSeNetV2
 from .cgnet import CGNet
 from .fast_scnn import FastSCNN
-from .gvt import Twins_alt_gvt, Twins_pcpvt
+from .twins import Twins_alt_gvt, Twins_pcpvt
 from .hrnet import HRNet
 from .icnet import ICNet
 from .mit import MixVisionTransformer
