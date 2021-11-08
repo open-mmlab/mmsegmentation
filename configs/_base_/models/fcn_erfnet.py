@@ -16,11 +16,15 @@ model = dict(
         dropout_ratio=0.1,
         init_cfg=None),
     decode_head=dict(
-        type='ERFHead',
+        type='FCNHead',
         in_channels=16,
-        channels=19,
+        channels=512,
+        num_convs=2,
+        concat_input=True,
+        dropout_ratio=0.1,
         num_classes=19,
         norm_cfg=norm_cfg,
+        align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     # model training and testing settings
