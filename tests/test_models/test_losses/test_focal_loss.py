@@ -125,7 +125,7 @@ def test_forward_with_weight():
 def test_none_reduction_type():
     loss_cfg = dict(type='FocalLoss', reduction='none')
     focal_loss = build_loss(loss_cfg)
-    fake_pred = torch.rand(3, 2, 2, 2)
-    fake_target = torch.randint(0, 2, (3, 2, 2))
+    fake_pred = torch.rand(3, 2, 4, 4)
+    fake_target = torch.randint(0, 2, (3, 4, 4))
     loss = focal_loss(fake_pred, fake_target)
     assert loss.shape == fake_pred.shape

@@ -230,7 +230,15 @@ class FocalLoss(nn.Module):
                 avg_factor=avg_factor)
 
             if reduction == 'none':
-                loss_cls = loss_cls.view(*none_reduce_shape).contiguous()
+                temp_shape = none_reduce_shape[0:1] + none_reduce_shape[2:] \
+                             + none_reduce_shape[1:2]
+                # [N, C] -> [B, d1, d2, ..., C]
+                loss_cls = loss_cls.view(*temp_shape).contiguous()
+                original_permute = [0, loss_cls.dim() - 1] \
+                    + list(range(1, loss_cls.dim() - 1))
+                # [B, d1, d2, ..., C] -> [B, C, d1, d2, ...]
+                loss_cls = loss_cls.permute(*original_permute).contiguous()
+                return loss_cls
 
         else:
             raise NotImplementedError
