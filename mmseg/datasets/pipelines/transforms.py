@@ -432,6 +432,9 @@ class Normalize(object):
         std (sequence): Std values of 3 channels.
         to_rgb (bool): Whether to convert the image from BGR to RGB,
             default is true.
+        normalize_in_graph (bool): Whether to normalize the input in the
+            graph (mmseg.models.segmentors.base.forward) or here in the
+            __call__ function (only relevant during onnx export)
     """
 
     def __init__(self, mean, std, to_rgb=True, normalize_in_graph=False):
