@@ -306,7 +306,6 @@ class SpatialReductionAttention(MultiheadAttention):
             init_cfg=init_cfg)
 
         self.sr_ratio = sr_ratio
-        self.proj = nn.Linear(embed_dims, embed_dims)
         if sr_ratio > 1:
             self.sr = build_conv_layer(
                 dict(type='Conv2d'),
@@ -333,7 +332,6 @@ class SpatialReductionAttention(MultiheadAttention):
         import pdb
         pdb.set_trace()
         out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
-        out = self.proj(out)
         return identity + self.dropout_layer(self.proj_drop(out))
 
 
