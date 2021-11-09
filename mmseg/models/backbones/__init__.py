@@ -13,7 +13,7 @@ from .resnet import ResNet, ResNetV1c, ResNetV1d
 from .resnext import ResNeXt
 from .swin import SwinTransformer
 from .timm_backbone import TIMMBackbone
-from .twins import Twins_alt_gvt, Twins_pcpvt
+from .twins import PCPVT, ALTGVT
 from .unet import UNet
 from .vit import VisionTransformer
 
@@ -21,6 +21,5 @@ __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
     'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
-    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'Twins_pcpvt',
-    'Twins_alt_gvt'
+    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'PCPVT', 'ALTGVT'
 ]

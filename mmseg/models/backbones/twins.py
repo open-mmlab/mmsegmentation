@@ -662,8 +662,13 @@ class PosCNN(BaseModule):
         return ['proj.%d.weight' % i for i in range(4)]
 
 
-class CPVTV2(PyramidVisionTransformer):
-    """Use useful results from CPVT.
+@BACKBONES.register_module()
+class PCPVT(PyramidVisionTransformer):
+    """
+    Add applicable positional encodings to CPVT.
+    The implementation of our first proposed architecture: Twins-PCPVT.
+
+    Use useful results from CPVT.
 
     PEG and GAP. Therefore, cls token is no longer required. PEG is used to
     encode the absolute position on the fly, which greatly affects the
@@ -714,7 +719,7 @@ class CPVTV2(PyramidVisionTransformer):
                  block_cls=TransformerEncoderLayer,
                  F4=False,
                  extra_norm=False):
-        super(CPVTV2,
+        super(PCPVT,
               self).__init__(img_size, patch_size, in_chans, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
                              drop_rate, attn_drop_rate, drop_path_rate,
@@ -784,62 +789,7 @@ class CPVTV2(PyramidVisionTransformer):
         return x
 
 
-class PCPVT(CPVTV2):
-    """Add applicable positional encodings to CPVT. The implementation of our
-    first proposed architecture: Twins-PCPVT.
-
-    Args:
-         img_size (int | tuple): Input image size. Default: 224.
-         patch_size (int): The patch size. Default: 4.
-         in_chans (int): Number of input channels. Default: 3.
-         num_classes (int): Number of num_classes. Default: 1000
-         embed_dims (list): embedding dimension. Default: [64, 128, 256].
-         num_heads (int): number of attention heads. Default: [1, 2, 4].
-         mlp_ratios (int): ratio of mlp hidden dim to embedding dim.
-             Default: [4, 4, 4].
-         qkv_bias (bool): enable bias for qkv if True. Default: False.
-         drop_rate (float): Probability of an element to be zeroed.
-             Default 0.
-         attn_drop_rate (float): The drop out rate for attention layer.
-             Default 0.0
-         drop_path_rate (float): stochastic depth rate. Default 0.0
-         norm_cfg (dict): Config dict for normalization layer.
-             Default: dict(type='LN')
-         depths (list): depths of each stage. Default [4, 4, 4].
-         sr_ratios (list): kernel_size of conv in each Attn module in
-             Transformer encoder layer. Default: [4, 2, 1].
-         block_cls (BaseModule): Transformer Encoder.
-            Default TransformerEncoderLayer
-         F4=False（bool): input features need slice.
-         extra_norm（bool): add extra norm. Default False.
-    """
-
-    def __init__(self,
-                 img_size=224,
-                 patch_size=4,
-                 in_chans=3,
-                 num_classes=1000,
-                 embed_dims=[64, 128, 256],
-                 num_heads=[1, 2, 4],
-                 mlp_ratios=[4, 4, 4],
-                 qkv_bias=False,
-                 drop_rate=0.,
-                 attn_drop_rate=0.,
-                 drop_path_rate=0.,
-                 norm_cfg=dict(type='LN'),
-                 depths=[4, 4, 4],
-                 sr_ratios=[4, 2, 1],
-                 block_cls=TransformerEncoderLayer,
-                 F4=False,
-                 extra_norm=False):
-        super(PCPVT,
-              self).__init__(img_size, patch_size, in_chans, num_classes,
-                             embed_dims, num_heads, mlp_ratios, qkv_bias,
-                             drop_rate, attn_drop_rate, drop_path_rate,
-                             norm_cfg, depths, sr_ratios, block_cls, F4,
-                             extra_norm)
-
-
+@BACKBONES.register_module()
 class ALTGVT(PCPVT):
     """Use useful results from CPVT.
 
@@ -980,64 +930,3 @@ def _conv_filter(state_dict, patch_size=16):
         out_dict[k] = v
 
     return out_dict
-
-
-@BACKBONES.register_module()
-class Twins_pcpvt(CPVTV2):
-    """Implements of Twins-PCPVT."""
-
-    def __init__(self,
-                 patch_size=4,
-                 embed_dims=[64, 128, 320, 512],
-                 num_heads=[1, 2, 5, 8],
-                 mlp_ratios=[8, 8, 4, 4],
-                 qkv_bias=True,
-                 norm_cfg=dict(type='LN'),
-                 depths=[3, 4, 6, 3],
-                 sr_ratios=[8, 4, 2, 1],
-                 drop_rate=0.0,
-                 drop_path_rate=0.2,
-                 **kwargs):
-        super(Twins_pcpvt, self).__init__(
-            patch_size=patch_size,
-            embed_dims=embed_dims,
-            num_heads=num_heads,
-            mlp_ratios=mlp_ratios,
-            qkv_bias=qkv_bias,
-            norm_cfg=norm_cfg,
-            depths=depths,
-            sr_ratios=sr_ratios,
-            drop_rate=drop_rate,
-            drop_path_rate=drop_path_rate)
-
-
-@BACKBONES.register_module()
-class Twins_alt_gvt(ALTGVT):
-    """Implements of Twins-ALTGVT."""
-
-    def __init__(self,
-                 patch_size=4,
-                 embed_dims=[64, 128, 256, 512],
-                 num_heads=[2, 4, 8, 16],
-                 mlp_ratios=[4, 4, 4, 4],
-                 qkv_bias=True,
-                 norm_cfg=dict(type='LN'),
-                 depths=[2, 2, 10, 4],
-                 wss=[7, 7, 7, 7],
-                 sr_ratios=[8, 4, 2, 1],
-                 extra_norm=True,
-                 drop_path_rate=0.2,
-                 **kwargs):
-        super(Twins_alt_gvt, self).__init__(
-            patch_size=patch_size,
-            embed_dims=embed_dims,
-            num_heads=num_heads,
-            mlp_ratios=mlp_ratios,
-            qkv_bias=qkv_bias,
-            norm_cfg=norm_cfg,
-            depths=depths,
-            wss=wss,
-            sr_ratios=sr_ratios,
-            extra_norm=extra_norm,
-            drop_path_rate=drop_path_rate,
-        )
