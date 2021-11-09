@@ -9,5 +9,5 @@ model = dict(
     backbone=dict(type='PCPVT', depths=[3, 4, 18, 3]),
 )
 
-optimizer = dict(type='AdamW', lr=0.0001, weight_decay=0.0001)
+optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)

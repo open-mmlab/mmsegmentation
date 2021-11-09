@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/models/twins_upernet.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', 'twins_schedule_160k.py'
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 model = dict(
     type='EncoderDecoder',

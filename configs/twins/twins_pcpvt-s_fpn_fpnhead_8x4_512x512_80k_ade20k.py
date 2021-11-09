@@ -5,5 +5,5 @@ _base_ = [
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 
-optimizer = dict(type='AdamW', lr=0.0001, weight_decay=0.0001)
+optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
