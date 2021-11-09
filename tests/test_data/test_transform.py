@@ -538,11 +538,13 @@ def test_cutout():
 
     transform = dict(type='CutOut', n_holes=1, cutout_shape=(10, 10))
     cutout_module = build_from_cfg(transform, PIPELINES)
+    assert 'cutout_shape' in repr(cutout_module)
     cutout_result = cutout_module(copy.deepcopy(results))
     assert cutout_result['img'].sum() < img.sum()
 
     transform = dict(type='CutOut', n_holes=1, cutout_ratio=(0.8, 0.8))
     cutout_module = build_from_cfg(transform, PIPELINES)
+    assert 'cutout_ratio' in repr(cutout_module)
     cutout_result = cutout_module(copy.deepcopy(results))
     assert cutout_result['img'].sum() < img.sum()
 
