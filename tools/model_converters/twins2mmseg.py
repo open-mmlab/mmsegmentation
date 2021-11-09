@@ -13,6 +13,7 @@ def convert_vit(ckpt):
     new_ckpt = OrderedDict()
 
     for k, v in ckpt.items():
+        new_v = v
         if k.startswith('head'):
             continue
         elif k.startswith('backbone.blocks'):
@@ -20,13 +21,18 @@ def convert_vit(ckpt):
                 new_k = k.replace('norm1', 'ln1')
             elif 'norm2' in k:
                 new_k = k.replace('norm2', 'ln2')
+            elif 'attn.q.' in new_k:
+                new_k = new_k.replace('q.', 'attn.in_proj_')
+            elif 'attn.kv.' in new_k:
+                new_k = k.replace('kv.', 'attn.in_proj_')
+                new_v = torch.cat([ckpt[new_k]], v, dim=0)
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
             else:
                 new_k = k
         else:
             new_k = k
-        new_ckpt[new_k] = v
+        new_ckpt[new_k] = new_v
 
     return new_ckpt
 

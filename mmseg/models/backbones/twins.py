@@ -330,7 +330,8 @@ class SpatialReductionAttention(MultiheadAttention):
 
         if identity is None:
             identity = x_q
-        import pdb; pdb.set_trace()
+        import pdb
+        pdb.set_trace()
         out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
         out = self.proj(out)
         return identity + self.dropout_layer(self.proj_drop(out))
