@@ -74,8 +74,6 @@ class FCNHead(BaseDecodeHead):
 
     def forward(self, inputs):
         """Forward function."""
-        import pdb
-        pdb.set_trace()
         x = self._transform_inputs(inputs)
         output = self.convs(x)
         if self.concat_input:
