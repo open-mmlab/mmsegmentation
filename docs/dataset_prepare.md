@@ -282,4 +282,4 @@ mv Val/Rural/masks_png/* ann_dir/val
 mv Val/Uban/masks_png/* ann_dir/val
 ```
 
-More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA). 
+More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
