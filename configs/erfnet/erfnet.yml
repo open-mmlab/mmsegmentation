@@ -13,7 +13,7 @@ Collections:
   Converted From:
     Code: https://github.com/Eromera/erfnet_pytorch
 Models:
-- Name: fcn_erfnet_4x4_512x1024_160k_cityscapes
+- Name: ''
   In Collection: erfnet
   Metadata:
     backbone: ERFNet
@@ -33,5 +33,5 @@ Models:
     Metrics:
       mIoU: 71.4
       mIoU(ms+flip): 72.96
-  Config: configs/erfnet/fcn_erfnet_4x4_512x1024_160k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/fcn_erfnet_4x4_512x1024_160k_cityscapes/fcn_erfnet_4x4_512x1024_160k_cityscapes_20211103_011334-8f691334.pth
+  Config: ''
+  Weights: ''

@@ -11,8 +11,9 @@ from ..builder import BACKBONES
 class DownsamplerBlock(BaseModule):
     """Downsampler block of ERFNet.
 
-    This module is a little different from basical ConvModule. Concatenation
-    of Conv and MaxPool will be used before BatchNorm.
+    This module is a little different from basical ConvModule.
+    The features from Conv and MaxPool layers are
+    concatenated before BatchNorm.
 
     Args:
         in_channels (int): Number of input channels.
@@ -73,6 +74,8 @@ class NonBottleneck1d(BaseModule):
             Default 0.
         dilation (int): Dilation rate for last two conv layers.
             Default 1.
+        num_conv_layer (int): Number of 3x1 and 1x3 convolution layers.
+            Default 2.
         conv_cfg (dict | None): Config of conv layers.
             Default: None.
         norm_cfg (dict | None): Config of norm layers.
@@ -87,6 +90,7 @@ class NonBottleneck1d(BaseModule):
                  channels,
                  drop_rate=0,
                  dilation=1,
+                 num_conv_layer=2,
                  conv_cfg=None,
                  norm_cfg=dict(type='BN', eps=1e-3),
                  act_cfg=dict(type='ReLU'),
@@ -99,12 +103,11 @@ class NonBottleneck1d(BaseModule):
         self.act = build_activation_layer(self.act_cfg)
 
         self.convs_layer = nn.ModuleList()
-        for conv_layer in range(2):
-            conv_first_padding = (1, 0) if conv_layer == 0 else (1 * dilation,
-                                                                 0)
-            conv_first_dilation = 1 if conv_layer == 0 else (dilation, 1)
-            conv_second_padding = (0, 1) if conv_layer == 0 else (0, dilation)
-            conv_second_dilation = 1 if conv_layer == 0 else (1, dilation)
+        for conv_layer in range(num_conv_layer):
+            first_conv_padding = (1, 0) if conv_layer == 0 else (dilation, 0)
+            first_conv_dilation = 1 if conv_layer == 0 else (dilation, 1)
+            second_conv_padding = (0, 1) if conv_layer == 0 else (0, dilation)
+            second_conv_dilation = 1 if conv_layer == 0 else (1, dilation)
 
             self.convs_layer.append(
                 build_conv_layer(
@@ -113,9 +116,9 @@ class NonBottleneck1d(BaseModule):
                     channels,
                     kernel_size=(3, 1),
                     stride=1,
-                    padding=conv_first_padding,
+                    padding=first_conv_padding,
                     bias=True,
-                    dilation=conv_first_dilation))
+                    dilation=first_conv_dilation))
             self.convs_layer.append(self.act)
             self.convs_layer.append(
                 build_conv_layer(
@@ -124,9 +127,9 @@ class NonBottleneck1d(BaseModule):
                     channels,
                     kernel_size=(1, 3),
                     stride=1,
-                    padding=conv_second_padding,
+                    padding=second_conv_padding,
                     bias=True,
-                    dilation=conv_second_dilation))
+                    dilation=second_conv_dilation))
             self.convs_layer.append(
                 build_norm_layer(self.norm_cfg, channels)[1])
             if conv_layer == 0:

@@ -35,4 +35,4 @@
 | FCN | ERFNet | 512x1024  | 160000 | 16.40 | 2.16 | 71.4 | 72.96 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/erfnet/fcn_erfnet_4x4_512x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/fcn_erfnet_4x4_512x1024_160k_cityscapes/fcn_erfnet_4x4_512x1024_160k_cityscapes_20211103_011334-8f691334.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/fcn_erfnet_4x4_512x1024_160k_cityscapes/fcn_erfnet_4x4_512x1024_160k_cityscapes_20211103_011334.log.json) |
 Note:
 
-- Last deconvolution layer in original paper is replaced by normal `FCN` decoder head and upsampling operation.
+- Last deconvolution layer in the original paper is replaced by a naive `FCN` decoder head and a bilinear upsampling layer.
