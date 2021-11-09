@@ -124,7 +124,7 @@ Models:
       mIoU(ms+flip): 79.57
   Config: configs/bisenetv1/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes_20210917_234628-8b304447.pth
-- Name: bisenetv1_r18-d32_lr5e3_4x4_512x512_160k_coco-stuff164k
+- Name: bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
   In Collection: bisenetv1
   Metadata:
     backbone: R-18-D32
@@ -136,9 +136,9 @@ Models:
     Metrics:
       mIoU: 25.45
       mIoU(ms+flip): 26.15
-  Config: configs/bisenetv1/bisenetv1_r18-d32_lr5e3_4x4_512x512_160k_coco-stuff164k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e3_4x4_512x512_160k_coco-stuff164k_20211022_054328-9ffb7b16.pth
-- Name: bisenetv1_r18-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k
+  Config: configs/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211022_054328-62ece8da.pth
+- Name: bisenetv1_r18-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k
   In Collection: bisenetv1
   Metadata:
     backbone: R-18-D32
@@ -158,9 +158,9 @@ Models:
     Metrics:
       mIoU: 28.55
       mIoU(ms+flip): 29.26
-  Config: configs/bisenetv1/bisenetv1_r18-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k_20211023_013100-cf9e9196.pth
-- Name: bisenetv1_r50-d32_lr5e3_4x4_512x512_160k_coco-stuff164k
+  Config: configs/bisenetv1/bisenetv1_r18-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k_20211023_013100-114850d1.pth
+- Name: bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
   In Collection: bisenetv1
   Metadata:
     backbone: R-50-D32
@@ -172,9 +172,9 @@ Models:
     Metrics:
       mIoU: 29.82
       mIoU(ms+flip): 30.33
-  Config: configs/bisenetv1/bisenetv1_r50-d32_lr5e3_4x4_512x512_160k_coco-stuff164k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e3_4x4_512x512_160k_coco-stuff164k_20211101_040616-c9f79c3a.pth
-- Name: bisenetv1_r50-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k
+  Config: configs/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_040616-07a22ad0.pth
+- Name: bisenetv1_r50-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k
   In Collection: bisenetv1
   Metadata:
     backbone: R-50-D32
@@ -194,9 +194,9 @@ Models:
     Metrics:
       mIoU: 34.88
       mIoU(ms+flip): 35.37
-  Config: configs/bisenetv1/bisenetv1_r50-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k_20211101_181932-9faefb7c.pth
-- Name: bisenetv1_r101-d32_lr5e3_4x4_512x512_160k_coco-stuff164k
+  Config: configs/bisenetv1/bisenetv1_r50-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k_20211101_181932-49f590d9.pth
+- Name: bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
   In Collection: bisenetv1
   Metadata:
     backbone: R-101-D32
@@ -208,9 +208,9 @@ Models:
     Metrics:
       mIoU: 31.14
       mIoU(ms+flip): 31.76
-  Config: configs/bisenetv1/bisenetv1_r101-d32_lr5e3_4x4_512x512_160k_coco-stuff164k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e3_4x4_512x512_160k_coco-stuff164k_20211102_164147-3bec92d9.pth
-- Name: bisenetv1_r101-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k
+  Config: configs/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211102_164147-94cac3d6.pth
+- Name: bisenetv1_r101-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k
   In Collection: bisenetv1
   Metadata:
     backbone: R-101-D32
@@ -230,5 +230,5 @@ Models:
     Metrics:
       mIoU: 37.38
       mIoU(ms+flip): 37.99
-  Config: configs/bisenetv1/bisenetv1_r101-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e3_in1k-pre_4x4_512x512_160k_coco-stuff164k_20211101_225220-57e53480.pth
+  Config: configs/bisenetv1/bisenetv1_r101-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e-3_in1k-pre_4x4_512x512_160k_coco-stuff164k_20211101_225220-f24ec6e9.pth
