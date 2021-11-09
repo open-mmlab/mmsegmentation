@@ -316,8 +316,9 @@ class SpatialReductionAttention(MultiheadAttention):
             # The ret[0] of build_norm_layer is norm name.
             self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
 
-    def forward(self, x, hw_shape, identity=None):
+    def forward(self, x, H, W, identity=None):
         x_q = x
+        hw_shape = H, W
         if self.sr_ratio > 1:
             x_kv = nlc_to_nchw(x, hw_shape)
             x_kv = self.sr(x_kv)
