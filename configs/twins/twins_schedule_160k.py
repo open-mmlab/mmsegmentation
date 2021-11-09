@@ -1,6 +1,4 @@
-_base_ = [
-    '../_base_/schedules/schedule_160k.py'
-]
+_base_ = ['../_base_/schedules/schedule_160k.py']
 # optimizer
 optimizer = dict(_delete_=True, type='SGD', lr=0.01, weight_decay=0.0005)
 optimizer_config = dict()

@@ -5,8 +5,7 @@ _base_ = [
 model = dict(
     type='EncoderDecoder',
     pretrained='pretrained/pcpvt_base.pth',
-    backbone=dict(
-        type='PCPVT', depths=[3, 4, 18, 3], drop_path_rate=0.3))
+    backbone=dict(type='PCPVT', depths=[3, 4, 18, 3], drop_path_rate=0.3))
 
 optimizer = dict(
     _delete_=True,

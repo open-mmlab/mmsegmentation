@@ -664,9 +664,8 @@ class PosCNN(BaseModule):
 
 @BACKBONES.register_module()
 class PCPVT(PyramidVisionTransformer):
-    """
-    Add applicable positional encodings to CPVT.
-    The implementation of our first proposed architecture: Twins-PCPVT.
+    """Add applicable positional encodings to CPVT. The implementation of our
+    first proposed architecture: Twins-PCPVT.
 
     Use useful results from CPVT.
 
@@ -718,7 +717,8 @@ class PCPVT(PyramidVisionTransformer):
                  sr_ratios=[8, 4, 2, 1],
                  block_cls=TransformerEncoderLayer,
                  F4=False,
-                 extra_norm=False):
+                 extra_norm=False,
+                 **kwargs):
         super(PCPVT,
               self).__init__(img_size, patch_size, in_chans, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
@@ -845,7 +845,8 @@ class ALTGVT(PCPVT):
                  wss=[7, 7, 7],
                  F4=False,
                  extra_norm=False,
-                 strides=(2, 2, 2)):
+                 strides=(2, 2, 2),
+                 **kwargs):
         super(ALTGVT,
               self).__init__(img_size, patch_size, in_chans, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
