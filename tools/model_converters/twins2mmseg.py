@@ -15,31 +15,15 @@ def convert_vit(ckpt):
     for k, v in ckpt.items():
         if k.startswith('head'):
             continue
-        # if k.startswith('norm'):
-        #     new_k = k.replace('norm.', 'ln1.')
-        # elif k.startswith('patch_embed'):
-        #     if 'proj' in k:
-        #         new_k = k.replace('proj', 'projection')
-        #     else:
-        #         new_k = k
         elif k.startswith('backbone.blocks'):
             if 'norm1' in k:
                 new_k = k.replace('norm1', 'ln1')
             elif 'norm2' in k:
                 new_k = k.replace('norm2', 'ln2')
-            # elif 'mlp.fc1' in k:
-            #     new_k = k.replace('mlp.fc1', 'ffn.layers.0.0')
-            # elif 'mlp.fc2' in k:
-            #     new_k = k.replace('mlp.fc2', 'ffn.layers.1')
-            # elif 'attn.ln' in k:
-            #     import pdb
-            #     pdb.set_trace()
-            #     new_k = k.replace('attn.ln', 'attn.norm')
-            # elif 'attn.qkv' in k:
-            #     new_k = k.replace('attn.qkv.', 'attn.attn.in_proj_')
+            elif 'attn.proj.' in new_k:
+                new_k = new_k.replace('proj.', 'attn.out_proj.')
             else:
                 new_k = k
-            # new_k = new_k.replace('blocks.', 'layers.')
         else:
             new_k = k
         new_ckpt[new_k] = v
