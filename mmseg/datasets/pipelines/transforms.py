@@ -451,10 +451,12 @@ class Normalize(object):
                 result dict.
         """
         if not self.normalize_in_graph:
-            results['img'] = mmcv.imnormalize(results['img'], self.mean, self.std,
-                                            self.to_rgb)
+            results['img'] = mmcv.imnormalize(results['img'], self.mean,
+                                              self.std, self.to_rgb)
         results['img_norm_cfg'] = dict(
-            mean=self.mean, std=self.std, to_rgb=self.to_rgb,
+            mean=self.mean,
+            std=self.std,
+            to_rgb=self.to_rgb,
             normalize_in_graph=self.normalize_in_graph)
         return results
 

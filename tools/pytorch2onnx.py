@@ -83,7 +83,7 @@ def _prepare_input_img(img_path,
         test_pipeline[1]['img_scale'] = (shape[1], shape[0])
     test_pipeline[1]['transforms'][0]['keep_ratio'] = False
     for transform in test_pipeline[1]['transforms']:
-        if transform['type'] is 'Normalize':
+        if transform['type'] == 'Normalize':
             transform.normalize_in_graph = normalize_in_graph
     test_pipeline = [LoadImage()] + test_pipeline[1:]
     test_pipeline = Compose(test_pipeline)
@@ -232,8 +232,13 @@ def pytorch2onnx(model,
         # check the numerical value
         # get pytorch output
         with torch.no_grad():
-            img_list_clone = [tensor.clone() for tensor in img_list] # in case img needs to be normalized
-            pytorch_result = model(img_list_clone, img_meta_list, return_loss=False, do_norm=args.normalize_in_graph)
+            img_list_clone = [tensor.clone() for tensor in img_list
+                              ]  # in case img needs to be normalized
+            pytorch_result = model(
+                img_list_clone,
+                img_meta_list,
+                return_loss=False,
+                do_norm=args.normalize_in_graph)
             pytorch_result = np.stack(pytorch_result, 0)
 
         # get onnx output
