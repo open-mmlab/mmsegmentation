@@ -229,6 +229,8 @@ class Attention(BaseModule):
 
     def forward(self, x, H, W):
         B, N, C = x.shape  # 1, 21760, 64
+        import pdb
+        pdb.set_trace()
         q = self.q(x).reshape(B, N, self.num_heads,
                               C // self.num_heads).permute(0, 2, 1, 3)
 
