@@ -13,6 +13,7 @@ def convert_vit(ckpt):
     new_ckpt = OrderedDict()
 
     for k, v in ckpt.items():
+        new_keys = []
         new_v = v
         if k.startswith('head'):
             continue
@@ -23,11 +24,11 @@ def convert_vit(ckpt):
                 new_k = k.replace('norm2', 'ln2')
             elif 'attn.q.' in new_k:
                 new_k = new_k.replace('q.', 'attn.in_proj_')
-                if new_k in ckpt.items():
+                if new_k in new_keys:
                     new_v = torch.cat(v, [ckpt[new_k]], dim=0)
             elif 'attn.kv.' in new_k:
                 new_k = k.replace('kv.', 'attn.in_proj_')
-                if new_k in ckpt.items():
+                if new_k in new_keys:
                     new_v = torch.cat([ckpt[new_k]], v, dim=0)
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
@@ -36,7 +37,7 @@ def convert_vit(ckpt):
         else:
             new_k = k
         new_ckpt[new_k] = new_v
-
+        new_keys.append(new_k)
     return new_ckpt
 
 
