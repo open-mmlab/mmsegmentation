@@ -23,7 +23,6 @@ def convert_vit(ckpt):
                 new_k = k.replace('norm2', 'ln2')
             elif 'attn.q.' in new_k:
                 new_k = new_k.replace('q.', 'attn.in_proj_')
-                import pdb; pdb.set_trace()
                 if new_k in ckpt.items():
                     new_v = torch.cat(v, [ckpt[new_k]], dim=0)
             elif 'attn.kv.' in new_k:
