@@ -20,8 +20,8 @@ def convert_vit(ckpt):
                 new_k = k.replace('norm1', 'ln1')
             elif 'norm2' in k:
                 new_k = k.replace('norm2', 'ln2')
-            elif 'attn.proj.' in new_k:
-                new_k = new_k.replace('proj.', 'attn.out_proj.')
+            elif 'attn.proj.' in k
+                new_k = k.replace('proj.', 'attn.out_proj.')
             else:
                 new_k = k
         else:
