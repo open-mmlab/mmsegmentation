@@ -206,8 +206,7 @@ def pytorch2onnx(model,
             keep_initializers_as_inputs=False,
             verbose=show,
             opset_version=opset_version,
-            dynamic_axes=dynamic_axes,
-            do_constant_folding=False)
+            dynamic_axes=dynamic_axes)
         print(f'Successfully exported ONNX model: {output_file}')
     model.forward = origin_forward
 
