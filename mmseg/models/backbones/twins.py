@@ -4,11 +4,13 @@ import torch.nn.functional as F
 from mmcv.cnn import (build_activation_layer, build_conv_layer,
                       build_norm_layer, trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
+from mmcv.cnn.bricks.transformer import MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.models.builder import BACKBONES
 from mmseg.utils import get_root_logger
+from ..utils import nchw_to_nlc, nlc_to_nchw
 
 
 class Mlp(BaseModule):
@@ -229,14 +231,12 @@ class Attention(BaseModule):
 
     def forward(self, x, H, W):
         B, N, C = x.shape  # 1, 21760, 64
-        import pdb
-        pdb.set_trace()
         q = self.q(x).reshape(B, N, self.num_heads,
                               C // self.num_heads).permute(0, 2, 1, 3)
 
         if self.sr_ratio > 1:
-            x_ = x.permute(0, 2, 1).reshape(B, C, H, W)
-            x_ = self.sr(x_).reshape(B, C, -1).permute(0, 2, 1)
+            x_ = x.permute(0, 2, 1).reshape(B, C, H, W)  #nlc_to_nchw
+            x_ = self.sr(x_).reshape(B, C, -1).permute(0, 2, 1)  #nchw_to_nlc
             x_ = self.norm(x_)
             kv = self.kv(x_).reshape(B, -1, 2, self.num_heads,
                                      C // self.num_heads).permute(
@@ -256,6 +256,82 @@ class Attention(BaseModule):
         x = self.proj_drop(x)
 
         return x
+
+
+class SpatialReductionAttention(MultiheadAttention):
+    """An implementation of Spatial Reduction Attention of PVT.
+
+    This module is modified from MultiheadAttention which is a module from
+    mmcv.cnn.bricks.transformer.
+    Args:
+        embed_dims (int): The embedding dimension.
+        num_heads (int): Parallel attention heads.
+        attn_drop (float): A Dropout layer on attn_output_weights.
+            Default: 0.0.
+        proj_drop (float): A Dropout layer after `nn.MultiheadAttention`.
+            Default: 0.0.
+        dropout_layer (obj:`ConfigDict`): The dropout_layer used
+            when adding the shortcut. Default: None.
+        batch_first (bool): Key, Query and Value are shape of
+            (batch, n, embed_dim)
+            or (n, batch, embed_dim). Default: False.
+        qkv_bias (bool): enable bias for qkv if True. Default: True.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN').
+        sr_ratio (int): The ratio of spatial reduction of Spatial Reduction
+            Attention of PVT. Default: 1.
+        init_cfg (obj:`mmcv.ConfigDict`): The Config for initialization.
+            Default: None.
+    """
+
+    def __init__(self,
+                 embed_dims,
+                 num_heads,
+                 attn_drop=0.,
+                 proj_drop=0.,
+                 dropout_layer=None,
+                 batch_first=True,
+                 qkv_bias=True,
+                 norm_cfg=dict(type='LN'),
+                 sr_ratio=1,
+                 init_cfg=None):
+        super().__init__(
+            embed_dims,
+            num_heads,
+            attn_drop,
+            proj_drop,
+            batch_first=batch_first,
+            dropout_layer=dropout_layer,
+            bias=qkv_bias,
+            init_cfg=init_cfg)
+
+        self.sr_ratio = sr_ratio
+        if sr_ratio > 1:
+            self.sr = build_conv_layer(
+                dict(type='Conv2d'),
+                in_channels=embed_dims,
+                out_channels=embed_dims,
+                kernel_size=sr_ratio,
+                stride=sr_ratio)
+            # The ret[0] of build_norm_layer is norm name.
+            self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
+
+    def forward(self, x, hw_shape, identity=None):
+        x_q = x
+        if self.sr_ratio > 1:
+            x_kv = nlc_to_nchw(x, hw_shape)
+            x_kv = self.sr(x_kv)
+            x_kv = nchw_to_nlc(x_kv)
+            x_kv = self.norm(x_kv)
+        else:
+            x_kv = x
+
+        if identity is None:
+            identity = x_q
+
+        out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
+
+        return identity + self.dropout_layer(self.proj_drop(out))
 
 
 class TransformerEncoderLayer(BaseModule):
@@ -302,13 +378,23 @@ class TransformerEncoderLayer(BaseModule):
             norm_cfg, embed_dims, postfix=1)
         self.add_module(self.norm1_name, norm1)
 
-        self.attn = Attention(
-            embed_dims,
+        # self.attn = Attention(
+        #     embed_dims,
+        #     num_heads=num_heads,
+        #     qkv_bias=qkv_bias,
+        #     qk_scale=None,
+        #     attn_drop=attn_drop_rate,
+        #     proj_drop=drop_rate,
+        #     sr_ratio=sr_ratio)
+
+        self.attn = SpatialReductionAttention(
+            embed_dims=embed_dims,
             num_heads=num_heads,
-            qkv_bias=qkv_bias,
-            qk_scale=None,
             attn_drop=attn_drop_rate,
             proj_drop=drop_rate,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+            qkv_bias=qkv_bias,
+            norm_cfg=norm_cfg,
             sr_ratio=sr_ratio)
 
         self.norm2_name, norm2 = build_norm_layer(
