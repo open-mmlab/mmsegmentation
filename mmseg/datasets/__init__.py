@@ -35,5 +35,5 @@ __all__ = [
     'DarkZurichDataset',
     'NightDrivingDataset',
     'COCOStuffDataset',
-    'LoveDADataset',
+    'LoveDADataset'
 ]
