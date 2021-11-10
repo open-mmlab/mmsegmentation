@@ -558,7 +558,7 @@ def test_cutout():
         n_holes=(2, 4),
         cutout_shape=[(10, 10), (15, 15)],
         fill_in=(255, 255, 255),
-        ignore_index=255)
+        seg_fill_in=255)
     cutout_module = build_from_cfg(transform, PIPELINES)
     cutout_result = cutout_module(copy.deepcopy(results))
     assert cutout_result['img'].sum() > img.sum()
@@ -569,7 +569,7 @@ def test_cutout():
         n_holes=1,
         cutout_ratio=(0.8, 0.8),
         fill_in=(255, 255, 255),
-        ignore_index=255)
+        seg_fill_in=255)
     cutout_module = build_from_cfg(transform, PIPELINES)
     cutout_result = cutout_module(copy.deepcopy(results))
     assert cutout_result['img'].sum() > img.sum()
