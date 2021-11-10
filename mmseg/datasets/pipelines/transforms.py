@@ -988,6 +988,9 @@ class CutOut:
             assert len(n_holes) == 2 and 0 <= n_holes[0] < n_holes[1]
         else:
             n_holes = (n_holes, n_holes)
+        if seg_fill_in is not None:
+            assert (isinstance(seg_fill_in, int) and 0 <= seg_fill_in
+                    and seg_fill_in <= 255)
         self.n_holes = n_holes
         self.fill_in = fill_in
         self.seg_fill_in = seg_fill_in
