@@ -977,7 +977,8 @@ class CutOut:
                  n_holes,
                  cutout_shape=None,
                  cutout_ratio=None,
-                 fill_in=(0, 0, 0)):
+                 fill_in=(0, 0, 0),
+                 ignore_index=255):
 
         assert (cutout_shape is None) ^ (cutout_ratio is None), \
             'Either cutout_shape or cutout_ratio should be specified.'
@@ -989,6 +990,7 @@ class CutOut:
             n_holes = (n_holes, n_holes)
         self.n_holes = n_holes
         self.fill_in = fill_in
+        self.ignore_index = ignore_index
         self.with_ratio = cutout_ratio is not None
         self.candidates = cutout_ratio if self.with_ratio else cutout_shape
         if not isinstance(self.candidates, list):
@@ -1011,6 +1013,9 @@ class CutOut:
             x2 = np.clip(x1 + cutout_w, 0, w)
             y2 = np.clip(y1 + cutout_h, 0, h)
             results['img'][y1:y2, x1:x2, :] = self.fill_in
+
+            for key in results.get('seg_fields', []):
+                results[key][y1:y2, x1:x2] = self.ignore_index
 
         return results
 

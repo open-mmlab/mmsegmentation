@@ -530,7 +530,12 @@ def test_cutout():
     img = mmcv.imread(
         osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
 
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+
     results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
     results['img_shape'] = img.shape
     results['ori_shape'] = img.shape
     results['pad_shape'] = img.shape
@@ -552,16 +557,20 @@ def test_cutout():
         type='CutOut',
         n_holes=(2, 4),
         cutout_shape=[(10, 10), (15, 15)],
-        fill_in=(255, 255, 255))
+        fill_in=(255, 255, 255),
+        ignore_index=255)
     cutout_module = build_from_cfg(transform, PIPELINES)
     cutout_result = cutout_module(copy.deepcopy(results))
     assert cutout_result['img'].sum() > img.sum()
+    assert cutout_result['gt_semantic_seg'].sum() > seg.sum()
 
     transform = dict(
         type='CutOut',
         n_holes=1,
         cutout_ratio=(0.8, 0.8),
-        fill_in=(255, 255, 255))
+        fill_in=(255, 255, 255),
+        ignore_index=255)
     cutout_module = build_from_cfg(transform, PIPELINES)
     cutout_result = cutout_module(copy.deepcopy(results))
     assert cutout_result['img'].sum() > img.sum()
+    assert cutout_result['gt_semantic_seg'].sum() > seg.sum()
