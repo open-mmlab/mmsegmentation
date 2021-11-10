@@ -42,19 +42,11 @@ def py_sigmoid_focal_loss(pred,
     loss = F.binary_cross_entropy_with_logits(
         pred, target, reduction='none') * focal_weight
     if weight is not None:
-        if weight.shape != loss.shape:
-            if weight.size(0) == loss.size(0):
-                # For most cases, weight is of shape (num_priors, ),
-                #  which means it does not have the second axis num_class
-                weight = weight.view(-1, 1)
-            else:
-                # Sometimes, weight per anchor per class is also needed. e.g.
-                #  in FSAF. But it may be flattened of shape
-                #  (num_priors x num_class, ), while loss is still of shape
-                #  (num_priors, num_class).
-                assert weight.numel() == loss.numel()
-                weight = weight.view(loss.size(0), -1)
-        assert weight.ndim == loss.ndim
+        if (weight.shape != loss.shape and weight.size(0) == loss.size(0)):
+            # For most cases, weight is of shape (N, ),
+            # which means it does not have the second axis num_class
+            weight = weight.view(-1, 1)
+        assert weight.dim() == loss.dim()
     loss = weight_reduce_loss(loss, weight, reduction, avg_factor)
     return loss
 
@@ -88,19 +80,11 @@ def sigmoid_focal_loss(pred,
     loss = _sigmoid_focal_loss(pred.contiguous(), target.contiguous(), gamma,
                                alpha, None, 'none')
     if weight is not None:
-        if weight.shape != loss.shape:
-            if weight.size(0) == loss.size(0):
-                # For most cases, weight is of shape (num_priors, ),
-                #  which means it does not have the second axis num_class
-                weight = weight.view(-1, 1)
-            else:
-                # Sometimes, weight per anchor per class is also needed. e.g.
-                #  in FSAF. But it may be flattened of shape
-                #  (num_priors x num_class, ), while loss is still of shape
-                #  (num_priors, num_class).
-                assert weight.numel() == loss.numel()
-                weight = weight.view(loss.size(0), -1)
-        assert weight.ndim == loss.ndim
+        if (weight.shape != loss.shape and weight.size(0) == loss.size(0)):
+            # For most cases, weight is of shape (N, ),
+            #  which means it does not have the second axis num_class
+            weight = weight.view(-1, 1)
+        assert weight.dim() == loss.dim()
     loss = weight_reduce_loss(loss, weight, reduction, avg_factor)
     return loss
 
@@ -189,22 +173,28 @@ class FocalLoss(nn.Module):
                 pred.shape[2:] == target.shape[1:]), \
                "The shape of pred doesn't match the shape of target"
 
-        none_reduce_shape = pred.shape
+        original_shape = pred.shape
 
-        # transform the pred's shape into [N, C]
-        new_dim = [i for i in range(pred.dim()) if i != 1] + [1]
-        pred = pred.permute(*new_dim).contiguous()
-        pred = pred.view(-1, pred.size(-1))
+        # [B, C, d_1, d_2, ..., d_k] -> [C, B, d_1, d_2, ..., d_k]
+        pred = pred.transpose(0, 1)
+        # [C, B, d_1, d_2, ..., d_k] -> [C, N]
+        pred = pred.reshape(pred.size(0), -1)
+        # [C, N] -> [N, C]
+        pred = pred.transpose(0, 1).contiguous()
 
-        if none_reduce_shape == target.shape:
+        if original_shape == target.shape:
             # target with shape [B, C, d_1, d_2, ...]
             # transform it's shape into [N, C]
-            target = target.permute(*new_dim).contiguous()
-            target = target.view(-1, target.size(-1))
+            # [B, C, d_1, d_2, ...] -> [C, B, d_1, d_2, ..., d_k]
+            target = target.transpose(0, 1)
+            # [C, B, d_1, d_2, ..., d_k] -> [C, N]
+            target = target.reshape(target.size(0), -1)
+            # [C, N] -> [N, C]
+            target = target.transpose(0, 1).contiguous()
         else:
             # target with shape [B, d_1, d_2, ...]
             # transform it's shape into [N, ]
-            target = target.view(-1)
+            target = target.view(-1).contiguous()
 
         reduction = (
             reduction_override if reduction_override else self.reduction)
@@ -230,16 +220,15 @@ class FocalLoss(nn.Module):
                 avg_factor=avg_factor)
 
             if reduction == 'none':
-                temp_shape = none_reduce_shape[0:1] + none_reduce_shape[2:] \
-                             + none_reduce_shape[1:2]
-                # [N, C] -> [B, d1, d2, ..., C]
-                loss_cls = loss_cls.view(*temp_shape).contiguous()
-                original_permute = [0, loss_cls.dim() - 1] \
-                    + list(range(1, loss_cls.dim() - 1))
-                # [B, d1, d2, ..., C] -> [B, C, d1, d2, ...]
-                loss_cls = loss_cls.permute(*original_permute).contiguous()
-                return loss_cls
-
+                # [N, C] -> [C, N]
+                loss_cls = loss_cls.transpose(0, 1)
+                # [C, N] -> [C, B, d1, d2, ...]
+                # original_shape: [B, C, d1, d2, ...]
+                loss_cls = loss_cls.reshape(*original_shape[1:2],
+                                            *original_shape[0:1],
+                                            *original_shape[2:])
+                # [C, B, d1, d2, ...] -> [B, C, d1, d2, ...]
+                loss_cls = loss_cls.transpose(0, 1).contiguous()
         else:
             raise NotImplementedError
         return loss_cls

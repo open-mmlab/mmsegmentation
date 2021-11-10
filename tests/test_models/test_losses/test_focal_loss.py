@@ -117,7 +117,7 @@ def test_forward_with_weight():
     weight = torch.rand(12)
     focal_loss(fake_pred, fake_target, weight=weight)
 
-    weight = torch.rand(12 * 2)
+    weight = torch.rand(12, 2)
     focal_loss(fake_pred, fake_target, weight=weight)
 
 
