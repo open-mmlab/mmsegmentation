@@ -525,6 +525,15 @@ def test_cutout():
             cutout_shape=(2, 2),
             cutout_ratio=(0.4, 0.4))
         build_from_cfg(transform, PIPELINES)
+    # test seg_fill_in
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='CutOut', n_holes=1, cutout_shape=(8, 8), seg_fill_in='a')
+        build_from_cfg(transform, PIPELINES)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='CutOut', n_holes=1, cutout_shape=(8, 8), seg_fill_in=256)
+        build_from_cfg(transform, PIPELINES)
 
     results = dict()
     img = mmcv.imread(
