@@ -971,6 +971,8 @@ class CutOut:
             and `cutout_ratio` cannot be both given at the same time.
         fill_in (tuple[float, float, float] | tuple[int, int, int]): The value
             of pixel to fill in the dropped regions. Default: (0, 0, 0).
+        seg_fill_in (int): The labels of pixel to fill in the dropped regions.
+            If seg_fill_in is None, skip. Default: None.
     """
 
     def __init__(self,
