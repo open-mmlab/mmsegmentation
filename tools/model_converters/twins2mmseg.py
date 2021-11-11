@@ -30,12 +30,13 @@ def convert_vit(ckpt):
             #     new_k = k.replace('kv.', 'attn.in_proj_')
             #     if new_k in new_keys:
             #         new_v = torch.cat([ckpt[new_k]], v, dim=0)
-            elif 'attn.q.' in new_k:
-                new_k = new_k.replace('q.', 'attn.in_proj_')
+            elif 'attn.q.' in k:
+                new_k = k.replace('q.', 'attn.in_proj_')
                 # if new_k in new_keys:
                 new_v = torch.cat([v, ckpt[k.replace('attn.q.', 'attn.kv.')]],
                                   dim=0)
-                import pdb; pdb.set_trace()
+                # import pdb
+                # pdb.set_trace()
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
             else:
