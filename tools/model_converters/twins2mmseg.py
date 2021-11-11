@@ -28,6 +28,8 @@ def convert_vit(ckpt):
                                   dim=0)
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
+            elif 'proj.' in k:
+                new_k = k.replace('proj.', 'projection.')
             else:
                 new_k = k
         else:
