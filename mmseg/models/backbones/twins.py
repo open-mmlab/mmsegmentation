@@ -513,19 +513,26 @@ class PyramidVisionTransformer(BaseModule):
                         input_size=img_size,
                         init_cfg=None))
             else:
+                patch_size = 2
+                input_size = img_size // patch_size // 2**(i - 1)
                 self.patch_embeds.append(
                     PatchEmbed(
-                        in_channels=embed_dims[i - 1],
+                        in_channels=in_chans,
                         embed_dims=embed_dims[i],
                         conv_type='Conv2d',
-                        kernel_size=2,
-                        stride=2,
+                        kernel_size=patch_size,
+                        stride=patch_size,
                         padding='corner',
                         norm_cfg=norm_cfg,
-                        input_size=img_size // patch_size // 2**(i - 1),
+                        input_size=input_size,
                         init_cfg=None))
-            patch_num = self.patch_embeds[-1].init_out_size + 1 if i == len(
-                embed_dims) - 1 else self.patch_embeds[-1].init_out_size
+
+            H, W = to_2tuple(input_size)[0] // to_2tuple(patch_size)[0], \
+                   to_2tuple(img_size)[1] // to_2tuple(patch_size)[1]
+            num_patches = H * W
+
+            patch_num = num_patches + 1 if i == len(embed_dims) - 1 \
+                else num_patches
             self.pos_embeds.append(
                 nn.Parameter(torch.zeros(1, patch_num, embed_dims[i])))
             self.pos_drops.append(nn.Dropout(p=drop_rate))
