@@ -274,8 +274,8 @@ mv Train/Rural/images_png/* img_dir/train
 mv Train/Urban/images_png/* img_dir/train
 mv Val/Rural/images_png/* img_dir/val
 mv Val/Urban/images_png/* img_dir/val
-mv Test/Rural/images_png/* img_dir/val
-mv Test/Urban/images_png/* img_dir/val
+mv Test/Rural/images_png/* img_dir/test
+mv Test/Urban/images_png/* img_dir/test
 mv Train/Rural/masks_png/* ann_dir/train
 mv Train/Urban/masks_png/* ann_dir/train
 mv Val/Rural/masks_png/* ann_dir/val
