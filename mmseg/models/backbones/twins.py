@@ -330,7 +330,7 @@ class SpatialReductionAttention(MultiheadAttention):
         if identity is None:
             identity = x_q
         out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
-        return identity + self.dropout_layer(self.proj_drop(out))
+        return self.dropout_layer(self.proj_drop(out))
 
 
 class TransformerEncoderLayer(BaseModule):
