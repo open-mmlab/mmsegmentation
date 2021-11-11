@@ -21,15 +21,11 @@ def convert_vit(ckpt):
                 new_k = k.replace('norm1', 'ln1')
             elif 'norm2' in k:
                 new_k = k.replace('norm2', 'ln2')
+            # merge (attn.q.) and (attn.kv.) to (attn.in_proj_)
             elif 'attn.q.' in k:
                 new_k = k.replace('q.', 'attn.in_proj_')
                 new_v = torch.cat([v, ckpt[k.replace('attn.q.', 'attn.kv.')]],
                                   dim=0)
-                print('q shape: ', v.shape)
-                print('kv shape: ', ckpt[k.replace('attn.q.',
-                                                   'attn.kv.')].shape)
-                import pdb
-                pdb.set_trace()
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
             else:

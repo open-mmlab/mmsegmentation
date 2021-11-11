@@ -442,7 +442,6 @@ class PatchEmbed_(BaseModule):
         return x, (H, W)
 
 
-
 # borrow from PVT https://github.com/whai362/PVT.git
 class PyramidVisionTransformer(BaseModule):
     """Pyramid Vision Transformer.
@@ -504,15 +503,15 @@ class PyramidVisionTransformer(BaseModule):
             if i == 0:
                 self.patch_embeds.append(
                     PatchEmbed(
-                    in_channels=in_chans,
-                    embed_dims=embed_dims[i],
-                    conv_type='Conv2d',
-                    kernel_size=patch_size,
-                    stride=patch_size,
-                    padding='corner',
-                    norm_cfg=norm_cfg,
-                    input_size = img_size,
-                    init_cfg=None))
+                        in_channels=in_chans,
+                        embed_dims=embed_dims[i],
+                        conv_type='Conv2d',
+                        kernel_size=patch_size,
+                        stride=patch_size,
+                        padding='corner',
+                        norm_cfg=norm_cfg,
+                        input_size=img_size,
+                        init_cfg=None))
             else:
                 self.patch_embeds.append(
                     PatchEmbed(
@@ -525,8 +524,8 @@ class PyramidVisionTransformer(BaseModule):
                         norm_cfg=norm_cfg,
                         input_size=img_size // patch_size // 2**(i - 1),
                         init_cfg=None))
-            patch_num = self.patch_embeds[-1].num_patches + 1 if i == len(
-                embed_dims) - 1 else self.patch_embeds[-1].num_patches
+            patch_num = self.patch_embeds[-1].init_out_size + 1 if i == len(
+                embed_dims) - 1 else self.patch_embeds[-1].init_out_size
             self.pos_embeds.append(
                 nn.Parameter(torch.zeros(1, patch_num, embed_dims[i])))
             self.pos_drops.append(nn.Dropout(p=drop_rate))
@@ -927,8 +926,8 @@ class ALTGVT(PCPVT):
                             in_channels=embed_dims[i - 1],
                             embed_dims=embed_dims[i],
                             conv_type='Conv2d',
-                            kernel_size= strides[i - 1],
-                            stride= strides[i - 1],
+                            kernel_size=strides[i - 1],
+                            stride=strides[i - 1],
                             padding='corner',
                             norm_cfg=norm_cfg,
                             input_size=img_size // patch_size // s,
