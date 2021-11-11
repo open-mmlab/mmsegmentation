@@ -35,6 +35,7 @@ def convert_vit(ckpt):
                 # if new_k in new_keys:
                 new_v = torch.cat([v, ckpt[k.replace('attn.q.', 'attn.kv.')]],
                                   dim=0)
+                import pdb; pdb.set_trace()
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
             else:
