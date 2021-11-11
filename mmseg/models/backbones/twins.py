@@ -502,6 +502,8 @@ class PyramidVisionTransformer(BaseModule):
         for i in range(len(depths)):
             if i == 0:
                 input_size = img_size
+                import pdb
+                pdb.set_trace()
                 self.patch_embeds.append(
                     PatchEmbed(
                         in_channels=in_chans,
