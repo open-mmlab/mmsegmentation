@@ -11,6 +11,7 @@ from torch.nn.modules.utils import _pair as to_2tuple
 from mmseg.models.builder import BACKBONES
 from mmseg.utils import get_root_logger
 from ..utils import nchw_to_nlc, nlc_to_nchw
+from ..utils.embed import PatchEmbed
 
 
 class Mlp(BaseModule):
@@ -175,91 +176,9 @@ class GroupAttention(BaseModule):
         return x
 
 
-class Attention(BaseModule):
-    """Window based multi-head self-attention (W-MSA) module with relative
-    position bias.
-
-    Args:
-        dim (int): Number of input channels.
-        num_heads (int): Number of attention heads. Default: 8
-        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
-            Default: False.
-        qk_scale (float | None, optional): Override default qk scale of
-            head_dim ** -0.5 if set. Default: None.
-        attn_drop (float, optional): Dropout ratio of attention weight.
-            Default: 0.0
-        proj_drop (float, optional): Dropout ratio of output. Default: 0.
-        sr_ratio (float): kernel_size of conv. Default: 1.
-        init_cfg (dict | None, optional): The Config for initialization.
-            Default: None.
-    """
-
-    def __init__(self,
-                 dim,
-                 num_heads=8,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 attn_drop=0.,
-                 proj_drop=0.,
-                 sr_ratio=1,
-                 init_cfg=None):
-        super().__init__(init_cfg=init_cfg)
-        assert dim % num_heads == 0, f'dim {dim} should be divided by ' \
-                                     f'num_heads {num_heads}.'
-
-        self.dim = dim
-        self.num_heads = num_heads
-        head_dim = dim // num_heads
-        self.scale = qk_scale or head_dim**-0.5
-
-        self.q = nn.Linear(dim, dim, bias=qkv_bias)
-        self.kv = nn.Linear(dim, dim * 2, bias=qkv_bias)  # 2E - E
-        self.attn_drop = nn.Dropout(attn_drop)
-        self.proj = nn.Linear(dim, dim)
-        self.proj_drop = nn.Dropout(proj_drop)
-
-        self.sr_ratio = sr_ratio
-        if sr_ratio > 1:
-            self.sr = build_conv_layer(
-                dict(type='Conv2d'),
-                in_channels=dim,
-                out_channels=dim,
-                kernel_size=sr_ratio,
-                stride=sr_ratio)
-            norm_cfg = dict(type='LN')
-            self.norm = build_norm_layer(norm_cfg, dim)[1]
-
-    def forward(self, x, H, W):
-        B, N, C = x.shape  # 1, 21760, 64
-        q = self.q(x).reshape(B, N, self.num_heads,
-                              C // self.num_heads).permute(0, 2, 1, 3)
-
-        if self.sr_ratio > 1:
-            x_ = x.permute(0, 2, 1).reshape(B, C, H, W)  #nlc_to_nchw
-            x_ = self.sr(x_).reshape(B, C, -1).permute(0, 2, 1)  #nchw_to_nlc
-            x_ = self.norm(x_)
-            kv = self.kv(x_).reshape(B, -1, 2, self.num_heads,
-                                     C // self.num_heads).permute(
-                                         2, 0, 3, 1, 4)
-        else:
-            kv = self.kv(x).reshape(B, -1, 2, self.num_heads,
-                                    C // self.num_heads).permute(
-                                        2, 0, 3, 1, 4)
-        k, v = kv[0], kv[1]
-
-        attn = (q @ k.transpose(-2, -1)) * self.scale
-        attn = attn.softmax(dim=-1)
-        attn = self.attn_drop(attn)
-
-        x = (attn @ v).transpose(1, 2).reshape(B, N, C)
-        x = self.proj(x)
-        x = self.proj_drop(x)
-
-        return x
-
-
 class SpatialReductionAttention(MultiheadAttention):
-    """An implementation of Spatial Reduction Attention of PVT.
+    """An implementation of Spatial Reduction Attention of PVT. apply some
+    changes based on SpatialReductionAttention in PVT.py (mmdetection)
 
     This module is modified from MultiheadAttention which is a module from
     mmcv.cnn.bricks.transformer.
@@ -316,7 +235,7 @@ class SpatialReductionAttention(MultiheadAttention):
             # The ret[0] of build_norm_layer is norm name.
             self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
 
-    def forward(self, x, H, W, identity=None):
+    def forward(self, x, H, W):
         x_q = x
         hw_shape = H, W
         if self.sr_ratio > 1:
@@ -327,8 +246,6 @@ class SpatialReductionAttention(MultiheadAttention):
         else:
             x_kv = x
 
-        if identity is None:
-            identity = x_q
         out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
         return self.dropout_layer(self.proj_drop(out))
 
@@ -376,15 +293,6 @@ class TransformerEncoderLayer(BaseModule):
         self.norm1_name, norm1 = build_norm_layer(
             norm_cfg, embed_dims, postfix=1)
         self.add_module(self.norm1_name, norm1)
-
-        # self.attn = Attention(
-        #     embed_dims,
-        #     num_heads=num_heads,
-        #     qkv_bias=qkv_bias,
-        #     qk_scale=None,
-        #     attn_drop=attn_drop_rate,
-        #     proj_drop=drop_rate,
-        #     sr_ratio=sr_ratio)
 
         self.attn = SpatialReductionAttention(
             embed_dims=embed_dims,
@@ -473,8 +381,15 @@ class GroupBlock(TransformerEncoderLayer):
 
         del self.attn
         if ws == 1:
-            self.attn = Attention(dim, num_heads, qkv_bias, qk_scale,
-                                  attn_drop, drop, sr_ratio)
+            self.attn = SpatialReductionAttention(
+                embed_dims=dim,
+                num_heads=num_heads,
+                attn_drop=attn_drop,
+                proj_drop=drop,
+                dropout_layer=dict(type='DropPath', drop_prob=drop_path),
+                qkv_bias=qkv_bias,
+                norm_cfg=norm_cfg,
+                sr_ratio=sr_ratio)
         else:
             self.attn = GroupAttention(dim, num_heads, qkv_bias, qk_scale,
                                        attn_drop, drop, ws)
@@ -485,7 +400,7 @@ class GroupBlock(TransformerEncoderLayer):
         return x
 
 
-class PatchEmbed(BaseModule):
+class PatchEmbed_(BaseModule):
     """Image to Patch Embedding.
 
     Args:
@@ -525,6 +440,7 @@ class PatchEmbed(BaseModule):
         H, W = H // self.patch_size[0], W // self.patch_size[1]
 
         return x, (H, W)
+
 
 
 # borrow from PVT https://github.com/whai362/PVT.git
@@ -587,11 +503,28 @@ class PyramidVisionTransformer(BaseModule):
         for i in range(len(depths)):
             if i == 0:
                 self.patch_embeds.append(
-                    PatchEmbed(img_size, patch_size, in_chans, embed_dims[i]))
+                    PatchEmbed(
+                    in_channels=in_chans,
+                    embed_dims=embed_dims[i],
+                    conv_type='Conv2d',
+                    kernel_size=patch_size,
+                    stride=patch_size,
+                    padding='corner',
+                    norm_cfg=norm_cfg,
+                    input_size = img_size,
+                    init_cfg=None))
             else:
                 self.patch_embeds.append(
-                    PatchEmbed(img_size // patch_size // 2**(i - 1), 2,
-                               embed_dims[i - 1], embed_dims[i]))
+                    PatchEmbed(
+                        in_channels=embed_dims[i - 1],
+                        embed_dims=embed_dims[i],
+                        conv_type='Conv2d',
+                        kernel_size=2,
+                        stride=2,
+                        padding='corner',
+                        norm_cfg=norm_cfg,
+                        input_size=img_size // patch_size // 2**(i - 1),
+                        init_cfg=None))
             patch_num = self.patch_embeds[-1].num_patches + 1 if i == len(
                 embed_dims) - 1 else self.patch_embeds[-1].num_patches
             self.pos_embeds.append(
@@ -978,12 +911,28 @@ class ALTGVT(PCPVT):
             for i in range(len(depths)):
                 if i == 0:
                     self.patch_embeds.append(
-                        PatchEmbed(img_size, patch_size, in_chans,
-                                   embed_dims[i]))
+                        PatchEmbed(
+                            in_channels=in_chans,
+                            embed_dims=embed_dims[i],
+                            conv_type='Conv2d',
+                            kernel_size=patch_size,
+                            stride=patch_size,
+                            padding='corner',
+                            norm_cfg=norm_cfg,
+                            input_size=img_size,
+                            init_cfg=None))
                 else:
                     self.patch_embeds.append(
-                        PatchEmbed(img_size // patch_size // s, strides[i - 1],
-                                   embed_dims[i - 1], embed_dims[i]))
+                        PatchEmbed(
+                            in_channels=embed_dims[i - 1],
+                            embed_dims=embed_dims[i],
+                            conv_type='Conv2d',
+                            kernel_size= strides[i - 1],
+                            stride= strides[i - 1],
+                            padding='corner',
+                            norm_cfg=norm_cfg,
+                            input_size=img_size // patch_size // s,
+                            init_cfg=None))
                 s = s * strides[i - 1]
 
         self.apply(self._init_weights)
