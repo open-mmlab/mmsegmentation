@@ -12,7 +12,7 @@ def convert_vit(ckpt):
 
     new_ckpt = OrderedDict()
 
-    for k, v in ckpt.items():
+    for k, v in list(ckpt.items()):
         new_keys = []
         new_v = v
         if k.startswith('head'):
