@@ -28,11 +28,11 @@ def convert_vit(ckpt):
                                   dim=0)
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
-            elif 'patch_embeds.' in k and 'proj.' in k:
-                import pdb; pdb.set_trace()
-                new_k = k.replace('proj.', 'projection.')
             else:
                 new_k = k
+        elif k.startswith('backbone.patch_embeds'):
+            if 'proj.' in k:
+                new_k = k.replace('proj.', 'projection.')
         else:
             new_k = k
         if 'attn.kv.' not in k:
