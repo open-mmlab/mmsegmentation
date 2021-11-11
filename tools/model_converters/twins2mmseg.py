@@ -22,14 +22,19 @@ def convert_vit(ckpt):
                 new_k = k.replace('norm1', 'ln1')
             elif 'norm2' in k:
                 new_k = k.replace('norm2', 'ln2')
+            # elif 'attn.q.' in new_k:
+            #     new_k = new_k.replace('q.', 'attn.in_proj_')
+            #     if new_k in new_keys:
+            #         new_v = torch.cat(v, [ckpt[new_k]], dim=0)
+            # elif 'attn.kv.' in new_k:
+            #     new_k = k.replace('kv.', 'attn.in_proj_')
+            #     if new_k in new_keys:
+            #         new_v = torch.cat([ckpt[new_k]], v, dim=0)
             elif 'attn.q.' in new_k:
                 new_k = new_k.replace('q.', 'attn.in_proj_')
-                if new_k in new_keys:
-                    new_v = torch.cat(v, [ckpt[new_k]], dim=-1)
-            elif 'attn.kv.' in new_k:
-                new_k = k.replace('kv.', 'attn.in_proj_')
-                if new_k in new_keys:
-                    new_v = torch.cat([ckpt[new_k]], v, dim=-1)
+                # if new_k in new_keys:
+                new_v = torch.cat([v, ckpt[k.replace('attn.q.', 'attn.kv.')]],
+                                  dim=0)
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
             else:
@@ -37,6 +42,7 @@ def convert_vit(ckpt):
         else:
             new_k = k
         new_ckpt[new_k] = new_v
+
         new_keys.append(new_k)
     return new_ckpt
 
@@ -60,6 +66,7 @@ def main():
         state_dict = checkpoint
 
     weight = convert_vit(state_dict)
+
     checkpoint['state_dict'] = weight
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
     torch.save(checkpoint, args.dst)
