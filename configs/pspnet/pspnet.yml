@@ -158,6 +158,27 @@ Models:
       mIoU(ms+flip): 81.01
   Config: configs/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes/pspnet_r101-d8_512x1024_80k_cityscapes_20200606_112211-e1e1100f.pth
+- Name: pspnet_r101-d8_fp16_512x1024_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 114.03
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 5.34
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.46
+  Config: configs/pspnet/pspnet_r101-d8_fp16_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_fp16_512x1024_80k_cityscapes/pspnet_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230919-a0875e5c.pth
 - Name: pspnet_r18-d8_769x769_80k_cityscapes
   In Collection: pspnet
   Metadata:
