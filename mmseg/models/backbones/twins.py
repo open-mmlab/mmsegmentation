@@ -400,48 +400,6 @@ class GroupBlock(TransformerEncoderLayer):
         return x
 
 
-class PatchEmbed_(BaseModule):
-    """Image to Patch Embedding.
-
-    Args:
-       img_size (int): Input image size. Default: 224.
-       patch_size (int): The patch size. Default: 16.
-       in_chans (int): Number of input channels. Default: 3.
-       embed_dim (int): The feature dimension. Default: 768
-    """
-
-    def __init__(self, img_size=224, patch_size=16, in_chans=3, embed_dim=768):
-        super().__init__()
-        img_size = to_2tuple(img_size)
-        patch_size = to_2tuple(patch_size)
-
-        self.img_size = img_size
-        self.patch_size = patch_size
-        assert img_size[0] % patch_size[0] == 0 and img_size[1] % \
-               patch_size[1] == 0, f'img_size {img_size} should be ' \
-                                   f'divided by patch_size {patch_size}.'
-        self.H, self.W = img_size[0] // patch_size[0], img_size[
-            1] // patch_size[1]
-        self.num_patches = self.H * self.W
-        self.proj = build_conv_layer(
-            dict(type='Conv2d'),
-            in_channels=in_chans,
-            out_channels=embed_dim,
-            kernel_size=patch_size,
-            stride=patch_size)
-        norm_cfg = dict(type='LN')
-        self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
-
-    def forward(self, x):
-        B, C, H, W = x.shape
-
-        x = self.proj(x).flatten(2).transpose(1, 2)
-        x = self.norm(x)
-        H, W = H // self.patch_size[0], W // self.patch_size[1]
-
-        return x, (H, W)
-
-
 # borrow from PVT https://github.com/whai362/PVT.git
 class PyramidVisionTransformer(BaseModule):
     """Pyramid Vision Transformer.
@@ -502,8 +460,6 @@ class PyramidVisionTransformer(BaseModule):
         for i in range(len(depths)):
             if i == 0:
                 input_size = img_size
-                import pdb
-                pdb.set_trace()
                 self.patch_embeds.append(
                     PatchEmbed(
                         in_channels=in_chans,
@@ -511,7 +467,8 @@ class PyramidVisionTransformer(BaseModule):
                         conv_type='Conv2d',
                         kernel_size=patch_size,
                         stride=patch_size,
-                        padding='corner',
+                        # padding='corner',
+                        padding=None,
                         norm_cfg=norm_cfg,
                         input_size=input_size,
                         init_cfg=None))
@@ -525,7 +482,8 @@ class PyramidVisionTransformer(BaseModule):
                         conv_type='Conv2d',
                         kernel_size=patch_size,
                         stride=patch_size,
-                        padding='corner',
+                        # padding='corner',
+                        padding=None,
                         norm_cfg=norm_cfg,
                         input_size=input_size,
                         init_cfg=None))
@@ -926,7 +884,8 @@ class ALTGVT(PCPVT):
                             conv_type='Conv2d',
                             kernel_size=patch_size,
                             stride=patch_size,
-                            padding='corner',
+                            # padding='corner',
+                            padding=None,
                             norm_cfg=norm_cfg,
                             input_size=img_size,
                             init_cfg=None))
@@ -938,7 +897,8 @@ class ALTGVT(PCPVT):
                             conv_type='Conv2d',
                             kernel_size=strides[i - 1],
                             stride=strides[i - 1],
-                            padding='corner',
+                            # padding='corner',
+                            padding=None,
                             norm_cfg=norm_cfg,
                             input_size=img_size // patch_size // s,
                             init_cfg=None))
