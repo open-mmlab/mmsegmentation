@@ -468,7 +468,7 @@ class PyramidVisionTransformer(BaseModule):
                         kernel_size=patch_size,
                         stride=patch_size,
                         # padding='corner',
-                        padding=None,
+                        padding=0,
                         norm_cfg=norm_cfg,
                         input_size=input_size,
                         init_cfg=None))
@@ -483,7 +483,7 @@ class PyramidVisionTransformer(BaseModule):
                         kernel_size=patch_size,
                         stride=patch_size,
                         # padding='corner',
-                        padding=None,
+                        padding=0,
                         norm_cfg=norm_cfg,
                         input_size=input_size,
                         init_cfg=None))
@@ -885,7 +885,7 @@ class ALTGVT(PCPVT):
                             kernel_size=patch_size,
                             stride=patch_size,
                             # padding='corner',
-                            padding=None,
+                            padding=0,
                             norm_cfg=norm_cfg,
                             input_size=img_size,
                             init_cfg=None))
@@ -898,7 +898,7 @@ class ALTGVT(PCPVT):
                             kernel_size=strides[i - 1],
                             stride=strides[i - 1],
                             # padding='corner',
-                            padding=None,
+                            padding=0,
                             norm_cfg=norm_cfg,
                             input_size=img_size // patch_size // s,
                             init_cfg=None))
