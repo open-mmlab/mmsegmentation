@@ -14,8 +14,6 @@ def convert_vit(ckpt):
 
     for k, v in list(ckpt.items()):
         new_v = v
-        if 'norm.' in k:
-            print(k)
         if k.startswith('head'):
             continue
         elif k.startswith('backbone.blocks'):
@@ -35,6 +33,8 @@ def convert_vit(ckpt):
         elif k.startswith('backbone.patch_embeds'):
             if 'proj.' in k:
                 new_k = k.replace('proj.', 'projection.')
+            else:
+                new_k = k
         else:
             new_k = k
         if 'attn.kv.' not in k:
