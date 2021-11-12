@@ -14,6 +14,8 @@ def convert_vit(ckpt):
 
     for k, v in list(ckpt.items()):
         new_v = v
+        if 'norm.' in k:
+            print(k)
         if k.startswith('head'):
             continue
         elif k.startswith('backbone.blocks'):

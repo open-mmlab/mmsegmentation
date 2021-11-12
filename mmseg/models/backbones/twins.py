@@ -520,7 +520,7 @@ class PyramidVisionTransformer(BaseModule):
                 input_size = img_size // patch_size // 2**(i - 1)
                 self.patch_embeds.append(
                     PatchEmbed(
-                        in_channels=embed_dims[i-1],
+                        in_channels=embed_dims[i - 1],
                         embed_dims=embed_dims[i],
                         conv_type='Conv2d',
                         kernel_size=patch_size,
