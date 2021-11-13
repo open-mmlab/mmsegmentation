@@ -188,6 +188,14 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         loss = sum(_value for _key, _value in log_vars.items()
                    if 'loss' in _key)
 
+        # If the loss_vars has different length, raise assertion error
+        # to prevent GPUs from infinite waiting.
+        if dist.is_available() and dist.is_initialized():
+            log_var_length = torch.tensor(len(log_vars), device=loss.device)
+            dist.all_reduce(log_var_length)
+            assert log_var_length == len(log_vars) * dist.get_world_size(), \
+                'loss log variables are different across GPUs!'
+
         log_vars['loss'] = loss
         for loss_name, loss_value in log_vars.items():
             # reduce loss when distributed training
