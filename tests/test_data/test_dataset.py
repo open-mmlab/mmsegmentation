@@ -607,7 +607,7 @@ def test_loveda():
             osp.dirname(__file__), '../data/pseudo_loveda_dataset/img_dir'),
         ann_dir=osp.join(
             osp.dirname(__file__), '../data/pseudo_loveda_dataset/ann_dir'))
-    assert len(test_dataset) == 2
+    assert len(test_dataset) == 3
 
     gt_seg_maps = list(test_dataset.get_gt_seg_maps())
 
