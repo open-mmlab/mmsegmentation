@@ -30,7 +30,7 @@ class LoveDADataset(CustomDataset):
             reduce_zero_label=True,
             **kwargs)
 
-    def results2img(self, results, imgfile_prefix, to_label_id, indices=None):
+    def results2img(self, results, imgfile_prefix, indices=None):
         """Write the segmentation results to images.
 
         Args:
@@ -39,8 +39,6 @@ class LoveDADataset(CustomDataset):
             imgfile_prefix (str): The filename prefix of the png files.
                 If the prefix is "somepath/xxx",
                 the png files will be named "somepath/xxx.png".
-            to_label_id (bool): whether convert output to label_id for
-                submission.
             indices (list[int], optional): Indices of input results, if not
                 set, all the indices of the dataset will be used.
                 Default: None.
@@ -68,11 +66,7 @@ class LoveDADataset(CustomDataset):
 
         return result_files
 
-    def format_results(self,
-                       results,
-                       imgfile_prefix,
-                       to_label_id=True,
-                       indices=None):
+    def format_results(self, results, imgfile_prefix, indices=None):
         """Format the results into dir (standard format for LoveDA evaluation).
 
         Args:
@@ -80,8 +74,6 @@ class LoveDADataset(CustomDataset):
             imgfile_prefix (str): The prefix of images files. It
                 includes the file path and the prefix of filename, e.g.,
                 "a/b/prefix".
-            to_label_id (bool): whether convert output to label_id for
-                submission. Default: False
             indices (list[int], optional): Indices of input results,
                 if not set, all the indices of the dataset will be used.
                 Default: None.
@@ -97,7 +89,6 @@ class LoveDADataset(CustomDataset):
         assert isinstance(results, list), 'results must be a list.'
         assert isinstance(indices, list), 'indices must be a list.'
 
-        result_files = self.results2img(results, imgfile_prefix, to_label_id,
-                                        indices)
+        result_files = self.results2img(results, imgfile_prefix, indices)
 
         return result_files
