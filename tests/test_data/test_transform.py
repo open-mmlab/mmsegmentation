@@ -585,6 +585,13 @@ def test_cutout():
     assert cutout_result['img'].sum() < img.sum()
 
     transform = dict(
+        type='RandomCutOut', prob=0, n_holes=1, cutout_ratio=(0.8, 0.8))
+    cutout_module = build_from_cfg(transform, PIPELINES)
+    cutout_result = cutout_module(copy.deepcopy(results))
+    assert cutout_result['img'].sum() == img.sum()
+    assert cutout_result['gt_semantic_seg'].sum() == seg.sum()
+
+    transform = dict(
         type='RandomCutOut',
         prob=1,
         n_holes=(2, 4),
