@@ -49,7 +49,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.17.0 was released in 09/01/2021.
+v0.19.0 was released in 11/02/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -66,7 +66,6 @@ Supported backbones:
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ArXiv'2021)](configs/swin)
-- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
 
 Supported methods:
 
@@ -74,7 +73,6 @@ Supported methods:
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
-- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
 - [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
@@ -97,6 +95,7 @@ Supported methods:
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
+- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
 - [x] [SETR (CVPR'2021)](configs/setr)
 - [x] [DPT (ArXiv'2021)](configs/dpt)
 - [x] [SegFormer (ArXiv'2021)](configs/segformer)
@@ -124,7 +123,7 @@ Please refer to [get_started.md](docs/get_started.md#installation) for installat
 
 Please see [train.md](docs/train.md) and [inference.md](docs/inference.md) for the basic usage of MMSegmentation.
 There are also tutorials for [customizing dataset](docs/tutorials/customize_datasets.md), [designing data pipeline](docs/tutorials/data_pipeline.md), [customizing modules](docs/tutorials/customize_models.md), and [customizing runtime](docs/tutorials/customize_runtime.md).
-We also provide many [training tricks](docs/tutorials/training_tricks.md) for better training and [usefule tools](docs/useful_tools.md) for deployment.
+We also provide many [training tricks](docs/tutorials/training_tricks.md) for better training and [useful tools](docs/useful_tools.md) for deployment.
 
 A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 

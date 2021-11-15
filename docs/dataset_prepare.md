@@ -135,7 +135,7 @@ If you would like to use augmented VOC dataset, please run following command to 
 python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/tutorials/new_dataset.md#concatenate-dataset) for details about how to concatenate them and train them together.
+Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/tutorials/customize_datasets.md#concatenate-dataset) for details about how to concatenate them and train them together.
 
 ### ADE20K
 

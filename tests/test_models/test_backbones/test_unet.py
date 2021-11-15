@@ -425,7 +425,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check if num_stages matchs strides, len(strides)=num_stages
+        # Check if num_stages matches strides, len(strides)=num_stages
         unet = UNet(
             in_channels=3,
             base_channels=4,
@@ -440,7 +440,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check if num_stages matchs strides, len(enc_num_convs)=num_stages
+        # Check if num_stages matches strides, len(enc_num_convs)=num_stages
         unet = UNet(
             in_channels=3,
             base_channels=4,
@@ -455,7 +455,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check if num_stages matchs strides, len(dec_num_convs)=num_stages-1
+        # Check if num_stages matches strides, len(dec_num_convs)=num_stages-1
         unet = UNet(
             in_channels=3,
             base_channels=4,
@@ -470,7 +470,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check if num_stages matchs strides, len(downsamples)=num_stages-1
+        # Check if num_stages matches strides, len(downsamples)=num_stages-1
         unet = UNet(
             in_channels=3,
             base_channels=4,
@@ -485,7 +485,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check if num_stages matchs strides, len(enc_dilations)=num_stages
+        # Check if num_stages matches strides, len(enc_dilations)=num_stages
         unet = UNet(
             in_channels=3,
             base_channels=4,
@@ -500,7 +500,7 @@ def test_unet():
         unet(x)
 
     with pytest.raises(AssertionError):
-        # Check if num_stages matchs strides, len(dec_dilations)=num_stages-1
+        # Check if num_stages matches strides, len(dec_dilations)=num_stages-1
         unet = UNet(
             in_channels=3,
             base_channels=4,

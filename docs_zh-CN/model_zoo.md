@@ -13,7 +13,7 @@
     在这个模式下，从原图中裁剪多个小图分别输入网络中进行推理。小图的大小和小图之间的距离由 `crop_size` 和 `stride` 决定，重合区域会进行平均
   * `whole` 模式 （全图模式）：测试的配置文件字段 `test_cfg` 会是 `dict(mode='whole')`. 在这个模式下，全图会被直接输入到网络中进行推理。
     对于 769x769 下训练的模型，我们默认使用 `slide` 进行推理，其余模型用 `whole` 进行推理
-* 对于输入大小为 8x+1 （比如769），我们使用 `align_corners=True`。其余情况，对于输入大小为 8x+1 (比如 512，1024)，我们使用 `align_corners=False`
+* 对于输入大小为 8x+1 （比如769），我们使用 `align_corners=True`。其余情况，对于输入大小为 8x (比如 512，1024)，我们使用 `align_corners=False`
 
 ## 基线
 
@@ -119,7 +119,7 @@
 
 ### Mixed Precision (FP16) Training
 
-Please refer [Mixed Precision (FP16) Training](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fp16/README.md) for details.
+请参考 [Mixed Precision (FP16) Training] 在 BiSeNetV2 训练的样例 (https://github.com/open-mmlab/mmsegmentation/blob/master/configs/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes.py) for details.
 
 ## 速度标定
 
