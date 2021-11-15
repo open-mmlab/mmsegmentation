@@ -176,7 +176,7 @@ def parse_md(md_file):
                                 'Task': 'Semantic Segmentation',
                                 'Dataset': current_dataset,
                                 'Metrics': {
-                                    'mIoU': float(els[ss_id]),
+                                    cols[ss_id]: float(els[ss_id]),
                                 },
                             },
                         ],
