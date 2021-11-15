@@ -16,7 +16,6 @@ Import:
 - configs/fastfcn/fastfcn.yml
 - configs/fastscnn/fastscnn.yml
 - configs/fcn/fcn.yml
-- configs/fp16/fp16.yml
 - configs/gcnet/gcnet.yml
 - configs/hrnet/hrnet.yml
 - configs/icnet/icnet.yml
