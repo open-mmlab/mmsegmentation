@@ -249,7 +249,8 @@ class FocalLoss(nn.Module):
             target = target.view(-1).contiguous()
             valid_mask = (target != ignore_index).view(-1, 1)
             # avoid raising error when using F.one_hot()
-            target = torch.where(target == ignore_index, 0, target)
+            target = torch.where(target == ignore_index, target.new_tensor(0),
+                                 target)
 
         reduction = (
             reduction_override if reduction_override else self.reduction)
