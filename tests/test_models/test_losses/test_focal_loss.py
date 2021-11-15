@@ -160,6 +160,7 @@ def test_class_weight():
 # test ignore index
 def test_ignore_index():
     loss_cfg = dict(type='FocalLoss', reduction='none')
+    # ignore_index within C classes
     focal_loss = build_loss(loss_cfg)
     fake_pred = torch.rand(3, 5, 5, 6)
     fake_target = torch.randint(0, 4, (3, 5, 6))
@@ -174,6 +175,27 @@ def test_ignore_index():
     assert (loss1 == loss2).all()
     assert (loss1[dim1, :, dim2, dim3] == 0).all()
     assert (loss2[dim1, :, dim2, dim3] == 0).all()
+
+    fake_pred = torch.rand(3, 4, 5, 6)
+    fake_target = torch.randint(0, 4, (3, 5, 6))
+    loss1 = focal_loss(fake_pred, fake_target, ignore_index=2)
+    one_hot_target = F.one_hot(fake_target, num_classes=4)
+    one_hot_target = one_hot_target.permute(0, 3, 1, 2)
+    loss2 = focal_loss(fake_pred, one_hot_target, ignore_index=2)
+    ignore_mask = one_hot_target == 2
+    assert (loss1 == loss2).all()
+    assert torch.sum(loss1 * ignore_mask) == 0
+    assert torch.sum(loss2 * ignore_mask) == 0
+
+    # ignore index is not in prediction's classes
+    fake_pred = torch.rand(3, 4, 5, 6)
+    fake_target = torch.randint(0, 4, (3, 5, 6))
+    dim1 = torch.randint(0, 3, (4, ))
+    dim2 = torch.randint(0, 5, (4, ))
+    dim3 = torch.randint(0, 6, (4, ))
+    fake_target[dim1, dim2, dim3] = 255
+    loss1 = focal_loss(fake_pred, fake_target, ignore_index=255)
+    assert (loss1[dim1, :, dim2, dim3] == 0).all()
 
 
 # test list alpha

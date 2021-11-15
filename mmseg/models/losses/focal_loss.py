@@ -12,6 +12,7 @@ from .utils import weight_reduce_loss
 # This method is used when cuda is not available
 def py_sigmoid_focal_loss(pred,
                           target,
+                          one_hot_target=None,
                           weight=None,
                           gamma=2.0,
                           alpha=0.5,
@@ -26,6 +27,7 @@ def py_sigmoid_focal_loss(pred,
             number of classes
         target (torch.Tensor): The learning label of the prediction with
             shape (N, C)
+        one_hot_target (None): Placeholder. It should be None.
         weight (torch.Tensor, optional): Sample-wise loss weight.
         gamma (float, optional): The gamma for calculating the modulating
             factor. Defaults to 2.0.
@@ -48,7 +50,7 @@ def py_sigmoid_focal_loss(pred,
 
     loss = F.binary_cross_entropy_with_logits(
         pred, target, reduction='none') * focal_weight
-    final_weight = torch.ones(1, pred.size(1))
+    final_weight = torch.ones(1, pred.size(1)).type_as(loss)
     if weight is not None:
         if weight.shape != loss.shape and weight.size(0) == loss.size(0):
             # For most cases, weight is of shape (N, ),
@@ -66,6 +68,7 @@ def py_sigmoid_focal_loss(pred,
 
 def sigmoid_focal_loss(pred,
                        target,
+                       one_hot_target,
                        weight=None,
                        gamma=2.0,
                        alpha=0.5,
@@ -80,6 +83,7 @@ def sigmoid_focal_loss(pred,
             of classes.
         target (torch.Tensor): The learning label of the prediction. It's shape
             should be (N, )
+        one_hot_target (torch.Tensor): The learning label with shape (N, C)
         weight (torch.Tensor, optional): Sample-wise loss weight.
         gamma (float, optional): The gamma for calculating the modulating
             factor. Defaults to 2.0.
@@ -99,7 +103,7 @@ def sigmoid_focal_loss(pred,
     float_alpha = alpha if isinstance(alpha, float) else 0.5
     loss = _sigmoid_focal_loss(pred.contiguous(), target.contiguous(), gamma,
                                float_alpha, None, 'none')
-    final_weight = torch.ones(1, pred.size(1))
+    final_weight = torch.ones(1, pred.size(1)).type_as(loss)
     if weight is not None:
         if (weight.shape != loss.shape and weight.size(0) == loss.size(0)):
             # For most cases, weight is of shape (N, ),
@@ -109,7 +113,8 @@ def sigmoid_focal_loss(pred,
         final_weight = final_weight * weight
     if isinstance(alpha, torch.Tensor):
         final_weight = final_weight * \
-                       (alpha * target + (1 - alpha) * (1 - target))
+                       (alpha * one_hot_target +
+                        (1 - alpha) * (1 - one_hot_target))
     if class_weight is not None:
         final_weight = final_weight * class_weight
     if valid_mask is not None:
@@ -249,13 +254,17 @@ class FocalLoss(nn.Module):
         reduction = (
             reduction_override if reduction_override else self.reduction)
         if self.use_sigmoid:
+            num_classes = pred.size(1)
             if torch.cuda.is_available() and pred.is_cuda:
-                if target.dim() > 1:
+                if target.dim() == 1:
+                    one_hot_target = F.one_hot(target, num_classes=num_classes)
+                else:
+                    one_hot_target = target
                     target = target.argmax(dim=1)
                     valid_mask = (target != ignore_index).view(-1, 1)
                 calculate_loss_func = sigmoid_focal_loss
             else:
-                num_classes = pred.size(1)
+                one_hot_target = None
                 if target.dim() == 1:
                     target = F.one_hot(target, num_classes=num_classes)
                 else:
@@ -266,6 +275,7 @@ class FocalLoss(nn.Module):
             loss_cls = self.loss_weight * calculate_loss_func(
                 pred,
                 target,
+                one_hot_target,
                 weight,
                 gamma=self.gamma,
                 alpha=self.alpha if isinstance(
