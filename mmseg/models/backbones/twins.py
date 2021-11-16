@@ -316,7 +316,7 @@ class TransformerEncoderLayer(BaseModule):
         self.mlp = FFN(
             embed_dims=embed_dims,
             feedforward_channels=feedforward_channels,
-            num_fcs=1,
+            num_fcs=num_fcs,
             ffn_drop=drop_rate,
             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
             act_cfg=act_cfg,
