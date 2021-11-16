@@ -31,7 +31,7 @@ def convert_vit(ckpt):
             elif 'mlp.fc1' in k:
                 new_k = k.replace('mlp.fc1', 'mlp.layers.0.0')
             elif 'mlp.fc2' in k:
-                new_k = k.replace('mlp.fc1', 'mlp.layers.1')
+                new_k = k.replace('mlp.fc2', 'mlp.layers.1')
             else:
                 new_k = k
         elif k.startswith('backbone.patch_embeds'):
