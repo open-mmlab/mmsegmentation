@@ -613,9 +613,9 @@ class PosCNN(PatchEmbed):
         if self.adap_padding:
             cnn_feat = self.adap_padding(cnn_feat)
         if self.s == 1:
-            x = self.projection(cnn_feat) + cnn_feat
+            x = self.proj(cnn_feat) + cnn_feat
         else:
-            x = self.projection(cnn_feat)
+            x = self.proj(cnn_feat)
         x = x.flatten(2).transpose(1, 2)
         return x
 
