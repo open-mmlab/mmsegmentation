@@ -65,10 +65,12 @@ class GroupAttention(BaseModule):
         we recommend forward_padding because it's neat. However, the masking
         implementation is more reasonable and accurate.
         """
-        # return self.forward_mask(x, H, W) #default
-        return self.forward_padding(x, H, W)
+        return self.forward_mask(x, H, W) #default
+        # return self.forward_padding(x, H, W)
 
     def forward_mask(self, x, H, W):
+        import pdb
+        pdb.set_trace()
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         pad_l = pad_t = 0
@@ -113,20 +115,18 @@ class GroupAttention(BaseModule):
         return x
 
     def forward_padding(self, x, H, W):
-        import pdb
-        pdb.set_trace()
-        B, N, C = x.shape
-        x = x.view(B, H, W, C)
+        B, N, C = x.shape  # 1, 21888, 128
+        x = x.view(B, H, W, C) # (1, 128, 171, 128)
         pad_l = pad_t = 0
-        pad_r = (self.ws - W % self.ws) % self.ws
-        pad_b = (self.ws - H % self.ws) % self.ws
-        x = F.pad(x, (0, 0, pad_l, pad_r, pad_t, pad_b))
+        pad_r = (self.ws - W % self.ws) % self.ws   # 4 , self.ws=7
+        pad_b = (self.ws - H % self.ws) % self.ws   # 5
+        x = F.pad(x, (0, 0, pad_l, pad_r, pad_t, pad_b)) # [1, 133, 175, 128]
         _, Hp, Wp, _ = x.shape
-        _h, _w = Hp // self.ws, Wp // self.ws
-        x = x.reshape(B, _h, self.ws, _w, self.ws, C).transpose(2, 3)
+        _h, _w = Hp // self.ws, Wp // self.ws # 19, 25
+        x = x.reshape(B, _h, self.ws, _w, self.ws, C).transpose(2, 3) # ([1, 19, 25, 7, 7, 128])
         qkv = self.qkv(x).reshape(B, _h * _w, self.ws * self.ws, 3,
                                   self.num_heads, C // self.num_heads).permute(
-                                      3, 0, 1, 4, 2, 5)
+                                      3, 0, 1, 4, 2, 5) # ([3, 1, 475, 4, 49, 32])
         q, k, v = qkv[0], qkv[1], qkv[2]
         attn = (q @ k.transpose(-2, -1)) * self.scale
         attn = attn.softmax(dim=-1)
@@ -579,7 +579,7 @@ class PyramidVisionTransformer(BaseModule):
         return x
 
 
-class PosCNN(PatchEmbed):
+class PosCNN(BaseModule):
     """Default Patch Embedding of CPVTV2.
 
     Args:
@@ -612,9 +612,6 @@ class PosCNN(PatchEmbed):
         B, N, C = x.shape
         feat_token = x
         cnn_feat = feat_token.transpose(1, 2).view(B, C, H, W)
-
-        if self.adap_padding:
-            cnn_feat = self.adap_padding(cnn_feat)
         if self.s == 1:
             x = self.proj(cnn_feat) + cnn_feat
         else:
