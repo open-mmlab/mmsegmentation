@@ -34,7 +34,7 @@ def convert_vit(args, ckpt):
                     if int(l[3]) % 2 == 1:
                         new_k = k.replace('proj.', 'attn.out_proj.')
                     else:
-                        continue
+                        new_k = k
             elif 'mlp.fc1' in k:
                 new_k = k.replace('mlp.fc1', 'mlp.layers.0.0')
             elif 'mlp.fc2' in k:
