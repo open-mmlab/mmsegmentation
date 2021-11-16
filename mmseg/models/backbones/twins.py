@@ -593,16 +593,16 @@ class PosCNN(PatchEmbed):
             stride=s,
             padding=1,
         )
-        # self.proj = nn.Sequential(
-        #     build_conv_layer(
-        #         dict(type='Conv2d'),
-        #         in_channels=in_chans,
-        #         out_channels=embed_dim,
-        #         kernel_size=3,
-        #         stride=s,
-        #         padding=1,
-        #         bias=True,
-        #         groups=embed_dim))
+        self.proj = nn.Sequential(
+            build_conv_layer(
+                dict(type='Conv2d'),
+                in_channels=in_chans,
+                out_channels=embed_dim,
+                kernel_size=3,
+                stride=s,
+                padding=1,
+                bias=True,
+                groups=embed_dim))
         self.s = s
 
     def forward(self, x, H, W):
