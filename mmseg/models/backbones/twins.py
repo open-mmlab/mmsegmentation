@@ -14,43 +14,6 @@ from ..utils import nchw_to_nlc, nlc_to_nchw
 from ..utils.embed import PatchEmbed
 
 
-class Mlp(BaseModule):
-    """feed forward network in Attention Module.
-
-    Args:
-        in_features (int): The feature dimension.
-        hidden_features (int/None): The feature dimension of hidden layer.
-            Default: None.
-        out_features(int/None): he feature dimension of output layer.
-            Default: None.
-        act_cfg(dict): The activation config for FFNs.
-            Default: dict(type='GELU').
-        drop(float, optional): Dropout ratio of output. Default: 0.
-    """
-
-    def __init__(self,
-                 in_features,
-                 hidden_features=None,
-                 out_features=None,
-                 act_cfg=dict(type='GELU'),
-                 drop=0.):
-        super().__init__()
-        out_features = out_features or in_features
-        hidden_features = hidden_features or in_features
-        self.fc1 = nn.Linear(in_features, hidden_features)
-        self.act = build_activation_layer(act_cfg)
-        self.fc2 = nn.Linear(hidden_features, out_features)
-        self.drop = nn.Dropout(drop)
-
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.act(x)
-        x = self.drop(x)
-        x = self.fc2(x)
-        x = self.drop(x)
-        return x
-
-
 class GroupAttention(BaseModule):
     """implementation of proposed Locally-grouped self-attention(LSA).
 
@@ -308,11 +271,6 @@ class TransformerEncoderLayer(BaseModule):
             norm_cfg, embed_dims, postfix=2)
         self.add_module(self.norm2_name, norm2)
 
-        # self.mlp = Mlp(
-        #     in_features=embed_dims,
-        #     hidden_features=feedforward_channels,
-        #     act_cfg=act_cfg,
-        #     drop=drop_rate)
         self.mlp = FFN(
             embed_dims=embed_dims,
             feedforward_channels=feedforward_channels,
@@ -618,7 +576,7 @@ class PyramidVisionTransformer(BaseModule):
         return x
 
 
-class PosCNN(BaseModule):
+class PosCNN(PatchEmbed):
     """Default Patch Embedding of CPVTV2.
 
     Args:
@@ -628,17 +586,19 @@ class PosCNN(BaseModule):
     """
 
     def __init__(self, in_chans, embed_dim=768, s=1):
-        super(PosCNN, self).__init__()
-        self.proj = nn.Sequential(
-            build_conv_layer(
-                dict(type='Conv2d'),
-                in_channels=in_chans,
-                out_channels=embed_dim,
-                kernel_size=3,
-                stride=s,
-                padding=1,
-                bias=True,
-                groups=embed_dim))
+        super(PosCNN, self).__init__(in_chans, embed_dim,
+                                     kernel_size=3, stride=s,
+                                     padding=1, )
+        # self.proj = nn.Sequential(
+        #     build_conv_layer(
+        #         dict(type='Conv2d'),
+        #         in_channels=in_chans,
+        #         out_channels=embed_dim,
+        #         kernel_size=3,
+        #         stride=s,
+        #         padding=1,
+        #         bias=True,
+        #         groups=embed_dim))
         self.s = s
 
     def forward(self, x, H, W):
@@ -646,9 +606,9 @@ class PosCNN(BaseModule):
         feat_token = x
         cnn_feat = feat_token.transpose(1, 2).view(B, C, H, W)
         if self.s == 1:
-            x = self.proj(cnn_feat) + cnn_feat
+            x = self.projection(cnn_feat) + cnn_feat
         else:
-            x = self.proj(cnn_feat)
+            x = self.projection(cnn_feat)
         x = x.flatten(2).transpose(1, 2)
         return x
 
