@@ -26,9 +26,15 @@ def convert_vit(args, ckpt):
                 new_k = k.replace('q.', 'attn.in_proj_')
                 new_v = torch.cat([v, ckpt[k.replace('attn.q.', 'attn.kv.')]],
                                   dim=0)
-            elif 'attn.proj.' in k and args.model == 'pcpvt':
-                # elif 'attn.proj.' in k:
-                new_k = k.replace('proj.', 'attn.out_proj.')
+            elif 'attn.proj.' in k:
+                if args.model == 'pcpvt':
+                    new_k = k.replace('proj.', 'attn.out_proj.')
+                else:
+                    l = k.split(str=".")
+                    if int(l[3]) % 2 == 1:
+                        new_k = k.replace('proj.', 'attn.out_proj.')
+                    else:
+                        continue
             elif 'mlp.fc1' in k:
                 new_k = k.replace('mlp.fc1', 'mlp.layers.0.0')
             elif 'mlp.fc2' in k:
