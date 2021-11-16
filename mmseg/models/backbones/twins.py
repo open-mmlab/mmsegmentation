@@ -1,5 +1,6 @@
-import torch
 import warnings
+
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import (build_activation_layer, build_conv_layer,
