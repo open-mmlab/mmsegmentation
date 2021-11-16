@@ -1,4 +1,5 @@
 import torch
+import warnings
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import (build_activation_layer, build_conv_layer,
@@ -205,6 +206,15 @@ class SpatialReductionAttention(MultiheadAttention):
             # The ret[0] of build_norm_layer is norm name.
             self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
 
+        # handle the BC-breaking from https://github.com/open-mmlab/mmcv/pull/1418 # noqa
+        from mmseg import mmcv_version, digit_version
+        if mmcv_version < digit_version('1.3.17'):
+            warnings.warn('The legacy version of forward function in'
+                          'SpatialReductionAttention is deprecated in'
+                          'mmcv>=1.3.17 and will no longer support in the'
+                          'future. Please upgrade your mmcv.')
+            self.forward = self.legacy_forward
+
     def forward(self, x, H, W):
         x_q = x
         hw_shape = H, W
@@ -216,7 +226,31 @@ class SpatialReductionAttention(MultiheadAttention):
         else:
             x_kv = x
 
+        if self.batch_first:
+            x_q = x_q.transpose(0, 1)
+            x_kv = x_kv.transpose(0, 1)
+
         out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
+
+        if self.batch_first:
+            out = out.transpose(0, 1)
+
+        return self.dropout_layer(self.proj_drop(out))
+
+    def legacy_forward(self, x, H, W):
+        """multi head attention forward in mmcv version < 1.3.17."""
+        x_q = x
+        hw_shape = H, W
+        if self.sr_ratio > 1:
+            x_kv = nlc_to_nchw(x, hw_shape)
+            x_kv = self.sr(x_kv)
+            x_kv = nchw_to_nlc(x_kv)
+            x_kv = self.norm(x_kv)
+        else:
+            x_kv = x
+
+        out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
+
         return self.dropout_layer(self.proj_drop(out))
 
 
