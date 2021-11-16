@@ -203,7 +203,6 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 对于 LoveDA 数据集，请运行以下命令下载并重新组织数据集
 
 ```shell
-
 # download
 mkdir -p data/loveDA && cd data/loveDA
 wget https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing
