@@ -586,9 +586,13 @@ class PosCNN(PatchEmbed):
     """
 
     def __init__(self, in_chans, embed_dim=768, s=1):
-        super(PosCNN, self).__init__(in_chans, embed_dim,
-                                     kernel_size=3, stride=s,
-                                     padding=1, )
+        super(PosCNN, self).__init__(
+            in_chans,
+            embed_dim,
+            kernel_size=3,
+            stride=s,
+            padding=1,
+        )
         # self.proj = nn.Sequential(
         #     build_conv_layer(
         #         dict(type='Conv2d'),
