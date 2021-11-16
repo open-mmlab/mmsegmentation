@@ -14,7 +14,7 @@ from ..utils import nchw_to_nlc, nlc_to_nchw
 from ..utils.embed import PatchEmbed
 
 
-class GroupAttention(BaseModule):
+class GroupAttention(MultiheadAttention):
     """implementation of proposed Locally-grouped self-attention(LSA).
 
     Args:
@@ -130,18 +130,20 @@ class GroupAttention(BaseModule):
                                       3, 0, 1, 4, 2,
                                       5)  # ([3, 1, 475, 4, 49, 32])
         q, k, v = qkv[0], qkv[1], qkv[2]
-        attn = (q @ k.transpose(-2, -1)) * self.scale # ([1, 475, 4, 49, 49])
+        attn = (q @ k.transpose(-2, -1)) * self.scale  # ([1, 475, 4, 49, 49])
         attn = attn.softmax(dim=-1)
         attn = self.attn_drop(attn)
-        attn = (attn @ v).transpose(2, 3).reshape(B, _h, _w, self.ws, self.ws,
-                                                  C) # ([1, 19, 25, 7, 7, 128])
-        x = attn.transpose(2, 3).reshape(B, _h * self.ws, _w * self.ws, C) #([1, 133, 175, 128])
+        attn = (attn @ v).transpose(2,
+                                    3).reshape(B, _h, _w, self.ws, self.ws,
+                                               C)  # ([1, 19, 25, 7, 7, 128])
+        x = attn.transpose(2, 3).reshape(B, _h * self.ws, _w * self.ws,
+                                         C)  #([1, 133, 175, 128])
         if pad_r > 0 or pad_b > 0:
-            x = x[:, :H, :W, :].contiguous() #([1, 128, 171, 128])
-        x = x.reshape(B, N, C) # ([1, 21888, 128])
+            x = x[:, :H, :W, :].contiguous()  #([1, 128, 171, 128])
+        x = x.reshape(B, N, C)  # ([1, 21888, 128])
         x = self.proj(x)
         x = self.proj_drop(x)
-        return x # ([1, 21888, 128])
+        return x  # ([1, 21888, 128])
 
 
 class SpatialReductionAttention(MultiheadAttention):

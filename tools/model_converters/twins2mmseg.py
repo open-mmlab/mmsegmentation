@@ -8,7 +8,7 @@ import torch
 from mmcv.runner import CheckpointLoader
 
 
-def convert_vit(ckpt):
+def convert_vit(args, ckpt):
 
     new_ckpt = OrderedDict()
 
@@ -26,7 +26,7 @@ def convert_vit(ckpt):
                 new_k = k.replace('q.', 'attn.in_proj_')
                 new_v = torch.cat([v, ckpt[k.replace('attn.q.', 'attn.kv.')]],
                                   dim=0)
-            elif 'attn.proj.' in k:
+            elif 'attn.proj.' in k and args.model=='pcpvt':
                 new_k = k.replace('proj.', 'attn.out_proj.')
             elif 'mlp.fc1' in k:
                 new_k = k.replace('mlp.fc1', 'mlp.layers.0.0')
@@ -53,6 +53,7 @@ def main():
     parser.add_argument('src', help='src model path or url')
     # The dst path must be a full path of the new checkpoint.
     parser.add_argument('dst', help='save path')
+    parser.add_argument('model', help='model: pcpvt or alt-gvt')
     args = parser.parse_args()
 
     checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')
@@ -64,7 +65,7 @@ def main():
     else:
         state_dict = checkpoint
 
-    weight = convert_vit(state_dict)
+    weight = convert_vit(args, state_dict)
 
     checkpoint['state_dict'] = weight
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
