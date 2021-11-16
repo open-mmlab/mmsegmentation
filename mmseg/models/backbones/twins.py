@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from mmcv.cnn import (build_activation_layer, build_conv_layer,
                       build_norm_layer, trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
-from mmcv.cnn.bricks.transformer import MultiheadAttention
+from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from torch.nn.modules.utils import _pair as to_2tuple
 
@@ -308,11 +308,20 @@ class TransformerEncoderLayer(BaseModule):
             norm_cfg, embed_dims, postfix=2)
         self.add_module(self.norm2_name, norm2)
 
-        self.mlp = Mlp(
-            in_features=embed_dims,
-            hidden_features=feedforward_channels,
+        # self.mlp = Mlp(
+        #     in_features=embed_dims,
+        #     hidden_features=feedforward_channels,
+        #     act_cfg=act_cfg,
+        #     drop=drop_rate)
+        self.mlp = FFN(
+            embed_dims=embed_dims,
+            feedforward_channels=feedforward_channels,
+            num_fcs=1,
+            ffn_drop=drop_rate,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
             act_cfg=act_cfg,
-            drop=drop_rate)
+            add_identity=False,
+            init_cfg=None)
 
         self.drop_path = build_dropout(
             dict(type='DropPath', drop_prob=drop_path_rate)
@@ -467,8 +476,7 @@ class PyramidVisionTransformer(BaseModule):
                         conv_type='Conv2d',
                         kernel_size=patch_size,
                         stride=patch_size,
-                        # padding='corner',
-                        padding=0,
+                        padding='corner',
                         norm_cfg=norm_cfg,
                         input_size=input_size,
                         init_cfg=None))
@@ -482,8 +490,7 @@ class PyramidVisionTransformer(BaseModule):
                         conv_type='Conv2d',
                         kernel_size=patch_size,
                         stride=patch_size,
-                        # padding='corner',
-                        padding=0,
+                        padding='corner',
                         norm_cfg=norm_cfg,
                         input_size=input_size,
                         init_cfg=None))
@@ -884,8 +891,7 @@ class ALTGVT(PCPVT):
                             conv_type='Conv2d',
                             kernel_size=patch_size,
                             stride=patch_size,
-                            # padding='corner',
-                            padding=0,
+                            padding='corner',
                             norm_cfg=norm_cfg,
                             input_size=img_size,
                             init_cfg=None))
@@ -897,8 +903,7 @@ class ALTGVT(PCPVT):
                             conv_type='Conv2d',
                             kernel_size=strides[i - 1],
                             stride=strides[i - 1],
-                            # padding='corner',
-                            padding=0,
+                            padding='corner',
                             norm_cfg=norm_cfg,
                             input_size=img_size // patch_size // s,
                             init_cfg=None))
