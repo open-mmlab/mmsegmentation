@@ -982,24 +982,24 @@ class Mosaic(object):
          3. Sub image will be cropped if image is larger than mosaic patch
     Args:
         img_scale (Sequence[int]): Image size after mosaic pipeline of single
-           image. Default to (640, 640).
+           image. Default: (640, 640).
         center_ratio_range (Sequence[float]): Center ratio range of mosaic
-           output. Default to (0.5, 1.5).
-        min_bbox_size (int | float): The minimum pixel for filtering
-            invalid bboxes after the mosaic pipeline. Default to 0.
-        pad_val (int): Pad value. Default to 114.
+           output. Default: (0.5, 1.5).
+            invalid bboxes after the mosaic pipeline. Default: 0.
+        pad_val (int): Pad value. Default: 0.
+        seg_pad_val (int): Pad value of segmentation map. Default: 255.
     """
 
     def __init__(self,
                  img_scale=(640, 640),
                  center_ratio_range=(0.5, 1.5),
-                 min_bbox_size=0,
-                 pad_val=114):
+                 pad_val=0,
+                 seg_pad_val=255):
         assert isinstance(img_scale, tuple)
         self.img_scale = img_scale
         self.center_ratio_range = center_ratio_range
-        self.min_bbox_size = min_bbox_size
         self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
 
     def __call__(self, results):
         """Call function to make a mosaic of image.
@@ -1010,7 +1010,8 @@ class Mosaic(object):
             dict: Result dict with mosaic transformed.
         """
 
-        results = self._mosaic_transform(results)
+        results = self._mosaic_transform_img(results)
+        results = self._mosaic_transform_seg(results)
         return results
 
     def get_indexes(self, dataset):
@@ -1025,7 +1026,7 @@ class Mosaic(object):
         indexes = [random.randint(0, len(dataset)) for _ in range(3)]
         return indexes
 
-    def _mosaic_transform(self, results):
+    def _mosaic_transform_img(self, results):
         """Mosaic transform function.
 
         Args:
@@ -1035,8 +1036,6 @@ class Mosaic(object):
         """
 
         assert 'mix_results' in results
-        mosaic_labels = []
-        mosaic_bboxes = []
         if len(results['img'].shape) == 3:
             mosaic_img = np.full(
                 (int(self.img_scale[0] * 2), int(self.img_scale[1] * 2), 3),
@@ -1049,20 +1048,20 @@ class Mosaic(object):
                 dtype=results['img'].dtype)
 
         # mosaic center x, y
-        center_x = int(
+        self.center_x = int(
             random.uniform(*self.center_ratio_range) * self.img_scale[1])
-        center_y = int(
+        self.center_y = int(
             random.uniform(*self.center_ratio_range) * self.img_scale[0])
-        center_position = (center_x, center_y)
+        center_position = (self.center_x, self.center_y)
 
         loc_strs = ('top_left', 'top_right', 'bottom_left', 'bottom_right')
         for i, loc in enumerate(loc_strs):
             if loc == 'top_left':
-                results_patch = copy.deepcopy(results)
+                result_patch = copy.deepcopy(results)
             else:
-                results_patch = copy.deepcopy(results['mix_results'][i - 1])
+                result_patch = copy.deepcopy(results['mix_results'][i - 1])
 
-            img_i = results_patch['img']
+            img_i = result_patch['img']
             h_i, w_i = img_i.shape[:2]
             # keep_ratio resize
             scale_ratio_i = min(self.img_scale[0] / h_i,
@@ -1079,37 +1078,58 @@ class Mosaic(object):
             # crop and paste image
             mosaic_img[y1_p:y2_p, x1_p:x2_p] = img_i[y1_c:y2_c, x1_c:x2_c]
 
-            # adjust coordinate
-            gt_bboxes_i = results_patch['gt_bboxes']
-            gt_labels_i = results_patch['gt_labels']
-
-            if gt_bboxes_i.shape[0] > 0:
-                padw = x1_p - x1_c
-                padh = y1_p - y1_c
-                gt_bboxes_i[:, 0::2] = \
-                    scale_ratio_i * gt_bboxes_i[:, 0::2] + padw
-                gt_bboxes_i[:, 1::2] = \
-                    scale_ratio_i * gt_bboxes_i[:, 1::2] + padh
-
-            mosaic_bboxes.append(gt_bboxes_i)
-            mosaic_labels.append(gt_labels_i)
-
-        if len(mosaic_labels) > 0:
-            mosaic_bboxes = np.concatenate(mosaic_bboxes, 0)
-            mosaic_bboxes[:, 0::2] = np.clip(mosaic_bboxes[:, 0::2], 0,
-                                             2 * self.img_scale[1])
-            mosaic_bboxes[:, 1::2] = np.clip(mosaic_bboxes[:, 1::2], 0,
-                                             2 * self.img_scale[0])
-            mosaic_labels = np.concatenate(mosaic_labels, 0)
-
-            mosaic_bboxes, mosaic_labels = \
-                self._filter_box_candidates(mosaic_bboxes, mosaic_labels)
-
         results['img'] = mosaic_img
         results['img_shape'] = mosaic_img.shape
         results['ori_shape'] = mosaic_img.shape
-        results['gt_bboxes'] = mosaic_bboxes
-        results['gt_labels'] = mosaic_labels
+
+        return results
+
+    def _mosaic_transform_seg(self, results):
+        """Mosaic transform function.
+
+        Args:
+            results (dict): Result dict.
+        Returns:
+            dict: Updated result dict.
+        """
+
+        assert 'mix_results' in results
+        for key in results.get('seg_fields', []):
+            mosaic_seg = np.full(
+                (int(self.img_scale[0] * 2), int(self.img_scale[1] * 2)),
+                self.seg_pad_val,
+                dtype=results[key].dtype)
+
+            # mosaic center x, y
+            center_position = (self.center_x, self.center_y)
+
+            loc_strs = ('top_left', 'top_right', 'bottom_left', 'bottom_right')
+            for i, loc in enumerate(loc_strs):
+                if loc == 'top_left':
+                    result_patch = copy.deepcopy(results)
+                else:
+                    result_patch = copy.deepcopy(results['mix_results'][i - 1])
+
+                gt_seg_i = result_patch[key]
+                h_i, w_i = gt_seg_i.shape[:2]
+                # keep_ratio resize
+                scale_ratio_i = min(self.img_scale[0] / h_i,
+                                    self.img_scale[1] / w_i)
+                gt_seg_i = mmcv.imresize(
+                    gt_seg_i,
+                    (int(w_i * scale_ratio_i), int(h_i * scale_ratio_i)))
+
+                # compute the combine parameters
+                paste_coord, crop_coord = self._mosaic_combine(
+                    loc, center_position, gt_seg_i.shape[:2][::-1])
+                x1_p, y1_p, x2_p, y2_p = paste_coord
+                x1_c, y1_c, x2_c, y2_c = crop_coord
+
+                # crop and paste image
+                mosaic_seg[y1_p:y2_p, x1_p:x2_p] = gt_seg_i[y1_c:y2_c,
+                                                            x1_c:x2_c]
+
+            results[key] = mosaic_seg
 
         return results
 
@@ -1173,18 +1193,10 @@ class Mosaic(object):
         paste_coord = x1, y1, x2, y2
         return paste_coord, crop_coord
 
-    def _filter_box_candidates(self, bboxes, labels):
-        """Filter out bboxes too small after Mosaic."""
-        bbox_w = bboxes[:, 2] - bboxes[:, 0]
-        bbox_h = bboxes[:, 3] - bboxes[:, 1]
-        valid_inds = (bbox_w > self.min_bbox_size) & \
-                     (bbox_h > self.min_bbox_size)
-        valid_inds = np.nonzero(valid_inds)[0]
-        return bboxes[valid_inds], labels[valid_inds]
-
     def __repr__(self):
         repr_str = self.__class__.__name__
         repr_str += f'img_scale={self.img_scale}, '
-        repr_str += f'center_ratio_range={self.center_ratio_range})'
-        repr_str += f'pad_val={self.pad_val})'
+        repr_str += f'center_ratio_range={self.center_ratio_range}, '
+        repr_str += f'pad_val={self.pad_val}, '
+        repr_str += f'seg_pad_val={self.pad_val})'
         return repr_str
