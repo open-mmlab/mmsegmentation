@@ -65,7 +65,8 @@ class GroupAttention(BaseModule):
         we recommend forward_padding because it's neat. However, the masking
         implementation is more reasonable and accurate.
         """
-        return self.forward_mask(x, H, W)
+        # return self.forward_mask(x, H, W) #default
+        return self.forward_padding(x, H, W)
 
     def forward_mask(self, x, H, W):
         B, N, C = x.shape
@@ -112,6 +113,7 @@ class GroupAttention(BaseModule):
         return x
 
     def forward_padding(self, x, H, W):
+        import pdb; pdb.set_trace()
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         pad_l = pad_t = 0
