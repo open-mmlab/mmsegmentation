@@ -14,7 +14,7 @@ from ..utils import nchw_to_nlc, nlc_to_nchw
 from ..utils.embed import PatchEmbed
 
 
-class GroupAttention(MultiheadAttention):
+class GroupAttention(BaseModule):
     """implementation of proposed Locally-grouped self-attention(LSA).
 
     Args:
