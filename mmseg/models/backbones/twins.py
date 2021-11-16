@@ -71,8 +71,6 @@ class GroupAttention(BaseModule):
         # return self.forward_padding(x, H, W)
 
     def forward_mask(self, x, H, W):
-        import pdb
-        pdb.set_trace()
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         pad_l = pad_t = 0
