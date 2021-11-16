@@ -40,6 +40,8 @@ def convert_vit(ckpt):
             else:
                 new_k = k
         elif k.startswith('backbone.pos_block'):
+            import pdb
+            pdb.set_trace()
             if 'proj.' in k:
                 new_k = k.replace('proj.0.', 'projection.')
         else:
