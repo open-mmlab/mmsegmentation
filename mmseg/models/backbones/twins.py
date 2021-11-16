@@ -113,7 +113,8 @@ class GroupAttention(BaseModule):
         return x
 
     def forward_padding(self, x, H, W):
-        import pdb; pdb.set_trace()
+        import pdb
+        pdb.set_trace()
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         pad_l = pad_t = 0
@@ -612,8 +613,8 @@ class PosCNN(PatchEmbed):
         feat_token = x
         cnn_feat = feat_token.transpose(1, 2).view(B, C, H, W)
 
-        # if self.adap_padding:
-        #     cnn_feat = self.adap_padding(cnn_feat)
+        if self.adap_padding:
+            cnn_feat = self.adap_padding(cnn_feat)
         if self.s == 1:
             x = self.proj(cnn_feat) + cnn_feat
         else:
