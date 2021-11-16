@@ -264,7 +264,6 @@ For LoveDA dataset, please run the following command to download and re-organize
 # download
 mkdir -p data/loveDA && cd data/loveDA
 wget https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing
-
 # unzip
 unzip '*.zip'
 # Convert into segmentation splits
