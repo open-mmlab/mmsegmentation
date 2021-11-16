@@ -28,6 +28,10 @@ def convert_vit(ckpt):
                                   dim=0)
             elif 'attn.proj.' in k:
                 new_k = k.replace('proj.', 'attn.out_proj.')
+            elif 'mlp.fc1' in k:
+                new_k = k.replace('mlp.fc1', 'mlp.layers.0.0')
+            elif 'mlp.fc2' in k:
+                new_k = k.replace('mlp.fc1', 'mlp.layers.1')
             else:
                 new_k = k
         elif k.startswith('backbone.patch_embeds'):
