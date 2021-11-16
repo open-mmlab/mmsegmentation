@@ -610,8 +610,8 @@ class PosCNN(PatchEmbed):
         feat_token = x
         cnn_feat = feat_token.transpose(1, 2).view(B, C, H, W)
 
-        if self.adap_padding:
-            cnn_feat = self.adap_padding(cnn_feat)
+        # if self.adap_padding:
+        #     cnn_feat = self.adap_padding(cnn_feat)
         if self.s == 1:
             x = self.proj(cnn_feat) + cnn_feat
         else:
