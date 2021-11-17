@@ -67,8 +67,7 @@ class GroupAttention(BaseModule):
         we recommend forward_padding because it's neat. However, the masking
         implementation is more reasonable and accurate.
         """
-        return self.forward_mask(x, H, W)  #default
-        # return self.forward_padding(x, H, W)
+        return self.forward_mask(x, H, W)
 
     def forward_mask(self, x, H, W):
         B, N, C = x.shape
@@ -113,37 +112,6 @@ class GroupAttention(BaseModule):
         x = self.proj(x)
         x = self.proj_drop(x)
         return x
-
-    def forward_padding(self, x, H, W):
-        B, N, C = x.shape  # 1, 21888, 128
-        x = x.view(B, H, W, C)  # (1, 128, 171, 128)
-        pad_l = pad_t = 0
-        pad_r = (self.ws - W % self.ws) % self.ws  # 4 , self.ws=7
-        pad_b = (self.ws - H % self.ws) % self.ws  # 5
-        x = F.pad(x, (0, 0, pad_l, pad_r, pad_t, pad_b))  # [1, 133, 175, 128]
-        _, Hp, Wp, _ = x.shape
-        _h, _w = Hp // self.ws, Wp // self.ws  # 19, 25
-        x = x.reshape(B, _h, self.ws, _w, self.ws,
-                      C).transpose(2, 3)  # ([1, 19, 25, 7, 7, 128])
-        qkv = self.qkv(x).reshape(B, _h * _w, self.ws * self.ws, 3,
-                                  self.num_heads, C // self.num_heads).permute(
-                                      3, 0, 1, 4, 2,
-                                      5)  # ([3, 1, 475, 4, 49, 32])
-        q, k, v = qkv[0], qkv[1], qkv[2]
-        attn = (q @ k.transpose(-2, -1)) * self.scale  # ([1, 475, 4, 49, 49])
-        attn = attn.softmax(dim=-1)
-        attn = self.attn_drop(attn)
-        attn = (attn @ v).transpose(2,
-                                    3).reshape(B, _h, _w, self.ws, self.ws,
-                                               C)  # ([1, 19, 25, 7, 7, 128])
-        x = attn.transpose(2, 3).reshape(B, _h * self.ws, _w * self.ws,
-                                         C)  #([1, 133, 175, 128])
-        if pad_r > 0 or pad_b > 0:
-            x = x[:, :H, :W, :].contiguous()  #([1, 128, 171, 128])
-        x = x.reshape(B, N, C)  # ([1, 21888, 128])
-        x = self.proj(x)
-        x = self.proj_drop(x)
-        return x  # ([1, 21888, 128])
 
 
 class SpatialReductionAttention(MultiheadAttention):
