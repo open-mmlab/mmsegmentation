@@ -100,6 +100,10 @@ def sigmoid_focal_loss(pred,
     """
     # Function.apply does not accept keyword arguments, so the decorator
     # "weighted_loss" is not applicable
+
+    # _sigmoid_focal_loss doesn't accept alpha of list type. Therefore, if
+    # a list is given, we set float_alpha as 0.5. This means setting equal
+    # weight for foreground class and background class.
     float_alpha = alpha if isinstance(alpha, float) else 0.5
     loss = _sigmoid_focal_loss(pred.contiguous(), target.contiguous(), gamma,
                                float_alpha, None, 'none')
@@ -120,6 +124,9 @@ def sigmoid_focal_loss(pred,
     if valid_mask is not None:
         final_weight = final_weight * valid_mask
 
+    # if alpha of list type is given, we set float_alpha as 0.5.
+    # Therefore, we need to multiply the loss by 2 to offset the
+    # effect of setting float_alpha as 0.5.
     loss = loss if isinstance(alpha, float) else loss * 2
     loss = weight_reduce_loss(loss, final_weight, reduction, avg_factor)
     return loss
@@ -145,11 +152,15 @@ class FocalLoss(nn.Module):
             alpha (float, list[float], optional): A balanced form for Focal
                 Loss. Defaults to 0.5. When a list is provided, the length
                 of the list should be equal to the number of classes.
-                Regarding the pixels which belong to one class as the
-                foreground and the other pixels as the background, each
-                element in the list is the weight of the corresponding
-                foreground class. The value of alpha or each element of
-                alpha should be a float in the interval [0, 1].
+                Please be careful that this parameter is not the
+                class-wise weight but the weight of a binary classification
+                problem. This binary classification problem regards the
+                pixels which belong to one class as the foreground
+                and the other pixels as the background, each element in
+                the list is the weight of the corresponding foreground class.
+                The value of alpha or each element of alpha should be a float
+                in the interval [0, 1]. If you want to specify the class-wise
+                weight, please use `class_weight` parameter.
             reduction (str, optional): The method used to reduce the loss into
                 a scalar. Defaults to 'mean'. Options are "none", "mean" and
                 "sum".
