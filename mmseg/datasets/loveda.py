@@ -34,7 +34,7 @@ class LoveDADataset(CustomDataset):
         """Write the segmentation results to images.
 
         Args:
-            results (list[list | tuple | ndarray]): Testing results of the
+            results (list[ndarray]): Testing results of the
                 dataset.
             imgfile_prefix (str): The filename prefix of the png files.
                 If the prefix is "somepath/xxx",
@@ -47,8 +47,6 @@ class LoveDADataset(CustomDataset):
             list[str: str]: result txt files which contains corresponding
             semantic segmentation images.
         """
-        if indices is None:
-            indices = list(range(len(self)))
 
         mmcv.mkdir_or_exist(imgfile_prefix)
         result_files = []

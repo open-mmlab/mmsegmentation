@@ -108,6 +108,14 @@ mmsegmentation
 |   |   └── leftImg8bit
 |   |   |   └── test
 |   |   |       └── night
+│   ├── loveDA
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   │   ├── test
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -279,5 +287,7 @@ mv Train/Urban/masks_png/* ann_dir/train
 mv Val/Rural/masks_png/* ann_dir/val
 mv Val/Urban/masks_png/* ann_dir/val
 ```
+
+Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/inference.md).
 
 More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).

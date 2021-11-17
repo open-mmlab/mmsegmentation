@@ -68,7 +68,29 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
    We use the simple version without average for all datasets.
 :::
 
-5. Test PSPNet on cityscapes test split with 4 GPUs, and generate the png files to be submit to the official evaluation server.
+5. Test PSPNet on LoveDA test split with 1 GPU, and generate the png files to be submit to the official evaluation server.
+
+   First, add following to config file `configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py`,
+
+    ```python
+    data = dict(
+        test=dict(
+            img_dir='img_dir/test',
+            ann_dir='ann_dir/test'))
+    ```
+
+   Then run test.
+
+    ```shell
+   python ./tools/test.py configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py \
+        checkpoints/pspnet_r50-d8_512x512_80k_loveda_20211104_155728-88610f9f.pth \
+        --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
+    ```
+
+   You will get png files under `./pspnet_test_results` directory.
+   You may run `zip -r -j Results.zip pspnet_test_results/` and submit the zip file to [evaluation server](https://competitions.codalab.org/competitions/35865#participate-submit_results).
+
+6. Test PSPNet on cityscapes test split with 4 GPUs, and generate the png files to be submit to the official evaluation server.
 
    First, add following to config file `configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py`,
 
@@ -90,7 +112,7 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
    You will get png files under `./pspnet_test_results` directory.
    You may run `zip -r results.zip pspnet_test_results/` and submit the zip file to [evaluation server](https://www.cityscapes-dataset.com/submit/).
 
-6. CPU memory efficient test DeeplabV3+ on Cityscapes (without saving the test results) and evaluate the mIoU.
+7. CPU memory efficient test DeeplabV3+ on Cityscapes (without saving the test results) and evaluate the mIoU.
 
     ```shell
     python tools/test.py \
