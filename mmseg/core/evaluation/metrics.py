@@ -18,9 +18,27 @@ def f_score(precision, recall, beta=1):
     Returns:
         [torch.tensor]: The f-score value.
     """
-    score = (1 + beta**2) * (precision * recall) / (
-        (beta**2 * precision) + recall)
+    score = (1 + beta ** 2) * (precision * recall) / (
+            (beta ** 2 * precision) + recall)
     return score
+
+
+def calc_mae(pred_label, label):
+    return torch.mean(torch.abs(pred_label - label))
+
+
+def calc_adaptive_fm(pred_label, label, beta=0.3):
+    adaptive_threshold = min(2 * pred_label.mean(), 1.)
+    binary_pred_label = pred_label >= adaptive_threshold
+    area_intersection = binary_pred_label[label].sum()
+    if area_intersection == 0:
+        adaptive_fm = 0
+    else:
+        precision = area_intersection / torch.count_nonzero(binary_pred_label)
+        recall = area_intersection / torch.count_nonzero(label)
+        adaptive_fm = (1 + beta) * precision * recall / (
+                beta * precision + recall)
+    return adaptive_fm
 
 
 def intersect_and_union(pred_label,
@@ -112,10 +130,10 @@ def total_intersect_and_union(results,
          ndarray: The prediction histogram on all classes.
          ndarray: The ground truth histogram on all classes.
     """
-    total_area_intersect = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_union = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_pred_label = torch.zeros((num_classes, ), dtype=torch.float64)
-    total_area_label = torch.zeros((num_classes, ), dtype=torch.float64)
+    total_area_intersect = torch.zeros((num_classes,), dtype=torch.float64)
+    total_area_union = torch.zeros((num_classes,), dtype=torch.float64)
+    total_area_pred_label = torch.zeros((num_classes,), dtype=torch.float64)
+    total_area_label = torch.zeros((num_classes,), dtype=torch.float64)
     for result, gt_seg_map in zip(results, gt_seg_maps):
         area_intersect, area_union, area_pred_label, area_label = \
             intersect_and_union(
@@ -126,7 +144,7 @@ def total_intersect_and_union(results,
         total_area_pred_label += area_pred_label
         total_area_label += area_label
     return total_area_intersect, total_area_union, total_area_pred_label, \
-        total_area_label
+           total_area_label
 
 
 def mean_iou(results,
@@ -282,14 +300,75 @@ def eval_metrics(results,
     """
 
     total_area_intersect, total_area_union, total_area_pred_label, \
-        total_area_label = total_intersect_and_union(
-            results, gt_seg_maps, num_classes, ignore_index, label_map,
-            reduce_zero_label)
+    total_area_label = total_intersect_and_union(
+        results, gt_seg_maps, num_classes, ignore_index, label_map,
+        reduce_zero_label)
     ret_metrics = total_area_to_metrics(total_area_intersect, total_area_union,
                                         total_area_pred_label,
                                         total_area_label, metrics, nan_to_num,
                                         beta)
 
+    return ret_metrics
+
+
+def calc_sod_metrics(pred_label, label):
+    if isinstance(pred_label, str):
+        pred_label = torch.from_numpy(np.load(pred_label))
+    else:
+        pred_label = torch.from_numpy((pred_label))
+
+    if isinstance(label, str):
+        label = torch.from_numpy(
+            mmcv.imread(label, flag='unchanged', backend='pillow'))
+    else:
+        label = torch.from_numpy(label)
+
+    pred_label = pred_label.float()
+    if pred_label.max() != pred_label.min():
+        pred_label = (pred_label - pred_label.min()) / (
+                pred_label.max() - pred_label.min())
+
+    mae = calc_mae(pred_label, label)
+    adaptive_fm = calc_adaptive_fm(pred_label, label)
+
+    return mae, adaptive_fm
+
+
+def pre_eval_to_sod_metrics(pre_eval_results, nan_to_num=None):
+    pre_eval_results = tuple(zip(*pre_eval_results))
+    assert len(pre_eval_results) == 2
+
+    mae = sum(pre_eval_results[0]) / len(pre_eval_results[0])
+    adp_fm = sum(pre_eval_results[1]) / len(pre_eval_results[1])
+
+    ret_metrics = OrderedDict({'MAE': mae.numpy(), 'adpFm': adp_fm.numpy()})
+    if nan_to_num is not None:
+        ret_metrics = OrderedDict({
+            metric: np.nan_to_num(metric_value, nan=nan_to_num)
+            for metric, metric_value in ret_metrics.items()
+        })
+    return ret_metrics
+
+
+def eval_sod_metrics(results, gt_seg_maps, nan_to_num=None):
+    maes = []
+    adp_fms = []
+
+    for result, gt_seg_map in zip(results, gt_seg_maps):
+        mae, adp_fm = calc_sod_metrics(result, gt_seg_map)
+        maes.append(mae)
+        adp_fms.append(adp_fm)
+
+    ret_metrics = OrderedDict({
+        'MAE': np.mean(maes),
+        'adpFm': np.mean(adp_fms)
+    })
+
+    if nan_to_num is not None:
+        ret_metrics = OrderedDict({
+            metric: np.nan_to_num(metric_value, nan=nan_to_num)
+            for metric, metric_value in ret_metrics.items()
+        })
     return ret_metrics
 
 
@@ -370,7 +449,7 @@ def total_area_to_metrics(total_area_intersect,
             ret_metrics['Acc'] = acc
         elif metric == 'mDice':
             dice = 2 * total_area_intersect / (
-                total_area_pred_label + total_area_label)
+                    total_area_pred_label + total_area_label)
             acc = total_area_intersect / total_area_label
             ret_metrics['Dice'] = dice
             ret_metrics['Acc'] = acc

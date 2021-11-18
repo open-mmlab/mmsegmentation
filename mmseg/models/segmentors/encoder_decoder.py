@@ -216,7 +216,7 @@ class EncoderDecoder(BaseSegmentor):
 
         return seg_logit
 
-    def inference(self, img, img_meta, rescale):
+    def inference(self, img, img_meta, rescale, return_logit):
         """Inference with slide/whole style.
 
         Args:
@@ -239,7 +239,13 @@ class EncoderDecoder(BaseSegmentor):
             seg_logit = self.slide_inference(img, img_meta, rescale)
         else:
             seg_logit = self.whole_inference(img, img_meta, rescale)
-        output = F.softmax(seg_logit, dim=1)
+        if return_logit:
+            output = seg_logit
+        else:
+            if seg_logit.shape[1] >= 2:
+                output = F.softmax(seg_logit, dim=1)
+            else:
+                output = F.sigmoid(seg_logit)
         flip = img_meta[0]['flip']
         if flip:
             flip_direction = img_meta[0]['flip_direction']
@@ -251,10 +257,17 @@ class EncoderDecoder(BaseSegmentor):
 
         return output
 
-    def simple_test(self, img, img_meta, rescale=True):
+    def simple_test(self, img, img_meta, rescale=True, return_logit=False):
         """Simple test with single image."""
-        seg_logit = self.inference(img, img_meta, rescale)
-        seg_pred = seg_logit.argmax(dim=1)
+        seg_logit = self.inference(img, img_meta, rescale, return_logit)
+        if return_logit:
+            seg_pred = seg_logit
+        else:
+            if seg_logit.shape[1] >= 2:
+                seg_pred = seg_logit.argmax(dim=1)
+            else:
+                seg_pred = seg_logit.squeeze(1)
+                seg_pred = (seg_pred > 0.5).int()
         if torch.onnx.is_in_onnx_export():
             # our inference backend only support 4D output
             seg_pred = seg_pred.unsqueeze(0)
@@ -264,7 +277,7 @@ class EncoderDecoder(BaseSegmentor):
         seg_pred = list(seg_pred)
         return seg_pred
 
-    def aug_test(self, imgs, img_metas, rescale=True):
+    def aug_test(self, imgs, img_metas, rescale=True, return_logit=False):
         """Test with augmentations.
 
         Only rescale=True is supported.
@@ -272,12 +285,17 @@ class EncoderDecoder(BaseSegmentor):
         # aug_test rescale all imgs back to ori_shape for now
         assert rescale
         # to save memory, we get augmented seg logit inplace
-        seg_logit = self.inference(imgs[0], img_metas[0], rescale)
+        seg_logit = self.inference(imgs[0], img_metas[0], rescale,
+                                   return_logit)
         for i in range(1, len(imgs)):
-            cur_seg_logit = self.inference(imgs[i], img_metas[i], rescale)
+            cur_seg_logit = self.inference(imgs[i], img_metas[i], rescale,
+                                           return_logit)
             seg_logit += cur_seg_logit
         seg_logit /= len(imgs)
-        seg_pred = seg_logit.argmax(dim=1)
+        if return_logit:
+            seg_pred = seg_logit.squeeze(1)
+        else:
+            seg_pred = seg_logit.argmax(dim=1)
         seg_pred = seg_pred.cpu().numpy()
         # unravel batch dim
         seg_pred = list(seg_pred)

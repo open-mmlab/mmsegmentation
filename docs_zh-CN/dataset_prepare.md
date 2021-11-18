@@ -89,6 +89,28 @@ mmsegmentation
 |   |   └── leftImg8bit
 |   |   |   └── test
 |   |   |       └── night
+|   ├── DUTS
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+|   ├── DUT-OMRON
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
+|   ├── ECSSD
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
+|   ├── HKU-IS
+│   │   ├── images
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -195,3 +217,49 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 ### Nighttime Driving
 
 因为我们只支持在此数据集上测试模型，所以您只需下载[测试集](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip)。
+
+### DUTS
+
+首先，下载 [DUTS-TR.zip](http://saliencydetection.net/duts/download/DUTS-TR.zip) 和 [DUTS-TE.zip](http://saliencydetection.net/duts/download/DUTS-TE.zip) 。
+
+为了将 DUTS 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/duts.py /path/to/DUTS-TR.zip /path/to/DUTS-TE.zip
+```
+
+### DUT-OMRON
+
+显著性检测（SOD）任务中 DUT-OMRON 仅作为测试集。
+
+首先，下载 [DUT-OMRON-image.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-image.zip) 和 [DUT-OMRON-gt-pixelwise.zip.zip](http://saliencydetection.net/dut-omron/download/DUT-OMRON-gt-pixelwise.zip.zip) 。
+
+为了将 DUT-OMRON 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/dut_omron.py /path/to/DUT-OMRON-image.zip /path/to/DUT-OMRON-gt-pixelwise.zip.zip
+```
+
+### ECSSD
+
+显著性检测（SOD）任务中 ECSSD 仅作为测试集。
+
+首先，下载 [images.zip](https://www.cse.cuhk.edu.hk/leojia/projects/hsaliency/data/ECSSD/images.zip) 和 [ground_truth_mask.zip](https://www.cse.cuhk.edu.hk/leojia/projects/hsaliency/data/ECSSD/ground_truth_mask.zip) 。
+
+为了将 ECSSD 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/ecssd.py /path/to/images.zip /path/to/ground_truth_mask.zip
+```
+
+### HKU-IS
+
+显著性检测（SOD）任务中 HKU-IS 仅作为测试集。
+
+首先，下载 [HKU-IS.rar](https://sites.google.com/site/ligb86/mdfsaliency/) 。
+
+为了将 HKU-IS 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/hku_is.py /path/to/HKU-IS.rar
+```

@@ -38,6 +38,7 @@ def single_gpu_test(model,
                     efficient_test=False,
                     opacity=0.5,
                     pre_eval=False,
+                    return_logit=False,
                     format_only=False,
                     format_args={}):
     """Test with single GPU by progressive mode.
@@ -88,7 +89,8 @@ def single_gpu_test(model,
 
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
-            result = model(return_loss=False, **data)
+            result = model(
+                return_loss=False, return_logit=return_logit, **data)
 
         if efficient_test:
             result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
@@ -99,7 +101,8 @@ def single_gpu_test(model,
         if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            result = dataset.pre_eval(result, indices=batch_indices)
+            result = dataset.pre_eval(
+                result, return_logit, indices=batch_indices)
 
         results.extend(result)
 
@@ -142,6 +145,7 @@ def multi_gpu_test(model,
                    gpu_collect=False,
                    efficient_test=False,
                    pre_eval=False,
+                   return_logit=False,
                    format_only=False,
                    format_args={}):
     """Test model with multiple gpus by progressive mode.
@@ -204,7 +208,11 @@ def multi_gpu_test(model,
 
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
-            result = model(return_loss=False, rescale=True, **data)
+            result = model(
+                return_loss=False,
+                return_logit=return_logit,
+                rescale=True,
+                **data)
 
         if efficient_test:
             result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
@@ -215,7 +223,8 @@ def multi_gpu_test(model,
         if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            result = dataset.pre_eval(result, indices=batch_indices)
+            result = dataset.pre_eval(
+                result, return_logit, indices=batch_indices)
 
         results.extend(result)
 

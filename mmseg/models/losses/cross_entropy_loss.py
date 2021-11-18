@@ -83,8 +83,11 @@ def binary_cross_entropy(pred,
                 pred.dim() == 4 and label.dim() == 3), \
             'Only pred shape [N, C], label shape [N] or pred shape [N, C, ' \
             'H, W], label shape [N, H, W] are supported'
-        label, weight = _expand_onehot_labels(label, weight, pred.shape,
-                                              ignore_index)
+        if pred.shape[1] == 1:
+            pred = pred.squeeze(1)
+        else:
+            label, weight = _expand_onehot_labels(label, weight, pred.shape,
+                                                  ignore_index)
 
     # weighted element-wise losses
     if weight is not None:

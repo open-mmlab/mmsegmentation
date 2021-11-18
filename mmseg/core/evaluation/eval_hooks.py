@@ -30,9 +30,11 @@ class EvalHook(_EvalHook):
                  by_epoch=False,
                  efficient_test=False,
                  pre_eval=False,
+                 return_logit=False,
                  **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         self.pre_eval = pre_eval
+        self.return_logit = return_logit
         if efficient_test:
             warnings.warn(
                 'DeprecationWarning: ``efficient_test`` for evaluation hook '
@@ -47,7 +49,11 @@ class EvalHook(_EvalHook):
 
         from mmseg.apis import single_gpu_test
         results = single_gpu_test(
-            runner.model, self.dataloader, show=False, pre_eval=self.pre_eval)
+            runner.model,
+            self.dataloader,
+            show=False,
+            pre_eval=self.pre_eval,
+            return_logit=self.return_logit)
         runner.log_buffer.clear()
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
         key_score = self.evaluate(runner, results)
@@ -77,9 +83,11 @@ class DistEvalHook(_DistEvalHook):
                  by_epoch=False,
                  efficient_test=False,
                  pre_eval=False,
+                 return_logit=False,
                  **kwargs):
         super().__init__(*args, by_epoch=by_epoch, **kwargs)
         self.pre_eval = pre_eval
+        self.return_logit = return_logit
         if efficient_test:
             warnings.warn(
                 'DeprecationWarning: ``efficient_test`` for evaluation hook '
@@ -115,7 +123,8 @@ class DistEvalHook(_DistEvalHook):
             self.dataloader,
             tmpdir=tmpdir,
             gpu_collect=self.gpu_collect,
-            pre_eval=self.pre_eval)
+            pre_eval=self.pre_eval,
+            return_logit=self.return_logit)
 
         runner.log_buffer.clear()
 

@@ -5,6 +5,7 @@ from collections import OrderedDict
 
 import mmcv
 import numpy as np
+import torch.nn.functional as F
 from mmcv.utils import print_log
 from prettytable import PrettyTable
 from torch.utils.data import Dataset
@@ -262,7 +263,7 @@ class CustomDataset(Dataset):
             self.gt_seg_map_loader(results)
             yield results['gt_semantic_seg']
 
-    def pre_eval(self, preds, indices):
+    def pre_eval(self, preds, indices, return_logit=False):
         """Collect eval result from each iteration.
 
         Args:
@@ -284,6 +285,14 @@ class CustomDataset(Dataset):
         pre_eval_results = []
 
         for pred, index in zip(preds, indices):
+            if return_logit:
+                if pred.shape[0] >= 2:
+                    pred = F.softmax(pred, dim=0)
+                    pred = pred.argmax(dim=0)
+                else:
+                    pred = F.sigmoid(pred)
+                    pred = pred.squeeze(0)
+                    pred = (pred > 0.5).int()
             seg_map = self.get_gt_seg_map_by_idx(index)
             pre_eval_results.append(
                 intersect_and_union(pred, seg_map, len(self.CLASSES),
@@ -358,6 +367,7 @@ class CustomDataset(Dataset):
     def evaluate(self,
                  results,
                  metric='mIoU',
+                 return_logit=False,
                  logger=None,
                  gt_seg_maps=None,
                  **kwargs):
