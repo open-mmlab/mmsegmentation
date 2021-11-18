@@ -147,6 +147,10 @@ html_theme_options = {
                     'name': 'MMGeneration',
                     'url': 'https://github.com/open-mmlab/mmgeneration',
                 },
+                {
+                    'name': 'MMFlow',
+                    'url': 'https://github.com/open-mmlab/mmflow',
+                },
             ]
         },
         {
