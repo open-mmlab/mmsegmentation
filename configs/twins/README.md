@@ -22,18 +22,14 @@
 
 </details>
 
-To train Twins - SVT - B on ImageNet  using 8 gpus for 300 epochs, run
+## Usage
 
-```python
-python - m torch.distributed.launch - -nproc_per_node = 8 - -use_env main.py - -model alt_gvt_base - -batch - size 128 - -data - path path_to_imagenet - -dist - eval - -drop - path 0.3
-```
+To use other repositories' pre-trained models, it is necessary to convert keys.
 
-## Evaluation
+We provide a script [`twins2mmseg.py`](../../tools/model_converters/twins2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/Meituan-AutoML/Twins) to MMSegmentation style.
 
-To evaluate the performance of Twins - SVT - L on ImageNet using one GPU, run
-
-```python
-python main.py - -eval - -resume alt_gvt_large.pth - -model alt_gvt_large - -data - path path_to_imagenet
+```shell
+python tools/model_converters/twins2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
 ```
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
@@ -42,11 +38,11 @@ This script convert model from `PRETRAIN_PATH` and store the converted model in 
 
 ### ADE20K
 
-|   Method    |   Backbone    | Crop Size  |  Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config | download |
-|   ------    |   --------    | ---------  |  ------   | -------------- | ----- | ------------- | ------ |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| PCPVT-Small | Twins-PCPVT-S | 512x512    |  ------   |    -------     | 46.2  | 47.5          |  --    |  --   |
-| PCPVT-Base  | Twins-PCPVT-B | 512x512    |  ------   |    -------     | 47.1  | 48.4          |  --    |  --  |
-| PCPVT-Large | Twins-PCPVT-L | 512x512    |  ------   |    -------     | 48.6  | 49.8          |  --    |  --  |
-| ALTGVT-Small| Twins-SVT-S   | 512x512    |  ------   |    -------     | 46.2  | 47.1          |  --    |  --  |
-| ALTGVT-Base | Twins-SVT-B   | 512x512    |  ------   |    -------     | 47.4  | 48.9          |  --    |  --  |
-| ALTGVT-Large| Twins-SVT-L   | 512x512    |  ------   |    -------     | 48.8  | 50.2          |  --    |  --  |
+| Method| Backbone | Crop Size  | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config | download |
+| ----- | ------- | ---------  |  ------|  ------   | -------------- | ----- | ------------- | ------ |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Twins | PCPVT-S | 512x512    |  160000|  ------   |    -------     | 46.2  | 47.5          |  --    |  --   |
+| Twins | PCPVT-B | 512x512    |  160000|  ------   |    -------     | 47.1  | 48.4          |  --    |  --  |
+| Twins | PCPVT-L | 512x512    |  160000|  ------   |    -------     | 48.6  | 49.8          |  --    |  --  |
+| Twins | ALTGVT-S| 512x512    |  160000|  ------   |    -------     | 46.2  | 47.1          |  --    |  --  |
+| Twins | ALTGVT-B| 512x512    |  160000|  ------   |    -------     | 47.4  | 48.9          |  --    |  --  |
+| Twins | ALTGVT-L| 512x512    |  160000|  ------   |    -------     | 48.8  | 50.2          |  --    |  --  |

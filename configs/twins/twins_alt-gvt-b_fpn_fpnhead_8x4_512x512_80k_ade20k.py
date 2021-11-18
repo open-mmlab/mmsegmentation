@@ -11,6 +11,3 @@ model = dict(
     neck=dict(type='FPN', in_channels=[96, 192, 384, 768]),
     decode_head=dict(num_classes=150),
 )
-
-optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, weight_decay=0.0001)
-optimizer_config = dict(grad_clip=None)

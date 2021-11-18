@@ -655,7 +655,7 @@ class PCPVT(PyramidVisionTransformer):
             Transformer encoder layer. Default: [8, 4, 2, 1].
         block_cls (BaseModule): Transformer Encoder.
             Default TransformerEncoderLayer
-        F4=False（bool): input features need slice.
+        input_features_slice（bool): input features need slice. Default False.
         extra_norm（bool): add extra norm. Default False.
     """
 
@@ -675,7 +675,7 @@ class PCPVT(PyramidVisionTransformer):
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
                  block_cls=TransformerEncoderLayer,
-                 F4=False,
+                 input_features_slice=False,
                  extra_norm=False,
                  **kwargs):
         super(PCPVT,
@@ -683,7 +683,7 @@ class PCPVT(PyramidVisionTransformer):
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
                              drop_rate, attn_drop_rate, drop_path_rate,
                              norm_cfg, depths, sr_ratios, block_cls)
-        self.F4 = F4
+        self.input_features_slice = input_features_slice
         self.extra_norm = extra_norm
         if self.extra_norm:
             self.norm_list = ModuleList()
@@ -742,7 +742,7 @@ class PCPVT(PyramidVisionTransformer):
     def forward(self, x):
         x = self.forward_features(x)
 
-        if self.F4:
+        if self.input_features_slice:
             x = x[3:4]
 
         return x
@@ -779,7 +779,7 @@ class ALTGVT(PCPVT):
             Transformer encoder layer. Default: [4, 2, 1].
         block_cls (BaseModule): Transformer Encoder. Default GroupBlock.
         wss=[7, 7, 7],
-        F4=False（bool): input features need slice.
+        input_features_slice（bool): input features need slice. Default False.
         extra_norm（bool): add extra norm. Default False.
         strides=(2, 2, 2)
     """
@@ -802,7 +802,7 @@ class ALTGVT(PCPVT):
                  sr_ratios=[4, 2, 1],
                  block_cls=GroupBlock,
                  wss=[7, 7, 7],
-                 F4=False,
+                 input_features_slice=False,
                  extra_norm=False,
                  strides=(2, 2, 2),
                  **kwargs):
@@ -810,7 +810,8 @@ class ALTGVT(PCPVT):
               self).__init__(img_size, patch_size, in_chans, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
                              drop_rate, attn_drop_rate, drop_path_rate,
-                             norm_cfg, depths, sr_ratios, block_cls, F4)
+                             norm_cfg, depths, sr_ratios, block_cls,
+                             input_features_slice)
         del self.blocks
         self.wss = wss
         self.extra_norm = extra_norm
