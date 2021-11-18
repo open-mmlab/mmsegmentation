@@ -71,7 +71,8 @@ class MobileNetV2(BaseModule):
         if isinstance(pretrained, str):
             warnings.warn('DeprecationWarning: pretrained is a deprecated, '
                           'please use "init_cfg" instead')
-            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
+            self.init_cfg = dict(
+                type='Pretrained', checkpoint=pretrained, prefix='backbone.')
         elif pretrained is None:
             if init_cfg is None:
                 self.init_cfg = [
@@ -81,6 +82,13 @@ class MobileNetV2(BaseModule):
                         val=1,
                         layer=['_BatchNorm', 'GroupNorm'])
                 ]
+            else:
+                if isinstance(init_cfg, dict) \
+                        and init_cfg['type'] == 'Pretrained':
+                    init_cfg['prefix'] = 'backbone.'
+                    self.init_cfg = init_cfg
+                elif not isinstance(init_cfg, list):
+                    raise TypeError('init_cfg must be a dict or list')
         else:
             raise TypeError('pretrained must be a str or None')
 
