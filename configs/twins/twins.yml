@@ -1,0 +1,15 @@
+Collections:
+- Name: twins
+  Metadata:
+    Training Data:
+    - ADE20K
+  Paper:
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+  README: configs/twins/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/faketwins.py#L524
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/Meituan-AutoML/Twins
+Models: []

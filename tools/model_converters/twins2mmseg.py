@@ -30,8 +30,8 @@ def convert_vit(args, ckpt):
                 if args.model == 'pcpvt':
                     new_k = k.replace('proj.', 'attn.out_proj.')
                 else:
-                    l = k.split('.')
-                    if int(l[3]) % 2 == 1:
+                    k_lst = k.split('.')
+                    if int(k_lst[3]) % 2 == 1:
                         new_k = k.replace('proj.', 'attn.out_proj.')
                     else:
                         new_k = k

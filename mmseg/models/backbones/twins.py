@@ -3,8 +3,7 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import (build_activation_layer, build_conv_layer,
-                      build_norm_layer, trunc_normal_init)
+from mmcv.cnn import build_conv_layer, build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
@@ -461,8 +460,8 @@ class PyramidVisionTransformer(BaseModule):
                         input_size=input_size,
                         init_cfg=None))
 
-            H, W = to_2tuple(input_size)[0] // to_2tuple(patch_size)[0], \
-                   to_2tuple(img_size)[1] // to_2tuple(patch_size)[1]
+            H = to_2tuple(input_size)[0] // to_2tuple(patch_size)[0]
+            W = to_2tuple(img_size)[1] // to_2tuple(patch_size)[1]
             num_patches = H * W
 
             patch_num = num_patches + 1 if i == len(embed_dims) - 1 \
