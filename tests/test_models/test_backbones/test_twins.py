@@ -15,13 +15,13 @@ def test_PyramidVisionTransformer():
 
 def test_pcpvt():
     # Test img_size isinstance tuple
-    imgs = torch.randn(1, 3, 224, 224)
+    imgs = torch.randn(1, 3, 56, 56)
     model = PCPVT()
     model.init_weights()
     model(imgs)
 
     # Test convertible img_size
-    imgs = torch.randn(1, 3, 128, 128)
+    imgs = torch.randn(1, 3, 32, 32)
     model(imgs)
 
     # Test extra_norm = True
@@ -31,7 +31,7 @@ def test_pcpvt():
 
 def test_altgvt():
     # Test img_size isinstance tuple
-    imgs = torch.randn(1, 3, 224, 224)
+    imgs = torch.randn(1, 3, 56, 56)
     model = ALTGVT()
     model.init_weights()
     model(imgs)
@@ -41,7 +41,7 @@ def test_altgvt():
     model(imgs)
 
     # Test convertible img_size
-    imgs = torch.randn(1, 3, 128, 128)
+    imgs = torch.randn(1, 3, 32, 32)
     model(imgs)
 
     # Test extra_norm = True
