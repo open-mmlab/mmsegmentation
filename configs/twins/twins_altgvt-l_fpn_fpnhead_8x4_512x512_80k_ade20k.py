@@ -5,6 +5,8 @@ model = dict(
     pretrained='pretrained/alt_gvt_large.pth',
     backbone=dict(
         type='ALTGVT',
+        init_cfg=dict(
+            type='Pretrained', checkpoint='pretrained/alt_gvt_large.pth'),
         embed_dims=[128, 256, 512, 1024],
         num_heads=[4, 8, 16, 32],
         depths=[2, 2, 18, 2],

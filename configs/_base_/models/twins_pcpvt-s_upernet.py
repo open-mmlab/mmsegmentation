@@ -1,9 +1,10 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='pretrained/pcpvt_small.pth',
     backbone=dict(
         type='PCPVT',
+        init_cfg=dict(
+            type='Pretrained', checkpoint='pretrained/pcpvt_small.pth'),
         patch_size=4,
         embed_dims=[64, 128, 320, 512],
         num_heads=[1, 2, 5, 8],

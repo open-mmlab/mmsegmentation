@@ -5,9 +5,10 @@ _base_ = [
 ]
 model = dict(
     type='EncoderDecoder',
-    pretrained='pretrained/alt_gvt_small.pth',
     backbone=dict(
         type='ALTGVT',
+        init_cfg=dict(
+            type='Pretrained', checkpoint='pretrained/alt_gvt_small.pth'),
         patch_size=4,
         embed_dims=[64, 128, 256, 512],
         num_heads=[2, 4, 8, 16],
