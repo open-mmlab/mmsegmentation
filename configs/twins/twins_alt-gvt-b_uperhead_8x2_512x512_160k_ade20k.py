@@ -10,5 +10,4 @@ model = dict(
     decode_head=dict(in_channels=[96, 192, 384, 768]),
     auxiliary_head=dict(in_channels=384))
 
-# By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)
