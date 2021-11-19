@@ -59,6 +59,8 @@ class GroupAttention(BaseModule):
         self.ws = ws
 
     def forward(self, x, H, W):
+        import pdb
+        pdb.set_trace()
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         pad_l = pad_t = 0
