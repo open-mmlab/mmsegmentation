@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/twins_fpn.py', '../_base_/datasets/ade20k.py',
+    '../_base_/models/twins_pcpvt-s_fpn.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
 
@@ -20,11 +20,7 @@ model = dict(
         extra_norm=True,
         drop_path_rate=0.2,
         style='pytorch'),
-    neck=dict(
-        type='FPN',
-        in_channels=[64, 128, 256, 512],
-        out_channels=256,
-        num_outs=4),
+    neck=dict(in_channels=[64, 128, 256, 512], out_channels=256, num_outs=4),
     decode_head=dict(num_classes=150),
 )
 

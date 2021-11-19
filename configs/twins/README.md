@@ -12,12 +12,12 @@
 <summary align = "right"> <a href = "https://arxiv.org/pdf/2104.13840.pdf" >Twins (arXiv'2021)</a></summary>
 
 ```latex
-@article{liu2021Swin,
-         title = {Swin Transformer: Hierarchical Vision Transformer using Shifted Windows},
-         author = {Liu, Ze and Lin, Yutong and Cao, Yue and Hu, Han and Wei, Yixuan and Zhang, Zheng and Lin, Stephen and Guo, Baining},
-         journal = {arXiv preprint arXiv: 2103.14030},
-         year = {2021}
-         }
+@article{chu2021twins,
+  title={Twins: Revisiting spatial attention design in vision transformers},
+  author={Chu, Xiangxiang and Tian, Zhi and Wang, Yuqing and Zhang, Bo and Ren, Haibing and Wei, Xiaolin and Xia, Huaxia and Shen, Chunhua},
+  journal={arXiv preprint arXiv:2104.13840},
+  year={2021}altgvt
+}
 ```
 
 </details>

@@ -1,4 +1,4 @@
-_base_ = ['twins_alt-gvt-s_uperhead_8x2_512x512_160k_ade20k.py']
+_base_ = ['twins_altgvt-s_uperhead_8x2_512x512_160k_ade20k.py']
 model = dict(
     type='EncoderDecoder',
     pretrained='pretrained/alt_gvt_large.pth',
@@ -11,4 +11,4 @@ model = dict(
     decode_head=dict(in_channels=[128, 256, 512, 1024]),
     auxiliary_head=dict(in_channels=512))
 
-data = dict(samples_per_gpu=2)
+data = dict(samples_per_gpu=2, workers_per_gpu=2)

@@ -60,7 +60,7 @@ def main():
     parser.add_argument('src', help='src model path or url')
     # The dst path must be a full path of the new checkpoint.
     parser.add_argument('dst', help='save path')
-    parser.add_argument('model', help='model: pcpvt or alt-gvt')
+    parser.add_argument('model', help='model: pcpvt or altgvt')
     args = parser.parse_args()
 
     checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')

@@ -1,6 +1,7 @@
 _base_ = [
-    '../_base_/models/twins_upernet.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/twins_pcpvt-s_upernet.py',
+    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_160k.py'
 ]
 model = dict(
     type='EncoderDecoder',
@@ -43,4 +44,4 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-data = dict(samples_per_gpu=2)
+data = dict(samples_per_gpu=2, workers_per_gpu=2)

@@ -16,7 +16,7 @@ from ..utils.embed import PatchEmbed
 
 
 class GroupAttention(BaseModule):
-    """implementation of proposed Locally-grouped self-attention(LSA).
+    """Locally-grouped self-attention(LSA).
 
     Args:
         dim (int): Number of input channels.
@@ -59,16 +59,6 @@ class GroupAttention(BaseModule):
         self.ws = ws
 
     def forward(self, x, H, W):
-        """There are two implementations for this function, zero padding or
-        mask.
-
-        We don't observe obvious difference for both. You can choose any one,
-        we recommend forward_padding because it's neat. However, the masking
-        implementation is more reasonable and accurate.
-        """
-        return self.forward_mask(x, H, W)
-
-    def forward_mask(self, x, H, W):
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         pad_l = pad_t = 0
