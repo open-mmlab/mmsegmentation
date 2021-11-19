@@ -205,7 +205,8 @@ python ${MMSEG_PATH}/tools/onnx2tensorrt.py \
     --max-shape ${MAX_SHAPE} \
     --input-img ${INPUT_IMG} \
     --show \
-    --verify
+    --verify \
+    --skip-normalize
 ```
 
 Description of all arguments
@@ -222,6 +223,7 @@ Description of all arguments
 - `--dataset` : Palette provider, `CityscapesDataset` as default.
 - `--verify` : Verify the outputs of ONNXRuntime and TensorRT.
 - `--verbose` : Whether to verbose logging messages while creating TensorRT engine. Defaults to False.
+- `--skip-normalize` : Whether to skip image normalization in preprocessing. Defaults to False.
 
 :::{note}
 Only tested on whole mode.
