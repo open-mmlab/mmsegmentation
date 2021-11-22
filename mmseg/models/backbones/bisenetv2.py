@@ -194,7 +194,7 @@ class GELayer(BaseModule):
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     Returns:
-        x (torch.Tensor): Intermidiate feature map in
+        x (torch.Tensor): Intermediate feature map in
             Semantic Branch.
     """
 

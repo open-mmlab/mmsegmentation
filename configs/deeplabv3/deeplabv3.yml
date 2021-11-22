@@ -157,6 +157,27 @@ Models:
       mIoU(ms+flip): 81.21
   Config: configs/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503-9e428899.pth
+- Name: deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 259.07
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (512,1024)
+    memory (GB): 5.75
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.48
+  Config: configs/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-774d9cec.pth
 - Name: deeplabv3_r18-d8_769x769_80k_cityscapes
   In Collection: deeplabv3
   Metadata:

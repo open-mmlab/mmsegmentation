@@ -102,14 +102,14 @@ class NonBottleneck1d(BaseModule):
         self.act_cfg = act_cfg
         self.act = build_activation_layer(self.act_cfg)
 
-        self.convs_layer = nn.ModuleList()
+        self.convs_layers = nn.ModuleList()
         for conv_layer in range(num_conv_layer):
             first_conv_padding = (1, 0) if conv_layer == 0 else (dilation, 0)
             first_conv_dilation = 1 if conv_layer == 0 else (dilation, 1)
             second_conv_padding = (0, 1) if conv_layer == 0 else (0, dilation)
             second_conv_dilation = 1 if conv_layer == 0 else (1, dilation)
 
-            self.convs_layer.append(
+            self.convs_layers.append(
                 build_conv_layer(
                     self.conv_cfg,
                     channels,
@@ -119,8 +119,8 @@ class NonBottleneck1d(BaseModule):
                     padding=first_conv_padding,
                     bias=True,
                     dilation=first_conv_dilation))
-            self.convs_layer.append(self.act)
-            self.convs_layer.append(
+            self.convs_layers.append(self.act)
+            self.convs_layers.append(
                 build_conv_layer(
                     self.conv_cfg,
                     channels,
@@ -130,17 +130,17 @@ class NonBottleneck1d(BaseModule):
                     padding=second_conv_padding,
                     bias=True,
                     dilation=second_conv_dilation))
-            self.convs_layer.append(
+            self.convs_layers.append(
                 build_norm_layer(self.norm_cfg, channels)[1])
             if conv_layer == 0:
-                self.convs_layer.append(self.act)
+                self.convs_layers.append(self.act)
             else:
-                self.convs_layer.append(nn.Dropout(p=drop_rate))
+                self.convs_layers.append(nn.Dropout(p=drop_rate))
 
     def forward(self, input):
         output = input
-        for op in self.convs_layer:
-            output = op(output)
+        for conv in self.convs_layers:
+            output = conv(output)
         output = self.act(output + input)
         return output
 
@@ -205,7 +205,7 @@ class ERFNet(BaseModule):
         enc_downsample_channels (Tuple[int]): Size of channel
             numbers of various Downsampler block in encoder.
             Default: (16, 64, 128).
-        enc_num_stages_non_bottleneck (Tuple[int]): Number of stages of
+        enc_stage_non_bottlenecks (Tuple[int]): Number of stages of
             Non-bottleneck block in encoder.
             Default: (5, 8).
         enc_non_bottleneck_dilations (Tuple[int]): Dilation rate of each
@@ -217,7 +217,7 @@ class ERFNet(BaseModule):
         dec_upsample_channels (Tuple[int]): Size of channel numbers of
             various Deconvolution block in decoder.
             Default: (64, 16).
-        dec_num_stages_non_bottleneck (Tuple[int]): Number of stages of
+        dec_stages_non_bottleneck (Tuple[int]): Number of stages of
             Non-bottleneck block in decoder.
             Default: (2, 2).
         dec_non_bottleneck_channels (Tuple[int]): Size of channel
@@ -230,11 +230,11 @@ class ERFNet(BaseModule):
     def __init__(self,
                  in_channels=3,
                  enc_downsample_channels=(16, 64, 128),
-                 enc_num_stages_non_bottleneck=(5, 8),
+                 enc_stage_non_bottlenecks=(5, 8),
                  enc_non_bottleneck_dilations=(2, 4, 8, 16),
                  enc_non_bottleneck_channels=(64, 128),
                  dec_upsample_channels=(64, 16),
-                 dec_num_stages_non_bottleneck=(2, 2),
+                 dec_stages_non_bottleneck=(2, 2),
                  dec_non_bottleneck_channels=(64, 16),
                  dropout_ratio=0.1,
                  conv_cfg=None,
@@ -248,33 +248,33 @@ class ERFNet(BaseModule):
                      block of encoder does not \
                     match number of upsample block of decoder!'
         assert len(enc_downsample_channels) \
-               == len(enc_num_stages_non_bottleneck)+1, 'Number of \
+               == len(enc_stage_non_bottlenecks)+1, 'Number of \
                     downsample block of encoder does not match \
                     number of Non-bottleneck block of encoder!'
         assert len(enc_downsample_channels) \
                == len(enc_non_bottleneck_channels)+1, 'Number of \
                     downsample block of encoder does not match \
                     number of channels of Non-bottleneck block of encoder!'
-        assert enc_num_stages_non_bottleneck[-1] \
+        assert enc_stage_non_bottlenecks[-1] \
                % len(enc_non_bottleneck_dilations) == 0, 'Number of \
                     Non-bottleneck block of encoder does not match \
                     number of Non-bottleneck block of encoder!'
         assert len(dec_upsample_channels) \
-               == len(dec_num_stages_non_bottleneck), 'Number of \
+               == len(dec_stages_non_bottleneck), 'Number of \
                 upsample block of decoder does not match \
                 number of Non-bottleneck block of decoder!'
-        assert len(dec_num_stages_non_bottleneck) \
+        assert len(dec_stages_non_bottleneck) \
                == len(dec_non_bottleneck_channels), 'Number of \
                 Non-bottleneck block of decoder does not match \
                 number of channels of Non-bottleneck block of decoder!'
 
         self.in_channels = in_channels
         self.enc_downsample_channels = enc_downsample_channels
-        self.enc_num_stages_non_bottleneck = enc_num_stages_non_bottleneck
+        self.enc_stage_non_bottlenecks = enc_stage_non_bottlenecks
         self.enc_non_bottleneck_dilations = enc_non_bottleneck_dilations
         self.enc_non_bottleneck_channels = enc_non_bottleneck_channels
         self.dec_upsample_channels = dec_upsample_channels
-        self.dec_num_stages_non_bottleneck = dec_num_stages_non_bottleneck
+        self.dec_stages_non_bottleneck = dec_stages_non_bottleneck
         self.dec_non_bottleneck_channels = dec_non_bottleneck_channels
         self.dropout_ratio = dropout_ratio
 
@@ -294,7 +294,7 @@ class ERFNet(BaseModule):
                                  enc_downsample_channels[i + 1]))
             # Last part of encoder is some dilated NonBottleneck1d blocks.
             if i == len(enc_downsample_channels) - 2:
-                iteration_times = int(enc_num_stages_non_bottleneck[-1] /
+                iteration_times = int(enc_stage_non_bottlenecks[-1] /
                                       len(enc_non_bottleneck_dilations))
                 for j in range(iteration_times):
                     for k in range(len(enc_non_bottleneck_dilations)):
@@ -303,7 +303,7 @@ class ERFNet(BaseModule):
                                             self.dropout_ratio,
                                             enc_non_bottleneck_dilations[k]))
             else:
-                for j in range(enc_num_stages_non_bottleneck[i]):
+                for j in range(enc_stage_non_bottlenecks[i]):
                     self.encoder.append(
                         NonBottleneck1d(enc_downsample_channels[i + 1],
                                         self.dropout_ratio))
@@ -317,7 +317,7 @@ class ERFNet(BaseModule):
                 self.decoder.append(
                     UpsamplerBlock(dec_non_bottleneck_channels[i - 1],
                                    dec_non_bottleneck_channels[i]))
-            for j in range(dec_num_stages_non_bottleneck[i]):
+            for j in range(dec_stages_non_bottleneck[i]):
                 self.decoder.append(
                     NonBottleneck1d(dec_non_bottleneck_channels[i]))
 
