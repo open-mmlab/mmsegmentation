@@ -508,20 +508,32 @@ def test_mosaic():
     results = dict()
     img = mmcv.imread(
         osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
-    results['img'] = img
-
     seg = np.array(
         Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+
+    results['img'] = img
     results['gt_semantic_seg'] = seg
     results['seg_fields'] = ['gt_semantic_seg']
 
     transform = dict(type='Mosaic', img_scale=(10, 12))
     mosaic_module = build_from_cfg(transform, PIPELINES)
+    assert 'Mosaic' in repr(mosaic_module)
 
     # test assertion for invalid mix_results
     with pytest.raises(AssertionError):
         mosaic_module(results)
 
+    results['mix_results'] = [copy.deepcopy(results)] * 3
+    results = mosaic_module(results)
+    assert results['img'].shape[:2] == (20, 24)
+
+    results = dict()
+    results['img'] = img[:, :, 0]
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+
+    transform = dict(type='Mosaic', img_scale=(10, 12))
+    mosaic_module = build_from_cfg(transform, PIPELINES)
     results['mix_results'] = [copy.deepcopy(results)] * 3
     results = mosaic_module(results)
     assert results['img'].shape[:2] == (20, 24)
