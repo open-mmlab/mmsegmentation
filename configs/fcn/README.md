@@ -14,7 +14,7 @@ Convolutional networks are powerful visual models that yield hierarchies of feat
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/fcn.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901525-fd0d2bf4-9a47-4143-85f5-3cee8849eaa4.png" width="70%"/>
 </div>
 
 <details>

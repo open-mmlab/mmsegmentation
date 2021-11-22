@@ -15,7 +15,7 @@ The MobileNetV2 architecture is based on an inverted residual structure where th
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/mobilenet_v2.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901935-fa22700e-4b77-477f-90b9-334a4197506f.png" width="50%"/>
 </div>
 
 <details>

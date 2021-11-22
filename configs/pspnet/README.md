@@ -14,7 +14,7 @@ Scene parsing is challenging for unrestricted open vocabulary and diverse scenes
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/pspnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902444-9f93b99e-9261-443b-a0a4-17e78eefb525.png" width="70%"/>
 </div>
 
 <details>

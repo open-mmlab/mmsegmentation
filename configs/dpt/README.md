@@ -14,7 +14,7 @@ We introduce dense vision transformers, an architecture that leverages vision tr
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/dpt.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901057-00aabea5-dab4-43d3-a14a-5f73eb5dd9b9.png" width="80%"/>
 </div>
 
 <details>

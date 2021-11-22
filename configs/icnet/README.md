@@ -14,7 +14,7 @@ We focus on the challenging task of real-time semantic segmentation in this pape
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/icnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901772-4570455d-7b27-44ae-a690-47dd9fde8445.png" width="70%"/>
 </div>
 
 <details>

@@ -14,7 +14,7 @@ Both convolutional and recurrent operations are building blocks that process one
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/nonlocal.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902128-17e29678-bf12-4ff4-b3d6-a39b47dfd253.png" width="50%"/>
 </div>
 
 <details>

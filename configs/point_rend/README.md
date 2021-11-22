@@ -14,7 +14,7 @@ We present a new method for efficient high-quality image segmentation of objects
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/point_rend.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902293-5db49cdd-4b1b-4940-9067-2acd6196c700.png" width="60%"/>
 </div>
 
 <details>

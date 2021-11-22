@@ -14,7 +14,7 @@ We present the next generation of MobileNets based on a combination of complemen
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/mobilenet_v3.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902036-3dc2e0c0-d475-4816-b1ac-961836b41f5c.png" width="60%"/>
 </div>
 
 <details>

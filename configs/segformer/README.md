@@ -14,7 +14,7 @@ We present SegFormer, a simple, efficient yet powerful semantic segmentation fra
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/segformer.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902600-e188073e-5744-4ba9-8dbf-9316e55c74aa.png" width="70%"/>
 </div>
 
 <details>

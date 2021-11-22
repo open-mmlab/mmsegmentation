@@ -14,7 +14,7 @@ High-resolution representations are essential for position-sensitive vision prob
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/hrnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901680-64c285bc-669f-4924-b054-46a2f07c5427.png" width="80%"/>
 </div>
 
 <details>

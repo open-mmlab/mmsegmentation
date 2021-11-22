@@ -14,7 +14,7 @@ Modern approaches for semantic segmentation usually employ dilated convolutions 
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/fastfcn.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901374-6e0252ab-6e0f-4acd-86ad-1e9f49be3185.png" width="70%"/>
 </div>
 
 <details>

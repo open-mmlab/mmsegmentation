@@ -14,7 +14,7 @@ In this paper, we address the scene segmentation task by capturing rich contextu
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/danet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142900467-f832fdb9-3b7d-47d3-8e80-e6ee9303bdfb.png" width="70%"/>
 </div>
 
 <details>

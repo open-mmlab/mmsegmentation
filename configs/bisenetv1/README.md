@@ -14,7 +14,7 @@ Semantic segmentation requires both rich spatial information and sizeable recept
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/bisenetv1.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142898839-a0a78148-848a-41b2-8682-b1f61ac004ba.png" width="70%"/>
 </div>
 
 <details>

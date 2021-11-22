@@ -14,7 +14,7 @@ The Non-Local Network (NLNet) presents a pioneering approach for capturing long-
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/gcnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901601-ad17922e-2538-4b48-9f51-84a57d44b12b.png" width="80%"/>
 </div>
 
 <details>

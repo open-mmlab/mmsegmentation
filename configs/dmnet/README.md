@@ -14,7 +14,7 @@ Multi-scale representation provides an effective way toaddress scale variation o
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/dmnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142900781-6215763f-8b71-4e0b-a6b1-c41372db2aa0.png" width="70%"/>
 </div>
 
 <details>

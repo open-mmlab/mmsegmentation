@@ -14,7 +14,7 @@ There is large consent that successful training of deep networks requires many t
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/unet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902977-20fe689d-a147-4d92-9690-dbfde8b68dbe.png" width="70%"/>
 </div>
 
 <details>

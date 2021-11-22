@@ -14,7 +14,7 @@ Contextual information is vital in visual understanding problems, such as semant
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/ccnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142899159-b329c12a-0fde-44df-8718-def6cfb004e4.png" width="70%"/>
 </div>
 
 <details>

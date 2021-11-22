@@ -14,7 +14,7 @@ Most recent semantic segmentation methods adopt a fully-convolutional network (F
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/setr.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902777-ee2d34b7-a631-4fa7-ad68-118ff5716afe.png" width="80%"/>
 </div>
 
 ```None

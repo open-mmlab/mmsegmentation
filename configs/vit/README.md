@@ -14,7 +14,7 @@ While the Transformer architecture has become the de-facto standard for natural 
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/vit.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142903144-f80a12cc-8698-48ab-843c-49dedf558121.png" width="70%"/>
 </div>
 
 <details>

@@ -14,7 +14,7 @@ We notice information flow in convolutional neural networksis  restricted  insid
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/psanet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902367-0f29e8cb-5ac0-434b-98c4-b2af7c9c2e58.png" width="70%"/>
 </div>
 
 <details>

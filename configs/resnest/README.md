@@ -14,7 +14,7 @@ It is well known that featuremap attention and multi-path representation are imp
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/resnest.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902526-3cf33345-7e40-47a6-985e-4381857e21df.png" width="60%"/>
 </div>
 
 <details>

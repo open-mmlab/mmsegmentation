@@ -14,7 +14,7 @@ This paper presents a new vision Transformer, called Swin Transformer, that capa
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/swin.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902882-3fb9014c-11b6-47e9-aa14-500dfe7cbb1c.png" width="80%"/>
 </div>
 
 <details>

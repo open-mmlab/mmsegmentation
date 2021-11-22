@@ -14,7 +14,7 @@ Humans recognize the visual world at multiple levels: we effortlessly categorize
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/upernet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142903077-44e8e0da-7276-4bda-bd2b-0df1680ca845.png" width="70%"/>
 </div>
 
 <details>

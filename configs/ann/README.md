@@ -14,7 +14,7 @@ The non-local module works as a particularly useful technique for semantic segme
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/ann.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142898322-3bbd578c-e488-4bae-9c14-7598adac5cbd.png" width="70%"/>
 </div>
 
 <details>

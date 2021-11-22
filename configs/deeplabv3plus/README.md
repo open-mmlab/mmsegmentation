@@ -14,7 +14,7 @@ Spatial pyramid pooling module or encode-decoder structure are used in deep neur
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/deeplabv3plus.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142900680-3e2c3098-8341-4760-bbfd-b1d7d29968ea.png" width="70%"/>
 </div>
 
 <details>

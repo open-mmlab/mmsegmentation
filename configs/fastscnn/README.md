@@ -14,7 +14,7 @@ The encoder-decoder framework is state-of-the-art for offline semantic image seg
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/fastscnn.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901444-705b4ff4-6d1e-409b-899a-37bf3a6b69ce.png" width="80%"/>
 </div>
 
 <details>

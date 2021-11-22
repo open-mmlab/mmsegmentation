@@ -14,7 +14,7 @@ Recent studies witnessed that context features can significantly improve the per
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/apcnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142898638-e1c0c6ae-9270-448e-aa01-bbac3a236db5.png" width="70%"/>
 </div>
 
 <details>

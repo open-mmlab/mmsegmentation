@@ -14,7 +14,7 @@ In this work, we revisit atrous convolution, a powerful tool to explicitly adjus
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/deeplabv3.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142900575-f30a7755-09aa-406a-bf78-45893a61ee9a.png" width="80%"/>
 </div>
 
 <details>

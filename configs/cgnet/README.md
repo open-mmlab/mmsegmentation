@@ -14,7 +14,7 @@ The demand of applying semantic segmentation model on mobile devices has been in
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/cgnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142900351-89559574-79cc-4f57-8f69-5d88765ec38d.png" width="80%"/>
 </div>
 
 <details>

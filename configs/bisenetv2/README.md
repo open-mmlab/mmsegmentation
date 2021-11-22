@@ -14,7 +14,7 @@ The low-level details and high-level semantics are both essential to the semanti
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/bisenetv2.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142898966-ec4a81da-b4b0-41ee-b083-1d964582c18a.png" width="70%"/>
 </div>
 
 <details>

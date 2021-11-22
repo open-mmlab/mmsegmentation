@@ -14,7 +14,7 @@ In this paper, we address the problem of semantic segmentation and focus on the 
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/ocrnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902197-b06b1e04-57ab-44ac-adc8-cea6695bb236.png" width="70%"/>
 </div>
 
 <details>

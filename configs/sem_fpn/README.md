@@ -14,7 +14,7 @@ The recently introduced panoptic segmentation task has renewed our community's i
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/sem_fpn.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142902694-03ed2131-9104-467b-ace1-c74c62fb7177.png" width="60%"/>
 </div>
 
 <details>

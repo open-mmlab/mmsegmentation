@@ -14,7 +14,7 @@ In this paper, we present a so-called interlaced sparse self-attention approach 
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/isanet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901868-03d80da4-b9c0-4df9-8509-5f684ba9dadc.png" width="80%"/>
 </div>
 
 <details>

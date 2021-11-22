@@ -14,7 +14,7 @@ Recent work has made significant progress in improving spatial resolution for pi
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/encnet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901276-b364fbbf-3bdb-4000-9d31-b9a135e30935.png" width="70%"/>
 </div>
 
 <details>

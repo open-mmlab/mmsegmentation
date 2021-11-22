@@ -14,7 +14,7 @@ Self-attention mechanism has been widely used for various tasks. It is designed 
 
 <!-- [IMAGE] -->
 <div align=center>
-<img src="resources/model_images/emanet.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/24582831/142901186-7bfe15e2-805a-420e-81b0-74f214f20a36.png" width="80%"/>
 </div>
 
 <details>
