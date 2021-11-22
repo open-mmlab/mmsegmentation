@@ -211,23 +211,7 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 对于 LoveDA 数据集，请运行以下命令下载并重新组织数据集
 
 ```shell
-# download
-mkdir -p data/loveDA && cd data/loveDA
-wget https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing
-# unzip
-unzip '*.zip'
-# Convert into segmentation splits
-mkdir -p img_dir/train img_dir/val img_dir/test ann_dir/train ann_dir/val
-mv Train/Rural/images_png/* img_dir/train
-mv Train/Urban/images_png/* img_dir/train
-mv Val/Rural/images_png/* img_dir/val
-mv Val/Urban/images_png/* img_dir/val
-mv Test/Rural/images_png/* img_dir/test
-mv Test/Urban/images_png/* img_dir/test
-mv Train/Rural/masks_png/* ann_dir/train
-mv Train/Urban/masks_png/* ann_dir/train
-mv Val/Rural/masks_png/* ann_dir/val
-mv Val/Urban/masks_png/* ann_dir/val
+python tools/convert_datasets/loveda.py /path/to/loveDA
 ```
 
 请参照 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/inference.md) 来使用训练好的模型去预测 LoveDA 测试集并且提交到官网。
