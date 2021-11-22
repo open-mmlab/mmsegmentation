@@ -27,6 +27,11 @@ def cross_entropy(pred,
     # apply weights and do the reduction
     if weight is not None:
         weight = weight.float()
+
+    if avg_factor is None and reduction == 'mean':
+        with torch.no_grad():
+            avg_factor = (label != ignore_index).sum()
+
     loss = weight_reduce_loss(
         loss, weight=weight, reduction=reduction, avg_factor=avg_factor)
 
