@@ -45,7 +45,7 @@ class LocallygroupedSelfAttention(WindowMSA):
         super(LocallygroupedSelfAttention, self).__init__(
             embed_dims=embed_dims,
             num_heads=num_heads,
-            window_size=window_size,
+            window_size=[window_size]*2,
             qkv_bias=qkv_bias,
             qk_scale=qk_scale,
             attn_drop_rate=attn_drop_rate,
