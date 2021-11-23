@@ -137,7 +137,7 @@ class GlobalSubsampledAttention(EfficientMultiheadAttention):
                  qkv_bias=True,
                  norm_cfg=dict(type='LN'),
                  sr_ratio=1):
-        super(GlobalSubsampledAttention).__init__(
+        super(GlobalSubsampledAttention, self).__init__(
             embed_dims,
             num_heads,
             attn_drop=attn_drop,
