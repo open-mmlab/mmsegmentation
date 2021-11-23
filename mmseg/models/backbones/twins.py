@@ -257,6 +257,7 @@ class GroupBlock(GSAEncoderLayer):
                  drop_path=0.,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
+                 sr_ratio=1.,
                  ws=1):
         super(GroupBlock, self).__init__(
             dim,
@@ -267,7 +268,8 @@ class GroupBlock(GSAEncoderLayer):
             attn_drop_rate=attn_drop,
             drop_path_rate=drop_path,
             act_cfg=act_cfg,
-            norm_cfg=norm_cfg)
+            norm_cfg=norm_cfg,
+            sr_ratio=sr_ratio)
 
         if ws != 1:
             self.attn = LocallygroupedSelfAttention(dim, num_heads, qkv_bias,
