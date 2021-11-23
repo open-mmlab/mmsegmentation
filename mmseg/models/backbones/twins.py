@@ -14,6 +14,8 @@ from ..utils.embed import PatchEmbed
 
 class GlobalSubsampledAttention(EfficientMultiheadAttention):
     """global sub-sampled attention (Spatial Reduction Attention)
+        This module is modified from EfficientMultiheadAttention
+        which is a module from mmseg.models.backbones.mit.py
     Args:
         embed_dims (int): The embedding dimension.
         num_heads (int): Parallel attention heads.
@@ -56,7 +58,7 @@ class GlobalSubsampledAttention(EfficientMultiheadAttention):
             sr_ratio=sr_ratio)
 
 
-class GSAEncoderLayer(BaseModule):
+class PCPVTEncoderLayer(BaseModule):
     """Implements one encoder layer in Twins-PCPVT.
 
     Args:
@@ -76,9 +78,6 @@ class GSAEncoderLayer(BaseModule):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         sr_ratio (float): kernel_size of conv in Attention modules. Default: 1.
-        batch_first (bool): Key, Query and Value are shape of
-            (batch, n, embed_dim)
-            or (n, batch, embed_dim). Default: True.
     """
 
     def __init__(self,
@@ -93,7 +92,7 @@ class GSAEncoderLayer(BaseModule):
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  sr_ratio=1.):
-        super(GSAEncoderLayer, self).__init__()
+        super(PCPVTEncoderLayer, self).__init__()
 
         self.norm1 = build_norm_layer(norm_cfg, embed_dims, postfix=1)[1]
 
@@ -142,7 +141,7 @@ class LocallygroupedSelfAttention(WindowMSA):
         attn_drop_rate (float, optional): Dropout ratio of attention weight.
             Default: 0.0
         proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
-        window_size(int): the use of LSA or GSA. Default: 1.  #TODO: need rethinking
+        window_size(int): the use of LSA or GSA. Default: 1.
         forward padding
     """
 
@@ -167,8 +166,9 @@ class LocallygroupedSelfAttention(WindowMSA):
         del self.relative_position_bias_table
         del self.window_size
         self.window_size = window_size
-        assert embed_dims % num_heads == 0, f'dim {embed_dims} should be divided by ' \
-                                     f'num_heads {num_heads}.'
+        assert embed_dims % num_heads == 0, f'dim {embed_dims} should be ' \
+                                            f'divided by num_heads ' \
+                                            f'{num_heads}.'
 
     def forward(self, x, hw_shape, identity=None):
         B, N, C = x.shape
@@ -222,27 +222,27 @@ class LocallygroupedSelfAttention(WindowMSA):
         return x
 
 
-class LSAEncoderLayer(GSAEncoderLayer):
+class SVTEncoderLayer(PCPVTEncoderLayer):
     """Implements one encoder layer in Twins-SVT.
 
     Args:
-       dim (int): The feature dimension.
+        embed_dims (int): The feature dimension.
        num_heads (int): Parallel attention heads.
        mlp_ratio (float): The hidden dimension for FFNs.
        qkv_bias (bool): enable bias for qkv if True. Default: True
        qk_scale (float | None, optional): Override default qk scale of
            head_dim ** -0.5 if set. Default: None.
-       drop (float): Probability of an element to be zeroed
+       drop_rate (float): Probability of an element to be zeroed
             after the feed forward layer. Default: 0.0.
-       attn_drop (float, optional): Dropout ratio of attention weight.
+       attn_drop_rate (float, optional): Dropout ratio of attention weight.
            Default: 0.0
-       drop_path (float): stochastic depth rate. Default 0.0.
+       drop_path_rate (float): stochastic depth rate. Default 0.0.
        act_cfg (dict): The activation config for FFNs.
             Default: dict(type='GELU').
        norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
        sr_ratio (float): kernel_size of conv in Attention modules. Default: 1.
-       ws (int): the use of LSA or GSA. Default: 1.
+       window_size (int): the use of LSA or GSA. Default: 1.
     """
 
     def __init__(self,
@@ -258,7 +258,7 @@ class LSAEncoderLayer(GSAEncoderLayer):
                  norm_cfg=dict(type='LN'),
                  sr_ratio=1.,
                  window_size=1):
-        super(LSAEncoderLayer, self).__init__(
+        super(SVTEncoderLayer, self).__init__(
             embed_dims,
             num_heads,
             mlp_ratio * embed_dims,
@@ -319,15 +319,7 @@ class ConditionalPositionEncoding(BaseModule):
 
 @BACKBONES.register_module()
 class PCPVT(BaseModule):
-    """Add applicable positional encodings to CPVT. The implementation of our
-    first proposed architecture: Twins-PCPVT.
-
-    Use useful results from CPVT.
-
-    PEG and GAP. Therefore, cls token is no longer required. PEG is used to
-    encode the absolute position on the fly, which greatly affects the
-    performance when input resolution changes during the training (such as
-    segmentation, detection)
+    """The backbone of Twins-PCPVT.
 
     Args:
         img_size (int | tuple): Input image size. Default: 224.
@@ -349,8 +341,6 @@ class PCPVT(BaseModule):
         depths (list): depths of each stage. Default [3, 4, 6, 3]
         sr_ratios (list): kernel_size of conv in each Attn module in
             Transformer encoder layer. Default: [8, 4, 2, 1].
-        block_cls (BaseModule): Transformer Encoder.
-            Default TransformerEncoderLayer
         input_features_slice（bool): input features need slice. Default False.
         extra_norm（bool): add extra norm. Default False.
     """
@@ -422,7 +412,7 @@ class PCPVT(BaseModule):
 
         for k in range(len(depths)):
             _block = ModuleList([
-                GSAEncoderLayer(
+                PCPVTEncoderLayer(
                     embed_dims=embed_dims[k],
                     num_heads=num_heads[k],
                     feedforward_channels=mlp_ratios[k] * embed_dims[k],
@@ -499,12 +489,7 @@ class PCPVT(BaseModule):
 
 @BACKBONES.register_module()
 class SVT(PCPVT):
-    """Use useful results from CPVT.
-
-    PEG and GAP. Therefore, cls token is no longer required. PEG is used to
-    encode the absolute position on the fly, which greatly affects the
-    performance when input resolution changes during the training (such as
-    segmentation, detection)
+    """The backbone of Twins-SVT.
 
     Args:
         img_size (int | tuple): Input image size. Default: 224.
@@ -526,7 +511,7 @@ class SVT(PCPVT):
         depths (list): depths of each stage. Default [4, 4, 4].
         sr_ratios (list): kernel_size of conv in each Attn module in
             Transformer encoder layer. Default: [4, 2, 1].
-        block_cls (BaseModule): Transformer Encoder. Default GroupBlock.
+        block_cls (BaseModule): Transformer Encoder. Default SVTEncoderLayer.
         wss=[7, 7, 7],
         input_features_slice（bool): input features need slice. Default False.
         extra_norm（bool): add extra norm. Default False.
@@ -549,12 +534,11 @@ class SVT(PCPVT):
                  norm_cfg=dict(type='LN'),
                  depths=[4, 4, 4],
                  sr_ratios=[4, 2, 1],
-                 block_cls=LSAEncoderLayer,
+                 block_cls=SVTEncoderLayer,
                  wss=[7, 7, 7],
                  input_features_slice=False,
                  extra_norm=False,
-                 strides=(2, 2, 2),
-                 **kwargs):
+                 strides=(2, 2, 2)):
         super(SVT,
               self).__init__(img_size, patch_size, in_channels, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
@@ -587,7 +571,8 @@ class SVT(PCPVT):
                     drop_path_rate=dpr[cur + i],
                     norm_cfg=dict(type='LN'),
                     sr_ratio=sr_ratios[k],
-                    window_size=1 if i % 2 == 1 else wss[k]) for i in range(depths[k])
+                    window_size=1 if i % 2 == 1 else wss[k])
+                for i in range(depths[k])
             ])
 
             self.blocks.append(_block)
