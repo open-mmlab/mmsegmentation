@@ -16,99 +16,6 @@ from mmseg.utils import get_root_logger
 from ..utils.embed import PatchEmbed
 
 
-class LocallygroupedSelfAttention(WindowMSA):
-    """Locally-grouped self-attention(LSA).
-
-    Args:
-        embed_dims (int): Number of input channels.
-        num_heads (int): Number of attention heads. Default: 8
-        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
-            Default: False.
-        qk_scale (float | None, optional): Override default qk scale of
-            head_dim ** -0.5 if set. Default: None.
-        attn_drop_rate (float, optional): Dropout ratio of attention weight.
-            Default: 0.0
-        proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
-        window_size(int): the use of LSA or GSA. Default: 1.  #TODO: need rethinking
-        forward padding
-    """
-
-    def __init__(self,
-                 embed_dims,
-                 num_heads=8,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 attn_drop_rate=0.,
-                 proj_drop_rate=0.,
-                 window_size=1):
-        """window_size 1 for stand attention."""
-        super(LocallygroupedSelfAttention, self).__init__(
-            embed_dims=embed_dims,
-            num_heads=num_heads,
-            window_size=[window_size] * 2,
-            qkv_bias=qkv_bias,
-            qk_scale=qk_scale,
-            attn_drop_rate=attn_drop_rate,
-            proj_drop_rate=proj_drop_rate)
-
-        del self.relative_position_bias_table
-        del self.window_size
-        self.window_size = window_size
-        assert embed_dims % num_heads == 0, f'dim {embed_dims} should be divided by ' \
-                                     f'num_heads {num_heads}.'
-
-    def forward(self, x, hw_shape, identity=None):
-        B, N, C = x.shape
-        H, W = hw_shape
-        x = x.view(B, H, W, C)
-
-        # pad feature maps to multiples of Local-groups
-        pad_l = pad_t = 0
-        pad_r = (self.window_size - W % self.window_size) % self.window_size
-        pad_b = (self.window_size - H % self.window_size) % self.window_size
-        x = F.pad(x, (0, 0, pad_l, pad_r, pad_t, pad_b))
-
-        # calculate attention mask for LSA
-        _, Hp, Wp, _ = x.shape
-        _h, _w = Hp // self.window_size, Wp // self.window_size
-        mask = torch.zeros((1, Hp, Wp), device=x.device)
-        mask[:, -pad_b:, :].fill_(1)
-        mask[:, :, -pad_r:].fill_(1)
-
-        x = x.reshape(B, _h, self.window_size, _w, self.window_size,
-                      C).transpose(2, 3)
-        mask = mask.reshape(1, _h, self.window_size, _w,
-                            self.window_size).transpose(2, 3).reshape(
-                                1, _h * _w,
-                                self.window_size * self.window_size)
-        attn_mask = mask.unsqueeze(2) - mask.unsqueeze(3)
-        attn_mask = attn_mask.masked_fill(attn_mask != 0,
-                                          float(-1000.0)).masked_fill(
-                                              attn_mask == 0, float(0.0))
-
-        # calculate multi-head self-attention
-        qkv = self.qkv(x).reshape(B, _h * _w,
-                                  self.window_size * self.window_size, 3,
-                                  self.num_heads, C // self.num_heads).permute(
-                                      3, 0, 1, 4, 2, 5)
-        q, k, v = qkv[0], qkv[1], qkv[2]
-        attn = (q @ k.transpose(-2, -1)) * self.scale
-        attn = attn + attn_mask.unsqueeze(2)
-        attn = attn.softmax(dim=-1)
-        attn = self.attn_drop(attn)
-        attn = (attn @ v).transpose(2, 3).reshape(B, _h, _w, self.window_size,
-                                                  self.window_size, C)
-        x = attn.transpose(2, 3).reshape(B, _h * self.window_size,
-                                         _w * self.window_size, C)
-        if pad_r > 0 or pad_b > 0:
-            x = x[:, :H, :W, :].contiguous()
-
-        x = x.reshape(B, N, C)
-        x = self.proj(x)
-        x = self.proj_drop(x)
-        return x
-
-
 class GlobalSubsampledAttention(EfficientMultiheadAttention):
     """global sub-sampled attention (Spatial Reduction Attention)
     Args:
@@ -225,8 +132,100 @@ class GSAEncoderLayer(BaseModule):
         x = x + self.drop_path(self.ffn(self.norm2(x)))
         return x
 
+class LocallygroupedSelfAttention(WindowMSA):
+    """Locally-grouped self-attention(LSA).
 
-class GroupBlock(GSAEncoderLayer):
+    Args:
+        embed_dims (int): Number of input channels.
+        num_heads (int): Number of attention heads. Default: 8
+        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
+            Default: False.
+        qk_scale (float | None, optional): Override default qk scale of
+            head_dim ** -0.5 if set. Default: None.
+        attn_drop_rate (float, optional): Dropout ratio of attention weight.
+            Default: 0.0
+        proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
+        window_size(int): the use of LSA or GSA. Default: 1.  #TODO: need rethinking
+        forward padding
+    """
+
+    def __init__(self,
+                 embed_dims,
+                 num_heads=8,
+                 qkv_bias=False,
+                 qk_scale=None,
+                 attn_drop_rate=0.,
+                 proj_drop_rate=0.,
+                 window_size=1):
+        """window_size 1 for stand attention."""
+        super(LocallygroupedSelfAttention, self).__init__(
+            embed_dims=embed_dims,
+            num_heads=num_heads,
+            window_size=[window_size] * 2,
+            qkv_bias=qkv_bias,
+            qk_scale=qk_scale,
+            attn_drop_rate=attn_drop_rate,
+            proj_drop_rate=proj_drop_rate)
+
+        del self.relative_position_bias_table
+        del self.window_size
+        self.window_size = window_size
+        assert embed_dims % num_heads == 0, f'dim {embed_dims} should be divided by ' \
+                                     f'num_heads {num_heads}.'
+
+    def forward(self, x, hw_shape, identity=None):
+        B, N, C = x.shape
+        H, W = hw_shape
+        x = x.view(B, H, W, C)
+
+        # pad feature maps to multiples of Local-groups
+        pad_l = pad_t = 0
+        pad_r = (self.window_size - W % self.window_size) % self.window_size
+        pad_b = (self.window_size - H % self.window_size) % self.window_size
+        x = F.pad(x, (0, 0, pad_l, pad_r, pad_t, pad_b))
+
+        # calculate attention mask for LSA
+        _, Hp, Wp, _ = x.shape
+        _h, _w = Hp // self.window_size, Wp // self.window_size
+        mask = torch.zeros((1, Hp, Wp), device=x.device)
+        mask[:, -pad_b:, :].fill_(1)
+        mask[:, :, -pad_r:].fill_(1)
+
+        x = x.reshape(B, _h, self.window_size, _w, self.window_size,
+                      C).transpose(2, 3)
+        mask = mask.reshape(1, _h, self.window_size, _w,
+                            self.window_size).transpose(2, 3).reshape(
+                                1, _h * _w,
+                                self.window_size * self.window_size)
+        attn_mask = mask.unsqueeze(2) - mask.unsqueeze(3)
+        attn_mask = attn_mask.masked_fill(attn_mask != 0,
+                                          float(-1000.0)).masked_fill(
+                                              attn_mask == 0, float(0.0))
+
+        # calculate multi-head self-attention
+        qkv = self.qkv(x).reshape(B, _h * _w,
+                                  self.window_size * self.window_size, 3,
+                                  self.num_heads, C // self.num_heads).permute(
+                                      3, 0, 1, 4, 2, 5)
+        q, k, v = qkv[0], qkv[1], qkv[2]
+        attn = (q @ k.transpose(-2, -1)) * self.scale
+        attn = attn + attn_mask.unsqueeze(2)
+        attn = attn.softmax(dim=-1)
+        attn = self.attn_drop(attn)
+        attn = (attn @ v).transpose(2, 3).reshape(B, _h, _w, self.window_size,
+                                                  self.window_size, C)
+        x = attn.transpose(2, 3).reshape(B, _h * self.window_size,
+                                         _w * self.window_size, C)
+        if pad_r > 0 or pad_b > 0:
+            x = x[:, :H, :W, :].contiguous()
+
+        x = x.reshape(B, N, C)
+        x = self.proj(x)
+        x = self.proj_drop(x)
+        return x
+
+
+class LSAEncoderLayer(GSAEncoderLayer):
     """Implements one encoder layer in Twins-ALTGVT.
 
     Args:
@@ -248,36 +247,36 @@ class GroupBlock(GSAEncoderLayer):
        sr_ratio (float): kernel_size of conv in Attention modules. Default: 1.
        ws (int): the use of LSA or GSA. Default: 1.
     """
-
     def __init__(self,
-                 dim,
+                 embed_dims,
                  num_heads,
                  mlp_ratio=4.,
                  qkv_bias=False,
                  qk_scale=None,
-                 drop=0.,
-                 attn_drop=0.,
-                 drop_path=0.,
+                 drop_rate=0.,
+                 attn_drop_rate=0.,
+                 drop_path_rate=0.,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  sr_ratio=1.,
-                 ws=1):
-        super(GroupBlock, self).__init__(
-            dim,
+                 window_size=1):
+        super(LSAEncoderLayer, self).__init__(
+            embed_dims,
             num_heads,
-            mlp_ratio * dim,
+            mlp_ratio * embed_dims,
             qkv_bias=qkv_bias,
-            drop_rate=drop,
-            attn_drop_rate=attn_drop,
-            drop_path_rate=drop_path,
+            drop_rate=drop_rate,
+            attn_drop_rate=attn_drop_rate,
+            drop_path_rate=drop_path_rate,
             act_cfg=act_cfg,
             norm_cfg=norm_cfg,
             sr_ratio=sr_ratio)
 
-        if ws != 1:
-            self.attn = LocallygroupedSelfAttention(dim, num_heads, qkv_bias,
-                                                    qk_scale, attn_drop, drop,
-                                                    ws)
+        if window_size != 1:
+            self.attn = LocallygroupedSelfAttention(embed_dims, num_heads,
+                                                    qkv_bias, qk_scale,
+                                                    attn_drop_rate, drop_rate,
+                                                    window_size)
 
     def forward(self, x, H, W):
         x = x + self.drop_path(self.attn(self.norm1(x), (H, W), identity=0.))
@@ -285,7 +284,6 @@ class GroupBlock(GSAEncoderLayer):
         return x
 
 
-# borrow from PVT https://github.com/whai362/PVT.git
 class PyramidVisionTransformer(BaseModule):
     """Pyramid Vision Transformer.
 
@@ -501,7 +499,7 @@ class PosCNN(BaseModule):
 
 
 @BACKBONES.register_module()
-class PCPVT(PyramidVisionTransformer):
+class PCPVT(BaseModule):
     """Add applicable positional encodings to CPVT. The implementation of our
     first proposed architecture: Twins-PCPVT.
 
@@ -562,14 +560,90 @@ class PCPVT(PyramidVisionTransformer):
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
                              drop_rate, attn_drop_rate, drop_path_rate,
                              norm_cfg, depths, sr_ratios)
+        print('drop_path_rate: --- ', drop_path_rate)
+        self.num_classes = num_classes
+        self.depths = depths
+
+        # patch_embed
+        self.patch_embeds = ModuleList()
+        self.pos_drops = ModuleList()
+        self.blocks = ModuleList()
+
+        for i in range(len(depths)):
+            if i == 0:
+                input_size = img_size
+                self.patch_embeds.append(
+                    PatchEmbed(
+                        in_channels=in_chans,
+                        embed_dims=embed_dims[i],
+                        conv_type='Conv2d',
+                        kernel_size=patch_size,
+                        stride=patch_size,
+                        padding='corner',
+                        norm_cfg=norm_cfg,
+                        input_size=input_size,
+                        init_cfg=None))
+            else:
+                patch_size = 2
+                input_size = img_size // patch_size // 2**(i - 1)
+                self.patch_embeds.append(
+                    PatchEmbed(
+                        in_channels=embed_dims[i - 1],
+                        embed_dims=embed_dims[i],
+                        conv_type='Conv2d',
+                        kernel_size=patch_size,
+                        stride=patch_size,
+                        padding='corner',
+                        norm_cfg=norm_cfg,
+                        input_size=input_size,
+                        init_cfg=None))
+
+            H = to_2tuple(input_size)[0] // to_2tuple(patch_size)[0]
+            W = to_2tuple(img_size)[1] // to_2tuple(patch_size)[1]
+            num_patches = H * W
+
+            patch_num = num_patches + 1 if i == len(embed_dims) - 1 \
+                else num_patches
+            self.pos_drops.append(nn.Dropout(p=drop_rate))
+
+        # transformer encoder
+        dpr = [
+            x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
+        ]  # stochastic depth decay rule
+        cur = 0
+
+        for k in range(len(depths)):
+            _block = ModuleList([
+                GSAEncoderLayer(
+                    embed_dims=embed_dims[k],
+                    num_heads=num_heads[k],
+                    feedforward_channels=mlp_ratios[k] * embed_dims[k],
+                    attn_drop_rate=attn_drop_rate,
+                    drop_rate=drop_rate,
+                    drop_path_rate=dpr[cur + i],
+                    num_fcs=2,
+                    qkv_bias=qkv_bias,
+                    act_cfg=dict(type='GELU'),
+                    norm_cfg=dict(type='LN'),
+                    sr_ratio=sr_ratios[k]) for i in range(depths[k])
+            ])
+            self.blocks.append(_block)
+            cur += depths[k]
+
+        self.norm_name, norm = build_norm_layer(
+            norm_cfg, embed_dims[-1], postfix=1)
+
+        # classification head
+        self.head = nn.Linear(
+            embed_dims[-1], num_classes) if num_classes > 0 else nn.Identity()
+
         self.input_features_slice = input_features_slice
         self.extra_norm = extra_norm
         if self.extra_norm:
             self.norm_list = ModuleList()
             for dim in embed_dims:
                 self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
-        del self.pos_embeds
-        del self.cls_token
+
         self.pos_block = ModuleList(
             [PosCNN(embed_dim, embed_dim) for embed_dim in embed_dims])
         self.apply(self._init_weights)
