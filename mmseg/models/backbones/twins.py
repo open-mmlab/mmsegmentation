@@ -558,10 +558,7 @@ class PCPVT(BaseModule):
                  extra_norm=False,
                  **kwargs):
         super(PCPVT,
-              self).__init__(img_size, patch_size, in_chans, num_classes,
-                             embed_dims, num_heads, mlp_ratios, qkv_bias,
-                             drop_rate, attn_drop_rate, drop_path_rate,
-                             norm_cfg, depths, sr_ratios)
+              self).__init__()
         print('drop_path_rate: --- ', drop_path_rate)
         self.num_classes = num_classes
         self.depths = depths
