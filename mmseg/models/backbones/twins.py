@@ -166,14 +166,13 @@ class LocallygroupedSelfAttention(BaseModule):
         self.embed_dims = embed_dims
         self.num_heads = num_heads
         head_dim = embed_dims // num_heads
-        self.scale = qk_scale or head_dim ** -0.5
+        self.scale = qk_scale or head_dim**-0.5
 
         self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop_rate)
         self.proj = nn.Linear(embed_dims, embed_dims)
         self.proj_drop = nn.Dropout(proj_drop_rate)
         self.window_size = window_size
-
 
     def forward(self, x, hw_shape, identity=None):
         B, N, C = x.shape
@@ -301,14 +300,14 @@ class ConditionalPositionEncoding(BaseModule):
     def __init__(self, in_channels, embed_dim=768, stride=1, init_cfg=None):
         super(ConditionalPositionEncoding, self).__init__(init_cfg=init_cfg)
         self.proj = build_conv_layer(
-                dict(type='Conv2d'),
-                in_channels=in_channels,
-                out_channels=embed_dim,
-                kernel_size=3,
-                stride=stride,
-                padding=1,
-                bias=True,
-                groups=embed_dim)
+            dict(type='Conv2d'),
+            in_channels=in_channels,
+            out_channels=embed_dim,
+            kernel_size=3,
+            stride=stride,
+            padding=1,
+            bias=True,
+            groups=embed_dim)
         self.stride = stride
 
     def forward(self, x, H, W):
@@ -566,6 +565,8 @@ class SVT(PCPVT):
         cur = 0
         self.blocks = ModuleList()
         for k in range(len(depths)):
+            import pdb
+            pdb.set_trace()
             _block = ModuleList([
                 block_cls(
                     embed_dims=embed_dims[k],
