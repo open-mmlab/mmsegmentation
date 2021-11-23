@@ -17,11 +17,6 @@ def convert_vit(args, ckpt):
         if k.startswith('head'):
             continue
         elif k.startswith('backbone.blocks'):
-            # if 'norm1' in k:
-            #     new_k = k.replace('norm1', 'ln1')
-            # elif 'norm2' in k:
-            #     new_k = k.replace('norm2', 'ln2')
-            # merge (attn.q.) and (attn.kv.) to (attn.in_proj_)
             if 'attn.q.' in k:
                 new_k = k.replace('q.', 'attn.in_proj_')
                 new_v = torch.cat([v, ckpt[k.replace('attn.q.', 'attn.kv.')]],
@@ -60,7 +55,7 @@ def main():
     parser.add_argument('src', help='src model path or url')
     # The dst path must be a full path of the new checkpoint.
     parser.add_argument('dst', help='save path')
-    parser.add_argument('model', help='model: pcpvt or altgvt')
+    parser.add_argument('model', help='model: pcpvt or svt')
     args = parser.parse_args()
 
     checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')

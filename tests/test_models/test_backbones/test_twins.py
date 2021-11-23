@@ -1,16 +1,6 @@
-import pytest
 import torch
 
-from mmseg.models.backbones.twins import (ALTGVT, PCPVT,
-                                          PyramidVisionTransformer)
-
-
-def test_PyramidVisionTransformer():
-    # test alt_gvt structure and forward
-    with pytest.raises(TypeError):
-        # pretrained must be a string path
-        model = PyramidVisionTransformer()
-        model.init_weights(pretrained=0)
+from mmseg.models.backbones.twins import PCPVT, SVT
 
 
 def test_pcpvt():
@@ -29,14 +19,14 @@ def test_pcpvt():
     model.train()
 
 
-def test_altgvt():
+def test_svt():
     # Test img_size isinstance tuple
     imgs = torch.randn(1, 3, 56, 56)
-    model = ALTGVT()
+    model = SVT()
     model.init_weights()
     model(imgs)
 
-    model = ALTGVT()
+    model = SVT()
     model.init_weights()
     model(imgs)
 
@@ -45,5 +35,5 @@ def test_altgvt():
     model(imgs)
 
     # Test extra_norm = True
-    model = ALTGVT(extra_norm=True)
+    model = SVT(extra_norm=True)
     model.train()
