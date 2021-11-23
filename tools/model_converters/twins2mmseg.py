@@ -17,12 +17,12 @@ def convert_vit(args, ckpt):
         if k.startswith('head'):
             continue
         elif k.startswith('backbone.blocks'):
-            if 'norm1' in k:
-                new_k = k.replace('norm1', 'ln1')
-            elif 'norm2' in k:
-                new_k = k.replace('norm2', 'ln2')
+            # if 'norm1' in k:
+            #     new_k = k.replace('norm1', 'ln1')
+            # elif 'norm2' in k:
+            #     new_k = k.replace('norm2', 'ln2')
             # merge (attn.q.) and (attn.kv.) to (attn.in_proj_)
-            elif 'attn.q.' in k:
+            if 'attn.q.' in k:
                 new_k = k.replace('q.', 'attn.in_proj_')
                 new_v = torch.cat([v, ckpt[k.replace('attn.q.', 'attn.kv.')]],
                                   dim=0)
@@ -36,9 +36,9 @@ def convert_vit(args, ckpt):
                     else:
                         new_k = k
             elif 'mlp.fc1' in k:
-                new_k = k.replace('mlp.fc1', 'mlp.layers.0.0')
+                new_k = k.replace('mlp.fc1', 'ffn.layers.0.0')
             elif 'mlp.fc2' in k:
-                new_k = k.replace('mlp.fc2', 'mlp.layers.1')
+                new_k = k.replace('mlp.fc2', 'ffn.layers.1')
             else:
                 new_k = k
         elif k.startswith('backbone.patch_embeds'):
