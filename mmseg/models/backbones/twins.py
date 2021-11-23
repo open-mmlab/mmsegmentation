@@ -189,9 +189,7 @@ class GSAEncoderLayer(BaseModule):
                  sr_ratio=1.):
         super(GSAEncoderLayer, self).__init__()
 
-        self.norm1_name, norm1 = build_norm_layer(
-            norm_cfg, embed_dims, postfix=1)
-        self.add_module(self.norm1_name, norm1)
+        self.norm1 = build_norm_layer(norm_cfg, embed_dims, postfix=1)[1]
 
         self.attn = GlobalSubsampledAttention(
             embed_dims=embed_dims,
@@ -203,9 +201,7 @@ class GSAEncoderLayer(BaseModule):
             norm_cfg=norm_cfg,
             sr_ratio=sr_ratio)
 
-        self.norm2_name, norm2 = build_norm_layer(
-            norm_cfg, embed_dims, postfix=2)
-        self.add_module(self.norm2_name, norm2)
+        self.norm2 = build_norm_layer(norm_cfg, embed_dims, postfix=2)[1]
 
         self.ffn = FFN(
             embed_dims=embed_dims,
