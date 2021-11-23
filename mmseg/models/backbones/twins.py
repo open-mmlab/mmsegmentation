@@ -1,18 +1,14 @@
-import warnings
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer, build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
-from mmcv.runner import BaseModule, ModuleList, load_checkpoint
-from torch.nn.modules.utils import _pair as to_2tuple
+from mmcv.runner import BaseModule, ModuleList
 
 from mmseg.models.backbones.mit import EfficientMultiheadAttention
 from mmseg.models.backbones.swin import WindowMSA
 from mmseg.models.builder import BACKBONES
-from mmseg.utils import get_root_logger
 from ..utils.embed import PatchEmbed
 
 
@@ -227,7 +223,7 @@ class LocallygroupedSelfAttention(WindowMSA):
 
 
 class LSAEncoderLayer(GSAEncoderLayer):
-    """Implements one encoder layer in Twins-ALTGVT.
+    """Implements one encoder layer in Twins-SVT.
 
     Args:
        dim (int): The feature dimension.
@@ -286,218 +282,39 @@ class LSAEncoderLayer(GSAEncoderLayer):
         return x
 
 
-class PyramidVisionTransformer(BaseModule):
-    """Pyramid Vision Transformer.
-
-    borrow from PVT https://github.com/whai362/PVT.git
-
-    Args:
-        img_size (int | tuple): Input image size. Default: 224.
-        patch_size (int): The patch size. Default: 16.
-        in_chans (int): Number of input channels. Default: 3.
-        num_classes (int): Number of num_classes. Default: 1000
-        embed_dims (list): embedding dimension. Default: [64, 128, 256, 512].
-        num_heads (int): number of attention heads. Default: [1, 2, 4, 8].
-        mlp_ratios (int): ratio of mlp hidden dim to embedding dim.
-            Default: [4, 4, 4, 4].
-        qkv_bias (bool): enable bias for qkv if True. Default: False.
-        drop_rate (float): Probability of an element to be zeroed.
-            Default 0.
-        attn_drop_rate (float): The drop out rate for attention layer.
-            Default 0.0
-        drop_path_rate (float): stochastic depth rate. Default 0.0
-        norm_cfg (dict): Config dict for normalization layer.
-            Default: dict(type='LN')
-        depths (list): depths of each stage. Default [3, 4, 6, 3]
-        sr_ratios (list): kernel_size of conv in each Attn module in
-            Transformer encoder layer. Default: [8, 4, 2, 1].
-        block_cls (BaseModule): Transformer Encoder.
-            Default TransformerEncoderLayer
-    """
-
-    def __init__(self,
-                 img_size=224,
-                 patch_size=16,
-                 in_chans=3,
-                 num_classes=1000,
-                 embed_dims=[64, 128, 256, 512],
-                 num_heads=[1, 2, 4, 8],
-                 mlp_ratios=[4, 4, 4, 4],
-                 qkv_bias=False,
-                 drop_rate=0.,
-                 attn_drop_rate=0.,
-                 drop_path_rate=0.,
-                 norm_cfg=dict(type='LN'),
-                 depths=[3, 4, 6, 3],
-                 sr_ratios=[8, 4, 2, 1]):
-        super().__init__()
-        print('drop_path_rate: --- ', drop_path_rate)
-        self.num_classes = num_classes
-        self.depths = depths
-
-        # patch_embed
-        self.patch_embeds = ModuleList()
-        self.pos_embeds = nn.ParameterList()
-        self.pos_drops = ModuleList()
-        self.blocks = ModuleList()
-
-        for i in range(len(depths)):
-            if i == 0:
-                input_size = img_size
-                self.patch_embeds.append(
-                    PatchEmbed(
-                        in_channels=in_chans,
-                        embed_dims=embed_dims[i],
-                        conv_type='Conv2d',
-                        kernel_size=patch_size,
-                        stride=patch_size,
-                        padding='corner',
-                        norm_cfg=norm_cfg,
-                        input_size=input_size,
-                        init_cfg=None))
-            else:
-                patch_size = 2
-                input_size = img_size // patch_size // 2**(i - 1)
-                self.patch_embeds.append(
-                    PatchEmbed(
-                        in_channels=embed_dims[i - 1],
-                        embed_dims=embed_dims[i],
-                        conv_type='Conv2d',
-                        kernel_size=patch_size,
-                        stride=patch_size,
-                        padding='corner',
-                        norm_cfg=norm_cfg,
-                        input_size=input_size,
-                        init_cfg=None))
-
-            H = to_2tuple(input_size)[0] // to_2tuple(patch_size)[0]
-            W = to_2tuple(img_size)[1] // to_2tuple(patch_size)[1]
-            num_patches = H * W
-
-            patch_num = num_patches + 1 if i == len(embed_dims) - 1 \
-                else num_patches
-            self.pos_embeds.append(
-                nn.Parameter(torch.zeros(1, patch_num, embed_dims[i])))
-            self.pos_drops.append(nn.Dropout(p=drop_rate))
-
-        # transformer encoder
-        dpr = [
-            x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
-        ]  # stochastic depth decay rule
-        cur = 0
-
-        for k in range(len(depths)):
-            _block = ModuleList([
-                GSAEncoderLayer(
-                    embed_dims=embed_dims[k],
-                    num_heads=num_heads[k],
-                    feedforward_channels=mlp_ratios[k] * embed_dims[k],
-                    attn_drop_rate=attn_drop_rate,
-                    drop_rate=drop_rate,
-                    drop_path_rate=dpr[cur + i],
-                    num_fcs=2,
-                    qkv_bias=qkv_bias,
-                    act_cfg=dict(type='GELU'),
-                    norm_cfg=dict(type='LN'),
-                    sr_ratio=sr_ratios[k]) for i in range(depths[k])
-            ])
-            self.blocks.append(_block)
-            cur += depths[k]
-
-        self.norm_name, norm = build_norm_layer(
-            norm_cfg, embed_dims[-1], postfix=1)
-
-        # cls_token
-        self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims[-1]))
-
-        # classification head
-        self.head = nn.Linear(
-            embed_dims[-1], num_classes) if num_classes > 0 else nn.Identity()
-
-        # init weights
-        for pos_emb in self.pos_embeds:
-            trunc_normal_init(pos_emb, std=.02)
-        self.apply(self._init_weights)
-
-    def _init_weights(self, m):
-        if isinstance(m, nn.Linear):
-            trunc_normal_init(m.weight, std=.02)
-            if isinstance(m, nn.Linear) and m.bias is not None:
-                nn.init.constant_(m.bias, 0)
-        elif isinstance(m, nn.LayerNorm):
-            nn.init.constant_(m.bias, 0)
-            nn.init.constant_(m.weight, 1.0)
-
-    def init_weights(self, pretrained=None):
-        if isinstance(pretrained, str):
-            self.apply(self._init_weights)
-            logger = get_root_logger()
-            load_checkpoint(
-                self,
-                pretrained,
-                map_location='cpu',
-                strict=False,
-                logger=logger)
-        elif pretrained is None:
-            self.apply(self._init_weights)
-        else:
-            raise TypeError('pretrained must be a str or None')
-
-    def forward(self, x):
-        B = x.shape[0]
-        for i in range(len(self.depths)):
-            x, (H, W) = self.patch_embeds[i](x)
-            if i == len(self.depths) - 1:
-                cls_tokens = self.cls_token.expand(B, -1, -1)
-                x = torch.cat((cls_tokens, x), dim=1)
-            x = x + self.pos_embeds[i]
-            x = self.pos_drops[i](x)
-            for blk in self.blocks[i]:
-                x = blk(x, H, W)
-            if i < len(self.depths) - 1:
-                x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
-
-        x = self.norm(x)[:, 0]
-        x = self.head(x)
-        return x
-
-
-class PosCNN(BaseModule):
+class ConditionalPositionEncoding(BaseModule):
     """Default Patch Embedding of CPVTV2.
 
     Args:
-       in_chans (int): Number of input channels. Default: 3.
+       in_channels (int): Number of input channels. Default: 3.
        embed_dim (int): The feature dimension. Default: 768.
-       s (int): stride of cobnv layer. Default: 1.
+       stride (int): stride of cobnv layer. Default: 1.
     """
 
-    def __init__(self, in_chans, embed_dim=768, s=1):
-        super(PosCNN, self).__init__()
+    def __init__(self, in_channels, embed_dim=768, stride=1):
+        super(ConditionalPositionEncoding, self).__init__()
         self.proj = nn.Sequential(
             build_conv_layer(
                 dict(type='Conv2d'),
-                in_channels=in_chans,
+                in_channels=in_channels,
                 out_channels=embed_dim,
                 kernel_size=3,
-                stride=s,
+                stride=stride,
                 padding=1,
                 bias=True,
                 groups=embed_dim))
-        self.s = s
+        self.stride = stride
 
     def forward(self, x, H, W):
         B, N, C = x.shape
         feat_token = x
         cnn_feat = feat_token.transpose(1, 2).view(B, C, H, W)
-        if self.s == 1:
+        if self.stride == 1:
             x = self.proj(cnn_feat) + cnn_feat
         else:
             x = self.proj(cnn_feat)
         x = x.flatten(2).transpose(1, 2)
         return x
-
-    def no_weight_decay(self):
-        return ['proj.%d.weight' % i for i in range(4)]
 
 
 @BACKBONES.register_module()
@@ -515,7 +332,7 @@ class PCPVT(BaseModule):
     Args:
         img_size (int | tuple): Input image size. Default: 224.
         patch_size (int): The patch size. Default: 4.
-        in_chans (int): Number of input channels. Default: 3.
+        in_channels (int): Number of input channels. Default: 3.
         num_classes (int): Number of num_classes. Default: 1000
         embed_dims (list): embedding dimension. Default: [64, 128, 256, 512].
         num_heads (int): number of attention heads. Default: [1, 2, 4, 8].
@@ -541,7 +358,7 @@ class PCPVT(BaseModule):
     def __init__(self,
                  img_size=224,
                  patch_size=4,
-                 in_chans=3,
+                 in_channels=3,
                  num_classes=1000,
                  embed_dims=[64, 128, 256, 512],
                  num_heads=[1, 2, 4, 8],
@@ -553,12 +370,10 @@ class PCPVT(BaseModule):
                  norm_cfg=dict(type='LN'),
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
-                 block_cls=GSAEncoderLayer,
                  input_features_slice=False,
                  extra_norm=False,
                  **kwargs):
-        super(PCPVT,
-              self).__init__()
+        super(PCPVT, self).__init__()
         print('drop_path_rate: --- ', drop_path_rate)
         self.num_classes = num_classes
         self.depths = depths
@@ -573,7 +388,7 @@ class PCPVT(BaseModule):
                 input_size = img_size
                 self.patch_embeds.append(
                     PatchEmbed(
-                        in_channels=in_chans,
+                        in_channels=in_channels,
                         embed_dims=embed_dims[i],
                         conv_type='Conv2d',
                         kernel_size=patch_size,
@@ -597,12 +412,6 @@ class PCPVT(BaseModule):
                         input_size=input_size,
                         init_cfg=None))
 
-            H = to_2tuple(input_size)[0] // to_2tuple(patch_size)[0]
-            W = to_2tuple(img_size)[1] // to_2tuple(patch_size)[1]
-            num_patches = H * W
-
-            patch_num = num_patches + 1 if i == len(embed_dims) - 1 \
-                else num_patches
             self.pos_drops.append(nn.Dropout(p=drop_rate))
 
         # transformer encoder
@@ -632,10 +441,6 @@ class PCPVT(BaseModule):
         self.norm_name, norm = build_norm_layer(
             norm_cfg, embed_dims[-1], postfix=1)
 
-        # classification head
-        self.head = nn.Linear(
-            embed_dims[-1], num_classes) if num_classes > 0 else nn.Identity()
-
         self.input_features_slice = input_features_slice
         self.extra_norm = extra_norm
         if self.extra_norm:
@@ -643,8 +448,10 @@ class PCPVT(BaseModule):
             for dim in embed_dims:
                 self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
 
-        self.pos_block = ModuleList(
-            [PosCNN(embed_dim, embed_dim) for embed_dim in embed_dims])
+        self.pos_block = ModuleList([
+            ConditionalPositionEncoding(embed_dim, embed_dim)
+            for embed_dim in embed_dims
+        ])
         self.apply(self._init_weights)
 
     def _init_weights(self, m):
@@ -665,11 +472,6 @@ class PCPVT(BaseModule):
         elif isinstance(m, nn.BatchNorm2d):
             m.weight.data.fill_(1.0)
             m.bias.data.zero_()
-
-    def no_weight_decay(self):
-        return set(
-            ['cls_token'] +
-            ['pos_block.' + n for n, p in self.pos_block.named_parameters()])
 
     def forward(self, x):
         outputs = list()
@@ -696,7 +498,7 @@ class PCPVT(BaseModule):
 
 
 @BACKBONES.register_module()
-class ALTGVT(PCPVT):
+class SVT(PCPVT):
     """Use useful results from CPVT.
 
     PEG and GAP. Therefore, cls token is no longer required. PEG is used to
@@ -707,7 +509,7 @@ class ALTGVT(PCPVT):
     Args:
         img_size (int | tuple): Input image size. Default: 224.
         patch_size (int): The patch size. Default: 4.
-        in_chans (int): Number of input channels. Default: 3.
+        in_channels (int): Number of input channels. Default: 3.
         num_classes (int): Number of num_classes. Default: 1000
         embed_dims (list): embedding dimension. Default: [64, 128, 256].
         num_heads (int): number of attention heads. Default: [1, 2, 4].
@@ -734,7 +536,7 @@ class ALTGVT(PCPVT):
     def __init__(self,
                  img_size=224,
                  patch_size=4,
-                 in_chans=3,
+                 in_channels=3,
                  num_classes=1000,
                  embed_dims=[64, 128, 256],
                  num_heads=[1, 2, 4],
@@ -753,12 +555,11 @@ class ALTGVT(PCPVT):
                  extra_norm=False,
                  strides=(2, 2, 2),
                  **kwargs):
-        super(ALTGVT,
-              self).__init__(img_size, patch_size, in_chans, num_classes,
+        super(SVT,
+              self).__init__(img_size, patch_size, in_channels, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
                              drop_rate, attn_drop_rate, drop_path_rate,
-                             norm_cfg, depths, sr_ratios, block_cls,
-                             input_features_slice)
+                             norm_cfg, depths, sr_ratios, input_features_slice)
         del self.blocks
         self.wss = wss
         self.extra_norm = extra_norm
@@ -799,7 +600,7 @@ class ALTGVT(PCPVT):
                 if i == 0:
                     self.patch_embeds.append(
                         PatchEmbed(
-                            in_channels=in_chans,
+                            in_channels=in_channels,
                             embed_dims=embed_dims[i],
                             conv_type='Conv2d',
                             kernel_size=patch_size,

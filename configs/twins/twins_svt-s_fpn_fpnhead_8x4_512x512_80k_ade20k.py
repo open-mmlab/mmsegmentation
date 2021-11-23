@@ -6,7 +6,7 @@ _base_ = [
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
-        type='ALTGVT',
+        type='SVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/alt_gvt_small.pth'),
         patch_size=4,
