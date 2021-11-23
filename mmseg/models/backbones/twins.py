@@ -3,16 +3,15 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
 from mmcv.cnn import build_conv_layer, build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
 from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from torch.nn.modules.utils import _pair as to_2tuple
 
-from mmseg.models.builder import BACKBONES
 from mmseg.models.backbones.mit import EfficientMultiheadAttention
 from mmseg.models.backbones.swin import WindowMSA
+from mmseg.models.builder import BACKBONES
 from mmseg.utils import get_root_logger
 from ..utils.embed import PatchEmbed
 
@@ -562,7 +561,7 @@ class PCPVT(PyramidVisionTransformer):
               self).__init__(img_size, patch_size, in_chans, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
                              drop_rate, attn_drop_rate, drop_path_rate,
-                             norm_cfg, depths, sr_ratios, block_cls)
+                             norm_cfg, depths, sr_ratios)
         self.input_features_slice = input_features_slice
         self.extra_norm = extra_norm
         if self.extra_norm:
