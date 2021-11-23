@@ -398,7 +398,6 @@ class PyramidVisionTransformer(BaseModule):
                     qkv_bias=qkv_bias,
                     act_cfg=dict(type='GELU'),
                     norm_cfg=dict(type='LN'),
-                    batch_first=True,
                     sr_ratio=sr_ratios[k]) for i in range(depths[k])
             ])
             self.blocks.append(_block)
