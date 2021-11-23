@@ -132,6 +132,7 @@ class GSAEncoderLayer(BaseModule):
         x = x + self.drop_path(self.ffn(self.norm2(x)))
         return x
 
+
 class LocallygroupedSelfAttention(WindowMSA):
     """Locally-grouped self-attention(LSA).
 
@@ -247,6 +248,7 @@ class LSAEncoderLayer(GSAEncoderLayer):
        sr_ratio (float): kernel_size of conv in Attention modules. Default: 1.
        ws (int): the use of LSA or GSA. Default: 1.
     """
+
     def __init__(self,
                  embed_dims,
                  num_heads,
@@ -748,7 +750,7 @@ class ALTGVT(PCPVT):
                  norm_cfg=dict(type='LN'),
                  depths=[4, 4, 4],
                  sr_ratios=[4, 2, 1],
-                 block_cls=GroupBlock,
+                 block_cls=LSAEncoderLayer,
                  wss=[7, 7, 7],
                  input_features_slice=False,
                  extra_norm=False,
