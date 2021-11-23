@@ -3,6 +3,7 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 from mmcv.cnn import build_conv_layer, build_norm_layer, trunc_normal_init
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
@@ -10,10 +11,10 @@ from mmcv.runner import BaseModule, ModuleList, load_checkpoint
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.models.builder import BACKBONES
+from mmseg.models.backbones.mit import EfficientMultiheadAttention
+from mmseg.models.backbones.swin import WindowMSA
 from mmseg.utils import get_root_logger
 from ..utils.embed import PatchEmbed
-from mit import EfficientMultiheadAttention
-from swin import WindowMSA
 
 
 class LocallygroupedSelfAttention(WindowMSA):
@@ -43,13 +44,13 @@ class LocallygroupedSelfAttention(WindowMSA):
                  window_size=1):
         """window_size 1 for stand attention."""
         super(LocallygroupedSelfAttention, self).__init__(
-                embed_dims=embed_dims,
-                num_heads=num_heads,
-                window_size=window_size,
-                qkv_bias=qkv_bias,
-                qk_scale=qk_scale,
-                attn_drop_rate=attn_drop_rate,
-                proj_drop_rate=proj_drop_rate)
+            embed_dims=embed_dims,
+            num_heads=num_heads,
+            window_size=window_size,
+            qkv_bias=qkv_bias,
+            qk_scale=qk_scale,
+            attn_drop_rate=attn_drop_rate,
+            proj_drop_rate=proj_drop_rate)
 
         assert embed_dims % num_heads == 0, f'dim {embed_dims} should be divided by ' \
                                      f'num_heads {num_heads}.'
@@ -76,14 +77,16 @@ class LocallygroupedSelfAttention(WindowMSA):
                       C).transpose(2, 3)
         mask = mask.reshape(1, _h, self.window_size, _w,
                             self.window_size).transpose(2, 3).reshape(
-                                1, _h * _w, self.window_size * self.window_size)
+                                1, _h * _w,
+                                self.window_size * self.window_size)
         attn_mask = mask.unsqueeze(2) - mask.unsqueeze(3)
         attn_mask = attn_mask.masked_fill(attn_mask != 0,
                                           float(-1000.0)).masked_fill(
                                               attn_mask == 0, float(0.0))
 
         # calculate multi-head self-attention
-        qkv = self.qkv(x).reshape(B, _h * _w, self.window_size * self.window_size, 3,
+        qkv = self.qkv(x).reshape(B, _h * _w,
+                                  self.window_size * self.window_size, 3,
                                   self.num_heads, C // self.num_heads).permute(
                                       3, 0, 1, 4, 2, 5)
         q, k, v = qkv[0], qkv[1], qkv[2]
@@ -93,8 +96,8 @@ class LocallygroupedSelfAttention(WindowMSA):
         attn = self.attn_drop(attn)
         attn = (attn @ v).transpose(2, 3).reshape(B, _h, _w, self.window_size,
                                                   self.window_size, C)
-        x = attn.transpose(2, 3).reshape(B, _h * self.window_size, _w * self.window_size,
-                                         C)
+        x = attn.transpose(2, 3).reshape(B, _h * self.window_size,
+                                         _w * self.window_size, C)
         if pad_r > 0 or pad_b > 0:
             x = x[:, :H, :W, :].contiguous()
 
@@ -272,14 +275,9 @@ class GroupBlock(GSAEncoderLayer):
             norm_cfg=norm_cfg)
 
         if ws != 1:
-            self.attn = LocallygroupedSelfAttention(
-                dim,
-                num_heads,
-                qkv_bias,
-                qk_scale,
-                attn_drop,
-                drop,
-                ws)
+            self.attn = LocallygroupedSelfAttention(dim, num_heads, qkv_bias,
+                                                    qk_scale, attn_drop, drop,
+                                                    ws)
 
     def forward(self, x, H, W):
         x = x + self.drop_path(self.attn(self.norm1(x), (H, W), identity=0.))
@@ -772,4 +770,3 @@ class ALTGVT(PCPVT):
             outputs.append(x)
 
         return outputs
-
