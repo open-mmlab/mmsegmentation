@@ -7,15 +7,16 @@ from mmcv.cnn.bricks.transformer import FFN
 from mmcv.runner import BaseModule, ModuleList
 
 from mmseg.models.backbones.mit import EfficientMultiheadAttention
-from mmseg.models.backbones.swin import WindowMSA
 from mmseg.models.builder import BACKBONES
 from ..utils.embed import PatchEmbed
 
 
 class GlobalSubsampledAttention(EfficientMultiheadAttention):
-    """global sub-sampled attention (Spatial Reduction Attention)
+    """Global Sub-sampled Attention (Spatial Reduction Attention)
+
         This module is modified from EfficientMultiheadAttention
-        which is a module from mmseg.models.backbones.mit.py
+        which is a module from mmseg.models.backbones.mit.py.
+
     Args:
         embed_dims (int): The embedding dimension.
         num_heads (int): Parallel attention heads.
@@ -31,8 +32,8 @@ class GlobalSubsampledAttention(EfficientMultiheadAttention):
         qkv_bias (bool): enable bias for qkv if True. Default: True.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
-        sr_ratio (int): The ratio of spatial reduction of Spatial Reduction
-            Attention of PVT. Default: 1.
+        sr_ratio (int): The ratio of spatial reduction of GSA of PCPVT.
+            Default: 1.
     """
 
     def __init__(self,
@@ -44,22 +45,23 @@ class GlobalSubsampledAttention(EfficientMultiheadAttention):
                  batch_first=True,
                  qkv_bias=True,
                  norm_cfg=dict(type='LN'),
-                 sr_ratio=1):
+                 sr_ratio=1,
+                 init_cfg=None):
         super(GlobalSubsampledAttention, self).__init__(
             embed_dims,
             num_heads,
             attn_drop=attn_drop,
             proj_drop=proj_drop,
             dropout_layer=dropout_layer,
-            init_cfg=None,
             batch_first=batch_first,
             qkv_bias=qkv_bias,
             norm_cfg=norm_cfg,
-            sr_ratio=sr_ratio)
+            sr_ratio=sr_ratio,
+            init_cfg=init_cfg)
 
 
-class PCPVTEncoderLayer(BaseModule):
-    """Implements one encoder layer in Twins-PCPVT.
+class GSAEncoderLayer(BaseModule):
+    """Implements one encoder layer with GSA.
 
     Args:
         embed_dims (int): The feature dimension.
@@ -91,8 +93,9 @@ class PCPVTEncoderLayer(BaseModule):
                  qkv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 sr_ratio=1.):
-        super(PCPVTEncoderLayer, self).__init__()
+                 sr_ratio=1.,
+                 init_cfg=None):
+        super(GSAEncoderLayer, self).__init__(init_cfg=init_cfg)
 
         self.norm1 = build_norm_layer(norm_cfg, embed_dims, postfix=1)[1]
 
@@ -128,8 +131,8 @@ class PCPVTEncoderLayer(BaseModule):
         return x
 
 
-class LocallygroupedSelfAttention(WindowMSA):
-    """Locally-grouped self-attention(LSA).
+class LocallygroupedSelfAttention(BaseModule):
+    """Locally-grouped self-attention (LSA).
 
     Args:
         embed_dims (int): Number of input channels.
@@ -152,23 +155,25 @@ class LocallygroupedSelfAttention(WindowMSA):
                  qk_scale=None,
                  attn_drop_rate=0.,
                  proj_drop_rate=0.,
-                 window_size=1):
+                 window_size=1,
+                 init_cfg=None):
         """window_size 1 for stand attention."""
-        super(LocallygroupedSelfAttention, self).__init__(
-            embed_dims=embed_dims,
-            num_heads=num_heads,
-            window_size=[window_size] * 2,
-            qkv_bias=qkv_bias,
-            qk_scale=qk_scale,
-            attn_drop_rate=attn_drop_rate,
-            proj_drop_rate=proj_drop_rate)
+        super(LocallygroupedSelfAttention, self).__init__(init_cfg=init_cfg)
 
-        del self.relative_position_bias_table
-        del self.window_size
-        self.window_size = window_size
         assert embed_dims % num_heads == 0, f'dim {embed_dims} should be ' \
                                             f'divided by num_heads ' \
                                             f'{num_heads}.'
+        self.embed_dims = embed_dims
+        self.num_heads = num_heads
+        head_dim = embed_dims // num_heads
+        self.scale = qk_scale or head_dim ** -0.5
+
+        self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=qkv_bias)
+        self.attn_drop = nn.Dropout(attn_drop_rate)
+        self.proj = nn.Linear(embed_dims, embed_dims)
+        self.proj_drop = nn.Dropout(proj_drop_rate)
+        self.window_size = window_size
+
 
     def forward(self, x, hw_shape, identity=None):
         B, N, C = x.shape
@@ -222,7 +227,7 @@ class LocallygroupedSelfAttention(WindowMSA):
         return x
 
 
-class SVTEncoderLayer(PCPVTEncoderLayer):
+class SVTEncoderLayer(GSAEncoderLayer):
     """Implements one encoder layer in Twins-SVT.
 
     Args:
@@ -257,7 +262,8 @@ class SVTEncoderLayer(PCPVTEncoderLayer):
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  sr_ratio=1.,
-                 window_size=1):
+                 window_size=1,
+                 init_cfg=None):
         super(SVTEncoderLayer, self).__init__(
             embed_dims,
             num_heads,
@@ -268,7 +274,8 @@ class SVTEncoderLayer(PCPVTEncoderLayer):
             drop_path_rate=drop_path_rate,
             act_cfg=act_cfg,
             norm_cfg=norm_cfg,
-            sr_ratio=sr_ratio)
+            sr_ratio=sr_ratio,
+            init_cfg=init_cfg)
 
         if window_size != 1:
             self.attn = LocallygroupedSelfAttention(embed_dims, num_heads,
@@ -291,10 +298,9 @@ class ConditionalPositionEncoding(BaseModule):
        stride (int): stride of cobnv layer. Default: 1.
     """
 
-    def __init__(self, in_channels, embed_dim=768, stride=1):
-        super(ConditionalPositionEncoding, self).__init__()
-        self.proj = nn.Sequential(
-            build_conv_layer(
+    def __init__(self, in_channels, embed_dim=768, stride=1, init_cfg=None):
+        super(ConditionalPositionEncoding, self).__init__(init_cfg=init_cfg)
+        self.proj = build_conv_layer(
                 dict(type='Conv2d'),
                 in_channels=in_channels,
                 out_channels=embed_dim,
@@ -302,7 +308,7 @@ class ConditionalPositionEncoding(BaseModule):
                 stride=stride,
                 padding=1,
                 bias=True,
-                groups=embed_dim))
+                groups=embed_dim)
         self.stride = stride
 
     def forward(self, x, H, W):
@@ -362,9 +368,8 @@ class PCPVT(BaseModule):
                  sr_ratios=[8, 4, 2, 1],
                  input_features_slice=False,
                  extra_norm=False,
-                 **kwargs):
-        super(PCPVT, self).__init__()
-        print('drop_path_rate: --- ', drop_path_rate)
+                 init_cfg=None):
+        super(PCPVT, self).__init__(init_cfg=init_cfg)
         self.num_classes = num_classes
         self.depths = depths
 
@@ -539,12 +544,13 @@ class SVT(PCPVT):
                  input_features_slice=False,
                  extra_norm=False,
                  strides=(2, 2, 2),
-                 **kwargs):
+                 init_cfg=None):
         super(SVT,
               self).__init__(img_size, patch_size, in_channels, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
                              drop_rate, attn_drop_rate, drop_path_rate,
-                             norm_cfg, depths, sr_ratios, input_features_slice)
+                             norm_cfg, depths, sr_ratios, input_features_slice,
+                             init_cfg)
         del self.blocks
         self.wss = wss
         self.extra_norm = extra_norm
