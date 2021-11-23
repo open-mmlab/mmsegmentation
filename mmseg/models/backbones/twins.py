@@ -538,7 +538,8 @@ class SVT(PCPVT):
                  wss=[7, 7, 7],
                  input_features_slice=False,
                  extra_norm=False,
-                 strides=(2, 2, 2)):
+                 strides=(2, 2, 2),
+                 **kwargs):
         super(SVT,
               self).__init__(img_size, patch_size, in_channels, num_classes,
                              embed_dims, num_heads, mlp_ratios, qkv_bias,
