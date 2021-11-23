@@ -281,7 +281,7 @@ class GroupBlock(GSAEncoderLayer):
 
     def forward(self, x, H, W):
         x = x + self.drop_path(self.attn(self.norm1(x), (H, W), identity=0.))
-        x = x + self.drop_path(self.mlp(self.norm2(x)))
+        x = x + self.drop_path(self.ffn(self.norm2(x)))
         return x
 
 
