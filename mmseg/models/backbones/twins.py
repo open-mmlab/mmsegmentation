@@ -45,12 +45,15 @@ class LocallygroupedSelfAttention(WindowMSA):
         super(LocallygroupedSelfAttention, self).__init__(
             embed_dims=embed_dims,
             num_heads=num_heads,
-            window_size=[window_size]*2,
+            window_size=[window_size] * 2,
             qkv_bias=qkv_bias,
             qk_scale=qk_scale,
             attn_drop_rate=attn_drop_rate,
             proj_drop_rate=proj_drop_rate)
 
+        del self.relative_position_bias_table
+        del self.window_size
+        self.window_size = window_size
         assert embed_dims % num_heads == 0, f'dim {embed_dims} should be divided by ' \
                                      f'num_heads {num_heads}.'
 
