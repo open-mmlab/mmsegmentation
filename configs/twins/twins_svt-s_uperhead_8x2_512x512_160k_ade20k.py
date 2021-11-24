@@ -19,8 +19,7 @@ model = dict(
         wss=[7, 7, 7, 7],
         sr_ratios=[8, 4, 2, 1],
         extra_norm=True,
-        drop_path_rate=0.2,
-        style='pytorch'),
+        drop_path_rate=0.2),
     decode_head=dict(in_channels=[64, 128, 256, 512]),
     auxiliary_head=dict(in_channels=256))
 
