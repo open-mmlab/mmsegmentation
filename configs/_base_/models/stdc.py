@@ -63,7 +63,7 @@ model = dict(
             in_channels=256,
             channels=64,
             num_convs=1,
-            num_classes=1,
+            num_classes=2,
             boundary_threshold=0.1,
             in_index=0,
             norm_cfg=norm_cfg,
@@ -73,6 +73,7 @@ model = dict(
                 dict(
                     type='CrossEntropyLoss',
                     loss_name='loss_ce',
+                    use_sigmoid=True,
                     loss_weight=1.0),
                 dict(type='DiceLoss', loss_name='loss_dice', loss_weight=1.0)
             ]),
