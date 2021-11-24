@@ -89,6 +89,14 @@ mmsegmentation
 |   |   └── leftImg8bit
 |   |   |   └── test
 |   |   |       └── night
+│   ├── loveDA
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   │   ├── test
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -190,8 +198,33 @@ python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels
 
 ### Dark Zurich
 
-因为我们只支持在此数据集上测试模型，所以您只需下载[验证集](https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip)。
+因为我们只支持在此数据集上测试模型，所以您只需下载[验证集](https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip) 。
 
 ### Nighttime Driving
 
-因为我们只支持在此数据集上测试模型，所以您只需下载[测试集](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip)。
+因为我们只支持在此数据集上测试模型，所以您只需下载[测试集](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip) 。
+
+### LoveDA
+
+可以从 Google Drive 里下载 [LoveDA数据集](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing) 。
+
+或者它还可以从 [zenodo](https://zenodo.org/record/5706578#.YZvN7SYRXdF) 下载, 您需要运行如下命令:
+
+```shell
+# Download Train.zip
+wget https://zenodo.org/record/5706578/files/Train.zip
+# Download Val.zip
+wget https://zenodo.org/record/5706578/files/Val.zip
+# Download Test.zip
+wget https://zenodo.org/record/5706578/files/Test.zip
+```
+
+对于 LoveDA 数据集，请运行以下命令下载并重新组织数据集
+
+```shell
+python tools/convert_datasets/loveda.py /path/to/loveDA
+```
+
+请参照 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/inference.md) 来使用训练好的模型去预测 LoveDA 测试集并且提交到官网。
+
+关于 LoveDA 的更多细节可以在[这里](https://github.com/Junjue-Wang/LoveDA) 找到。

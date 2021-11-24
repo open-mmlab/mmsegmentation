@@ -52,7 +52,7 @@ class CityscapesDataset(CustomDataset):
         """Write the segmentation results to images.
 
         Args:
-            results (list[list | tuple | ndarray]): Testing results of the
+            results (list[ndarray]): Testing results of the
                 dataset.
             imgfile_prefix (str): The filename prefix of the png files.
                 If the prefix is "somepath/xxx",
