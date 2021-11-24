@@ -586,6 +586,28 @@ class SVT(PCPVT):
             self.blocks.append(_block)
             cur += depths[k]
 
+        for k in range(len(depths)):
+            _blocks = ModuleList()
+            for i in range(depths[k]):
+                if i % 2 == 1:
+                    single_block = ModuleList([
+                        block_cls(
+                            embed_dims=embed_dims[k],
+                            num_heads=num_heads[k],
+                            mlp_ratio=mlp_ratios[k],
+                            qkv_bias=qkv_bias,
+                            qk_scale=qk_scale,
+                            drop_rate=drop_rate,
+                            attn_drop_rate=attn_drop_rate,
+                            drop_path_rate=dpr[cur + i],
+                            norm_cfg=dict(type='LN'),
+                            sr_ratio=sr_ratios[k],
+                            window_size=1 if i % 2 == 1 else wss[k])
+                    ])
+                _blocks.append(single_block)
+            self.blocks.append(_block)
+            cur += depths[k]
+
         if strides != (2, 2, 2):
             del self.patch_embeds
             self.patch_embeds = ModuleList()
