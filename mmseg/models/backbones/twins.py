@@ -507,25 +507,24 @@ class SVT(PCPVT):
         patch_size (int): The patch size. Default: 4.
         in_channels (int): Number of input channels. Default: 3.
         num_classes (int): Number of num_classes. Default: 1000
-        embed_dims (list): embedding dimension. Default: [64, 128, 256].
-        num_heads (int): number of attention heads. Default: [1, 2, 4].
-        mlp_ratios (int): ratio of mlp hidden dim to embedding dim.
+        embed_dims (list): Embedding dimension. Default: [64, 128, 256].
+        num_heads (int): Number of attention heads. Default: [1, 2, 4].
+        mlp_ratios (int): Ratio of mlp hidden dim to embedding dim.
             Default: [4, 4, 4].
-        qkv_bias (bool): enable bias for qkv if True. Default: False.
-        drop_rate (float): Probability of an element to be zeroed.
-            Default 0.
-        attn_drop_rate (float): The drop out rate for attention layer.
+        qkv_bias (bool): Enable bias for qkv if True. Default: False.
+        drop_rate (float): Dropout rate. Default 0.
+        attn_drop_rate (float): Dropout ratio of attention weight.
             Default 0.0
-        drop_path_rate (float): stochastic depth rate. Default 0.2.
+        drop_path_rate (float): Stochastic depth rate. Default 0.2.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         depths (list): depths of each stage. Default [4, 4, 4].
         sr_ratios (list): kernel_size of conv in each Attn module in
             Transformer encoder layer. Default: [4, 2, 1].
         block_cls (BaseModule): Transformer Encoder. Default SVTEncoderLayer.
-        wss=[7, 7, 7],
-        input_features_slice（bool): input features need slice. Default False.
-        extra_norm（bool): add extra norm. Default False.
+        windiow_size (list): Window size of LSA. Default: [7, 7, 7],
+        input_features_slice（bool): Input features need slice. Default False.
+        extra_norm（bool): Add extra norm. Default False.
         strides=(2, 2, 2)
     """
 
