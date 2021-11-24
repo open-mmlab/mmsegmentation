@@ -447,3 +447,69 @@ Models:
       mIoU(ms+flip): 53.56
   Config: configs/hrnet/fcn_hr48_480x480_80k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_80k_pascal_context_59/fcn_hr48_480x480_80k_pascal_context_59_20210411_003240-3ae7081e.pth
+- Name: fcn_hr18s_512x512_80k_loveda
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 33.26
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 1.72
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 49.3
+      mIoU(ms+flip): 49.23
+  Config: configs/hrnet/fcn_hr18s_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_loveda/fcn_hr18s_512x512_80k_loveda_20211105_180825-41dcc5dc.pth
+- Name: fcn_hr18_512x512_80k_loveda
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 59.63
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 2.9
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 50.87
+      mIoU(ms+flip): 51.24
+  Config: configs/hrnet/fcn_hr18_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_loveda/fcn_hr18_512x512_80k_loveda_20211105_165542-95be4d2b.pth
+- Name: fcn_hr48_512x512_80k_loveda
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 110.01
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 6.25
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 51.04
+      mIoU(ms+flip): 51.12
+  Config: configs/hrnet/fcn_hr48_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_loveda/fcn_hr48_512x512_80k_loveda_20211105_131509-f07e47c6.pth

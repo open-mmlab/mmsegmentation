@@ -13,8 +13,8 @@ from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
-                            ConcatDataset, CustomDataset, PascalVOCDataset,
-                            RepeatDataset, build_dataset)
+                            ConcatDataset, CustomDataset, LoveDADataset,
+                            PascalVOCDataset, RepeatDataset, build_dataset)
 
 
 def test_classes():
@@ -620,6 +620,32 @@ def test_concat_cityscapes(separate_eval):
     with pytest.raises(NotImplementedError):
         _ = ConcatDataset([cityscape_dataset, ade_dataset],
                           separate_eval=separate_eval)
+
+
+def test_loveda():
+    test_dataset = LoveDADataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_loveda_dataset/img_dir'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_loveda_dataset/ann_dir'))
+    assert len(test_dataset) == 3
+
+    gt_seg_maps = list(test_dataset.get_gt_seg_maps())
+
+    # Test format_results
+    pseudo_results = []
+    for idx in range(len(test_dataset)):
+        h, w = gt_seg_maps[idx].shape
+        pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
+    file_paths = test_dataset.format_results(pseudo_results, '.format_loveda')
+    assert len(file_paths) == len(test_dataset)
+    # Test loveda evaluate
+
+    test_dataset.evaluate(
+        pseudo_results, metric='mIoU', imgfile_prefix='.format_loveda')
+
+    shutil.rmtree('.format_loveda')
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
