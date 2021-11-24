@@ -407,9 +407,7 @@ class MixVisionTransformer(BaseModule):
         if self.pretrained is None:
             for m in self.modules():
                 if isinstance(m, nn.Linear):
-                    trunc_normal_init(m.weight, std=.02)
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
+                    trunc_normal_init(m, std=.02, bias=0.)
                 elif isinstance(m, nn.LayerNorm):
                     constant_init(m.bias, 0)
                     constant_init(m.weight, 1.0)
