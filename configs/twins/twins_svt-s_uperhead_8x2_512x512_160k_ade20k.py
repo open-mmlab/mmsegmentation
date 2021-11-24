@@ -16,7 +16,7 @@ model = dict(
         qkv_bias=True,
         norm_cfg=dict(type='LN'),
         depths=[2, 2, 10, 4],
-        wss=[7, 7, 7, 7],
+        windiow_size=[7, 7, 7, 7],
         sr_ratios=[8, 4, 2, 1],
         extra_norm=True,
         drop_path_rate=0.2),

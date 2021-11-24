@@ -573,26 +573,26 @@ class SVT(PCPVT):
         for k in range(len(depths)):
             _blocks = ModuleList()
             for i in range(depths[k]):
-                _blocks.append(LSAEncoderLayer(
-                    embed_dims=embed_dims[k],
-                    num_heads=num_heads[k],
-                    feedforward_channels=mlp_ratios[k] * embed_dims[k],
-                    drop_rate=drop_rate,
-                    attn_drop_rate=attn_drop_rate,
-                    drop_path_rate=dpr[cur + i],
-                    qkv_bias=qkv_bias,
-                    window_size=windiow_size[k])
-                )
-                _blocks.append(GSAEncoderLayer(
-                    embed_dims=embed_dims[k],
-                    num_heads=num_heads[k],
-                    feedforward_channels=mlp_ratios[k] * embed_dims[k],
-                    drop_rate=drop_rate,
-                    attn_drop_rate=attn_drop_rate,
-                    drop_path_rate=dpr[cur + i],
-                    qkv_bias=qkv_bias,
-                    sr_ratio=sr_ratios[k])
-                )
+                _blocks.append(
+                    LSAEncoderLayer(
+                        embed_dims=embed_dims[k],
+                        num_heads=num_heads[k],
+                        feedforward_channels=mlp_ratios[k] * embed_dims[k],
+                        drop_rate=drop_rate,
+                        attn_drop_rate=attn_drop_rate,
+                        drop_path_rate=dpr[cur + i],
+                        qkv_bias=qkv_bias,
+                        window_size=windiow_size[k]))
+                _blocks.append(
+                    GSAEncoderLayer(
+                        embed_dims=embed_dims[k],
+                        num_heads=num_heads[k],
+                        feedforward_channels=mlp_ratios[k] * embed_dims[k],
+                        drop_rate=drop_rate,
+                        attn_drop_rate=attn_drop_rate,
+                        drop_path_rate=dpr[cur + i],
+                        qkv_bias=qkv_bias,
+                        sr_ratio=sr_ratios[k]))
             self.blocks.append(_blocks)
             cur += depths[k]
 
