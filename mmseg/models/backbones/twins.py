@@ -636,8 +636,6 @@ class SVT(PCPVT):
         for i in range(len(self.depths)):
             x, (H, W) = self.patch_embeds[i](x)
             x = self.pos_drops[i](x)
-            import pdb
-            pdb.set_trace()
             for j, blk in enumerate(self.blocks[i]):
                 x = blk(x, H, W)
                 if j == 0:
