@@ -36,6 +36,9 @@ def convert_vit(args, ckpt):
                 new_k = k.replace('mlp.fc2', 'ffn.layers.1')
             else:
                 new_k = k
+        elif k.startswith('backbone.pos_block') and args.model == 'pcpvt':
+            if 'proj.0.' in k:
+                new_k = k.replace('proj.0.', 'proj.')
         elif k.startswith('backbone.patch_embeds'):
             if 'proj.' in k:
                 new_k = k.replace('proj.', 'projection.')
