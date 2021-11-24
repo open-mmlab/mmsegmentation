@@ -641,7 +641,7 @@ class SVT(PCPVT):
 
         self.apply(self._init_weights)
 
-    def forward_features(self, x):
+    def forward(self, x):
         outputs = list()
 
         B = x.shape[0]
