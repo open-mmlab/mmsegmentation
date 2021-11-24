@@ -416,7 +416,7 @@ class PCPVT(BaseModule):
 
         for k in range(len(depths)):
             _block = ModuleList([
-                PCPVTEncoderLayer(
+                GSAEncoderLayer(
                     embed_dims=embed_dims[k],
                     num_heads=num_heads[k],
                     feedforward_channels=mlp_ratios[k] * embed_dims[k],
