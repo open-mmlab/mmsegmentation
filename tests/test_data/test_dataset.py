@@ -600,6 +600,28 @@ def test_cityscapes():
     shutil.rmtree('.format_city')
 
 
+@pytest.mark.parametrize('separate_eval', [True, False])
+def test_concat_cityscapes(separate_eval):
+    cityscape_dataset = CityscapesDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_cityscapes_dataset/leftImg8bit'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_cityscapes_dataset/gtFine'))
+    assert len(cityscape_dataset) == 1
+    with pytest.raises(NotImplementedError):
+        _ = ConcatDataset([cityscape_dataset, cityscape_dataset],
+                          separate_eval=separate_eval)
+    ade_dataset = ADE20KDataset(
+        pipeline=[],
+        img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'))
+    assert len(ade_dataset) == 5
+    with pytest.raises(NotImplementedError):
+        _ = ConcatDataset([cityscape_dataset, ade_dataset],
+                          separate_eval=separate_eval)
+
+
 def test_loveda():
     test_dataset = LoveDADataset(
         pipeline=[],
@@ -624,28 +646,6 @@ def test_loveda():
         pseudo_results, metric='mIoU', imgfile_prefix='.format_loveda')
 
     shutil.rmtree('.format_loveda')
-
-
-@pytest.mark.parametrize('separate_eval', [True, False])
-def test_concat_cityscapes(separate_eval):
-    cityscape_dataset = CityscapesDataset(
-        pipeline=[],
-        img_dir=osp.join(
-            osp.dirname(__file__),
-            '../data/pseudo_cityscapes_dataset/leftImg8bit'),
-        ann_dir=osp.join(
-            osp.dirname(__file__), '../data/pseudo_cityscapes_dataset/gtFine'))
-    assert len(cityscape_dataset) == 1
-    with pytest.raises(NotImplementedError):
-        _ = ConcatDataset([cityscape_dataset, cityscape_dataset],
-                          separate_eval=separate_eval)
-    ade_dataset = ADE20KDataset(
-        pipeline=[],
-        img_dir=osp.join(osp.dirname(__file__), '../data/pseudo_dataset/imgs'))
-    assert len(ade_dataset) == 5
-    with pytest.raises(NotImplementedError):
-        _ = ConcatDataset([cityscape_dataset, ade_dataset],
-                          separate_eval=separate_eval)
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
