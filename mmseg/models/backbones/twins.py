@@ -491,7 +491,8 @@ class PCPVT(BaseModule):
             x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
 
             outputs.append(x)
-
+        import pdb
+        pdb.set_trace()
         if self.input_features_slice:
             outputs = outputs[3:4]
 
@@ -627,22 +628,3 @@ class SVT(PCPVT):
                 s = s * strides[i - 1]
 
         self.apply(self._init_weights)
-
-    # def forward(self, x):
-    #     outputs = list()
-    #
-    #     B = x.shape[0]
-    #
-    #     for i in range(len(self.depths)):
-    #         x, (H, W) = self.patch_embeds[i](x)
-    #         x = self.pos_drops[i](x)
-    #         for j, blk in enumerate(self.blocks[i]):
-    #             x = blk(x, H, W)
-    #             if j == 0:
-    #                 x = self.pos_block[i](x, H, W)
-    #         if self.extra_norm:
-    #             x = self.norm_list[i](x)
-    #         x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
-    #         outputs.append(x)
-    #
-    #     return outputs
