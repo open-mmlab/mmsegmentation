@@ -174,7 +174,7 @@ class LocallygroupedSelfAttention(BaseModule):
         self.proj_drop = nn.Dropout(proj_drop_rate)
         self.window_size = window_size
 
-    def forward(self, x, hw_shape, identity=None):
+    def forward(self, x, hw_shape):
         B, N, C = x.shape
         H, W = hw_shape
         x = x.view(B, H, W, C)
@@ -226,7 +226,7 @@ class LocallygroupedSelfAttention(BaseModule):
         return x
 
 
-class SVTEncoderLayer(GSAEncoderLayer):
+class LSAEncoderLayer(BaseModule):
     """Implements one encoder layer in Twins-SVT.
 
     Args:
@@ -252,38 +252,45 @@ class SVTEncoderLayer(GSAEncoderLayer):
     def __init__(self,
                  embed_dims,
                  num_heads,
-                 mlp_ratio=4.,
-                 qkv_bias=False,
-                 qk_scale=None,
+                 feedforward_channels,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
+                 num_fcs=2,
+                 qkv_bias=True,
+                 qk_scale=None,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 sr_ratio=1.,
                  window_size=1,
                  init_cfg=None):
-        super(SVTEncoderLayer, self).__init__(
-            embed_dims,
-            num_heads,
-            mlp_ratio * embed_dims,
-            qkv_bias=qkv_bias,
-            drop_rate=drop_rate,
-            attn_drop_rate=attn_drop_rate,
-            drop_path_rate=drop_path_rate,
-            act_cfg=act_cfg,
-            norm_cfg=norm_cfg,
-            sr_ratio=sr_ratio,
-            init_cfg=init_cfg)
 
-        if window_size != 1:
-            self.attn = LocallygroupedSelfAttention(embed_dims, num_heads,
-                                                    qkv_bias, qk_scale,
-                                                    attn_drop_rate, drop_rate,
-                                                    window_size)
+        super(LSAEncoderLayer, self).__init__(init_cfg=init_cfg)
+
+        self.norm1 = build_norm_layer(norm_cfg, embed_dims, postfix=1)[1]
+
+        self.attn = LocallygroupedSelfAttention(embed_dims, num_heads,
+                                                qkv_bias, qk_scale,
+                                                attn_drop_rate, drop_rate,
+                                                window_size)
+
+        self.norm2 = build_norm_layer(norm_cfg, embed_dims, postfix=2)[1]
+
+        self.ffn = FFN(
+            embed_dims=embed_dims,
+            feedforward_channels=feedforward_channels,
+            num_fcs=num_fcs,
+            ffn_drop=drop_rate,
+            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+            act_cfg=act_cfg,
+            add_identity=False,
+            init_cfg=None)
+
+        self.drop_path = build_dropout(
+            dict(type='DropPath', drop_prob=drop_path_rate)
+        ) if drop_path_rate > 0. else nn.Identity()
 
     def forward(self, x, H, W):
-        x = x + self.drop_path(self.attn(self.norm1(x), (H, W), identity=0.))
+        x = x + self.drop_path(self.attn(self.norm1(x), (H, W)))
         x = x + self.drop_path(self.ffn(self.norm2(x)))
         return x
 
@@ -531,15 +538,13 @@ class SVT(PCPVT):
                  num_heads=[1, 2, 4],
                  mlp_ratios=[4, 4, 4],
                  qkv_bias=False,
-                 qk_scale=None,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.2,
                  norm_cfg=dict(type='LN'),
                  depths=[4, 4, 4],
                  sr_ratios=[4, 2, 1],
-                 block_cls=SVTEncoderLayer,
-                 wss=[7, 7, 7],
+                 windiow_size=[7, 7, 7],
                  input_features_slice=False,
                  extra_norm=False,
                  strides=(2, 2, 2),
@@ -551,7 +556,7 @@ class SVT(PCPVT):
                              norm_cfg, depths, sr_ratios, input_features_slice,
                              init_cfg)
         del self.blocks
-        self.wss = wss
+        self.windiow_size = windiow_size
         self.extra_norm = extra_norm
         self.strides = strides
         if self.extra_norm:
@@ -564,49 +569,32 @@ class SVT(PCPVT):
         ]  # stochastic depth decay rule
         cur = 0
         self.blocks = ModuleList()
+
         for k in range(len(depths)):
-            # import pdb
-            # pdb.set_trace()
-            _block = ModuleList([
-                block_cls(
+            _blocks = ModuleList()
+            for i in range(depths[k]):
+                _blocks.append(LSAEncoderLayer(
                     embed_dims=embed_dims[k],
                     num_heads=num_heads[k],
-                    mlp_ratio=mlp_ratios[k],
-                    qkv_bias=qkv_bias,
-                    qk_scale=qk_scale,
+                    feedforward_channels=mlp_ratios[k] * embed_dims[k],
                     drop_rate=drop_rate,
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[cur + i],
-                    norm_cfg=dict(type='LN'),
-                    sr_ratio=sr_ratios[k],
-                    window_size=1 if i % 2 == 1 else wss[k])
-                for i in range(depths[k])
-            ])
-
-            self.blocks.append(_block)
+                    qkv_bias=qkv_bias,
+                    window_size=windiow_size[k])
+                )
+                _blocks.append(GSAEncoderLayer(
+                    embed_dims=embed_dims[k],
+                    num_heads=num_heads[k],
+                    feedforward_channels=mlp_ratios[k] * embed_dims[k],
+                    drop_rate=drop_rate,
+                    attn_drop_rate=attn_drop_rate,
+                    drop_path_rate=dpr[cur + i],
+                    qkv_bias=qkv_bias,
+                    sr_ratio=sr_ratios[k])
+                )
+            self.blocks.append(_blocks)
             cur += depths[k]
-        #
-        # for k in range(len(depths)):
-        #     _blocks = ModuleList()
-        #     for i in range(depths[k]):
-        #         if i % 2 == 1:
-        #             single_block = ModuleList([
-        #                 block_cls(
-        #                     embed_dims=embed_dims[k],
-        #                     num_heads=num_heads[k],
-        #                     mlp_ratio=mlp_ratios[k],
-        #                     qkv_bias=qkv_bias,
-        #                     qk_scale=qk_scale,
-        #                     drop_rate=drop_rate,
-        #                     attn_drop_rate=attn_drop_rate,
-        #                     drop_path_rate=dpr[cur + i],
-        #                     norm_cfg=dict(type='LN'),
-        #                     sr_ratio=sr_ratios[k],
-        #                     window_size=1 if i % 2 == 1 else wss[k])
-        #             ])
-        #         _blocks.append(single_block)
-        #     self.blocks.append(_block)
-        #     cur += depths[k]
 
         if strides != (2, 2, 2):
             del self.patch_embeds
