@@ -10,6 +10,7 @@ Collections:
     - Dark Zurich and Nighttime Driving
     - COCO-Stuff 10k
     - COCO-Stuff 164k
+    - LoveDA
   Paper:
     URL: https://arxiv.org/abs/1612.01105
     Title: Pyramid Scene Parsing Network
@@ -757,7 +758,7 @@ Models:
     memory (GB): 1.45
   Results:
   - Task: Semantic Segmentation
-    Dataset: COCO-Stuff 164k
+    Dataset: LoveDA
     Metrics:
       mIoU: 48.62
       mIoU(ms+flip): 47.57
@@ -779,7 +780,7 @@ Models:
     memory (GB): 6.14
   Results:
   - Task: Semantic Segmentation
-    Dataset: COCO-Stuff 164k
+    Dataset: LoveDA
     Metrics:
       mIoU: 50.46
       mIoU(ms+flip): 50.19
@@ -801,7 +802,7 @@ Models:
     memory (GB): 9.61
   Results:
   - Task: Semantic Segmentation
-    Dataset: COCO-Stuff 164k
+    Dataset: LoveDA
     Metrics:
       mIoU: 51.86
       mIoU(ms+flip): 51.34
