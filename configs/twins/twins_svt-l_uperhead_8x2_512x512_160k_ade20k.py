@@ -7,7 +7,7 @@ model = dict(
             type='Pretrained', checkpoint='pretrained/alt_gvt_large.pth'),
         embed_dims=[128, 256, 512, 1024],
         num_heads=[4, 8, 16, 32],
-        depths=[1, 1, 9, 1],
+        depths=[2, 2, 18, 2],
         drop_path_rate=0.3),
     decode_head=dict(in_channels=[128, 256, 512, 1024]),
     auxiliary_head=dict(in_channels=512))
