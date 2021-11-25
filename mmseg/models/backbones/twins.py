@@ -569,7 +569,6 @@ class SVT(PCPVT):
                                   mlp_ratios, out_indices, qkv_bias, drop_rate,
                                   attn_drop_rate, drop_path_rate, norm_cfg,
                                   depths, sr_ratios, init_cfg)
-        del self.blocks
         self.windiow_size = windiow_size
         self.extra_norm = extra_norm
         self.strides = strides
@@ -582,13 +581,11 @@ class SVT(PCPVT):
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]  # stochastic depth decay rule
         cur = 0
-        self.blocks = ModuleList()
 
         for k in range(len(depths)):
-            _blocks = ModuleList()
             for i in range(depths[k]):
                 if i % 2 == 0:
-                    _blocks.append(
+                    self.blocks[k][i] = \
                         LSAEncoderLayer(
                             embed_dims=embed_dims[k],
                             num_heads=num_heads[k],
@@ -597,19 +594,7 @@ class SVT(PCPVT):
                             attn_drop_rate=attn_drop_rate,
                             drop_path_rate=dpr[cur + i],
                             qkv_bias=qkv_bias,
-                            window_size=windiow_size[k]))
-                else:
-                    _blocks.append(
-                        GSAEncoderLayer(
-                            embed_dims=embed_dims[k],
-                            num_heads=num_heads[k],
-                            feedforward_channels=mlp_ratios[k] * embed_dims[k],
-                            drop_rate=drop_rate,
-                            attn_drop_rate=attn_drop_rate,
-                            drop_path_rate=dpr[cur + i],
-                            qkv_bias=qkv_bias,
-                            sr_ratio=sr_ratios[k]))
-            self.blocks.append(_blocks)
+                            window_size=windiow_size[k])
             cur += depths[k]
 
         if strides != (2, 2, 2):
