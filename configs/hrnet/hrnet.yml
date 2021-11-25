@@ -7,6 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
     - Pascal Context
     - Pascal Context 59
+    - LoveDA
   Paper:
     URL: https://arxiv.org/abs/1908.07919
     Title: Deep High-Resolution Representation Learning for Human Pose Estimation
@@ -463,7 +464,7 @@ Models:
     memory (GB): 1.72
   Results:
   - Task: Semantic Segmentation
-    Dataset: Pascal Context 59
+    Dataset: LoveDA
     Metrics:
       mIoU: 49.3
       mIoU(ms+flip): 49.23
@@ -485,7 +486,7 @@ Models:
     memory (GB): 2.9
   Results:
   - Task: Semantic Segmentation
-    Dataset: Pascal Context 59
+    Dataset: LoveDA
     Metrics:
       mIoU: 50.87
       mIoU(ms+flip): 51.24
@@ -507,7 +508,7 @@ Models:
     memory (GB): 6.25
   Results:
   - Task: Semantic Segmentation
-    Dataset: Pascal Context 59
+    Dataset: LoveDA
     Metrics:
       mIoU: 51.04
       mIoU(ms+flip): 51.12
