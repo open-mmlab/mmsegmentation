@@ -303,8 +303,8 @@ class FocalLoss(nn.Module):
                 loss_cls = loss_cls.transpose(0, 1)
                 # [C, N] -> [C, B, d1, d2, ...]
                 # original_shape: [B, C, d1, d2, ...]
-                loss_cls = loss_cls.reshape(*original_shape[1:2],
-                                            *original_shape[0:1],
+                loss_cls = loss_cls.reshape(original_shape[1],
+                                            original_shape[0],
                                             *original_shape[2:])
                 # [C, B, d1, d2, ...] -> [B, C, d1, d2, ...]
                 loss_cls = loss_cls.transpose(0, 1).contiguous()
