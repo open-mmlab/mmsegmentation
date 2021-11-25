@@ -21,7 +21,7 @@ English | [简体中文](README_zh-CN.md)
 MMSegmentation is an open source semantic segmentation toolbox based on PyTorch.
 It is a part of the OpenMMLab project.
 
-The master branch works with **PyTorch 1.3+**.
+The master branch works with **PyTorch 1.5+**.
 
 ![demo image](resources/seg_demo.gif)
 
@@ -114,6 +114,7 @@ Supported datasets:
 - [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#stare)
 - [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#dark-zurich)
 - [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#nighttime-driving)
+- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#loveda)
 
 ## Installation
 
@@ -166,3 +167,4 @@ and develop their own new semantic segmentation methods.
 - [MMGeneration](https://github.com/open-mmlab/mmgeneration): A powerful toolkit for generative models.
 - [MIM](https://github.com/open-mmlab/mim): MIM Installs OpenMMLab Packages.
 - [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab optical flow toolbox and benchmark.
+- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab few shot learning toolbox and benchmark.
