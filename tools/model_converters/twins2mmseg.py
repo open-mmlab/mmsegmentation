@@ -33,14 +33,14 @@ def convert_vit(args, ckpt):
                 new_k = k.replace('mlp.fc2', 'ffn.layers.1')
 
             # Only pcpvt
-            if args.model == 'pcpvt':
+            elif args.model == 'pcpvt':
                 if 'attn.proj.' in k:
                     new_k = k.replace('proj.', 'attn.out_proj.')
                 else:
                     new_k = k
 
             # Only svt
-            if args.model == 'svt':
+            else:
                 if 'attn.proj.' in k:
                     k_lst = k.split('.')
                     if int(k_lst[3]) % 2 == 1:
