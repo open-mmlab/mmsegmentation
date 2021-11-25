@@ -64,8 +64,8 @@ def vit_jax_to_torch(jax_weights):
         torch_weights[f'{torch_block}.attn.attn.in_proj_bias'] = qkv_bias
         to_out_weight = jax_weights[
             f'{jax_block}/MultiHeadDotProductAttention_1/out/kernel']
-        to_out_bias = jax_weights[
-            f'{jax_block}/MultiHeadDotProductAttention_1/out/bias']
+        # to_out_bias = jax_weights[
+        #     f'{jax_block}/MultiHeadDotProductAttention_1/out/bias']
         to_out_weight = rearrange(to_out_weight, 'h hd d -> (h hd) d')
         torch_weights[
             f'{torch_block}.attn.attn.out_proj.weight'] = to_out_weight
