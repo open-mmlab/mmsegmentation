@@ -14,8 +14,8 @@ def test_pcpvt():
     imgs = torch.randn(1, 3, 32, 32)
     model(imgs)
 
-    # Test extra_norm = True
-    model = PCPVT(extra_norm=True)
+    # Test norm_after_stage = True
+    model = PCPVT(norm_after_stage=True)
     model.train()
 
 
@@ -34,6 +34,6 @@ def test_svt():
     imgs = torch.randn(1, 3, 32, 32)
     model(imgs)
 
-    # Test extra_norm = True
-    model = SVT(extra_norm=True)
+    # Test norm_after_stage = True
+    model = SVT(norm_after_stage=True)
     model.train()

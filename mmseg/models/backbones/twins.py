@@ -14,8 +14,8 @@ from ..utils.embed import PatchEmbed
 class GlobalSubsampledAttention(EfficientMultiheadAttention):
     """Global Sub-sampled Attention (Spatial Reduction Attention)
 
-        This module is modified from EfficientMultiheadAttention
-        which is a module from mmseg.models.backbones.mit.py.
+    This module is modified from EfficientMultiheadAttention，
+    which is a module from mmseg.models.backbones.mit.py.
 
     Args:
         embed_dims (int): The embedding dimension.
@@ -27,8 +27,8 @@ class GlobalSubsampledAttention(EfficientMultiheadAttention):
         dropout_layer (obj:`ConfigDict`): The dropout_layer used
             when adding the shortcut. Default: None.
         batch_first (bool): Key, Query and Value are shape of
-            (batch, n, embed_dim)
-            or (n, batch, embed_dim). Default: False.
+            (batch, n, embed_dims)
+            or (n, batch, embed_dims). Default: False.
         qkv_bias (bool): enable bias for qkv if True. Default: True.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
@@ -197,26 +197,26 @@ class LocallygroupedSelfAttention(BaseModule):
         mask[:, -pad_b:, :].fill_(1)
         mask[:, :, -pad_r:].fill_(1)
 
-        # B, _h, _w, window_size, window_size, C
+        # [B, _h, _w, window_size, window_size, C]
         x = x.reshape(B, _h, self.window_size, _w, self.window_size,
                       C).transpose(2, 3)
         mask = mask.reshape(1, _h, self.window_size, _w,
                             self.window_size).transpose(2, 3).reshape(
                                 1, _h * _w,
                                 self.window_size * self.window_size)
-        # 1, _h*_w, window_size*window_size, window_size*window_size
+        # [1, _h*_w, window_size*window_size, window_size*window_size]
         attn_mask = mask.unsqueeze(2) - mask.unsqueeze(3)
         attn_mask = attn_mask.masked_fill(attn_mask != 0,
                                           float(-1000.0)).masked_fill(
                                               attn_mask == 0, float(0.0))
 
-        # n_h, B, _w*_h, nhead, window_size*window_size, dim
+        # [n_h, B, _w*_h, nhead, window_size*window_size, dim]
         qkv = self.qkv(x).reshape(B, _h * _w,
                                   self.window_size * self.window_size, 3,
                                   self.num_heads, C // self.num_heads).permute(
                                       3, 0, 1, 4, 2, 5)
         q, k, v = qkv[0], qkv[1], qkv[2]
-        # B, _h*_w, n_head, window_size*window_size, window_size*window_size
+        # [B, _h*_w, n_head, window_size*window_size, window_size*window_size]
         attn = (q @ k.transpose(-2, -1)) * self.scale
         attn = attn + attn_mask.unsqueeze(2)
         attn = attn.softmax(dim=-1)
@@ -307,26 +307,28 @@ class LSAEncoderLayer(BaseModule):
 
 
 class ConditionalPositionEncoding(BaseModule):
-    """The conditional position encoding(CPE) proposed in CPVT. CPVT paper:
-    https://arxiv.org/abs/2102.10882.
+    """The Conditional Position Encoding(CPE).
+
+    The CPE is the implementation of 'Conditional Positional Encodings
+    for Vision Transformers <https://arxiv.org/abs/2102.10882>'_.
 
     Args:
        in_channels (int): Number of input channels. Default: 3.
-       embed_dim (int): The feature dimension. Default: 768.
+       embed_dims (int): The feature dimension. Default: 768.
        stride (int): Stride of conv layer. Default: 1.
     """
 
-    def __init__(self, in_channels, embed_dim=768, stride=1, init_cfg=None):
+    def __init__(self, in_channels, embed_dims=768, stride=1, init_cfg=None):
         super(ConditionalPositionEncoding, self).__init__(init_cfg=init_cfg)
         self.proj = build_conv_layer(
             dict(type='Conv2d'),
             in_channels=in_channels,
-            out_channels=embed_dim,
+            out_channels=embed_dims,
             kernel_size=3,
             stride=stride,
             padding=1,
             bias=True,
-            groups=embed_dim)
+            groups=embed_dims)
         self.stride = stride
 
     def forward(self, x, H, W):
@@ -345,11 +347,14 @@ class ConditionalPositionEncoding(BaseModule):
 class PCPVT(BaseModule):
     """The backbone of Twins-PCPVT.
 
+    This backbone is the implementation of `Twins: Revisiting the Design
+    of Spatial Attention in Vision Transformers
+    <https://arxiv.org/abs/1512.03385>`_.
+
     Args:
         img_size (int | tuple): Input image size. Default: 224.
         patch_size (int): The patch size. Default: 4.
         in_channels (int): Number of input channels. Default: 3.
-        num_classes (int): Number of num_classes. Default: 1000
         embed_dims (list): Embedding dimension. Default: [64, 128, 256, 512].
         num_heads (int): Number of attention heads. Default: [1, 2, 4, 8].
         mlp_ratios (int): Ratio of mlp hidden dim to embedding dim.
@@ -367,7 +372,7 @@ class PCPVT(BaseModule):
         depths (list): Depths of each stage. Default [3, 4, 6, 3]
         sr_ratios (list): Kernel_size of conv in each Attn module in
             Transformer encoder layer. Default: [8, 4, 2, 1].
-        extra_norm（bool): Add extra norm. Default False.
+        norm_after_stage（bool): Add extra norm. Default False.
         init_cfg (dict, optional): The Config for initialization.
             Defaults to None.
     """
@@ -376,7 +381,6 @@ class PCPVT(BaseModule):
                  img_size=224,
                  patch_size=4,
                  in_channels=3,
-                 num_classes=1000,
                  embed_dims=[64, 128, 256, 512],
                  num_heads=[1, 2, 4, 8],
                  mlp_ratios=[4, 4, 4, 4],
@@ -388,16 +392,15 @@ class PCPVT(BaseModule):
                  norm_cfg=dict(type='LN'),
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
-                 extra_norm=False,
+                 norm_after_stage=False,
                  init_cfg=None):
         super(PCPVT, self).__init__(init_cfg=init_cfg)
-        self.num_classes = num_classes
         self.depths = depths
 
         # patch_embed
         self.patch_embeds = ModuleList()
         self.pos_drops = ModuleList()
-        self.blocks = ModuleList()
+        self.layers = ModuleList()
 
         for i in range(len(depths)):
             if i == 0:
@@ -430,6 +433,11 @@ class PCPVT(BaseModule):
 
             self.pos_drops.append(nn.Dropout(p=drop_rate))
 
+        self.position_encodings = ModuleList([
+            ConditionalPositionEncoding(embed_dim, embed_dim)
+            for embed_dim in embed_dims
+        ])
+
         # transformer encoder
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
@@ -451,26 +459,20 @@ class PCPVT(BaseModule):
                     norm_cfg=dict(type='LN'),
                     sr_ratio=sr_ratios[k]) for i in range(depths[k])
             ])
-            self.blocks.append(_block)
+            self.layers.append(_block)
             cur += depths[k]
 
         self.norm_name, norm = build_norm_layer(
             norm_cfg, embed_dims[-1], postfix=1)
 
         self.out_indices = out_indices
-        self.extra_norm = extra_norm
-        if self.extra_norm:
+        self.norm_after_stage = norm_after_stage
+        if self.norm_after_stage:
             self.norm_list = ModuleList()
             for dim in embed_dims:
                 self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
 
-        self.pos_block = ModuleList([
-            ConditionalPositionEncoding(embed_dim, embed_dim)
-            for embed_dim in embed_dims
-        ])
-        self.apply(self._init_weights)
-
-    def _init_weights(self, m):
+    def init_weights(self, m):
         import math
         if isinstance(m, nn.Linear):
             trunc_normal_init(m.weight, std=.02)
@@ -497,11 +499,11 @@ class PCPVT(BaseModule):
         for i in range(len(self.depths)):
             x, (H, W) = self.patch_embeds[i](x)
             x = self.pos_drops[i](x)
-            for j, blk in enumerate(self.blocks[i]):
+            for j, blk in enumerate(self.layers[i]):
                 x = blk(x, H, W)
                 if j == 0:
-                    x = self.pos_block[i](x, H, W)
-            if self.extra_norm:
+                    x = self.position_encodings[i](x, H, W)
+            if self.norm_after_stage:
                 x = self.norm_list[i](x)
             x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
 
@@ -515,11 +517,14 @@ class PCPVT(BaseModule):
 class SVT(PCPVT):
     """The backbone of Twins-SVT.
 
+    This backbone is the implementation of `Twins: Revisiting the Design
+    of Spatial Attention in Vision Transformers
+    <https://arxiv.org/abs/1512.03385>`_.
+
     Args:
         img_size (int | tuple): Input image size. Default: 224.
         patch_size (int): The patch size. Default: 4.
         in_channels (int): Number of input channels. Default: 3.
-        num_classes (int): Number of num_classes. Default: 1000
         embed_dims (list): Embedding dimension. Default: [64, 128, 256].
         num_heads (int): Number of attention heads. Default: [1, 2, 4].
         mlp_ratios (int): Ratio of mlp hidden dim to embedding dim.
@@ -538,7 +543,7 @@ class SVT(PCPVT):
             Transformer encoder layer. Default: [4, 2, 1].
         windiow_size (list): Window size of LSA. Default: [7, 7, 7],
         input_features_slice（bool): Input features need slice. Default: False.
-        extra_norm（bool): Add extra norm. Default False.
+        norm_after_stage（bool): Add extra norm. Default False.
         strides (list): Strides in patch-Embedding modules. Default: (2, 2, 2)
         init_cfg (dict, optional): The Config for initialization.
             Defaults to None.
@@ -548,7 +553,6 @@ class SVT(PCPVT):
                  img_size=224,
                  patch_size=4,
                  in_channels=3,
-                 num_classes=1000,
                  embed_dims=[64, 128, 256],
                  num_heads=[1, 2, 4],
                  mlp_ratios=[4, 4, 4],
@@ -561,18 +565,18 @@ class SVT(PCPVT):
                  depths=[4, 4, 4],
                  sr_ratios=[4, 2, 1],
                  windiow_size=[7, 7, 7],
-                 extra_norm=False,
+                 norm_after_stage=True,
                  strides=(2, 2, 2),
                  init_cfg=None):
-        super(SVT, self).__init__(img_size, patch_size, in_channels,
-                                  num_classes, embed_dims, num_heads,
-                                  mlp_ratios, out_indices, qkv_bias, drop_rate,
-                                  attn_drop_rate, drop_path_rate, norm_cfg,
-                                  depths, sr_ratios, init_cfg)
+        super(SVT,
+              self).__init__(img_size, patch_size, in_channels, embed_dims,
+                             num_heads, mlp_ratios, out_indices, qkv_bias,
+                             drop_rate, attn_drop_rate, drop_path_rate,
+                             norm_cfg, depths, sr_ratios, init_cfg)
         self.windiow_size = windiow_size
-        self.extra_norm = extra_norm
+        self.norm_after_stage = norm_after_stage
         self.strides = strides
-        if self.extra_norm:
+        if self.norm_after_stage:
             self.norm_list = ModuleList()
             for dim in embed_dims:
                 self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
@@ -585,7 +589,7 @@ class SVT(PCPVT):
         for k in range(len(depths)):
             for i in range(depths[k]):
                 if i % 2 == 0:
-                    self.blocks[k][i] = \
+                    self.layers[k][i] = \
                         LSAEncoderLayer(
                             embed_dims=embed_dims[k],
                             num_heads=num_heads[k],

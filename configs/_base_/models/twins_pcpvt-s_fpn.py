@@ -1,4 +1,5 @@
 # model settings
+backbone_norm_cfg = dict(type='LN')
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
@@ -9,16 +10,15 @@ model = dict(
         img_size=224,
         patch_size=4,
         in_channels=3,
-        num_classes=1000,
         embed_dims=[64, 128, 320, 512],
         num_heads=[1, 2, 5, 8],
         mlp_ratios=[8, 8, 4, 4],
         out_indices=(0, 1, 2, 3),
         qkv_bias=True,
-        norm_cfg=dict(type='LN'),
+        norm_cfg=backbone_norm_cfg,
         depths=[3, 4, 6, 3],
         sr_ratios=[8, 4, 2, 1],
-        extra_norm=False,
+        norm_after_stage=False,
         drop_rate=0.0,
         attn_drop_rate=0.,
         drop_path_rate=0.2),

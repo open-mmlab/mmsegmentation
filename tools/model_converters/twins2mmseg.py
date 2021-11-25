@@ -22,6 +22,7 @@ def convert_vit(args, ckpt):
             else:
                 new_k = k
         elif k.startswith('backbone.blocks'):
+            k = k.replace('blocks.', 'layers.')
             # Union
             if 'attn.q.' in k:
                 new_k = k.replace('q.', 'attn.in_proj_')
