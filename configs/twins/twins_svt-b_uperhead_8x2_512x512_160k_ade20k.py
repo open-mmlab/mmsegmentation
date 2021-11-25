@@ -1,4 +1,4 @@
-_base_ = ['twins_svt-s_uperhead_8x2_512x512_160k_ade20k.py']
+_base_ = ['./twins_svt-s_uperhead_8x2_512x512_160k_ade20k.py']
 model = dict(
     type='EncoderDecoder',
     pretrained='pretrained/alt_gvt_base.pth',

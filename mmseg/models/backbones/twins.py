@@ -399,7 +399,7 @@ class PCPVT(BaseModule):
 
         # patch_embed
         self.patch_embeds = ModuleList()
-        self.pos_drops = ModuleList()
+        self.position_encoding_drops = ModuleList()
         self.layers = ModuleList()
 
         for i in range(len(depths)):
@@ -431,7 +431,7 @@ class PCPVT(BaseModule):
                         input_size=input_size,
                         init_cfg=None))
 
-            self.pos_drops.append(nn.Dropout(p=drop_rate))
+            self.position_encoding_drops.append(nn.Dropout(p=drop_rate))
 
         self.position_encodings = ModuleList([
             ConditionalPositionEncoding(embed_dim, embed_dim)
@@ -498,7 +498,7 @@ class PCPVT(BaseModule):
 
         for i in range(len(self.depths)):
             x, (H, W) = self.patch_embeds[i](x)
-            x = self.pos_drops[i](x)
+            x = self.position_encoding_drops[i](x)
             for j, blk in enumerate(self.layers[i]):
                 x = blk(x, H, W)
                 if j == 0:

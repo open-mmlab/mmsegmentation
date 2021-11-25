@@ -12,4 +12,3 @@ model = dict(
         depths=[3, 8, 27, 3]))
 
 optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, weight_decay=0.0001)
-optimizer_config = dict(grad_clip=None)

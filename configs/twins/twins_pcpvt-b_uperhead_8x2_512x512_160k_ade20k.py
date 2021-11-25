@@ -3,6 +3,7 @@ _base_ = [
     '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_160k.py'
 ]
+
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
