@@ -20,18 +20,18 @@ Models:
     crop size: (512,1024)
     lr schd: 160000
     inference time (ms/im):
-    - value: 462.96
+    - value: 65.92
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 16.4
+    memory (GB): 6.1
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 71.4
-      mIoU(ms+flip): 72.96
+      mIoU: 70.8
+      mIoU(ms+flip): 72.09
   Config: configs/erfnet/erfnet_4x4_512x1024_160k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/fcn_erfnet_4x4_512x1024_160k_cityscapes/fcn_erfnet_4x4_512x1024_160k_cityscapes_20211103_011334-8f691334.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_4x4_512x1024_160k_cityscapes/erfnet_4x4_512x1024_160k_cityscapes_20211123_021608-80bcacef.pth
