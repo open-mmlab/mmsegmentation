@@ -587,7 +587,7 @@ class SVT(PCPVT):
         for k in range(len(depths)):
             _blocks = ModuleList()
             for i in range(depths[k]):
-                if i % 2 == 1:
+                if i % 2 == 0:
                     _blocks.append(
                         LSAEncoderLayer(
                             embed_dims=embed_dims[k],
