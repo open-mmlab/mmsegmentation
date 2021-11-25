@@ -6,7 +6,6 @@ _base_ = [
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
-        type='PCPVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/pcpvt_large.pth'),
         depths=[3, 8, 27, 3],
