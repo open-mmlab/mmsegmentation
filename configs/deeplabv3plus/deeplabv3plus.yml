@@ -4,6 +4,10 @@ Collections:
     Training Data:
     - Cityscapes
     - ADE20K
+    - Pascal VOC 2012 + Aug
+    - Pascal Context
+    - Pascal Context 59
+    - LoveDA
   Paper:
     URL: https://arxiv.org/abs/1802.02611
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
@@ -480,7 +484,7 @@ Models:
     memory (GB): 7.6
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20K
+    Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 75.93
       mIoU(ms+flip): 77.5
@@ -502,7 +506,7 @@ Models:
     memory (GB): 11.0
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20K
+    Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 77.22
       mIoU(ms+flip): 78.59
@@ -516,7 +520,7 @@ Models:
     lr schd: 40000
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20K
+    Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 76.81
       mIoU(ms+flip): 77.57
@@ -530,7 +534,7 @@ Models:
     lr schd: 40000
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20K
+    Dataset: Pascal VOC 2012 + Aug
     Metrics:
       mIoU: 78.62
       mIoU(ms+flip): 79.53
@@ -551,7 +555,7 @@ Models:
       resolution: (480,480)
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20K
+    Dataset: Pascal Context
     Metrics:
       mIoU: 47.3
       mIoU(ms+flip): 48.47
@@ -565,7 +569,7 @@ Models:
     lr schd: 80000
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20K
+    Dataset: Pascal Context
     Metrics:
       mIoU: 47.23
       mIoU(ms+flip): 48.26
@@ -579,7 +583,7 @@ Models:
     lr schd: 40000
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20K
+    Dataset: Pascal Context 59
     Metrics:
       mIoU: 52.86
       mIoU(ms+flip): 54.54
@@ -593,9 +597,75 @@ Models:
     lr schd: 80000
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20K
+    Dataset: Pascal Context 59
     Metrics:
       mIoU: 53.2
       mIoU(ms+flip): 54.67
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59_20210416_111127-7ca0331d.pth
+- Name: deeplabv3plus_r18-d8_512x512_80k_loveda
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-18-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 39.11
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 1.93
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 50.28
+      mIoU(ms+flip): 50.47
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_loveda/deeplabv3plus_r18-d8_512x512_80k_loveda_20211104_132800-ce0fa0ca.pth
+- Name: deeplabv3plus_r50-d8_512x512_80k_loveda
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 166.67
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 7.37
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 50.99
+      mIoU(ms+flip): 50.65
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda/deeplabv3plus_r50-d8_512x512_80k_loveda_20211105_080442-f0720392.pth
+- Name: deeplabv3plus_r101-d8_512x512_80k_loveda
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 230.95
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 10.84
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 51.47
+      mIoU(ms+flip): 51.32
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda/deeplabv3plus_r101-d8_512x512_80k_loveda_20211105_110759-4c1f297e.pth
