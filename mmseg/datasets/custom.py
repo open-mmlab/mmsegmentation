@@ -364,7 +364,7 @@ class CustomDataset(Dataset):
         """Evaluate the dataset.
 
         Args:
-            results (list[tuple[torch.Tensor]] | list[str]): per image pre_eval
+            results (list[list[torch.Tensor]] | list[str]): per image pre_eval
                  results or predict segmentation map for computing evaluation
                  metric.
             metric (str | list[str]): Metrics to be evaluated. 'mIoU',
