@@ -13,25 +13,25 @@ Collections:
   Converted From:
     Code: https://github.com/Eromera/erfnet_pytorch
 Models:
-- Name: erfnet_4x4_512x1024_160k_cityscapes
+- Name: erfnet_fcn_4x4_512x1024_160k_cityscapes
   In Collection: erfnet
   Metadata:
     backbone: ERFNet
     crop size: (512,1024)
     lr schd: 160000
     inference time (ms/im):
-    - value: 65.92
+    - value: 65.53
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 6.1
+    memory (GB): 6.04
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 70.8
-      mIoU(ms+flip): 72.09
-  Config: configs/erfnet/erfnet_4x4_512x1024_160k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_4x4_512x1024_160k_cityscapes/erfnet_4x4_512x1024_160k_cityscapes_20211123_021608-80bcacef.pth
+      mIoU: 71.08
+      mIoU(ms+flip): 72.6
+  Config: configs/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20211126_082056-03d333ed.pth
