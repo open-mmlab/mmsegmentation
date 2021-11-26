@@ -405,14 +405,13 @@ class PCPVT(BaseModule):
         for i in range(len(depths)):
             self.patch_embeds.append(
                 PatchEmbed(
-                    in_channels=in_channels,
+                    in_channels=in_channels if i == 0 else embed_dims[i - 1],
                     embed_dims=embed_dims[i],
                     conv_type='Conv2d',
                     kernel_size=patch_sizes[i],
                     stride=patch_sizes[i],
                     padding='corner',
-                    norm_cfg=norm_cfg,
-                    init_cfg=None))
+                    norm_cfg=norm_cfg))
 
             self.position_encoding_drops.append(nn.Dropout(p=drop_rate))
 
