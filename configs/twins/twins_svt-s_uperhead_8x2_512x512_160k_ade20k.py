@@ -10,7 +10,7 @@ model = dict(
         type='SVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/alt_gvt_small.pth'),
-        patch_size=4,
+        patch_sizes=[4, 2, 2, 2],
         embed_dims=[64, 128, 256, 512],
         num_heads=[2, 4, 8, 16],
         mlp_ratios=[4, 4, 4, 4],

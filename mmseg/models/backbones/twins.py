@@ -378,8 +378,7 @@ class PCPVT(BaseModule):
     """
 
     def __init__(self,
-                 img_size=224,
-                 patch_size=4,
+                 patch_sizes=[4, 2, 2, 2],
                  in_channels=3,
                  embed_dims=[64, 128, 256, 512],
                  num_heads=[1, 2, 4, 8],
@@ -403,35 +402,16 @@ class PCPVT(BaseModule):
         self.layers = ModuleList()
 
         for i in range(len(depths)):
-            import pdb
-            pdb.set_trace()
-            if i == 0:
-                input_size = img_size
-                self.patch_embeds.append(
-                    PatchEmbed(
-                        in_channels=in_channels,
-                        embed_dims=embed_dims[i],
-                        conv_type='Conv2d',
-                        kernel_size=patch_size,
-                        stride=patch_size,
-                        padding='corner',
-                        norm_cfg=norm_cfg,
-                        input_size=input_size,
-                        init_cfg=None))
-            else:
-                patch_size = 2
-                input_size = img_size // patch_size // 2**(i - 1)
-                self.patch_embeds.append(
-                    PatchEmbed(
-                        in_channels=embed_dims[i - 1],
-                        embed_dims=embed_dims[i],
-                        conv_type='Conv2d',
-                        kernel_size=patch_size,
-                        stride=patch_size,
-                        padding='corner',
-                        norm_cfg=norm_cfg,
-                        input_size=input_size,
-                        init_cfg=None))
+            self.patch_embeds.append(
+                PatchEmbed(
+                    in_channels=in_channels,
+                    embed_dims=embed_dims[i],
+                    conv_type='Conv2d',
+                    kernel_size=patch_sizes[i],
+                    stride=patch_sizes[i],
+                    padding='corner',
+                    norm_cfg=norm_cfg,
+                    init_cfg=None))
 
             self.position_encoding_drops.append(nn.Dropout(p=drop_rate))
 
@@ -552,8 +532,7 @@ class SVT(PCPVT):
     """
 
     def __init__(self,
-                 img_size=224,
-                 patch_size=4,
+                 patch_sizes=[4, 2, 2, 2],
                  in_channels=3,
                  embed_dims=[64, 128, 256],
                  num_heads=[1, 2, 4],
@@ -570,11 +549,10 @@ class SVT(PCPVT):
                  norm_after_stage=True,
                  init_cfg=None):
         super(SVT,
-              self).__init__(img_size, patch_size, in_channels, embed_dims,
-                             num_heads, mlp_ratios, out_indices, qkv_bias,
-                             drop_rate, attn_drop_rate, drop_path_rate,
-                             norm_cfg, depths, sr_ratios, norm_after_stage,
-                             init_cfg)
+              self).__init__(patch_sizes, in_channels, embed_dims, num_heads,
+                             mlp_ratios, out_indices, qkv_bias, drop_rate,
+                             attn_drop_rate, drop_path_rate, norm_cfg, depths,
+                             sr_ratios, norm_after_stage, init_cfg)
         self.windiow_size = windiow_size
 
         # transformer encoder

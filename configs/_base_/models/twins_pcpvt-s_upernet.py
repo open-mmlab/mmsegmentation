@@ -7,8 +7,7 @@ model = dict(
         type='PCPVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/pcpvt_small.pth'),
-        img_size=224,
-        patch_size=4,
+        patch_sizes=[4, 2, 2, 2],
         in_channels=3,
         embed_dims=[64, 128, 320, 512],
         num_heads=[1, 2, 5, 8],
