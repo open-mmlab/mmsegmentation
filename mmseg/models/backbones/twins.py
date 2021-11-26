@@ -328,6 +328,7 @@ class ConditionalPositionEncoding(BaseModule):
             embed_dims,
             kernel_size=3,
             stride=stride,
+            padding=1,
             bias=True,
             groups=embed_dims)
         self.stride = stride
@@ -524,7 +525,7 @@ class SVT(PCPVT):
         depths (list): Depths of each stage. Default [4, 4, 4].
         sr_ratios (list): Kernel_size of conv in each Attn module in
             Transformer encoder layer. Default: [4, 2, 1].
-        windiow_size (list): Window size of LSA. Default: [7, 7, 7],
+        windiow_sizes (list): Window size of LSA. Default: [7, 7, 7],
         input_features_slice（bool): Input features need slice. Default: False.
         norm_after_stage（bool): Add extra norm. Default False.
         strides (list): Strides in patch-Embedding modules. Default: (2, 2, 2)
@@ -546,7 +547,7 @@ class SVT(PCPVT):
                  norm_cfg=dict(type='LN'),
                  depths=[4, 4, 4],
                  sr_ratios=[4, 2, 1],
-                 windiow_size=[7, 7, 7],
+                 windiow_sizes=[7, 7, 7],
                  norm_after_stage=True,
                  init_cfg=None):
         super(SVT,
@@ -554,8 +555,6 @@ class SVT(PCPVT):
                              mlp_ratios, out_indices, qkv_bias, drop_rate,
                              attn_drop_rate, drop_path_rate, norm_cfg, depths,
                              sr_ratios, norm_after_stage, init_cfg)
-        self.windiow_size = windiow_size
-
         # transformer encoder
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
@@ -574,5 +573,5 @@ class SVT(PCPVT):
                             attn_drop_rate=attn_drop_rate,
                             drop_path_rate=dpr[cur + i],
                             qkv_bias=qkv_bias,
-                            window_size=windiow_size[k])
+                            window_size=windiow_sizes[k])
             cur += depths[k]
