@@ -10,5 +10,5 @@ class SegmenterLinearHead(FCNHead):
 
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
-        x = self.convs(x)
+        x = self.cls_seg(x)
         return x
