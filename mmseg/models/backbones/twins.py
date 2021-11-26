@@ -355,10 +355,10 @@ class PCPVT(BaseModule):
     <https://arxiv.org/abs/1512.03385>`_.
 
     Args:
-        img_size (int | tuple): Input image size. Default: 224.
-        patch_size (int): The patch size. Default: 4.
         in_channels (int): Number of input channels. Default: 3.
         embed_dims (list): Embedding dimension. Default: [64, 128, 256, 512].
+        patch_sizes (list): The patch sizes. Default: [4, 2, 2, 2].
+        strides (list): The strides. Default: [4, 2, 2, 2].
         num_heads (int): Number of attention heads. Default: [1, 2, 4, 8].
         mlp_ratios (int): Ratio of mlp hidden dim to embedding dim.
             Default: [4, 4, 4, 4].
@@ -381,9 +381,10 @@ class PCPVT(BaseModule):
     """
 
     def __init__(self,
-                 patch_sizes=[4, 2, 2, 2],
                  in_channels=3,
                  embed_dims=[64, 128, 256, 512],
+                 patch_sizes=[4, 2, 2, 2],
+                 strides=[4, 2, 2, 2],
                  num_heads=[1, 2, 4, 8],
                  mlp_ratios=[4, 4, 4, 4],
                  out_indices=(0, 1, 2, 3),
@@ -411,7 +412,7 @@ class PCPVT(BaseModule):
                     embed_dims=embed_dims[i],
                     conv_type='Conv2d',
                     kernel_size=patch_sizes[i],
-                    stride=patch_sizes[i],
+                    stride=strides[i],
                     padding='corner',
                     norm_cfg=norm_cfg))
 
@@ -506,10 +507,10 @@ class SVT(PCPVT):
     <https://arxiv.org/abs/1512.03385>`_.
 
     Args:
-        img_size (int | tuple): Input image size. Default: 224.
-        patch_size (int): The patch size. Default: 4.
         in_channels (int): Number of input channels. Default: 3.
-        embed_dims (list): Embedding dimension. Default: [64, 128, 256].
+        embed_dims (list): Embedding dimension. Default: [64, 128, 256, 512].
+        patch_sizes (list): The patch sizes. Default: [4, 2, 2, 2].
+        strides (list): The strides. Default: [4, 2, 2, 2].
         num_heads (int): Number of attention heads. Default: [1, 2, 4].
         mlp_ratios (int): Ratio of mlp hidden dim to embedding dim.
             Default: [4, 4, 4].
@@ -534,9 +535,10 @@ class SVT(PCPVT):
     """
 
     def __init__(self,
-                 patch_sizes=[4, 2, 2, 2],
                  in_channels=3,
                  embed_dims=[64, 128, 256],
+                 patch_sizes=[4, 2, 2, 2],
+                 strides=[4, 2, 2, 2],
                  num_heads=[1, 2, 4],
                  mlp_ratios=[4, 4, 4],
                  out_indices=(0, 1, 2, 3),
@@ -550,11 +552,11 @@ class SVT(PCPVT):
                  windiow_sizes=[7, 7, 7],
                  norm_after_stage=True,
                  init_cfg=None):
-        super(SVT,
-              self).__init__(patch_sizes, in_channels, embed_dims, num_heads,
-                             mlp_ratios, out_indices, qkv_bias, drop_rate,
-                             attn_drop_rate, drop_path_rate, norm_cfg, depths,
-                             sr_ratios, norm_after_stage, init_cfg)
+        super(SVT, self).__init__(in_channels, embed_dims, patch_sizes,
+                                  strides, num_heads, mlp_ratios, out_indices,
+                                  qkv_bias, drop_rate, attn_drop_rate,
+                                  drop_path_rate, norm_cfg, depths, sr_ratios,
+                                  norm_after_stage, init_cfg)
         # transformer encoder
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))

@@ -1,10 +1,8 @@
 _base_ = ['./twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k.py']
 
 model = dict(
-    type='EncoderDecoder',
     pretrained='pretrained/alt_gvt_large.pth',
     backbone=dict(
-        type='SVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/alt_gvt_large.pth'),
         embed_dims=[128, 256, 512, 1024],

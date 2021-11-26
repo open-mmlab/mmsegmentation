@@ -7,10 +7,11 @@ model = dict(
         type='PCPVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/pcpvt_small.pth'),
-        patch_sizes=[4, 2, 2, 2],
         in_channels=3,
         embed_dims=[64, 128, 320, 512],
         num_heads=[1, 2, 5, 8],
+        patch_sizes=[4, 2, 2, 2],
+        strides=[4, 2, 2, 2],
         mlp_ratios=[8, 8, 4, 4],
         out_indices=(0, 1, 2, 3),
         qkv_bias=True,

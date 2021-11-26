@@ -5,23 +5,16 @@ _base_ = [
 ]
 backbone_norm_cfg = dict(type='LN')
 model = dict(
-    type='EncoderDecoder',
     backbone=dict(
         type='SVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/alt_gvt_small.pth'),
-        patch_sizes=[4, 2, 2, 2],
         embed_dims=[64, 128, 256, 512],
         num_heads=[2, 4, 8, 16],
         mlp_ratios=[4, 4, 4, 4],
-        out_indices=(0, 1, 2, 3),
-        qkv_bias=True,
-        norm_cfg=backbone_norm_cfg,
         depths=[2, 2, 10, 4],
         windiow_sizes=[7, 7, 7, 7],
-        sr_ratios=[8, 4, 2, 1],
-        norm_after_stage=True,
-        drop_path_rate=0.2),
+        norm_after_stage=True),
     decode_head=dict(in_channels=[64, 128, 256, 512]),
     auxiliary_head=dict(in_channels=256))
 

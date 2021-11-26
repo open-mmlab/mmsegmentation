@@ -1,7 +1,6 @@
 _base_ = ['./twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k.py']
 
 model = dict(
-    type='EncoderDecoder',
     backbone=dict(
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/pcpvt_base.pth'),

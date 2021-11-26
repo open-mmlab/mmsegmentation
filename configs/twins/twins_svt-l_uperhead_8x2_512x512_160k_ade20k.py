@@ -1,8 +1,6 @@
 _base_ = ['./twins_svt-s_uperhead_8x2_512x512_160k_ade20k.py']
 model = dict(
-    type='EncoderDecoder',
     backbone=dict(
-        type='SVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/alt_gvt_large.pth'),
         embed_dims=[128, 256, 512, 1024],
