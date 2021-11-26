@@ -572,9 +572,9 @@ class SVT(PCPVT):
               self).__init__(img_size, patch_size, in_channels, embed_dims,
                              num_heads, mlp_ratios, out_indices, qkv_bias,
                              drop_rate, attn_drop_rate, drop_path_rate,
-                             norm_cfg, depths, sr_ratios, init_cfg)
+                             norm_cfg, depths, sr_ratios, norm_after_stage,
+                             init_cfg)
         self.windiow_size = windiow_size
-        self.norm_after_stage = norm_after_stage
         self.strides = strides
         if self.norm_after_stage:
             self.norm_list = ModuleList()
@@ -601,6 +601,8 @@ class SVT(PCPVT):
                             window_size=windiow_size[k])
             cur += depths[k]
 
+        import pdb
+        pdb.set_trace()
         if strides != (2, 2, 2):
             del self.patch_embeds
             self.patch_embeds = ModuleList()
