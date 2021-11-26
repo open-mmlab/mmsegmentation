@@ -1,7 +1,3 @@
-import torch.nn as nn
-from einops import rearrange
-from mmcv.cnn.utils.weight_init import trunc_normal_
-
 from ..builder import HEADS
 from .fcn_head import FCNHead
 
