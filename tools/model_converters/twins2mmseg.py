@@ -51,6 +51,8 @@ def convert_vit(args, ckpt):
             new_k = new_k.replace('blocks.', 'layers.')
         elif k.startswith('backbone.pos_block'):
             new_k = k.replace('pos_block', 'position_encodings')
+            if 'proj.0.' in new_k:
+                new_k = k.replace('proj.0.', 'proj.')
         else:
             new_k = k
         if 'attn.kv.' not in k:
