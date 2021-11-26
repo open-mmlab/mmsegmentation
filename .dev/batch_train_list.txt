@@ -15,5 +15,5 @@ configs/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes.py
 configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes.py
 configs/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k.py
 configs/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k.py
-configs/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes.py
+configs/deeplabv3plus/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes.py
 configs/swin/upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K.py

@@ -10,6 +10,7 @@ Collections:
     - Dark Zurich and Nighttime Driving
     - COCO-Stuff 10k
     - COCO-Stuff 164k
+    - LoveDA
   Paper:
     URL: https://arxiv.org/abs/1612.01105
     Title: Pyramid Scene Parsing Network
@@ -158,6 +159,27 @@ Models:
       mIoU(ms+flip): 81.01
   Config: configs/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes/pspnet_r101-d8_512x1024_80k_cityscapes_20200606_112211-e1e1100f.pth
+- Name: pspnet_r101-d8_fp16_512x1024_80k_cityscapes
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 114.03
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (512,1024)
+    memory (GB): 5.34
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.46
+  Config: configs/pspnet/pspnet_r101-d8_fp16_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_fp16_512x1024_80k_cityscapes/pspnet_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230919-a0875e5c.pth
 - Name: pspnet_r18-d8_769x769_80k_cityscapes
   In Collection: pspnet
   Metadata:
@@ -720,3 +742,69 @@ Models:
       mIoU(ms+flip): 42.42
   Config: configs/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-72220c60.pth
+- Name: pspnet_r18-d8_512x512_80k_loveda
+  In Collection: pspnet
+  Metadata:
+    backbone: R-18-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 37.22
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 1.45
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 48.62
+      mIoU(ms+flip): 47.57
+  Config: configs/pspnet/pspnet_r18-d8_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_512x512_80k_loveda/pspnet_r18-d8_512x512_80k_loveda_20211105_052100-b97697f1.pth
+- Name: pspnet_r50-d8_512x512_80k_loveda
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 151.52
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 6.14
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 50.46
+      mIoU(ms+flip): 50.19
+  Config: configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_loveda/pspnet_r50-d8_512x512_80k_loveda_20211104_155728-88610f9f.pth
+- Name: pspnet_r101-d8_512x512_80k_loveda
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 218.34
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 9.61
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 51.86
+      mIoU(ms+flip): 51.34
+  Config: configs/pspnet/pspnet_r101-d8_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_80k_loveda/pspnet_r101-d8_512x512_80k_loveda_20211104_153212-1c06c6a8.pth

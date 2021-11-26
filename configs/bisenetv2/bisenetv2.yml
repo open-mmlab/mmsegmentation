@@ -75,7 +75,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: FP16
       resolution: (1024,1024)
     memory (GB): 5.77
   Results:
