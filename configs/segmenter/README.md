@@ -6,6 +6,8 @@
 
 <a href="https://github.com/rstrudel/segmenter">Official Repo</a>
 
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/backbones/mit.py#L246">Code Snippet</a>
+
 <details>
 <summary align="right"><a href="https://arxiv.org/abs/2105.05633">Segmenter: Transformer for Semantic Segmentation (ICCV'2021)</a></summary>
 
@@ -46,7 +48,7 @@ This script convert model from `PRETRAIN_PATH` and store the converted model in 
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config | download |
 | ------ | -------- | --------- | ---------- | ------- | -------- | --- | --- | -------------- | ----- |
-| Segmenter-Linear | ViT-S/16 | 512x512 | 160000   | mem        | 34.78              | 45.57 | 45.69            | [config]()  | [model]() &#124; [log]()     |
-| Segmenter-Mask | ViT-S/16 | 512x512 | 160000   | mem        | 29.80              | 45.96 | 46.51            | [config]()  | [model]() &#124; [log]()     |
-| Segmenter-Linear | ViT-B/16 | 512x512 | 160000   | mem        | 17.34              | 48.69 | 48.71            | [config]()  | [model]() &#124; [log]()     |
-| Segmenter-Mask | ViT-B/16 |512x512 |  160000   | mem        | 14.67              | 48.69 | 49.51            | [config]()  | [model]() &#124; [log]()     |
+| Segmenter-Linear | ViT-S_16 | 512x512 | 160000   | 999        | 34.78              | 45.57 | 45.69            | [config]() | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530-8ffa8fda.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530.log.json) |
+| Segmenter-Mask | ViT-S_16 | 512x512 | 160000   | 999        | 29.80              | 45.96 | 46.51            | [config]() | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530-8ffa8fda.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530.log.json) |
+| Segmenter-Linear | ViT-B_16 | 512x512 | 160000   | 999        | 17.34              | 48.69 | 48.71            | [config]() | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530-8ffa8fda.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530.log.json) |
+| Segmenter-Mask | ViT-B_16 |512x512 |  160000   | 999        | 14.67              | 48.69 | 49.51            | [config]()  | [model]() &#124; [log]()     |

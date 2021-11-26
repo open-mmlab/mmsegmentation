@@ -1,0 +1,103 @@
+Collections:
+- Name: segmenter
+  Metadata:
+    Training Data:
+    - ADE20K
+  Paper:
+    URL: https://arxiv.org/abs/2105.05633
+    Title: 'Segmenter: Transformer for Semantic Segmentation'
+  README: configs/segmenter/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/backbones/mit.py#L246
+    Version: v0.21.0
+  Converted From:
+    Code: https://github.com/rstrudel/segmenter
+Models:
+- Name: ''
+  In Collection: segmenter
+  Metadata:
+    backbone: ViT-S_16
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 28.75
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 999.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.57
+      mIoU(ms+flip): 45.69
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: segmenter
+  Metadata:
+    backbone: ViT-S_16
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 33.56
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 999.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.96
+      mIoU(ms+flip): 46.51
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: segmenter
+  Metadata:
+    backbone: ViT-B_16
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 57.67
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 999.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.69
+      mIoU(ms+flip): 48.71
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: segmenter
+  Metadata:
+    backbone: ViT-B_16
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 68.17
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 999.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.69
+      mIoU(ms+flip): 49.51
+  Config: ''
+  Weights: ''
