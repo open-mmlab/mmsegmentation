@@ -129,8 +129,8 @@ class GSAEncoderLayer(BaseModule):
             dict(type='DropPath', drop_prob=drop_path_rate)
         ) if drop_path_rate > 0. else nn.Identity()
 
-    def forward(self, x, H, W):
-        x = x + self.drop_path(self.attn(self.norm1(x), (H, W), identity=0.))
+    def forward(self, x, hw_shape):
+        x = x + self.drop_path(self.attn(self.norm1(x), hw_shape, identity=0.))
         x = x + self.drop_path(self.ffn(self.norm2(x)))
         return x
 
@@ -180,14 +180,14 @@ class LocallygroupedSelfAttention(BaseModule):
         self.window_size = window_size
 
     def forward(self, x, hw_shape):
-        B, N, C = x.shape
-        H, W = hw_shape
-        x = x.view(B, H, W, C)
+        b, n, c = x.shape
+        h, w = hw_shape
+        x = x.view(b, h, w, c)
 
         # pad feature maps to multiples of Local-groups
         pad_l = pad_t = 0
-        pad_r = (self.window_size - W % self.window_size) % self.window_size
-        pad_b = (self.window_size - H % self.window_size) % self.window_size
+        pad_r = (self.window_size - w % self.window_size) % self.window_size
+        pad_b = (self.window_size - h % self.window_size) % self.window_size
         x = F.pad(x, (0, 0, pad_l, pad_r, pad_t, pad_b))
 
         # calculate attention mask for LSA
@@ -198,8 +198,8 @@ class LocallygroupedSelfAttention(BaseModule):
         mask[:, :, -pad_r:].fill_(1)
 
         # [B, _h, _w, window_size, window_size, C]
-        x = x.reshape(B, _h, self.window_size, _w, self.window_size,
-                      C).transpose(2, 3)
+        x = x.reshape(b, _h, self.window_size, _w, self.window_size,
+                      c).transpose(2, 3)
         mask = mask.reshape(1, _h, self.window_size, _w,
                             self.window_size).transpose(2, 3).reshape(
                                 1, _h * _w,
@@ -211,9 +211,9 @@ class LocallygroupedSelfAttention(BaseModule):
                                               attn_mask == 0, float(0.0))
 
         # [n_h, B, _w*_h, nhead, window_size*window_size, dim]
-        qkv = self.qkv(x).reshape(B, _h * _w,
+        qkv = self.qkv(x).reshape(b, _h * _w,
                                   self.window_size * self.window_size, 3,
-                                  self.num_heads, C // self.num_heads).permute(
+                                  self.num_heads, c // self.num_heads).permute(
                                       3, 0, 1, 4, 2, 5)
         q, k, v = qkv[0], qkv[1], qkv[2]
         # [B, _h*_w, n_head, window_size*window_size, window_size*window_size]
@@ -221,14 +221,14 @@ class LocallygroupedSelfAttention(BaseModule):
         attn = attn + attn_mask.unsqueeze(2)
         attn = attn.softmax(dim=-1)
         attn = self.attn_drop(attn)
-        attn = (attn @ v).transpose(2, 3).reshape(B, _h, _w, self.window_size,
-                                                  self.window_size, C)
-        x = attn.transpose(2, 3).reshape(B, _h * self.window_size,
-                                         _w * self.window_size, C)
+        attn = (attn @ v).transpose(2, 3).reshape(b, _h, _w, self.window_size,
+                                                  self.window_size, c)
+        x = attn.transpose(2, 3).reshape(b, _h * self.window_size,
+                                         _w * self.window_size, c)
         if pad_r > 0 or pad_b > 0:
-            x = x[:, :H, :W, :].contiguous()
+            x = x[:, :h, :w, :].contiguous()
 
-        x = x.reshape(B, N, C)
+        x = x.reshape(b, n, c)
         x = self.proj(x)
         x = self.proj_drop(x)
         return x
@@ -300,8 +300,8 @@ class LSAEncoderLayer(BaseModule):
             dict(type='DropPath', drop_prob=drop_path_rate)
         ) if drop_path_rate > 0. else nn.Identity()
 
-    def forward(self, x, H, W):
-        x = x + self.drop_path(self.attn(self.norm1(x), (H, W)))
+    def forward(self, x, hw_shape):
+        x = x + self.drop_path(self.attn(self.norm1(x), hw_shape))
         x = x + self.drop_path(self.ffn(self.norm2(x)))
         return x
 
@@ -331,10 +331,11 @@ class ConditionalPositionEncoding(BaseModule):
             groups=embed_dims)
         self.stride = stride
 
-    def forward(self, x, H, W):
-        B, N, C = x.shape
+    def forward(self, x, hw_shape):
+        b, n, c = x.shape
+        h, w = hw_shape
         feat_token = x
-        cnn_feat = feat_token.transpose(1, 2).view(B, C, H, W)
+        cnn_feat = feat_token.transpose(1, 2).view(b, c, h, w)
         if self.stride == 1:
             x = self.proj(cnn_feat) + cnn_feat
         else:
@@ -476,18 +477,19 @@ class PCPVT(BaseModule):
     def forward(self, x):
         outputs = list()
 
-        B = x.shape[0]
+        b = x.shape[0]
 
         for i in range(len(self.depths)):
-            x, (H, W) = self.patch_embeds[i](x)
+            x, hw_shape = self.patch_embeds[i](x)
+            h, w = hw_shape
             x = self.position_encoding_drops[i](x)
             for j, blk in enumerate(self.layers[i]):
-                x = blk(x, H, W)
+                x = blk(x, hw_shape)
                 if j == 0:
-                    x = self.position_encodings[i](x, H, W)
+                    x = self.position_encodings[i](x, hw_shape)
             if self.norm_after_stage:
                 x = self.norm_list[i](x)
-            x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
+            x = x.reshape(b, h, w, -1).permute(0, 3, 1, 2).contiguous()
 
             if i in self.out_indices:
                 outputs.append(x)
