@@ -3,6 +3,7 @@ _base_ = [
     '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_160k.py'
 ]
+backbone_norm_cfg = dict(type='LN')
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
@@ -13,14 +14,14 @@ model = dict(
         embed_dims=[64, 128, 256, 512],
         num_heads=[2, 4, 8, 16],
         mlp_ratios=[4, 4, 4, 4],
+        out_indices=(0, 1, 2, 3),
         qkv_bias=True,
-        norm_cfg=dict(type='LN'),
+        norm_cfg=backbone_norm_cfg,
         depths=[2, 2, 10, 4],
-        wss=[7, 7, 7, 7],
+        windiow_size=[7, 7, 7, 7],
         sr_ratios=[8, 4, 2, 1],
-        extra_norm=True,
-        drop_path_rate=0.2,
-        style='pytorch'),
+        norm_after_stage=True,
+        drop_path_rate=0.2),
     decode_head=dict(in_channels=[64, 128, 256, 512]),
     auxiliary_head=dict(in_channels=256))
 

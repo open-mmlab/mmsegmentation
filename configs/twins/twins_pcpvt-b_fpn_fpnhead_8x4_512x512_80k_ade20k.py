@@ -6,11 +6,9 @@ _base_ = [
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
-        type='PCPVT',
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/pcpvt_base.pth'),
         depths=[3, 4, 18, 3]),
 )
 
 optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, weight_decay=0.0001)
-optimizer_config = dict(grad_clip=None)

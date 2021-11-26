@@ -1,4 +1,4 @@
-_base_ = ['twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k.py']
+_base_ = ['./twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k.py']
 
 model = dict(
     type='EncoderDecoder',
