@@ -31,7 +31,8 @@ def convert_vit(args, ckpt):
                 new_k = k.replace('mlp.fc1', 'ffn.layers.0.0')
             elif 'mlp.fc2' in k:
                 new_k = k.replace('mlp.fc2', 'ffn.layers.1')
-
+            # elif 'mlp.fc2' in k:
+            #     position_encodings
             # Only pcpvt
             elif args.model == 'pcpvt':
                 if 'attn.proj.' in k:
@@ -49,7 +50,7 @@ def convert_vit(args, ckpt):
                         new_k = k
                 else:
                     new_k = k
-            k = k.replace('blocks.', 'layers.')
+            new_k = new_k.replace('blocks.', 'layers.')
         elif k.startswith('backbone.pos_block'):
             if 'proj.0.' in k:
                 new_k = k.replace('proj.0.', 'proj.')
