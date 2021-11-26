@@ -493,7 +493,7 @@ class PCPVT(BaseModule):
             if i in self.out_indices:
                 outputs.append(x)
 
-        return outputs
+        return tuple(outputs)
 
 
 @BACKBONES.register_module()
