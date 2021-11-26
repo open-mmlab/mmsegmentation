@@ -123,7 +123,7 @@ pip install -e .  # 或者 "python setup.py develop"
    要么手动使用 `pip install -r requirements/optional.txt` 安装，要么专门从pip下安装(即 `pip install -e .[optional]`，
    其中选项可设置为 `all`, `tests`, `build`, 和 `optional`)
 
-### 完成的安装脚本
+### 完整的安装脚本
 
 #### Linux
 
