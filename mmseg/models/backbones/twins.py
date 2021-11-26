@@ -403,6 +403,8 @@ class PCPVT(BaseModule):
         self.layers = ModuleList()
 
         for i in range(len(depths)):
+            import pdb
+            pdb.set_trace()
             if i == 0:
                 input_size = img_size
                 self.patch_embeds.append(
@@ -566,7 +568,6 @@ class SVT(PCPVT):
                  sr_ratios=[4, 2, 1],
                  windiow_size=[7, 7, 7],
                  norm_after_stage=True,
-                 strides=(2, 2, 2),
                  init_cfg=None):
         super(SVT,
               self).__init__(img_size, patch_size, in_channels, embed_dims,
@@ -575,11 +576,7 @@ class SVT(PCPVT):
                              norm_cfg, depths, sr_ratios, norm_after_stage,
                              init_cfg)
         self.windiow_size = windiow_size
-        self.strides = strides
-        if self.norm_after_stage:
-            self.norm_list = ModuleList()
-            for dim in embed_dims:
-                self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
+
         # transformer encoder
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
@@ -600,38 +597,3 @@ class SVT(PCPVT):
                             qkv_bias=qkv_bias,
                             window_size=windiow_size[k])
             cur += depths[k]
-
-        import pdb
-        pdb.set_trace()
-        if strides != (2, 2, 2):
-            del self.patch_embeds
-            self.patch_embeds = ModuleList()
-            scale = 1
-            for i in range(len(depths)):
-                if i == 0:
-                    self.patch_embeds.append(
-                        PatchEmbed(
-                            in_channels=in_channels,
-                            embed_dims=embed_dims[i],
-                            conv_type='Conv2d',
-                            kernel_size=patch_size,
-                            stride=patch_size,
-                            padding='corner',
-                            norm_cfg=norm_cfg,
-                            input_size=img_size,
-                            init_cfg=None))
-                else:
-                    self.patch_embeds.append(
-                        PatchEmbed(
-                            in_channels=embed_dims[i - 1],
-                            embed_dims=embed_dims[i],
-                            conv_type='Conv2d',
-                            kernel_size=strides[i - 1],
-                            stride=strides[i - 1],
-                            padding='corner',
-                            norm_cfg=norm_cfg,
-                            input_size=img_size // patch_size // scale,
-                            init_cfg=None))
-                scale = scale * strides[i - 1]
-
-        self.apply(self._init_weights)
