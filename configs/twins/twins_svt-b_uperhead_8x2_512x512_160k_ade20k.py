@@ -9,5 +9,3 @@ model = dict(
         depths=[2, 2, 18, 2]),
     decode_head=dict(in_channels=[96, 192, 384, 768]),
     auxiliary_head=dict(in_channels=384))
-
-data = dict(samples_per_gpu=2, workers_per_gpu=2)

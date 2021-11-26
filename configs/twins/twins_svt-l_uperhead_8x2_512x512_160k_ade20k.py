@@ -9,5 +9,3 @@ model = dict(
         drop_path_rate=0.3),
     decode_head=dict(in_channels=[128, 256, 512, 1024]),
     auxiliary_head=dict(in_channels=512))
-
-data = dict(samples_per_gpu=2, workers_per_gpu=2)

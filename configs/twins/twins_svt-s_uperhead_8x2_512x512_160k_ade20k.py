@@ -3,7 +3,6 @@ _base_ = [
     '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_160k.py'
 ]
-backbone_norm_cfg = dict(type='LN')
 model = dict(
     backbone=dict(
         type='SVT',

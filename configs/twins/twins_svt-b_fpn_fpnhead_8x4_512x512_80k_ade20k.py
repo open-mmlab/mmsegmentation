@@ -8,5 +8,4 @@ model = dict(
         num_heads=[3, 6, 12, 24],
         depths=[2, 2, 18, 2]),
     neck=dict(in_channels=[96, 192, 384, 768]),
-    decode_head=dict(num_classes=150),
 )
