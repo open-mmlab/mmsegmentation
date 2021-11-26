@@ -1,9 +1,12 @@
+import math
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import build_conv_layer, build_norm_layer, trunc_normal_init
+from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
+from mmcv.cnn.utils.weight_init import trunc_normal_
 from mmcv.runner import BaseModule, ModuleList
 
 from mmseg.models.backbones.mit import EfficientMultiheadAttention
@@ -307,7 +310,7 @@ class LSAEncoderLayer(BaseModule):
 
 
 class ConditionalPositionEncoding(BaseModule):
-    """The Conditional Position Encoding(CPE).
+    """The Conditional Position Encoding (CPE).
 
     The CPE is the implementation of 'Conditional Positional Encodings
     for Vision Transformers <https://arxiv.org/abs/2102.10882>'_.
@@ -320,13 +323,11 @@ class ConditionalPositionEncoding(BaseModule):
 
     def __init__(self, in_channels, embed_dims=768, stride=1, init_cfg=None):
         super(ConditionalPositionEncoding, self).__init__(init_cfg=init_cfg)
-        self.proj = build_conv_layer(
-            dict(type='Conv2d'),
-            in_channels=in_channels,
-            out_channels=embed_dims,
+        self.proj = nn.Conv2d(
+            in_channels,
+            embed_dims,
             kernel_size=3,
             stride=stride,
-            padding=1,
             bias=True,
             groups=embed_dims)
         self.stride = stride
@@ -455,9 +456,8 @@ class PCPVT(BaseModule):
                 self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
 
     def init_weights(self, m):
-        import math
         if isinstance(m, nn.Linear):
-            trunc_normal_init(m.weight, std=.02)
+            trunc_normal_(m.weight, std=.02)
             if isinstance(m, nn.Linear) and m.bias is not None:
                 nn.init.constant_(m.bias, 0)
         elif isinstance(m, nn.LayerNorm):
