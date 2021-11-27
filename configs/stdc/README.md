@@ -32,6 +32,26 @@ BiSeNet has been proved to be a popular two-stream network for real-time segment
 
 </details>
 
+## Usage
+
+To use original repositories' [pre-trained models](https://drive.google.com/drive/folders/1wROFwRt8qWHD4jSo8Zu1gp1d6oYJ3ns1), it is necessary to convert keys.
+
+We provide a script [`stdc2mmseg.py`](../../tools/model_converters/stdc2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/MichaelFan01/STDC-Seg) to MMSegmentation style.
+
+```shell
+python tools/model_converters/stdc2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH} ${STDC_TYPE}
+```
+
+E.g.
+
+```shell
+python tools/model_converters/stdc2mmseg.py ./STDCNet813M_73.91.tar ./pretrained/pretrained_stdc-813.pth STDC1
+
+python tools/model_converters/stdc2mmseg.py ./STDCNet1446_76.47.tar ./pretrained/pretrained_stdc-1446.pth STDC2
+```
+
+This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
+
 ## Results and models
 
 ### Cityscapes
