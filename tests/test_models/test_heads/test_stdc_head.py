@@ -11,7 +11,7 @@ def test_stdc_head():
         in_channels=32,
         channels=8,
         num_convs=1,
-        num_classes=1,
+        num_classes=2,
         in_index=-1,
         loss_decode=[
             dict(
