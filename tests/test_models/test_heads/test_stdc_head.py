@@ -24,7 +24,7 @@ def test_stdc_head():
     assert isinstance(outputs, torch.Tensor) and len(outputs) == 1
     assert outputs.shape == torch.Size([1, head.num_classes, 21, 21])
 
-    fake_label = torch.zeros_like(outputs, dtype=torch.int16).long()
+    fake_label = torch.ones_like(outputs, dtype=torch.int16).long()
     loss = head.losses(seg_logit=outputs, seg_label=fake_label)
     assert torch.allclose(loss['loss_ce'], torch.tensor(0.))
     assert torch.allclose(loss['loss_dice'], torch.tensor(0.))
