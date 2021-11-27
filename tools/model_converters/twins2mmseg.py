@@ -16,12 +16,12 @@ def convert_vit(args, ckpt):
         new_v = v
         if k.startswith('head'):
             continue
-        elif k.startswith('backbone.patch_embeds'):
+        elif k.startswith('patch_embeds'):
             if 'proj.' in k:
                 new_k = k.replace('proj.', 'projection.')
             else:
                 new_k = k
-        elif k.startswith('backbone.blocks'):
+        elif k.startswith('blocks'):
             # Union
             if 'attn.q.' in k:
                 new_k = k.replace('q.', 'attn.in_proj_')
@@ -42,14 +42,14 @@ def convert_vit(args, ckpt):
             else:
                 if 'attn.proj.' in k:
                     k_lst = k.split('.')
-                    if int(k_lst[3]) % 2 == 1:
+                    if int(k_lst[2]) % 2 == 1:
                         new_k = k.replace('proj.', 'attn.out_proj.')
                     else:
                         new_k = k
                 else:
                     new_k = k
             new_k = new_k.replace('blocks.', 'layers.')
-        elif k.startswith('backbone.pos_block'):
+        elif k.startswith('pos_block'):
             new_k = k.replace('pos_block', 'position_encodings')
             if 'proj.0.' in new_k:
                 new_k = new_k.replace('proj.0.', 'proj.')
@@ -72,7 +72,6 @@ def main():
 
     checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')
 
-    state_dict = checkpoint
     if 'state_dict' in checkpoint:
         # timm checkpoint
         state_dict = checkpoint['state_dict']
@@ -80,10 +79,8 @@ def main():
         state_dict = checkpoint
 
     weight = convert_vit(args, state_dict)
-
-    checkpoint['state_dict'] = weight
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
-    torch.save(checkpoint, args.dst)
+    torch.save(weight, args.dst)
 
 
 if __name__ == '__main__':
