@@ -23,7 +23,6 @@ model = dict(
         type='SegmenterLinearHead',
         in_channels=384,
         channels=384,
-        num_convs=0,
         num_classes=19,
         dropout_ratio=0.0,
         in_index=-1,

@@ -30,7 +30,10 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
             **kwargs,
     ):
         super(SegmenterMaskTransformerHead, self).__init__(
-            in_channels=in_channels, **kwargs)
+            in_channels=in_channels,
+            init_cfg=dict(type='Normal', std=0.02),
+            **kwargs,
+        )
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, num_layers)]
         self.layers = ModuleList()
@@ -65,6 +68,8 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
         trunc_normal_(self.cls_emb, std=0.02)
         trunc_normal_(self.proj_patch, std=0.02)
         trunc_normal_(self.proj_classes, std=0.02)
+
+        delattr(self, 'conv_seg')
 
     def forward(self, inputs):
         x = self._transform_inputs(inputs)

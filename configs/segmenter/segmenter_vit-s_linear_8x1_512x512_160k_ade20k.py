@@ -7,7 +7,7 @@ _base_ = [
 find_unused_parameters = True
 model = dict(
     backbone=dict(img_size=(512, 512)),
-    decode_head=dict(num_classes=150),
+    decode_head=dict(num_convs=0, num_classes=150),
 )
 
 optimizer = dict(lr=0.001, weight_decay=0.0)
