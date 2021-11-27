@@ -31,7 +31,7 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
     ):
         super(SegmenterMaskTransformerHead, self).__init__(
             in_channels=in_channels,
-            init_cfg=dict(type='Normal', std=0.02),
+            init_cfg=dict(type='TruncNormal', std=0.02),
             **kwargs,
         )
 
