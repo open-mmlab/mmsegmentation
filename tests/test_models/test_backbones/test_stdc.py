@@ -20,7 +20,7 @@ def test_stdc_context_path_net():
             stdc_num_convs=4,
             norm_cfg=dict(type='BN', requires_grad=True),
             act_cfg=dict(type='ReLU'),
-            with_final_conv=False),
+            with_final_conv=True),
         last_in_channels=(512, 1024),
         out_channels=128,
         ffm_cfg=dict(in_channels=384, out_channels=256, scale_factor=4))
