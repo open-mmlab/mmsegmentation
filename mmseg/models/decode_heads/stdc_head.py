@@ -24,12 +24,12 @@ class STDCHead(FCNHead):
         self.register_buffer(
             'laplacian_kernel',
             torch.tensor([-1, -1, -1, -1, 8, -1, -1, -1, -1],
-                         dtype=torch.float32).requires_grad_(False).reshape(
-                             (1, 1, 3, 3)))
+                         dtype=torch.float32,
+                         requires_grad=False).reshape((1, 1, 3, 3)))
         self.fuse_kernel = torch.nn.Parameter(
             torch.tensor([[6. / 10], [3. / 10], [1. / 10]],
-                         dtype=torch.float32).reshape(1, 3, 1,
-                                                      1)).requires_grad_(False)
+                         dtype=torch.float32).reshape(1, 3, 1, 1),
+            requires_grad=False)
 
     def losses(self, seg_logit, seg_label):
         """Compute Detail Aggregation Loss."""

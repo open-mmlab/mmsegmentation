@@ -3,4 +3,4 @@ model = dict(
     backbone=dict(
         stdc_cfg=dict(
             init_cfg=dict(
-                checkpoint='./pretrained/pretrained_stdc-1446.pth'))))
+                type='Pretrained', checkpoint='./pretrained/stdc-1446.pth'))))

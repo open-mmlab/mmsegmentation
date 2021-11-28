@@ -45,9 +45,9 @@ python tools/model_converters/stdc2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH} ${STD
 E.g.
 
 ```shell
-python tools/model_converters/stdc2mmseg.py ./STDCNet813M_73.91.tar ./pretrained/pretrained_stdc-813.pth STDC1
+python tools/model_converters/stdc2mmseg.py ./STDCNet813M_73.91.tar ./pretrained/stdc-813.pth STDC1
 
-python tools/model_converters/stdc2mmseg.py ./STDCNet1446_76.47.tar ./pretrained/pretrained_stdc-1446.pth STDC2
+python tools/model_converters/stdc2mmseg.py ./STDCNet1446_76.47.tar ./pretrained/stdc-1446.pth STDC2
 ```
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
