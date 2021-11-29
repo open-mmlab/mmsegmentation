@@ -27,7 +27,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 7.7
+    Training Memory (GB): 7.7
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -49,7 +49,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 11.2
+    Training Memory (GB): 11.2
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -71,7 +71,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (769,769)
-    memory (GB): 8.7
+    Training Memory (GB): 8.7
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -93,7 +93,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (769,769)
-    memory (GB): 12.7
+    Training Memory (GB): 12.7
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -171,7 +171,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 10.1
+    Training Memory (GB): 10.1
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -193,7 +193,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 13.6
+    Training Memory (GB): 13.6
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
