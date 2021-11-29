@@ -13,17 +13,15 @@ def convert_vit(args, ckpt):
     new_ckpt = OrderedDict()
 
     for k, v in list(ckpt.items()):
-        import pdb
-        pdb.set_trace()
         new_v = v
         if k.startswith('head'):
             continue
-        elif k.startswith('backbone.patch_embeds'):
+        elif k.startswith('patch_embeds'):
             if 'proj.' in k:
                 new_k = k.replace('proj.', 'projection.')
             else:
                 new_k = k
-        elif k.startswith('backbone.blocks'):
+        elif k.startswith('blocks'):
             # Union
             if 'attn.q.' in k:
                 new_k = k.replace('q.', 'attn.in_proj_')
@@ -51,7 +49,7 @@ def convert_vit(args, ckpt):
                 else:
                     new_k = k
             new_k = new_k.replace('blocks.', 'layers.')
-        elif k.startswith('backbone.pos_block'):
+        elif k.startswith('pos_block'):
             new_k = k.replace('pos_block', 'position_encodings')
             if 'proj.0.' in new_k:
                 new_k = new_k.replace('proj.0.', 'proj.')
