@@ -70,6 +70,7 @@ jobs:
       - run:
           name: Run unittests
           command: |
+            python -m pip install timm
             python -m coverage run --branch --source mmseg -m pytest tests/
             python -m coverage xml
             python -m coverage report -m
