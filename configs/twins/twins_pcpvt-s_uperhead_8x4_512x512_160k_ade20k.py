@@ -33,4 +33,4 @@ backbone = dict(
         'data/linxinyang/models/twins/'
         'mmsegPR_convert_backbone_'
         'pcpvt_s.pth'))
-evaluation = dict(interval=100, metric='mIoU', pre_eval=True)
+evaluation = dict(interval=1000, metric='mIoU', pre_eval=True)
