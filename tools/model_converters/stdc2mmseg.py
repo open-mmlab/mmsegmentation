@@ -24,50 +24,49 @@ def convert_stdc1(ckpt):
         if 'conv_list' in k:
             k = k.replace('conv_list', 'layers')
             flag = True
-        if 'avd_layer.0' in k:
-            k = k.replace('avd_layer.0', 'avg_pool.conv')
-            flag = True
-        if 'avd_layer.1' in k:
-            k = k.replace('avd_layer.1', 'avg_pool.bn')
+        if 'avd_layer.' in k:
+            if 'avd_layer.0' in k:
+                k = k.replace('avd_layer.0', 'avg_pool.conv')
+            elif 'avd_layer.1' in k:
+                k = k.replace('avd_layer.1', 'avg_pool.bn')
             flag = True
         if 'conv_last' in k:
             k = k.replace('conv_last', 'final_conv')
             flag = True
-        if 'arm16' in k:
-            k = k.replace('arm16', 'arms.0')
+        if 'arm' in k:
+            if 'arm16' in k:
+                k = k.replace('arm16', 'arms.0')
+            elif 'arm32' in k:
+                k = k.replace('arm32', 'arms.1')
             flag = True
-        if 'arm32' in k:
-            k = k.replace('arm32', 'arms.1')
+        if '_atten' in k:
+            if 'conv_atten' in k:
+                k = k.replace('conv_atten', 'conv_attn.conv')
+            elif 'bn_atten' in k:
+                k = k.replace('bn_atten', 'conv_attn.bn')
             flag = True
-        if 'conv_atten' in k:
-            k = k.replace('conv_atten', 'conv_attn.conv')
+        if 'conv_head' in k:
+            if 'conv_head32' in k:
+                k = k.replace('conv_head32', 'convs.1')
+            elif 'conv_head16' in k:
+                k = k.replace('conv_head16', 'convs.0')
             flag = True
-        if 'bn_atten' in k:
-            k = k.replace('bn_atten', 'conv_attn.bn')
+        if 'ffm.conv' in k:
+            if 'ffm.convblk' in k:
+                k = k.replace('ffm.convblk', 'ffm.conv0')
+            elif 'ffm.conv1' in k:
+                k = k.replace('ffm.conv1', 'ffm.conv1.conv')
+            elif 'ffm.conv2' in k:
+                k = k.replace('ffm.conv2', 'ffm.conv2.conv')
             flag = True
-        if 'conv_head32' in k:
-            k = k.replace('conv_head32', 'convs.1')
-            flag = True
-        if 'conv_head16' in k:
-            k = k.replace('conv_head16', 'convs.0')
-            flag = True
-        if 'ffm.convblk' in k:
-            k = k.replace('ffm.convblk', 'ffm.conv0')
-            flag = True
-        if 'ffm.conv1' in k:
-            k = k.replace('ffm.conv1', 'ffm.conv1.conv')
-            flag = True
-        if 'ffm.conv2' in k:
-            k = k.replace('ffm.conv2', 'ffm.conv2.conv')
-            flag = True
-        if 'conv_out.conv.conv.' in k:
-            k = k.replace('conv_out.conv.conv.', 'decode_head.convs.0.conv.')
-            flag = True
-        if 'conv_out.conv.bn.' in k:
-            k = k.replace('conv_out.conv.bn.', 'decode_head.convs.0.bn.')
-            flag = True
-        if 'conv_out.conv_out' in k:
-            k = k.replace('conv_out.conv_out', 'decode_head.conv_seg')
+        if 'conv_out.conv' in k:
+            if 'conv_out.conv.conv.' in k:
+                k = k.replace('conv_out.conv.conv.',
+                              'decode_head.convs.0.conv.')
+            elif 'conv_out.conv.bn.' in k:
+                k = k.replace('conv_out.conv.bn.', 'decode_head.convs.0.bn.')
+            elif 'conv_out.conv_out' in k:
+                k = k.replace('conv_out.conv_out', 'decode_head.conv_seg')
             flag = True
         if 'x' in k:
             flag = False
@@ -99,50 +98,49 @@ def convert_stdc2(ckpt):
         if 'conv_list' in k:
             k = k.replace('conv_list', 'layers')
             flag = True
-        if 'avd_layer.0' in k:
-            k = k.replace('avd_layer.0', 'avg_pool.conv')
-            flag = True
-        if 'avd_layer.1' in k:
-            k = k.replace('avd_layer.1', 'avg_pool.bn')
+        if 'avd_layer.' in k:
+            if 'avd_layer.0' in k:
+                k = k.replace('avd_layer.0', 'avg_pool.conv')
+            elif 'avd_layer.1' in k:
+                k = k.replace('avd_layer.1', 'avg_pool.bn')
             flag = True
         if 'conv_last' in k:
             k = k.replace('conv_last', 'final_conv')
             flag = True
-        if 'arm16' in k:
-            k = k.replace('arm16', 'arms.0')
+        if 'arm' in k:
+            if 'arm16' in k:
+                k = k.replace('arm16', 'arms.0')
+            elif 'arm32' in k:
+                k = k.replace('arm32', 'arms.1')
             flag = True
-        if 'arm32' in k:
-            k = k.replace('arm32', 'arms.1')
+        if '_atten' in k:
+            if 'conv_atten' in k:
+                k = k.replace('conv_atten', 'conv_attn.conv')
+            elif 'bn_atten' in k:
+                k = k.replace('bn_atten', 'conv_attn.bn')
             flag = True
-        if 'conv_atten' in k:
-            k = k.replace('conv_atten', 'conv_attn.conv')
+        if 'conv_head' in k:
+            if 'conv_head32' in k:
+                k = k.replace('conv_head32', 'convs.1')
+            elif 'conv_head16' in k:
+                k = k.replace('conv_head16', 'convs.0')
             flag = True
-        if 'bn_atten' in k:
-            k = k.replace('bn_atten', 'conv_attn.bn')
+        if 'ffm.conv' in k:
+            if 'ffm.convblk' in k:
+                k = k.replace('ffm.convblk', 'ffm.conv0')
+            elif 'ffm.conv1' in k:
+                k = k.replace('ffm.conv1', 'ffm.conv1.conv')
+            elif 'ffm.conv2' in k:
+                k = k.replace('ffm.conv2', 'ffm.conv2.conv')
             flag = True
-        if 'conv_head32' in k:
-            k = k.replace('conv_head32', 'convs.1')
-            flag = True
-        if 'conv_head16' in k:
-            k = k.replace('conv_head16', 'convs.0')
-            flag = True
-        if 'ffm.convblk' in k:
-            k = k.replace('ffm.convblk', 'ffm.conv0')
-            flag = True
-        if 'ffm.conv1' in k:
-            k = k.replace('ffm.conv1', 'ffm.conv1.conv')
-            flag = True
-        if 'ffm.conv2' in k:
-            k = k.replace('ffm.conv2', 'ffm.conv2.conv')
-            flag = True
-        if 'conv_out.conv.conv.' in k:
-            k = k.replace('conv_out.conv.conv.', 'decode_head.convs.0.conv.')
-            flag = True
-        if 'conv_out.conv.bn.' in k:
-            k = k.replace('conv_out.conv.bn.', 'decode_head.convs.0.bn.')
-            flag = True
-        if 'conv_out.conv_out' in k:
-            k = k.replace('conv_out.conv_out', 'decode_head.conv_seg')
+        if 'conv_out.conv' in k:
+            if 'conv_out.conv.conv.' in k:
+                k = k.replace('conv_out.conv.conv.',
+                              'decode_head.convs.0.conv.')
+            elif 'conv_out.conv.bn.' in k:
+                k = k.replace('conv_out.conv.bn.', 'decode_head.convs.0.bn.')
+            elif 'conv_out.conv_out' in k:
+                k = k.replace('conv_out.conv_out', 'decode_head.conv_seg')
             flag = True
         if 'x' in k:
             flag = False
