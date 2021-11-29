@@ -32,5 +32,5 @@ backbone = dict(
         checkpoint='/home/hadoop-automl/cephfs/'
         'data/linxinyang/models/twins/'
         'mmsegPR_convert_backbone_'
-        'pcpvt_s.pth'))
+        'alt_gvt_s.pth'))
 evaluation = dict(interval=1000, metric='mIoU', pre_eval=True)
