@@ -5,8 +5,14 @@ model = dict(
     type='EncoderDecoder',
     backbone=dict(
         type='PCPVT',
+        # init_cfg=dict(
+        #     type='Pretrained', checkpoint='pretrained/pcpvt_small.pth'),
         init_cfg=dict(
-            type='Pretrained', checkpoint='pretrained/pcpvt_small.pth'),
+            type='Pretrained',
+            checkpoint='/home/hadoop-automl/cephfs/'
+            'data/linxinyang/models/twins/'
+            'mmsegPR_convert_backbone_'
+            'pcpvt_s.pth'),
         in_channels=3,
         embed_dims=[64, 128, 320, 512],
         num_heads=[1, 2, 5, 8],
