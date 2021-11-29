@@ -13,6 +13,8 @@ def convert_vit(args, ckpt):
     new_ckpt = OrderedDict()
 
     for k, v in list(ckpt.items()):
+        import pdb
+        pdb.set_trace()
         new_v = v
         if k.startswith('head'):
             continue
