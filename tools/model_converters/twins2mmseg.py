@@ -42,9 +42,7 @@ def convert_vit(args, ckpt):
             else:
                 if 'attn.proj.' in k:
                     k_lst = k.split('.')
-                    import pdb
-                    pdb.set_trace()
-                    if int(k_lst[3]) % 2 == 1:
+                    if int(k_lst[2]) % 2 == 1:
                         new_k = k.replace('proj.', 'attn.out_proj.')
                     else:
                         new_k = k
