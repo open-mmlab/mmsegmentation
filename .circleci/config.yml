@@ -24,7 +24,7 @@ jobs:
           name: Check docstring coverage
           command: |
             pip install interrogate
-            interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --ignore-regex "__repr__" --fail-under 50 mmsegmentation
+            interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --ignore-regex "__repr__" --fail-under 50 mmseg
 
   build_cpu:
     parameters:
@@ -58,7 +58,7 @@ jobs:
             python -V
             python -m pip install torch==<< parameters.torch >>+cpu torchvision==<< parameters.torchvision >>+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - run:
-          name: Install mmsegmentation dependencies
+          name: Install mmseg dependencies
           command: |
             python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch<< parameters.torch >>/index.html
             python -m pip install mmdet
@@ -70,7 +70,7 @@ jobs:
       - run:
           name: Run unittests
           command: |
-            python -m coverage run --branch --source mmsegmentation -m pytest tests/
+            python -m coverage run --branch --source mmseg -m pytest tests/
             python -m coverage xml
             python -m coverage report -m
 
@@ -97,7 +97,7 @@ jobs:
             python -V
             python -m pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
       - run:
-          name: Install mmsegmentation dependencies
+          name: Install mmseg dependencies
           # python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch${{matrix.torch_version}}/index.html
           command: |
             python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
