@@ -33,7 +33,8 @@ repos:
     rev: v0.11.0
     hooks:
       - id: markdownlint
-        args: ["-r", "~MD002,~MD013,~MD029,~MD033,~MD034,~MD036"]
+        args: ["-r", "~MD002,~MD013,~MD029,~MD033,~MD034",
+              "-t", "allow_different_nesting"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.1.0
     hooks:
