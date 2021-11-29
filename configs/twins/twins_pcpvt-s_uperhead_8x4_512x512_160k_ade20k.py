@@ -25,12 +25,13 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-backbone = dict(
-    type='PCPVT',
-    init_cfg=dict(
-        type='Pretrained',
-        checkpoint='/home/hadoop-automl/cephfs/'
-        'data/linxinyang/models/twins/'
-        'mmsegPR_convert_backbone_'
-        'alt_gvt_s.pth'))
+model = dict(
+    backbone=dict(
+        type='PCPVT',
+        init_cfg=dict(
+            type='Pretrained',
+            checkpoint='/home/hadoop-automl/cephfs/'
+            'data/linxinyang/models/twins/'
+            'mmsegPR_convert_backbone_'
+            'alt_gvt_s.pth')))
 evaluation = dict(interval=1000, metric='mIoU', pre_eval=True)
