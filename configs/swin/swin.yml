@@ -26,7 +26,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 5.02
+    Training Memory (GB): 5.02
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -48,7 +48,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 6.17
+    Training Memory (GB): 6.17
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -70,7 +70,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 7.61
+    Training Memory (GB): 7.61
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -106,7 +106,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 8.52
+    Training Memory (GB): 8.52
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K

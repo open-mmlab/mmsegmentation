@@ -1,52 +1,47 @@
 name: build
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - 'demo/**'
+      - '.dev/**'
+      - 'docker/**'
+      - 'tools/**'
+      - '**.md'
+
+  pull_request:
+    paths-ignore:
+      - 'demo/**'
+      - '.dev/**'
+      - 'docker/**'
+      - 'tools/**'
+      - 'docs/**'
+      - 'docs_zh-CN/**'
+      - '**.md'
 
 jobs:
-  lint:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-      - name: Install pre-commit hook
-        run: |
-          pip install pre-commit
-          pre-commit install
-      - name: Linting
-        run: pre-commit run --all-files
-      - name: Check docstring coverage
-        run: |
-          pip install interrogate
-          interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --exclude mmseg/ops --ignore-regex "__repr__" --fail-under 80 mmseg
-
   build_cpu:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
         python-version: [3.7]
-        torch: [1.3.1, 1.5.1, 1.6.0, 1.7.0, 1.8.0, 1.9.0]
+        torch: [1.5.1, 1.6.0, 1.7.0, 1.8.0, 1.9.0]
         include:
-          - torch: 1.3.1
-            torchvision: 0.4.2
-            mmcv: "latest+torch1.3.0+cpu"
           - torch: 1.5.1
             torchvision: 0.6.1
-            mmcv: "latest+torch1.5.0+cpu"
+            mmcv: 1.5.0
           - torch: 1.6.0
             torchvision: 0.7.0
-            mmcv: "latest+torch1.6.0+cpu"
+            mmcv: 1.6.0
           - torch: 1.7.0
             torchvision: 0.8.1
-            mmcv: "latest+torch1.7.0+cpu"
+            mmcv: 1.7.0
           - torch: 1.8.0
             torchvision: 0.9.0
-            mmcv: "latest+torch1.8.0+cpu"
+            mmcv: 1.8.0
           - torch: 1.9.0
             torchvision: 0.10.0
-            mmcv: "latest+torch1.9.0+cpu"
+            mmcv: 1.9.0
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -62,7 +57,7 @@ jobs:
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install MMCV
         run: |
-          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch${{matrix.torch}}/index.html
+          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch${{matrix.mmcv}}/index.html
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: |
@@ -93,33 +88,28 @@ jobs:
         python-version: [3.7]
         torch:
           [
-            1.3.1,
             1.5.1+cu101,
             1.6.0+cu101,
             1.7.0+cu101,
             1.8.0+cu101
           ]
         include:
-          - torch: 1.3.1
-            torch_version: torch1.3.1
-            torchvision: 0.4.2
-            mmcv_link: "torch1.3.0"
           - torch: 1.5.1+cu101
             torch_version: torch1.5.1
             torchvision: 0.6.1+cu101
-            mmcv_link: "torch1.5.0"
+            mmcv: 1.5.0
           - torch: 1.6.0+cu101
             torch_version: torch1.6.0
             torchvision: 0.7.0+cu101
-            mmcv_link: "torch1.6.0"
+            mmcv: 1.6.0
           - torch: 1.7.0+cu101
             torch_version: torch1.7.0
             torchvision: 0.8.1+cu101
-            mmcv_link: "torch1.7.0"
+            mmcv: 1.7.0
           - torch: 1.8.0+cu101
             torch_version: torch1.8.0
             torchvision: 0.9.0+cu101
-            mmcv_link: "torch1.8.0"
+            mmcv: 1.8.0
 
     steps:
       - uses: actions/checkout@v2
@@ -140,7 +130,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.mmcv_link}}/index.html
+          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch${{matrix.mmcv}}/index.html
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -183,7 +173,7 @@ jobs:
           - torch: 1.9.0+cu102
             torch_version: torch1.9.0
             torchvision: 0.10.0+cu102
-            mmcv_link: "torch1.9.0"
+            mmcv_link: 1.9.0
 
     steps:
       - uses: actions/checkout@v2
@@ -204,7 +194,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.mmcv_link}}/index.html
+          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch${{matrix.mmcv_link}}/index.html
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
