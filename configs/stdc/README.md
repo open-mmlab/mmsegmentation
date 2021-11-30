@@ -18,7 +18,7 @@ BiSeNet has been proved to be a popular two-stream network for real-time segment
 </div>
 
 <details>
-<summary align="right"><a href="https://arxiv.org/abs/2104.13188">STDC-Seg (CVPR'2021)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/2104.13188">STDC (CVPR'2021)</a></summary>
 
 ```latex
 @inproceedings{fan2021rethinking,
@@ -65,7 +65,7 @@ This script convert model from `PRETRAIN_PATH` and store the converted model in 
 
 Note:
 
-- For STDC-Seg on Cityscapes dataset, default setting is 4 GPUs with 12 samples per GPU in training.
+- For STDC on Cityscapes dataset, default setting is 4 GPUs with 12 samples per GPU in training.
 - `No Pretrain` means the model is trained from scratch.
 - The FPS is for reference only. The environment is also different from paper setting, whose input size is `512x1024` and `768x1536`, i.e., 50% and 75% of our input size, respectively and using TensorRT.
 - The parameter `fuse_kernel` in `STDCHead` is not learnable. You may check it by printing model parameters of original repo on your own.
