@@ -1209,7 +1209,8 @@ class Mosaic(object):
                                     self.img_scale[1] / w_i)
                 gt_seg_i = mmcv.imresize(
                     gt_seg_i,
-                    (int(w_i * scale_ratio_i), int(h_i * scale_ratio_i)))
+                    (int(w_i * scale_ratio_i), int(h_i * scale_ratio_i)),
+                    interpolation='nearest')
 
                 # compute the combine parameters
                 paste_coord, crop_coord = self._mosaic_combine(
