@@ -108,6 +108,14 @@ mmsegmentation
 |   |   └── leftImg8bit
 |   |   |   └── test
 |   |   |       └── night
+│   ├── loveDA
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   │   ├── test
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -253,3 +261,28 @@ Since we only support test models on this dataset, you may only download [the va
 ### Nighttime Driving
 
 Since we only support test models on this dataset, you may only download [the test set](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip).
+
+### LoveDA
+
+The data could be downloaded from Google Drive [here](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing).
+
+Or it can be downloaded from [zenodo](https://zenodo.org/record/5706578#.YZvN7SYRXdF), you should run the following command:
+
+```shell
+# Download Train.zip
+wget https://zenodo.org/record/5706578/files/Train.zip
+# Download Val.zip
+wget https://zenodo.org/record/5706578/files/Val.zip
+# Download Test.zip
+wget https://zenodo.org/record/5706578/files/Test.zip
+```
+
+For LoveDA dataset, please run the following command to download and re-organize the dataset.
+
+```shell
+python tools/convert_datasets/loveda.py /path/to/loveDA
+```
+
+Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/inference.md).
+
+More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
