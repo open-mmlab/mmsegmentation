@@ -25,13 +25,7 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-model = dict(
-    backbone=dict(
-        type='PCPVT',
-        init_cfg=dict(
-            type='Pretrained',
-            checkpoint='/home/hadoop-automl/cephfs/'
-            'data/linxinyang/models/twins/'
-            'mmsegPR_convert_backbone_'
-            'alt_gvt_s.pth')))
+model = dict(pretrained='https://s3plus.sankuai.com/v1/mss_9240d97c6bf34ab1b78'
+             '859c3c2a2a3e4/automl-model-zoo/models/twins/pcpvt_large.pth')
+
 evaluation = dict(interval=1000, metric='mIoU', pre_eval=True)
