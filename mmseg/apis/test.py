@@ -99,9 +99,10 @@ def single_gpu_test(model,
         if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            result = dataset.pre_eval(result, indices=batch_indices)
-
-        results.extend(result)
+            pre_eval_results = dataset.pre_eval(result, indices=batch_indices)
+            results.extend(pre_eval_results)
+        else:
+            results.extend(result)
 
         if show or out_dir:
             img_tensor = data['img'][0]
