@@ -18,7 +18,7 @@ Semantic segmentation is a challenging task that addresses most of the perceptio
 </div>
 
 <details>
-<summary align="right"><a href="http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf">ERFNet (T-ITS)</a></summary>
+<summary align="right"><a href="http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf">ERFNet (T-ITS'2017)</a></summary>
 
 ```latex
 @article{romera2017erfnet,
