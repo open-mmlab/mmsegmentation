@@ -459,6 +459,8 @@ class PCPVT(BaseModule):
 
     def init_weights(self):
         for m in self.modules():
+            import pdb
+            pdb.set_trace()
             if isinstance(m, nn.Linear):
                 trunc_normal_(m.weight, std=.02)
                 if isinstance(m, nn.Linear) and m.bias is not None:
