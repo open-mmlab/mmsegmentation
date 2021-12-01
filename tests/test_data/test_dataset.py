@@ -97,13 +97,11 @@ def test_dataset_wrapper():
     assert len(repeat_dataset) == 10 * len(dataset_a)
 
     img_scale = (60, 60)
-    dynamic_scale = (80, 80)
     pipeline = [
         # dict(type='Mosaic', img_scale=img_scale, pad_val=255),
         # need to merge mosaic
-        dict(type='RandomFlip', flip_ratio=0.5),
-        dict(type='Resize', keep_ratio=True),
-        dict(type='Pad', pad_to_square=True, pad_val=255),
+        dict(type='RandomFlip', prob=0.5),
+        dict(type='Resize', img_scale=img_scale, keep_ratio=False),
     ]
 
     CustomDataset.load_annotations = MagicMock()
@@ -112,17 +110,18 @@ def test_dataset_wrapper():
         height = np.random.randint(10, 30)
         weight = np.random.randint(10, 30)
         img = np.ones((height, weight, 3))
-        seg_fields = 'gt_semantic_seg'
         gt_semantic_seg = np.random.randint(5, size=(height, weight))
-        results.append(
-            dict(
-                seg_fields=seg_fields,
-                gt_semantic_seg=gt_semantic_seg,
-                img=img))
+        results.append(dict(gt_semantic_seg=gt_semantic_seg, img=img))
 
+    classes = ['0', '1', '2', '3', '4']
+    palette = [(0, 0, 0), (1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4)]
     CustomDataset.__getitem__ = MagicMock(side_effect=lambda idx: results[idx])
     dataset_a = CustomDataset(
-        ann_dir=MagicMock(), pipeline=[], test_mode=True, img_prefix='')
+        img_dir=MagicMock(),
+        pipeline=[],
+        test_mode=True,
+        classes=classes,
+        palette=palette)
     len_a = 2
     cat_ids_list_a = [
         np.random.randint(0, 80, num).tolist()
@@ -133,21 +132,17 @@ def test_dataset_wrapper():
     dataset_a.get_cat_ids = MagicMock(
         side_effect=lambda idx: cat_ids_list_a[idx])
 
-    multi_image_mix_dataset = MultiImageMixDataset(dataset_a, pipeline,
-                                                   dynamic_scale)
+    multi_image_mix_dataset = MultiImageMixDataset(dataset_a, pipeline)
 
     for idx in range(len_a):
         results_ = multi_image_mix_dataset[idx]
-        assert results_['img'].shape == (dynamic_scale[0], dynamic_scale[1], 3)
 
     # test skip_type_keys
     multi_image_mix_dataset = MultiImageMixDataset(
-        dataset_a,
-        pipeline,
-        dynamic_scale,
-        skip_type_keys=('RandomFlip', 'Resize', 'Pad'))
+        dataset_a, pipeline, skip_type_keys=('RandomFlip'))
     for idx in range(len_a):
         results_ = multi_image_mix_dataset[idx]
+        print(results_['img'].shape)
         assert results_['img'].shape == (img_scale[0], img_scale[1], 3)
 
 
