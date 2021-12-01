@@ -122,7 +122,7 @@ def test_dataset_wrapper():
 
     CustomDataset.__getitem__ = MagicMock(side_effect=lambda idx: results[idx])
     dataset_a = CustomDataset(
-        ann_file=MagicMock(), pipeline=[], test_mode=True, img_prefix='')
+        ann_dir=MagicMock(), pipeline=[], test_mode=True, img_prefix='')
     len_a = 2
     cat_ids_list_a = [
         np.random.randint(0, 80, num).tolist()
