@@ -71,40 +71,40 @@ def main():
             input_height)
         output_width = args.output_width if args.output_width > 0 else int(
             input_width)
-        print(args.output_file, fourcc, output_fps, output_width,
-              output_height)
         writer = cv2.VideoWriter(args.output_file, fourcc, output_fps,
                                  (output_width, output_height), True)
 
     # start looping
-    while True:
-        flag, frame = cap.read()
-        if not flag:
-            break
+    try:
+        while True:
+            flag, frame = cap.read()
+            if not flag:
+                break
 
-        # test a single image
-        result = inference_segmentor(model, frame)
+            # test a single image
+            result = inference_segmentor(model, frame)
 
-        # blend raw image and prediction
-        draw_img = model.show_result(
-            frame,
-            result,
-            palette=get_palette(args.palette),
-            show=False,
-            opacity=args.opacity)
+            # blend raw image and prediction
+            draw_img = model.show_result(
+                frame,
+                result,
+                palette=get_palette(args.palette),
+                show=False,
+                opacity=args.opacity)
 
-        if args.show:
-            cv2.imshow('video_demo', draw_img)
-            cv2.waitKey(args.show_wait_time)
+            if args.show:
+                cv2.imshow('video_demo', draw_img)
+                cv2.waitKey(args.show_wait_time)
+            if writer:
+                if draw_img.shape[0] != output_height or draw_img.shape[
+                        1] != output_width:
+                    draw_img = cv2.resize(draw_img,
+                                          (output_width, output_height))
+                writer.write(draw_img)
+    finally:
         if writer:
-            if draw_img.shape[0] != output_height or draw_img.shape[
-                    1] != output_width:
-                draw_img = cv2.resize(draw_img, (output_width, output_height))
-            writer.write(draw_img)
-
-    if writer:
-        writer.release()
-    cap.release()
+            writer.release()
+        cap.release()
 
 
 if __name__ == '__main__':

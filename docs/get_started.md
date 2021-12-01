@@ -228,6 +228,7 @@ python demo/video_demo.py ${VIDEO_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--dev
 Examples:
 
 ```shell
+# TODO: add mp4 link link `wget -P demo/ `
 python demo/video_demo.py demo/demo.mp4 configs/cgnet/cgnet_680x680_60k_cityscapes.py \
     checkpoints/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth \
     --device cuda:0 --palette cityscapes --show
