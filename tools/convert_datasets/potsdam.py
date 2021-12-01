@@ -85,47 +85,14 @@ def clip_big_image(image_path, clip_save_dir, to_label=False):
 def main():
     splits = {
         'train': [
-            '2_10',
-            '2_11',
-            '2_12',
-            '3_10',
-            '3_11',
-            '3_12',
-            '4_10',
-            '4_11',
-            '4_12',
-            '5_10',
-            '5_11',
-            '5_12',
-            '6_10',
-            '6_11',
-            '6_12',
-            '6_7',
-            '6_8',
-            '6_9',
-            '7_10',
-            '7_11',
-            '7_12',
-            '7_7',
-            '7_8',
-            '7_9',
+            '2_10', '2_11', '2_12', '3_10', '3_11', '3_12', '4_10', '4_11',
+            '4_12', '5_10', '5_11', '5_12', '6_10', '6_11', '6_12', '6_7',
+            '6_8', '6_9', '7_10', '7_11', '7_12', '7_7', '7_8', '7_9'
         ],
         'val': [
-            '5_15',
-            '6_15',
-            '6_13',
-            '3_13',
-            '4_14',
-            '6_14',
-            '5_14',
-            '2_13',
-            '4_15',
-            '2_14',
-            '5_13',
-            '4_13',
-            '3_14',
-            '7_13',
-        ],
+            '5_15', '6_15', '6_13', '3_13', '4_14', '6_14', '5_14', '2_13',
+            '4_15', '2_14', '5_13', '4_13', '3_14', '7_13'
+        ]
     }
 
     dataset_path = args.dataset_path
@@ -135,11 +102,8 @@ def main():
         out_dir = args.out_dir
 
     print('Making directories...')
-    mmcv.mkdir_or_exist(out_dir)
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir'))
     mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
     mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir'))
     mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
     mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
 
@@ -151,11 +115,14 @@ def main():
             zip_file = zipfile.ZipFile(zipp)
             zip_file.extractall(tmp_dir)
             src_path_list = glob.glob(os.path.join(tmp_dir, '*.tif'))
+            if not len(src_path_list):
+                sub_tmp_dir = os.path.join(tmp_dir, os.listdir(tmp_dir)[0])
+                src_path_list = glob.glob(os.path.join(sub_tmp_dir, '*.tif'))
             for src_path in tqdm(src_path_list):
                 idx_i, idx_j = osp.basename(src_path).split('_')[2:4]
                 data_type = 'train' if '%s_%s' % (
                     idx_i, idx_j) in splits['train'] else 'val'
-                if 'label' in src_path.split('_'):
+                if 'label' in src_path:
                     dst_dir = osp.join(out_dir, 'ann_dir', data_type)
                     clip_big_image(src_path, dst_dir, to_label=True)
                 else:
