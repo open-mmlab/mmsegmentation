@@ -1292,3 +1292,4 @@ class Mosaic(object):
         repr_str += f'center_ratio_range={self.center_ratio_range}, '
         repr_str += f'pad_val={self.pad_val}, '
         repr_str += f'seg_pad_val={self.pad_val})'
+        return repr_str
