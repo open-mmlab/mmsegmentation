@@ -287,7 +287,7 @@ Using trained model to predict test set of LoveDA and submit it to server can be
 
 More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
 
-### ISPRS Postdam
+### ISPRS Potsdam
 
 The [Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/)
 dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
@@ -295,7 +295,7 @@ dataset is for urban semantic segmentation used in the 2D Semantic Labeling Cont
 The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
 The '2_Ortho_RGB.zip' and '5_Labels_all_noBoundary.zip' are required.
 
-For Postdam dataset, please run the following command to download and re-organize the dataset.
+For Potsdam dataset, please run the following command to download and re-organize the dataset.
 
 ```shell
 python tools/convert_datasets/potsdam.py /path/to/potsdam
