@@ -147,7 +147,7 @@ class AttentionRefinementModule(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='Sigmoid'),
                  init_cfg=None):
-        super().__init__(init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.conv = ConvModule(
             in_channels, out_channels, 3, padding=1, norm_cfg=norm_cfg)
         self.conv_attn = ConvModule(
@@ -155,8 +155,9 @@ class AttentionRefinementModule(BaseModule):
 
     def forward(self, x):
         x = self.conv(x)
-        attn = self.conv_attn(F.avg_pool2d(x, x.shape[2:]))
-        return torch.mul(x, attn)
+        attn = self.conv_attn(F.adaptive_avg_pool2d(x, 1))
+        x =x * attn
+        return x
 
 
 class FeatureFusionModule(BaseModule):
@@ -185,7 +186,7 @@ class FeatureFusionModule(BaseModule):
                  default_act_cfg=dict(type='ReLU'),
                  act_cfg=dict(type='Sigmoid'),
                  init_cfg=None):
-        super().__init__(init_cfg)
+        super().__init__(init_cfg=init_cfg)
         channels = out_channels // scale_factor
         self.conv0 = ConvModule(
             in_channels,
@@ -211,7 +212,7 @@ class FeatureFusionModule(BaseModule):
     def forward(self, spatial_inputs, context_inputs):
         inputs = torch.cat([spatial_inputs, context_inputs], dim=1)
         x = self.conv0(inputs)
-        attn = F.avg_pool2d(x, x.shape[2:])
+        attn = F.adaptive_avg_pool2d(x, 1)
         attn = self.conv1(attn)
         attn = self.conv2(attn)
         x_attn = x * attn
@@ -220,7 +221,7 @@ class FeatureFusionModule(BaseModule):
 
 @BACKBONES.register_module()
 class STDCNet(BaseModule):
-    """STDCNet This backbone is the implementation of `Rethinking BiSeNet For
+    """This backbone is the implementation of `Rethinking BiSeNet For
     Real-time Semantic Segmentation.
 
     <https://arxiv.org/abs/2104.13188>`_.
@@ -262,7 +263,7 @@ class STDCNet(BaseModule):
                  with_cp=False,
                  pretrained=None,
                  init_cfg=None):
-        super().__init__(init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert stdc_type in self.arch_settings, \
             f'invalid structure {stdc_type} for STDCNet.'
         assert bottleneck_type in ['add', 'cat'],\
@@ -370,7 +371,7 @@ class STDCContextPathNet(BaseModule):
                  align_corners=None,
                  norm_cfg=dict(type='BN'),
                  init_cfg=None):
-        super().__init__(init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.backbone = build_backbone(stdc_cfg)
         self.arms = ModuleList()
         self.convs = ModuleList()
