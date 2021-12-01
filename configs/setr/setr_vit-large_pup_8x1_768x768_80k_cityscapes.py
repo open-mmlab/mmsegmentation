@@ -61,7 +61,6 @@ model = dict(
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(512, 512)))
 
 optimizer = dict(
-    lr=0.01,
     weight_decay=0.0,
     paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}))
 
