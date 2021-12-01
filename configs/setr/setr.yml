@@ -28,7 +28,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 18.4
+    Training Memory (GB): 18.4
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -50,7 +50,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 19.54
+    Training Memory (GB): 19.54
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -65,7 +65,7 @@ Models:
     backbone: ViT-L
     crop size: (512,512)
     lr schd: 160000
-    memory (GB): 10.96
+    Training Memory (GB): 10.96
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -87,7 +87,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 17.3
+    Training Memory (GB): 17.3
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
