@@ -200,27 +200,16 @@ class MultiImageMixDataset:
     mosaic and mixup. For the augmentation pipeline of mixed image data,
     the `get_indexes` method needs to be provided to obtain the image
     indexes, and you can set `skip_flags` to change the pipeline running
-    process. At the same time, we provide the `dynamic_scale` parameter
-    to dynamically change the output image size.
+    process.
     Args:
         dataset (:obj:`CustomDataset`): The dataset to be mixed.
         pipeline (Sequence[dict]): Sequence of transform object or
             config dict to be composed.
-        dynamic_scale (tuple[int], optional): The image scale can be changed
-            dynamically. Default to None. It is deprecated.
         skip_type_keys (list[str], optional): Sequence of type string to
             be skip pipeline. Default to None.
     """
 
-    def __init__(self,
-                 dataset,
-                 pipeline,
-                 dynamic_scale=None,
-                 skip_type_keys=None):
-        if dynamic_scale is not None:
-            raise RuntimeError(
-                'dynamic_scale is deprecated. Please use Resize pipeline '
-                'to achieve similar functions')
+    def __init__(self, dataset, pipeline, skip_type_keys=None):
         assert isinstance(pipeline, collections.abc.Sequence)
         if skip_type_keys is not None:
             assert all([
@@ -241,6 +230,7 @@ class MultiImageMixDataset:
 
         self.dataset = dataset
         self.CLASSES = dataset.CLASSES
+        self.PALETTE = dataset.PALETTE
         if hasattr(self.dataset, 'flag'):
             self.flag = dataset.flag
         self.num_samples = len(dataset)

@@ -127,16 +127,17 @@ def retrieve_data_cfg(config_path, skip_type, show_origin=False):
     train_data_cfg = cfg.data.train
     if isinstance(train_data_cfg, list):
         for _data_cfg in train_data_cfg:
+            while 'dataset' in _data_cfg and _data_cfg[
+                    'type'] != 'MultiImageMixDataset':
+                _data_cfg = _data_cfg['dataset']
             if 'pipeline' in _data_cfg:
                 _retrieve_data_cfg(_data_cfg, skip_type, show_origin)
-            elif 'dataset' in _data_cfg:
-                _retrieve_data_cfg(_data_cfg['dataset'], skip_type,
-                                   show_origin)
             else:
                 raise ValueError
-    elif 'dataset' in train_data_cfg:
-        _retrieve_data_cfg(train_data_cfg['dataset'], skip_type, show_origin)
     else:
+        while 'dataset' in train_data_cfg and train_data_cfg[
+                'type'] != 'MultiImageMixDataset':
+            train_data_cfg = train_data_cfg['dataset']
         _retrieve_data_cfg(train_data_cfg, skip_type, show_origin)
     return cfg
 
