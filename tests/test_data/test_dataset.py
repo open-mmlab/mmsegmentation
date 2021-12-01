@@ -99,7 +99,8 @@ def test_dataset_wrapper():
     img_scale = (60, 60)
     dynamic_scale = (80, 80)
     pipeline = [
-        # dict(type='Mosaic', img_scale=img_scale, pad_val=255), # need to merge mosaic
+        # dict(type='Mosaic', img_scale=img_scale, pad_val=255),
+        # need to merge mosaic
         dict(type='RandomFlip', flip_ratio=0.5),
         dict(type='Resize', keep_ratio=True),
         dict(type='Pad', pad_to_square=True, pad_val=255),
