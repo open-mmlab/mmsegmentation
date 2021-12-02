@@ -84,7 +84,7 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
     ```
 
    您会在文件夹 `./pspnet_test_results` 里得到生成的 png 文件。
-   您也许可以运行 `zip -r results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://www.cityscapes-dataset.com/submit/)。
+   您也许可以运行 `zip -r results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://www.cityscapes-dataset.com/submit/) 。
 
 6. 在 Cityscapes 数据集上使用 CPU 高效内存选项来测试 DeeplabV3+ `mIoU` 指标 (没有保存测试结果)
 
@@ -97,3 +97,25 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
     ```
 
     使用 ```pmap``` 可查看 CPU 内存情况,  ```efficient_test=True``` 会使用约 2.25GB 的 CPU 内存， ```efficient_test=False``` 会使用约 11.06GB 的 CPU 内存。 这个可选参数可以节约很多 CPU 内存。（MMseg v0.17 之后, `efficient_test` 参数将不再生效, 我们使用了一种渐近的方式来更加有效快速地评估和保存结果。）
+
+7. 在 LoveDA 数据集上1卡 GPU 测试 PSPNet， 并生成 png 文件以便提交给官方评估服务器
+
+   首先，在配置文件里添加内容： `configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py`,
+
+    ```python
+    data = dict(
+        test=dict(
+            img_dir='img_dir/test',
+            ann_dir='ann_dir/test'))
+    ```
+
+   随后，进行测试。
+
+    ```shell
+   python ./tools/test.py configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py \
+        checkpoints/pspnet_r50-d8_512x512_80k_loveda_20211104_155728-88610f9f.pth \
+        --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
+    ```
+
+   您会在文件夹 `./pspnet_test_results` 里得到生成的 png 文件。
+   您也许可以运行 `zip -r -j Results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://codalab.lisn.upsaclay.fr/competitions/421) 。

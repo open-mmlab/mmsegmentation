@@ -20,7 +20,7 @@
 
 MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 OpenMMLab 项目的一部分。
 
-主分支代码目前支持 PyTorch 1.3 以上的版本。
+主分支代码目前支持 PyTorch 1.5 以上的版本。
 
 ![示例图片](resources/seg_demo.gif)
 
@@ -72,7 +72,6 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
-- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
 - [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
@@ -102,18 +101,19 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 已支持的数据集：
 
-- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#cityscapes)
-- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-voc)
-- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#ade20k)
-- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-context)
-- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#coco-stuff-10k)
-- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#coco-stuff-164k)
-- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#chase-db1)
-- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#drive)
-- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#hrf)
-- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#stare)
-- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#dark-zurich)
-- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#nighttime-driving)
+- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#cityscapes)
+- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#pascal-voc)
+- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#ade20k)
+- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#pascal-context)
+- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#coco-stuff-10k)
+- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#coco-stuff-164k)
+- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#chase-db1)
+- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#drive)
+- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#hrf)
+- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#stare)
+- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#dark-zurich)
+- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#nighttime-driving)
+- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#loveda)
 
 ## 安装
 
@@ -161,6 +161,8 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab 图像视频编辑工具箱
 - [MMOCR](https://github.com/open-mmlab/mmocr): OpenMMLab 全流程文字检测识别理解工具包
 - [MMGeneration](https://github.com/open-mmlab/mmgeneration): OpenMMLab 生成模型工具箱
+- [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab 光流估计工具箱与测试基准
+- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab 少样本学习工具箱与测试基准
 
 ## 欢迎加入 OpenMMLab 社区
 

@@ -176,7 +176,7 @@ def parse_md(md_file):
                                 'Task': 'Semantic Segmentation',
                                 'Dataset': current_dataset,
                                 'Metrics': {
-                                    'mIoU': float(els[ss_id]),
+                                    cols[ss_id]: float(els[ss_id]),
                                 },
                             },
                         ],
@@ -201,12 +201,12 @@ def parse_md(md_file):
                             'batch size':
                             1,
                             'mode':
-                            'FP32',
+                            'FP32' if 'fp16' not in config else 'FP16',
                             'resolution':
                             f'({crop_size[0]},{crop_size[1]})'
                         }]
                     if mem != -1:
-                        model['Metadata']['memory (GB)'] = float(mem)
+                        model['Metadata']['Training Memory (GB)'] = float(mem)
                     # Only have semantic segmentation now
                     if ms_id and els[ms_id] != '-' and els[ms_id] != '':
                         model['Results'][0]['Metrics'][

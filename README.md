@@ -21,7 +21,7 @@ English | [简体中文](README_zh-CN.md)
 MMSegmentation is an open source semantic segmentation toolbox based on PyTorch.
 It is a part of the OpenMMLab project.
 
-The master branch works with **PyTorch 1.3+**.
+The master branch works with **PyTorch 1.5+**.
 
 ![demo image](resources/seg_demo.gif)
 
@@ -73,7 +73,6 @@ Supported methods:
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
-- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
 - [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
@@ -115,6 +114,7 @@ Supported datasets:
 - [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#stare)
 - [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#dark-zurich)
 - [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#nighttime-driving)
+- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#loveda)
 
 ## Installation
 
@@ -166,3 +166,5 @@ and develop their own new semantic segmentation methods.
 - [MMOCR](https://github.com/open-mmlab/mmocr): A Comprehensive Toolbox for Text Detection, Recognition and Understanding.
 - [MMGeneration](https://github.com/open-mmlab/mmgeneration): A powerful toolkit for generative models.
 - [MIM](https://github.com/open-mmlab/mim): MIM Installs OpenMMLab Packages.
+- [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab optical flow toolbox and benchmark.
+- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab few shot learning toolbox and benchmark.

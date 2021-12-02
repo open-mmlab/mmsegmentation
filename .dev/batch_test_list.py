@@ -116,8 +116,8 @@ vit = [
 ]
 fp16 = [
     dict(
-        config='configs/fp16/deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes.py', # noqa
-        checkpoint='deeplabv3plus_r101-d8_512x1024_80k_fp16_cityscapes-cc58bc8d.pth', # noqa
+        config='configs/deeplabv3plus/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes.py', # noqa
+        checkpoint='deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-f1104f4b.pth', # noqa
         eval='mIoU',
         metric=dict(mIoU=80.46),
     )
