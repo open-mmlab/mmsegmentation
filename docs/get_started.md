@@ -220,6 +220,7 @@ A notebook demo can be found in [demo/inference_demo.ipynb](../demo/inference_de
 Now we also provide a demo script to test a single video.
 
 ```shell
+wget -O demo/demo.mp4 https://user-images.githubusercontent.com/22089207/144212749-44411ef4-b564-4b37-96d4-04bedec629ab.mp4
 python demo/video_demo.py ${VIDEO_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}] \
     [--show] [--show-wait-time {SHOW_WAIT_TIME}] [--output-file {OUTPUT_FILE}] [--output-fps {OUTPUT_FPS}] \
     [--output-height {OUTPUT_HEIGHT}] [--output-width {OUTPUT_WIDTH}] [--opacity {OPACITY}]
