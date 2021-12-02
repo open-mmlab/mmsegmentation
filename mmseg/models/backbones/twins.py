@@ -1,4 +1,5 @@
 import math
+import warnings
 
 import torch
 import torch.nn as nn
@@ -7,10 +8,11 @@ from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
 from mmcv.cnn.utils.weight_init import trunc_normal_
-from mmcv.runner import BaseModule, ModuleList
+from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 
 from mmseg.models.backbones.mit import EfficientMultiheadAttention
 from mmseg.models.builder import BACKBONES
+from mmseg.utils import get_root_logger
 from ..utils.embed import PatchEmbed
 
 
@@ -396,8 +398,18 @@ class PCPVT(BaseModule):
                  depths=[3, 4, 6, 3],
                  sr_ratios=[8, 4, 2, 1],
                  norm_after_stage=False,
+                 pretrained=None,
                  init_cfg=None):
         super(PCPVT, self).__init__(init_cfg=init_cfg)
+        assert not (init_cfg and pretrained), \
+            'init_cfg and pretrained cannot be set at the same time'
+        if isinstance(pretrained, str):
+            warnings.warn('DeprecationWarning: pretrained is deprecated, '
+                          'please use "init_cfg" instead')
+            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
+        elif pretrained is not None:
+            raise TypeError('pretrained must be a str or None')
+
         self.depths = depths
 
         # patch_embed
@@ -458,23 +470,37 @@ class PCPVT(BaseModule):
                 self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
 
     def init_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.Linear):
-                trunc_normal_(m.weight, std=.02)
-                if isinstance(m, nn.Linear) and m.bias is not None:
+        if (isinstance(self.init_cfg, dict)
+                and self.init_cfg.get('type') == 'Pretrained'):
+            logger = get_root_logger()
+            checkpoint = _load_checkpoint(
+                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
+            if 'state_dict' in checkpoint:
+                state_dict = checkpoint['state_dict']
+            else:
+                state_dict = checkpoint
+            self.load_state_dict(state_dict, False)
+        elif self.init_cfg is not None:
+            super(PCPVT, self).init_weights()
+        else:
+            for m in self.modules():
+                if isinstance(m, nn.Linear):
+                    trunc_normal_(m.weight, std=.02)
+                    if isinstance(m, nn.Linear) and m.bias is not None:
+                        nn.init.constant_(m.bias, 0)
+                elif isinstance(m, nn.LayerNorm):
                     nn.init.constant_(m.bias, 0)
-            elif isinstance(m, nn.LayerNorm):
-                nn.init.constant_(m.bias, 0)
-                nn.init.constant_(m.weight, 1.0)
-            elif isinstance(m, nn.Conv2d):
-                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                fan_out //= m.groups
-                m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-                if m.bias is not None:
+                    nn.init.constant_(m.weight, 1.0)
+                elif isinstance(m, nn.Conv2d):
+                    fan_out = m.kernel_size[0] * m.kernel_size[
+                        1] * m.out_channels
+                    fan_out //= m.groups
+                    m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+                    if m.bias is not None:
+                        m.bias.data.zero_()
+                elif isinstance(m, nn.BatchNorm2d):
+                    m.weight.data.fill_(1.0)
                     m.bias.data.zero_()
-            elif isinstance(m, nn.BatchNorm2d):
-                m.weight.data.fill_(1.0)
-                m.bias.data.zero_()
 
     def forward(self, x):
         outputs = list()
