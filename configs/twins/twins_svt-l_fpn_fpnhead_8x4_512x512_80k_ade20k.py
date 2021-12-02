@@ -1,7 +1,6 @@
 _base_ = ['./twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k.py']
 
 model = dict(
-    pretrained='pretrained/alt_gvt_large.pth',
     backbone=dict(
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrained/alt_gvt_large.pth'),
