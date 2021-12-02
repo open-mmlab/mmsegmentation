@@ -13,10 +13,10 @@ Import:
 - configs/dpt/dpt.yml
 - configs/emanet/emanet.yml
 - configs/encnet/encnet.yml
+- configs/erfnet/erfnet.yml
 - configs/fastfcn/fastfcn.yml
 - configs/fastscnn/fastscnn.yml
 - configs/fcn/fcn.yml
-- configs/fp16/fp16.yml
 - configs/gcnet/gcnet.yml
 - configs/hrnet/hrnet.yml
 - configs/icnet/icnet.yml

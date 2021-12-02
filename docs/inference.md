@@ -101,3 +101,25 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
     ```
 
     Using ```pmap``` to view CPU memory footprint, it used 2.25GB CPU memory with ```efficient_test=True``` and 11.06GB CPU memory with ```efficient_test=False``` . This optional parameter can save a lot of memory. (After mmseg v0.17, efficient_test has not effect and we use a progressive mode to evaluation and format results efficiently by default.)
+
+7. Test PSPNet on LoveDA test split with 1 GPU, and generate the png files to be submit to the official evaluation server.
+
+   First, add following to config file `configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py`,
+
+    ```python
+    data = dict(
+        test=dict(
+            img_dir='img_dir/test',
+            ann_dir='ann_dir/test'))
+    ```
+
+   Then run test.
+
+    ```shell
+   python ./tools/test.py configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py \
+        checkpoints/pspnet_r50-d8_512x512_80k_loveda_20211104_155728-88610f9f.pth \
+        --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
+    ```
+
+   You will get png files under `./pspnet_test_results` directory.
+   You may run `zip -r -j Results.zip pspnet_test_results/` and submit the zip file to [evaluation server](https://codalab.lisn.upsaclay.fr/competitions/421).

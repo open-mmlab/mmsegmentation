@@ -32,7 +32,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 6.1
+    Training Memory (GB): 6.1
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -54,7 +54,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 9.6
+    Training Memory (GB): 9.6
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -76,7 +76,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (769,769)
-    memory (GB): 6.9
+    Training Memory (GB): 6.9
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -98,7 +98,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (769,769)
-    memory (GB): 10.9
+    Training Memory (GB): 10.9
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -120,7 +120,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 1.7
+    Training Memory (GB): 1.7
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -157,6 +157,27 @@ Models:
       mIoU(ms+flip): 81.21
   Config: configs/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503-9e428899.pth
+- Name: deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes
+  In Collection: deeplabv3
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 259.07
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (512,1024)
+    Training Memory (GB): 5.75
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.48
+  Config: configs/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-774d9cec.pth
 - Name: deeplabv3_r18-d8_769x769_80k_cityscapes
   In Collection: deeplabv3
   Metadata:
@@ -170,7 +191,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (769,769)
-    memory (GB): 1.9
+    Training Memory (GB): 1.9
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -234,7 +255,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 1.6
+    Training Memory (GB): 1.6
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -256,7 +277,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 6.0
+    Training Memory (GB): 6.0
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -278,7 +299,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 9.5
+    Training Memory (GB): 9.5
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -300,7 +321,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (769,769)
-    memory (GB): 1.8
+    Training Memory (GB): 1.8
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -322,7 +343,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (769,769)
-    memory (GB): 6.8
+    Training Memory (GB): 6.8
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -344,7 +365,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (769,769)
-    memory (GB): 10.7
+    Training Memory (GB): 10.7
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -366,7 +387,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 8.9
+    Training Memory (GB): 8.9
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -388,7 +409,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 12.4
+    Training Memory (GB): 12.4
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -438,7 +459,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 6.1
+    Training Memory (GB): 6.1
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
@@ -460,7 +481,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 9.6
+    Training Memory (GB): 9.6
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
@@ -510,7 +531,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (480,480)
-    memory (GB): 9.2
+    Training Memory (GB): 9.2
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal Context
@@ -574,7 +595,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 9.6
+    Training Memory (GB): 9.6
   Results:
   - Task: Semantic Segmentation
     Dataset: COCO-Stuff 10k
@@ -596,7 +617,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 13.2
+    Training Memory (GB): 13.2
   Results:
   - Task: Semantic Segmentation
     Dataset: COCO-Stuff 10k
@@ -646,7 +667,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 9.6
+    Training Memory (GB): 9.6
   Results:
   - Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
@@ -668,7 +689,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 13.2
+    Training Memory (GB): 13.2
   Results:
   - Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k

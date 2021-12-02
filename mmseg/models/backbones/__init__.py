@@ -2,6 +2,7 @@
 from .bisenetv1 import BiSeNetV1
 from .bisenetv2 import BiSeNetV2
 from .cgnet import CGNet
+from .erfnet import ERFNet
 from .fast_scnn import FastSCNN
 from .hrnet import HRNet
 from .icnet import ICNet
@@ -20,5 +21,5 @@ __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
     'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
-    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone'
+    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'ERFNet'
 ]
