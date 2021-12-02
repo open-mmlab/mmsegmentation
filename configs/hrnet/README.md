@@ -8,6 +8,15 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/hrnet.py#L218">Code Snippet</a>
 
+## Abstract
+
+High-resolution representations are essential for position-sensitive vision problems, such as human pose estimation, semantic segmentation, and object detection. Existing state-of-the-art frameworks first encode the input image as a low-resolution representation through a subnetwork that is formed by connecting high-to-low resolution convolutions \emph{in series} (e.g., ResNet, VGGNet), and then recover the high-resolution representation from the encoded low-resolution representation. Instead, our proposed network, named as High-Resolution Network (HRNet), maintains high-resolution representations through the whole process. There are two key characteristics: (i) Connect the high-to-low resolution convolution streams \emph{in parallel}; (ii) Repeatedly exchange the information across resolutions. The benefit is that the resulting representation is semantically richer and spatially more precise. We show the superiority of the proposed HRNet in a wide range of applications, including human pose estimation, semantic segmentation, and object detection, suggesting that the HRNet is a stronger backbone for computer vision problems. All the codes are available at [this https URL](https://github.com/HRNet).
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142901680-64c285bc-669f-4924-b054-46a2f07c5427.png" width="80%"/>
+</div>
+
 <details>
 <summary align="right"><a href="https://arxiv.org/abs/1908.07919">HRNet (CVPR'2019)</a></summary>
 
@@ -74,7 +83,7 @@
 | FCN    | HRNetV2p-W48 | 480x480   |   40000 | -     | -           | 50.33 |         52.83 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr48_480x480_40k_pascal_context_59.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_40k_pascal_context_59/fcn_hr48_480x480_40k_pascal_context_59_20210410_122738-b808b8b2.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_40k_pascal_context_59/fcn_hr48_480x480_40k_pascal_context_59-20210410_122738.log.json) |
 | FCN    | HRNetV2p-W48 | 480x480   |   80000 | -        | -              | 51.12 |         53.56 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr48_480x480_80k_pascal_context_59.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_80k_pascal_context_59/fcn_hr48_480x480_80k_pascal_context_59_20210411_003240-3ae7081e.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_80k_pascal_context_59/fcn_hr48_480x480_80k_pascal_context_59-20210411_003240.log.json) |
 
-#### LoveDA
+### LoveDA
 
 | Method     | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                 | download                                                                                                                                                                                                                                                                                                                                                                                   |
 | ---------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

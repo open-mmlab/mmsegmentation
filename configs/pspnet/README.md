@@ -8,6 +8,15 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psp_head.py#L63">Code Snippet</a>
 
+## Abstract
+
+Scene parsing is challenging for unrestricted open vocabulary and diverse scenes. In this paper, we exploit the capability of global context information by different-region-based context aggregation through our pyramid pooling module together with the proposed pyramid scene parsing network (PSPNet). Our global prior representation is effective to produce good quality results on the scene parsing task, while PSPNet provides a superior framework for pixel-level prediction tasks. The proposed approach achieves state-of-the-art performance on various datasets. It came first in ImageNet scene parsing challenge 2016, PASCAL VOC 2012 benchmark and Cityscapes benchmark. A single PSPNet yields new record of mIoU accuracy 85.4% on PASCAL VOC 2012 and accuracy 80.2% on Cityscapes.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142902444-9f93b99e-9261-443b-a0a4-17e78eefb525.png" width="70%"/>
+</div>
+
 <details>
 <summary align="right"><a href="https://arxiv.org/abs/1612.01105">PSPNet (CVPR'2017)</a></summary>
 
@@ -114,7 +123,7 @@ We support evaluation results on these two datasets using models above trained o
 | PSPNet | R-50-D8  | 512x512   |  320000 | -        | -              | 40.53 |         40.75 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-be9610cc.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004.log.json)     |
 | PSPNet | R-101-D8 | 512x512   |  320000 | -        | -              | 41.95 |         42.42 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-72220c60.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004.log.json) |
 
-#### LoveDA
+### LoveDA
 
 | Method     | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                 | download                                                                                                                                                                                                                                                                                                                                                                                   |
 | ---------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
