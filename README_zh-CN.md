@@ -69,6 +69,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 已支持的算法：
 
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
+- [x] [ERFNet (T-ITS'2017)](configs/erfnet)
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
