@@ -45,9 +45,9 @@ python tools/model_converters/stdc2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH} ${STD
 E.g.
 
 ```shell
-python tools/model_converters/stdc2mmseg.py ./STDCNet813M_73.91.tar ./pretrained/stdc-813.pth STDC1
+python tools/model_converters/stdc2mmseg.py ./STDCNet813M_73.91.tar ./pretrained/stdc1.pth STDC1
 
-python tools/model_converters/stdc2mmseg.py ./STDCNet1446_76.47.tar ./pretrained/stdc-1446.pth STDC2
+python tools/model_converters/stdc2mmseg.py ./STDCNet1446_76.47.tar ./pretrained/stdc2.pth STDC2
 ```
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
@@ -68,4 +68,4 @@ Note:
 - For STDC on Cityscapes dataset, default setting is 4 GPUs with 12 samples per GPU in training.
 - `No Pretrain` means the model is trained from scratch.
 - The FPS is for reference only. The environment is also different from paper setting, whose input size is `512x1024` and `768x1536`, i.e., 50% and 75% of our input size, respectively and using TensorRT.
-- The parameter `fuse_kernel` in `STDCHead` is not learnable. You may check it by printing model parameters of original repo on your own.
+- The parameter `fusion_kernel` in `STDCHead` is not learnable. You may check it by printing model parameters of original repo on your own.

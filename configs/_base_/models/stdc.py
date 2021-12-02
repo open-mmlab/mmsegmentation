@@ -4,13 +4,13 @@ model = dict(
     pretrained=None,
     backbone=dict(
         type='STDCContextPathNet',
-        stdc_cfg=dict(
+        backbone_cfg=dict(
             type='STDCNet',
-            stdc_type='STDCNet813',
+            stdc_type='STDCNet1',
             in_channels=3,
             channels=(32, 64, 256, 512, 1024),
             bottleneck_type='cat',
-            stdc_num_convs=4,
+            num_convs=4,
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
             with_final_conv=False),

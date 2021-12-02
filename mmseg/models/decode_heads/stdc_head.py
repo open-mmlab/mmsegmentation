@@ -26,14 +26,14 @@ class STDCHead(FCNHead):
             torch.tensor([-1, -1, -1, -1, 8, -1, -1, -1, -1],
                          dtype=torch.float32,
                          requires_grad=False).reshape((1, 1, 3, 3)))
-        self.fuse_kernel = torch.nn.Parameter(
+        self.fusion_kernel = torch.nn.Parameter(
             torch.tensor([[6. / 10], [3. / 10], [1. / 10]],
                          dtype=torch.float32).reshape(1, 3, 1, 1),
             requires_grad=False)
 
     def losses(self, seg_logit, seg_label):
         """Compute Detail Aggregation Loss."""
-        # Note: The paper claims `fuse_kernel` is a trainable 1x1 conv
+        # Note: The paper claims `fusion_kernel` is a trainable 1x1 conv
         # parameters. However, it is a constant in original repo and other
         # codebase because it would not be added into computation graph
         # after threshold operation.
@@ -73,7 +73,7 @@ class STDCHead(FCNHead):
 
         boudary_targets_pyramids = boudary_targets_pyramids.squeeze(2)
         boudary_targets_pyramid = F.conv2d(boudary_targets_pyramids,
-                                           self.fuse_kernel)
+                                           self.fusion_kernel)
 
         boudary_targets_pyramid[
             boudary_targets_pyramid > self.boundary_threshold] = 1

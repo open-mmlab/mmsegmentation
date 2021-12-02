@@ -34,11 +34,11 @@ class STDCModule(BaseModule):
                  num_convs=4,
                  fusion_type='add',
                  init_cfg=None):
-        super().__init__(init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert num_convs > 1
         assert fusion_type in ['add', 'cat']
         self.stride = stride
-        self.with_avg_pool = True if stride == 2 else False
+        self.with_avg_pool = True if self.stride == 2 else False
         self.fusion_type = fusion_type
 
         self.layers = ModuleList()
@@ -156,7 +156,7 @@ class AttentionRefinementModule(BaseModule):
     def forward(self, x):
         x = self.conv(x)
         attn = self.conv_attn(F.adaptive_avg_pool2d(x, 1))
-        x =x * attn
+        x = x * attn
         return x
 
 
@@ -170,10 +170,8 @@ class FeatureFusionModule(BaseModule):
             Default: 4.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='BN').
-        default_act_cfg (dict): The activation config for conv layers.
-            Default: dict(type='ReLU').
         act_cfg (dict): The activation config for conv layers.
-            Default: dict(type='Sigmoid').
+            Default: dict(type='ReLU').
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     """
@@ -183,31 +181,21 @@ class FeatureFusionModule(BaseModule):
                  out_channels,
                  scale_factor=4,
                  norm_cfg=dict(type='BN'),
-                 default_act_cfg=dict(type='ReLU'),
-                 act_cfg=dict(type='Sigmoid'),
+                 act_cfg=dict(type='ReLU'),
                  init_cfg=None):
         super().__init__(init_cfg=init_cfg)
         channels = out_channels // scale_factor
         self.conv0 = ConvModule(
-            in_channels,
-            out_channels,
-            1,
-            norm_cfg=norm_cfg,
-            act_cfg=default_act_cfg)
+            in_channels, out_channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
         self.conv1 = ConvModule(
             out_channels,
             channels,
             1,
             norm_cfg=None,
             bias=False,
-            act_cfg=default_act_cfg)
-        self.conv2 = ConvModule(
-            channels,
-            out_channels,
-            1,
-            norm_cfg=None,
-            bias=False,
             act_cfg=act_cfg)
+        self.conv2 = ConvModule(
+            channels, out_channels, 1, norm_cfg=None, bias=False, act_cfg=None)
 
     def forward(self, spatial_inputs, context_inputs):
         inputs = torch.cat([spatial_inputs, context_inputs], dim=1)
@@ -215,40 +203,40 @@ class FeatureFusionModule(BaseModule):
         attn = F.adaptive_avg_pool2d(x, 1)
         attn = self.conv1(attn)
         attn = self.conv2(attn)
+        attn = F.sigmoid(attn)
         x_attn = x * attn
         return x_attn + x
 
 
 @BACKBONES.register_module()
 class STDCNet(BaseModule):
-    """This backbone is the implementation of `Rethinking BiSeNet For
-    Real-time Semantic Segmentation.
+    """This backbone is the implementation of `Rethinking BiSeNet For Real-time
+    Semantic Segmentation.
 
     <https://arxiv.org/abs/2104.13188>`_.
 
     Args:
         stdc_type (int): The type of backbone structure,
-            `STDCNet813` denotes STDC1, `STDCNet1446` denotes STDC2.
+            `STDCNet1` and`STDCNet2` denotes two main backbones in paper,
+            whose FLOPs is 813M and 1446M, respectively.
         in_channels (int): The num of input_channels.
         channels (tuple[int]): The output channels for each stage.
         bottleneck_type (str): The type of STDC Module type, the value must
             be 'add' or 'cat'.
         norm_cfg (dict): Config dict for normalization layer.
         act_cfg (dict): The activation config for conv layers.
-        stdc_num_convs (int): Numbers of conv layer at each STDC Module.
+        num_convs (int): Numbers of conv layer at each STDC Module.
             Default: 4.
         with_final_conv (bool): Whether add a conv layer at the Module output.
             Default: True.
-        with_cp (bool): Use checkpoint or not. Using checkpoint will save
-            some memory while slowing down the training speed. Default: False.
         pretrained (str, optional): Model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     """
 
     arch_settings = {
-        'STDCNet813': [(2, 1), (2, 1), (2, 1)],
-        'STDCNet1446': [(2, 1, 1, 1), (2, 1, 1, 1, 1), (2, 1, 1)]
+        'STDCNet1': [(2, 1), (2, 1), (2, 1)],
+        'STDCNet2': [(2, 1, 1, 1), (2, 1, 1, 1, 1), (2, 1, 1)]
     }
 
     def __init__(self,
@@ -258,9 +246,8 @@ class STDCNet(BaseModule):
                  bottleneck_type,
                  norm_cfg,
                  act_cfg,
-                 stdc_num_convs=4,
+                 num_convs=4,
                  with_final_conv=False,
-                 with_cp=False,
                  pretrained=None,
                  init_cfg=None):
         super().__init__(init_cfg=init_cfg)
@@ -276,9 +263,8 @@ class STDCNet(BaseModule):
         self.channels = channels
         self.stage_strides = self.arch_settings[stdc_type]
         self.prtrained = pretrained
-        self.stdc_num_convs = stdc_num_convs
+        self.num_convs = num_convs
         self.with_final_conv = with_final_conv
-        self.with_cp = with_cp
 
         self.stages = ModuleList([
             ConvModule(
@@ -324,7 +310,7 @@ class STDCNet(BaseModule):
                     stride,
                     norm_cfg,
                     act_cfg,
-                    num_convs=self.stdc_num_convs,
+                    num_convs=self.num_convs,
                     fusion_type=bottleneck_type))
         return Sequential(*layers)
 
@@ -343,18 +329,18 @@ class STDCContextPathNet(BaseModule):
     """STDCNet with Context Path.
 
     Args:
-        stdc_cfg (dict): Config dict for stdc backbone.
-            last_in_channels (tuple(int)), The number of channels of last
+        backbone_cfg (dict): Config dict for stdc backbone.
+        last_in_channels (tuple(int)), The number of channels of last
             two feature maps from stdc backbone. Default: (512, 1024).
         out_channels (int): The channels of output feature maps.
             Default: 128.
         ffm_cfg (dict): Config dict for Feature Fusion Module. Default:
-            dict(in_channels=512, out_channels=256, scale_factor=4).
+            `dict(in_channels=512, out_channels=256, scale_factor=4)`.
         upsample_mode (str): Algorithm used for upsampling:
                 ``'nearest'`` | ``'linear'`` | ``'bilinear'`` | ``'bicubic'`` |
                 ``'trilinear'``. Default: ``'nearest'``.
-        align_corners (str): align_corners argument of F.interpolate.
-            Default: False.
+        align_corners (str): align_corners argument of F.interpolate. It
+            must be `None` if upsample_mode is ``'nearest'``. Default: None.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='BN').
         init_cfg (dict or list[dict], optional): Initialization config dict.
@@ -362,7 +348,7 @@ class STDCContextPathNet(BaseModule):
     """
 
     def __init__(self,
-                 stdc_cfg,
+                 backbone_cfg,
                  last_in_channels=(512, 1024),
                  out_channels=128,
                  ffm_cfg=dict(
@@ -372,7 +358,7 @@ class STDCContextPathNet(BaseModule):
                  norm_cfg=dict(type='BN'),
                  init_cfg=None):
         super().__init__(init_cfg=init_cfg)
-        self.backbone = build_backbone(stdc_cfg)
+        self.backbone = build_backbone(backbone_cfg)
         self.arms = ModuleList()
         self.convs = ModuleList()
         for channels in last_in_channels:
@@ -396,11 +382,11 @@ class STDCContextPathNet(BaseModule):
         outs = list(self.backbone(x))
         prev_stages_out = outs[:3]
         outs = outs[2:]
-        avg = F.avg_pool2d(outs[-1], outs[-1].shape[2:])
-        avg = self.conv_avg(avg)
+        avg = F.adaptive_avg_pool2d(outs[-1], 1)
+        avg_feat = self.conv_avg(avg)
 
         feature_up = resize(
-            avg,
+            avg_feat,
             size=outs[-1].shape[2:],
             mode=self.upsample_mode,
             align_corners=self.align_corners)
@@ -415,4 +401,6 @@ class STDCContextPathNet(BaseModule):
             feature_up = self.convs[i](feature_up)
             arms_out.append(feature_up)
         feat_fuse = self.ffm(outs[0], arms_out[1])
-        return [prev_stages_out[-1]] + list(reversed(arms_out)) + [feat_fuse]
+        outputs = [prev_stages_out[-1]] + list(
+            reversed(arms_out)) + [feat_fuse]
+        return outputs

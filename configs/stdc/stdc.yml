@@ -13,7 +13,7 @@ Collections:
   Converted From:
     Code: https://github.com/MichaelFan01/STDC-Seg
 Models:
-- Name: stdc-813_512x1024_80k_cityscapes
+- Name: ''
   In Collection: stdc
   Metadata:
     backbone: STDC1
@@ -33,9 +33,9 @@ Models:
     Metrics:
       mIoU: 71.52
       mIoU(ms+flip): 73.35
-  Config: configs/stdc/stdc-813_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/v0.5/stdc/stdc-813_512x1024_80k_cityscapes/stdc-813_512x1024_80k_cityscapes_20211125_211245-f71028cf.pth
-- Name: stdc-813_pretrain_512x1024_80k_cityscapes
+  Config: ''
+  Weights: ''
+- Name: ''
   In Collection: stdc
   Metadata:
     backbone: STDC1
@@ -47,9 +47,9 @@ Models:
     Metrics:
       mIoU: 75.1
       mIoU(ms+flip): 77.72
-  Config: configs/stdc/stdc-813_pretrain_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc-813_pretrain_512x1024_80k_cityscapes/stdc-813_pretrain_512x1024_80k_cityscapes_20211125_213942-7b2a5ec5.pth
-- Name: stdc-1446_512x1024_80k_cityscapes
+  Config: ''
+  Weights: ''
+- Name: ''
   In Collection: stdc
   Metadata:
     backbone: STDC2
@@ -69,9 +69,9 @@ Models:
     Metrics:
       mIoU: 73.2
       mIoU(ms+flip): 75.55
-  Config: configs/stdc/stdc-1446_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc-1446_512x1024_80k_cityscapes/stdc-1446_512x1024_80k_cityscapes_20211125_222450-d5d1ea33.pth
-- Name: stdc-1446_pretrain_512x1024_80k_cityscapes
+  Config: ''
+  Weights: ''
+- Name: ''
   In Collection: stdc
   Metadata:
     backbone: STDC2
@@ -83,5 +83,5 @@ Models:
     Metrics:
       mIoU: 77.17
       mIoU(ms+flip): 79.01
-  Config: configs/stdc/stdc-1446_pretrain_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc-1446_pretrain_512x1024_80k_cityscapes/stdc-1446_pretrain_512x1024_80k_cityscapes_20211125_220437-deab0443.pth
+  Config: ''
+  Weights: ''
