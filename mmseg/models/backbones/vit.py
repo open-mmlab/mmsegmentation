@@ -300,7 +300,7 @@ class VisionTransformer(BaseModule):
                     trunc_normal_(m.weight, std=.02)
                     if m.bias is not None:
                         if 'ffn' in n:
-                            nn.init.normal_(m.bias, mead=0., std=1e-6)
+                            nn.init.normal_(m.bias, mean=0., std=1e-6)
                         else:
                             nn.init.constant_(m.bias, 0)
                 elif isinstance(m, nn.Conv2d):
