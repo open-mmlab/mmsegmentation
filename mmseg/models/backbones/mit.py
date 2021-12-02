@@ -414,7 +414,8 @@ class MixVisionTransformer(BaseModule):
                     fan_out = m.kernel_size[0] * m.kernel_size[
                         1] * m.out_channels
                     fan_out //= m.groups
-                    normal_init(m, 0, math.sqrt(2.0 / fan_out), 0)
+                    normal_init(
+                        m, mean=0, std=math.sqrt(2.0 / fan_out), bias=0)
         elif isinstance(self.pretrained, str):
             logger = get_root_logger()
             checkpoint = _load_checkpoint(
