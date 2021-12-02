@@ -6,8 +6,10 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
-from mmcv.cnn.utils.weight_init import trunc_normal_
+from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
+                                        trunc_normal_)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
+from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.ops import resize
@@ -296,6 +298,15 @@ class VisionTransformer(BaseModule):
             for n, m in self.named_modules():
                 if isinstance(m, nn.Linear):
                     trunc_normal_(m.weight, std=.02)
+                    if m.bias is not None:
+                        if 'ffn' in n:
+                            nn.init.normal_(m.bias, mead=0., std=1e-6)
+                        else:
+                            nn.init.constant_(m.bias, 0)
+                elif isinstance(m, nn.Conv2d):
+                    kaiming_init(m, mode='fan_in', bias=0.)
+                elif isinstance(m, (_BatchNorm, nn.GroupNorm, nn.LayerNorm)):
+                    constant_init(m, val=1.0, bias=0.)
 
     def _pos_embeding(self, patched_img, hw_shape, pos_embed):
         """Positiong embeding method.
