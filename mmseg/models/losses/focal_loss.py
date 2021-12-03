@@ -31,7 +31,7 @@ def py_sigmoid_focal_loss(pred,
         weight (torch.Tensor, optional): Sample-wise loss weight.
         gamma (float, optional): The gamma for calculating the modulating
             factor. Defaults to 2.0.
-        alpha (float, torch.Tensor, optional): A balanced form for Focal Loss.
+        alpha (float, list, optional): A balanced form for Focal Loss.
             Defaults to 0.5.
         class_weight (torch.Tensor, optional): Weight of each class.
             Defaults to None.
@@ -42,6 +42,8 @@ def py_sigmoid_focal_loss(pred,
         avg_factor (int, optional): Average factor that is used to average
             the loss. Defaults to None.
     """
+    if isinstance(alpha, list):
+        alpha = pred.new_tensor(alpha)
     pred_sigmoid = pred.sigmoid()
     target = target.type_as(pred)
     one_minus_pt = (1 - pred_sigmoid) * target + pred_sigmoid * (1 - target)
@@ -87,7 +89,7 @@ def sigmoid_focal_loss(pred,
         weight (torch.Tensor, optional): Sample-wise loss weight.
         gamma (float, optional): The gamma for calculating the modulating
             factor. Defaults to 2.0.
-        alpha (float, torch.Tensor, optional): A balanced form for Focal Loss.
+        alpha (float, list, optional): A balanced form for Focal Loss.
             Defaults to 0.5.
         class_weight (torch.Tensor, optional): Weight of each class.
             Defaults to None.
@@ -100,34 +102,33 @@ def sigmoid_focal_loss(pred,
     """
     # Function.apply does not accept keyword arguments, so the decorator
     # "weighted_loss" is not applicable
-
-    # _sigmoid_focal_loss doesn't accept alpha of list type. Therefore, if
-    # a list is given, we set float_alpha as 0.5. This means setting equal
-    # weight for foreground class and background class.
-    float_alpha = alpha if isinstance(alpha, float) else 0.5
-    loss = _sigmoid_focal_loss(pred.contiguous(), target.contiguous(), gamma,
-                               float_alpha, None, 'none')
-    final_weight = torch.ones(1, pred.size(1)).type_as(loss)
+    final_weight = torch.ones(1, pred.size(1)).type_as(pred)
+    if isinstance(alpha, list):
+        # _sigmoid_focal_loss doesn't accept alpha of list type. Therefore, if
+        # a list is given, we set the input alpha as 0.5. This means setting
+        # equal weight for foreground class and background class. By
+        # multiplying the loss by 2, the effect of setting alpha as 0.5 is
+        # offset. The alpha of type list is used to regulate the loss in the
+        # post-processing process.
+        loss = _sigmoid_focal_loss(pred.contiguous(), target.contiguous(),
+                                   gamma, 0.5, None, 'none') * 2
+        alpha = pred.new_tensor(alpha)
+        final_weight = final_weight * (
+            alpha * one_hot_target + (1 - alpha) * (1 - one_hot_target))
+    else:
+        loss = _sigmoid_focal_loss(pred.contiguous(), target.contiguous(),
+                                   gamma, alpha, None, 'none')
     if weight is not None:
-        if (weight.shape != loss.shape and weight.size(0) == loss.size(0)):
+        if weight.shape != loss.shape and weight.size(0) == loss.size(0):
             # For most cases, weight is of shape (N, ),
             # which means it does not have the second axis num_class
             weight = weight.view(-1, 1)
         assert weight.dim() == loss.dim()
         final_weight = final_weight * weight
-    if isinstance(alpha, torch.Tensor):
-        final_weight = final_weight * \
-                       (alpha * one_hot_target +
-                        (1 - alpha) * (1 - one_hot_target))
     if class_weight is not None:
         final_weight = final_weight * class_weight
     if valid_mask is not None:
         final_weight = final_weight * valid_mask
-
-    # if alpha of list type is given, we set float_alpha as 0.5.
-    # Therefore, we need to multiply the loss by 2 to offset the
-    # effect of setting float_alpha as 0.5.
-    loss = loss if isinstance(alpha, float) else loss * 2
     loss = weight_reduce_loss(loss, final_weight, reduction, avg_factor)
     return loss
 
@@ -290,8 +291,7 @@ class FocalLoss(nn.Module):
                 one_hot_target,
                 weight,
                 gamma=self.gamma,
-                alpha=self.alpha if isinstance(
-                    self.alpha, float) else pred.new_tensor(self.alpha),
+                alpha=self.alpha,
                 class_weight=None if not self.class_weight else
                 pred.new_tensor(self.class_weight),
                 valid_mask=valid_mask,
