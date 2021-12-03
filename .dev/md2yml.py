@@ -206,7 +206,7 @@ def parse_md(md_file):
                             f'({crop_size[0]},{crop_size[1]})'
                         }]
                     if mem != -1:
-                        model['Metadata']['memory (GB)'] = float(mem)
+                        model['Metadata']['Training Memory (GB)'] = float(mem)
                     # Only have semantic segmentation now
                     if ms_id and els[ms_id] != '-' and els[ms_id] != '':
                         model['Results'][0]['Metrics'][

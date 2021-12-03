@@ -118,4 +118,4 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
     ```
 
    您会在文件夹 `./pspnet_test_results` 里得到生成的 png 文件。
-   您也许可以运行 `zip -r -j Results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://competitions.codalab.org/competitions/35865#participate-submit_results) 。
+   您也许可以运行 `zip -r -j Results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://codalab.lisn.upsaclay.fr/competitions/421) 。
