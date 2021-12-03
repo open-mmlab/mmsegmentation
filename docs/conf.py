@@ -155,6 +155,10 @@ html_theme_options = {
                     'name': 'MMFewShot',
                     'url': 'https://github.com/open-mmlab/mmfewshot',
                 },
+                {
+                    'name': 'MMHuman3D',
+                    'url': 'https://github.com/open-mmlab/mmhuman3d',
+                },
             ]
         },
         {
