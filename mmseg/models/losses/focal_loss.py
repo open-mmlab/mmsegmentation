@@ -31,11 +31,11 @@ def py_sigmoid_focal_loss(pred,
         weight (torch.Tensor, optional): Sample-wise loss weight.
         gamma (float, optional): The gamma for calculating the modulating
             factor. Defaults to 2.0.
-        alpha (float, list, optional): A balanced form for Focal Loss.
+        alpha (float | list[float], optional): A balanced form for Focal Loss.
             Defaults to 0.5.
-        class_weight (torch.Tensor, optional): Weight of each class.
+        class_weight (list[float], optional): Weight of each class.
             Defaults to None.
-        valid_mask (torch.Tensor ,None): A mask uses 1 to mark the valid
+        valid_mask (torch.Tensor, optional): A mask uses 1 to mark the valid
             samples and uses 0 to mark the ignored samples. Default: None.
         reduction (str, optional): The method used to reduce the loss into
             a scalar. Defaults to 'mean'.
@@ -61,7 +61,7 @@ def py_sigmoid_focal_loss(pred,
         assert weight.dim() == loss.dim()
         final_weight = final_weight * weight
     if class_weight is not None:
-        final_weight = final_weight * class_weight
+        final_weight = final_weight * pred.new_tensor(class_weight)
     if valid_mask is not None:
         final_weight = final_weight * valid_mask
     loss = weight_reduce_loss(loss, final_weight, reduction, avg_factor)
@@ -89,11 +89,11 @@ def sigmoid_focal_loss(pred,
         weight (torch.Tensor, optional): Sample-wise loss weight.
         gamma (float, optional): The gamma for calculating the modulating
             factor. Defaults to 2.0.
-        alpha (float, list, optional): A balanced form for Focal Loss.
+        alpha (float | list[float], optional): A balanced form for Focal Loss.
             Defaults to 0.5.
-        class_weight (torch.Tensor, optional): Weight of each class.
+        class_weight (list[float], optional): Weight of each class.
             Defaults to None.
-        valid_mask (torch.Tensor ,None): A mask uses 1 to mark the valid
+        valid_mask (torch.Tensor, optional): A mask uses 1 to mark the valid
             samples and uses 0 to mark the ignored samples. Default: None.
         reduction (str, optional): The method used to reduce the loss into
             a scalar. Defaults to 'mean'. Options are "none", "mean" and "sum".
@@ -126,7 +126,7 @@ def sigmoid_focal_loss(pred,
         assert weight.dim() == loss.dim()
         final_weight = final_weight * weight
     if class_weight is not None:
-        final_weight = final_weight * class_weight
+        final_weight = final_weight * pred.new_tensor(class_weight)
     if valid_mask is not None:
         final_weight = final_weight * valid_mask
     loss = weight_reduce_loss(loss, final_weight, reduction, avg_factor)
@@ -150,7 +150,7 @@ class FocalLoss(nn.Module):
                 used for sigmoid or softmax. Defaults to True.
             gamma (float, optional): The gamma for calculating the modulating
                 factor. Defaults to 2.0.
-            alpha (float, list[float], optional): A balanced form for Focal
+            alpha (float | list[float], optional): A balanced form for Focal
                 Loss. Defaults to 0.5. When a list is provided, the length
                 of the list should be equal to the number of classes.
                 Please be careful that this parameter is not the
@@ -223,7 +223,8 @@ class FocalLoss(nn.Module):
             reduction_override (str, optional): The reduction method used
                 to override the original reduction method of the loss.
                 Options are "none", "mean" and "sum".
-            ignore_index (int): The label index to be ignored. Default: 255
+            ignore_index (int, optional): The label index to be ignored.
+                Default: 255
         Returns:
             torch.Tensor: The calculated loss
         """
@@ -292,8 +293,7 @@ class FocalLoss(nn.Module):
                 weight,
                 gamma=self.gamma,
                 alpha=self.alpha,
-                class_weight=None if not self.class_weight else
-                pred.new_tensor(self.class_weight),
+                class_weight=self.class_weight,
                 valid_mask=valid_mask,
                 reduction=reduction,
                 avg_factor=avg_factor)
