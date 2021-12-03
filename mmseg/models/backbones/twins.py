@@ -410,6 +410,7 @@ class PCPVT(BaseModule):
         elif pretrained is not None:
             raise TypeError('pretrained must be a str or None')
 
+        self.pretrained = pretrained
         self.depths = depths
 
         # patch_embed
@@ -482,6 +483,16 @@ class PCPVT(BaseModule):
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:
             super(PCPVT, self).init_weights()
+        elif isinstance(self.pretrained, str):
+            logger = get_root_logger()
+            checkpoint = _load_checkpoint(
+                self.pretrained, logger=logger, map_location='cpu')
+            if 'state_dict' in checkpoint:
+                state_dict = checkpoint['state_dict']
+            else:
+                state_dict = checkpoint
+
+            self.load_state_dict(state_dict, False)
         else:
             for m in self.modules():
                 if isinstance(m, nn.Linear):
@@ -578,12 +589,13 @@ class SVT(PCPVT):
                  sr_ratios=[4, 2, 1],
                  windiow_sizes=[7, 7, 7],
                  norm_after_stage=True,
+                 pretrained=None,
                  init_cfg=None):
         super(SVT, self).__init__(in_channels, embed_dims, patch_sizes,
                                   strides, num_heads, mlp_ratios, out_indices,
                                   qkv_bias, drop_rate, attn_drop_rate,
                                   drop_path_rate, norm_cfg, depths, sr_ratios,
-                                  norm_after_stage, init_cfg)
+                                  norm_after_stage, pretrained, init_cfg)
         # transformer encoder
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
