@@ -108,7 +108,7 @@ def sigmoid_focal_loss(pred,
         # a list is given, we set the input alpha as 0.5. This means setting
         # equal weight for foreground class and background class. By
         # multiplying the loss by 2, the effect of setting alpha as 0.5 is
-        # offset. The alpha of type list is used to regulate the loss in the
+        # undone. The alpha of type list is used to regulate the loss in the
         # post-processing process.
         loss = _sigmoid_focal_loss(pred.contiguous(), target.contiguous(),
                                    gamma, 0.5, None, 'none') * 2
