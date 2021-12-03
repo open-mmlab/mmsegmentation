@@ -7,11 +7,7 @@ model = dict(
     pretrained=None,
     backbone=dict(
         drop_rate=0.,
-        init_cfg=dict(
-            type='Pretrained',
-            checkpoint='https://download.openmmlab.com/'
-            'pretrain/third_party/'
-            'vit_large_patch16_384-82bcfcdd.pth')),
+        init_cfg=dict(type='Pretrained', checkpoint='mmcls://vit_large_p16')),
     test_cfg=dict(mode='slide', crop_size=(768, 768), stride=(512, 512)))
 
 optimizer = dict(

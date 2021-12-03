@@ -8,11 +8,7 @@ model = dict(
     backbone=dict(
         img_size=(512, 512),
         drop_rate=0.,
-        init_cfg=dict(
-            type='Pretrained',
-            checkpoint='https://download.openmmlab.com/'
-            'pretrain/third_party/'
-            'vit_large_patch16_384-82bcfcdd.pth')),
+        init_cfg=dict(type='Pretrained', checkpoint='mmcls://vit_large_p16')),
     decode_head=dict(num_classes=150),
     auxiliary_head=[
         dict(
