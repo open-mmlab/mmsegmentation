@@ -9,7 +9,7 @@ def test_pcpvt():
     H, W = (224, 224)
     temp = torch.randn((1, 3, H, W))
     model = PCPVT(
-        embed_dims=[64, 128, 320, 512],
+        embed_dims=[32, 64, 160, 256],
         num_heads=[1, 2, 5, 8],
         mlp_ratios=[8, 8, 4, 4],
         qkv_bias=True,
@@ -28,21 +28,20 @@ def test_svt():
     # Test normal input
     H, W = (224, 224)
     temp = torch.randn((1, 3, H, W))
-    model = PCPVT(
-        embed_dims=[64, 128, 256, 512],
-        num_heads=[2, 4, 8, 16],
-        mlp_ratios=[4, 4, 4, 4],
-        qkv_bias=True,
-        depths=[2, 2, 10, 4],
-        windiow_sizes=[7, 7, 7, 7],
+    model = SVT(
+        embed_dims=[32, 64, 128],
+        num_heads=[1, 2, 4],
+        mlp_ratios=[4, 4, 4],
+        qkv_bias=False,
+        depths=[4, 4, 4],
+        windiow_sizes=[7, 7, 7],
         norm_after_stage=True)
 
     model.init_weights()
     outs = model(temp)
     assert outs[0].shape == (1, 32, H // 4, W // 4)
     assert outs[1].shape == (1, 64, H // 8, W // 8)
-    assert outs[2].shape == (1, 160, H // 16, W // 16)
-    assert outs[3].shape == (1, 256, H // 32, W // 32)
+    assert outs[2].shape == (1, 128, H // 16, W // 16)
 
 
 def test_svt_init():

@@ -7,8 +7,10 @@ import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
-from mmcv.cnn.utils.weight_init import trunc_normal_
+from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
+                                        trunc_normal_init)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
+from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.models.backbones.mit import EfficientMultiheadAttention
 from mmseg.models.builder import BACKBONES
@@ -400,7 +402,7 @@ class PCPVT(BaseModule):
                  norm_after_stage=False,
                  pretrained=None,
                  init_cfg=None):
-        super(PCPVT, self).__init__(pretrained=pretrained, init_cfg=init_cfg)
+        super(PCPVT, self).__init__(init_cfg=init_cfg)
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be set at the same time'
         if isinstance(pretrained, str):
@@ -416,6 +418,8 @@ class PCPVT(BaseModule):
         self.patch_embeds = ModuleList()
         self.position_encoding_drops = ModuleList()
         self.layers = ModuleList()
+
+        self.pretrained = pretrained
 
         for i in range(len(depths)):
             self.patch_embeds.append(
@@ -475,42 +479,40 @@ class PCPVT(BaseModule):
             logger = get_root_logger()
             checkpoint = _load_checkpoint(
                 self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
-            if 'state_dict' in checkpoint:
-                state_dict = checkpoint['state_dict']
-            else:
-                state_dict = checkpoint
-            self.load_state_dict(state_dict, False)
-        elif self.init_cfg is not None:
-            super(PCPVT, self).init_weights()
-        elif isinstance(self.pretrained, str):
-            logger = get_root_logger()
-            checkpoint = _load_checkpoint(
-                self.pretrained, logger=logger, map_location='cpu')
+
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']
             else:
                 state_dict = checkpoint
 
+            if 'pos_embed' in state_dict.keys():
+                if self.pos_embed.shape != state_dict['pos_embed'].shape:
+                    logger.info(msg=f'Resize the pos_embed shape from '
+                                f'{state_dict["pos_embed"].shape} to '
+                                f'{self.pos_embed.shape}')
+                    h, w = self.img_size
+                    pos_size = int(
+                        math.sqrt(state_dict['pos_embed'].shape[1] - 1))
+                    state_dict['pos_embed'] = self.resize_pos_embed(
+                        state_dict['pos_embed'],
+                        (h // self.patch_size, w // self.patch_size),
+                        (pos_size, pos_size), self.interpolate_mode)
+
             self.load_state_dict(state_dict, False)
+        elif self.init_cfg is not None:
+            super(PCPVT, self).init_weights()
         else:
             for m in self.modules():
                 if isinstance(m, nn.Linear):
-                    trunc_normal_(m.weight, std=.02)
-                    if isinstance(m, nn.Linear) and m.bias is not None:
-                        nn.init.constant_(m.bias, 0)
-                elif isinstance(m, nn.LayerNorm):
-                    nn.init.constant_(m.bias, 0)
-                    nn.init.constant_(m.weight, 1.0)
+                    trunc_normal_init(m, std=.02, bias=0.)
+                elif isinstance(m, (_BatchNorm, nn.GroupNorm, nn.LayerNorm)):
+                    constant_init(m, val=1.0, bias=0.)
                 elif isinstance(m, nn.Conv2d):
                     fan_out = m.kernel_size[0] * m.kernel_size[
                         1] * m.out_channels
                     fan_out //= m.groups
-                    m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-                    if m.bias is not None:
-                        m.bias.data.zero_()
-                elif isinstance(m, nn.BatchNorm2d):
-                    m.weight.data.fill_(1.0)
-                    m.bias.data.zero_()
+                    normal_init(
+                        m, mean=0, std=math.sqrt(2.0 / fan_out), bias=0)
 
     def forward(self, x):
         outputs = list()
