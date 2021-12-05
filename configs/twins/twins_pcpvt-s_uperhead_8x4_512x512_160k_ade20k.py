@@ -26,12 +26,5 @@ lr_config = dict(
     by_epoch=False)
 
 model = dict(
-    backbone=dict(
-        init_cfg=dict(
-            type='Pretrained',
-            checkpoint='/home/hadoop-automl/cephfs/'
-            'data/linxinyang/models/twins/'
-            'mmsegPR_convert_backbone_'
-            'svt_s.pth')))
-
-evaluation = dict(interval=1000, metric='mIoU', pre_eval=True)
+    pretrained='https://s3plus.sankuai.com/v1/mss_9240d97c6bf34ab1b78859c3c'
+    '2a2a3e4/automl-model-zoo/models/twins/alt_gvt_small.pth')
