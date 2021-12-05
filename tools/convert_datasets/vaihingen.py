@@ -16,9 +16,9 @@ from tqdm import tqdm
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Convert vaihingen dataset to mmsegmentation format')
-    parser.add_argument('--dataset_path', help='vaihingen folder path', default='D:\Vaihingen')
+    parser.add_argument('--dataset_path', help='vaihingen folder path')
     parser.add_argument('--tmp_dir', help='path of the temporary directory')
-    parser.add_argument('-o', '--out_dir', help='output path', default=r'D:\Vaihingen\data')
+    parser.add_argument('-o', '--out_dir', help='output path')
     parser.add_argument(
         '--clip_size', type=int, help='potsdam clip size', default=512)
     parser.add_argument(
