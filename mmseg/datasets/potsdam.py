@@ -4,10 +4,10 @@ from .custom import CustomDataset
 
 
 @DATASETS.register_module()
-class ISPRSDataset(CustomDataset):
-    """ISPRS dataset.
+class PotsdamDataset(CustomDataset):
+    """ISPRS Potsdam dataset.
 
-    In segmentation map annotation for LoveDA, 0 is the ignore index.
+    In segmentation map annotation for Potsdam dataset, 0 is the ignore index.
     ``reduce_zero_label`` should be set to True. The ``img_suffix`` and
     ``seg_map_suffix`` are both fixed to '.png'.
     """
@@ -18,7 +18,7 @@ class ISPRSDataset(CustomDataset):
                [255, 255, 0], [255, 0, 0]]
 
     def __init__(self, **kwargs):
-        super(ISPRSDataset, self).__init__(
+        super(PotsdamDataset, self).__init__(
             img_suffix='.png',
             seg_map_suffix='.png',
             reduce_zero_label=True,

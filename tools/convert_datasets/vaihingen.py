@@ -99,7 +99,7 @@ def main():
                   'area34',
                   'area37',
                   'area5',
-                  'area7',
+                  'area7'
                   ],
         'val': ['area6',
                 'area24',
@@ -117,7 +117,7 @@ def main():
                 'area27',
                 'area38',
                 'area12',
-                'area29',
+                'area29'
                 ],
     }
 
