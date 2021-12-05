@@ -400,7 +400,7 @@ class PCPVT(BaseModule):
                  norm_after_stage=False,
                  pretrained=None,
                  init_cfg=None):
-        super(PCPVT, self).__init__(pretrained=pretrained, init_cfg=init_cfg)
+        super(PCPVT, self).__init__(init_cfg=init_cfg)
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be set at the same time'
         if isinstance(pretrained, str):
@@ -409,7 +409,7 @@ class PCPVT(BaseModule):
             self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
         elif pretrained is not None:
             raise TypeError('pretrained must be a str or None')
-
+        self.pretrained = pretrained
         self.depths = depths
 
         # patch_embed
