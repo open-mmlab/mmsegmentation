@@ -24,7 +24,3 @@ lr_config = dict(
     power=1.0,
     min_lr=0.0,
     by_epoch=False)
-
-model = dict(
-    pretrained='https://s3plus.sankuai.com/v1/mss_9240d97c6bf34ab1b78859c3c'
-    '2a2a3e4/automl-model-zoo/models/twins/alt_gvt_small.pth')

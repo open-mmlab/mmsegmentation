@@ -143,7 +143,7 @@ class GSAEncoderLayer(BaseModule):
 
 
 class LocallygroupedSelfAttention(BaseModule):
-    """Locally-grouped Self Attention (LSA).
+    """Locally-grouped Self Attention (LSA) module.
 
     Args:
         embed_dims (int): Number of input channels.
@@ -155,7 +155,8 @@ class LocallygroupedSelfAttention(BaseModule):
         attn_drop_rate (float, optional): Dropout ratio of attention weight.
             Default: 0.0
         proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
-        window_size(int): Window size of LSA. Default: 1.
+        window_size(int): Window size of LSA. LSA can be equal to GSA when
+            window_size=1. Default: 1.
         init_cfg (dict, optional): The Config for initialization.
             Defaults to None.
     """
@@ -169,7 +170,6 @@ class LocallygroupedSelfAttention(BaseModule):
                  proj_drop_rate=0.,
                  window_size=1,
                  init_cfg=None):
-        """window_size 1 for stand attention."""
         super(LocallygroupedSelfAttention, self).__init__(init_cfg=init_cfg)
 
         assert embed_dims % num_heads == 0, f'dim {embed_dims} should be ' \
