@@ -9,7 +9,8 @@ import torch.nn.functional as F
 import torch.utils.checkpoint as cp
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import FFN, build_dropout
-from mmcv.cnn.utils.weight_init import trunc_normal_
+from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
+                                        trunc_normal_init)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 from mmcv.utils import to_2tuple
 
@@ -669,7 +670,9 @@ class SwinTransformer(BaseModule):
                 trunc_normal_(self.absolute_pos_embed, std=0.02)
             for m in self.modules():
                 if isinstance(m, nn.Linear):
-                    trunc_normal_(m.weight, std=.02)
+                    trunc_normal_init(m, std=.02, bias=0.)
+                elif isinstance(m, nn.LayerNorm):
+                    constant_init(m, val=1.0, bias=0.)
         else:
             assert 'checkpoint' in self.init_cfg, f'Only support ' \
                                                   f'specify `Pretrained` in ' \
