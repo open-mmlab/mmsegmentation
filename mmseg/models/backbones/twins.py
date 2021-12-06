@@ -155,8 +155,7 @@ class LocallygroupedSelfAttention(BaseModule):
         attn_drop_rate (float, optional): Dropout ratio of attention weight.
             Default: 0.0
         proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
-        window_size(int): Window size of LSA. LSA can be equal to GSA when
-            window_size=1. Default: 1.
+        window_size(int): Window size of LSA. Default: 1.
         init_cfg (dict, optional): The Config for initialization.
             Defaults to None.
     """
@@ -314,7 +313,7 @@ class LSAEncoderLayer(BaseModule):
 
 
 class ConditionalPositionEncoding(BaseModule):
-    """The Conditional Position Encoding (CPE).
+    """The Conditional Position Encoding (CPE) module.
 
     The CPE is the implementation of 'Conditional Positional Encodings
     for Vision Transformers <https://arxiv.org/abs/2102.10882>'_.
@@ -411,7 +410,6 @@ class PCPVT(BaseModule):
             self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
         elif pretrained is not None:
             raise TypeError('pretrained must be a str or None')
-        self.pretrained = pretrained
         self.depths = depths
 
         # patch_embed
@@ -420,7 +418,6 @@ class PCPVT(BaseModule):
         self.layers = ModuleList()
 
         self.pretrained = pretrained
-
         for i in range(len(depths)):
             self.patch_embeds.append(
                 PatchEmbed(
