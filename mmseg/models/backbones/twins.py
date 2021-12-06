@@ -417,7 +417,6 @@ class PCPVT(BaseModule):
         self.position_encoding_drops = ModuleList()
         self.layers = ModuleList()
 
-        self.pretrained = pretrained
         for i in range(len(depths)):
             self.patch_embeds.append(
                 PatchEmbed(
@@ -471,31 +470,6 @@ class PCPVT(BaseModule):
                 self.norm_list.append(build_norm_layer(norm_cfg, dim)[1])
 
     def init_weights(self):
-        if (isinstance(self.init_cfg, dict)
-                and self.init_cfg.get('type') == 'Pretrained'):
-            logger = get_root_logger()
-            checkpoint = _load_checkpoint(
-                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
-
-            if 'state_dict' in checkpoint:
-                state_dict = checkpoint['state_dict']
-            else:
-                state_dict = checkpoint
-
-            if 'pos_embed' in state_dict.keys():
-                if self.pos_embed.shape != state_dict['pos_embed'].shape:
-                    logger.info(msg=f'Resize the pos_embed shape from '
-                                f'{state_dict["pos_embed"].shape} to '
-                                f'{self.pos_embed.shape}')
-                    h, w = self.img_size
-                    pos_size = int(
-                        math.sqrt(state_dict['pos_embed'].shape[1] - 1))
-                    state_dict['pos_embed'] = self.resize_pos_embed(
-                        state_dict['pos_embed'],
-                        (h // self.patch_size, w // self.patch_size),
-                        (pos_size, pos_size), self.interpolate_mode)
-
-            self.load_state_dict(state_dict, False)
         if self.init_cfg is not None:
             super(PCPVT, self).init_weights()
         else:
