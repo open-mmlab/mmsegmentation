@@ -496,7 +496,7 @@ class PCPVT(BaseModule):
                         (pos_size, pos_size), self.interpolate_mode)
 
             self.load_state_dict(state_dict, False)
-        elif self.init_cfg is not None:
+        if self.init_cfg is not None:
             super(PCPVT, self).init_weights()
         else:
             for m in self.modules():
