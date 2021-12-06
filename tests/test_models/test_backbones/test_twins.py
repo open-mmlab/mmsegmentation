@@ -1,7 +1,9 @@
 import pytest
 import torch
 
-from mmseg.models.backbones.twins import PCPVT, SVT
+from mmseg.models.backbones.twins import (PCPVT, SVT,
+                                          ConditionalPositionEncoding,
+                                          LocallygroupedSelfAttention)
 
 
 def test_pcpvt():
@@ -154,3 +156,15 @@ def test_pcpvt_init():
     # init_cfg=123, whose type is unsupported
     with pytest.raises(AssertionError):
         model = PCPVT(pretrained=123, init_cfg=123)
+
+
+def test_locallygrouped_self_attention_module():
+    LSA = LocallygroupedSelfAttention(embed_dims=32, window_size=3)
+    outs = LSA(torch.randn(1, 3136, 32), (56, 56))
+    assert outs.shape == torch.Size([1, 3136, 32])
+
+
+def test_conditional_position_encoding_module():
+    CPE = ConditionalPositionEncoding(in_channels=32, embed_dims=32, stride=2)
+    outs = CPE(torch.randn(1, 3136, 32), (56, 56))
+    assert outs.shape == torch.Size([1, 784, 32])

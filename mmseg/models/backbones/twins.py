@@ -318,7 +318,7 @@ class ConditionalPositionEncoding(BaseModule):
     for Vision Transformers <https://arxiv.org/abs/2102.10882>'_.
 
     Args:
-       in_channels (int): Number of input channels. Default: 3.
+       in_channels (int): Number of input channels.
        embed_dims (int): The feature dimension. Default: 768.
        stride (int): Stride of conv layer. Default: 1.
     """
