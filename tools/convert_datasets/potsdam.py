@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument(
         '--clip_size', type=int, help='potsdam clip size', default=512)
     parser.add_argument(
-        '--stride_size', type=int, help='potsdam overlap size', default=256)
+        '--stride_size', type=int, help='potsdam stride size', default=256)
     args = parser.parse_args()
     return args
 
