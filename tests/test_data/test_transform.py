@@ -617,9 +617,13 @@ def test_cutout():
 
 
 def test_mosaic():
+    # test prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomMosaic', prob=1.5)
+        build_from_cfg(transform, PIPELINES)
     # test assertion for invalid img_scale
     with pytest.raises(AssertionError):
-        transform = dict(type='Mosaic', img_scale=640)
+        transform = dict(type='RandomMosaic', prob=1, img_scale=640)
         build_from_cfg(transform, PIPELINES)
 
     results = dict()
@@ -632,7 +636,7 @@ def test_mosaic():
     results['gt_semantic_seg'] = seg
     results['seg_fields'] = ['gt_semantic_seg']
 
-    transform = dict(type='Mosaic', img_scale=(10, 12))
+    transform = dict(type='RandomMosaic', prob=1, img_scale=(10, 12))
     mosaic_module = build_from_cfg(transform, PIPELINES)
     assert 'Mosaic' in repr(mosaic_module)
 
@@ -649,8 +653,13 @@ def test_mosaic():
     results['gt_semantic_seg'] = seg
     results['seg_fields'] = ['gt_semantic_seg']
 
-    transform = dict(type='Mosaic', img_scale=(10, 12))
+    transform = dict(type='RandomMosaic', prob=0, img_scale=(10, 12))
     mosaic_module = build_from_cfg(transform, PIPELINES)
     results['mix_results'] = [copy.deepcopy(results)] * 3
+    results = mosaic_module(results)
+    assert results['img'].shape[:2] == img.shape[:2]
+
+    transform = dict(type='RandomMosaic', prob=1, img_scale=(10, 12))
+    mosaic_module = build_from_cfg(transform, PIPELINES)
     results = mosaic_module(results)
     assert results['img'].shape[:2] == (20, 24)

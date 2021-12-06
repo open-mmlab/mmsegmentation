@@ -1045,7 +1045,7 @@ class RandomCutOut(object):
 
 
 @PIPELINES.register_module()
-class Mosaic(object):
+class RandomMosaic(object):
     """Mosaic augmentation. Given 4 images, mosaic transform combines them into
     one output image. The output image is composed of the parts from each sub-
     image.
@@ -1082,11 +1082,14 @@ class Mosaic(object):
     """
 
     def __init__(self,
+                 prob,
                  img_scale=(640, 640),
                  center_ratio_range=(0.5, 1.5),
                  pad_val=0,
                  seg_pad_val=255):
+        assert 0 <= prob and prob <= 1
         assert isinstance(img_scale, tuple)
+        self.prob = prob
         self.img_scale = img_scale
         self.center_ratio_range = center_ratio_range
         self.pad_val = pad_val
@@ -1100,9 +1103,10 @@ class Mosaic(object):
         Returns:
             dict: Result dict with mosaic transformed.
         """
-
-        results = self._mosaic_transform_img(results)
-        results = self._mosaic_transform_seg(results)
+        mosaic = True if np.random.rand() < self.prob else False
+        if mosaic:
+            results = self._mosaic_transform_img(results)
+            results = self._mosaic_transform_seg(results)
         return results
 
     def get_indexes(self, dataset):
@@ -1287,6 +1291,7 @@ class Mosaic(object):
 
     def __repr__(self):
         repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
         repr_str += f'img_scale={self.img_scale}, '
         repr_str += f'center_ratio_range={self.center_ratio_range}, '
         repr_str += f'pad_val={self.pad_val}, '
