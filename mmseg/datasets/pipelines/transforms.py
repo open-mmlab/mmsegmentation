@@ -1077,7 +1077,6 @@ class Mosaic(object):
            image. Default: (640, 640).
         center_ratio_range (Sequence[float]): Center ratio range of mosaic
            output. Default: (0.5, 1.5).
-            invalid bboxes after the mosaic pipeline. Default: 0.
         pad_val (int): Pad value. Default: 0.
         seg_pad_val (int): Pad value of segmentation map. Default: 255.
     """
