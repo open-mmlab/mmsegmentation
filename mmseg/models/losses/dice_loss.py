@@ -55,8 +55,6 @@ class DiceLoss(nn.Module):
     Volumetric Medical Image Segmentation <https://arxiv.org/abs/1606.04797>`_.
 
     Args:
-        loss_type (str, optional): Binary or multi-class loss.
-            Default: 'multi_class'. Options are "binary" and "multi_class".
         smooth (float): A float number to smooth loss, and avoid NaN error.
             Default: 1
         exponent (float): An float number to calculate denominator
