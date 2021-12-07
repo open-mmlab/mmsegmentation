@@ -66,6 +66,7 @@ Supported backbones:
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ArXiv'2021)](configs/swin)
+- [x] [HRFormer (NeurIPS'2021)](configs/hrformer)
 
 Supported methods:
 

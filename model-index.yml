@@ -17,6 +17,7 @@ Import:
 - configs/fastscnn/fastscnn.yml
 - configs/fcn/fcn.yml
 - configs/gcnet/gcnet.yml
+- configs/hrformer/hrformer.yml
 - configs/hrnet/hrnet.yml
 - configs/icnet/icnet.yml
 - configs/isanet/isanet.yml

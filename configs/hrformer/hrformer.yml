@@ -1,0 +1,149 @@
+Collections:
+- Name: hrformer
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal Context
+  Paper:
+    URL: https://arxiv.org/abs/2110.09408
+    Title: 'HRFormer: High-Resolution Transformer for Dense Prediction'
+  README: configs/hrformer/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/hrformer.py
+    Version: v0.18.0
+  Converted From:
+    Code: https://github.com/HRNet/HRFormer
+Models:
+- Name: ''
+  In Collection: hrformer
+  Metadata:
+    backbone: HRFormer-S
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 1000.0
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 0.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 0.0
+      mIoU(ms+flip): 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: hrformer
+  Metadata:
+    backbone: HRFormer-B
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 1000.0
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    memory (GB): 0.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 0.0
+      mIoU(ms+flip): 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: hrformer
+  Metadata:
+    backbone: HRFormer-S
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 1000.0
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 0.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 0.0
+      mIoU(ms+flip): 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: hrformer
+  Metadata:
+    backbone: HRFormer-B
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 1000.0
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    memory (GB): 0.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 0.0
+      mIoU(ms+flip): 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: hrformer
+  Metadata:
+    backbone: HRFormer-S
+    crop size: (480,480)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 1000.0
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,480)
+    memory (GB): 0.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 0.0
+      mIoU(ms+flip): 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: hrformer
+  Metadata:
+    backbone: HRFormer-B
+    crop size: (480,480)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 1000.0
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,480)
+    memory (GB): 0.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 0.0
+      mIoU(ms+flip): 0.0
+  Config: ''
+  Weights: ''

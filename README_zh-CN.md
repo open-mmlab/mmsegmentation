@@ -65,6 +65,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ArXiv'2021)](configs/swin)
+- [x] [HRFormer (NeurIPS'2021)](configs/hrformer)
 
 已支持的算法：
 
