@@ -46,7 +46,7 @@ class STDCModule(BaseModule):
             in_channels, out_channels // 2, kernel_size=1, norm_cfg=norm_cfg)
 
         if self.with_downsample:
-            self.avg_pool = ConvModule(
+            self.downsample = ConvModule(
                 out_channels // 2,
                 out_channels // 2,
                 kernel_size=3,
@@ -57,7 +57,7 @@ class STDCModule(BaseModule):
                 act_cfg=None)
 
             if self.fusion_type == 'add':
-                self.layers.append(nn.Sequential(conv_0, self.avg_pool))
+                self.layers.append(nn.Sequential(conv_0, self.downsample))
                 self.skip = Sequential(
                     ConvModule(
                         in_channels,
@@ -116,7 +116,7 @@ class STDCModule(BaseModule):
         for i, layer in enumerate(self.layers[1:]):
             if i == 0:
                 if self.with_downsample:
-                    x = layer(self.avg_pool(x0))
+                    x = layer(self.downsample(x0))
                 else:
                     x = layer(x0)
             else:
