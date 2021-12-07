@@ -102,7 +102,7 @@ html_theme_options = {
             'children': [
                 {
                     'name': 'MMCV',
-                    'url': 'https://github.com/open-mmlab/mmcv',
+                    'url': 'https://mmcv.readthedocs.io/zh_CN/latest/',
                     'description': '基础视觉库'
                 },
             ]
@@ -113,35 +113,37 @@ html_theme_options = {
             'children': [
                 {
                     'name': 'MMAction2',
-                    'url': 'https://github.com/open-mmlab/mmaction2',
+                    'url': 'https://mmaction2.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMClassification',
-                    'url': 'https://github.com/open-mmlab/mmclassification',
+                    'url':
+                    'https://mmclassification.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMOCR',
-                    'url': 'https://github.com/open-mmlab/mmocr',
+                    'url': 'https://mmocr.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMDetection',
-                    'url': 'https://github.com/open-mmlab/mmdetection',
+                    'url': 'https://mmdetection.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMEditing',
-                    'url': 'https://github.com/open-mmlab/mmediting',
+                    'url': 'https://mmediting.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMDetection3D',
-                    'url': 'https://github.com/open-mmlab/mmdetection3d',
+                    'url':
+                    'https://mmdetection3d.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMPose',
-                    'url': 'https://github.com/open-mmlab/mmpose',
+                    'url': 'https://mmpose.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMTracking',
-                    'url': 'https://github.com/open-mmlab/mmtracking',
+                    'url': 'https://mmtracking.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMGeneration',
@@ -153,7 +155,7 @@ html_theme_options = {
                 },
                 {
                     'name': 'MMFewShot',
-                    'url': 'https://github.com/open-mmlab/mmfewshot',
+                    'url': 'https://mmfewshot.readthedocs.io/zh_CN/latest/',
                 },
                 {
                     'name': 'MMHuman3D',

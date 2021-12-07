@@ -14,7 +14,7 @@
 
 Documentation: https://mmsegmentation.readthedocs.io/
 
-English | [简体中文](README_zh-CN.md)
+English | [简体中文](README_zh_CN.md)
 
 ## Introduction
 
@@ -169,4 +169,4 @@ and develop their own new semantic segmentation methods.
 - [MIM](https://github.com/open-mmlab/mim): MIM Installs OpenMMLab Packages.
 - [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab optical flow toolbox and benchmark.
 - [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab few shot learning toolbox and benchmark.
-- [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab Human Pose and Shape Estimation Toolbox and Benchmark.
+- [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab 3D human parametric model toolbox and benchmark.
