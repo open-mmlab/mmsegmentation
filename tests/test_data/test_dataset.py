@@ -154,7 +154,7 @@ def test_dataset_wrapper():
     # test pipeline
     with pytest.raises(TypeError):
         pipeline = [['Resize']]
-        multi_image_mix_dataset = MultiImageMixDataset(dataset_a, [])
+        multi_image_mix_dataset = MultiImageMixDataset(dataset_a, pipeline)
 
 
 def test_custom_dataset():
