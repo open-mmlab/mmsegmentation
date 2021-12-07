@@ -122,4 +122,4 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
     ```
 
    You will get png files under `./pspnet_test_results` directory.
-   You may run `zip -r -j Results.zip pspnet_test_results/` and submit the zip file to [evaluation server](https://competitions.codalab.org/competitions/35865#participate-submit_results).
+   You may run `zip -r -j Results.zip pspnet_test_results/` and submit the zip file to [evaluation server](https://codalab.lisn.upsaclay.fr/competitions/421).

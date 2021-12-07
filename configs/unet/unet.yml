@@ -22,7 +22,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (64,64)
     lr schd: 40000
-    memory (GB): 0.68
+    Training Memory (GB): 0.68
   Results:
   - Task: Semantic Segmentation
     Dataset: DRIVE
@@ -36,7 +36,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (64,64)
     lr schd: 40000
-    memory (GB): 0.599
+    Training Memory (GB): 0.599
   Results:
   - Task: Semantic Segmentation
     Dataset: DRIVE
@@ -50,7 +50,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (64,64)
     lr schd: 40000
-    memory (GB): 0.596
+    Training Memory (GB): 0.596
   Results:
   - Task: Semantic Segmentation
     Dataset: DRIVE
@@ -64,7 +64,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
-    memory (GB): 0.968
+    Training Memory (GB): 0.968
   Results:
   - Task: Semantic Segmentation
     Dataset: STARE
@@ -78,7 +78,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
-    memory (GB): 0.982
+    Training Memory (GB): 0.982
   Results:
   - Task: Semantic Segmentation
     Dataset: STARE
@@ -92,7 +92,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
-    memory (GB): 0.999
+    Training Memory (GB): 0.999
   Results:
   - Task: Semantic Segmentation
     Dataset: STARE
@@ -106,7 +106,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
-    memory (GB): 0.968
+    Training Memory (GB): 0.968
   Results:
   - Task: Semantic Segmentation
     Dataset: CHASE_DB1
@@ -120,7 +120,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
-    memory (GB): 0.982
+    Training Memory (GB): 0.982
   Results:
   - Task: Semantic Segmentation
     Dataset: CHASE_DB1
@@ -134,7 +134,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (128,128)
     lr schd: 40000
-    memory (GB): 0.999
+    Training Memory (GB): 0.999
   Results:
   - Task: Semantic Segmentation
     Dataset: CHASE_DB1
@@ -148,7 +148,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (256,256)
     lr schd: 40000
-    memory (GB): 2.525
+    Training Memory (GB): 2.525
   Results:
   - Task: Semantic Segmentation
     Dataset: HRF
@@ -162,7 +162,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (256,256)
     lr schd: 40000
-    memory (GB): 2.588
+    Training Memory (GB): 2.588
   Results:
   - Task: Semantic Segmentation
     Dataset: HRF
@@ -176,7 +176,7 @@ Models:
     backbone: UNet-S5-D16
     crop size: (256,256)
     lr schd: 40000
-    memory (GB): 2.604
+    Training Memory (GB): 2.604
   Results:
   - Task: Semantic Segmentation
     Dataset: HRF
