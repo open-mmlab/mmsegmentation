@@ -8,7 +8,7 @@ import torch
 from mmcv.runner import CheckpointLoader
 
 
-def convert_vit(args, ckpt):
+def convert_twins(args, ckpt):
 
     new_ckpt = OrderedDict()
 
@@ -78,7 +78,7 @@ def main():
     else:
         state_dict = checkpoint
 
-    weight = convert_vit(args, state_dict)
+    weight = convert_twins(args, state_dict)
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
     torch.save(weight, args.dst)
 
