@@ -8,6 +8,7 @@ from mmcv.runner.base_module import BaseModule, ModuleList, Sequential
 
 from mmseg.ops import resize
 from ..builder import BACKBONES, build_backbone
+from .bisenetv1 import AttentionRefinementModule
 
 
 class STDCModule(BaseModule):
@@ -127,41 +128,12 @@ class STDCModule(BaseModule):
         return torch.cat(layer_outputs, dim=1)
 
 
-class AttentionRefinementModule(BaseModule):
-    """Attention Refinement Module.
-
-    Args:
-        in_channels (int): The number of input channels.
-        out_channels (int): The number of output channels.
-        norm_cfg (dict): Config dict for normalization layer.
-            Default: dict(type='BN').
-        act_cfg (dict): The activation config for conv layers.
-            Default: dict(type='Sigmoid').
-        init_cfg (dict or list[dict], optional): Initialization config dict.
-            Default: None.
-    """
-
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='Sigmoid'),
-                 init_cfg=None):
-        super().__init__(init_cfg=init_cfg)
-        self.conv = ConvModule(
-            in_channels, out_channels, 3, padding=1, norm_cfg=norm_cfg)
-        self.conv_attn = ConvModule(
-            out_channels, out_channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
-
-    def forward(self, x):
-        x = self.conv(x)
-        attn = self.conv_attn(F.adaptive_avg_pool2d(x, 1))
-        x = x * attn
-        return x
-
-
 class FeatureFusionModule(BaseModule):
-    """Feature Fusion Module.
+    """Feature Fusion Module. This module is different from FeatureFusionModule
+    in BiSeNetV1. It uses two ConvModules in `self.attention` whose inter
+    channel number is calculated by given `scale_factor`, while
+    FeatureFusionModule in BiSeNetV1 only uses one ConvModule in
+    `self.conv_atten`.
 
     Args:
         in_channels (int): The number of input channels.
@@ -187,23 +159,27 @@ class FeatureFusionModule(BaseModule):
         channels = out_channels // scale_factor
         self.conv0 = ConvModule(
             in_channels, out_channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
-        self.conv1 = ConvModule(
-            out_channels,
-            channels,
-            1,
-            norm_cfg=None,
-            bias=False,
-            act_cfg=act_cfg)
-        self.conv2 = ConvModule(
-            channels, out_channels, 1, norm_cfg=None, bias=False, act_cfg=None)
+        self.attention = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)),
+            ConvModule(
+                out_channels,
+                channels,
+                1,
+                norm_cfg=None,
+                bias=False,
+                act_cfg=act_cfg),
+            ConvModule(
+                channels,
+                out_channels,
+                1,
+                norm_cfg=None,
+                bias=False,
+                act_cfg=None), nn.Sigmoid())
 
     def forward(self, spatial_inputs, context_inputs):
         inputs = torch.cat([spatial_inputs, context_inputs], dim=1)
         x = self.conv0(inputs)
-        attn = F.adaptive_avg_pool2d(x, 1)
-        attn = self.conv1(attn)
-        attn = self.conv2(attn)
-        attn = F.sigmoid(attn)
+        attn = self.attention(x)
         x_attn = x * attn
         return x_attn + x
 
@@ -232,6 +208,22 @@ class STDCNet(BaseModule):
         pretrained (str, optional): Model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
+
+    Example:
+        >>> import torch
+        >>> stdc_type = 'STDCNet1',
+        >>> in_channels = 3
+        >>> channels = (32, 64, 256, 512, 1024)
+        >>> bottleneck_type = 'cat'
+        >>> inputs = [torch.rand(1, 3, 1024, 2048)]
+        >>> self = STDCNet(stdc_type, in_channels,
+        ...                 channels, bottleneck_type).eval()
+        >>> outputs = self.forward(inputs)
+        >>> for i in range(len(outputs)):
+        ...     print(f'outputs[{i}].shape = {outputs[i].shape}')
+        outputs[0].shape = torch.Size([1, 256, 128, 256])
+        outputs[1].shape = torch.Size([1, 512, 64, 128])
+        outputs[2].shape = torch.Size([1, 1024, 32, 64])
     """
 
     arch_settings = {
@@ -284,6 +276,7 @@ class STDCNet(BaseModule):
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg)
         ])
+        self.num_shallow_features = len(self.stages)
 
         for strides in self.stage_strides:
             idx = len(self.stages) - 1
@@ -321,6 +314,7 @@ class STDCNet(BaseModule):
             outs.append(x)
         if self.with_final_conv:
             outs[-1] = self.final_conv(outs[-1])
+        outs = outs[self.num_shallow_features:]
         return tuple(outs)
 
 
@@ -380,8 +374,6 @@ class STDCContextPathNet(BaseModule):
 
     def forward(self, x):
         outs = list(self.backbone(x))
-        prev_stages_out = outs[:3]
-        outs = outs[2:]
         avg = F.adaptive_avg_pool2d(outs[-1], 1)
         avg_feat = self.conv_avg(avg)
 
@@ -391,16 +383,22 @@ class STDCContextPathNet(BaseModule):
             mode=self.upsample_mode,
             align_corners=self.align_corners)
         arms_out = []
-        for i in range(len(self.arms) - 1, -1, -1):
-            x_arm = self.arms[i](outs[i + 1]) + feature_up
+        # Get reversed output feature from small to big,
+        # please refer to `STDCNet` for more details.
+        reversed_outs = outs.copy()
+        reversed_outs.reverse()
+        for i in range(len(self.arms)):
+            # Get index number back to front.
+            reversed_i = len(self.arms) - i - 1
+            x_arm = self.arms[reversed_i](reversed_outs[i]) + feature_up
             feature_up = resize(
                 x_arm,
-                size=outs[i].shape[2:],
+                size=reversed_outs[i + 1].shape[2:],
                 mode=self.upsample_mode,
                 align_corners=self.align_corners)
-            feature_up = self.convs[i](feature_up)
+            feature_up = self.convs[reversed_i](feature_up)
             arms_out.append(feature_up)
+
         feat_fuse = self.ffm(outs[0], arms_out[1])
-        outputs = [prev_stages_out[-1]] + list(
-            reversed(arms_out)) + [feat_fuse]
+        outputs = [outs[0]] + list(reversed(arms_out)) + [feat_fuse]
         return outputs
