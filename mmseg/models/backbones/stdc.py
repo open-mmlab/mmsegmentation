@@ -38,14 +38,14 @@ class STDCModule(BaseModule):
         assert num_convs > 1
         assert fusion_type in ['add', 'cat']
         self.stride = stride
-        self.with_avg_pool = True if self.stride == 2 else False
+        self.with_downsample = True if self.stride == 2 else False
         self.fusion_type = fusion_type
 
         self.layers = ModuleList()
         conv_0 = ConvModule(
             in_channels, out_channels // 2, kernel_size=1, norm_cfg=norm_cfg)
 
-        if self.with_avg_pool:
+        if self.with_downsample:
             self.avg_pool = ConvModule(
                 out_channels // 2,
                 out_channels // 2,
@@ -105,7 +105,7 @@ class STDCModule(BaseModule):
         for layer in self.layers:
             x = layer(x)
             layer_outputs.append(x)
-        if self.with_avg_pool:
+        if self.with_downsample:
             inputs = self.skip(inputs)
 
         return torch.cat(layer_outputs, dim=1) + inputs
@@ -115,14 +115,14 @@ class STDCModule(BaseModule):
         layer_outputs = [x0]
         for i, layer in enumerate(self.layers[1:]):
             if i == 0:
-                if self.with_avg_pool:
+                if self.with_downsample:
                     x = layer(self.avg_pool(x0))
                 else:
                     x = layer(x0)
             else:
                 x = layer(x)
             layer_outputs.append(x)
-        if self.with_avg_pool:
+        if self.with_downsample:
             layer_outputs[0] = self.skip(x0)
         return torch.cat(layer_outputs, dim=1)
 
