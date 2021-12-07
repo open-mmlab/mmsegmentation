@@ -133,6 +133,7 @@ def test_dataset_wrapper():
         side_effect=lambda idx: cat_ids_list_a[idx])
 
     multi_image_mix_dataset = MultiImageMixDataset(dataset_a, pipeline)
+    assert len(multi_image_mix_dataset) == len(dataset_a)
 
     for idx in range(len_a):
         results_ = multi_image_mix_dataset[idx]
@@ -142,8 +143,18 @@ def test_dataset_wrapper():
         dataset_a, pipeline, skip_type_keys=('RandomFlip'))
     for idx in range(len_a):
         results_ = multi_image_mix_dataset[idx]
-        print(results_['img'].shape)
         assert results_['img'].shape == (img_scale[0], img_scale[1], 3)
+
+    skip_type_keys = ('RandomFlip', 'Resize')
+    multi_image_mix_dataset.update_skip_type_keys(skip_type_keys)
+    for idx in range(len_a):
+        results_ = multi_image_mix_dataset[idx]
+        assert results_['img'].shape[:2] != img_scale
+
+    # test pipeline
+    with pytest.raises(TypeError):
+        pipeline = [['Resize']]
+        multi_image_mix_dataset = MultiImageMixDataset(dataset_a, [])
 
 
 def test_custom_dataset():

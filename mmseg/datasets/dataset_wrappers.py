@@ -231,8 +231,6 @@ class MultiImageMixDataset:
         self.dataset = dataset
         self.CLASSES = dataset.CLASSES
         self.PALETTE = dataset.PALETTE
-        if hasattr(self.dataset, 'flag'):
-            self.flag = dataset.flag
         self.num_samples = len(dataset)
 
     def __len__(self):
