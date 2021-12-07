@@ -1073,6 +1073,7 @@ class RandomMosaic(object):
             sample another 3 images from the custom dataset.
          3. Sub image will be cropped if image is larger than mosaic patch
     Args:
+        prob (float): mosaic probability.
         img_scale (Sequence[int]): Image size after mosaic pipeline of single
            image. Default: (640, 640).
         center_ratio_range (Sequence[float]): Center ratio range of mosaic
@@ -1180,7 +1181,7 @@ class RandomMosaic(object):
         return results
 
     def _mosaic_transform_seg(self, results):
-        """Mosaic transform function.
+        """Mosaic transform function for label annotations.
 
         Args:
             results (dict): Result dict.
