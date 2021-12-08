@@ -288,11 +288,11 @@ Using trained model to predict test set of LoveDA and submit it to server can be
 More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
 
 ### iSAID 
-The data images could be download from [DOTA-v1.0] https://captain-whu.github.io/DOTA/dataset.html (train/val/test)
+The data images could be download from [Dota-v1.0] https://captain-whu.github.io/DOTA/dataset.html (train/val/test)
 
 The data annotations could be download from [iSAID] https://captain-whu.github.io/iSAID/dataset.html (train/val)
 
-The dataset is a Large-scale Dataset for Instance Segmentation (alse have segmantic segmentation) in Aerial Images.
+The dataset is a Large-scale Dataset for Instance Segmentation (also have segmantic segmentation) in Aerial Images.
 
 iSAID
  --train
