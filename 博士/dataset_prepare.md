@@ -116,6 +116,14 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── iSAID
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   │   ├── test
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -294,23 +302,24 @@ The data annotations could be download from [iSAID] https://captain-whu.github.i
 
 The dataset is a Large-scale Dataset for Instance Segmentation (also have segmantic segmentation) in Aerial Images.
 
-iSAID
- --train
-   --images
-     --part1.zip
-     --part2.zip
-     --part3.zip
-   --Semantic_masks
-     --images.zip
- --val
-   --images
-     --part1.zip
-   --Semantic_masks
-     --images.zip
- --test 
-   --images
-     --part1.zip
-     --part2.zip
+If the data directory structure you downloaded from Baidu online disk is different, you may need to follow the following structure
+│   ├── iSAID
+│   │   ├── train
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   │   ├── part2.zip
+│   │   │   │   ├── part3.zip
+│   │   │   ├── Semantic_masks
+│   │   │   │   ├── images.zip
+│   │   ├── val
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   ├── Semantic_masks
+│   │   │   │   ├── images.zip
+│   │   ├── test
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   │   ├── part2.zip
 
 ```shell
 python tools/convert_datasets/iSAID.py /path/to/iSAID
