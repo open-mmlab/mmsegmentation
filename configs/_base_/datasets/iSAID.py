@@ -24,7 +24,7 @@ test_pipeline = [
     dict(
         type='MultiScaleFlipAug',
         img_scale=(896, 896),
-        #img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
+        # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),
@@ -43,7 +43,6 @@ data = dict(
         img_dir='img_dir/train',
         ann_dir='ann_dir/train',
         pipeline=train_pipeline),
-
     val=dict(
         type=dataset_type,
         data_root=data_root,

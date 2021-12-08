@@ -5,12 +5,12 @@ import os.path as osp
 import shutil
 import tempfile
 import zipfile
+
 import imgviz
 import mmcv
 import numpy as np
 from PIL import Image
 from tqdm import tqdm
-
 
 iSAID_palette = \
     {
@@ -36,7 +36,7 @@ iSAID_invert_palette = {v: k for k, v in iSAID_palette.items()}
 
 
 def iSAID_convert_from_color(arr_3d, palette=iSAID_invert_palette):
-    """ RGB-color encoding to grayscale labels """
+    """RGB-color encoding to grayscale labels."""
     arr_2d = np.zeros((arr_3d.shape[0], arr_3d.shape[1]), dtype=np.uint8)
 
     for c, i in palette.items():
@@ -86,12 +86,11 @@ def slide_crop_image(src_path, out_dir, mode, patch_H, patch_W, overlap):
 
             img_patch = img[y_str:y_end, x_str:x_end, :]
             img_patch = Image.fromarray(img_patch.astype(np.uint8))
-            image = osp.splitext(src_path.split("/")[-1])[0] + '_' + str(y_str) + '_' + str(y_end) + '_' + str(
-                x_str) + '_' + str(
-                x_end) + '.png'
+            image = osp.splitext(
+                src_path.split('/')[-1])[0] + '_' + str(y_str) + '_' + str(
+                    y_end) + '_' + str(x_str) + '_' + str(x_end) + '.png'
             # print(image)
-            save_path_image = osp.join(
-                out_dir, 'img_dir', mode, str(image))
+            save_path_image = osp.join(out_dir, 'img_dir', mode, str(image))
             img_patch.save(save_path_image)
 
 
@@ -135,7 +134,7 @@ def slide_crop_label(src_path, out_dir, mode, patch_H, patch_W, overlap):
                 y_end = img_H
 
             lab_patch = label[y_str:y_end, x_str:x_end]
-            lab_patch = Image.fromarray(lab_patch.astype(np.uint8), mode="P")
+            lab_patch = Image.fromarray(lab_patch.astype(np.uint8), mode='P')
             # print(np.unique(label))
             colormap = imgviz.label_colormap(n_label=256)
 
@@ -160,12 +159,11 @@ def slide_crop_label(src_path, out_dir, mode, patch_H, patch_W, overlap):
 
             colormap[255, :] = [255, 255, 255]
 
-            image = osp.splitext(src_path.split("/")[-1])[0] + '_' + str(y_str) + '_' + str(y_end) + '_' + str(
-                x_str) + '_' + str(
-                x_end) + '.png'
+            image = osp.splitext(
+                src_path.split('/')[-1])[0] + '_' + str(y_str) + '_' + str(
+                    y_end) + '_' + str(x_str) + '_' + str(x_end) + '.png'
             lab_patch.putpalette(colormap.flatten())
-            lab_patch.save(osp.join(
-                out_dir, 'ann_dir', mode, str(image)))
+            lab_patch.save(osp.join(out_dir, 'ann_dir', mode, str(image)))
 
 
 def parse_args():
@@ -175,9 +173,18 @@ def parse_args():
     parser.add_argument('--tmp_dir', help='path of the temporary directory')
     parser.add_argument('-o', '--out_dir', help='output path')
 
-    parser.add_argument('--patch_width', default=896, type=int, help='Width of the cropped image patch')
-    parser.add_argument('--patch_height', default=896, type=int, help='Height of the cropped image patch')
-    parser.add_argument('--overlap_area', default=384, type=int, help='Overlap area')
+    parser.add_argument(
+        '--patch_width',
+        default=896,
+        type=int,
+        help='Width of the cropped image patch')
+    parser.add_argument(
+        '--patch_height',
+        default=896,
+        type=int,
+        help='Height of the cropped image patch')
+    parser.add_argument(
+        '--overlap_area', default=384, type=int, help='Overlap area')
     args = parser.parse_args()
     return args
 
@@ -185,7 +192,8 @@ def parse_args():
 def main():
     args = parse_args()
     dataset_path = args.dataset_path
-    patch_H, patch_W = args.patch_width, args.patch_height  # image patch width and height
+    # image patch width and height
+    patch_H, patch_W = args.patch_width, args.patch_height
 
     overlap = args.overlap_area  # overlap area
 
@@ -211,34 +219,43 @@ def main():
         'test is not in {}'.format(dataset_path)
 
     with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
-        for dataset_mode in ['train','val', 'test']:
+        for dataset_mode in ['train', 'val', 'test']:
 
-        # for dataset_mode in [ 'test']:
+            # for dataset_mode in [ 'test']:
             print('Extracting  {}ing.zip...'.format(dataset_mode))
-            img_zipp_list = glob.glob(os.path.join(dataset_path, dataset_mode, 'images', '*.zip'))
+            img_zipp_list = glob.glob(
+                os.path.join(dataset_path, dataset_mode, 'images', '*.zip'))
             print('Find the data', img_zipp_list)
             for img_zipp in img_zipp_list:
                 zip_file = zipfile.ZipFile(img_zipp)
-                zip_file.extractall(os.path.join(tmp_dir, dataset_mode,'img'))
-            src_path_list = glob.glob(os.path.join(tmp_dir, dataset_mode, 'img','images', '*.png'))
+                zip_file.extractall(os.path.join(tmp_dir, dataset_mode, 'img'))
+            src_path_list = glob.glob(
+                os.path.join(tmp_dir, dataset_mode, 'img', 'images', '*.png'))
 
             for img_path in tqdm(src_path_list):
                 if dataset_mode != 'test':
-                    slide_crop_image(img_path, out_dir, dataset_mode, patch_H, patch_W, overlap)
+                    slide_crop_image(img_path, out_dir, dataset_mode, patch_H,
+                                     patch_W, overlap)
 
                 else:
-                    shutil.move(img_path, os.path.join(out_dir,'img_dir', dataset_mode))
+                    shutil.move(img_path,
+                                os.path.join(out_dir, 'img_dir', dataset_mode))
             if dataset_mode != 'test':
-                label_zipp_list = glob.glob(os.path.join(dataset_path, dataset_mode, 'Semantic_masks', '*.zip'))
+                label_zipp_list = glob.glob(
+                    os.path.join(dataset_path, dataset_mode, 'Semantic_masks',
+                                 '*.zip'))
                 for label_zipp in label_zipp_list:
                     zip_file = zipfile.ZipFile(label_zipp)
-                    zip_file.extractall(os.path.join(tmp_dir, dataset_mode,'lab'))
+                    zip_file.extractall(
+                        os.path.join(tmp_dir, dataset_mode, 'lab'))
 
-                lab_path_list = glob.glob(os.path.join(tmp_dir, dataset_mode, 'lab','images', '*.png'))
+                lab_path_list = glob.glob(
+                    os.path.join(tmp_dir, dataset_mode, 'lab', 'images',
+                                 '*.png'))
 
                 for lab_path in tqdm(lab_path_list):
-                    slide_crop_label(lab_path, out_dir, dataset_mode, patch_H, patch_W, overlap)
-
+                    slide_crop_label(lab_path, out_dir, dataset_mode, patch_H,
+                                     patch_W, overlap)
 
         print('Removing the temporary files...')
 
