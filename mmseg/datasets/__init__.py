@@ -14,7 +14,7 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .stare import STAREDataset
 from .voc import PascalVOCDataset
-
+from .iSAID import ISAIDDataset
 __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
     'DATASETS', 'build_dataset', 'PIPELINES', 'CityscapesDataset',
