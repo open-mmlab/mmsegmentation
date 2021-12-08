@@ -221,9 +221,9 @@ class STDCNet(BaseModule):
         >>> outputs = self.forward(inputs)
         >>> for i in range(len(outputs)):
         ...     print(f'outputs[{i}].shape = {outputs[i].shape}')
-        outputs[0].shape = torch.Size([1, 256, 128, 256])
+        outputs[1].shape = torch.Size([1, 1024, 32, 64])
         outputs[1].shape = torch.Size([1, 512, 64, 128])
-        outputs[2].shape = torch.Size([1, 1024, 32, 64])
+        outputs[2].shape = torch.Size([1, 256, 128, 256])
     """
 
     arch_settings = {
@@ -315,6 +315,9 @@ class STDCNet(BaseModule):
         if self.with_final_conv:
             outs[-1] = self.final_conv(outs[-1])
         outs = outs[self.num_shallow_features:]
+
+        # Get reversed output feature maps from small to big.
+        outs.reverse()
         return tuple(outs)
 
 
@@ -325,7 +328,7 @@ class STDCContextPathNet(BaseModule):
     Args:
         backbone_cfg (dict): Config dict for stdc backbone.
         last_in_channels (tuple(int)), The number of channels of last
-            two feature maps from stdc backbone. Default: (512, 1024).
+            two feature maps from stdc backbone. Default: (1024, 512).
         out_channels (int): The channels of output feature maps.
             Default: 128.
         ffm_cfg (dict): Config dict for Feature Fusion Module. Default:
@@ -343,7 +346,7 @@ class STDCContextPathNet(BaseModule):
 
     def __init__(self,
                  backbone_cfg,
-                 last_in_channels=(512, 1024),
+                 last_in_channels=(1024, 512),
                  out_channels=128,
                  ffm_cfg=dict(
                      in_channels=512, out_channels=256, scale_factor=4),
@@ -365,7 +368,7 @@ class STDCContextPathNet(BaseModule):
                     padding=1,
                     norm_cfg=norm_cfg))
         self.conv_avg = ConvModule(
-            last_in_channels[-1], out_channels, 1, norm_cfg=norm_cfg)
+            last_in_channels[0], out_channels, 1, norm_cfg=norm_cfg)
 
         self.ffm = FeatureFusionModule(**ffm_cfg)
 
@@ -374,31 +377,25 @@ class STDCContextPathNet(BaseModule):
 
     def forward(self, x):
         outs = list(self.backbone(x))
-        avg = F.adaptive_avg_pool2d(outs[-1], 1)
+        avg = F.adaptive_avg_pool2d(outs[0], 1)
         avg_feat = self.conv_avg(avg)
 
         feature_up = resize(
             avg_feat,
-            size=outs[-1].shape[2:],
+            size=outs[0].shape[2:],
             mode=self.upsample_mode,
             align_corners=self.align_corners)
         arms_out = []
-        # Get reversed output feature from small to big,
-        # please refer to `STDCNet` for more details.
-        reversed_outs = outs.copy()
-        reversed_outs.reverse()
         for i in range(len(self.arms)):
-            # Get index number back to front.
-            reversed_i = len(self.arms) - i - 1
-            x_arm = self.arms[reversed_i](reversed_outs[i]) + feature_up
+            x_arm = self.arms[i](outs[i]) + feature_up
             feature_up = resize(
                 x_arm,
-                size=reversed_outs[i + 1].shape[2:],
+                size=outs[i + 1].shape[2:],
                 mode=self.upsample_mode,
                 align_corners=self.align_corners)
-            feature_up = self.convs[reversed_i](feature_up)
+            feature_up = self.convs[i](feature_up)
             arms_out.append(feature_up)
 
-        feat_fuse = self.ffm(outs[0], arms_out[1])
-        outputs = [outs[0]] + list(reversed(arms_out)) + [feat_fuse]
+        feat_fuse = self.ffm(outs[-1], arms_out[1])
+        outputs = [outs[-1]] + list(reversed(arms_out)) + [feat_fuse]
         return outputs

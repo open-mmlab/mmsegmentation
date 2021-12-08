@@ -7,83 +7,15 @@ import torch
 from mmcv.runner import CheckpointLoader
 
 
-def convert_stdc1(ckpt):
+def convert_stdc(ckpt, stdc_type):
     new_state_dict = {}
-    stage_lst = ['0', '1', '2.0', '2.1', '3.0', '3.1', '4.0', '4.1']
-    for k, v in ckpt.items():
-        ori_k = k
-        flag = False
-        if 'cp.' in k:
-            k = k.replace('cp.', '')
-        if k.startswith('features.'):
-            num_layer = int(k.split('.')[1])
-            feature_key_lst = 'features.' + str(num_layer) + '.'
-            stages_key_lst = 'stages.' + stage_lst[num_layer] + '.'
-            k = k.replace(feature_key_lst, stages_key_lst)
-            flag = True
-        if 'conv_list' in k:
-            k = k.replace('conv_list', 'layers')
-            flag = True
-        if 'avd_layer.' in k:
-            if 'avd_layer.0' in k:
-                k = k.replace('avd_layer.0', 'avg_pool.conv')
-            elif 'avd_layer.1' in k:
-                k = k.replace('avd_layer.1', 'avg_pool.bn')
-            flag = True
-        if 'conv_last' in k:
-            k = k.replace('conv_last', 'final_conv')
-            flag = True
-        if 'arm' in k:
-            if 'arm16' in k:
-                k = k.replace('arm16', 'arms.0')
-            elif 'arm32' in k:
-                k = k.replace('arm32', 'arms.1')
-            flag = True
-        if '_atten' in k:
-            if 'conv_atten' in k:
-                k = k.replace('conv_atten', 'conv_attn.conv')
-            elif 'bn_atten' in k:
-                k = k.replace('bn_atten', 'conv_attn.bn')
-            flag = True
-        if 'conv_head' in k:
-            if 'conv_head32' in k:
-                k = k.replace('conv_head32', 'convs.1')
-            elif 'conv_head16' in k:
-                k = k.replace('conv_head16', 'convs.0')
-            flag = True
-        if 'ffm.conv' in k:
-            if 'ffm.convblk' in k:
-                k = k.replace('ffm.convblk', 'ffm.conv0')
-            elif 'ffm.conv1' in k:
-                k = k.replace('ffm.conv1', 'ffm.conv1.conv')
-            elif 'ffm.conv2' in k:
-                k = k.replace('ffm.conv2', 'ffm.conv2.conv')
-            flag = True
-        if 'conv_out.conv' in k:
-            if 'conv_out.conv.conv.' in k:
-                k = k.replace('conv_out.conv.conv.',
-                              'decode_head.convs.0.conv.')
-            elif 'conv_out.conv.bn.' in k:
-                k = k.replace('conv_out.conv.bn.', 'decode_head.convs.0.bn.')
-            elif 'conv_out.conv_out' in k:
-                k = k.replace('conv_out.conv_out', 'decode_head.conv_seg')
-            flag = True
-        if 'x' in k:
-            flag = False
-        if 'conv_avg' in k:
-            flag = True
-        if flag:
-            new_state_dict[k] = ckpt[ori_k]
-
-    return new_state_dict
-
-
-def convert_stdc2(ckpt):
-    new_state_dict = {}
-    stage_lst = [
-        '0', '1', '2.0', '2.1', '2.2', '2.3', '3.0', '3.1', '3.2', '3.3',
-        '3.4', '4.0', '4.1', '4.2'
-    ]
+    if stdc_type == 'STDC1':
+        stage_lst = ['0', '1', '2.0', '2.1', '3.0', '3.1', '4.0', '4.1']
+    else:
+        stage_lst = [
+            '0', '1', '2.0', '2.1', '2.2', '2.3', '3.0', '3.1', '3.2', '3.3',
+            '3.4', '4.0', '4.1', '4.2'
+        ]
     for k, v in ckpt.items():
         ori_k = k
         flag = False
@@ -100,51 +32,9 @@ def convert_stdc2(ckpt):
             flag = True
         if 'avd_layer.' in k:
             if 'avd_layer.0' in k:
-                k = k.replace('avd_layer.0', 'avg_pool.conv')
+                k = k.replace('avd_layer.0', 'downsample.conv')
             elif 'avd_layer.1' in k:
-                k = k.replace('avd_layer.1', 'avg_pool.bn')
-            flag = True
-        if 'conv_last' in k:
-            k = k.replace('conv_last', 'final_conv')
-            flag = True
-        if 'arm' in k:
-            if 'arm16' in k:
-                k = k.replace('arm16', 'arms.0')
-            elif 'arm32' in k:
-                k = k.replace('arm32', 'arms.1')
-            flag = True
-        if '_atten' in k:
-            if 'conv_atten' in k:
-                k = k.replace('conv_atten', 'conv_attn.conv')
-            elif 'bn_atten' in k:
-                k = k.replace('bn_atten', 'conv_attn.bn')
-            flag = True
-        if 'conv_head' in k:
-            if 'conv_head32' in k:
-                k = k.replace('conv_head32', 'convs.1')
-            elif 'conv_head16' in k:
-                k = k.replace('conv_head16', 'convs.0')
-            flag = True
-        if 'ffm.conv' in k:
-            if 'ffm.convblk' in k:
-                k = k.replace('ffm.convblk', 'ffm.conv0')
-            elif 'ffm.conv1' in k:
-                k = k.replace('ffm.conv1', 'ffm.conv1.conv')
-            elif 'ffm.conv2' in k:
-                k = k.replace('ffm.conv2', 'ffm.conv2.conv')
-            flag = True
-        if 'conv_out.conv' in k:
-            if 'conv_out.conv.conv.' in k:
-                k = k.replace('conv_out.conv.conv.',
-                              'decode_head.convs.0.conv.')
-            elif 'conv_out.conv.bn.' in k:
-                k = k.replace('conv_out.conv.bn.', 'decode_head.convs.0.bn.')
-            elif 'conv_out.conv_out' in k:
-                k = k.replace('conv_out.conv_out', 'decode_head.conv_seg')
-            flag = True
-        if 'x' in k:
-            flag = False
-        if 'conv_avg' in k:
+                k = k.replace('avd_layer.1', 'downsample.bn')
             flag = True
         if flag:
             new_state_dict[k] = ckpt[ori_k]
@@ -172,10 +62,7 @@ def main():
 
     assert args.type in ['STDC1',
                          'STDC2'], 'STD type should be STDC1 or STDC2!'
-    if args.type == 'STDC1':
-        weight = convert_stdc1(state_dict)
-    elif args.type == 'STDC2':
-        weight = convert_stdc2(state_dict)
+    weight = convert_stdc(state_dict, args.type)
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
     torch.save(weight, args.dst)
 

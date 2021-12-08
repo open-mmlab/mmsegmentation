@@ -14,7 +14,7 @@ model = dict(
             norm_cfg=norm_cfg,
             act_cfg=dict(type='ReLU'),
             with_final_conv=False),
-        last_in_channels=(512, 1024),
+        last_in_channels=(1024, 512),
         out_channels=128,
         ffm_cfg=dict(in_channels=384, out_channels=256, scale_factor=4)),
     decode_head=dict(
