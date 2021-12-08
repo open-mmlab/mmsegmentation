@@ -4,12 +4,14 @@ import warnings
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import (Conv2d, build_activation_layer, build_norm_layer,
-                      constant_init, normal_init, trunc_normal_init)
+from mmcv.cnn import Conv2d, build_activation_layer, build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import MultiheadAttention
-from mmcv.runner import BaseModule, ModuleList, Sequential
+from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
+                                        trunc_normal_init)
+from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
+from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw
 
@@ -406,21 +408,25 @@ class MixVisionTransformer(BaseModule):
         if self.init_cfg is None:
             for m in self.modules():
                 if isinstance(m, nn.Linear):
-                    trunc_normal_init(m.weight, std=.02)
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
+                    trunc_normal_init(m, std=.02, bias=0.)
                 elif isinstance(m, nn.LayerNorm):
-                    constant_init(m.bias, 0)
-                    constant_init(m.weight, 1.0)
+                    constant_init(m, val=1.0, bias=0.)
                 elif isinstance(m, nn.Conv2d):
                     fan_out = m.kernel_size[0] * m.kernel_size[
                         1] * m.out_channels
                     fan_out //= m.groups
-                    normal_init(m.weight, 0, math.sqrt(2.0 / fan_out))
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
-        else:
-            super(MixVisionTransformer, self).init_weights()
+                    normal_init(
+                        m, mean=0, std=math.sqrt(2.0 / fan_out), bias=0)
+        elif isinstance(self.pretrained, str):
+            logger = get_root_logger()
+            checkpoint = _load_checkpoint(
+                self.pretrained, logger=logger, map_location='cpu')
+            if 'state_dict' in checkpoint:
+                state_dict = checkpoint['state_dict']
+            else:
+                state_dict = checkpoint
+
+            self.load_state_dict(state_dict, False)
 
     def forward(self, x):
         outs = []
