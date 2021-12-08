@@ -5,7 +5,7 @@ from pathlib import Path
 
 import mmcv
 import numpy as np
-from mmcv import Config
+from mmcv import Config, DictAction
 
 from mmseg.datasets.builder import build_dataset
 
@@ -42,6 +42,16 @@ def parse_args():
         type=float,
         default=0.5,
         help='the opacity of semantic map')
+    parser.add_argument(
+        '--cfg-options',
+        nargs='+',
+        action=DictAction,
+        help='override some settings in the used config, the key-value pair '
+        'in xxx=yyy format will be merged into config file. If the value to '
+        'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
+        'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
+        'Note that the quotation marks are necessary and that no white space '
+        'is allowed.')
     args = parser.parse_args()
     return args
 
@@ -122,8 +132,10 @@ def _retrieve_data_cfg(_data_cfg, skip_type, show_origin):
         ]
 
 
-def retrieve_data_cfg(config_path, skip_type, show_origin=False):
+def retrieve_data_cfg(config_path, skip_type, cfg_options, show_origin=False):
     cfg = Config.fromfile(config_path)
+    if cfg_options is not None:
+        cfg.merge_from_dict(cfg_options)
     train_data_cfg = cfg.data.train
     if isinstance(train_data_cfg, list):
         for _data_cfg in train_data_cfg:
@@ -144,7 +156,8 @@ def retrieve_data_cfg(config_path, skip_type, show_origin=False):
 
 def main():
     args = parse_args()
-    cfg = retrieve_data_cfg(args.config, args.skip_type, args.show_origin)
+    cfg = retrieve_data_cfg(args.config, args.skip_type, args.cfg_options,
+                            args.show_origin)
     dataset = build_dataset(cfg.data.train)
     progress_bar = mmcv.ProgressBar(len(dataset))
     for item in dataset:
