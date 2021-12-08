@@ -22,6 +22,12 @@ class GlobalSubsampledAttention(EfficientMultiheadAttention):
 
     This module is modified from EfficientMultiheadAttention，
     which is a module from mmseg.models.backbones.mit.py.
+    Specifically, there is no difference between
+    `GlobalSubsampledAttention` and `EfficientMultiheadAttention`,
+    `GlobalSubsampledAttention` is built as a brand new class
+    because it is renamed as `Global sub-sampled attention (GSA)`
+    in paper.
+
 
     Args:
         embed_dims (int): The embedding dimension.
@@ -196,7 +202,7 @@ class LocallygroupedSelfAttention(BaseModule):
         x = F.pad(x, (0, 0, pad_l, pad_r, pad_t, pad_b))
 
         # calculate attention mask for LSA
-        _, Hp, Wp, _ = x.shape
+        Hp, Wp = x.shape[1:-1]
         _h, _w = Hp // self.window_size, Wp // self.window_size
         mask = torch.zeros((1, Hp, Wp), device=x.device)
         mask[:, -pad_b:, :].fill_(1)
@@ -215,7 +221,7 @@ class LocallygroupedSelfAttention(BaseModule):
                                           float(-1000.0)).masked_fill(
                                               attn_mask == 0, float(0.0))
 
-        # [n_h, B, _w*_h, nhead, window_size*window_size, dim]
+        # [3, B, _w*_h, nhead, window_size*window_size, dim]
         qkv = self.qkv(x).reshape(b, _h * _w,
                                   self.window_size * self.window_size, 3,
                                   self.num_heads, c // self.num_heads).permute(
@@ -571,7 +577,6 @@ class SVT(PCPVT):
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]  # stochastic depth decay rule
-        cur = 0
 
         for k in range(len(depths)):
             for i in range(depths[k]):
@@ -583,7 +588,6 @@ class SVT(PCPVT):
                             feedforward_channels=mlp_ratios[k] * embed_dims[k],
                             drop_rate=drop_rate,
                             attn_drop_rate=attn_drop_rate,
-                            drop_path_rate=dpr[cur + i],
+                            drop_path_rate=dpr[sum(depths[:k])+i],
                             qkv_bias=qkv_bias,
                             window_size=windiow_sizes[k])
-            cur += depths[k]
