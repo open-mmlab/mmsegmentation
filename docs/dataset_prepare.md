@@ -286,3 +286,33 @@ python tools/convert_datasets/loveda.py /path/to/loveDA
 Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/inference.md).
 
 More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
+
+### iSAID 
+The data images could be download from [DOTA-v1.0] https://captain-whu.github.io/DOTA/dataset.html (train/val/test)
+
+The data annotations could be download from [iSAID] https://captain-whu.github.io/iSAID/dataset.html (train/val)
+
+The dataset is a Large-scale Dataset for Instance Segmentation (alse have segmantic segmentation) in Aerial Images.
+
+iSAID
+ --train
+   --images
+     --part1.zip
+     --part2.zip
+     --part3.zip
+   --Semantic_masks
+     --images.zip
+ --val
+   --images
+     --part1.zip
+   --Semantic_masks
+     --images.zip
+ --test 
+   --images
+     --part1.zip
+     --part2.zip
+
+```shell
+python tools/convert_datasets/iSAID.py /path/to/iSAID
+```
+
