@@ -147,7 +147,7 @@ class GSAEncoderLayer(BaseModule):
         return x
 
 
-class LocallygroupedSelfAttention(BaseModule):
+class LocallyGroupedSelfAttention(BaseModule):
     """Locally-grouped Self Attention (LSA) module.
 
     Args:
@@ -174,7 +174,7 @@ class LocallygroupedSelfAttention(BaseModule):
                  proj_drop_rate=0.,
                  window_size=1,
                  init_cfg=None):
-        super(LocallygroupedSelfAttention, self).__init__(init_cfg=init_cfg)
+        super(LocallyGroupedSelfAttention, self).__init__(init_cfg=init_cfg)
 
         assert embed_dims % num_heads == 0, f'dim {embed_dims} should be ' \
                                             f'divided by num_heads ' \
@@ -290,7 +290,7 @@ class LSAEncoderLayer(BaseModule):
 
         self.norm1 = build_norm_layer(norm_cfg, embed_dims, postfix=1)[1]
 
-        self.attn = LocallygroupedSelfAttention(embed_dims, num_heads,
+        self.attn = LocallyGroupedSelfAttention(embed_dims, num_heads,
                                                 qkv_bias, qk_scale,
                                                 attn_drop_rate, drop_rate,
                                                 window_size)

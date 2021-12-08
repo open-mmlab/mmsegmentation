@@ -3,7 +3,7 @@ import torch
 
 from mmseg.models.backbones.twins import (PCPVT, SVT,
                                           ConditionalPositionEncoding,
-                                          LocallygroupedSelfAttention)
+                                          LocallyGroupedSelfAttention)
 
 
 def test_pcpvt():
@@ -159,7 +159,7 @@ def test_pcpvt_init():
 
 
 def test_locallygrouped_self_attention_module():
-    LSA = LocallygroupedSelfAttention(embed_dims=32, window_size=3)
+    LSA = LocallyGroupedSelfAttention(embed_dims=32, window_size=3)
     outs = LSA(torch.randn(1, 3136, 32), (56, 56))
     assert outs.shape == torch.Size([1, 3136, 32])
 
