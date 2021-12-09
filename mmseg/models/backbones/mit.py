@@ -22,7 +22,6 @@ class MixFFN(BaseModule):
     The differences between MixFFN & FFN:
         1. Use 1X1 Conv to replace Linear layer.
         2. Introduce 3X3 Conv to encode positional information.
-
     Args:
         embed_dims (int): The feature dimension. Same as
             `MultiheadAttention`. Defaults: 256.
@@ -94,7 +93,6 @@ class EfficientMultiheadAttention(MultiheadAttention):
 
     This module is modified from MultiheadAttention which is a module from
     mmcv.cnn.bricks.transformer.
-
     Args:
         embed_dims (int): The embedding dimension.
         num_heads (int): Parallel attention heads.
@@ -291,7 +289,6 @@ class MixVisionTransformer(BaseModule):
     This backbone is the implementation of `SegFormer: Simple and
     Efficient Design for Semantic Segmentation with
     Transformers <https://arxiv.org/abs/2105.15203>`_.
-
     Args:
         in_channels (int): Number of input channels. Default: 3.
         embed_dims (int): Embedding dimension. Default: 768.
