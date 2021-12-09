@@ -125,7 +125,6 @@ class GSAEncoderLayer(BaseModule):
             sr_ratio=sr_ratio)
 
         self.norm2 = build_norm_layer(norm_cfg, embed_dims, postfix=2)[1]
-
         self.ffn = FFN(
             embed_dims=embed_dims,
             feedforward_channels=feedforward_channels,
