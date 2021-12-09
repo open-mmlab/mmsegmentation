@@ -114,7 +114,6 @@ class GSAEncoderLayer(BaseModule):
         super(GSAEncoderLayer, self).__init__(init_cfg=init_cfg)
 
         self.norm1 = build_norm_layer(norm_cfg, embed_dims, postfix=1)[1]
-
         self.attn = GlobalSubsampledAttention(
             embed_dims=embed_dims,
             num_heads=num_heads,
