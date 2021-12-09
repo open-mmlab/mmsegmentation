@@ -3,7 +3,7 @@ Collections:
   Metadata:
     Training Data:
     - Cityscapes
-    - ADE20k
+    - ADE20K
   Paper:
     URL: https://arxiv.org/abs/2004.08955
     Title: 'ResNeSt: Split-Attention Networks'
@@ -118,7 +118,7 @@ Models:
     Training Memory (GB): 14.2
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 45.62
       mIoU(ms+flip): 46.16
@@ -140,7 +140,7 @@ Models:
     Training Memory (GB): 14.2
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 45.44
       mIoU(ms+flip): 46.28
@@ -162,7 +162,7 @@ Models:
     Training Memory (GB): 14.6
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 45.71
       mIoU(ms+flip): 46.59
@@ -184,7 +184,7 @@ Models:
     Training Memory (GB): 16.2
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 46.47
       mIoU(ms+flip): 47.27
