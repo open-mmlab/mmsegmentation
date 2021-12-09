@@ -286,7 +286,6 @@ class LSAEncoderLayer(BaseModule):
         super(LSAEncoderLayer, self).__init__(init_cfg=init_cfg)
 
         self.norm1 = build_norm_layer(norm_cfg, embed_dims, postfix=1)[1]
-
         self.attn = LocallyGroupedSelfAttention(embed_dims, num_heads,
                                                 qkv_bias, qk_scale,
                                                 attn_drop_rate, drop_rate,
