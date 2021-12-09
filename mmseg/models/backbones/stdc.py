@@ -211,19 +211,19 @@ class STDCNet(BaseModule):
 
     Example:
         >>> import torch
-        >>> stdc_type = 'STDCNet1',
+        >>> stdc_type = 'STDCNet1'
         >>> in_channels = 3
         >>> channels = (32, 64, 256, 512, 1024)
         >>> bottleneck_type = 'cat'
-        >>> inputs = [torch.rand(1, 3, 1024, 2048)]
+        >>> inputs = torch.rand(1, 3, 1024, 2048)
         >>> self = STDCNet(stdc_type, in_channels,
         ...                 channels, bottleneck_type).eval()
         >>> outputs = self.forward(inputs)
         >>> for i in range(len(outputs)):
         ...     print(f'outputs[{i}].shape = {outputs[i].shape}')
-        outputs[1].shape = torch.Size([1, 1024, 32, 64])
+        outputs[0].shape = torch.Size([1, 256, 128, 256])
         outputs[1].shape = torch.Size([1, 512, 64, 128])
-        outputs[2].shape = torch.Size([1, 256, 128, 256])
+        outputs[2].shape = torch.Size([1, 1024, 32, 64])
     """
 
     arch_settings = {
@@ -276,6 +276,12 @@ class STDCNet(BaseModule):
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg)
         ])
+        # `self.num_shallow_features` is the number of shallow modules in
+        # `STDCNet`, which is noted as `Stage1` and `Stage2` in original paper.
+        # They are both not used for following modules like Attention
+        # Refinement Module and Feature Fusion Module.
+        # Thus they would be cut from `outs`. Please refer to Figure 4
+        # of original paper for more details.
         self.num_shallow_features = len(self.stages)
 
         for strides in self.stage_strides:
@@ -315,15 +321,20 @@ class STDCNet(BaseModule):
         if self.with_final_conv:
             outs[-1] = self.final_conv(outs[-1])
         outs = outs[self.num_shallow_features:]
-
-        # Get reversed output feature maps from small to big.
-        outs.reverse()
         return tuple(outs)
 
 
 @BACKBONES.register_module()
 class STDCContextPathNet(BaseModule):
-    """STDCNet with Context Path.
+    """STDCNet with Context Path. The `outs` below is a list of three feature
+    maps from deep to shallow, whose height and width is from small to big,
+    respectively. The biggest feature map of `outs` is outputted for
+    `STDCHead`, where Detail Loss would be calculated by Detail Ground-truth.
+    The other two feature maps are used for Attention Refinement Module,
+    respectively. Besides, the biggest feature map of `outs` and the last
+    output of Attention Refinement Module are concatenated for Feature Fusion
+    Module. Then, this fusion feature map `feat_fuse` would be outputted for
+    `decode_head`. More details please refer to Figure 4 of original paper.
 
     Args:
         backbone_cfg (dict): Config dict for stdc backbone.
@@ -342,6 +353,10 @@ class STDCContextPathNet(BaseModule):
             Default: dict(type='BN').
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
+
+    Return:
+        outputs (tuple): The tuple of list of output feature map for
+            auxiliary heads and decoder head.
     """
 
     def __init__(self,
@@ -377,25 +392,31 @@ class STDCContextPathNet(BaseModule):
 
     def forward(self, x):
         outs = list(self.backbone(x))
-        avg = F.adaptive_avg_pool2d(outs[0], 1)
+        avg = F.adaptive_avg_pool2d(outs[-1], 1)
         avg_feat = self.conv_avg(avg)
 
         feature_up = resize(
             avg_feat,
-            size=outs[0].shape[2:],
+            size=outs[-1].shape[2:],
             mode=self.upsample_mode,
             align_corners=self.align_corners)
         arms_out = []
+        num_feat_index = len(outs) - 1
         for i in range(len(self.arms)):
-            x_arm = self.arms[i](outs[i]) + feature_up
+            x_arm = self.arms[i](outs[num_feat_index - i]) + feature_up
             feature_up = resize(
                 x_arm,
-                size=outs[i + 1].shape[2:],
+                size=outs[num_feat_index - i - 1].shape[2:],
                 mode=self.upsample_mode,
                 align_corners=self.align_corners)
             feature_up = self.convs[i](feature_up)
             arms_out.append(feature_up)
 
-        feat_fuse = self.ffm(outs[-1], arms_out[1])
-        outputs = [outs[-1]] + list(reversed(arms_out)) + [feat_fuse]
-        return outputs
+        feat_fuse = self.ffm(outs[0], arms_out[1])
+
+        # The `outputs` has four feature maps.
+        # `outs[0]` is outputted for `STDCHead` auxiliary head.
+        # Two feature maps of `arms_out` are outputted for auxiliary head.
+        # `feat_fuse` is outputted for decoder head.
+        outputs = [outs[0]] + list(arms_out) + [feat_fuse]
+        return tuple(outputs)

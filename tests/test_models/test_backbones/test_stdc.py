@@ -34,9 +34,9 @@ def test_stdc_context_path_net():
     # output for segment Head
     assert feat[0].shape == torch.Size([batch_size, 256, 32, 64])
     # for auxiliary head 1
-    assert feat[1].shape == torch.Size([batch_size, 128, 32, 64])
+    assert feat[1].shape == torch.Size([batch_size, 128, 16, 32])
     # for auxiliary head 2
-    assert feat[2].shape == torch.Size([batch_size, 128, 16, 32])
+    assert feat[2].shape == torch.Size([batch_size, 128, 32, 64])
     # for auxiliary head 3
     assert feat[3].shape == torch.Size([batch_size, 256, 32, 64])
 
