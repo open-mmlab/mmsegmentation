@@ -134,8 +134,7 @@ class GSAEncoderLayer(BaseModule):
             ffn_drop=drop_rate,
             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
             act_cfg=act_cfg,
-            add_identity=False,
-            init_cfg=None)
+            add_identity=False)
 
         self.drop_path = build_dropout(
             dict(type='DropPath', drop_prob=drop_path_rate)
