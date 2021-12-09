@@ -45,7 +45,7 @@ This script convert model from `PRETRAIN_PATH` and store the converted model in 
 
 ## Results and models
 
-### ADE20k
+### ADE20K
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU | mIoU(ms+flip) | config | download |
 | ------ | -------- | --------- | ------: | -------: | -------------- | ---: | ------------- | ------ | -------- |
