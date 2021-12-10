@@ -7,7 +7,6 @@
 - Support Twins ([#989](https://github.com/open-mmlab/mmsegmentation/pull/989))
 - Support a real-time segmentation model STDC ([#995](https://github.com/open-mmlab/mmsegmentation/pull/995))
 - Support a widely-used segmentation model in lane detection ERFNet ([#960](https://github.com/open-mmlab/mmsegmentation/pull/960))
-- Fix incorrectly loading init_cfg or pretrained models of several transformer models ([#999](https://github.com/open-mmlab/mmsegmentation/pull/999), [#1069](https://github.com/open-mmlab/mmsegmentation/pull/1069), [#1102](https://github.com/open-mmlab/mmsegmentation/pull/1102))
 - Support A Remote Sensing Land-Cover Dataset LoveDA ([#1028](https://github.com/open-mmlab/mmsegmentation/pull/1028))
 - Support focal loss ([#1024](https://github.com/open-mmlab/mmsegmentation/pull/1024))
 
