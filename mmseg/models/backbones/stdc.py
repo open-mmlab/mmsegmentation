@@ -35,7 +35,7 @@ class STDCModule(BaseModule):
                  num_convs=4,
                  fusion_type='add',
                  init_cfg=None):
-        super().__init__(init_cfg=init_cfg)
+        super(STDCModule, self).__init__(init_cfg=init_cfg)
         assert num_convs > 1
         assert fusion_type in ['add', 'cat']
         self.stride = stride
@@ -155,7 +155,7 @@ class FeatureFusionModule(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super().__init__(init_cfg=init_cfg)
+        super(FeatureFusionModule, self).__init__(init_cfg=init_cfg)
         channels = out_channels // scale_factor
         self.conv0 = ConvModule(
             in_channels, out_channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
@@ -242,7 +242,7 @@ class STDCNet(BaseModule):
                  with_final_conv=False,
                  pretrained=None,
                  init_cfg=None):
-        super().__init__(init_cfg=init_cfg)
+        super(STDCNet, self).__init__(init_cfg=init_cfg)
         assert stdc_type in self.arch_settings, \
             f'invalid structure {stdc_type} for STDCNet.'
         assert bottleneck_type in ['add', 'cat'],\
@@ -372,7 +372,7 @@ class STDCContextPathNet(BaseModule):
                  align_corners=None,
                  norm_cfg=dict(type='BN'),
                  init_cfg=None):
-        super().__init__(init_cfg=init_cfg)
+        super(STDCContextPathNet, self).__init__(init_cfg=init_cfg)
         self.backbone = build_backbone(backbone_cfg)
         self.arms = ModuleList()
         self.convs = ModuleList()
