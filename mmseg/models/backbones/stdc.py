@@ -187,9 +187,7 @@ class FeatureFusionModule(BaseModule):
 @BACKBONES.register_module()
 class STDCNet(BaseModule):
     """This backbone is the implementation of `Rethinking BiSeNet For Real-time
-    Semantic Segmentation.
-
-    <https://arxiv.org/abs/2104.13188>`_.
+    Semantic Segmentation <https://arxiv.org/abs/2104.13188>`_.
 
     Args:
         stdc_type (int): The type of backbone structure,
