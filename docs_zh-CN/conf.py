@@ -102,7 +102,7 @@ html_theme_options = {
             'children': [
                 {
                     'name': 'MMCV',
-                    'url': 'https://mmcv.readthedocs.io/zh_CN/latest/',
+                    'url': 'https://github.com/open-mmlab/mmcv',
                     'description': '基础视觉库'
                 },
             ]
