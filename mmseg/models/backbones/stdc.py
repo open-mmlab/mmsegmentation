@@ -289,7 +289,10 @@ class STDCNet(BaseModule):
             self.stages.append(
                 self._make_stage(self.channels[idx], self.channels[idx + 1],
                                  strides, norm_cfg, act_cfg, bottleneck_type))
-
+        # After appending, `self.stages` is a ModuleList including several
+        # shallow modules and STDCModules.
+        # (len(self.stages) ==
+        # self.num_shallow_features + len(self.stage_strides))
         if self.with_final_conv:
             self.final_conv = ConvModule(
                 self.channels[-1],
@@ -401,12 +404,11 @@ class STDCContextPathNet(BaseModule):
             mode=self.upsample_mode,
             align_corners=self.align_corners)
         arms_out = []
-        num_feat_index = len(outs) - 1
         for i in range(len(self.arms)):
-            x_arm = self.arms[i](outs[num_feat_index - i]) + feature_up
+            x_arm = self.arms[i](outs[len(outs) - 1 - i]) + feature_up
             feature_up = resize(
                 x_arm,
-                size=outs[num_feat_index - i - 1].shape[2:],
+                size=outs[len(outs) - 1 - i - 1].shape[2:],
                 mode=self.upsample_mode,
                 align_corners=self.align_corners)
             feature_up = self.convs[i](feature_up)
