@@ -107,85 +107,10 @@ html_theme_options = {
                 },
             ]
         },
-        {
-            'name':
-            '算法库',
-            'children': [
-                {
-                    'name': 'MMAction2',
-                    'url': 'https://mmaction2.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMClassification',
-                    'url':
-                    'https://mmclassification.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMOCR',
-                    'url': 'https://mmocr.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMDetection',
-                    'url': 'https://mmdetection.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMEditing',
-                    'url': 'https://mmediting.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMDetection3D',
-                    'url':
-                    'https://mmdetection3d.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMPose',
-                    'url': 'https://mmpose.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMTracking',
-                    'url': 'https://mmtracking.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMGeneration',
-                    'url': 'https://github.com/open-mmlab/mmgeneration',
-                },
-                {
-                    'name': 'MMFlow',
-                    'url': 'https://github.com/open-mmlab/mmflow',
-                },
-                {
-                    'name': 'MMFewShot',
-                    'url': 'https://mmfewshot.readthedocs.io/zh_CN/latest/',
-                },
-                {
-                    'name': 'MMHuman3D',
-                    'url': 'https://github.com/open-mmlab/mmhuman3d',
-                },
-            ]
-        },
-        {
-            'name':
-            'OpenMMLab',
-            'children': [
-                {
-                    'name': '官网',
-                    'url': 'https://openmmlab.com/'
-                },
-                {
-                    'name': 'GitHub',
-                    'url': 'https://github.com/open-mmlab/'
-                },
-                {
-                    'name': '推特',
-                    'url': 'https://twitter.com/OpenMMLab'
-                },
-                {
-                    'name': '知乎',
-                    'url': 'https://zhihu.com/people/openmmlab'
-                },
-            ]
-        },
-    ]
+    ],
+    # Specify the language of shared menu
+    'menu_lang':
+    'cn',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

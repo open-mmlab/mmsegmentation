@@ -102,89 +102,15 @@ html_theme_options = {
             'children': [
                 {
                     'name': 'MMCV',
-                    'url': 'https://mmcv.readthedocs.io/en/latest/',
+                    'url': 'https://github.com/open-mmlab/mmcv',
                     'description': 'Foundational library for computer vision'
                 },
             ]
         },
-        {
-            'name':
-            'Projects',
-            'children': [
-                {
-                    'name': 'MMAction2',
-                    'url': 'https://mmaction2.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMClassification',
-                    'url':
-                    'https://mmclassification.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMOCR',
-                    'url': 'https://mmocr.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMDetection',
-                    'url': 'https://mmdetection.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMEditing',
-                    'url': 'https://mmediting.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMDetection3D',
-                    'url': 'https://mmdetection3d.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMPose',
-                    'url': 'https://mmpose.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMTracking',
-                    'url': 'https://mmtracking.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMGeneration',
-                    'url': 'https://mmgeneration.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMFlow',
-                    'url': 'https://mmflow.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMFewShot',
-                    'url': 'https://mmfewshot.readthedocs.io/en/latest/',
-                },
-                {
-                    'name': 'MMHuman3D',
-                    'url': 'https://mmhuman3d.readthedocs.io/en/latest/',
-                },
-            ]
-        },
-        {
-            'name':
-            'OpenMMLab',
-            'children': [
-                {
-                    'name': 'Homepage',
-                    'url': 'https://openmmlab.com/'
-                },
-                {
-                    'name': 'GitHub',
-                    'url': 'https://github.com/open-mmlab/'
-                },
-                {
-                    'name': 'Twitter',
-                    'url': 'https://twitter.com/OpenMMLab'
-                },
-                {
-                    'name': 'Zhihu',
-                    'url': 'https://zhihu.com/people/openmmlab'
-                },
-            ]
-        },
-    ]
+    ],
+    # Specify the language of shared menu
+    'menu_lang':
+    'en'
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
