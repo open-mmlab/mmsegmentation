@@ -1074,10 +1074,12 @@ class RandomMosaic(object):
          3. Sub image will be cropped if image is larger than mosaic patch
     Args:
         prob (float): mosaic probability.
-        img_scale (Sequence[int]): Image size after mosaic pipeline of single
-           image. Default: (640, 640).
+        img_scale (Sequence[int]): Image size after mosaic pipeline of
+            a single image. The size of the output image is four times
+            that of a single image. The output image comprises 4 single images.
+            Default: (640, 640).
         center_ratio_range (Sequence[float]): Center ratio range of mosaic
-           output. Default: (0.5, 1.5).
+            output. Default: (0.5, 1.5).
         pad_val (int): Pad value. Default: 0.
         seg_pad_val (int): Pad value of segmentation map. Default: 255.
     """
