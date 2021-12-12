@@ -22,9 +22,9 @@ def parse_args():
         '--log-interval', type=int, default=50, help='interval of logging')
     parser.add_argument(
         '--work-dir',
-        help=('if specified, the evaluation metric results will be dumped'
+        help=('if specified, the results will be dumped'
               'into the directory as json'))
-    parser.add_argument('--repeat_times', type=int, default=1)
+    parser.add_argument('--repeat-times', type=int, default=1)
     args = parser.parse_args()
     return args
 
