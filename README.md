@@ -49,7 +49,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.19.0 was released in 11/02/2021.
+v0.20.0 was released in 12/10/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
@@ -98,6 +98,7 @@ Supported methods:
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
+- [x] [STDC (CVPR'2021)](configs/stdc)
 - [x] [SETR (CVPR'2021)](configs/setr)
 - [x] [DPT (ArXiv'2021)](configs/dpt)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
