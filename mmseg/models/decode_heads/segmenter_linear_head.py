@@ -1,14 +1,12 @@
+# Copyright (c) OpenMMLab. All rights reserved.
+from mmseg.models.decode_heads.fcn_head import FCNHead
 from ..builder import HEADS
-from .fcn_head import FCNHead
 
 
 @HEADS.register_module()
 class SegmenterLinearHead(FCNHead):
 
-    def __init__(self, **kwargs):
-        super(SegmenterLinearHead, self).__init__(**kwargs)
-
-    def forward(self, inputs):
-        x = self._transform_inputs(inputs)
-        x = self.cls_seg(x)
-        return x
+    def __init__(self, in_channels, **kwargs):
+        kwargs['num_convs'] = 0
+        super(SegmenterLinearHead, self).__init__(
+            in_channels=in_channels, **kwargs)
