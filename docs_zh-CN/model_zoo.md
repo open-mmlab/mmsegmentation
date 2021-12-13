@@ -119,7 +119,7 @@
 
 ### Mixed Precision (FP16) Training
 
-请参考 [Mixed Precision (FP16) Training] 在 BiSeNetV2 训练的样例 (https://github.com/open-mmlab/mmsegmentation/blob/master/configs/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes.py) for details.
+请参考 [Mixed Precision (FP16) Training 在 BiSeNetV2 训练的样例](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes.py) for details.
 
 ## 速度标定
 

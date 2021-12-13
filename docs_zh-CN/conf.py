@@ -107,79 +107,10 @@ html_theme_options = {
                 },
             ]
         },
-        {
-            'name':
-            '算法库',
-            'children': [
-                {
-                    'name': 'MMAction2',
-                    'url': 'https://github.com/open-mmlab/mmaction2',
-                },
-                {
-                    'name': 'MMClassification',
-                    'url': 'https://github.com/open-mmlab/mmclassification',
-                },
-                {
-                    'name': 'MMOCR',
-                    'url': 'https://github.com/open-mmlab/mmocr',
-                },
-                {
-                    'name': 'MMDetection',
-                    'url': 'https://github.com/open-mmlab/mmdetection',
-                },
-                {
-                    'name': 'MMEditing',
-                    'url': 'https://github.com/open-mmlab/mmediting',
-                },
-                {
-                    'name': 'MMDetection3D',
-                    'url': 'https://github.com/open-mmlab/mmdetection3d',
-                },
-                {
-                    'name': 'MMPose',
-                    'url': 'https://github.com/open-mmlab/mmpose',
-                },
-                {
-                    'name': 'MMTracking',
-                    'url': 'https://github.com/open-mmlab/mmtracking',
-                },
-                {
-                    'name': 'MMGeneration',
-                    'url': 'https://github.com/open-mmlab/mmgeneration',
-                },
-                {
-                    'name': 'MMFlow',
-                    'url': 'https://github.com/open-mmlab/mmflow',
-                },
-                {
-                    'name': 'MMFewShot',
-                    'url': 'https://github.com/open-mmlab/mmfewshot',
-                },
-            ]
-        },
-        {
-            'name':
-            'OpenMMLab',
-            'children': [
-                {
-                    'name': '官网',
-                    'url': 'https://openmmlab.com/'
-                },
-                {
-                    'name': 'GitHub',
-                    'url': 'https://github.com/open-mmlab/'
-                },
-                {
-                    'name': '推特',
-                    'url': 'https://twitter.com/OpenMMLab'
-                },
-                {
-                    'name': '知乎',
-                    'url': 'https://zhihu.com/people/openmmlab'
-                },
-            ]
-        },
-    ]
+    ],
+    # Specify the language of shared menu
+    'menu_lang':
+    'cn',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

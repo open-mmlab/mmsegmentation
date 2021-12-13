@@ -26,6 +26,7 @@ from .sep_aspp_head import DepthwiseSeparableASPPHead
 from .sep_fcn_head import DepthwiseSeparableFCNHead
 from .setr_mla_head import SETRMLAHead
 from .setr_up_head import SETRUPHead
+from .stdc_head import STDCHead
 from .uper_head import UPerHead
 
 __all__ = [
@@ -34,5 +35,5 @@ __all__ = [
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
     'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
     'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegmenterLinearHead',
-    'SegmenterMaskTransformerHead', 'SegformerHead', 'ISAHead'
+    'SegmenterMaskTransformerHead', 'SegformerHead', 'ISAHead', 'STDCHead'
 ]

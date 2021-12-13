@@ -3,7 +3,7 @@ Collections:
   Metadata:
     Training Data:
     - Cityscapes
-    - ADE20k
+    - ADE20K
   Paper:
     URL: https://arxiv.org/abs/2004.08955
     Title: 'ResNeSt: Split-Attention Networks'
@@ -27,7 +27,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 11.4
+    Training Memory (GB): 11.4
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -49,7 +49,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 11.8
+    Training Memory (GB): 11.8
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -71,7 +71,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 11.9
+    Training Memory (GB): 11.9
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -93,7 +93,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 13.2
+    Training Memory (GB): 13.2
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -115,10 +115,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 14.2
+    Training Memory (GB): 14.2
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 45.62
       mIoU(ms+flip): 46.16
@@ -137,10 +137,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 14.2
+    Training Memory (GB): 14.2
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 45.44
       mIoU(ms+flip): 46.28
@@ -159,10 +159,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 14.6
+    Training Memory (GB): 14.6
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 45.71
       mIoU(ms+flip): 46.59
@@ -181,10 +181,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 16.2
+    Training Memory (GB): 16.2
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 46.47
       mIoU(ms+flip): 47.27

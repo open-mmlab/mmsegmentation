@@ -31,7 +31,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 1.7
+    Training Memory (GB): 1.7
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -53,7 +53,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 2.9
+    Training Memory (GB): 2.9
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -75,7 +75,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 6.2
+    Training Memory (GB): 6.2
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -181,7 +181,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 3.8
+    Training Memory (GB): 3.8
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -203,7 +203,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 4.9
+    Training Memory (GB): 4.9
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -225,7 +225,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 8.2
+    Training Memory (GB): 8.2
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -289,7 +289,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 1.8
+    Training Memory (GB): 1.8
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
@@ -311,7 +311,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 2.9
+    Training Memory (GB): 2.9
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
@@ -333,7 +333,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 6.2
+    Training Memory (GB): 6.2
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
@@ -397,7 +397,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (480,480)
-    memory (GB): 6.1
+    Training Memory (GB): 6.1
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal Context
@@ -461,7 +461,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 1.72
+    Training Memory (GB): 1.72
   Results:
   - Task: Semantic Segmentation
     Dataset: LoveDA
@@ -483,7 +483,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 2.9
+    Training Memory (GB): 2.9
   Results:
   - Task: Semantic Segmentation
     Dataset: LoveDA
@@ -505,7 +505,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 6.25
+    Training Memory (GB): 6.25
   Results:
   - Task: Semantic Segmentation
     Dataset: LoveDA
