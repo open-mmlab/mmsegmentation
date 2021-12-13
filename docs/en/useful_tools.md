@@ -142,7 +142,7 @@ TensorRT is only available on configs with `whole mode`.
 
 ### Convert to TorchScript (experimental)
 
-We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between PyTorch and TorchScript model.
+We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/en/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/en/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between PyTorch and TorchScript model.
 
 ```shell
 python tools/pytorch2torchscript.py \
@@ -189,7 +189,7 @@ A script to convert [ONNX](https://github.com/onnx/onnx) model to [TensorRT](htt
 
 Prerequisite
 
-- install `mmcv-full` with ONNXRuntime custom ops and TensorRT plugins follow [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) and [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md).
+- install `mmcv-full` with ONNXRuntime custom ops and TensorRT plugins follow [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) and [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/en/tensorrt_plugin.md).
 - Use [pytorch2onnx](#convert-to-onnx-experimental) to convert the model from PyTorch to ONNX.
 
 Usage
@@ -336,7 +336,7 @@ docker run --rm \
 mmseg-serve:latest
 ```
 
-[Read the docs](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) about the Inference (8080), Management (8081) and Metrics (8082) APIs
+[Read the docs](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/en/rest_api.md) about the Inference (8080), Management (8081) and Metrics (8082) APIs
 
 ### 4. Test deployment
 

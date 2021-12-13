@@ -49,11 +49,11 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 ## 更新日志
 
 最新的月度版本 v0.20.0 在 2021.12.10 发布。
-如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/changelog.md)。
+如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
 
 ## 基准测试和模型库
 
-测试结果和模型可以在[模型库](docs_zh-CN/model_zoo.md)中找到。
+测试结果和模型可以在[模型库](docs/zh_zn/model_zoo.md)中找到。
 
 已支持的骨干网络：
 
@@ -104,29 +104,29 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 已支持的数据集：
 
-- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#cityscapes)
-- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#pascal-voc)
-- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#ade20k)
-- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#pascal-context)
-- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#coco-stuff-10k)
-- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#coco-stuff-164k)
-- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#chase-db1)
-- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#drive)
-- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#hrf)
-- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#stare)
-- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#dark-zurich)
-- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#nighttime-driving)
-- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/master/docs_zh-CN/dataset_prepare.md#loveda)
+- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#cityscapes)
+- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#pascal-voc)
+- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#ade20k)
+- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#pascal-context)
+- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#coco-stuff-10k)
+- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#coco-stuff-164k)
+- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#chase-db1)
+- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#drive)
+- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#hrf)
+- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#stare)
+- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#dark-zurich)
+- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#nighttime-driving)
+- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_zn/dataset_prepare.md#loveda)
 
 ## 安装
 
-请参考[快速入门文档](docs_zh-CN/get_started.md#installation)进行安装，参考[数据集准备](docs_zh-CN/dataset_prepare.md)处理数据。
+请参考[快速入门文档](docs/zh_zn/get_started.md#installation)进行安装，参考[数据集准备](docs/zh_zn/dataset_prepare.md)处理数据。
 
 ## 快速入门
 
-请参考[训练教程](docs_zh-CN/train.md)和[测试教程](docs_zh-CN/inference.md)学习 MMSegmentation 的基本使用。
-我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs_zh-CN/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs_zh-CN/tutorials/data_pipeline.md)，[增加自定义模型](docs_zh-CN/tutorials/customize_models.md)，[增加自定义的运行时配置](docs_zh-CN/tutorials/customize_runtime.md)。
-除此之外，我们也提供了很多实用的[训练技巧说明](docs_zh-CN/tutorials/training_tricks.md)和模型部署相关的[有用的工具](docs_zh-CN/useful_tools.md)。
+请参考[训练教程](docs/zh_zn/train.md)和[测试教程](docs/zh_zn/inference.md)学习 MMSegmentation 的基本使用。
+我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs/zh_zn/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs/zh_zn/tutorials/data_pipeline.md)，[增加自定义模型](docs/zh_zn/tutorials/customize_models.md)，[增加自定义的运行时配置](docs/zh_zn/tutorials/customize_runtime.md)。
+除此之外，我们也提供了很多实用的[训练技巧说明](docs/zh_zn/tutorials/training_tricks.md)和模型部署相关的[有用的工具](docs/zh_zn/useful_tools.md)。
 
 同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb)。
 
@@ -173,7 +173,7 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
  扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，加入 [OpenMMLab 团队](https://jq.qq.com/?_wv=1027&k=aCvMxdr3) 以及 [MMSegmentation](https://jq.qq.com/?_wv=1027&k=ukevz6Ie) 的 QQ 群。
 
  <div align="center">
- <img src="docs_zh-CN/imgs/zhihu_qrcode.jpg" height="400" />  <img src="docs_zh-CN/imgs/qq_group_qrcode.jpg" height="400" />  <img src="docs_zh-CN/imgs/seggroup_qrcode.jpg" height="400" />
+ <img src="docs/zh_zn/imgs/zhihu_qrcode.jpg" height="400" />  <img src="docs/zh_zn/imgs/qq_group_qrcode.jpg" height="400" />  <img src="docs/zh_zn/imgs/seggroup_qrcode.jpg" height="400" />
  </div>
 
  我们会在 OpenMMLab 社区为大家

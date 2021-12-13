@@ -140,7 +140,7 @@ python tools/deploy_test.py \
 
 ### 导出 TorchScript (试验性)
 
-我们同样提供一个脚本去把模型导出成 [TorchScript](https://pytorch.org/docs/stable/jit.html) 格式。您可以使用 pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) 去推理训练好的模型。
+我们同样提供一个脚本去把模型导出成 [TorchScript](https://pytorch.org/docs/en/stable/jit.html) 格式。您可以使用 pytorch C++ API [LibTorch](https://pytorch.org/docs/en/stable/cpp_index.html) 去推理训练好的模型。
 被转换的模型能被像 [Netron](https://github.com/lutzroeder/netron) 的工具来可视化。此外，我们还支持 PyTorch 和 TorchScript 模型的输出结果的比较。
 
 ```shell
@@ -184,7 +184,7 @@ python tools/pytorch2torchscript.py \
 
 先决条件
 
-- 按照 [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) 和 [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md) ，用 ONNXRuntime 自定义运算 (custom ops) 和 TensorRT 插件安装 `mmcv-full`
+- 按照 [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) 和 [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/en/tensorrt_plugin.md) ，用 ONNXRuntime 自定义运算 (custom ops) 和 TensorRT 插件安装 `mmcv-full`
 - 使用 [pytorch2onnx](#convert-to-onnx-experimental) 将模型从 PyTorch 转成 ONNX
 
 使用方法
@@ -326,7 +326,7 @@ docker run --rm \
 mmseg-serve:latest
 ```
 
-阅读关于推理 (8080), 管理 (8081) 和指标 (8082) APIs 的 [文档](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/rest_api.md) 。
+阅读关于推理 (8080), 管理 (8081) 和指标 (8082) APIs 的 [文档](https://github.com/pytorch/serve/blob/072f5d088cce9bb64b2a18af065886c9b01b317b/docs/en/rest_api.md) 。
 
 ### 4. 测试部署
 

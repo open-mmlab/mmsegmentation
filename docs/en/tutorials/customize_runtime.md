@@ -11,7 +11,7 @@ For example, if you want to use `ADAM` (note that the performance could drop a l
 optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 ```
 
-To modify the learning rate of the model, the users only need to modify the `lr` in the config of optimizer. The users can directly set arguments following the [API doc](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim) of PyTorch.
+To modify the learning rate of the model, the users only need to modify the `lr` in the config of optimizer. The users can directly set arguments following the [API doc](https://pytorch.org/docs/en/stable/optim.html?highlight=optim#module-torch.optim) of PyTorch.
 
 ### Customize self-implemented optimizer
 

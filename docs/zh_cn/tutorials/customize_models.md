@@ -1,9 +1,9 @@
-# Tutorial 4: Customize Models
+# 教程 4: 自定义模型
 
-## Customize optimizer
+## 自定义优化器 (optimizer)
 
-Assume you want to add a optimizer named as `MyOptimizer`, which has arguments `a`, `b`, and `c`.
-You need to first implement the new optimizer in a file, e.g., in `mmseg/core/optimizer/my_optimizer.py`:
+假设您想增加一个新的叫 `MyOptimizer` 的优化器，它的参数分别为 `a`, `b`, 和 `c`。
+您首先需要在一个文件里实现这个新的优化器，例如在 `mmseg/core/optimizer/my_optimizer.py` 里面：
 
 ```python
 from mmcv.runner import OPTIMIZERS
@@ -17,41 +17,39 @@ class MyOptimizer(Optimizer):
 
 ```
 
-Then add this module in `mmseg/core/optimizer/__init__.py` thus the registry will
-find the new module and add it:
+然后增加这个模块到 `mmseg/core/optimizer/__init__.py` 里面，这样注册器 (registry) 将会发现这个新的模块并添加它：
 
 ```python
 from .my_optimizer import MyOptimizer
 ```
 
-Then you can use `MyOptimizer` in `optimizer` field of config files.
-In the configs, the optimizers are defined by the field `optimizer` like the following:
+之后您可以在配置文件的 `optimizer` 域里使用 `MyOptimizer`，
+如下所示，在配置文件里，优化器被 `optimizer` 域所定义：
 
 ```python
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 ```
 
-To use your own optimizer, the field can be changed as
+为了使用您自己的优化器，域可以被修改为：
 
 ```python
 optimizer = dict(type='MyOptimizer', a=a_value, b=b_value, c=c_value)
 ```
 
-We already support to use all the optimizers implemented by PyTorch, and the only modification is to change the `optimizer` field of config files.
-For example, if you want to use `ADAM`, though the performance will drop a lot, the modification could be as the following.
+我们已经支持了 PyTorch 自带的全部优化器，唯一修改的地方是在配置文件里的 `optimizer` 域。例如，如果您想使用 `ADAM`，尽管数值表现会掉点，还是可以如下修改：
 
 ```python
 optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 ```
 
-The users can directly set arguments following the [API doc](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim) of PyTorch.
+使用者可以直接按照 PyTorch [文档教程](https://pytorch.org/docs/en/stable/optim.html?highlight=optim#module-torch.optim) 去设置参数。
 
-## Customize optimizer constructor
+## 定制优化器的构造器 (optimizer constructor)
 
-Some models may have some parameter-specific settings for optimization, e.g. weight decay for BatchNoarm layers.
-The users can do those fine-grained parameter tuning through customizing optimizer constructor.
+对于优化，一些模型可能会有一些特别定义的参数，例如批归一化 (BatchNorm) 层里面的权重衰减 (weight decay)。
+使用者可以通过定制优化器的构造器来微调这些细粒度的优化器参数。
 
-```
+```python
 from mmcv.utils import build_from_cfg
 
 from mmcv.runner import OPTIMIZER_BUILDERS
@@ -69,18 +67,18 @@ class CocktailOptimizerConstructor(object):
 
 ```
 
-## Develop new components
+## 开发和增加新的组件（Module）
 
-There are mainly 2 types of components in MMSegmentation.
+MMSegmentation 里主要有2种组件：
 
-- backbone: usually stacks of convolutional network to extract feature maps, e.g., ResNet, HRNet.
-- head: the component for semantic segmentation map decoding.
+- 主干网络 (backbone): 通常是卷积网络的堆叠，来做特征提取，例如 ResNet, HRNet
+- 解码头 (decoder head): 用于语义分割图的解码的组件（得到分割结果）
 
-### Add new backbones
+### 添加新的主干网络
 
-Here we show how to develop new components with an example of MobileNet.
+这里我们以 MobileNet 为例，展示如何增加新的主干组件：
 
-1. Create a new file `mmseg/models/backbones/mobilenet.py`.
+1. 创建一个新的文件 `mmseg/models/backbones/mobilenet.py`
 
 ```python
 import torch.nn as nn
@@ -101,13 +99,13 @@ class MobileNet(nn.Module):
         pass
 ```
 
-2. Import the module in `mmseg/models/backbones/__init__.py`.
+2. 在 `mmseg/models/backbones/__init__.py` 里面导入模块
 
 ```python
 from .mobilenet import MobileNet
 ```
 
-3. Use it in your config file.
+3. 在您的配置文件里使用它
 
 ```python
 model = dict(
@@ -119,15 +117,14 @@ model = dict(
     ...
 ```
 
-### Add new heads
+### 增加新的解码头 (decoder head)组件
 
-In MMSegmentation, we provide a base [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py) for all segmentation head.
-All newly implemented decode heads should be derived from it.
-Here we show how to develop a new head with the example of [PSPNet](https://arxiv.org/abs/1612.01105) as the following.
+在 MMSegmentation 里面，对于所有的分割头，我们提供一个基类解码头 [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py) 。
+所有新建的解码头都应该继承它。这里我们以 [PSPNet](https://arxiv.org/abs/1612.01105) 为例，
+展示如何开发和增加一个新的解码头组件：
 
-First, add a new decode head in `mmseg/models/decode_heads/psp_head.py`.
-PSPNet implements a decode head for segmentation decode.
-To implement a decode head, basically we need to implement three functions of the new module as the following.
+首先，在 `mmseg/models/decode_heads/psp_head.py` 里添加一个新的解码头。
+PSPNet 中实现了一个语义分割的解码头。为了实现一个解码头，我们只需要在新构造的解码头中实现如下的3个函数：
 
 ```python
 @HEADS.register_module()
@@ -142,9 +139,9 @@ class PSPHead(BaseDecodeHead):
 
 ```
 
-Next, the users need to add the module in the `mmseg/models/decode_heads/__init__.py` thus the corresponding registry could find and load them.
+接着，使用者需要在 `mmseg/models/decode_heads/__init__.py` 里面添加这个模块，这样对应的注册器 (registry) 可以查找并加载它们。
 
-To config file of PSPNet is as the following
+PSPNet的配置文件如下所示：
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -177,11 +174,11 @@ model = dict(
 
 ```
 
-### Add new loss
+### 增加新的损失函数
 
-Assume you want to add a new loss as `MyLoss` for segmentation decode.
-To add a new loss function, the users need implement it in `mmseg/models/losses/my_loss.py`.
-The decorator `weighted_loss` enable the loss to be weighted for each element.
+假设您想添加一个新的损失函数 `MyLoss` 到语义分割解码器里。
+为了添加一个新的损失函数，使用者需要在 `mmseg/models/losses/my_loss.py` 里面去实现它。
+`weighted_loss` 可以对计算损失时的每个样本做加权。
 
 ```python
 import torch
@@ -218,16 +215,15 @@ class MyLoss(nn.Module):
         return loss
 ```
 
-Then the users need to add it in the `mmseg/models/losses/__init__.py`.
+然后使用者需要在 `mmseg/models/losses/__init__.py` 里面添加它：
 
 ```python
 from .my_loss import MyLoss, my_loss
 
 ```
 
-To use it, modify the `loss_xxx` field.
-Then you need to modify the `loss_decode` field in the head.
-`loss_weight` could be used to balance multiple losses.
+为了使用它，修改 `loss_xxx` 域。之后您需要在解码头组件里修改 `loss_decode` 域。
+`loss_weight` 可以被用来对不同的损失函数做加权。
 
 ```python
 loss_decode=dict(type='MyLoss', loss_weight=1.0))
