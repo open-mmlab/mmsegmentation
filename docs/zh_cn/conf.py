@@ -17,14 +17,14 @@ import sys
 
 import pytorch_sphinx_theme
 
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'MMSegmentation'
 copyright = '2020-2021, OpenMMLab'
 author = 'MMSegmentation Authors'
-version_file = '../mmseg/version.py'
+version_file = '../../mmseg/version.py'
 
 
 def get_version():
