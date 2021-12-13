@@ -48,7 +48,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新的月度版本 v0.19.0 在 2021.11.2 发布。
+最新的月度版本 v0.20.0 在 2021.12.10 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/changelog.md)。
 
 ## 基准测试和模型库
@@ -64,11 +64,13 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
-- [x] [Swin Transformer (ArXiv'2021)](configs/swin)
+- [x] [Swin Transformer (ICCV'2021)](configs/swin)
+- [x] [Twins (NeurIPS'2021)](configs/twins)
 
 已支持的算法：
 
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
+- [x] [ERFNet (T-ITS'2017)](configs/erfnet)
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
@@ -95,9 +97,10 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
 - [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
+- [x] [STDC (CVPR'2021)](configs/stdc)
 - [x] [SETR (CVPR'2021)](configs/setr)
 - [x] [DPT (ArXiv'2021)](configs/dpt)
-- [x] [SegFormer (ArXiv'2021)](configs/segformer)
+- [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 
 已支持的数据集：
 
@@ -163,6 +166,7 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - [MMGeneration](https://github.com/open-mmlab/mmgeneration): OpenMMLab 生成模型工具箱
 - [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab 光流估计工具箱与测试基准
 - [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab 少样本学习工具箱与测试基准
+- [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab 人体参数化模型工具箱与测试基准
 
 ## 欢迎加入 OpenMMLab 社区
 
