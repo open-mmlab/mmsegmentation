@@ -16,7 +16,6 @@ model = dict(
         num_layers=2,
         num_heads=6,
         embed_dims=384,
-        in_index=-1,
         align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
