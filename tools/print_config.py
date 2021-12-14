@@ -16,12 +16,13 @@ def parse_args():
         '--options',
         nargs='+',
         action=DictAction,
-        help='override some settings in the used config, the key-value pair '
-        'in xxx=yyy format will be merged into config file. If the value to '
-        'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
-        'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
-        'Note that the quotation marks are necessary and that no white space '
-        'is allowed.')
+        help="--options is deprecated in favor of --cfg_options' and it will "
+        'not be supported in version v0.22.0. Override some settings in the '
+        'used config, the key-value pair in xxx=yyy format will be merged '
+        'into config file. If the value to be overwritten is a list, it '
+        'should be like key="[a,b]" or key=a,b It also allows nested '
+        'list/tuple values, e.g. key="[(a,b),(c,d)]" Note that the quotation '
+        'marks are necessary and that no white space is allowed.')
     parser.add_argument(
         '--cfg-options',
         nargs='+',
