@@ -36,7 +36,7 @@ def main():
     if args.work_dir is not None:
         mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-        json_file = osp.join(args.work_dir, f'eval_{timestamp}.json')
+        json_file = osp.join(args.work_dir, f'fps_{timestamp}.json')
     repeat_times = args.repeat_times
     # set cudnn_benchmark
     torch.backends.cudnn.benchmark = False
