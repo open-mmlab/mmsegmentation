@@ -1,5 +1,19 @@
 ## Changelog
 
+### V0.20.1 (12/14/2021)
+
+**Improvements**
+
+- Change options to cfg-options ([#1129](https://github.com/open-mmlab/mmsegmentation/pull/1129))
+
+
+**Bug Fixes**
+
+- Fix `<!-- [ABSTRACT] -->` in metafile. ([#1127](https://github.com/open-mmlab/mmsegmentation/pull/1127))
+- Fix correct `num_classes` of HRNet in `LoveDA` dataset ([#1136](https://github.com/open-mmlab/mmsegmentation/pull/1136))
+
+
+
 ### V0.20 (12/10/2021)
 
 **Highlights**
