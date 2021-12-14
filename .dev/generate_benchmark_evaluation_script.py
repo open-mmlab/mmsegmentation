@@ -65,7 +65,7 @@ def create_test_bash_info(commands, model_test_dict, port, script_name,
 
     command_info += f'--eval {eval} '
     command_info += f'--work-dir {work_dir} '
-    command_info += f'--options dist_params.port={port} '
+    command_info += f'--cfg-options dist_params.port={port} '
     command_info += '&'
 
     commands.append(command_info)
