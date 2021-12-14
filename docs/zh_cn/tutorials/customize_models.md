@@ -42,7 +42,7 @@ optimizer = dict(type='MyOptimizer', a=a_value, b=b_value, c=c_value)
 optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 ```
 
-使用者可以直接按照 PyTorch [文档教程](https://pytorch.org/docs/en/stable/optim.html?highlight=optim#module-torch.optim) 去设置参数。
+使用者可以直接按照 PyTorch [文档教程](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim) 去设置参数。
 
 ## 定制优化器的构造器 (optimizer constructor)
 

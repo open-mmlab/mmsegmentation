@@ -12,7 +12,7 @@ optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 ```
 
 为了修改模型的学习率，使用者仅需要修改配置文件里 optimizer 的 `lr` 即可。
-使用者可以参照 PyTorch 的 [API 文档](https://pytorch.org/docs/en/stable/optim.html?highlight=optim#module-torch.optim)
+使用者可以参照 PyTorch 的 [API 文档](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim)
 直接设置参数。
 
 ### 自定义自己实现的优化器
