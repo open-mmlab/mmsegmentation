@@ -105,7 +105,7 @@ python tools/deploy_test.py \
     --eval ${EVALUATION_METRICS} \
     --show \
     --show-dir ${SHOW_DIRECTORY} \
-    --options ${CFG_OPTIONS} \
+    --cfg-options ${CFG_OPTIONS} \
     --eval-options ${EVALUATION_OPTIONS} \
     --opacity ${OPACITY} \
 ```
@@ -120,7 +120,7 @@ python tools/deploy_test.py \
 - `--eval`: 评估指标，取决于每个数据集的要求，例如 "mIoU" 是大多数据集的指标而 "cityscapes" 仅针对 Cityscapes 数据集。注意这个参数是用 `--format-only` 来 **手动添加**
 - `--show`: 是否展示结果
 - `--show-dir`: 涂上结果的图像被保存的文件夹的路径
-- `--options`: 重写配置文件里的一些设置，`xxx=yyy` 格式的键值对将被覆盖到配置文件里
+- `--cfg-options`: 重写配置文件里的一些设置，`xxx=yyy` 格式的键值对将被覆盖到配置文件里
 - `--eval-options`: 自定义的评估的选项， `xxx=yyy` 格式的键值对将成为  `dataset.evaluate()` 函数的参数变量
 - `--opacity`: 涂上结果的分割图的透明度，范围在 (0, 1] 之间
 
@@ -228,14 +228,14 @@ python ${MMSEG_PATH}/tools/onnx2tensorrt.py \
 python tools/print_config.py \
   ${CONFIG} \
   --graph \
-  --options ${OPTIONS [OPTIONS...]} \
+  --cfg-options ${OPTIONS [OPTIONS...]} \
 ```
 
 各个参数的描述:
 
 - `config` : pytorch 模型的配置文件的路径
 - `--graph` : 是否打印模型的图 (models graph)
-- `--options`: 自定义替换配置文件的选项
+- `--cfg-options`: 自定义替换配置文件的选项
 
 ### 对训练日志 (training logs) 画图
 

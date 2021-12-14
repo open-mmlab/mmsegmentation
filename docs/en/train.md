@@ -15,7 +15,7 @@ evaluation = dict(interval=4000)  # This evaluate the model per 4000 iterations.
 **\*Important\***: The default learning rate in config files is for 4 GPUs and 2 img/gpu (batch size = 4x2 = 8).
 Equivalently, you may also use 8 GPUs and 1 imgs/gpu since all models using cross-GPU SyncBN.
 
-To trade speed with GPU memory, you may pass in `--options model.backbone.with_cp=True` to enable checkpoint in backbone.
+To trade speed with GPU memory, you may pass in `--cfg-options model.backbone.with_cp=True` to enable checkpoint in backbone.
 
 ### Train with a single GPU
 
