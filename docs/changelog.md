@@ -1,5 +1,11 @@
 ## Changelog
 
+### V0.20.2 (12/15/2021)
+
+**Bug Fixes**
+
+- Revise --option to --options to avoid BC-breaking. ([#1140](https://github.com/open-mmlab/mmsegmentation/pull/1140))
+
 ### V0.20.1 (12/14/2021)
 
 **Improvements**
