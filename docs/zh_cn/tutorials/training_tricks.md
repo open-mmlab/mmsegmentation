@@ -48,7 +48,7 @@ model=dict(
                         1.0865, 1.0955, 1.0865, 1.1529, 1.0507])))
 ```
 
-`class_weight` 将被作为 `weight` 参数，传递给 `CrossEntropyLoss`。详细信息请参照 [PyTorch 文档](https://pytorch.org/docs//stable/nn.html?highlight=crossentropy#torch.nn.CrossEntropyLoss) 。
+`class_weight` 将被作为 `weight` 参数，传递给 `CrossEntropyLoss`。详细信息请参照 [PyTorch 文档](https://pytorch.org/docs/stable/nn.html?highlight=crossentropy#torch.nn.CrossEntropyLoss) 。
 
 ## 同时使用多种损失函数 (Multiple Losses)
 
