@@ -49,7 +49,7 @@ model=dict(
                         1.0865, 1.0955, 1.0865, 1.1529, 1.0507])))
 ```
 
-`class_weight` will be passed into `CrossEntropyLoss` as `weight` argument. Please refer to [PyTorch Doc](https://pytorch.org/docs/en/stable/nn.html?highlight=crossentropy#torch.nn.CrossEntropyLoss) for details.
+`class_weight` will be passed into `CrossEntropyLoss` as `weight` argument. Please refer to [PyTorch Doc](https://pytorch.org/docs//stable/nn.html?highlight=crossentropy#torch.nn.CrossEntropyLoss) for details.
 
 ## Multiple Losses
 

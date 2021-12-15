@@ -142,7 +142,7 @@ TensorRT is only available on configs with `whole mode`.
 
 ### Convert to TorchScript (experimental)
 
-We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/en/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/en/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between PyTorch and TorchScript model.
+We also provide a script to convert model to [TorchScript](https://pytorch.org/docs/stable/jit.html) format. You can use the pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) inference the trained model. The converted model could be visualized by tools like [Netron](https://github.com/lutzroeder/netron). Besides, we also support comparing the output results between PyTorch and TorchScript model.
 
 ```shell
 python tools/pytorch2torchscript.py \

@@ -140,7 +140,7 @@ python tools/deploy_test.py \
 
 ### 导出 TorchScript (试验性)
 
-我们同样提供一个脚本去把模型导出成 [TorchScript](https://pytorch.org/docs/en/stable/jit.html) 格式。您可以使用 pytorch C++ API [LibTorch](https://pytorch.org/docs/en/stable/cpp_index.html) 去推理训练好的模型。
+我们同样提供一个脚本去把模型导出成 [TorchScript](https://pytorch.org/docs/stable/jit.html) 格式。您可以使用 pytorch C++ API [LibTorch](https://pytorch.org/docs/stable/cpp_index.html) 去推理训练好的模型。
 被转换的模型能被像 [Netron](https://github.com/lutzroeder/netron) 的工具来可视化。此外，我们还支持 PyTorch 和 TorchScript 模型的输出结果的比较。
 
 ```shell

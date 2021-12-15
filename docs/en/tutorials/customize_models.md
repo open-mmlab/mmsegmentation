@@ -44,7 +44,7 @@ For example, if you want to use `ADAM`, though the performance will drop a lot, 
 optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
 ```
 
-The users can directly set arguments following the [API doc](https://pytorch.org/docs/en/stable/optim.html?highlight=optim#module-torch.optim) of PyTorch.
+The users can directly set arguments following the [API doc](https://pytorch.org/docs//stable/optim.html?highlight=optim#module-torch.optim) of PyTorch.
 
 ## Customize optimizer constructor
 
