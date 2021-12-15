@@ -207,7 +207,7 @@ def parse_args() -> argparse.Namespace:
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)
 
-    if args.option and args.cfg_options:
+    if args.options and args.cfg_options:
         raise ValueError(
             '--options and --cfg-options cannot be both '
             'specified, --options is deprecated in favor of --cfg-options. '
