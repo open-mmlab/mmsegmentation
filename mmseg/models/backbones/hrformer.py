@@ -737,14 +737,7 @@ class HRFormer(BaseModule):
                           'please use "init_cfg" instead')
             self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
         elif pretrained is None:
-            if init_cfg is None:
-                self.init_cfg = [
-                    dict(type='Kaiming', layer='Conv2d'),
-                    dict(
-                        type='Constant',
-                        val=1,
-                        layer=['_BatchNorm', 'GroupNorm'])
-                ]
+            self.init_cfg = init_cfg
         else:
             raise TypeError('pretrained must be a str or None')
 
