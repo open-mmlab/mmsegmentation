@@ -9,15 +9,20 @@ from mmseg.models.backbones.hrformer import (HRFomerModule, HRFormer,
 @pytest.mark.parametrize('block', [HRFormerBlock])
 def test_hrformer_module(block):
     norm_cfg = dict(type='BN')
+
     # Test multiscale forward
     num_channles = (32, 64)
     num_inchannels = [c * block.expansion for c in num_channles]
     hrmodule = HRFomerModule(
         num_branches=2,
-        blocks=block,
+        block=block,
+        num_blocks=(2, 2),
         num_inchannels=num_inchannels,
-        num_blocks=(4, 4),
         num_channels=num_channles,
+        num_heads=(1, 2),
+        num_window_sizes=(7, 7),
+        num_mlp_ratios=(4, 4),
+        drop_path=(0., 0.),
         norm_cfg=norm_cfg)
 
     feats = [
@@ -35,10 +40,14 @@ def test_hrformer_module(block):
     in_channels = [c * block.expansion for c in num_channles]
     hrmodule = HRFomerModule(
         num_branches=2,
-        blocks=block,
-        in_channels=in_channels,
-        num_blocks=(4, 4),
+        block=block,
+        num_blocks=(2, 2),
+        num_inchannels=num_inchannels,
         num_channels=num_channles,
+        num_heads=(1, 2),
+        num_window_sizes=(7, 7),
+        num_mlp_ratios=(4, 4),
+        drop_path=(0., 0.),
         norm_cfg=norm_cfg,
         multiscale_output=False,
     )
@@ -57,7 +66,6 @@ def test_hrformer_backbone():
     norm_cfg = dict(type='BN')
     # only have 3 stages
     extra = dict(
-        norm_cfg=norm_cfg,
         stage1=dict(
             num_modules=1,
             num_branches=1,
@@ -103,7 +111,7 @@ def test_hrformer_backbone():
     extra['stage4']['num_branches'] = 4
 
     # Test HRFormer-S
-    model = HRFormer(extra=extra)
+    model = HRFormer(extra=extra, norm_cfg=norm_cfg)
     model.init_weights()
     model.train()
 
@@ -114,7 +122,7 @@ def test_hrformer_backbone():
     assert feats[3].shape == torch.Size([1, 256, 2, 2])
 
     # Test single scale output
-    model = HRFormer(extra=extra, multiscale_output=False)
+    model = HRFormer(extra=extra, multiscale_output=False, norm_cfg=norm_cfg)
     model.init_weights()
     model.train()
 
@@ -122,3 +130,8 @@ def test_hrformer_backbone():
     feats = model(imgs)
     assert len(feats) == 1
     assert feats[0].shape == torch.Size([1, 32, 16, 16])
+
+
+if __name__ == '__main__':
+    test_hrformer_module(HRFormerBlock)
+    test_hrformer_backbone()

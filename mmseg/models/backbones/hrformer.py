@@ -398,20 +398,20 @@ class HRFomerModule(nn.Module):
     """
 
     def __init__(
-        self,
-        num_branches,
-        block,
-        num_blocks,
-        num_inchannels,
-        num_channels,
-        num_heads,
-        num_window_sizes,
-        num_mlp_ratios,
-        multi_scale_output=True,
-        drop_path=0.0,
-        conv_cfg=None,
-        norm_cfg=None,
-        transformer_norm_cfg=None,
+            self,
+            num_branches,
+            block,
+            num_blocks,
+            num_inchannels,
+            num_channels,
+            num_heads,
+            num_window_sizes,
+            num_mlp_ratios,
+            multiscale_output=True,
+            drop_path=0.0,
+            conv_cfg=None,
+            norm_cfg=dict(type='SyncBN', requires_grad=True),
+            transformer_norm_cfg=dict(type='LN', eps=1e-6),
     ):
 
         super(HRFomerModule, self).__init__()
@@ -424,7 +424,7 @@ class HRFomerModule(nn.Module):
         self.norm_cfg = norm_cfg
         self.transformer_norm_cfg = transformer_norm_cfg
 
-        self.multi_scale_output = multi_scale_output
+        self.multiscale_output = multiscale_output
         self.branches = self._make_branches(
             num_branches,
             block,
@@ -531,7 +531,7 @@ class HRFomerModule(nn.Module):
         num_branches = self.num_branches
         num_inchannels = self.num_inchannels
         fuse_layers = []
-        for i in range(num_branches if self.multi_scale_output else 1):
+        for i in range(num_branches if self.multiscale_output else 1):
             fuse_layer = []
             for j in range(num_branches):
                 if j > i:
@@ -833,7 +833,7 @@ class HRFormer(BaseModule):
         self.stage4, pre_stage_channels = self._make_stage(
             self.stage4_cfg,
             num_channels,
-            multi_scale_output=multiscale_output,
+            multiscale_output=multiscale_output,
             drop_path=dpr[depth_s2 + depth_s3:],
         )
 
@@ -995,7 +995,7 @@ class HRFormer(BaseModule):
     def _make_stage(self,
                     layer_config,
                     num_inchannels,
-                    multi_scale_output=True,
+                    multiscale_output=True,
                     drop_path=0.0):
         num_modules = layer_config['num_modules']
         num_branches = layer_config['num_branches']
@@ -1008,11 +1008,11 @@ class HRFormer(BaseModule):
 
         modules = []
         for i in range(num_modules):
-            # multi_scale_output is only used last module
-            if not multi_scale_output and i == num_modules - 1:
-                reset_multi_scale_output = False
+            # multiscale_output is only used last module
+            if not multiscale_output and i == num_modules - 1:
+                reset_multiscale_output = False
             else:
-                reset_multi_scale_output = True
+                reset_multiscale_output = True
 
             modules.append(
                 HRFomerModule(
@@ -1024,7 +1024,7 @@ class HRFormer(BaseModule):
                     num_heads,
                     num_window_sizes,
                     num_mlp_ratios,
-                    reset_multi_scale_output,
+                    reset_multiscale_output,
                     drop_path=drop_path[num_blocks[0] * i:num_blocks[0] *
                                         (i + 1)],
                     norm_cfg=self.norm_cfg,
