@@ -105,7 +105,7 @@ python tools/deploy_test.py \
     --eval ${EVALUATION_METRICS} \
     --show \
     --show-dir ${SHOW_DIRECTORY} \
-    --options ${CFG_OPTIONS} \
+    --cfg-options ${CFG_OPTIONS} \
     --eval-options ${EVALUATION_OPTIONS} \
     --opacity ${OPACITY} \
 ```
@@ -120,7 +120,7 @@ Description of all arguments
 - `--eval`: Evaluation metrics, which depends on the dataset, e.g., "mIoU" for generic datasets, and "cityscapes" for Cityscapes. Note that this argument is **mutually exclusive** with `--format-only`.
 - `--show`: Show results flag.
 - `--show-dir`: Directory where painted images will be saved
-- `--options`: Override some settings in the used config file, the key-value pair in `xxx=yyy` format will be merged into config file.
+- `--cfg-options`: Override some settings in the used config file, the key-value pair in `xxx=yyy` format will be merged into config file.
 - `--eval-options`: Custom options for evaluation, the key-value pair in `xxx=yyy` format will be kwargs for `dataset.evaluate()` function
 - `--opacity`: Opacity of painted segmentation map. In (0, 1] range.
 
@@ -189,7 +189,7 @@ A script to convert [ONNX](https://github.com/onnx/onnx) model to [TensorRT](htt
 
 Prerequisite
 
-- install `mmcv-full` with ONNXRuntime custom ops and TensorRT plugins follow [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) and [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md).
+- install `mmcv-full` with ONNXRuntime custom ops and TensorRT plugins follow [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/deployment/onnxruntime_op.html) and [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/en/deployment/tensorrt_plugin.md).
 - Use [pytorch2onnx](#convert-to-onnx-experimental) to convert the model from PyTorch to ONNX.
 
 Usage
@@ -236,14 +236,14 @@ Only tested on whole mode.
 python tools/print_config.py \
   ${CONFIG} \
   --graph \
-  --options ${OPTIONS [OPTIONS...]} \
+  --cfg-options ${OPTIONS [OPTIONS...]} \
 ```
 
 Description of arguments:
 
 - `config` : The path of a pytorch model config file.
 - `--graph` : Determines whether to print the models graph.
-- `--options`: Custom options to replace the config file.
+- `--cfg-options`: Custom options to replace the config file.
 
 ### Plot training logs
 

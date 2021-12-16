@@ -13,8 +13,10 @@ from .mobilenet_v3 import MobileNetV3
 from .resnest import ResNeSt
 from .resnet import ResNet, ResNetV1c, ResNetV1d
 from .resnext import ResNeXt
+from .stdc import STDCContextPathNet, STDCNet
 from .swin import SwinTransformer
 from .timm_backbone import TIMMBackbone
+from .twins import PCPVT, SVT
 from .unet import UNet
 from .vit import VisionTransformer
 
@@ -22,5 +24,6 @@ __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
     'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
-    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'ERFNet', 'HRFormer'
+    'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'ERFNet', 'PCPVT',
+    'SVT', 'STDCNet', 'STDCContextPathNet', 'HRFormer'
 ]

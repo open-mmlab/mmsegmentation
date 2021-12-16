@@ -42,7 +42,7 @@ class CustomDataset(Dataset):
     ``xxx{img_suffix}`` and ``xxx{seg_map_suffix}`` (extension is also included
     in the suffix). If split is given, then ``xxx`` is specified in txt file.
     Otherwise, all files in ``img_dir/``and ``ann_dir`` will be loaded.
-    Please refer to ``docs/tutorials/new_dataset.md`` for more details.
+    Please refer to ``docs/en/tutorials/new_dataset.md`` for more details.
 
 
     Args:

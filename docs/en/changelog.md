@@ -1,5 +1,84 @@
 ## Changelog
 
+### V0.20.2 (12/15/2021)
+
+**Bug Fixes**
+
+- Revise --option to --options to avoid BC-breaking. ([#1140](https://github.com/open-mmlab/mmsegmentation/pull/1140))
+
+### V0.20.1 (12/14/2021)
+
+**Improvements**
+
+- Change options to cfg-options ([#1129](https://github.com/open-mmlab/mmsegmentation/pull/1129))
+
+
+**Bug Fixes**
+
+- Fix `<!-- [ABSTRACT] -->` in metafile. ([#1127](https://github.com/open-mmlab/mmsegmentation/pull/1127))
+- Fix correct `num_classes` of HRNet in `LoveDA` dataset ([#1136](https://github.com/open-mmlab/mmsegmentation/pull/1136))
+
+
+
+### V0.20 (12/10/2021)
+
+**Highlights**
+
+- Support Twins ([#989](https://github.com/open-mmlab/mmsegmentation/pull/989))
+- Support a real-time segmentation model STDC ([#995](https://github.com/open-mmlab/mmsegmentation/pull/995))
+- Support a widely-used segmentation model in lane detection ERFNet ([#960](https://github.com/open-mmlab/mmsegmentation/pull/960))
+- Support A Remote Sensing Land-Cover Dataset LoveDA ([#1028](https://github.com/open-mmlab/mmsegmentation/pull/1028))
+- Support focal loss ([#1024](https://github.com/open-mmlab/mmsegmentation/pull/1024))
+
+**New Features**
+
+- Support Twins ([#989](https://github.com/open-mmlab/mmsegmentation/pull/989))
+- Support a real-time segmentation model STDC ([#995](https://github.com/open-mmlab/mmsegmentation/pull/995))
+- Support a widely-used segmentation model in lane detection ERFNet ([#960](https://github.com/open-mmlab/mmsegmentation/pull/960))
+- Add SETR cityscapes benchmark ([#1087](https://github.com/open-mmlab/mmsegmentation/pull/1087))
+- Add BiSeNetV1 COCO-Stuff 164k benchmark ([#1019](https://github.com/open-mmlab/mmsegmentation/pull/1019))
+- Support focal loss ([#1024](https://github.com/open-mmlab/mmsegmentation/pull/1024))
+- Add Cutout transform ([#1022](https://github.com/open-mmlab/mmsegmentation/pull/1022))
+
+**Improvements**
+
+- Set a random seed when the user does not set a seed ([#1039](https://github.com/open-mmlab/mmsegmentation/pull/1039))
+- Add CircleCI setup ([#1086](https://github.com/open-mmlab/mmsegmentation/pull/1086))
+- Skip CI on ignoring given paths ([#1078](https://github.com/open-mmlab/mmsegmentation/pull/1078))
+- Add abstract and image for every paper ([#1060](https://github.com/open-mmlab/mmsegmentation/pull/1060))
+- Create a symbolic link on windows ([#1090](https://github.com/open-mmlab/mmsegmentation/pull/1090))
+- Support video demo using trained model ([#1014](https://github.com/open-mmlab/mmsegmentation/pull/1014))
+
+**Bug Fixes**
+
+- Fix incorrectly loading init_cfg or pretrained models of several transformer models ([#999](https://github.com/open-mmlab/mmsegmentation/pull/999), [#1069](https://github.com/open-mmlab/mmsegmentation/pull/1069), [#1102](https://github.com/open-mmlab/mmsegmentation/pull/1102))
+- Fix EfficientMultiheadAttention in SegFormer ([#1003](https://github.com/open-mmlab/mmsegmentation/pull/1037))
+- Remove `fp16` folder in `configs` ([#1031](https://github.com/open-mmlab/mmsegmentation/pull/1031))
+- Fix several typos in .yml file (Dice Metric [#1041](https://github.com/open-mmlab/mmsegmentation/pull/1041), ADE20K dataset [#1120](https://github.com/open-mmlab/mmsegmentation/pull/1120), Training Memory (GB) [#1083](https://github.com/open-mmlab/mmsegmentation/pull/1083))
+- Fix test error when using `--show-dir` ([#1091](https://github.com/open-mmlab/mmsegmentation/pull/1091))
+- Fix dist training infinite waiting issue ([#1035](https://github.com/open-mmlab/mmsegmentation/pull/1035))
+- Change the upper version of mmcv to 1.5.0 ([#1096](https://github.com/open-mmlab/mmsegmentation/pull/1096))
+- Fix symlink failure on Windows ([#1038](https://github.com/open-mmlab/mmsegmentation/pull/1038))
+- Cancel previous runs that are not completed ([#1118](https://github.com/open-mmlab/mmsegmentation/pull/1118))
+- Unified links of readthedocs in docs ([#1119](https://github.com/open-mmlab/mmsegmentation/pull/1119))
+
+**Contributors**
+
+- @Junjue-Wang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1028
+- @ddebby made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1066
+- @del-zhenwu made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1078
+- @KangBK0120 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1106
+- @zergzzlun made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1091
+- @fingertap made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1035
+- @irvingzhang0512 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1014
+- @littleSunlxy made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/989
+- @lkm2835
+- @RockeyCoss
+- @MengzhangLI
+- @Junjun2016
+- @xiexinch
+- @xvjiarui
+
 ### V0.19 (11/02/2021)
 
 **Highlights**
