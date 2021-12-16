@@ -16,7 +16,6 @@ on:
       - 'docker/**'
       - 'tools/**'
       - 'docs/**'
-      - 'docs_zh-CN/**'
       - '**.md'
 
 concurrency:

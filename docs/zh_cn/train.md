@@ -59,7 +59,7 @@ GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_
 您可以查看 [slurm_train.sh](../tools/slurm_train.sh) 以熟悉全部的参数与环境变量。
 
 如果您多个机器已经有以太网连接， 您可以参考 PyTorch
-[launch utility](https://pytorch.org/docs/stable/distributed_deprecated.html#launch-utility) 。
+[launch utility](https://pytorch.org/docs/stable/distributed.html#launch-utility) 。
 若您没有像 InfiniBand 这样高速的网络连接，多机器训练通常会比较慢。
 
 ### 在单个机器上启动多个任务

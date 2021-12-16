@@ -189,7 +189,7 @@ A script to convert [ONNX](https://github.com/onnx/onnx) model to [TensorRT](htt
 
 Prerequisite
 
-- install `mmcv-full` with ONNXRuntime custom ops and TensorRT plugins follow [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/onnxruntime_op.html) and [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/tensorrt_plugin.md).
+- install `mmcv-full` with ONNXRuntime custom ops and TensorRT plugins follow [ONNXRuntime in mmcv](https://mmcv.readthedocs.io/en/latest/deployment/onnxruntime_op.html) and [TensorRT plugin in mmcv](https://github.com/open-mmlab/mmcv/blob/master/docs/en/deployment/tensorrt_plugin.md).
 - Use [pytorch2onnx](#convert-to-onnx-experimental) to convert the model from PyTorch to ONNX.
 
 Usage
