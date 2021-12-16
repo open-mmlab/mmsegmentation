@@ -1,22 +1,20 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import math
 import warnings
-from functools import partial
-from typing import Optional, Tuple
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import (build_conv_layer, build_norm_layer, constant_init,
-                      trunc_normal_init)
+from mmcv.cnn import (build_activation_layer, build_conv_layer,
+                      build_norm_layer, constant_init, trunc_normal_init)
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.runner import BaseModule, _load_checkpoint
 from mmcv.utils.parrots_wrapper import _BatchNorm
-from torch import Tensor
 from torch.nn import functional as F
 from torch.nn.functional import dropout, linear, pad, softmax
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
+from ..utils import nchw_to_nlc, nlc_to_nchw
 from .resnet import Bottleneck
 
 
@@ -25,29 +23,36 @@ def build_drop_path(drop_path_rate):
 
 
 class MultiheadAttention(nn.Module):
-    """Multi-head self-attention with relative position embedding."""
+    """MultiheadSelfAttention module with relative position bias.
 
-    bias_k: Optional[Tensor]
-    bias_v: Optional[Tensor]
+    Args:
+        embed_dims (int): Number of input channels.
+        num_heads (int): Number of attention heads.
+        window_size (tuple[int]): The height and width of the window.
+        bias (bool, optional):  If True, add a learnable bias to q, k, v.
+            Default: True.
+        dropout (float, optional): Dropout ratio of attention weight.
+            Default: 0.0
+        kdim (int, optional): The number of channels of q/k.
+            Default: None
+        kdim (int, optional): The number of channels of v.
+            Default: None
+    """
 
     def __init__(
-        self,
-        embed_dim,
-        num_heads,
-        dropout=0.0,
-        bias=True,
-        rpe=False,
-        window_size=7,
-        add_zero_attn=False,
-        kdim=None,
-        vdim=None,
+            self,
+            embed_dim,
+            num_heads,
+            window_size=(7, 7),
+            bias=True,
+            dropout=0.0,
+            kdim=None,
+            vdim=None,
     ):
         super(MultiheadAttention, self).__init__()
         self.embed_dim = embed_dim
         self.kdim = kdim if kdim is not None else embed_dim
         self.vdim = vdim if vdim is not None else embed_dim
-        self._qkv_same_embed_dim = (
-            self.kdim == embed_dim and self.vdim == embed_dim)
 
         self.num_heads = num_heads
         self.dropout = dropout
@@ -60,56 +65,36 @@ class MultiheadAttention(nn.Module):
         self.q_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
         self.out_proj = nn.Linear(embed_dim, embed_dim)
 
-        self.in_proj_bias = None
-        self.in_proj_weight = None
-        self.bias_k = self.bias_v = None
-        self.q_proj_weight = None
-        self.k_proj_weight = None
-        self.v_proj_weight = None
-        self.add_zero_attn = add_zero_attn
-
-        self.rpe = rpe
-        if rpe:
-            self.window_size = [window_size] * 2
-            # define a parameter table of relative position bias
-            self.relative_position_bias_table = nn.Parameter(
-                torch.zeros(
-                    (2 * self.window_size[0] - 1) *
-                    (2 * self.window_size[1] - 1),
-                    self.num_heads,
-                ))  # 2*Wh-1 * 2*Ww-1, nH
-            # pairwise relative position for each token inside the window
-            coords_h = torch.arange(self.window_size[0])
-            coords_w = torch.arange(self.window_size[1])
-            coords = torch.stack(torch.meshgrid([coords_h,
-                                                 coords_w]))  # 2, Wh, Ww
-            coords_flatten = torch.flatten(coords, 1)  # 2, Wh*Ww
-            relative_coords = (coords_flatten[:, :, None] -
-                               coords_flatten[:, None, :])  # 2, Wh*Ww, Wh*Ww
-            relative_coords = relative_coords.permute(
-                1, 2, 0).contiguous()  # Wh*Ww, Wh*Ww, 2
-            relative_coords[:, :, 0] += self.window_size[
-                0] - 1  # shift to start from 0
-            relative_coords[:, :, 1] += self.window_size[1] - 1
-            relative_coords[:, :, 0] *= 2 * self.window_size[1] - 1
-            relative_position_index = relative_coords.sum(-1)  # Wh*Ww, Wh*Ww
-            self.register_buffer('relative_position_index',
-                                 relative_position_index)
-            trunc_normal_init(self.relative_position_bias_table, std=0.02)
-
-    def __setstate__(self, state):
-        # Support loading old MultiheadAttention checkpoints
-        if '_qkv_same_embed_dim' not in state:
-            state['_qkv_same_embed_dim'] = True
-
-        super(MultiheadAttention, self).__setstate__(state)
+        self.window_size = [window_size] * 2
+        # define a parameter table of relative position bias
+        self.relative_position_bias_table = nn.Parameter(
+            torch.zeros(
+                (2 * self.window_size[0] - 1) * (2 * self.window_size[1] - 1),
+                self.num_heads,
+            ))  # 2*Wh-1 * 2*Ww-1, nH
+        # pairwise relative position for each token inside the window
+        coords_h = torch.arange(self.window_size[0])
+        coords_w = torch.arange(self.window_size[1])
+        coords = torch.stack(torch.meshgrid([coords_h, coords_w]))  # 2, Wh, Ww
+        coords_flatten = torch.flatten(coords, 1)  # 2, Wh*Ww
+        relative_coords = (coords_flatten[:, :, None] -
+                           coords_flatten[:, None, :])  # 2, Wh*Ww, Wh*Ww
+        relative_coords = relative_coords.permute(
+            1, 2, 0).contiguous()  # Wh*Ww, Wh*Ww, 2
+        relative_coords[:, :,
+                        0] += self.window_size[0] - 1  # shift to start from 0
+        relative_coords[:, :, 1] += self.window_size[1] - 1
+        relative_coords[:, :, 0] *= 2 * self.window_size[1] - 1
+        relative_position_index = relative_coords.sum(-1)  # Wh*Ww, Wh*Ww
+        self.register_buffer('relative_position_index',
+                             relative_position_index)
+        trunc_normal_init(self.relative_position_bias_table, std=0.02)
 
     def forward(
         self,
         query,
         key,
         value,
-        need_weights=False,
     ):
         return self.multi_head_attention_forward(
             query,
@@ -119,22 +104,20 @@ class MultiheadAttention(nn.Module):
             self.num_heads,
             dropout_p=self.dropout,
             training=self.training,
-            need_weights=need_weights,
             out_dim=self.vdim,
         )
 
     def multi_head_attention_forward(
         self,
-        query: Tensor,
-        key: Tensor,
-        value: Tensor,
-        embed_dim_to_check: int,
-        num_heads: int,
-        dropout_p: Optional[float] = 0.0,
-        need_weights: bool = False,
-        out_dim: Optional[Tensor] = None,
-        training: Optional[bool] = True,
-    ) -> Tuple[Tensor, Optional[Tensor]]:
+        query,
+        key,
+        value,
+        embed_dim_to_check,
+        num_heads,
+        dropout_p=0.0,
+        out_dim=None,
+        training=True,
+    ):
         tgt_len, bsz, embed_dim = query.size()
         key = query if key is None else key
         value = query if value is None else value
@@ -173,26 +156,25 @@ class MultiheadAttention(nn.Module):
         """
         Add relative position embedding
         """
-        if self.rpe:
-            # NOTE: we assume the src_len == tgt_len == window_size**2
-            assert (
-                src_len == self.window_size[0] * self.window_size[1]
-                and tgt_len == self.window_size[0] * self.window_size[1]
-            ), f'src_len={src_len}, tgt_len={tgt_len},' \
-               f' window_size={self.window_size}'
-            relative_position_bias = self.relative_position_bias_table[
-                self.relative_position_index.view(-1)].view(
-                    self.window_size[0] * self.window_size[1],
-                    self.window_size[0] * self.window_size[1],
-                    -1,
-                )  # Wh*Ww,Wh*Ww,nH
-            relative_position_bias = relative_position_bias.permute(
-                2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
-            attn_output_weights = attn_output_weights.view(
-                bsz, num_heads, tgt_len,
-                src_len) + relative_position_bias.unsqueeze(0)
-            attn_output_weights = attn_output_weights.view(
-                bsz * num_heads, tgt_len, src_len)
+        # NOTE: we assume that the src_len == tgt_len == window_size**2
+        assert (
+            src_len == self.window_size[0] * self.window_size[1]
+            and tgt_len == self.window_size[0] * self.window_size[1]
+        ), f'src_len={src_len}, tgt_len={tgt_len},' \
+            f' window_size={self.window_size}'
+        relative_position_bias = self.relative_position_bias_table[
+            self.relative_position_index.view(-1)].view(
+                self.window_size[0] * self.window_size[1],
+                self.window_size[0] * self.window_size[1],
+                -1,
+            )  # Wh*Ww,Wh*Ww,nH
+        relative_position_bias = relative_position_bias.permute(
+            2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
+        attn_output_weights = attn_output_weights.view(
+            bsz, num_heads, tgt_len,
+            src_len) + relative_position_bias.unsqueeze(0)
+        attn_output_weights = attn_output_weights.view(bsz * num_heads,
+                                                       tgt_len, src_len)
         """
         Reweight the attention map before softmax().
         attn_output_weights: (b*n_head, n, hw)
@@ -209,14 +191,7 @@ class MultiheadAttention(nn.Module):
                                   1).contiguous().view(tgt_len, bsz, out_dim))
         attn_output = linear(attn_output, self.out_proj.weight,
                              self.out_proj.bias)
-
-        if need_weights:
-            # average attention weights over heads
-            attn_output_weights = attn_output_weights.view(
-                bsz, num_heads, tgt_len, src_len)
-            return attn_output, attn_output_weights.sum(dim=1) / num_heads
-        else:
-            return attn_output
+        return attn_output
 
 
 class LocalWindowSelfAttention(nn.Module):
@@ -227,16 +202,14 @@ class LocalWindowSelfAttention(nn.Module):
 
     Args:
         window_size (tuple[int]): Window size.
-        rpe (bool, optional): If true, use relative position embedding.
     """
 
-    def __init__(self, *args, window_size=7, rpe=True, **kwargs):
+    def __init__(self, *args, window_size=7, **kwargs):
         super(LocalWindowSelfAttention, self).__init__()
 
         self.window_size = window_size
-        self.with_rpe = rpe
         self.attn = MultiheadAttention(
-            *args, rpe=rpe, window_size=window_size, **kwargs)
+            *args, window_size=window_size, **kwargs)
 
     def forward(self, x, H, W, **kwargs):
         B, N, C = x.shape
@@ -268,20 +241,33 @@ class LocalWindowSelfAttention(nn.Module):
 
 
 class CrossFFN(nn.Module):
+    """FFN with Depthwise Conv of HRFormer.
+
+    Args:
+        in_features (int): The feature dimension.
+        hidden_features (int, optional): The hidden dimension of FFNs.
+            Defaults: The same as in_features.
+        act_layer (nn.Module, optional): The activation for 1x1 convs.
+            Default: nn.GELU
+        dw_act_layer (nn.Module, optional): The activation for 3x3 dw convs.
+            Default: nn.GELU
+        norm_layer (nn.Module, optional): The normalization layer of FFNs.
+            Default: nn.SyncBatchNorm
+    """
 
     def __init__(self,
                  in_features,
                  hidden_features=None,
                  out_features=None,
-                 act_layer=nn.GELU,
-                 dw_act_layer=nn.GELU,
-                 norm_layer=nn.SyncBatchNorm):
+                 act_cfg=nn.GELU,
+                 dw_act_cfg=nn.GELU,
+                 norm_cfg=nn.SyncBatchNorm):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = nn.Conv2d(in_features, hidden_features, kernel_size=1)
-        self.act1 = act_layer()
-        self.norm1 = norm_layer(hidden_features)
+        self.act1 = build_activation_layer(act_cfg)
+        self.norm1 = build_norm_layer(norm_cfg, hidden_features)[1]
         self.dw3x3 = nn.Conv2d(
             hidden_features,
             hidden_features,
@@ -290,79 +276,88 @@ class CrossFFN(nn.Module):
             groups=hidden_features,
             padding=1,
         )
-        self.act2 = dw_act_layer()
-        self.norm2 = norm_layer(hidden_features)
+        self.act2 = build_activation_layer(dw_act_cfg)
+        self.norm2 = build_norm_layer(norm_cfg, hidden_features)[1]
         self.fc2 = nn.Conv2d(hidden_features, out_features, kernel_size=1)
-        self.act3 = act_layer()
-        self.norm3 = norm_layer(out_features)
+        self.act3 = build_activation_layer(act_cfg)
+        self.norm3 = build_norm_layer(norm_cfg, out_features)[1]
+
+        # put the modules togather
+        self.layers = [
+            self.fc1, self.norm1, self.act1, self.dw3x3, self.norm2, self.act2,
+            self.fc2, self.norm3, self.act3
+        ]
 
     def forward(self, x, H, W):
-        B, N, C = x.shape
-
-        x_ = x.reshape(B, H, W, C).permute(0, 3, 1, 2)
-        x_ = self.fc1(x_)
-        x_ = self.norm1(x_)
-        x_ = self.act1(x_)
-        x_ = self.dw3x3(x_)
-        x_ = self.norm2(x_)
-        x_ = self.act2(x_)
-        x_ = self.fc2(x_)
-        x_ = self.norm3(x_)
-        x_ = self.act3(x_)
-        x_ = x_.reshape(B, C, -1).permute(0, 2, 1)
-        return x_
+        x = nlc_to_nchw(x, (H, W))
+        for layer in self.layers:
+            x = layer(x)
+        x = nchw_to_nlc(x)
+        return x
 
 
 class HRFormerBlock(nn.Module):
+    """High-Resolution Block for HRFormer.
+
+    Args:
+        in_features (int): The input dimension.
+        out_features (int): The output dimension.
+        num_heads (int): The number of head within each LSA.
+        window_size (int, optional): The window size for the LSA.
+            Default: 7
+        mlp_ratio (int, optional): The expansion ration of FFN.
+            Default: 4
+        act_layer (nn.Module, optional): The activation layer.
+            Default: nn.GELU
+        norm_layer (nn.Module, optional): The normalization layer.
+            Default: nn.LayerNorm
+    """
+
     expansion = 1
 
     def __init__(self,
-                 inplanes,
-                 planes,
+                 in_features,
+                 out_features,
                  num_heads,
                  window_size=7,
-                 rpe=True,
                  mlp_ratio=4.0,
                  drop_path=0.0,
-                 act_layer=nn.GELU,
-                 norm_layer=partial(nn.LayerNorm, eps=1e-6),
+                 act_cfg=dict(type='GELU'),
+                 norm_cfg=dict(type='SyncBN'),
+                 transformer_norm_cfg=dict(type='LN', eps=1e-6),
                  **kwargs):
         super(HRFormerBlock, self).__init__()
-        self.dim = inplanes
-        self.out_dim = planes
         self.num_heads = num_heads
         self.window_size = window_size
         self.mlp_ratio = mlp_ratio
+
+        self.norm1 = build_norm_layer(transformer_norm_cfg, in_features)[1]
         self.attn = LocalWindowSelfAttention(
-            self.dim,
+            in_features,
             num_heads=num_heads,
             window_size=window_size,
-            rpe=rpe,
             **kwargs)
 
-        self.norm1 = norm_layer(self.dim)
-        self.norm2 = norm_layer(self.out_dim)
+        self.norm2 = build_norm_layer(transformer_norm_cfg, out_features)[1]
+        self.ffn = CrossFFN(
+            in_features=in_features,
+            hidden_features=int(in_features * mlp_ratio),
+            out_features=out_features,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg,
+            dw_act_cfg=act_cfg,
+        )
+
         self.drop_path = build_drop_path(
             drop_path) if drop_path > 0.0 else nn.Identity()
-        mlp_hidden_dim = int(self.dim * mlp_ratio)
-
-        self.mlp = CrossFFN(
-            in_features=self.dim,
-            hidden_features=mlp_hidden_dim,
-            out_features=self.out_dim,
-            act_layer=act_layer,
-            dw_act_layer=act_layer,
-        )
 
     def forward(self, x):
         B, C, H, W = x.size()
-        # reshape
-        x = x.view(B, C, -1).permute(0, 2, 1)
         # Attention
+        x = x.view(B, C, -1).permute(0, 2, 1)
         x = x + self.drop_path(self.attn(self.norm1(x), H, W))
         # FFN
-        x = x + self.drop_path(self.mlp(self.norm2(x), H, W))
-        # reshape
+        x = x + self.drop_path(self.ffn(self.norm2(x), H, W))
         x = x.permute(0, 2, 1).view(B, C, H, W)
         return x
 
@@ -374,39 +369,65 @@ class HRFormerBlock(nn.Module):
 
 
 class HRFomerModule(nn.Module):
+    """High-Resolution Module for HRFormer.
 
-    def __init__(self,
-                 num_branches,
-                 blocks,
-                 num_blocks,
-                 num_inchannels,
-                 num_channels,
-                 num_heads,
-                 num_window_sizes,
-                 num_mlp_ratios,
-                 multi_scale_output=True,
-                 drop_path=0.0,
-                 conv_cfg=None,
-                 norm_cfg=None):
-        """High-Resolution Module for HRFormer.
+    Args:
+        num_branches (int): The number of branches in the HRFormerModule.
+        block (nn.Module): The building block of HRFormer.
+            The block should be the HRFormerBlock.
+        num_blocks (tuple): The number of blocks in each branch.
+            The length must be equal to num_branches.
+        num_inchannels (tuple): The number of input channels in each branch.
+            The length must be equal to num_branches.
+        num_channels (tuple): The number of channels in each branch.
+            The length must be equal to num_branches.
+        num_heads (tuple): The number of heads within the LSAs.
+        num_window_sizes (tuple): The window size for the LSAs.
+        num_mlp_ratios (tuple): The expansion ratio for the FFNs.
+        drop_path (int, optional): The drop path rate of HRFomer.
+            Default: 0.0
+        multiscale_output (bool, optional): Whether to output multi-level
+            features produced by multiple branches. If False, only the first
+            level feature will be output. Default: True.
+        conv_cfg (dict, optional): Config of the conv layers.
+            Default: None.
+        norm_cfg (dict, optional): Config of the norm layers appended
+            right after conv. Default: None.
+        transformer_norm_cfg (dict, optional): Config of the norm layers.
+            Default: None.
+    """
 
-        Args:
-        num_heads: the number of head within each MHSA
-        num_window_sizes: the window size for the local self-attention
-        """
+    def __init__(
+        self,
+        num_branches,
+        block,
+        num_blocks,
+        num_inchannels,
+        num_channels,
+        num_heads,
+        num_window_sizes,
+        num_mlp_ratios,
+        multi_scale_output=True,
+        drop_path=0.0,
+        conv_cfg=None,
+        norm_cfg=None,
+        transformer_norm_cfg=None,
+    ):
+
         super(HRFomerModule, self).__init__()
-        self._check_branches(num_branches, blocks, num_blocks, num_inchannels,
+        self._check_branches(num_branches, num_blocks, num_inchannels,
                              num_channels)
 
         self.num_inchannels = num_inchannels
         self.num_branches = num_branches
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
+        self.transformer_norm_cfg = transformer_norm_cfg
 
         self.multi_scale_output = multi_scale_output
         self.branches = self._make_branches(
             num_branches,
-            blocks,
+            block,
             num_blocks,
             num_channels,
             num_heads,
@@ -421,7 +442,7 @@ class HRFomerModule(nn.Module):
         self.num_window_sizes = num_window_sizes
         self.num_mlp_ratios = num_mlp_ratios
 
-    def _check_branches(self, num_branches, blocks, num_blocks, num_inchannels,
+    def _check_branches(self, num_branches, num_blocks, num_inchannels,
                         num_channels):
         if num_branches != len(num_blocks):
             error_msg = 'num_branches({}) <> num_blocks({})'.format(
@@ -448,24 +469,7 @@ class HRFomerModule(nn.Module):
         num_window_sizes,
         num_mlp_ratios,
         drop_paths,
-        stride=1,
     ):
-        # downsample = None
-        # if (stride != 1 or self.num_inchannels[branch_index] !=
-        #         num_channels[branch_index] * block.expansion):
-        #     downsample = nn.Sequential(
-        #         build_conv_layer(
-        #             self.conv_cfg,
-        #             self.num_inchannels[branch_index],
-        #             num_channels[branch_index] * block.expansion,
-        #             kernel_size=1,
-        #             stride=stride,
-        #             bias=False,
-        #         ),
-        #         build_norm_layer(self.norm_cfg, num_channels[branch_index] *
-        #                          block.expansion)[1],
-        #     )
-
         layers = []
         layers.append(
             block(
@@ -475,7 +479,8 @@ class HRFomerModule(nn.Module):
                 window_size=num_window_sizes[branch_index],
                 mlp_ratio=num_mlp_ratios[branch_index],
                 drop_path=drop_paths[0],
-            ))
+                norm_cfg=self.norm_cfg,
+                transformer_norm_cfg=self.transformer_norm_cfg))
 
         self.num_inchannels[
             branch_index] = num_channels[branch_index] * block.expansion
@@ -488,7 +493,8 @@ class HRFomerModule(nn.Module):
                     window_size=num_window_sizes[branch_index],
                     mlp_ratio=num_mlp_ratios[branch_index],
                     drop_path=drop_paths[i],
-                ))
+                    norm_cfg=self.norm_cfg,
+                    transformer_norm_cfg=self.transformer_norm_cfg))
         return nn.Sequential(*layers)
 
     def _make_branches(
@@ -551,61 +557,37 @@ class HRFomerModule(nn.Module):
                     for k in range(i - j):
                         if k == i - j - 1:
                             num_outchannels_conv3x3 = num_inchannels[i]
-                            conv3x3s.append(
-                                nn.Sequential(
-                                    build_conv_layer(
-                                        self.conv_cfg,
-                                        num_inchannels[j],
-                                        num_inchannels[j],
-                                        kernel_size=3,
-                                        stride=2,
-                                        padding=1,
-                                        groups=num_inchannels[j],
-                                        bias=False,
-                                    ),
-                                    build_norm_layer(self.norm_cfg,
-                                                     num_inchannels[j])[1],
-                                    build_conv_layer(
-                                        self.conv_cfg,
-                                        num_inchannels[j],
-                                        num_outchannels_conv3x3,
-                                        kernel_size=1,
-                                        stride=1,
-                                        bias=False,
-                                    ),
-                                    build_norm_layer(
-                                        self.norm_cfg,
-                                        num_outchannels_conv3x3)[1],
-                                ))
+                            with_out_act = False
                         else:
                             num_outchannels_conv3x3 = num_inchannels[j]
-                            conv3x3s.append(
-                                nn.Sequential(
-                                    build_conv_layer(
-                                        self.conv_cfg,
-                                        num_inchannels[j],
-                                        num_inchannels[j],
-                                        kernel_size=3,
-                                        stride=2,
-                                        padding=1,
-                                        groups=num_inchannels[j],
-                                        bias=False,
-                                    ),
-                                    build_norm_layer(self.norm_cfg,
-                                                     num_inchannels[j])[1],
-                                    build_conv_layer(
-                                        self.conv_cfg,
-                                        num_inchannels[j],
-                                        num_outchannels_conv3x3,
-                                        kernel_size=1,
-                                        stride=1,
-                                        bias=False,
-                                    ),
-                                    build_norm_layer(
-                                        self.norm_cfg,
-                                        num_outchannels_conv3x3)[1],
-                                    nn.ReLU(False),
-                                ))
+                            with_out_act = True
+                        sub_modules = [
+                            build_conv_layer(
+                                self.conv_cfg,
+                                num_inchannels[j],
+                                num_inchannels[j],
+                                kernel_size=3,
+                                stride=2,
+                                padding=1,
+                                groups=num_inchannels[j],
+                                bias=False,
+                            ),
+                            build_norm_layer(self.norm_cfg,
+                                             num_inchannels[j])[1],
+                            build_conv_layer(
+                                self.conv_cfg,
+                                num_inchannels[j],
+                                num_outchannels_conv3x3,
+                                kernel_size=1,
+                                stride=1,
+                                bias=False,
+                            ),
+                            build_norm_layer(self.norm_cfg,
+                                             num_outchannels_conv3x3)[1],
+                        ]
+                        if with_out_act:
+                            sub_modules.append(nn.ReLU(False))
+                        conv3x3s.append(nn.Sequential(*sub_modules))
                     fuse_layer.append(nn.Sequential(*conv3x3s))
             fuse_layers.append(nn.ModuleList(fuse_layer))
 
@@ -665,8 +647,10 @@ class HRFormer(BaseModule):
         in_channels (int): Number of input image channels. Normally 3.
         conv_cfg (dict): Dictionary to construct and config conv layer.
             Default: None.
-        norm_cfg (dict): Dictionary to construct and config norm layer.
-            Use `BN` by default.
+        norm_cfg (dict): Config of norm layer.
+            Use `SyncBN` by default.
+        transformer_norm_cfg (dict): Config of transformer norm layer.
+            Use `LN` by default.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
@@ -736,7 +720,8 @@ class HRFormer(BaseModule):
                  extra,
                  in_channels=3,
                  conv_cfg=None,
-                 norm_cfg=dict(type='BN', requires_grad=True),
+                 norm_cfg=dict(type='SyncBN', requires_grad=True),
+                 transformer_norm_cfg=dict(type='LN', eps=1e-6),
                  norm_eval=False,
                  drop_path_rate=0.,
                  frozen_stages=-1,
@@ -777,6 +762,7 @@ class HRFormer(BaseModule):
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.norm_eval = norm_eval
+        self.transformer_norm_cfg = transformer_norm_cfg
         self.frozen_stages = frozen_stages
 
         self.conv1 = build_conv_layer(
@@ -854,7 +840,7 @@ class HRFormer(BaseModule):
         self.stage4, pre_stage_channels = self._make_stage(
             self.stage4_cfg,
             num_channels,
-            multi_scale_output=True,
+            multi_scale_output=multiscale_output,
             drop_path=dpr[depth_s2 + depth_s3:],
         )
 
@@ -909,7 +895,7 @@ class HRFormer(BaseModule):
                         nH2, L2).permute(1, 0).contiguous()
 
             # load state_dict
-            self.load_state_dict(state_dict, False)
+            self.load_state_dict(state_dict, True)
 
     def _make_transition_layer(self, num_channels_pre_layer,
                                num_channels_cur_layer):
@@ -1049,6 +1035,7 @@ class HRFormer(BaseModule):
                     drop_path=drop_path[num_blocks[0] * i:num_blocks[0] *
                                         (i + 1)],
                     norm_cfg=self.norm_cfg,
+                    transformer_norm_cfg=self.transformer_norm_cfg,
                     conv_cfg=self.conv_cfg,
                 ))
             num_inchannels = modules[-1].get_num_inchannels()

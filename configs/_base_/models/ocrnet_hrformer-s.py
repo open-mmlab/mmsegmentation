@@ -1,11 +1,13 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.1)
+transformer_norm_cfg = dict(type='LN', eps=1e-6)
 model = dict(
     type='CascadeEncoderDecoder',
     num_stages=2,
     backbone=dict(
         type='HRFormer',
         norm_cfg=norm_cfg,
+        transformer_norm_cfg=transformer_norm_cfg,
         norm_eval=False,
         drop_path_rate=0.2,
         extra=dict(
