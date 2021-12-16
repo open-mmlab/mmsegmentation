@@ -17,14 +17,14 @@ import sys
 
 import pytorch_sphinx_theme
 
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'MMSegmentation'
 copyright = '2020-2021, OpenMMLab'
 author = 'MMSegmentation Authors'
-version_file = '../mmseg/version.py'
+version_file = '../../mmseg/version.py'
 
 
 def get_version():
@@ -83,11 +83,11 @@ html_theme = 'pytorch_sphinx_theme'
 html_theme_path = [pytorch_sphinx_theme.get_html_theme_path()]
 html_theme_options = {
     'logo_url':
-    'https://mmsegmentation.readthedocs.io/en/latest/',
+    'https://mmsegmentation.readthedocs.io/zh-CN/latest/',
     'menu': [
         {
             'name':
-            'Tutorial',
+            '教程',
             'url':
             'https://github.com/open-mmlab/mmsegmentation/blob/master/'
             'demo/MMSegmentation_Tutorial.ipynb'
@@ -98,19 +98,19 @@ html_theme_options = {
         },
         {
             'name':
-            'Upstream',
+            '上游库',
             'children': [
                 {
                     'name': 'MMCV',
                     'url': 'https://github.com/open-mmlab/mmcv',
-                    'description': 'Foundational library for computer vision'
+                    'description': '基础视觉库'
                 },
             ]
         },
     ],
     # Specify the language of shared menu
     'menu_lang':
-    'en'
+    'cn',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -122,7 +122,7 @@ html_css_files = ['css/readthedocs.css']
 # Enable ::: for my_st
 myst_enable_extensions = ['colon_fence']
 
-language = 'en'
+language = 'zh-CN'
 
 
 def builder_inited_handler(app):
