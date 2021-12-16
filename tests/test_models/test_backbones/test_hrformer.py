@@ -8,6 +8,7 @@ from mmseg.models.backbones.hrformer import (HRFomerModule, HRFormer,
 
 @pytest.mark.parametrize('block', [HRFormerBlock])
 def test_hrformer_module(block):
+    norm_cfg = dict(type='BN')
     # Test multiscale forward
     num_channles = (32, 64)
     num_inchannels = [c * block.expansion for c in num_channles]
@@ -17,7 +18,7 @@ def test_hrformer_module(block):
         num_inchannels=num_inchannels,
         num_blocks=(4, 4),
         num_channels=num_channles,
-    )
+        norm_cfg=norm_cfg)
 
     feats = [
         torch.randn(1, num_inchannels[0], 64, 64),
@@ -38,6 +39,7 @@ def test_hrformer_module(block):
         in_channels=in_channels,
         num_blocks=(4, 4),
         num_channels=num_channles,
+        norm_cfg=norm_cfg,
         multiscale_output=False,
     )
 
@@ -52,8 +54,10 @@ def test_hrformer_module(block):
 
 
 def test_hrformer_backbone():
+    norm_cfg = dict(type='BN')
     # only have 3 stages
     extra = dict(
+        norm_cfg=norm_cfg,
         stage1=dict(
             num_modules=1,
             num_branches=1,
