@@ -86,7 +86,7 @@ def test_hrformer_backbone():
         num_modules=3,
         num_branches=3,  # should be 4
         block='HRFORMER',
-        window_sizes=(7, 7),
+        window_sizes=(7, 7, 7, 7),
         num_heads=(1, 2, 4, 8),
         mlp_ratios=(4, 4, 4, 4),
         num_blocks=(2, 2, 2, 2),
