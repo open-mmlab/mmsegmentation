@@ -13,7 +13,7 @@ evaluation = dict(interval=4000)  # 每4000 iterations 评估一次模型的性�
 **\*Important\***: 在配置文件里的默认学习率是针对4卡 GPU 和2张图/GPU (此时 batchsize = 4x2 = 8)来设置的。
 同样，您也可以使用8卡 GPU 和 1张图/GPU 的设置，因为所有的模型均使用 cross-GPU 的 SyncBN 模式。
 
-我们可以在训练速度和 GPU 显存之间做平衡。当模型或者 Batch Size 比较大的时，可以传递`--options model.backbone.with_cp=True` ，使用 `with_cp` 来节省显存，但是速度会更慢，因为原先使用 `ith_cp` 时，是逐层反向传播(Back Propagation, BP)，不会保存所有的梯度。
+我们可以在训练速度和 GPU 显存之间做平衡。当模型或者 Batch Size 比较大的时，可以传递`--cfg-options model.backbone.with_cp=True` ，使用 `with_cp` 来节省显存，但是速度会更慢，因为原先使用 `ith_cp` 时，是逐层反向传播(Back Propagation, BP)，不会保存所有的梯度。
 
 ### 使用单卡 GPU 训练
 
@@ -59,7 +59,7 @@ GPUS=16 ./tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_
 您可以查看 [slurm_train.sh](../tools/slurm_train.sh) 以熟悉全部的参数与环境变量。
 
 如果您多个机器已经有以太网连接， 您可以参考 PyTorch
-[launch utility](https://pytorch.org/docs/stable/distributed_deprecated.html#launch-utility) 。
+[launch utility](https://pytorch.org/docs/stable/distributed.html#launch-utility) 。
 若您没有像 InfiniBand 这样高速的网络连接，多机器训练通常会比较慢。
 
 ### 在单个机器上启动多个任务

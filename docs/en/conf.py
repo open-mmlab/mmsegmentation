@@ -17,14 +17,14 @@ import sys
 
 import pytorch_sphinx_theme
 
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'MMSegmentation'
 copyright = '2020-2021, OpenMMLab'
 author = 'MMSegmentation Authors'
-version_file = '../mmseg/version.py'
+version_file = '../../mmseg/version.py'
 
 
 def get_version():
@@ -83,11 +83,11 @@ html_theme = 'pytorch_sphinx_theme'
 html_theme_path = [pytorch_sphinx_theme.get_html_theme_path()]
 html_theme_options = {
     'logo_url':
-    'https://mmsegmentation.readthedocs.io/zh-CN/latest/',
+    'https://mmsegmentation.readthedocs.io/en/latest/',
     'menu': [
         {
             'name':
-            '教程',
+            'Tutorial',
             'url':
             'https://github.com/open-mmlab/mmsegmentation/blob/master/'
             'demo/MMSegmentation_Tutorial.ipynb'
@@ -98,92 +98,19 @@ html_theme_options = {
         },
         {
             'name':
-            '上游库',
+            'Upstream',
             'children': [
                 {
                     'name': 'MMCV',
                     'url': 'https://github.com/open-mmlab/mmcv',
-                    'description': '基础视觉库'
+                    'description': 'Foundational library for computer vision'
                 },
             ]
         },
-        {
-            'name':
-            '算法库',
-            'children': [
-                {
-                    'name': 'MMAction2',
-                    'url': 'https://github.com/open-mmlab/mmaction2',
-                },
-                {
-                    'name': 'MMClassification',
-                    'url': 'https://github.com/open-mmlab/mmclassification',
-                },
-                {
-                    'name': 'MMOCR',
-                    'url': 'https://github.com/open-mmlab/mmocr',
-                },
-                {
-                    'name': 'MMDetection',
-                    'url': 'https://github.com/open-mmlab/mmdetection',
-                },
-                {
-                    'name': 'MMEditing',
-                    'url': 'https://github.com/open-mmlab/mmediting',
-                },
-                {
-                    'name': 'MMDetection3D',
-                    'url': 'https://github.com/open-mmlab/mmdetection3d',
-                },
-                {
-                    'name': 'MMPose',
-                    'url': 'https://github.com/open-mmlab/mmpose',
-                },
-                {
-                    'name': 'MMTracking',
-                    'url': 'https://github.com/open-mmlab/mmtracking',
-                },
-                {
-                    'name': 'MMGeneration',
-                    'url': 'https://github.com/open-mmlab/mmgeneration',
-                },
-                {
-                    'name': 'MMFlow',
-                    'url': 'https://github.com/open-mmlab/mmflow',
-                },
-                {
-                    'name': 'MMFewShot',
-                    'url': 'https://github.com/open-mmlab/mmfewshot',
-                },
-                {
-                    'name': 'MMHuman3D',
-                    'url': 'https://github.com/open-mmlab/mmhuman3d',
-                },
-            ]
-        },
-        {
-            'name':
-            'OpenMMLab',
-            'children': [
-                {
-                    'name': '官网',
-                    'url': 'https://openmmlab.com/'
-                },
-                {
-                    'name': 'GitHub',
-                    'url': 'https://github.com/open-mmlab/'
-                },
-                {
-                    'name': '推特',
-                    'url': 'https://twitter.com/OpenMMLab'
-                },
-                {
-                    'name': '知乎',
-                    'url': 'https://zhihu.com/people/openmmlab'
-                },
-            ]
-        },
-    ]
+    ],
+    # Specify the language of shared menu
+    'menu_lang':
+    'en'
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -195,7 +122,7 @@ html_css_files = ['css/readthedocs.css']
 # Enable ::: for my_st
 myst_enable_extensions = ['colon_fence']
 
-language = 'zh-CN'
+language = 'en'
 
 
 def builder_inited_handler(app):

@@ -101,7 +101,7 @@ class UPerHead(BaseDecodeHead):
         used_backbone_levels = len(laterals)
         for i in range(used_backbone_levels - 1, 0, -1):
             prev_shape = laterals[i - 1].shape[2:]
-            laterals[i - 1] += resize(
+            laterals[i - 1] = laterals[i - 1] + resize(
                 laterals[i],
                 size=prev_shape,
                 mode='bilinear',
