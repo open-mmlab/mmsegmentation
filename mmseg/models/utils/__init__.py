@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from .embed import PatchEmbed
 from .inverted_residual import InvertedResidual, InvertedResidualV3
 from .make_divisible import make_divisible
