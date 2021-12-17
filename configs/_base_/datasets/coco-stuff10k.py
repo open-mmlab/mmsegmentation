@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # dataset settings
 dataset_type = 'COCOStuffDataset'
 data_root = 'data/coco_stuff10k'

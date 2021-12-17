@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # model settings
 _base_ = './fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)

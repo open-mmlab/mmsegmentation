@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/bisenetv1_r18-d32.py',
     '../_base_/datasets/cityscapes_1024x1024.py',

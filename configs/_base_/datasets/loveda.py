@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # dataset settings
 dataset_type = 'LoveDADataset'
 data_root = 'data/loveDA'

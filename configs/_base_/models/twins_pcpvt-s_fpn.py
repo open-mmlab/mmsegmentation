@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # model settings
 backbone_norm_cfg = dict(type='LN')
 norm_cfg = dict(type='SyncBN', requires_grad=True)

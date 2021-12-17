@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/setr_mla.py', '../_base_/datasets/cityscapes_768x768.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'

@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = ['./twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k.py']
 model = dict(
     backbone=dict(

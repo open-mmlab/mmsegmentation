@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = './deeplabv3plus_r50-d8_512x512_80k_loveda.py'
 model = dict(
     backbone=dict(

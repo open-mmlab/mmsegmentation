@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = './bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes.py'
 model = dict(
     type='EncoderDecoder',

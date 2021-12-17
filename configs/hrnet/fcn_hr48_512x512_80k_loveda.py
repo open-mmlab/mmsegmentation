@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = './fcn_hr18_512x512_80k_loveda.py'
 model = dict(
     backbone=dict(

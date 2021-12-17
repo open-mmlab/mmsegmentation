@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/pspnet_unet_s5-d16.py', '../_base_/datasets/stare.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'

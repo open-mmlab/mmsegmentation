@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/twins_pcpvt-s_upernet.py',
     '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',

@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/upernet_vit-b16_ln_mln.py',
     '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',

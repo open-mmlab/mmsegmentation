@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 _base_ = [
     '../_base_/models/fastfcn_r50-d32_jpu_psp.py',
     '../_base_/datasets/cityscapes.py', '../_base_/default_runtime.py',
