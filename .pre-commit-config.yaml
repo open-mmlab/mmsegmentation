@@ -59,4 +59,4 @@ repos:
     hooks:
     - id: check-algo-readme
     - id: check-copyright
-      args: ["mmseg"]  # replace the dir_to_check with your expected directory to check
+      args: ["mmseg", "tools", "tests"]  # replace the dir_to_check with your expected directory to check
