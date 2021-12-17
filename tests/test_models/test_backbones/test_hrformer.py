@@ -31,6 +31,7 @@ def test_hrformer_module(block):
     ]
     feats = hrmodule(feats)
 
+    assert len(str(hrmodule)) > 0
     assert len(feats) == 2
     assert feats[0].shape == torch.Size([1, num_inchannels[0], 64, 64])
     assert feats[1].shape == torch.Size([1, num_inchannels[1], 32, 32])
@@ -60,6 +61,52 @@ def test_hrformer_module(block):
 
     assert len(feats) == 1
     assert feats[0].shape == torch.Size([1, in_channels[0], 64, 64])
+
+    # Value tests
+    kwargs = dict(
+        num_branches=2,
+        block=block,
+        num_blocks=(2, 2),
+        num_inchannels=num_inchannels,
+        num_channels=num_channles,
+        num_heads=(1, 2),
+        num_window_sizes=(7, 7),
+        num_mlp_ratios=(4, 4),
+        drop_path=(0.1, 0.1),
+        norm_cfg=norm_cfg,
+    )
+
+    with pytest.raises(ValueError):
+        # len(num_blocks) should equal num_branches
+        kwargs['num_blocks'] = [2, 2, 2]
+        HRFomerModule(**kwargs)
+    kwargs['num_blocks'] = [2, 2, 2]
+
+    with pytest.raises(ValueError):
+        # len(num_blocks) should equal num_branches
+        kwargs['num_channels'] = [2]
+        HRFomerModule(**kwargs)
+    kwargs['num_channels'] = [2, 2]
+
+    with pytest.raises(ValueError):
+        # len(num_blocks) should equal num_branches
+        kwargs['num_inchannels'] = [2]
+        HRFomerModule(**kwargs)
+    kwargs['num_inchannels'] = [2, 2]
+
+    # Test single branch HRFormer module
+    hrmodule = HRFomerModule(
+        num_branches=1,
+        block=block,
+        num_blocks=(1, ),
+        num_inchannels=[2],
+        num_channels=[2],
+        num_heads=(1, ),
+        num_window_sizes=(7, ),
+        num_mlp_ratios=(4, ),
+        drop_path=(0.1, ),
+        norm_cfg=norm_cfg,
+    )
 
 
 def test_hrformer_backbone():
@@ -94,6 +141,7 @@ def test_hrformer_backbone():
     with pytest.raises(AssertionError):
         # HRNet now only support 4 stages
         HRFormer(extra=extra)
+
     extra['stage4'] = dict(
         num_modules=3,
         num_branches=3,  # should be 4
@@ -130,8 +178,3 @@ def test_hrformer_backbone():
     feats = model(imgs)
     assert len(feats) == 1
     assert feats[0].shape == torch.Size([1, 32, 16, 16])
-
-
-if __name__ == '__main__':
-    test_hrformer_module(HRFormerBlock)
-    test_hrformer_backbone()
