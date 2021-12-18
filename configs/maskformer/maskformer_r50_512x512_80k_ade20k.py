@@ -18,7 +18,7 @@ model = dict(
         style='pytorch',
         contract_dilation=True,
         init_cfg=dict(type='Pretrained',
-                      checkpoint='../init_weights/resnet/resnet50_v1c-2cccc1ad.pth')),
+                      checkpoint='open-mmlab://resnet50_v1c')),
     decode_head=dict(
         type='MaskFormerHead',
         in_channels=[256, 512, 1024, 2048],  # pass to pixel_decoder inside
