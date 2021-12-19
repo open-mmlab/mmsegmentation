@@ -245,8 +245,12 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         seg = result[0]
         if palette is None:
             if self.PALETTE is None:
+                # Fix colors by set random seed.
+                state = np.random.get_state()
+                np.random.seed(42)
                 palette = np.random.randint(
                     0, 255, size=(len(self.CLASSES), 3))
+                np.random.set_state(state)
             else:
                 palette = self.PALETTE
         palette = np.array(palette)
