@@ -9,14 +9,14 @@ import numpy as np
 
 url_prefix = 'https://github.com/open-mmlab/mmsegmentation/blob/master/'
 
-files = sorted(glob.glob('../configs/*/README.md'))
+files = sorted(glob.glob('../../configs/*/README.md'))
 
 stats = []
 titles = []
 num_ckpts = 0
 
 for f in files:
-    url = osp.dirname(f.replace('../', url_prefix))
+    url = osp.dirname(f.replace('../../', url_prefix))
 
     with open(f, 'r') as content_file:
         content = content_file.read()
