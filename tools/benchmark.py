@@ -63,7 +63,8 @@ def main():
         fp16_cfg = cfg.get('fp16', None)
         if fp16_cfg is not None:
             wrap_fp16_model(model)
-        load_checkpoint(model, args.checkpoint, map_location='cpu')
+        if 'checkpoint' in args and osp.exists(args.checkpoint):
+            load_checkpoint(model, args.checkpoint, map_location='cpu')
 
         model = MMDataParallel(model, device_ids=[0])
 
