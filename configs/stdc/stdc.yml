@@ -1,0 +1,87 @@
+Collections:
+- Name: stdc
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    URL: https://arxiv.org/abs/2104.13188
+    Title: Rethinking BiSeNet For Real-time Semantic Segmentation
+  README: configs/stdc/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/stdc.py#L394
+    Version: v0.20.0
+  Converted From:
+    Code: https://github.com/MichaelFan01/STDC-Seg
+Models:
+- Name: stdc1_512x1024_80k_cityscapes
+  In Collection: stdc
+  Metadata:
+    backbone: STDC1
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 43.37
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 7.15
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 71.52
+      mIoU(ms+flip): 73.35
+  Config: configs/stdc/stdc1_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/v0.5/stdc/stdc1_512x1024_80k_cityscapes/stdc1_512x1024_80k_cityscapes_20211125_211245-2c8ba4c5.pth
+- Name: stdc1_in1k-pre_512x1024_80k_cityscapes
+  In Collection: stdc
+  Metadata:
+    backbone: STDC1
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.1
+      mIoU(ms+flip): 77.72
+  Config: configs/stdc/stdc1_in1k-pre_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_in1k-pre_512x1024_80k_cityscapes/stdc1_in1k-pre_512x1024_80k_cityscapes_20211125_213942-880bb7d0.pth
+- Name: stdc2_512x1024_80k_cityscapes
+  In Collection: stdc
+  Metadata:
+    backbone: STDC2
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 42.18
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 8.27
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.2
+      mIoU(ms+flip): 75.55
+  Config: configs/stdc/stdc2_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc2_512x1024_80k_cityscapes/stdc2_512x1024_80k_cityscapes_20211125_222450-82333ae0.pth
+- Name: stdc2_in1k-pre_512x1024_80k_cityscapes
+  In Collection: stdc
+  Metadata:
+    backbone: STDC2
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.17
+      mIoU(ms+flip): 79.01
+  Config: configs/stdc/stdc2_in1k-pre_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc2_in1k-pre_512x1024_80k_cityscapes/stdc2_in1k-pre_512x1024_80k_cityscapes_20211125_220437-d2c469f8.pth

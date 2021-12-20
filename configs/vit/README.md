@@ -8,6 +8,17 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98">Code Snippet</a>
 
+## Abstract
+
+<!-- [ABSTRACT] -->
+
+While the Transformer architecture has become the de-facto standard for natural language processing tasks, its applications to computer vision remain limited. In vision, attention is either applied in conjunction with convolutional networks, or used to replace certain components of convolutional networks while keeping their overall structure in place. We show that this reliance on CNNs is not necessary and a pure transformer applied directly to sequences of image patches can perform very well on image classification tasks. When pre-trained on large amounts of data and transferred to multiple mid-sized or small image recognition benchmarks (ImageNet, CIFAR-100, VTAB, etc.), Vision Transformer (ViT) attains excellent results compared to state-of-the-art convolutional networks while requiring substantially fewer computational resources to train.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142903144-f80a12cc-8698-48ab-843c-49dedf558121.png" width="70%"/>
+</div>
+
 <details>
 <summary align="right"><a href="https://arxiv.org/pdf/2010.11929.pdf">Vision Transformer (ICLR'2021)</a></summary>
 

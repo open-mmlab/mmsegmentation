@@ -7,6 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
     - Pascal Context
     - Pascal Context 59
+    - LoveDA
   Paper:
     URL: https://arxiv.org/abs/1908.07919
     Title: Deep High-Resolution Representation Learning for Human Pose Estimation
@@ -30,7 +31,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 1.7
+    Training Memory (GB): 1.7
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -52,7 +53,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 2.9
+    Training Memory (GB): 2.9
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -74,7 +75,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,1024)
-    memory (GB): 6.2
+    Training Memory (GB): 6.2
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -180,7 +181,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 3.8
+    Training Memory (GB): 3.8
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -202,7 +203,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 4.9
+    Training Memory (GB): 4.9
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -224,7 +225,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 8.2
+    Training Memory (GB): 8.2
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
@@ -288,7 +289,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 1.8
+    Training Memory (GB): 1.8
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
@@ -310,7 +311,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 2.9
+    Training Memory (GB): 2.9
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
@@ -332,7 +333,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 6.2
+    Training Memory (GB): 6.2
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal VOC 2012 + Aug
@@ -396,7 +397,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (480,480)
-    memory (GB): 6.1
+    Training Memory (GB): 6.1
   Results:
   - Task: Semantic Segmentation
     Dataset: Pascal Context
@@ -447,3 +448,69 @@ Models:
       mIoU(ms+flip): 53.56
   Config: configs/hrnet/fcn_hr48_480x480_80k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_80k_pascal_context_59/fcn_hr48_480x480_80k_pascal_context_59_20210411_003240-3ae7081e.pth
+- Name: fcn_hr18s_512x512_80k_loveda
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 40.21
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.59
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 49.28
+      mIoU(ms+flip): 49.42
+  Config: configs/hrnet/fcn_hr18s_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_loveda/fcn_hr18s_512x512_80k_loveda_20211210_203228-60a86a7a.pth
+- Name: fcn_hr18_512x512_80k_loveda
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 77.4
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.76
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 50.81
+      mIoU(ms+flip): 50.95
+  Config: configs/hrnet/fcn_hr18_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_loveda/fcn_hr18_512x512_80k_loveda_20211210_203952-93d9c3b3.pth
+- Name: fcn_hr48_512x512_80k_loveda
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 104.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 51.42
+      mIoU(ms+flip): 51.64
+  Config: configs/hrnet/fcn_hr48_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_loveda/fcn_hr48_512x512_80k_loveda_20211211_044756-67072f55.pth

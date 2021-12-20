@@ -2,7 +2,7 @@ Collections:
 - Name: segformer
   Metadata:
     Training Data:
-    - ADE20k
+    - ADE20K
   Paper:
     URL: https://arxiv.org/abs/2105.15203
     Title: resize image to multiple of 32, improve SegFormer by 0.5-1.0 mIoU.
@@ -26,10 +26,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 2.1
+    Training Memory (GB): 2.1
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 37.41
       mIoU(ms+flip): 38.34
@@ -48,10 +48,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 2.6
+    Training Memory (GB): 2.6
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 40.97
       mIoU(ms+flip): 42.54
@@ -70,10 +70,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 3.6
+    Training Memory (GB): 3.6
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 45.58
       mIoU(ms+flip): 47.03
@@ -92,10 +92,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 4.8
+    Training Memory (GB): 4.8
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 47.82
       mIoU(ms+flip): 48.81
@@ -114,10 +114,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 6.1
+    Training Memory (GB): 6.1
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 48.46
       mIoU(ms+flip): 49.76
@@ -136,10 +136,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    memory (GB): 7.2
+    Training Memory (GB): 7.2
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 49.13
       mIoU(ms+flip): 50.22
@@ -158,10 +158,10 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (640,640)
-    memory (GB): 11.5
+    Training Memory (GB): 11.5
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 49.62
       mIoU(ms+flip): 50.36
