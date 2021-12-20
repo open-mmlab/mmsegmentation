@@ -245,9 +245,13 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         seg = result[0]
         if palette is None:
             if self.PALETTE is None:
-                # Fix colors by setting random seed.
+                # Get random state before set seed,
+                # and restore random state later.
+                # Prevent loss of randomness.
+                # See: https://github.com/open-mmlab/mmdetection/issues/5844
                 state = np.random.get_state()
                 np.random.seed(42)
+                # random palette
                 palette = np.random.randint(
                     0, 255, size=(len(self.CLASSES), 3))
                 np.random.set_state(state)
