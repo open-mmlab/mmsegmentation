@@ -96,7 +96,7 @@ test_pipeline = [
 
 ### Cityscapes
 
-The low fps result is caused by sliding window inference scheme(window size:1024x1024).
+The lower fps result is caused by the sliding window inference scheme (window size:1024x1024).
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU | mIoU(ms+flip) | config | download |
 | ------ | -------- | --------- | ------: | -------: | -------------- | ---: | ------------- | ------ | -------- |
