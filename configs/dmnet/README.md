@@ -10,6 +10,8 @@
 
 ## Abstract
 
+<!-- [ABSTRACT] -->
+
 Multi-scale representation provides an effective way toaddress scale variation of objects and stuff in semantic seg-mentation. Previous works construct multi-scale represen-tation by utilizing different filter sizes, expanding filter sizeswith dilated filters or pooling grids, and the parameters ofthese filters are fixed after training. These methods oftensuffer from heavy computational cost or have more param-eters, and are not adaptive to the input image during in-ference. To address these problems, this paper proposes aDynamic Multi-scale Network (DMNet) to adaptively cap-ture multi-scale contents for predicting pixel-level semanticlabels. DMNet is composed of multiple Dynamic Convolu-tional Modules (DCMs) arranged in parallel, each of whichexploits context-aware filters to estimate semantic represen-tation for a specific scale. The outputs of multiple DCMsare further integrated for final segmentation. We conductextensive experiments to evaluate our DMNet on three chal-lenging semantic segmentation and scene parsing datasets,PASCAL VOC 2012, Pascal-Context, and ADE20K. DMNetachieves a new record 84.4% mIoU on PASCAL VOC 2012test set without MS COCO pre-trained and post-processing,and also obtains state-of-the-art performance on Pascal-Context and ADE20K.
 
 <!-- [IMAGE] -->

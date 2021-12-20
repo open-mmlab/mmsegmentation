@@ -143,7 +143,7 @@ If you would like to use augmented VOC dataset, please run following command to 
 python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/tutorials/customize_datasets.md#concatenate-dataset) for details about how to concatenate them and train them together.
+Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/tutorials/customize_datasets.md#concatenate-dataset) for details about how to concatenate them and train them together.
 
 ### ADE20K
 
@@ -283,6 +283,6 @@ For LoveDA dataset, please run the following command to download and re-organize
 python tools/convert_datasets/loveda.py /path/to/loveDA
 ```
 
-Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/inference.md).
+Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/inference.md).
 
 More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
