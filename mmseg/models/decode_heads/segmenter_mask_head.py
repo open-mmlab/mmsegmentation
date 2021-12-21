@@ -89,8 +89,8 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
 
         patches, cls_seg_feat = x[:, :-self.num_classes], x[:,
                                                             -self.num_classes:]
-        patches = patches @ self.patch_proj
-        cls_seg_feat = cls_seg_feat @ self.classes_proj
+        patches = self.patch_proj(patches)
+        cls_seg_feat = self.classes_proj(cls_seg_feat)
 
         patches = patches / patches.norm(dim=-1, keepdim=True)
         cls_seg_feat = cls_seg_feat / cls_seg_feat.norm(dim=-1, keepdim=True)
