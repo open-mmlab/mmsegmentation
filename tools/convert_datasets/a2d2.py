@@ -253,7 +253,7 @@ def create_split_dir(img_filepaths,
     assert split in ['train', 'val', 'test']
 
     for img_filepath, ann_filepath in zip(img_filepaths, ann_filepaths):
-        # Partions string: [generic/path/to/file] [/] [filename]
+        # Partitions string: [generic/path/to/file] [/] [filename]
         img_filename = img_filepath.rpartition('/')[2]
         ann_filename = ann_filepath.rpartition('/')[2]
 
