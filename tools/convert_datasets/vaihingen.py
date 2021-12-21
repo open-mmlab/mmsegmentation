@@ -84,41 +84,16 @@ def clip_big_image(image_path, clip_save_dir, to_label=False):
 
 def main():
     splits = {
-        'train': ['area1',
-                  'area11',
-                  'area13',
-                  'area15',
-                  'area17',
-                  'area21',
-                  'area23',
-                  'area26',
-                  'area28',
-                  'area3',
-                  'area30',
-                  'area32',
-                  'area34',
-                  'area37',
-                  'area5',
-                  'area7'
-                  ],
-        'val': ['area6',
-                'area24',
-                'area35',
-                'area16',
-                'area14',
-                'area22',
-                'area10',
-                'area4',
-                'area2',
-                'area20',
-                'area8',
-                'area31',
-                'area33',
-                'area27',
-                'area38',
-                'area12',
-                'area29'
-                ],
+        'train': [
+            'area1', 'area11', 'area13', 'area15', 'area17', 'area21',
+            'area23', 'area26', 'area28', 'area3', 'area30', 'area32',
+            'area34', 'area37', 'area5', 'area7'
+        ],
+        'val': [
+            'area6', 'area24', 'area35', 'area16', 'area14', 'area22',
+            'area10', 'area4', 'area2', 'area20', 'area8', 'area31', 'area33',
+            'area27', 'area38', 'area12', 'area29'
+        ],
     }
 
     dataset_path = args.dataset_path
