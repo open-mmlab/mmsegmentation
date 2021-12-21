@@ -195,6 +195,8 @@ class LocalWindowSelfAttention(BaseModule):
 
     Args:
         window_size (tuple[int]): Window size.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     """
 
     def __init__(self, *args, window_size=7, init_cfg=None, **kwargs):
@@ -240,12 +242,12 @@ class CrossFFN(BaseModule):
         in_features (int): The feature dimension.
         hidden_features (int, optional): The hidden dimension of FFNs.
             Defaults: The same as in_features.
-        act_layer (nn.Module, optional): The activation for 1x1 convs.
-            Default: nn.GELU
-        dw_act_layer (nn.Module, optional): The activation for 3x3 dw convs.
-            Default: nn.GELU
-        norm_layer (nn.Module, optional): The normalization layer of FFNs.
-            Default: nn.SyncBatchNorm
+        act_cfg (dict, optional): Config of activation layer.
+            Default: dict(type='GELU').
+        dw_act_cfg (dict, optional): Config of activation layer appended
+            right after DW Conv. Default: dict(type='GELU').
+        norm_cfg (dict, optional): Config of norm layer.
+            Default: dict(type='SyncBN').
         init_cfg (dict | list | None, optional): The init config.
             Default: None.
     """
@@ -254,9 +256,9 @@ class CrossFFN(BaseModule):
                  in_features,
                  hidden_features=None,
                  out_features=None,
-                 act_cfg=nn.GELU,
-                 dw_act_cfg=nn.GELU,
-                 norm_cfg=nn.SyncBatchNorm,
+                 act_cfg=dict(type='GELU'),
+                 dw_act_cfg=dict(type='GELU'),
+                 norm_cfg=dict(type='SyncBN'),
                  init_cfg=None):
         super().__init__(init_cfg=init_cfg)
         out_features = out_features or in_features
@@ -302,10 +304,12 @@ class HRFormerBlock(BaseModule):
             Default: 7
         mlp_ratio (int, optional): The expansion ration of FFN.
             Default: 4
-        act_layer (nn.Module, optional): The activation layer.
-            Default: nn.GELU
-        norm_layer (nn.Module, optional): The normalization layer.
-            Default: nn.LayerNorm
+        act_cfg (dict, optional): Config of activation layer.
+            Default: dict(type='GELU').
+        norm_cfg (dict, optional): Config of norm layer.
+            Default: dict(type='SyncBN').
+        transformer_norm_cfg (dict, optional): Config of transformer norm
+            layer. Default: dict(type='LN', eps=1e-6).
         init_cfg (dict | list | None, optional): The init config.
             Default: None.
     """
