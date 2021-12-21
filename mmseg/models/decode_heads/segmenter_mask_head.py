@@ -71,9 +71,7 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
         trunc_normal_init(self.classes_proj, std=self.init_std)
         for n, m in self.named_modules():
             if isinstance(m, nn.Linear):
-                trunc_normal_(m.weight, std=self.init_std)
-                if m.bias is not None:
-                    nn.init.constant_(m.bias, 0)
+                trunc_normal_init(m, std=self.init_std, bias=0)
             elif isinstance(m, nn.LayerNorm):
                 nn.init.constant_(m.bias, 0)
                 nn.init.constant_(m.weight, 1.0)
