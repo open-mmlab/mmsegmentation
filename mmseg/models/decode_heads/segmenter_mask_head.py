@@ -2,7 +2,8 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import build_norm_layer
-from mmcv.cnn.utils.weight_init import trunc_normal_
+from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
+                                        trunc_normal_init)
 from mmcv.runner import ModuleList
 
 from mmseg.models.backbones.vit import TransformerEncoderLayer
