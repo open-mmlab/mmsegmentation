@@ -74,7 +74,7 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
             if isinstance(m, nn.Linear):
                 trunc_normal_init(m, std=self.init_std, bias=0)
             elif isinstance(m, nn.LayerNorm):
-                constant_init(m, val=1.0, bias=0.)
+                constant_init(m, val=1.0, bias=0.0)
 
     def forward(self, inputs):
         x = self._transform_inputs(inputs)
