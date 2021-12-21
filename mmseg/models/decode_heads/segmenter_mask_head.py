@@ -55,8 +55,8 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
 
         self.cls_emb = nn.Parameter(
             torch.randn(1, self.num_classes, embed_dims))
-        self.patch_proj = nn.Parameter(torch.randn(embed_dims, embed_dims))
-        self.classes_proj = nn.Parameter(torch.randn(embed_dims, embed_dims))
+        self.patch_proj = nn.Linear(embed_dims, embed_dims, bias=False)
+        self.classes_proj = nn.Linear(embed_dims, embed_dims, bias=False)
 
         _, self.decoder_norm = build_norm_layer(
             norm_cfg, embed_dims, postfix=1)
