@@ -16,8 +16,11 @@ on:
       - 'docker/**'
       - 'tools/**'
       - 'docs/**'
-      - 'docs_zh-CN/**'
       - '**.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build_cpu:
