@@ -19,6 +19,7 @@ from .resnet import Bottleneck
 
 
 def build_drop_path(drop_path_rate):
+    """Build drop path layer."""
     return build_dropout(dict(type='DropPath', drop_prob=drop_path_rate))
 
 
@@ -90,9 +91,11 @@ class MultiheadAttention(BaseModule):
                              relative_position_index)
 
     def init_weights(self):
+        """Initialize the weight of relative_position_bias_table."""
         trunc_normal_init(self.relative_position_bias_table, std=0.02)
 
     def forward(self, query, key, value):
+        """Forward function."""
         return self.multi_head_attention_forward(
             query,
             key,
@@ -112,6 +115,7 @@ class MultiheadAttention(BaseModule):
                                      dropout_p=0.0,
                                      out_dim=None,
                                      training=True):
+        """The actual implementation of forward function."""
         tgt_len, bsz, embed_dim = query.size()
         key = query if key is None else key
         value = query if value is None else value
@@ -207,6 +211,7 @@ class LocalWindowSelfAttention(BaseModule):
             *args, window_size=window_size, init_cfg=None, **kwargs)
 
     def forward(self, x, H, W, **kwargs):
+        """Forward function."""
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         Wh = Ww = self.window_size
@@ -236,7 +241,7 @@ class LocalWindowSelfAttention(BaseModule):
 
 
 class CrossFFN(BaseModule):
-    """FFN with Depthwise Conv of HRFormer.
+    r"""FFN with Depthwise Conv of HRFormer.
 
     Args:
         in_features (int): The feature dimension.
@@ -286,6 +291,7 @@ class CrossFFN(BaseModule):
         ]
 
     def forward(self, x, H, W):
+        """Forward function."""
         x = nlc_to_nchw(x, (H, W))
         for layer in self.layers:
             x = layer(x)
@@ -355,6 +361,7 @@ class HRFormerBlock(BaseModule):
             drop_path) if drop_path > 0.0 else nn.Identity()
 
     def forward(self, x):
+        """Forward function."""
         B, C, H, W = x.size()
         # Attention
         x = x.view(B, C, -1).permute(0, 2, 1)
@@ -365,8 +372,7 @@ class HRFormerBlock(BaseModule):
         return x
 
     def extra_repr(self):
-        # (Optional) Set the extra information about this module. You can test
-        # it by printing an object of this class.
+        """(Optional) Set the extra information about this module."""
         return 'num_heads={}, window_size={}, mlp_ratio={}'.format(
             self.num_heads, self.window_size, self.mlp_ratio)
 
@@ -440,6 +446,7 @@ class HRFomerModule(BaseModule):
 
     def _check_branches(self, num_branches, num_blocks, num_inchannels,
                         num_channels):
+        """Check branches configuration."""
         if num_branches != len(num_blocks):
             error_msg = 'num_branches({}) <> num_blocks({})'.format(
                 num_branches, len(num_blocks))
@@ -458,6 +465,7 @@ class HRFomerModule(BaseModule):
     def _make_one_branch(self, branch_index, block, num_blocks, num_channels,
                          num_heads, num_window_sizes, num_mlp_ratios,
                          drop_paths):
+        """Build one branch."""
         layers = []
         layers.append(
             block(
@@ -490,6 +498,7 @@ class HRFomerModule(BaseModule):
     def _make_branches(self, num_branches, block, num_blocks, num_channels,
                        num_heads, num_window_sizes, num_mlp_ratios,
                        drop_paths):
+        """Build multiple branches."""
         branches = []
 
         for i in range(num_branches):
@@ -507,6 +516,7 @@ class HRFomerModule(BaseModule):
         return nn.ModuleList(branches)
 
     def _make_fuse_layers(self):
+        """Build fuse layers."""
         if self.num_branches == 1:
             return None
         num_branches = self.num_branches
@@ -573,9 +583,11 @@ class HRFomerModule(BaseModule):
         return nn.ModuleList(fuse_layers)
 
     def get_num_inchannels(self):
+        """Return the number of input channels."""
         return self.num_inchannels
 
     def forward(self, x):
+        """Forward function."""
         if self.num_branches == 1:
             return [self.branches[0](x[0])]
 
@@ -815,6 +827,7 @@ class HRFormer(BaseModule):
             drop_path=dpr[depth_s2 + depth_s3:])
 
     def init_weights(self):
+        """Initialize the model weights."""
         logger = get_root_logger()
         if self.init_cfg is None:
             logger.warn(f'No pre-trained weights for '
@@ -869,6 +882,7 @@ class HRFormer(BaseModule):
 
     def _make_transition_layer(self, num_channels_pre_layer,
                                num_channels_cur_layer):
+        """Build transition layers."""
         num_branches_cur = len(num_channels_cur_layer)
         num_branches_pre = len(num_channels_pre_layer)
 
@@ -926,6 +940,7 @@ class HRFormer(BaseModule):
         window_size=7,
         mlp_ratio=4.0,
     ):
+        """Make each layer."""
         downsample = None
         if stride != 1 or inplanes != planes * block.expansion:
             downsample = nn.Sequential(
@@ -971,6 +986,7 @@ class HRFormer(BaseModule):
                     num_inchannels,
                     multiscale_output=True,
                     drop_path=0.0):
+        """Make each stage."""
         num_modules = layer_config['num_modules']
         num_branches = layer_config['num_branches']
         num_blocks = layer_config['num_blocks']
@@ -1010,6 +1026,7 @@ class HRFormer(BaseModule):
         return nn.Sequential(*modules), num_inchannels
 
     def forward(self, x):
+        """Forward function."""
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
