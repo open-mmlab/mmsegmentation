@@ -4,7 +4,6 @@ import os.path as osp
 import mmcv
 import numpy as np
 import torch
-from einops import rearrange
 
 
 def vit_jax_to_torch(jax_weights):
@@ -12,7 +11,8 @@ def vit_jax_to_torch(jax_weights):
 
     # patch embedding
     conv_filters = jax_weights['embedding/kernel']
-    conv_filters = rearrange(conv_filters, 'h w c d -> d c h w')
+    # conv_filters = rearrange(conv_filters, 'h w c d -> d c h w')
+    conv_filters = torch.permute(conv_filters, (3, 2, 0, 1))
     torch_weights['patch_embed.projection.weight'] = conv_filters
     torch_weights['patch_embed.projection.bias'] = jax_weights[
         'embedding/bias']
@@ -56,17 +56,18 @@ def vit_jax_to_torch(jax_weights):
             f'{jax_block}/MultiHeadDotProductAttention_1/value/bias']
 
         qkv_weight = np.stack((query_weight, key_weight, value_weight), 1)
-        qkv_weight = rearrange(qkv_weight, 'out qkv nh d-> out (qkv nh d)')
+        # qkv_weight = rearrange(qkv_weight, 'out qkv nh d-> out (qkv nh d)')
+        qkv_weight = torch.flatten(qkv_weight, start_dim=1)
         qkv_bias = np.stack((query_bias, key_bias, value_bias), 0)
-        qkv_bias = rearrange(qkv_bias, 'qkv nh d -> (qkv nh d)')
+        # qkv_bias = rearrange(qkv_bias, 'qkv nh d -> (qkv nh d)')
+        qkv_bias = torch.flatten(qkv_bias, start_dim=0)
 
         torch_weights[f'{torch_block}.attn.attn.in_proj_weight'] = qkv_weight
         torch_weights[f'{torch_block}.attn.attn.in_proj_bias'] = qkv_bias
         to_out_weight = jax_weights[
             f'{jax_block}/MultiHeadDotProductAttention_1/out/kernel']
-        # to_out_bias = jax_weights[
-        #     f'{jax_block}/MultiHeadDotProductAttention_1/out/bias']
-        to_out_weight = rearrange(to_out_weight, 'h hd d -> (h hd) d')
+        # to_out_weight = rearrange(to_out_weight, 'h hd d -> (h hd) d')
+        to_out_weight = torch.flatten(to_out_weight, start_dim=0, end_dim=1)
         torch_weights[
             f'{torch_block}.attn.attn.out_proj.weight'] = to_out_weight
         torch_weights[f'{torch_block}.attn.attn.out_proj.bias'] = jax_weights[
@@ -91,7 +92,8 @@ def vit_jax_to_torch(jax_weights):
     # transpose weights
     for k, v in torch_weights.items():
         if 'weight' in k and 'patch_embed' not in k and 'ln' not in k:
-            v = rearrange(v, 'i o -> o i')
+            # v = rearrange(v, 'i o -> o i')
+            v = torch.permute(v, (1, 0))
         torch_weights[k] = torch.tensor(v)
 
     return torch_weights
