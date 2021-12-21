@@ -284,7 +284,7 @@ Next, while in the MMSegmentation directory root, create a symbolic link from `m
 ln -s /absolute/path/to/a2d2/camera_lidar_semantic/ data/a2d2/
 ```
 
-Finally, convert the A2D2 dataset label files to the MMSegmentation format. One can choose to generate Cityscape-like labels having 18 classes in total (default choice), as well as using the original A2D2 semantic segmentation category labels with 34 classes (reduced from 38 classes as explained bellow). The original label files will not be overwritten during conversion. It is possible to have both 18 and 34 class labels existing simultaneously.
+Finally, convert the A2D2 dataset label files to the MMSegmentation format. One can choose to generate Cityscape-like labels having 18 classes in total (default choice), as well as using the original A2D2 semantic segmentation category labels with 34 classes (reduced from 38 classes as explained below). The original label files will not be overwritten during conversion. It is possible to have both 18 and 34 class labels existing simultaneously.
 
 ```shell
 python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic

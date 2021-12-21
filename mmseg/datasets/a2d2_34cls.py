@@ -10,7 +10,7 @@ class A2D2Dataset34Classes(CustomDataset):
 
     The dataset features 41,280 frames with semantic segmentation having 34
     classes. The original set of 38 classes are reduced to 34 for reasons
-    explained bellow.
+    explained below.
 
     The segmentation conversion is defined in the following file:
         tools/convert_datasets/a2d2.py
