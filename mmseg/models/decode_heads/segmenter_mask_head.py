@@ -67,8 +67,8 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
 
     def init_weights(self):
         trunc_normal_(self.cls_emb, std=self.init_std)
-        trunc_normal_(self.patch_proj, std=self.init_std)
-        trunc_normal_(self.classes_proj, std=self.init_std)
+        trunc_normal_init(self.patch_proj, std=self.init_std)
+        trunc_normal_init(self.classes_proj, std=self.init_std)
         for n, m in self.named_modules():
             if isinstance(m, nn.Linear):
                 trunc_normal_(m.weight, std=self.init_std)
