@@ -4,6 +4,24 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/NVlabs/SegFormer">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246">Code Snippet</a>
+
+## Abstract
+
+<!-- [ABSTRACT] -->
+
+We present SegFormer, a simple, efficient yet powerful semantic segmentation framework which unifies Transformers with lightweight multilayer perception (MLP) decoders. SegFormer has two appealing features: 1) SegFormer comprises a novel hierarchically structured Transformer encoder which outputs multiscale features. It does not need positional encoding, thereby avoiding the interpolation of positional codes which leads to decreased performance when the testing resolution differs from training. 2) SegFormer avoids complex decoders. The proposed MLP decoder aggregates information from different layers, and thus combining both local attention and global attention to render powerful representations. We show that this simple and lightweight design is the key to efficient segmentation on Transformers. We scale our approach up to obtain a series of models from SegFormer-B0 to SegFormer-B5, reaching significantly better performance and efficiency than previous counterparts. For example, SegFormer-B4 achieves 50.3% mIoU on ADE20K with 64M parameters, being 5x smaller and 2.2% better than the previous best method. Our best model, SegFormer-B5, achieves 84.0% mIoU on Cityscapes validation set and shows excellent zero-shot robustness on Cityscapes-C. Code will be released at: [this http URL](https://github.com/NVlabs/SegFormer).
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142902600-e188073e-5744-4ba9-8dbf-9316e55c74aa.png" width="70%"/>
+</div>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/2105.15203">SegFormer (ArXiv'2021)</a></summary>
+
 ```latex
 @article{xie2021segformer,
   title={SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers},
@@ -13,6 +31,8 @@
 }
 ```
 
+</details>
+
 ## Usage
 
 To use other repositories' pre-trained models, it is necessary to convert keys.
@@ -20,14 +40,14 @@ To use other repositories' pre-trained models, it is necessary to convert keys.
 We provide a script [`mit2mmseg.py`](../../tools/model_converters/mit2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/NVlabs/SegFormer) to MMSegmentation style.
 
 ```shell
-python tools/model_converters/swin2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
+python tools/model_converters/mit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
 ```
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
 
 ## Results and models
 
-### ADE20k
+### ADE20K
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU | mIoU(ms+flip) | config | download |
 | ------ | -------- | --------- | ------: | -------: | -------------- | ---: | ------------- | ------ | -------- |

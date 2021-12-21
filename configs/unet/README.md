@@ -4,6 +4,24 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225">Code Snippet</a>
+
+## Abstract
+
+<!-- [ABSTRACT] -->
+
+There is large consent that successful training of deep networks requires many thousand annotated training samples. In this paper, we present a network and training strategy that relies on the strong use of data augmentation to use the available annotated samples more efficiently. The architecture consists of a contracting path to capture context and a symmetric expanding path that enables precise localization. We show that such a network can be trained end-to-end from very few images and outperforms the prior best method (a sliding-window convolutional network) on the ISBI challenge for segmentation of neuronal structures in electron microscopic stacks. Using the same network trained on transmitted light microscopy images (phase contrast and DIC) we won the ISBI cell tracking challenge 2015 in these categories by a large margin. Moreover, the network is fast. Segmentation of a 512x512 image takes less than a second on a recent GPU. The full implementation (based on Caffe) and the trained networks are available at [this http URL](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/).
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142902977-20fe689d-a147-4d92-9690-dbfde8b68dbe.png" width="70%"/>
+</div>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1505.04597">UNet (MICCAI'2016/Nat. Methods'2019)</a></summary>
+
 ```latex
 @inproceedings{ronneberger2015u,
   title={U-net: Convolutional networks for biomedical image segmentation},
@@ -14,6 +32,8 @@
   organization={Springer}
 }
 ```
+
+</details>
 
 ## Results and models
 

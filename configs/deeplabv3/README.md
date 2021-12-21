@@ -4,6 +4,24 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/tensorflow/models/tree/master/research/deeplab">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/aspp_head.py#L54">Code Snippet</a>
+
+## Abstract
+
+<!-- [ABSTRACT] -->
+
+In this work, we revisit atrous convolution, a powerful tool to explicitly adjust filter's field-of-view as well as control the resolution of feature responses computed by Deep Convolutional Neural Networks, in the application of semantic image segmentation. To handle the problem of segmenting objects at multiple scales, we design modules which employ atrous convolution in cascade or in parallel to capture multi-scale context by adopting multiple atrous rates. Furthermore, we propose to augment our previously proposed Atrous Spatial Pyramid Pooling module, which probes convolutional features at multiple scales, with image-level features encoding global context and further boost performance. We also elaborate on implementation details and share our experience on training our system. The proposed `DeepLabv3' system significantly improves over our previous DeepLab versions without DenseCRF post-processing and attains comparable performance with other state-of-art models on the PASCAL VOC 2012 semantic image segmentation benchmark.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142900575-f30a7755-09aa-406a-bf78-45893a61ee9a.png" width="80%"/>
+</div>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1706.05587">DeepLabV3 (ArXiv'2017)</a></summary>
+
 ```latext
 @article{chen2017rethinking,
   title={Rethinking atrous convolution for semantic image segmentation},
@@ -12,6 +30,8 @@
   year={2017}
 }
 ```
+
+</details>
 
 ## Results and models
 
@@ -30,6 +50,7 @@
 | DeepLabV3 | R-18-D8         | 512x1024  |   80000 | 1.7      | 13.78          | 76.70 |         78.27 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes.py)         | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes/deeplabv3_r18-d8_512x1024_80k_cityscapes_20201225_021506-23dffbe2.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes/deeplabv3_r18-d8_512x1024_80k_cityscapes-20201225_021506.log.json)                                 |
 | DeepLabV3 | R-50-D8         | 512x1024  |   80000 | -        | -              | 79.32 |         80.57 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes.py)         | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes/deeplabv3_r50-d8_512x1024_80k_cityscapes_20200606_113404-b92cfdd4.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes/deeplabv3_r50-d8_512x1024_80k_cityscapes_20200606_113404.log.json)                                 |
 | DeepLabV3 | R-101-D8        | 512x1024  |   80000 | -        | -              | 80.20 |         81.21 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes.py)        | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503-9e428899.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503.log.json)                             |
+| DeepLabV3 (FP16)  | R-101-D8 | 512x1024  |   80000 | 5.75     | 3.86           | 80.48 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes.py)     | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-774d9cec.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920.log.json)                 |
 | DeepLabV3 | R-18-D8         | 769x769   |   80000 | 1.9      | 5.55           | 76.60 |         78.26 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3/deeplabv3_r18-d8_769x769_80k_cityscapes.py)          | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_769x769_80k_cityscapes/deeplabv3_r18-d8_769x769_80k_cityscapes_20201225_021506-6452126a.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_769x769_80k_cityscapes/deeplabv3_r18-d8_769x769_80k_cityscapes-20201225_021506.log.json)                                     |
 | DeepLabV3 | R-50-D8         | 769x769   |   80000 | -        | -              | 79.89 |         81.06 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes.py)          | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes/deeplabv3_r50-d8_769x769_80k_cityscapes_20200606_221338-788d6228.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes/deeplabv3_r50-d8_769x769_80k_cityscapes_20200606_221338.log.json)                                     |
 | DeepLabV3 | R-101-D8        | 769x769   |   80000 | -        | -              | 79.67 |         80.81 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes.py)         | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes/deeplabv3_r101-d8_769x769_80k_cityscapes_20200607_013353-60e95418.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes/deeplabv3_r101-d8_769x769_80k_cityscapes_20200607_013353.log.json)                                 |
@@ -93,3 +114,7 @@
 | DeepLabV3 | R-101-D8 | 512x512   |  160000 | -        | -              | 41.82 |         42.49 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k_20210709_155402-f035acfd.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k_20210709_155402.log.json) |
 | DeepLabV3 | R-50-D8  | 512x512   |  320000 | -        | -              | 41.37 |         42.22 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k_20210709_155403-51b21115.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k_20210709_155403.log.json)     |
 | DeepLabV3 | R-101-D8 | 512x512   |  320000 | -        | -              | 42.61 |         43.42 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k_20210709_155402-3cbca14d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k_20210709_155402.log.json) |
+
+Note:
+
+- `FP16` means Mixed Precision (FP16) is adopted in training.

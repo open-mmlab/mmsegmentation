@@ -4,6 +4,24 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/facebookresearch/detectron2">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12">Code Snippet</a>
+
+## Abstract
+
+<!-- [ABSTRACT] -->
+
+The recently introduced panoptic segmentation task has renewed our community's interest in unifying the tasks of instance segmentation (for thing classes) and semantic segmentation (for stuff classes). However, current state-of-the-art methods for this joint task use separate and dissimilar networks for instance and semantic segmentation, without performing any shared computation. In this work, we aim to unify these methods at the architectural level, designing a single network for both tasks. Our approach is to endow Mask R-CNN, a popular instance segmentation method, with a semantic segmentation branch using a shared Feature Pyramid Network (FPN) backbone. Surprisingly, this simple baseline not only remains effective for instance segmentation, but also yields a lightweight, top-performing method for semantic segmentation. In this work, we perform a detailed study of this minimally extended version of Mask R-CNN with FPN, which we refer to as Panoptic FPN, and show it is a robust and accurate baseline for both tasks. Given its effectiveness and conceptual simplicity, we hope our method can serve as a strong baseline and aid future research in panoptic segmentation.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142902694-03ed2131-9104-467b-ace1-c74c62fb7177.png" width="60%"/>
+</div>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1901.02446">Semantic FPN (CVPR'2019)</a></summary>
+
 ```latex
 @article{Kirillov_2019,
    title={Panoptic Feature Pyramid Networks},
@@ -17,6 +35,8 @@
    month={Jun}
 }
 ```
+
+</details>
 
 ## Results and models
 

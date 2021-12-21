@@ -20,7 +20,7 @@
 
 MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 OpenMMLab 项目的一部分。
 
-主分支代码目前支持 PyTorch 1.3 以上的版本。
+主分支代码目前支持 PyTorch 1.5 以上的版本。
 
 ![示例图片](resources/seg_demo.gif)
 
@@ -48,12 +48,12 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新的月度版本 v0.17.0 在 2021.09.01 发布。
+最新的月度版本 v0.20.2 在 2021.12.15 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/changelog.md)。
 
 ## 基准测试和模型库
 
-测试结果和模型可以在[模型库](docs_zh-CN/model_zoo.md)中找到。
+测试结果和模型可以在[模型库](docs/zh_cn/model_zoo.md)中找到。
 
 已支持的骨干网络：
 
@@ -64,18 +64,21 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
-- [x] [Swin Transformer (ArXiv'2021)](configs/swin)
+- [x] [Swin Transformer (ICCV'2021)](configs/swin)
+- [x] [Twins (NeurIPS'2021)](configs/twins)
 
 已支持的算法：
 
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
+- [x] [ERFNet (T-ITS'2017)](configs/erfnet)
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
-- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
+- [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
 - [x] [UPerNet (ECCV'2018)](configs/upernet)
+- [x] [ICNet (ECCV'2018)](configs/icnet)
 - [x] [NonLocal Net (CVPR'2018)](configs/nonlocal_net)
 - [x] [EncNet (CVPR'2018)](configs/encnet)
 - [x] [Semantic FPN (CVPR'2019)](configs/sem_fpn)
@@ -86,39 +89,44 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [DMNet (ICCV'2019)](configs/dmnet)
 - [x] [ANN (ICCV'2019)](configs/ann)
 - [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
+- [x] [FastFCN (ArXiv'2019)](configs/fastfcn)
 - [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
 - [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
 - [x] [OCRNet (ECCV'2020)](configs/ocrnet)
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
+- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
+- [x] [STDC (CVPR'2021)](configs/stdc)
 - [x] [SETR (CVPR'2021)](configs/setr)
-- [x] [SegFormer (ArXiv'2021)](configs/segformer)
+- [x] [DPT (ArXiv'2021)](configs/dpt)
+- [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 
 已支持的数据集：
 
-- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#cityscapes)
-- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-voc)
-- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#ade20k)
-- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-context)
-- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#coco-stuff-10k)
-- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#coco-stuff-164k)
-- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#chase-db1)
-- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#drive)
-- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#hrf)
-- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#stare)
-- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#dark-zurich)
-- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#nighttime-driving)
+- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#cityscapes)
+- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#pascal-voc)
+- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#ade20k)
+- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#pascal-context)
+- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#coco-stuff-10k)
+- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#coco-stuff-164k)
+- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#chase-db1)
+- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#drive)
+- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#hrf)
+- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#stare)
+- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#dark-zurich)
+- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#nighttime-driving)
+- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#loveda)
 
 ## 安装
 
-请参考[快速入门文档](docs_zh-CN/get_started.md#installation)进行安装，参考[数据集准备](docs_zh-CN/dataset_prepare.md)处理数据。
+请参考[快速入门文档](docs/zh_cn/get_started.md#installation)进行安装，参考[数据集准备](docs/zh_cn/dataset_prepare.md)处理数据。
 
 ## 快速入门
 
-请参考[训练教程](docs_zh-CN/train.md)和[测试教程](docs_zh-CN/inference.md)学习 MMSegmentation 的基本使用。
-我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs_zh-CN/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs_zh-CN/tutorials/data_pipeline.md)，[增加自定义模型](docs_zh-CN/tutorials/customize_models.md)，[增加自定义的运行时配置](docs_zh-CN/tutorials/customize_runtime.md)。
-除此之外，我们也提供了很多实用的[训练技巧说明](docs_zh-CN/tutorials/training_tricks.md)和模型部署相关的[有用的工具](docs_zh-CN/useful_tools.md)。
+请参考[训练教程](docs/zh_cn/train.md)和[测试教程](docs/zh_cn/inference.md)学习 MMSegmentation 的基本使用。
+我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs/zh_cn/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs/zh_cn/tutorials/data_pipeline.md)，[增加自定义模型](docs/zh_cn/tutorials/customize_models.md)，[增加自定义的运行时配置](docs/zh_cn/tutorials/customize_runtime.md)。
+除此之外，我们也提供了很多实用的[训练技巧说明](docs/zh_cn/tutorials/training_tricks.md)和模型部署相关的[有用的工具](docs/zh_cn/useful_tools.md)。
 
 同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb)。
 
@@ -156,13 +164,16 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab 图像视频编辑工具箱
 - [MMOCR](https://github.com/open-mmlab/mmocr): OpenMMLab 全流程文字检测识别理解工具包
 - [MMGeneration](https://github.com/open-mmlab/mmgeneration): OpenMMLab 生成模型工具箱
+- [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab 光流估计工具箱与测试基准
+- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab 少样本学习工具箱与测试基准
+- [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab 人体参数化模型工具箱与测试基准
 
 ## 欢迎加入 OpenMMLab 社区
 
  扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，加入 [OpenMMLab 团队](https://jq.qq.com/?_wv=1027&k=aCvMxdr3) 以及 [MMSegmentation](https://jq.qq.com/?_wv=1027&k=ukevz6Ie) 的 QQ 群。
 
  <div align="center">
- <img src="docs_zh-CN/imgs/zhihu_qrcode.jpg" height="400" />  <img src="docs_zh-CN/imgs/qq_group_qrcode.jpg" height="400" />  <img src="docs_zh-CN/imgs/seggroup_qrcode.jpg" height="400" />
+ <img src="docs/zh_cn/imgs/zhihu_qrcode.jpg" height="400" />  <img src="docs/zh_cn/imgs/qq_group_qrcode.jpg" height="400" />  <img src="docs/zh_cn/imgs/seggroup_qrcode.jpg" height="400" />
  </div>
 
  我们会在 OpenMMLab 社区为大家

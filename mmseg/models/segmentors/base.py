@@ -145,15 +145,22 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
 
         return outputs
 
-    def val_step(self, data_batch, **kwargs):
+    def val_step(self, data_batch, optimizer=None, **kwargs):
         """The iteration step during validation.
 
         This method shares the same signature as :func:`train_step`, but used
         during val epochs. Note that the evaluation after training epochs is
         not implemented with this method, but an evaluation hook.
         """
-        output = self(**data_batch, **kwargs)
-        return output
+        losses = self(**data_batch)
+        loss, log_vars = self._parse_losses(losses)
+
+        outputs = dict(
+            loss=loss,
+            log_vars=log_vars,
+            num_samples=len(data_batch['img_metas']))
+
+        return outputs
 
     @staticmethod
     def _parse_losses(losses):
@@ -180,6 +187,17 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
 
         loss = sum(_value for _key, _value in log_vars.items()
                    if 'loss' in _key)
+
+        # If the loss_vars has different length, raise assertion error
+        # to prevent GPUs from infinite waiting.
+        if dist.is_available() and dist.is_initialized():
+            log_var_length = torch.tensor(len(log_vars), device=loss.device)
+            dist.all_reduce(log_var_length)
+            message = (f'rank {dist.get_rank()}' +
+                       f' len(log_vars): {len(log_vars)}' + ' keys: ' +
+                       ','.join(log_vars.keys()) + '\n')
+            assert log_var_length == len(log_vars) * dist.get_world_size(), \
+                'loss log variables are different across GPUs!\n' + message
 
         log_vars['loss'] = loss
         for loss_name, loss_value in log_vars.items():

@@ -1,6 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os
 import os.path as osp
 import shutil
+import tempfile
 from typing import Generator
 from unittest.mock import MagicMock, patch
 
@@ -11,8 +13,8 @@ from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
-                            ConcatDataset, CustomDataset, PascalVOCDataset,
-                            RepeatDataset, build_dataset)
+                            ConcatDataset, CustomDataset, LoveDADataset,
+                            PascalVOCDataset, RepeatDataset, build_dataset)
 
 
 def test_classes():
@@ -24,6 +26,37 @@ def test_classes():
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
+
+
+def test_classes_file_path():
+    tmp_file = tempfile.NamedTemporaryFile()
+    classes_path = f'{tmp_file.name}.txt'
+    train_pipeline = [dict(type='LoadImageFromFile')]
+    kwargs = dict(pipeline=train_pipeline, img_dir='./', classes=classes_path)
+
+    # classes.txt with full categories
+    categories = get_classes('cityscapes')
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+    assert list(CityscapesDataset(**kwargs).CLASSES) == categories
+
+    # classes.txt with sub categories
+    categories = ['road', 'sidewalk', 'building']
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+    assert list(CityscapesDataset(**kwargs).CLASSES) == categories
+
+    # classes.txt with unknown categories
+    categories = ['road', 'sidewalk', 'unknown']
+    with open(classes_path, 'w') as f:
+        f.write('\n'.join(categories))
+
+    with pytest.raises(ValueError):
+        CityscapesDataset(**kwargs)
+
+    tmp_file.close()
+    os.remove(classes_path)
+    assert not osp.exists(classes_path)
 
 
 def test_palette():
@@ -587,6 +620,32 @@ def test_concat_cityscapes(separate_eval):
     with pytest.raises(NotImplementedError):
         _ = ConcatDataset([cityscape_dataset, ade_dataset],
                           separate_eval=separate_eval)
+
+
+def test_loveda():
+    test_dataset = LoveDADataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_loveda_dataset/img_dir'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_loveda_dataset/ann_dir'))
+    assert len(test_dataset) == 3
+
+    gt_seg_maps = list(test_dataset.get_gt_seg_maps())
+
+    # Test format_results
+    pseudo_results = []
+    for idx in range(len(test_dataset)):
+        h, w = gt_seg_maps[idx].shape
+        pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
+    file_paths = test_dataset.format_results(pseudo_results, '.format_loveda')
+    assert len(file_paths) == len(test_dataset)
+    # Test loveda evaluate
+
+    test_dataset.evaluate(
+        pseudo_results, metric='mIoU', imgfile_prefix='.format_loveda')
+
+    shutil.rmtree('.format_loveda')
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)

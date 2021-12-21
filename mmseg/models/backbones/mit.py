@@ -4,13 +4,13 @@ import warnings
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import (Conv2d, build_activation_layer, build_norm_layer,
-                      constant_init, normal_init, trunc_normal_init)
+from mmcv.cnn import Conv2d, build_activation_layer, build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import MultiheadAttention
-from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
+from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
+                                        trunc_normal_init)
+from mmcv.runner import BaseModule, ModuleList, Sequential
 
-from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw
 
@@ -21,7 +21,6 @@ class MixFFN(BaseModule):
     The differences between MixFFN & FFN:
         1. Use 1X1 Conv to replace Linear layer.
         2. Introduce 3X3 Conv to encode positional information.
-
     Args:
         embed_dims (int): The feature dimension. Same as
             `MultiheadAttention`. Defaults: 256.
@@ -93,7 +92,6 @@ class EfficientMultiheadAttention(MultiheadAttention):
 
     This module is modified from MultiheadAttention which is a module from
     mmcv.cnn.bricks.transformer.
-
     Args:
         embed_dims (int): The embedding dimension.
         num_heads (int): Parallel attention heads.
@@ -146,7 +144,48 @@ class EfficientMultiheadAttention(MultiheadAttention):
             # The ret[0] of build_norm_layer is norm name.
             self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
 
+        # handle the BC-breaking from https://github.com/open-mmlab/mmcv/pull/1418 # noqa
+        from mmseg import digit_version, mmcv_version
+        if mmcv_version < digit_version('1.3.17'):
+            warnings.warn('The legacy version of forward function in'
+                          'EfficientMultiheadAttention is deprecated in'
+                          'mmcv>=1.3.17 and will no longer support in the'
+                          'future. Please upgrade your mmcv.')
+            self.forward = self.legacy_forward
+
     def forward(self, x, hw_shape, identity=None):
+
+        x_q = x
+        if self.sr_ratio > 1:
+            x_kv = nlc_to_nchw(x, hw_shape)
+            x_kv = self.sr(x_kv)
+            x_kv = nchw_to_nlc(x_kv)
+            x_kv = self.norm(x_kv)
+        else:
+            x_kv = x
+
+        if identity is None:
+            identity = x_q
+
+        # Because the dataflow('key', 'query', 'value') of
+        # ``torch.nn.MultiheadAttention`` is (num_query, batch,
+        # embed_dims), We should adjust the shape of dataflow from
+        # batch_first (batch, num_query, embed_dims) to num_query_first
+        # (num_query ,batch, embed_dims), and recover ``attn_output``
+        # from num_query_first to batch_first.
+        if self.batch_first:
+            x_q = x_q.transpose(0, 1)
+            x_kv = x_kv.transpose(0, 1)
+
+        out = self.attn(query=x_q, key=x_kv, value=x_kv)[0]
+
+        if self.batch_first:
+            out = out.transpose(0, 1)
+
+        return identity + self.dropout_layer(self.proj_drop(out))
+
+    def legacy_forward(self, x, hw_shape, identity=None):
+        """multi head attention forward in mmcv version < 1.3.17."""
 
         x_q = x
         if self.sr_ratio > 1:
@@ -186,7 +225,7 @@ class TransformerEncoderLayer(BaseModule):
         qkv_bias (bool): enable bias for qkv if True.
             Default: True.
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
+            Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         batch_first (bool): Key, Query and Value are shape of
@@ -249,7 +288,6 @@ class MixVisionTransformer(BaseModule):
     This backbone is the implementation of `SegFormer: Simple and
     Efficient Design for Semantic Segmentation with
     Transformers <https://arxiv.org/abs/2105.15203>`_.
-
     Args:
         in_channels (int): Number of input channels. Default: 3.
         embed_dims (int): Embedding dimension. Default: 768.
@@ -277,9 +315,7 @@ class MixVisionTransformer(BaseModule):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
-            Defalut: dict(type='GELU').
-        pretrain_style (str): Choose to use official or mmcls pretrain weights.
-            Default: official.
+            Default: dict(type='GELU').
         pretrained (str, optional): model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
@@ -302,23 +338,20 @@ class MixVisionTransformer(BaseModule):
                  drop_path_rate=0.,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN', eps=1e-6),
-                 pretrain_style='official',
                  pretrained=None,
                  init_cfg=None):
-        super().__init__()
+        super(MixVisionTransformer, self).__init__(init_cfg=init_cfg)
 
-        assert pretrain_style in [
-            'official', 'mmcls'
-        ], 'we only support official weights or mmcls weights.'
-
-        if isinstance(pretrained, str) or pretrained is None:
-            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+        assert not (init_cfg and pretrained), \
+            'init_cfg and pretrained cannot be set at the same time'
+        if isinstance(pretrained, str):
+            warnings.warn('DeprecationWarning: pretrained is deprecated, '
                           'please use "init_cfg" instead')
-        else:
+            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
+        elif pretrained is not None:
             raise TypeError('pretrained must be a str or None')
 
         self.embed_dims = embed_dims
-
         self.num_stages = num_stages
         self.num_layers = num_layers
         self.num_heads = num_heads
@@ -330,9 +363,6 @@ class MixVisionTransformer(BaseModule):
 
         self.out_indices = out_indices
         assert max(out_indices) < self.num_stages
-        self.pretrain_style = pretrain_style
-        self.pretrained = pretrained
-        self.init_cfg = init_cfg
 
         # transformer encoder
         dpr = [
@@ -350,7 +380,6 @@ class MixVisionTransformer(BaseModule):
                 kernel_size=patch_sizes[i],
                 stride=strides[i],
                 padding=patch_sizes[i] // 2,
-                pad_to_patch_size=False,
                 norm_cfg=norm_cfg)
             layer = ModuleList([
                 TransformerEncoderLayer(
@@ -372,39 +401,26 @@ class MixVisionTransformer(BaseModule):
             cur += num_layer
 
     def init_weights(self):
-        if self.pretrained is None:
+        if self.init_cfg is None:
             for m in self.modules():
                 if isinstance(m, nn.Linear):
-                    trunc_normal_init(m.weight, std=.02)
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
+                    trunc_normal_init(m, std=.02, bias=0.)
                 elif isinstance(m, nn.LayerNorm):
-                    constant_init(m.bias, 0)
-                    constant_init(m.weight, 1.0)
+                    constant_init(m, val=1.0, bias=0.)
                 elif isinstance(m, nn.Conv2d):
                     fan_out = m.kernel_size[0] * m.kernel_size[
                         1] * m.out_channels
                     fan_out //= m.groups
-                    normal_init(m.weight, 0, math.sqrt(2.0 / fan_out))
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
-        elif isinstance(self.pretrained, str):
-            logger = get_root_logger()
-            checkpoint = _load_checkpoint(
-                self.pretrained, logger=logger, map_location='cpu')
-            if 'state_dict' in checkpoint:
-                state_dict = checkpoint['state_dict']
-            else:
-                state_dict = checkpoint
-
-            self.load_state_dict(state_dict, False)
+                    normal_init(
+                        m, mean=0, std=math.sqrt(2.0 / fan_out), bias=0)
+        else:
+            super(MixVisionTransformer, self).init_weights()
 
     def forward(self, x):
         outs = []
 
         for i, layer in enumerate(self.layers):
-            x, H, W = layer[0](x), layer[0].DH, layer[0].DW
-            hw_shape = (H, W)
+            x, hw_shape = layer[0](x)
             for block in layer[1]:
                 x = block(x, hw_shape)
             x = layer[2](x)

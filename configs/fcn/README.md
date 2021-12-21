@@ -4,6 +4,24 @@
 
 <!-- [ALGORITHM] -->
 
+<a href="https://github.com/BVLC/caffe/wiki/Model-Zoo#fcn">Official Repo</a>
+
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11">Code Snippet</a>
+
+## Abstract
+
+<!-- [ABSTRACT] -->
+
+Convolutional networks are powerful visual models that yield hierarchies of features. We show that convolutional networks by themselves, trained end-to-end, pixels-to-pixels, exceed the state-of-the-art in semantic segmentation. Our key insight is to build "fully convolutional" networks that take input of arbitrary size and produce correspondingly-sized output with efficient inference and learning. We define and detail the space of fully convolutional networks, explain their application to spatially dense prediction tasks, and draw connections to prior models. We adapt contemporary classification networks (AlexNet, the VGG net, and GoogLeNet) into fully convolutional networks and transfer their learned representations by fine-tuning to the segmentation task. We then define a novel architecture that combines semantic information from a deep, coarse layer with appearance information from a shallow, fine layer to produce accurate and detailed segmentations. Our fully convolutional network achieves state-of-the-art segmentation of PASCAL VOC (20% relative improvement to 62.2% mean IU on 2012), NYUDv2, and SIFT Flow, while inference takes one third of a second for a typical image.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142901525-fd0d2bf4-9a47-4143-85f5-3cee8849eaa4.png" width="70%"/>
+</div>
+
+<details>
+<summary align="right"><a href="https://arxiv.org/abs/1411.4038">FCN (CVPR'2015/TPAMI'2017)</a></summary>
+
 ```latex
 @article{shelhamer2017fully,
   title={Fully convolutional networks for semantic segmentation},
@@ -16,6 +34,8 @@
   publisher={IEEE Trans Pattern Anal Mach Intell}
 }
 ```
+
+</details>
 
 ## Results and models
 
@@ -30,6 +50,7 @@
 | FCN    | R-18-D8    | 512x1024  |   80000 | 1.7      | 14.65          | 71.11 |         72.91 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r18-d8_512x1024_80k_cityscapes.py)       | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes-20201225_021327.log.json)         |
 | FCN    | R-50-D8    | 512x1024  |   80000 | -        |                | 73.61 |         74.24 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r50-d8_512x1024_80k_cityscapes.py)       | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019-03aa804d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019.log.json)         |
 | FCN    | R-101-D8   | 512x1024  |   80000 | -        | -              | 75.13 |         75.94 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_512x1024_80k_cityscapes.py)      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038-3fb937eb.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038.log.json)     |
+| FCN (FP16)| R-101-D8 | 512x1024 |   80000 | 5.37    | 8.64           | 76.80 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes.py)           | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes/fcn_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230921-fb13e883.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes/fcn_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230921.log.json)                                         |
 | FCN    | R-18-D8    | 769x769   |   80000 | 1.9      | 6.40           | 70.80 |         73.16 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r18-d8_769x769_80k_cityscapes.py)        | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes_20201225_021451-9739d1b8.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes-20201225_021451.log.json)             |
 | FCN    | R-50-D8    | 769x769   |   80000 | -        | -              | 72.64 |         73.32 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r50-d8_769x769_80k_cityscapes.py)        | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749-f5caeabc.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749.log.json)             |
 | FCN    | R-101-D8   | 769x769   |   80000 | -        | -              | 75.52 |         76.61 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_769x769_80k_cityscapes.py)       | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354-45cbac68.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354.log.json)         |
@@ -83,3 +104,7 @@
 | ------ | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | FCN    | R-101-D8 | 480x480   |   40000 | -        | -           | 48.42 |         50.4 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_480x480_40k_pascal_context_59.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context_59/fcn_r101-d8_480x480_40k_pascal_context_59_20210415_230724-8cf83682.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context_59/fcn_r101-d8_480x480_40k_pascal_context_59-20210415_230724.log.json) |
 | FCN    | R-101-D8 | 480x480   |   80000 | -        | -              | 49.35 |         51.38 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn/fcn_r101-d8_480x480_80k_pascal_context_59.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context_59/fcn_r101-d8_480x480_80k_pascal_context_59_20210416_110804-9a6f2c94.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context_59/fcn_r101-d8_480x480_80k_pascal_context_59-20210416_110804.log.json) |
+
+Note:
+
+- `FP16` means Mixed Precision (FP16) is adopted in training.

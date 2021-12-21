@@ -13,7 +13,7 @@ from mmcv.runner import get_dist_info, init_dist
 from mmcv.utils import Config, DictAction, get_git_hash
 
 from mmseg import __version__
-from mmseg.apis import set_random_seed, train_segmentor
+from mmseg.apis import init_random_seed, set_random_seed, train_segmentor
 from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
 from mmseg.utils import collect_env, get_root_logger
@@ -49,7 +49,26 @@ def parse_args():
         action='store_true',
         help='whether to set deterministic options for CUDNN backend.')
     parser.add_argument(
-        '--options', nargs='+', action=DictAction, help='custom options')
+        '--options',
+        nargs='+',
+        action=DictAction,
+        help="--options is deprecated in favor of --cfg_options' and it will "
+        'not be supported in version v0.22.0. Override some settings in the '
+        'used config, the key-value pair in xxx=yyy format will be merged '
+        'into config file. If the value to be overwritten is a list, it '
+        'should be like key="[a,b]" or key=a,b It also allows nested '
+        'list/tuple values, e.g. key="[(a,b),(c,d)]" Note that the quotation '
+        'marks are necessary and that no white space is allowed.')
+    parser.add_argument(
+        '--cfg-options',
+        nargs='+',
+        action=DictAction,
+        help='override some settings in the used config, the key-value pair '
+        'in xxx=yyy format will be merged into config file. If the value to '
+        'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
+        'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
+        'Note that the quotation marks are necessary and that no white space '
+        'is allowed.')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
@@ -60,6 +79,16 @@ def parse_args():
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)
 
+    if args.options and args.cfg_options:
+        raise ValueError(
+            '--options and --cfg-options cannot be both '
+            'specified, --options is deprecated in favor of --cfg-options. '
+            '--options will not be supported in version v0.22.0.')
+    if args.options:
+        warnings.warn('--options is deprecated in favor of --cfg-options. '
+                      '--options will not be supported in version v0.22.0.')
+        args.cfg_options = args.options
+
     return args
 
 
@@ -67,8 +96,8 @@ def main():
     args = parse_args()
 
     cfg = Config.fromfile(args.config)
-    if args.options is not None:
-        cfg.merge_from_dict(args.options)
+    if args.cfg_options is not None:
+        cfg.merge_from_dict(args.cfg_options)
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
@@ -96,7 +125,7 @@ def main():
     else:
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
-        # gpu_ids is used to calculate iter when resuming checkpoint,
+        # gpu_ids is used to calculate iter when resuming checkpoint
         _, world_size = get_dist_info()
         cfg.gpu_ids = range(world_size)
 
@@ -125,12 +154,12 @@ def main():
     logger.info(f'Config:\n{cfg.pretty_text}')
 
     # set random seeds
-    if args.seed is not None:
-        logger.info(f'Set random seed to {args.seed}, deterministic: '
-                    f'{args.deterministic}')
-        set_random_seed(args.seed, deterministic=args.deterministic)
-    cfg.seed = args.seed
-    meta['seed'] = args.seed
+    seed = init_random_seed(args.seed)
+    logger.info(f'Set random seed to {seed}, '
+                f'deterministic: {args.deterministic}')
+    set_random_seed(seed, deterministic=args.deterministic)
+    cfg.seed = seed
+    meta['seed'] = seed
     meta['exp_name'] = osp.basename(args.config)
 
     model = build_segmentor(

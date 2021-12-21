@@ -21,7 +21,7 @@ English | [简体中文](README_zh-CN.md)
 MMSegmentation is an open source semantic segmentation toolbox based on PyTorch.
 It is a part of the OpenMMLab project.
 
-The master branch works with **PyTorch 1.3+**.
+The master branch works with **PyTorch 1.5+**.
 
 ![demo image](resources/seg_demo.gif)
 
@@ -49,12 +49,12 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.17.0 was released in 09/01/2021.
+v0.20.2 was released in 12/15/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
 
-Results and models are available in the [model zoo](docs/model_zoo.md).
+Results and models are available in the [model zoo](docs/en/model_zoo.md).
 
 Supported backbones:
 
@@ -65,18 +65,21 @@ Supported backbones:
 - [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
 - [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
-- [x] [Swin Transformer (ArXiv'2021)](configs/swin)
+- [x] [Swin Transformer (ICCV'2021)](configs/swin)
+- [x] [Twins (NeurIPS'2021)](configs/twins)
 
 Supported methods:
 
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
+- [x] [ERFNet (T-ITS'2017)](configs/erfnet)
 - [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
 - [x] [PSPNet (CVPR'2017)](configs/pspnet)
 - [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
-- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16)
+- [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
 - [x] [PSANet (ECCV'2018)](configs/psanet)
 - [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
 - [x] [UPerNet (ECCV'2018)](configs/upernet)
+- [x] [ICNet (ECCV'2018)](configs/icnet)
 - [x] [NonLocal Net (CVPR'2018)](configs/nonlocal_net)
 - [x] [EncNet (CVPR'2018)](configs/encnet)
 - [x] [Semantic FPN (CVPR'2019)](configs/sem_fpn)
@@ -87,39 +90,44 @@ Supported methods:
 - [x] [DMNet (ICCV'2019)](configs/dmnet)
 - [x] [ANN (ICCV'2019)](configs/ann)
 - [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
+- [x] [FastFCN (ArXiv'2019)](configs/fastfcn)
 - [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
 - [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
 - [x] [OCRNet (ECCV'2020)](configs/ocrnet)
 - [x] [DNLNet (ECCV'2020)](configs/dnlnet)
 - [x] [PointRend (CVPR'2020)](configs/point_rend)
 - [x] [CGNet (TIP'2020)](configs/cgnet)
+- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
+- [x] [STDC (CVPR'2021)](configs/stdc)
 - [x] [SETR (CVPR'2021)](configs/setr)
-- [x] [SegFormer (ArXiv'2021)](configs/segformer)
+- [x] [DPT (ArXiv'2021)](configs/dpt)
+- [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 
 Supported datasets:
 
-- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#cityscapes)
-- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-voc)
-- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#ade20k)
-- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#pascal-context)
-- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#coco-stuff-10k)
-- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#coco-stuff-164k)
-- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#chase-db1)
-- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#drive)
-- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#hrf)
-- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#stare)
-- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#dark-zurich)
-- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/dataset_prepare.md#nighttime-driving)
+- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#cityscapes)
+- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#pascal-voc)
+- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#ade20k)
+- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#pascal-context)
+- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#coco-stuff-10k)
+- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#coco-stuff-164k)
+- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#chase-db1)
+- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#drive)
+- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#hrf)
+- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#stare)
+- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#dark-zurich)
+- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#nighttime-driving)
+- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#loveda)
 
 ## Installation
 
-Please refer to [get_started.md](docs/get_started.md#installation) for installation and [dataset_prepare.md](docs/dataset_prepare.md#prepare-datasets) for dataset preparation.
+Please refer to [get_started.md](docs/en/get_started.md#installation) for installation and [dataset_prepare.md](docs/en/dataset_prepare.md#prepare-datasets) for dataset preparation.
 
 ## Get Started
 
-Please see [train.md](docs/train.md) and [inference.md](docs/inference.md) for the basic usage of MMSegmentation.
-There are also tutorials for [customizing dataset](docs/tutorials/customize_datasets.md), [designing data pipeline](docs/tutorials/data_pipeline.md), [customizing modules](docs/tutorials/customize_models.md), and [customizing runtime](docs/tutorials/customize_runtime.md).
-We also provide many [training tricks](docs/tutorials/training_tricks.md) for better training and [usefule tools](docs/useful_tools.md) for deployment.
+Please see [train.md](docs/en/train.md) and [inference.md](docs/en/inference.md) for the basic usage of MMSegmentation.
+There are also tutorials for [customizing dataset](docs/en/tutorials/customize_datasets.md), [designing data pipeline](docs/en/tutorials/data_pipeline.md), [customizing modules](docs/en/tutorials/customize_models.md), and [customizing runtime](docs/en/tutorials/customize_runtime.md).
+We also provide many [training tricks](docs/en/tutorials/training_tricks.md) for better training and [useful tools](docs/en/useful_tools.md) for deployment.
 
 A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 
@@ -161,3 +169,6 @@ and develop their own new semantic segmentation methods.
 - [MMOCR](https://github.com/open-mmlab/mmocr): A Comprehensive Toolbox for Text Detection, Recognition and Understanding.
 - [MMGeneration](https://github.com/open-mmlab/mmgeneration): A powerful toolkit for generative models.
 - [MIM](https://github.com/open-mmlab/mim): MIM Installs OpenMMLab Packages.
+- [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab optical flow toolbox and benchmark.
+- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab few shot learning toolbox and benchmark.
+- [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab 3D human parametric model toolbox and benchmark.

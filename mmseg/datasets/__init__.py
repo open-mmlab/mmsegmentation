@@ -11,6 +11,7 @@ from .dark_zurich import DarkZurichDataset
 from .dataset_wrappers import ConcatDataset, RepeatDataset
 from .drive import DRIVEDataset
 from .hrf import HRFDataset
+from .loveda import LoveDADataset
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .stare import STAREDataset
@@ -22,5 +23,6 @@ __all__ = [
     'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
-    'COCOStuffDataset', 'A2D2Dataset18Classes', 'A2D2Dataset34Classes'
+    'COCOStuffDataset', 'LoveDADataset', 'A2D2Dataset18Classes',
+    'A2D2Dataset34Classes'
 ]
