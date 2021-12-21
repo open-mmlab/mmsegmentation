@@ -274,7 +274,6 @@ Since we only support test models on this dataset, you may only download [the va
 
 Since we only support test models on this dataset, you may only download [the test set](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip).
 
-<<<<<<< HEAD:docs/dataset_prepare.md
 ### A2D2
 
 To set up the A2D2 semantic segmentation dataset, first download 'Dataset - Semantic Segmentation' (`camera_lidar_semantic.tar`) from the official site ([a2d2.audi/a2d2/en/download.html](https://www.a2d2.audi/a2d2/en/download.html)). Extract the downloaded file as `a2d2/camera_lidar_semantic/`. Inside this directory, there will be 10 subdirectories, each containing separate `camera`, `label`, `lidar` subfolders.
@@ -306,7 +305,7 @@ When using the original A2D2 semantic classes 34 of the original 38 semantic cat
 The following segmentation class is merged due to extreme rarity:
 
 - Speed bumper --> RD normal street (randomly parsing 50% of dataset results in only one sample containing the 'speed_bumper' semantic)
-=======
+
 ### LoveDA
 
 The data could be downloaded from Google Drive [here](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing).
@@ -331,4 +330,3 @@ python tools/convert_datasets/loveda.py /path/to/loveDA
 Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/inference.md).
 
 More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
->>>>>>> 9975c674c74f59f4772b602647aa4fc2d6d0b2ed:docs/en/dataset_prepare.md
