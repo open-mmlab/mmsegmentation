@@ -109,7 +109,6 @@ def parse_args():
 
 def main():
     args = parse_args()
-
     assert args.out or args.eval or args.format_only or args.show \
         or args.show_dir, \
         ('Please specify at least one operation (save/eval/format/show the '
@@ -149,7 +148,19 @@ def main():
     if args.work_dir is not None and rank == 0:
         mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-        json_file = osp.join(args.work_dir, f'eval_{timestamp}.json')
+        if args.aug_test:
+            json_file = osp.join(args.work_dir, f'eval_ms_{timestamp}.json')
+        else:
+            json_file = osp.join(args.work_dir, f'eval_ss_{timestamp}.json')
+    elif rank == 0:
+        work_dir = osp.join('./work_dirs',
+                            osp.splitext(osp.basename(args.config))[0])
+        mmcv.mkdir_or_exist(osp.abspath(work_dir))
+        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+        if args.aug_test:
+            json_file = osp.join(work_dir, f'eval_ms_{timestamp}.json')
+        else:
+            json_file = osp.join(work_dir, f'eval_ss_{timestamp}.json')
 
     # build the dataloader
     # TODO: support multiple images per gpu (only minor changes are needed)
@@ -248,8 +259,7 @@ def main():
             eval_kwargs.update(metric=args.eval)
             metric = dataset.evaluate(results, **eval_kwargs)
             metric_dict = dict(config=args.config, metric=metric)
-            if args.work_dir is not None and rank == 0:
-                mmcv.dump(metric_dict, json_file, indent=4)
+            mmcv.dump(metric_dict, json_file, indent=4)
             if tmpdir is not None and eval_on_format_results:
                 # remove tmp dir when cityscapes evaluation
                 shutil.rmtree(tmpdir)
