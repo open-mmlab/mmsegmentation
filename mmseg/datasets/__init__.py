@@ -14,7 +14,6 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
-from .vaihingen import VaihingenDataset
 from .voc import PascalVOCDataset
 
 __all__ = [
@@ -23,5 +22,5 @@ __all__ = [
     'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
-    'COCOStuffDataset', 'LoveDADataset', 'PotsdamDataset', 'VaihingenDataset'
+    'COCOStuffDataset', 'LoveDADataset', 'PotsdamDataset'
 ]

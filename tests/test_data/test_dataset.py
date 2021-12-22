@@ -14,7 +14,8 @@ from PIL import Image
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
                             ConcatDataset, CustomDataset, LoveDADataset,
-                            PascalVOCDataset, RepeatDataset, build_dataset)
+                            PascalVOCDataset, PotsdamDataset, RepeatDataset,
+                            build_dataset)
 
 
 def test_classes():
@@ -646,6 +647,16 @@ def test_loveda():
         pseudo_results, metric='mIoU', imgfile_prefix='.format_loveda')
 
     shutil.rmtree('.format_loveda')
+
+
+def test_potsdam():
+    test_dataset = PotsdamDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_potsdam_dataset/img_dir'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_potsdam_dataset/ann_dir'))
+    assert len(test_dataset) == 1
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
