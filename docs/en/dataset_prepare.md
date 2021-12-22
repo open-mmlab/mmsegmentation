@@ -116,6 +116,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── potsdam
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
