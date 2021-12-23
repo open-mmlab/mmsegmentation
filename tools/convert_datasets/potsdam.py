@@ -75,8 +75,8 @@ def clip_big_image(image_path, clip_save_dir, to_label=False):
         mmcv.imwrite(
             clipped_image.astype(np.uint8),
             osp.join(
-                clip_save_dir, '%s_%s_%d_%d_%d_%d.png' %
-                (idx_i, idx_j, start_x, start_y, end_x, end_y)))
+                clip_save_dir,
+                f'{idx_i}_{idx_j}_{start_x}_{start_y}_{end_x}_{end_y}.png'))
 
 
 def main():
@@ -119,8 +119,8 @@ def main():
             prog_bar = mmcv.ProgressBar(len(src_path_list))
             for i, src_path in enumerate(src_path_list):
                 idx_i, idx_j = osp.basename(src_path).split('_')[2:4]
-                data_type = 'train' if '%s_%s' % (
-                    idx_i, idx_j) in splits['train'] else 'val'
+                data_type = 'train' if f'{idx_i}_{idx_j}' in splits[
+                    'train'] else 'val'
                 if 'label' in src_path:
                     dst_dir = osp.join(out_dir, 'ann_dir', data_type)
                     clip_big_image(src_path, dst_dir, to_label=True)
