@@ -9,8 +9,6 @@ import zipfile
 
 import mmcv
 import numpy as np
-from skimage.io import imread, imsave
-from tqdm import tqdm
 
 
 def parse_args():
@@ -28,7 +26,7 @@ def parse_args():
 
 
 def clip_big_image(image_path, clip_save_dir, to_label=False):
-    image = imread(image_path)
+    image = mmcv.imread(image_path)
 
     h, w, c = image.shape
     cs = args.clip_size
@@ -55,9 +53,9 @@ def clip_big_image(image_path, clip_save_dir, to_label=False):
                      axis=1)
 
     if to_label:
-        color_map = np.array([[0, 0, 0], [255, 255, 255], [0, 0, 255],
-                              [0, 255, 255], [0, 255, 0], [255, 255, 0],
-                              [255, 0, 0]])
+        color_map = np.array([[0, 0, 0], [255, 255, 255], [255, 0, 0],
+                              [255, 255, 0], [0, 255, 0], [0, 255, 255],
+                              [0, 0, 255]])
         flatten_v = np.matmul(
             image.reshape(-1, c),
             np.array([2, 3, 4]).reshape(3, 1))
@@ -74,12 +72,11 @@ def clip_big_image(image_path, clip_save_dir, to_label=False):
                               start_x:end_x] if to_label else image[
                                   start_y:end_y, start_x:end_x, :]
         idx_i, idx_j = osp.basename(image_path).split('_')[2:4]
-        imsave(
+        mmcv.imwrite(
+            clipped_image.astype(np.uint8),
             osp.join(
                 clip_save_dir, '%s_%s_%d_%d_%d_%d.png' %
-                (idx_i, idx_j, start_x, start_y, end_x, end_y)),
-            clipped_image.astype(np.uint8),
-            check_contrast=False)
+                (idx_i, idx_j, start_x, start_y, end_x, end_y)))
 
 
 def main():
@@ -118,7 +115,9 @@ def main():
             if not len(src_path_list):
                 sub_tmp_dir = os.path.join(tmp_dir, os.listdir(tmp_dir)[0])
                 src_path_list = glob.glob(os.path.join(sub_tmp_dir, '*.tif'))
-            for src_path in tqdm(src_path_list):
+
+            prog_bar = mmcv.ProgressBar(len(src_path_list))
+            for i, src_path in enumerate(src_path_list):
                 idx_i, idx_j = osp.basename(src_path).split('_')[2:4]
                 data_type = 'train' if '%s_%s' % (
                     idx_i, idx_j) in splits['train'] else 'val'
@@ -128,8 +127,9 @@ def main():
                 else:
                     dst_dir = osp.join(out_dir, 'img_dir', data_type)
                     clip_big_image(src_path, dst_dir, to_label=False)
+                prog_bar.update()
 
-        print('Removing the temporary files...')
+    print('Removing the temporary files...')
 
     print('Done!')
 
