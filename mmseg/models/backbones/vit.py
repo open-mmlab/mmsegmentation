@@ -4,7 +4,9 @@ import warnings
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
+from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
@@ -16,6 +18,133 @@ from mmseg.ops import resize
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed
+
+
+class BEiTAttention(BaseModule):
+    """Window based multi-head self-attention (W-MSA) module with relative
+    position bias.
+
+    Args:
+        embed_dims (int): Number of input channels.
+        num_heads (int): Number of attention heads.
+        window_size (tuple[int]): The height and width of the window.
+        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
+            Default: True.
+        qk_scale (float | None, optional): Override default qk scale of
+            head_dim ** -0.5 if set. Default: None.
+        attn_drop_rate (float, optional): Dropout ratio of attention weight.
+            Default: 0.0
+        proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
+        init_cfg (dict | None, optional): The Config for initialization.
+            Default: None.
+    """
+
+    def __init__(self,
+                 embed_dims,
+                 num_heads,
+                 window_size,
+                 qkv_bias=True,
+                 qk_scale=None,
+                 attn_drop_rate=0.,
+                 proj_drop_rate=0.,
+                 init_cfg=None):
+
+        super().__init__(init_cfg=init_cfg)
+        self.embed_dims = embed_dims
+        self.num_heads = num_heads
+        head_embed_dims = embed_dims // num_heads
+        self.scale = qk_scale or head_embed_dims**-0.5
+        if qkv_bias:
+            self.q_bias = nn.Parameter(torch.zeros(embed_dims))
+            self.v_bias = nn.Parameter(torch.zeros(embed_dims))
+        else:
+            self.q_bias = None
+            self.v_bias = None
+
+        if window_size:
+            self.window_size = window_size
+            self.num_relative_distance = (2 * window_size[0] -
+                                          1) * (2 * window_size[1] - 1) + 3
+            self.relative_position_bias_table = nn.Parameter(
+                torch.zeros(self.num_relative_distance,
+                            num_heads))  # 2*Wh-1 * 2*Ww-1, nH
+            # cls to token & token 2 cls & cls to cls
+
+            coords_h = torch.arange(window_size[0])
+            coords_w = torch.arange(window_size[1])
+            coords = torch.stack(torch.meshgrid([coords_h,
+                                                 coords_w]))  # 2, Wh, Ww
+            coords_flatten = torch.flatten(coords, 1)  # 2, Wh*Ww
+            relative_coords = coords_flatten[:, :,
+                                             None] - coords_flatten[:, None, :]
+            relative_coords = relative_coords.permute(1, 2, 0).contiguous()
+            relative_coords[:, :, 0] += window_size[0] - 1
+            relative_coords[:, :, 1] += window_size[1] - 1
+            relative_coords[:, :, 0] *= 2 * window_size[1] - 1
+            relative_position_index = \
+                torch.zeros(size=(window_size[0] * window_size[1] + 1, ) * 2,
+                            dtype=relative_coords.dtype)
+            relative_position_index[1:, 1:] = relative_coords.sum(-1)
+            relative_position_index[0, 0:] = self.num_relative_distance - 3
+            relative_position_index[0:, 0] = self.num_relative_distance - 2
+            relative_position_index[0, 0] = self.num_relative_distance - 1
+
+            self.register_buffer('relative_position_index',
+                                 relative_position_index)
+
+        else:
+            self.window_size = None
+            self.relative_position_bias_table = None
+            self.relative_position_index = None
+
+        self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=False)
+        self.attn_drop = nn.Dropout(attn_drop_rate)
+        self.proj = nn.Linear(embed_dims, embed_dims)
+        self.proj_drop = nn.Dropout(proj_drop_rate)
+        self.softmax = nn.Softmax(dim=-1)
+
+    def init_weights(self):
+        trunc_normal_(self.relative_position_bias_table, std=0.02)
+
+    def forward(self, x):
+        """
+        Args:
+
+            x (tensor): input features with shape of (num_windows*B, N, C)
+            mask (tensor | None, Optional): mask with shape of (num_windows,
+                Wh*Ww, Wh*Ww), value should be between (-inf, 0].
+        """
+        B, N, C = x.shape
+        qkv_bias = None
+        if self.q_bias is not None:
+            qkv_bias = torch.cat(
+                (self.q_bias,
+                 torch.zeros_like(self.v_bias,
+                                  requires_grad=False), self.v_bias))
+
+        qkv = F.linear(input=x, weight=self.qkv.weight, bias=qkv_bias)
+        qkv = qkv.reshape(B, N, 3, self.num_heads, -1).permute(2, 0, 3, 1, 4)
+        q, k, v = qkv[0], qkv[1], qkv[2]
+
+        q = q * self.scale
+        attn = (q @ k.transpose(-2, -1))
+
+        if self.relative_position_bias_table is not None:
+            relative_position_bias = self.relative_position_bias_table[
+                self.relative_position_index.view(-1)].view(
+                    self.window_size[0] * self.window_size[1] + 1,
+                    self.window_size[0] * self.window_size[1] + 1, -1)
+            relative_position_bias = \
+                relative_position_bias.permute(2, 0, 1).contiguous()
+            attn = attn + relative_position_bias.unsqueeze(0)
+
+        attn = self.softmax(attn)
+        attn = self.attn_drop(attn)
+
+        x = (attn @ v).transpose(1, 2).reshape(B, N, C)
+        x = self.proj(x)
+        x = self.proj_drop(x)
+        return x
 
 
 class TransformerEncoderLayer(BaseModule):
@@ -53,33 +182,64 @@ class TransformerEncoderLayer(BaseModule):
                  qkv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
-                 batch_first=True):
+                 batch_first=True,
+                 window_size=None,
+                 init_values=None):
         super(TransformerEncoderLayer, self).__init__()
 
         self.norm1_name, norm1 = build_norm_layer(
             norm_cfg, embed_dims, postfix=1)
         self.add_module(self.norm1_name, norm1)
-
-        self.attn = MultiheadAttention(
-            embed_dims=embed_dims,
-            num_heads=num_heads,
-            attn_drop=attn_drop_rate,
-            proj_drop=drop_rate,
-            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
-            batch_first=batch_first,
-            bias=qkv_bias)
+        if window_size is not None:
+            self.attn = BEiTAttention(
+                embed_dims=embed_dims,
+                num_heads=num_heads,
+                window_size=window_size,
+                qkv_bias=True,
+                qk_scale=None,
+                attn_drop_rate=0.,
+                proj_drop_rate=0.,
+                init_cfg=None)
+            self.ffn = FFN(
+                embed_dims=embed_dims,
+                feedforward_channels=feedforward_channels,
+                num_fcs=num_fcs,
+                ffn_drop=0.,
+                dropout_layer=None,
+                act_cfg=act_cfg,
+                add_identity=False)
+        else:
+            self.attn = MultiheadAttention(
+                embed_dims=embed_dims,
+                num_heads=num_heads,
+                attn_drop=attn_drop_rate,
+                proj_drop=drop_rate,
+                dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+                batch_first=batch_first,
+                bias=qkv_bias)
+            self.ffn = FFN(
+                embed_dims=embed_dims,
+                feedforward_channels=feedforward_channels,
+                num_fcs=num_fcs,
+                ffn_drop=drop_rate,
+                dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+                act_cfg=act_cfg)
 
         self.norm2_name, norm2 = build_norm_layer(
             norm_cfg, embed_dims, postfix=2)
         self.add_module(self.norm2_name, norm2)
 
-        self.ffn = FFN(
-            embed_dims=embed_dims,
-            feedforward_channels=feedforward_channels,
-            num_fcs=num_fcs,
-            ffn_drop=drop_rate,
-            dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
-            act_cfg=act_cfg)
+        dropout_layer = dict(type='DropPath', drop_prob=drop_path_rate)
+        self.drop_path = build_dropout(
+            dropout_layer) if dropout_layer else nn.Identity()
+
+        if init_values is not None:
+            self.gamma_1 = nn.Parameter(
+                init_values * torch.ones((embed_dims)), requires_grad=True)
+            self.gamma_2 = nn.Parameter(
+                init_values * torch.ones((embed_dims)), requires_grad=True)
+        else:
+            self.gamma_1, self.gamma_2 = None, None
 
     @property
     def norm1(self):
@@ -90,8 +250,12 @@ class TransformerEncoderLayer(BaseModule):
         return getattr(self, self.norm2_name)
 
     def forward(self, x):
-        x = self.attn(self.norm1(x), identity=x)
-        x = self.ffn(self.norm2(x), identity=x)
+        if self.gamma_1 is None:
+            x = self.attn(self.norm1(x), identity=x)
+            x = self.ffn(self.norm2(x), identity=x)
+        else:
+            x = x + self.drop_path(self.gamma_1 * self.attn(self.norm1(x)))
+            x = x + self.drop_path(self.gamma_2 * self.ffn(self.norm2(x)))
         return x
 
 
@@ -142,6 +306,9 @@ class VisionTransformer(BaseModule):
         with_cp (bool): Use checkpoint or not. Using checkpoint will save
             some memory while slowing down the training speed. Default: False.
         pretrained (str, optional): model pretrained path. Default: None.
+        use_rel_pos_bias (bool): Whether to use BEiTAttention
+        init_values (float): Initialize the values of BEiTAttention and FFN
+        with learnable scaling.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     """
@@ -170,6 +337,8 @@ class VisionTransformer(BaseModule):
                  norm_eval=False,
                  with_cp=False,
                  pretrained=None,
+                 use_rel_pos_bias=False,
+                 init_values=None,
                  init_cfg=None):
         super(VisionTransformer, self).__init__(init_cfg=init_cfg)
 
@@ -212,15 +381,18 @@ class VisionTransformer(BaseModule):
             norm_cfg=norm_cfg if patch_norm else None,
             init_cfg=None,
         )
-
+        self.use_rel_pos_bias = use_rel_pos_bias
         num_patches = (img_size[0] // patch_size) * \
             (img_size[1] // patch_size)
+
+        window_size = (img_size[0] // patch_size, img_size[1] // patch_size)
 
         self.with_cls_token = with_cls_token
         self.output_cls_token = output_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
-        self.pos_embed = nn.Parameter(
-            torch.zeros(1, num_patches + 1, embed_dims))
+        if not use_rel_pos_bias:
+            self.pos_embed = nn.Parameter(
+                torch.zeros(1, num_patches + 1, embed_dims))
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
         if isinstance(out_indices, int):
@@ -250,7 +422,9 @@ class VisionTransformer(BaseModule):
                     qkv_bias=qkv_bias,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
-                    batch_first=True))
+                    batch_first=True,
+                    window_size=window_size if use_rel_pos_bias else None,
+                    init_values=init_values))
 
         self.final_norm = final_norm
         if final_norm:
@@ -258,9 +432,21 @@ class VisionTransformer(BaseModule):
                 norm_cfg, embed_dims, postfix=1)
             self.add_module(self.norm1_name, norm1)
 
+        if use_rel_pos_bias:
+            self.fix_init_weight()
+
     @property
     def norm1(self):
         return getattr(self, self.norm1_name)
+
+    def fix_init_weight(self):
+
+        def rescale(param, layer_id):
+            param.div_(math.sqrt(2.0 * layer_id))
+
+        for layer_id, layer in enumerate(self.layers):
+            rescale(layer.attn.proj.weight.data, layer_id + 1)
+            rescale(layer.ffn.layers[1].weight.data, layer_id + 1)
 
     def init_weights(self):
         if (isinstance(self.init_cfg, dict)
@@ -377,7 +563,8 @@ class VisionTransformer(BaseModule):
         # stole cls_tokens impl from Phil Wang, thanks
         cls_tokens = self.cls_token.expand(B, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
-        x = self._pos_embeding(x, hw_shape, self.pos_embed)
+        if not self.use_rel_pos_bias:
+            x = self._pos_embeding(x, hw_shape, self.pos_embed)
 
         if not self.with_cls_token:
             # Remove class token for transformer encoder input
