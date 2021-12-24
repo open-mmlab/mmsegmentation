@@ -27,8 +27,7 @@ class DisentangledNonLocal2d(NonLocal2d):
         if self.use_scale:
             # theta_x.shape[-1] is `self.inter_channels`
             pairwise_weight /= torch.tensor(
-                theta_x.shape[-1], dtype=torch.float
-            ) ** torch.tensor(0.5)
+                theta_x.shape[-1], dtype=torch.float)**torch.tensor(0.5)
         pairwise_weight /= torch.tensor(self.temperature)
         pairwise_weight = pairwise_weight.softmax(dim=-1)
         return pairwise_weight
