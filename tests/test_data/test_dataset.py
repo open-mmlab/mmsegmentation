@@ -24,6 +24,8 @@ def test_classes():
         'pascal_voc')
     assert list(
         ADE20KDataset.CLASSES) == get_classes('ade') == get_classes('ade20k')
+    assert list(LoveDADataset.CLASSES) == get_classes('loveda')
+    assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -65,6 +67,8 @@ def test_palette():
     assert PascalVOCDataset.PALETTE == get_palette('voc') == get_palette(
         'pascal_voc')
     assert ADE20KDataset.PALETTE == get_palette('ade') == get_palette('ade20k')
+    assert LoveDADataset.PALETTE == get_palette('loveda')
+    assert PotsdamDataset.PALETTE == get_palette('potsdam')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
