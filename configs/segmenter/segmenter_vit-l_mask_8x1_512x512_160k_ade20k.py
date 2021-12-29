@@ -10,7 +10,7 @@ model = dict(
     pretrained='pretrain/vit_large_p16_384.pth',
     backbone=dict(
         type='VisionTransformer',
-        img_size=(512, 512),
+        img_size=(640, 640),
         patch_size=16,
         in_channels=3,
         embed_dims=1024,
@@ -43,11 +43,11 @@ optimizer = dict(lr=0.001, weight_decay=0.0)
 # TODO: handle img_norm_cfg
 img_norm_cfg = dict(
     mean=[127.5, 127.5, 127.5], std=[127.5, 127.5, 127.5], to_rgb=True)
-# crop_size = (512, 512)
+# crop_size = (640, 640)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', reduce_zero_label=True),
-    dict(type='Resize', img_scale=(2048, 512), ratio_range=(0.5, 2.0)),
+    dict(type='Resize', img_scale=(2048, 640), ratio_range=(0.5, 2.0)),
     # dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
@@ -60,7 +60,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(2048, 512),
+        img_scale=(2048, 640),
         # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
