@@ -90,7 +90,7 @@ def _prepare_input_img(img_path,
     # prepare data
     data = dict(img=img_path)
     data = test_pipeline(data)
-    imgs = data['img']
+    imgs = [img.float() for img in data['img']]
     img_metas = [i.data for i in data['img_metas']]
 
     if rescale_shape is not None:
