@@ -18,37 +18,55 @@ def parse_args():
     parser.add_argument('--tmp_dir', help='path of the temporary directory')
     parser.add_argument('-o', '--out_dir', help='output path')
     parser.add_argument(
-        '--clip_size', type=int, help='potsdam clip size', default=512)
+        '--clip_size',
+        type=int,
+        help='clipped size of image after preparation',
+        default=512)
     parser.add_argument(
-        '--stride_size', type=int, help='potsdam stride size', default=256)
+        '--stride_size',
+        type=int,
+        help='stride of clipping original images',
+        default=256)
     args = parser.parse_args()
     return args
 
 
-def clip_big_image(image_path, clip_save_dir, to_label=False):
+def clip_big_image(image_path, clip_save_dir, args, to_label=False):
+    # Original image of Potsdam dataset is very large, thus pre-processing
+    # of them is adopted. Given fixed clip size and stride size to generate
+    # clipped image, the intersection　of width and height is determined.
+    # For example, given one 5120 x 5120 original image, the clip size is
+    # 512 and stride size is 256, thus it would generate 20x20 = 400 images
+    # whose size are all 512x512.
     image = mmcv.imread(image_path)
 
     h, w, c = image.shape
-    cs = args.clip_size
-    ss = args.stride_size
+    clip_size = args.clip_size
+    stride_size = args.stride_size
 
-    num_rows = math.ceil((h - cs) / ss) if math.ceil(
-        (h - cs) / ss) * ss + cs >= h else math.ceil((h - cs) / ss) + 1
-    num_cols = math.ceil((w - cs) / ss) if math.ceil(
-        (w - cs) / ss) * ss + cs >= w else math.ceil((w - cs) / ss) + 1
+    num_rows = math.ceil((h - clip_size) / stride_size) if math.ceil(
+        (h - clip_size) /
+        stride_size) * stride_size + clip_size >= h else math.ceil(
+            (h - clip_size) / stride_size) + 1
+    num_cols = math.ceil((w - clip_size) / stride_size) if math.ceil(
+        (w - clip_size) /
+        stride_size) * stride_size + clip_size >= w else math.ceil(
+            (w - clip_size) / stride_size) + 1
 
     x, y = np.meshgrid(np.arange(num_cols + 1), np.arange(num_rows + 1))
-    xmin = x * cs
-    ymin = y * cs
+    xmin = x * clip_size
+    ymin = y * clip_size
 
     xmin = xmin.ravel()
     ymin = ymin.ravel()
-    xmin_offset = np.where(xmin + cs > w, w - xmin - cs, np.zeros_like(xmin))
-    ymin_offset = np.where(ymin + cs > h, h - ymin - cs, np.zeros_like(ymin))
+    xmin_offset = np.where(xmin + clip_size > w, w - xmin - clip_size,
+                           np.zeros_like(xmin))
+    ymin_offset = np.where(ymin + clip_size > h, h - ymin - clip_size,
+                           np.zeros_like(ymin))
     boxes = np.stack([
         xmin + xmin_offset, ymin + ymin_offset,
-        np.minimum(xmin + cs, w),
-        np.minimum(ymin + cs, h)
+        np.minimum(xmin + clip_size, w),
+        np.minimum(ymin + clip_size, h)
     ],
                      axis=1)
 
@@ -80,6 +98,7 @@ def clip_big_image(image_path, clip_save_dir, to_label=False):
 
 
 def main():
+    args = parse_args()
     splits = {
         'train': [
             '2_10', '2_11', '2_12', '3_10', '3_11', '3_12', '4_10', '4_11',
@@ -123,10 +142,10 @@ def main():
                     'train'] else 'val'
                 if 'label' in src_path:
                     dst_dir = osp.join(out_dir, 'ann_dir', data_type)
-                    clip_big_image(src_path, dst_dir, to_label=True)
+                    clip_big_image(src_path, dst_dir, args, to_label=True)
                 else:
                     dst_dir = osp.join(out_dir, 'img_dir', data_type)
-                    clip_big_image(src_path, dst_dir, to_label=False)
+                    clip_big_image(src_path, dst_dir, args, to_label=False)
                 prog_bar.update()
 
     print('Removing the temporary files...')
@@ -135,5 +154,4 @@ def main():
 
 
 if __name__ == '__main__':
-    args = parse_args()
     main()
