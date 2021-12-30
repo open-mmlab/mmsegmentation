@@ -1,7 +1,7 @@
 _base_ = [
     '../_base_/models/segformer_mit-b0.py',
     '../_base_/datasets/Vaihingen_ndsm.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_80k.py'
+    '../_base_/schedules/schedule_20k.py'
 ]
 
 model = dict(
@@ -9,9 +9,9 @@ model = dict(
     backbone=dict(
         type='MitFuse',
         in_channels=4,
-        weight=0.8,
+        weight=0.5,
         overlap=True,
-        dsa_mode='concat',
+        dsa_mode='add',
         same_branch=False),
     decode_head=dict(num_classes=6))
 

@@ -2,10 +2,10 @@
 dataset_type = 'VaihingenDataset'
 data_root = 'G:/Datasets/Potsdam'
 img_norm_cfg = dict(
-    mean=[97.6339, 92.5452, 85.9160,45.5489],
-    std=[36.2434, 35.3706, 36.7771,54.8976],
+    mean=[97.6339, 92.5452, 85.9160, 45.5489],
+    std=[36.2434, 35.3706, 36.7771, 54.8976],
     to_rgb=False)
-crop_size = (256, 256)
+crop_size = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile', color_type='unchanged'),
     dict(type='LoadAnnotations', reduce_zero_label=True),
@@ -37,8 +37,8 @@ data = dict(
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='ndsm/training/block',
-        ann_dir='annotations/training/block',
+        img_dir='ndsm/block33',
+        ann_dir='annotations/block33',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,

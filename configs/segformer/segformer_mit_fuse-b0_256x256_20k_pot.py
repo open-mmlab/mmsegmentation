@@ -13,13 +13,14 @@ model = dict(
         overlap=True,
         dsa_mode='add',
         same_branch=False),
-    decode_head=dict(num_classes=6))
+    decode_head=dict(num_classes=6),
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
 # optimizer
 optimizer = dict(
     _delete_=True,
     type='AdamW',
-    lr=0.00006,
+    lr=0.00010,
     betas=(0.9, 0.999),
     weight_decay=0.01,
     paramwise_cfg=dict(
@@ -40,4 +41,4 @@ lr_config = dict(
     by_epoch=False)
 
 data = dict(samples_per_gpu=2, workers_per_gpu=2)
-evaluation = dict(metric=['mIoU', 'mFscore'], save_best='mIoU')
+evaluation = dict(interval=80000,metric=['mIoU', 'mFscore'], save_best='mIoU')
