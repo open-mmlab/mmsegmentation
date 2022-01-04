@@ -8,9 +8,8 @@ def find_latest_checkpoint(path, suffix='pth'):
     """Find the latest checkpoint from the working directory.
 
     Args:
-        path(str): The path to find checkpoints.
-        suffix(str): File extension.
-            Defaults to pth.
+        path (str): The path to find checkpoints.
+        suffix (str): File extension for the checkpoint. Defaults to pth.
     Returns:
         latest_path(str | None): File path of the latest checkpoint.
     Modified from
