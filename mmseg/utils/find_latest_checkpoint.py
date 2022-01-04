@@ -5,15 +5,15 @@ import warnings
 
 
 def find_latest_checkpoint(path, suffix='pth'):
-    """Find the latest checkpoint from the working directory.
+    """This function is for finding the latest checkpoint, which will be used
+    when automatically resume, modified from https://github.com/open-
+    mmlab/mmdetection/blob/dev-v2.20.0/mmdet/utils/misc.py.
 
     Args:
         path (str): The path to find checkpoints.
         suffix (str): File extension for the checkpoint. Defaults to pth.
     Returns:
         latest_path(str | None): File path of the latest checkpoint.
-    Modified from
-    https://github.com/open-mmlab/mmdetection/blob/dev-v2.20.0/mmdet/utils/misc.py
     """
     if not osp.exists(path):
         warnings.warn("The path of the checkpoints doesn't exist.")
@@ -30,7 +30,8 @@ def find_latest_checkpoint(path, suffix='pth'):
     for checkpoint in checkpoints:
         if len(checkpoint) < len(latest_path):
             continue
-        # `count` is iteration number, as checkpoints are saved as 'iter_xx.pth' or 'epoch_xx.pth' and xx is iteration number.
+        # `count` is iteration number, as checkpoints are saved as
+        # 'iter_xx.pth' or 'epoch_xx.pth' and xx is iteration number.
         count = int(osp.basename(checkpoint).split('_')[-1].split('.')[0])
         if count > latest:
             latest = count
