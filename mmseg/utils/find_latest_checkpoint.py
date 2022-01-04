@@ -30,6 +30,7 @@ def find_latest_checkpoint(path, suffix='pth'):
     for checkpoint in checkpoints:
         if len(checkpoint) < len(latest_path):
             continue
+        # `count` is iteration number, as checkpoints are saved as 'iter_xx.pth' or 'epoch_xx.pth' and xx is iteration number.
         count = int(osp.basename(checkpoint).split('_')[-1].split('.')[0])
         if count > latest:
             latest = count
