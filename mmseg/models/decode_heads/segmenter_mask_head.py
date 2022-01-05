@@ -66,6 +66,8 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
 
         self.init_std = init_std
 
+        delattr(self, 'conv_seg')
+
     def init_weights(self):
         trunc_normal_(self.cls_emb, std=self.init_std)
         trunc_normal_init(self.patch_proj, std=self.init_std)

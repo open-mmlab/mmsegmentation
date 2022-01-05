@@ -6,13 +6,13 @@ import numpy as np
 import torch
 
 
-def vit_jax_to_torch(jax_weights):
+def vit_jax_to_torch(jax_weights, num_layer=12):
     torch_weights = dict()
 
     # patch embedding
     conv_filters = jax_weights['embedding/kernel']
     # conv_filters = rearrange(conv_filters, 'h w c d -> d c h w')
-    conv_filters = torch.permute(conv_filters, (3, 2, 0, 1))
+    conv_filters = conv_filters.permute(3, 2, 0, 1)
     torch_weights['patch_embed.projection.weight'] = conv_filters
     torch_weights['patch_embed.projection.bias'] = jax_weights[
         'embedding/bias']
@@ -31,7 +31,7 @@ def vit_jax_to_torch(jax_weights):
     # torch_weights["head.bias"] = jax_weights["head/bias"]
 
     # transformer blocks
-    for i in range(12):
+    for i in range(num_layer):
         jax_block = f'Transformer/encoderblock_{i}'
         torch_block = f'layers.{i}'
 
@@ -55,10 +55,12 @@ def vit_jax_to_torch(jax_weights):
         value_bias = jax_weights[
             f'{jax_block}/MultiHeadDotProductAttention_1/value/bias']
 
-        qkv_weight = np.stack((query_weight, key_weight, value_weight), 1)
+        qkv_weight = torch.from_numpy(
+            np.stack((query_weight, key_weight, value_weight), 1))
         # qkv_weight = rearrange(qkv_weight, 'out qkv nh d-> out (qkv nh d)')
         qkv_weight = torch.flatten(qkv_weight, start_dim=1)
-        qkv_bias = np.stack((query_bias, key_bias, value_bias), 0)
+        qkv_bias = torch.from_numpy(
+            np.stack((query_bias, key_bias, value_bias), 0))
         # qkv_bias = rearrange(qkv_bias, 'qkv nh d -> (qkv nh d)')
         qkv_bias = torch.flatten(qkv_bias, start_dim=0)
 
@@ -93,8 +95,8 @@ def vit_jax_to_torch(jax_weights):
     for k, v in torch_weights.items():
         if 'weight' in k and 'patch_embed' not in k and 'ln' not in k:
             # v = rearrange(v, 'i o -> o i')
-            v = torch.permute(v, (1, 0))
-        torch_weights[k] = torch.tensor(v)
+            v = v.permute(1, 0)
+        torch_weights[k] = v
 
     return torch_weights
 
@@ -109,7 +111,15 @@ def main():
     args = parser.parse_args()
 
     jax_weights = np.load(args.src)
-    torch_weights = vit_jax_to_torch(jax_weights)
+    jax_weights_tensor = {}
+    for key in jax_weights.files:
+        value = torch.from_numpy(jax_weights[key])
+        jax_weights_tensor[key] = value
+    if 'L_16-i21k-300ep-lr_0.001-aug_medium1-wd_0.1-do_0.1-sd_0.1--imagenet2012-steps_20k-lr_0.01-res_384' in args.src:  # noqa
+        num_layer = 24
+    else:
+        num_layer = 12
+    torch_weights = vit_jax_to_torch(jax_weights_tensor, num_layer)
     mmcv.mkdir_or_exist(osp.dirname(args.dst))
     torch.save(torch_weights, args.dst)
 
