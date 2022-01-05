@@ -131,7 +131,7 @@ def main():
     if args.aug_test:
         # hard code index
         cfg.data.test.pipeline[1].img_ratios = [
-            0.5, 0.75, 1.0, 1.25, 1.5, 1.75
+            0.5, 0.75, 1.0, 1.25, 1.5
         ]
         cfg.data.test.pipeline[1].flip = True
     cfg.model.pretrained = None

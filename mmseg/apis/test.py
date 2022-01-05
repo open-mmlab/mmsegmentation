@@ -109,7 +109,7 @@ def single_gpu_test(model,
                     out_file = None
 
                 model.module.show_result(
-                    img_show,
+                    img_show[:,:,:3],
                     result,
                     palette=dataset.PALETTE,
                     show=show,

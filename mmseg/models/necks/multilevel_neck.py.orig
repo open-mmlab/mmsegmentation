@@ -1,0 +1,124 @@
+# Copyright (c) OpenMMLab. All rights reserved.
+import torch.nn as nn
+from mmcv.cnn import ConvModule, xavier_init
+
+from mmseg.ops import resize
+from ..builder import NECKS
+
+
+@NECKS.register_module()
+class MultiLevelNeck(nn.Module):
+    """MultiLevelNeck.
+
+    A neck structure connect vit backbone and decoder_heads.
+<<<<<<< HEAD
+=======
+    modified in a way like ReAssembleBlock mentioned in the paper
+        `Vision Transformers for Dense Prediction`
+        https://arxiv.org/abs/2103.13413
+>>>>>>> rgbd
+
+    Args:
+        in_channels (List[int]): Number of input channels per scale.
+        out_channels (int | List[int]): Number of output channels per scale.
+        scales (List[float]): Scale factors for each input feature map.
+            Default: [0.5, 1, 2, 4]
+        resize_mode(string): 'conv' and interpolate mode('bilinear')
+        norm_cfg (dict): Config dict for normalization layer. Default: None.
+        act_cfg (dict): Config dict for activation layer in ConvModule.
+            Default: None.
+    """
+
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 scales=[0.5, 1, 2, 4],
+                 resize_mode='bilinear',
+                 norm_cfg=None,
+                 act_cfg=None):
+        super(MultiLevelNeck, self).__init__()
+        assert isinstance(in_channels, list)
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.scales = scales
+        self.num_outs = len(scales)
+        self.resize_mode = resize_mode
+        if not isinstance(out_channels, list):
+            out_channels=[out_channels]*num_outs
+
+        self.lateral_convs = nn.ModuleList()
+        self.convs = nn.ModuleList()
+        for i, in_channel in enumerate(self.in_channels):
+            self.lateral_convs.append(
+                ConvModule(
+                    in_channel,
+                    out_channels[i],
+                    kernel_size=1,
+                    norm_cfg=norm_cfg,
+                    act_cfg=act_cfg))
+        # to be noticed: the module below is absent for dpt
+        for i in range(self.num_outs):
+            self.convs.append(
+                ConvModule(
+                    out_channels[i],
+                    out_channels[i],
+                    kernel_size=3,
+                    padding=1,
+                    stride=1,
+                    norm_cfg=norm_cfg,
+                    act_cfg=act_cfg))
+
+        # downsample use odd kernal size's ConvModule
+        # upsample use even kernal size's nn.ConvTranspose2d
+        # to be simple scale=1 means downsample using 1*1 conv
+        self.resize_convs = nn.ModuleList()
+        if resize_mode == 'conv':           
+            for i, scale in enumerate(self.scales):
+                if scale>1:
+                    self.resize_convs.append(
+                        nn.ConvTranspose2d(
+                            out_channels[i],
+                            out_channels[i],
+                            kernel_size=scale,
+                            stride=scale,
+                            padding=0))
+                else:
+                    scale=int(1/scale)
+                    self.resize_convs.append(
+                        ConvModule(
+                            out_channels[i],
+                            out_channels[i],
+                            kernel_size=2*scale-1,
+                            stride=scale,
+                            padding=scale-1))
+
+    # default init_weights for conv(msra) and norm in ConvModule
+    def init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                xavier_init(m, distribution='uniform')
+
+    def resize(self, x, scale_index, mode):
+        if self.resize_mode == 'conv':
+            x_resize=self.resize_convs[scale_index](x)
+        else:
+            x_resize=F.interpolate(
+                x, scale_factor=self.scale[scale_index], mode=mode)
+        return x_resize
+
+    def forward(self, inputs):
+        assert len(inputs) == len(self.in_channels)
+        inputs = [
+            lateral_conv(inputs[i])
+            for i, lateral_conv in enumerate(self.lateral_convs)
+        ]
+        # for len(inputs) not equal to self.num_outs
+        if len(inputs) == 1:
+            inputs = [inputs[0] for _ in range(self.num_outs)]
+
+        outs = []
+        for i in range(self.num_outs):            
+            x_resize = resize(
+                inputs[i], i, mode=self.resize_mode)
+            outs.append(self.convs[i](x_resize))
+        return tuple(outs)

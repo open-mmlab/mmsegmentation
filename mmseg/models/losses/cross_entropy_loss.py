@@ -19,7 +19,7 @@ def cross_entropy(pred,
     # If given, has to be a Tensor of size C element-wise losses
     loss = F.cross_entropy(
         pred,
-        label,
+        label.long(),
         weight=class_weight,
         reduction='none',
         ignore_index=ignore_index)
