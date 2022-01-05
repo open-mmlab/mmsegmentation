@@ -328,12 +328,6 @@ def restructure_a2d2_directory(a2d2_path,
     for split in ['train', 'val', 'test']:
         mmcv.mkdir_or_exist(osp.join(a2d2_path, 'images', split))
         mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations', split))
-    # mmcv.mkdir_or_exist(osp.join(a2d2_path, 'images', 'train'))
-    # mmcv.mkdir_or_exist(osp.join(a2d2_path, 'images', 'val'))
-    # mmcv.mkdir_or_exist(osp.join(a2d2_path, 'images', 'test'))
-    # mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations', 'train'))
-    # mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations', 'val'))
-    # mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations', 'test'))
 
     # Lists containing all images and labels to symlinked
     img_filepaths = sorted(glob.glob(osp.join(a2d2_path, '*/camera/*/*.png')))
