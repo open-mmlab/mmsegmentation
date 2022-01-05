@@ -32,7 +32,9 @@ Import:
 - configs/segformer/segformer.yml
 - configs/sem_fpn/sem_fpn.yml
 - configs/setr/setr.yml
+- configs/stdc/stdc.yml
 - configs/swin/swin.yml
+- configs/twins/twins.yml
 - configs/unet/unet.yml
 - configs/upernet/upernet.yml
 - configs/vit/vit.yml

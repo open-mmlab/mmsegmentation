@@ -46,7 +46,7 @@ def create_train_bash_info(commands, config, script_name, partition, port):
     command_info += f'{partition} '
     command_info += f'{config_name} '
     command_info += f'{cfg} '
-    command_info += f'--options ' \
+    command_info += f'--cfg-options ' \
                     f'checkpoint_config.max_keep_ckpts=1 ' \
                     f'dist_params.port={port} '
     command_info += f'--work-dir work_dirs/{model_name}/{config_name} '
