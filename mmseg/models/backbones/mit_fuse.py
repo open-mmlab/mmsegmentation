@@ -13,7 +13,8 @@ from mmcv.runner import BaseModule, ModuleList, Sequential, _load_checkpoint
 
 from ...utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw, SelfAttentionBlock, CBAM
+from ..utils import PatchEmbedOld as PatchEmbed
+from ..utils import nchw_to_nlc, nlc_to_nchw, SelfAttentionBlock
 
 from .mit import MixVisionTransformer
 
@@ -138,18 +139,18 @@ class DepthFusionModule2(SelfAttentionBlock):
         return self.norm(out)
 
 
-class DepthFusionModule3(CBAM):
+# class DepthFusionModule3(CBAM):
 
-    def __init__(self, embed_dims, num_heads):
-        super(DepthFusionModule3, self).__init__(embed_dims * 2)
-        self.embed_dims = embed_dims
-        self.gamma = Scale(0)
+#     def __init__(self, embed_dims, num_heads):
+#         super(DepthFusionModule3, self).__init__(embed_dims * 2)
+#         self.embed_dims = embed_dims
+#         self.gamma = Scale(0)
 
-    def forward(self, color, depth):
-        x = torch.cat([color, depth], dim=1)
-        out = super(DepthFusionModule3, self).forward(x)[:, :self.embed_dims]
-        out = self.gamma(out) + color
-        return color
+#     def forward(self, color, depth):
+#         x = torch.cat([color, depth], dim=1)
+#         out = super(DepthFusionModule3, self).forward(x)[:, :self.embed_dims]
+#         out = self.gamma(out) + color
+#         return color
 
 
 class DepthDownsample(BaseModule):
@@ -199,9 +200,9 @@ class DepthDownsample(BaseModule):
 
     def forward(self, x):
         outs = []
-        for downsample in self.layers:
-            x, H, W = downsample(x), downsample.DH, downsample.DW
-            x = nlc_to_nchw(x, (H, W))
+        for downsample in self.layers:        
+            x, hw_shape = downsample(x)
+            x = nlc_to_nchw(x, hw_shape)
             outs.append(x)
         return outs
 

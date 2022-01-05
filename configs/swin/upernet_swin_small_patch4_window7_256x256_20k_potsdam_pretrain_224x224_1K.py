@@ -1,5 +1,5 @@
 _base_ = [
-    './upernet_swin_tiny_patch4_window7_256x256_20k_vaihingen_pretrain_224x224_1K.py'
+    './upernet_swin_tiny_patch4_window7_256x256_20k_potsdam_pretrain_224x224_1K.py'
 ]
 model = dict(
     pretrained='pretrain/swin_small_patch4_window7_224.pth',

@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/upernet_swin.py', '../_base_/datasets/Vaihingen.py',
+    '../_base_/models/upernet_swin.py', '../_base_/datasets/Potsdam.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
 model = dict(
@@ -14,7 +14,7 @@ model = dict(
         patch_norm=True),
     decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=6),
     auxiliary_head=dict(in_channels=384, num_classes=6),
-    test_cfg=dict(mode='slide',crop_size=(256,256),stride=(171,171)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
 optimizer = dict(
     _delete_=True,
