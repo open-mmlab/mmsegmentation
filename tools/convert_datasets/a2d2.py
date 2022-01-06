@@ -498,7 +498,12 @@ def main():
 
     Training, validation, and test sets are generated according to the same
     sequence split used in the official A2D2 paper benchmark results as
-    explained by the authors.
+    explained by the authors. The resulting sample count is as follows:
+        train | 30699 samples (74.4 %)
+        val   |  3246 samples (7.8 %)
+        test  |  7332 samples (17.8 %)
+        ---------------------
+        tot. 41277 samples
 
     Add the optional argument `--train-on-val-and-test` to train on the entire
     dataset.
