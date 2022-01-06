@@ -480,7 +480,7 @@ def main():
         filename suffix '_34LabelTrainIds.png'.
 
     The default arguments result in merging of the original 38 semantic classes
-    into a 18 class label setup corresponding to the official benchmark results
+    into a 19 class label setup corresponding to the official benchmark results
     presented in the A2D2 paper (ref: p.8 "4. Experiment: Semantic
     segmentation").
 
