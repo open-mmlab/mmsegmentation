@@ -1051,6 +1051,7 @@ class RandomMosaic(object):
     image.
 
     .. code:: text
+
                         mosaic transform
                            center_x
                 +------------------------------+
@@ -1067,11 +1068,13 @@ class RandomMosaic(object):
                 +----|-------------+-----------+
                      |             |
                      +-------------+
+
      The mosaic transform steps are as follows:
          1. Choose the mosaic center as the intersections of 4 images
          2. Get the left top image according to the index, and randomly
             sample another 3 images from the custom dataset.
          3. Sub image will be cropped if image is larger than mosaic patch
+
     Args:
         prob (float): mosaic probability.
         img_scale (Sequence[int]): Image size after mosaic pipeline of
@@ -1239,6 +1242,7 @@ class RandomMosaic(object):
     def _mosaic_combine(self, loc, center_position_xy, img_shape_wh):
         """Calculate global coordinate of mosaic image and local coordinate of
         cropped sub-image.
+
         Args:
             loc (str): Index for the sub-image, loc in ('top_left',
               'top_right', 'bottom_left', 'bottom_right').
