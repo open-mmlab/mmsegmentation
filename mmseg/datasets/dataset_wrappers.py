@@ -201,6 +201,7 @@ class MultiImageMixDataset:
     the `get_indexes` method needs to be provided to obtain the image
     indexes, and you can set `skip_flags` to change the pipeline running
     process.
+
     Args:
         dataset (:obj:`CustomDataset`): The dataset to be mixed.
         pipeline (Sequence[dict]): Sequence of transform object or
