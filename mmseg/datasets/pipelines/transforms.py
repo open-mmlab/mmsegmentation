@@ -1103,6 +1103,7 @@ class RandomMosaic(object):
 
         Args:
             results (dict): Result dict.
+
         Returns:
             dict: Result dict with mosaic transformed.
         """
@@ -1117,6 +1118,7 @@ class RandomMosaic(object):
 
         Args:
             dataset (:obj:`MultiImageMixDataset`): The dataset.
+
         Returns:
             list: indexes.
         """
@@ -1129,6 +1131,7 @@ class RandomMosaic(object):
 
         Args:
             results (dict): Result dict.
+
         Returns:
             dict: Updated result dict.
         """
@@ -1187,6 +1190,7 @@ class RandomMosaic(object):
 
         Args:
             results (dict): Result dict.
+
         Returns:
             dict: Updated result dict.
         """
@@ -1241,6 +1245,7 @@ class RandomMosaic(object):
             center_position_xy (Sequence[float]): Mixing center for 4 images,
                 (x, y).
             img_shape_wh (Sequence[int]): Width and height of sub-image
+
         Returns:
             tuple[tuple[float]]: Corresponding coordinate of pasting and
                 cropping
