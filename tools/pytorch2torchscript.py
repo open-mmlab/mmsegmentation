@@ -140,6 +140,11 @@ def parse_args():
         '--verify', action='store_true', help='verify the TorchScript model')
     parser.add_argument('--output-file', type=str, default='tmp.pt')
     parser.add_argument(
+        '--num-classes',
+        type=int,
+        default=-1,
+        help='number of out output classes')
+    parser.add_argument(
         '--shape',
         type=int,
         nargs='+',
@@ -165,6 +170,8 @@ if __name__ == '__main__':
 
     cfg = mmcv.Config.fromfile(args.config)
     cfg.model.pretrained = None
+    if args.num_classes > 0:
+        cfg.model.decode_head['num_classes'] = args.num_classes
 
     # build the model and load checkpoint
     cfg.model.train_cfg = None
