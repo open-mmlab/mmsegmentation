@@ -49,12 +49,10 @@ def main():
     markdown_file = cfg.get('markdown_file', None)
     json_file = cfg.get('json_file', None)
 
-    if (json_file and osp.split(json_file)[0] != ''
-            and not osp.exists(osp.split(json_file)[0])):
-        os.makedirs(osp.split(json_file)[0])
-    if (markdown_file and osp.split(markdown_file)[0] != ''
-            and not osp.exists(osp.split(markdown_file)[0])):
-        os.makedirs(osp.split(markdown_file)[0])
+    if json_file and osp.split(json_file)[0] != '':
+        os.makedirs(osp.split(json_file)[0], exist_ok=True)
+    if markdown_file and osp.split(markdown_file)[0] != '':
+        os.makedirs(osp.split(markdown_file)[0], exist_ok=True)
 
     assert not (log_items and ignore_keywords), \
         'log_items and ignore_keywords cannot be specified at the same time'
