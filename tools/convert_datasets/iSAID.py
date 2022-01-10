@@ -6,7 +6,6 @@ import shutil
 import tempfile
 import zipfile
 
-import imgviz
 import mmcv
 import numpy as np
 from PIL import Image
@@ -135,34 +134,10 @@ def slide_crop_label(src_path, out_dir, mode, patch_H, patch_W, overlap):
 
             lab_patch = label[y_str:y_end, x_str:x_end]
             lab_patch = Image.fromarray(lab_patch.astype(np.uint8), mode='P')
-            # print(np.unique(label))
-            colormap = imgviz.label_colormap(n_label=256)
-
-            colormap[0, :] = [0, 0, 0]
-            colormap[1, :] = [0, 0, 63]
-            colormap[2, :] = [0, 63, 63]
-            colormap[3, :] = [0, 63, 0]
-            colormap[4, :] = [0, 63, 127]
-            colormap[5, :] = [0, 63, 191]
-
-            colormap[6, :] = [0, 63, 255]
-            colormap[7, :] = [0, 127, 63]
-            colormap[8, :] = [0, 127, 127]
-            colormap[9, :] = [0, 0, 127]
-            colormap[10, :] = [0, 0, 191]
-
-            colormap[11, :] = [0, 0, 255]
-            colormap[12, :] = [0, 191, 127]
-            colormap[13, :] = [0, 127, 191]
-            colormap[14, :] = [0, 127, 255]
-            colormap[15, :] = [0, 100, 155]
-
-            colormap[255, :] = [255, 255, 255]
 
             image = osp.splitext(
                 src_path.split('/')[-1])[0] + '_' + str(y_str) + '_' + str(
                     y_end) + '_' + str(x_str) + '_' + str(x_end) + '.png'
-            lab_patch.putpalette(colormap.flatten())
             lab_patch.save(osp.join(out_dir, 'ann_dir', mode, str(image)))
 
 
