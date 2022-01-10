@@ -36,11 +36,11 @@ log_items = [
 
 # Other log items in .log.json that you want to collect.
 # should not include metric.
-other_info_keys = ['other_key']
+other_info_keys = ["mAcc"]
 # The output markdown file's name.
 markdown_file ='markdowns/lr_in_trans.json.md'
 # The output json file's name. (optional)
-json_file = 'trans_in_cnn.json'
+json_file = 'jsons/trans_in_cnn.json'
 ```
 
  The structure of the work-dir directory should be like：
@@ -69,9 +69,75 @@ python log_collector.py ./example_config.py
 
 The output markdown file is like:
 
-| exp_num |                            method                            | mIoU best | best index | mIoU last | last index |
-| :-----: | :----------------------------------------------------------: | :-------: | :--------: | :-------: | :--------: |
-|    1    |       deeplabv3plus_r101-d8_512x512_160k_ade20k_cnn_lr       |  0.4537   |     10     |  0.4537   |     10     |
-|    2    | deeplabv3plus_r101-d8_512x512_160k_ade20k_cnn_with_warmup_lr |  0.4602   |     10     |  0.4602   |     10     |
-|    3    |    deeplabv3plus_r101-d8_512x512_160k_ade20k_mit_trans_lr    |  0.4543   |     13     |  0.4543   |     13     |
-|    4    |   deeplabv3plus_r101-d8_512x512_160k_ade20k_swin_trans_lr    |  0.4454   |     12     |  0.4454   |     12     |
+|exp_num|method|mIoU best|best index|mIoU last|last index|last iter num|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|1|segformer_mit-b5_512x512_160k_ade20k_cnn_lr_with_warmup|0.2776|10|0.2776|10|160000|
+|2|segformer_mit-b5_512x512_160k_ade20k_cnn_no_warmup_lr|0.2802|10|0.2802|10|160000|
+|3|segformer_mit-b5_512x512_160k_ade20k_mit_trans_lr|0.4943|11|0.4943|11|160000|
+|4|segformer_mit-b5_512x512_160k_ade20k_swin_trans_lr|0.4883|11|0.4883|11|160000|
+
+The output json file is like:
+```json
+[
+    {
+        "method": "segformer_mit-b5_512x512_160k_ade20k_cnn_lr_with_warmup",
+        "metric_used": "mIoU",
+        "last_iter": 160000,
+        "last eval": {
+            "eval_index": 10,
+            "mIoU": 0.2776,
+            "mAcc": 0.3779
+        },
+        "best eval": {
+            "eval_index": 10,
+            "mIoU": 0.2776,
+            "mAcc": 0.3779
+        }
+    },
+    {
+        "method": "segformer_mit-b5_512x512_160k_ade20k_cnn_no_warmup_lr",
+        "metric_used": "mIoU",
+        "last_iter": 160000,
+        "last eval": {
+            "eval_index": 10,
+            "mIoU": 0.2802,
+            "mAcc": 0.3764
+        },
+        "best eval": {
+            "eval_index": 10,
+            "mIoU": 0.2802,
+            "mAcc": 0.3764
+        }
+    },
+    {
+        "method": "segformer_mit-b5_512x512_160k_ade20k_mit_trans_lr",
+        "metric_used": "mIoU",
+        "last_iter": 160000,
+        "last eval": {
+            "eval_index": 11,
+            "mIoU": 0.4943,
+            "mAcc": 0.6097
+        },
+        "best eval": {
+            "eval_index": 11,
+            "mIoU": 0.4943,
+            "mAcc": 0.6097
+        }
+    },
+    {
+        "method": "segformer_mit-b5_512x512_160k_ade20k_swin_trans_lr",
+        "metric_used": "mIoU",
+        "last_iter": 160000,
+        "last eval": {
+            "eval_index": 11,
+            "mIoU": 0.4883,
+            "mAcc": 0.6061
+        },
+        "best eval": {
+            "eval_index": 11,
+            "mIoU": 0.4883,
+            "mAcc": 0.6061
+        }
+    }
+]
+```

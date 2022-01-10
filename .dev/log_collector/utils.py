@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 # modified from https://github.dev/open-mmlab/mmcv
 import os.path as osp
 import sys

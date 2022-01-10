@@ -3,6 +3,7 @@ import argparse
 import datetime
 import json
 import os
+import os.path as osp
 from collections import OrderedDict
 
 from utils import load_config
@@ -47,6 +48,13 @@ def main():
     other_info_keys = cfg.get('other_info_keys', [])
     markdown_file = cfg.get('markdown_file', None)
     json_file = cfg.get('json_file', None)
+
+    if (json_file and osp.split(json_file)[0] != ''
+            and not osp.exists(osp.split(json_file)[0])):
+        os.makedirs(osp.split(json_file)[0])
+    if (markdown_file and osp.split(markdown_file)[0] != ''
+            and not osp.exists(osp.split(markdown_file)[0])):
+        os.makedirs(osp.split(markdown_file)[0])
 
     assert not (log_items and ignore_keywords), \
         'log_items and ignore_keywords cannot be specified at the same time'
@@ -127,7 +135,7 @@ def main():
         with open(markdown_file, 'w') as f:
             f.write(f'|exp_num|method|{metric} best|best index|'
                     f'{metric} last|last index|last iter num|\n')
-            f.write('|:--:|:--:|:--:|:--:|:--:|:--:|:--:|\n')
+            f.write('|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n')
             f.writelines(lines_to_write)
 
     print('processed successfully')
