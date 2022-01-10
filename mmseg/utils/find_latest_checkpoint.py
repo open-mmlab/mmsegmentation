@@ -5,13 +5,15 @@ import warnings
 
 
 def find_latest_checkpoint(path, suffix='pth'):
-    """This function is for finding the latest checkpoint, which will be used
-    when automatically resume, modified from https://github.com/open-
-    mmlab/mmdetection/blob/dev-v2.20.0/mmdet/utils/misc.py.
+    """This function is for finding the latest checkpoint.
+
+    It will be used when automatically resume, modified from
+    https://github.com/open-mmlab/mmdetection/blob/dev-v2.20.0/mmdet/utils/misc.py
 
     Args:
         path (str): The path to find checkpoints.
         suffix (str): File extension for the checkpoint. Defaults to pth.
+
     Returns:
         latest_path(str | None): File path of the latest checkpoint.
     """
