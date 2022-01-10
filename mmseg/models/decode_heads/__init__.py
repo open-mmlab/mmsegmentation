@@ -14,6 +14,7 @@ from .fpn_head import FPNHead
 from .gc_head import GCHead
 from .isa_head import ISAHead
 from .lraspp_head import LRASPPHead
+from .maskformer_head import MaskFormerHead
 from .nl_head import NLHead
 from .ocr_head import OCRHead
 from .point_head import PointHead
@@ -33,5 +34,5 @@ __all__ = [
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
     'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
     'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegformerHead', 'ISAHead',
-    'STDCHead'
+    'STDCHead', 'MaskFormerHead'
 ]

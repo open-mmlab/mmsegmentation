@@ -7,12 +7,30 @@ from mmcv.utils import Registry
 
 MODELS = Registry('models', parent=MMCV_MODELS)
 ATTENTION = Registry('attention', parent=MMCV_ATTENTION)
+TRANSFORMER = Registry('Transformer')
+MASK_ASSIGNERS = Registry('mask_assigner')
+MATCH_COST = Registry('match_cost')
 
 BACKBONES = MODELS
 NECKS = MODELS
 HEADS = MODELS
 LOSSES = MODELS
 SEGMENTORS = MODELS
+
+
+def build_match_cost(cfg):
+    """Build Match Cost."""
+    return MATCH_COST.build(cfg)
+
+
+def build_assigner(cfg):
+    """Build Assigner."""
+    return MASK_ASSIGNERS.build(cfg)
+
+
+def build_transformer(cfg):
+    """Build Transformer."""
+    return TRANSFORMER.build(cfg)
 
 
 def build_backbone(cfg):
