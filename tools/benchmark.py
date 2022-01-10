@@ -103,8 +103,7 @@ def main():
 
             if (i + 1) == total_iters:
                 fps = (i + 1 - num_warmup) / pure_inf_time
-                print(f'Overall fps: {fps:.2f} img / s')
-                print()
+                print(f'Overall fps: {fps:.2f} img / s\n')
                 benchmark_dict[f'overall_fps_{time_index + 1}'] = round(fps, 2)
                 overall_fps_list.append(fps)
                 break
