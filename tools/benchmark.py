@@ -111,7 +111,7 @@ def main():
     benchmark_dict['fps_variance'] = round(np.var(overall_fps_list), 4)
     print(f'Average fps of {repeat_times} evaluations: '
           f'{benchmark_dict["average_fps"]}')
-    print(f'The variance of {repeat_times} evalutations:'
+    print(f'The variance of {repeat_times} evaluations: '
           f'{benchmark_dict["fps_variance"]}')
     mmcv.dump(benchmark_dict, json_file, indent=4)
 
