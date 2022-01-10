@@ -1,4 +1,4 @@
-work_dir = '../mmsegmentation-master/work_dirs'
+work_dir = '../../work_dirs'
 metric = 'mIoU'
 # the folders whose name contain `'segformer'` won't be collected
 ignore_keywords = ['segformer']

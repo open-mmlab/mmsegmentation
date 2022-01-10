@@ -16,7 +16,7 @@ example_config.py:
 
 ```python
 # The work directory that contains folders that contains .log.json files.
-work_dir = '../mmsegmentation-master/work_dirs'
+work_dir = '../../work_dirs'
 # The metric used to find the best evaluation.
 metric = 'mIoU'
 
@@ -59,7 +59,9 @@ json_file = 'trans_in_cnn.json'
 │   │   ├── time8.log.json
 ```
 
-Then , you can run log_collector.py by using command:
+Then , cd to the log collector folder.
+
+Now you can run log_collector.py by using command:
 
 ```bash
 python log_collector.py ./example_config.py
