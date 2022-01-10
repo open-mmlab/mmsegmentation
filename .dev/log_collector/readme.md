@@ -42,7 +42,7 @@ json_file = 'trans_in_cnn.json'
 
  The structure of the work-dir directory should be like：
 
-```
+```text
         ├── work-dir
         │   ├── folder1
         │   │   ├── time1.log.json
