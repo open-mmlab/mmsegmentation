@@ -58,7 +58,6 @@ class ISAIDDataset(CustomDataset):
             with open(split) as f:
                 for line in f:
                     name = line.strip()
-                    # img_name = 'top_potsdam_{}_IRRG'.format(name)
                     img_name = name
                     img_info = dict(filename=img_name + img_suffix)
                     if ann_dir is not None:

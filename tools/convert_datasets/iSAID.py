@@ -9,7 +9,6 @@ import zipfile
 import mmcv
 import numpy as np
 from PIL import Image
-from tqdm import tqdm
 
 iSAID_palette = \
     {
@@ -135,9 +134,9 @@ def slide_crop_label(src_path, out_dir, mode, patch_H, patch_W, overlap):
             lab_patch = label[y_str:y_end, x_str:x_end]
             lab_patch = Image.fromarray(lab_patch.astype(np.uint8), mode='P')
 
-            image = osp.splitext(
-                src_path.split('/')[-1])[0] + '_' + str(y_str) + '_' + str(
-                    y_end) + '_' + str(x_str) + '_' + str(x_end) + '.png'
+            image = osp.splitext(src_path.split('/')[-1])[0].split(
+                '_')[0] + '_' + str(y_str) + '_' + str(y_end) + '_' + str(
+                    x_str) + '_' + str(x_end) + '_instance_color_RGB' + '.png'
             lab_patch.save(osp.join(out_dir, 'ann_dir', mode, str(image)))
 
 
@@ -207,7 +206,8 @@ def main():
             src_path_list = glob.glob(
                 os.path.join(tmp_dir, dataset_mode, 'img', 'images', '*.png'))
 
-            for img_path in tqdm(src_path_list):
+            src_prog_bar = mmcv.ProgressBar(len(src_path_list))
+            for i, img_path in enumerate(src_path_list):
                 if dataset_mode != 'test':
                     slide_crop_image(img_path, out_dir, dataset_mode, patch_H,
                                      patch_W, overlap)
@@ -215,6 +215,8 @@ def main():
                 else:
                     shutil.move(img_path,
                                 os.path.join(out_dir, 'img_dir', dataset_mode))
+                src_prog_bar.update()
+
             if dataset_mode != 'test':
                 label_zipp_list = glob.glob(
                     os.path.join(dataset_path, dataset_mode, 'Semantic_masks',
@@ -227,10 +229,11 @@ def main():
                 lab_path_list = glob.glob(
                     os.path.join(tmp_dir, dataset_mode, 'lab', 'images',
                                  '*.png'))
-
-                for lab_path in tqdm(lab_path_list):
+                lab_prog_bar = mmcv.ProgressBar(len(lab_path_list))
+                for i, lab_path in enumerate(lab_path_list):
                     slide_crop_label(lab_path, out_dir, dataset_mode, patch_H,
                                      patch_W, overlap)
+                    lab_prog_bar.update()
 
         print('Removing the temporary files...')
 
