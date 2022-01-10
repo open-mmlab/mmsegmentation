@@ -50,7 +50,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 ## Changelog
 
 v0.20.2 was released in 12/15/2021.
-Please refer to [changelog.md](docs/changelog.md) for details and release history.
+Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
 
