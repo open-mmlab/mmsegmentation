@@ -20,7 +20,7 @@ We present the next generation of MobileNets based on a combination of complemen
 </div>
 
 <details>
-<summary align="right"><a href="https://arxiv.org/abs/1801.04381">MobileNetV3 (ICCV'2019)</a></summary>
+<summary align="right"><a href="https://arxiv.org/abs/1905.02244">MobileNetV3 (ICCV'2019)</a></summary>
 
 ```latex
 @inproceedings{Howard_2019_ICCV,
