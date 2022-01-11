@@ -53,6 +53,15 @@ pretrain/vit_tiny_p16_384.pth
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
 
+In our default setting, pretrained models and its corresponding [ViT-AugReg](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L54-L106) models could be defined below:
+
+  | pretrained models | original model |
+  | ------ | -------- |
+  |vit_tiny_p16_384.pth | ['vit_tiny_patch16_384'](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L59) |
+  |vit_small_p16_384.pth | ['vit_small_patch16_384'](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L73) |
+  |vit_base_p16_384.pth | ['vit_base_patch16_384'](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L87) |
+  |vit_large_p16_384.pth | ['vit_large_patch16_384'](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L103) |
+
 ## Results and models
 
 ### ADE20K
