@@ -7,8 +7,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as cp
-from mmcv.cnn import build_norm_layer, constant_init, trunc_normal_init
+from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import FFN, build_dropout
+from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
+                                        trunc_normal_init)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
 from mmcv.utils import to_2tuple
 
@@ -73,7 +75,7 @@ class WindowMSA(BaseModule):
         self.softmax = nn.Softmax(dim=-1)
 
     def init_weights(self):
-        trunc_normal_init(self.relative_position_bias_table, std=0.02)
+        trunc_normal_(self.relative_position_bias_table, std=0.02)
 
     def forward(self, x, mask=None):
         """
@@ -665,15 +667,12 @@ class SwinTransformer(BaseModule):
                         f'{self.__class__.__name__}, '
                         f'training start from scratch')
             if self.use_abs_pos_embed:
-                trunc_normal_init(self.absolute_pos_embed, std=0.02)
+                trunc_normal_(self.absolute_pos_embed, std=0.02)
             for m in self.modules():
                 if isinstance(m, nn.Linear):
-                    trunc_normal_init(m.weight, std=.02)
-                    if m.bias is not None:
-                        constant_init(m.bias, 0)
+                    trunc_normal_init(m, std=.02, bias=0.)
                 elif isinstance(m, nn.LayerNorm):
-                    constant_init(m.bias, 0)
-                    constant_init(m.weight, 1.0)
+                    constant_init(m, val=1.0, bias=0.)
         else:
             assert 'checkpoint' in self.init_cfg, f'Only support ' \
                                                   f'specify `Pretrained` in ' \

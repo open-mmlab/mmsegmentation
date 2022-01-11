@@ -3,7 +3,7 @@ Collections:
   Metadata:
     Training Data:
     - Cityscapes
-    - ADE20k
+    - ADE20K
   Paper:
     URL: https://arxiv.org/abs/1801.04381
     Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
@@ -114,7 +114,7 @@ Models:
     Training Memory (GB): 6.5
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 19.71
   Config: configs/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k.py
@@ -135,7 +135,7 @@ Models:
     Training Memory (GB): 6.5
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 29.68
   Config: configs/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k.py
@@ -156,7 +156,7 @@ Models:
     Training Memory (GB): 6.8
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 34.08
   Config: configs/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k.py
@@ -177,7 +177,7 @@ Models:
     Training Memory (GB): 8.2
   Results:
   - Task: Semantic Segmentation
-    Dataset: ADE20k
+    Dataset: ADE20K
     Metrics:
       mIoU: 34.02
   Config: configs/mobilenet_v2/deeplabv3plus_m-v2-d8_512x512_160k_ade20k.py

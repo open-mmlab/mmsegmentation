@@ -10,6 +10,8 @@
 
 ## Abstract
 
+<!-- [ABSTRACT] -->
+
 We notice information flow in convolutional neural networksis  restricted  inside  local  neighborhood  regions  due  to  the  physical  de-sign  of  convolutional  filters,  which  limits  the  overall  understanding  ofcomplex scenes. In this paper, we propose thepoint-wise  spatial  atten-tion network(PSANet) to relax the local neighborhood constraint. Eachposition on the feature map is connected to all the other ones througha self-adaptively learned attention mask. Moreover, information propa-gation in bi-direction for scene parsing is enabled. Information at otherpositions can be collected to help the prediction of the current positionand  vice  versa,  information  at  the  current  position  can  be  distributedto assist the prediction of other ones. Our proposed approach achievestop performance on various competitive scene parsing datasets, includ-ing  ADE20K,  PASCAL  VOC  2012  and  Cityscapes,  demonstrating  itseffectiveness and generality.
 
 <!-- [IMAGE] -->

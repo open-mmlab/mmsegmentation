@@ -10,6 +10,8 @@
 
 ## Abstract
 
+<!-- [ABSTRACT] -->
+
 In this paper, we address the problem of semantic segmentation and focus on the context aggregation strategy for robust segmentation. Our motivation is that the label of a pixel is the category of the object that the pixel belongs to. We present a simple yet effective approach, object-contextual representations, characterizing a pixel by exploiting the representation of the corresponding object class. First, we construct object regions based on a feature map supervised by the ground-truth segmentation, and then compute the object region representations. Second, we compute the representation similarity between each pixel and each object region, and augment the representation of each pixel with an object contextual representation, which is a weighted aggregation of all the object region representations according to their similarities with the pixel. We empirically demonstrate that the proposed approach achieves competitive performance on six challenging semantic segmentation benchmarks: Cityscapes, ADE20K, LIP, PASCAL VOC 2012, PASCAL-Context and COCO-Stuff. Notably, we achieved the \nth{2} place on the Cityscapes leader-board with a single model.
 
 <!-- [IMAGE] -->
