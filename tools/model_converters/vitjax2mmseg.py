@@ -11,7 +11,6 @@ def vit_jax_to_torch(jax_weights, num_layer=12):
 
     # patch embedding
     conv_filters = jax_weights['embedding/kernel']
-    # conv_filters = rearrange(conv_filters, 'h w c d -> d c h w')
     conv_filters = conv_filters.permute(3, 2, 0, 1)
     torch_weights['patch_embed.projection.weight'] = conv_filters
     torch_weights['patch_embed.projection.bias'] = jax_weights[
@@ -27,8 +26,6 @@ def vit_jax_to_torch(jax_weights, num_layer=12):
     # head
     torch_weights['ln1.weight'] = jax_weights['Transformer/encoder_norm/scale']
     torch_weights['ln1.bias'] = jax_weights['Transformer/encoder_norm/bias']
-    # torch_weights["head.weight"] = jax_weights["head/kernel"]
-    # torch_weights["head.bias"] = jax_weights["head/bias"]
 
     # transformer blocks
     for i in range(num_layer):
@@ -57,18 +54,15 @@ def vit_jax_to_torch(jax_weights, num_layer=12):
 
         qkv_weight = torch.from_numpy(
             np.stack((query_weight, key_weight, value_weight), 1))
-        # qkv_weight = rearrange(qkv_weight, 'out qkv nh d-> out (qkv nh d)')
         qkv_weight = torch.flatten(qkv_weight, start_dim=1)
         qkv_bias = torch.from_numpy(
             np.stack((query_bias, key_bias, value_bias), 0))
-        # qkv_bias = rearrange(qkv_bias, 'qkv nh d -> (qkv nh d)')
         qkv_bias = torch.flatten(qkv_bias, start_dim=0)
 
         torch_weights[f'{torch_block}.attn.attn.in_proj_weight'] = qkv_weight
         torch_weights[f'{torch_block}.attn.attn.in_proj_bias'] = qkv_bias
         to_out_weight = jax_weights[
             f'{jax_block}/MultiHeadDotProductAttention_1/out/kernel']
-        # to_out_weight = rearrange(to_out_weight, 'h hd d -> (h hd) d')
         to_out_weight = torch.flatten(to_out_weight, start_dim=0, end_dim=1)
         torch_weights[
             f'{torch_block}.attn.attn.out_proj.weight'] = to_out_weight
@@ -94,7 +88,6 @@ def vit_jax_to_torch(jax_weights, num_layer=12):
     # transpose weights
     for k, v in torch_weights.items():
         if 'weight' in k and 'patch_embed' not in k and 'ln' not in k:
-            # v = rearrange(v, 'i o -> o i')
             v = v.permute(1, 0)
         torch_weights[k] = v
 
@@ -102,6 +95,7 @@ def vit_jax_to_torch(jax_weights, num_layer=12):
 
 
 def main():
+    # stole refactoring code from Robin Strudel, thanks
     parser = argparse.ArgumentParser(
         description='Convert keys from jax official pretrained vit models to '
         'MMSegmentation style.')

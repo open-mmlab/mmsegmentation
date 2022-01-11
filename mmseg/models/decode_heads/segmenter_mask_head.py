@@ -13,6 +13,35 @@ from .decode_head import BaseDecodeHead
 
 @HEADS.register_module()
 class SegmenterMaskTransformerHead(BaseDecodeHead):
+    """Segmenter: Transformer for Semantic Segmentation.
+
+    This head is the implementation of
+    `Segmenter:　<https://arxiv.org/abs/2105.05633>`_.
+
+    Args:
+        backbone_cfg:(dict): Config of backbone of
+            Context Path.
+        in_channels (int): The number of channels of input image.
+        num_layers (int): The depth of transformer.
+        num_heads (int): The number of attention heads.
+        embed_dims (int): The number of embedding dimension.
+        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+            Default: 4.
+        drop_path_rate (float): stochastic depth rate. Default 0.1.
+        drop_rate (float): Probability of an element to be zeroed.
+            Default 0.0
+        attn_drop_rate (float): The drop out rate for attention layer.
+            Default 0.0
+        num_fcs (int): The number of fully-connected layers for FFNs.
+            Default: 2.
+        qkv_bias (bool): Enable bias for qkv if True. Default: True.
+        act_cfg (dict): The activation config for FFNs.
+            Default: dict(type='GELU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN')
+        init_std (float): The value of std in weight initialization.
+            Default: 0.02.
+    """
 
     def __init__(
             self,
@@ -59,10 +88,10 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
         self.patch_proj = nn.Linear(embed_dims, embed_dims, bias=False)
         self.classes_proj = nn.Linear(embed_dims, embed_dims, bias=False)
 
-        _, self.decoder_norm = build_norm_layer(
-            norm_cfg, embed_dims, postfix=1)
-        _, self.mask_norm = build_norm_layer(
-            norm_cfg, self.num_classes, postfix=2)
+        self.decoder_norm = build_norm_layer(
+            norm_cfg, embed_dims, postfix=1)[1]
+        self.mask_norm = build_norm_layer(
+            norm_cfg, self.num_classes, postfix=2)[1]
 
         self.init_std = init_std
 
