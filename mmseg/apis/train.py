@@ -11,7 +11,7 @@ from mmcv.utils import build_from_cfg
 
 from mmseg.core import DistEvalHook, EvalHook
 from mmseg.datasets import build_dataloader, build_dataset
-from mmseg.utils import get_root_logger
+from mmseg.utils import find_latest_checkpoint, get_root_logger
 
 
 def init_random_seed(seed=None, device='cuda'):
@@ -160,6 +160,10 @@ def train_segmentor(model,
             hook = build_from_cfg(hook_cfg, HOOKS)
             runner.register_hook(hook, priority=priority)
 
+    if cfg.resume_from is None and cfg.get('auto_resume'):
+        resume_from = find_latest_checkpoint(cfg.work_dir)
+        if resume_from is not None:
+            cfg.resume_from = resume_from
     if cfg.resume_from:
         runner.resume(cfg.resume_from)
     elif cfg.load_from:
