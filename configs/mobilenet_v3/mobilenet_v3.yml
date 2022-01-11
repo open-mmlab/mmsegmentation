@@ -4,7 +4,7 @@ Collections:
     Training Data:
     - Cityscapes
   Paper:
-    URL: https://arxiv.org/abs/1801.04381
+    URL: https://arxiv.org/abs/1905.02244
     Title: Searching for MobileNetV3
   README: configs/mobilenet_v3/README.md
   Code:
