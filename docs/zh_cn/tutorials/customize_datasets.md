@@ -49,7 +49,7 @@ zzz
 ## 通过混合数据去定制数据集
 
 MMSegmentation 同样支持混合数据集去训练。
-当前它支持拼接 (concat) 和 重复 (repeat) 数据集。
+当前它支持拼接 (concat), 重复 (repeat) 和多图混合 (multi-image mix)数据集。
 
 ### 重复数据集
 
@@ -168,6 +168,41 @@ data = dict(
     ],
     val = dataset_A_val,
     test = dataset_A_test
+)
+
+```
+
+### 多图混合集
+
+我们使用 `MultiImageMixDataset` 作为包装(wrapper)去混合多个数据集的图片。
+`MultiImageMixDataset`可以被类似mosaic和mixup的多图混合数据増广使用。
+
+`MultiImageMixDataset`与`Mosaic`数据増广一起使用的例子：
+```python
+train_pipeline = [
+    dict(type='Mosaic'),
+    dict(type='Resize', img_scale=(1024, 512), keep_ratio=True),
+    dict(type='RandomFlip', prob=0.5),
+    dict(type='Normalize', **img_norm_cfg),
+    dict(type='DefaultFormatBundle'),
+    dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+]
+
+train_dataset = dict(
+    type='MultiImageMixDataset',
+    dataset=dict(
+        classes=classes,
+        palette=palette,
+        type=dataset_type,
+        reduce_zero_label=False,
+        img_dir=data_root + "images/train",
+        ann_dir=data_root + "annotations/train",
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='LoadAnnotations'),
+        ]
+    ),
+    pipeline=train_pipeline
 )
 
 ```
