@@ -4,7 +4,7 @@
 
 Automatically collect logs and write the result in a json file or markdown file.
 
-If there are several .log.json files in one folder, Log Collector assumes that the .log.json files other than the first one is resume from the preceding .log.json file. Log Collector returns the result considering all .log.json files.
+If there are several `.log.json` files in one folder, Log Collector assumes that the `.log.json` files other than the first one are resume from the preceding `.log.json` file. Log Collector returns the result considering all `.log.json` files.
 
 ## Usage:
 
