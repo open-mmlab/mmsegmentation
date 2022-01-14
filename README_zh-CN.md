@@ -2,12 +2,12 @@
   <img src="resources/mmseg-logo.png" width="600"/>
   <div>&nbsp;</div>
   <div align="center">
-    <b><font size="5">OpenMMLab 官网</font></b>
-    <sup>
-      <a href="https://openmmlab.com">
+    <a href="https://openmmlab.com">
+      <b><font size="5">OpenMMLab 官网</font></b>
+      <sup>
         <i><font size="4">HOT</font></i>
-      </a>
-    </sup>
+      </sup>
+    </a>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <b><font size="5">OpenMMLab 开放平台</font></b>
     <sup>
