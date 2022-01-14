@@ -10,7 +10,7 @@ model = dict(
         in_channels=4,
         weight=0.5,
         overlap=True,
-        dsa_mode='add',
+        attention_type='dsa-add',
         same_branch=False,
         init_cfg=dict(
             type='Pretrained', checkpoint='pretrain/alt_gvt_small.pth'),

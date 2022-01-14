@@ -12,8 +12,8 @@ model = dict(
         in_channels=4,
         weight=0.8,
         overlap=True,
-        dsa_mode='none',
-        same_branch=True),
+        attention_type='dsa-add',
+        same_branch=False),
     decode_head=dict(num_classes=6),
     test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 

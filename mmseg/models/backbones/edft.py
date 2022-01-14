@@ -15,7 +15,7 @@ from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbedOld as PatchEmbed
 from ..utils import nchw_to_nlc, nlc_to_nchw, SelfAttentionBlock
-from ..utils import CBAM
+from ..utils import CBAM, SELayer
 
 from .mit import MixVisionTransformer
 from .twins import SVT
@@ -96,7 +96,7 @@ class DepthFusionModule2(SelfAttentionBlock):
 
 class DepthFusionModule3(CBAM):
 
-    def __init__(self, embed_dims, num_heads):
+    def __init__(self, embed_dims):
         super(DepthFusionModule3, self).__init__(embed_dims * 2)
         self.embed_dims = embed_dims
         self.gamma = Scale(0)
@@ -104,6 +104,20 @@ class DepthFusionModule3(CBAM):
     def forward(self, color, depth):
         x = torch.cat([color, depth], dim=1)
         out = super(DepthFusionModule3, self).forward(x)[:, :self.embed_dims]
+        out = self.gamma(out) + color
+        return color
+
+
+class DepthFusionModule4(SELayer):
+
+    def __init__(self, embed_dims):
+        super(DepthFusionModule4, self).__init__(embed_dims * 2)
+        self.embed_dims = embed_dims
+        self.gamma = Scale(0)
+
+    def forward(self, color, depth):
+        x = torch.cat([color, depth], dim=1)
+        out = super(DepthFusionModule4, self).forward(x)[:, :self.embed_dims]
         out = self.gamma(out) + color
         return color
 
@@ -169,17 +183,17 @@ class EDFT(BaseModule):
         super(EDFT, self).__init__()
         assert (in_channels == 4)
 
-        self.num_heads = [1, 2, 4, 8]
-        self.num_stages = 4
+        self.num_heads = kwargs["num_heads"]
+        self.num_stages = kwargs["num_stages"]
 
         self.weight = kwargs["weight"]
         self.overlap = kwargs["overlap"]
-        self.dsa_mode = kwargs["dsa_mode"]
+        self.attention_type = kwargs["attention_type"]
         self.same_branch = kwargs["same_branch"]
         self.backbone = kwargs["backbone"]
         kwargs.pop("weight")
         kwargs.pop("overlap")
-        kwargs.pop("dsa_mode")
+        kwargs.pop("attention_type")
         kwargs.pop("same_branch")
         kwargs.pop("backbone")
 
@@ -189,6 +203,7 @@ class EDFT(BaseModule):
         elif (self.backbone == "Twins_svt"):
             self.color = SVT(3, **kwargs)
             self.embed_dims = kwargs["embed_dims"][0]
+            self.num_heads = self.num_heads / 2
         else:
             raise NotImplementedError("{} backbone is not supported".format(
                 self.backbone))
@@ -213,15 +228,19 @@ class EDFT(BaseModule):
         self.dfms = ModuleList()
         for i in range(self.num_stages):
             embed_dims_i = self.embed_dims * self.num_heads[i]
-            if self.dsa_mode == 'concat':
+            if self.attention_type == 'dsa-concat':
                 self.dfms.append(
                     DepthFusionModule1(embed_dims_i, self.num_heads[i]))
-            elif self.dsa_mode == 'add':
+            elif self.attention_type == 'dsa-add':
                 self.dfms.append(
                     DepthFusionModule2(
                         embed_dims_i, self.num_heads[i], weight=self.weight))
+            elif self.attention_type == 'ca':
+                self.dfms.append(DepthFusionModule4(embed_dims_i))
+            elif self.attention_type == 'cbam':
+                self.dfms.append(DepthFusionModule3(embed_dims_i))
             else:
-                pass  # self.dsa_mode == 'none'
+                pass  # self.attention_type == 'none'  just add
 
     def init_weights(self):
         for m in self.modules():

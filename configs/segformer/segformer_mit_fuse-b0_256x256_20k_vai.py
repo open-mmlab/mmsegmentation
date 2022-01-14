@@ -12,8 +12,8 @@ model = dict(
         in_channels=4,
         weight=0.5,
         overlap=True,
-        dsa_mode='none',
-        same_branch=True),
+        attention_type='cbam',
+        same_branch=False),
     decode_head=dict(num_classes=6))
 
 # optimizer
