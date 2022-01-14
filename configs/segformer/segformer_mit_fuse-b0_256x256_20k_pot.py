@@ -7,12 +7,13 @@ _base_ = [
 model = dict(
     pretrained='pretrain/mit_b0.pth',
     backbone=dict(
-        type='MitFuse',
+        type='EDFT',
+        backbone="Segformer",
         in_channels=4,
         weight=0.8,
         overlap=True,
-        dsa_mode='add',
-        same_branch=False),
+        dsa_mode='none',
+        same_branch=True),
     decode_head=dict(num_classes=6),
     test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
@@ -41,4 +42,4 @@ lr_config = dict(
     by_epoch=False)
 
 data = dict(samples_per_gpu=2, workers_per_gpu=2)
-evaluation = dict(interval=80000,metric=['mIoU', 'mFscore'], save_best='mIoU')
+evaluation = dict(metric=['mIoU', 'mFscore'], save_best='mIoU')

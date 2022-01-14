@@ -5,7 +5,7 @@ _base_ = [
 
 model = dict(
     pretrained='pretrain/mit_b0.pth', 
-    backbone=dict(type='MitFuse',in_channels=4),
+    backbone=dict(type='EDFT',backbone="Segformer",in_channels=4),
     decode_head=dict(num_classes=40),
     test_cfg=dict(mode='whole'))
 

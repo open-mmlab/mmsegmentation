@@ -86,6 +86,46 @@ def intersect_and_union(pred_label,
     return area_intersect, area_union, area_pred_label, area_label
 
 
+def calculate_confusion_matrix(pred, target, reduce_zero_label, num_classes):
+    """Calculate confusion matrix according to the prediction and target.
+    Args:
+        pred (torch.Tensor | np.array): The model prediction with shape (N, C).
+        target (torch.Tensor | np.array): The target of each prediction with
+            shape (N, 1) or (N,).
+    Returns:
+        torch.Tensor: Confusion matrix
+            The shape is (C, C), where C is the number of classes.
+    """
+
+    if isinstance(pred, np.ndarray):
+        pred = torch.from_numpy(pred)
+    if isinstance(target, np.ndarray):
+        target = torch.from_numpy(target)
+    assert (
+        isinstance(pred, torch.Tensor) and isinstance(target, torch.Tensor)), \
+        (f'pred and target should be torch.Tensor or np.ndarray, '
+         f'but got {type(pred)} and {type(target)}.')
+
+    if reduce_zero_label:
+        target[target == 0] = 255
+        target = target - 1
+        target[target == 254] = 255
+
+    # Modified from PyTorch-Ignite
+    pred_label = pred.flatten()
+    target_label = target.flatten()
+    mask = target_label != 255
+    assert len(pred_label) == len(target_label)
+
+    with torch.no_grad():
+        indices = num_classes * target_label[mask] + pred_label[mask]
+        matrix = torch.bincount(indices, minlength=num_classes**2)
+        matrix = matrix.reshape(num_classes, num_classes)
+    return matrix
+
+
+
+
 def total_intersect_and_union(results,
                               gt_seg_maps,
                               num_classes,
@@ -116,7 +156,13 @@ def total_intersect_and_union(results,
     total_area_union = torch.zeros((num_classes, ), dtype=torch.float64)
     total_area_pred_label = torch.zeros((num_classes, ), dtype=torch.float64)
     total_area_label = torch.zeros((num_classes, ), dtype=torch.float64)
+    total_confusion_matrix = torch.zeros((num_classes, num_classes),
+                                         dtype=torch.float64)
     for result, gt_seg_map in zip(results, gt_seg_maps):
+        confusion_matrix = calculate_confusion_matrix(result, gt_seg_map,
+                                                      reduce_zero_label,
+                                                      num_classes)
+        total_confusion_matrix += confusion_matrix
         area_intersect, area_union, area_pred_label, area_label = \
             intersect_and_union(
                 result, gt_seg_map, num_classes, ignore_index,
@@ -125,6 +171,7 @@ def total_intersect_and_union(results,
         total_area_union += area_union
         total_area_pred_label += area_pred_label
         total_area_label += area_label
+    print("\n Confusion Matrix:\n", total_confusion_matrix.long())
     return total_area_intersect, total_area_union, total_area_pred_label, \
         total_area_label
 
@@ -316,7 +363,6 @@ def pre_eval_to_metrics(pre_eval_results,
     # ([A_1, ..., A_n], ..., [D_1, ..., D_n])
     pre_eval_results = tuple(zip(*pre_eval_results))
     assert len(pre_eval_results) == 4
-
     total_area_intersect = sum(pre_eval_results[0])
     total_area_union = sum(pre_eval_results[1])
     total_area_pred_label = sum(pre_eval_results[2])

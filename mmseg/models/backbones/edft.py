@@ -15,55 +15,10 @@ from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbedOld as PatchEmbed
 from ..utils import nchw_to_nlc, nlc_to_nchw, SelfAttentionBlock
+from ..utils import CBAM
 
 from .mit import MixVisionTransformer
-
-
-class DepthAlignModule(BaseModule):
-
-    def __init__(self, features):
-        super(DepthAlignModule, self).__init__()
-
-        self.delta_gen1 = nn.Sequential(
-            nn.Conv2d(features * 2, features, kernel_size=1, bias=False),
-            nn.BatchNorm2d(features),
-            nn.Conv2d(features, 2, kernel_size=3, padding=1, bias=False))
-
-        self.delta_gen2 = nn.Sequential(
-            nn.Conv2d(features * 2, features, kernel_size=1, bias=False),
-            nn.BatchNorm2d(features),
-            nn.Conv2d(features, 2, kernel_size=3, padding=1, bias=False))
-
-        self.delta_gen1[2].weight.data.zero_()
-        self.delta_gen2[2].weight.data.zero_()
-
-    def bilinear_interpolate_torch_gridsample(self, input, size, delta=0):
-        out_h, out_w = size
-        n, c, h, w = input.shape
-        s = 1.0
-        norm = torch.tensor([[[[h / s,
-                                w / s]]]]).type_as(input).to(input.device)
-        w_list = torch.linspace(-1.0, 1.0, out_h).view(-1, 1).repeat(1, out_w)
-        h_list = torch.linspace(-1.0, 1.0, out_w).repeat(out_h, 1)
-        grid = torch.cat((h_list.unsqueeze(2), w_list.unsqueeze(2)), 2)
-        grid = grid.repeat(n, 1, 1, 1).type_as(input).to(input.device)
-        grid = grid + delta.permute(0, 2, 3, 1) / norm
-
-        output = F.grid_sample(input, grid)
-        return output
-
-    def forward(self, color, depth):
-        h, w = color.size(2), color.size(3)
-
-        concat = torch.cat((color, depth), 1)
-        delta1 = self.delta_gen1(concat)
-        delta2 = self.delta_gen2(concat)
-        color = self.bilinear_interpolate_torch_gridsample(
-            color, (h, w), delta1)
-        depth = self.bilinear_interpolate_torch_gridsample(
-            depth, (h, w), delta2)
-
-        return color, depth
+from .twins import SVT
 
 
 class DepthFusionModule1(MultiheadAttention):
@@ -139,18 +94,18 @@ class DepthFusionModule2(SelfAttentionBlock):
         return self.norm(out)
 
 
-# class DepthFusionModule3(CBAM):
+class DepthFusionModule3(CBAM):
 
-#     def __init__(self, embed_dims, num_heads):
-#         super(DepthFusionModule3, self).__init__(embed_dims * 2)
-#         self.embed_dims = embed_dims
-#         self.gamma = Scale(0)
+    def __init__(self, embed_dims, num_heads):
+        super(DepthFusionModule3, self).__init__(embed_dims * 2)
+        self.embed_dims = embed_dims
+        self.gamma = Scale(0)
 
-#     def forward(self, color, depth):
-#         x = torch.cat([color, depth], dim=1)
-#         out = super(DepthFusionModule3, self).forward(x)[:, :self.embed_dims]
-#         out = self.gamma(out) + color
-#         return color
+    def forward(self, color, depth):
+        x = torch.cat([color, depth], dim=1)
+        out = super(DepthFusionModule3, self).forward(x)[:, :self.embed_dims]
+        out = self.gamma(out) + color
+        return color
 
 
 class DepthDownsample(BaseModule):
@@ -200,7 +155,7 @@ class DepthDownsample(BaseModule):
 
     def forward(self, x):
         outs = []
-        for downsample in self.layers:        
+        for downsample in self.layers:
             x, hw_shape = downsample(x)
             x = nlc_to_nchw(x, hw_shape)
             outs.append(x)
@@ -208,44 +163,65 @@ class DepthDownsample(BaseModule):
 
 
 @BACKBONES.register_module()
-class MitFuse(BaseModule):
+class EDFT(BaseModule):
 
     def __init__(self, in_channels, **kwargs):
-        super(MitFuse, self).__init__()
+        super(EDFT, self).__init__()
         assert (in_channels == 4)
 
-        self.num_heads = kwargs["num_heads"]
-        self.num_stages = kwargs["num_stages"]
+        self.num_heads = [1, 2, 4, 8]
+        self.num_stages = 4
+
         self.weight = kwargs["weight"]
         self.overlap = kwargs["overlap"]
         self.dsa_mode = kwargs["dsa_mode"]
         self.same_branch = kwargs["same_branch"]
+        self.backbone = kwargs["backbone"]
         kwargs.pop("weight")
         kwargs.pop("overlap")
         kwargs.pop("dsa_mode")
         kwargs.pop("same_branch")
+        kwargs.pop("backbone")
 
-        self.color = MixVisionTransformer(3, **kwargs)
-        self.depth = DepthDownsample(
-            1,
-            embed_dims=kwargs["embed_dims"],
-            num_heads=self.num_heads,
-            overlap=self.overlap,
-            pretrained=kwargs["pretrained"] if "pretrained" in kwargs.keys()
-            else None) if not self.same_branch else MixVisionTransformer(
-                1, **kwargs)
+        if (self.backbone == "Segformer"):
+            self.color = MixVisionTransformer(3, **kwargs)
+            self.embed_dims = kwargs["embed_dims"]
+        elif (self.backbone == "Twins_svt"):
+            self.color = SVT(3, **kwargs)
+            self.embed_dims = kwargs["embed_dims"][0]
+        else:
+            raise NotImplementedError("{} backbone is not supported".format(
+                self.backbone))
 
-        self.dams = ModuleList()
+        if self.same_branch:
+            if (self.backbone == "Segformer"):
+                self.depth = MixVisionTransformer(1, **kwargs)
+            elif (self.backbone == "Twins_svt"):
+                self.depth = SVT(1, **kwargs)
+            else:
+                raise NotImplementedError(
+                    "{} backbone is not supported".format(self.backbone))
+        else:
+            self.depth = DepthDownsample(
+                1,
+                embed_dims=self.embed_dims,
+                num_heads=self.num_heads,
+                overlap=self.overlap,
+                pretrained=kwargs["pretrained"]
+                if "pretrained" in kwargs.keys() else None)
+
         self.dfms = ModuleList()
         for i in range(self.num_stages):
-            embed_dims_i = kwargs["embed_dims"] * self.num_heads[i]
-            # self.dams.append(DepthAlignModule(embed_dims_i))
-            if self.dsa_mode != 'none':
+            embed_dims_i = self.embed_dims * self.num_heads[i]
+            if self.dsa_mode == 'concat':
+                self.dfms.append(
+                    DepthFusionModule1(embed_dims_i, self.num_heads[i]))
+            elif self.dsa_mode == 'add':
                 self.dfms.append(
                     DepthFusionModule2(
-                        embed_dims_i, self.num_heads[i], weight=self.weight
-                    ) if self.dsa_mode == 'add' else DepthFusionModule1(
-                        embed_dims_i, self.num_heads[i]))
+                        embed_dims_i, self.num_heads[i], weight=self.weight))
+            else:
+                pass  # self.dsa_mode == 'none'
 
     def init_weights(self):
         for m in self.modules():
@@ -275,8 +251,6 @@ class MitFuse(BaseModule):
         outs = []
         for i in range(self.num_stages):
             c, d = c_outs[i], d_outs[i]
-            if (len(self.dams) != 0):
-                c, d = self.dams[i](c, d)
             if (len(self.dfms) != 0):
                 out = self.dfms[i](c, d)
                 outs.append(out)

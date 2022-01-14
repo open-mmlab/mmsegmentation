@@ -7,12 +7,13 @@ _base_ = [
 model = dict(
     pretrained='pretrain/mit_b0.pth',
     backbone=dict(
-        type='MitFuse',
+        type='EDFT',
+        backbone="Segformer",
         in_channels=4,
         weight=0.5,
         overlap=True,
-        dsa_mode='add',
-        same_branch=False),
+        dsa_mode='none',
+        same_branch=True),
     decode_head=dict(num_classes=6))
 
 # optimizer
