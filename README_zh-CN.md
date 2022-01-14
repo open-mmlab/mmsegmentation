@@ -5,7 +5,7 @@
     <a href="https://openmmlab.com">
       <b><font size="5">OpenMMLab 官网</font></b>
       <sup>
-        <i><font size="4">HOT</font></i>
+        <i><font size="4" color="red">HOT</font></i>
       </sup>
     </a>
     &nbsp;&nbsp;&nbsp;&nbsp;
