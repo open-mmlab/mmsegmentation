@@ -97,6 +97,14 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── iSAID
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   │   ├── test
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -228,3 +236,35 @@ python tools/convert_datasets/loveda.py /path/to/loveDA
 请参照 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/inference.md) 来使用训练好的模型去预测 LoveDA 测试集并且提交到官网。
 
 关于 LoveDA 的更多细节可以在[这里](https://github.com/Junjue-Wang/LoveDA) 找到。
+
+### iSAID
+iSAID 数据集(训练集/验证集/测试集)的图像可以从 [DOTA-v1.0](https://captain-whu.github.io/DOTA/dataset.html) 下载.
+
+iSAID 数据集(训练集/验证集)的注释可以从 [iSAID](https://captain-whu.github.io/iSAID/dataset.html) 下载.
+
+该数据集是一个大规模的实例分割(也可以用于语义分割)的遥感数据集.
+
+下载后，在数据集转换前，您需要将数据集文件夹调整成如下格式.
+```
+│   ├── iSAID
+│   │   ├── train
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   │   ├── part2.zip
+│   │   │   │   ├── part3.zip
+│   │   │   ├── Semantic_masks
+│   │   │   │   ├── images.zip
+│   │   ├── val
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   ├── Semantic_masks
+│   │   │   │   ├── images.zip
+│   │   ├── test
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   │   ├── part2.zip
+```
+
+```shell
+python tools/convert_datasets/isaid.py /path/to/iSAID
+```

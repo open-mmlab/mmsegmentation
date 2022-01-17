@@ -302,7 +302,7 @@ The data annotations could be download from [iSAID](https://captain-whu.github.i
 
 The dataset is a Large-scale Dataset for Instance Segmentation (also have segmantic segmentation) in Aerial Images.
 
-If the data directory structure you downloaded from Baidu online disk is different, you may need to follow the following structure
+You may need to follow the following structure for dataset preparation after downloading iSAID dataset.
 ```
 │   ├── iSAID
 │   │   ├── train
@@ -324,5 +324,5 @@ If the data directory structure you downloaded from Baidu online disk is differe
 ```
 
 ```shell
-python tools/convert_datasets/iSAID.py /path/to/iSAID
+python tools/convert_datasets/isaid.py /path/to/iSAID
 ```

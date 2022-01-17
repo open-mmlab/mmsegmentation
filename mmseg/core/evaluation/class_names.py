@@ -52,6 +52,16 @@ def voc_classes():
     ]
 
 
+def isaid_classes():
+    """iSAID class names for external use."""
+    return [
+        'background', 'ship', 'store_tank', 'baseball_diamond', 'tennis_court',
+        'basketball_court', 'Ground_Track_Field', 'Bridge', 'Large_Vehicle',
+        'Small_Vehicle', 'Helicopter', 'Swimming_pool', 'Roundabout',
+        'Soccer_ball_field', 'plane', 'Harbor'
+    ]
+
+
 def cityscapes_palette():
     """Cityscapes palette for external use."""
     return [[128, 64, 128], [244, 35, 232], [70, 70, 70], [102, 102, 156],
@@ -112,10 +122,20 @@ def voc_palette():
             [128, 64, 0], [0, 192, 0], [128, 192, 0], [0, 64, 128]]
 
 
+def isaid_palette():
+    """iSAID palette for external use."""
+    return [[0, 0, 0], [0, 0, 63], [0, 63, 63], [0, 63, 0], [0, 63, 127],
+            [0, 63, 191], [0, 63, 255], [0, 127, 63], [0, 127,
+                                                       127], [0, 0, 127],
+            [0, 0, 191], [0, 0, 255], [0, 191, 127], [0, 127, 191],
+            [0, 127, 255], [0, 100, 155]]
+
+
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
-    'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug']
+    'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug'],
+    'isaid': ['isaid', 'iSAID']
 }
 
 
