@@ -34,7 +34,7 @@ Models:
       mIoU: 71.52
       mIoU(ms+flip): 73.35
   Config: configs/stdc/stdc1_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/v0.5/stdc/stdc1_512x1024_80k_cityscapes/stdc1_512x1024_80k_cityscapes_20211125_211245-2c8ba4c5.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_512x1024_80k_cityscapes/stdc1_512x1024_80k_cityscapes_20211125_211245-2c8ba4c5.pth
 - Name: stdc1_in1k-pre_512x1024_80k_cityscapes
   In Collection: stdc
   Metadata:
