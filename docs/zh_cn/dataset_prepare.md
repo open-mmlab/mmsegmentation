@@ -248,3 +248,4 @@ python tools/convert_datasets/loveda.py /path/to/loveDA
 ```shell
 python tools/convert_datasets/potsdam.py /path/to/potsdam
 ```
+使用我们默认的配置， 将生成 3456 张图片的训练集和 2016 张图片的验证集。
