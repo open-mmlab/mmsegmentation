@@ -4,7 +4,7 @@ import time
 
 import torch
 from mmcv import Config
-from mmcv.parallel import MMDataParallel
+from mmcv.parallel import scatter
 from mmcv.runner import load_checkpoint, wrap_fp16_model
 
 from mmseg.datasets import build_dataloader, build_dataset
@@ -36,9 +36,10 @@ def main():
     data_loader = build_dataloader(
         dataset,
         samples_per_gpu=1,
-        workers_per_gpu=cfg.data.workers_per_gpu,
+        workers_per_gpu=0,
         dist=False,
-        shuffle=False)
+        shuffle=False,
+        persistent_workers=False)
 
     # build the model and load checkpoint
     cfg.model.train_cfg = None
@@ -48,7 +49,8 @@ def main():
         wrap_fp16_model(model)
     load_checkpoint(model, args.checkpoint, map_location='cpu')
 
-    model = MMDataParallel(model, device_ids=[0])
+    model = model.cuda()
+    device = next(model.parameters()).device  # model device
 
     model.eval()
 
@@ -57,9 +59,13 @@ def main():
     pure_inf_time = 0
     total_iters = 200
 
+    data_loader_iter = iter(data_loader)
     # benchmark with 200 image and take the average
-    for i, data in enumerate(data_loader):
+    for i in range(total_iters):
 
+        data = next(data_loader_iter)
+
+        data = scatter(data, [device])[0]
         torch.cuda.synchronize()
         start_time = time.perf_counter()
 
@@ -76,10 +82,8 @@ def main():
                 print(f'Done image [{i + 1:<3}/ {total_iters}], '
                       f'fps: {fps:.2f} img / s')
 
-        if (i + 1) == total_iters:
-            fps = (i + 1 - num_warmup) / pure_inf_time
-            print(f'Overall fps: {fps:.2f} img / s')
-            break
+    fps = (total_iters - num_warmup) / pure_inf_time
+    print(f'Overall fps: {fps:.2f} img / s')
 
 
 if __name__ == '__main__':
