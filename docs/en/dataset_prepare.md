@@ -307,4 +307,5 @@ For Potsdam dataset, please run the following command to download and re-organiz
 ```shell
 python tools/convert_datasets/potsdam.py /path/to/potsdam
 ```
+
 In our default setting, it will generate 3456 images for training and 2016 images for validation.
