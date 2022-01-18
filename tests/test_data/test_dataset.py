@@ -15,7 +15,7 @@ from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
                             ConcatDataset, CustomDataset, LoveDADataset,
                             MultiImageMixDataset, PascalVOCDataset,
-                            RepeatDataset, build_dataset)
+                            PotsdamDataset, RepeatDataset, build_dataset)
 
 
 def test_classes():
@@ -24,6 +24,8 @@ def test_classes():
         'pascal_voc')
     assert list(
         ADE20KDataset.CLASSES) == get_classes('ade') == get_classes('ade20k')
+    assert list(LoveDADataset.CLASSES) == get_classes('loveda')
+    assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -65,6 +67,8 @@ def test_palette():
     assert PascalVOCDataset.PALETTE == get_palette('voc') == get_palette(
         'pascal_voc')
     assert ADE20KDataset.PALETTE == get_palette('ade') == get_palette('ade20k')
+    assert LoveDADataset.PALETTE == get_palette('loveda')
+    assert PotsdamDataset.PALETTE == get_palette('potsdam')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -707,6 +711,16 @@ def test_loveda():
         pseudo_results, metric='mIoU', imgfile_prefix='.format_loveda')
 
     shutil.rmtree('.format_loveda')
+
+
+def test_potsdam():
+    test_dataset = PotsdamDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_potsdam_dataset/img_dir'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_potsdam_dataset/ann_dir'))
+    assert len(test_dataset) == 1
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
