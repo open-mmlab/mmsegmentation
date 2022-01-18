@@ -1,5 +1,22 @@
 <div align="center">
   <img src="resources/mmseg-logo.png" width="600"/>
+  <div>&nbsp;</div>
+  <div align="center">
+    <b><font size="5">OpenMMLab website</font></b>
+    <sup>
+      <a href="https://openmmlab.com">
+        <i><font size="4">HOT</font></i>
+      </a>
+    </sup>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <b><font size="5">OpenMMLab platform</font></b>
+    <sup>
+      <a href="https://platform.openmmlab.com">
+        <i><font size="4">TRY IT OUT</font></i>
+      </a>
+    </sup>
+  </div>
+  <div>&nbsp;</div>
 </div>
 <br />
 
@@ -50,7 +67,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 ## Changelog
 
 v0.20.2 was released in 12/15/2021.
-Please refer to [changelog.md](docs/changelog.md) for details and release history.
+Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
 
@@ -174,3 +191,4 @@ and develop their own new semantic segmentation methods.
 - [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab 3D human parametric model toolbox and benchmark.
 - [MMSelfSup](https://github.com/open-mmlab/mmselfsup): OpenMMLab self-supervised learning toolbox and benchmark.
 - [MMRazor](https://github.com/open-mmlab/mmrazor): OpenMMLab Model Compression Toolbox and Benchmark.
+- [MMDeploy](https://github.com/open-mmlab/mmdeploy): OpenMMLab Model Deployment Framework.

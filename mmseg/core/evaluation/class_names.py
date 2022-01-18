@@ -52,6 +52,22 @@ def voc_classes():
     ]
 
 
+def loveda_classes():
+    """LoveDA class names for external use."""
+    return [
+        'background', 'building', 'road', 'water', 'barren', 'forest',
+        'agricultural'
+    ]
+
+
+def potsdam_classes():
+    """Potsdam class names for external use."""
+    return [
+        'impervious_surface', 'building', 'low_vegetation', 'tree', 'car',
+        'clutter'
+    ]
+
+
 def cityscapes_palette():
     """Cityscapes palette for external use."""
     return [[128, 64, 128], [244, 35, 232], [70, 70, 70], [102, 102, 156],
@@ -112,10 +128,24 @@ def voc_palette():
             [128, 64, 0], [0, 192, 0], [128, 192, 0], [0, 64, 128]]
 
 
+def loveda_palette():
+    """LoveDA palette for external use."""
+    return [[255, 255, 255], [255, 0, 0], [255, 255, 0], [0, 0, 255],
+            [159, 129, 183], [0, 255, 0], [255, 195, 128]]
+
+
+def potsdam_palette():
+    """Potsdam palette for external use."""
+    return [[255, 255, 255], [0, 0, 255], [0, 255, 255], [0, 255, 0],
+            [255, 255, 0], [255, 0, 0]]
+
+
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
-    'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug']
+    'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug'],
+    'loveda': ['loveda'],
+    'potsdam': ['potsdam']
 }
 
 

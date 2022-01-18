@@ -6,8 +6,8 @@ import pytest
 from torch.utils.data import (DistributedSampler, RandomSampler,
                               SequentialSampler)
 
-from mmseg.datasets import (DATASETS, ConcatDataset, build_dataloader,
-                            build_dataset)
+from mmseg.datasets import (DATASETS, ConcatDataset, MultiImageMixDataset,
+                            build_dataloader, build_dataset)
 
 
 @DATASETS.register_module()
@@ -46,6 +46,11 @@ def test_build_dataset():
         ann_dir=[ann_dir, ann_dir])
     dataset = build_dataset(cfg)
     assert isinstance(dataset, ConcatDataset)
+    assert len(dataset) == 10
+
+    cfg = dict(type='MultiImageMixDataset', dataset=cfg, pipeline=[])
+    dataset = build_dataset(cfg)
+    assert isinstance(dataset, MultiImageMixDataset)
     assert len(dataset) == 10
 
     # with ann_dir, split
