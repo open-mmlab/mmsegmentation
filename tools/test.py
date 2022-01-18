@@ -149,18 +149,22 @@ def main():
         mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
         if args.aug_test:
-            json_file = osp.join(args.work_dir, f'eval_ms_{timestamp}.json')
+            json_file = osp.join(args.work_dir,
+                                 f'eval_multi_scale_{timestamp}.json')
         else:
-            json_file = osp.join(args.work_dir, f'eval_ss_{timestamp}.json')
+            json_file = osp.join(args.work_dir,
+                                 f'eval_single_scale_{timestamp}.json')
     elif rank == 0:
         work_dir = osp.join('./work_dirs',
                             osp.splitext(osp.basename(args.config))[0])
         mmcv.mkdir_or_exist(osp.abspath(work_dir))
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
         if args.aug_test:
-            json_file = osp.join(work_dir, f'eval_ms_{timestamp}.json')
+            json_file = osp.join(work_dir,
+                                 f'eval_multi_scale_{timestamp}.json')
         else:
-            json_file = osp.join(work_dir, f'eval_ss_{timestamp}.json')
+            json_file = osp.join(work_dir,
+                                 f'eval_single_scale_{timestamp}.json')
 
     # build the dataloader
     # TODO: support multiple images per gpu (only minor changes are needed)
