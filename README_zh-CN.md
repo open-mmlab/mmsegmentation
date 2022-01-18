@@ -1,5 +1,22 @@
 <div align="center">
   <img src="resources/mmseg-logo.png" width="600"/>
+  <div>&nbsp;</div>
+  <div align="center">
+    <b><font size="5">OpenMMLab 官网</font></b>
+    <sup>
+      <a href="https://openmmlab.com">
+        <i><font size="4">HOT</font></i>
+      </a>
+    </sup>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <b><font size="5">OpenMMLab 开放平台</font></b>
+    <sup>
+      <a href="https://platform.openmmlab.com">
+        <i><font size="4">TRY IT OUT</font></i>
+      </a>
+    </sup>
+  </div>
+  <div>&nbsp;</div>
 </div>
 <br />
 
@@ -49,7 +66,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 ## 更新日志
 
 最新的月度版本 v0.20.2 在 2021.12.15 发布。
-如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/changelog.md)。
+如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
 
 ## 基准测试和模型库
 
