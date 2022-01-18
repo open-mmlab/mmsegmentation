@@ -97,6 +97,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── potsdam
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -228,3 +235,18 @@ python tools/convert_datasets/loveda.py /path/to/loveDA
 请参照 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/inference.md) 来使用训练好的模型去预测 LoveDA 测试集并且提交到官网。
 
 关于 LoveDA 的更多细节可以在[这里](https://github.com/Junjue-Wang/LoveDA) 找到。
+
+### ISPRS Potsdam
+
+[Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/)
+数据集是一个有着2D 语义分割内容标注的城市遥感数据集。
+数据集可以从挑战[主页](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/) 获得。
+需要其中的 '2_Ortho_RGB.zip' 和 '5_Labels_all_noBoundary.zip'。
+
+对于 Potsdam 数据集，请运行以下命令下载并重新组织数据集
+
+```shell
+python tools/convert_datasets/potsdam.py /path/to/potsdam
+```
+
+使用我们默认的配置， 将生成 3456 张图片的训练集和 2016 张图片的验证集。
