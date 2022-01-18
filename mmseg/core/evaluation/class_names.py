@@ -68,6 +68,14 @@ def potsdam_classes():
     ]
 
 
+def vaihingen_classes():
+    """Vaihingen class names for external use."""
+    return [
+        'impervious_surface', 'building', 'low_vegetation', 'tree', 'car',
+        'clutter'
+    ]
+
+
 def cityscapes_palette():
     """Cityscapes palette for external use."""
     return [[128, 64, 128], [244, 35, 232], [70, 70, 70], [102, 102, 156],
@@ -140,12 +148,19 @@ def potsdam_palette():
             [255, 255, 0], [255, 0, 0]]
 
 
+def vaihingen_palette():
+    """Vaihingen palette for external use."""
+    return [[255, 255, 255], [0, 0, 255], [0, 0, 255], [0, 255, 0],
+            [255, 255, 0], [255, 0, 0]]
+
+
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
     'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug'],
     'loveda': ['loveda'],
-    'potsdam': ['potsdam']
+    'potsdam': ['potsdam'],
+    'vaihingen': ['vaihingen']
 }
 
 
