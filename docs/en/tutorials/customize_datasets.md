@@ -182,7 +182,7 @@ like mosaic and mixup.
 An example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
 ```python
 train_pipeline = [
-    dict(type='Mosaic'),
+    dict(type='RandomMosaic', prob=1),
     dict(type='Resize', img_scale=(1024, 512), keep_ratio=True),
     dict(type='RandomFlip', prob=0.5),
     dict(type='Normalize', **img_norm_cfg),
