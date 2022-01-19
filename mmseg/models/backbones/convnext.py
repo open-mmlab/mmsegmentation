@@ -160,7 +160,8 @@ class ConvNeXt(BaseModule):
                 nn.init.constant_(m.bias, 0)
                 nn.init.constant_(m.weight, 1.0)
 
-        if self.init_cfg is not None:
+        if isinstance(pretrained, str):
+            self.apply(_init_weights)
             super(ConvNeXt, self).init_weights()
         elif pretrained is None:
             self.apply(_init_weights)
