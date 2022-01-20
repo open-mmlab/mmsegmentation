@@ -131,6 +131,7 @@ class ConvNeXt(BaseModule):
             raise TypeError('pretrained must be a str or None')
         super(ConvNeXt, self).__init__(init_cfg=self.init_cfg)
 
+        self.num_stages = num_stages
         self.downsample_layers = nn.ModuleList(
         )  # stem and 3 intermediate downsampling conv layers
         stem = nn.Sequential(
@@ -148,7 +149,7 @@ class ConvNeXt(BaseModule):
         dp_rates = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]
-        for i in range(4):
+        for i in range(num_stages):
             stage = nn.Sequential(*[
                 Block(
                     dim=dims[i],
@@ -200,7 +201,7 @@ class ConvNeXt(BaseModule):
 
     def forward(self, x):
         outs = []
-        for i in range(4):
+        for i in range(self.num_stages):
             if i != 0:
                 downsample_norm = getattr(self, f'downsample_norm{i-1}')
                 x = downsample_norm(x.permute(0, 2, 3, 1)).permute(0, 3, 1, 2)
