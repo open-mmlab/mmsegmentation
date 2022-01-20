@@ -1,11 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
-from functools import partial
 
 import torch
 import torch.nn as nn
+from mmcv.cnn import build_activation_layer, build_norm_layer
 from mmcv.cnn.bricks.transformer import build_dropout
-from mmcv.cnn.utils.weight_init import trunc_normal_
+from mmcv.cnn.utils.weight_init import constant_init, trunc_normal_init
 from mmcv.runner import BaseModule
 
 from mmseg.models.builder import BACKBONES
@@ -25,17 +25,28 @@ class Block(BaseModule):
             Default: 1e-6.
         dropout_layer (obj:`ConfigDict`): The dropout_layer used
             when adding the shortcut. Default: None.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN').
+        act_cfg (dict, optional): The activation config for ConvNext
+            blocks. Default: dict(type='GELU').
     """
 
-    def __init__(self, dim, layer_scale_init_value=1e-6, dropout_layer=None):
+    def __init__(self,
+                 dim,
+                 kernel_size,
+                 layer_scale_init_value=1e-6,
+                 dropout_layer=None,
+                 norm_cfg=dict(type='LN', eps=1e-6),
+                 act_cfg=dict(type='GELU')):
         super().__init__()
         self.dwconv = nn.Conv2d(
-            dim, dim, kernel_size=7, padding=3, groups=dim)  # depthwise conv
-        self.norm = nn.LayerNorm(dim, eps=1e-6)
+            dim, dim, kernel_size=kernel_size, padding=3,
+            groups=dim)  # depthwise conv
+        self.norm = build_norm_layer(norm_cfg, dim)[1]
         self.pwconv1 = nn.Linear(
             dim,
             4 * dim)  # pointwise/1x1 convs, implemented with linear layers
-        self.act = nn.GELU()
+        self.act = build_activation_layer(act_cfg)
         self.pwconv2 = nn.Linear(4 * dim, dim)
         self.gamma = nn.Parameter(
             layer_scale_init_value * torch.ones((dim)),
@@ -69,6 +80,7 @@ class ConvNeXt(BaseModule):
 
     Args:
         in_chans (int): Number of input image channels. Default: 3.
+        num_stages (int): ConvNext stages, normally 4. Default: 4.
         depths (tuple(int)): Number of blocks at each stage.
             Default: [3, 3, 9, 3]
         dims (int): Feature dimension at each stage.
@@ -79,38 +91,53 @@ class ConvNeXt(BaseModule):
             Default: 1e-6.
         out_indices (List[int] | int, optional): Output from which stages.
             Default: [0, 1, 2, 3].
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN').
+        act_cfg (dict): The activation config for FFNs.
+            Default: dict(type='GELU').
         pretrained (str, optional): Model pretrained path.
-            Default: None
+            Default: None.
         init_cfg (dict, optional): The Config for initialization.
             Defaults to None.
     """
 
     def __init__(self,
                  in_chans=3,
+                 num_stages=4,
                  depths=[3, 3, 9, 3],
                  dims=[96, 192, 384, 768],
+                 kernel_size=7,
                  drop_path_rate=0.,
                  layer_scale_init_value=1e-6,
                  out_indices=[0, 1, 2, 3],
+                 norm_cfg=dict(type='LN', eps=1e-6),
+                 act_cfg=dict(type='GELU'),
                  pretrained=None,
                  init_cfg=None):
-        super(ConvNeXt, self).__init__(init_cfg=init_cfg)
+        assert len(depths) == num_stages, 'Length of depths does \
+                                        not match number of stages!'
+
+        assert len(dims) == num_stages, 'Length of dims does \
+                                        not match number of stages!'
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be set at the same time'
         if isinstance(pretrained, str):
             warnings.warn('DeprecationWarning: pretrained is deprecated, '
                           'please use "init_cfg" instead')
             self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
-        elif pretrained is not None:
+        elif pretrained is None:
+            self.init_cfg = init_cfg
+        else:
             raise TypeError('pretrained must be a str or None')
+        super(ConvNeXt, self).__init__(init_cfg=self.init_cfg)
 
         self.downsample_layers = nn.ModuleList(
         )  # stem and 3 intermediate downsampling conv layers
         stem = nn.Sequential(
             nn.Conv2d(in_chans, dims[0], kernel_size=4, stride=4))
-        self.stem_norm = nn.LayerNorm(dims[0], eps=1e-6)
+        self.stem_norm = build_norm_layer(norm_cfg, dims[0])[1]
         self.downsample_layers.append(stem)
-        for i in range(3):
+        for i in range(num_stages - 1):
             downsample_layer = nn.Conv2d(
                 dims[i], dims[i + 1], kernel_size=2, stride=2)
             self.downsample_layers.append(downsample_layer)
@@ -121,28 +148,28 @@ class ConvNeXt(BaseModule):
         dp_rates = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]
-        cur = 0
         for i in range(4):
             stage = nn.Sequential(*[
                 Block(
                     dim=dims[i],
+                    kernel_size=kernel_size,
                     layer_scale_init_value=layer_scale_init_value,
                     dropout_layer=dict(
-                        type='DropPath', drop_prob=dp_rates[cur + j]))
-                for j in range(depths[i])
+                        type='DropPath',
+                        drop_prob=dp_rates[sum(depths[:i]) + j]),
+                    norm_cfg=norm_cfg,
+                    act_cfg=act_cfg) for j in range(depths[i])
             ])
             self.stages.append(stage)
-            cur += depths[i]
 
         self.out_indices = out_indices
 
-        norm_layer = partial(nn.LayerNorm, eps=1e-6)
-        for i_layer in range(4):
-            layer = norm_layer(dims[i_layer])
+        for i_layer in range(num_stages):
+            layer = build_norm_layer(norm_cfg, dims[i_layer])[1]
             layer_name = f'norm{i_layer}'
             self.add_module(layer_name, layer)
-        for i_downsample_layer in range(3):
-            layer = norm_layer(dims[i_downsample_layer])
+        for i_downsample_layer in range(num_stages - 1):
+            layer = build_norm_layer(norm_cfg, dims[i_downsample_layer])[1]
             layer_name = f'downsample_norm{i_downsample_layer}'
             self.add_module(layer_name, layer)
 
@@ -150,23 +177,26 @@ class ConvNeXt(BaseModule):
 
         def _init_weights(m):
             if isinstance(m, nn.Linear):
-                trunc_normal_(m.weight, std=.02)
+                trunc_normal_init(m.weight, std=.02)
                 if isinstance(m, nn.Linear) and m.bias is not None:
-                    nn.init.constant_(m.bias, 0)
+                    constant_init(m.bias, val=0., bias=0.)
             elif isinstance(m, nn.Conv2d):
-                trunc_normal_(m.weight, std=.02)
-                nn.init.constant_(m.bias, 0)
+                trunc_normal_init(m.weight, std=.02)
+                constant_init(m.bias, val=0., bias=0.)
             elif isinstance(m, nn.LayerNorm):
-                nn.init.constant_(m.bias, 0)
-                nn.init.constant_(m.weight, 1.0)
+                constant_init(m.bias, val=0., bias=0.)
+                constant_init(m.weight, val=1.0, bias=0.)
 
-        if isinstance(pretrained, str):
-            self.apply(_init_weights)
-            super(ConvNeXt, self).init_weights()
-        elif pretrained is None:
-            self.apply(_init_weights)
+        if self.init_cfg is None:
+            if isinstance(pretrained, str):
+                self.apply(_init_weights)
+                super(ConvNeXt, self).init_weights()
+            elif pretrained is None:
+                self.apply(_init_weights)
+            else:
+                raise TypeError('pretrained must be a str or None')
         else:
-            raise TypeError('pretrained must be a str or None')
+            super(ConvNeXt, self).init_weights()
 
     def forward(self, x):
         outs = []

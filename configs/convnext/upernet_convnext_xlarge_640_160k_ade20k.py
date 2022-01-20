@@ -9,11 +9,15 @@ model = dict(
     backbone=dict(
         type='ConvNeXt',
         in_chans=3,
+        num_stages=4,
         depths=[3, 3, 27, 3],
         dims=[256, 512, 1024, 2048],
+        kernel_size=7,
         drop_path_rate=0.4,
         layer_scale_init_value=1.0,
         out_indices=[0, 1, 2, 3],
+        norm_cfg=dict(type='LN', eps=1e-6),
+        act_cfg=dict(type='GELU'),
     ),
     decode_head=dict(
         in_channels=[256, 512, 1024, 2048],
