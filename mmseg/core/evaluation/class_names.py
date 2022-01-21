@@ -228,7 +228,11 @@ dataset_aliases = {
     'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug'],
     'loveda': ['loveda'],
     'potsdam': ['potsdam'],
-    'cocostuff': ['cocostuff']
+    'cocostuff': [
+        'cocostuff', 'cocostuff10k', 'cocostuff164k', 'coco-stuff',
+        'coco-stuff10k', 'coco-stuff164k', 'coco_stuff', 'coco_stuff10k',
+        'coco_stuff164k'
+    ]
 }
 
 
