@@ -5,6 +5,7 @@ _base_ = [
 crop_size = (512, 512)
 
 model = dict(
+    pretrained='./pretrain/new_convnext_tiny_1k_224.pth',
     backbone=dict(
         type='ConvNeXt',
         in_chans=3,
@@ -52,7 +53,7 @@ lr_config = dict(
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)
 
-runner = dict(type='IterBasedRunnerAmp')
+# runner = dict(type='IterBasedRunnerAmp')
 
 # do not use mmdet version fp16
 fp16 = None
