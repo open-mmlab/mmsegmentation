@@ -1,10 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import sys
 import pytest
 import torch
 import torch.nn as nn
-import os.path as osp
-from mmseg.core.utils.layer_decay_optimizer_constructor import LearningRateDecayOptimizerConstructor
+
+from mmseg.core.utils.layer_decay_optimizer_constructor import \
+    LearningRateDecayOptimizerConstructor
+
 
 class SubModel(nn.Module):
 
@@ -16,6 +17,7 @@ class SubModel(nn.Module):
 
     def forward(self, x):
         return x
+
 
 class ExampleModel(nn.Module):
 
@@ -30,9 +32,11 @@ class ExampleModel(nn.Module):
     def forward(self, x):
         return x
 
+
 base_lr = 0.01
 base_wd = 0.0001
 momentum = 0.9
+
 
 class PseudoDataParallel(nn.Module):
 
@@ -52,9 +56,9 @@ def check_default_optimizer(optimizer, model, prefix=''):
     param_groups = optimizer.param_groups[0]
 
     param_names = [
-        'param1', 'conv1.weight', 'conv2.weight', 'conv2.bias',
-        'bn.weight', 'bn.bias', 'sub.param1', 'sub.conv1.weight',
-        'sub.conv1.bias', 'sub.gn.weight', 'sub.gn.bias'
+        'param1', 'conv1.weight', 'conv2.weight', 'conv2.bias', 'bn.weight',
+        'bn.bias', 'sub.param1', 'sub.conv1.weight', 'sub.conv1.bias',
+        'sub.gn.weight', 'sub.gn.bias'
     ]
     param_dict = dict(model.named_parameters())
     assert len(param_groups['params']) == len(param_names)
@@ -62,13 +66,15 @@ def check_default_optimizer(optimizer, model, prefix=''):
         assert torch.equal(param_groups['params'][i],
                            param_dict[prefix + param_names[i]])
 
+
 def test_learning_rate_decay_optimizer_constructor():
     model = ExampleModel()
 
     with pytest.raises(TypeError):
         # optimizer_cfg must be a dict
         optimizer_cfg = []
-        optim_constructor = LearningRateDecayOptimizerConstructor(optimizer_cfg)
+        optim_constructor = LearningRateDecayOptimizerConstructor(
+            optimizer_cfg)
         optim_constructor(model)
 
     with pytest.raises(TypeError):
@@ -109,7 +115,8 @@ def test_learning_rate_decay_optimizer_constructor():
         optimizer_cfg = dict(
             type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
         paramwise_cfg = None
-        optim_constructor = LearningRateDecayOptimizerConstructor(optimizer_cfg)
+        optim_constructor = LearningRateDecayOptimizerConstructor(
+            optimizer_cfg)
         optimizer = optim_constructor(model)
         check_default_optimizer(optimizer, model, prefix='module.')
 
@@ -118,8 +125,8 @@ def test_learning_rate_decay_optimizer_constructor():
     optimizer_cfg = dict(
         type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
     paramwise_cfg = dict()
-    optim_constructor = LearningRateDecayOptimizerConstructor(optimizer_cfg,
-                                                    paramwise_cfg)
+    optim_constructor = LearningRateDecayOptimizerConstructor(
+        optimizer_cfg, paramwise_cfg)
     optimizer = optim_constructor(model)
     check_default_optimizer(optimizer, model)
 
