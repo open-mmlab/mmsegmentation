@@ -324,4 +324,4 @@ For Vaihingen dataset, please run the following command to download and re-organ
 python tools/convert_datasets/vaihingen.py /path/to/vaihingen
 ```
 
-In our default setting, it will generate 344 images for training and 398 images for validation.
+In our default setting (`clip_size` =512, `stride_size`=256), it will generate 344 images for training and 398 images for validation.

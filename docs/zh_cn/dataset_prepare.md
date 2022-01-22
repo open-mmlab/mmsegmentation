@@ -265,4 +265,4 @@ python tools/convert_datasets/potsdam.py /path/to/potsdam
 python tools/convert_datasets/vaihingen.py /path/to/vaihingen
 ```
 
-使用我们默认的配置， 将生成 344 张图片的训练集和 398 张图片的验证集。
+使用我们默认的配置 (`clip_size` =512, `stride_size`=256)， 将生成 344 张图片的训练集和 398 张图片的验证集。

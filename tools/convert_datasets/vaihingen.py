@@ -18,14 +18,26 @@ def parse_args():
     parser.add_argument('--tmp_dir', help='path of the temporary directory')
     parser.add_argument('-o', '--out_dir', help='output path')
     parser.add_argument(
-        '--clip_size', type=int, help='potsdam clip size', default=512)
+        '--clip_size',
+        type=int,
+        help='clipped size of image after preparation',
+        default=512)
     parser.add_argument(
-        '--stride_size', type=int, help='potsdam stride size', default=256)
+        '--stride_size',
+        type=int,
+        help='stride of clipping original images',
+        default=256)
     args = parser.parse_args()
     return args
 
 
 def clip_big_image(image_path, clip_save_dir, to_label=False):
+    # Original image of Vaihingen dataset is very large, thus pre-processing
+    # of them is adopted. Given fixed clip size and stride size to generate
+    # clipped image, the intersection　of width and height is determined.
+    # For example, given one 5120 x 5120 original image, the clip size is
+    # 512 and stride size is 256, thus it would generate 20x20 = 400 images
+    # whose size are all 512x512.
     image = mmcv.imread(image_path)
 
     h, w, c = image.shape
