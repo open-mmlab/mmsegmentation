@@ -27,6 +27,20 @@ def test_convnext():
     assert outs[2].shape == (1, dims[2], H // 16, W // 16)
     assert outs[3].shape == (1, dims[3], H // 32, W // 32)
 
+    with pytest.raises(AssertionError):
+        # check ConvNeXt out_indices range.
+        ConvNeXt(
+            in_chans=3,
+            num_stages=3,
+            depths=[3, 3, 9, 3],
+            dims=dims,
+            kernel_size=7,
+            drop_path_rate=0.4,
+            layer_scale_init_value=1.0,
+            out_indices=[0, 1, 2, 3],
+            norm_cfg=dict(type='LN', eps=1e-6),
+            act_cfg=dict(type='GELU'))
+
 
 def test_convnext_init():
     path = 'PATH_THAT_DO_NOT_EXIST'

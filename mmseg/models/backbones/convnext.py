@@ -131,7 +131,9 @@ class ConvNeXt(BaseModule):
             raise TypeError('pretrained must be a str or None')
         super(ConvNeXt, self).__init__(init_cfg=self.init_cfg)
 
+        assert max(out_indices) < num_stages
         self.num_stages = num_stages
+        self.out_indices = out_indices
         self.downsample_layers = nn.ModuleList(
         )  # stem and 3 intermediate downsampling conv layers
         stem = nn.Sequential(
@@ -162,8 +164,6 @@ class ConvNeXt(BaseModule):
                     act_cfg=act_cfg) for j in range(depths[i])
             ])
             self.stages.append(stage)
-
-        self.out_indices = out_indices
 
         for i_layer in range(num_stages):
             layer = build_norm_layer(norm_cfg, dims[i_layer])[1]
