@@ -52,22 +52,6 @@ def voc_classes():
     ]
 
 
-def loveda_classes():
-    """LoveDA class names for external use."""
-    return [
-        'background', 'building', 'road', 'water', 'barren', 'forest',
-        'agricultural'
-    ]
-
-
-def potsdam_classes():
-    """Potsdam class names for external use."""
-    return [
-        'impervious_surface', 'building', 'low_vegetation', 'tree', 'car',
-        'clutter'
-    ]
-
-
 def cocostuff_classes():
     """CocoStuff class names for external use."""
     return [
@@ -100,6 +84,30 @@ def cocostuff_classes():
         'wall-brick', 'wall-concrete', 'wall-other', 'wall-panel',
         'wall-stone', 'wall-tile', 'wall-wood', 'water-other', 'waterdrops',
         'window-blind', 'window-other', 'wood'
+    ]
+
+
+def loveda_classes():
+    """LoveDA class names for external use."""
+    return [
+        'background', 'building', 'road', 'water', 'barren', 'forest',
+        'agricultural'
+    ]
+
+
+def potsdam_classes():
+    """Potsdam class names for external use."""
+    return [
+        'impervious_surface', 'building', 'low_vegetation', 'tree', 'car',
+        'clutter'
+    ]
+
+
+def vaihingen_classes():
+    """Vaihingen class names for external use."""
+    return [
+        'impervious_surface', 'building', 'low_vegetation', 'tree', 'car',
+        'clutter'
     ]
 
 
@@ -163,18 +171,6 @@ def voc_palette():
             [128, 64, 0], [0, 192, 0], [128, 192, 0], [0, 64, 128]]
 
 
-def loveda_palette():
-    """LoveDA palette for external use."""
-    return [[255, 255, 255], [255, 0, 0], [255, 255, 0], [0, 0, 255],
-            [159, 129, 183], [0, 255, 0], [255, 195, 128]]
-
-
-def potsdam_palette():
-    """Potsdam palette for external use."""
-    return [[255, 255, 255], [0, 0, 255], [0, 255, 255], [0, 255, 0],
-            [255, 255, 0], [255, 0, 0]]
-
-
 def cocostuff_palette():
     """CocoStuff palette for external use."""
     return [[0, 192, 64], [0, 192, 64], [0, 64, 96], [128, 192, 192],
@@ -222,12 +218,31 @@ def cocostuff_palette():
             [64, 160, 64], [64, 64, 0]]
 
 
+def loveda_palette():
+    """LoveDA palette for external use."""
+    return [[255, 255, 255], [255, 0, 0], [255, 255, 0], [0, 0, 255],
+            [159, 129, 183], [0, 255, 0], [255, 195, 128]]
+
+
+def potsdam_palette():
+    """Potsdam palette for external use."""
+    return [[255, 255, 255], [0, 0, 255], [0, 255, 255], [0, 255, 0],
+            [255, 255, 0], [255, 0, 0]]
+
+
+def vaihingen_palette():
+    """Vaihingen palette for external use."""
+    return [[255, 255, 255], [0, 0, 255], [0, 0, 255], [0, 255, 0],
+            [255, 255, 0], [255, 0, 0]]
+
+
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
     'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug'],
     'loveda': ['loveda'],
     'potsdam': ['potsdam'],
+    'vaihingen': ['vaihingen'],
     'cocostuff': [
         'cocostuff', 'cocostuff10k', 'cocostuff164k', 'coco-stuff',
         'coco-stuff10k', 'coco-stuff164k', 'coco_stuff', 'coco_stuff10k',

@@ -14,7 +14,7 @@ from PIL import Image
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
                             COCOStuffDataset, ConcatDataset, CustomDataset,
-                            LoveDADataset, MultiImageMixDataset,
+                            ISPRSDataset, LoveDADataset, MultiImageMixDataset,
                             PascalVOCDataset, PotsdamDataset, RepeatDataset,
                             build_dataset)
 
@@ -27,6 +27,7 @@ def test_classes():
         ADE20KDataset.CLASSES) == get_classes('ade') == get_classes('ade20k')
     assert list(LoveDADataset.CLASSES) == get_classes('loveda')
     assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
+    assert list(ISPRSDataset.CLASSES) == get_classes('vaihingen')
     assert list(COCOStuffDataset.CLASSES) == get_classes('cocostuff')
 
     with pytest.raises(ValueError):
@@ -716,6 +717,16 @@ def test_potsdam():
             osp.dirname(__file__), '../data/pseudo_potsdam_dataset/img_dir'),
         ann_dir=osp.join(
             osp.dirname(__file__), '../data/pseudo_potsdam_dataset/ann_dir'))
+    assert len(test_dataset) == 1
+
+
+def test_vaihingen():
+    test_dataset = ISPRSDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_vaihingen_dataset/img_dir'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_vaihingen_dataset/ann_dir'))
     assert len(test_dataset) == 1
 
 
