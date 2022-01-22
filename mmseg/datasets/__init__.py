@@ -10,6 +10,7 @@ from .dataset_wrappers import (ConcatDataset, MultiImageMixDataset,
                                RepeatDataset)
 from .drive import DRIVEDataset
 from .hrf import HRFDataset
+from .isprs import ISPRSDataset
 from .loveda import LoveDADataset
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
@@ -24,5 +25,5 @@ __all__ = [
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
     'COCOStuffDataset', 'LoveDADataset', 'MultiImageMixDataset',
-    'PotsdamDataset'
+    'ISPRSDataset', 'PotsdamDataset'
 ]

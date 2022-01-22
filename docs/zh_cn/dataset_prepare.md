@@ -250,3 +250,19 @@ python tools/convert_datasets/potsdam.py /path/to/potsdam
 ```
 
 使用我们默认的配置， 将生成 3456 张图片的训练集和 2016 张图片的验证集。
+
+### ISPRS Vaihingen
+
+[Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/)
+数据集是一个有着2D 语义分割内容标注的城市遥感数据集。
+
+数据集可以从挑战 [主页](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
+需要其中的 'ISPRS_semantic_labeling_Vaihingen.zip' 和 'ISPRS_semantic_labeling_Vaihingen_ground_truth_eroded_COMPLETE.zip'。
+
+对于 Vaihingen 数据集，请运行以下命令下载并重新组织数据集
+
+```shell
+python tools/convert_datasets/vaihingen.py /path/to/vaihingen
+```
+
+使用我们默认的配置 (`clip_size` =512, `stride_size`=256)， 将生成 344 张图片的训练集和 398 张图片的验证集。
