@@ -6,7 +6,7 @@
 
 <a href="https://github.com/rstrudel/segmenter">Official Repo</a>
 
-<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/backbones/mit.py#L246">Code Snippet</a>
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/decode_heads/segmenter_mask_head.py#L15">Code Snippet</a>
 
 ## Abstract
 
@@ -35,7 +35,7 @@ Image segmentation is often ambiguous at the level of individual image patches a
 
 ## Usage
 
-To use other repositories' pre-trained models, it is necessary to convert keys.
+To use the pre-trained ViT model from [Segmenter](https://github.com/rstrudel/segmenter), it is necessary to convert keys.
 
 We provide a script [`vitjax2mmseg.py`](../../tools/model_converters/vitjax2mmseg.py) in the tools directory to convert the key of models from [ViT-AugReg](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L54-L106) to MMSegmentation style.
 
@@ -57,10 +57,10 @@ In our default setting, pretrained models and their corresponding [ViT-AugReg](h
 
   | pretrained models | original models |
   | ------ | -------- |
-  |vit_tiny_p16_384.pth | ['vit_tiny_patch16_384'](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L59) |
-  |vit_small_p16_384.pth | ['vit_small_patch16_384'](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L73) |
-  |vit_base_p16_384.pth | ['vit_base_patch16_384'](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L87) |
-  |vit_large_p16_384.pth | ['vit_large_patch16_384'](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L103) |
+  |vit_tiny_p16_384.pth | ['vit_tiny_patch16_384'](https://storage.googleapis.com/vit_models/augreg/Ti_16-i21k-300ep-lr_0.001-aug_none-wd_0.03-do_0.0-sd_0.0--imagenet2012-steps_20k-lr_0.03-res_384.npz) |
+  |vit_small_p16_384.pth | ['vit_small_patch16_384'](https://storage.googleapis.com/vit_models/augreg/S_16-i21k-300ep-lr_0.001-aug_light1-wd_0.03-do_0.0-sd_0.0--imagenet2012-steps_20k-lr_0.03-res_384.npz) |
+  |vit_base_p16_384.pth | ['vit_base_patch16_384'](https://storage.googleapis.com/vit_models/augreg/B_16-i21k-300ep-lr_0.001-aug_medium1-wd_0.1-do_0.0-sd_0.0--imagenet2012-steps_20k-lr_0.01-res_384.npz) |
+  |vit_large_p16_384.pth | ['vit_large_patch16_384'](https://storage.googleapis.com/vit_models/augreg/L_16-i21k-300ep-lr_0.001-aug_medium1-wd_0.1-do_0.1-sd_0.1--imagenet2012-steps_20k-lr_0.01-res_384.npz) |
 
 ## Results and models
 
