@@ -13,8 +13,8 @@ from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
-                            ConcatDataset, CustomDataset, ISPRSDataset,
-                            LoveDADataset, MultiImageMixDataset,
+                            COCOStuffDataset, ConcatDataset, CustomDataset,
+                            ISPRSDataset, LoveDADataset, MultiImageMixDataset,
                             PascalVOCDataset, PotsdamDataset, RepeatDataset,
                             build_dataset)
 
@@ -28,6 +28,7 @@ def test_classes():
     assert list(LoveDADataset.CLASSES) == get_classes('loveda')
     assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
     assert list(ISPRSDataset.CLASSES) == get_classes('vaihingen')
+    assert list(COCOStuffDataset.CLASSES) == get_classes('cocostuff')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -71,6 +72,7 @@ def test_palette():
     assert ADE20KDataset.PALETTE == get_palette('ade') == get_palette('ade20k')
     assert LoveDADataset.PALETTE == get_palette('loveda')
     assert PotsdamDataset.PALETTE == get_palette('potsdam')
+    assert COCOStuffDataset.PALETTE == get_palette('cocostuff')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -104,8 +106,7 @@ def test_dataset_wrapper():
 
     img_scale = (60, 60)
     pipeline = [
-        # dict(type='Mosaic', img_scale=img_scale, pad_val=255),
-        # need to merge mosaic
+        dict(type='RandomMosaic', prob=1, img_scale=img_scale),
         dict(type='RandomFlip', prob=0.5),
         dict(type='Resize', img_scale=img_scale, keep_ratio=False),
     ]
@@ -129,14 +130,8 @@ def test_dataset_wrapper():
         classes=classes,
         palette=palette)
     len_a = 2
-    cat_ids_list_a = [
-        np.random.randint(0, 80, num).tolist()
-        for num in np.random.randint(1, 20, len_a)
-    ]
-    dataset_a.data_infos = MagicMock()
-    dataset_a.data_infos.__len__.return_value = len_a
-    dataset_a.get_cat_ids = MagicMock(
-        side_effect=lambda idx: cat_ids_list_a[idx])
+    dataset_a.img_infos = MagicMock()
+    dataset_a.img_infos.__len__.return_value = len_a
 
     multi_image_mix_dataset = MultiImageMixDataset(dataset_a, pipeline)
     assert len(multi_image_mix_dataset) == len(dataset_a)
