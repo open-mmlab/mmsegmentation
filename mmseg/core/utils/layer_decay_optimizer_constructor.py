@@ -22,6 +22,19 @@ def get_num_layer_layer_wise(var_name, num_max_layer=12):
             layer_id = num_max_layer
         return layer_id
     elif var_name.startswith('backbone.stem_norm'):
+        layer_id = 0
+        return layer_id
+    elif var_name.startswith('backbone.downsample_norm'):
+        stage_id = int(
+            var_name.split('backbone.downsample_norm')[1].split('.')[0])
+        if stage_id == 0:
+            layer_id = 2
+        elif stage_id == 1:
+            layer_id = 3
+        elif stage_id == 2:
+            layer_id = num_max_layer
+        return layer_id
+    elif var_name.startswith('backbone.downsample_layers'):
         stage_id = int(var_name.split('.')[2])
         if stage_id == 0:
             layer_id = 0

@@ -52,16 +52,3 @@ lr_config = dict(
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)
-
-# runner = dict(type='IterBasedRunnerAmp')
-
-# do not use mmdet version fp16
-fp16 = None
-optimizer_config = dict(
-    type='DistOptimizerHook',
-    update_interval=1,
-    grad_clip=None,
-    coalesce=True,
-    bucket_size_mb=-1,
-    use_fp16=True,
-)
