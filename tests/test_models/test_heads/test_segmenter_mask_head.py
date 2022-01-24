@@ -5,7 +5,7 @@ from mmseg.models.decode_heads import SegmenterMaskTransformerHead
 from .utils import _conv_has_norm, to_cuda
 
 
-def test_uper_head():
+def test_segmenter_mask_transformer_head():
     head = SegmenterMaskTransformerHead(
         in_channels=2,
         channels=2,
