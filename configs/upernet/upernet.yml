@@ -7,7 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
   Paper:
     URL: https://arxiv.org/pdf/1807.10221.pdf
-    Title: UPerNet
+    Title: Unified Perceptual Parsing for Scene Understanding
   README: configs/upernet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13

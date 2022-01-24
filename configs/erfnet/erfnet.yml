@@ -5,7 +5,7 @@ Collections:
     - Cityscapes
   Paper:
     URL: http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf
-    Title: ERFNet
+    Title: 'ERFNet: Efficient Residual Factorized ConvNet for Real-time Semantic Segmentation'
   README: configs/erfnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/erfnet.py#L321

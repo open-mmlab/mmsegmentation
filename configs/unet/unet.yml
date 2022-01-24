@@ -9,7 +9,7 @@ Collections:
     - HRF
   Paper:
     URL: https://arxiv.org/abs/1505.04597
-    Title: UNet
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
   README: configs/unet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225

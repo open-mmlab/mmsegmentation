@@ -6,7 +6,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://arxiv.org/abs/1903.11816
-    Title: FastFCN
+    Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
   README: configs/fastfcn/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12

@@ -6,7 +6,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://arxiv.org/abs/1912.08193
-    Title: PointRend
+    Title: 'PointRend: Image Segmentation as Rendering'
   README: configs/point_rend/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36

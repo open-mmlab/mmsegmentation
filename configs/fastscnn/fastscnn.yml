@@ -5,7 +5,7 @@ Collections:
     - Cityscapes
   Paper:
     URL: https://arxiv.org/abs/1902.04502
-    Title: Fast-SCNN
+    Title: Fast-SCNN for Semantic Segmentation
   README: configs/fastscnn/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/fast_scnn.py#L272

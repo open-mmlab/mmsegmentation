@@ -6,7 +6,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://arxiv.org/abs/1901.02446
-    Title: Semantic FPN
+    Title: Panoptic Feature Pyramid Networks
   README: configs/sem_fpn/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12

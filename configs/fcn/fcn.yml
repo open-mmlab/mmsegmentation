@@ -9,7 +9,7 @@ Collections:
     - Pascal Context 59
   Paper:
     URL: https://arxiv.org/abs/1411.4038
-    Title: FCN
+    Title: Fully Convolutional Networks for Semantic Segmentation
   README: configs/fcn/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11

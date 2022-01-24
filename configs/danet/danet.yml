@@ -7,7 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
   Paper:
     URL: https://arxiv.org/abs/1809.02983
-    Title: DANet
+    Title: Dual Attention Network for Scene Segmentation
   README: configs/danet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76

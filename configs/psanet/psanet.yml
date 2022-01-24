@@ -7,7 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
   Paper:
     URL: https://openaccess.thecvf.com/content_ECCV_2018/papers/Hengshuang_Zhao_PSANet_Point-wise_Spatial_ECCV_2018_paper.pdf
-    Title: PSANet
+    Title: 'PSANet: Point-wise Spatial Attention Network for Scene Parsing'
   README: configs/psanet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psa_head.py#L18

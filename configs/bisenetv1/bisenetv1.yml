@@ -6,7 +6,7 @@ Collections:
     - COCO-Stuff 164k
   Paper:
     URL: https://arxiv.org/abs/1808.00897
-    Title: BiSeNetV1
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
   README: configs/bisenetv1/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266

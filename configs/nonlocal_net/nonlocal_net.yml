@@ -7,7 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
   Paper:
     URL: https://arxiv.org/abs/1711.07971
-    Title: NonLocal Net
+    Title: Non-local Neural Networks
   README: configs/nonlocal_net/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10

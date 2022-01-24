@@ -12,7 +12,7 @@ Collections:
     - Vaihingen
   Paper:
     URL: https://arxiv.org/abs/1802.02611
-    Title: DeepLabV3+
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
   README: configs/deeplabv3plus/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30

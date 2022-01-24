@@ -7,7 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
   Paper:
     URL: https://arxiv.org/abs/1811.11721
-    Title: CCNet
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
   README: configs/ccnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
