@@ -18,6 +18,51 @@ from lxml import etree
 MMSEG_ROOT = osp.dirname(osp.dirname((osp.dirname(__file__))))
 
 
+def get_collection_names(config_names):
+    collect_config_dict = {
+        'ann': 'ANN',
+        'apcnet': 'APCNet',
+        'bisenetv1': 'BiSeNet V1',
+        'bisenetv2': 'BiSeNet V2',
+        'ccnet': 'CCNet',
+        'cgnet': 'CGNet',
+        'danet': 'DANet',
+        'deeplabv3': 'DeepLabV3',
+        'deeplabv3plus': 'DeepLabV3+',
+        'dmnet': 'DMNet',
+        'dnlnet': 'DNLNet',
+        'dpt': 'DPT',
+        'emanet': 'EMANet',
+        'encnet': 'ENCNet',
+        'erfnet': 'ERFNet FCN',
+        'fastfcn': 'Fast FCN',
+        'fastscnn': 'Fast SCNN',
+        'fcn': 'FCN',
+        'gcnet': 'GCNet',
+        'hrnet': 'HRNet',
+        'icnet': 'ICNet',
+        'isanet': 'ISANet',
+        'mobilenet_v2': 'MobileNetV2',
+        'mobilenet_v3': 'MobileNetV3',
+        'nonlocal_net': 'NonLocal Net',
+        'ocrnet': 'OCRNet',
+        'point_rend': 'PointRend',
+        'psanet': 'PSANet',
+        'pspnet': 'PSPNet',
+        'resnest': 'ResNeSt',
+        'segformer': 'SegFormer',
+        'sem_fpn': 'Semantic FPN',
+        'setr': 'SETR',
+        'stdc': 'STDC-Seg',
+        'swin': 'Swin Transformer',
+        'twins': 'Twins',
+        'unet': 'UNet',
+        'upernet': 'UPerNet',
+        'vit': 'Vision Transformer'
+    }
+    return collect_config_dict[config_names]
+
+
 def dump_yaml_and_check_difference(obj, filename, sort_keys=False):
     """Dump object to a yaml file, and check if the file content is different
     from the original.
@@ -165,7 +210,7 @@ def parse_md(md_file):
                         'Name':
                         model_name,
                         'In Collection':
-                        collection_name,
+                        get_collection_names(collection_name),
                         'Metadata': {
                             'backbone': els[backbone_id],
                             'crop size': f'({crop_size[0]},{crop_size[1]})',
@@ -185,6 +230,8 @@ def parse_md(md_file):
                         'Weights':
                         weight,
                     }
+                    assert model['In Collection'] != model['Metadata'][
+                        'backbone'], f'The backbone and Collection names of {model_name} are the same.'  # noqa
                     if fps != -1:
                         try:
                             fps = float(fps)
