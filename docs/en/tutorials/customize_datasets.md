@@ -50,7 +50,7 @@ You may use `'P'` mode of [pillow](https://pillow.readthedocs.io/en/stable/handb
 ## Customize datasets by mixing dataset
 
 MMSegmentation also supports to mix dataset for training.
-Currently it supports to concat and repeat datasets.
+Currently it supports to concat, repeat and multi-image mix datasets.
 
 ### Repeat dataset
 
@@ -169,6 +169,43 @@ data = dict(
     ],
     val = dataset_A_val,
     test = dataset_A_test
+)
+
+```
+
+### Multi-image Mix Dataset
+
+We use `MultiImageMixDataset` as a wrapper to mix images from multiple datasets.
+`MultiImageMixDataset` can be used by multiple images mixed data augmentation
+like mosaic and mixup.
+
+An example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
+
+```python
+train_pipeline = [
+    dict(type='RandomMosaic', prob=1),
+    dict(type='Resize', img_scale=(1024, 512), keep_ratio=True),
+    dict(type='RandomFlip', prob=0.5),
+    dict(type='Normalize', **img_norm_cfg),
+    dict(type='DefaultFormatBundle'),
+    dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+]
+
+train_dataset = dict(
+    type='MultiImageMixDataset',
+    dataset=dict(
+        classes=classes,
+        palette=palette,
+        type=dataset_type,
+        reduce_zero_label=False,
+        img_dir=data_root + "images/train",
+        ann_dir=data_root + "annotations/train",
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='LoadAnnotations'),
+        ]
+    ),
+    pipeline=train_pipeline
 )
 
 ```
