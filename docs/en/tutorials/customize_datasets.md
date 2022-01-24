@@ -180,6 +180,7 @@ We use `MultiImageMixDataset` as a wrapper to mix images from multiple datasets.
 like mosaic and mixup.
 
 An example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
+
 ```python
 train_pipeline = [
     dict(type='RandomMosaic', prob=1),

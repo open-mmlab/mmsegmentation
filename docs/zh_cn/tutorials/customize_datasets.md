@@ -178,6 +178,7 @@ data = dict(
 `MultiImageMixDataset`可以被类似mosaic和mixup的多图混合数据増广使用。
 
 `MultiImageMixDataset`与`Mosaic`数据増广一起使用的例子：
+
 ```python
 train_pipeline = [
     dict(type='RandomMosaic', prob=1),
