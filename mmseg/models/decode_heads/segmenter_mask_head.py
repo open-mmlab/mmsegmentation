@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
                                         trunc_normal_init)
@@ -122,8 +123,8 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
         patches = self.patch_proj(x[:, :-self.num_classes])
         cls_seg_feat = self.classes_proj(x[:, -self.num_classes:])
 
-        patches = patches / patches.norm(dim=-1, keepdim=True)
-        cls_seg_feat = cls_seg_feat / cls_seg_feat.norm(dim=-1, keepdim=True)
+        patches = F.normalize(patches, dim=2, p=2)
+        cls_seg_feat = F.normalize(cls_seg_feat, dim=2, p=2)
 
         masks = patches @ cls_seg_feat.transpose(1, 2)
         masks = self.mask_norm(masks)
