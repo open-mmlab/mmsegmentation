@@ -11,6 +11,8 @@ Collections:
     - COCO-Stuff 10k
     - COCO-Stuff 164k
     - LoveDA
+    - Potsdam
+    - Vaihingen
   Paper:
     URL: https://arxiv.org/abs/1612.01105
     Title: Pyramid Scene Parsing Network
@@ -808,3 +810,135 @@ Models:
       mIoU(ms+flip): 51.34
   Config: configs/pspnet/pspnet_r101-d8_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_80k_loveda/pspnet_r101-d8_512x512_80k_loveda_20211104_153212-1c06c6a8.pth
+- Name: pspnet_r18-d8_4x4_512x512_80k_potsdam
+  In Collection: pspnet
+  Metadata:
+    backbone: R-18-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 11.75
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.5
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 77.09
+      mIoU(ms+flip): 78.3
+  Config: configs/pspnet/pspnet_r18-d8_4x4_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_512x512_80k_potsdam/pspnet_r18-d8_4x4_512x512_80k_potsdam_20211220_125612-7cd046e1.pth
+- Name: pspnet_r50-d8_4x4_512x512_80k_potsdam
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 33.1
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.14
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.12
+      mIoU(ms+flip): 78.98
+  Config: configs/pspnet/pspnet_r50-d8_4x4_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_512x512_80k_potsdam/pspnet_r50-d8_4x4_512x512_80k_potsdam_20211219_043541-2dd5fe67.pth
+- Name: pspnet_r101-d8_4x4_512x512_80k_potsdam
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 51.55
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 9.61
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.62
+      mIoU(ms+flip): 79.47
+  Config: configs/pspnet/pspnet_r101-d8_4x4_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_4x4_512x512_80k_potsdam/pspnet_r101-d8_4x4_512x512_80k_potsdam_20211220_125612-aed036c4.pth
+- Name: pspnet_r18-d8_4x4_512x512_80k_vaihingen
+  In Collection: pspnet
+  Metadata:
+    backbone: R-18-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 11.76
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.45
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 71.46
+      mIoU(ms+flip): 73.36
+  Config: configs/pspnet/pspnet_r18-d8_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_512x512_80k_vaihingen/pspnet_r18-d8_4x4_512x512_80k_vaihingen_20211228_160355-52a8a6f6.pth
+- Name: pspnet_r50-d8_4x4_512x512_80k_vaihingen
+  In Collection: pspnet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 33.01
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.14
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 72.36
+      mIoU(ms+flip): 73.75
+  Config: configs/pspnet/pspnet_r50-d8_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_512x512_80k_vaihingen/pspnet_r50-d8_4x4_512x512_80k_vaihingen_20211228_160355-382f8f5b.pth
+- Name: pspnet_r101-d8_4x4_512x512_80k_vaihingen
+  In Collection: pspnet
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 50.08
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 9.61
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 72.61
+      mIoU(ms+flip): 74.18
+  Config: configs/pspnet/pspnet_r101-d8_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_4x4_512x512_80k_vaihingen/pspnet_r101-d8_4x4_512x512_80k_vaihingen_20211231_230806-8eba0a09.pth

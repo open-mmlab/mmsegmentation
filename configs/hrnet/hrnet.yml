@@ -8,6 +8,8 @@ Collections:
     - Pascal Context
     - Pascal Context 59
     - LoveDA
+    - Potsdam
+    - Vaihingen
   Paper:
     URL: https://arxiv.org/abs/1908.07919
     Title: Deep High-Resolution Representation Learning for Human Pose Estimation
@@ -514,3 +516,135 @@ Models:
       mIoU(ms+flip): 51.64
   Config: configs/hrnet/fcn_hr48_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_loveda/fcn_hr48_512x512_80k_loveda_20211211_044756-67072f55.pth
+- Name: fcn_hr18s_512x512_80k_potsdam
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 27.78
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.58
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 77.64
+      mIoU(ms+flip): 78.8
+  Config: configs/hrnet/fcn_hr18s_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_potsdam/fcn_hr18s_512x512_80k_potsdam_20211218_205517-ba32af63.pth
+- Name: fcn_hr18_512x512_80k_potsdam
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 51.95
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.76
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.26
+      mIoU(ms+flip): 79.24
+  Config: configs/hrnet/fcn_hr18_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_potsdam/fcn_hr18_512x512_80k_potsdam_20211218_205517-5d0387ad.pth
+- Name: fcn_hr48_512x512_80k_potsdam
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 60.9
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.39
+      mIoU(ms+flip): 79.34
+  Config: configs/hrnet/fcn_hr48_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_potsdam/fcn_hr48_512x512_80k_potsdam_20211219_020601-97434c78.pth
+- Name: fcn_hr18s_4x4_512x512_80k_vaihingen
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 26.24
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.58
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 71.81
+      mIoU(ms+flip): 73.1
+  Config: configs/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen/fcn_hr18s_4x4_512x512_80k_vaihingen_20211231_230909-b23aae02.pth
+- Name: fcn_hr18_4x4_512x512_80k_vaihingen
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 51.15
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.76
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 72.57
+      mIoU(ms+flip): 74.09
+  Config: configs/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen/fcn_hr18_4x4_512x512_80k_vaihingen_20211231_231216-2ec3ae8a.pth
+- Name: fcn_hr48_4x4_512x512_80k_vaihingen
+  In Collection: hrnet
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 57.97
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 72.5
+      mIoU(ms+flip): 73.52
+  Config: configs/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen/fcn_hr48_4x4_512x512_80k_vaihingen_20211231_231244-7133cb22.pth
