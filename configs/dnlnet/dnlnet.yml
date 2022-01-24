@@ -6,7 +6,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://arxiv.org/abs/2006.06668
-    Title: Disentangled Non-Local Neural Networks
+    Title: DNLNet
   README: configs/dnlnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88

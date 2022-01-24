@@ -6,8 +6,7 @@ Collections:
     - Cityscapes
   Paper:
     URL: https://arxiv.org/abs/2012.15840
-    Title: Rethinking Semantic Segmentation from a Sequence-to-Sequence Perspective
-      with Transformers
+    Title: SETR
   README: configs/setr/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/setr_up_head.py#L11

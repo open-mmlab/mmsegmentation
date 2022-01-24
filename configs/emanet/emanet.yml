@@ -5,7 +5,7 @@ Collections:
     - Cityscapes
   Paper:
     URL: https://arxiv.org/abs/1907.13426
-    Title: Expectation-Maximization Attention Networks for Semantic Segmentation
+    Title: EMANet
   README: configs/emanet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80

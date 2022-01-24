@@ -5,7 +5,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://arxiv.org/pdf/2104.13840.pdf
-    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    Title: Twins
   README: configs/twins/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352

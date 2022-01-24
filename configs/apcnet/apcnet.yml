@@ -6,7 +6,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
-    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    Title: APCNet
   README: configs/apcnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111

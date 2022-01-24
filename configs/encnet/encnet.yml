@@ -6,7 +6,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://arxiv.org/abs/1803.08904
-    Title: Context Encoding for Semantic Segmentation
+    Title: EncNet
   README: configs/encnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/enc_head.py#L63

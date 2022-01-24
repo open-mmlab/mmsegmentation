@@ -1,4 +1,6 @@
-# CCNet: Criss-Cross Attention for Semantic Segmentation
+# CCNet
+
+[CCNet: Criss-Cross Attention for Semantic Segmentation](https://arxiv.org/abs/1811.11721)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Contextual information is vital in visual understanding problems, such as semant
 <img src="https://user-images.githubusercontent.com/24582831/142899159-b329c12a-0fde-44df-8718-def6cfb004e4.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1811.11721">CCNet (ICCV'2019)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{huang2018ccnet,
     title={CCNet: Criss-Cross Attention for Semantic Segmentation},
     author={Huang, Zilong and Wang, Xinggang and Huang, Lichao and Huang, Chang and Wei, Yunchao and Liu, Wenyu},
@@ -31,7 +32,6 @@ Contextual information is vital in visual understanding problems, such as semant
 }
 ```
 
-</details>
 
 ## Results and models
 

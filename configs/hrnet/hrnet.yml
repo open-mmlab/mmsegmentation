@@ -12,7 +12,7 @@ Collections:
     - Vaihingen
   Paper:
     URL: https://arxiv.org/abs/1908.07919
-    Title: Deep High-Resolution Representation Learning for Human Pose Estimation
+    Title: HRNet
   README: configs/hrnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/hrnet.py#L218

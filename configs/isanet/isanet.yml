@@ -7,7 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
   Paper:
     URL: https://arxiv.org/abs/1907.12273
-    Title: Interlaced Sparse Self-Attention for Semantic Segmentation
+    Title: ISANet
   README: configs/isanet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/decode_heads/isa_head.py#L58

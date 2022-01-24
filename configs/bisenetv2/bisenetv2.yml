@@ -5,8 +5,7 @@ Collections:
     - Cityscapes
   Paper:
     URL: https://arxiv.org/abs/2004.02147
-    Title: 'Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic
-      Segmentation'
+    Title: BiSeNetV2
   README: configs/bisenetv2/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv2.py#L545

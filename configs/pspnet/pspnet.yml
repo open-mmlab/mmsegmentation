@@ -15,7 +15,7 @@ Collections:
     - Vaihingen
   Paper:
     URL: https://arxiv.org/abs/1612.01105
-    Title: Pyramid Scene Parsing Network
+    Title: PSPNet
   README: configs/pspnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psp_head.py#L63

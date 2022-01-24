@@ -6,7 +6,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
-    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    Title: DMNet
   README: configs/dmnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93

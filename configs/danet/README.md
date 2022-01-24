@@ -1,4 +1,6 @@
-# Dual Attention Network for Scene Segmentation
+# DANet
+
+[Dual Attention Network for Scene Segmentation](https://arxiv.org/abs/1809.02983)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ In this paper, we address the scene segmentation task by capturing rich contextu
 <img src="https://user-images.githubusercontent.com/24582831/142900467-f832fdb9-3b7d-47d3-8e80-e6ee9303bdfb.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1809.02983">DANet (CVPR'2019)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{fu2018dual,
   title={Dual Attention Network for Scene Segmentation},
   author={Jun Fu, Jing Liu, Haijie Tian, Yong Li, Yongjun Bao, Zhiwei Fang,and Hanqing Lu},
@@ -30,8 +31,6 @@ In this paper, we address the scene segmentation task by capturing rich contextu
   year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

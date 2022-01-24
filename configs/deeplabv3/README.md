@@ -1,4 +1,6 @@
-# Rethinking atrous convolution for semantic image segmentation
+# DeepLabV3
+
+[Rethinking atrous convolution for semantic image segmentation](https://arxiv.org/abs/1706.05587)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ In this work, we revisit atrous convolution, a powerful tool to explicitly adjus
 <img src="https://user-images.githubusercontent.com/24582831/142900575-f30a7755-09aa-406a-bf78-45893a61ee9a.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1706.05587">DeepLabV3 (ArXiv'2017)</a></summary>
+## Citation
 
-```latext
+```bibtext
 @article{chen2017rethinking,
   title={Rethinking atrous convolution for semantic image segmentation},
   author={Chen, Liang-Chieh and Papandreou, George and Schroff, Florian and Adam, Hartwig},
@@ -31,13 +32,7 @@ In this work, we revisit atrous convolution, a powerful tool to explicitly adjus
 }
 ```
 
-</details>
-
 ## Results and models
-
-:::{note}
-`D-8` here corresponding to the output stride 8 setting for DeepLab series.
-:::
 
 ### Cityscapes
 
@@ -117,4 +112,5 @@ In this work, we revisit atrous convolution, a powerful tool to explicitly adjus
 
 Note:
 
+- `D-8` here corresponding to the output stride 8 setting for DeepLab series.
 - `FP16` means Mixed Precision (FP16) is adopted in training.

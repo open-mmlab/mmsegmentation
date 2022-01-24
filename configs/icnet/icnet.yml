@@ -5,7 +5,7 @@ Collections:
     - Cityscapes
   Paper:
     URL: https://arxiv.org/abs/1704.08545
-    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    Title: ICNet
   README: configs/icnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77

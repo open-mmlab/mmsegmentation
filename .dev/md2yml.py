@@ -87,6 +87,8 @@ def parse_md(md_file):
         current_dataset = ''
         while i < len(lines):
             line = lines[i].strip()
+            if i == 2:
+                paper_url = lines[i].split('](')[1].split(')')[0]
             if len(line) == 0:
                 i += 1
                 continue
@@ -112,13 +114,13 @@ def parse_md(md_file):
                     assert repo_url is not None, (
                         f'{collection_name} hasn\'t official repo url.')
                 i += 1
-            elif line[:9] == '<summary ':
-                content = etree.HTML(line)
-                nodes = content.xpath('//a')
-                assert len(nodes) == 1, (
-                    'summary tag should only have single a tag.')
-                paper_url = nodes[0].get('href', None)
-                i += 1
+            # elif line[:9] == '<summary ':
+            #     content = etree.HTML(line)
+            #     nodes = content.xpath('//a')
+            #     assert len(nodes) == 1, (
+            #         'summary tag should only have single a tag.')
+            #     paper_url = nodes[0].get('href', None)
+            #     i += 1
             elif line[:4] == '### ':
                 datasets.append(line[4:])
                 current_dataset = line[4:]

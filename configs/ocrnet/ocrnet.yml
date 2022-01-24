@@ -7,7 +7,7 @@ Collections:
     - Pascal VOC 2012 + Aug
   Paper:
     URL: https://arxiv.org/abs/1909.11065
-    Title: Object-Contextual Representations for Semantic Segmentation
+    Title: OCRNet
   README: configs/ocrnet/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ocr_head.py#L86

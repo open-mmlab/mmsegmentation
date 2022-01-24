@@ -1,4 +1,6 @@
-# Vision Transformer for Dense Prediction
+# DPT
+
+[Vision Transformer for Dense Prediction](https://arxiv.org/abs/2103.13413)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ We introduce dense vision transformers, an architecture that leverages vision tr
 <img src="https://user-images.githubusercontent.com/24582831/142901057-00aabea5-dab4-43d3-a14a-5f73eb5dd9b9.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2103.13413">DPT (ArXiv'2021)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{dosoViTskiy2020,
   title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
   author={DosoViTskiy, Alexey and Beyer, Lucas and Kolesnikov, Alexander and Weissenborn, Dirk and Zhai, Xiaohua and Unterthiner, Thomas and  Dehghani, Mostafa and Minderer, Matthias and Heigold, Georg and Gelly, Sylvain and Uszkoreit, Jakob and Houlsby, Neil},
@@ -37,8 +38,6 @@ We introduce dense vision transformers, an architecture that leverages vision tr
   year      = {2021},
 }
 ```
-
-</details>
 
 ## Usage
 
