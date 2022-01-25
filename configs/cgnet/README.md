@@ -1,4 +1,6 @@
-# CGNet: A Light-weight Context Guided Network for Semantic Segmentation
+# CGNet
+
+[CGNet: A Light-weight Context Guided Network for Semantic Segmentation](https://arxiv.org/abs/1811.08201)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ The demand of applying semantic segmentation model on mobile devices has been in
 <img src="https://user-images.githubusercontent.com/24582831/142900351-89559574-79cc-4f57-8f69-5d88765ec38d.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/pdf/1811.08201.pdf">CGNet (TIP'2020)</a></summary>
+## Citation
 
-```latext
+```bibtext
 @article{wu2020cgnet,
   title={Cgnet: A light-weight context guided network for semantic segmentation},
   author={Wu, Tianyi and Tang, Sheng and Zhang, Rui and Cao, Juan and Zhang, Yongdong},
@@ -33,8 +34,6 @@ The demand of applying semantic segmentation model on mobile devices has been in
   publisher={IEEE}
 }
 ```
-
-</details>
 
 ## Results and models
 

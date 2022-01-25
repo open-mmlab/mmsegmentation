@@ -1,4 +1,6 @@
-# Disentangled Non-Local Neural Networks
+# DNLNet
+
+[Disentangled Non-Local Neural Networks](https://arxiv.org/abs/2006.06668)
 
 ## Introduction
 
@@ -19,14 +21,13 @@ The non-local block is a popular module for strengthening the context modeling a
 <img src="https://user-images.githubusercontent.com/24582831/142900944-b8d93301-d2ce-488e-a461-b0813f96be49.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2006.06668">DNLNet (ECCV'2020)</a></summary>
+## Citation
 
 This example is to reproduce ["Disentangled Non-Local Neural Networks"](https://arxiv.org/abs/2006.06668) for semantic segmentation. It is still in progress.
 
 ## Citation
 
-```latex
+```bibtex
 @misc{yin2020disentangled,
     title={Disentangled Non-Local Neural Networks},
     author={Minghao Yin and Zhuliang Yao and Yue Cao and Xiu Li and Zheng Zhang and Stephen Lin and Han Hu},
@@ -34,8 +35,6 @@ This example is to reproduce ["Disentangled Non-Local Neural Networks"](https://
     booktitle={ECCV}
 }
 ```
-
-</details>
 
 ## Results and models (in progress)
 

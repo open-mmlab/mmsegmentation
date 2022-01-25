@@ -1,4 +1,6 @@
-# ICNet for Real-time Semantic Segmentation on High-resolution Images
+# ICNet
+
+[ICNet for Real-time Semantic Segmentation on High-resolution Images](https://arxiv.org/abs/1704.08545)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ We focus on the challenging task of real-time semantic segmentation in this pape
 <img src="https://user-images.githubusercontent.com/24582831/142901772-4570455d-7b27-44ae-a690-47dd9fde8445.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1704.08545">ICNet (ECCV'2018)</a></summary>
+## Citation
 
-```latext
+```bibtext
 @inproceedings{zhao2018icnet,
   title={Icnet for real-time semantic segmentation on high-resolution images},
   author={Zhao, Hengshuang and Qi, Xiaojuan and Shen, Xiaoyong and Shi, Jianping and Jia, Jiaya},
@@ -31,8 +32,6 @@ We focus on the challenging task of real-time semantic segmentation in this pape
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 

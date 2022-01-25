@@ -1,4 +1,6 @@
-# GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond
+# GCNet
+
+[GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond](https://arxiv.org/abs/1904.11492)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ The Non-Local Network (NLNet) presents a pioneering approach for capturing long-
 <img src="https://user-images.githubusercontent.com/24582831/142901601-ad17922e-2538-4b48-9f51-84a57d44b12b.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1904.11492">GCNet (ICCVW'2019/TPAMI'2020)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{cao2019gcnet,
   title={Gcnet: Non-local networks meet squeeze-excitation networks and beyond},
   author={Cao, Yue and Xu, Jiarui and Lin, Stephen and Wei, Fangyun and Hu, Han},
@@ -31,8 +32,6 @@ The Non-Local Network (NLNet) presents a pioneering approach for capturing long-
   year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

@@ -1,4 +1,6 @@
-# Pyramid Scene Parsing Network
+# PSPNet
+
+[Pyramid Scene Parsing Network](https://arxiv.org/abs/1612.01105)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Scene parsing is challenging for unrestricted open vocabulary and diverse scenes
 <img src="https://user-images.githubusercontent.com/24582831/142902444-9f93b99e-9261-443b-a0a4-17e78eefb525.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1612.01105">PSPNet (CVPR'2017)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{zhao2017pspnet,
   title={Pyramid Scene Parsing Network},
   author={Zhao, Hengshuang and Shi, Jianping and Qi, Xiaojuan and Wang, Xiaogang and Jia, Jiaya},
@@ -30,8 +31,6 @@ Scene parsing is challenging for unrestricted open vocabulary and diverse scenes
   year={2017}
 }
 ```
-
-</details>
 
 ## Results and models
 

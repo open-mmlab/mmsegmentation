@@ -1,4 +1,6 @@
-# Adaptive Pyramid Context Network for Semantic Segmentation
+# APCNet
+
+[Adaptive Pyramid Context Network for Semantic Segmentation](https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Recent studies witnessed that context features can significantly improve the per
 <img src="https://user-images.githubusercontent.com/24582831/142898638-e1c0c6ae-9270-448e-aa01-bbac3a236db5.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html">APCNet (CVPR'2019)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @InProceedings{He_2019_CVPR,
 author = {He, Junjun and Deng, Zhongying and Zhou, Lei and Wang, Yali and Qiao, Yu},
 title = {Adaptive Pyramid Context Network for Semantic Segmentation},
@@ -31,8 +32,6 @@ month = {June},
 year = {2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

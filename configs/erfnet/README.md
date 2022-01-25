@@ -1,4 +1,6 @@
-# ERFNet: Efficient Residual Factorized ConvNet for Real-time Semantic Segmentation
+# ERFNet
+
+[ERFNet: Efficient Residual Factorized ConvNet for Real-time Semantic Segmentation](http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Semantic segmentation is a challenging task that addresses most of the perceptio
 <img src="https://user-images.githubusercontent.com/24582831/143479729-ea7951f6-1a3c-47d6-aaee-62c5759c0638.png" width="60%"/>
 </div>
 
-<details>
-<summary align="right"><a href="http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf">ERFNet (T-ITS'2017)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{romera2017erfnet,
   title={Erfnet: Efficient residual factorized convnet for real-time semantic segmentation},
   author={Romera, Eduardo and Alvarez, Jos{\'e} M and Bergasa, Luis M and Arroyo, Roberto},
@@ -34,8 +35,6 @@ Semantic segmentation is a challenging task that addresses most of the perceptio
   publisher={IEEE}
 }
 ```
-
-</details>
 
 ## Results and models
 

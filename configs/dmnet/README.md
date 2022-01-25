@@ -1,4 +1,6 @@
-# Dynamic Multi-scale Filters for Semantic Segmentation
+# DMNet
+
+[Dynamic Multi-scale Filters for Semantic Segmentation](https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Multi-scale representation provides an effective way toaddress scale variation o
 <img src="https://user-images.githubusercontent.com/24582831/142900781-6215763f-8b71-4e0b-a6b1-c41372db2aa0.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf">DMNet (ICCV'2019)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @InProceedings{He_2019_ICCV,
 author = {He, Junjun and Deng, Zhongying and Qiao, Yu},
 title = {Dynamic Multi-Scale Filters for Semantic Segmentation},
@@ -31,8 +32,6 @@ month = {October},
 year = {2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

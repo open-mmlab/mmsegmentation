@@ -5,7 +5,7 @@ Collections:
     - ADE20K
   Paper:
     URL: https://arxiv.org/pdf/2010.11929.pdf
-    Title: Vision Transformer
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
   README: configs/vit/README.md
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98

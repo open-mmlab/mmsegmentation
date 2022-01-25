@@ -1,8 +1,10 @@
-# MobileNetV2: Inverted Residuals and Linear Bottlenecks
+# MobileNetV2
+
+[MobileNetV2: Inverted Residuals and Linear Bottlenecks](https://arxiv.org/abs/1801.04381)
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/tensorflow/models/tree/master/research/deeplab">Official Repo</a>
 
@@ -20,10 +22,9 @@ The MobileNetV2 architecture is based on an inverted residual structure where th
 <img src="https://user-images.githubusercontent.com/24582831/142901935-fa22700e-4b77-477f-90b9-334a4197506f.png" width="50%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1801.04381">MobileNetV2 (CVPR'2018)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{sandler2018mobilenetv2,
   title={Mobilenetv2: Inverted residuals and linear bottlenecks},
   author={Sandler, Mark and Howard, Andrew and Zhu, Menglong and Zhmoginov, Andrey and Chen, Liang-Chieh},
@@ -32,8 +33,6 @@ The MobileNetV2 architecture is based on an inverted residual structure where th
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 
