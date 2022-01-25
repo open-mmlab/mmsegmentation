@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href = "https://github.com/Meituan-AutoML/Twins">Official Repo</a>
 

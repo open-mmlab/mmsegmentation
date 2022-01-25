@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/google-research/vision_transformer">Official Repo</a>
 

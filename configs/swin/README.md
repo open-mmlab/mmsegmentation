@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/microsoft/Swin-Transformer">Official Repo</a>
 

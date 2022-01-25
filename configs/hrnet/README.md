@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/HRNet/HRNet-Semantic-Segmentation">Official Repo</a>
 
