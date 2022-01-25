@@ -124,8 +124,8 @@ def parse_md(md_file):
                 datasets.append(line[4:])
                 current_dataset = line[4:]
                 i += 2
-            elif line[:4] == '<!--':
-                is_backbone = True if 'BACKBONE' in line else False
+            elif line[:15] == '<!-- [BACKBONE]':
+                is_backbone = True
                 i += 1
             elif line[0] == '|' and (
                     i + 1) < len(lines) and lines[i + 1][:3] == '| -':
