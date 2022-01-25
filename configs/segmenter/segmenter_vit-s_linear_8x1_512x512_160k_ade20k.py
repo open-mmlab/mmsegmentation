@@ -11,5 +11,4 @@ model = dict(
         concat_input=False,
         num_classes=150,
         loss_decode=dict(
-            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
-    ), )
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)))

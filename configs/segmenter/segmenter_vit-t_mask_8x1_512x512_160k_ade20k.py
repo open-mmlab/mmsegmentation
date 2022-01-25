@@ -1,24 +1,18 @@
 _base_ = [
     '../_base_/models/segmenter_vit-b16_mask.py',
-    '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_160k.py',
+    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_160k.py'
 ]
 
 model = dict(
     pretrained='pretrain/vit_tiny_p16_384.pth',
-    backbone=dict(
-        embed_dims=192,
-        num_heads=3,
-    ),
+    backbone=dict(embed_dims=192, num_heads=3),
     decode_head=dict(
         type='SegmenterMaskTransformerHead',
         in_channels=192,
         channels=192,
         num_heads=3,
-        embed_dims=192,
-    ),
-)
+        embed_dims=192))
 
 optimizer = dict(lr=0.001, weight_decay=0.0)
 
@@ -35,7 +29,7 @@ train_pipeline = [
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
     dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+    dict(type='Collect', keys=['img', 'gt_semantic_seg'])
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -49,7 +43,7 @@ test_pipeline = [
             dict(type='RandomFlip'),
             dict(type='Normalize', **img_norm_cfg),
             dict(type='ImageToTensor', keys=['img']),
-            dict(type='Collect', keys=['img']),
+            dict(type='Collect', keys=['img'])
         ])
 ]
 data = dict(

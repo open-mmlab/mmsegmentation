@@ -1,8 +1,7 @@
 _base_ = [
     '../_base_/models/segmenter_vit-b16_mask.py',
-    '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_160k.py',
+    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_160k.py'
 ]
 
 backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
@@ -24,8 +23,7 @@ model = dict(
         dropout_ratio=0.0,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
-    ),
-)
+    ))
 
 optimizer = dict(lr=0.001, weight_decay=0.0)
 
@@ -42,7 +40,7 @@ train_pipeline = [
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
     dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+    dict(type='Collect', keys=['img', 'gt_semantic_seg'])
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -56,7 +54,7 @@ test_pipeline = [
             dict(type='RandomFlip'),
             dict(type='Normalize', **img_norm_cfg),
             dict(type='ImageToTensor', keys=['img']),
-            dict(type='Collect', keys=['img']),
+            dict(type='Collect', keys=['img'])
         ])
 ]
 data = dict(
