@@ -1,4 +1,6 @@
-# Fully Convolutional Networks for Semantic Segmentation
+# FCN
+
+[Fully Convolutional Networks for Semantic Segmentation](https://arxiv.org/abs/1411.4038)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Convolutional networks are powerful visual models that yield hierarchies of feat
 <img src="https://user-images.githubusercontent.com/24582831/142901525-fd0d2bf4-9a47-4143-85f5-3cee8849eaa4.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1411.4038">FCN (CVPR'2015/TPAMI'2017)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{shelhamer2017fully,
   title={Fully convolutional networks for semantic segmentation},
   author={Shelhamer, Evan and Long, Jonathan and Darrell, Trevor},
@@ -34,8 +35,6 @@ Convolutional networks are powerful visual models that yield hierarchies of feat
   publisher={IEEE Trans Pattern Anal Mach Intell}
 }
 ```
-
-</details>
 
 ## Results and models
 

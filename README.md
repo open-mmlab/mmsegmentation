@@ -154,7 +154,7 @@ A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSe
 
 If you find this project useful in your research, please consider cite:
 
-```latex
+```bibtex
 @misc{mmseg2020,
     title={{MMSegmentation}: OpenMMLab Semantic Segmentation Toolbox and Benchmark},
     author={MMSegmentation Contributors},

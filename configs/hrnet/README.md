@@ -1,8 +1,10 @@
-# Deep High-Resolution Representation Learning for Human Pose Estimation
+# HRNet
+
+[Deep High-Resolution Representation Learning for Human Pose Estimation](https://arxiv.org/abs/1908.07919)
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/HRNet/HRNet-Semantic-Segmentation">Official Repo</a>
 
@@ -19,10 +21,9 @@ High-resolution representations are essential for position-sensitive vision prob
 <img src="https://user-images.githubusercontent.com/24582831/142901680-64c285bc-669f-4924-b054-46a2f07c5427.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1908.07919">HRNet (CVPR'2019)</a></summary>
+## Citation
 
-```latext
+```bibtext
 @inproceedings{SunXLW19,
   title={Deep High-Resolution Representation Learning for Human Pose Estimation},
   author={Ke Sun and Bin Xiao and Dong Liu and Jingdong Wang},
@@ -30,8 +31,6 @@ High-resolution representations are essential for position-sensitive vision prob
   year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

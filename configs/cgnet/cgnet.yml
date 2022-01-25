@@ -4,7 +4,7 @@ Collections:
     Training Data:
     - Cityscapes
   Paper:
-    URL: https://arxiv.org/pdf/1811.08201.pdf
+    URL: https://arxiv.org/abs/1811.08201
     Title: 'CGNet: A Light-weight Context Guided Network for Semantic Segmentation'
   README: configs/cgnet/README.md
   Code:

@@ -1,4 +1,6 @@
-# U-Net: Convolutional Networks for Biomedical Image Segmentation
+# UNet
+
+[U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ There is large consent that successful training of deep networks requires many t
 <img src="https://user-images.githubusercontent.com/24582831/142902977-20fe689d-a147-4d92-9690-dbfde8b68dbe.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1505.04597">UNet (MICCAI'2016/Nat. Methods'2019)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{ronneberger2015u,
   title={U-net: Convolutional networks for biomedical image segmentation},
   author={Ronneberger, Olaf and Fischer, Philipp and Brox, Thomas},
@@ -32,8 +33,6 @@ There is large consent that successful training of deep networks requires many t
   organization={Springer}
 }
 ```
-
-</details>
 
 ## Results and models
 

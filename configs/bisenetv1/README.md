@@ -1,4 +1,6 @@
-# BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation
+# BiSeNetV1
+
+[BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation](https://arxiv.org/abs/1808.00897)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Semantic segmentation requires both rich spatial information and sizeable recept
 <img src="https://user-images.githubusercontent.com/24582831/142898839-a0a78148-848a-41b2-8682-b1f61ac004ba.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1808.00897">BiSeNetV1 (ECCV'2018)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{yu2018bisenet,
   title={Bisenet: Bilateral segmentation network for real-time semantic segmentation},
   author={Yu, Changqian and Wang, Jingbo and Peng, Chao and Gao, Changxin and Yu, Gang and Sang, Nong},
@@ -31,8 +32,6 @@ Semantic segmentation requires both rich spatial information and sizeable recept
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 

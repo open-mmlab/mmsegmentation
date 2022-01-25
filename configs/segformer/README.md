@@ -1,4 +1,6 @@
-# SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers
+# SegFormer
+
+[SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers](https://arxiv.org/abs/2105.15203)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ We present SegFormer, a simple, efficient yet powerful semantic segmentation fra
 <img src="https://user-images.githubusercontent.com/24582831/142902600-e188073e-5744-4ba9-8dbf-9316e55c74aa.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2105.15203">SegFormer (ArXiv'2021)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{xie2021segformer,
   title={SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers},
   author={Xie, Enze and Wang, Wenhai and Yu, Zhiding and Anandkumar, Anima and Alvarez, Jose M and Luo, Ping},
@@ -30,8 +31,6 @@ We present SegFormer, a simple, efficient yet powerful semantic segmentation fra
   year={2021}
 }
 ```
-
-</details>
 
 ## Usage
 

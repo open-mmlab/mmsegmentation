@@ -1,4 +1,6 @@
-# Context Encoding for Semantic Segmentation
+# EncNet
+
+[Context Encoding for Semantic Segmentation](https://arxiv.org/abs/1803.08904)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Recent work has made significant progress in improving spatial resolution for pi
 <img src="https://user-images.githubusercontent.com/24582831/142901276-b364fbbf-3bdb-4000-9d31-b9a135e30935.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1803.08904">EncNet (CVPR'2018)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @InProceedings{Zhang_2018_CVPR,
 author = {Zhang, Hang and Dana, Kristin and Shi, Jianping and Zhang, Zhongyue and Wang, Xiaogang and Tyagi, Ambrish and Agrawal, Amit},
 title = {Context Encoding for Semantic Segmentation},
@@ -31,8 +32,6 @@ month = {June},
 year = {2018}
 }
 ```
-
-</details>
 
 ## Results and models
 
