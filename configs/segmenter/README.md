@@ -1,4 +1,6 @@
-# Segmenter: Transformer for Semantic Segmentation
+# Segmenter
+
+[Segmenter: Transformer for Semantic Segmentation](https://arxiv.org/abs/2105.05633)
 
 ## Introduction
 
@@ -19,10 +21,7 @@ Image segmentation is often ambiguous at the level of individual image patches a
 <img src="https://user-images.githubusercontent.com/24582831/148507554-87eb80bd-02c7-4c31-b102-c6141e231ec8.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2105.05633">Segmenter: Transformer for Semantic Segmentation (ICCV'2021)</a></summary>
-
-```latex
+```bibtex
 @article{strudel2021Segmenter,
   title={Segmenter: Transformer for Semantic Segmentation},
   author={Strudel, Robin and Ricardo, Garcia, and Laptev, Ivan and Schmid, Cordelia},
@@ -31,7 +30,6 @@ Image segmentation is often ambiguous at the level of individual image patches a
 }
 ```
 
-</details>
 
 ## Usage
 
