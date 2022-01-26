@@ -140,7 +140,7 @@ def parse_args():
         '--verify', action='store_true', help='verify the TorchScript model')
     parser.add_argument('--output-file', type=str, default='tmp.pt')
     parser.add_argument(
-        '--num-classes',
+        '--num_classes',
         type=int,
         default=-1,
         help='number of out output classes')
