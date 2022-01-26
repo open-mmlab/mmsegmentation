@@ -1,8 +1,10 @@
 # Vision Transformer
 
+[An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale](https://arxiv.org/pdf/2010.11929.pdf)
+
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/google-research/vision_transformer">Official Repo</a>
 
@@ -19,10 +21,9 @@ While the Transformer architecture has become the de-facto standard for natural 
 <img src="https://user-images.githubusercontent.com/24582831/142903144-f80a12cc-8698-48ab-843c-49dedf558121.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/pdf/2010.11929.pdf">Vision Transformer (ICLR'2021)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{dosoViTskiy2020,
   title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
   author={DosoViTskiy, Alexey and Beyer, Lucas and Kolesnikov, Alexander and Weissenborn, Dirk and Zhai, Xiaohua and Unterthiner, Thomas and  Dehghani, Mostafa and Minderer, Matthias and Heigold, Georg and Gelly, Sylvain and Uszkoreit, Jakob and Houlsby, Neil},
@@ -30,8 +31,6 @@ While the Transformer architecture has become the de-facto standard for natural 
   year={2020}
 }
 ```
-
-</details>
 
 ## Usage
 

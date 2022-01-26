@@ -1,4 +1,6 @@
-# Rethinking Semantic Segmentation from a Sequence-to-Sequence Perspective with Transformers
+# SETR
+
+[Rethinking Semantic Segmentation from a Sequence-to-Sequence Perspective with Transformers](https://arxiv.org/abs/2012.15840)
 
 ## Introduction
 
@@ -23,10 +25,9 @@ Most recent semantic segmentation methods adopt a fully-convolutional network (F
 This head has two version head.
 ```
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2012.15840">SETR (CVPR'2021)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{zheng2020rethinking,
   title={Rethinking Semantic Segmentation from a Sequence-to-Sequence Perspective with Transformers},
   author={Zheng, Sixiao and Lu, Jiachen and Zhao, Hengshuang and Zhu, Xiatian and Luo, Zekun and Wang, Yabiao and Fu, Yanwei and Feng, Jianfeng and Xiang, Tao and Torr, Philip HS and others},
@@ -34,8 +35,6 @@ This head has two version head.
   year={2020}
 }
 ```
-
-</details>
 
 ## Results and models
 

@@ -1,4 +1,6 @@
-# PointRend: Image Segmentation as Rendering
+# PointRend
+
+[PointRend: Image Segmentation as Rendering](https://arxiv.org/abs/1912.08193)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ We present a new method for efficient high-quality image segmentation of objects
 <img src="https://user-images.githubusercontent.com/24582831/142902293-5db49cdd-4b1b-4940-9067-2acd6196c700.png" width="60%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1912.08193">PointRend (CVPR'2020)</a></summary>
+## Citation
 
-```
+```bibtex
 @inproceedings{kirillov2020pointrend,
   title={Pointrend: Image segmentation as rendering},
   author={Kirillov, Alexander and Wu, Yuxin and He, Kaiming and Girshick, Ross},
@@ -31,8 +32,6 @@ We present a new method for efficient high-quality image segmentation of objects
   year={2020}
 }
 ```
-
-</details>
 
 ## Results and models
 

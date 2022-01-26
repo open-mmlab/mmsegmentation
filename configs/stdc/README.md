@@ -1,4 +1,6 @@
-# Rethinking BiSeNet For Real-time Semantic Segmentation
+# STDC
+
+[Rethinking BiSeNet For Real-time Semantic Segmentation](https://arxiv.org/abs/2104.13188)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ BiSeNet has been proved to be a popular two-stream network for real-time segment
 <img src="https://user-images.githubusercontent.com/24582831/143640374-d0709587-edb2-4821-bb60-340035f6ad8f.png" width="60%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2104.13188">STDC (CVPR'2021)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{fan2021rethinking,
   title={Rethinking BiSeNet For Real-time Semantic Segmentation},
   author={Fan, Mingyuan and Lai, Shenqi and Huang, Junshi and Wei, Xiaoming and Chai, Zhenhua and Luo, Junfeng and Wei, Xiaolin},
@@ -31,8 +32,6 @@ BiSeNet has been proved to be a popular two-stream network for real-time segment
   year={2021}
 }
 ```
-
-</details>
 
 ## Usage
 
@@ -60,7 +59,7 @@ This script convert model from `PRETRAIN_PATH` and store the converted model in 
 
 | Method    | Backbone  | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                  | download                                                                                                                                                                                                                                                       |
 | --------- | --------- | --------- | ------: | -------- | -------------- | ----: | ------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| STDC1 (No Pretrain) | STDC1 | 512x1024  | 80000 | 7.15 | 23.06 | 71.52 | 73.35 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/stdc/stdc1_512x1024_80k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/v0.5/stdc/stdc1_512x1024_80k_cityscapes/stdc1_512x1024_80k_cityscapes_20211125_211245-2c8ba4c5.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_512x1024_80k_cityscapes/stdc1_512x1024_80k_cityscapes_20211125_211245.log.json) |
+| STDC1 (No Pretrain) | STDC1 | 512x1024  | 80000 | 7.15 | 23.06 | 71.52 | 73.35 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/stdc/stdc1_512x1024_80k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_512x1024_80k_cityscapes/stdc1_512x1024_80k_cityscapes_20211125_211245-2c8ba4c5.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_512x1024_80k_cityscapes/stdc1_512x1024_80k_cityscapes_20211125_211245.log.json) |
 | STDC1| STDC1 | 512x1024  | 80000 | - | - | 75.10 | 77.72 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/stdc/stdc1_in1k-pre_512x1024_80k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_in1k-pre_512x1024_80k_cityscapes/stdc1_in1k-pre_512x1024_80k_cityscapes_20211125_213942-880bb7d0.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_in1k-pre_512x1024_80k_cityscapes/stdc1_in1k-pre_512x1024_80k_cityscapes_20211125_213942.log.json) |
 | STDC2 (No Pretrain) | STDC2 | 512x1024  | 80000 | 8.27 | 23.71 | 73.20 | 75.55 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/stdc/stdc2_512x1024_80k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc2_512x1024_80k_cityscapes/stdc2_512x1024_80k_cityscapes_20211125_222450-82333ae0.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc2_512x1024_80k_cityscapes/stdc2_512x1024_80k_cityscapes_20211125_222450.log.json) |
 | STDC2 | STDC2 | 512x1024  | 80000 | - | - | 77.17 | 79.01 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/stdc/stdc2_in1k-pre_512x1024_80k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc2_in1k-pre_512x1024_80k_cityscapes/stdc2_in1k-pre_512x1024_80k_cityscapes_20211125_220437-d2c469f8.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc2_in1k-pre_512x1024_80k_cityscapes/stdc2_in1k-pre_512x1024_80k_cityscapes_20211125_220437.log.json) |

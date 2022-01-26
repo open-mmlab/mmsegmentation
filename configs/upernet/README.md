@@ -1,4 +1,6 @@
-# Unified Perceptual Parsing for Scene Understanding
+# UPerNet
+
+[Unified Perceptual Parsing for Scene Understanding](https://arxiv.org/pdf/1807.10221.pdf)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Humans recognize the visual world at multiple levels: we effortlessly categorize
 <img src="https://user-images.githubusercontent.com/24582831/142903077-44e8e0da-7276-4bda-bd2b-0df1680ca845.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/pdf/1807.10221.pdf">UPerNet (ECCV'2018)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{xiao2018unified,
   title={Unified perceptual parsing for scene understanding},
   author={Xiao, Tete and Liu, Yingcheng and Zhou, Bolei and Jiang, Yuning and Sun, Jian},
@@ -31,8 +32,6 @@ Humans recognize the visual world at multiple levels: we effortlessly categorize
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 

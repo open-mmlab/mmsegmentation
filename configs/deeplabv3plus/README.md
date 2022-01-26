@@ -1,4 +1,6 @@
-# Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+# DeepLabV3+
+
+[Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation](https://arxiv.org/abs/1802.02611)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Spatial pyramid pooling module or encode-decoder structure are used in deep neur
 <img src="https://user-images.githubusercontent.com/24582831/142900680-3e2c3098-8341-4760-bbfd-b1d7d29968ea.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1802.02611">DeepLabV3+ (CVPR'2018)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{deeplabv3plus2018,
   title={Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation},
   author={Liang-Chieh Chen and Yukun Zhu and George Papandreou and Florian Schroff and Hartwig Adam},
@@ -31,14 +32,7 @@ Spatial pyramid pooling module or encode-decoder structure are used in deep neur
 }
 ```
 
-</details>
-
 ## Results and models
-
-:::{note}
-`D-8`/`D-16` here corresponding to the output stride 8/16 setting for DeepLab series.
-`MG-124` stands for multi-grid dilation in the last stage of ResNet.
-:::
 
 ### Cityscapes
 
@@ -104,6 +98,24 @@ Spatial pyramid pooling module or encode-decoder structure are used in deep neur
 | DeepLabV3+ | R-50-D8  | 512x512   |   80000 | 7.37      | 6.00             | 50.99 |         50.65 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda/deeplabv3plus_r50-d8_512x512_80k_loveda_20211105_080442-f0720392.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda/deeplabv3plus_r50-d8_512x512_80k_loveda_20211105_080442.log.json)     |
 | DeepLabV3+ | R-101-D8 | 512x512   |   80000 | 10.84       | 4.33          | 51.47 |         51.32 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda/deeplabv3plus_r101-d8_512x512_80k_loveda_20211105_110759-4c1f297e.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda/deeplabv3plus_r101-d8_512x512_80k_loveda_20211105_110759.log.json) |
 
+### Potsdam
+
+| Method     | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                 | download                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DeepLabV3+ | R-18-D8  | 512x512   |   80000 | 1.91      | 81.68             | 77.09 |         78.44 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam/deeplabv3plus_r18-d8_512x512_80k_potsdam_20211219_020601-75fd5bc3.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam/deeplabv3plus_r18-d8_512x512_80k_potsdam_20211219_020601.log.json)     |
+| DeepLabV3+ | R-50-D8  | 512x512   |   80000 | 7.36      | 26.44             | 78.33 |         79.27 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam/deeplabv3plus_r50-d8_512x512_80k_potsdam_20211219_031508-7e7a2b24.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam/deeplabv3plus_r50-d8_512x512_80k_potsdam_20211219_031508.log.json)     |
+| DeepLabV3+ | R-101-D8 | 512x512   |   80000 | 10.83       | 17.56          | 78.7 |         79.47 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam/deeplabv3plus_r101-d8_512x512_80k_potsdam_20211219_031508-8b112708.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam/deeplabv3plus_r101-d8_512x512_80k_potsdam_20211219_031508.log.json) |
+
+### Vaihingen
+
+| Method     | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                 | download                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DeepLabV3+ | R-18-D8  | 512x512   |   80000 | 1.91      | 72.79             | 72.50 |         74.13 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen_20211231_230805-7626a263.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen_20211231_230805.log.json)     |
+| DeepLabV3+ | R-50-D8  | 512x512   |   80000 | 7.36      | 26.91             | 73.97 |         75.05 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen_20211231_230816-5040938d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen_20211231_230816.log.json)     |
+| DeepLabV3+ | R-101-D8 | 512x512   |   80000 | 10.83       | 18.59          | 73.06 |         74.14 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen_20211231_230816-8a095afa.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen_20211231_230816.log.json) |
+
 Note:
 
+- `D-8`/`D-16` here corresponding to the output stride 8/16 setting for DeepLab series.
+- `MG-124` stands for multi-grid dilation in the last stage of ResNet.
 - `FP16` means Mixed Precision (FP16) is adopted in training.

@@ -1,4 +1,6 @@
-# Expectation-Maximization Attention Networks for Semantic Segmentation
+# EMANet
+
+[Expectation-Maximization Attention Networks for Semantic Segmentation](https://arxiv.org/abs/1907.13426)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Self-attention mechanism has been widely used for various tasks. It is designed 
 <img src="https://user-images.githubusercontent.com/24582831/142901186-7bfe15e2-805a-420e-81b0-74f214f20a36.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1907.13426">EMANet (ICCV'2019)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{li2019expectation,
   title={Expectation-maximization attention networks for semantic segmentation},
   author={Li, Xia and Zhong, Zhisheng and Wu, Jianlong and Yang, Yibo and Lin, Zhouchen and Liu, Hong},
@@ -31,8 +32,6 @@ Self-attention mechanism has been widely used for various tasks. It is designed 
   year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

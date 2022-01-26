@@ -13,8 +13,10 @@ from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
-                            ConcatDataset, CustomDataset, LoveDADataset,
-                            PascalVOCDataset, RepeatDataset, build_dataset)
+                            COCOStuffDataset, ConcatDataset, CustomDataset,
+                            ISPRSDataset, LoveDADataset, MultiImageMixDataset,
+                            PascalVOCDataset, PotsdamDataset, RepeatDataset,
+                            build_dataset)
 
 
 def test_classes():
@@ -23,6 +25,10 @@ def test_classes():
         'pascal_voc')
     assert list(
         ADE20KDataset.CLASSES) == get_classes('ade') == get_classes('ade20k')
+    assert list(LoveDADataset.CLASSES) == get_classes('loveda')
+    assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
+    assert list(ISPRSDataset.CLASSES) == get_classes('vaihingen')
+    assert list(COCOStuffDataset.CLASSES) == get_classes('cocostuff')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -64,6 +70,9 @@ def test_palette():
     assert PascalVOCDataset.PALETTE == get_palette('voc') == get_palette(
         'pascal_voc')
     assert ADE20KDataset.PALETTE == get_palette('ade') == get_palette('ade20k')
+    assert LoveDADataset.PALETTE == get_palette('loveda')
+    assert PotsdamDataset.PALETTE == get_palette('potsdam')
+    assert COCOStuffDataset.PALETTE == get_palette('cocostuff')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -94,6 +103,59 @@ def test_dataset_wrapper():
     assert repeat_dataset[15] == 5
     assert repeat_dataset[27] == 7
     assert len(repeat_dataset) == 10 * len(dataset_a)
+
+    img_scale = (60, 60)
+    pipeline = [
+        dict(type='RandomMosaic', prob=1, img_scale=img_scale),
+        dict(type='RandomFlip', prob=0.5),
+        dict(type='Resize', img_scale=img_scale, keep_ratio=False),
+    ]
+
+    CustomDataset.load_annotations = MagicMock()
+    results = []
+    for _ in range(2):
+        height = np.random.randint(10, 30)
+        weight = np.random.randint(10, 30)
+        img = np.ones((height, weight, 3))
+        gt_semantic_seg = np.random.randint(5, size=(height, weight))
+        results.append(dict(gt_semantic_seg=gt_semantic_seg, img=img))
+
+    classes = ['0', '1', '2', '3', '4']
+    palette = [(0, 0, 0), (1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4)]
+    CustomDataset.__getitem__ = MagicMock(side_effect=lambda idx: results[idx])
+    dataset_a = CustomDataset(
+        img_dir=MagicMock(),
+        pipeline=[],
+        test_mode=True,
+        classes=classes,
+        palette=palette)
+    len_a = 2
+    dataset_a.img_infos = MagicMock()
+    dataset_a.img_infos.__len__.return_value = len_a
+
+    multi_image_mix_dataset = MultiImageMixDataset(dataset_a, pipeline)
+    assert len(multi_image_mix_dataset) == len(dataset_a)
+
+    for idx in range(len_a):
+        results_ = multi_image_mix_dataset[idx]
+
+    # test skip_type_keys
+    multi_image_mix_dataset = MultiImageMixDataset(
+        dataset_a, pipeline, skip_type_keys=('RandomFlip'))
+    for idx in range(len_a):
+        results_ = multi_image_mix_dataset[idx]
+        assert results_['img'].shape == (img_scale[0], img_scale[1], 3)
+
+    skip_type_keys = ('RandomFlip', 'Resize')
+    multi_image_mix_dataset.update_skip_type_keys(skip_type_keys)
+    for idx in range(len_a):
+        results_ = multi_image_mix_dataset[idx]
+        assert results_['img'].shape[:2] != img_scale
+
+    # test pipeline
+    with pytest.raises(TypeError):
+        pipeline = [['Resize']]
+        multi_image_mix_dataset = MultiImageMixDataset(dataset_a, pipeline)
 
 
 def test_custom_dataset():
@@ -646,6 +708,26 @@ def test_loveda():
         pseudo_results, metric='mIoU', imgfile_prefix='.format_loveda')
 
     shutil.rmtree('.format_loveda')
+
+
+def test_potsdam():
+    test_dataset = PotsdamDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_potsdam_dataset/img_dir'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_potsdam_dataset/ann_dir'))
+    assert len(test_dataset) == 1
+
+
+def test_vaihingen():
+    test_dataset = ISPRSDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_vaihingen_dataset/img_dir'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_vaihingen_dataset/ann_dir'))
+    assert len(test_dataset) == 1
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)

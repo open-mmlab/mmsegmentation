@@ -8,6 +8,8 @@ Collections:
     - Pascal Context
     - Pascal Context 59
     - LoveDA
+    - Potsdam
+    - Vaihingen
   Paper:
     URL: https://arxiv.org/abs/1802.02611
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
@@ -669,3 +671,135 @@ Models:
       mIoU(ms+flip): 51.32
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda/deeplabv3plus_r101-d8_512x512_80k_loveda_20211105_110759-4c1f297e.pth
+- Name: deeplabv3plus_r18-d8_512x512_80k_potsdam
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-18-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 12.24
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.91
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 77.09
+      mIoU(ms+flip): 78.44
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam/deeplabv3plus_r18-d8_512x512_80k_potsdam_20211219_020601-75fd5bc3.pth
+- Name: deeplabv3plus_r50-d8_512x512_80k_potsdam
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 37.82
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 7.36
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.33
+      mIoU(ms+flip): 79.27
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam/deeplabv3plus_r50-d8_512x512_80k_potsdam_20211219_031508-7e7a2b24.pth
+- Name: deeplabv3plus_r101-d8_512x512_80k_potsdam
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 56.95
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 10.83
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.7
+      mIoU(ms+flip): 79.47
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam/deeplabv3plus_r101-d8_512x512_80k_potsdam_20211219_031508-8b112708.pth
+- Name: deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-18-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 13.74
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.91
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 72.5
+      mIoU(ms+flip): 74.13
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen_20211231_230805-7626a263.pth
+- Name: deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 37.16
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 7.36
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 73.97
+      mIoU(ms+flip): 75.05
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen_20211231_230816-5040938d.pth
+- Name: deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 53.79
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 10.83
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 73.06
+      mIoU(ms+flip): 74.14
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen_20211231_230816-8a095afa.pth
