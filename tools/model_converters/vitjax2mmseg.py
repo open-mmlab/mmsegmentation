@@ -109,7 +109,7 @@ def main():
     for key in jax_weights.files:
         value = torch.from_numpy(jax_weights[key])
         jax_weights_tensor[key] = value
-    if 'L_16-i21k-300ep-lr_0.001-aug_medium1-wd_0.1-do_0.1-sd_0.1--imagenet2012-steps_20k-lr_0.01-res_384' in args.src:  # noqa
+    if 'L_16-i21k' in args.src:
         num_layer = 24
     else:
         num_layer = 12
