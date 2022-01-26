@@ -162,7 +162,7 @@ Description of arguments:
 - `--output-file`: The path of output TorchScript model. If not specified, it will be set to `tmp.pt`.
 - `--input-img` : The path of an input image for conversion and visualize.
 - `--shape`: The height and width of input tensor to the model. If not specified, it will be set to `512 512`.
-- `--num-classes`: The number of output classes. If not specified, it will be set to the model configuration value.
+- `--num_classes`: The number of output classes. If not specified, it will be set to the model configuration value.
 - `--show`: Determines whether to print the traced graph of the exported model. If not specified, it will be set to `False`.
 - `--verify`: Determines whether to verify the correctness of an exported model. If not specified, it will be set to `False`.
 
