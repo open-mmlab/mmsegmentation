@@ -124,6 +124,11 @@ def main():
         cfg.load_from = args.load_from
     if args.resume_from is not None:
         cfg.resume_from = args.resume_from
+    if args.gpus is not None:
+        cfg.gpu_ids = range(1)
+        warnings.warn('`--gpus` is deprecated because we only support '
+                      'single GPU mode in non-distributed training. '
+                      'Use `gpus=1` now.')
     if args.gpu_ids is not None:
         cfg.gpu_ids = args.gpu_ids[0:1]
         warnings.warn('`--gpu-ids` is deprecated, please use `--gpu-id`. '
