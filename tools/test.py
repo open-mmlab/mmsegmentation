@@ -8,6 +8,7 @@ import warnings
 
 import mmcv
 import torch
+from mmcv.cnn.utils import revert_sync_batchnorm
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import (get_dist_info, init_dist, load_checkpoint,
                          wrap_fp16_model)
@@ -80,6 +81,12 @@ def parse_args():
         action=DictAction,
         help='custom options for evaluation')
     parser.add_argument(
+        '--gpu-ids',
+        type=int,
+        nargs='+',
+        help='ids of gpus to use '
+        '(only applicable to non-distributed testing)')
+    parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
         default='none',
@@ -136,9 +143,19 @@ def main():
     cfg.model.pretrained = None
     cfg.data.test.test_mode = True
 
+    if args.gpu_ids is not None:
+        cfg.gpu_ids = args.gpu_ids
+    else:
+        cfg.gpu_ids = range(1)
+
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
         distributed = False
+        if len(cfg.gpu_ids) > 1:
+            warnings.warn(f'The gpu-ids is reset from {cfg.gpu_ids} to '
+                          f'{cfg.gpu_ids[0:1]} to avoid potential error in '
+                          'non-distribute testing time.')
+            cfg.gpu_ids = cfg.gpu_ids[0:1]
     else:
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
@@ -223,7 +240,12 @@ def main():
         tmpdir = None
 
     if not distributed:
-        model = MMDataParallel(model, device_ids=[0])
+        warnings.warn(
+            'SyncBN is only supported with DDP. To be compatible with DP, '
+            'we convert SyncBN to BN. Please use dist_train.sh which can '
+            'avoid this error.')
+        model = revert_sync_batchnorm(model)
+        model = MMDataParallel(model, device_ids=cfg.gpu_ids)
         results = single_gpu_test(
             model,
             data_loader,
