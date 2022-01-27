@@ -1,6 +1,6 @@
 Models:
 - Name: twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k
-  In Collection: Twins-FPN
+  In Collection: FPN
   Metadata:
     backbone: PCPVT-S
     crop size: (512,512)
@@ -22,7 +22,7 @@ Models:
   Config: configs/twins/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_204132-41acd132.pth
 - Name: twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k
-  In Collection: Twins-UPerNet
+  In Collection: UPerNet
   Metadata:
     backbone: PCPVT-S
     crop size: (512,512)
@@ -44,7 +44,7 @@ Models:
   Config: configs/twins/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k_20211201_233537-8e99c07a.pth
 - Name: twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k
-  In Collection: Twins-FPN
+  In Collection: FPN
   Metadata:
     backbone: PCPVT-B
     crop size: (512,512)
@@ -66,7 +66,7 @@ Models:
   Config: configs/twins/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141019-d396db72.pth
 - Name: twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k
-  In Collection: Twins-UPerNet (8x2)
+  In Collection: UPerNet (8x2)
   Metadata:
     backbone: PCPVT-B
     crop size: (512,512)
@@ -88,7 +88,7 @@ Models:
   Config: configs/twins/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k_20211130_141020-02094ea5.pth
 - Name: twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k
-  In Collection: Twins-FPN
+  In Collection: FPN
   Metadata:
     backbone: PCPVT-L
     crop size: (512,512)
@@ -110,7 +110,7 @@ Models:
   Config: configs/twins/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_105226-bc6d61dc.pth
 - Name: twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k
-  In Collection: Twins-UPerNet (8x2)
+  In Collection: UPerNet (8x2)
   Metadata:
     backbone: PCPVT-L
     crop size: (512,512)
@@ -132,7 +132,7 @@ Models:
   Config: configs/twins/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k_20211201_075053-c6095c07.pth
 - Name: twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k
-  In Collection: Twins-FPN
+  In Collection: FPN
   Metadata:
     backbone: SVT-S
     crop size: (512,512)
@@ -154,7 +154,7 @@ Models:
   Config: configs/twins/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141006-0a0d3317.pth
 - Name: twins_svt-s_uperhead_8x2_512x512_160k_ade20k
-  In Collection: Twins-UPerNet (8x2)
+  In Collection: UPerNet (8x2)
   Metadata:
     backbone: SVT-S
     crop size: (512,512)
@@ -176,7 +176,7 @@ Models:
   Config: configs/twins/twins_svt-s_uperhead_8x2_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-s_uperhead_8x2_512x512_160k_ade20k/twins_svt-s_uperhead_8x2_512x512_160k_ade20k_20211130_141005-e48a2d94.pth
 - Name: twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k
-  In Collection: Twins-FPN
+  In Collection: FPN
   Metadata:
     backbone: SVT-B
     crop size: (512,512)
@@ -198,7 +198,7 @@ Models:
   Config: configs/twins/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_113849-88b2907c.pth
 - Name: twins_svt-b_uperhead_8x2_512x512_160k_ade20k
-  In Collection: Twins-UPerNet (8x2)
+  In Collection: UPerNet (8x2)
   Metadata:
     backbone: SVT-B
     crop size: (512,512)
@@ -220,7 +220,7 @@ Models:
   Config: configs/twins/twins_svt-b_uperhead_8x2_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-b_uperhead_8x2_512x512_160k_ade20k/twins_svt-b_uperhead_8x2_512x512_160k_ade20k_20211202_040826-0943a1f1.pth
 - Name: twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k
-  In Collection: Twins-FPN
+  In Collection: FPN
   Metadata:
     backbone: SVT-L
     crop size: (512,512)
@@ -242,7 +242,7 @@ Models:
   Config: configs/twins/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141005-1d59bee2.pth
 - Name: twins_svt-l_uperhead_8x2_512x512_160k_ade20k
-  In Collection: Twins-UPerNet (8x2)
+  In Collection: UPerNet (8x2)
   Metadata:
     backbone: SVT-L
     crop size: (512,512)
