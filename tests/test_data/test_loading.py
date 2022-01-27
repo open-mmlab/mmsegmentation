@@ -31,7 +31,7 @@ class TestLoading(object):
         np.testing.assert_equal(results['img_norm_cfg']['mean'],
                                 np.zeros(3, dtype=np.float32))
         assert repr(transform) == transform.__class__.__name__ + \
-            "(to_float32=False,color_type='color',imdecode_backend='cv2')"
+            "(to_dtype=None,color_type='color',imdecode_backend='cv2')"
 
         # no img_prefix
         results = dict(
@@ -43,9 +43,14 @@ class TestLoading(object):
         assert results['img'].shape == (288, 512, 3)
 
         # to_float32
-        transform = LoadImageFromFile(to_float32=True)
+        transform = LoadImageFromFile(to_dtype='float32')
         results = transform(copy.deepcopy(results))
         assert results['img'].dtype == np.float32
+        
+        # to_int32
+        transform = LoadImageFromFile(to_dtype='int32')
+        results = transform(copy.deepcopy(results))
+        assert results['img'].dtype == np.int32
 
         # gray image
         results = dict(
@@ -61,6 +66,15 @@ class TestLoading(object):
         assert results['img'].dtype == np.uint8
         np.testing.assert_equal(results['img_norm_cfg']['mean'],
                                 np.zeros(1, dtype=np.float32))
+        
+        # numpy image
+        results = dict(
+            img_prefix = self.data_prefix, img_info=dict(filename='image.npy'))
+        transform = LoadImageFromFile(imdecode_backend='numpy')
+        results = transform(copy.deepcopy(results))
+        assert results['img'].shape == (300, 300)
+        assert results['img'].dtype == np.uint8
+
 
     def test_load_seg(self):
         results = dict(
@@ -91,6 +105,12 @@ class TestLoading(object):
         assert results['gt_semantic_seg'].shape == (288, 512)
         assert results['gt_semantic_seg'].dtype == np.uint8
 
+        # convert dtype
+        transform = LoadAnnotations(to_dtype='int64')
+        results = transform(copy.deepcopy(results))
+        assert results['gt_semantic_seg'].shape == (288, 512)
+        assert results['gt_semantic_seg'].dtype == np.int64
+
         # mmcv backend
         results = dict(
             seg_prefix=self.data_prefix,
@@ -100,6 +120,17 @@ class TestLoading(object):
         results = transform(copy.deepcopy(results))
         # this image is saved by PIL
         assert results['gt_semantic_seg'].shape == (288, 512)
+        assert results['gt_semantic_seg'].dtype == np.uint8
+
+        # numpy backend
+        results = dict(
+            seg_prefix=self.data_prefix,
+            ann_info=dict(seg_map='image.npy'),
+            seg_fields=[])
+        transform = LoadAnnotations(imdecode_backend='numpy')
+        results = transform(copy.deepcopy(results))
+        # this image is saved by np.save
+        assert results['gt_semantic_seg'].shape == (300, 300)
         assert results['gt_semantic_seg'].dtype == np.uint8
 
     def test_load_seg_custom_classes(self):
