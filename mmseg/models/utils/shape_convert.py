@@ -43,6 +43,13 @@ def nchw2nlc2nchw(module, x):
 
     Returns:
         Tensor: The output tensor of shape [N, C, H, W].
+
+    Example:
+        >>> import torch
+        >>> import torch.nn as nn
+        >>> norm = nn.LayerNorm(4)
+        >>> feature_map = torch.rand(4, 4, 5, 5)
+        >>> output = nchw2nlc2nchw(norm, feature_map)
     """
     B, C, H, W = x.shape
     x = x.flatten(2).transpose(1, 2)
@@ -67,6 +74,13 @@ def nlc2nchw2nlc(module, x, hw_shape):
 
     Returns:
         Tensor: The output tensor of shape [N, L, C].
+
+    Example:
+        >>> import torch
+        >>> import torch.nn as nn
+        >>> conv = nn.Conv2d(16, 16, 3, 1, 1)
+        >>> feature_map = torch.rand(4, 25, 16)
+        >>> output = nlc2nchw2nlc(conv, feature_map, (5, 5))
     """
     H, W = hw_shape
     assert len(x.shape) == 3
