@@ -80,11 +80,6 @@ class STDCHead(FCNHead):
         boudary_targets_pyramid[
             boudary_targets_pyramid <= self.boundary_threshold] = 0
 
-        seg_logit = F.interpolate(
-            seg_logit,
-            boundary_targets.shape[2:],
-            mode='bilinear',
-            align_corners=True)
         loss = super(STDCHead, self).losses(seg_logit,
                                             boudary_targets_pyramid.long())
         return loss
