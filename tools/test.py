@@ -89,12 +89,6 @@ def parse_args():
         action=DictAction,
         help='custom options for evaluation')
     parser.add_argument(
-        '--gpu-ids',
-        type=int,
-        nargs='+',
-        help='ids of gpus to use '
-        '(only applicable to non-distributed testing)')
-    parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
         default='none',
