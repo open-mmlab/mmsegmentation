@@ -155,8 +155,8 @@ def main():
     cfg.model.pretrained = None
     cfg.data.test.test_mode = True
 
-    if args.gpu_ids is not None:
-        cfg.gpu_ids = [args.gpu_ids]
+    if args.gpu_id is not None:
+        cfg.gpu_ids = [args.gpu_id]
 
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
