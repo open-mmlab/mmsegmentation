@@ -140,12 +140,16 @@ def main():
                       'non-distributed training. Use the first GPU '
                       'in `gpu_ids` now.')
     if args.gpus is None and args.gpu_ids is None:
-        cfg.gpu_ids = [args.gpu_id]
+        if args.gpu_id is not None:
+            cfg.gpu_ids = args.gpu_id
+        else:
+            cfg.gpu_ids = range(1)
 
     cfg.auto_resume = args.auto_resume
 
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
+        cfg.gpu_ids = [args.gpu_id]
         distributed = False
     else:
         distributed = True
