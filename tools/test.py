@@ -149,14 +149,11 @@ def main():
     cfg.model.pretrained = None
     cfg.data.test.test_mode = True
 
-    if args.gpu_id is not None:
-        cfg.gpu_ids = args.gpu_id
-    else:
-        cfg.gpu_ids = range(1)
+    if args.gpus is None and args.gpu_ids is None:
+        cfg.gpu_ids = [args.gpu_id]
 
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
-        cfg.gpu_ids = [args.gpu_id]
         distributed = False
         if len(cfg.gpu_ids) > 1:
             warnings.warn(f'The gpu-ids is reset from {cfg.gpu_ids} to '
