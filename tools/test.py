@@ -89,6 +89,12 @@ def parse_args():
         action=DictAction,
         help='custom options for evaluation')
     parser.add_argument(
+        '--gpu-ids',
+        type=int,
+        nargs='+',
+        help='ids of gpus to use '
+        '(only applicable to non-distributed testing)')
+    parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
         default='none',
@@ -149,11 +155,12 @@ def main():
     cfg.model.pretrained = None
     cfg.data.test.test_mode = True
 
-    if args.gpus is None and args.gpu_ids is None:
-        cfg.gpu_ids = [args.gpu_id]
+    if args.gpu_ids is not None:
+        cfg.gpu_ids = [args.gpu_ids]
 
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
+        cfg.gpu_ids = [args.gpu_id]
         distributed = False
         if len(cfg.gpu_ids) > 1:
             warnings.warn(f'The gpu-ids is reset from {cfg.gpu_ids} to '
