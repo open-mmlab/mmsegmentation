@@ -5,6 +5,7 @@
 ### 测试一个数据集
 
 - 单卡 GPU
+- CPU
 - 单节点多卡 GPU
 - 多节点
 
@@ -12,6 +13,10 @@
 
 ```shell
 # 单卡 GPU 测试
+python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] [--eval ${评估指标}] [--show]
+
+# CPU: 禁用 GPU 并运行单 GPU 测试脚本
+export CUDA_VISIBLE_DEVICES=-1
 python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] [--eval ${评估指标}] [--show]
 
 # 多卡GPU 测试

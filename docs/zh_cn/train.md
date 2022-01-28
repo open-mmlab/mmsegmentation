@@ -23,6 +23,20 @@ python tools/train.py ${配置文件} [可选参数]
 
 如果您想在命令里定义工作文件夹路径，您可以添加一个参数`--work-dir ${YOUR_WORK_DIR}`。
 
+### 使用 CPU 训练
+
+使用 CPU 训练的流程和使用单 GPU 训练的流程一致，我们仅需要在训练流程开始前禁用 GPU。
+
+```shell
+export CUDA_VISIBLE_DEVICES=-1
+```
+
+之后运行单 GPU 训练脚本即可。
+
+```{warning}
+我们不推荐用户使用 CPU 进行训练，这太过缓慢。我们支持这个功能是为了方便用户在没有 GPU 的机器上进行调试。
+```
+
 ### 使用多卡 GPU 训练
 
 ```shell

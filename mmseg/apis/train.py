@@ -2,6 +2,7 @@
 import random
 import warnings
 
+import mmcv
 import numpy as np
 import torch
 import torch.distributed as dist
@@ -9,6 +10,7 @@ from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import HOOKS, build_optimizer, build_runner, get_dist_info
 from mmcv.utils import build_from_cfg
 
+from mmseg import digit_version
 from mmseg.core import DistEvalHook, EvalHook
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import find_latest_checkpoint, get_root_logger
@@ -99,9 +101,10 @@ def train_segmentor(model,
             broadcast_buffers=False,
             find_unused_parameters=find_unused_parameters)
     else:
-        model = MMDataParallel(
-            model.cuda(cfg.gpu_ids[0]), device_ids=cfg.gpu_ids)
-
+        if not torch.cuda.is_available():
+            assert digit_version(mmcv.__version__) >= digit_version('1.4.4'), \
+                'Please use MMCV >= 1.4.4 for CPU training!'
+        model = MMDataParallel(model, device_ids=cfg.gpu_ids)
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
 

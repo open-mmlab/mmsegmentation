@@ -33,6 +33,20 @@ python tools/train.py ${CONFIG_FILE} [optional arguments]
 
 If you want to specify the working directory in the command, you can add an argument `--work-dir ${YOUR_WORK_DIR}`.
 
+### Train with CPU
+
+The process of training on the CPU is consistent with single GPU training. We just need to disable GPUs before the training process.
+
+```shell
+export CUDA_VISIBLE_DEVICES=-1
+```
+
+And then run the script [above](#train-with-a-single-gpu).
+
+```{warning}
+The process of training on the CPU is consistent with single GPU training. We just need to disable GPUs before the training process.
+```
+
 ### Train with multiple GPUs
 
 ```shell

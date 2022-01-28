@@ -8,11 +8,13 @@ import warnings
 
 import mmcv
 import torch
+from mmcv.cnn.utils import revert_sync_batchnorm
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import (get_dist_info, init_dist, load_checkpoint,
                          wrap_fp16_model)
 from mmcv.utils import DictAction
 
+from mmseg import digit_version
 from mmseg.apis import multi_gpu_test, single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
@@ -147,11 +149,18 @@ def main():
     cfg.model.pretrained = None
     cfg.data.test.test_mode = True
 
-    cfg.gpu_ids = [args.gpu_id]
+    if args.gpu_id is not None:
+        cfg.gpu_ids = [args.gpu_id]
 
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
+        cfg.gpu_ids = [args.gpu_id]
         distributed = False
+        if len(cfg.gpu_ids) > 1:
+            warnings.warn(f'The gpu-ids is reset from {cfg.gpu_ids} to '
+                          f'{cfg.gpu_ids[0:1]} to avoid potential error in '
+                          'non-distribute testing time.')
+            cfg.gpu_ids = cfg.gpu_ids[0:1]
     else:
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
@@ -236,7 +245,15 @@ def main():
         tmpdir = None
 
     if not distributed:
-        model = MMDataParallel(model, device_ids=[0])
+        warnings.warn(
+            'SyncBN is only supported with DDP. To be compatible with DP, '
+            'we convert SyncBN to BN. Please use dist_train.sh which can '
+            'avoid this error.')
+        if not torch.cuda.is_available():
+            assert digit_version(mmcv.__version__) >= digit_version('1.4.4'), \
+                'Please use MMCV >= 1.4.4 for CPU training!'
+        model = revert_sync_batchnorm(model)
+        model = MMDataParallel(model, device_ids=cfg.gpu_ids)
         results = single_gpu_test(
             model,
             data_loader,
