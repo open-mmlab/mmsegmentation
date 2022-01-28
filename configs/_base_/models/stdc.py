@@ -68,7 +68,7 @@ model = dict(
             in_index=0,
             norm_cfg=norm_cfg,
             concat_input=False,
-            align_corners=False,
+            align_corners=True,
             loss_decode=[
                 dict(
                     type='CrossEntropyLoss',
