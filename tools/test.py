@@ -18,6 +18,7 @@ from mmseg import digit_version
 from mmseg.apis import multi_gpu_test, single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
+from mmseg.utils import setup_multi_processes
 
 
 def parse_args():
@@ -51,6 +52,12 @@ def parse_args():
         '--gpu-collect',
         action='store_true',
         help='whether to use gpu to collect results.')
+    parser.add_argument(
+        '--gpu-id',
+        type=int,
+        default=0,
+        help='id of gpu to use '
+        '(only applicable to non-distributed testing)')
     parser.add_argument(
         '--tmpdir',
         help='tmp directory used for collecting results from multiple '
@@ -132,6 +139,10 @@ def main():
     cfg = mmcv.Config.fromfile(args.config)
     if args.cfg_options is not None:
         cfg.merge_from_dict(args.cfg_options)
+
+    # set multi-process settings
+    setup_multi_processes(cfg)
+
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
@@ -151,6 +162,7 @@ def main():
 
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
+        cfg.gpu_ids = [args.gpu_id]
         distributed = False
         if len(cfg.gpu_ids) > 1:
             warnings.warn(f'The gpu-ids is reset from {cfg.gpu_ids} to '
