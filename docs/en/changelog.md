@@ -8,7 +8,7 @@
 - Officially Support CPUs training and inference, please use the latest MMCV (1.4.4) to try it out.
 - Support Segmenter: Transformer for Semantic Segmentation (ICCV'2021).
 - Support ISPRS Potsdam and Vaihingen Dataset.
-- Add UNet benchmark with multiple losses supervision.
+- Add Mosaic transform and `MultiImageMixDataset` class in `dataset_wrappers`.
 
 **New Features**
 
@@ -16,8 +16,7 @@
 - Support ISPRS Potsdam and Vaihingen Dataset ([#1097](https://github.com/open-mmlab/mmsegmentation/pull/1097), [#1171](https://github.com/open-mmlab/mmsegmentation/pull/1171))
 - Add segformer‘s benchmark on cityscapes ([#1155](https://github.com/open-mmlab/mmsegmentation/pull/1155))
 - Add auto resume ([#1172](https://github.com/open-mmlab/mmsegmentation/pull/1172))
-- Add Mosaic transform ([#1093](https://github.com/open-mmlab/mmsegmentation/pull/1093))
-- Add MultiImageMixDataset ([#1105](https://github.com/open-mmlab/mmsegmentation/pull/1105))
+- Add Mosaic transform and `MultiImageMixDataset` class in `dataset_wrappers` ([#1093](https://github.com/open-mmlab/mmsegmentation/pull/1093), [#1105](https://github.com/open-mmlab/mmsegmentation/pull/1105))
 - Add log collector ([#1175](https://github.com/open-mmlab/mmsegmentation/pull/1175))
 
 **Improvements**
