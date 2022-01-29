@@ -1,6 +1,44 @@
 ## Changelog
 
 
+### V0.21 (1/29/2022)
+
+**Highlights**
+
+- Officially Support CPUs training and inference, please use the latest MMCV (1.4.4) to try it out.
+- Support Segmenter: Transformer for Semantic Segmentation (ICCV'2021).
+- Support ISPRS Potsdam and Vaihingen Dataset.
+- Add Mosaic transform and `MultiImageMixDataset` class in `dataset_wrappers`.
+
+**New Features**
+
+- Support Segmenter: Transformer for Semantic Segmentation (ICCV'2021) ([#955](https://github.com/open-mmlab/mmsegmentation/pull/955))
+- Support ISPRS Potsdam and Vaihingen Dataset ([#1097](https://github.com/open-mmlab/mmsegmentation/pull/1097), [#1171](https://github.com/open-mmlab/mmsegmentation/pull/1171))
+- Add segformer‘s benchmark on cityscapes ([#1155](https://github.com/open-mmlab/mmsegmentation/pull/1155))
+- Add auto resume ([#1172](https://github.com/open-mmlab/mmsegmentation/pull/1172))
+- Add Mosaic transform and `MultiImageMixDataset` class in `dataset_wrappers` ([#1093](https://github.com/open-mmlab/mmsegmentation/pull/1093), [#1105](https://github.com/open-mmlab/mmsegmentation/pull/1105))
+- Add log collector ([#1175](https://github.com/open-mmlab/mmsegmentation/pull/1175))
+
+**Improvements**
+
+- New-style CPU training and inference ([#1251](https://github.com/open-mmlab/mmsegmentation/pull/1251))
+- Add UNet benchmark with multiple losses supervision ([#1143](https://github.com/open-mmlab/mmsegmentation/pull/1143))
+
+**Bug Fixes**
+
+- Fix the model statistics in doc for readthedoc ([#1153](https://github.com/open-mmlab/mmsegmentation/pull/1153))
+- Set random seed for `palette` if not given ([#1152](https://github.com/open-mmlab/mmsegmentation/pull/1152))
+- Add `COCOStuffDataset` in `class_names.py` ([#1222](https://github.com/open-mmlab/mmsegmentation/pull/1222))
+- Fix bug in non-distributed multi-gpu training/testing ([#1247](https://github.com/open-mmlab/mmsegmentation/pull/1247))
+- Delete unnecessary lines of STDCHead ([#1231](https://github.com/open-mmlab/mmsegmentation/pull/1231))
+
+**Contributors**
+
+- @jbwang1997 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1152
+- @BeaverCC made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1206
+- @Echo-minn made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1214
+- @rstrudel made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/955
+
 ### V0.20.2 (12/15/2021)
 
 **Bug Fixes**
@@ -53,7 +91,7 @@
 **Bug Fixes**
 
 - Fix incorrectly loading init_cfg or pretrained models of several transformer models ([#999](https://github.com/open-mmlab/mmsegmentation/pull/999), [#1069](https://github.com/open-mmlab/mmsegmentation/pull/1069), [#1102](https://github.com/open-mmlab/mmsegmentation/pull/1102))
-- Fix EfficientMultiheadAttention in SegFormer ([#1003](https://github.com/open-mmlab/mmsegmentation/pull/1037))
+- Fix EfficientMultiheadAttention in SegFormer ([#1037](https://github.com/open-mmlab/mmsegmentation/pull/1037))
 - Remove `fp16` folder in `configs` ([#1031](https://github.com/open-mmlab/mmsegmentation/pull/1031))
 - Fix several typos in .yml file (Dice Metric [#1041](https://github.com/open-mmlab/mmsegmentation/pull/1041), ADE20K dataset [#1120](https://github.com/open-mmlab/mmsegmentation/pull/1120), Training Memory (GB) [#1083](https://github.com/open-mmlab/mmsegmentation/pull/1083))
 - Fix test error when using `--show-dir` ([#1091](https://github.com/open-mmlab/mmsegmentation/pull/1091))
