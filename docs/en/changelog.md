@@ -5,16 +5,15 @@
 
 **Highlights**
 
-- Support Segmenter ([#955](https://github.com/open-mmlab/mmsegmentation/pull/955))
-- Support ISPRS Potsdam Dataset ([#1097](https://github.com/open-mmlab/mmsegmentation/pull/1097))
-- Support ISPRS Vaihingen Dataset ([#1171](https://github.com/open-mmlab/mmsegmentation/pull/1171))
-- Add UNet benchmark with multiple losses supervision ([#1143](https://github.com/open-mmlab/mmsegmentation/pull/1143))
+- Officially Support CPUs training and inference, please use the latest MMCV (1.4.4) to try it out.
+- Support Segmenter: Transformer for Semantic Segmentation (ICCV'2021).
+- Support ISPRS Potsdam and Vaihingen Dataset.
+- Add UNet benchmark with multiple losses supervision.
 
 **New Features**
 
-- Support Segmenter ([#955](https://github.com/open-mmlab/mmsegmentation/pull/955))
-- Support ISPRS Potsdam Dataset ([#1097](https://github.com/open-mmlab/mmsegmentation/pull/1097))
-- Support ISPRS Vaihingen Dataset ([#1171](https://github.com/open-mmlab/mmsegmentation/pull/1171))
+- Support Segmenter: Transformer for Semantic Segmentation (ICCV'2021) ([#955](https://github.com/open-mmlab/mmsegmentation/pull/955))
+- Support ISPRS Potsdam and Vaihingen Dataset ([#1097](https://github.com/open-mmlab/mmsegmentation/pull/1097), [#1171](https://github.com/open-mmlab/mmsegmentation/pull/1171))
 - Add segformer‘s benchmark on cityscapes ([#1155](https://github.com/open-mmlab/mmsegmentation/pull/1155))
 - Add auto resume ([#1172](https://github.com/open-mmlab/mmsegmentation/pull/1172))
 - Add Mosaic transform ([#1093](https://github.com/open-mmlab/mmsegmentation/pull/1093))
