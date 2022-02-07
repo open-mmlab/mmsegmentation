@@ -348,4 +348,21 @@ plt.show()
 
 看到的东西将会和下图类似:
 
-![3dogs_mask](../resources/3dogs_mask.png)
+![3dogs_mask](../../resources/3dogs_mask.png)
+
+然后您可以使用 `test_torchserve.py` 比较 torchserve 和 pytorch 的结果，并将它们可视化。
+
+```shell
+python tools/torchserve/test_torchserve.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} ${MODEL_NAME}
+[--inference-addr ${INFERENCE_ADDR}] [--result-image ${RESULT_IMAGE}] [--device ${DEVICE}]
+```
+
+示例：
+
+```shell
+python tools/torchserve/test_torchserve.py \
+demo/demo.png \
+configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py \
+checkpoint/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth \
+fcn
+```

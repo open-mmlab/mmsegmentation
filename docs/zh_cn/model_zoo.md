@@ -19,107 +19,107 @@
 
 ### FCN
 
-请参考 [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) for details.
+请参考 [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) 获得详细信息。
 
 ### PSPNet
 
-请参考 [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) for details.
+请参考 [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) 获得详细信息。
 
 ### DeepLabV3
 
-请参考 [DeepLabV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3) for details.
+请参考 [DeepLabV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3) 获得详细信息。
 
 ### PSANet
 
-请参考 [PSANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/psanet) for details.
+请参考 [PSANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/psanet) 获得详细信息。
 
 ### DeepLabV3+
 
-请参考 [DeepLabV3+](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus) for details.
+请参考 [DeepLabV3+](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus) 获得详细信息。
 
 ### UPerNet
 
-请参考 [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/upernet) for details.
+请参考 [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/upernet) 获得详细信息。
 
 ### NonLocal Net
 
-请参考 [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/nlnet) for details.
+请参考 [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/nlnet) 获得详细信息。
 
 ### EncNet
 
-请参考 [EncNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) for details.
+请参考 [EncNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) 获得详细信息。
 
 ### CCNet
 
-请参考 [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ccnet) for details.
+请参考 [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ccnet) 获得详细信息。
 
 ### DANet
 
-请参考 [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) for details.
+请参考 [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) 获得详细信息。
 
 ### APCNet
 
-请参考 [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) for details.
+请参考 [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) 获得详细信息。
 
 ### HRNet
 
-请参考 [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet) for details.
+请参考 [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet) 获得详细信息。
 
 ### GCNet
 
-请参考 [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/gcnet) for details.
+请参考 [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/gcnet) 获得详细信息。
 
 ### DMNet
 
-请参考 [DMNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dmnet) for details.
+请参考 [DMNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dmnet) 获得详细信息。
 
 ### ANN
 
-请参考 [ANN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ann) for details.
+请参考 [ANN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ann) 获得详细信息。
 
 ### OCRNet
 
-请参考 [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet) for details.
+请参考 [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet) 获得详细信息。
 
 ### Fast-SCNN
 
-请参考 [Fast-SCNN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastscnn) for details.
+请参考 [Fast-SCNN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastscnn) 获得详细信息。
 
 ### ResNeSt
 
-请参考 [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest) for details.
+请参考 [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest) 获得详细信息。
 
 ### Semantic FPN
 
-请参考 [Semantic FPN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/semfpn) for details.
+请参考 [Semantic FPN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/semfpn) 获得详细信息。
 
 ### PointRend
 
-请参考 [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/point_rend) for details.
+请参考 [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/point_rend) 获得详细信息。
 
 ### MobileNetV2
 
-请参考 [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v2) for details.
+请参考 [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v2) 获得详细信息。
 
 ### MobileNetV3
 
-请参考 [MobileNetV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v3) for details.
+请参考 [MobileNetV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v3) 获得详细信息。
 
 ### EMANet
 
-请参考 [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet) for details.
+请参考 [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet) 获得详细信息。
 
 ### DNLNet
 
-请参考 [DNLNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dnlnet) for details.
+请参考 [DNLNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dnlnet) 获得详细信息。
 
 ### CGNet
 
-请参考 [CGNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/cgnet) for details.
+请参考 [CGNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/cgnet) 获得详细信息。
 
 ### Mixed Precision (FP16) Training
 
-请参考 [Mixed Precision (FP16) Training 在 BiSeNetV2 训练的样例](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes.py) for details.
+请参考 [Mixed Precision (FP16) Training 在 BiSeNetV2 训练的样例](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes.py) 获得详细信息。
 
 ## 速度标定
 
@@ -149,4 +149,4 @@
 | [CASILVision](https://github.com/CSAILVision/semantic-segmentation-pytorch) | 1.15           | N/A          |
 | [vedaseg](https://github.com/Media-Smart/vedaseg)                           | 0.95           | 1.25       |
 
-注意：DeepLabV3+ 的输出步长为 8
+注意：DeepLabV3+ 的输出步长为 8。

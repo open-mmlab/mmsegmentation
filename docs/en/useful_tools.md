@@ -1,3 +1,5 @@
+## Useful tools
+
 Apart from training/testing scripts, We provide lots of useful tools under the
  `tools/` directory.
 
@@ -358,7 +360,7 @@ plt.show()
 
 You should see something similar to:
 
-![3dogs_mask](../resources/3dogs_mask.png)
+![3dogs_mask](../../resources/3dogs_mask.png)
 
 And you can use `test_torchserve.py` to compare result of torchserve and pytorch, and visualize them.
 
