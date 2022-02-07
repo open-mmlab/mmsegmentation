@@ -741,7 +741,11 @@ def test_isaid():
             osp.dirname(__file__), '../data/pseudo_isaid_dataset/ann_dir'))
     assert len(test_dataset) == 1
 
-    ISAIDDataset.load_annotations = MagicMock()
+
+@patch('mmseg.datasets.ISAIDDataset.load_annotations', MagicMock)
+@patch('mmseg.datasets.ISAIDDataset.__getitem__',
+       MagicMock(side_effect=lambda idx: idx))
+def test_isaid_load_annotations():
     results = []
     for _ in range(2):
         height = np.random.randint(10, 30)
