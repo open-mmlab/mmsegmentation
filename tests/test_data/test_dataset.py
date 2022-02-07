@@ -741,6 +741,26 @@ def test_isaid():
             osp.dirname(__file__), '../data/pseudo_isaid_dataset/ann_dir'))
     assert len(test_dataset) == 1
 
+    ISAIDDataset.load_annotations = MagicMock()
+    results = []
+    for _ in range(2):
+        height = np.random.randint(10, 30)
+        weight = np.random.randint(10, 30)
+        img = np.ones((height, weight, 3))
+        gt_semantic_seg = np.random.randint(5, size=(height, weight))
+        results.append(dict(gt_semantic_seg=gt_semantic_seg, img=img))
+
+    ISAIDDataset.__getitem__ = MagicMock(side_effect=lambda idx: results[idx])
+    dataset_a = ISAIDDataset(
+        img_dir=MagicMock(),
+        pipeline=[],
+        test_mode=True,
+        classes=get_classes('isaid'),
+        palette=get_palette('isaid'))
+    len_a = 2
+    dataset_a.img_infos = MagicMock()
+    dataset_a.img_infos.__len__.return_value = len_a
+
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
 @patch('mmseg.datasets.CustomDataset.__getitem__',
