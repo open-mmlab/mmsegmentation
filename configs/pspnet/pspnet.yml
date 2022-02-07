@@ -13,7 +13,7 @@ Collections:
     - LoveDA
     - Potsdam
     - Vaihingen
-    - Vaihingen
+    - iSAID
   Paper:
     URL: https://arxiv.org/abs/1612.01105
     Title: Pyramid Scene Parsing Network
@@ -959,12 +959,12 @@ Models:
     Training Memory (GB): 4.52
   Results:
   - Task: Semantic Segmentation
-    Dataset: Vaihingen
+    Dataset: iSAID
     Metrics:
       mIoU: 60.22
       mIoU(ms+flip): 61.25
   Config: configs/pspnet/pspnet_r18-d8_4x4_512x512_80k_isaid.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_512x512_80k_vaihingen/pspnet_r18-d8_4x4_512x512_80k_vaihingen_20211228_160355-52a8a6f6.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_512x512_80k_isaid/pspnet_r18-d8_4x4_512x512_80k_isaid_20220110_180526-7ccf7f9b.pth
 - Name: pspnet_r50-d8_4x4_512x512_80k_isaid
   In Collection: pspnet
   Metadata:
@@ -981,9 +981,9 @@ Models:
     Training Memory (GB): 16.58
   Results:
   - Task: Semantic Segmentation
-    Dataset: Vaihingen
+    Dataset: iSAID
     Metrics:
       mIoU: 65.36
       mIoU(ms+flip): 66.48
   Config: configs/pspnet/pspnet_r50-d8_4x4_512x512_80k_isaid.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_512x512_80k_vaihingen/pspnet_r50-d8_4x4_512x512_80k_vaihingen_20211228_160355-382f8f5b.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_512x512_80k_isaid/pspnet_r50-d8_4x4_512x512_80k_isaid_20220110_180629-a28d0b0e.pth

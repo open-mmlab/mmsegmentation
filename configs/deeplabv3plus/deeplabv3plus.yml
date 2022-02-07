@@ -825,7 +825,7 @@ Models:
       mIoU: 61.35
       mIoU(ms+flip): 62.61
   Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_isaid.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen_20211231_230805-7626a263.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_isaid/deeplabv3plus_r18-d8_4x4_512x512_80k_isaid_20220110_180526-f5019985.pth
 - Name: deeplabv3plus_r50-d8_4x4_512x512_80k_isaid
   In Collection: deeplabv3plus
   Metadata:
@@ -847,4 +847,4 @@ Models:
       mIoU: 67.06
       mIoU(ms+flip): 68.02
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_isaid.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen_20211231_230816-5040938d.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_isaid/deeplabv3plus_r50-d8_4x4_512x512_80k_isaid_20220110_180526-d56d6b38.pth
