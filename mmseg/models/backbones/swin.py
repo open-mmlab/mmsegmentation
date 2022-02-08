@@ -11,7 +11,7 @@ from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import FFN, build_dropout
 from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
                                         trunc_normal_init)
-from mmcv.runner import (BaseModule, ModuleList, _load_checkpoint,
+from mmcv.runner import (BaseModule, CheckpointLoader, ModuleList,
                          load_state_dict)
 from mmcv.utils import to_2tuple
 
@@ -679,7 +679,7 @@ class SwinTransformer(BaseModule):
                                                   f'specify `Pretrained` in ' \
                                                   f'`init_cfg` in ' \
                                                   f'{self.__class__.__name__} '
-            ckpt = _load_checkpoint(
+            ckpt = CheckpointLoader.load_checkpoint(
                 self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
             if 'state_dict' in ckpt:
                 _state_dict = ckpt['state_dict']
