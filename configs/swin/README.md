@@ -1,8 +1,10 @@
-# Swin Transformer: Hierarchical Vision Transformer using Shifted Windows
+# Swin Transformer
+
+[Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/abs/2103.14030)
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/microsoft/Swin-Transformer">Official Repo</a>
 
@@ -19,10 +21,9 @@ This paper presents a new vision Transformer, called Swin Transformer, that capa
 <img src="https://user-images.githubusercontent.com/24582831/142902882-3fb9014c-11b6-47e9-aa14-500dfe7cbb1c.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2103.14030">Swin Transformer (arXiv'2021)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{liu2021Swin,
   title={Swin Transformer: Hierarchical Vision Transformer using Shifted Windows},
   author={Liu, Ze and Lin, Yutong and Cao, Yue and Hu, Han and Wei, Yixuan and Zhang, Zheng and Lin, Stephen and Guo, Baining},
@@ -30,8 +31,6 @@ This paper presents a new vision Transformer, called Swin Transformer, that capa
   year={2021}
 }
 ```
-
-</details>
 
 ## Usage
 

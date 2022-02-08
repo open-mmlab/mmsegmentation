@@ -1,4 +1,6 @@
-# PSANet: Point-wise Spatial Attention Network for Scene Parsing
+# PSANet
+
+[PSANet: Point-wise Spatial Attention Network for Scene Parsing](https://openaccess.thecvf.com/content_ECCV_2018/papers/Hengshuang_Zhao_PSANet_Point-wise_Spatial_ECCV_2018_paper.pdf)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ We notice information flow in convolutional neural networksis  restricted  insid
 <img src="https://user-images.githubusercontent.com/24582831/142902367-0f29e8cb-5ac0-434b-98c4-b2af7c9c2e58.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://openaccess.thecvf.com/content_ECCV_2018/papers/Hengshuang_Zhao_PSANet_Point-wise_Spatial_ECCV_2018_paper.pdf">PSANet (ECCV'2018)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{zhao2018psanet,
   title={Psanet: Point-wise spatial attention network for scene parsing},
   author={Zhao, Hengshuang and Zhang, Yi and Liu, Shu and Shi, Jianping and Change Loy, Chen and Lin, Dahua and Jia, Jiaya},
@@ -31,8 +32,6 @@ We notice information flow in convolutional neural networksis  restricted  insid
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 

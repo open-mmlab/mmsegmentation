@@ -242,8 +242,9 @@ def pytorch2onnx(model,
             None, {net_feed_input[0]: img_list[0].detach().numpy()})[0][0]
         # show segmentation results
         if show:
-            import cv2
             import os.path as osp
+
+            import cv2
             img = img_meta_list[0][0]['filename']
             if not osp.exists(img):
                 img = imgs[0][:3, ...].permute(1, 2, 0) * 255

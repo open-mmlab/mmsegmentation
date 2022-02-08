@@ -1,8 +1,10 @@
-# ResNeSt: Split-Attention Networks
+# ResNeSt
+
+[ResNeSt: Split-Attention Networks](https://arxiv.org/abs/2004.08955)
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/zhanghang1989/ResNeSt">Official Repo</a>
 
@@ -19,10 +21,9 @@ It is well known that featuremap attention and multi-path representation are imp
 <img src="https://user-images.githubusercontent.com/24582831/142902526-3cf33345-7e40-47a6-985e-4381857e21df.png" width="60%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2004.08955">ResNeSt (ArXiv'2020)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{zhang2020resnest,
 title={ResNeSt: Split-Attention Networks},
 author={Zhang, Hang and Wu, Chongruo and Zhang, Zhongyue and Zhu, Yi and Zhang, Zhi and Lin, Haibin and Sun, Yue and He, Tong and Muller, Jonas and Manmatha, R. and Li, Mu and Smola, Alexander},
@@ -30,8 +31,6 @@ journal={arXiv preprint arXiv:2004.08955},
 year={2020}
 }
 ```
-
-</details>
 
 ## Results and models
 

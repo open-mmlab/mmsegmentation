@@ -1,4 +1,6 @@
-# Non-local Neural Networks
+# NonLocal Net
+
+[Non-local Neural Networks](https://arxiv.org/abs/1711.07971)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Both convolutional and recurrent operations are building blocks that process one
 <img src="https://user-images.githubusercontent.com/24582831/142902128-17e29678-bf12-4ff4-b3d6-a39b47dfd253.png" width="50%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1711.07971">NonLocal Net (CVPR'2018)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{wang2018non,
   title={Non-local neural networks},
   author={Wang, Xiaolong and Girshick, Ross and Gupta, Abhinav and He, Kaiming},
@@ -31,8 +32,6 @@ Both convolutional and recurrent operations are building blocks that process one
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 

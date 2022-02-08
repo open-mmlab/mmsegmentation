@@ -1,4 +1,6 @@
-# Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+# DeepLabV3+
+
+[Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation](https://arxiv.org/abs/1802.02611)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Spatial pyramid pooling module or encode-decoder structure are used in deep neur
 <img src="https://user-images.githubusercontent.com/24582831/142900680-3e2c3098-8341-4760-bbfd-b1d7d29968ea.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1802.02611">DeepLabV3+ (CVPR'2018)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{deeplabv3plus2018,
   title={Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation},
   author={Liang-Chieh Chen and Yukun Zhu and George Papandreou and Florian Schroff and Hartwig Adam},
@@ -31,14 +32,7 @@ Spatial pyramid pooling module or encode-decoder structure are used in deep neur
 }
 ```
 
-</details>
-
 ## Results and models
-
-:::{note}
-`D-8`/`D-16` here corresponding to the output stride 8/16 setting for DeepLab series.
-`MG-124` stands for multi-grid dilation in the last stage of ResNet.
-:::
 
 ### Cityscapes
 
@@ -122,4 +116,6 @@ Spatial pyramid pooling module or encode-decoder structure are used in deep neur
 
 Note:
 
+- `D-8`/`D-16` here corresponding to the output stride 8/16 setting for DeepLab series.
+- `MG-124` stands for multi-grid dilation in the last stage of ResNet.
 - `FP16` means Mixed Precision (FP16) is adopted in training.

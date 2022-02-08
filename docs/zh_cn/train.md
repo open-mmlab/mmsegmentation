@@ -10,7 +10,7 @@ MMSegmentation 可以执行分布式训练和非分布式训练，分别使用 `
 evaluation = dict(interval=4000)  # 每4000 iterations 评估一次模型的性能
 ```
 
-**\*Important\***: 在配置文件里的默认学习率是针对4卡 GPU 和2张图/GPU (此时 batchsize = 4x2 = 8)来设置的。
+**\*重要提示\***: 在配置文件里的默认学习率是针对4卡 GPU 和2张图/GPU (此时 batchsize = 4x2 = 8)来设置的。
 同样，您也可以使用8卡 GPU 和 1张图/GPU 的设置，因为所有的模型均使用 cross-GPU 的 SyncBN 模式。
 
 我们可以在训练速度和 GPU 显存之间做平衡。当模型或者 Batch Size 比较大的时，可以传递`--cfg-options model.backbone.with_cp=True` ，使用 `with_cp` 来节省显存，但是速度会更慢，因为原先使用 `ith_cp` 时，是逐层反向传播(Back Propagation, BP)，不会保存所有的梯度。
@@ -21,7 +21,21 @@ evaluation = dict(interval=4000)  # 每4000 iterations 评估一次模型的性�
 python tools/train.py ${配置文件} [可选参数]
 ```
 
-如果您想在命令里定义工作文件夹路径，您可以添加一个参数`--work-dir ${YOUR_WORK_DIR}`。
+如果您想在命令里定义工作文件夹路径，您可以添加一个参数`--work-dir ${工作路径}`。
+
+### 使用 CPU 训练
+
+使用 CPU 训练的流程和使用单 GPU 训练的流程一致，我们仅需要在训练流程开始前禁用 GPU。
+
+```shell
+export CUDA_VISIBLE_DEVICES=-1
+```
+
+之后运行单 GPU 训练脚本即可。
+
+```{warning}
+我们不推荐用户使用 CPU 进行训练，这太过缓慢。我们支持这个功能是为了方便用户在没有 GPU 的机器上进行调试。
+```
 
 ### 使用多卡 GPU 训练
 
