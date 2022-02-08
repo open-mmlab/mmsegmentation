@@ -29,7 +29,7 @@ def nchw_to_nlc(x):
     return x.flatten(2).transpose(1, 2).contiguous()
 
 
-def nchw2nlc2nchw(module, x):
+def nchw2nlc2nchw(module, x, contiguous=False, **kwargs):
     """Flatten [N, C, H, W] shape tensor `x` to [N, L, C] shape tensor. Use the
     reshaped tensor as the input of `module`, and the convert the output of
     `module`, whose shape is.
@@ -37,9 +37,12 @@ def nchw2nlc2nchw(module, x):
     [N, L, C], to [N, C, H, W].
 
     Args:
-        module: (Callable): A callable object the takes a tensor
+        module (Callable): A callable object the takes a tensor
             with shape [N, L, C] as input.
-        x: (Tensor): The input tensor of shape [N, C, H, W].
+        x (Tensor): The input tensor of shape [N, C, H, W].
+                contiguous:
+        contiguous (Bool): Whether to make the tensor contiguous
+            after each shape transform.
 
     Returns:
         Tensor: The output tensor of shape [N, C, H, W].
@@ -52,13 +55,18 @@ def nchw2nlc2nchw(module, x):
         >>> output = nchw2nlc2nchw(norm, feature_map)
     """
     B, C, H, W = x.shape
-    x = x.flatten(2).transpose(1, 2)
-    x = module(x)
-    x = x.transpose(1, 2).reshape(B, C, H, W)
+    if not contiguous:
+        x = x.flatten(2).transpose(1, 2)
+        x = module(x, **kwargs)
+        x = x.transpose(1, 2).reshape(B, C, H, W)
+    else:
+        x = x.flatten(2).transpose(1, 2).contiguous()
+        x = module(x, **kwargs)
+        x = x.transpose(1, 2).reshape(B, C, H, W).contiguous()
     return x
 
 
-def nlc2nchw2nlc(module, x, hw_shape):
+def nlc2nchw2nlc(module, x, hw_shape, contiguous=False, **kwargs):
     """Convert [N, L, C] shape tensor `x` to [N, C, H, W] shape tensor. Use the
     reshaped tensor as the input of `module`, and convert the output of
     `module`, whose shape is.
@@ -66,11 +74,13 @@ def nlc2nchw2nlc(module, x, hw_shape):
     [N, C, H, W], to [N, L, C].
 
     Args:
-        module: (Callable): A callable object the takes a tensor
+        module (Callable): A callable object the takes a tensor
             with shape [N, C, H, W] as input.
-        x: (Tensor): The input tensor of shape [N, L, C].
+        x (Tensor): The input tensor of shape [N, L, C].
         hw_shape: (Sequence[int]): The height and width of the
             feature map with shape [N, C, H, W].
+        contiguous (Bool): Whether to make the tensor contiguous
+            after each shape transform.
 
     Returns:
         Tensor: The output tensor of shape [N, L, C].
@@ -86,7 +96,12 @@ def nlc2nchw2nlc(module, x, hw_shape):
     assert len(x.shape) == 3
     B, L, C = x.shape
     assert L == H * W, 'The seq_len doesn\'t match H, W'
-    x = x.transpose(1, 2).reshape(B, C, H, W)
-    x = module(x)
-    x = x.flatten(2).transpose(1, 2)
+    if not contiguous:
+        x = x.transpose(1, 2).reshape(B, C, H, W)
+        x = module(x, **kwargs)
+        x = x.flatten(2).transpose(1, 2)
+    else:
+        x = x.transpose(1, 2).reshape(B, C, H, W).contiguous()
+        x = module(x, **kwargs)
+        x = x.flatten(2).transpose(1, 2).contiguous()
     return x
