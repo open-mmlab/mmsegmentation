@@ -64,8 +64,8 @@ def _concat_dataset(cfg, default_args=None):
 
 def build_dataset(cfg, default_args=None):
     """Build datasets."""
-    from .dataset_wrappers import (ConcatDataset, RepeatDataset,
-                                   MultiImageMixDataset)
+    from .dataset_wrappers import (ConcatDataset, MultiImageMixDataset,
+                                   RepeatDataset)
     if isinstance(cfg, (list, tuple)):
         dataset = ConcatDataset([build_dataset(c, default_args) for c in cfg])
     elif cfg['type'] == 'RepeatDataset':

@@ -30,6 +30,7 @@ def test_ce_loss():
     # test loss with class weights from file
     import os
     import tempfile
+
     import mmcv
     import numpy as np
     tmp_file = tempfile.NamedTemporaryFile()
