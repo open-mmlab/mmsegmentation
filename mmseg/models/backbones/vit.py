@@ -8,7 +8,8 @@ from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
-from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
+from mmcv.runner import (BaseModule, ModuleList, _load_checkpoint,
+                         load_state_dict)
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
@@ -287,7 +288,7 @@ class VisionTransformer(BaseModule):
                         (h // self.patch_size, w // self.patch_size),
                         (pos_size, pos_size), self.interpolate_mode)
 
-            self.load_state_dict(state_dict, False)
+            load_state_dict(self, state_dict, strict=False, logger=logger)
         elif self.init_cfg is not None:
             super(VisionTransformer, self).init_weights()
         else:
