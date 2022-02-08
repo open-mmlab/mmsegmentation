@@ -1,11 +1,18 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import json
-
+from mmseg.utils import get_root_logger
 from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
                          get_dist_info)
 
 
 def get_num_layer_for_vit(var_name, num_max_layer):
+    """Get the layer id to set the different learning rates.
+
+    Args:
+        var_name (str): The key of the model.
+        num_max_layer (int): Maximum number of backbone layers.
+    """
+
     if var_name in ('backbone.cls_token', 'backbone.mask_token',
                     'backbone.pos_embed'):
         return 0
@@ -20,6 +27,7 @@ def get_num_layer_for_vit(var_name, num_max_layer):
 
 @OPTIMIZER_BUILDERS.register_module()
 class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
+    """Different learning rates are set for different layers of backbone."""
 
     def add_params(self, params, module, prefix='', is_dcn_module=None):
         """Add all parameters of module to the params list.
@@ -36,11 +44,16 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
                 control conv_offset layer's learning rate. Defaults to None.
         """
         parameter_groups = {}
-        print(self.paramwise_cfg)
+        logger = get_root_logger()
+        logger.info(self.paramwise_cfg)
+
         num_layers = self.paramwise_cfg.get('num_layers') + 2
         layer_decay_rate = self.paramwise_cfg.get('layer_decay_rate')
-        print('Build LayerDecayOptimizerConstructor %f - %d' %
-              (layer_decay_rate, num_layers))
+
+        logger.info(
+            f'Build LayerDecayOptimizerConstructor '
+            f'{layer_decay_rate} - {num_layers}')
+
         weight_decay = self.base_wd
 
         for name, param in module.named_parameters():
@@ -81,6 +94,6 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
                     'lr': parameter_groups[key]['lr'],
                     'weight_decay': parameter_groups[key]['weight_decay'],
                 }
-            print('Param groups = %s' % json.dumps(to_display, indent=2))
+            logger.info(f'Param groups ={to_display}')
 
         params.extend(parameter_groups.values())

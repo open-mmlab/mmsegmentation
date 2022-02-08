@@ -12,7 +12,7 @@ model = dict(
         num_heads=12,
         mlp_ratio=4,
         out_indices=(3, 5, 7, 11),
-        qkv_bias=True,
+        qv_bias=True,
         drop_rate=0.0,
         attn_drop_rate=0.0,
         drop_path_rate=0.1,
@@ -21,8 +21,7 @@ model = dict(
         act_cfg=dict(type='GELU'),
         norm_eval=False,
         interpolate_mode='bicubic',
-        init_values=0.1,
-        use_rel_pos_bias=True),
+        init_values=0.1),
     neck=dict(type='Feature2Pyramid', embed_dim=768, rescales=[4, 2, 1, 0.5]),
     decode_head=dict(
         type='UPerHead',

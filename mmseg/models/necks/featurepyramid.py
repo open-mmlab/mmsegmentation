@@ -13,7 +13,7 @@ class Feature2Pyramid(nn.Module):
     Args:
         embed_dims (int): embedding dimension.
         rescales (list[float]): different sampling multiples were
-        used to obtain pyramid features. Default: (4, 2, 1, 0.5).
+            used to obtain pyramid features. Default: (4, 2, 1, 0.5).
     """
 
     def __init__(self, embed_dim, rescales):

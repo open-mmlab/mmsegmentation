@@ -1,23 +1,23 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import math
+import warnings
 
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
-from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
-from scipy import interpolate
 from torch.nn.modules.batchnorm import _BatchNorm
-
+from torch.nn.modules.utils import _pair as to_2tuple
+from mmcv.cnn.bricks.drop import build_dropout
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed
-from .vit import VisionTransformer
+from scipy import interpolate
+import numpy as np
 
 
 class BEiTAttention(BaseModule):
@@ -28,7 +28,7 @@ class BEiTAttention(BaseModule):
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
         window_size (tuple[int]): The height and width of the window.
-        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
+        qv_bias (bool, optional):  If True, add a learnable bias to q, v.
             Default: True.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
@@ -43,7 +43,7 @@ class BEiTAttention(BaseModule):
                  embed_dims,
                  num_heads,
                  window_size,
-                 qkv_bias=True,
+                 qv_bias=True,
                  qk_scale=None,
                  attn_drop_rate=0.,
                  proj_drop_rate=0.,
@@ -54,52 +54,48 @@ class BEiTAttention(BaseModule):
         self.num_heads = num_heads
         head_embed_dims = embed_dims // num_heads
         self.scale = qk_scale or head_embed_dims**-0.5
-        if qkv_bias:
+        if qv_bias:
             self.q_bias = nn.Parameter(torch.zeros(embed_dims))
             self.v_bias = nn.Parameter(torch.zeros(embed_dims))
         else:
             self.q_bias = None
             self.v_bias = None
 
-        if window_size:
-            self.window_size = window_size
-            self.num_relative_distance = (2 * window_size[0] -
-                                          1) * (2 * window_size[1] - 1) + 3
-            self.relative_position_bias_table = nn.Parameter(
-                torch.zeros(self.num_relative_distance,
-                            num_heads))  # 2*Wh-1 * 2*Ww-1, nH
+        self.window_size = window_size
+        self.num_relative_distance = (2 * window_size[0] -
+                                        1) * (2 * window_size[1] - 1) + 3
+        # relative_position_bias_table shape is (2*Wh-1 * 2*Ww-1 + 3, nH)
+        self.relative_position_bias_table = nn.Parameter(
+                torch.zeros(self.num_relative_distance, num_heads))
 
-            # get pair-wise relative position index for
-            # each token inside the window
-            coords_h = torch.arange(window_size[0])
-            coords_w = torch.arange(window_size[1])
-            coords = torch.stack(torch.meshgrid([coords_h,
-                                                 coords_w]))  # 2, Wh, Ww
-            coords_flatten = torch.flatten(coords, 1)  # 2, Wh*Ww
-            relative_coords = coords_flatten[:, :,
-                                             None] - coords_flatten[:, None, :]
-            relative_coords = relative_coords.permute(
-                1, 2, 0).contiguous()  # Wh*Ww, Wh*Ww, 2
-            relative_coords[:, :,
-                            0] += window_size[0] - 1  # shift to start from 0
-            relative_coords[:, :, 1] += window_size[1] - 1
-            relative_coords[:, :, 0] *= 2 * window_size[1] - 1
-            relative_position_index = \
-                torch.zeros(size=(window_size[0] * window_size[1] + 1, ) * 2,
-                            dtype=relative_coords.dtype)
-            relative_position_index[1:, 1:] = relative_coords.sum(
-                -1)  # Wh*Ww, Wh*Ww
-            relative_position_index[0, 0:] = self.num_relative_distance - 3
-            relative_position_index[0:, 0] = self.num_relative_distance - 2
-            relative_position_index[0, 0] = self.num_relative_distance - 1
+        # get pair-wise relative position index for
+        # each token inside the window
+        coords_h = torch.arange(window_size[0])
+        coords_w = torch.arange(window_size[1])
+        # coords shape is (2, Wh, Ww)
+        coords = torch.stack(torch.meshgrid([coords_h, coords_w]))
+        # coords_flatten shape is (2, Wh*Ww)
+        coords_flatten = torch.flatten(coords, 1)
+        relative_coords = (
+                coords_flatten[:, :, None] - coords_flatten[:, None, :])
+        # relative_coords shape is (Wh*Ww, Wh*Ww, 2)
+        relative_coords = relative_coords.permute(1, 2, 0).contiguous()
+        # shift to start from 0
+        relative_coords[:, :, 0] += window_size[0] - 1  
+        relative_coords[:, :, 1] += window_size[1] - 1
+        relative_coords[:, :, 0] *= 2 * window_size[1] - 1
+        relative_position_index = torch.zeros(
+                size=(window_size[0] * window_size[1] + 1, ) * 2,
+                dtype=relative_coords.dtype)
 
-            self.register_buffer('relative_position_index',
-                                 relative_position_index)
+        # relative_position_index shape is (Wh*Ww, Wh*Ww)
+        relative_position_index[1:, 1:] = relative_coords.sum(-1)
+        relative_position_index[0, 0:] = self.num_relative_distance - 3
+        relative_position_index[0:, 0] = self.num_relative_distance - 2
+        relative_position_index[0, 0] = self.num_relative_distance - 1
 
-        else:
-            self.window_size = None
-            self.relative_position_bias_table = None
-            self.relative_position_index = None
+        self.register_buffer('relative_position_index',
+                                relative_position_index)
 
         self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=False)
         self.attn_drop = nn.Dropout(attn_drop_rate)
@@ -112,10 +108,7 @@ class BEiTAttention(BaseModule):
     def forward(self, x):
         """
         Args:
-
-            x (tensor): input features with shape of (num_windows*B, N, C)
-            mask (tensor | None, Optional): mask with shape of (num_windows,
-                Wh*Ww, Wh*Ww), value should be between (-inf, 0].
+            x (tensor): input features with shape of (num_windows*B, N, C).
         """
         B, N, C = x.shape
         qkv_bias = None
@@ -158,8 +151,6 @@ class TransformerEncoderLayer(BaseModule):
         embed_dims (int): The feature dimension.
         num_heads (int): Parallel attention heads.
         feedforward_channels (int): The hidden dimension for FFNs.
-        drop_rate (float): Probability of an element to be zeroed
-            after the feed forward layer. Default: 0.0.
         attn_drop_rate (float): The drop out rate for attention layer.
             Default: 0.0.
         drop_path_rate (float): stochastic depth rate. Default 0.0.
@@ -170,9 +161,9 @@ class TransformerEncoderLayer(BaseModule):
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
-        batch_first (bool): Key, Query and Value are shape of
-            (batch, n, embed_dim)
-            or (n, batch, embed_dim). Default: True.
+        window_size (tuple[int]): The height and width of the window.
+        init_values (float): Initialize the values of BEiTAttention and FFN 
+            with learnable scaling.
     """
 
     def __init__(self,
@@ -182,7 +173,7 @@ class TransformerEncoderLayer(BaseModule):
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  num_fcs=2,
-                 qkv_bias=True,
+                 qv_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  window_size=None,
@@ -197,7 +188,7 @@ class TransformerEncoderLayer(BaseModule):
             embed_dims=embed_dims,
             num_heads=num_heads,
             window_size=window_size,
-            qkv_bias=qkv_bias,
+            qv_bias=qv_bias,
             qk_scale=None,
             attn_drop_rate=attn_drop_rate,
             proj_drop_rate=0.,
@@ -241,27 +232,110 @@ class TransformerEncoderLayer(BaseModule):
 
 
 @BACKBONES.register_module()
-class BEiT(VisionTransformer):
-    """VisionTransformer with support for patch."""
+class BEiT(BaseModule):
+    """VisionTransformer with support for patch.
+
+    Args:
+        img_size (int | tuple): Input image size. Default: 224.
+        patch_size (int): The patch size. Default: 16.
+        in_channels (int): Number of input channels. Default: 3.
+        embed_dims (int): embedding dimension. Default: 768.
+        num_layers (int): depth of transformer. Default: 12.
+        num_heads (int): number of attention heads. Default: 12.
+        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+            Default: 4.
+        out_indices (list | tuple | int): Output from which stages.
+            Default: -1.
+        qkv_bias (bool): enable bias for qkv if True. Default: True.
+        drop_rate (float): Probability of an element to be zeroed.
+            Default 0.0
+        attn_drop_rate (float): The drop out rate for attention layer.
+            Default 0.0
+        drop_path_rate (float): stochastic depth rate. Default 0.0
+        with_cls_token (bool): Whether concatenating class token into image
+            tokens as transformer input. Default: True.
+        output_cls_token (bool): Whether output the cls_token. If set True,
+            `with_cls_token` must be True. Default: False.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN')
+        act_cfg (dict): The activation config for FFNs.
+            Default: dict(type='GELU').
+        patch_norm (bool): Whether to add a norm in PatchEmbed Block.
+            Default: False.
+        final_norm (bool): Whether to add a additional layer to normalize
+            final feature map. Default: False.
+        interpolate_mode (str): Select the interpolate mode for position
+            embeding vector resize. Default: bicubic.
+        num_fcs (int): The number of fully-connected layers for FFNs.
+            Default: 2.
+        norm_eval (bool): Whether to set norm layers to eval mode, namely,
+            freeze running stats (mean and var). Note: Effect on Batch Norm
+            and its variants only. Default: False.
+        with_cp (bool): Use checkpoint or not. Using checkpoint will save
+            some memory while slowing down the training speed. Default: False.
+        pretrained (str, optional): model pretrained path. Default: None.
+        init_values (float): Initialize the values of BEiTAttention and FFN 
+            with learnable scaling.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
+    """
 
     def __init__(self,
-                 img_size,
+                 img_size=224,
+                 patch_size=16,
                  in_channels=3,
                  embed_dims=768,
-                 patch_size=16,
                  num_layers=12,
                  num_heads=12,
                  mlp_ratio=4,
+                 out_indices=-1,
+                 qv_bias=True,
+                 drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
+                 with_cls_token=True,
+                 output_cls_token=False,
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
-                 num_fcs=2,
                  patch_norm=False,
-                 qkv_bias=True,
-                 init_values=0.1,
-                 **kwargs):
-        super(BEiT, self).__init__(**kwargs)
+                 final_norm=False,
+                 interpolate_mode='bicubic',
+                 num_fcs=2,
+                 norm_eval=False,
+                 with_cp=False,
+                 pretrained=None,
+                 init_values=None,
+                 init_cfg=None):
+        super(BEiT, self).__init__(init_cfg=init_cfg)
+
+        if isinstance(img_size, int):
+            img_size = to_2tuple(img_size)
+        elif isinstance(img_size, tuple):
+            if len(img_size) == 1:
+                img_size = to_2tuple(img_size[0])
+            assert len(img_size) == 2, \
+                f'The size of image should have length 1 or 2, ' \
+                f'but got {len(img_size)}'
+
+        if output_cls_token:
+            assert with_cls_token is True, f'with_cls_token must be True if' \
+                f'set output_cls_token to True, but got {with_cls_token}'
+
+        assert not (init_cfg and pretrained), \
+            'init_cfg and pretrained cannot be set at the same time'
+        if isinstance(pretrained, str):
+            warnings.warn('DeprecationWarning: pretrained is deprecated, '
+                          'please use "init_cfg" instead')
+            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
+        elif pretrained is not None:
+            raise TypeError('pretrained must be a str or None')
+
+        self.img_size = img_size
+        self.patch_size = patch_size
+        self.interpolate_mode = interpolate_mode
+        self.norm_eval = norm_eval
+        self.with_cp = with_cp
+        self.pretrained = pretrained
 
         self.patch_embed = PatchEmbed(
             in_channels=in_channels,
@@ -273,9 +347,22 @@ class BEiT(VisionTransformer):
             norm_cfg=norm_cfg if patch_norm else None,
             init_cfg=None,
         )
+
         window_size = (img_size[0] // patch_size, img_size[1] // patch_size)
         self.patch_shape = window_size
-        self.pos_embed = None
+        self.with_cls_token = with_cls_token
+        self.output_cls_token = output_cls_token
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
+        self.drop_after_pos = nn.Dropout(p=drop_rate)
+
+        if isinstance(out_indices, int):
+            if out_indices == -1:
+                out_indices = num_layers - 1
+            self.out_indices = [out_indices]
+        elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
+            self.out_indices = out_indices
+        else:
+            raise TypeError('out_indices must be type of int, list or tuple')
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, num_layers)]
         self.layers = ModuleList()
@@ -288,16 +375,23 @@ class BEiT(VisionTransformer):
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[i],
                     num_fcs=num_fcs,
-                    qkv_bias=qkv_bias,
+                    qv_bias=qv_bias,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
                     window_size=window_size,
                     init_values=init_values))
 
-        self.fix_init_weight()
+        self.final_norm = final_norm
+        if final_norm:
+            self.norm1_name, norm1 = build_norm_layer(
+                norm_cfg, embed_dims, postfix=1)
+            self.add_module(self.norm1_name, norm1)
+
+    @property
+    def norm1(self):
+        return getattr(self, self.norm1_name)
 
     def fix_init_weight(self):
-
         def rescale(param, layer_id):
             param.div_(math.sqrt(2.0 * layer_id))
 
@@ -306,7 +400,7 @@ class BEiT(VisionTransformer):
             rescale(layer.ffn.layers[1].weight.data, layer_id + 1)
 
     def init_weights(self):
-
+        
         def _init_weights(m):
             if isinstance(m, nn.Linear):
                 trunc_normal_(m.weight, std=.02)
@@ -317,6 +411,7 @@ class BEiT(VisionTransformer):
                 nn.init.constant_(m.weight, 1.0)
 
         self.apply(_init_weights)
+        self.fix_init_weight()
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg.get('type') == 'Pretrained'):
@@ -331,27 +426,25 @@ class BEiT(VisionTransformer):
 
             all_keys = list(state_dict.keys())
             for key in all_keys:
-                if 'relative_position_index' in key:
+                if "relative_position_index" in key:
                     state_dict.pop(key)
 
-                if 'relative_position_bias_table' in key:
+                if "relative_position_bias_table" in key:
                     rel_pos_bias = state_dict[key]
                     src_num_pos, num_attn_heads = rel_pos_bias.size()
                     dst_num_pos, _ = self.state_dict()[key].size()
                     dst_patch_shape = self.patch_shape
                     if dst_patch_shape[0] != dst_patch_shape[1]:
                         raise NotImplementedError()
-                    num_extra_tokens = dst_num_pos - (
-                        dst_patch_shape[0] * 2 - 1) * (
-                            dst_patch_shape[1] * 2 - 1)
-                    src_size = int((src_num_pos - num_extra_tokens)**0.5)
-                    dst_size = int((dst_num_pos - num_extra_tokens)**0.5)
+                    num_extra_tokens = dst_num_pos - (dst_patch_shape[0] * 2 - 1) * (dst_patch_shape[1] * 2 - 1)
+                    src_size = int((src_num_pos - num_extra_tokens) ** 0.5)
+                    dst_size = int((dst_num_pos - num_extra_tokens) ** 0.5)
                     if src_size != dst_size:
                         extra_tokens = rel_pos_bias[-num_extra_tokens:, :]
                         rel_pos_bias = rel_pos_bias[:-num_extra_tokens, :]
 
                         def geometric_progression(a, r, n):
-                            return a * (1.0 - r**n) / (1.0 - r)
+                            return a * (1.0 - r ** n) / (1.0 - r)
 
                         left, right = 1.01, 1.5
                         while right - left > 1e-6:
@@ -362,14 +455,11 @@ class BEiT(VisionTransformer):
                             else:
                                 left = q
 
-                        # if q > 1.13492:
-                        #     q = 1.13492
-
                         dis = []
                         cur = 1
                         for i in range(src_size // 2):
                             dis.append(cur)
-                            cur += q**(i + 1)
+                            cur += q ** (i + 1)
 
                         r_ids = [-_ for _ in reversed(dis)]
 
@@ -383,42 +473,32 @@ class BEiT(VisionTransformer):
                         all_rel_pos_bias = []
 
                         for i in range(num_attn_heads):
-                            z = rel_pos_bias[:,
-                                             i].view(src_size,
-                                                     src_size).float().numpy()
+                            z = rel_pos_bias[:, i].view(src_size, src_size).float().numpy()
                             f = interpolate.interp2d(x, y, z, kind='cubic')
                             all_rel_pos_bias.append(
-                                torch.Tensor(f(dx, dy)).contiguous().view(
-                                    -1, 1).to(rel_pos_bias.device))
+                                torch.Tensor(f(dx, dy)).contiguous().view(-1, 1).to(rel_pos_bias.device))
 
                         rel_pos_bias = torch.cat(all_rel_pos_bias, dim=-1)
-                        new_rel_pos_bias = torch.cat(
-                            (rel_pos_bias, extra_tokens), dim=0)
+                        new_rel_pos_bias = torch.cat((rel_pos_bias, extra_tokens), dim=0)
                         state_dict[key] = new_rel_pos_bias
-
-            # interpolate position bias table if needed
-            relative_position_bias_table_keys = [
-                k for k in state_dict.keys()
-                if 'relative_position_bias_table' in k
-            ]
+                    
+            # interpolate position bias table
+            relative_position_bias_table_keys = [k for k in state_dict.keys() if "relative_position_bias_table" in k]
             for table_key in relative_position_bias_table_keys:
                 table_pretrained = state_dict[table_key]
                 table_current = self.state_dict()[table_key]
                 L1, nH1 = table_pretrained.size()
                 L2, nH2 = table_current.size()
                 if nH1 != nH2:
-                    logger.warning(f'Error in loading {table_key}, pass')
+                    logger.warning(f"Error in loading {table_key}, pass")
                 else:
                     if L1 != L2:
-                        S1 = int(L1**0.5)
-                        S2 = int(L2**0.5)
+                        S1 = int(L1 ** 0.5)
+                        S2 = int(L2 ** 0.5)
                         table_pretrained_resized = F.interpolate(
-                            table_pretrained.permute(1,
-                                                     0).view(1, nH1, S1, S1),
-                            size=(S2, S2),
-                            mode='bicubic')
-                        state_dict[table_key] = table_pretrained_resized.view(
-                            nH2, L2).permute(1, 0)
+                            table_pretrained.permute(1, 0).view(1, nH1, S1, S1),
+                            size=(S2, S2), mode='bicubic')
+                        state_dict[table_key] = table_pretrained_resized.view(nH2, L2).permute(1, 0)
 
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:
@@ -474,3 +554,10 @@ class BEiT(VisionTransformer):
                 outs.append(out)
 
         return tuple(outs)
+
+    def train(self, mode=True):
+        super(BEiT, self).train(mode)
+        if mode and self.norm_eval:
+            for m in self.modules():
+                if isinstance(m, nn.LayerNorm):
+                    m.eval()
