@@ -1,6 +1,19 @@
 ## Changelog
 
 
+### V0.21.1 (2/9/2022)
+
+**Bug Fixes**
+
+- Fix typos in docs. ([#1263](https://github.com/open-mmlab/mmsegmentation/pull/1263))
+- Fix repeating log by `setup_multi_processes`. ([#1267](https://github.com/open-mmlab/mmsegmentation/pull/1267))
+- Upgrade isort in pre-commit hook. ([#1270](https://github.com/open-mmlab/mmsegmentation/pull/1270))
+
+**Improvements**
+
+- Use MMCV load_state_dict func in ViT/Swin. ([#1272](https://github.com/open-mmlab/mmsegmentation/pull/1272))
+- Add exception for PointRend for support CPU-only. ([#1271](https://github.com/open-mmlab/mmsegmentation/pull/1270))
+
 ### V0.21 (1/29/2022)
 
 **Highlights**
