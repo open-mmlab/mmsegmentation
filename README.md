@@ -66,7 +66,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.21.0 was released in 1/29/2022.
+v0.21.0 was released in 2/9/2022.
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 
 ## Benchmark and model zoo
