@@ -60,11 +60,20 @@ c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation)
 通过运行
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.5.0/index.html
+# pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
 ```
 
-可以安装好 mmcv-full (PyTorch 1.5 和 CUDA 10.1) 版本。
+可以安装好 mmcv-full (PyTorch 1.6.0 和 CUDA 10.1) 版本。
+
 其他 PyTorch 和 CUDA 版本的 MMCV 安装请参照[这里](https://mmcv.readthedocs.io/en/latest/#install-with-pip)
+
+PyTorch 在 1.x.0 和 1.x.1 之间通常是兼容的，故 mmcv-full 只提供 1.x.0 的编译包。如果你的 PyTorch 版本是 1.x.1，你可以放心地安装在 1.x.0 版本编译的 mmcv-full。
+
+```shell
+# 我们可以忽略 PyTorch 的小版本号
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.10/index.html
+```
 
 **在 Windows 下安装 mmcv (有风险)：**
 
