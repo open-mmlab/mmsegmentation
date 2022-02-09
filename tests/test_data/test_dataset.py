@@ -14,9 +14,9 @@ from PIL import Image
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
                             COCOStuffDataset, ConcatDataset, CustomDataset,
-                            ISAIDDataset, ISPRSDataset, LoveDADataset,
-                            MultiImageMixDataset, PascalVOCDataset,
-                            PotsdamDataset, RepeatDataset, build_dataset)
+                            ISPRSDataset, LoveDADataset, MultiImageMixDataset,
+                            PascalVOCDataset, PotsdamDataset, RepeatDataset,
+                            build_dataset, iSAIDDataset)
 
 
 def test_classes():
@@ -29,7 +29,7 @@ def test_classes():
     assert list(LoveDADataset.CLASSES) == get_classes('loveda')
     assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
     assert list(ISPRSDataset.CLASSES) == get_classes('vaihingen')
-    assert list(ISAIDDataset.CLASSES) == get_classes('isaid')
+    assert list(iSAIDDataset.CLASSES) == get_classes('isaid')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -74,7 +74,7 @@ def test_palette():
     assert LoveDADataset.PALETTE == get_palette('loveda')
     assert PotsdamDataset.PALETTE == get_palette('potsdam')
     assert COCOStuffDataset.PALETTE == get_palette('cocostuff')
-    assert ISAIDDataset.PALETTE == get_palette('isaid')
+    assert iSAIDDataset.PALETTE == get_palette('isaid')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -733,37 +733,24 @@ def test_vaihingen():
 
 
 def test_isaid():
-    test_dataset = ISAIDDataset(
+    test_dataset = iSAIDDataset(
         pipeline=[],
         img_dir=osp.join(
             osp.dirname(__file__), '../data/pseudo_isaid_dataset/img_dir'),
         ann_dir=osp.join(
             osp.dirname(__file__), '../data/pseudo_isaid_dataset/ann_dir'))
-    assert len(test_dataset) == 1
-
-
-@patch('mmseg.datasets.ISAIDDataset.load_annotations', MagicMock)
-@patch('mmseg.datasets.ISAIDDataset.__getitem__',
-       MagicMock(side_effect=lambda idx: idx))
-def test_isaid_load_annotations():
-    results = []
-    for _ in range(2):
-        height = np.random.randint(10, 30)
-        weight = np.random.randint(10, 30)
-        img = np.ones((height, weight, 3))
-        gt_semantic_seg = np.random.randint(5, size=(height, weight))
-        results.append(dict(gt_semantic_seg=gt_semantic_seg, img=img))
-
-    ISAIDDataset.__getitem__ = MagicMock(side_effect=lambda idx: results[idx])
-    dataset_a = ISAIDDataset(
-        img_dir=MagicMock(),
-        pipeline=[],
-        test_mode=True,
-        classes=get_classes('isaid'),
-        palette=get_palette('isaid'))
-    len_a = 2
-    dataset_a.img_infos = MagicMock()
-    dataset_a.img_infos.__len__.return_value = len_a
+    assert len(test_dataset) == 2
+    isaid_info = test_dataset.load_annotations(
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_isaid_dataset/img_dir'),
+        img_suffix='.png',
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_isaid_dataset/ann_dir'),
+        seg_map_suffix='.png',
+        split=osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_isaid_dataset/splits/train.txt'))
+    assert len(isaid_info) == 1
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)
