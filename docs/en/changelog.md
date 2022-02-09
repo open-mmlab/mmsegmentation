@@ -5,6 +5,7 @@
 
 **Bug Fixes**
 
+- Fix typos in docs. ([#1263](https://github.com/open-mmlab/mmsegmentation/pull/1263))
 - Fix repeating log by `setup_multi_processes`. ([#1267](https://github.com/open-mmlab/mmsegmentation/pull/1267))
 - Upgrade isort in pre-commit hook. ([#1270](https://github.com/open-mmlab/mmsegmentation/pull/1270))
 
