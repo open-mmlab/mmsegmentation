@@ -7,10 +7,13 @@ from mmcv.cnn.bricks.transformer import (FFN, TRANSFORMER_LAYER,
                                          build_transformer_layer)
 
 from mmseg.models.builder import HEADS, build_head
-from mmseg.models.decode_heads import ASPPHead, FCNHead, PSPHead, UPerHead
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.ops import resize
 from mmseg.utils import get_root_logger
+from .aspp_head import ASPPHead
+from .fcn_head import FCNHead
+from .psp_head import PSPHead
+from .uper_head import UPerHead
 
 
 @HEADS.register_module()
