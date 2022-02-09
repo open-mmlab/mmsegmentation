@@ -1,5 +1,5 @@
 # dataset settings
-dataset_type = 'ISAIDDataset'
+dataset_type = 'iSAIDDataset'
 data_root = 'data/iSAID'
 
 img_norm_cfg = dict(

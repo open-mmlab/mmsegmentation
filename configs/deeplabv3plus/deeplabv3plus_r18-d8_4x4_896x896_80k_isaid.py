@@ -1,8 +1,10 @@
-_base_ = './pspnet_r50-d8_4x4_512x512_80k_isaid.py'
+_base_ = './deeplabv3plus_r50-d8_4x4_896x896_80k_isaid.py'
 model = dict(
     pretrained='open-mmlab://resnet18_v1c',
     backbone=dict(depth=18),
     decode_head=dict(
+        c1_in_channels=64,
+        c1_channels=12,
         in_channels=512,
         channels=128,
     ),

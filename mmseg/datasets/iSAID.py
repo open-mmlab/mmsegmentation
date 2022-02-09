@@ -9,7 +9,7 @@ from .custom import CustomDataset
 
 
 @DATASETS.register_module()
-class ISAIDDataset(CustomDataset):
+class iSAIDDataset(CustomDataset):
     """ iSAID: A Large-scale Dataset for Instance Segmentation in Aerial Images
     In segmentation map annotation for iSAID dataset, which is included
     in 16 categories. ``reduce_zero_label`` is fixed to False. The
@@ -29,7 +29,7 @@ class ISAIDDataset(CustomDataset):
                [0, 127, 191], [0, 127, 255], [0, 100, 155]]
 
     def __init__(self, **kwargs):
-        super(ISAIDDataset, self).__init__(
+        super(iSAIDDataset, self).__init__(
             img_suffix='.png',
             seg_map_suffix='.png',
             ignore_index=255,

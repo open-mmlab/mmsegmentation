@@ -1,7 +1,6 @@
-_base_ = './fcn_hr18_4x4_512x512_80k_isaid.py'
+_base_ = './fcn_hr18_4x4_896x896_80k_isaid.py'
 model = dict(
-    # pretrained='open-mmlab://msra/hrnetv2_w18_small',
-    pretrained='./pretrained/hrnetv2_w18_small-b5a04e21.pth',
+    pretrained='open-mmlab://msra/hrnetv2_w18_small',
     backbone=dict(
         extra=dict(
             stage1=dict(num_blocks=(2, )),
