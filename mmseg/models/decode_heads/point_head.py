@@ -4,6 +4,7 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
+
 try:
     from mmcv.ops import point_sample
 except ModuleNotFoundError:
