@@ -14,7 +14,7 @@ def setup_multi_processes(cfg):
 
     # set multi-process start method
     if platform.system() != 'Windows':
-        mp_start_method = cfg.get('mp_start_method', None)
+        mp_start_method = cfg.get('mp_start_method', 'fork')
         current_method = mp.get_start_method(allow_none=True)
         if mp_start_method in ('fork', 'spawn', 'forkserver'):
             logger.info(
