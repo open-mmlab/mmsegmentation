@@ -1,6 +1,13 @@
 ## Changelog
 
 
+### V0.21.1 (2/9/2022)
+
+**Bug Fixes**
+
+-  Fix repeating log by `setup_multi_processes`. ([#1267](https://github.com/open-mmlab/mmsegmentation/pull/1267))
+-  Upgrade isort in pre-commit hook. ([#1270](https://github.com/open-mmlab/mmsegmentation/pull/1270))
+
 ### V0.21 (1/29/2022)
 
 **Highlights**
