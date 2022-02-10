@@ -60,7 +60,6 @@ c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation)
 通过运行
 
 ```shell
-# pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
 pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
 ```
 
