@@ -3,22 +3,16 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
-
+checkpoint_file = './pretrain/convnext-small_3rdparty_32xb128_in1k_20220124-d39b5192.pth'  # noqa
 model = dict(
-    pretrained='./pretrain/new_convnext_tiny_1k_224.pth',
     backbone=dict(
-        type='ConvNeXt',
-        in_chans=3,
-        num_stages=4,
-        depths=[3, 3, 9, 3],
-        dims=[96, 192, 384, 768],
-        kernel_size=7,
-        drop_path_rate=0.4,
-        layer_scale_init_value=1.0,
+        type='mmcls.ConvNeXt',
+        arch='small',
         out_indices=[0, 1, 2, 3],
-        norm_cfg=dict(type='LN', eps=1e-6),
-        act_cfg=dict(type='GELU'),
-    ),
+        drop_path_rate=0.1,
+        gap_before_final_norm=False,
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
+        _delete_=True),
     decode_head=dict(
         in_channels=[96, 192, 384, 768],
         num_classes=150,
@@ -37,7 +31,7 @@ optimizer = dict(
     paramwise_cfg={
         'decay_rate': 0.9,
         'decay_type': 'stage_wise',
-        'num_layers': 6
+        'num_layers': 12
     })
 
 lr_config = dict(

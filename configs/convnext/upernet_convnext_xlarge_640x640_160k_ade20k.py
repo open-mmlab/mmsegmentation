@@ -4,21 +4,16 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (640, 640)
-
+checkpoint_file = './pretrain/convnext-xlarge_3rdparty_in21k_20220124-f909bad7.pth'  # noqa
 model = dict(
     backbone=dict(
-        type='ConvNeXt',
-        in_chans=3,
-        num_stages=4,
-        depths=[3, 3, 27, 3],
-        dims=[256, 512, 1024, 2048],
-        kernel_size=7,
-        drop_path_rate=0.4,
-        layer_scale_init_value=1.0,
+        type='mmcls.ConvNeXt',
+        arch='xlarge',
         out_indices=[0, 1, 2, 3],
-        norm_cfg=dict(type='LN', eps=1e-6),
-        act_cfg=dict(type='GELU'),
-    ),
+        drop_path_rate=0.1,
+        gap_before_final_norm=False,
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
+        _delete_=True),
     decode_head=dict(
         in_channels=[256, 512, 1024, 2048],
         num_classes=150,

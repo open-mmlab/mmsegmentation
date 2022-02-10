@@ -3,25 +3,7 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
-
 model = dict(
-    backbone=dict(
-        type='ConvNeXt',
-        in_chans=3,
-        num_stages=4,
-        depths=[3, 3, 27, 3],
-        dims=[128, 256, 512, 1024],
-        kernel_size=7,
-        drop_path_rate=0.4,
-        layer_scale_init_value=1.0,
-        out_indices=[0, 1, 2, 3],
-        norm_cfg=dict(type='LN', eps=1e-6),
-        act_cfg=dict(type='GELU'),
-    ),
-    decode_head=dict(
-        in_channels=[128, 256, 512, 1024],
-        num_classes=150,
-    ),
     auxiliary_head=dict(in_channels=512, num_classes=150),
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(341, 341)),
 )

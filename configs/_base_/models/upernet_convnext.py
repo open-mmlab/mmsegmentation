@@ -1,20 +1,16 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
+custom_imports = dict(imports='mmcls.models', allow_failed_imports=False)
+checkpoint_file = './pretrain/convnext-base_3rdparty_32xb128_in1k_20220124-d0915162.pth'  # noqa
 model = dict(
     type='EncoderDecoder',
     pretrained=None,
     backbone=dict(
-        type='ConvNeXt',
-        in_chans=3,
-        num_stages=4,
-        depths=[3, 3, 9, 3],
-        dims=[96, 192, 384, 768],
-        kernel_size=7,
-        drop_path_rate=0.2,
-        layer_scale_init_value=1.0,
+        type='mmcls.ConvNeXt',
+        arch='base',
         out_indices=[0, 1, 2, 3],
-        norm_cfg=dict(type='LN', eps=1e-6),
-        act_cfg=dict(type='GELU'),
-    ),
+        drop_path_rate=0.1,
+        gap_before_final_norm=False,
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file)),
     decode_head=dict(
         type='UPerHead',
         in_channels=[128, 256, 512, 1024],
