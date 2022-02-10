@@ -135,6 +135,9 @@ mmsegmentation
 │   │   │   ├── train
 │   │   │   ├── val
 │   │   │   ├── test
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes

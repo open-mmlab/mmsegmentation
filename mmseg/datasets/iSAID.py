@@ -58,8 +58,7 @@ class iSAIDDataset(CustomDataset):
             with open(split) as f:
                 for line in f:
                     name = line.strip()
-                    img_name = name
-                    img_info = dict(filename=img_name + img_suffix)
+                    img_info = dict(filename=name + img_suffix)
                     if ann_dir is not None:
                         ann_name = name + '_instance_color_RGB'
                         seg_map = ann_name + seg_map_suffix
