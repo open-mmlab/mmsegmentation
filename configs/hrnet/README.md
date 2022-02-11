@@ -1,8 +1,10 @@
-# Deep High-Resolution Representation Learning for Human Pose Estimation
+# HRNet
+
+[Deep High-Resolution Representation Learning for Human Pose Estimation](https://arxiv.org/abs/1908.07919)
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/HRNet/HRNet-Semantic-Segmentation">Official Repo</a>
 
@@ -19,10 +21,9 @@ High-resolution representations are essential for position-sensitive vision prob
 <img src="https://user-images.githubusercontent.com/24582831/142901680-64c285bc-669f-4924-b054-46a2f07c5427.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1908.07919">HRNet (CVPR'2019)</a></summary>
+## Citation
 
-```latext
+```bibtext
 @inproceedings{SunXLW19,
   title={Deep High-Resolution Representation Learning for Human Pose Estimation},
   author={Ke Sun and Bin Xiao and Dong Liu and Jingdong Wang},
@@ -30,8 +31,6 @@ High-resolution representations are essential for position-sensitive vision prob
   year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 
@@ -92,3 +91,19 @@ High-resolution representations are essential for position-sensitive vision prob
 | FCN | HRNetV2p-W18-Small  | 512x512   |   80000 | 1.59      | 24.87             | 49.28 |         49.42 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr18s_512x512_80k_loveda.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_loveda/fcn_hr18s_512x512_80k_loveda_20211210_203228-60a86a7a.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_loveda/fcn_hr18s_512x512_80k_loveda_20211210_203228.log.json)     |
 | FCN | HRNetV2p-W18  | 512x512   |   80000 | 2.76      | 12.92             | 50.81 |         50.95 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr18_512x512_80k_loveda.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_loveda/fcn_hr18_512x512_80k_loveda_20211210_203952-93d9c3b3.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_loveda/fcn_hr18_512x512_80k_loveda_20211210_203952.log.json)     |
 | FCN | HRNetV2p-W48 | 512x512   |   80000 | 6.20       | 9.61          | 51.42 |         51.64 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr48_512x512_80k_loveda.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_loveda/fcn_hr48_512x512_80k_loveda_20211211_044756-67072f55.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_loveda/fcn_hr48_512x512_80k_loveda_20211211_044756.log.json) |
+
+### Potsdam
+
+| Method     | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                 | download                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| FCN | HRNetV2p-W18-Small  | 512x512   |   80000 | 1.58      | 36.00             | 77.64 |         78.8 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr18s_512x512_80k_potsdam.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_potsdam/fcn_hr18s_512x512_80k_potsdam_20211218_205517-ba32af63.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_potsdam/fcn_hr18s_512x512_80k_potsdam_20211218_205517.log.json)     |
+| FCN | HRNetV2p-W18  | 512x512   |   80000 | 2.76      | 19.25             | 78.26 |         79.24 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr18_512x512_80k_potsdam.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_potsdam/fcn_hr18_512x512_80k_potsdam_20211218_205517-5d0387ad.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_potsdam/fcn_hr18_512x512_80k_potsdam_20211218_205517.log.json)     |
+| FCN | HRNetV2p-W48 | 512x512   |   80000 | 6.20       | 16.42          | 78.39 |         79.34 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr48_512x512_80k_potsdam.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_potsdam/fcn_hr48_512x512_80k_potsdam_20211219_020601-97434c78.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_potsdam/fcn_hr48_512x512_80k_potsdam_20211219_020601.log.json) |
+
+### Vaihingen
+
+| Method     | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                 | download                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| FCN | HRNetV2p-W18-Small  | 512x512   |   80000 | 1.58      | 38.11             | 71.81 |         73.1 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen/fcn_hr18s_4x4_512x512_80k_vaihingen_20211231_230909-b23aae02.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen/fcn_hr18s_4x4_512x512_80k_vaihingen_20211231_230909.log.json)     |
+| FCN | HRNetV2p-W18  | 512x512   |   80000 | 2.76      | 19.55             | 72.57 |         74.09 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen/fcn_hr18_4x4_512x512_80k_vaihingen_20211231_231216-2ec3ae8a.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen/fcn_hr18_4x4_512x512_80k_vaihingen_20211231_231216.log.json)     |
+| FCN | HRNetV2p-W48 | 512x512   |   80000 | 6.20       | 17.25          | 72.50 |         73.52 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen/fcn_hr48_4x4_512x512_80k_vaihingen_20211231_231244-7133cb22.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen/fcn_hr48_4x4_512x512_80k_vaihingen_20211231_231244.log.json) |

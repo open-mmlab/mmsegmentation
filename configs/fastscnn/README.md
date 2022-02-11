@@ -1,4 +1,6 @@
-# Fast-SCNN for Semantic Segmentation
+# Fast-SCNN
+
+[Fast-SCNN for Semantic Segmentation](https://arxiv.org/abs/1902.04502)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ The encoder-decoder framework is state-of-the-art for offline semantic image seg
 <img src="https://user-images.githubusercontent.com/24582831/142901444-705b4ff4-6d1e-409b-899a-37bf3a6b69ce.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1902.04502">Fast-SCNN (ArXiv'2019)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{poudel2019fast,
   title={Fast-scnn: Fast semantic segmentation network},
   author={Poudel, Rudra PK and Liwicki, Stephan and Cipolla, Roberto},
@@ -30,8 +31,6 @@ The encoder-decoder framework is state-of-the-art for offline semantic image seg
   year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

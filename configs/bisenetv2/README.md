@@ -1,4 +1,6 @@
-# Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic Segmentation
+# BiSeNetV2
+
+[Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic Segmentation](https://arxiv.org/abs/2004.02147)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ The low-level details and high-level semantics are both essential to the semanti
 <img src="https://user-images.githubusercontent.com/24582831/142898966-ec4a81da-b4b0-41ee-b083-1d964582c18a.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2004.02147">BiSeNetV2 (IJCV'2021)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{yu2021bisenet,
   title={Bisenet v2: Bilateral network with guided aggregation for real-time semantic segmentation},
   author={Yu, Changqian and Gao, Changxin and Wang, Jingbo and Yu, Gang and Shen, Chunhua and Sang, Nong},
@@ -33,7 +34,6 @@ The low-level details and high-level semantics are both essential to the semanti
 }
 ```
 
-</details>
 
 ## Results and models
 

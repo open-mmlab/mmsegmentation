@@ -1,8 +1,10 @@
-# Searching for MobileNetV3
+# MobileNetV3
+
+[Searching for MobileNetV3](https://arxiv.org/abs/1905.02244)
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/tensorflow/models/tree/master/research/deeplab">Official Repo</a>
 
@@ -19,10 +21,9 @@ We present the next generation of MobileNets based on a combination of complemen
 <img src="https://user-images.githubusercontent.com/24582831/142902036-3dc2e0c0-d475-4816-b1ac-961836b41f5c.png" width="60%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1801.04381">MobileNetV3 (ICCV'2019)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @inproceedings{Howard_2019_ICCV,
   title={Searching for MobileNetV3},
   author={Howard, Andrew and Sandler, Mark and Chu, Grace and Chen, Liang-Chieh and Chen, Bo and Tan, Mingxing and Wang, Weijun and Zhu, Yukun and Pang, Ruoming and Vasudevan, Vijay and Le, Quoc V. and Adam, Hartwig},
@@ -33,8 +34,6 @@ We present the next generation of MobileNets based on a combination of complemen
   doi={10.1109/ICCV.2019.00140}}
 }
 ```
-
-</details>
 
 ## Results and models
 

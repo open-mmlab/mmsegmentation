@@ -1,4 +1,6 @@
-# Asymmetric Non-local Neural Networks for Semantic Segmentation
+# ANN
+
+[Asymmetric Non-local Neural Networks for Semantic Segmentation](https://arxiv.org/abs/1908.07678)
 
 ## Introduction
 
@@ -19,10 +21,10 @@ The non-local module works as a particularly useful technique for semantic segme
 <img src="https://user-images.githubusercontent.com/24582831/142898322-3bbd578c-e488-4bae-9c14-7598adac5cbd.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1908.07678">ANN (ICCV'2019)</a></summary>
 
-```latex
+## Citation
+
+```bibtex
 @inproceedings{zhu2019asymmetric,
   title={Asymmetric non-local neural networks for semantic segmentation},
   author={Zhu, Zhen and Xu, Mengde and Bai, Song and Huang, Tengteng and Bai, Xiang},
@@ -32,7 +34,6 @@ The non-local module works as a particularly useful technique for semantic segme
 }
 ```
 
-</details>
 
 ## Results and models
 

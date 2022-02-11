@@ -6,6 +6,7 @@ and also some high-level apis for easier integration to other projects.
 ### Test a dataset
 
 - single GPU
+- CPU
 - single node multiple GPU
 - multiple node
 
@@ -13,6 +14,10 @@ You can use the following commands to test a dataset.
 
 ```shell
 # single-gpu testing
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${RESULT_FILE}] [--eval ${EVAL_METRICS}] [--show]
+
+# CPU: disable GPUs and run single-gpu testing script
+export CUDA_VISIBLE_DEVICES=-1
 python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${RESULT_FILE}] [--eval ${EVAL_METRICS}] [--show]
 
 # multi-gpu testing

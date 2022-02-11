@@ -1,4 +1,6 @@
-# Interlaced Sparse Self-Attention for Semantic Segmentation
+# ISANet
+
+[Interlaced Sparse Self-Attention for Semantic Segmentation](https://arxiv.org/abs/1907.12273)
 
 ## Introduction
 
@@ -19,18 +21,20 @@ In this paper, we present a so-called interlaced sparse self-attention approach 
 <img src="https://user-images.githubusercontent.com/24582831/142901868-03d80da4-b9c0-4df9-8509-5f684ba9dadc.png" width="80%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1907.12273">ISANet (ArXiv'2019/IJCV'2021)</a></summary>
+## Citation
 
-```
+```bibetex
 @article{huang2019isa,
   title={Interlaced Sparse Self-Attention for Semantic Segmentation},
   author={Huang, Lang and Yuan, Yuhui and Guo, Jianyuan and Zhang, Chao and Chen, Xilin and Wang, Jingdong},
   journal={arXiv preprint arXiv:1907.12273},
   year={2019}
 }
+```
 
 The technical report above is also presented at:
+
+```bibetex
 @article{yuan2021ocnet,
   title={OCNet: Object Context for Semantic Segmentation},
   author={Yuan, Yuhui and Huang, Lang and Guo, Jianyuan and Zhang, Chao and Chen, Xilin and Wang, Jingdong},
@@ -40,8 +44,6 @@ The technical report above is also presented at:
   publisher={Springer}
 }
 ```
-
-</details>
 
 ## Results and models
 
