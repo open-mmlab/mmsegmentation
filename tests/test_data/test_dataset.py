@@ -12,7 +12,7 @@ import torch
 from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
-from mmseg.datasets import (DATASETS, A2D2Dataset19Classes,
+from mmseg.datasets import (DATASETS, A2D2Dataset18Classes,
                             A2D2Dataset34Classes, ADE20KDataset,
                             CityscapesDataset, COCOStuffDataset, ConcatDataset,
                             CustomDataset, ISPRSDataset, LoveDADataset,
@@ -631,8 +631,8 @@ def test_concat_ade(separate_eval):
     shutil.rmtree('.format_ade')
 
 
-def test_a2d2_19cls():
-    test_dataset = A2D2Dataset19Classes(
+def test_a2d2_18cls():
+    test_dataset = A2D2Dataset18Classes(
         pipeline=[],
         img_dir=osp.join(
             osp.dirname(__file__), '../data/pseudo_a2d2_dataset/images'),

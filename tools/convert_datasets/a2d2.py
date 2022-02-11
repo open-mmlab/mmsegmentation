@@ -11,7 +11,7 @@ import numpy as np
 random.seed(14)
 
 # Global variables for specifying label suffix according to class count
-LABEL_SUFFIX_19_CLS = '_19LabelTrainIds.png'
+LABEL_SUFFIX_18_CLS = '_18LabelTrainIds.png'
 LABEL_SUFFIX_34_CLS = '_34LabelTrainIds.png'
 
 # Dictionaries specifying which A2D2 segmentation color corresponds to
@@ -85,62 +85,144 @@ SEG_COLOR_DICT_34_CLS = {
 }
 
 # Merged set of segmentation classes used by authors of original paper
-SEG_COLOR_DICT_19_CLS = {
-    (255, 0, 0): 5,  # Car 1 --> Cars
-    (200, 0, 0): 5,  # Car 2 --> Cars
-    (150, 0, 0): 5,  # Car 3 --> Cars
-    (128, 0, 0): 5,  # Car 4 --> Cars
-    (182, 89, 6): 17,  # Bicycle 1 --> Small traffic participants
-    (150, 50, 4): 17,  # Bicycle 2 --> Small traffic participants
-    (90, 30, 1): 17,  # Bicycle 3 --> Small traffic participants
-    (90, 30, 30): 17,  # Bicycle 4 --> Small traffic participants
-    (204, 153, 255): 15,  # Pedestrian 1 --> Pedestrians
-    (189, 73, 155): 15,  # Pedestrian 2 --> Pedestrians
-    (239, 89, 191): 15,  # Pedestrian 3 --> Pedestrians
-    (255, 128, 0): 12,  # Truck 1 --> Trucks
-    (200, 128, 0): 12,  # Truck 2 --> Trucks
-    (150, 128, 0): 12,  # Truck 3 --> Trucks
-    (0, 0, 100): 12,  # Tractor --> Trucks
-    (0, 255, 0): 17,  # Small vehicles 1 --> Small traffic participants
-    (0, 200, 0): 17,  # Small vehicles 2 --> Small traffic participants
-    (0, 150, 0): 17,  # Small vehicles 3 --> Small traffic participants
-    (0, 128, 255): 9,  # Traffic signal 1 --> Traffic Info
-    (30, 28, 158): 9,  # Traffic signal 2 --> Traffic Info
-    (60, 28, 100): 9,  # Traffic signal 3 --> Traffic Info
-    (0, 255, 255): 9,  # Traffic sign 1 --> Traffic Info
-    (30, 220, 220): 9,  # Traffic sign 2 --> Traffic Info
-    (60, 157, 199): 9,  # Traffic sign 3 --> Traffic Info
-    (255, 255, 0): 12,  # Utility vehicle 1 --> Trucks
-    (255, 255, 200): 12,  # Utility vehicle 2 --> Trucks
-    (233, 100, 0): 4,  # Sidebars --> Poles
-    (110, 110, 0): 1,  # Speed bumper --> Road
-    (128, 128, 0): 10,  # Curb stones --> Curb stones
-    (255, 193, 37): 6,  # Solid line --> Lane lines
-    (64, 0, 64): 8,  # Irrelevant signs --> Irrelevant
-    (185, 122, 87): 13,  # Road blocks --> Grid structure
-    (139, 99, 108): 11,  # Non-drivable street --> Side walk
-    (210, 50, 115): 1,  # Zebra crossing --> Road
-    (255, 0, 128): 14,  # Obstacles / trash on road
-    (255, 246, 143): 4,  # Poles --> Poles
-    (150, 0, 150): 1,  # RD restricted area --> Road
-    (204, 255, 153): 15,  # Animals --> Pedestrians
-    (238, 162, 173): 13,  # Grid structure --> Grid structure
-    (33, 44, 177): 8,  # Signal corpus --> Irrelevant
-    (180, 50, 180): 1,  # Drivable cobblestone --> Road
-    (255, 70, 185): 9,  # Electronic traffic --> Traffic Info
-    (238, 233, 191): 1,  # Slow drive area --> Road
-    (147, 253, 194): 3,  # Nature object --> Nature
-    (150, 150, 200): 18,  # Parking area
-    (180, 150, 200): 11,  # Side walk
-    (72, 209, 204): 16,  # Ego car
-    (200, 125, 210): 1,  # Painted driv. instr. --> Road
-    (159, 121, 238): 9,  # Traffic guide obj. --> Traffic Info
-    (128, 0, 255): 6,  # Dashed line --> Lane lines
-    (255, 0, 255): 1,  # RD normal street --> Road
-    (135, 206, 255): 2,  # Sky
-    (241, 230, 255): 7,  # Buildings
-    (96, 69, 143): 0,  # Blurred area --> Background
-    (53, 46, 82): 255,  # Rain dirt --> IGNORED
+SEG_COLOR_DICT_18_CLS = {
+    # ID	Classes			Merged classes
+    # --------------------------------------------
+    # 0		Road			RD normal street, Drivable cobblestone, Painted
+    #                       driving instructions on lane, RD restricted area on
+    #                       street, Slow drive area, Zebra crossing, Speed
+    #                       bumper
+    # 1		Sky				Sky
+    # 2		Nature			Nature object
+    # 3		Poles			Poles, Sidebars
+    # 4		Cars			Car1, Car2, Car3
+    # 5		Lane lines		Dashed line, Solid line
+    # 6		Buildings		Buildings
+    # 7		Irrelevant		Irrelevant signs, Signal corpus
+    # 8		Traffic Info	Traffic signs, Traffic signals, Traffic guidance object,
+    #                       Electronic traffic guidance system
+    # 9		Curb stones		Curb stones
+    # 10	Side walk		Side walk, Non-drivable street
+    # 11	Trucks			Truck1, Truck2, Utility vehicle1, Truck3, Tractor,
+    #                       Utility vehicle2, Trucks
+    # 12	Grid structure  Grid structure, Road blocks
+    # 13	Obstacles / trash on road	Obstacles / trash on road
+    # 14	Pedestrians		Pedestrians, Pedestrians2, Pedestrians3, Animals
+    # 15	Ego car			Ego car
+    # 16	Small traffic participants	Bicycles1, Small vehicle1, Bicycles2,
+    #                                   Bicycles3, Small vehicle2,
+    #                                   Small vehicle3
+    # 17	Parking area	Parking area
+    (255, 0, 0):
+    4,  # Car 1 --> Cars
+    (200, 0, 0):
+    4,  # Car 2 --> Cars
+    (150, 0, 0):
+    4,  # Car 3 --> Cars
+    (128, 0, 0):
+    4,  # Car 4 --> Cars
+    (182, 89, 6):
+    16,  # Bicycle 1 --> Small traffic participants
+    (150, 50, 4):
+    16,  # Bicycle 2 --> Small traffic participants
+    (90, 30, 1):
+    16,  # Bicycle 3 --> Small traffic participants
+    (90, 30, 30):
+    16,  # Bicycle 4 --> Small traffic participants
+    (204, 153, 255):
+    14,  # Pedestrian 1 --> Pedestrians
+    (189, 73, 155):
+    14,  # Pedestrian 2 --> Pedestrians
+    (239, 89, 191):
+    14,  # Pedestrian 3 --> Pedestrians
+    (255, 128, 0):
+    11,  # Truck 1 --> Trucks
+    (200, 128, 0):
+    11,  # Truck 2 --> Trucks
+    (150, 128, 0):
+    11,  # Truck 3 --> Trucks
+    (0, 0, 100):
+    11,  # Tractor --> Trucks
+    (0, 255, 0):
+    16,  # Small vehicles 1 --> Small traffic participants
+    (0, 200, 0):
+    16,  # Small vehicles 2 --> Small traffic participants
+    (0, 150, 0):
+    16,  # Small vehicles 3 --> Small traffic participants
+    (0, 128, 255):
+    8,  # Traffic signal 1 --> Traffic Info
+    (30, 28, 158):
+    8,  # Traffic signal 2 --> Traffic Info
+    (60, 28, 100):
+    8,  # Traffic signal 3 --> Traffic Info
+    (0, 255, 255):
+    8,  # Traffic sign 1 --> Traffic Info
+    (30, 220, 220):
+    8,  # Traffic sign 2 --> Traffic Info
+    (60, 157, 199):
+    8,  # Traffic sign 3 --> Traffic Info
+    (255, 255, 0):
+    11,  # Utility vehicle 1 --> Trucks
+    (255, 255, 200):
+    11,  # Utility vehicle 2 --> Trucks
+    (233, 100, 0):
+    3,  # Sidebars --> Poles
+    (110, 110, 0):
+    0,  # Speed bumper --> Road
+    (128, 128, 0):
+    9,  # Curb stones --> Curb stones
+    (255, 193, 37):
+    5,  # Solid line --> Lane lines
+    (64, 0, 64):
+    7,  # Irrelevant signs --> Irrelevant
+    (185, 122, 87):
+    12,  # Road blocks --> Grid structure
+    (139, 99, 108):
+    10,  # Non-drivable street --> Side walk
+    (210, 50, 115):
+    0,  # Zebra crossing --> Road
+    (255, 0, 128):
+    13,  # Obstacles / trash on road
+    (255, 246, 143):
+    3,  # Poles --> Poles
+    (150, 0, 150):
+    0,  # RD restricted area --> Road
+    (204, 255, 153):
+    14,  # Animals --> Pedestrians
+    (238, 162, 173):
+    12,  # Grid structure --> Grid structure
+    (33, 44, 177):
+    7,  # Signal corpus --> Irrelevant
+    (180, 50, 180):
+    0,  # Drivable cobblestone --> Road
+    (255, 70, 185):
+    8,  # Electronic traffic --> Traffic Info
+    (238, 233, 191):
+    0,  # Slow drive area --> Road
+    (147, 253, 194):
+    2,  # Nature object --> Nature
+    (150, 150, 200):
+    17,  # Parking area
+    (180, 150, 200):
+    10,  # Side walk
+    (72, 209, 204):
+    15,  # Ego car
+    (200, 125, 210):
+    0,  # Painted driv. instr. --> Road
+    (159, 121, 238):
+    8,  # Traffic guide obj. --> Traffic Info
+    (128, 0, 255):
+    5,  # Dashed line --> Lane lines
+    (255, 0, 255):
+    0,  # RD normal street --> Road
+    (135, 206, 255):
+    1,  # Sky
+    (241, 230, 255):
+    6,  # Buildings
+    (96, 69, 143):
+    255,  # Blurred area --> IGNORED
+    (53, 46, 82):
+    255,  # Rain dirt --> IGNORED
 }
 
 VAL_SEQS = ['20181008_095521', '20181108_141609', '20181204_154421']
@@ -160,8 +242,8 @@ def modify_label_filename(label_filepath, label_choice):
     label_filepath = label_filepath.replace('_label_', '_camera_')
     if label_choice == '34_cls':
         label_filepath = label_filepath.replace('.png', LABEL_SUFFIX_34_CLS)
-    elif label_choice == '19_cls':
-        label_filepath = label_filepath.replace('.png', LABEL_SUFFIX_19_CLS)
+    elif label_choice == '18_cls':
+        label_filepath = label_filepath.replace('.png', LABEL_SUFFIX_18_CLS)
     else:
         raise ValueError
     return label_filepath
@@ -202,8 +284,8 @@ def convert_34_cls_trainids(label_filepath, ignore_id=255):
     mmcv.imwrite(label_img, label_filepath)
 
 
-def convert_19_cls_trainids(label_filepath, ignore_id=255):
-    """Saves a new semantic label using 19 class category labels.
+def convert_18_cls_trainids(label_filepath, ignore_id=255):
+    """Saves a new semantic label using 18 class category labels.
 
     The new image is saved into the same directory as the original image having
     an additional suffix.
@@ -219,7 +301,7 @@ def convert_19_cls_trainids(label_filepath, ignore_id=255):
     H, W, _ = orig_label.shape
     mod_label = ignore_id * np.ones((H, W), dtype=int)
 
-    seg_colors = list(SEG_COLOR_DICT_19_CLS.keys())
+    seg_colors = list(SEG_COLOR_DICT_18_CLS.keys())
     for seg_color in seg_colors:
         # The operation produce (H,W,3) array of (i,j,k)-wise truth values
         mask = (orig_label == seg_color)
@@ -229,10 +311,10 @@ def convert_19_cls_trainids(label_filepath, ignore_id=255):
         mask = np.prod(mask, axis=-1)
         mask = mask.astype(bool)
         # Segment masked elements with 'trainIds' value
-        mod_label[mask] = SEG_COLOR_DICT_19_CLS[seg_color]
+        mod_label[mask] = SEG_COLOR_DICT_18_CLS[seg_color]
 
     # Save new 'trainids' semantic label
-    label_filepath = modify_label_filename(label_filepath, '19_cls')
+    label_filepath = modify_label_filename(label_filepath, '18_cls')
     label_img = mod_label.astype(np.uint8)
     mmcv.imwrite(label_img, label_filepath)
 
@@ -334,8 +416,8 @@ def restructure_a2d2_directory(a2d2_path,
 
     if label_choice == '34_cls':
         label_suffix = LABEL_SUFFIX_34_CLS
-    elif label_choice == '19_cls':
-        label_suffix = LABEL_SUFFIX_19_CLS
+    elif label_choice == '18_cls':
+        label_suffix = LABEL_SUFFIX_18_CLS
     else:
         raise ValueError
 
@@ -437,8 +519,8 @@ def parse_args():
     parser.set_defaults(restruct=True)
     parser.add_argument(
         '--choice',
-        default='19_cls',
-        help='Label conversion type choice: \'19_cls\' (19 classes) or '
+        default='18_cls',
+        help='Label conversion type choice: \'18_cls\' (18 classes) or '
         '\'34_cls\' (34 classes)')
     parser.add_argument(
         '--train-on-val-and-test',
@@ -473,18 +555,18 @@ def main():
         them as new label image files with a filename suffix corresponding to
         the type of class categories.
 
-        Label choice 'cls_19' (default) results in a merged set of 19 classes
-        with the filename suffix '_19LabelTrainIds.png'.
+        Label choice 'cls_18' (default) results in a merged set of 18 classes
+        with the filename suffix '_18LabelTrainIds.png'.
 
         Label choice 'cls_34' results in labels with 34 classes with the
         filename suffix '_34LabelTrainIds.png'.
 
     The default arguments result in merging of the original 38 semantic classes
-    into a 19 class label setup corresponding to the official benchmark results
+    into a 18 class label setup corresponding to the official benchmark results
     presented in the A2D2 paper (ref: p.8 "4. Experiment: Semantic
     segmentation").
 
-    Add `--choice 34_cls` to use the unmerged 34 semantic classes.
+    Add `--choice 34_cls` to use the full unmerged 34 semantic classes.
 
     NOTE: The following segmentation classes are ignored (i.e. trainIds 255):
           - Ego car:  A calibrated system should a priori know what input
@@ -534,12 +616,12 @@ def main():
     # Convert segmentation images to the Cityscapes 'TrainIds' values
     if args.convert:
         seg_choice = args.choice
-        if seg_choice == '19_cls':
+        if seg_choice == '18_cls':
             if args.nproc > 1:
-                mmcv.track_parallel_progress(convert_19_cls_trainids,
+                mmcv.track_parallel_progress(convert_18_cls_trainids,
                                              label_filepaths, args.nproc)
             else:
-                mmcv.track_progress(convert_19_cls_trainids, label_filepaths)
+                mmcv.track_progress(convert_18_cls_trainids, label_filepaths)
         elif seg_choice == '34_cls':
             if args.nproc > 1:
                 mmcv.track_parallel_progress(convert_34_cls_trainids,
