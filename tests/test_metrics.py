@@ -308,8 +308,9 @@ def test_mean_fscore():
 
 
 def test_filename_inputs():
-    import cv2
     import tempfile
+
+    import cv2
 
     def save_arr(input_arrays: list, title: str, is_image: bool, dir: str):
         filenames = []

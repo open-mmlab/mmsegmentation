@@ -1,4 +1,6 @@
-# FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation
+# FastFCN
+
+[FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation](https://arxiv.org/abs/1903.11816)
 
 ## Introduction
 
@@ -8,10 +10,20 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12">Code Snippet</a>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1903.11816">FastFCN (ArXiv'2019) </a></summary>
+## Abstract
 
-```latex
+<!-- [ABSTRACT] -->
+
+Modern approaches for semantic segmentation usually employ dilated convolutions in the backbone to extract high-resolution feature maps, which brings heavy computation complexity and memory footprint. To replace the time and memory consuming dilated convolutions, we propose a novel joint upsampling module named Joint Pyramid Upsampling (JPU) by formulating the task of extracting high-resolution feature maps into a joint upsampling problem. With the proposed JPU, our method reduces the computation complexity by more than three times without performance loss. Experiments show that JPU is superior to other upsampling modules, which can be plugged into many existing approaches to reduce computation complexity and improve performance. By replacing dilated convolutions with the proposed JPU module, our method achieves the state-of-the-art performance in Pascal Context dataset (mIoU of 53.13%) and ADE20K dataset (final score of 0.5584) while running 3 times faster.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142901374-6e0252ab-6e0f-4acd-86ad-1e9f49be3185.png" width="70%"/>
+</div>
+
+## Citation
+
+```bibtex
 @article{wu2019fastfcn,
 title={Fastfcn: Rethinking dilated convolution in the backbone for semantic segmentation},
 author={Wu, Huikai and Zhang, Junge and Huang, Kaiqi and Liang, Kongming and Yu, Yizhou},
@@ -19,8 +31,6 @@ journal={arXiv preprint arXiv:1903.11816},
 year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 
@@ -34,6 +44,17 @@ year={2019}
 | PSPNet + JPU (4x4) | R-50-D32   | 512x1024  |   80000 |  9.94       |  -             | 78.76 |   80.03       | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes_20210925_061841-77e87b0a.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes_20210925_061841.log.json)         |
 | EncNet + JPU | R-50-D32  | 512x1024  |   80000 | 8.15        |  4.77             | 77.97 |79.92          | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes_20210928_030036-78da5046.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes_20210928_030036.log.json)    |
 | EncNet + JPU (4x4)| R-50-D32  | 512x1024  |   80000 | 15.45        | -              | 78.6 |         80.25 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes_20210926_093217-e1eb6dbb.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes_20210926_093217.log.json)     |
+
+### ADE20K
+
+| Method    | Backbone  | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                  | download                                                                                                                                                                                                                                                       |
+| --------- | --------- | --------- | ------: | -------- | -------------- | ----: | ------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DeepLabV3 + JPU | R-50-D32 | 512x1024  | 80000 | 8.46 | 12.06 | 41.88 | 42.91 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k_20211013_190619-3aa40f2d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k_20211013_190619.log.json)  |
+| DeepLabV3 + JPU | R-50-D32 | 512x1024  | 160000 | - | - | 43.58 | 44.92 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k_20211008_152246-27036aee.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k_20211008_152246.log.json) |
+| PSPNet + JPU | R-50-D32   | 512x1024  |   80000 | 8.02        |  19.21             | 41.40 |   42.12       | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k.py)  |  [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k_20210930_225137-993d07c8.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k_20210930_225137.log.json)       |
+| PSPNet + JPU | R-50-D32   | 512x1024  |   160000 |  -       |  -             | 42.63 |   43.71       | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k_20211008_105455-e8f5a2fd.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k_20211008_105455.log.json)         |
+| EncNet + JPU | R-50-D32  | 512x1024  |   80000 | 9.67        |  17.23             | 40.88 | 42.36          | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k_20210930_225214-65aef6dd.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k_20210930_225214.log.json)    |
+| EncNet + JPU | R-50-D32  | 512x1024  |   160000 | -        | -              | 42.50 |         44.21 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k_20211008_105456-d875ce3c.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k_20211008_105456.log.json)     |
 
 Note:
 

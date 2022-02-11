@@ -66,9 +66,10 @@ def test_config_data_pipeline():
     CommandLine:
         xdoctest -m tests/test_config.py test_config_build_data_pipeline
     """
-    from mmcv import Config
-    from mmseg.datasets.pipelines import Compose
     import numpy as np
+    from mmcv import Config
+
+    from mmseg.datasets.pipelines import Compose
 
     config_dpath = _get_config_directory()
     print('Found config_dpath = {!r}'.format(config_dpath))

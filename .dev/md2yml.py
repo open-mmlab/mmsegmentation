@@ -87,12 +87,13 @@ def parse_md(md_file):
         current_dataset = ''
         while i < len(lines):
             line = lines[i].strip()
+            # In latest README.md the title and url are in the third line.
+            if i == 2:
+                paper_url = lines[i].split('](')[1].split(')')[0]
+                paper_title = lines[i].split('](')[0].split('[')[1]
             if len(line) == 0:
                 i += 1
                 continue
-            if line[:2] == '# ':
-                paper_title = line.replace('# ', '')
-                i += 1
             elif line[:3] == '<a ':
                 content = etree.HTML(line)
                 node = content.xpath('//a')[0]
@@ -111,13 +112,6 @@ def parse_md(md_file):
                     repo_url = node.get('href', None)
                     assert repo_url is not None, (
                         f'{collection_name} hasn\'t official repo url.')
-                i += 1
-            elif line[:9] == '<summary ':
-                content = etree.HTML(line)
-                nodes = content.xpath('//a')
-                assert len(nodes) == 1, (
-                    'summary tag should only have single a tag.')
-                paper_url = nodes[0].get('href', None)
                 i += 1
             elif line[:4] == '### ':
                 datasets.append(line[4:])
@@ -176,7 +170,7 @@ def parse_md(md_file):
                                 'Task': 'Semantic Segmentation',
                                 'Dataset': current_dataset,
                                 'Metrics': {
-                                    'mIoU': float(els[ss_id]),
+                                    cols[ss_id]: float(els[ss_id]),
                                 },
                             },
                         ],
@@ -201,12 +195,12 @@ def parse_md(md_file):
                             'batch size':
                             1,
                             'mode':
-                            'FP32',
+                            'FP32' if 'fp16' not in config else 'FP16',
                             'resolution':
                             f'({crop_size[0]},{crop_size[1]})'
                         }]
                     if mem != -1:
-                        model['Metadata']['memory (GB)'] = float(mem)
+                        model['Metadata']['Training Memory (GB)'] = float(mem)
                     # Only have semantic segmentation now
                     if ms_id and els[ms_id] != '-' and els[ms_id] != '':
                         model['Results'][0]['Metrics'][

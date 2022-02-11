@@ -1,4 +1,6 @@
-# Dynamic Multi-scale Filters for Semantic Segmentation
+# DMNet
+
+[Dynamic Multi-scale Filters for Semantic Segmentation](https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf)
 
 ## Introduction
 
@@ -8,10 +10,20 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93">Code Snippet</a>
 
-<details>
-<summary align="right"><a href="https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf">DMNet (ICCV'2019)</a></summary>
+## Abstract
 
-```latex
+<!-- [ABSTRACT] -->
+
+Multi-scale representation provides an effective way toaddress scale variation of objects and stuff in semantic seg-mentation. Previous works construct multi-scale represen-tation by utilizing different filter sizes, expanding filter sizeswith dilated filters or pooling grids, and the parameters ofthese filters are fixed after training. These methods oftensuffer from heavy computational cost or have more param-eters, and are not adaptive to the input image during in-ference. To address these problems, this paper proposes aDynamic Multi-scale Network (DMNet) to adaptively cap-ture multi-scale contents for predicting pixel-level semanticlabels. DMNet is composed of multiple Dynamic Convolu-tional Modules (DCMs) arranged in parallel, each of whichexploits context-aware filters to estimate semantic represen-tation for a specific scale. The outputs of multiple DCMsare further integrated for final segmentation. We conductextensive experiments to evaluate our DMNet on three chal-lenging semantic segmentation and scene parsing datasets,PASCAL VOC 2012, Pascal-Context, and ADE20K. DMNetachieves a new record 84.4% mIoU on PASCAL VOC 2012test set without MS COCO pre-trained and post-processing,and also obtains state-of-the-art performance on Pascal-Context and ADE20K.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142900781-6215763f-8b71-4e0b-a6b1-c41372db2aa0.png" width="70%"/>
+</div>
+
+## Citation
+
+```bibtex
 @InProceedings{He_2019_ICCV,
 author = {He, Junjun and Deng, Zhongying and Qiao, Yu},
 title = {Dynamic Multi-Scale Filters for Semantic Segmentation},
@@ -20,8 +32,6 @@ month = {October},
 year = {2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

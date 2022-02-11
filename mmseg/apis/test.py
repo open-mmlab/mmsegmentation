@@ -90,19 +90,6 @@ def single_gpu_test(model,
         with torch.no_grad():
             result = model(return_loss=False, **data)
 
-        if efficient_test:
-            result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
-
-        if format_only:
-            result = dataset.format_results(
-                result, indices=batch_indices, **format_args)
-        if pre_eval:
-            # TODO: adapt samples_per_gpu > 1.
-            # only samples_per_gpu=1 valid now
-            result = dataset.pre_eval(result, indices=batch_indices)
-
-        results.extend(result)
-
         if show or out_dir:
             img_tensor = data['img'][0]
             img_metas = data['img_metas'][0].data[0]
@@ -128,6 +115,20 @@ def single_gpu_test(model,
                     show=show,
                     out_file=out_file,
                     opacity=opacity)
+
+        if efficient_test:
+            result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
+
+        if format_only:
+            result = dataset.format_results(
+                result, indices=batch_indices, **format_args)
+        if pre_eval:
+            # TODO: adapt samples_per_gpu > 1.
+            # only samples_per_gpu=1 valid now
+            result = dataset.pre_eval(result, indices=batch_indices)
+            results.extend(result)
+        else:
+            results.extend(result)
 
         batch_size = len(result)
         for _ in range(batch_size):

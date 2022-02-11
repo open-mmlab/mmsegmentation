@@ -25,7 +25,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (1024,1024)
-    memory (GB): 7.64
+    Training Memory (GB): 7.64
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -40,7 +40,7 @@ Models:
     backbone: BiSeNetV2
     crop size: (1024,1024)
     lr schd: 160000
-    memory (GB): 7.64
+    Training Memory (GB): 7.64
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -55,7 +55,7 @@ Models:
     backbone: BiSeNetV2
     crop size: (1024,1024)
     lr schd: 160000
-    memory (GB): 15.05
+    Training Memory (GB): 15.05
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -75,9 +75,9 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: FP16
       resolution: (1024,1024)
-    memory (GB): 5.77
+    Training Memory (GB): 5.77
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes

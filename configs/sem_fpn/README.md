@@ -1,4 +1,6 @@
-# Panoptic Feature Pyramid Networks
+# Semantic FPN
+
+[Panoptic Feature Pyramid Networks](https://arxiv.org/abs/1901.02446)
 
 ## Introduction
 
@@ -8,24 +10,28 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12">Code Snippet</a>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1901.02446">Semantic FPN (CVPR'2019)</a></summary>
+## Abstract
 
-```latex
-@article{Kirillov_2019,
-   title={Panoptic Feature Pyramid Networks},
-   ISBN={9781728132938},
-   url={http://dx.doi.org/10.1109/CVPR.2019.00656},
-   DOI={10.1109/cvpr.2019.00656},
-   journal={2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-   publisher={IEEE},
-   author={Kirillov, Alexander and Girshick, Ross and He, Kaiming and Dollar, Piotr},
-   year={2019},
-   month={Jun}
+<!-- [ABSTRACT] -->
+
+The recently introduced panoptic segmentation task has renewed our community's interest in unifying the tasks of instance segmentation (for thing classes) and semantic segmentation (for stuff classes). However, current state-of-the-art methods for this joint task use separate and dissimilar networks for instance and semantic segmentation, without performing any shared computation. In this work, we aim to unify these methods at the architectural level, designing a single network for both tasks. Our approach is to endow Mask R-CNN, a popular instance segmentation method, with a semantic segmentation branch using a shared Feature Pyramid Network (FPN) backbone. Surprisingly, this simple baseline not only remains effective for instance segmentation, but also yields a lightweight, top-performing method for semantic segmentation. In this work, we perform a detailed study of this minimally extended version of Mask R-CNN with FPN, which we refer to as Panoptic FPN, and show it is a robust and accurate baseline for both tasks. Given its effectiveness and conceptual simplicity, we hope our method can serve as a strong baseline and aid future research in panoptic segmentation.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142902694-03ed2131-9104-467b-ace1-c74c62fb7177.png" width="60%"/>
+</div>
+
+## Citation
+
+```bibtex
+@inproceedings{kirillov2019panoptic,
+  title={Panoptic feature pyramid networks},
+  author={Kirillov, Alexander and Girshick, Ross and He, Kaiming and Doll{\'a}r, Piotr},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={6399--6408},
+  year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

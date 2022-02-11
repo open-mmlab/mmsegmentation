@@ -1,4 +1,6 @@
-# PSANet: Point-wise Spatial Attention Network for Scene Parsing
+# PSANet
+
+[PSANet: Point-wise Spatial Attention Network for Scene Parsing](https://openaccess.thecvf.com/content_ECCV_2018/papers/Hengshuang_Zhao_PSANet_Point-wise_Spatial_ECCV_2018_paper.pdf)
 
 ## Introduction
 
@@ -8,10 +10,20 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psa_head.py#L18">Code Snippet</a>
 
-<details>
-<summary align="right"><a href="https://openaccess.thecvf.com/content_ECCV_2018/papers/Hengshuang_Zhao_PSANet_Point-wise_Spatial_ECCV_2018_paper.pdf">PSANet (ECCV'2018)</a></summary>
+## Abstract
 
-```latex
+<!-- [ABSTRACT] -->
+
+We notice information flow in convolutional neural networksis  restricted  inside  local  neighborhood  regions  due  to  the  physical  de-sign  of  convolutional  filters,  which  limits  the  overall  understanding  ofcomplex scenes. In this paper, we propose thepoint-wise  spatial  atten-tion network(PSANet) to relax the local neighborhood constraint. Eachposition on the feature map is connected to all the other ones througha self-adaptively learned attention mask. Moreover, information propa-gation in bi-direction for scene parsing is enabled. Information at otherpositions can be collected to help the prediction of the current positionand  vice  versa,  information  at  the  current  position  can  be  distributedto assist the prediction of other ones. Our proposed approach achievestop performance on various competitive scene parsing datasets, includ-ing  ADE20K,  PASCAL  VOC  2012  and  Cityscapes,  demonstrating  itseffectiveness and generality.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142902367-0f29e8cb-5ac0-434b-98c4-b2af7c9c2e58.png" width="70%"/>
+</div>
+
+## Citation
+
+```bibtex
 @inproceedings{zhao2018psanet,
   title={Psanet: Point-wise spatial attention network for scene parsing},
   author={Zhao, Hengshuang and Zhang, Yi and Liu, Shu and Shi, Jianping and Change Loy, Chen and Lin, Dahua and Jia, Jiaya},
@@ -20,8 +32,6 @@
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 

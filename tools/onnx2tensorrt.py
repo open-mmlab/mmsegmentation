@@ -117,7 +117,7 @@ def onnx2tensorrt(onnx_file: str,
     import tensorrt as trt
     min_shape = input_config['min_shape']
     max_shape = input_config['max_shape']
-    # create trt engine and wraper
+    # create trt engine and wrapper
     opt_shape_dict = {'input': [min_shape, min_shape, max_shape]}
     max_workspace_size = get_GiB(workspace_size)
     trt_engine = onnx2trt(
@@ -254,7 +254,7 @@ if __name__ == '__main__':
         'Dataset {} does not found.'.format(args.dataset)
     for max_value, min_value in zip(args.max_shape, args.min_shape):
         assert max_value >= min_value, \
-            'max_shape sould be larger than min shape'
+            'max_shape should be larger than min shape'
 
     input_config = {
         'min_shape': args.min_shape,

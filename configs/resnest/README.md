@@ -1,17 +1,29 @@
-# ResNeSt: Split-Attention Networks
+# ResNeSt
+
+[ResNeSt: Split-Attention Networks](https://arxiv.org/abs/2004.08955)
 
 ## Introduction
 
-<!-- [ALGORITHM] -->
+<!-- [BACKBONE] -->
 
 <a href="https://github.com/zhanghang1989/ResNeSt">Official Repo</a>
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271">Code Snippet</a>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/2004.08955">ResNeSt (ArXiv'2020)</a></summary>
+## Abstract
 
-```latex
+<!-- [ABSTRACT] -->
+
+It is well known that featuremap attention and multi-path representation are important for visual recognition. In this paper, we present a modularized architecture, which applies the channel-wise attention on different network branches to leverage their success in capturing cross-feature interactions and learning diverse representations. Our design results in a simple and unified computation block, which can be parameterized using only a few variables. Our model, named ResNeSt, outperforms EfficientNet in accuracy and latency trade-off on image classification. In addition, ResNeSt has achieved superior transfer learning results on several public benchmarks serving as the backbone, and has been adopted by the winning entries of COCO-LVIS challenge. The source code for complete system and pretrained models are publicly available.
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142902526-3cf33345-7e40-47a6-985e-4381857e21df.png" width="60%"/>
+</div>
+
+## Citation
+
+```bibtex
 @article{zhang2020resnest,
 title={ResNeSt: Split-Attention Networks},
 author={Zhang, Hang and Wu, Chongruo and Zhang, Zhongyue and Zhu, Yi and Zhang, Zhi and Lin, Haibin and Sun, Yue and He, Tong and Muller, Jonas and Manmatha, R. and Li, Mu and Smola, Alexander},
@@ -19,8 +31,6 @@ journal={arXiv preprint arXiv:2004.08955},
 year={2020}
 }
 ```
-
-</details>
 
 ## Results and models
 
@@ -33,7 +43,7 @@ year={2020}
 | DeepLabV3  | S-101-D8 | 512x1024  |   80000 |     11.9 | 1.88           | 79.67 | 80.51         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes.py)     | [model](https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes_20200807_144429-b73c4270.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes-20200807_144429.log.json)                 |
 | DeepLabV3+ | S-101-D8 | 512x1024  |   80000 |     13.2 | 2.36           | 79.62 | 80.27         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes_20200807_144429-1239eb43.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes-20200807_144429.log.json) |
 
-### ADE20k
+### ADE20K
 
 | Method     | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                          | download                                                                                                                                                                                                                                                                                                                                                                   |
 | ---------- | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

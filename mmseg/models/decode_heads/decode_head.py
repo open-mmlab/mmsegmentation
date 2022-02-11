@@ -83,11 +83,11 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
 
         self.ignore_index = ignore_index
         self.align_corners = align_corners
-        self.loss_decode = nn.ModuleList()
 
         if isinstance(loss_decode, dict):
-            self.loss_decode.append(build_loss(loss_decode))
+            self.loss_decode = build_loss(loss_decode)
         elif isinstance(loss_decode, (list, tuple)):
+            self.loss_decode = nn.ModuleList()
             for loss in loss_decode:
                 self.loss_decode.append(build_loss(loss))
         else:
@@ -242,7 +242,12 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
-        for loss_decode in self.loss_decode:
+
+        if not isinstance(self.loss_decode, nn.ModuleList):
+            losses_decode = [self.loss_decode]
+        else:
+            losses_decode = self.loss_decode
+        for loss_decode in losses_decode:
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
                     seg_logit,

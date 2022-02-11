@@ -1,4 +1,6 @@
-# Non-local Neural Networks
+# NonLocal Net
+
+[Non-local Neural Networks](https://arxiv.org/abs/1711.07971)
 
 ## Introduction
 
@@ -8,10 +10,20 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10">Code Snippet</a>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1711.07971">NonLocal Net (CVPR'2018)</a></summary>
+## Abstract
 
-```latex
+<!-- [ABSTRACT] -->
+
+Both convolutional and recurrent operations are building blocks that process one local neighborhood at a time. In this paper, we present non-local operations as a generic family of building blocks for capturing long-range dependencies. Inspired by the classical non-local means method in computer vision, our non-local operation computes the response at a position as a weighted sum of the features at all positions. This building block can be plugged into many computer vision architectures. On the task of video classification, even without any bells and whistles, our non-local models can compete or outperform current competition winners on both Kinetics and Charades datasets. In static image recognition, our non-local models improve object detection/segmentation and pose estimation on the COCO suite of tasks. Code is available at [this https URL](https://github.com/facebookresearch/video-nonlocal-net).
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142902128-17e29678-bf12-4ff4-b3d6-a39b47dfd253.png" width="50%"/>
+</div>
+
+## Citation
+
+```bibtex
 @inproceedings{wang2018non,
   title={Non-local neural networks},
   author={Wang, Xiaolong and Girshick, Ross and Gupta, Abhinav and He, Kaiming},
@@ -20,8 +32,6 @@
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 

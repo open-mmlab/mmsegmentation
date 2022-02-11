@@ -1,4 +1,6 @@
-# Unified Perceptual Parsing for Scene Understanding
+# UPerNet
+
+[Unified Perceptual Parsing for Scene Understanding](https://arxiv.org/pdf/1807.10221.pdf)
 
 ## Introduction
 
@@ -8,10 +10,20 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13">Code Snippet</a>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/pdf/1807.10221.pdf">UPerNet (ECCV'2018)</a></summary>
+## Abstract
 
-```latex
+<!-- [ABSTRACT] -->
+
+Humans recognize the visual world at multiple levels: we effortlessly categorize scenes and detect objects inside, while also identifying the textures and surfaces of the objects along with their different compositional parts. In this paper, we study a new task called Unified Perceptual Parsing, which requires the machine vision systems to recognize as many visual concepts as possible from a given image. A multi-task framework called UPerNet and a training strategy are developed to learn from heterogeneous image annotations. We benchmark our framework on Unified Perceptual Parsing and show that it is able to effectively segment a wide range of concepts from images. The trained networks are further applied to discover visual knowledge in natural scenes. Models are available at [this https URL](https://github.com/CSAILVision/unifiedparsing).
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142903077-44e8e0da-7276-4bda-bd2b-0df1680ca845.png" width="70%"/>
+</div>
+
+## Citation
+
+```bibtex
 @inproceedings{xiao2018unified,
   title={Unified perceptual parsing for scene understanding},
   author={Xiao, Tete and Liu, Yingcheng and Zhou, Bolei and Jiang, Yuning and Sun, Jian},
@@ -20,8 +32,6 @@
   year={2018}
 }
 ```
-
-</details>
 
 ## Results and models
 

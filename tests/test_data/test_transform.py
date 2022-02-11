@@ -497,3 +497,169 @@ def test_seg_rescale():
     rescale_module = build_from_cfg(transform, PIPELINES)
     rescale_results = rescale_module(results.copy())
     assert rescale_results['gt_semantic_seg'].shape == (h, w)
+
+
+def test_cutout():
+    # test prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomCutOut', prob=1.5, n_holes=1)
+        build_from_cfg(transform, PIPELINES)
+    # test n_holes
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='RandomCutOut', prob=0.5, n_holes=(5, 3), cutout_shape=(8, 8))
+        build_from_cfg(transform, PIPELINES)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='RandomCutOut',
+            prob=0.5,
+            n_holes=(3, 4, 5),
+            cutout_shape=(8, 8))
+        build_from_cfg(transform, PIPELINES)
+    # test cutout_shape and cutout_ratio
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='RandomCutOut', prob=0.5, n_holes=1, cutout_shape=8)
+        build_from_cfg(transform, PIPELINES)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='RandomCutOut', prob=0.5, n_holes=1, cutout_ratio=0.2)
+        build_from_cfg(transform, PIPELINES)
+    # either of cutout_shape and cutout_ratio should be given
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomCutOut', prob=0.5, n_holes=1)
+        build_from_cfg(transform, PIPELINES)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='RandomCutOut',
+            prob=0.5,
+            n_holes=1,
+            cutout_shape=(2, 2),
+            cutout_ratio=(0.4, 0.4))
+        build_from_cfg(transform, PIPELINES)
+    # test seg_fill_in
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='RandomCutOut',
+            prob=0.5,
+            n_holes=1,
+            cutout_shape=(8, 8),
+            seg_fill_in='a')
+        build_from_cfg(transform, PIPELINES)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='RandomCutOut',
+            prob=0.5,
+            n_holes=1,
+            cutout_shape=(8, 8),
+            seg_fill_in=256)
+        build_from_cfg(transform, PIPELINES)
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    results['pad_shape'] = img.shape
+    results['img_fields'] = ['img']
+
+    transform = dict(
+        type='RandomCutOut', prob=1, n_holes=1, cutout_shape=(10, 10))
+    cutout_module = build_from_cfg(transform, PIPELINES)
+    assert 'cutout_shape' in repr(cutout_module)
+    cutout_result = cutout_module(copy.deepcopy(results))
+    assert cutout_result['img'].sum() < img.sum()
+
+    transform = dict(
+        type='RandomCutOut', prob=1, n_holes=1, cutout_ratio=(0.8, 0.8))
+    cutout_module = build_from_cfg(transform, PIPELINES)
+    assert 'cutout_ratio' in repr(cutout_module)
+    cutout_result = cutout_module(copy.deepcopy(results))
+    assert cutout_result['img'].sum() < img.sum()
+
+    transform = dict(
+        type='RandomCutOut', prob=0, n_holes=1, cutout_ratio=(0.8, 0.8))
+    cutout_module = build_from_cfg(transform, PIPELINES)
+    cutout_result = cutout_module(copy.deepcopy(results))
+    assert cutout_result['img'].sum() == img.sum()
+    assert cutout_result['gt_semantic_seg'].sum() == seg.sum()
+
+    transform = dict(
+        type='RandomCutOut',
+        prob=1,
+        n_holes=(2, 4),
+        cutout_shape=[(10, 10), (15, 15)],
+        fill_in=(255, 255, 255),
+        seg_fill_in=None)
+    cutout_module = build_from_cfg(transform, PIPELINES)
+    cutout_result = cutout_module(copy.deepcopy(results))
+    assert cutout_result['img'].sum() > img.sum()
+    assert cutout_result['gt_semantic_seg'].sum() == seg.sum()
+
+    transform = dict(
+        type='RandomCutOut',
+        prob=1,
+        n_holes=1,
+        cutout_ratio=(0.8, 0.8),
+        fill_in=(255, 255, 255),
+        seg_fill_in=255)
+    cutout_module = build_from_cfg(transform, PIPELINES)
+    cutout_result = cutout_module(copy.deepcopy(results))
+    assert cutout_result['img'].sum() > img.sum()
+    assert cutout_result['gt_semantic_seg'].sum() > seg.sum()
+
+
+def test_mosaic():
+    # test prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomMosaic', prob=1.5)
+        build_from_cfg(transform, PIPELINES)
+    # test assertion for invalid img_scale
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomMosaic', prob=1, img_scale=640)
+        build_from_cfg(transform, PIPELINES)
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+
+    transform = dict(type='RandomMosaic', prob=1, img_scale=(10, 12))
+    mosaic_module = build_from_cfg(transform, PIPELINES)
+    assert 'Mosaic' in repr(mosaic_module)
+
+    # test assertion for invalid mix_results
+    with pytest.raises(AssertionError):
+        mosaic_module(results)
+
+    results['mix_results'] = [copy.deepcopy(results)] * 3
+    results = mosaic_module(results)
+    assert results['img'].shape[:2] == (20, 24)
+
+    results = dict()
+    results['img'] = img[:, :, 0]
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+
+    transform = dict(type='RandomMosaic', prob=0, img_scale=(10, 12))
+    mosaic_module = build_from_cfg(transform, PIPELINES)
+    results['mix_results'] = [copy.deepcopy(results)] * 3
+    results = mosaic_module(results)
+    assert results['img'].shape[:2] == img.shape[:2]
+
+    transform = dict(type='RandomMosaic', prob=1, img_scale=(10, 12))
+    mosaic_module = build_from_cfg(transform, PIPELINES)
+    results = mosaic_module(results)
+    assert results['img'].shape[:2] == (20, 24)

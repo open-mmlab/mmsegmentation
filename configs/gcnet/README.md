@@ -1,4 +1,6 @@
-# GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond
+# GCNet
+
+[GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond](https://arxiv.org/abs/1904.11492)
 
 ## Introduction
 
@@ -8,10 +10,20 @@
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10">Code Snippet</a>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1904.11492">GCNet (ICCVW'2019/TPAMI'2020)</a></summary>
+## Abstract
 
-```latex
+<!-- [ABSTRACT] -->
+
+The Non-Local Network (NLNet) presents a pioneering approach for capturing long-range dependencies, via aggregating query-specific global context to each query position. However, through a rigorous empirical analysis, we have found that the global contexts modeled by non-local network are almost the same for different query positions within an image. In this paper, we take advantage of this finding to create a simplified network based on a query-independent formulation, which maintains the accuracy of NLNet but with significantly less computation. We further observe that this simplified design shares similar structure with Squeeze-Excitation Network (SENet). Hence we unify them into a three-step general framework for global context modeling. Within the general framework, we design a better instantiation, called the global context (GC) block, which is lightweight and can effectively model the global context. The lightweight property allows us to apply it for multiple layers in a backbone network to construct a global context network (GCNet), which generally outperforms both simplified NLNet and SENet on major benchmarks for various recognition tasks. The code and configurations are released at [this https URL](https://github.com/xvjiarui/GCNet).
+
+<!-- [IMAGE] -->
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/142901601-ad17922e-2538-4b48-9f51-84a57d44b12b.png" width="80%"/>
+</div>
+
+## Citation
+
+```bibtex
 @inproceedings{cao2019gcnet,
   title={Gcnet: Non-local networks meet squeeze-excitation networks and beyond},
   author={Cao, Yue and Xu, Jiarui and Lin, Stephen and Wei, Fangyun and Hu, Han},
@@ -20,8 +32,6 @@
   year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 

@@ -3,6 +3,7 @@ Collections:
   Metadata:
     Training Data:
     - Cityscapes
+    - COCO-Stuff 164k
   Paper:
     URL: https://arxiv.org/abs/1808.00897
     Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
@@ -26,7 +27,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (1024,1024)
-    memory (GB): 5.69
+    Training Memory (GB): 5.69
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -48,7 +49,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (1024,1024)
-    memory (GB): 5.69
+    Training Memory (GB): 5.69
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -70,7 +71,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (1024,1024)
-    memory (GB): 11.17
+    Training Memory (GB): 11.17
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -92,7 +93,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (1024,1024)
-    memory (GB): 15.39
+    Training Memory (GB): 15.39
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -114,7 +115,7 @@ Models:
       batch size: 1
       mode: FP32
       resolution: (1024,1024)
-    memory (GB): 15.39
+    Training Memory (GB): 15.39
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -123,3 +124,111 @@ Models:
       mIoU(ms+flip): 79.57
   Config: configs/bisenetv1/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes_20210917_234628-8b304447.pth
+- Name: bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
+  In Collection: bisenetv1
+  Metadata:
+    backbone: R-18-D32
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 25.45
+      mIoU(ms+flip): 26.15
+  Config: configs/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211022_054328-046aa2f2.pth
+- Name: bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k
+  In Collection: bisenetv1
+  Metadata:
+    backbone: R-18-D32
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 13.47
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.33
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 28.55
+      mIoU(ms+flip): 29.26
+  Config: configs/bisenetv1/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211023_013100-f700dbf7.pth
+- Name: bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
+  In Collection: bisenetv1
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 29.82
+      mIoU(ms+flip): 30.33
+  Config: configs/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_040616-d2bb0df4.pth
+- Name: bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k
+  In Collection: bisenetv1
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 30.67
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 9.28
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 34.88
+      mIoU(ms+flip): 35.37
+  Config: configs/bisenetv1/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_181932-66747911.pth
+- Name: bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
+  In Collection: bisenetv1
+  Metadata:
+    backbone: R-101-D32
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 31.14
+      mIoU(ms+flip): 31.76
+  Config: configs/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211102_164147-c6b32c3b.pth
+- Name: bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k
+  In Collection: bisenetv1
+  Metadata:
+    backbone: R-101-D32
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 39.6
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 10.36
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 37.38
+      mIoU(ms+flip): 37.99
+  Config: configs/bisenetv1/bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_225220-28c8f092.pth

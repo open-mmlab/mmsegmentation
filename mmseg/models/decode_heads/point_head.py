@@ -4,7 +4,11 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
-from mmcv.ops import point_sample
+
+try:
+    from mmcv.ops import point_sample
+except ModuleNotFoundError:
+    point_sample = None
 
 from mmseg.models.builder import HEADS
 from mmseg.ops import resize
@@ -75,6 +79,9 @@ class PointHead(BaseCascadeDecodeHead):
             init_cfg=dict(
                 type='Normal', std=0.01, override=dict(name='fc_seg')),
             **kwargs)
+        if point_sample is None:
+            raise RuntimeError('Please install mmcv-full for '
+                               'point_sample ops')
 
         self.num_fcs = num_fcs
         self.coarse_pred_each_layer = coarse_pred_each_layer
@@ -249,9 +256,14 @@ class PointHead(BaseCascadeDecodeHead):
     def losses(self, point_logits, point_label):
         """Compute segmentation loss."""
         loss = dict()
-        for loss_module in self.loss_decode:
+        if not isinstance(self.loss_decode, nn.ModuleList):
+            losses_decode = [self.loss_decode]
+        else:
+            losses_decode = self.loss_decode
+        for loss_module in losses_decode:
             loss['point' + loss_module.loss_name] = loss_module(
                 point_logits, point_label, ignore_index=self.ignore_index)
+
         loss['acc_point'] = accuracy(point_logits, point_label)
         return loss
 
