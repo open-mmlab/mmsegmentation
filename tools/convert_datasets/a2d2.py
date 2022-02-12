@@ -412,7 +412,8 @@ def restructure_a2d2_directory(a2d2_path,
         mmcv.mkdir_or_exist(osp.join(a2d2_path, 'annotations', split))
 
     # Lists containing all images and labels to symlinked
-    img_filepaths = sorted(glob.glob(osp.join(a2d2_path, '*/camera/*/*.png')))
+    img_filepaths = sorted(
+        glob.glob(osp.join(a2d2_path, '*/camera/*/*[0-9].png')))
 
     if label_choice == '34_cls':
         label_suffix = LABEL_SUFFIX_34_CLS
