@@ -653,7 +653,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18-Small
-    crop size: (512,512)
+    crop size: (896,896)
     lr schd: 80000
     inference time (ms/im):
     - value: 72.25
@@ -661,7 +661,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512,512)
+      resolution: (896,896)
     Training Memory (GB): 4.95
   Results:
   - Task: Semantic Segmentation
@@ -675,7 +675,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W18
-    crop size: (512,512)
+    crop size: (896,896)
     lr schd: 80000
     inference time (ms/im):
     - value: 129.7
@@ -683,7 +683,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512,512)
+      resolution: (896,896)
     Training Memory (GB): 8.3
   Results:
   - Task: Semantic Segmentation
@@ -697,7 +697,7 @@ Models:
   In Collection: hrnet
   Metadata:
     backbone: HRNetV2p-W48
-    crop size: (512,512)
+    crop size: (896,896)
     lr schd: 80000
     inference time (ms/im):
     - value: 136.24
@@ -705,7 +705,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512,512)
+      resolution: (896,896)
     Training Memory (GB): 16.89
   Results:
   - Task: Semantic Segmentation

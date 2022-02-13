@@ -808,7 +808,7 @@ Models:
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-18-D8
-    crop size: (512,512)
+    crop size: (896,896)
     lr schd: 80000
     inference time (ms/im):
     - value: 40.31
@@ -816,7 +816,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512,512)
+      resolution: (896,896)
     Training Memory (GB): 6.19
   Results:
   - Task: Semantic Segmentation
@@ -830,7 +830,7 @@ Models:
   In Collection: deeplabv3plus
   Metadata:
     backbone: R-50-D8
-    crop size: (512,512)
+    crop size: (896,896)
     lr schd: 80000
     inference time (ms/im):
     - value: 118.76
@@ -838,7 +838,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512,512)
+      resolution: (896,896)
     Training Memory (GB): 21.45
   Results:
   - Task: Semantic Segmentation

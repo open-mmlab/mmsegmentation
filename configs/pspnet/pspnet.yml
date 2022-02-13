@@ -947,7 +947,7 @@ Models:
   In Collection: pspnet
   Metadata:
     backbone: R-18-D8
-    crop size: (512,512)
+    crop size: (896,896)
     lr schd: 80000
     inference time (ms/im):
     - value: 37.16
@@ -955,7 +955,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512,512)
+      resolution: (896,896)
     Training Memory (GB): 4.52
   Results:
   - Task: Semantic Segmentation
@@ -969,7 +969,7 @@ Models:
   In Collection: pspnet
   Metadata:
     backbone: R-50-D8
-    crop size: (512,512)
+    crop size: (896,896)
     lr schd: 80000
     inference time (ms/im):
     - value: 112.61
@@ -977,7 +977,7 @@ Models:
       backend: PyTorch
       batch size: 1
       mode: FP32
-      resolution: (512,512)
+      resolution: (896,896)
     Training Memory (GB): 16.58
   Results:
   - Task: Semantic Segmentation
