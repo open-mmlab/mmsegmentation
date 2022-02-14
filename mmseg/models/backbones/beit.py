@@ -10,6 +10,7 @@ from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
+from scipy import interpolate
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
@@ -104,7 +105,16 @@ class BEiTAttention(BaseModule):
         relative_coords[:, :, 1] += Ww - 1
         relative_coords[:, :, 0] *= 2 * Ww - 1
         relative_position_index = torch.zeros(
+<<<<<<< HEAD
             size=(Wh * Ww + 1, ) * 2, dtype=relative_coords.dtype)
+=======
+            size=(window_size[0] * window_size[1] + 1, ) * 2,
+            dtype=relative_coords.dtype)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 04a61eb ([Fix]: Fix lint)
+>>>>>>> 5fb8730 ([Fix]: Fix lint)
         # relative_position_index shape is (Wh*Ww, Wh*Ww)
         relative_position_index[1:, 1:] = relative_coords.sum(-1)
         relative_position_index[0, 0:] = self.num_relative_distance - 3
@@ -113,6 +123,17 @@ class BEiTAttention(BaseModule):
 
         self.register_buffer('relative_position_index',
                              relative_position_index)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> 04a61eb ([Fix]: Fix lint)
+        self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=False)
+        self.attn_drop = nn.Dropout(attn_drop_rate)
+        self.proj = nn.Linear(embed_dims, embed_dims)
+        self.proj_drop = nn.Dropout(proj_drop_rate)
+>>>>>>> 5fb8730 ([Fix]: Fix lint)
 
     def init_weights(self):
         trunc_normal_(self.relative_position_bias_table, std=0.02)
