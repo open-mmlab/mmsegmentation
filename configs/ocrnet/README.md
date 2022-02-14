@@ -1,4 +1,6 @@
-# Object-Contextual Representations for Semantic Segmentation
+# OCRNet
+
+[Object-Contextual Representations for Semantic Segmentation](https://arxiv.org/abs/1909.11065)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ In this paper, we address the problem of semantic segmentation and focus on the 
 <img src="https://user-images.githubusercontent.com/24582831/142902197-b06b1e04-57ab-44ac-adc8-cea6695bb236.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1909.11065">OCRNet (ECCV'2020)</a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{YuanW18,
   title={Ocnet: Object context network for scene parsing},
   author={Yuhui Yuan and Jingdong Wang},
@@ -37,8 +38,6 @@ In this paper, we address the problem of semantic segmentation and focus on the 
   year={2020}
 }
 ```
-
-</details>
 
 ## Results and models
 

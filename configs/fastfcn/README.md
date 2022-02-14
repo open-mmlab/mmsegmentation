@@ -1,4 +1,6 @@
-# FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation
+# FastFCN
+
+[FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation](https://arxiv.org/abs/1903.11816)
 
 ## Introduction
 
@@ -19,10 +21,9 @@ Modern approaches for semantic segmentation usually employ dilated convolutions 
 <img src="https://user-images.githubusercontent.com/24582831/142901374-6e0252ab-6e0f-4acd-86ad-1e9f49be3185.png" width="70%"/>
 </div>
 
-<details>
-<summary align="right"><a href="https://arxiv.org/abs/1903.11816">FastFCN (ArXiv'2019) </a></summary>
+## Citation
 
-```latex
+```bibtex
 @article{wu2019fastfcn,
 title={Fastfcn: Rethinking dilated convolution in the backbone for semantic segmentation},
 author={Wu, Huikai and Zhang, Junge and Huang, Kaiqi and Liang, Kongming and Yu, Yizhou},
@@ -30,8 +31,6 @@ journal={arXiv preprint arXiv:1903.11816},
 year={2019}
 }
 ```
-
-</details>
 
 ## Results and models
 
