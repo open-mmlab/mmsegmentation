@@ -52,6 +52,30 @@ def test_accuracy():
     pred = torch.Tensor([[0.2, 0.3, 0.6, 0.5], [0.1, 0.1, 0.2, 0.6],
                          [0.9, 0.0, 0.0, 0.1], [0.4, 0.7, 0.1, 0.1],
                          [0.0, 0.0, 0.99, 0]])
+    # test for ignore_index
+    true_label = torch.Tensor([2, 3, 0, 1, 2]).long()
+    accuracy = Accuracy(topk=1, ignore_index=None)
+    acc = accuracy(pred, true_label)
+    assert acc.item() == 100
+
+    # test for ignore_index with a wrong prediction of that index
+    true_label = torch.Tensor([2, 3, 1, 1, 2]).long()
+    accuracy = Accuracy(topk=1, ignore_index=1)
+    acc = accuracy(pred, true_label)
+    assert acc.item() == 100
+
+    # test for ignore_index 1 with a wrong prediction of other index
+    true_label = torch.Tensor([2, 0, 0, 1, 2]).long()
+    accuracy = Accuracy(topk=1, ignore_index=1)
+    acc = accuracy(pred, true_label)
+    assert acc.item() == 75
+
+    # test for ignore_index 4 with a wrong prediction of other index
+    true_label = torch.Tensor([2, 0, 0, 1, 2]).long()
+    accuracy = Accuracy(topk=1, ignore_index=4)
+    acc = accuracy(pred, true_label)
+    assert acc.item() == 80
+
     # test for top1
     true_label = torch.Tensor([2, 3, 0, 1, 2]).long()
     accuracy = Accuracy(topk=1)
