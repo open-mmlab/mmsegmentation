@@ -62,10 +62,14 @@ class ASPPHead(BaseDecodeHead):
             Default: (1, 6, 12, 18).
     """
 
-    def __init__(self, dilations=(1, 6, 12, 18), **kwargs):
+    def __init__(self,
+                 dilations=(1, 6, 12, 18),
+                 kernel_update=False,
+                 **kwargs):
         super(ASPPHead, self).__init__(**kwargs)
         assert isinstance(dilations, (list, tuple))
         self.dilations = dilations
+        self.kernel_update = kernel_update
         self.image_pool = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             ConvModule(
@@ -91,7 +95,7 @@ class ASPPHead(BaseDecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
-    def forward(self, inputs):
+    def forward_normal(self, inputs):
         """Forward function."""
         x = self._transform_inputs(inputs)
         aspp_outs = [
@@ -106,3 +110,33 @@ class ASPPHead(BaseDecodeHead):
         output = self.bottleneck(aspp_outs)
         output = self.cls_seg(output)
         return output
+
+    def forward_feature(self, inputs):
+        """Forward function."""
+        x = self._transform_inputs(inputs)
+        aspp_outs = [
+            resize(
+                self.image_pool(x),
+                size=x.size()[2:],
+                mode='bilinear',
+                align_corners=self.align_corners)
+        ]
+        aspp_outs.extend(self.aspp_modules(x))
+        aspp_outs = torch.cat(aspp_outs, dim=1)
+        feats = self.bottleneck(aspp_outs)
+        output = self.cls_seg(feats)
+        seg_kernels = self.conv_seg.weight.clone()
+        seg_kernels = seg_kernels[None].expand(
+            feats.size(0), *seg_kernels.size())
+        return output, feats, seg_kernels
+
+    def forward(self, inputs):
+        """Calls either :func:`forward_feature` or :func:`forward_normal`
+        depending on whether ``kernel_update`` is ``True``.
+
+        Note this setting will change the expected inputs.
+        """
+        if self.kernel_update:
+            return self.forward_feature(inputs)
+        else:
+            return self.forward_normal(inputs)

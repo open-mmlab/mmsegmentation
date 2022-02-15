@@ -52,7 +52,8 @@ model = dict(
                     norm_cfg=dict(type='LN'))) for _ in range(num_stages)
         ],
         kernel_generate_head=dict(
-            type='UPerKernelHead',
+            type='UPerHead',
+            kernel_update=True,
             in_channels=[256, 512, 1024, 2048],
             in_index=[0, 1, 2, 3],
             pool_scales=(1, 2, 3, 6),

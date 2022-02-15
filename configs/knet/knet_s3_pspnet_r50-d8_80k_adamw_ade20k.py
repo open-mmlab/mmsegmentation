@@ -51,7 +51,8 @@ model = dict(
                     norm_cfg=dict(type='LN'))) for _ in range(num_stages)
         ],
         kernel_generate_head=dict(
-            type='PSPKernelHead',
+            type='PSPHead',
+            kernel_update=True,
             in_channels=2048,
             in_index=3,
             channels=512,

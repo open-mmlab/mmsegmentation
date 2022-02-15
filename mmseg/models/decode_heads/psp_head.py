@@ -71,10 +71,14 @@ class PSPHead(BaseDecodeHead):
             Module. Default: (1, 2, 3, 6).
     """
 
-    def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
+    def __init__(self,
+                 pool_scales=(1, 2, 3, 6),
+                 kernel_update=False,
+                 **kwargs):
         super(PSPHead, self).__init__(**kwargs)
         assert isinstance(pool_scales, (list, tuple))
         self.pool_scales = pool_scales
+        self.kernel_update = kernel_update
         self.psp_modules = PPM(
             self.pool_scales,
             self.in_channels,
@@ -92,7 +96,7 @@ class PSPHead(BaseDecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
-    def forward(self, inputs):
+    def forward_normal(self, inputs):
         """Forward function."""
         x = self._transform_inputs(inputs)
         psp_outs = [x]
@@ -101,3 +105,28 @@ class PSPHead(BaseDecodeHead):
         output = self.bottleneck(psp_outs)
         output = self.cls_seg(output)
         return output
+
+    def forward_feature(self, inputs):
+        """Forward function."""
+        x = self._transform_inputs(inputs)
+        psp_outs = [x]
+        psp_outs.extend(self.psp_modules(x))
+        psp_outs = torch.cat(psp_outs, dim=1)
+        feats = self.bottleneck(psp_outs)
+        output = self.cls_seg(feats)
+
+        seg_kernels = self.conv_seg.weight.clone()
+        seg_kernels = seg_kernels[None].expand(
+            feats.size(0), *seg_kernels.size())
+        return output, feats, seg_kernels
+
+    def forward(self, inputs):
+        """Calls either :func:`forward_feature` or :func:`forward_normal`
+        depending on whether ``kernel_update`` is ``True``.
+
+        Note this setting will change the expected inputs.
+        """
+        if self.kernel_update:
+            return self.forward_feature(inputs)
+        else:
+            return self.forward_normal(inputs)

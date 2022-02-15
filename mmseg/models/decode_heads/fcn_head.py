@@ -26,11 +26,13 @@ class FCNHead(BaseDecodeHead):
                  kernel_size=3,
                  concat_input=True,
                  dilation=1,
+                 kernel_update=False,
                  **kwargs):
         assert num_convs >= 0 and dilation > 0 and isinstance(dilation, int)
         self.num_convs = num_convs
         self.concat_input = concat_input
         self.kernel_size = kernel_size
+        self.kernel_update = kernel_update
         super(FCNHead, self).__init__(**kwargs)
         if num_convs == 0:
             assert self.in_channels == self.channels
@@ -72,7 +74,7 @@ class FCNHead(BaseDecodeHead):
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg)
 
-    def forward(self, inputs):
+    def forward_normal(self, inputs):
         """Forward function."""
         x = self._transform_inputs(inputs)
         output = self.convs(x)
@@ -80,3 +82,27 @@ class FCNHead(BaseDecodeHead):
             output = self.conv_cat(torch.cat([x, output], dim=1))
         output = self.cls_seg(output)
         return output
+
+    def forward_feature(self, inputs):
+        """Forward function."""
+        x = self._transform_inputs(inputs)
+        feats = self.convs(x)
+        if self.concat_input:
+            feats = self.conv_cat(torch.cat([x, feats], dim=1))
+        output = self.cls_seg(feats)
+
+        seg_kernels = self.conv_seg.weight.clone()
+        seg_kernels = seg_kernels[None].expand(
+            feats.size(0), *seg_kernels.size())
+        return output, feats, seg_kernels
+
+    def forward(self, inputs):
+        """Calls either :func:`forward_feature` or :func:`forward_normal`
+        depending on whether ``kernel_update`` is ``True``.
+
+        Note this setting will change the expected inputs.
+        """
+        if self.kernel_update:
+            return self.forward_feature(inputs)
+        else:
+            return self.forward_normal(inputs)
