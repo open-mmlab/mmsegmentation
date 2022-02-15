@@ -126,3 +126,4 @@ Note:
 - `D-8`/`D-16` here corresponding to the output stride 8/16 setting for DeepLab series.
 - `MG-124` stands for multi-grid dilation in the last stage of ResNet.
 - `FP16` means Mixed Precision (FP16) is adopted in training.
+- `896x896` is the Crop Size of iSAID dataset, which is followed by the implementation of [PointFlow: Flowing Semantics Through Points for Aerial Image Segmentation](https://arxiv.org/pdf/2103.06564.pdf)

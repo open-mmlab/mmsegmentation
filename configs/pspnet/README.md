@@ -158,3 +158,4 @@ We support evaluation results on these two datasets using models above trained o
 Note:
 
 - `FP16` means Mixed Precision (FP16) is adopted in training.
+- `896x896` is the Crop Size of iSAID dataset, which is followed by the implementation of [PointFlow: Flowing Semantics Through Points for Aerial Image Segmentation](https://arxiv.org/pdf/2103.06564.pdf)
