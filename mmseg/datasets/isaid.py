@@ -36,8 +36,12 @@ class iSAIDDataset(CustomDataset):
             **kwargs)
         assert osp.exists(self.img_dir)
 
-    def load_annotations(self, img_dir, img_suffix, ann_dir, seg_map_suffix,
-                         split):
+    def load_annotations(self,
+                         img_dir,
+                         img_suffix,
+                         ann_dir,
+                         seg_map_suffix=None,
+                         split=None):
         """Load annotation from directory.
 
         Args:
