@@ -14,7 +14,7 @@ class ISPRSDataset(CustomDataset):
     CLASSES = ('impervious_surface', 'building', 'low_vegetation', 'tree',
                'car', 'clutter')
 
-    PALETTE = [[255, 255, 255], [0, 0, 255], [0, 0, 255], [0, 255, 0],
+    PALETTE = [[255, 255, 255], [0, 0, 255], [0, 255, 255], [0, 255, 0],
                [255, 255, 0], [255, 0, 0]]
 
     def __init__(self, **kwargs):
