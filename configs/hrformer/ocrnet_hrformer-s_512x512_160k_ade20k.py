@@ -48,7 +48,7 @@ model = dict(
         dict(
             type='FCNHead',
             in_channels=[32, 64, 128, 256],
-            channels=sum([32, 64, 128, 256]),
+            channels=512,
             in_index=(0, 1, 2, 3),
             input_transform='resize_concat',
             kernel_size=3,
