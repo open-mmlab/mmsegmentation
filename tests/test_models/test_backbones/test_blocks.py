@@ -134,7 +134,8 @@ def test_inv_residualv3():
         assert isinstance(inv_module.depthwise_conv.activate, mmcv.cnn.HSwish)
     else:
         assert isinstance(inv_module.expand_conv.activate, torch.nn.Hardswish)
-        assert isinstance(inv_module.depthwise_conv.activate, mmcv.cnn.HSwish)
+        assert isinstance(inv_module.depthwise_conv.activate,
+                          torch.nn.Hardswish)
 
     x = torch.rand(1, 32, 64, 64)
     output = inv_module(x)
