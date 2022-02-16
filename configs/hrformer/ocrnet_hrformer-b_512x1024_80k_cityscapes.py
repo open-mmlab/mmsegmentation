@@ -60,7 +60,8 @@ model = dict(
             norm_cfg=norm_cfg,
             align_corners=False,
             loss_decode=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)
+            sampler=dict(type='OHEMPixelSampler', thresh=0.9, min_kept=100000)),
         dict(
             type='OCRHead',
             in_channels=[78, 156, 312, 624],
