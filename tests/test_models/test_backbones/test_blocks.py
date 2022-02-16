@@ -2,6 +2,7 @@
 import mmcv
 import pytest
 import torch
+from mmcv.utils import TORCH_VERSION, digit_version
 
 from mmseg.models.utils import (InvertedResidual, InvertedResidualV3, SELayer,
                                 make_divisible)
@@ -93,12 +94,6 @@ def test_inv_residualv3():
     output = inv_module(x)
     assert output.shape == (1, 32, 64, 64)
 
-    # test with se_cfg and with_expand_conv
-    # Note: Use PyTorch official HSwish when torch>=1.7 after MMCV >= 1.4.5.
-    # Hardswish is not supported when PyTorch version < 1.6.
-    # And Hardswish in PyTorch 1.6 does not support inplace.
-    # More details could be found from:
-    # https://github.com/open-mmlab/mmcv/pull/1709
     se_cfg = dict(
         channels=16,
         ratio=4,
@@ -113,8 +108,6 @@ def test_inv_residualv3():
     assert inv_module.expand_conv.conv.kernel_size == (1, 1)
     assert inv_module.expand_conv.conv.stride == (1, 1)
     assert inv_module.expand_conv.conv.padding == (0, 0)
-    assert isinstance(inv_module.expand_conv.activate,
-                      (mmcv.cnn.HSwish, torch.nn.Hardswish))
 
     assert isinstance(inv_module.depthwise_conv.conv,
                       mmcv.cnn.bricks.Conv2dAdaptivePadding)
@@ -123,12 +116,26 @@ def test_inv_residualv3():
     assert inv_module.depthwise_conv.conv.padding == (0, 0)
     assert isinstance(inv_module.depthwise_conv.bn, torch.nn.BatchNorm2d)
 
-    assert isinstance(inv_module.depthwise_conv.activate,
-                      (mmcv.cnn.HSwish, torch.nn.Hardswish))
     assert inv_module.linear_conv.conv.kernel_size == (1, 1)
     assert inv_module.linear_conv.conv.stride == (1, 1)
     assert inv_module.linear_conv.conv.padding == (0, 0)
     assert isinstance(inv_module.linear_conv.bn, torch.nn.BatchNorm2d)
+
+    if (TORCH_VERSION == 'parrots'
+            or digit_version(TORCH_VERSION) < digit_version('1.7')):
+        # test with se_cfg and with_expand_conv
+        # Note: Use PyTorch official HSwish
+        # when torch>=1.7 after MMCV >= 1.4.5.
+        # Hardswish is not supported when PyTorch version < 1.6.
+        # And Hardswish in PyTorch 1.6 does not support inplace.
+        # More details could be found from:
+        # https://github.com/open-mmlab/mmcv/pull/1709
+        assert isinstance(inv_module.expand_conv.activate, mmcv.cnn.HSwish)
+        assert isinstance(inv_module.depthwise_conv.activate, mmcv.cnn.HSwish)
+    else:
+        assert isinstance(inv_module.expand_conv.activate, torch.nn.Hardswish)
+        assert isinstance(inv_module.depthwise_conv.activate, mmcv.cnn.HSwish)
+
     x = torch.rand(1, 32, 64, 64)
     output = inv_module(x)
     assert output.shape == (1, 40, 32, 32)
