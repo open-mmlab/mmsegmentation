@@ -94,6 +94,7 @@ def test_inv_residualv3():
     output = inv_module(x)
     assert output.shape == (1, 32, 64, 64)
 
+    # test with se_cfg and with_expand_conv
     se_cfg = dict(
         channels=16,
         ratio=4,
@@ -123,7 +124,6 @@ def test_inv_residualv3():
 
     if (TORCH_VERSION == 'parrots'
             or digit_version(TORCH_VERSION) < digit_version('1.7')):
-        # test with se_cfg and with_expand_conv
         # Note: Use PyTorch official HSwish
         # when torch>=1.7 after MMCV >= 1.4.5.
         # Hardswish is not supported when PyTorch version < 1.6.
