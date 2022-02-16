@@ -57,11 +57,35 @@ Either `mmcv` or `mmcv-full` is compatible with MMSegmentation, but for methods 
 
 **Install mmcv for Linux:**
 
-The pre-build mmcv-full (with PyTorch 1.6 and CUDA 10.1) can be installed by running: (other available versions could be found [here](https://mmcv.readthedocs.io/en/latest/#install-with-pip))
+Install MMCV, we recommend you to install the pre-built mmcv as below.
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
 ```
+
+Please replace ``{cu_version}`` and ``{torch_version}`` in the url to your desired one. mmcv-full is only compiled on
+PyTorch 1.x.0 because the compatibility usually holds between 1.x.0 and 1.x.1. If your PyTorch version is 1.x.1,
+you can install mmcv-full compiled with PyTorch 1.x.0 and it usually works well.
+For example, to install the ``mmcv-full`` with ``CUDA 10.1`` and ``PyTorch 1.6.0``, use the following command:
+
+```shell
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6/index.html
+```
+
+See [here](https://github.com/open-mmlab/mmcv#installation) for different versions of MMCV compatible to different PyTorch and CUDA versions.
+
+Optionally you can choose to compile mmcv from source by the following command
+
+```shell
+git clone https://github.com/open-mmlab/mmcv.git
+cd mmcv
+MMCV_WITH_OPS=1 pip install -e .  # package mmcv-full, which contains cuda ops, will be installed after this step
+# OR pip install -e .  # package mmcv, which contains no cuda ops, will be installed after this step
+cd ..
+```
+
+**Important:** You need to run `pip uninstall mmcv` first if you have mmcv installed. Because if `mmcv` and `mmcv-full` are both installed, there will be `ModuleNotFoundError`.
+
 
 **Install mmcv for Windows (Experimental):**
 
@@ -213,7 +237,7 @@ python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--dev
 Examples:
 
 ```shell
-python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+python demo/image_demo.py demo/demo.png configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
     checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --palette cityscapes
 ```
 

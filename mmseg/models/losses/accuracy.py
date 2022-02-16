@@ -2,12 +2,13 @@
 import torch.nn as nn
 
 
-def accuracy(pred, target, topk=1, thresh=None):
+def accuracy(pred, target, topk=1, thresh=None, ignore_index=None):
     """Calculate accuracy according to the prediction and target.
 
     Args:
         pred (torch.Tensor): The model prediction, shape (N, num_class, ...)
         target (torch.Tensor): The target of each prediction, shape (N, , ...)
+        ignore_index (int | None): The label index to be ignored. Default: None
         topk (int | tuple[int], optional): If the predictions in ``topk``
             matches the target, the predictions will be regarded as
             correct ones. Defaults to 1.
@@ -43,17 +44,19 @@ def accuracy(pred, target, topk=1, thresh=None):
     if thresh is not None:
         # Only prediction values larger than thresh are counted as correct
         correct = correct & (pred_value > thresh).t()
+    correct = correct[:, target != ignore_index]
     res = []
     for k in topk:
         correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
-        res.append(correct_k.mul_(100.0 / target.numel()))
+        res.append(
+            correct_k.mul_(100.0 / target[target != ignore_index].numel()))
     return res[0] if return_single else res
 
 
 class Accuracy(nn.Module):
     """Accuracy calculation module."""
 
-    def __init__(self, topk=(1, ), thresh=None):
+    def __init__(self, topk=(1, ), thresh=None, ignore_index=None):
         """Module to calculate the accuracy.
 
         Args:
@@ -65,6 +68,7 @@ class Accuracy(nn.Module):
         super().__init__()
         self.topk = topk
         self.thresh = thresh
+        self.ignore_index = ignore_index
 
     def forward(self, pred, target):
         """Forward function to calculate accuracy.
@@ -76,4 +80,5 @@ class Accuracy(nn.Module):
         Returns:
             tuple[float]: The accuracies under different topk criterions.
         """
-        return accuracy(pred, target, self.topk, self.thresh)
+        return accuracy(pred, target, self.topk, self.thresh,
+                        self.ignore_index)
