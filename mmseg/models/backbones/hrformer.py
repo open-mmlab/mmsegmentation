@@ -232,7 +232,7 @@ class LocalWindowSelfAttention(BaseModule):
 
         # reverse permutation
         out = out.reshape(Wh, Ww, B, math.ceil(H / Wh), math.ceil(W / Ww), C)
-        out = out.permute(2, 0, 3, 1, 4, 5)
+        out = out.permute(2, 3, 0, 4, 1, 5)
         out = out.reshape(B, H + pad_h, W + pad_w, C)
 
         # de-pad
