@@ -261,5 +261,6 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
 
-        loss['acc_seg'] = accuracy(seg_logit, seg_label)
+        loss['acc_seg'] = accuracy(
+            seg_logit, seg_label, ignore_index=self.ignore_index)
         return loss

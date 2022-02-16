@@ -264,7 +264,8 @@ class PointHead(BaseCascadeDecodeHead):
             loss['point' + loss_module.loss_name] = loss_module(
                 point_logits, point_label, ignore_index=self.ignore_index)
 
-        loss['acc_point'] = accuracy(point_logits, point_label)
+        loss['acc_point'] = accuracy(
+            point_logits, point_label, ignore_index=self.ignore_index)
         return loss
 
     def get_points_train(self, seg_logits, uncertainty_func, cfg):
