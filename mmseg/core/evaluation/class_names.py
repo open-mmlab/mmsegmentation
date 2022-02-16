@@ -232,7 +232,7 @@ def potsdam_palette():
 
 def vaihingen_palette():
     """Vaihingen palette for external use."""
-    return [[255, 255, 255], [0, 0, 255], [0, 0, 255], [0, 255, 0],
+    return [[255, 255, 255], [0, 0, 255], [0, 255, 255], [0, 255, 0],
             [255, 255, 0], [255, 0, 0]]
 
 
