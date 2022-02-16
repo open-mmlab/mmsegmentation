@@ -123,8 +123,8 @@ def test_inv_residualv3():
     assert inv_module.depthwise_conv.conv.padding == (0, 0)
     assert isinstance(inv_module.depthwise_conv.bn, torch.nn.BatchNorm2d)
 
-    assert isinstance(inv_module.depthwise_conv.activate, mmcv.cnn.HSwish,
-                      torch.nn.Hardswish)
+    assert isinstance(inv_module.depthwise_conv.activate,
+                      (mmcv.cnn.HSwish, torch.nn.Hardswish))
     assert inv_module.linear_conv.conv.kernel_size == (1, 1)
     assert inv_module.linear_conv.conv.stride == (1, 1)
     assert inv_module.linear_conv.conv.padding == (0, 0)
