@@ -49,7 +49,7 @@ model = dict(
         dict(
             type='FCNHead',
             in_channels=[78, 156, 312, 624],
-            channels=sum([78, 156, 312, 624]),
+            channels=512,
             in_index=(0, 1, 2, 3),
             input_transform='resize_concat',
             kernel_size=1,
