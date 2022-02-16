@@ -45,7 +45,7 @@ class MultiheadAttention(BaseModule):
     def __init__(self,
                  embed_dim,
                  num_heads,
-                 window_size=(7, 7),
+                 window_size=7,
                  bias=True,
                  dropout=0.0,
                  kdim=None,
