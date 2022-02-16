@@ -95,6 +95,8 @@ def test_inv_residualv3():
 
     # test with se_cfg and with_expand_conv
     # Note: Use PyTorch official HSwish when torch>=1.7 after MMCV >= 1.4.5.
+    # Hardswish is not supported when PyTorch version < 1.6.
+    # And Hardswish in PyTorch 1.6 does not support inplace.
     # More details could be found from:
     # https://github.com/open-mmlab/mmcv/pull/1709
     se_cfg = dict(
@@ -111,8 +113,8 @@ def test_inv_residualv3():
     assert inv_module.expand_conv.conv.kernel_size == (1, 1)
     assert inv_module.expand_conv.conv.stride == (1, 1)
     assert inv_module.expand_conv.conv.padding == (0, 0)
-    assert isinstance(inv_module.expand_conv.activate, mmcv.cnn.HSwish
-                      or torch.nn.Hardswish)
+    assert isinstance(inv_module.expand_conv.activate,
+                      (mmcv.cnn.HSwish, torch.nn.Hardswish))
 
     assert isinstance(inv_module.depthwise_conv.conv,
                       mmcv.cnn.bricks.Conv2dAdaptivePadding)
@@ -120,8 +122,9 @@ def test_inv_residualv3():
     assert inv_module.depthwise_conv.conv.stride == (2, 2)
     assert inv_module.depthwise_conv.conv.padding == (0, 0)
     assert isinstance(inv_module.depthwise_conv.bn, torch.nn.BatchNorm2d)
-    assert isinstance(inv_module.depthwise_conv.activate, mmcv.cnn.HSwish
-                      or torch.nn.Hardswish)
+
+    assert isinstance(inv_module.depthwise_conv.activate, mmcv.cnn.HSwish,
+                      torch.nn.Hardswish)
     assert inv_module.linear_conv.conv.kernel_size == (1, 1)
     assert inv_module.linear_conv.conv.stride == (1, 1)
     assert inv_module.linear_conv.conv.padding == (0, 0)
