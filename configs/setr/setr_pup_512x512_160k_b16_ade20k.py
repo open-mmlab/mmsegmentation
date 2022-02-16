@@ -8,7 +8,8 @@ model = dict(
     backbone=dict(
         img_size=(512, 512),
         drop_rate=0.,
-        init_cfg=dict(type='Pretrained', checkpoint='mmcls://vit_large_p16')),
+        init_cfg=dict(
+            type='Pretrained', checkpoint='pretrain/vit_large_p16.pth')),
     decode_head=dict(num_classes=150),
     auxiliary_head=[
         dict(
