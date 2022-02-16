@@ -29,7 +29,7 @@ class MultiheadAttention(BaseModule):
     Args:
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
-        window_size (tuple[int]): The height and width of the window.
+        window_size (int): The height and width of the window.
         bias (bool, optional):  If True, add a learnable bias to q, k, v.
             Default: True.
         dropout (float, optional): Dropout ratio of attention weight.
