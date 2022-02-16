@@ -36,7 +36,7 @@ class MultiheadAttention(BaseModule):
             Default: 0.0
         kdim (int, optional): The number of channels of q/k.
             Default: None
-        kdim (int, optional): The number of channels of v.
+        vdim (int, optional): The number of channels of v.
             Default: None
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
