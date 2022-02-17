@@ -62,7 +62,7 @@ class ASPPHead(BaseDecodeHead):
             Default: (1, 6, 12, 18).
         kernel_update (bool): Whether output feature map before
             `self.cls_seg` and learnable semantic kernels
-            for kernel updation.
+            for kernel updation. Default: False.
     """
 
     def __init__(self,
