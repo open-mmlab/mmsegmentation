@@ -243,7 +243,7 @@ jobs:
       - name: Run unittests
         run: |
           python -m pip install timm
-          coverage run --branch --source mmflow -m pytest tests/
+          coverage run --branch --source mmseg -m pytest tests/
       - name: Generate coverage report
         run: |
           coverage xml
