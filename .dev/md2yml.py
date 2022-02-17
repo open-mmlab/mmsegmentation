@@ -166,8 +166,7 @@ def parse_md(md_file):
                         mem_id] != '' else -1
                     crop_size = els[crop_size_id].split('x')
                     assert len(crop_size) == 2
-                    method = els[method_id].split(
-                        '-')[-1].split()[0] if is_backbone else collection_name
+                    method = els[method_id].split('-')[-1].split()[0]
                     model = {
                         'Name':
                         model_name,
