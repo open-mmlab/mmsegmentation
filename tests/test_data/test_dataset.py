@@ -16,7 +16,7 @@ from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
                             COCOStuffDataset, ConcatDataset, CustomDataset,
                             ISPRSDataset, LoveDADataset, MultiImageMixDataset,
                             PascalVOCDataset, PotsdamDataset, RepeatDataset,
-                            build_dataset)
+                            build_dataset, iSAIDDataset)
 
 
 def test_classes():
@@ -25,10 +25,11 @@ def test_classes():
         'pascal_voc')
     assert list(
         ADE20KDataset.CLASSES) == get_classes('ade') == get_classes('ade20k')
+    assert list(COCOStuffDataset.CLASSES) == get_classes('cocostuff')
     assert list(LoveDADataset.CLASSES) == get_classes('loveda')
     assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
     assert list(ISPRSDataset.CLASSES) == get_classes('vaihingen')
-    assert list(COCOStuffDataset.CLASSES) == get_classes('cocostuff')
+    assert list(iSAIDDataset.CLASSES) == get_classes('isaid')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -73,6 +74,7 @@ def test_palette():
     assert LoveDADataset.PALETTE == get_palette('loveda')
     assert PotsdamDataset.PALETTE == get_palette('potsdam')
     assert COCOStuffDataset.PALETTE == get_palette('cocostuff')
+    assert iSAIDDataset.PALETTE == get_palette('isaid')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -728,6 +730,27 @@ def test_vaihingen():
         ann_dir=osp.join(
             osp.dirname(__file__), '../data/pseudo_vaihingen_dataset/ann_dir'))
     assert len(test_dataset) == 1
+
+
+def test_isaid():
+    test_dataset = iSAIDDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_isaid_dataset/img_dir'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_isaid_dataset/ann_dir'))
+    assert len(test_dataset) == 2
+    isaid_info = test_dataset.load_annotations(
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_isaid_dataset/img_dir'),
+        img_suffix='.png',
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_isaid_dataset/ann_dir'),
+        seg_map_suffix='.png',
+        split=osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_isaid_dataset/splits/train.txt'))
+    assert len(isaid_info) == 1
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)

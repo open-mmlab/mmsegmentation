@@ -9,25 +9,26 @@
 
 可编译的 MMSegmentation 和 MMCV 版本如下所示，请对照对应版本安装以避免安装问题。
 
-| MMSegmentation 版本 |    MMCV 版本     |
-|:-------------------:|:-------------------:|
-| master              | mmcv-full>=1.3.13, <1.5.0 |
-| 0.20.0              | mmcv-full>=1.3.13, <1.5.0 |
-| 0.19.0              | mmcv-full>=1.3.13, <1.4.0 |
-| 0.18.0              | mmcv-full>=1.3.13, <1.4.0 |
-| 0.17.0              | mmcv-full>=1.3.7, <1.4.0 |
-| 0.16.0              | mmcv-full>=1.3.7, <1.4.0 |
-| 0.15.0              | mmcv-full>=1.3.7, <1.4.0 |
-| 0.14.1              | mmcv-full>=1.3.7, <1.4.0 |
-| 0.14.0              | mmcv-full>=1.3.1, <1.4.0 |
-| 0.13.0              | mmcv-full>=1.3.1, <1.4.0 |
-| 0.12.0              | mmcv-full>=1.1.4, <1.4.0 |
-| 0.11.0              | mmcv-full>=1.1.4, <1.3.0 |
-| 0.10.0              | mmcv-full>=1.1.4, <1.3.0 |
-| 0.9.0               | mmcv-full>=1.1.4, <1.3.0 |
-| 0.8.0               | mmcv-full>=1.1.4, <1.2.0 |
-| 0.7.0               | mmcv-full>=1.1.2, <1.2.0 |
-| 0.6.0               | mmcv-full>=1.1.2, <1.2.0 |
+| MMSegmentation 版本 |          MMCV 版本           |
+|:-----------------:|:--------------------------:|
+|      master       |  mmcv-full>=1.4.4, <1.5.0  |
+|      0.21.0       |  mmcv-full>=1.4.4, <1.5.0  |
+|      0.20.0       | mmcv-full>=1.3.13, <1.5.0  |
+|      0.19.0       | mmcv-full>=1.3.13, <1.3.17 |
+|      0.18.0       | mmcv-full>=1.3.13, <1.3.17 |
+|      0.17.0       | mmcv-full>=1.3.7, <1.3.17  |
+|      0.16.0       | mmcv-full>=1.3.7, <1.3.17  |
+|      0.15.0       | mmcv-full>=1.3.7, <1.3.17  |
+|      0.14.1       | mmcv-full>=1.3.7, <1.3.17  |
+|      0.14.0       |  mmcv-full>=1.3.1, <1.3.2  |
+|      0.13.0       |  mmcv-full>=1.3.1, <1.3.2  |
+|      0.12.0       |  mmcv-full>=1.1.4, <1.3.2  |
+|      0.11.0       |  mmcv-full>=1.1.4, <1.3.0  |
+|      0.10.0       |  mmcv-full>=1.1.4, <1.3.0  |
+|       0.9.0       |  mmcv-full>=1.1.4, <1.3.0  |
+|       0.8.0       |  mmcv-full>=1.1.4, <1.2.0  |
+|       0.7.0       |  mmcv-full>=1.1.2, <1.2.0  |
+|       0.6.0       |  mmcv-full>=1.1.2, <1.2.0  |
 
 注意: 如果您已经安装好 mmcv， 您首先需要运行 `pip uninstall mmcv`。
 如果 mmcv 和 mmcv-full 同时被安装，会报错 `ModuleNotFoundError`。
@@ -56,14 +57,35 @@ c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation)
 
 **在 Linux 下安装 mmcv：**
 
-通过运行
+为了安装 MMCV, 我们推荐使用下面的这种预编译好的 MMCV.
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.5.0/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
 ```
 
-可以安装好 mmcv-full (PyTorch 1.5 和 CUDA 10.1) 版本。
-其他 PyTorch 和 CUDA 版本的 MMCV 安装请参照[这里](https://mmcv.readthedocs.io/en/latest/#install-with-pip)
+请替换 url 里面的 ``{cu_version}`` 和 ``{torch_version}`` 为您想要使用的版本. mmcv-full 仅在
+PyTorch 1.x.0 上面编译, 因为在 1.x.0 和 1.x.1 之间通常是兼容的. 如果您的 PyTorch 版本是 1.x.1,
+您可以安装用 PyTorch 1.x.0 编译的 mmcv-full 而它通常是可以正常使用的.
+例如, 用 ``CUDA 10.1`` and ``PyTorch 1.6.0`` 安装使用 ``mmcv-full``, 使用如下命令:
+
+```shell
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6/index.html
+```
+
+请查看 [这里](https://github.com/open-mmlab/mmcv#installation) 来找到适配不同 PyTorch 和 CUDA 版本的 MMCV.
+
+您也可以采用下面的命令来从源码编译 MMCV (可选)
+
+```shell
+git clone https://github.com/open-mmlab/mmcv.git
+cd mmcv
+MMCV_WITH_OPS=1 pip install -e .  # package mmcv-full, which contains cuda ops, will be installed after this step
+# OR pip install -e .  # package mmcv, which contains no cuda ops, will be installed after this step
+cd ..
+```
+
+**重点:** 如果您已经安装了 MMCV, 您需要先运行 `pip uninstall mmcv`. 因为如果 `mmcv` 和 `mmcv-full` 被同时安装, 将会报错 `ModuleNotFoundError`.
+
 
 **在 Windows 下安装 mmcv (有风险)：**
 

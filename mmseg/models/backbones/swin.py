@@ -11,7 +11,8 @@ from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import FFN, build_dropout
 from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
                                         trunc_normal_init)
-from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
+from mmcv.runner import (BaseModule, CheckpointLoader, ModuleList,
+                         load_state_dict)
 from mmcv.utils import to_2tuple
 
 from ...utils import get_root_logger
@@ -478,7 +479,7 @@ class SwinTransformer(BaseModule):
         embed_dims (int): The feature dimension. Default: 96.
         patch_size (int | tuple[int]): Patch size. Default: 4.
         window_size (int): Window size. Default: 7.
-        mlp_ratio (int): Ratio of mlp hidden dim to embedding dim.
+        mlp_ratio (int | float): Ratio of mlp hidden dim to embedding dim.
             Default: 4.
         depths (tuple[int]): Depths of each Swin Transformer stage.
             Default: (2, 2, 6, 2).
@@ -609,7 +610,7 @@ class SwinTransformer(BaseModule):
             stage = SwinBlockSequence(
                 embed_dims=in_channels,
                 num_heads=num_heads[i],
-                feedforward_channels=mlp_ratio * in_channels,
+                feedforward_channels=int(mlp_ratio * in_channels),
                 depth=depths[i],
                 window_size=window_size,
                 qkv_bias=qkv_bias,
@@ -678,7 +679,7 @@ class SwinTransformer(BaseModule):
                                                   f'specify `Pretrained` in ' \
                                                   f'`init_cfg` in ' \
                                                   f'{self.__class__.__name__} '
-            ckpt = _load_checkpoint(
+            ckpt = CheckpointLoader.load_checkpoint(
                 self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
             if 'state_dict' in ckpt:
                 _state_dict = ckpt['state_dict']
@@ -732,7 +733,7 @@ class SwinTransformer(BaseModule):
                         nH2, L2).permute(1, 0).contiguous()
 
             # load state_dict
-            self.load_state_dict(state_dict, False)
+            load_state_dict(self, state_dict, strict=False, logger=logger)
 
     def forward(self, x):
         x, hw_shape = self.patch_embed(x)

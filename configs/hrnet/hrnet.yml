@@ -627,3 +627,69 @@ Models:
       mIoU(ms+flip): 73.52
   Config: configs/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen/fcn_hr48_4x4_512x512_80k_vaihingen_20211231_231244-7133cb22.pth
+- Name: fcn_hr18s_4x4_896x896_80k_isaid
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 72.25
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 4.95
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 62.3
+      mIoU(ms+flip): 62.97
+  Config: configs/hrnet/fcn_hr18s_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_4x4_896x896_80k_isaid/fcn_hr18s_4x4_896x896_80k_isaid_20220118_001603-3cc0769b.pth
+- Name: fcn_hr18_4x4_896x896_80k_isaid
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 129.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 8.3
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 65.06
+      mIoU(ms+flip): 65.6
+  Config: configs/hrnet/fcn_hr18_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_4x4_896x896_80k_isaid/fcn_hr18_4x4_896x896_80k_isaid_20220110_182230-49bf752e.pth
+- Name: fcn_hr48_4x4_896x896_80k_isaid
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 136.24
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 16.89
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 67.8
+      mIoU(ms+flip): 68.53
+  Config: configs/hrnet/fcn_hr48_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_4x4_896x896_80k_isaid/fcn_hr48_4x4_896x896_80k_isaid_20220114_174643-547fc420.pth
