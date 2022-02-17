@@ -1,4 +1,5 @@
 matplotlib
 numpy
+opencv-python>=3
 packaging
 prettytable
