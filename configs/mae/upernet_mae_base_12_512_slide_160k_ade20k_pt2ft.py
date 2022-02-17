@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/upernet_beit.py', '../_base_/datasets/ade20k_640x640.py',
+    '../_base_/models/upernet_mae.py', '../_base_/datasets/ade20k_640x640.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
@@ -7,14 +7,14 @@ crop_size = (512, 512)
 model = dict(
     pretrained='pretrain/beit_base_patch16_224_pt22k_ft22k.pth',
     backbone=dict(
-        type='BEiT',
+        type='MAE',
         img_size=(512, 512),
         patch_size=16,
         embed_dims=768,
         num_layers=12,
         num_heads=12,
         mlp_ratio=4,
-        qv_bias=True,
+        qkv_bias=True,
         init_values=0.1,
         drop_path_rate=0.1,
         out_indices=[3, 5, 7, 11]),
