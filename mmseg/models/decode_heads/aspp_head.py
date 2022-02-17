@@ -60,12 +60,19 @@ class ASPPHead(BaseDecodeHead):
     Args:
         dilations (tuple[int]): Dilation rates for ASPP module.
             Default: (1, 6, 12, 18).
+        kernel_update (bool): Whether output feature map before
+            `self.cls_seg` and learnable semantic kernels
+            for kernel updation.
     """
 
-    def __init__(self, dilations=(1, 6, 12, 18), **kwargs):
+    def __init__(self,
+                 dilations=(1, 6, 12, 18),
+                 kernel_update=False,
+                 **kwargs):
         super(ASPPHead, self).__init__(**kwargs)
         assert isinstance(dilations, (list, tuple))
         self.dilations = dilations
+        self.kernel_update = kernel_update
         self.image_pool = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             ConvModule(
@@ -91,6 +98,13 @@ class ASPPHead(BaseDecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
+    def forward_feature(self, feats):
+        output = self.cls_seg(feats)
+        seg_kernels = self.conv_seg.weight.clone()
+        seg_kernels = seg_kernels[None].expand(
+            feats.size(0), *seg_kernels.size())
+        return output, feats, seg_kernels
+
     def forward(self, inputs):
         """Forward function."""
         x = self._transform_inputs(inputs)
@@ -103,6 +117,15 @@ class ASPPHead(BaseDecodeHead):
         ]
         aspp_outs.extend(self.aspp_modules(x))
         aspp_outs = torch.cat(aspp_outs, dim=1)
-        output = self.bottleneck(aspp_outs)
-        output = self.cls_seg(output)
-        return output
+        feats = self.bottleneck(aspp_outs)
+        """Calls either :func:`forward_feature` or :func:`cls_seg`
+        depending on whether ``kernel_update`` is ``True``.
+        When ``kernel_update=True``, feature map before
+        `self.cls_seg` and learnable semantic kernels are both
+        output for kernel updation.
+        """
+        if self.kernel_update:
+            return self.forward_feature(feats)
+        else:
+            output = self.cls_seg(feats)
+            return output

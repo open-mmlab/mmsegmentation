@@ -74,3 +74,21 @@ def test_dw_aspp_head():
     assert head.aspp_modules[2].depthwise_conv.dilation == (24, 24)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)
+
+
+def test_kernel_update_forward():
+
+    inputs = [torch.randn(1, 8, 45, 45)]
+    out_channels = 4
+    head = ASPPHead(
+        in_channels=8,
+        channels=out_channels,
+        num_classes=19,
+        dilations=(1, 12, 24),
+        kernel_update=True)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+    output, feats, seg_kernels = head(inputs)
+    assert output.shape == (1, head.num_classes, 45, 45)
+    assert feats.shape == (1, out_channels, 45, 45)
+    assert seg_kernels.shape == (1, head.num_classes, out_channels, 1, 1)
