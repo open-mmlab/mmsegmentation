@@ -36,38 +36,9 @@ This head has two version head.
 }
 ```
 
-
 ## Usage
 
-To use the pre-trained ViT model, you need to convert its keys.
-
-We provide a script [`vitjax2mmseg.py`](../../tools/model_converters/vitjax2mmseg.py) in the tools directory to convert the keys of models from [ViT-AugReg](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L54-L106) to MMSegmentation style.
-
-```shell
-python tools/model_converters/vitjax2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
-```
-
-E.g.
-
-```shell
-python tools/model_converters/vitjax2mmseg.py \
-L_16-i21k-300ep-lr_0.001-aug_medium1-wd_0.1-do_0.1-sd_0.1--imagenet2012-steps_20k-lr_0.01-res_384.npz \
-pretrain/vit_large_p16.pth
-```
-
-This script convert the model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
-
-In our default setting, we use [ViT-AugReg](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L54-L106) pretrain. The pretrain can be found below:
-
-  | pretrained model | weights |
-  | ------ | -------- |
-  |vit_large_p16_384.pth | ['vit_large_patch16_384'](https://storage.googleapis.com/vit_models/augreg/L_16-i21k-300ep-lr_0.001-aug_medium1-wd_0.1-do_0.1-sd_0.1--imagenet2012-steps_20k-lr_0.01-res_384.npz) |
-
-## Results and models
-
-Please note that all the results below are trained with the older version of ViT pretrain.
-
-You can download it from [here](https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_large_p16_384-b3be5167.pth). Then you can convert its keys with the script `vit2mmseg.py` in the tools directory.
+You can download the pretrain from [here](https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_large_p16_384-b3be5167.pth). Then you can convert its keys with the script `vit2mmseg.py` in the tools directory.
 
 ```shell
 python tools/model_converters/vit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
@@ -81,6 +52,8 @@ jx_vit_large_p16_384-b3be5167.pth pretrain/vit_large_p16.pth
 ```
 
 This script convert the model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
+
+## Results and models
 
 ### ADE20K
 
