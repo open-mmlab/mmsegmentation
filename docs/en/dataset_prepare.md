@@ -374,4 +374,4 @@ You may need to follow the following structure for dataset preparation after dow
 python tools/convert_datasets/isaid.py /path/to/iSAID
 ```
 
-In our default setting (`clip_size` =512, `stride_size`=256), it will generate 33978 images for training and 11644 images for validation.
+In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
