@@ -104,6 +104,21 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── vaihingen
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   ├── iSAID
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   │   ├── test
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -265,4 +280,39 @@ python tools/convert_datasets/potsdam.py /path/to/potsdam
 python tools/convert_datasets/vaihingen.py /path/to/vaihingen
 ```
 
-使用我们默认的配置 (`clip_size` =512, `stride_size`=256)， 将生成 344 张图片的训练集和 398 张图片的验证集。
+使用我们默认的配置 (`clip_size`=512, `stride_size`=256)， 将生成 344 张图片的训练集和 398 张图片的验证集。
+
+### iSAID
+iSAID 数据集(训练集/验证集/测试集)的图像可以从 [DOTA-v1.0](https://captain-whu.github.io/DOTA/dataset.html) 下载.
+
+iSAID 数据集(训练集/验证集)的注释可以从 [iSAID](https://captain-whu.github.io/iSAID/dataset.html) 下载.
+
+该数据集是一个大规模的实例分割(也可以用于语义分割)的遥感数据集.
+
+下载后，在数据集转换前，您需要将数据集文件夹调整成如下格式.
+
+```
+│   ├── iSAID
+│   │   ├── train
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   │   ├── part2.zip
+│   │   │   │   ├── part3.zip
+│   │   │   ├── Semantic_masks
+│   │   │   │   ├── images.zip
+│   │   ├── val
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   ├── Semantic_masks
+│   │   │   │   ├── images.zip
+│   │   ├── test
+│   │   │   ├── images
+│   │   │   │   ├── part1.zip
+│   │   │   │   ├── part2.zip
+```
+
+```shell
+python tools/convert_datasets/isaid.py /path/to/iSAID
+```
+
+使用我们默认的配置 (`patch_width`=896, `patch_height`=896,　`overlap_area`=384)， 将生成 33978 张图片的训练集和 11644 张图片的验证集。

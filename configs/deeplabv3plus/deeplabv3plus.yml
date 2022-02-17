@@ -10,6 +10,7 @@ Collections:
     - LoveDA
     - Potsdam
     - Vaihingen
+    - iSAID
   Paper:
     URL: https://arxiv.org/abs/1802.02611
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
@@ -803,3 +804,47 @@ Models:
       mIoU(ms+flip): 74.14
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen_20211231_230816-8a095afa.pth
+- Name: deeplabv3plus_r18-d8_4x4_896x896_80k_isaid
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-18-D8
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 40.31
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 6.19
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 61.35
+      mIoU(ms+flip): 62.61
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid_20220110_180526-7059991d.pth
+- Name: deeplabv3plus_r50-d8_4x4_896x896_80k_isaid
+  In Collection: deeplabv3plus
+  Metadata:
+    backbone: R-50-D8
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 118.76
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 21.45
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 67.06
+      mIoU(ms+flip): 68.02
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid_20220110_180526-598be439.pth
