@@ -36,6 +36,23 @@ This head has two version head.
 }
 ```
 
+## Usage
+
+You can download the pretrain from [here](https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_large_p16_384-b3be5167.pth). Then you can convert its keys with the script `vit2mmseg.py` in the tools directory.
+
+```shell
+python tools/model_converters/vit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
+```
+
+E.g.
+
+```shell
+python tools/model_converters/vit2mmseg.py \
+jx_vit_large_p16_384-b3be5167.pth pretrain/vit_large_p16.pth
+```
+
+This script convert the model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
+
 ## Results and models
 
 ### ADE20K
