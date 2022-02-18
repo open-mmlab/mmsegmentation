@@ -78,6 +78,7 @@ def test_dw_aspp_head():
 
 def test_kernel_update_forward():
 
+    # test kernel updation
     inputs = [torch.randn(1, 8, 45, 45)]
     out_channels = 4
     head = ASPPHead(

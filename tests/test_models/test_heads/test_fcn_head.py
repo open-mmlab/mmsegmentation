@@ -129,3 +129,22 @@ def test_sep_fcn_head():
     assert head.concat_input
     assert isinstance(head.convs[0], DepthwiseSeparableConvModule)
     assert isinstance(head.convs[1], DepthwiseSeparableConvModule)
+
+
+def test_kernel_update_forward():
+
+    # test kernel updation
+    inputs = [torch.randn(1, 8, 23, 23)]
+    out_channels = 4
+    head = FCNHead(
+        in_channels=8,
+        channels=out_channels,
+        num_classes=19,
+        kernel_update=True)
+    if torch.cuda.is_available():
+        head, inputs = to_cuda(head, inputs)
+
+    output, feats, seg_kernels = head(inputs)
+    assert output.shape == (1, head.num_classes, 23, 23)
+    assert feats.shape == (1, out_channels, 23, 23)
+    assert seg_kernels.shape == (1, head.num_classes, out_channels, 1, 1)

@@ -21,9 +21,13 @@ class UPerHead(BaseDecodeHead):
             Module applied on the last feature. Default: (1, 2, 3, 6).
     """
 
-    def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
+    def __init__(self,
+                 pool_scales=(1, 2, 3, 6),
+                 kernel_update=False,
+                 **kwargs):
         super(UPerHead, self).__init__(
             input_transform='multiple_select', **kwargs)
+        self.kernel_update = kernel_update
         # PSP Module
         self.psp_modules = PPM(
             pool_scales,
@@ -84,7 +88,7 @@ class UPerHead(BaseDecodeHead):
 
         return output
 
-    def forward(self, inputs):
+    def forward_feature(self, inputs):
         """Forward function."""
 
         inputs = self._transform_inputs(inputs)
@@ -101,7 +105,7 @@ class UPerHead(BaseDecodeHead):
         used_backbone_levels = len(laterals)
         for i in range(used_backbone_levels - 1, 0, -1):
             prev_shape = laterals[i - 1].shape[2:]
-            laterals[i - 1] = laterals[i - 1] + resize(
+            laterals[i - 1] += resize(
                 laterals[i],
                 size=prev_shape,
                 mode='bilinear',
@@ -122,6 +126,22 @@ class UPerHead(BaseDecodeHead):
                 mode='bilinear',
                 align_corners=self.align_corners)
         fpn_outs = torch.cat(fpn_outs, dim=1)
-        output = self.fpn_bottleneck(fpn_outs)
-        output = self.cls_seg(output)
-        return output
+        feats = self.fpn_bottleneck(fpn_outs)
+        output = self.cls_seg(feats)
+
+        seg_kernels = self.conv_seg.weight.clone()
+        seg_kernels = seg_kernels[None].expand(
+            feats.size(0), *seg_kernels.size())
+        return output, feats, seg_kernels
+
+    def forward(self, inputs):
+        """Forward function."""
+        output, feats, seg_kernels = self.forward_feature(inputs)
+        """When ``kernel_update=True``, feature map before
+        `self.cls_seg` and learnable semantic kernels are both
+        output for kernel updation.
+        """
+        if self.kernel_update:
+            return output, feats, seg_kernels
+        else:
+            return output
