@@ -1,6 +1,5 @@
 Collections:
-- Name: point_rend
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
@@ -13,6 +12,7 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/facebookresearch/detectron2/tree/master/projects/PointRend
+  Name: PointRend
 Models:
 - Name: pointrend_r50_512x1024_80k_cityscapes
   In Collection: PointRend

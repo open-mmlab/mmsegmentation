@@ -1,6 +1,5 @@
 Collections:
-- Name: erfnet
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
   Paper:
@@ -12,6 +11,7 @@ Collections:
     Version: v0.20.0
   Converted From:
     Code: https://github.com/Eromera/erfnet_pytorch
+  Name: FCN
 Models:
 - Name: erfnet_fcn_4x4_512x1024_160k_cityscapes
   In Collection: FCN

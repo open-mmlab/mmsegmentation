@@ -1,6 +1,5 @@
 Collections:
-- Name: danet
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
@@ -14,6 +13,7 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/junfu1115/DANet/
+  Name: DANet
 Models:
 - Name: danet_r50-d8_512x1024_40k_cityscapes
   In Collection: DANet

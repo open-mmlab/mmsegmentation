@@ -1,6 +1,5 @@
 Collections:
-- Name: stdc
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
   Paper:
@@ -12,6 +11,7 @@ Collections:
     Version: v0.20.0
   Converted From:
     Code: https://github.com/MichaelFan01/STDC-Seg
+  Name: STDC2
 Models:
 - Name: stdc1_512x1024_80k_cityscapes
   In Collection: STDC1

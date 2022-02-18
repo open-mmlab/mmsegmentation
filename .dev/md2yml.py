@@ -61,7 +61,6 @@ def parse_md(md_file):
     configs = os.listdir(osp.dirname(md_file))
 
     collection = dict(
-        Name=collection_name,
         Metadata={'Training Data': []},
         Paper={
             'URL': '',
@@ -225,6 +224,7 @@ def parse_md(md_file):
     flag = (code_url is not None) and (paper_url is not None) and (repo_url
                                                                    is not None)
     assert flag, f'{collection_name} readme error'
+    collection['Name'] = method
     collection['Metadata']['Training Data'] = datasets
     collection['Code']['URL'] = code_url
     collection['Code']['Version'] = code_version

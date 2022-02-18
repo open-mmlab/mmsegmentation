@@ -1,6 +1,5 @@
 Collections:
-- Name: psanet
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
@@ -14,6 +13,7 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/hszhao/PSANet
+  Name: PSANet
 Models:
 - Name: psanet_r50-d8_512x1024_40k_cityscapes
   In Collection: PSANet

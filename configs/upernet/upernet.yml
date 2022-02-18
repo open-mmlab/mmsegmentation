@@ -1,6 +1,5 @@
 Collections:
-- Name: upernet
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
@@ -14,6 +13,7 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/CSAILVision/unifiedparsing
+  Name: UPerNet
 Models:
 - Name: upernet_r50_512x1024_40k_cityscapes
   In Collection: UPerNet

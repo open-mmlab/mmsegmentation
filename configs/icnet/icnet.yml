@@ -1,6 +1,5 @@
 Collections:
-- Name: icnet
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
   Paper:
@@ -12,6 +11,7 @@ Collections:
     Version: v0.18.0
   Converted From:
     Code: https://github.com/hszhao/ICNet
+  Name: pre)
 Models:
 - Name: icnet_r18-d8_832x832_80k_cityscapes
   In Collection: ICNet

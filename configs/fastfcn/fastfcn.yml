@@ -1,6 +1,5 @@
 Collections:
-- Name: fastfcn
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
@@ -13,6 +12,7 @@ Collections:
     Version: v0.18.0
   Converted From:
     Code: https://github.com/wuhuikai/FastFCN
+  Name: EncNet
 Models:
 - Name: fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes
   In Collection: DeepLabV3

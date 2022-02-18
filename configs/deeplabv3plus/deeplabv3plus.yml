@@ -1,6 +1,5 @@
 Collections:
-- Name: deeplabv3plus
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
@@ -20,6 +19,7 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/tensorflow/models/tree/master/research/deeplab
+  Name: DeepLabV3+
 Models:
 - Name: deeplabv3plus_r50-d8_512x1024_40k_cityscapes
   In Collection: DeepLabV3+

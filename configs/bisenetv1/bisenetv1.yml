@@ -1,6 +1,5 @@
 Collections:
-- Name: bisenetv1
-  Metadata:
+- Metadata:
     Training Data:
     - Cityscapes
     - COCO-Stuff 164k
@@ -13,6 +12,7 @@ Collections:
     Version: v0.18.0
   Converted From:
     Code: https://github.com/ycszen/TorchSeg/tree/master/model/bisenet
+  Name: BiSeNetV1
 Models:
 - Name: bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes
   In Collection: BiSeNetV1
