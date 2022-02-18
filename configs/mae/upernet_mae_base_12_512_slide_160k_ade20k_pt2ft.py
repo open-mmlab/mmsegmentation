@@ -15,7 +15,7 @@ model = dict(
         num_heads=12,
         mlp_ratio=4,
         qkv_bias=True,
-        init_values=0.1,
+        init_values=1.0,
         drop_path_rate=0.1,
         out_indices=[3, 5, 7, 11]),
     neck=dict(embed_dim=768, rescales=[4, 2, 1, 0.5]),
@@ -27,11 +27,11 @@ model = dict(
 optimizer = dict(
     _delete_=True,
     type='AdamW',
-    lr=3e-5,
+    lr=1e-4,
     betas=(0.9, 0.999),
     weight_decay=0.05,
     constructor='LayerDecayOptimizerConstructor',
-    paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.9))
+    paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.65))
 
 lr_config = dict(
     _delete_=True,
