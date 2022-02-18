@@ -21,13 +21,9 @@ class UPerHead(BaseDecodeHead):
             Module applied on the last feature. Default: (1, 2, 3, 6).
     """
 
-    def __init__(self,
-                 pool_scales=(1, 2, 3, 6),
-                 kernel_update=False,
-                 **kwargs):
+    def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
         super(UPerHead, self).__init__(
             input_transform='multiple_select', **kwargs)
-        self.kernel_update = kernel_update
         # PSP Module
         self.psp_modules = PPM(
             pool_scales,
@@ -89,7 +85,8 @@ class UPerHead(BaseDecodeHead):
         return output
 
     def forward_feature(self, inputs):
-        """Forward function."""
+        """Feature map before `self.cls_seg` and learnable semantic kernels can
+        be both output for kernel updation."""
 
         inputs = self._transform_inputs(inputs)
 
@@ -137,11 +134,4 @@ class UPerHead(BaseDecodeHead):
     def forward(self, inputs):
         """Forward function."""
         output, feats, seg_kernels = self.forward_feature(inputs)
-        """When ``kernel_update=True``, feature map before
-        `self.cls_seg` and learnable semantic kernels are both
-        output for kernel updation.
-        """
-        if self.kernel_update:
-            return output, feats, seg_kernels
-        else:
-            return output
+        return output

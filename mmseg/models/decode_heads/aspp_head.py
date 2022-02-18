@@ -60,19 +60,12 @@ class ASPPHead(BaseDecodeHead):
     Args:
         dilations (tuple[int]): Dilation rates for ASPP module.
             Default: (1, 6, 12, 18).
-        kernel_update (bool): Whether output feature map before
-            `self.cls_seg` and learnable semantic kernels
-            for kernel updation. Default: False.
     """
 
-    def __init__(self,
-                 dilations=(1, 6, 12, 18),
-                 kernel_update=False,
-                 **kwargs):
+    def __init__(self, dilations=(1, 6, 12, 18), **kwargs):
         super(ASPPHead, self).__init__(**kwargs)
         assert isinstance(dilations, (list, tuple))
         self.dilations = dilations
-        self.kernel_update = kernel_update
         self.image_pool = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             ConvModule(
@@ -99,6 +92,8 @@ class ASPPHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward_feature(self, inputs):
+        """Feature map before `self.cls_seg` and learnable semantic kernels can
+        be both output for kernel updation."""
         x = self._transform_inputs(inputs)
         aspp_outs = [
             resize(
@@ -119,11 +114,4 @@ class ASPPHead(BaseDecodeHead):
     def forward(self, inputs):
         """Forward function."""
         output, feats, seg_kernels = self.forward_feature(inputs)
-        """When ``kernel_update=True``, feature map before
-        `self.cls_seg` and learnable semantic kernels are both
-        output for kernel updation.
-        """
-        if self.kernel_update:
-            return output, feats, seg_kernels
-        else:
-            return output
+        return output

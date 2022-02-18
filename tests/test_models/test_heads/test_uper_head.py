@@ -43,11 +43,10 @@ def test_kernel_update_forward():
         in_channels=[4, 2],
         channels=out_channels,
         num_classes=19,
-        in_index=[-2, -1],
-        kernel_update=True)
+        in_index=[-2, -1])
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
-    output, feats, seg_kernels = head(inputs)
+    output, feats, seg_kernels = head.forward_feature(inputs)
     assert output.shape == (1, head.num_classes, 45, 45)
     assert feats.shape == (1, out_channels, 45, 45)
     assert seg_kernels.shape == (1, head.num_classes, out_channels, 1, 1)

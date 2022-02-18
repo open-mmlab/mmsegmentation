@@ -19,9 +19,6 @@ class FCNHead(BaseDecodeHead):
         concat_input (bool): Whether concat the input and output of convs
             before classification layer.
         dilation (int): The dilation rate for convs in the head. Default: 1.
-        kernel_update (bool): Whether output feature map before
-            `self.cls_seg` and learnable semantic kernels
-            for kernel updation. Default: False.
     """
 
     def __init__(self,
@@ -29,13 +26,11 @@ class FCNHead(BaseDecodeHead):
                  kernel_size=3,
                  concat_input=True,
                  dilation=1,
-                 kernel_update=False,
                  **kwargs):
         assert num_convs >= 0 and dilation > 0 and isinstance(dilation, int)
         self.num_convs = num_convs
         self.concat_input = concat_input
         self.kernel_size = kernel_size
-        self.kernel_update = kernel_update
         super(FCNHead, self).__init__(**kwargs)
         if num_convs == 0:
             assert self.in_channels == self.channels
@@ -78,7 +73,8 @@ class FCNHead(BaseDecodeHead):
                 act_cfg=self.act_cfg)
 
     def forward_feature(self, inputs):
-        """Forward function."""
+        """Feature map before `self.cls_seg` and learnable semantic kernels can
+        be both output for kernel updation."""
         x = self._transform_inputs(inputs)
         feats = self.convs(x)
         if self.concat_input:
@@ -93,11 +89,4 @@ class FCNHead(BaseDecodeHead):
     def forward(self, inputs):
         """Forward function."""
         output, feats, seg_kernels = self.forward_feature(inputs)
-        """When ``kernel_update=True``, feature map before
-        `self.cls_seg` and learnable semantic kernels are both
-        output for kernel updation.
-        """
-        if self.kernel_update:
-            return output, feats, seg_kernels
-        else:
-            return output
+        return output

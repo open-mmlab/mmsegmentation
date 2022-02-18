@@ -69,19 +69,12 @@ class PSPHead(BaseDecodeHead):
     Args:
         pool_scales (tuple[int]): Pooling scales used in Pooling Pyramid
             Module. Default: (1, 2, 3, 6).
-        kernel_update (bool): Whether output feature map before
-            `self.cls_seg` and learnable semantic kernels
-            for kernel updation. Default: False.
     """
 
-    def __init__(self,
-                 pool_scales=(1, 2, 3, 6),
-                 kernel_update=False,
-                 **kwargs):
+    def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
         super(PSPHead, self).__init__(**kwargs)
         assert isinstance(pool_scales, (list, tuple))
         self.pool_scales = pool_scales
-        self.kernel_update = kernel_update
         self.psp_modules = PPM(
             self.pool_scales,
             self.in_channels,
@@ -100,7 +93,8 @@ class PSPHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward_feature(self, inputs):
-        """Forward function."""
+        """Feature map before `self.cls_seg` and learnable semantic kernels can
+        be both output for kernel updation."""
         x = self._transform_inputs(inputs)
         psp_outs = [x]
         psp_outs.extend(self.psp_modules(x))
@@ -116,11 +110,4 @@ class PSPHead(BaseDecodeHead):
     def forward(self, inputs):
         """Forward function."""
         output, feats, seg_kernels = self.forward_feature(inputs)
-        """When ``kernel_update=True``, feature map before
-        `self.cls_seg` and learnable semantic kernels are both
-        output for kernel updation.
-        """
-        if self.kernel_update:
-            return output, feats, seg_kernels
-        else:
-            return output
+        return output
