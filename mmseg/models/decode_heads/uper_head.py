@@ -133,5 +133,5 @@ class UPerHead(BaseDecodeHead):
 
     def forward(self, inputs):
         """Forward function."""
-        output, feats, seg_kernels = self.forward_feature(inputs)
+        output, _, _ = self.forward_feature(inputs)
         return output
