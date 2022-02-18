@@ -477,6 +477,7 @@ class MAE(BaseModule):
         # stole cls_tokens impl from Phil Wang, thanks
         cls_tokens = self.cls_token.expand(B, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
+        x = x + self.pos_embed
 
         if not self.with_cls_token:
             # Remove class token for transformer encoder input
