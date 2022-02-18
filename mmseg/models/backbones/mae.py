@@ -1,18 +1,15 @@
 # Copyright (c) OpenMMLab. All rights reserved.import math
-import warnings
 import math
+import warnings
 
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
-from scipy import interpolate
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 

@@ -7,6 +7,7 @@ from .erfnet import ERFNet
 from .fast_scnn import FastSCNN
 from .hrnet import HRNet
 from .icnet import ICNet
+from .mae import MAE
 from .mit import MixVisionTransformer
 from .mobilenet_v2 import MobileNetV2
 from .mobilenet_v3 import MobileNetV3
@@ -19,7 +20,6 @@ from .timm_backbone import TIMMBackbone
 from .twins import PCPVT, SVT
 from .unet import UNet
 from .vit import VisionTransformer
-from .mae import MAE
 
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
