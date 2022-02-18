@@ -1,5 +1,6 @@
 Collections:
-- Metadata:
+- Name: CGNet
+  Metadata:
     Training Data:
     - Cityscapes
   Paper:
@@ -11,7 +12,6 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/wutianyiRosun/CGNet
-  Name: CGNet
 Models:
 - Name: cgnet_680x680_60k_cityscapes
   In Collection: CGNet

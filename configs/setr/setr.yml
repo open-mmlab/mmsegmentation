@@ -1,5 +1,6 @@
 Collections:
-- Metadata:
+- Name: MLA
+  Metadata:
     Training Data:
     - ADE20K
     - Cityscapes
@@ -13,7 +14,6 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/fudan-zvg/SETR
-  Name: MLA
 Models:
 - Name: setr_naive_512x512_160k_b16_ade20k
   In Collection: Naive

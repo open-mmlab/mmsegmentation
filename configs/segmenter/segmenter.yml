@@ -1,5 +1,6 @@
 Collections:
-- Metadata:
+- Name: Mask
+  Metadata:
     Training Data:
     - ADE20K
   Paper:
@@ -11,7 +12,6 @@ Collections:
     Version: v0.21.0
   Converted From:
     Code: https://github.com/rstrudel/segmenter
-  Name: Mask
 Models:
 - Name: segmenter_vit-t_mask_8x1_512x512_160k_ade20k
   In Collection: Mask

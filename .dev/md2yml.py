@@ -61,6 +61,7 @@ def parse_md(md_file):
     configs = os.listdir(osp.dirname(md_file))
 
     collection = dict(
+        Name=collection_name,
         Metadata={'Training Data': []},
         Paper={
             'URL': '',

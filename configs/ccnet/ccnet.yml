@@ -1,5 +1,6 @@
 Collections:
-- Metadata:
+- Name: CCNet
+  Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
@@ -13,7 +14,6 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/speedinghzl/CCNet
-  Name: CCNet
 Models:
 - Name: ccnet_r50-d8_512x1024_40k_cityscapes
   In Collection: CCNet

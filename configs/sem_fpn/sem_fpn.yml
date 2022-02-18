@@ -1,5 +1,6 @@
 Collections:
-- Metadata:
+- Name: FPN
+  Metadata:
     Training Data:
     - Cityscapes
     - ADE20K
@@ -12,7 +13,6 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/facebookresearch/detectron2
-  Name: FPN
 Models:
 - Name: fpn_r50_512x1024_80k_cityscapes
   In Collection: FPN

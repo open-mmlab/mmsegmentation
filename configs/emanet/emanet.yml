@@ -1,5 +1,6 @@
 Collections:
-- Metadata:
+- Name: EMANet
+  Metadata:
     Training Data:
     - Cityscapes
   Paper:
@@ -11,7 +12,6 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://xialipku.github.io/EMANet
-  Name: EMANet
 Models:
 - Name: emanet_r50-d8_512x1024_80k_cityscapes
   In Collection: EMANet

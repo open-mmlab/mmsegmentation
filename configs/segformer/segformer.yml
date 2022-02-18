@@ -1,5 +1,6 @@
 Collections:
-- Metadata:
+- Name: Segformer
+  Metadata:
     Training Data:
     - ADE20K
     - Cityscapes
@@ -13,7 +14,6 @@ Collections:
     Version: v0.17.0
   Converted From:
     Code: https://github.com/NVlabs/SegFormer
-  Name: Segformer
 Models:
 - Name: segformer_mit-b0_512x512_160k_ade20k
   In Collection: Segformer

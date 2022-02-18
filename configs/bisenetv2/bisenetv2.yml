@@ -1,5 +1,6 @@
 Collections:
-- Metadata:
+- Name: BiSeNetV2
+  Metadata:
     Training Data:
     - Cityscapes
   Paper:
@@ -10,7 +11,6 @@ Collections:
   Code:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv2.py#L545
     Version: v0.18.0
-  Name: BiSeNetV2
 Models:
 - Name: bisenetv2_fcn_4x4_1024x1024_160k_cityscapes
   In Collection: BiSeNetV2
