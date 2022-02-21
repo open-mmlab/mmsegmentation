@@ -3,8 +3,8 @@ import math
 import warnings
 
 import torch
-import torch.nn as nn
 import torch.distributed as dist
+import torch.nn as nn
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
@@ -432,7 +432,7 @@ class MAE(BaseModule):
             # class_token and dist_token are kept unchanged
             if orig_size != new_size:
                 if dist.get_rank() == 0:
-                    print("Position interpolate from %dx%d to %dx%d" %
+                    print('Position interpolate from %dx%d to %dx%d' %
                           (orig_size, orig_size, new_size, new_size))
                 extra_tokens = pos_embed_checkpoint[:, :num_extra_tokens]
                 # only the position tokens are interpolated
