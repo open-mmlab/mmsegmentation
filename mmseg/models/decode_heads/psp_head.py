@@ -93,8 +93,7 @@ class PSPHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward_feature(self, inputs):
-        """Feature map before `self.cls_seg` and learnable semantic kernels can
-        be both output for kernel updation."""
+        """Forward function."""
         x = self._transform_inputs(inputs)
         psp_outs = [x]
         psp_outs.extend(self.psp_modules(x))

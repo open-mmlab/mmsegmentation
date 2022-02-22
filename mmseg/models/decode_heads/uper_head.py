@@ -85,8 +85,7 @@ class UPerHead(BaseDecodeHead):
         return output
 
     def forward_feature(self, inputs):
-        """Feature map before `self.cls_seg` and learnable semantic kernels can
-        be both output for kernel updation."""
+        """Forward function."""
 
         inputs = self._transform_inputs(inputs)
 

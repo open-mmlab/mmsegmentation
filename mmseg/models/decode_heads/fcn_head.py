@@ -73,8 +73,7 @@ class FCNHead(BaseDecodeHead):
                 act_cfg=self.act_cfg)
 
     def forward_feature(self, inputs):
-        """Feature map before `self.cls_seg` and learnable semantic kernels can
-        be both output for kernel updation."""
+        """Forward function."""
         x = self._transform_inputs(inputs)
         feats = self.convs(x)
         if self.concat_input:
