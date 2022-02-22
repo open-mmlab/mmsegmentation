@@ -52,7 +52,6 @@ model = dict(
         ],
         kernel_generate_head=dict(
             type='PSPHead',
-            kernel_update=True,
             in_channels=2048,
             in_index=3,
             channels=512,
