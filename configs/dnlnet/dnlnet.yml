@@ -1,5 +1,5 @@
 Collections:
-- Name: DNL
+- Name: DNLNet
   Metadata:
     Training Data:
     - Cityscapes
@@ -155,7 +155,7 @@ Models:
   Config: configs/dnlnet/dnl_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes_20200821_051111-95ff84ab.pth
 - Name: dnl_r50-d8_512x512_80k_ade20k
-  In Collection: DNL
+  In Collection: DNLNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -177,7 +177,7 @@ Models:
   Config: configs/dnlnet/dnl_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_80k_ade20k/dnl_r50-d8_512x512_80k_ade20k_20200826_183354-1cf6e0c1.pth
 - Name: dnl_r101-d8_512x512_80k_ade20k
-  In Collection: DNL
+  In Collection: DNLNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -199,7 +199,7 @@ Models:
   Config: configs/dnlnet/dnl_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_80k_ade20k/dnl_r101-d8_512x512_80k_ade20k_20200826_183354-d820d6ea.pth
 - Name: dnl_r50-d8_512x512_160k_ade20k
-  In Collection: DNL
+  In Collection: DNLNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -213,7 +213,7 @@ Models:
   Config: configs/dnlnet/dnl_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_160k_ade20k/dnl_r50-d8_512x512_160k_ade20k_20200826_183350-37837798.pth
 - Name: dnl_r101-d8_512x512_160k_ade20k
-  In Collection: DNL
+  In Collection: DNLNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
