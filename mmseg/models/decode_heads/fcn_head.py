@@ -79,14 +79,10 @@ class FCNHead(BaseDecodeHead):
         feats = self.convs(x)
         if self.concat_input:
             feats = self.conv_cat(torch.cat([x, feats], dim=1))
-        output = self.cls_seg(feats)
-
-        seg_kernels = self.conv_seg.weight.clone()
-        seg_kernels = seg_kernels[None].expand(
-            feats.size(0), *seg_kernels.size())
-        return output, feats, seg_kernels
+        return feats
 
     def forward(self, inputs):
         """Forward function."""
-        output, _, _ = self.forward_feature(inputs)
+        output = self.forward_feature(inputs)
+        output = self.cls_seg(output)
         return output

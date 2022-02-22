@@ -92,8 +92,7 @@ class ASPPHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward_feature(self, inputs):
-        """Feature map before `self.cls_seg` and learnable semantic kernels can
-        be both output for kernel updation."""
+        """Forward function"""
         x = self._transform_inputs(inputs)
         aspp_outs = [
             resize(
@@ -105,13 +104,10 @@ class ASPPHead(BaseDecodeHead):
         aspp_outs.extend(self.aspp_modules(x))
         aspp_outs = torch.cat(aspp_outs, dim=1)
         feats = self.bottleneck(aspp_outs)
-        output = self.cls_seg(feats)
-        seg_kernels = self.conv_seg.weight.clone()
-        seg_kernels = seg_kernels[None].expand(
-            feats.size(0), *seg_kernels.size())
-        return output, feats, seg_kernels
+        return feats
 
     def forward(self, inputs):
         """Forward function."""
-        output, _, _ = self.forward_feature(inputs)
+        output = self.forward_feature(inputs)
+        output = self.cls_seg(output)
         return output
