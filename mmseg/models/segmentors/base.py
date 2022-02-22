@@ -59,7 +59,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         """Placeholder for augmentation test."""
         pass
 
-    def forward_test(self, imgs, img_metas, **kwargs):
+    def forward_test(self, imgs, img_metas, return_all, **kwargs):
         """
         Args:
             imgs (List[Tensor]): the outer list indicates test-time
@@ -89,12 +89,14 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
             assert all(shape == pad_shapes[0] for shape in pad_shapes)
 
         if num_augs == 1:
-            return self.simple_test(imgs[0], img_metas[0], **kwargs)
+            return self.simple_test(
+                imgs[0], img_metas[0], return_all=return_all, **kwargs)
         else:
-            return self.aug_test(imgs, img_metas, **kwargs)
+            return self.aug_test(
+                imgs, img_metas, return_all=return_all, **kwargs)
 
     @auto_fp16(apply_to=('img', ))
-    def forward(self, img, img_metas, return_loss=True, **kwargs):
+    def forward(self, img, img_metas, return_all, return_loss=True, **kwargs):
         """Calls either :func:`forward_train` or :func:`forward_test` depending
         on whether ``return_loss`` is ``True``.
 
@@ -107,7 +109,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         if return_loss:
             return self.forward_train(img, img_metas, **kwargs)
         else:
-            return self.forward_test(img, img_metas, **kwargs)
+            return self.forward_test(img, img_metas, return_all, **kwargs)
 
     def train_step(self, data_batch, optimizer, **kwargs):
         """The iteration step during training.

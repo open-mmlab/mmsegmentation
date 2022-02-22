@@ -39,7 +39,8 @@ def single_gpu_test(model,
                     opacity=0.5,
                     pre_eval=False,
                     format_only=False,
-                    format_args={}):
+                    format_args={},
+                    return_all=False):
     """Test with single GPU by progressive mode.
 
     Args:
@@ -88,7 +89,7 @@ def single_gpu_test(model,
 
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
-            result = model(return_loss=False, **data)
+            result = model(return_all=return_all, return_loss=False, **data)
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -144,7 +145,8 @@ def multi_gpu_test(model,
                    efficient_test=False,
                    pre_eval=False,
                    format_only=False,
-                   format_args={}):
+                   format_args={},
+                   return_all=False):
     """Test model with multiple gpus by progressive mode.
 
     This method tests model with multiple gpus and collects the results

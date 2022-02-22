@@ -99,6 +99,10 @@ def parse_args():
         default=0.5,
         help='Opacity of painted segmentation map. In (0, 1] range.')
     parser.add_argument('--local_rank', type=int, default=0)
+    parser.add_argument(
+        '--return-all',
+        action='store_true',
+        help='Use Flip and Multi scale aug')
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)
@@ -187,6 +191,7 @@ def main():
         else:
             json_file = osp.join(work_dir,
                                  f'eval_single_scale_{timestamp}.json')
+    return_all = True if args.return_all else False
 
     # build the dataloader
     # TODO: support multiple images per gpu (only minor changes are needed)
@@ -263,7 +268,8 @@ def main():
             args.opacity,
             pre_eval=args.eval is not None and not eval_on_format_results,
             format_only=args.format_only or eval_on_format_results,
-            format_args=eval_kwargs)
+            format_args=eval_kwargs,
+            return_all=return_all)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
@@ -277,7 +283,8 @@ def main():
             False,
             pre_eval=args.eval is not None and not eval_on_format_results,
             format_only=args.format_only or eval_on_format_results,
-            format_args=eval_kwargs)
+            format_args=eval_kwargs,
+            return_all=return_all)
 
     rank, _ = get_dist_info()
     if rank == 0:

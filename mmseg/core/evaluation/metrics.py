@@ -52,9 +52,15 @@ def intersect_and_union(pred_label,
          torch.Tensor: The ground truth histogram on all classes.
     """
 
-    if isinstance(pred_label, str):
+    if isinstance(pred_label, dict):
+        pred_logit = torch.from_numpy((pred_label['seg_logit']))
+        if isinstance(pred_label['seg_pred'], str):
+            pred_label = torch.from_numpy(np.load(pred_label['seg_pred']))
+        elif isinstance(pred_label['seg_pred'], np.ndarray):
+            pred_label = torch.from_numpy((pred_label['seg_pred']))
+    elif isinstance(pred_label, str):
         pred_label = torch.from_numpy(np.load(pred_label))
-    else:
+    elif isinstance(pred_label, np.ndarray):
         pred_label = torch.from_numpy((pred_label))
 
     if isinstance(label, str):

@@ -251,7 +251,7 @@ class EncoderDecoder(BaseSegmentor):
 
         return output
 
-    def simple_test(self, img, img_meta, rescale=True):
+    def simple_test(self, img, img_meta, return_all=False, rescale=True):
         """Simple test with single image."""
         seg_logit = self.inference(img, img_meta, rescale)
         seg_pred = seg_logit.argmax(dim=1)
@@ -260,11 +260,16 @@ class EncoderDecoder(BaseSegmentor):
             seg_pred = seg_pred.unsqueeze(0)
             return seg_pred
         seg_pred = seg_pred.cpu().numpy()
+        seg_logit = seg_logit.cpu().numpy()
         # unravel batch dim
         seg_pred = list(seg_pred)
-        return seg_pred
 
-    def aug_test(self, imgs, img_metas, rescale=True):
+        if return_all:
+            return dict(seg_pred=seg_pred[0], seg_logit=seg_logit)
+        else:
+            return seg_pred
+
+    def aug_test(self, imgs, img_metas, return_all=False, rescale=True):
         """Test with augmentations.
 
         Only rescale=True is supported.
@@ -279,6 +284,10 @@ class EncoderDecoder(BaseSegmentor):
         seg_logit /= len(imgs)
         seg_pred = seg_logit.argmax(dim=1)
         seg_pred = seg_pred.cpu().numpy()
+        seg_logit = seg_logit.cpu().numpy()
         # unravel batch dim
         seg_pred = list(seg_pred)
-        return seg_pred
+        if return_all:
+            return dict(seg_pred=seg_pred[0], seg_logit=seg_logit)
+        else:
+            return seg_pred
