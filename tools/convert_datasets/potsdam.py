@@ -126,8 +126,8 @@ def main():
     zipp_list = glob.glob(os.path.join(dataset_path, '*.zip'))
     print('Find the data', zipp_list)
 
-    with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
-        for zipp in zipp_list:
+    for zipp in zipp_list:
+        with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
             zip_file = zipfile.ZipFile(zipp)
             zip_file.extractall(tmp_dir)
             src_path_list = glob.glob(os.path.join(tmp_dir, '*.tif'))

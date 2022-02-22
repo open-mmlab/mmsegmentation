@@ -21,13 +21,9 @@ class UPerHead(BaseDecodeHead):
             Module applied on the last feature. Default: (1, 2, 3, 6).
     """
 
-    def __init__(self,
-                 pool_scales=(1, 2, 3, 6),
-                 kernel_update=False,
-                 **kwargs):
+    def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
         super(UPerHead, self).__init__(
             input_transform='multiple_select', **kwargs)
-        self.kernel_update = kernel_update
         # PSP Module
         self.psp_modules = PPM(
             pool_scales,
@@ -88,50 +84,9 @@ class UPerHead(BaseDecodeHead):
 
         return output
 
-    def forward_normal(self, inputs):
-        """Forward function."""
-
-        inputs = self._transform_inputs(inputs)
-
-        # build laterals
-        laterals = [
-            lateral_conv(inputs[i])
-            for i, lateral_conv in enumerate(self.lateral_convs)
-        ]
-
-        laterals.append(self.psp_forward(inputs))
-
-        # build top-down path
-        used_backbone_levels = len(laterals)
-        for i in range(used_backbone_levels - 1, 0, -1):
-            prev_shape = laterals[i - 1].shape[2:]
-            laterals[i - 1] = laterals[i - 1] + resize(
-                laterals[i],
-                size=prev_shape,
-                mode='bilinear',
-                align_corners=self.align_corners)
-
-        # build outputs
-        fpn_outs = [
-            self.fpn_convs[i](laterals[i])
-            for i in range(used_backbone_levels - 1)
-        ]
-        # append psp feature
-        fpn_outs.append(laterals[-1])
-
-        for i in range(used_backbone_levels - 1, 0, -1):
-            fpn_outs[i] = resize(
-                fpn_outs[i],
-                size=fpn_outs[0].shape[2:],
-                mode='bilinear',
-                align_corners=self.align_corners)
-        fpn_outs = torch.cat(fpn_outs, dim=1)
-        output = self.fpn_bottleneck(fpn_outs)
-        output = self.cls_seg(output)
-        return output
-
     def forward_feature(self, inputs):
-        """Forward function."""
+        """Feature map before `self.cls_seg` and learnable semantic kernels can
+        be both output for kernel updation."""
 
         inputs = self._transform_inputs(inputs)
 
@@ -169,20 +124,10 @@ class UPerHead(BaseDecodeHead):
                 align_corners=self.align_corners)
         fpn_outs = torch.cat(fpn_outs, dim=1)
         feats = self.fpn_bottleneck(fpn_outs)
-        output = self.cls_seg(feats)
-
-        seg_kernels = self.conv_seg.weight.clone()
-        seg_kernels = seg_kernels[None].expand(
-            feats.size(0), *seg_kernels.size())
-        return output, feats, seg_kernels
+        return feats
 
     def forward(self, inputs):
-        """Calls either :func:`forward_feature` or :func:`forward_normal`
-        depending on whether ``kernel_update`` is ``True``.
-
-        Note this setting will change the expected inputs.
-        """
-        if self.kernel_update:
-            return self.forward_feature(inputs)
-        else:
-            return self.forward_normal(inputs)
+        """Forward function."""
+        output = self.forward_feature(inputs)
+        output = self.cls_seg(output)
+        return output

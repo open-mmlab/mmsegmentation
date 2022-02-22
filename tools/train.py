@@ -109,9 +109,6 @@ def main():
     if args.cfg_options is not None:
         cfg.merge_from_dict(args.cfg_options)
 
-    # set multi-process settings
-    setup_multi_processes(cfg)
-
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
@@ -162,6 +159,9 @@ def main():
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
     log_file = osp.join(cfg.work_dir, f'{timestamp}.log')
     logger = get_root_logger(log_file=log_file, log_level=cfg.log_level)
+
+    # set multi-process settings
+    setup_multi_processes(cfg)
 
     # init the meta dict to record some important information such as
     # environment info and seed, which will be logged

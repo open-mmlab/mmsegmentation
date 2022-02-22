@@ -347,7 +347,12 @@ class IterativeDecodeHead(BaseDecodeHead):
 
     def forward(self, inputs):
         """Forward function."""
-        sem_seg, feats, seg_kernels = self.kernel_generate_head(inputs)
+        feats = self.kernel_generate_head.forward_feature(inputs)
+        sem_seg = self.kernel_generate_head.cls_seg(feats)
+        seg_kernels = self.kernel_generate_head.conv_seg.weight.clone()
+        seg_kernels = seg_kernels[None].expand(
+            feats.size(0), *seg_kernels.size())
+
         stage_segs = [sem_seg]
         for i in range(self.num_stages):
             sem_seg, seg_kernels = self.kernel_update_head[i](feats,
