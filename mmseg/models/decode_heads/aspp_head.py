@@ -92,7 +92,7 @@ class ASPPHead(BaseDecodeHead):
             act_cfg=self.act_cfg)
 
     def forward_feature(self, inputs):
-        """Forward function"""
+        """Forward function."""
         x = self._transform_inputs(inputs)
         aspp_outs = [
             resize(
