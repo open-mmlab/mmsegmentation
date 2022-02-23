@@ -434,12 +434,16 @@ class Normalize(object):
         std (sequence): Std values of 3 channels.
         to_rgb (bool): Whether to convert the image from BGR to RGB,
             default is true.
+        normalize_in_graph (bool): Whether to normalize the input in the
+            graph (mmseg.models.segmentors.base.forward) or here in the
+            __call__ function (only relevant during onnx export)
     """
 
-    def __init__(self, mean, std, to_rgb=True):
+    def __init__(self, mean, std, to_rgb=True, normalize_in_graph=False):
         self.mean = np.array(mean, dtype=np.float32)
         self.std = np.array(std, dtype=np.float32)
         self.to_rgb = to_rgb
+        self.normalize_in_graph = normalize_in_graph
 
     def __call__(self, results):
         """Call function to normalize images.
@@ -451,17 +455,21 @@ class Normalize(object):
             dict: Normalized results, 'img_norm_cfg' key is added into
                 result dict.
         """
-
-        results['img'] = mmcv.imnormalize(results['img'], self.mean, self.std,
-                                          self.to_rgb)
+        if not self.normalize_in_graph:
+            results['img'] = mmcv.imnormalize(results['img'], self.mean,
+                                              self.std, self.to_rgb)
         results['img_norm_cfg'] = dict(
-            mean=self.mean, std=self.std, to_rgb=self.to_rgb)
+            mean=self.mean,
+            std=self.std,
+            to_rgb=self.to_rgb,
+            normalize_in_graph=self.normalize_in_graph)
         return results
 
     def __repr__(self):
         repr_str = self.__class__.__name__
         repr_str += f'(mean={self.mean}, std={self.std}, to_rgb=' \
-                    f'{self.to_rgb})'
+                    f'{self.to_rgb})' \
+                    f', normalize_in_graph={self.normalize_in_graph}'
         return repr_str
 
 

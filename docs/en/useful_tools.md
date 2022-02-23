@@ -61,6 +61,7 @@ python tools/pytorch2onnx.py \
     --show \
     --verify \
     --dynamic-export \
+    --normalize-in-graph \
     --cfg-options \
       model.test_cfg.mode="whole"
 ```
@@ -76,6 +77,7 @@ Description of arguments:
 - `--show`: Determines whether to print the architecture of the exported model. If not specified, it will be set to `False`.
 - `--verify`: Determines whether to verify the correctness of an exported model. If not specified, it will be set to `False`.
 - `--dynamic-export`: Determines whether to export ONNX model with dynamic input and output shapes. If not specified, it will be set to `False`.
+- `--normalize-in-graph`: Whether to include image normalization in ONNX graph. This would cause the saved ONNX model to do image normalization as the first step, allowing inference with non-normalized inputs. If not specified, it will be set to `False`.
 - `--cfg-options`:Update config options.
 
 :::{note}
@@ -205,7 +207,8 @@ python ${MMSEG_PATH}/tools/onnx2tensorrt.py \
     --max-shape ${MAX_SHAPE} \
     --input-img ${INPUT_IMG} \
     --show \
-    --verify
+    --verify \
+    --skip-normalize
 ```
 
 Description of all arguments
@@ -222,6 +225,7 @@ Description of all arguments
 - `--dataset` : Palette provider, `CityscapesDataset` as default.
 - `--verify` : Verify the outputs of ONNXRuntime and TensorRT.
 - `--verbose` : Whether to verbose logging messages while creating TensorRT engine. Defaults to False.
+- `--skip-normalize` : Whether to skip image normalization in preprocessing. Defaults to False.
 
 :::{note}
 Only tested on whole mode.

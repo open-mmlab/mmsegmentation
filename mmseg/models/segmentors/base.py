@@ -107,6 +107,16 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         if return_loss:
             return self.forward_train(img, img_metas, **kwargs)
         else:
+            if torch.onnx.is_in_onnx_export() or kwargs.pop('do_norm', False):
+                assert len(img_metas) == 1
+                img_norm_cfg = img_metas[0][0].get('img_norm_cfg', None)
+                if img_norm_cfg and img_norm_cfg['normalize_in_graph']:
+                    mean = torch.tensor(img_norm_cfg['mean'])[None, ..., None,
+                                                              None]
+                    std = torch.tensor(img_norm_cfg['std'])[None, ..., None,
+                                                            None]
+                    img = [(i - mean) / std for i in img]
+
             return self.forward_test(img, img_metas, **kwargs)
 
     def train_step(self, data_batch, optimizer, **kwargs):

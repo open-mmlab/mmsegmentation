@@ -26,17 +26,21 @@ def get_GiB(x: int):
 def _prepare_input_img(img_path: str,
                        test_pipeline: Iterable[dict],
                        shape: Optional[Iterable] = None,
-                       rescale_shape: Optional[Iterable] = None) -> dict:
+                       rescale_shape: Optional[Iterable] = None,
+                       normalize_in_graph: Optional[bool] = False) -> dict:
     # build the data pipeline
     if shape is not None:
         test_pipeline[1]['img_scale'] = (shape[1], shape[0])
     test_pipeline[1]['transforms'][0]['keep_ratio'] = False
+    for transform in test_pipeline[1]['transforms']:
+        if transform['type'] == 'Normalize':
+            transform.normalize_in_graph = normalize_in_graph
     test_pipeline = [LoadImage()] + test_pipeline[1:]
     test_pipeline = Compose(test_pipeline)
     # prepare data
     data = dict(img=img_path)
     data = test_pipeline(data)
-    imgs = data['img']
+    imgs = [img.float() for img in data['img']]
     img_metas = [i.data for i in data['img_metas']]
 
     if rescale_shape is not None:
@@ -113,7 +117,8 @@ def onnx2tensorrt(onnx_file: str,
                   show: bool = False,
                   dataset: str = 'CityscapesDataset',
                   workspace_size: int = 1,
-                  verbose: bool = False):
+                  verbose: bool = False,
+                  skip_normalize: bool = False):
     import tensorrt as trt
     min_shape = input_config['min_shape']
     max_shape = input_config['max_shape']
@@ -136,7 +141,8 @@ def onnx2tensorrt(onnx_file: str,
         inputs = _prepare_input_img(
             input_config['input_path'],
             config.data.test.pipeline,
-            shape=min_shape[2:])
+            shape=min_shape[2:],
+            normalize_in_graph=skip_normalize)
 
         imgs = inputs['imgs']
         img_metas = inputs['img_metas']
@@ -233,6 +239,10 @@ def parse_args():
         action='store_true',
         help='Whether to verbose logging messages while creating \
                 TensorRT engine.')
+    parser.add_argument(
+        '--skip-normalize',
+        action='store_true',
+        help='Whether to skip image normalization in preprocessing')
     args = parser.parse_args()
     return args
 
@@ -273,4 +283,5 @@ if __name__ == '__main__':
         show=args.show,
         dataset=args.dataset,
         workspace_size=args.workspace_size,
-        verbose=args.verbose)
+        verbose=args.verbose,
+        skip_normalize=args.skip_normalize)
