@@ -1,5 +1,5 @@
 Collections:
-- Name: erfnet
+- Name: ERFNet
   Metadata:
     Training Data:
     - Cityscapes
@@ -14,7 +14,7 @@ Collections:
     Code: https://github.com/Eromera/erfnet_pytorch
 Models:
 - Name: erfnet_fcn_4x4_512x1024_160k_cityscapes
-  In Collection: erfnet
+  In Collection: ERFNet
   Metadata:
     backbone: ERFNet
     crop size: (512,1024)

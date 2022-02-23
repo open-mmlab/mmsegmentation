@@ -1,5 +1,5 @@
 Collections:
-- Name: fcn
+- Name: FCN
   Metadata:
     Training Data:
     - Cityscapes
@@ -18,7 +18,7 @@ Collections:
     Code: https://github.com/BVLC/caffe/wiki/Model-Zoo#fcn
 Models:
 - Name: fcn_r50-d8_512x1024_40k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -40,7 +40,7 @@ Models:
   Config: configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth
 - Name: fcn_r101-d8_512x1024_40k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -62,7 +62,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_40k_cityscapes/fcn_r101-d8_512x1024_40k_cityscapes_20200604_181852-a883d3a1.pth
 - Name: fcn_r50-d8_769x769_40k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -84,7 +84,7 @@ Models:
   Config: configs/fcn/fcn_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_40k_cityscapes/fcn_r50-d8_769x769_40k_cityscapes_20200606_113104-977b5d02.pth
 - Name: fcn_r101-d8_769x769_40k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -106,7 +106,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_40k_cityscapes/fcn_r101-d8_769x769_40k_cityscapes_20200606_113208-7d4ab69c.pth
 - Name: fcn_r18-d8_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-18-D8
     crop size: (512,1024)
@@ -128,7 +128,7 @@ Models:
   Config: configs/fcn/fcn_r18-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth
 - Name: fcn_r50-d8_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -142,7 +142,7 @@ Models:
   Config: configs/fcn/fcn_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019-03aa804d.pth
 - Name: fcn_r101-d8_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -156,7 +156,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038-3fb937eb.pth
 - Name: fcn_r101-d8_fp16_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -177,7 +177,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes/fcn_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230921-fb13e883.pth
 - Name: fcn_r18-d8_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-18-D8
     crop size: (769,769)
@@ -199,7 +199,7 @@ Models:
   Config: configs/fcn/fcn_r18-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes_20201225_021451-9739d1b8.pth
 - Name: fcn_r50-d8_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -213,7 +213,7 @@ Models:
   Config: configs/fcn/fcn_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749-f5caeabc.pth
 - Name: fcn_r101-d8_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -227,7 +227,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354-45cbac68.pth
 - Name: fcn_r18b-d8_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-18b-D8
     crop size: (512,1024)
@@ -249,7 +249,7 @@ Models:
   Config: configs/fcn/fcn_r18b-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_512x1024_80k_cityscapes/fcn_r18b-d8_512x1024_80k_cityscapes_20201225_230143-92c0f445.pth
 - Name: fcn_r50b-d8_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50b-D8
     crop size: (512,1024)
@@ -271,7 +271,7 @@ Models:
   Config: configs/fcn/fcn_r50b-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_512x1024_80k_cityscapes/fcn_r50b-d8_512x1024_80k_cityscapes_20201225_094221-82957416.pth
 - Name: fcn_r101b-d8_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101b-D8
     crop size: (512,1024)
@@ -293,7 +293,7 @@ Models:
   Config: configs/fcn/fcn_r101b-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_512x1024_80k_cityscapes/fcn_r101b-d8_512x1024_80k_cityscapes_20201226_160213-4543858f.pth
 - Name: fcn_r18b-d8_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-18b-D8
     crop size: (769,769)
@@ -315,7 +315,7 @@ Models:
   Config: configs/fcn/fcn_r18b-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_769x769_80k_cityscapes/fcn_r18b-d8_769x769_80k_cityscapes_20201226_004430-32d504e5.pth
 - Name: fcn_r50b-d8_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50b-D8
     crop size: (769,769)
@@ -337,7 +337,7 @@ Models:
   Config: configs/fcn/fcn_r50b-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_769x769_80k_cityscapes/fcn_r50b-d8_769x769_80k_cityscapes_20201225_094223-94552d38.pth
 - Name: fcn_r101b-d8_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101b-D8
     crop size: (769,769)
@@ -359,7 +359,7 @@ Models:
   Config: configs/fcn/fcn_r101b-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_769x769_80k_cityscapes/fcn_r101b-d8_769x769_80k_cityscapes_20201226_170012-82be37e2.pth
 - Name: fcn_d6_r50-d16_512x1024_40k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D16
     crop size: (512,1024)
@@ -381,7 +381,7 @@ Models:
   Config: configs/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes_20210305_130133-98d5d1bc.pth
 - Name: fcn_d6_r50-d16_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D16
     crop size: (512,1024)
@@ -402,7 +402,7 @@ Models:
   Config: configs/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_80k_cityscapes_20210306_115604-133c292f.pth
 - Name: fcn_d6_r50-d16_769x769_40k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D16
     crop size: (769,769)
@@ -424,7 +424,7 @@ Models:
   Config: configs/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes_20210305_185744-1aab18ed.pth
 - Name: fcn_d6_r50-d16_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D16
     crop size: (769,769)
@@ -445,7 +445,7 @@ Models:
   Config: configs/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes_20210305_200413-109d88eb.pth
 - Name: fcn_d6_r101-d16_512x1024_40k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D16
     crop size: (512,1024)
@@ -467,7 +467,7 @@ Models:
   Config: configs/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes_20210305_130337-9cf2b450.pth
 - Name: fcn_d6_r101-d16_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D16
     crop size: (512,1024)
@@ -488,7 +488,7 @@ Models:
   Config: configs/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes_20210308_102747-cb336445.pth
 - Name: fcn_d6_r101-d16_769x769_40k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D16
     crop size: (769,769)
@@ -510,7 +510,7 @@ Models:
   Config: configs/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes_20210308_102453-60b114e9.pth
 - Name: fcn_d6_r101-d16_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D16
     crop size: (769,769)
@@ -531,7 +531,7 @@ Models:
   Config: configs/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes_20210306_120016-e33adc4f.pth
 - Name: fcn_d6_r50b-d16_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50b-D16
     crop size: (512,1024)
@@ -553,7 +553,7 @@ Models:
   Config: configs/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes/fcn_d6_r50b-d16_512x1024_80k_cityscapes_20210311_125550-6a0b62e9.pth
 - Name: fcn_d6_r50b-d16_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50b-D16
     crop size: (769,769)
@@ -575,7 +575,7 @@ Models:
   Config: configs/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes/fcn_d6_r50b-d16_769x769_80k_cityscapes_20210311_131012-d665f231.pth
 - Name: fcn_d6_r101b-d16_512x1024_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101b-D16
     crop size: (512,1024)
@@ -597,7 +597,7 @@ Models:
   Config: configs/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes/fcn_d6_r101b-d16_512x1024_80k_cityscapes_20210311_144305-3f2eb5b4.pth
 - Name: fcn_d6_r101b-d16_769x769_80k_cityscapes
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101b-D16
     crop size: (769,769)
@@ -619,7 +619,7 @@ Models:
   Config: configs/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes/fcn_d6_r101b-d16_769x769_80k_cityscapes_20210311_154527-c4d8bfbc.pth
 - Name: fcn_r50-d8_512x512_80k_ade20k
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -641,7 +641,7 @@ Models:
   Config: configs/fcn/fcn_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
 - Name: fcn_r101-d8_512x512_80k_ade20k
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -663,7 +663,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_80k_ade20k/fcn_r101-d8_512x512_80k_ade20k_20200615_014143-bc1809f7.pth
 - Name: fcn_r50-d8_512x512_160k_ade20k
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -677,7 +677,7 @@ Models:
   Config: configs/fcn/fcn_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_160k_ade20k/fcn_r50-d8_512x512_160k_ade20k_20200615_100713-4edbc3b4.pth
 - Name: fcn_r101-d8_512x512_160k_ade20k
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -691,7 +691,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816-fd192bd5.pth
 - Name: fcn_r50-d8_512x512_20k_voc12aug
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -713,7 +713,7 @@ Models:
   Config: configs/fcn/fcn_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715-52dc5306.pth
 - Name: fcn_r101-d8_512x512_20k_voc12aug
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -735,7 +735,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_20k_voc12aug/fcn_r101-d8_512x512_20k_voc12aug_20200617_010842-0bb4e798.pth
 - Name: fcn_r50-d8_512x512_40k_voc12aug
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -749,7 +749,7 @@ Models:
   Config: configs/fcn/fcn_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_40k_voc12aug/fcn_r50-d8_512x512_40k_voc12aug_20200613_161222-5e2dbf40.pth
 - Name: fcn_r101-d8_512x512_40k_voc12aug
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -763,7 +763,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240-4c8bcefd.pth
 - Name: fcn_r101-d8_480x480_40k_pascal_context
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
@@ -784,7 +784,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context_20210421_154757-b5e97937.pth
 - Name: fcn_r101-d8_480x480_80k_pascal_context
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
@@ -798,7 +798,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_480x480_80k_pascal_context.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context_20210421_163310-4711813f.pth
 - Name: fcn_r101-d8_480x480_40k_pascal_context_59
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
@@ -812,7 +812,7 @@ Models:
   Config: configs/fcn/fcn_r101-d8_480x480_40k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context_59/fcn_r101-d8_480x480_40k_pascal_context_59_20210415_230724-8cf83682.pth
 - Name: fcn_r101-d8_480x480_80k_pascal_context_59
-  In Collection: fcn
+  In Collection: FCN
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)

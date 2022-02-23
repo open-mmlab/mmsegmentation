@@ -1,5 +1,5 @@
 Collections:
-- Name: dpt
+- Name: DPT
   Metadata:
     Training Data:
     - ADE20K
@@ -14,7 +14,7 @@ Collections:
     Code: https://github.com/isl-org/DPT
 Models:
 - Name: dpt_vit-b16_512x512_160k_ade20k
-  In Collection: dpt
+  In Collection: DPT
   Metadata:
     backbone: ViT-B
     crop size: (512,512)

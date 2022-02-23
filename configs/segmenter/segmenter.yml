@@ -1,5 +1,5 @@
 Collections:
-- Name: segmenter
+- Name: Segmenter
   Metadata:
     Training Data:
     - ADE20K
@@ -14,7 +14,7 @@ Collections:
     Code: https://github.com/rstrudel/segmenter
 Models:
 - Name: segmenter_vit-t_mask_8x1_512x512_160k_ade20k
-  In Collection: segmenter
+  In Collection: Segmenter
   Metadata:
     backbone: ViT-T_16
     crop size: (512,512)
@@ -36,7 +36,7 @@ Models:
   Config: configs/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k/segmenter_vit-t_mask_8x1_512x512_160k_ade20k_20220105_151706-ffcf7509.pth
 - Name: segmenter_vit-s_linear_8x1_512x512_160k_ade20k
-  In Collection: segmenter
+  In Collection: Segmenter
   Metadata:
     backbone: ViT-S_16
     crop size: (512,512)
@@ -58,7 +58,7 @@ Models:
   Config: configs/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713-39658c46.pth
 - Name: segmenter_vit-s_mask_8x1_512x512_160k_ade20k
-  In Collection: segmenter
+  In Collection: Segmenter
   Metadata:
     backbone: ViT-S_16
     crop size: (512,512)
@@ -80,7 +80,7 @@ Models:
   Config: configs/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k/segmenter_vit-s_mask_8x1_512x512_160k_ade20k_20220105_151706-511bb103.pth
 - Name: segmenter_vit-b_mask_8x1_512x512_160k_ade20k
-  In Collection: segmenter
+  In Collection: Segmenter
   Metadata:
     backbone: ViT-B_16
     crop size: (512,512)
@@ -102,7 +102,7 @@ Models:
   Config: configs/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k/segmenter_vit-b_mask_8x1_512x512_160k_ade20k_20220105_151706-bc533b08.pth
 - Name: segmenter_vit-l_mask_8x1_512x512_160k_ade20k
-  In Collection: segmenter
+  In Collection: Segmenter
   Metadata:
     backbone: ViT-L_16
     crop size: (640,640)

@@ -1,20 +1,6 @@
-Collections:
-- Name: mobilenet_v3
-  Metadata:
-    Training Data:
-    - Cityscapes
-  Paper:
-    URL: https://arxiv.org/abs/1905.02244
-    Title: Searching for MobileNetV3
-  README: configs/mobilenet_v3/README.md
-  Code:
-    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15
-    Version: v0.17.0
-  Converted From:
-    Code: https://github.com/tensorflow/models/tree/master/research/deeplab
 Models:
 - Name: lraspp_m-v3-d8_512x1024_320k_cityscapes
-  In Collection: mobilenet_v3
+  In Collection: LRASPP
   Metadata:
     backbone: M-V3-D8
     crop size: (512,1024)
@@ -36,7 +22,7 @@ Models:
   Config: configs/mobilenet_v3/lraspp_m-v3-d8_512x1024_320k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3-d8_512x1024_320k_cityscapes/lraspp_m-v3-d8_512x1024_320k_cityscapes_20201224_220337-cfe8fb07.pth
 - Name: lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes
-  In Collection: mobilenet_v3
+  In Collection: LRASPP
   Metadata:
     backbone: M-V3-D8 (scratch)
     crop size: (512,1024)
@@ -58,7 +44,7 @@ Models:
   Config: configs/mobilenet_v3/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes_20201224_220337-9f29cd72.pth
 - Name: lraspp_m-v3s-d8_512x1024_320k_cityscapes
-  In Collection: mobilenet_v3
+  In Collection: LRASPP
   Metadata:
     backbone: M-V3s-D8
     crop size: (512,1024)
@@ -80,7 +66,7 @@ Models:
   Config: configs/mobilenet_v3/lraspp_m-v3s-d8_512x1024_320k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3s-d8_512x1024_320k_cityscapes/lraspp_m-v3s-d8_512x1024_320k_cityscapes_20201224_223935-61565b34.pth
 - Name: lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes
-  In Collection: mobilenet_v3
+  In Collection: LRASPP
   Metadata:
     backbone: M-V3s-D8 (scratch)
     crop size: (512,1024)

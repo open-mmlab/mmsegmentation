@@ -1,5 +1,5 @@
 Collections:
-- Name: gcnet
+- Name: GCNet
   Metadata:
     Training Data:
     - Cityscapes
@@ -16,7 +16,7 @@ Collections:
     Code: https://github.com/xvjiarui/GCNet
 Models:
 - Name: gcnet_r50-d8_512x1024_40k_cityscapes
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -38,7 +38,7 @@ Models:
   Config: configs/gcnet/gcnet_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x1024_40k_cityscapes/gcnet_r50-d8_512x1024_40k_cityscapes_20200618_074436-4b0fd17b.pth
 - Name: gcnet_r101-d8_512x1024_40k_cityscapes
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -60,7 +60,7 @@ Models:
   Config: configs/gcnet/gcnet_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x1024_40k_cityscapes/gcnet_r101-d8_512x1024_40k_cityscapes_20200618_074436-5e62567f.pth
 - Name: gcnet_r50-d8_769x769_40k_cityscapes
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -82,7 +82,7 @@ Models:
   Config: configs/gcnet/gcnet_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_769x769_40k_cityscapes/gcnet_r50-d8_769x769_40k_cityscapes_20200618_182814-a26f4471.pth
 - Name: gcnet_r101-d8_769x769_40k_cityscapes
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -104,7 +104,7 @@ Models:
   Config: configs/gcnet/gcnet_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_769x769_40k_cityscapes/gcnet_r101-d8_769x769_40k_cityscapes_20200619_092550-ca4f0a84.pth
 - Name: gcnet_r50-d8_512x1024_80k_cityscapes
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -118,7 +118,7 @@ Models:
   Config: configs/gcnet/gcnet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x1024_80k_cityscapes/gcnet_r50-d8_512x1024_80k_cityscapes_20200618_074450-ef8f069b.pth
 - Name: gcnet_r101-d8_512x1024_80k_cityscapes
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -132,7 +132,7 @@ Models:
   Config: configs/gcnet/gcnet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x1024_80k_cityscapes/gcnet_r101-d8_512x1024_80k_cityscapes_20200618_074450-778ebf69.pth
 - Name: gcnet_r50-d8_769x769_80k_cityscapes
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -146,7 +146,7 @@ Models:
   Config: configs/gcnet/gcnet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_769x769_80k_cityscapes/gcnet_r50-d8_769x769_80k_cityscapes_20200619_092516-4839565b.pth
 - Name: gcnet_r101-d8_769x769_80k_cityscapes
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -160,7 +160,7 @@ Models:
   Config: configs/gcnet/gcnet_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_769x769_80k_cityscapes/gcnet_r101-d8_769x769_80k_cityscapes_20200619_092628-8e043423.pth
 - Name: gcnet_r50-d8_512x512_80k_ade20k
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -182,7 +182,7 @@ Models:
   Config: configs/gcnet/gcnet_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_80k_ade20k/gcnet_r50-d8_512x512_80k_ade20k_20200614_185146-91a6da41.pth
 - Name: gcnet_r101-d8_512x512_80k_ade20k
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -204,7 +204,7 @@ Models:
   Config: configs/gcnet/gcnet_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_80k_ade20k/gcnet_r101-d8_512x512_80k_ade20k_20200615_020811-c3fcb6dd.pth
 - Name: gcnet_r50-d8_512x512_160k_ade20k
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -218,7 +218,7 @@ Models:
   Config: configs/gcnet/gcnet_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_160k_ade20k/gcnet_r50-d8_512x512_160k_ade20k_20200615_224122-d95f3e1f.pth
 - Name: gcnet_r101-d8_512x512_160k_ade20k
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -232,7 +232,7 @@ Models:
   Config: configs/gcnet/gcnet_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_160k_ade20k/gcnet_r101-d8_512x512_160k_ade20k_20200615_225406-615528d7.pth
 - Name: gcnet_r50-d8_512x512_20k_voc12aug
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -254,7 +254,7 @@ Models:
   Config: configs/gcnet/gcnet_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_20k_voc12aug/gcnet_r50-d8_512x512_20k_voc12aug_20200617_165701-3cbfdab1.pth
 - Name: gcnet_r101-d8_512x512_20k_voc12aug
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -276,7 +276,7 @@ Models:
   Config: configs/gcnet/gcnet_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_20k_voc12aug/gcnet_r101-d8_512x512_20k_voc12aug_20200617_165713-6c720aa9.pth
 - Name: gcnet_r50-d8_512x512_40k_voc12aug
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -290,7 +290,7 @@ Models:
   Config: configs/gcnet/gcnet_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_40k_voc12aug/gcnet_r50-d8_512x512_40k_voc12aug_20200613_195105-9797336d.pth
 - Name: gcnet_r101-d8_512x512_40k_voc12aug
-  In Collection: gcnet
+  In Collection: GCNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)

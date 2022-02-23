@@ -1,5 +1,5 @@
 Collections:
-- Name: stdc
+- Name: STDC
   Metadata:
     Training Data:
     - Cityscapes
@@ -14,7 +14,7 @@ Collections:
     Code: https://github.com/MichaelFan01/STDC-Seg
 Models:
 - Name: stdc1_512x1024_80k_cityscapes
-  In Collection: stdc
+  In Collection: STDC
   Metadata:
     backbone: STDC1
     crop size: (512,1024)
@@ -36,7 +36,7 @@ Models:
   Config: configs/stdc/stdc1_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_512x1024_80k_cityscapes/stdc1_512x1024_80k_cityscapes_20211125_211245-2c8ba4c5.pth
 - Name: stdc1_in1k-pre_512x1024_80k_cityscapes
-  In Collection: stdc
+  In Collection: STDC
   Metadata:
     backbone: STDC1
     crop size: (512,1024)
@@ -50,7 +50,7 @@ Models:
   Config: configs/stdc/stdc1_in1k-pre_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc1_in1k-pre_512x1024_80k_cityscapes/stdc1_in1k-pre_512x1024_80k_cityscapes_20211125_213942-880bb7d0.pth
 - Name: stdc2_512x1024_80k_cityscapes
-  In Collection: stdc
+  In Collection: STDC
   Metadata:
     backbone: STDC2
     crop size: (512,1024)
@@ -72,7 +72,7 @@ Models:
   Config: configs/stdc/stdc2_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/stdc/stdc2_512x1024_80k_cityscapes/stdc2_512x1024_80k_cityscapes_20211125_222450-82333ae0.pth
 - Name: stdc2_in1k-pre_512x1024_80k_cityscapes
-  In Collection: stdc
+  In Collection: STDC
   Metadata:
     backbone: STDC2
     crop size: (512,1024)

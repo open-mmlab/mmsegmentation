@@ -1,5 +1,5 @@
 Collections:
-- Name: isanet
+- Name: ISANet
   Metadata:
     Training Data:
     - Cityscapes
@@ -16,7 +16,7 @@ Collections:
     Code: https://github.com/openseg-group/openseg.pytorch
 Models:
 - Name: isanet_r50-d8_512x1024_40k_cityscapes
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -38,7 +38,7 @@ Models:
   Config: configs/isanet/isanet_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x1024_40k_cityscapes/isanet_r50-d8_512x1024_40k_cityscapes_20210901_054739-981bd763.pth
 - Name: isanet_r50-d8_512x1024_80k_cityscapes
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -60,7 +60,7 @@ Models:
   Config: configs/isanet/isanet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x1024_80k_cityscapes/isanet_r50-d8_512x1024_80k_cityscapes_20210901_074202-89384497.pth
 - Name: isanet_r50-d8_769x769_40k_cityscapes
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -82,7 +82,7 @@ Models:
   Config: configs/isanet/isanet_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_769x769_40k_cityscapes/isanet_r50-d8_769x769_40k_cityscapes_20210903_050200-4ae7e65b.pth
 - Name: isanet_r50-d8_769x769_80k_cityscapes
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -104,7 +104,7 @@ Models:
   Config: configs/isanet/isanet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_769x769_80k_cityscapes/isanet_r50-d8_769x769_80k_cityscapes_20210903_101126-99b54519.pth
 - Name: isanet_r101-d8_512x1024_40k_cityscapes
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -126,7 +126,7 @@ Models:
   Config: configs/isanet/isanet_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x1024_40k_cityscapes/isanet_r101-d8_512x1024_40k_cityscapes_20210901_145553-293e6bd6.pth
 - Name: isanet_r101-d8_512x1024_80k_cityscapes
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -148,7 +148,7 @@ Models:
   Config: configs/isanet/isanet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x1024_80k_cityscapes/isanet_r101-d8_512x1024_80k_cityscapes_20210901_145243-5b99c9b2.pth
 - Name: isanet_r101-d8_769x769_40k_cityscapes
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -170,7 +170,7 @@ Models:
   Config: configs/isanet/isanet_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_769x769_40k_cityscapes/isanet_r101-d8_769x769_40k_cityscapes_20210903_111320-509e7224.pth
 - Name: isanet_r101-d8_769x769_80k_cityscapes
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -192,7 +192,7 @@ Models:
   Config: configs/isanet/isanet_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_769x769_80k_cityscapes/isanet_r101-d8_769x769_80k_cityscapes_20210903_111319-24f71dfa.pth
 - Name: isanet_r50-d8_512x512_80k_ade20k
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -214,7 +214,7 @@ Models:
   Config: configs/isanet/isanet_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x512_80k_ade20k/isanet_r50-d8_512x512_80k_ade20k_20210903_124557-6ed83a0c.pth
 - Name: isanet_r50-d8_512x512_160k_ade20k
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -236,7 +236,7 @@ Models:
   Config: configs/isanet/isanet_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x512_160k_ade20k/isanet_r50-d8_512x512_160k_ade20k_20210903_104850-f752d0a3.pth
 - Name: isanet_r101-d8_512x512_80k_ade20k
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -258,7 +258,7 @@ Models:
   Config: configs/isanet/isanet_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x512_80k_ade20k/isanet_r101-d8_512x512_80k_ade20k_20210903_162056-68b235c2.pth
 - Name: isanet_r101-d8_512x512_160k_ade20k
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -280,7 +280,7 @@ Models:
   Config: configs/isanet/isanet_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x512_160k_ade20k/isanet_r101-d8_512x512_160k_ade20k_20210903_211431-a7879dcd.pth
 - Name: isanet_r50-d8_512x512_20k_voc12aug
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -302,7 +302,7 @@ Models:
   Config: configs/isanet/isanet_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x512_20k_voc12aug/isanet_r50-d8_512x512_20k_voc12aug_20210901_164838-79d59b80.pth
 - Name: isanet_r50-d8_512x512_40k_voc12aug
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -324,7 +324,7 @@ Models:
   Config: configs/isanet/isanet_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r50-d8_512x512_40k_voc12aug/isanet_r50-d8_512x512_40k_voc12aug_20210901_151349-7d08a54e.pth
 - Name: isanet_r101-d8_512x512_20k_voc12aug
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -346,7 +346,7 @@ Models:
   Config: configs/isanet/isanet_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/isanet/isanet_r101-d8_512x512_20k_voc12aug/isanet_r101-d8_512x512_20k_voc12aug_20210901_115805-3ccbf355.pth
 - Name: isanet_r101-d8_512x512_40k_voc12aug
-  In Collection: isanet
+  In Collection: ISANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
