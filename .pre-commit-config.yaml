@@ -49,3 +49,9 @@ repos:
         language: python
         files: ^configs/.*\.md$
         require_serial: true
+  - repo: https://github.com/open-mmlab/pre-commit-hooks
+    rev: v0.2.0  # Use the rev to fix revision
+    hooks:
+      - id: check-algo-readme
+      - id: check-copyright
+        args: ["mmseg", "tools", "tests", "demo"]  # the dir_to_check with expected directory to check
