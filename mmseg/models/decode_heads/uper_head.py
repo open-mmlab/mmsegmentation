@@ -86,8 +86,15 @@ class UPerHead(BaseDecodeHead):
 
     def _forward_feature(self, inputs):
         """Forward function for feature maps before classifying each pixel with
-        fc, which could be used for updation of semantic kernel, i.e.,
-        `self.conv_seg.weight`."""
+        `self.cls_seg` fc.
+
+        Args:
+            inputs (list[Tensor]): List of multi-level img features.
+
+        Returns:
+            feats (Tensor): A tensor of shape (batch_size, self.channels,
+                H, W) which is feature map for last layer of decoder head.
+        """
         inputs = self._transform_inputs(inputs)
 
         # build laterals
