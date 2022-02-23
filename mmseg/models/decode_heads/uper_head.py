@@ -84,9 +84,10 @@ class UPerHead(BaseDecodeHead):
 
         return output
 
-    def forward_feature(self, inputs):
-        """Forward function."""
-
+    def _forward_feature(self, inputs):
+        """Forward function for feature maps before classifying each pixel with
+        fc, which could be used for updation of semantic kernel, i.e.,
+        `self.conv_seg.weight`."""
         inputs = self._transform_inputs(inputs)
 
         # build laterals
@@ -127,6 +128,6 @@ class UPerHead(BaseDecodeHead):
 
     def forward(self, inputs):
         """Forward function."""
-        output = self.forward_feature(inputs)
+        output = self._forward_feature(inputs)
         output = self.cls_seg(output)
         return output

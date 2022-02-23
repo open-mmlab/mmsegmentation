@@ -72,8 +72,10 @@ class FCNHead(BaseDecodeHead):
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg)
 
-    def forward_feature(self, inputs):
-        """Forward function."""
+    def _forward_feature(self, inputs):
+        """Forward function for feature maps before classifying each pixel with
+        fc, which could be used for updation of semantic kernel, i.e.,
+        `self.conv_seg.weight`."""
         x = self._transform_inputs(inputs)
         feats = self.convs(x)
         if self.concat_input:
@@ -82,6 +84,6 @@ class FCNHead(BaseDecodeHead):
 
     def forward(self, inputs):
         """Forward function."""
-        output = self.forward_feature(inputs)
+        output = self._forward_feature(inputs)
         output = self.cls_seg(output)
         return output
