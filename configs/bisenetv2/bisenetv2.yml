@@ -1,5 +1,5 @@
 Collections:
-- Name: bisenetv2
+- Name: BiSeNetV2
   Metadata:
     Training Data:
     - Cityscapes
@@ -13,7 +13,7 @@ Collections:
     Version: v0.18.0
 Models:
 - Name: bisenetv2_fcn_4x4_1024x1024_160k_cityscapes
-  In Collection: bisenetv2
+  In Collection: BiSeNetV2
   Metadata:
     backbone: BiSeNetV2
     crop size: (1024,1024)
@@ -35,7 +35,7 @@ Models:
   Config: configs/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes_20210902_015551-bcf10f09.pth
 - Name: bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes
-  In Collection: bisenetv2
+  In Collection: BiSeNetV2
   Metadata:
     backbone: BiSeNetV2
     crop size: (1024,1024)
@@ -50,7 +50,7 @@ Models:
   Config: configs/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947-5f8103b4.pth
 - Name: bisenetv2_fcn_4x8_1024x1024_160k_cityscapes
-  In Collection: bisenetv2
+  In Collection: BiSeNetV2
   Metadata:
     backbone: BiSeNetV2
     crop size: (1024,1024)
@@ -65,7 +65,7 @@ Models:
   Config: configs/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes_20210903_000032-e1a2eed6.pth
 - Name: bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes
-  In Collection: bisenetv2
+  In Collection: BiSeNetV2
   Metadata:
     backbone: BiSeNetV2
     crop size: (1024,1024)

@@ -1,5 +1,5 @@
 Collections:
-- Name: psanet
+- Name: PSANet
   Metadata:
     Training Data:
     - Cityscapes
@@ -16,7 +16,7 @@ Collections:
     Code: https://github.com/hszhao/PSANet
 Models:
 - Name: psanet_r50-d8_512x1024_40k_cityscapes
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -38,7 +38,7 @@ Models:
   Config: configs/psanet/psanet_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x1024_40k_cityscapes/psanet_r50-d8_512x1024_40k_cityscapes_20200606_103117-99fac37c.pth
 - Name: psanet_r101-d8_512x1024_40k_cityscapes
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -60,7 +60,7 @@ Models:
   Config: configs/psanet/psanet_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_512x1024_40k_cityscapes/psanet_r101-d8_512x1024_40k_cityscapes_20200606_001418-27b9cfa7.pth
 - Name: psanet_r50-d8_769x769_40k_cityscapes
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -82,7 +82,7 @@ Models:
   Config: configs/psanet/psanet_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_769x769_40k_cityscapes/psanet_r50-d8_769x769_40k_cityscapes_20200530_033717-d5365506.pth
 - Name: psanet_r101-d8_769x769_40k_cityscapes
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -104,7 +104,7 @@ Models:
   Config: configs/psanet/psanet_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_769x769_40k_cityscapes/psanet_r101-d8_769x769_40k_cityscapes_20200530_035107-997da1e6.pth
 - Name: psanet_r50-d8_512x1024_80k_cityscapes
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -118,7 +118,7 @@ Models:
   Config: configs/psanet/psanet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x1024_80k_cityscapes/psanet_r50-d8_512x1024_80k_cityscapes_20200606_161842-ab60a24f.pth
 - Name: psanet_r101-d8_512x1024_80k_cityscapes
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -132,7 +132,7 @@ Models:
   Config: configs/psanet/psanet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_512x1024_80k_cityscapes/psanet_r101-d8_512x1024_80k_cityscapes_20200606_161823-0f73a169.pth
 - Name: psanet_r50-d8_769x769_80k_cityscapes
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -146,7 +146,7 @@ Models:
   Config: configs/psanet/psanet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_769x769_80k_cityscapes/psanet_r50-d8_769x769_80k_cityscapes_20200606_225134-fe42f49e.pth
 - Name: psanet_r101-d8_769x769_80k_cityscapes
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -160,7 +160,7 @@ Models:
   Config: configs/psanet/psanet_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_769x769_80k_cityscapes/psanet_r101-d8_769x769_80k_cityscapes_20200606_214550-7665827b.pth
 - Name: psanet_r50-d8_512x512_80k_ade20k
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -182,7 +182,7 @@ Models:
   Config: configs/psanet/psanet_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x512_80k_ade20k/psanet_r50-d8_512x512_80k_ade20k_20200614_144141-835e4b97.pth
 - Name: psanet_r101-d8_512x512_80k_ade20k
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -204,7 +204,7 @@ Models:
   Config: configs/psanet/psanet_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_512x512_80k_ade20k/psanet_r101-d8_512x512_80k_ade20k_20200614_185117-1fab60d4.pth
 - Name: psanet_r50-d8_512x512_160k_ade20k
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -218,7 +218,7 @@ Models:
   Config: configs/psanet/psanet_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x512_160k_ade20k/psanet_r50-d8_512x512_160k_ade20k_20200615_161258-148077dd.pth
 - Name: psanet_r101-d8_512x512_160k_ade20k
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -232,7 +232,7 @@ Models:
   Config: configs/psanet/psanet_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_512x512_160k_ade20k/psanet_r101-d8_512x512_160k_ade20k_20200615_161537-dbfa564c.pth
 - Name: psanet_r50-d8_512x512_20k_voc12aug
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -254,7 +254,7 @@ Models:
   Config: configs/psanet/psanet_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x512_20k_voc12aug/psanet_r50-d8_512x512_20k_voc12aug_20200617_102413-2f1bbaa1.pth
 - Name: psanet_r101-d8_512x512_20k_voc12aug
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -276,7 +276,7 @@ Models:
   Config: configs/psanet/psanet_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_512x512_20k_voc12aug/psanet_r101-d8_512x512_20k_voc12aug_20200617_110624-946fef11.pth
 - Name: psanet_r50-d8_512x512_40k_voc12aug
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -290,7 +290,7 @@ Models:
   Config: configs/psanet/psanet_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x512_40k_voc12aug/psanet_r50-d8_512x512_40k_voc12aug_20200613_161946-f596afb5.pth
 - Name: psanet_r101-d8_512x512_40k_voc12aug
-  In Collection: psanet
+  In Collection: PSANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)

@@ -1,5 +1,5 @@
 Collections:
-- Name: dnlnet
+- Name: DNLNet
   Metadata:
     Training Data:
     - Cityscapes
@@ -15,7 +15,7 @@ Collections:
     Code: https://github.com/yinmh17/DNL-Semantic-Segmentation
 Models:
 - Name: dnl_r50-d8_512x1024_40k_cityscapes
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -36,7 +36,7 @@ Models:
   Config: configs/dnlnet/dnl_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_40k_cityscapes/dnl_r50-d8_512x1024_40k_cityscapes_20200904_233629-53d4ea93.pth
 - Name: dnl_r101-d8_512x1024_40k_cityscapes
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -57,7 +57,7 @@ Models:
   Config: configs/dnlnet/dnl_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_40k_cityscapes/dnl_r101-d8_512x1024_40k_cityscapes_20200904_233629-9928ffef.pth
 - Name: dnl_r50-d8_769x769_40k_cityscapes
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -79,7 +79,7 @@ Models:
   Config: configs/dnlnet/dnl_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_40k_cityscapes/dnl_r50-d8_769x769_40k_cityscapes_20200820_232206-0f283785.pth
 - Name: dnl_r101-d8_769x769_40k_cityscapes
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -101,7 +101,7 @@ Models:
   Config: configs/dnlnet/dnl_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_40k_cityscapes/dnl_r101-d8_769x769_40k_cityscapes_20200820_171256-76c596df.pth
 - Name: dnl_r50-d8_512x1024_80k_cityscapes
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -114,7 +114,7 @@ Models:
   Config: configs/dnlnet/dnl_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_80k_cityscapes/dnl_r50-d8_512x1024_80k_cityscapes_20200904_233629-58b2f778.pth
 - Name: dnl_r101-d8_512x1024_80k_cityscapes
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -127,7 +127,7 @@ Models:
   Config: configs/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes/dnl_r101-d8_512x1024_80k_cityscapes_20200904_233629-758e2dd4.pth
 - Name: dnl_r50-d8_769x769_80k_cityscapes
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -141,7 +141,7 @@ Models:
   Config: configs/dnlnet/dnl_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_80k_cityscapes/dnl_r50-d8_769x769_80k_cityscapes_20200820_011925-366bc4c7.pth
 - Name: dnl_r101-d8_769x769_80k_cityscapes
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -155,7 +155,7 @@ Models:
   Config: configs/dnlnet/dnl_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes_20200821_051111-95ff84ab.pth
 - Name: dnl_r50-d8_512x512_80k_ade20k
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -177,7 +177,7 @@ Models:
   Config: configs/dnlnet/dnl_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_80k_ade20k/dnl_r50-d8_512x512_80k_ade20k_20200826_183354-1cf6e0c1.pth
 - Name: dnl_r101-d8_512x512_80k_ade20k
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -199,7 +199,7 @@ Models:
   Config: configs/dnlnet/dnl_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_80k_ade20k/dnl_r101-d8_512x512_80k_ade20k_20200826_183354-d820d6ea.pth
 - Name: dnl_r50-d8_512x512_160k_ade20k
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -213,7 +213,7 @@ Models:
   Config: configs/dnlnet/dnl_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_160k_ade20k/dnl_r50-d8_512x512_160k_ade20k_20200826_183350-37837798.pth
 - Name: dnl_r101-d8_512x512_160k_ade20k
-  In Collection: dnlnet
+  In Collection: DNLNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)

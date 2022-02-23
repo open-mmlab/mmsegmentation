@@ -1,5 +1,5 @@
 Collections:
-- Name: ann
+- Name: ANN
   Metadata:
     Training Data:
     - Cityscapes
@@ -16,7 +16,7 @@ Collections:
     Code: https://github.com/MendelXu/ANN
 Models:
 - Name: ann_r50-d8_512x1024_40k_cityscapes
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -38,7 +38,7 @@ Models:
   Config: configs/ann/ann_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth
 - Name: ann_r101-d8_512x1024_40k_cityscapes
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -60,7 +60,7 @@ Models:
   Config: configs/ann/ann_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243-adf6eece.pth
 - Name: ann_r50-d8_769x769_40k_cityscapes
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -82,7 +82,7 @@ Models:
   Config: configs/ann/ann_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712-2b46b04d.pth
 - Name: ann_r101-d8_769x769_40k_cityscapes
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -104,7 +104,7 @@ Models:
   Config: configs/ann/ann_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720-059bff28.pth
 - Name: ann_r50-d8_512x1024_80k_cityscapes
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -118,7 +118,7 @@ Models:
   Config: configs/ann/ann_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911-5a9ad545.pth
 - Name: ann_r101-d8_512x1024_80k_cityscapes
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -132,7 +132,7 @@ Models:
   Config: configs/ann/ann_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728-aceccc6e.pth
 - Name: ann_r50-d8_769x769_80k_cityscapes
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -146,7 +146,7 @@ Models:
   Config: configs/ann/ann_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426-cc7ff323.pth
 - Name: ann_r101-d8_769x769_80k_cityscapes
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -160,7 +160,7 @@ Models:
   Config: configs/ann/ann_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713-a9d4be8d.pth
 - Name: ann_r50-d8_512x512_80k_ade20k
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -182,7 +182,7 @@ Models:
   Config: configs/ann/ann_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818-26f75e11.pth
 - Name: ann_r101-d8_512x512_80k_ade20k
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -204,7 +204,7 @@ Models:
   Config: configs/ann/ann_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818-c0153543.pth
 - Name: ann_r50-d8_512x512_160k_ade20k
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -218,7 +218,7 @@ Models:
   Config: configs/ann/ann_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733-892247bc.pth
 - Name: ann_r101-d8_512x512_160k_ade20k
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -232,7 +232,7 @@ Models:
   Config: configs/ann/ann_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733-955eb1ec.pth
 - Name: ann_r50-d8_512x512_20k_voc12aug
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -254,7 +254,7 @@ Models:
   Config: configs/ann/ann_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246-dfcb1c62.pth
 - Name: ann_r101-d8_512x512_20k_voc12aug
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -276,7 +276,7 @@ Models:
   Config: configs/ann/ann_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246-2fad0042.pth
 - Name: ann_r50-d8_512x512_40k_voc12aug
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -290,7 +290,7 @@ Models:
   Config: configs/ann/ann_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314-b5dac322.pth
 - Name: ann_r101-d8_512x512_40k_voc12aug
-  In Collection: ann
+  In Collection: ANN
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)

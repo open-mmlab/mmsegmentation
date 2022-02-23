@@ -1,5 +1,5 @@
 Collections:
-- Name: sem_fpn
+- Name: FPN
   Metadata:
     Training Data:
     - Cityscapes
@@ -15,7 +15,7 @@ Collections:
     Code: https://github.com/facebookresearch/detectron2
 Models:
 - Name: fpn_r50_512x1024_80k_cityscapes
-  In Collection: sem_fpn
+  In Collection: FPN
   Metadata:
     backbone: R-50
     crop size: (512,1024)
@@ -37,7 +37,7 @@ Models:
   Config: configs/sem_fpn/fpn_r50_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x1024_80k_cityscapes/fpn_r50_512x1024_80k_cityscapes_20200717_021437-94018a0d.pth
 - Name: fpn_r101_512x1024_80k_cityscapes
-  In Collection: sem_fpn
+  In Collection: FPN
   Metadata:
     backbone: R-101
     crop size: (512,1024)
@@ -59,7 +59,7 @@ Models:
   Config: configs/sem_fpn/fpn_r101_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x1024_80k_cityscapes/fpn_r101_512x1024_80k_cityscapes_20200717_012416-c5800d4c.pth
 - Name: fpn_r50_512x512_160k_ade20k
-  In Collection: sem_fpn
+  In Collection: FPN
   Metadata:
     backbone: R-50
     crop size: (512,512)
@@ -81,7 +81,7 @@ Models:
   Config: configs/sem_fpn/fpn_r50_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x512_160k_ade20k/fpn_r50_512x512_160k_ade20k_20200718_131734-5b5a6ab9.pth
 - Name: fpn_r101_512x512_160k_ade20k
-  In Collection: sem_fpn
+  In Collection: FPN
   Metadata:
     backbone: R-101
     crop size: (512,512)

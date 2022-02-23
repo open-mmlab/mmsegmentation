@@ -1,5 +1,5 @@
 Collections:
-- Name: emanet
+- Name: EMANet
   Metadata:
     Training Data:
     - Cityscapes
@@ -14,7 +14,7 @@ Collections:
     Code: https://xialipku.github.io/EMANet
 Models:
 - Name: emanet_r50-d8_512x1024_80k_cityscapes
-  In Collection: emanet
+  In Collection: EMANet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -36,7 +36,7 @@ Models:
   Config: configs/emanet/emanet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes_20200901_100301-c43fcef1.pth
 - Name: emanet_r101-d8_512x1024_80k_cityscapes
-  In Collection: emanet
+  In Collection: EMANet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -58,7 +58,7 @@ Models:
   Config: configs/emanet/emanet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes_20200901_100301-2d970745.pth
 - Name: emanet_r50-d8_769x769_80k_cityscapes
-  In Collection: emanet
+  In Collection: EMANet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -80,7 +80,7 @@ Models:
   Config: configs/emanet/emanet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes_20200901_100301-16f8de52.pth
 - Name: emanet_r101-d8_769x769_80k_cityscapes
-  In Collection: emanet
+  In Collection: EMANet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
