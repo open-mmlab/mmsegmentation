@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from .builder import DATASETS
 from .cityscapes import CityscapesDataset
 
