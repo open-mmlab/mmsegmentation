@@ -4,6 +4,8 @@ import json
 from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
                          get_dist_info)
 
+from ...utils import get_root_logger
+
 
 def get_num_layer_layer_wise(var_name, num_max_layer=12):
 
@@ -95,13 +97,16 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                 submodule of DCN, `is_dcn_module` will be passed to
                 control conv_offset layer's learning rate. Defaults to None.
         """
+        logger = get_root_logger()
+
         parameter_groups = {}
-        print(self.paramwise_cfg)
+        logger.info(f'self.paramwise_cfg is {self.paramwise_cfg}')
         num_layers = self.paramwise_cfg.get('num_layers') + 2
         decay_rate = self.paramwise_cfg.get('decay_rate')
         decay_type = self.paramwise_cfg.get('decay_type', 'layer_wise')
-        print('Build LearningRateDecayOptimizerConstructor %s %f - %d' %
-              (decay_type, decay_rate, num_layers))
+        logger.info(
+            f'Build LearningRateDecayOptimizerConstructor {decay_type} {decay_rate} - {num_layers}'  # noqa
+        )
         weight_decay = self.base_wd
 
         for name, param in module.named_parameters():
@@ -118,11 +123,10 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
             if decay_type == 'layer_wise':
                 layer_id = get_num_layer_layer_wise(
                     name, self.paramwise_cfg.get('num_layers'))
-                print(f'set param {name} as id {layer_id}')
+                logger.info(f'set param {name} as id {layer_id}')
             elif decay_type == 'stage_wise':
                 layer_id = get_num_layer_stage_wise(name, num_layers)
-                print(f'set param {name} as id {layer_id}')
-
+                logger.info(f'set param {name} as id {layer_id}')
             group_name = 'layer_%d_%s' % (layer_id, group_name)
 
             if group_name not in parameter_groups:
@@ -149,11 +153,5 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                     'lr': parameter_groups[key]['lr'],
                     'weight_decay': parameter_groups[key]['weight_decay'],
                 }
-            print('Param groups = %s' % json.dumps(to_display, indent=2))
-
-        # state_dict = module.state_dict()
-        # for group_name in parameter_groups:
-        #     group = parameter_groups[group_name]
-        #     for name in group["param_names"]:
-        #         group["params"].append(state_dict[name])
+            logger.info(f'Param groups = {json.dumps(to_display, indent=2)}')
         params.extend(parameter_groups.values())
