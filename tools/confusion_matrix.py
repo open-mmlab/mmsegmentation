@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import os
 
@@ -125,7 +126,9 @@ def plot_confusion_matrix(confusion_matrix,
             ax.text(
                 j,
                 i,
-                '{}%'.format(round(confusion_matrix[i, j], 2)),
+                '{}%'.format(
+                    round(confusion_matrix[i, j], 2
+                          ) if not np.isnan(confusion_matrix[i, j]) else -1),
                 ha='center',
                 va='center',
                 color='w',
