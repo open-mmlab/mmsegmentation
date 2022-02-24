@@ -104,9 +104,8 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
         num_layers = self.paramwise_cfg.get('num_layers') + 2
         decay_rate = self.paramwise_cfg.get('decay_rate')
         decay_type = self.paramwise_cfg.get('decay_type', 'layer_wise')
-        logger.info(
-            f'Build LearningRateDecayOptimizerConstructor {decay_type} {decay_rate} - {num_layers}'  # noqa
-        )
+        logger.info(f'Build LearningRateDecayOptimizerConstructor \n'
+                    f'{decay_type} {decay_rate} - {num_layers}')
         weight_decay = self.base_wd
 
         for name, param in module.named_parameters():
@@ -127,7 +126,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
             elif decay_type == 'stage_wise':
                 layer_id = get_num_layer_stage_wise(name, num_layers)
                 logger.info(f'set param {name} as id {layer_id}')
-            group_name = 'layer_%d_%s' % (layer_id, group_name)
+            group_name = f'layer_{layer_id}_{group_name}'
 
             if group_name not in parameter_groups:
                 scale = decay_rate**(num_layers - layer_id - 1)

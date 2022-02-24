@@ -13,8 +13,7 @@ model = dict(
         drop_path_rate=0.4,
         layer_scale_init_value=1.0,
         gap_before_final_norm=False,
-        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
-        _delete_=True),
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file)),
     decode_head=dict(
         in_channels=[256, 512, 1024, 2048],
         num_classes=150,
