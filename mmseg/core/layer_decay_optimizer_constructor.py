@@ -1,8 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import json
-from mmseg.utils import get_root_logger
 from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
                          get_dist_info)
+
+from mmseg.utils import get_root_logger
 
 
 def get_num_layer_for_vit(var_name, num_max_layer):
@@ -50,9 +50,8 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
         num_layers = self.paramwise_cfg.get('num_layers') + 2
         layer_decay_rate = self.paramwise_cfg.get('layer_decay_rate')
 
-        logger.info(
-            f'Build LayerDecayOptimizerConstructor '
-            f'{layer_decay_rate} - {num_layers}')
+        logger.info(f'Build LayerDecayOptimizerConstructor '
+                    f'{layer_decay_rate} - {num_layers}')
 
         weight_decay = self.base_wd
 

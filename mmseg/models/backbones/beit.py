@@ -2,22 +2,23 @@
 import math
 import warnings
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
+from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
+from scipy import interpolate
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
-from mmcv.cnn.bricks.drop import build_dropout
+
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed
-from scipy import interpolate
-import numpy as np
 
 
 class BEiTAttention(BaseModule):
@@ -64,10 +65,10 @@ class BEiTAttention(BaseModule):
         self.window_size = window_size
         # cls to token & token 2 cls & cls to cls
         self.num_relative_distance = (2 * window_size[0] -
-                                        1) * (2 * window_size[1] - 1) + 3
+                                      1) * (2 * window_size[1] - 1) + 3
         # relative_position_bias_table shape is (2*Wh-1 * 2*Ww-1 + 3, nH)
         self.relative_position_bias_table = nn.Parameter(
-                torch.zeros(self.num_relative_distance, num_heads))
+            torch.zeros(self.num_relative_distance, num_heads))
 
         # get pair-wise relative position index for
         # each token inside the window
@@ -78,16 +79,16 @@ class BEiTAttention(BaseModule):
         # coords_flatten shape is (2, Wh*Ww)
         coords_flatten = torch.flatten(coords, 1)
         relative_coords = (
-                coords_flatten[:, :, None] - coords_flatten[:, None, :])
+            coords_flatten[:, :, None] - coords_flatten[:, None, :])
         # relative_coords shape is (Wh*Ww, Wh*Ww, 2)
         relative_coords = relative_coords.permute(1, 2, 0).contiguous()
         # shift to start from 0
-        relative_coords[:, :, 0] += window_size[0] - 1  
+        relative_coords[:, :, 0] += window_size[0] - 1
         relative_coords[:, :, 1] += window_size[1] - 1
         relative_coords[:, :, 0] *= 2 * window_size[1] - 1
         relative_position_index = torch.zeros(
-                size=(window_size[0] * window_size[1] + 1, ) * 2,
-                dtype=relative_coords.dtype)
+            size=(window_size[0] * window_size[1] + 1, ) * 2,
+            dtype=relative_coords.dtype)
 
         # relative_position_index shape is (Wh*Ww, Wh*Ww)
         relative_position_index[1:, 1:] = relative_coords.sum(-1)
@@ -96,7 +97,7 @@ class BEiTAttention(BaseModule):
         relative_position_index[0, 0] = self.num_relative_distance - 1
 
         self.register_buffer('relative_position_index',
-                                relative_position_index)
+                             relative_position_index)
 
         self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=False)
         self.attn_drop = nn.Dropout(attn_drop_rate)
@@ -163,7 +164,7 @@ class TransformerEncoderLayer(BaseModule):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         window_size (tuple[int]): The height and width of the window.
-        init_values (float): Initialize the values of BEiTAttention and FFN 
+        init_values (float): Initialize the values of BEiTAttention and FFN
             with learnable scaling.
     """
 
@@ -252,11 +253,7 @@ class BEiT(BaseModule):
             Default 0.0
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
-        drop_path_rate (float): stochastic depth rate. Default 0.0
-        with_cls_token (bool): Whether concatenating class token into image
-            tokens as transformer input. Default: True.
-        output_cls_token (bool): Whether output the cls_token. If set True,
-            `with_cls_token` must be True. Default: False.
+        drop_path_rate (float): stochastic depth rate. Default 0.0.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
@@ -275,7 +272,7 @@ class BEiT(BaseModule):
         with_cp (bool): Use checkpoint or not. Using checkpoint will save
             some memory while slowing down the training speed. Default: False.
         pretrained (str, optional): model pretrained path. Default: None.
-        init_values (float): Initialize the values of BEiTAttention and FFN 
+        init_values (float): Initialize the values of BEiTAttention and FFN
             with learnable scaling.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
@@ -294,8 +291,6 @@ class BEiT(BaseModule):
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 with_cls_token=True,
-                 output_cls_token=False,
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
                  patch_norm=False,
@@ -305,7 +300,7 @@ class BEiT(BaseModule):
                  norm_eval=False,
                  with_cp=False,
                  pretrained=None,
-                 init_values=None,
+                 init_values=0.1,
                  init_cfg=None):
         super(BEiT, self).__init__(init_cfg=init_cfg)
 
@@ -317,10 +312,6 @@ class BEiT(BaseModule):
             assert len(img_size) == 2, \
                 f'The size of image should have length 1 or 2, ' \
                 f'but got {len(img_size)}'
-
-        if output_cls_token:
-            assert with_cls_token is True, f'with_cls_token must be True if' \
-                f'set output_cls_token to True, but got {with_cls_token}'
 
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be set at the same time'
@@ -351,8 +342,6 @@ class BEiT(BaseModule):
 
         window_size = (img_size[0] // patch_size, img_size[1] // patch_size)
         self.patch_shape = window_size
-        self.with_cls_token = with_cls_token
-        self.output_cls_token = output_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
         self.drop_after_pos = nn.Dropout(p=drop_rate)
 
@@ -393,6 +382,7 @@ class BEiT(BaseModule):
         return getattr(self, self.norm1_name)
 
     def fix_init_weight(self):
+
         def rescale(param, layer_id):
             param.div_(math.sqrt(2.0 * layer_id))
 
@@ -401,7 +391,7 @@ class BEiT(BaseModule):
             rescale(layer.ffn.layers[1].weight.data, layer_id + 1)
 
     def init_weights(self):
-        
+
         def _init_weights(m):
             if isinstance(m, nn.Linear):
                 trunc_normal_(m.weight, std=.02)
@@ -427,27 +417,29 @@ class BEiT(BaseModule):
 
             all_keys = list(state_dict.keys())
             for key in all_keys:
-                if "relative_position_index" in key:
+                if 'relative_position_index' in key:
                     state_dict.pop(key)
                 # In order to keep the center of pos_bias as consistent as
                 # possible after interpolation, and vice versa in the edge
                 # area, the geometric sequence interpolation method is adopted.
-                if "relative_position_bias_table" in key:
+                if 'relative_position_bias_table' in key:
                     rel_pos_bias = state_dict[key]
                     src_num_pos, num_attn_heads = rel_pos_bias.size()
                     dst_num_pos, _ = self.state_dict()[key].size()
                     dst_patch_shape = self.patch_shape
                     if dst_patch_shape[0] != dst_patch_shape[1]:
                         raise NotImplementedError()
-                    num_extra_tokens = dst_num_pos - (dst_patch_shape[0] * 2 - 1) * (dst_patch_shape[1] * 2 - 1)
-                    src_size = int((src_num_pos - num_extra_tokens) ** 0.5)
-                    dst_size = int((dst_num_pos - num_extra_tokens) ** 0.5)
+                    num_extra_tokens = dst_num_pos - (
+                        dst_patch_shape[0] * 2 - 1) * (
+                            dst_patch_shape[1] * 2 - 1)
+                    src_size = int((src_num_pos - num_extra_tokens)**0.5)
+                    dst_size = int((dst_num_pos - num_extra_tokens)**0.5)
                     if src_size != dst_size:
                         extra_tokens = rel_pos_bias[-num_extra_tokens:, :]
                         rel_pos_bias = rel_pos_bias[:-num_extra_tokens, :]
 
                         def geometric_progression(a, r, n):
-                            return a * (1.0 - r ** n) / (1.0 - r)
+                            return a * (1.0 - r**n) / (1.0 - r)
 
                         left, right = 1.01, 1.5
                         while right - left > 1e-6:
@@ -462,7 +454,7 @@ class BEiT(BaseModule):
                         cur = 1
                         for i in range(src_size // 2):
                             dis.append(cur)
-                            cur += q ** (i + 1)
+                            cur += q**(i + 1)
 
                         r_ids = [-_ for _ in reversed(dis)]
 
@@ -476,32 +468,42 @@ class BEiT(BaseModule):
                         all_rel_pos_bias = []
 
                         for i in range(num_attn_heads):
-                            z = rel_pos_bias[:, i].view(src_size, src_size).float().numpy()
+                            z = rel_pos_bias[:,
+                                             i].view(src_size,
+                                                     src_size).float().numpy()
                             f = interpolate.interp2d(x, y, z, kind='cubic')
                             all_rel_pos_bias.append(
-                                torch.Tensor(f(dx, dy)).contiguous().view(-1, 1).to(rel_pos_bias.device))
+                                torch.Tensor(f(dx, dy)).contiguous().view(
+                                    -1, 1).to(rel_pos_bias.device))
 
                         rel_pos_bias = torch.cat(all_rel_pos_bias, dim=-1)
-                        new_rel_pos_bias = torch.cat((rel_pos_bias, extra_tokens), dim=0)
+                        new_rel_pos_bias = torch.cat(
+                            (rel_pos_bias, extra_tokens), dim=0)
                         state_dict[key] = new_rel_pos_bias
-                    
+
             # interpolate position bias table
-            relative_position_bias_table_keys = [k for k in state_dict.keys() if "relative_position_bias_table" in k]
+            relative_position_bias_table_keys = [
+                k for k in state_dict.keys()
+                if 'relative_position_bias_table' in k
+            ]
             for table_key in relative_position_bias_table_keys:
                 table_pretrained = state_dict[table_key]
                 table_current = self.state_dict()[table_key]
                 L1, nH1 = table_pretrained.size()
                 L2, nH2 = table_current.size()
                 if nH1 != nH2:
-                    logger.warning(f"Error in loading {table_key}, pass")
+                    logger.warning(f'Error in loading {table_key}, pass')
                 else:
                     if L1 != L2:
-                        S1 = int(L1 ** 0.5)
-                        S2 = int(L2 ** 0.5)
+                        S1 = int(L1**0.5)
+                        S2 = int(L2**0.5)
                         table_pretrained_resized = F.interpolate(
-                            table_pretrained.permute(1, 0).view(1, nH1, S1, S1),
-                            size=(S2, S2), mode='bicubic')
-                        state_dict[table_key] = table_pretrained_resized.view(nH2, L2).permute(1, 0)
+                            table_pretrained.permute(1,
+                                                     0).view(1, nH1, S1, S1),
+                            size=(S2, S2),
+                            mode='bicubic')
+                        state_dict[table_key] = table_pretrained_resized.view(
+                            nH2, L2).permute(1, 0)
 
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:
@@ -509,7 +511,6 @@ class BEiT(BaseModule):
         else:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
-            trunc_normal_(self.pos_embed, std=.02)
             trunc_normal_(self.cls_token, std=.02)
             for n, m in self.named_modules():
                 if isinstance(m, nn.Linear):
@@ -533,10 +534,6 @@ class BEiT(BaseModule):
         cls_tokens = self.cls_token.expand(B, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
 
-        if not self.with_cls_token:
-            # Remove class token for transformer encoder input
-            x = x[:, 1:]
-
         outs = []
         for i, layer in enumerate(self.layers):
             x = layer(x)
@@ -544,16 +541,11 @@ class BEiT(BaseModule):
                 if self.final_norm:
                     x = self.norm1(x)
             if i in self.out_indices:
-                if self.with_cls_token:
-                    # Remove class token and reshape token for decoder head
-                    out = x[:, 1:]
-                else:
-                    out = x
+                # Remove class token and reshape token for decoder head
+                out = x[:, 1:]
                 B, _, C = out.shape
                 out = out.reshape(B, hw_shape[0], hw_shape[1],
                                   C).permute(0, 3, 1, 2).contiguous()
-                if self.output_cls_token:
-                    out = [out, x[:, 0]]
                 outs.append(out)
 
         return tuple(outs)

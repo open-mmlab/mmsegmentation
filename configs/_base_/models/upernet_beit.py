@@ -16,7 +16,6 @@ model = dict(
         drop_rate=0.0,
         attn_drop_rate=0.0,
         drop_path_rate=0.1,
-        with_cls_token=True,
         norm_cfg=dict(type='LN', eps=1e-6),
         act_cfg=dict(type='GELU'),
         norm_eval=False,

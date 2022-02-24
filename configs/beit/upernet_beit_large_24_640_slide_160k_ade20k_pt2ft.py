@@ -48,4 +48,5 @@ lr_config = dict(
     by_epoch=False)
 
 data = dict(samples_per_gpu=1)
-optimizer_config = dict(type='GradientCumulativeOptimizerHook', cumulative_iters=2)
+optimizer_config = dict(
+    type='GradientCumulativeOptimizerHook', cumulative_iters=2)

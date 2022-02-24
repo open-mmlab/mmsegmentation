@@ -14,21 +14,32 @@ class Feature2Pyramid(nn.Module):
         embed_dims (int): embedding dimension.
         rescales (list[float]): different sampling multiples were
             used to obtain pyramid features. Default: (4, 2, 1, 0.5).
+        norm (str) : bn or syncbn.
     """
 
-    def __init__(self, embed_dim, rescales):
+    def __init__(self, embed_dim, rescales, norm='syncbn'):
         super(Feature2Pyramid, self).__init__()
         self.rescales = rescales
         for k in self.rescales:
             if k == 4:
-                self.upsample_4x = nn.Sequential(
-                    nn.ConvTranspose2d(
-                        embed_dim, embed_dim, kernel_size=2, stride=2),
-                    nn.SyncBatchNorm(embed_dim),
-                    nn.GELU(),
-                    nn.ConvTranspose2d(
-                        embed_dim, embed_dim, kernel_size=2, stride=2),
-                )
+                if norm == 'bn':
+                    self.upsample_4x = nn.Sequential(
+                        nn.ConvTranspose2d(
+                            embed_dim, embed_dim, kernel_size=2, stride=2),
+                        nn.BatchNorm2d(embed_dim),
+                        nn.GELU(),
+                        nn.ConvTranspose2d(
+                            embed_dim, embed_dim, kernel_size=2, stride=2),
+                    )
+                elif norm == 'syncbn':
+                    self.upsample_4x = nn.Sequential(
+                        nn.ConvTranspose2d(
+                            embed_dim, embed_dim, kernel_size=2, stride=2),
+                        nn.SyncBatchNorm(embed_dim),
+                        nn.GELU(),
+                        nn.ConvTranspose2d(
+                            embed_dim, embed_dim, kernel_size=2, stride=2),
+                    )
             elif k == 2:
                 self.upsample_2x = nn.Sequential(
                     nn.ConvTranspose2d(
