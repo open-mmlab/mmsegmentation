@@ -8,6 +8,13 @@ from ...utils import get_root_logger
 
 
 def get_num_layer_layer_wise(var_name, num_max_layer=12):
+    """Get the layer id to set the different learning rates in `layer_wise`
+    decay_type.
+
+    Args:
+        var_name (str): The key of the model.
+        num_max_layer (int): Maximum number of backbone layers.
+    """
 
     if var_name in ('backbone.cls_token', 'backbone.mask_token',
                     'backbone.pos_embed'):
@@ -64,6 +71,14 @@ def get_num_layer_layer_wise(var_name, num_max_layer=12):
 
 
 def get_num_layer_stage_wise(var_name, num_max_layer):
+    """Get the layer id to set the different learning rates in `stage_wise`
+    decay_type.
+
+    Args:
+        var_name (str): The key of the model.
+        num_max_layer (int): Maximum number of backbone layers.
+    """
+
     if var_name in ('backbone.cls_token', 'backbone.mask_token',
                     'backbone.pos_embed'):
         return 0
@@ -82,6 +97,7 @@ def get_num_layer_stage_wise(var_name, num_max_layer):
 
 @OPTIMIZER_BUILDERS.register_module()
 class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
+    """Different learning rates are set for different layers of backbone."""
 
     def add_params(self, params, module, prefix='', is_dcn_module=None):
         """Add all parameters of module to the params list.
