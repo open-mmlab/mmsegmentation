@@ -123,6 +123,12 @@ def test_resize():
     assert int(288 * 0.5) <= resized_results['img_shape'][0] <= 288 * 2.0
     assert int(512 * 0.5) <= resized_results['img_shape'][1] <= 512 * 2.0
 
+    # test crop_size=640
+    transform = dict(type='Resize', img_scale=(2560, 640), crop_size=640)
+    resize_module = build_from_cfg(transform, PIPELINES)
+    resized_results = resize_module(results.copy())
+    assert resized_results['img_shape'] == (640, 1138, 3)
+
 
 def test_flip():
     # test assertion for invalid prob

@@ -99,6 +99,7 @@ class Resize(object):
             Default: None
         keep_ratio (bool): Whether to keep the aspect ratio when resizing the
             image. Default: True
+        crop_size (int): crop size for setr resize. Default: None
     """
 
     def __init__(self,
@@ -106,8 +107,7 @@ class Resize(object):
                  multiscale_mode='range',
                  ratio_range=None,
                  keep_ratio=True,
-                 crop_size=None,
-                 setr_multi_scale=False):
+                 crop_size=None):
         if img_scale is None:
             self.img_scale = None
         else:
@@ -129,7 +129,6 @@ class Resize(object):
         self.ratio_range = ratio_range
         self.keep_ratio = keep_ratio
         self.crop_size = crop_size
-        self.setr_multi_scale = setr_multi_scale
 
     @staticmethod
     def random_select(img_scales):
@@ -244,9 +243,10 @@ class Resize(object):
     def _resize_img(self, results):
         """Resize images with ``results['scale']``."""
         if self.keep_ratio:
-            if self.setr_multi_scale:
-                if min(results['scale']) < self.crop_size[0]:
-                    new_short = self.crop_size[0]
+            if self.crop_size is not None:
+                # keep the shape is not less than crop_size
+                if min(results['scale']) < self.crop_size:
+                    new_short = self.crop_size
                 else:
                     new_short = min(results['scale'])
 
