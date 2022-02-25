@@ -63,17 +63,23 @@ class KernelUpdator(nn.Module):
     def forward(self, update_feature, input_feature):
         update_feature = update_feature.reshape(-1, self.in_channels)
         num_proposals = update_feature.size(0)
+        # Use `self.dynamic_layer` fully connected layer to implement both
+        # \phi_1 and \psi_3 in Eq.(4) and (5) of original paper.
         parameters = self.dynamic_layer(update_feature)
         param_in = parameters[:, :self.num_params_in].view(
             -1, self.feat_channels)
         param_out = parameters[:, -self.num_params_out:].view(
             -1, self.feat_channels)
 
+        # Use `self.input_layer` fully connected layer to implement both
+        # \phi_2 and \psi_4 in Eq.(4) and (5) of original paper.
         input_feats = self.input_layer(
             input_feature.reshape(num_proposals, -1, self.feat_channels))
         input_in = input_feats[..., :self.num_params_in]
         input_out = input_feats[..., -self.num_params_out:]
 
+        # Element-wise multiplication between F^k and K_{i-1}.
+        # Eq.(4) in original paper.
         gate_feats = input_in * param_in.unsqueeze(-2)
         if self.gate_norm_act:
             gate_feats = self.activation(self.gate_norm(gate_feats))
@@ -90,6 +96,7 @@ class KernelUpdator(nn.Module):
             param_out = self.activation(param_out)
             input_out = self.activation(input_out)
 
+        # Gate mechanism. Eq.(5) in original paper.
         # param_out has shape (batch_size, feat_channels, out_channels)
         features = update_gate * param_out.unsqueeze(
             -2) + input_gate * input_out
@@ -232,6 +239,7 @@ class KernelUpdateHead(nn.Module):
 
         sigmoid_masks = gather_mask.softmax(dim=1)
 
+        # Group Feature Assembling. Eq.(3) in original paper.
         # einsum is faster than bmm by 30%
         x_feat = torch.einsum('bnhw,bchw->bnc', sigmoid_masks, x)
 
