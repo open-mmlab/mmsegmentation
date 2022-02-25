@@ -110,7 +110,7 @@ class Resize(object):
                  multiscale_mode='range',
                  ratio_range=None,
                  keep_ratio=True,
-                 crop_size=None):
+                 min_size=None):
         if img_scale is None:
             self.img_scale = None
         else:
@@ -131,7 +131,7 @@ class Resize(object):
         self.multiscale_mode = multiscale_mode
         self.ratio_range = ratio_range
         self.keep_ratio = keep_ratio
-        self.crop_size = crop_size
+        self.min_size = min_size
 
     @staticmethod
     def random_select(img_scales):
@@ -246,10 +246,10 @@ class Resize(object):
     def _resize_img(self, results):
         """Resize images with ``results['scale']``."""
         if self.keep_ratio:
-            if self.crop_size is not None:
+            if self.min_size is not None:
                 # keep the shape is not less than crop_size
-                if min(results['scale']) < self.crop_size:
-                    new_short = self.crop_size
+                if min(results['scale']) < self.min_size:
+                    new_short = self.min_size
                 else:
                     new_short = min(results['scale'])
 
