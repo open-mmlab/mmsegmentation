@@ -94,7 +94,7 @@ class PSPHead(BaseDecodeHead):
 
     def _forward_feature(self, inputs):
         """Forward function for feature maps before classifying each pixel with
-        `self.cls_seg` fc.
+        ``self.cls_seg`` fc.
 
         Args:
             inputs (list[Tensor]): List of multi-level img features.
