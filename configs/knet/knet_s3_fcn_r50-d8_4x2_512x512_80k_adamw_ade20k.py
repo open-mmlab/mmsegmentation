@@ -7,7 +7,6 @@ _base_ = [
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 num_stages = 3
 conv_kernel_size = 1
-
 model = dict(
     type='EncoderDecoder',
     pretrained='open-mmlab://resnet50_v1c',
@@ -16,8 +15,8 @@ model = dict(
         depth=50,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
-        dilations=(1, 1, 1, 1),
-        strides=(1, 2, 2, 2),
+        dilations=(1, 1, 2, 4),
+        strides=(1, 2, 1, 1),
         norm_cfg=norm_cfg,
         norm_eval=False,
         style='pytorch',
@@ -33,8 +32,8 @@ model = dict(
                 num_heads=8,
                 num_mask_fcs=1,
                 feedforward_channels=2048,
-                in_channels=256,
-                out_channels=256,
+                in_channels=512,
+                out_channels=512,
                 dropout=0.0,
                 conv_kernel_size=conv_kernel_size,
                 mask_upsample_stride=2,
@@ -52,11 +51,12 @@ model = dict(
                     norm_cfg=dict(type='LN'))) for _ in range(num_stages)
         ],
         kernel_generate_head=dict(
-            type='UPerHead',
-            in_channels=[256, 512, 1024, 2048],
-            in_index=[0, 1, 2, 3],
-            pool_scales=(1, 2, 3, 6),
-            channels=256,
+            type='FCNHead',
+            in_channels=2048,
+            in_index=3,
+            channels=512,
+            num_convs=2,
+            concat_input=True,
             dropout_ratio=0.1,
             num_classes=150,
             norm_cfg=norm_cfg,
@@ -91,3 +91,5 @@ lr_config = dict(
     warmup_ratio=0.001,
     step=[60000, 72000],
     by_epoch=False)
+# In K-Net implementation we use batch size 2 per GPU as default
+data = dict(samples_per_gpu=2, workers_per_gpu=2)

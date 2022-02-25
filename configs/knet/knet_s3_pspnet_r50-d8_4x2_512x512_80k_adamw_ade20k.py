@@ -51,12 +51,11 @@ model = dict(
                     norm_cfg=dict(type='LN'))) for _ in range(num_stages)
         ],
         kernel_generate_head=dict(
-            type='FCNHead',
+            type='PSPHead',
             in_channels=2048,
             in_index=3,
             channels=512,
-            num_convs=2,
-            concat_input=True,
+            pool_scales=(1, 2, 3, 6),
             dropout_ratio=0.1,
             num_classes=150,
             norm_cfg=norm_cfg,
@@ -91,3 +90,5 @@ lr_config = dict(
     warmup_ratio=0.001,
     step=[60000, 72000],
     by_epoch=False)
+# In K-Net implementation we use batch size 2 per GPU as default
+data = dict(samples_per_gpu=2, workers_per_gpu=2)

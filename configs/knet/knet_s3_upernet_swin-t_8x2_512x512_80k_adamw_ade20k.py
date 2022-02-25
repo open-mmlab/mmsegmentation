@@ -1,4 +1,4 @@
-_base_ = 'knet_s3_upernet_r50-d8_80k_adamw_ade20k.py'
+_base_ = 'knet_s3_upernet_r50-d8_8x2_512x512_80k_adamw_ade20k.py'
 
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -28,6 +28,8 @@ model = dict(
         kernel_generate_head=dict(in_channels=[96, 192, 384, 768])),
     auxiliary_head=dict(in_channels=384))
 
+# modify learning rate following the official
+# implementation of Swin Transformer
 optimizer = dict(
     _delete_=True,
     type='AdamW',
@@ -50,3 +52,5 @@ lr_config = dict(
     warmup_ratio=0.001,
     step=[60000, 72000],
     by_epoch=False)
+# In K-Net implementation we use batch size 2 per GPU as default
+data = dict(samples_per_gpu=2, workers_per_gpu=2)

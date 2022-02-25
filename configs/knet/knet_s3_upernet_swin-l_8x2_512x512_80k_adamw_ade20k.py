@@ -1,4 +1,4 @@
-_base_ = 'knet_s3_upernet_swin-t_80k_adamw_ade20k.py'
+_base_ = 'knet_s3_upernet_swin-t_8x2_512x512_80k_adamw_ade20k.py'
 
 # model settings
 model = dict(
@@ -14,3 +14,5 @@ model = dict(
     decode_head=dict(
         kernel_generate_head=dict(in_channels=[192, 384, 768, 1536])),
     auxiliary_head=dict(in_channels=768))
+# In K-Net implementation we use batch size 2 per GPU as default
+data = dict(samples_per_gpu=2, workers_per_gpu=2)

@@ -1,4 +1,4 @@
-_base_ = 'knet_s3_upernet_swin-t_80k_adamw_ade20k.py'
+_base_ = 'knet_s3_upernet_swin-t_8x2_512x512_80k_adamw_ade20k.py'
 
 # model settings
 model = dict(
@@ -49,3 +49,5 @@ data = dict(
     train=dict(pipeline=train_pipeline),
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
+# In K-Net implementation we use batch size 2 per GPU as default
+data = dict(samples_per_gpu=2, workers_per_gpu=2)
