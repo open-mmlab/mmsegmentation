@@ -8,12 +8,16 @@ from ...utils import get_root_logger
 
 
 def get_num_layer_layer_wise(var_name, num_max_layer=12):
-    """Get the layer id to set the different learning rates in `layer_wise`
+    """Get the layer id to set the different learning rates in ``layer_wise``
     decay_type.
 
     Args:
         var_name (str): The key of the model.
         num_max_layer (int): Maximum number of backbone layers.
+
+    Returns:
+        layer_id (int): The id number corresponding to different
+            learning rate in ``LearningRateDecayOptimizerConstructor``.
     """
 
     if var_name in ('backbone.cls_token', 'backbone.mask_token',
@@ -71,7 +75,7 @@ def get_num_layer_layer_wise(var_name, num_max_layer=12):
 
 
 def get_num_layer_stage_wise(var_name, num_max_layer):
-    """Get the layer id to set the different learning rates in `stage_wise`
+    """Get the layer id to set the different learning rates in ``stage_wise``
     decay_type.
 
     Args:
@@ -99,16 +103,16 @@ def get_num_layer_stage_wise(var_name, num_max_layer):
 class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
     """Different learning rates are set for different layers of backbone."""
 
-    def add_params(self, params, module, prefix='', is_dcn_module=None):
+    def add_params(self, params, module, is_dcn_module=None):
         """Add all parameters of module to the params list.
 
         The parameters of the given module will be added to the list of param
         groups, with specific rules defined by paramwise_cfg.
+
         Args:
             params (list[dict]): A list of param groups, it will be modified
                 in place.
             module (nn.Module): The module to be added.
-            prefix (str): The prefix of the module
             is_dcn_module (int|float|None): If the current module is a
                 submodule of DCN, `is_dcn_module` will be passed to
                 control conv_offset layer's learning rate. Defaults to None.
@@ -120,7 +124,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
         num_layers = self.paramwise_cfg.get('num_layers') + 2
         decay_rate = self.paramwise_cfg.get('decay_rate')
         decay_type = self.paramwise_cfg.get('decay_type', 'layer_wise')
-        logger.info(f'Build LearningRateDecayOptimizerConstructor \n'
+        logger.info('Build LearningRateDecayOptimizerConstructor  '
                     f'{decay_type} {decay_rate} - {num_layers}')
         weight_decay = self.base_wd
 
