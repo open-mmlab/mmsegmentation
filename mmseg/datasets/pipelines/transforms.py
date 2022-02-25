@@ -99,7 +99,7 @@ class Resize(object):
             Default: None
         keep_ratio (bool): Whether to keep the aspect ratio when resizing the
             image. Default: True
-        crop_size (int, optional): The minimum size for input and the shape
+        min_size (int, optional): The minimum size for input and the shape
             of the image and seg map will not be less than ``crop_szie``.
             It always be used in ``SETR`` algorithm to keep the shape.
             Default: None
