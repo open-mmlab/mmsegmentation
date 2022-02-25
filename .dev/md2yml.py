@@ -81,6 +81,13 @@ def parse_md(md_file):
     code_version = None
     repo_url = None
 
+    # To avoid re-counting number of backbone model in OpenMMLab,
+    # if certain model in configs folder is backbone whose name is already
+    # recorded in MMClassification, then the `COLLECTION` dict of this model
+    # in MMSegmentation should be deleted, and `In Collection` in `Models`
+    # should be set with head or neck of this config file.
+    is_backbone = None
+
     with open(md_file, 'r') as md:
         lines = md.readlines()
         i = 0
@@ -117,9 +124,13 @@ def parse_md(md_file):
                 datasets.append(line[4:])
                 current_dataset = line[4:]
                 i += 2
+            elif line[:15] == '<!-- [BACKBONE]':
+                is_backbone = True
+                i += 1
             elif line[0] == '|' and (
                     i + 1) < len(lines) and lines[i + 1][:3] == '| -':
                 cols = [col.strip() for col in line.split('|')]
+                method_id = cols.index('Method')
                 backbone_id = cols.index('Backbone')
                 crop_size_id = cols.index('Crop Size')
                 lr_schd_id = cols.index('Lr schd')
@@ -155,11 +166,12 @@ def parse_md(md_file):
                         mem_id] != '' else -1
                     crop_size = els[crop_size_id].split('x')
                     assert len(crop_size) == 2
+                    method = els[method_id].split()[0].split('-')[-1]
                     model = {
                         'Name':
                         model_name,
                         'In Collection':
-                        collection_name,
+                        method,
                         'Metadata': {
                             'backbone': els[backbone_id],
                             'crop size': f'({crop_size[0]},{crop_size[1]})',
@@ -213,6 +225,7 @@ def parse_md(md_file):
     flag = (code_url is not None) and (paper_url is not None) and (repo_url
                                                                    is not None)
     assert flag, f'{collection_name} readme error'
+    collection['Name'] = method
     collection['Metadata']['Training Data'] = datasets
     collection['Code']['URL'] = code_url
     collection['Code']['Version'] = code_version
@@ -232,8 +245,10 @@ def parse_md(md_file):
                     collection.pop(check_key)
                 else:
                     collection[check_key].pop(key)
-
-    result = {'Collections': [collection], 'Models': models}
+    if is_backbone:
+        result = {'Models': models}
+    else:
+        result = {'Collections': [collection], 'Models': models}
     yml_file = f'{md_file[:-9]}{collection_name}.yml'
     return dump_yaml_and_check_difference(result, yml_file)
 

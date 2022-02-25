@@ -1,5 +1,5 @@
 Collections:
-- Name: cgnet
+- Name: CGNet
   Metadata:
     Training Data:
     - Cityscapes
@@ -14,7 +14,7 @@ Collections:
     Code: https://github.com/wutianyiRosun/CGNet
 Models:
 - Name: cgnet_680x680_60k_cityscapes
-  In Collection: cgnet
+  In Collection: CGNet
   Metadata:
     backbone: M3N21
     crop size: (680,680)
@@ -36,7 +36,7 @@ Models:
   Config: configs/cgnet/cgnet_680x680_60k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth
 - Name: cgnet_512x1024_60k_cityscapes
-  In Collection: cgnet
+  In Collection: CGNet
   Metadata:
     backbone: M3N21
     crop size: (512,1024)

@@ -1,21 +1,6 @@
-Collections:
-- Name: resnest
-  Metadata:
-    Training Data:
-    - Cityscapes
-    - ADE20K
-  Paper:
-    URL: https://arxiv.org/abs/2004.08955
-    Title: 'ResNeSt: Split-Attention Networks'
-  README: configs/resnest/README.md
-  Code:
-    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
-    Version: v0.17.0
-  Converted From:
-    Code: https://github.com/zhanghang1989/ResNeSt
 Models:
 - Name: fcn_s101-d8_512x1024_80k_cityscapes
-  In Collection: resnest
+  In Collection: FCN
   Metadata:
     backbone: S-101-D8
     crop size: (512,1024)
@@ -37,7 +22,7 @@ Models:
   Config: configs/resnest/fcn_s101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x1024_80k_cityscapes/fcn_s101-d8_512x1024_80k_cityscapes_20200807_140631-f8d155b3.pth
 - Name: pspnet_s101-d8_512x1024_80k_cityscapes
-  In Collection: resnest
+  In Collection: PSPNet
   Metadata:
     backbone: S-101-D8
     crop size: (512,1024)
@@ -59,7 +44,7 @@ Models:
   Config: configs/resnest/pspnet_s101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x1024_80k_cityscapes/pspnet_s101-d8_512x1024_80k_cityscapes_20200807_140631-c75f3b99.pth
 - Name: deeplabv3_s101-d8_512x1024_80k_cityscapes
-  In Collection: resnest
+  In Collection: DeepLabV3
   Metadata:
     backbone: S-101-D8
     crop size: (512,1024)
@@ -81,7 +66,7 @@ Models:
   Config: configs/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes_20200807_144429-b73c4270.pth
 - Name: deeplabv3plus_s101-d8_512x1024_80k_cityscapes
-  In Collection: resnest
+  In Collection: DeepLabV3+
   Metadata:
     backbone: S-101-D8
     crop size: (512,1024)
@@ -103,7 +88,7 @@ Models:
   Config: configs/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes_20200807_144429-1239eb43.pth
 - Name: fcn_s101-d8_512x512_160k_ade20k
-  In Collection: resnest
+  In Collection: FCN
   Metadata:
     backbone: S-101-D8
     crop size: (512,512)
@@ -125,7 +110,7 @@ Models:
   Config: configs/resnest/fcn_s101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x512_160k_ade20k/fcn_s101-d8_512x512_160k_ade20k_20200807_145416-d3160329.pth
 - Name: pspnet_s101-d8_512x512_160k_ade20k
-  In Collection: resnest
+  In Collection: PSPNet
   Metadata:
     backbone: S-101-D8
     crop size: (512,512)
@@ -147,7 +132,7 @@ Models:
   Config: configs/resnest/pspnet_s101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x512_160k_ade20k/pspnet_s101-d8_512x512_160k_ade20k_20200807_145416-a6daa92a.pth
 - Name: deeplabv3_s101-d8_512x512_160k_ade20k
-  In Collection: resnest
+  In Collection: DeepLabV3
   Metadata:
     backbone: S-101-D8
     crop size: (512,512)
@@ -169,7 +154,7 @@ Models:
   Config: configs/resnest/deeplabv3_s101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x512_160k_ade20k/deeplabv3_s101-d8_512x512_160k_ade20k_20200807_144503-17ecabe5.pth
 - Name: deeplabv3plus_s101-d8_512x512_160k_ade20k
-  In Collection: resnest
+  In Collection: DeepLabV3+
   Metadata:
     backbone: S-101-D8
     crop size: (512,512)

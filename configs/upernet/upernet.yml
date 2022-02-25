@@ -1,5 +1,5 @@
 Collections:
-- Name: upernet
+- Name: UPerNet
   Metadata:
     Training Data:
     - Cityscapes
@@ -16,7 +16,7 @@ Collections:
     Code: https://github.com/CSAILVision/unifiedparsing
 Models:
 - Name: upernet_r50_512x1024_40k_cityscapes
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-50
     crop size: (512,1024)
@@ -38,7 +38,7 @@ Models:
   Config: configs/upernet/upernet_r50_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827-aa54cb54.pth
 - Name: upernet_r101_512x1024_40k_cityscapes
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-101
     crop size: (512,1024)
@@ -60,7 +60,7 @@ Models:
   Config: configs/upernet/upernet_r101_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_40k_cityscapes/upernet_r101_512x1024_40k_cityscapes_20200605_094933-ebce3b10.pth
 - Name: upernet_r50_769x769_40k_cityscapes
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-50
     crop size: (769,769)
@@ -82,7 +82,7 @@ Models:
   Config: configs/upernet/upernet_r50_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_40k_cityscapes/upernet_r50_769x769_40k_cityscapes_20200530_033048-92d21539.pth
 - Name: upernet_r101_769x769_40k_cityscapes
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-101
     crop size: (769,769)
@@ -104,7 +104,7 @@ Models:
   Config: configs/upernet/upernet_r101_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819-83c95d01.pth
 - Name: upernet_r50_512x1024_80k_cityscapes
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-50
     crop size: (512,1024)
@@ -118,7 +118,7 @@ Models:
   Config: configs/upernet/upernet_r50_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_80k_cityscapes/upernet_r50_512x1024_80k_cityscapes_20200607_052207-848beca8.pth
 - Name: upernet_r101_512x1024_80k_cityscapes
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-101
     crop size: (512,1024)
@@ -132,7 +132,7 @@ Models:
   Config: configs/upernet/upernet_r101_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_80k_cityscapes/upernet_r101_512x1024_80k_cityscapes_20200607_002403-f05f2345.pth
 - Name: upernet_r50_769x769_80k_cityscapes
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-50
     crop size: (769,769)
@@ -146,7 +146,7 @@ Models:
   Config: configs/upernet/upernet_r50_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_80k_cityscapes/upernet_r50_769x769_80k_cityscapes_20200607_005107-82ae7d15.pth
 - Name: upernet_r101_769x769_80k_cityscapes
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-101
     crop size: (769,769)
@@ -160,7 +160,7 @@ Models:
   Config: configs/upernet/upernet_r101_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014-082fc334.pth
 - Name: upernet_r50_512x512_80k_ade20k
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-50
     crop size: (512,512)
@@ -182,7 +182,7 @@ Models:
   Config: configs/upernet/upernet_r50_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127-ecc8377b.pth
 - Name: upernet_r101_512x512_80k_ade20k
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-101
     crop size: (512,512)
@@ -204,7 +204,7 @@ Models:
   Config: configs/upernet/upernet_r101_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117-32e4db94.pth
 - Name: upernet_r50_512x512_160k_ade20k
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-50
     crop size: (512,512)
@@ -218,7 +218,7 @@ Models:
   Config: configs/upernet/upernet_r50_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_160k_ade20k/upernet_r50_512x512_160k_ade20k_20200615_184328-8534de8d.pth
 - Name: upernet_r101_512x512_160k_ade20k
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-101
     crop size: (512,512)
@@ -232,7 +232,7 @@ Models:
   Config: configs/upernet/upernet_r101_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951-91b32684.pth
 - Name: upernet_r50_512x512_20k_voc12aug
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-50
     crop size: (512,512)
@@ -254,7 +254,7 @@ Models:
   Config: configs/upernet/upernet_r50_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330-5b5890a7.pth
 - Name: upernet_r101_512x512_20k_voc12aug
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-101
     crop size: (512,512)
@@ -276,7 +276,7 @@ Models:
   Config: configs/upernet/upernet_r101_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629-f14e7f27.pth
 - Name: upernet_r50_512x512_40k_voc12aug
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-50
     crop size: (512,512)
@@ -290,7 +290,7 @@ Models:
   Config: configs/upernet/upernet_r50_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_40k_voc12aug/upernet_r50_512x512_40k_voc12aug_20200613_162257-ca9bcc6b.pth
 - Name: upernet_r101_512x512_40k_voc12aug
-  In Collection: upernet
+  In Collection: UPerNet
   Metadata:
     backbone: R-101
     crop size: (512,512)
