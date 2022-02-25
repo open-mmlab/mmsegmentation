@@ -74,7 +74,8 @@ model = dict(
             norm_cfg=norm_cfg,
             align_corners=False,
             loss_decode=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
+            sampler=dict(type='OHEMPixelSampler', thresh=0.9, min_kept=100000)),
     ],
 )
 # AdamW optimizer, no weight decay for position embedding & layer norm
