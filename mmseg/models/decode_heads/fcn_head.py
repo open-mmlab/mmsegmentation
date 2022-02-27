@@ -72,11 +72,25 @@ class FCNHead(BaseDecodeHead):
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg)
 
+    def _forward_feature(self, inputs):
+        """Forward function for feature maps before classifying each pixel with
+        ``self.cls_seg`` fc.
+
+        Args:
+            inputs (list[Tensor]): List of multi-level img features.
+
+        Returns:
+            feats (Tensor): A tensor of shape (batch_size, self.channels,
+                H, W) which is feature map for last layer of decoder head.
+        """
+        x = self._transform_inputs(inputs)
+        feats = self.convs(x)
+        if self.concat_input:
+            feats = self.conv_cat(torch.cat([x, feats], dim=1))
+        return feats
+
     def forward(self, inputs):
         """Forward function."""
-        x = self._transform_inputs(inputs)
-        output = self.convs(x)
-        if self.concat_input:
-            output = self.conv_cat(torch.cat([x, output], dim=1))
+        output = self._forward_feature(inputs)
         output = self.cls_seg(output)
         return output
