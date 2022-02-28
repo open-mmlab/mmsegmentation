@@ -247,7 +247,7 @@ class Resize(object):
         """Resize images with ``results['scale']``."""
         if self.keep_ratio:
             if self.min_size is not None:
-                # keep the shape is not less than crop_size
+                # TODO: .....
                 if min(results['scale']) < self.min_size:
                     new_short = self.min_size
                 else:
