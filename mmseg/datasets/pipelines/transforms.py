@@ -100,7 +100,7 @@ class Resize(object):
         keep_ratio (bool): Whether to keep the aspect ratio when resizing the
             image. Default: True
         min_size (int, optional): The minimum size for input and the shape
-            of the image and seg map will not be less than ``crop_szie``.
+            of the image and seg map will not be less than ``min_size``.
             It always be used in ``SETR`` algorithm to keep the shape.
             Default: None
     """
@@ -247,7 +247,7 @@ class Resize(object):
         """Resize images with ``results['scale']``."""
         if self.keep_ratio:
             if self.min_size is not None:
-                # TODO: .....
+                # TODO: support H not equal to w in crop size
                 if min(results['scale']) < self.min_size:
                     new_short = self.min_size
                 else:
