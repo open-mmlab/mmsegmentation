@@ -101,7 +101,9 @@ class Resize(object):
             image. Default: True
         min_size (int, optional): The minimum size for input and the shape
             of the image and seg map will not be less than ``min_size``.
-            It always be used in ``SETR`` algorithm to keep the shape.
+            As the shape of model input is fixed and images are resized
+            before crop, the image shape after resize must be bigger than the
+            input size.
             Default: None
     """
 
@@ -248,7 +250,7 @@ class Resize(object):
         if self.keep_ratio:
             if self.min_size is not None:
                 # TODO: Now 'min_size' is an 'int' which means the minimum
-                # shape of images is (min_size, min_size,3). 'min_size'
+                # shape of images is (min_size, min_size, 3). 'min_size'
                 # with tuple type will be supported, i.e. the width and
                 # height are not equal.
                 if min(results['scale']) < self.min_size:
