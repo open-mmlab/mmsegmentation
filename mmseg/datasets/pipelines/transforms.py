@@ -247,7 +247,10 @@ class Resize(object):
         """Resize images with ``results['scale']``."""
         if self.keep_ratio:
             if self.min_size is not None:
-                # TODO: support H not equal to w in crop size
+                # TODO: Now 'min_size' is an 'int' which means the minimum
+                # shape of images is (min_size, min_size,3). 'min_size'
+                # with tuple type will be supported, i.e. the width and
+                # height are not equal.
                 if min(results['scale']) < self.min_size:
                     new_short = self.min_size
                 else:
