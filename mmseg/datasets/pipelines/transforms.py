@@ -101,10 +101,9 @@ class Resize(object):
             image. Default: True
         min_size (int, optional): The minimum size for input and the shape
             of the image and seg map will not be less than ``min_size``.
-            As the shape of model input is fixed and images are resized
-            before crop, the image shape after resize must be bigger than the
-            input size.
-            Default: None
+            As the shape of model input is fixed like 'setr' and 'beit'
+            and images are resized before crop, the image shape after resize
+            must be bigger than the input size. Default: None
     """
 
     def __init__(self,
