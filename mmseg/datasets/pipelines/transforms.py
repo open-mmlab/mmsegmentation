@@ -101,9 +101,9 @@ class Resize(object):
             image. Default: True
         min_size (int, optional): The minimum size for input and the shape
             of the image and seg map will not be less than ``min_size``.
-            As the shape of model input is fixed like 'setr' and 'beit'
-            and images are resized before crop, the image shape after resize
-            must be bigger than the input size. Default: None
+            As the shape of model input is fixed like 'setr' and 'beit'.
+            Following the setting in these models, resized images must be
+            bigger than the crop size in `slide_inference`. Default: None
     """
 
     def __init__(self,
@@ -272,6 +272,7 @@ class Resize(object):
             h, w = results['img'].shape[:2]
             w_scale = new_w / w
             h_scale = new_h / h
+            print(img.shape[:2])
         else:
             img, w_scale, h_scale = mmcv.imresize(
                 results['img'], results['scale'], return_scale=True)
