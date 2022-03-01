@@ -84,10 +84,17 @@ class UPerHead(BaseDecodeHead):
 
         return output
 
-    def forward_feature(self, inputs):
-        """Feature map before `self.cls_seg` and learnable semantic kernels can
-        be both output for kernel updation."""
+    def _forward_feature(self, inputs):
+        """Forward function for feature maps before classifying each pixel with
+        ``self.cls_seg`` fc.
 
+        Args:
+            inputs (list[Tensor]): List of multi-level img features.
+
+        Returns:
+            feats (Tensor): A tensor of shape (batch_size, self.channels,
+                H, W) which is feature map for last layer of decoder head.
+        """
         inputs = self._transform_inputs(inputs)
 
         # build laterals
@@ -102,7 +109,7 @@ class UPerHead(BaseDecodeHead):
         used_backbone_levels = len(laterals)
         for i in range(used_backbone_levels - 1, 0, -1):
             prev_shape = laterals[i - 1].shape[2:]
-            laterals[i - 1] += resize(
+            laterals[i - 1] = laterals[i - 1] + resize(
                 laterals[i],
                 size=prev_shape,
                 mode='bilinear',
@@ -128,6 +135,6 @@ class UPerHead(BaseDecodeHead):
 
     def forward(self, inputs):
         """Forward function."""
-        output = self.forward_feature(inputs)
+        output = self._forward_feature(inputs)
         output = self.cls_seg(output)
         return output
