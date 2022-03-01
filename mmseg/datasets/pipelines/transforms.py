@@ -272,7 +272,6 @@ class Resize(object):
             h, w = results['img'].shape[:2]
             w_scale = new_w / w
             h_scale = new_h / h
-            print(img.shape[:2])
         else:
             img, w_scale, h_scale = mmcv.imresize(
                 results['img'], results['scale'], return_scale=True)
