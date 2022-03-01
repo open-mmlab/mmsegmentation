@@ -2,36 +2,10 @@
 import pytest
 import torch
 import torch.nn as nn
+from mmcls.models.backbones import ConvNeXt
 
 from mmseg.core.utils.layer_decay_optimizer_constructor import \
     LearningRateDecayOptimizerConstructor
-
-
-class SubModel(nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(2, 2, kernel_size=1, groups=2)
-        self.gn = nn.GroupNorm(2, 2)
-        self.param1 = nn.Parameter(torch.ones(1))
-
-    def forward(self, x):
-        return x
-
-
-class ExampleModel(nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.param1 = nn.Parameter(torch.ones(1))
-        self.conv1 = nn.Conv2d(3, 4, kernel_size=1, bias=False)
-        self.conv2 = nn.Conv2d(4, 2, kernel_size=1)
-        self.bn = nn.BatchNorm2d(2)
-        self.sub = SubModel()
-
-    def forward(self, x):
-        return x
-
 
 base_lr = 0.01
 base_wd = 0.0001
@@ -42,7 +16,7 @@ class PseudoDataParallel(nn.Module):
 
     def __init__(self):
         super().__init__()
-        self.module = ExampleModel()
+        self.module = ConvNeXt()
 
     def forward(self, x):
         return x
@@ -55,11 +29,7 @@ def check_default_optimizer(optimizer, model, prefix=''):
     assert optimizer.defaults['weight_decay'] == base_wd
     param_groups = optimizer.param_groups[0]
 
-    param_names = [
-        'param1', 'conv1.weight', 'conv2.weight', 'conv2.bias', 'bn.weight',
-        'bn.bias', 'sub.param1', 'sub.conv1.weight', 'sub.conv1.bias',
-        'sub.gn.weight', 'sub.gn.bias'
-    ]
+    param_names = list(model.state_dict().keys())
     param_dict = dict(model.named_parameters())
     assert len(param_groups['params']) == len(param_names)
     for i in range(len(param_groups['params'])):
@@ -68,7 +38,7 @@ def check_default_optimizer(optimizer, model, prefix=''):
 
 
 def test_learning_rate_decay_optimizer_constructor():
-    model = ExampleModel()
+    model = ConvNeXt()
 
     with pytest.raises(TypeError):
         # optimizer_cfg must be a dict
@@ -107,21 +77,21 @@ def test_learning_rate_decay_optimizer_constructor():
     paramwise_cfg = None
     optim_constructor = LearningRateDecayOptimizerConstructor(optimizer_cfg)
     optimizer = optim_constructor(model)
-    check_default_optimizer(optimizer, model, prefix='module.')
+    check_default_optimizer(optimizer, model)
 
     # basic config with DataParallel
     if torch.cuda.is_available():
-        model = torch.nn.DataParallel(ExampleModel())
+        model = torch.nn.DataParallel(ConvNeXt())
         optimizer_cfg = dict(
             type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
         paramwise_cfg = None
         optim_constructor = LearningRateDecayOptimizerConstructor(
             optimizer_cfg)
         optimizer = optim_constructor(model)
-        check_default_optimizer(optimizer, model, prefix='module.')
+        check_default_optimizer(optimizer, model)
 
     # Empty paramwise_cfg with ExampleModel
-    model = ExampleModel()
+    model = ConvNeXt()
     optimizer_cfg = dict(
         type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
     paramwise_cfg = dict()
@@ -131,7 +101,7 @@ def test_learning_rate_decay_optimizer_constructor():
     check_default_optimizer(optimizer, model)
 
     # Empty paramwise_cfg with ExampleModel and no grad
-    model = ExampleModel()
+    model = ConvNeXt()
     for param in model.parameters():
         param.requires_grad = False
     optimizer_cfg = dict(
@@ -144,7 +114,7 @@ def test_learning_rate_decay_optimizer_constructor():
     # WIP TODO: ADD UNIT TEST
 
     # # paramwise_cfg with ExampleModel
-    # model = ExampleModel()
+    # model = ConvNeXt()
     # optimizer_cfg = dict(
     #     type='AdamW', lr=base_lr, weight_decay=base_wd, momentum=momentum,
     #     betas=(0.9, 0.999),
