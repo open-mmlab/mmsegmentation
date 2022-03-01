@@ -48,8 +48,13 @@ def accuracy(pred, target, topk=1, thresh=None, ignore_index=None):
     res = []
     for k in topk:
         correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
-        res.append(
-            correct_k.mul_(100.0 / target[target != ignore_index].numel()))
+        total_num = target[target != ignore_index].numel()
+        # Avoid causing ZeroDivisionError when all pixels
+        # of an image are ignored
+        if total_num != 0:
+            res.append(correct_k.mul_(100.0 / total_num))
+        else:
+            res.append(100.0)
     return res[0] if return_single else res
 
 
