@@ -100,10 +100,10 @@ class Resize(object):
         keep_ratio (bool): Whether to keep the aspect ratio when resizing the
             image. Default: True
         min_size (int, optional): The minimum size for input and the shape
-            of the image and seg map will not be less than `min_size`.
+            of the image and seg map will not be less than ``min_size``.
             As the shape of model input is fixed like 'SETR' and 'BEiT'.
             Following the setting in these models, resized images must be
-            bigger than the crop size in `slide_inference`. Default: None
+            bigger than the crop size in ``slide_inference``. Default: None
     """
 
     def __init__(self,
