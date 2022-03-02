@@ -27,7 +27,11 @@ class ConvNeXtExampleModel(nn.Module):
         self.backbone.mask_token = nn.Parameter(torch.ones(1))
         self.backbone.pos_embed = nn.Parameter(torch.ones(1))
         self.backbone.stem_norm = nn.Parameter(torch.ones(1))
-        self.backbone.downsample_norm = nn.Parameter(torch.ones(1))
+        self.backbone.downsample_norm0 = nn.BatchNorm2d(2)
+        self.backbone.downsample_norm1 = nn.BatchNorm2d(2)
+        self.backbone.downsample_norm2 = nn.BatchNorm2d(2)
+        self.backbone.lin = nn.Parameter(torch.ones(1))
+        self.backbone.lin.requires_grad = False
 
         self.decode_head = UPerHead(
             in_channels=[128, 256, 512, 1024],
@@ -71,7 +75,7 @@ def test_convnext_learning_rate_decay_optimizer_constructor():
     check_convnext_adamw_optimizer(optimizer)
 
     layerwise_paramwise_cfg = dict(
-        decay_rate=0.9, decay_type='stage_wise', num_layers=6)
+        decay_rate=0.9, decay_type='layer_wise', num_layers=6)
     optim_constructor = LearningRateDecayOptimizerConstructor(
         optimizer_cfg, layerwise_paramwise_cfg)
     optimizer = optim_constructor(model)
