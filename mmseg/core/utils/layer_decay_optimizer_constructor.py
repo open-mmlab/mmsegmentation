@@ -17,7 +17,7 @@ def get_num_layer_layer_wise(var_name, num_max_layer=12):
 
     Returns:
         layer_id (int): The id number corresponding to different
-            learning rate in ``LearningRateDecayOptimizerConstructor``.
+        learning rate in ``LearningRateDecayOptimizerConstructor``.
     """
 
     if var_name in ('backbone.cls_token', 'backbone.mask_token',

@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import pytest
 import torch
 import torch.nn as nn
 from mmcls.models.backbones import ConvNeXt
