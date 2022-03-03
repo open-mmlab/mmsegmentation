@@ -380,23 +380,28 @@ fcn
 ```
 
 ## Confusion Matrix
+
 In order to generate and plot a ```nxn``` confusion matrix where ```n``` is the number of classes, you can follow the steps:
 
 ### 1.Generate a prediction result in pkl format using `test.py`
+
 ```shell
 python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${PATH_TO_RESULT_FILE}]
 ```
+
 Note that the argument for ```--eval``` should be  ```None``` so that the result file contains numpy type of prediction results. The usage for distribution test is just the same.
 
 Example:
+
 ```shell
 python tools/test.py \
 configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py \
 checkpoint/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth \
---out result/pred_result.pkl \
+--out result/pred_result.pkl
 ```
 
 ### 2. Use ```confusion_matrix.py``` to generate and plot a confusion matrix
+
 ```shell
 python tools/confusion_matrix.py ${CONFIG_FILE} ${PATH_TO_RESULT_FILE} ${SAVE_DIR} --show
 ```
@@ -411,6 +416,7 @@ Description of arguments:
 - `--cfg_options`: Custom options to replace the config file.
 
 Example:
+
 ```shell
 python tools/confusion_matrix.py \
 configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py \
