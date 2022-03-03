@@ -16,7 +16,7 @@ def get_num_layer_layer_wise(var_name, num_max_layer=12):
         num_max_layer (int): Maximum number of backbone layers.
 
     Returns:
-        layer_id (int): The id number corresponding to different
+        int: The id number corresponding to different
         learning rate in ``LearningRateDecayOptimizerConstructor``.
     """
 
@@ -70,6 +70,9 @@ def get_num_layer_stage_wise(var_name, num_max_layer):
     Args:
         var_name (str): The key of the model.
         num_max_layer (int): Maximum number of backbone layers.
+    Returns:
+        int: The id number corresponding to different
+        learning rate in ``LearningRateDecayOptimizerConstructor``.
     """
 
     if var_name in ('backbone.cls_token', 'backbone.mask_token',
