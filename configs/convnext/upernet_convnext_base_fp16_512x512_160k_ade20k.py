@@ -3,21 +3,9 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
-checkpoint_file = './pretrain/convnext-tiny_3rdparty_32xb128_in1k_20220124-18abde00.pth'  # noqa
 model = dict(
-    backbone=dict(
-        type='mmcls.ConvNeXt',
-        arch='tiny',
-        out_indices=[0, 1, 2, 3],
-        drop_path_rate=0.4,
-        layer_scale_init_value=1.0,
-        gap_before_final_norm=False,
-        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file)),
-    decode_head=dict(
-        in_channels=[96, 192, 384, 768],
-        num_classes=150,
-    ),
-    auxiliary_head=dict(in_channels=384, num_classes=150),
+    decode_head=dict(in_channels=[128, 256, 512, 1024], num_classes=150),
+    auxiliary_head=dict(in_channels=512, num_classes=150),
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(341, 341)),
 )
 
@@ -31,7 +19,7 @@ optimizer = dict(
     paramwise_cfg={
         'decay_rate': 0.9,
         'decay_type': 'stage_wise',
-        'num_layers': 6
+        'num_layers': 12
     })
 
 lr_config = dict(
@@ -46,3 +34,7 @@ lr_config = dict(
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)
+# fp16 settings
+optimizer_config = dict(type='Fp16OptimizerHook', loss_scale='dynamic')
+# fp16 placeholder
+fp16 = dict()

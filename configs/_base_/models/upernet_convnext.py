@@ -1,6 +1,6 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 custom_imports = dict(imports='mmcls.models', allow_failed_imports=False)
-checkpoint_file = './pretrain/convnext-base_3rdparty_32xb128_in1k_20220124-d0915162.pth'  # noqa
+checkpoint_file = './pretrain/convnext-base_3rdparty_32xb128-noema_in1k_20220301-2a0ee547.pth'  # noqa
 model = dict(
     type='EncoderDecoder',
     pretrained=None,
@@ -11,7 +11,9 @@ model = dict(
         drop_path_rate=0.4,
         layer_scale_init_value=1.0,
         gap_before_final_norm=False,
-        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file)),
+        init_cfg=dict(
+            type='Pretrained', checkpoint=checkpoint_file,
+            prefix='backbone.')),
     decode_head=dict(
         type='UPerHead',
         in_channels=[128, 256, 512, 1024],

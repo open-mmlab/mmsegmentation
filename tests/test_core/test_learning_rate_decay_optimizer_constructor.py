@@ -135,8 +135,11 @@ class ConvNeXtExampleModel(nn.Module):
         self.backbone.downsample_norm2 = nn.BatchNorm2d(2)
         self.backbone.lin = nn.Parameter(torch.ones(1))
         self.backbone.lin.requires_grad = False
-        self.backbone.downsample_layers = nn.Sequential(
-            nn.Conv2d(3, 4, kernel_size=1, bias=True))
+
+        self.backbone.downsample_layers = nn.ModuleList()
+        for i in range(4):
+            stage = nn.Sequential(nn.Conv2d(3, 4, kernel_size=1, bias=True))
+            self.backbone.downsample_layers.append(stage)
 
         self.decode_head = nn.Conv2d(2, 2, kernel_size=1, groups=2)
 
