@@ -184,7 +184,7 @@ class EDFT(BaseModule):
         assert (in_channels == 4)
 
         self.num_heads = kwargs["num_heads"]
-        self.num_stages = kwargs["num_stages"]
+        self.num_stages = 4
 
         self.weight = kwargs["weight"]
         self.overlap = kwargs["overlap"]
@@ -203,7 +203,7 @@ class EDFT(BaseModule):
         elif (self.backbone == "Twins_svt"):
             self.color = SVT(3, **kwargs)
             self.embed_dims = kwargs["embed_dims"][0]
-            self.num_heads = self.num_heads / 2
+            self.num_heads = [1,2,4,8]
         else:
             raise NotImplementedError("{} backbone is not supported".format(
                 self.backbone))
