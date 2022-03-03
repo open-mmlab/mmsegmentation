@@ -3,14 +3,115 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.core.utils.layer_decay_optimizer_constructor import (
-    LearningRateDecayOptimizerConstructor, get_num_layer_layer_wise,
-    get_num_layer_stage_wise)
+from mmseg.core.utils.layer_decay_optimizer_constructor import \
+    LearningRateDecayOptimizerConstructor
 
-base_lr = 0.0001
+base_lr = 1000000000
+decay_rate = 9
 base_wd = 0.05
-momentum = 0.9
 weight_decay = 0.05
+
+stage_wise_gt_lst = [
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 4782969
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 531441
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 531441
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 59049
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 59049
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 6561
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 6561
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 729
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 729
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 1
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 4782969
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 1
+    },
+]
+
+layer_wise_gt_lst = [
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 4782969
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 531441
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 531441
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 59049
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 59049
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 6561
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 6561
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 9
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 9
+    },
+    {
+        'weight_decay': 0.0,
+        'lr_scale': 1
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 4782969
+    },
+    {
+        'weight_decay': 0.05,
+        'lr_scale': 1
+    },
+]
 
 
 class ConvNeXtExampleModel(nn.Module):
@@ -50,39 +151,15 @@ class PseudoDataParallel(nn.Module):
         return x
 
 
-def check_convnext_adamw_optimizer(optimizer, paramwise_cfg):
+def check_convnext_adamw_optimizer(optimizer, gt_lst):
     assert isinstance(optimizer, torch.optim.AdamW)
     assert optimizer.defaults['lr'] == base_lr
     assert optimizer.defaults['weight_decay'] == base_wd
     param_groups = optimizer.param_groups
     assert len(param_groups) == 12
-    for param_dict in param_groups:
-
-        # Just pick up the first variable in each groups
-        example_param_name = param_dict['param_names'][0]
-        example_param = param_dict['params'][0]
-
-        num_layers = paramwise_cfg['num_layers'] + 2
-        if len(example_param.shape) == 1 or example_param_name.endswith(
-                '.bias') or example_param_name in ('pos_embed', 'cls_token'):
-            group_name = 'no_decay'
-            this_weight_decay = 0.
-        else:
-            group_name = 'decay'
-            this_weight_decay = weight_decay
-
-        if paramwise_cfg['decay_type'] == 'layer_wise':
-            layer_id = get_num_layer_layer_wise(example_param_name,
-                                                paramwise_cfg['num_layers'])
-        elif paramwise_cfg['decay_type'] == 'stage_wise':
-            layer_id = get_num_layer_stage_wise(example_param_name, num_layers)
-        group_name = f'layer_{layer_id}_{group_name}'
-
-        scale = paramwise_cfg['decay_rate']**(num_layers - layer_id - 1)
-        assert this_weight_decay == param_dict['weight_decay']
-        assert scale == param_dict['lr_scale']
-        assert scale * optimizer.defaults['lr'] == param_dict['lr']
-        assert group_name == param_dict['group_name']
+    for i, param_dict in enumerate(param_groups):
+        assert param_dict['weight_decay'] == gt_lst[i]['weight_decay']
+        assert param_dict['lr_scale'] == gt_lst[i]['lr_scale']
 
 
 def test_convnext_learning_rate_decay_optimizer_constructor():
@@ -90,17 +167,17 @@ def test_convnext_learning_rate_decay_optimizer_constructor():
     # paramwise_cfg with ConvNeXtExampleModel
     model = ConvNeXtExampleModel()
     optimizer_cfg = dict(
-        type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.05)
+        type='AdamW', lr=base_lr, betas=(0.9, 0.999), weight_decay=0.05)
     stagewise_paramwise_cfg = dict(
-        decay_rate=0.9, decay_type='stage_wise', num_layers=6)
+        decay_rate=decay_rate, decay_type='stage_wise', num_layers=6)
     optim_constructor = LearningRateDecayOptimizerConstructor(
         optimizer_cfg, stagewise_paramwise_cfg)
     optimizer = optim_constructor(model)
-    check_convnext_adamw_optimizer(optimizer, stagewise_paramwise_cfg)
+    check_convnext_adamw_optimizer(optimizer, stage_wise_gt_lst)
 
     layerwise_paramwise_cfg = dict(
-        decay_rate=0.9, decay_type='layer_wise', num_layers=6)
+        decay_rate=decay_rate, decay_type='layer_wise', num_layers=6)
     optim_constructor = LearningRateDecayOptimizerConstructor(
         optimizer_cfg, layerwise_paramwise_cfg)
     optimizer = optim_constructor(model)
-    check_convnext_adamw_optimizer(optimizer, layerwise_paramwise_cfg)
+    check_convnext_adamw_optimizer(optimizer, layer_wise_gt_lst)
