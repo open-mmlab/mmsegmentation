@@ -13,11 +13,11 @@
 
 - Support Support ConvNeXt: A ConvNet for the 2020s. ([#1216](https://github.com/open-mmlab/mmsegmentation/pull/1216))
 - Support iSAID aerial Dataset. ([#1115](https://github.com/open-mmlab/mmsegmentation/pull/1115)
-- Support kernel updation for some decoder heads (ASPP, FCN, PSP, UPer). ([#1299](https://github.com/open-mmlab/mmsegmentation/pull/1299))
 - Generating and plotting confusion matrix. ([#1301](https://github.com/open-mmlab/mmsegmentation/pull/1301))
 
 **Improvements**
 
+- Refactor some decoder heads (ASPP, FCN, PSP, UPer): Split forward function into `_forward_feature` and `cls_seg`. ([#1299](https://github.com/open-mmlab/mmsegmentation/pull/1299))
 - Add `min_size` arg in `Resize` to keep the shape after resize bigger than slide window. ([#1318](https://github.com/open-mmlab/mmsegmentation/pull/1318))
 - Revise pre-commit-hooks. ([#1315](https://github.com/open-mmlab/mmsegmentation/pull/1315))
 - Add win-ci. ([#1296](https://github.com/open-mmlab/mmsegmentation/pull/1296))
