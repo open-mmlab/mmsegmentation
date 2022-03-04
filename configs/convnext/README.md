@@ -68,4 +68,4 @@ The pre-trained models on ImageNet-1k or ImageNet-21k are used to fine-tune on t
 
 Note:
 
-- `Mem (GB)` with \* is collected when `cudnn_benchmark=True`.
+- `Mem (GB)` with \* is collected when `cudnn_benchmark=True`, and hardware is V100.

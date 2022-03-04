@@ -6,112 +6,86 @@ from mmcv.cnn import ConvModule
 from mmseg.core.utils.layer_decay_optimizer_constructor import \
     LearningRateDecayOptimizerConstructor
 
-base_lr = 1000000000
-decay_rate = 9
+base_lr = 1
+decay_rate = 2
 base_wd = 0.05
 weight_decay = 0.05
 
-stage_wise_gt_lst = [
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 4782969
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 531441
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 531441
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 59049
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 59049
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 6561
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 6561
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 729
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 729
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 1
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 4782969
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 1
-    },
-]
+stage_wise_gt_lst = [{
+    'weight_decay': 0.0,
+    'lr_scale': 128
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 1
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 64
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 64
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 32
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 32
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 16
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 16
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 8
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 8
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 128
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 1
+}]
 
-layer_wise_gt_lst = [
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 4782969
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 531441
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 531441
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 59049
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 59049
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 6561
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 6561
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 9
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 9
-    },
-    {
-        'weight_decay': 0.0,
-        'lr_scale': 1
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 4782969
-    },
-    {
-        'weight_decay': 0.05,
-        'lr_scale': 1
-    },
-]
+layer_wise_gt_lst = [{
+    'weight_decay': 0.0,
+    'lr_scale': 128
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 1
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 64
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 64
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 32
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 32
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 16
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 16
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 2
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 2
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 128
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 1
+}]
 
 
 class ConvNeXtExampleModel(nn.Module):
@@ -163,6 +137,7 @@ def check_convnext_adamw_optimizer(optimizer, gt_lst):
     for i, param_dict in enumerate(param_groups):
         assert param_dict['weight_decay'] == gt_lst[i]['weight_decay']
         assert param_dict['lr_scale'] == gt_lst[i]['lr_scale']
+        assert param_dict['lr_scale'] == param_dict['lr']
 
 
 def test_convnext_learning_rate_decay_optimizer_constructor():
