@@ -7,6 +7,7 @@
 
 - Officially Support ConvNeXt: A ConvNet for the 2020s. Please use the latest MMClassification (0.21.0) to try it out.
 - Support iSAID aerial Dataset.
+- Officially Support inference on Windows OS by adding win-ci.
 
 **New Features**
 
@@ -19,6 +20,7 @@
 
 - Add `min_size` arg in `Resize` to keep the shape after resize bigger than slide window. ([#1318](https://github.com/open-mmlab/mmsegmentation/pull/1318))
 - Revise pre-commit-hooks. ([#1315](https://github.com/open-mmlab/mmsegmentation/pull/1315))
+- Add win-ci. ([#1296](https://github.com/open-mmlab/mmsegmentation/pull/1296))
 
 **Bug Fixes**
 
