@@ -1,22 +1,6 @@
-Collections:
-- Name: convnext
-  Metadata:
-    Training Data:
-    - Usage
-    - Pre-trained Models
-    - ADE20K
-  Paper:
-    URL: https://arxiv.org/abs/2201.03545
-    Title: A ConvNet for the 2020s
-  README: configs/convnext/README.md
-  Code:
-    URL: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
-    Version: v0.20.1
-  Converted From:
-    Code: https://github.com/facebookresearch/ConvNeXt
 Models:
 - Name: upernet_convnext_tiny_fp16_512x512_160k_ade20k
-  In Collection: convnext
+  In Collection: UperNet
   Metadata:
     backbone: ConvNeXt-T
     crop size: (512,512)
@@ -38,7 +22,7 @@ Models:
   Config: configs/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k/upernet_convnext_tiny_fp16_512x512_160k_ade20k_20220227_124553-cad485de.pth
 - Name: upernet_convnext_small_fp16_512x512_160k_ade20k
-  In Collection: convnext
+  In Collection: UperNet
   Metadata:
     backbone: ConvNeXt-S
     crop size: (512,512)
@@ -60,7 +44,7 @@ Models:
   Config: configs/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k/upernet_convnext_small_fp16_512x512_160k_ade20k_20220227_131208-1b1e394f.pth
 - Name: upernet_convnext_base_fp16_512x512_160k_ade20k
-  In Collection: convnext
+  In Collection: UperNet
   Metadata:
     backbone: ConvNeXt-B
     crop size: (512,512)
@@ -82,7 +66,7 @@ Models:
   Config: configs/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k/upernet_convnext_base_fp16_512x512_160k_ade20k_20220227_181227-02a24fc6.pth
 - Name: upernet_convnext_base_fp16_640x640_160k_ade20k
-  In Collection: convnext
+  In Collection: UperNet
   Metadata:
     backbone: ConvNeXt-B
     crop size: (640,640)
@@ -104,7 +88,7 @@ Models:
   Config: configs/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k/upernet_convnext_base_fp16_640x640_160k_ade20k_20220227_182859-9280e39b.pth
 - Name: upernet_convnext_large_fp16_640x640_160k_ade20k
-  In Collection: convnext
+  In Collection: UperNet
   Metadata:
     backbone: ConvNeXt-L
     crop size: (640,640)
@@ -126,7 +110,7 @@ Models:
   Config: configs/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k/upernet_convnext_large_fp16_640x640_160k_ade20k_20220226_040532-e57aa54d.pth
 - Name: upernet_convnext_xlarge_fp16_640x640_160k_ade20k
-  In Collection: convnext
+  In Collection: UperNet
   Metadata:
     backbone: ConvNeXt-XL
     crop size: (640,640)
