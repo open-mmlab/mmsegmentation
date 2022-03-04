@@ -1,5 +1,5 @@
 Collections:
-- Name: bisenetv1
+- Name: BiSeNetV1
   Metadata:
     Training Data:
     - Cityscapes
@@ -15,7 +15,7 @@ Collections:
     Code: https://github.com/ycszen/TorchSeg/tree/master/model/bisenet
 Models:
 - Name: bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-18-D32
     crop size: (1024,1024)
@@ -37,7 +37,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes_20210922_172239-c55e78e2.pth
 - Name: bisenetv1_r18-d32_in1k-pre_4x4_1024x1024_160k_cityscapes
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-18-D32
     crop size: (1024,1024)
@@ -59,7 +59,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x4_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x4_1024x1024_160k_cityscapes/bisenetv1_r18-d32_in1k-pre_4x4_1024x1024_160k_cityscapes_20210905_220251-8ba80eff.pth
 - Name: bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-18-D32
     crop size: (1024,1024)
@@ -81,7 +81,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes_20210905_220322-bb8db75f.pth
 - Name: bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-50-D32
     crop size: (1024,1024)
@@ -103,7 +103,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes_20210923_222639-7b28a2a6.pth
 - Name: bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-50-D32
     crop size: (1024,1024)
@@ -125,7 +125,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes_20210917_234628-8b304447.pth
 - Name: bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-18-D32
     crop size: (512,512)
@@ -139,7 +139,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211022_054328-046aa2f2.pth
 - Name: bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-18-D32
     crop size: (512,512)
@@ -161,7 +161,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211023_013100-f700dbf7.pth
 - Name: bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-50-D32
     crop size: (512,512)
@@ -175,7 +175,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_040616-d2bb0df4.pth
 - Name: bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-50-D32
     crop size: (512,512)
@@ -197,7 +197,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_181932-66747911.pth
 - Name: bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-101-D32
     crop size: (512,512)
@@ -211,7 +211,7 @@ Models:
   Config: configs/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211102_164147-c6b32c3b.pth
 - Name: bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k
-  In Collection: bisenetv1
+  In Collection: BiSeNetV1
   Metadata:
     backbone: R-101-D32
     crop size: (512,512)

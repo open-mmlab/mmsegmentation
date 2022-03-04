@@ -1,5 +1,5 @@
 Collections:
-- Name: nonlocal_net
+- Name: NonLocalNet
   Metadata:
     Training Data:
     - Cityscapes
@@ -16,7 +16,7 @@ Collections:
     Code: https://github.com/facebookresearch/video-nonlocal-net
 Models:
 - Name: nonlocal_r50-d8_512x1024_40k_cityscapes
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -37,7 +37,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes/nonlocal_r50-d8_512x1024_40k_cityscapes_20200605_210748-c75e81e3.pth
 - Name: nonlocal_r101-d8_512x1024_40k_cityscapes
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -58,7 +58,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes/nonlocal_r101-d8_512x1024_40k_cityscapes_20200605_210748-d63729fa.pth
 - Name: nonlocal_r50-d8_769x769_40k_cityscapes
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -80,7 +80,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes/nonlocal_r50-d8_769x769_40k_cityscapes_20200530_045243-82ef6749.pth
 - Name: nonlocal_r101-d8_769x769_40k_cityscapes
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -102,7 +102,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes/nonlocal_r101-d8_769x769_40k_cityscapes_20200530_045348-8fe9a9dc.pth
 - Name: nonlocal_r50-d8_512x1024_80k_cityscapes
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -115,7 +115,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes/nonlocal_r50-d8_512x1024_80k_cityscapes_20200607_193518-d6839fae.pth
 - Name: nonlocal_r101-d8_512x1024_80k_cityscapes
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -128,7 +128,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes/nonlocal_r101-d8_512x1024_80k_cityscapes_20200607_183411-32700183.pth
 - Name: nonlocal_r50-d8_769x769_80k_cityscapes
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -142,7 +142,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes/nonlocal_r50-d8_769x769_80k_cityscapes_20200607_193506-1f9792f6.pth
 - Name: nonlocal_r101-d8_769x769_80k_cityscapes
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -156,7 +156,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes/nonlocal_r101-d8_769x769_80k_cityscapes_20200607_183428-0e1fa4f9.pth
 - Name: nonlocal_r50-d8_512x512_80k_ade20k
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -178,7 +178,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k/nonlocal_r50-d8_512x512_80k_ade20k_20200615_015801-5ae0aa33.pth
 - Name: nonlocal_r101-d8_512x512_80k_ade20k
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -200,7 +200,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k/nonlocal_r101-d8_512x512_80k_ade20k_20200615_015758-24105919.pth
 - Name: nonlocal_r50-d8_512x512_160k_ade20k
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -214,7 +214,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k/nonlocal_r50-d8_512x512_160k_ade20k_20200616_005410-baef45e3.pth
 - Name: nonlocal_r101-d8_512x512_160k_ade20k
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -228,7 +228,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20210827_221502-7881aa1a.pth
 - Name: nonlocal_r50-d8_512x512_20k_voc12aug
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -250,7 +250,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug/nonlocal_r50-d8_512x512_20k_voc12aug_20200617_222613-07f2a57c.pth
 - Name: nonlocal_r101-d8_512x512_20k_voc12aug
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -272,7 +272,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug/nonlocal_r101-d8_512x512_20k_voc12aug_20200617_222615-948c68ab.pth
 - Name: nonlocal_r50-d8_512x512_40k_voc12aug
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -286,7 +286,7 @@ Models:
   Config: configs/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug/nonlocal_r50-d8_512x512_40k_voc12aug_20200614_000028-0139d4a9.pth
 - Name: nonlocal_r101-d8_512x512_40k_voc12aug
-  In Collection: nonlocal_net
+  In Collection: NonLocalNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)

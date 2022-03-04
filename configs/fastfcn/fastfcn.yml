@@ -1,5 +1,5 @@
 Collections:
-- Name: fastfcn
+- Name: FastFCN
   Metadata:
     Training Data:
     - Cityscapes
@@ -15,7 +15,7 @@ Collections:
     Code: https://github.com/wuhuikai/FastFCN
 Models:
 - Name: fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -37,7 +37,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes_20210928_053722-5d1a2648.pth
 - Name: fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -52,7 +52,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes_20210924_214357-72220849.pth
 - Name: fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -74,7 +74,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes_20210928_053722-57749bed.pth
 - Name: fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -89,7 +89,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes_20210925_061841-77e87b0a.pth
 - Name: fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -111,7 +111,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes_20210928_030036-78da5046.pth
 - Name: fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -126,7 +126,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes_20210926_093217-e1eb6dbb.pth
 - Name: fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -148,7 +148,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k_20211013_190619-3aa40f2d.pth
 - Name: fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -162,7 +162,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k_20211008_152246-27036aee.pth
 - Name: fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -184,7 +184,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k_20210930_225137-993d07c8.pth
 - Name: fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -198,7 +198,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k_20211008_105455-e8f5a2fd.pth
 - Name: fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)
@@ -220,7 +220,7 @@ Models:
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k_20210930_225214-65aef6dd.pth
 - Name: fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k
-  In Collection: fastfcn
+  In Collection: FastFCN
   Metadata:
     backbone: R-50-D32
     crop size: (512,1024)

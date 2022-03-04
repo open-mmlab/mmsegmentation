@@ -9,7 +9,8 @@ model = dict(
     pretrained=None,
     backbone=dict(
         drop_rate=0.,
-        init_cfg=dict(type='Pretrained', checkpoint='mmcls://vit_large_p16')),
+        init_cfg=dict(
+            type='Pretrained', checkpoint='pretrain/vit_large_p16.pth')),
     auxiliary_head=[
         dict(
             type='SETRUPHead',

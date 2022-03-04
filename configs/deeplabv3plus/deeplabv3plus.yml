@@ -1,5 +1,5 @@
 Collections:
-- Name: deeplabv3plus
+- Name: DeepLabV3+
   Metadata:
     Training Data:
     - Cityscapes
@@ -10,6 +10,7 @@ Collections:
     - LoveDA
     - Potsdam
     - Vaihingen
+    - iSAID
   Paper:
     URL: https://arxiv.org/abs/1802.02611
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
@@ -21,7 +22,7 @@ Collections:
     Code: https://github.com/tensorflow/models/tree/master/research/deeplab
 Models:
 - Name: deeplabv3plus_r50-d8_512x1024_40k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -43,7 +44,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes/deeplabv3plus_r50-d8_512x1024_40k_cityscapes_20200605_094610-d222ffcd.pth
 - Name: deeplabv3plus_r101-d8_512x1024_40k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -65,7 +66,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes/deeplabv3plus_r101-d8_512x1024_40k_cityscapes_20200605_094614-3769eecf.pth
 - Name: deeplabv3plus_r50-d8_769x769_40k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -87,7 +88,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes/deeplabv3plus_r50-d8_769x769_40k_cityscapes_20200606_114143-1dcb0e3c.pth
 - Name: deeplabv3plus_r101-d8_769x769_40k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -109,7 +110,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes/deeplabv3plus_r101-d8_769x769_40k_cityscapes_20200606_114304-ff414b9e.pth
 - Name: deeplabv3plus_r18-d8_512x1024_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-18-D8
     crop size: (512,1024)
@@ -131,7 +132,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes/deeplabv3plus_r18-d8_512x1024_80k_cityscapes_20201226_080942-cff257fe.pth
 - Name: deeplabv3plus_r50-d8_512x1024_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -145,7 +146,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes/deeplabv3plus_r50-d8_512x1024_80k_cityscapes_20200606_114049-f9fb496d.pth
 - Name: deeplabv3plus_r101-d8_512x1024_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -159,7 +160,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_20200606_114143-068fcfe9.pth
 - Name: deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -180,7 +181,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-f1104f4b.pth
 - Name: deeplabv3plus_r18-d8_769x769_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-18-D8
     crop size: (769,769)
@@ -202,7 +203,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_769x769_80k_cityscapes/deeplabv3plus_r18-d8_769x769_80k_cityscapes_20201226_083346-f326e06a.pth
 - Name: deeplabv3plus_r50-d8_769x769_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -216,7 +217,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes/deeplabv3plus_r50-d8_769x769_80k_cityscapes_20200606_210233-0e9dfdc4.pth
 - Name: deeplabv3plus_r101-d8_769x769_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -230,7 +231,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20200607_000405-a7573d20.pth
 - Name: deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D16-MG124
     crop size: (512,1024)
@@ -252,7 +253,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes_20200908_005644-cf9ce186.pth
 - Name: deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D16-MG124
     crop size: (512,1024)
@@ -267,7 +268,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes_20200908_005644-ee6158e0.pth
 - Name: deeplabv3plus_r18b-d8_512x1024_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-18b-D8
     crop size: (512,1024)
@@ -289,7 +290,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes_20201226_090828-e451abd9.pth
 - Name: deeplabv3plus_r50b-d8_512x1024_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50b-D8
     crop size: (512,1024)
@@ -311,7 +312,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes_20201225_213645-a97e4e43.pth
 - Name: deeplabv3plus_r101b-d8_512x1024_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101b-D8
     crop size: (512,1024)
@@ -333,7 +334,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes_20201226_190843-9c3c93a4.pth
 - Name: deeplabv3plus_r18b-d8_769x769_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-18b-D8
     crop size: (769,769)
@@ -355,7 +356,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes_20201226_151312-2c868aff.pth
 - Name: deeplabv3plus_r50b-d8_769x769_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50b-D8
     crop size: (769,769)
@@ -377,7 +378,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50b-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_769x769_80k_cityscapes/deeplabv3plus_r50b-d8_769x769_80k_cityscapes_20201225_224655-8b596d1c.pth
 - Name: deeplabv3plus_r101b-d8_769x769_80k_cityscapes
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101b-D8
     crop size: (769,769)
@@ -399,7 +400,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes/deeplabv3plus_r101b-d8_769x769_80k_cityscapes_20201226_205041-227cdf7c.pth
 - Name: deeplabv3plus_r50-d8_512x512_80k_ade20k
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -421,7 +422,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028-bf1400d8.pth
 - Name: deeplabv3plus_r101-d8_512x512_80k_ade20k
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -443,7 +444,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k/deeplabv3plus_r101-d8_512x512_80k_ade20k_20200615_014139-d5730af7.pth
 - Name: deeplabv3plus_r50-d8_512x512_160k_ade20k
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -457,7 +458,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k/deeplabv3plus_r50-d8_512x512_160k_ade20k_20200615_124504-6135c7e0.pth
 - Name: deeplabv3plus_r101-d8_512x512_160k_ade20k
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -471,7 +472,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k/deeplabv3plus_r101-d8_512x512_160k_ade20k_20200615_123232-38ed86bb.pth
 - Name: deeplabv3plus_r50-d8_512x512_20k_voc12aug
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -493,7 +494,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug/deeplabv3plus_r50-d8_512x512_20k_voc12aug_20200617_102323-aad58ef1.pth
 - Name: deeplabv3plus_r101-d8_512x512_20k_voc12aug
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -515,7 +516,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug/deeplabv3plus_r101-d8_512x512_20k_voc12aug_20200617_102345-c7ff3d56.pth
 - Name: deeplabv3plus_r50-d8_512x512_40k_voc12aug
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -529,7 +530,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug/deeplabv3plus_r50-d8_512x512_40k_voc12aug_20200613_161759-e1b43aa9.pth
 - Name: deeplabv3plus_r101-d8_512x512_40k_voc12aug
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -543,7 +544,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug/deeplabv3plus_r101-d8_512x512_40k_voc12aug_20200613_205333-faf03387.pth
 - Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
@@ -564,7 +565,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context/deeplabv3plus_r101-d8_480x480_40k_pascal_context_20200911_165459-d3c8a29e.pth
 - Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
@@ -578,7 +579,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context/deeplabv3plus_r101-d8_480x480_80k_pascal_context_20200911_155322-145d3ee8.pth
 - Name: deeplabv3plus_r101-d8_480x480_40k_pascal_context_59
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
@@ -592,7 +593,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59_20210416_111233-ed937f15.pth
 - Name: deeplabv3plus_r101-d8_480x480_80k_pascal_context_59
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (480,480)
@@ -606,7 +607,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59_20210416_111127-7ca0331d.pth
 - Name: deeplabv3plus_r18-d8_512x512_80k_loveda
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-18-D8
     crop size: (512,512)
@@ -628,7 +629,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_loveda/deeplabv3plus_r18-d8_512x512_80k_loveda_20211104_132800-ce0fa0ca.pth
 - Name: deeplabv3plus_r50-d8_512x512_80k_loveda
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -650,7 +651,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda/deeplabv3plus_r50-d8_512x512_80k_loveda_20211105_080442-f0720392.pth
 - Name: deeplabv3plus_r101-d8_512x512_80k_loveda
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -672,7 +673,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda/deeplabv3plus_r101-d8_512x512_80k_loveda_20211105_110759-4c1f297e.pth
 - Name: deeplabv3plus_r18-d8_512x512_80k_potsdam
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-18-D8
     crop size: (512,512)
@@ -694,7 +695,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam/deeplabv3plus_r18-d8_512x512_80k_potsdam_20211219_020601-75fd5bc3.pth
 - Name: deeplabv3plus_r50-d8_512x512_80k_potsdam
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -716,7 +717,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam/deeplabv3plus_r50-d8_512x512_80k_potsdam_20211219_031508-7e7a2b24.pth
 - Name: deeplabv3plus_r101-d8_512x512_80k_potsdam
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -738,7 +739,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam/deeplabv3plus_r101-d8_512x512_80k_potsdam_20211219_031508-8b112708.pth
 - Name: deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-18-D8
     crop size: (512,512)
@@ -760,7 +761,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen_20211231_230805-7626a263.pth
 - Name: deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -782,7 +783,7 @@ Models:
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen_20211231_230816-5040938d.pth
 - Name: deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen
-  In Collection: deeplabv3plus
+  In Collection: DeepLabV3+
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -803,3 +804,47 @@ Models:
       mIoU(ms+flip): 74.14
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen_20211231_230816-8a095afa.pth
+- Name: deeplabv3plus_r18-d8_4x4_896x896_80k_isaid
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-18-D8
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 40.31
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 6.19
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 61.35
+      mIoU(ms+flip): 62.61
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid_20220110_180526-7059991d.pth
+- Name: deeplabv3plus_r50-d8_4x4_896x896_80k_isaid
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-50-D8
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 118.76
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 21.45
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 67.06
+      mIoU(ms+flip): 68.02
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid_20220110_180526-598be439.pth

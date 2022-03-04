@@ -1,21 +1,6 @@
-Collections:
-- Name: mobilenet_v2
-  Metadata:
-    Training Data:
-    - Cityscapes
-    - ADE20K
-  Paper:
-    URL: https://arxiv.org/abs/1801.04381
-    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
-  README: configs/mobilenet_v2/README.md
-  Code:
-    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
-    Version: v0.17.0
-  Converted From:
-    Code: https://github.com/tensorflow/models/tree/master/research/deeplab
 Models:
 - Name: fcn_m-v2-d8_512x1024_80k_cityscapes
-  In Collection: mobilenet_v2
+  In Collection: FCN
   Metadata:
     backbone: M-V2-D8
     crop size: (512,1024)
@@ -36,7 +21,7 @@ Models:
   Config: configs/mobilenet_v2/fcn_m-v2-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x1024_80k_cityscapes/fcn_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-d24c28c1.pth
 - Name: pspnet_m-v2-d8_512x1024_80k_cityscapes
-  In Collection: mobilenet_v2
+  In Collection: PSPNet
   Metadata:
     backbone: M-V2-D8
     crop size: (512,1024)
@@ -57,7 +42,7 @@ Models:
   Config: configs/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes/pspnet_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-19e81d51.pth
 - Name: deeplabv3_m-v2-d8_512x1024_80k_cityscapes
-  In Collection: mobilenet_v2
+  In Collection: DeepLabV3
   Metadata:
     backbone: M-V2-D8
     crop size: (512,1024)
@@ -78,7 +63,7 @@ Models:
   Config: configs/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes/deeplabv3_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-bef03590.pth
 - Name: deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes
-  In Collection: mobilenet_v2
+  In Collection: DeepLabV3+
   Metadata:
     backbone: M-V2-D8
     crop size: (512,1024)
@@ -99,7 +84,7 @@ Models:
   Config: configs/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-d256dd4b.pth
 - Name: fcn_m-v2-d8_512x512_160k_ade20k
-  In Collection: mobilenet_v2
+  In Collection: FCN
   Metadata:
     backbone: M-V2-D8
     crop size: (512,512)
@@ -120,7 +105,7 @@ Models:
   Config: configs/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k/fcn_m-v2-d8_512x512_160k_ade20k_20200825_214953-c40e1095.pth
 - Name: pspnet_m-v2-d8_512x512_160k_ade20k
-  In Collection: mobilenet_v2
+  In Collection: PSPNet
   Metadata:
     backbone: M-V2-D8
     crop size: (512,512)
@@ -141,7 +126,7 @@ Models:
   Config: configs/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k/pspnet_m-v2-d8_512x512_160k_ade20k_20200825_214953-f5942f7a.pth
 - Name: deeplabv3_m-v2-d8_512x512_160k_ade20k
-  In Collection: mobilenet_v2
+  In Collection: DeepLabV3
   Metadata:
     backbone: M-V2-D8
     crop size: (512,512)
@@ -162,7 +147,7 @@ Models:
   Config: configs/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k/deeplabv3_m-v2-d8_512x512_160k_ade20k_20200825_223255-63986343.pth
 - Name: deeplabv3plus_m-v2-d8_512x512_160k_ade20k
-  In Collection: mobilenet_v2
+  In Collection: DeepLabV3+
   Metadata:
     backbone: M-V2-D8
     crop size: (512,512)

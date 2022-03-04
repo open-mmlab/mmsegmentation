@@ -111,6 +111,16 @@ def vaihingen_classes():
     ]
 
 
+def isaid_classes():
+    """iSAID class names for external use."""
+    return [
+        'background', 'ship', 'store_tank', 'baseball_diamond', 'tennis_court',
+        'basketball_court', 'Ground_Track_Field', 'Bridge', 'Large_Vehicle',
+        'Small_Vehicle', 'Helicopter', 'Swimming_pool', 'Roundabout',
+        'Soccer_ball_field', 'plane', 'Harbor'
+    ]
+
+
 def cityscapes_palette():
     """Cityscapes palette for external use."""
     return [[128, 64, 128], [244, 35, 232], [70, 70, 70], [102, 102, 156],
@@ -232,8 +242,17 @@ def potsdam_palette():
 
 def vaihingen_palette():
     """Vaihingen palette for external use."""
-    return [[255, 255, 255], [0, 0, 255], [0, 0, 255], [0, 255, 0],
+    return [[255, 255, 255], [0, 0, 255], [0, 255, 255], [0, 255, 0],
             [255, 255, 0], [255, 0, 0]]
+
+
+def isaid_palette():
+    """iSAID palette for external use."""
+    return [[0, 0, 0], [0, 0, 63], [0, 63, 63], [0, 63, 0], [0, 63, 127],
+            [0, 63, 191], [0, 63, 255], [0, 127, 63], [0, 127,
+                                                       127], [0, 0, 127],
+            [0, 0, 191], [0, 0, 255], [0, 191, 127], [0, 127, 191],
+            [0, 127, 255], [0, 100, 155]]
 
 
 dataset_aliases = {
@@ -247,7 +266,8 @@ dataset_aliases = {
         'cocostuff', 'cocostuff10k', 'cocostuff164k', 'coco-stuff',
         'coco-stuff10k', 'coco-stuff164k', 'coco_stuff', 'coco_stuff10k',
         'coco_stuff164k'
-    ]
+    ],
+    'isaid': ['isaid', 'iSAID']
 }
 
 
