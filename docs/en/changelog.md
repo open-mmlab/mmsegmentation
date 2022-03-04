@@ -7,11 +7,11 @@
 
 - Officially Support ConvNeXt: A ConvNet for the 2020s. Please use the latest MMClassification (0.21.0) to try it out.
 - Support iSAID aerial Dataset.
-- Officially Support inference on Windows OS by adding win-ci.
+- Officially Support inference on Windows OS.
 
 **New Features**
 
-- Support Support ConvNeXt: A ConvNet for the 2020s. ([#1216](https://github.com/open-mmlab/mmsegmentation/pull/1216))
+- Support ConvNeXt: A ConvNet for the 2020s. ([#1216](https://github.com/open-mmlab/mmsegmentation/pull/1216))
 - Support iSAID aerial Dataset. ([#1115](https://github.com/open-mmlab/mmsegmentation/pull/1115)
 - Generating and plotting confusion matrix. ([#1301](https://github.com/open-mmlab/mmsegmentation/pull/1301))
 
