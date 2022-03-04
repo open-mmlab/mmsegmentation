@@ -83,6 +83,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ICCV'2021)](configs/swin)
 - [x] [Twins (NeurIPS'2021)](configs/twins)
+- [x] [ConvNeXt (ArXiv'2022)](configs/convnext)
 
 已支持的算法：
 
@@ -119,7 +120,6 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [DPT (ArXiv'2021)](configs/dpt)
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
-- [x] [ConvNeXt (ArXiv'2022)](configs/convnext)
 
 已支持的数据集：
 

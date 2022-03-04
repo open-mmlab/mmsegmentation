@@ -84,6 +84,7 @@ Supported backbones:
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ICCV'2021)](configs/swin)
 - [x] [Twins (NeurIPS'2021)](configs/twins)
+- [x] [ConvNeXt (ArXiv'2022)](configs/convnext)
 
 Supported methods:
 
@@ -120,7 +121,6 @@ Supported methods:
 - [x] [DPT (ArXiv'2021)](configs/dpt)
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
-- [x] [ConvNeXt (ArXiv'2022)](configs/convnext)
 
 Supported datasets:
 
