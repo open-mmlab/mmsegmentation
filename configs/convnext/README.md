@@ -25,7 +25,7 @@ The "Roaring 20s" of visual recognition began with the introduction of Vision Tr
 @article{liu2022convnet,
   title={A ConvNet for the 2020s},
   author={Liu, Zhuang and Mao, Hanzi and Wu, Chao-Yuan and Feichtenhofer, Christoph and Darrell, Trevor and Xie, Saining},
-  journal={arXiv preprint arXiv:2201.03545},
+  journal={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
   year={2022}
 }
 ```
