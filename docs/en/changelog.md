@@ -1,11 +1,10 @@
 ## Changelog
 
-
 ### V0.22 (3/04/2022)
 
 **Highlights**
 
-- Officially Support ConvNeXt: A ConvNet for the 2020s. Please use the latest MMClassification (0.21.0) to try it out.
+- Support ConvNeXt: A ConvNet for the 2020s. Please use the latest MMClassification (0.21.0) to try it out.
 - Support iSAID aerial Dataset.
 - Officially Support inference on Windows OS.
 
