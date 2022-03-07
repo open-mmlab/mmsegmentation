@@ -1,8 +1,8 @@
-_base_ = 'knet_s3_upernet_swin-t_8x2_512x512_80k_adamw_ade20k.py'
+_base_ = 'knet_s3_upernet_swin-t_8x2_512x512_adamw_80k_ade20k.py'
 
 # model settings
 model = dict(
-    pretrained='./pretrain/swin/swin_large_patch4_window7_224_22k.pth',
+    pretrained='./pretrain/swin_large_patch4_window7_224_22k.pth',
     backbone=dict(
         embed_dims=192,
         depths=[2, 2, 18, 2],

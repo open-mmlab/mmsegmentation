@@ -36,7 +36,6 @@ model = dict(
                 out_channels=512,
                 dropout=0.0,
                 conv_kernel_size=conv_kernel_size,
-                mask_upsample_stride=2,
                 ffn_act_cfg=dict(type='ReLU', inplace=True),
                 with_ffn=True,
                 feat_transform_cfg=dict(
@@ -46,16 +45,15 @@ model = dict(
                     in_channels=256,
                     feat_channels=256,
                     out_channels=256,
-                    input_feat_shape=3,
                     act_cfg=dict(type='ReLU', inplace=True),
                     norm_cfg=dict(type='LN'))) for _ in range(num_stages)
         ],
         kernel_generate_head=dict(
-            type='ASPPHead',
+            type='PSPHead',
             in_channels=2048,
             in_index=3,
             channels=512,
-            dilations=(1, 12, 24, 36),
+            pool_scales=(1, 2, 3, 6),
             dropout_ratio=0.1,
             num_classes=150,
             norm_cfg=norm_cfg,
@@ -78,7 +76,6 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
-
 # optimizer
 optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, weight_decay=0.0005)
 optimizer_config = dict(grad_clip=dict(max_norm=1, norm_type=2))

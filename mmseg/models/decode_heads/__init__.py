@@ -13,7 +13,7 @@ from .fcn_head import FCNHead
 from .fpn_head import FPNHead
 from .gc_head import GCHead
 from .isa_head import ISAHead
-from .knet import IterativeDecodeHead, KernelUpdateHead, KernelUpdator
+from .knet_head import IterativeDecodeHead, KernelUpdateHead, KernelUpdator
 from .lraspp_head import LRASPPHead
 from .nl_head import NLHead
 from .ocr_head import OCRHead

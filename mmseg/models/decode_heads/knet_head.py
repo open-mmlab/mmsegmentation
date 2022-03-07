@@ -14,17 +14,41 @@ from mmseg.utils import get_root_logger
 
 @TRANSFORMER_LAYER.register_module()
 class KernelUpdator(nn.Module):
+    """Dynamic Kernel Updator in Kernel Update Head.
 
-    def __init__(self,
-                 in_channels=256,
-                 feat_channels=64,
-                 out_channels=None,
-                 input_feat_shape=3,
-                 gate_sigmoid=True,
-                 gate_norm_act=False,
-                 activate_out=False,
-                 act_cfg=dict(type='ReLU', inplace=True),
-                 norm_cfg=dict(type='LN')):
+    Args:
+        in_channels (int): The number of channels of input feature map.
+            Default: 256.
+        feat_channels (int): The number of middle-stage channels in
+            the kernel updator. Default: 64.
+        out_channels (int): The number of output channels.
+        gate_sigmoid (bool): Whether use sigmoid function in gate
+            mechanism. Default: True.
+        gate_norm_act (bool): Whether add normalization and activation
+            layer in gate mechanism. Default: False.
+        activate_out: Whether add activation after gate mechanism.
+            Default: False.
+        norm_cfg (dict | None): Config of norm layers.
+            Default: dict(type='LN').
+        act_cfg (dict): Config of activation layers.
+            Default: dict(type='ReLU').
+
+    Returns:
+        Tensor: The output tensor of shape
+        (self.num_classes(KernelUpdateHead) * self.in_channels(KernelUpdateHead)/ in_channels, kernel size * kernel size, in_channels). # noqa
+    """
+
+    def __init__(
+            self,
+            in_channels=256,
+            feat_channels=64,
+            out_channels=None,
+            gate_sigmoid=True,
+            gate_norm_act=False,
+            activate_out=False,
+            norm_cfg=dict(type='LN'),
+            act_cfg=dict(type='ReLU', inplace=True),
+    ):
         super(KernelUpdator, self).__init__()
         self.in_channels = in_channels
         self.feat_channels = feat_channels
@@ -32,9 +56,6 @@ class KernelUpdator(nn.Module):
         self.gate_sigmoid = gate_sigmoid
         self.gate_norm_act = gate_norm_act
         self.activate_out = activate_out
-        if isinstance(input_feat_shape, int):
-            input_feat_shape = [input_feat_shape] * 2
-        self.input_feat_shape = input_feat_shape
         self.act_cfg = act_cfg
         self.norm_cfg = norm_cfg
         self.out_channels = out_channels if out_channels else in_channels
@@ -62,25 +83,29 @@ class KernelUpdator(nn.Module):
         self.fc_norm = build_norm_layer(norm_cfg, self.out_channels)[1]
 
     def forward(self, update_feature, input_feature):
+        # `input_feature` is dynamic kernels for updation with shape:
+        # (N, num_classes, conv_kernel_size * conv_kernel_size, channels),
+        # it would be reshaped to `update_feature` whose last dimension
+        # shape is `self.in_channels`.
+
         update_feature = update_feature.reshape(-1, self.in_channels)
         num_proposals = update_feature.size(0)
-        # Use `self.dynamic_layer` fully connected layer to implement both
-        # \phi_1 and \psi_3 in Eq.(4) and (5) of original paper.
+        # dynamic_layer works for
+        # phi_1 and psi_3 in Eq.(4) and (5) of K-Net paper
         parameters = self.dynamic_layer(update_feature)
         param_in = parameters[:, :self.num_params_in].view(
             -1, self.feat_channels)
         param_out = parameters[:, -self.num_params_out:].view(
             -1, self.feat_channels)
 
-        # Use `self.input_layer` fully connected layer to implement both
-        # \phi_2 and \psi_4 in Eq.(4) and (5) of original paper.
+        # input_layer works for
+        # phi_2 and psi_4 in Eq.(4) and (5) of K-Net paper
         input_feats = self.input_layer(
             input_feature.reshape(num_proposals, -1, self.feat_channels))
         input_in = input_feats[..., :self.num_params_in]
         input_out = input_feats[..., -self.num_params_out:]
 
-        # Element-wise multiplication between F^k and K_{i-1}.
-        # Eq.(4) in original paper.
+        # `gate_feats` is F^G in K-Net paper
         gate_feats = input_in * param_in.unsqueeze(-2)
         if self.gate_norm_act:
             gate_feats = self.activation(self.gate_norm(gate_feats))
@@ -111,9 +136,57 @@ class KernelUpdator(nn.Module):
 
 @HEADS.register_module()
 class KernelUpdateHead(nn.Module):
+    """Kernel Update Head in K-Net.
+
+    Args:
+        num_classes (int): Number of classes. Default: 150.
+        num_ffn_fcs (int): The number of fully-connected layers in
+            FFNs. Default: 2.
+        num_heads (int): The number of parallel attention heads.
+            Default: 8.
+        num_mask_fcs (int): The number of fully connected layers for
+            mask prediction. Default: 3.
+        feedforward_channels (int): The hidden dimension of FFNs.
+            Defaults: 2048.
+        in_channels (int): The number of channels of input feature map.
+            Default: 256.
+        out_channels (int): The number of output channels.
+            Default: 256.
+        dropout (float): The Probability of an element to be
+            zeroed in MultiheadAttention and FFN. Default 0.0.
+        act_cfg (dict): Config of activation layers.
+            Default: dict(type='ReLU').
+        ffn_act_cfg (dict): Config of activation layers in FFN.
+            Default: dict(type='ReLU').
+        conv_kernel_size (int): The kernel size of convolution in
+            Kernel Update Head for dynamic kernel updation.
+            Default: 1.
+        feat_transform_cfg (dict | None): Config of feature transform.
+            Default: None.
+        kernel_init (bool): Whether initiate mask kernel in mask head.
+            Default: False.
+        with_ffn (bool): Whether add FFN in kernel update head.
+            Default: True.
+        feat_gather_stride (int): Stride of convolution in feature transform.
+            Default: 1.
+        mask_transform_stride (int): Stride of mask transform.
+            Default: 1.
+        kernel_updator_cfg (dict): Config of kernel updator.
+            Default: dict(
+                     type='DynamicConv',
+                     in_channels=256,
+                     feat_channels=64,
+                     out_channels=256,
+                     act_cfg=dict(type='ReLU', inplace=True),
+                     norm_cfg=dict(type='LN')).
+
+    Returns:
+        Tensor: The mask prediction of shape (N, num_classes, H, W).
+        Tensor: The dynamic kernels of shape (N, num_classes, channels, K, K).
+    """
 
     def __init__(self,
-                 num_classes=80,
+                 num_classes=150,
                  num_ffn_fcs=2,
                  num_heads=8,
                  num_mask_fcs=3,
@@ -123,20 +196,17 @@ class KernelUpdateHead(nn.Module):
                  dropout=0.0,
                  act_cfg=dict(type='ReLU', inplace=True),
                  ffn_act_cfg=dict(type='ReLU', inplace=True),
-                 conv_kernel_size=3,
+                 conv_kernel_size=1,
                  feat_transform_cfg=None,
                  kernel_init=False,
                  with_ffn=True,
-                 mask_out_stride=4,
                  feat_gather_stride=1,
                  mask_transform_stride=1,
-                 mask_upsample_stride=1,
                  kernel_updator_cfg=dict(
                      type='DynamicConv',
                      in_channels=256,
                      feat_channels=64,
                      out_channels=256,
-                     input_feat_shape=1,
                      act_cfg=dict(type='ReLU', inplace=True),
                      norm_cfg=dict(type='LN'))):
         super(KernelUpdateHead, self).__init__()
@@ -148,11 +218,9 @@ class KernelUpdateHead(nn.Module):
         self.num_heads = num_heads
         self.kernel_init = kernel_init
         self.with_ffn = with_ffn
-        self.mask_out_stride = mask_out_stride
         self.conv_kernel_size = conv_kernel_size
         self.feat_gather_stride = feat_gather_stride
         self.mask_transform_stride = mask_transform_stride
-        self.mask_upsample_stride = mask_upsample_stride
 
         self.attention = MultiheadAttention(in_channels * conv_kernel_size**2,
                                             num_heads, dropout)
@@ -208,12 +276,7 @@ class KernelUpdateHead(nn.Module):
                 'mask kernel in mask head is normal initialized by std 0.01')
             nn.init.normal_(self.fc_mask.weight, mean=0, std=0.01)
 
-    def forward(self,
-                x,
-                proposal_feat,
-                mask_preds,
-                mask_shape=None,
-                img_metas=None):
+    def forward(self, x, proposal_feat, mask_preds, mask_shape=None):
         """Forward function of Dynamic Instance Interactive Head.
 
         Args:
@@ -223,7 +286,7 @@ class KernelUpdateHead(nn.Module):
                 diihead in last stage, has shape
                 (batch_size, num_proposals, feature_dimensions)
             mask_preds (Tensor): mask prediction from the former stage in shape
-                (batch_size, num_proposals, H, W)
+                (batch_size, num_proposals, H, W).
         """
         N, num_proposals = proposal_feat.shape[:2]
         if self.feat_transform is not None:
@@ -324,21 +387,25 @@ class KernelUpdateHead(nn.Module):
 
 @HEADS.register_module()
 class IterativeDecodeHead(BaseDecodeHead):
-    """Rethinking Atrous Convolution for Semantic Image Segmentation.
+    """K-Net: Towards Unified Image Segmentation.
 
-    This head is the implementation of `DeepLabV3
-    <https://arxiv.org/abs/1706.05587>`_.
+    This head is the implementation of
+    `K-Net:　<https://arxiv.org/abs/2106.14855>`_.
 
     Args:
-        dilations (tuple[int]): Dilation rates for ASPP module.
-            Default: (1, 6, 12, 18).
+        num_stages (int): The number of stages (kernel update heads)
+            in IterativeDecodeHead. Default: 3.
+        kernel_generate_head:(dict): Config of kernel generate head which
+            generate mask predictions, dynamic kernels and class predictions
+            for next kernel update heads.
+        kernel_update_head (dict): Config of kernel update head which refine
+            dynamic kernels and class predictions iteratively.
+
+    Returns:
+        Tensor: The output tensor of shape (N, out_channels, H, W).
     """
 
-    def __init__(self,
-                 num_stages,
-                 kernel_generate_head,
-                 kernel_update_head,
-                 in_index=-1,
+    def __init__(self, num_stages, kernel_generate_head, kernel_update_head,
                  **kwargs):
         super(BaseDecodeHead, self).__init__(**kwargs)
         assert num_stages == len(kernel_update_head)
@@ -349,14 +416,13 @@ class IterativeDecodeHead(BaseDecodeHead):
         self.num_classes = self.kernel_generate_head.num_classes
         self.input_transform = self.kernel_generate_head.input_transform
         self.ignore_index = self.kernel_generate_head.ignore_index
-        self.in_index = in_index
 
         for head_cfg in kernel_update_head:
             self.kernel_update_head.append(build_head(head_cfg))
 
     def forward(self, inputs):
         """Forward function."""
-        feats = self.kernel_generate_head.forward_feature(inputs)
+        feats = self.kernel_generate_head._forward_feature(inputs)
         sem_seg = self.kernel_generate_head.cls_seg(feats)
         seg_kernels = self.kernel_generate_head.conv_seg.weight.clone()
         seg_kernels = seg_kernels[None].expand(

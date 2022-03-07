@@ -1,4 +1,4 @@
-_base_ = 'knet_s3_upernet_r50-d8_8x2_512x512_80k_adamw_ade20k.py'
+_base_ = 'knet_s3_upernet_r50-d8_8x2_512x512_adamw_80k_ade20k.py'
 
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -7,7 +7,7 @@ conv_kernel_size = 1
 
 model = dict(
     type='EncoderDecoder',
-    pretrained='./pretrain/swin/swin_tiny_patch4_window7_224.pth',
+    pretrained='./pretrain/swin_tiny_patch4_window7_224.pth',
     backbone=dict(
         _delete_=True,
         type='SwinTransformer',
@@ -28,8 +28,7 @@ model = dict(
         kernel_generate_head=dict(in_channels=[96, 192, 384, 768])),
     auxiliary_head=dict(in_channels=384))
 
-# modify learning rate following the official
-# implementation of Swin Transformer
+# modify learning rate following the official implementation of Swin Transformer # noqa
 optimizer = dict(
     _delete_=True,
     type='AdamW',

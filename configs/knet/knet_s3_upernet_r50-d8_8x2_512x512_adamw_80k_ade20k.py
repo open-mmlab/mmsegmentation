@@ -7,6 +7,7 @@ _base_ = [
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 num_stages = 3
 conv_kernel_size = 1
+
 model = dict(
     type='EncoderDecoder',
     pretrained='open-mmlab://resnet50_v1c',
@@ -15,8 +16,8 @@ model = dict(
         depth=50,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
-        dilations=(1, 1, 2, 4),
-        strides=(1, 2, 1, 1),
+        dilations=(1, 1, 1, 1),
+        strides=(1, 2, 2, 2),
         norm_cfg=norm_cfg,
         norm_eval=False,
         style='pytorch',
@@ -36,7 +37,6 @@ model = dict(
                 out_channels=512,
                 dropout=0.0,
                 conv_kernel_size=conv_kernel_size,
-                mask_upsample_stride=2,
                 ffn_act_cfg=dict(type='ReLU', inplace=True),
                 with_ffn=True,
                 feat_transform_cfg=dict(
@@ -46,17 +46,15 @@ model = dict(
                     in_channels=256,
                     feat_channels=256,
                     out_channels=256,
-                    input_feat_shape=3,
                     act_cfg=dict(type='ReLU', inplace=True),
                     norm_cfg=dict(type='LN'))) for _ in range(num_stages)
         ],
         kernel_generate_head=dict(
-            type='FCNHead',
-            in_channels=2048,
-            in_index=3,
+            type='UPerHead',
+            in_channels=[256, 512, 1024, 2048],
+            in_index=[0, 1, 2, 3],
+            pool_scales=(1, 2, 3, 6),
             channels=512,
-            num_convs=2,
-            concat_input=True,
             dropout_ratio=0.1,
             num_classes=150,
             norm_cfg=norm_cfg,

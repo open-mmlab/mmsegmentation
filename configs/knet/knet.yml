@@ -1,0 +1,169 @@
+Collections:
+- Name: KNet
+  Metadata:
+    Training Data:
+    - ADE20K
+  Paper:
+    URL: https://arxiv.org/abs/2106.14855
+    Title: 'K-Net: Towards Unified Image Segmentation'
+  README: configs/knet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/decode_heads/knet_head.py#L392
+    Version: v0.23.0
+  Converted From:
+    Code: https://github.com/ZwwWayne/K-Net/
+Models:
+- Name: knet_s3_fcn_r50-d8_8x2_512x512_adamw_80k_ade20k
+  In Collection: KNet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 51.98
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 7.01
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.6
+      mIoU(ms+flip): 45.12
+  Config: configs/knet/knet_s3_fcn_r50-d8_8x2_512x512_adamw_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_fcn_r50-d8_8x2_512x512_adamw_80k_ade20k/knet_s3_fcn_r50-d8_8x2_512x512_adamw_80k_ade20k_20220228_043751-abcab920.pth
+- Name: knet_s3_pspnet_r50-d8_8x2_512x512_adamw_80k_ade20k
+  In Collection: KNet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 49.9
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.98
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.18
+      mIoU(ms+flip): 45.58
+  Config: configs/knet/knet_s3_pspnet_r50-d8_8x2_512x512_adamw_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_pspnet_r50-d8_8x2_512x512_adamw_80k_ade20k/knet_s3_pspnet_r50-d8_8x2_512x512_adamw_80k_ade20k_20220228_054634-d2c72240.pth
+- Name: knet_s3_deeplabv3_r50-d8_8x2_512x512_adamw_80k_ade20k
+  In Collection: KNet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 82.64
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 7.42
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.06
+      mIoU(ms+flip): 46.11
+  Config: configs/knet/knet_s3_deeplabv3_r50-d8_8x2_512x512_adamw_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_deeplabv3_r50-d8_8x2_512x512_adamw_80k_ade20k/knet_s3_deeplabv3_r50-d8_8x2_512x512_adamw_80k_ade20k_20220228_041642-00c8fbeb.pth
+- Name: knet_s3_upernet_r50-d8_8x2_512x512_adamw_80k_ade20k
+  In Collection: KNet
+  Metadata:
+    backbone: R-50-D8
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 58.45
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 7.34
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.45
+      mIoU(ms+flip): 44.07
+  Config: configs/knet/knet_s3_upernet_r50-d8_8x2_512x512_adamw_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_upernet_r50-d8_8x2_512x512_adamw_80k_ade20k/knet_s3_upernet_r50-d8_8x2_512x512_adamw_80k_ade20k_20220304_125657-215753b0.pth
+- Name: knet_s3_upernet_swin-t_8x2_512x512_adamw_80k_ade20k
+  In Collection: KNet
+  Metadata:
+    backbone: Swin-T
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 64.27
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 7.57
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.84
+      mIoU(ms+flip): 46.27
+  Config: configs/knet/knet_s3_upernet_swin-t_8x2_512x512_adamw_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_upernet_swin-t_8x2_512x512_adamw_80k_ade20k/knet_s3_upernet_swin-t_8x2_512x512_adamw_80k_ade20k_20220303_133059-7545e1dc.pth
+- Name: knet_s3_upernet_swin-l_8x2_512x512_adamw_80k_ade20k
+  In Collection: KNet
+  Metadata:
+    backbone: Swin-L
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 120.63
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 13.5
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 52.05
+      mIoU(ms+flip): 53.24
+  Config: configs/knet/knet_s3_upernet_swin-l_8x2_512x512_adamw_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_upernet_swin-l_8x2_512x512_adamw_80k_ade20k/knet_s3_upernet_swin-l_8x2_512x512_adamw_80k_ade20k_20220303_154559-d8da9a90.pth
+- Name: knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k
+  In Collection: KNet
+  Metadata:
+    backbone: Swin-L
+    crop size: (640,640)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 120.63
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (640,640)
+    Training Memory (GB): 13.54
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 52.21
+      mIoU(ms+flip): 53.34
+  Config: configs/knet/knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k/knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k_20220301_220747-8787fc71.pth

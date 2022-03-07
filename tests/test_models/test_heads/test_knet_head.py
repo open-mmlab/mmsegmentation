@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 
-from mmseg.models.decode_heads.knet import IterativeDecodeHead
+from mmseg.models.decode_heads.knet_head import IterativeDecodeHead
 from .utils import to_cuda
 
 num_stages = 3
@@ -23,7 +23,6 @@ def test_knet_head():
                 out_channels=32,
                 dropout=0.0,
                 conv_kernel_size=conv_kernel_size,
-                mask_upsample_stride=2,
                 ffn_act_cfg=dict(type='ReLU', inplace=True),
                 with_ffn=True,
                 feat_transform_cfg=dict(
@@ -33,7 +32,6 @@ def test_knet_head():
                     in_channels=16,
                     feat_channels=16,
                     out_channels=16,
-                    input_feat_shape=3,
                     act_cfg=dict(type='ReLU', inplace=True),
                     norm_cfg=dict(type='LN'))) for _ in range(num_stages)
         ],
