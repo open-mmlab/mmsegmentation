@@ -65,7 +65,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新版本 v0.21.1 在 2022.2.9 发布。
+最新版本 v0.22.0 在 2022.3.4 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
 
 ## 基准测试和模型库
@@ -83,6 +83,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ICCV'2021)](configs/swin)
 - [x] [Twins (NeurIPS'2021)](configs/twins)
+- [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 
 已支持的算法：
 

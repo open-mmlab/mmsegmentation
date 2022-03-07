@@ -9,26 +9,27 @@
 
 The compatible MMSegmentation and MMCV versions are as below. Please install the correct version of MMCV to avoid installation issues.
 
-| MMSegmentation version |        MMCV version        |
-|:----------------------:|:--------------------------:|
-|         master         |  mmcv-full>=1.4.4, <1.5.0  |
-|         0.21.0         |  mmcv-full>=1.4.4, <1.5.0  |
-|         0.20.0         | mmcv-full>=1.3.13, <1.5.0  |
-|         0.19.0         | mmcv-full>=1.3.13, <1.3.17 |
-|         0.18.0         | mmcv-full>=1.3.13, <1.3.17 |
-|         0.17.0         | mmcv-full>=1.3.7, <1.3.17  |
-|         0.16.0         | mmcv-full>=1.3.7, <1.3.17  |
-|         0.15.0         | mmcv-full>=1.3.7, <1.3.17  |
-|         0.14.1         | mmcv-full>=1.3.7, <1.3.17  |
-|         0.14.0         |  mmcv-full>=1.3.1, <1.3.2  |
-|         0.13.0         |  mmcv-full>=1.3.1, <1.3.2  |
-|         0.12.0         |  mmcv-full>=1.1.4, <1.3.2  |
-|         0.11.0         |  mmcv-full>=1.1.4, <1.3.0  |
-|         0.10.0         |  mmcv-full>=1.1.4, <1.3.0  |
-|         0.9.0          |  mmcv-full>=1.1.4, <1.3.0  |
-|         0.8.0          |  mmcv-full>=1.1.4, <1.2.0  |
-|         0.7.0          |  mmcv-full>=1.1.2, <1.2.0  |
-|         0.6.0          |  mmcv-full>=1.1.2, <1.2.0  |
+| MMSegmentation version |        MMCV version        | MMClassification version |
+|:----------------------:|:--------------------------:|:------------------------:|
+|         master         |  mmcv-full>=1.4.4, <=1.5.0  | mmcls>=0.20.1, <=1.0.0   |
+|         0.22.0         |  mmcv-full>=1.4.4, <=1.5.0  | mmcls>=0.20.1, <=1.0.0   |
+|         0.21.1         |  mmcv-full>=1.4.4, <=1.5.0  | Not required             |
+|         0.20.2         | mmcv-full>=1.3.13, <=1.5.0  | Not required             |
+|         0.19.0         | mmcv-full>=1.3.13, <1.3.17 | Not required             |
+|         0.18.0         | mmcv-full>=1.3.13, <1.3.17 | Not required             |
+|         0.17.0         | mmcv-full>=1.3.7, <1.3.17  | Not required             |
+|         0.16.0         | mmcv-full>=1.3.7, <1.3.17  | Not required             |
+|         0.15.0         | mmcv-full>=1.3.7, <1.3.17  | Not required             |
+|         0.14.1         | mmcv-full>=1.3.7, <1.3.17  | Not required             |
+|         0.14.0         |  mmcv-full>=1.3.1, <1.3.2  | Not required             |
+|         0.13.0         |  mmcv-full>=1.3.1, <1.3.2  | Not required             |
+|         0.12.0         |  mmcv-full>=1.1.4, <1.3.2  | Not required             |
+|         0.11.0         |  mmcv-full>=1.1.4, <1.3.0  | Not required             |
+|         0.10.0         |  mmcv-full>=1.1.4, <1.3.0  | Not required             |
+|         0.9.0          |  mmcv-full>=1.1.4, <1.3.0  | Not required             |
+|         0.8.0          |  mmcv-full>=1.1.4, <1.2.0  | Not required             |
+|         0.7.0          |  mmcv-full>=1.1.2, <1.2.0  | Not required             |
+|         0.6.0          |  mmcv-full>=1.1.2, <1.2.0  | Not required             |
 
 :::{note}
 You need to run `pip uninstall mmcv` first if you have mmcv installed.

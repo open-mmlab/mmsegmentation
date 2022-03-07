@@ -5,6 +5,7 @@ Import:
 - configs/bisenetv2/bisenetv2.yml
 - configs/ccnet/ccnet.yml
 - configs/cgnet/cgnet.yml
+- configs/convnext/convnext.yml
 - configs/danet/danet.yml
 - configs/deeplabv3/deeplabv3.yml
 - configs/deeplabv3plus/deeplabv3plus.yml

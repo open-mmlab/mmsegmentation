@@ -162,8 +162,9 @@ def parse_md(md_file):
                             model_name = fn[:-3]
                     fps = els[fps_id] if els[fps_id] != '-' and els[
                         fps_id] != '' else -1
-                    mem = els[mem_id] if els[mem_id] != '-' and els[
-                        mem_id] != '' else -1
+                    mem = els[mem_id].split(
+                        '\\'
+                    )[0] if els[mem_id] != '-' and els[mem_id] != '' else -1
                     crop_size = els[crop_size_id].split('x')
                     assert len(crop_size) == 2
                     method = els[method_id].split()[0].split('-')[-1]
