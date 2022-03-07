@@ -32,10 +32,6 @@ class KernelUpdator(nn.Module):
             Default: dict(type='LN').
         act_cfg (dict): Config of activation layers.
             Default: dict(type='ReLU').
-
-    Returns:
-        Tensor: The output tensor of shape
-        (self.num_classes(KernelUpdateHead) * self.in_channels(KernelUpdateHead)/ in_channels, kernel size * kernel size, in_channels). # noqa
     """
 
     def __init__(
@@ -83,10 +79,19 @@ class KernelUpdator(nn.Module):
         self.fc_norm = build_norm_layer(norm_cfg, self.out_channels)[1]
 
     def forward(self, update_feature, input_feature):
-        # `input_feature` is dynamic kernels for updation with shape:
-        # (N, num_classes, conv_kernel_size * conv_kernel_size, channels),
-        # it would be reshaped to `update_feature` whose last dimension
-        # shape is `self.in_channels`.
+        """Forward function of KernelUpdator.
+
+        Args:
+            update_feature (torch.Tensor): Feature map assembled from
+                each group. It would be reshaped with last dimension
+                shape: `self.in_channels`.
+            input_feature (torch.Tensor): Intermediate feature
+                with shape: (N, num_classes, conv_kernel_size**2, channels).
+
+        Returns:
+            Tensor: The output tensor of shape
+            (self.num_classes(KernelUpdateHead) * self.in_channels(KernelUpdateHead)/ in_channels, kernel size * kernel size, in_channels). # noqa
+        """
 
         update_feature = update_feature.reshape(-1, self.in_channels)
         num_proposals = update_feature.size(0)
@@ -179,10 +184,6 @@ class KernelUpdateHead(nn.Module):
                      out_channels=256,
                      act_cfg=dict(type='ReLU', inplace=True),
                      norm_cfg=dict(type='LN')).
-
-    Returns:
-        Tensor: The mask prediction of shape (N, num_classes, H, W).
-        Tensor: The dynamic kernels of shape (N, num_classes, channels, K, K).
     """
 
     def __init__(self,
@@ -287,6 +288,11 @@ class KernelUpdateHead(nn.Module):
                 (batch_size, num_proposals, feature_dimensions)
             mask_preds (Tensor): mask prediction from the former stage in shape
                 (batch_size, num_proposals, H, W).
+
+        Returns:
+            Tensor: The mask prediction of shape (N, num_classes, H, W).
+            Tensor: The dynamic kernels of shape
+            (N, num_classes, channels, K, K).
         """
         N, num_proposals = proposal_feat.shape[:2]
         if self.feat_transform is not None:
@@ -401,8 +407,6 @@ class IterativeDecodeHead(BaseDecodeHead):
         kernel_update_head (dict): Config of kernel update head which refine
             dynamic kernels and class predictions iteratively.
 
-    Returns:
-        Tensor: The output tensor of shape (N, out_channels, H, W).
     """
 
     def __init__(self, num_stages, kernel_generate_head, kernel_update_head,
