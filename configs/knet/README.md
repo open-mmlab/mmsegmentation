@@ -30,10 +30,6 @@ Semantic, instance, and panoptic segmentations have been addressed using differe
 }
 ```
 
-## Usage
-
-K-Net models with Swin Transformer backbone need to use other repositories' pre-trained models, it is necessary to convert keys. Please refer to [swin transformer usage](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/swin#usage).
-
 ## Results and models
 
 ### ADE20K

@@ -290,9 +290,9 @@ class KernelUpdateHead(nn.Module):
                 (batch_size, num_proposals, H, W).
 
         Returns:
-            Tensor: The mask prediction of shape (N, num_classes, H, W).
-            Tensor: The dynamic kernels of shape
-            (N, num_classes, channels, K, K).
+            Tuple: The first tensor is predicted mask with shape
+            (N, num_classes, H, W), the second tensor is dynamic kernel
+            with shape (N, num_classes, channels, K, K).
         """
         N, num_proposals = proposal_feat.shape[:2]
         if self.feat_transform is not None:

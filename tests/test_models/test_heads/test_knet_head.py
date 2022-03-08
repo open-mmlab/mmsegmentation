@@ -184,3 +184,12 @@ def test_knet_head():
         head, inputs = to_cuda(head, inputs)
     outputs = head(inputs)
     assert outputs[-1].shape == (1, head.num_classes, 26, 16)
+
+    # test loss function in K-Net
+    fake_label = torch.ones_like(
+        outputs[-1][:, 0:1, :, :], dtype=torch.int16).long()
+    loss = head.losses(seg_logit=outputs, seg_label=fake_label)
+    assert loss['loss_ce.s0'] != torch.zeros_like(loss['loss_ce.s0'])
+    assert loss['loss_ce.s1'] != torch.zeros_like(loss['loss_ce.s1'])
+    assert loss['loss_ce.s2'] != torch.zeros_like(loss['loss_ce.s2'])
+    assert loss['loss_ce.s3'] != torch.zeros_like(loss['loss_ce.s3'])
