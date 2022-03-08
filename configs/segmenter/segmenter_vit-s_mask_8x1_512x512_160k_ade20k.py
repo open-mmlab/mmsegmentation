@@ -4,9 +4,11 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 
+checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segmenter/vit_small_p16_384_20220308-410f6037.pth'  # noqa
+
 backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
 model = dict(
-    pretrained='pretrain/vit_small_p16_384.pth',
+    pretrained=checkpoint,
     backbone=dict(
         img_size=(512, 512),
         embed_dims=384,

@@ -1,8 +1,9 @@
+checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segmenter/vit_base_p16_384_20220308-96dfe169.pth'  # noqa
 # model settings
 backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='pretrain/vit_base_p16_384.pth',
+    pretrained=checkpoint,
     backbone=dict(
         type='VisionTransformer',
         img_size=(512, 512),
