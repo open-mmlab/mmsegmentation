@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import torch
 import torch.nn as nn
 
 
@@ -46,7 +47,7 @@ def accuracy(pred, target, topk=1, thresh=None, ignore_index=None):
         correct = correct & (pred_value > thresh).t()
     correct = correct[:, target != ignore_index]
     res = []
-    eps = 1e-6
+    eps = torch.finfo(torch.float32).eps
     for k in topk:
         # Avoid causing ZeroDivisionError when all pixels
         # of an image are ignored
