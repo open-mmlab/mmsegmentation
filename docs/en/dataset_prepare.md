@@ -108,6 +108,18 @@ mmsegmentation
 |   |   └── leftImg8bit
 |   |   |   └── test
 |   |   |       └── night
+│   ├── A2D2
+|   |   ├── 20180807_145028
+|   |   ├── ...
+|   |   ├── 20181204_191844
+|   |   ├── annotations
+|   |   |   ├── test
+|   |   |   ├── train
+|   |   |   └── val
+|   |   └── images
+|   |   |   ├── test
+|   |   |   ├── train
+|   |   |   └── val
 │   ├── loveDA
 │   │   ├── img_dir
 │   │   │   ├── train
@@ -283,6 +295,35 @@ Since we only support test models on this dataset, you may only download [the va
 ### Nighttime Driving
 
 Since we only support test models on this dataset, you may only download [the test set](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip).
+
+### A2D2
+
+To set up the A2D2 semantic segmentation dataset, first download 'Dataset - Semantic Segmentation' (`camera_lidar_semantic.tar`) from the official site ([a2d2.audi/a2d2/en/download.html](https://www.a2d2.audi/a2d2/en/download.html)). Extract the downloaded file as `a2d2/camera_lidar_semantic/`. Inside this directory, there will be several subdirectories representing data sequences. Each sequence directory contains `camera`, `label`, `lidar` subfolders.
+
+Next, while in the MMSegmentation directory root, create a symbolic link from `mmsegmentation/data/a2d2` to the dataset directory `a2d2/camera_lidar_semantic`.
+
+```shell
+ln -s /absolute/path/to/a2d2/camera_lidar_semantic/ data/a2d2/
+```
+
+Finally, convert the A2D2 dataset label files to the MMSegmentation format. One can choose to generate labels with a merged set of 18 classes (default choice). The official A2D2 paper presents benchmark results with the same classes and data split. (ref: p.8 "4. Experiment: Semantic segmentation"). The original A2D2 semantic segmentation category labels with 34 classes (reduced from 38 classes as explained below) by adding the option `--choice 34_cls` when running the conversion script. The original label files will not be overwritten during conversion. It is possible to have both 18 and 34 class labels co-existing in the same A2D2 data directory as the post-processed files do not overwrite each other.
+
+```shell
+python tools/convert_datasets/a2d2.py /absolute/path/to/a2d2/camera_lidar_semantic
+```
+Training, validation, and test sets are generated according to the same sequence split used in the official A2D2 paper benchmark results as shared by the A2D2 paper authors. Add `--nproc N` for multiprocessing using N threads. Note that the dataset path should be the absolute path, NOT the previously generated symbolic link.
+
+The converted label images will be generated within the same directory as the original labels. The conversion process also creates a new directory structure, where `images/` and `annotations/` contains symbolic links to camera and label images located within the original data directories. The optional argument `--no-symlink` creates copies of the label images instead of symbolic links.
+
+The following segmentation classes are ignored (i.e. trainIds 255) when using the original A2D2 semantic classes 34 of the original 38 semantic categories:
+
+- Ego car:  A calibrated system should a priori know what input region corresponds to the ego vehicle.
+- Blurred area: Ambiguous semantic.
+- Rain dirt: Ambiguous semantic.
+
+The following segmentation class is merged due to extreme rarity:
+
+- Speed bumper --> RD normal street (randomly parsing 50% of dataset results in only one sample containing the 'speed_bumper' semantic)
 
 ### LoveDA
 

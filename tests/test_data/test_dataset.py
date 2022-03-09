@@ -12,11 +12,11 @@ import torch
 from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
-from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
-                            COCOStuffDataset, ConcatDataset, CustomDataset,
-                            ISPRSDataset, LoveDADataset, MultiImageMixDataset,
-                            PascalVOCDataset, PotsdamDataset, RepeatDataset,
-                            build_dataset, iSAIDDataset)
+from mmseg.datasets import (
+    DATASETS, A2D2Dataset18Classes, A2D2Dataset34Classes, ADE20KDataset,
+    CityscapesDataset, COCOStuffDataset, ConcatDataset, CustomDataset,
+    ISPRSDataset, LoveDADataset, MultiImageMixDataset, PascalVOCDataset,
+    PotsdamDataset, RepeatDataset, build_dataset, iSAIDDataset)
 
 
 def test_classes():
@@ -630,6 +630,60 @@ def test_concat_ade(separate_eval):
     assert np.allclose(temp, pseudo_results[0] + 1)
 
     shutil.rmtree('.format_ade')
+
+
+def test_a2d2_18cls():
+    test_dataset = A2D2Dataset18Classes(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_a2d2_dataset/images'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_a2d2_dataset/annotations'))
+    assert len(test_dataset) == 1
+
+    gt_seg_maps = list(test_dataset.get_gt_seg_maps())
+
+    # Test format_results
+    pseudo_results = []
+    for idx in range(len(test_dataset)):
+        h, w = gt_seg_maps[idx].shape
+        pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
+    file_paths = test_dataset.format_results(pseudo_results,
+                                             '.format_a2d2_18_cls')
+    assert len(file_paths) == len(test_dataset)
+    # Test loveda evaluate
+
+    test_dataset.evaluate(
+        pseudo_results, metric='mIoU', imgfile_prefix='.format_a2d2_18_cls')
+
+    shutil.rmtree('.format_a2d2_18_cls')
+
+
+def test_a2d2_34cls():
+    test_dataset = A2D2Dataset34Classes(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_a2d2_dataset/images'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_a2d2_dataset/annotations'))
+    assert len(test_dataset) == 1
+
+    gt_seg_maps = list(test_dataset.get_gt_seg_maps())
+
+    # Test format_results
+    pseudo_results = []
+    for idx in range(len(test_dataset)):
+        h, w = gt_seg_maps[idx].shape
+        pseudo_results.append(np.random.randint(low=0, high=7, size=(h, w)))
+    file_paths = test_dataset.format_results(pseudo_results,
+                                             '.format_a2d2_34_cls')
+    assert len(file_paths) == len(test_dataset)
+    # Test loveda evaluate
+
+    test_dataset.evaluate(
+        pseudo_results, metric='mIoU', imgfile_prefix='.format_a2d2_34_cls')
+
+    shutil.rmtree('.format_a2d2_34_cls')
 
 
 def test_cityscapes():
