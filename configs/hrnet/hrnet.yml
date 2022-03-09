@@ -1,28 +1,6 @@
-Collections:
-- Name: hrnet
-  Metadata:
-    Training Data:
-    - Cityscapes
-    - ADE20K
-    - Pascal VOC 2012 + Aug
-    - Pascal Context
-    - Pascal Context 59
-    - LoveDA
-    - Potsdam
-    - Vaihingen
-    - iSAID
-  Paper:
-    URL: https://arxiv.org/abs/1908.07919
-    Title: Deep High-Resolution Representation Learning for Human Pose Estimation
-  README: configs/hrnet/README.md
-  Code:
-    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/hrnet.py#L218
-    Version: v0.17.0
-  Converted From:
-    Code: https://github.com/HRNet/HRNet-Semantic-Segmentation
 Models:
 - Name: fcn_hr18s_512x1024_40k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,1024)
@@ -44,7 +22,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x1024_40k_cityscapes/fcn_hr18s_512x1024_40k_cityscapes_20200601_014216-93db27d0.pth
 - Name: fcn_hr18_512x1024_40k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,1024)
@@ -66,7 +44,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x1024_40k_cityscapes/fcn_hr18_512x1024_40k_cityscapes_20200601_014216-f196fb4e.pth
 - Name: fcn_hr48_512x1024_40k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,1024)
@@ -88,7 +66,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x1024_40k_cityscapes/fcn_hr48_512x1024_40k_cityscapes_20200601_014240-a989b146.pth
 - Name: fcn_hr18s_512x1024_80k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,1024)
@@ -102,7 +80,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x1024_80k_cityscapes/fcn_hr18s_512x1024_80k_cityscapes_20200601_202700-1462b75d.pth
 - Name: fcn_hr18_512x1024_80k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,1024)
@@ -116,7 +94,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x1024_80k_cityscapes/fcn_hr18_512x1024_80k_cityscapes_20200601_223255-4e7b345e.pth
 - Name: fcn_hr48_512x1024_80k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,1024)
@@ -130,7 +108,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x1024_80k_cityscapes/fcn_hr48_512x1024_80k_cityscapes_20200601_202606-58ea95d6.pth
 - Name: fcn_hr18s_512x1024_160k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,1024)
@@ -144,7 +122,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x1024_160k_cityscapes/fcn_hr18s_512x1024_160k_cityscapes_20200602_190901-4a0797ea.pth
 - Name: fcn_hr18_512x1024_160k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,1024)
@@ -158,7 +136,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x1024_160k_cityscapes/fcn_hr18_512x1024_160k_cityscapes_20200602_190822-221e4a4f.pth
 - Name: fcn_hr48_512x1024_160k_cityscapes
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,1024)
@@ -172,7 +150,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x1024_160k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x1024_160k_cityscapes/fcn_hr48_512x1024_160k_cityscapes_20200602_190946-59b7973e.pth
 - Name: fcn_hr18s_512x512_80k_ade20k
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
@@ -194,7 +172,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_ade20k/fcn_hr18s_512x512_80k_ade20k_20200614_144345-77fc814a.pth
 - Name: fcn_hr18_512x512_80k_ade20k
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
@@ -216,7 +194,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20210827_114910-6c9382c0.pth
 - Name: fcn_hr48_512x512_80k_ade20k
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
@@ -238,7 +216,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_ade20k/fcn_hr48_512x512_80k_ade20k_20200614_193946-7ba5258d.pth
 - Name: fcn_hr18s_512x512_160k_ade20k
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
@@ -252,7 +230,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_160k_ade20k/fcn_hr18s_512x512_160k_ade20k_20210829_174739-f1e7c2e7.pth
 - Name: fcn_hr18_512x512_160k_ade20k
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
@@ -266,7 +244,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_160k_ade20k/fcn_hr18_512x512_160k_ade20k_20200614_214426-ca961836.pth
 - Name: fcn_hr48_512x512_160k_ade20k
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
@@ -280,7 +258,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_160k_ade20k/fcn_hr48_512x512_160k_ade20k_20200614_214407-a52fc02c.pth
 - Name: fcn_hr18s_512x512_20k_voc12aug
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
@@ -302,7 +280,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20210829_174910-0aceadb4.pth
 - Name: fcn_hr18_512x512_20k_voc12aug
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
@@ -324,7 +302,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_20k_voc12aug/fcn_hr18_512x512_20k_voc12aug_20200617_224503-488d45f7.pth
 - Name: fcn_hr48_512x512_20k_voc12aug
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
@@ -346,7 +324,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_20k_voc12aug/fcn_hr48_512x512_20k_voc12aug_20200617_224419-89de05cd.pth
 - Name: fcn_hr18s_512x512_40k_voc12aug
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
@@ -360,7 +338,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_40k_voc12aug/fcn_hr18s_512x512_40k_voc12aug_20200614_000648-4f8d6e7f.pth
 - Name: fcn_hr18_512x512_40k_voc12aug
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
@@ -374,7 +352,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_40k_voc12aug/fcn_hr18_512x512_40k_voc12aug_20200613_224401-1b4b76cd.pth
 - Name: fcn_hr48_512x512_40k_voc12aug
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
@@ -388,7 +366,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x512_40k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_40k_voc12aug/fcn_hr48_512x512_40k_voc12aug_20200613_222111-1b0f18bc.pth
 - Name: fcn_hr48_480x480_40k_pascal_context
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (480,480)
@@ -410,7 +388,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_480x480_40k_pascal_context.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_40k_pascal_context/fcn_hr48_480x480_40k_pascal_context_20200911_164852-667d00b0.pth
 - Name: fcn_hr48_480x480_80k_pascal_context
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (480,480)
@@ -424,7 +402,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_480x480_80k_pascal_context.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_80k_pascal_context/fcn_hr48_480x480_80k_pascal_context_20200911_155322-847a6711.pth
 - Name: fcn_hr48_480x480_40k_pascal_context_59
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (480,480)
@@ -438,7 +416,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_480x480_40k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_40k_pascal_context_59/fcn_hr48_480x480_40k_pascal_context_59_20210410_122738-b808b8b2.pth
 - Name: fcn_hr48_480x480_80k_pascal_context_59
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (480,480)
@@ -452,7 +430,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_480x480_80k_pascal_context_59.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_80k_pascal_context_59/fcn_hr48_480x480_80k_pascal_context_59_20210411_003240-3ae7081e.pth
 - Name: fcn_hr18s_512x512_80k_loveda
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
@@ -474,7 +452,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_loveda/fcn_hr18s_512x512_80k_loveda_20211210_203228-60a86a7a.pth
 - Name: fcn_hr18_512x512_80k_loveda
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
@@ -496,7 +474,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_loveda/fcn_hr18_512x512_80k_loveda_20211210_203952-93d9c3b3.pth
 - Name: fcn_hr48_512x512_80k_loveda
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
@@ -518,7 +496,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x512_80k_loveda.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_loveda/fcn_hr48_512x512_80k_loveda_20211211_044756-67072f55.pth
 - Name: fcn_hr18s_512x512_80k_potsdam
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
@@ -540,7 +518,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_512x512_80k_potsdam.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_potsdam/fcn_hr18s_512x512_80k_potsdam_20211218_205517-ba32af63.pth
 - Name: fcn_hr18_512x512_80k_potsdam
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
@@ -562,7 +540,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_512x512_80k_potsdam.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_potsdam/fcn_hr18_512x512_80k_potsdam_20211218_205517-5d0387ad.pth
 - Name: fcn_hr48_512x512_80k_potsdam
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
@@ -584,7 +562,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_512x512_80k_potsdam.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_potsdam/fcn_hr48_512x512_80k_potsdam_20211219_020601-97434c78.pth
 - Name: fcn_hr18s_4x4_512x512_80k_vaihingen
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (512,512)
@@ -606,7 +584,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen/fcn_hr18s_4x4_512x512_80k_vaihingen_20211231_230909-b23aae02.pth
 - Name: fcn_hr18_4x4_512x512_80k_vaihingen
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (512,512)
@@ -628,7 +606,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen/fcn_hr18_4x4_512x512_80k_vaihingen_20211231_231216-2ec3ae8a.pth
 - Name: fcn_hr48_4x4_512x512_80k_vaihingen
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (512,512)
@@ -650,7 +628,7 @@ Models:
   Config: configs/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen/fcn_hr48_4x4_512x512_80k_vaihingen_20211231_231244-7133cb22.pth
 - Name: fcn_hr18s_4x4_896x896_80k_isaid
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18-Small
     crop size: (896,896)
@@ -672,7 +650,7 @@ Models:
   Config: configs/hrnet/fcn_hr18s_4x4_896x896_80k_isaid.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_4x4_896x896_80k_isaid/fcn_hr18s_4x4_896x896_80k_isaid_20220118_001603-3cc0769b.pth
 - Name: fcn_hr18_4x4_896x896_80k_isaid
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W18
     crop size: (896,896)
@@ -694,7 +672,7 @@ Models:
   Config: configs/hrnet/fcn_hr18_4x4_896x896_80k_isaid.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_4x4_896x896_80k_isaid/fcn_hr18_4x4_896x896_80k_isaid_20220110_182230-49bf752e.pth
 - Name: fcn_hr48_4x4_896x896_80k_isaid
-  In Collection: hrnet
+  In Collection: FCN
   Metadata:
     backbone: HRNetV2p-W48
     crop size: (896,896)

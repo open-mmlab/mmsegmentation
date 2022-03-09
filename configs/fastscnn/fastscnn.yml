@@ -1,5 +1,5 @@
 Collections:
-- Name: fastscnn
+- Name: FastSCNN
   Metadata:
     Training Data:
     - Cityscapes
@@ -12,9 +12,9 @@ Collections:
     Version: v0.17.0
 Models:
 - Name: fast_scnn_lr0.12_8x4_160k_cityscapes
-  In Collection: fastscnn
+  In Collection: FastSCNN
   Metadata:
-    backbone: Fast-SCNN
+    backbone: FastSCNN
     crop size: (512,1024)
     lr schd: 160000
     inference time (ms/im):

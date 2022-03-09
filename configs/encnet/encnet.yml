@@ -1,5 +1,5 @@
 Collections:
-- Name: encnet
+- Name: EncNet
   Metadata:
     Training Data:
     - Cityscapes
@@ -15,7 +15,7 @@ Collections:
     Code: https://github.com/zhanghang1989/PyTorch-Encoding
 Models:
 - Name: encnet_r50-d8_512x1024_40k_cityscapes
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -37,7 +37,7 @@ Models:
   Config: configs/encnet/encnet_r50-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_40k_cityscapes/encnet_r50-d8_512x1024_40k_cityscapes_20200621_220958-68638a47.pth
 - Name: encnet_r101-d8_512x1024_40k_cityscapes
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -59,7 +59,7 @@ Models:
   Config: configs/encnet/encnet_r101-d8_512x1024_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x1024_40k_cityscapes/encnet_r101-d8_512x1024_40k_cityscapes_20200621_220933-35e0a3e8.pth
 - Name: encnet_r50-d8_769x769_40k_cityscapes
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -81,7 +81,7 @@ Models:
   Config: configs/encnet/encnet_r50-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_769x769_40k_cityscapes/encnet_r50-d8_769x769_40k_cityscapes_20200621_220958-3bcd2884.pth
 - Name: encnet_r101-d8_769x769_40k_cityscapes
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -103,7 +103,7 @@ Models:
   Config: configs/encnet/encnet_r101-d8_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_40k_cityscapes/encnet_r101-d8_769x769_40k_cityscapes_20200621_220933-2fafed55.pth
 - Name: encnet_r50-d8_512x1024_80k_cityscapes
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,1024)
@@ -117,7 +117,7 @@ Models:
   Config: configs/encnet/encnet_r50-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_80k_cityscapes/encnet_r50-d8_512x1024_80k_cityscapes_20200622_003554-fc5c5624.pth
 - Name: encnet_r101-d8_512x1024_80k_cityscapes
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,1024)
@@ -131,7 +131,7 @@ Models:
   Config: configs/encnet/encnet_r101-d8_512x1024_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x1024_80k_cityscapes/encnet_r101-d8_512x1024_80k_cityscapes_20200622_003555-1de64bec.pth
 - Name: encnet_r50-d8_769x769_80k_cityscapes
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-50-D8
     crop size: (769,769)
@@ -145,7 +145,7 @@ Models:
   Config: configs/encnet/encnet_r50-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_769x769_80k_cityscapes/encnet_r50-d8_769x769_80k_cityscapes_20200622_003554-55096dcb.pth
 - Name: encnet_r101-d8_769x769_80k_cityscapes
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-101-D8
     crop size: (769,769)
@@ -159,7 +159,7 @@ Models:
   Config: configs/encnet/encnet_r101-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_80k_cityscapes/encnet_r101-d8_769x769_80k_cityscapes_20200622_003555-470ef79d.pth
 - Name: encnet_r50-d8_512x512_80k_ade20k
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -181,7 +181,7 @@ Models:
   Config: configs/encnet/encnet_r50-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_80k_ade20k/encnet_r50-d8_512x512_80k_ade20k_20200622_042412-44b46b04.pth
 - Name: encnet_r101-d8_512x512_80k_ade20k
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)
@@ -203,7 +203,7 @@ Models:
   Config: configs/encnet/encnet_r101-d8_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x512_80k_ade20k/encnet_r101-d8_512x512_80k_ade20k_20200622_101128-dd35e237.pth
 - Name: encnet_r50-d8_512x512_160k_ade20k
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-50-D8
     crop size: (512,512)
@@ -217,7 +217,7 @@ Models:
   Config: configs/encnet/encnet_r50-d8_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_160k_ade20k/encnet_r50-d8_512x512_160k_ade20k_20200622_101059-b2db95e0.pth
 - Name: encnet_r101-d8_512x512_160k_ade20k
-  In Collection: encnet
+  In Collection: EncNet
   Metadata:
     backbone: R-101-D8
     crop size: (512,512)

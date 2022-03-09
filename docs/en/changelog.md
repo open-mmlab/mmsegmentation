@@ -1,5 +1,50 @@
 ## Changelog
 
+### V0.22 (3/04/2022)
+
+**Highlights**
+
+- Support ConvNeXt: A ConvNet for the 2020s. Please use the latest MMClassification (0.21.0) to try it out.
+- Support iSAID aerial Dataset.
+- Officially Support inference on Windows OS.
+
+**New Features**
+
+- Support ConvNeXt: A ConvNet for the 2020s. ([#1216](https://github.com/open-mmlab/mmsegmentation/pull/1216))
+- Support iSAID aerial Dataset. ([#1115](https://github.com/open-mmlab/mmsegmentation/pull/1115)
+- Generating and plotting confusion matrix. ([#1301](https://github.com/open-mmlab/mmsegmentation/pull/1301))
+
+**Improvements**
+
+- Refactor 4 decoder heads (ASPP, FCN, PSP, UPer): Split forward function into `_forward_feature` and `cls_seg`. ([#1299](https://github.com/open-mmlab/mmsegmentation/pull/1299))
+- Add `min_size` arg in `Resize` to keep the shape after resize bigger than slide window. ([#1318](https://github.com/open-mmlab/mmsegmentation/pull/1318))
+- Revise pre-commit-hooks. ([#1315](https://github.com/open-mmlab/mmsegmentation/pull/1315))
+- Add win-ci. ([#1296](https://github.com/open-mmlab/mmsegmentation/pull/1296))
+
+**Bug Fixes**
+
+- Fix `mlp_ratio` type in Swin Transformer. ([#1274](https://github.com/open-mmlab/mmsegmentation/pull/1274))
+- Fix path errors in `./demo` . ([#1269](https://github.com/open-mmlab/mmsegmentation/pull/1269))
+- Fix bug in conversion of potsdam. ([#1279](https://github.com/open-mmlab/mmsegmentation/pull/1279))
+- Make accuracy take into account `ignore_index`. ([#1259](https://github.com/open-mmlab/mmsegmentation/pull/1259))
+- Add Pytorch HardSwish assertion in unit test. ([#1294](https://github.com/open-mmlab/mmsegmentation/pull/1294))
+- Fix wrong palette value in vaihingen. ([#1292](https://github.com/open-mmlab/mmsegmentation/pull/1292))
+- Fix the bug that SETR cannot load pretrain. ([#1293](https://github.com/open-mmlab/mmsegmentation/pull/1293))
+- Update correct `In Collection` in metafile of each configs. ([#1239](https://github.com/open-mmlab/mmsegmentation/pull/1239))
+- Upload completed STDC models. ([#1332](https://github.com/open-mmlab/mmsegmentation/pull/1332))
+- Fix `DNLHead` exports onnx inference difference type Cast error. ([#1161](https://github.com/open-mmlab/mmsegmentation/pull/1332))
+
+
+**Contributors**
+
+- @JiaYanhao made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1269
+- @andife made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1281
+- @SBCV made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1279
+- @HJoonKwon made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1259
+- @Tsingularity made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1290
+- @Waterman0524 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1115
+- @MeowZheng made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1315
+- @linfangjian01 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1318
 
 ### V0.21.1 (2/9/2022)
 

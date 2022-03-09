@@ -91,8 +91,17 @@ class ASPPHead(BaseDecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
-    def forward(self, inputs):
-        """Forward function."""
+    def _forward_feature(self, inputs):
+        """Forward function for feature maps before classifying each pixel with
+        ``self.cls_seg`` fc.
+
+        Args:
+            inputs (list[Tensor]): List of multi-level img features.
+
+        Returns:
+            feats (Tensor): A tensor of shape (batch_size, self.channels,
+                H, W) which is feature map for last layer of decoder head.
+        """
         x = self._transform_inputs(inputs)
         aspp_outs = [
             resize(
@@ -103,6 +112,11 @@ class ASPPHead(BaseDecodeHead):
         ]
         aspp_outs.extend(self.aspp_modules(x))
         aspp_outs = torch.cat(aspp_outs, dim=1)
-        output = self.bottleneck(aspp_outs)
+        feats = self.bottleneck(aspp_outs)
+        return feats
+
+    def forward(self, inputs):
+        """Forward function."""
+        output = self._forward_feature(inputs)
         output = self.cls_seg(output)
         return output
