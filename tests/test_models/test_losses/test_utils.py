@@ -76,6 +76,12 @@ def test_accuracy():
     acc = accuracy(pred, true_label)
     assert torch.allclose(acc, torch.tensor(80.0))
 
+    # test for ignoring all the pixels
+    true_label = torch.Tensor([2, 2, 2, 2, 2]).long()
+    accuracy = Accuracy(topk=1, ignore_index=2)
+    acc = accuracy(pred, true_label)
+    assert torch.allclose(acc, torch.tensor(100.0))
+
     # test for top1
     true_label = torch.Tensor([2, 3, 0, 1, 2]).long()
     accuracy = Accuracy(topk=1)
