@@ -49,7 +49,7 @@ def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
     if label_weights is None:
         bin_label_weights = valid_mask
     else:
-        bin_label_weights = label_weights.unsqueeze(1).expand(target_shape)
+        bin_label_weights = label_weights.unsqueeze(1).expand(target_shape).clone()
         bin_label_weights *= valid_mask
 
     return bin_labels, bin_label_weights
