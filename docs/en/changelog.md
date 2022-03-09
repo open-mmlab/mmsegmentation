@@ -1,5 +1,16 @@
 ## Changelog
 
+### V0.22.1 (3/9/2022)
+
+**Bug Fixes**
+
+- Fix the ZeroDivisionError that all pixels in one image is ignored. ([#1336](https://github.com/open-mmlab/mmsegmentation/pull/1336))
+
+**Improvements**
+
+- Provide URLs of STDC, Segmenter and Twins pretrained models ([#1272](https://github.com/open-mmlab/mmsegmentation/pull/1357))
+
+
 ### V0.22 (3/04/2022)
 
 **Highlights**
