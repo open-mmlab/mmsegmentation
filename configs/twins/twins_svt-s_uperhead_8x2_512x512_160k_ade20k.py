@@ -3,11 +3,13 @@ _base_ = [
     '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_160k.py'
 ]
+
+checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/twins/alt_gvt_small_20220308-7e1c3695.pth'  # noqa
+
 model = dict(
     backbone=dict(
         type='SVT',
-        init_cfg=dict(
-            type='Pretrained', checkpoint='pretrained/alt_gvt_small.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint),
         embed_dims=[64, 128, 256, 512],
         num_heads=[2, 4, 8, 16],
         mlp_ratios=[4, 4, 4, 4],
