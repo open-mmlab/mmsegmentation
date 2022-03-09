@@ -34,9 +34,9 @@ Very recently, a variety of vision transformer architectures for dense predictio
 
 ## Usage
 
-To use other repositories' pre-trained models, it is necessary to convert keys.
+We have provided pretrained models converted from [official repo](https://github.com/Meituan-AutoML/Twins).
 
-We provide a script [`twins2mmseg.py`](../../tools/model_converters/twins2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/Meituan-AutoML/Twins) to MMSegmentation style.
+If you want to convert keys on your own to use official repositories' pre-trained models, we also provide a script [`twins2mmseg.py`](../../tools/model_converters/twins2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/Meituan-AutoML/Twins) to MMSegmentation style.
 
 ```shell
 python tools/model_converters/twins2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH} ${MODEL_TYPE}
