@@ -121,6 +121,7 @@ Supported methods:
 - [x] [DPT (ArXiv'2021)](configs/dpt)
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
+- [x] [K-Net (NeurIPS'2021)](configs/knet)
 
 Supported datasets:
 
