@@ -87,10 +87,10 @@ class KernelUpdator(nn.Module):
                 shape: `self.in_channels`.
             input_feature (torch.Tensor): Intermediate feature
                 with shape: (N, num_classes, conv_kernel_size**2, channels).
-
         Returns:
-            Tensor: The output tensor of shape
-            (self.num_classes(KernelUpdateHead) * self.in_channels(KernelUpdateHead)/ in_channels, kernel size * kernel size, in_channels). # noqa
+            Tensor: The output tensor of shape (N*C1/C2, K*K, C2), where N is
+            the number of classes, C1 and C2 are the feature map channels of
+            KernelUpdateHead and KernelUpdator, respectively.
         """
 
         update_feature = update_feature.reshape(-1, self.in_channels)
