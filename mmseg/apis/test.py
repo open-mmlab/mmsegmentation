@@ -62,6 +62,9 @@ def single_gpu_test(model,
             Mutually exclusive with pre_eval and efficient_test.
             Default: False.
         format_args (dict): The args for format_results. Default: {}.
+        return_all (bool): Return logits value of prediction.
+            Default: False.
+
     Returns:
         list: list of evaluation pre-results or list of save file names.
     """
@@ -173,6 +176,8 @@ def multi_gpu_test(model,
             Mutually exclusive with pre_eval and efficient_test.
             Default: False.
         format_args (dict): The args for format_results. Default: {}.
+        return_all (bool): Return logits value of prediction.
+            Default: False.
 
     Returns:
         list: list of evaluation pre-results or list of save file names.
@@ -207,7 +212,8 @@ def multi_gpu_test(model,
 
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
-            result = model(return_loss=False, rescale=True, **data)
+            result = model(
+                return_all=return_all, return_loss=False, rescale=True, **data)
 
         if efficient_test:
             result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]

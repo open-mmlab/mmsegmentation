@@ -102,7 +102,7 @@ def parse_args():
     parser.add_argument(
         '--return-all',
         action='store_true',
-        help='Use Flip and Multi scale aug')
+        help='Return logits for downstream evaluation')
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)

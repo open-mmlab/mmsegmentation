@@ -265,7 +265,7 @@ class EncoderDecoder(BaseSegmentor):
         seg_pred = list(seg_pred)
 
         if return_all:
-            return dict(seg_pred=seg_pred[0], seg_logit=seg_logit)
+            return [dict(seg_pred=seg_pred[0], seg_logit=seg_logit)]
         else:
             return seg_pred
 

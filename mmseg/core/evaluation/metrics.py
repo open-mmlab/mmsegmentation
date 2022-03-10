@@ -53,7 +53,8 @@ def intersect_and_union(pred_label,
     """
 
     if isinstance(pred_label, dict):
-        pred_logit = torch.from_numpy((pred_label['seg_logit']))
+        # When using `--return-all`, `pre_logit` could be used for evaluation.
+        # pred_logit = torch.from_numpy((pred_label['seg_logit']))
         if isinstance(pred_label['seg_pred'], str):
             pred_label = torch.from_numpy(np.load(pred_label['seg_pred']))
         elif isinstance(pred_label['seg_pred'], np.ndarray):
