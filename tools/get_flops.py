@@ -8,7 +8,8 @@ from mmseg.models import build_segmentor
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Train a segmentor')
+    parser = argparse.ArgumentParser(
+        description='Get the FLOPs of a segmentor')
     parser.add_argument('config', help='train config file path')
     parser.add_argument(
         '--shape',
