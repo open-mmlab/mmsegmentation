@@ -88,7 +88,7 @@ def single_gpu_test(model,
 
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
-            result = model(return_loss=False, **data)
+            result = model(return_loss=False, return_all=True, **data)
 
         if show or out_dir:
             img_tensor = data['img'][0]
@@ -110,22 +110,25 @@ def single_gpu_test(model,
 
                 model.module.show_result(
                     img_show,
-                    result,
+                    result['seg_pred'],
                     palette=dataset.PALETTE,
                     show=show,
                     out_file=out_file,
                     opacity=opacity)
 
         if efficient_test:
-            result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
+            result = [
+                np2tmp(_, tmpdir='.efficient_test') for _ in result['seg_pred']
+            ]
 
         if format_only:
             result = dataset.format_results(
-                result, indices=batch_indices, **format_args)
+                result['seg_pred'], indices=batch_indices, **format_args)
         if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            result = dataset.pre_eval(result, indices=batch_indices)
+            result = dataset.pre_eval(
+                result['seg_pred'], indices=batch_indices)
             results.extend(result)
         else:
             results.extend(result)

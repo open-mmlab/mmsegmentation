@@ -281,14 +281,21 @@ def eval_metrics(results,
         ndarray: Per category evaluation metrics, shape (num_classes, ).
     """
 
-    total_area_intersect, total_area_union, total_area_pred_label, \
-        total_area_label = total_intersect_and_union(
-            results, gt_seg_maps, num_classes, ignore_index, label_map,
-            reduce_zero_label)
-    ret_metrics = total_area_to_metrics(total_area_intersect, total_area_union,
-                                        total_area_pred_label,
-                                        total_area_label, metrics, nan_to_num,
-                                        beta)
+    if metrics in ['mIoU', 'mDice', 'mFscore']:
+        total_area_intersect, total_area_union, total_area_pred_label, \
+            total_area_label = total_intersect_and_union(
+                results['seg_pred'],
+                gt_seg_maps,
+                num_classes,
+                ignore_index,
+                label_map,
+                reduce_zero_label,
+            )
+        ret_metrics = total_area_to_metrics(total_area_intersect,
+                                            total_area_union,
+                                            total_area_pred_label,
+                                            total_area_label, metrics,
+                                            nan_to_num, beta)
 
     return ret_metrics
 
