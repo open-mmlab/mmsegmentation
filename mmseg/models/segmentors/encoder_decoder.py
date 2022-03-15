@@ -251,7 +251,7 @@ class EncoderDecoder(BaseSegmentor):
 
         return output
 
-    def simple_test(self, img, img_meta, return_all=False, rescale=True):
+    def simple_test(self, img, img_meta, rescale=True, return_all=False):
         """Simple test with single image."""
         seg_logit = self.inference(img, img_meta, rescale)
         seg_pred = seg_logit.argmax(dim=1)
@@ -260,12 +260,14 @@ class EncoderDecoder(BaseSegmentor):
             seg_pred = seg_pred.unsqueeze(0)
             return seg_pred
         seg_pred = seg_pred.cpu().numpy()
-        seg_logit = seg_logit.cpu().numpy()
         # unravel batch dim
         seg_pred = list(seg_pred)
 
         if return_all:
-            return [dict(seg_pred=seg_pred[0], seg_logit=seg_logit)]
+            # Future batch inference may need to refactor
+            # to list because it uses list format in a for loop.
+            return dict(
+                seg_pred=seg_pred, seg_logit=list(seg_logit.cpu().numpy()))
         else:
             return seg_pred
 

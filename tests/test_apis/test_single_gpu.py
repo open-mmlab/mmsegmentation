@@ -51,15 +51,6 @@ def test_single_gpu():
     assert pred.shape == (1, )
     assert pred[0] == 1
 
-    # Test return_all
-    results = single_gpu_test(
-        model, data_loader, efficient_test=True, return_all=True)
-    assert len(results) == 1
-    pred = np.load(results[0])
-    assert isinstance(pred, np.ndarray)
-    assert pred.shape == (1, )
-    assert pred[0] == 1
-
     shutil.rmtree('.efficient_test')
 
     # Test pre_eval
