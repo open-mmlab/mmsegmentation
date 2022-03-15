@@ -264,8 +264,8 @@ def eval_metrics(results,
                  beta=1):
     """Calculate evaluation metrics
     Args:
-        results (list[ndarray] | list[str]): List of prediction segmentation
-            maps or list of prediction result filenames.
+        results (list[ndarray] | list[str] | dict): List of prediction
+            segmentation maps or list of prediction result filenames.
         gt_seg_maps (list[ndarray] | list[str] | Iterables): list of ground
             truth segmentation maps or list of label filenames.
         num_classes (int): Number of categories.
@@ -280,11 +280,14 @@ def eval_metrics(results,
         ndarray: Per category accuracy, shape (num_classes, ).
         ndarray: Per category evaluation metrics, shape (num_classes, ).
     """
-
-    if metrics in ['mIoU', 'mDice', 'mFscore']:
+    if isinstance(metrics, str):
+        metrics = [metrics]
+    seg_pred_metrics = ['mIoU', 'mDice', 'mFscore']
+    if set(metrics).issubset(set(seg_pred_metrics)):
+        results = results['seg_pred'] if isinstance(results, dict) else results
         total_area_intersect, total_area_union, total_area_pred_label, \
             total_area_label = total_intersect_and_union(
-                results['seg_pred'],
+                results,
                 gt_seg_maps,
                 num_classes,
                 ignore_index,

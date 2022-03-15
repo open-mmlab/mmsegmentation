@@ -31,8 +31,16 @@ class ExampleModel(nn.Module):
         self.test_cfg = None
         self.conv = nn.Conv2d(3, 3, 3)
 
-    def forward(self, img, img_metas, test_mode=False, **kwargs):
-        return img
+    def forward(self,
+                img,
+                img_metas,
+                return_all=False,
+                test_mode=False,
+                **kwargs):
+        if return_all:
+            return dict(seg_pred=img, seg_logits=img)
+        else:
+            return img
 
     def train_step(self, data_batch, optimizer):
         loss = self.forward(**data_batch)
@@ -73,7 +81,7 @@ def test_iter_eval_hook():
             logger=logging.getLogger())
         runner.register_hook(eval_hook)
         runner.run([loader], [('train', 1)], 1)
-        test_dataset.evaluate.assert_called_with([torch.tensor([1])],
+        test_dataset.evaluate.assert_called_with(['seg_pred', 'seg_logits'],
                                                  logger=runner.logger)
 
 
@@ -111,8 +119,8 @@ def test_epoch_eval_hook():
             logger=logging.getLogger())
         runner.register_hook(eval_hook)
         runner.run([loader], [('train', 1)], 2)
-        test_dataset.evaluate.assert_called_once_with([torch.tensor([1])],
-                                                      logger=runner.logger)
+        test_dataset.evaluate.assert_called_once_with(
+            ['seg_pred', 'seg_logits'], logger=runner.logger)
 
 
 def multi_gpu_test(model,
