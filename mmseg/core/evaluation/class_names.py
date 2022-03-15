@@ -120,6 +120,9 @@ def isaid_classes():
         'Soccer_ball_field', 'plane', 'Harbor'
     ]
 
+def stare_classes():
+    """stare class names for external use."""
+    return ['background', 'vessel']
 
 def cityscapes_palette():
     """Cityscapes palette for external use."""
@@ -254,6 +257,9 @@ def isaid_palette():
             [0, 0, 191], [0, 0, 255], [0, 191, 127], [0, 127, 191],
             [0, 127, 255], [0, 100, 155]]
 
+def stare_palette():
+    """STARE palette for external use"""
+    return [[120, 120, 120], [6, 230, 230]]
 
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
@@ -267,7 +273,8 @@ dataset_aliases = {
         'coco-stuff10k', 'coco-stuff164k', 'coco_stuff', 'coco_stuff10k',
         'coco_stuff164k'
     ],
-    'isaid': ['isaid', 'iSAID']
+    'isaid': ['isaid', 'iSAID'],
+    'stare':['stare', 'STARE']
 }
 
 
