@@ -258,7 +258,7 @@ def isaid_palette():
             [0, 127, 255], [0, 100, 155]]
 
 def stare_palette():
-    """STARE palette for external use"""
+    """STARE palette for external use."""
     return [[120, 120, 120], [6, 230, 230]]
 
 dataset_aliases = {
