@@ -33,9 +33,9 @@ Image segmentation is often ambiguous at the level of individual image patches a
 
 ## Usage
 
-To use the pre-trained ViT model from [Segmenter](https://github.com/rstrudel/segmenter), it is necessary to convert keys.
+We have provided pretrained models converted from [ViT-AugReg](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L54-L106).
 
-We provide a script [`vitjax2mmseg.py`](../../tools/model_converters/vitjax2mmseg.py) in the tools directory to convert the key of models from [ViT-AugReg](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L54-L106) to MMSegmentation style.
+If you want to convert keys on your own to use the pre-trained ViT model from [Segmenter](https://github.com/rstrudel/segmenter), we also provide a script [`vitjax2mmseg.py`](../../tools/model_converters/vitjax2mmseg.py) in the tools directory to convert the key of models from [ViT-AugReg](https://github.com/rwightman/pytorch-image-models/blob/f55c22bebf9d8afc449d317a723231ef72e0d662/timm/models/vision_transformer.py#L54-L106) to MMSegmentation style.
 
 ```shell
 python tools/model_converters/vitjax2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}

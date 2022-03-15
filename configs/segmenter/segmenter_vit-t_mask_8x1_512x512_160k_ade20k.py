@@ -4,8 +4,10 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 
+checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segmenter/vit_tiny_p16_384_20220308-cce8c795.pth'  # noqa
+
 model = dict(
-    pretrained='pretrain/vit_tiny_p16_384.pth',
+    pretrained=checkpoint,
     backbone=dict(embed_dims=192, num_heads=3),
     decode_head=dict(
         type='SegmenterMaskTransformerHead',
