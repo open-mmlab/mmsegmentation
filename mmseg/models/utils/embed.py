@@ -14,6 +14,7 @@ class AdaptivePadding(nn.Module):
     by filter you specified. It support two modes "same" and "corner". The
     "same" mode is same with "SAME" padding mode in TensorFlow, pad zero around
     input. The "corner"  mode would pad zero to bottom right.
+
     Args:
         kernel_size (int | tuple): Size of the kernel:
         stride (int | tuple): Stride of the filter. Default: 1:
@@ -83,6 +84,7 @@ class PatchEmbed(BaseModule):
     """Image to Patch Embedding.
 
     We use a conv layer to implement PatchEmbed.
+
     Args:
         in_channels (int): The num of input channels. Default: 3
         embed_dims (int): The dimensions of embedding. Default: 768
@@ -182,8 +184,10 @@ class PatchEmbed(BaseModule):
         """
         Args:
             x (Tensor): Has shape (B, C, H, W). In most case, C is 3.
+
         Returns:
             tuple: Contains merged results and its spatial shape.
+
                 - x (Tensor): Has shape (B, out_h * out_w, embed_dims)
                 - out_size (tuple[int]): Spatial shape of x, arrange as
                     (out_h, out_w).
@@ -207,6 +211,7 @@ class PatchMerging(BaseModule):
     layers to the grouped feature map. Our implementation uses `nn.Unfold` to
     merge patch, which is about 25% faster than original implementation.
     Instead, we need to modify pretrained models for compatibility.
+
     Args:
         in_channels (int): The num of input channels.
         out_channels (int): The num of output channels.
@@ -283,8 +288,10 @@ class PatchMerging(BaseModule):
             x (Tensor): Has shape (B, H*W, C_in).
             input_size (tuple[int]): The spatial shape of x, arrange as (H, W).
                 Default: None.
+
         Returns:
             tuple: Contains merged results and its spatial shape.
+
                 - x (Tensor): Has shape (B, Merged_H * Merged_W, C_out)
                 - out_size (tuple[int]): Spatial shape of x, arrange as
                     (Merged_H, Merged_W).
