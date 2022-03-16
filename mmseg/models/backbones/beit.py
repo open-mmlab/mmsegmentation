@@ -2,7 +2,6 @@
 import math
 import warnings
 
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -12,13 +11,12 @@ from mmcv.cnn.bricks.transformer import FFN
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
 from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
-from scipy import interpolate
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed
+from ..utils import PatchEmbed, resize_rel_pos_embed
 
 
 class BEiTAttention(BaseModule):
@@ -163,9 +161,10 @@ class TransformerEncoderLayer(BaseModule):
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
-        window_size (tuple[int]): The height and width of the window.
-        init_values (float): Initialize the values of BEiTAttention and FFN
-            with learnable scaling.
+        window_size (tuple[int], optional): The height and width of the window.
+            Default: None.
+        init_values (float, optional): Initialize the values of BEiTAttention
+            and FFN with learnable scaling. Default: None.
     """
 
     def __init__(self,
@@ -423,87 +422,10 @@ class BEiT(BaseModule):
                 # possible after interpolation, and vice versa in the edge
                 # area, the geometric sequence interpolation method is adopted.
                 if 'relative_position_bias_table' in key:
-                    rel_pos_bias = state_dict[key]
-                    src_num_pos, num_attn_heads = rel_pos_bias.size()
                     dst_num_pos, _ = self.state_dict()[key].size()
-                    dst_patch_shape = self.patch_shape
-                    if dst_patch_shape[0] != dst_patch_shape[1]:
-                        raise NotImplementedError()
-                    num_extra_tokens = dst_num_pos - (
-                        dst_patch_shape[0] * 2 - 1) * (
-                            dst_patch_shape[1] * 2 - 1)
-                    src_size = int((src_num_pos - num_extra_tokens)**0.5)
-                    dst_size = int((dst_num_pos - num_extra_tokens)**0.5)
-                    if src_size != dst_size:
-                        extra_tokens = rel_pos_bias[-num_extra_tokens:, :]
-                        rel_pos_bias = rel_pos_bias[:-num_extra_tokens, :]
-
-                        def geometric_progression(a, r, n):
-                            return a * (1.0 - r**n) / (1.0 - r)
-
-                        left, right = 1.01, 1.5
-                        while right - left > 1e-6:
-                            q = (left + right) / 2.0
-                            gp = geometric_progression(1, q, src_size // 2)
-                            if gp > dst_size // 2:
-                                right = q
-                            else:
-                                left = q
-
-                        dis = []
-                        cur = 1
-                        for i in range(src_size // 2):
-                            dis.append(cur)
-                            cur += q**(i + 1)
-
-                        r_ids = [-_ for _ in reversed(dis)]
-
-                        x = r_ids + [0] + dis
-                        y = r_ids + [0] + dis
-
-                        t = dst_size // 2.0
-                        dx = np.arange(-t, t + 0.1, 1.0)
-                        dy = np.arange(-t, t + 0.1, 1.0)
-
-                        all_rel_pos_bias = []
-
-                        for i in range(num_attn_heads):
-                            z = rel_pos_bias[:,
-                                             i].view(src_size,
-                                                     src_size).float().numpy()
-                            f = interpolate.interp2d(x, y, z, kind='cubic')
-                            all_rel_pos_bias.append(
-                                torch.Tensor(f(dx, dy)).contiguous().view(
-                                    -1, 1).to(rel_pos_bias.device))
-
-                        rel_pos_bias = torch.cat(all_rel_pos_bias, dim=-1)
-                        new_rel_pos_bias = torch.cat(
-                            (rel_pos_bias, extra_tokens), dim=0)
-                        state_dict[key] = new_rel_pos_bias
-
-            # interpolate position bias table
-            relative_position_bias_table_keys = [
-                k for k in state_dict.keys()
-                if 'relative_position_bias_table' in k
-            ]
-            for table_key in relative_position_bias_table_keys:
-                table_pretrained = state_dict[table_key]
-                table_current = self.state_dict()[table_key]
-                L1, nH1 = table_pretrained.size()
-                L2, nH2 = table_current.size()
-                if nH1 != nH2:
-                    logger.warning(f'Error in loading {table_key}, pass')
-                else:
-                    if L1 != L2:
-                        S1 = int(L1**0.5)
-                        S2 = int(L2**0.5)
-                        table_pretrained_resized = F.interpolate(
-                            table_pretrained.permute(1,
-                                                     0).view(1, nH1, S1, S1),
-                            size=(S2, S2),
-                            mode='bicubic')
-                        state_dict[table_key] = table_pretrained_resized.view(
-                            nH2, L2).permute(1, 0)
+                    state_dict = resize_rel_pos_embed(state_dict, key,
+                                                      dst_num_pos,
+                                                      self.patch_shape)
 
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:

@@ -2,11 +2,18 @@
 import math
 from typing import Sequence
 
+import numpy as np
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer, build_norm_layer
 from mmcv.runner.base_module import BaseModule
 from mmcv.utils import to_2tuple
+
+try:
+    from scipy import interpolate
+except ImportError:
+    interpolate = None
 
 
 class AdaptivePadding(nn.Module):
@@ -328,3 +335,73 @@ class PatchMerging(BaseModule):
         x = self.norm(x) if self.norm else x
         x = self.reduction(x)
         return x, output_size
+
+
+def resize_rel_pos_embed(state_dict, key, dst_num_pos, dst_patch_shape):
+    """Resize relative pos_embed weights.
+
+    Args:
+        state_dict (dict): Key and value of the model.
+        dst_num_pos (int): The number of relative position encoding
+            for the current model.
+        dst_patch_shape (tuple): The number of the patch embedding.
+    Returns:
+        state_dict (dict): Interpolate the relative pos_embed weights in the
+            pre-train model to the current model size.
+    """
+
+    rel_pos_bias = state_dict[key]
+    src_num_pos, num_attn_heads = rel_pos_bias.size()
+    # dst_num_pos, _ = self.state_dict()[key].size()
+    # dst_patch_shape = self.patch_shape
+    if dst_patch_shape[0] != dst_patch_shape[1]:
+        raise NotImplementedError()
+    num_extra_tokens = dst_num_pos - (dst_patch_shape[0] * 2 - 1) * (
+        dst_patch_shape[1] * 2 - 1)
+    src_size = int((src_num_pos - num_extra_tokens)**0.5)
+    dst_size = int((dst_num_pos - num_extra_tokens)**0.5)
+    if src_size != dst_size:
+        extra_tokens = rel_pos_bias[-num_extra_tokens:, :]
+        rel_pos_bias = rel_pos_bias[:-num_extra_tokens, :]
+
+        def geometric_progression(a, r, n):
+            return a * (1.0 - r**n) / (1.0 - r)
+
+        left, right = 1.01, 1.5
+        while right - left > 1e-6:
+            q = (left + right) / 2.0
+            gp = geometric_progression(1, q, src_size // 2)
+            if gp > dst_size // 2:
+                right = q
+            else:
+                left = q
+
+        dis = []
+        cur = 1
+        for i in range(src_size // 2):
+            dis.append(cur)
+            cur += q**(i + 1)
+
+        r_ids = [-_ for _ in reversed(dis)]
+
+        x = r_ids + [0] + dis
+        y = r_ids + [0] + dis
+
+        t = dst_size // 2.0
+        dx = np.arange(-t, t + 0.1, 1.0)
+        dy = np.arange(-t, t + 0.1, 1.0)
+
+        all_rel_pos_bias = []
+
+        for i in range(num_attn_heads):
+            z = rel_pos_bias[:, i].view(src_size, src_size).float().numpy()
+            f = interpolate.interp2d(x, y, z, kind='cubic')
+            all_rel_pos_bias.append(
+                torch.Tensor(f(dx, dy)).contiguous().view(-1, 1).to(
+                    rel_pos_bias.device))
+
+        rel_pos_bias = torch.cat(all_rel_pos_bias, dim=-1)
+        new_rel_pos_bias = torch.cat((rel_pos_bias, extra_tokens), dim=0)
+        state_dict[key] = new_rel_pos_bias
+
+    return state_dict
