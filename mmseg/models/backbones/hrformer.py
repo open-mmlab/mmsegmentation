@@ -578,11 +578,17 @@ class HRFormer(HRNet):
         with_cp (bool): Use checkpoint in ``HRFomerModule`` or not. Using
             checkpoint will save some memory while slowing down the training
             speed. Default: False
-        multiscale_output (bool):
+        multiscale_output (bool): Whether to output multi-level features
+            produced by multiple branches. If False, only the first level
+            feature will be output. Default: True.
+        drop_path_rate (float): Stochastic depth rate. Default 0.0.
         zero_init_residual (bool): Whether to use zero init for last norm layer
             in resblocks to let them behave as identity. Default: False.
         frozen_stages (int): Stages to be frozen (stop grad and set eval mode).
             -1 means not freezing any parameters. Default: -1.
+        pretrained (str, optional): Model pretrained path. Default: None.
+        init_cfg (dict or list[dict], optional): Initialization config dict.
+            Default: None.
     Example:
         >>> from mmseg.models import HRFormer
         >>> import torch
@@ -643,8 +649,11 @@ class HRFormer(HRNet):
                  norm_eval=False,
                  with_cp=False,
                  multiscale_output=True,
+                 drop_path_rate=0.,
                  zero_init_residual=False,
-                 frozen_stages=-1):
+                 frozen_stages=-1,
+                 pretrained=None,
+                 init_cfg=None):
 
         # stochastic depth
         depths = [
@@ -652,7 +661,7 @@ class HRFormer(HRNet):
             for stage in ['stage2', 'stage3', 'stage4']
         ]
         depth_s2, depth_s3, _ = depths
-        drop_path_rate = extra['drop_path_rate']
+        drop_path_rate = drop_path_rate
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
         ]
@@ -671,15 +680,17 @@ class HRFormer(HRNet):
         self.with_pad_mask = extra.get('with_pad_mask', False)
 
         super().__init__(
-            extra,
-            in_channels,
-            conv_cfg,
-            norm_cfg,
-            norm_eval,
-            with_cp,
-            zero_init_residual,
-            frozen_stages,
-            multiscale_output=multiscale_output)
+            extra=extra,
+            in_channels=in_channels,
+            conv_cfg=conv_cfg,
+            norm_cfg=norm_cfg,
+            norm_eval=norm_eval,
+            with_cp=with_cp,
+            zero_init_residual=zero_init_residual,
+            frozen_stages=frozen_stages,
+            multiscale_output=multiscale_output,
+            pretrained=pretrained,
+            init_cfg=init_cfg)
 
     def _make_stage(self,
                     layer_config,
