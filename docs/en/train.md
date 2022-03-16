@@ -74,9 +74,7 @@ An example:
 sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_512x512_80k_ade20k.py 8 --work_dir work_dirs/pspnet_r50-d8_512x512_80k_ade20k/ --deterministic
 ```
 
-**Note**: During training, checkpoints and logs are saved in the same folder structure as the config file under `work_dirs/`.
-Custom work directory is not recommended since evaluation scripts infer work directories from the config file name.
-If you want to save your weights somewhere else, please use symlink, for example:
+**Note**: During training, checkpoints and logs are saved in the same folder structure as the config file under `work_dirs/`. Custom work directory is not recommended since evaluation scripts infer work directories from the config file name. If you want to save your weights somewhere else, please use symlink, for example:
 
 ```shell
 ln -s ${YOUR_WORK_DIRS} ${MMSEG}/work_dirs
@@ -112,9 +110,7 @@ NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_tr
 
 Usually it is slow if you do not have high speed networking like InfiniBand.
 
-If you launch with slurm, the command is the same as that on single machine described above, but you need refer to
-[slurm_train.sh](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/slurm_train.sh) to set appropriate parameters and environment variables.
-(This script also supports single machine training.)
+If you launch with slurm, the command is the same as that on single machine described above, but you need refer to [slurm_train.sh](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/slurm_train.sh) to set appropriate parameters and environment variables. (This script also supports single machine training.)
 
 ```shell
 [GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} --work-dir ${WORK_DIR}
@@ -144,8 +140,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
 CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
 ```
 
-If you use `slurm_train.sh` to launch training jobs, you can set the port in commands with environment variable `MASTER_PORT`.
-You have two options to set different communication ports:
+If you use `slurm_train.sh` to launch training jobs, you can set the port in commands with environment variable `MASTER_PORT`. You have two options to set different communication ports:
 
 Option 1:
 
