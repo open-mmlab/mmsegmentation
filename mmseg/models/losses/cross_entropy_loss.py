@@ -15,6 +15,24 @@ def cross_entropy(pred,
                   avg_factor=None,
                   ignore_index=-100,
                   avg_non_ignore=False):
+    """cross_entropy.
+
+    Args:
+        pred (torch.Tensor): The prediction with shape (N, 1).
+        label (torch.Tensor): The learning label of the prediction.
+        weight (torch.Tensor, optional): Sample-wise loss weight.
+            Default: None.
+        class_weight (list[float], optional): The weight for each class.
+            Default: None.
+        reduction (str, optional): The method used to reduce the loss.
+            Options are "none", "mean" and "sum". Default: 'mean'.
+        avg_factor (int, optional): Average factor that is used to average
+            the loss. Default: None.
+        ignore_index (int): Index that will be ignored in evaluation.
+            Default: -100.
+        avg_non_ignore (bool, optional): Average factor whether to ignore index
+            when computing the mean of losses. Default: False.
+    """
     """The wrapper function for :func:`F.cross_entropy`"""
     # class_weight is a manual rescaling weight given to each class.
     # If given, has to be a Tensor of size C element-wise losses
