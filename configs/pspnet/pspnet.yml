@@ -408,7 +408,7 @@ Models:
       mIoU: 73.88
       mIoU(ms+flip): 76.85
   Config: configs/pspnet/pspnet_r50-d32_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d32_512x1024_80k_cityscapes_20220316_224840-9092b254.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d32_512x1024_80k_cityscapes/pspnet_r50-d32_512x1024_80k_cityscapes_20220316_224840-9092b254.pth
 - Name: pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes
   In Collection: PSPNet
   Metadata:
@@ -430,7 +430,7 @@ Models:
       mIoU: 74.09
       mIoU(ms+flip): 77.18
   Config: configs/pspnet/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220316_141229-dd9c9610.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220316_141229-dd9c9610.pth
 - Name: pspnet_r50b-d32_512x1024_80k_cityscapes
   In Collection: PSPNet
   Metadata:
@@ -452,7 +452,7 @@ Models:
       mIoU: 72.61
       mIoU(ms+flip): 75.51
   Config: configs/pspnet/pspnet_r50b-d32_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50b-d32_512x1024_80k_cityscapes_20220311_152152-23bcaf8c.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d32_512x1024_80k_cityscapes/pspnet_r50b-d32_512x1024_80k_cityscapes_20220311_152152-23bcaf8c.pth
 - Name: pspnet_r50-d8_512x512_80k_ade20k
   In Collection: PSPNet
   Metadata:
