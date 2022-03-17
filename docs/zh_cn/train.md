@@ -18,7 +18,7 @@ evaluation = dict(interval=4000)  # 每4000 iterations 评估一次模型的性�
 ### 使用单卡 GPU 训练
 
 ```shell
-python tools/train.py ${配置文件} [可选参数]
+python tools/train.py ${CONFIG_FILE} [可选参数]
 ```
 
 如果您想在命令里定义工作文件夹路径，您可以添加一个参数`--work-dir ${工作路径}`。
@@ -40,7 +40,7 @@ export CUDA_VISIBLE_DEVICES=-1
 ### 使用多卡 GPU 训练
 
 ```shell
-sh tools/dist_train.sh ${配置文件} ${GPU 个数} [可选参数]
+sh tools/dist_train.sh ${CONFIG_FILE} ${GPUS} [可选参数]
 ```
 
 可选参数可以为:
@@ -70,16 +70,15 @@ sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_512x512_80k_ade20k.py 8 --wo
 ln -s ${YOUR_WORK_DIRS} ${MMSEG}/work_dirs
 ```
 
-此外, 如果您在一个被 [slurm](https://slurm.schedmd.com/) 管理的集群中训练， 您可以使用以下的脚本开展训练:
+### 在单个机器上启动多个任务
+
+如果您在单个机器上启动多个任务，例如在8卡 GPU 的一个机器上有2个4卡 GPU 的训练任务，您需要特别对每个任务指定不同的端口（默认为29500）来避免通讯冲突。否则，将会有报错信息 `RuntimeError: Address already in use`。
+
+如果您使用命令 `dist_train.sh` 来启动一个训练任务，您可以在命令行的用环境变量 `PORT` 设置端口:
 
 ```shell
-GPUS_PER_NODE=${GPUS_PER_NODE} GPUS=${GPUS} SRUN_ARGS=${SRUN_ARGS} sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} ${YOUR_WORK_DIR} [optional arguments]
-```
-
-示例:
-
-```shell
-GPUS_PER_NODE=8 GPUS=8 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
+CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
+CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
 ```
 
 ### 使用多个机器训练
@@ -100,56 +99,50 @@ NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_tr
 
 但是，如果您不使用高速网路连接这几台机器的话，训练将会非常慢。
 
-如果您使用的是 slurm 来管理多台机器，您可以使用同在单台机器上一样的命令来启动任务，但是您必须得设置合适的环境变量和参数，具体可以参考[slurm_train.sh](../../tools/slurm_train.sh)。(这个脚本同样支持单机训练)
+### 使用slurm管理任务
+
+Slurm是一个很好的计算集群作业调度系统。在由Slurm管理的集群中，可以使用slurm_train.sh来进行训练。它同时支持单节点和多节点训练。
+
+在多台机器上训练：
 
 ```shell
 [GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} --work-dir ${WORK_DIR}
 ```
 
-这里是在 dev 分区里使用16块 GPU 训练 PSPNet 的例子。
+这里有一个在dev分区上使用16块GPUs来训练PSPNet的例子:
 
 ```shell
 GPUS=16 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
 ```
 
-### 在单个机器上启动多个任务
+在一台机器上启动多个作业:
 
-如果您在单个机器上启动多个任务，例如在8卡 GPU 的一个机器上有2个4卡 GPU 的训练任务，您需要特别对每个任务指定不同的端口（默认为29500）来避免通讯冲突。
-否则，将会有报错信息 `RuntimeError: Address already in use`。
+您可以使用环境变量' MASTER_PORT '在命令中设置端口。这里提供了两种设置:
 
-如果您使用命令 `dist_train.sh` 来启动一个训练任务，您可以在命令行的用环境变量 `PORT` 设置端口。
+方式1：
 
-```shell
-CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
-CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
-```
-
-如果您使用命令 `slurm_train.sh` 来启动训练任务，您可以在命令行的用环境变量 `MASTER_PORT` 设置端口。你有两种方式来为每个任务设置不同的端口:
-
-方法 1:
-
-在 `config1.py` 中, 做如下修改:
+在`config1.py`中设置:
 
 ```python
 dist_params = dict(backend='nccl', port=29500)
 ```
 
-在 `config2.py`中，做如下修改:
+在`config2.py`中设置:
 
 ```python
 dist_params = dict(backend='nccl', port=29501)
 ```
 
-然后您可以通过 config1.py 和 config2.py 来启动两个不同的任务.
+然后就可以使用config1.py和config2.py启动两个作业:
 
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2
 ```
 
-方法 2:
+方式2:
 
-除了修改配置文件之外, 您可以设置 `cfg-options` 来重写默认的端口号:
+您可以设置不同的通信端口，而不需要修改配置文件，但必须设置“cfg-options”，以覆盖配置文件中的默认端口。
 
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1 --cfg-options dist_params.port=29500

@@ -80,16 +80,15 @@ sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_512x512_80k_ade20k.py 8 --wo
 ln -s ${YOUR_WORK_DIRS} ${MMSEG}/work_dirs
 ```
 
-Alternatively, if you run mmsegmentation on a cluster managed with [slurm](https://slurm.schedmd.com/):
+### Launch multiple jobs on a single machine
+
+If you launch multiple jobs on a single machine, e.g., 2 jobs of 4-GPU training on a machine with 8 GPUs, you need to specify different ports (29500 by default) for each job to avoid communication conflict. Otherwise, there will be error message saying `RuntimeError: Address already in use`.
+
+If you use `dist_train.sh` to launch training jobs, you can set the port in commands with environment variable `PORT`.
 
 ```shell
-GPUS_PER_NODE=${GPUS_PER_NODE} GPUS=${GPUS} SRUN_ARGS=${SRUN_ARGS} sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} ${YOUR_WORK_DIR} [optional arguments]
-```
-
-An example:
-
-```shell
-GPUS_PER_NODE=8 GPUS=8 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
+CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
+CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
 ```
 
 ### Train with multiple machines
@@ -110,7 +109,11 @@ NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_tr
 
 Usually it is slow if you do not have high speed networking like InfiniBand.
 
-If you launch with slurm, the command is the same as that on single machine described above, but you need refer to [slurm_train.sh](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/slurm_train.sh) to set appropriate parameters and environment variables. (This script also supports single machine training.)
+### Manage jobs with Slurm
+
+Slurm is a good job scheduling system for computing clusters. On a cluster managed by Slurm, you can use slurm_train.sh to spawn training jobs. It supports both single-node and multi-node training.
+
+1. Train with multiple machines:
 
 ```shell
 [GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} --work-dir ${WORK_DIR}
@@ -122,19 +125,9 @@ Here is an example of using 16 GPUs to train PSPNet on the dev partition.
 GPUS=16 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
 ```
 
-### Launch multiple jobs on a single machine
+2. Launch multiple jobs on a single machine:
 
-If you launch multiple jobs on a single machine, e.g., 2 jobs of 4-GPU training on a machine with 8 GPUs,
-you need to specify different ports (29500 by default) for each job to avoid communication conflict. Otherwise, there will be error message saying `RuntimeError: Address already in use`.
-
-If you use `dist_train.sh` to launch training jobs, you can set the port in commands with environment variable `PORT`.
-
-```shell
-CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
-CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
-```
-
-If you use `slurm_train.sh` to launch training jobs, you can set the port in commands with environment variable `MASTER_PORT`. You have two options to set different communication ports:
+You can set the port in commands with environment variable `MASTER_PORT`. You have two options to set different communication ports:
 
 Option 1:
 
