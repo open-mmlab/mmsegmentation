@@ -81,6 +81,38 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
 CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
 ```
 
+当使用 `slurm_train.sh` 在一个节点上启动多个任务时，需要指定不同的端口号，这里提供了两种设置:
+
+方式1：
+
+在`config1.py`中设置:
+
+```python
+dist_params = dict(backend='nccl', port=29500)
+```
+
+在`config2.py`中设置:
+
+```python
+dist_params = dict(backend='nccl', port=29501)
+```
+
+然后就可以使用config1.py和config2.py启动两个作业:
+
+```shell
+CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1
+CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2
+```
+
+方式2:
+
+您可以设置不同的通信端口，而不需要修改配置文件，但必须设置“cfg-options”，以覆盖配置文件中的默认端口。
+
+```shell
+CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1 --cfg-options dist_params.port=29500
+CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2 --cfg-options dist_params.port=29501
+```
+
 ### 使用多个机器训练
 
 如果您想使用由 ethernet 连接起来的多台机器， 您可以使用以下命令:
@@ -113,38 +145,4 @@ Slurm是一个很好的计算集群作业调度系统。在由Slurm管理的集�
 
 ```shell
 GPUS=16 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
-```
-
-在一台机器上启动多个作业:
-
-您可以使用环境变量' MASTER_PORT '在命令中设置端口。这里提供了两种设置:
-
-方式1：
-
-在`config1.py`中设置:
-
-```python
-dist_params = dict(backend='nccl', port=29500)
-```
-
-在`config2.py`中设置:
-
-```python
-dist_params = dict(backend='nccl', port=29501)
-```
-
-然后就可以使用config1.py和config2.py启动两个作业:
-
-```shell
-CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1
-CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2
-```
-
-方式2:
-
-您可以设置不同的通信端口，而不需要修改配置文件，但必须设置“cfg-options”，以覆盖配置文件中的默认端口。
-
-```shell
-CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1 --cfg-options dist_params.port=29500
-CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2 --cfg-options dist_params.port=29501
 ```
