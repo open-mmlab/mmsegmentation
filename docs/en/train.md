@@ -17,7 +17,9 @@ Equivalently, you may also use 8 GPUs and 1 imgs/gpu since all models using cros
 
 To trade speed with GPU memory, you may pass in `--cfg-options model.backbone.with_cp=True` to enable checkpoint in backbone.
 
-### Train with a single GPU
+### Train on single machine
+
+#### Train with a single GPU
 
 official support:
 
@@ -33,7 +35,7 @@ python tools/train.py ${CONFIG_FILE} [optional arguments]
 
 If you want to specify the working directory in the command, you can add an argument `--work-dir ${YOUR_WORK_DIR}`.
 
-### Train with CPU
+#### Train with CPU
 
 The process of training on the CPU is consistent with single GPU training. We just need to disable GPUs before the training process.
 
@@ -47,7 +49,7 @@ And then run the script [above](#train-with-a-single-gpu).
 The process of training on the CPU is consistent with single GPU training. We just need to disable GPUs before the training process.
 ```
 
-### Train with multiple GPUs
+#### Train with multiple GPUs
 
 ```shell
 sh tools/dist_train.sh ${CONFIG_FILE} ${GPU_NUM} [optional arguments]
@@ -80,7 +82,7 @@ sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_512x512_80k_ade20k.py 8 --wo
 ln -s ${YOUR_WORK_DIRS} ${MMSEG}/work_dirs
 ```
 
-### Launch multiple jobs on a single machine
+#### Launch multiple jobs on a single machine
 
 If you launch multiple jobs on a single machine, e.g., 2 jobs of 4-GPU training on a machine with 8 GPUs, you need to specify different ports (29500 by default) for each job to avoid communication conflict. Otherwise, there will be error message saying `RuntimeError: Address already in use`.
 
@@ -89,6 +91,40 @@ If you use `dist_train.sh` to launch training jobs, you can set the port in comm
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
 CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
+```
+
+### Train with multiple machines
+
+If you launch with multiple machines simply connected with ethernet, you can simply run following commands:
+
+On the first machine:
+
+```shell
+NNODES=2 NODE_RANK=0 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_train.sh $CONFIG $GPUS
+```
+
+On the second machine:
+
+```shell
+NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_train.sh $CONFIG $GPUS
+```
+
+Usually it is slow if you do not have high speed networking like InfiniBand.
+
+#### Manage jobs with Slurm
+
+Slurm is a good job scheduling system for computing clusters. On a cluster managed by Slurm, you can use slurm_train.sh to spawn training jobs. It supports both single-node and multi-node training.
+
+Train with multiple machines:
+
+```shell
+[GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} --work-dir ${WORK_DIR}
+```
+
+Here is an example of using 16 GPUs to train PSPNet on the dev partition.
+
+```shell
+GPUS=16 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
 ```
 
 When using 'slurm_train.sh' to start multiple tasks on a node, different ports need to be specified. Three settings are provided:
@@ -130,38 +166,4 @@ You can set the port in the command using the environment variable 'MASTER_PORT'
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 MASTER_PORT=29500 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2
-```
-
-### Train with multiple machines
-
-If you launch with multiple machines simply connected with ethernet, you can simply run following commands:
-
-On the first machine:
-
-```shell
-NNODES=2 NODE_RANK=0 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_train.sh $CONFIG $GPUS
-```
-
-On the second machine:
-
-```shell
-NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_train.sh $CONFIG $GPUS
-```
-
-Usually it is slow if you do not have high speed networking like InfiniBand.
-
-### Manage jobs with Slurm
-
-Slurm is a good job scheduling system for computing clusters. On a cluster managed by Slurm, you can use slurm_train.sh to spawn training jobs. It supports both single-node and multi-node training.
-
-Train with multiple machines:
-
-```shell
-[GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} --work-dir ${WORK_DIR}
-```
-
-Here is an example of using 16 GPUs to train PSPNet on the dev partition.
-
-```shell
-GPUS=16 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
 ```

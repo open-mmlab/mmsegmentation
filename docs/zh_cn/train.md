@@ -15,7 +15,9 @@ evaluation = dict(interval=4000)  # 每4000 iterations 评估一次模型的性�
 
 我们可以在训练速度和 GPU 显存之间做平衡。当模型或者 Batch Size 比较大的时，可以传递`--cfg-options model.backbone.with_cp=True` ，使用 `with_cp` 来节省显存，但是速度会更慢，因为原先使用 `ith_cp` 时，是逐层反向传播(Back Propagation, BP)，不会保存所有的梯度。
 
-### 使用单卡 GPU 训练
+### 使用单台机器训练
+
+#### 使用单卡 GPU 训练
 
 ```shell
 python tools/train.py ${CONFIG_FILE} [可选参数]
@@ -23,7 +25,7 @@ python tools/train.py ${CONFIG_FILE} [可选参数]
 
 如果您想在命令里定义工作文件夹路径，您可以添加一个参数`--work-dir ${工作路径}`。
 
-### 使用 CPU 训练
+#### 使用 CPU 训练
 
 使用 CPU 训练的流程和使用单 GPU 训练的流程一致，我们仅需要在训练流程开始前禁用 GPU。
 
@@ -37,7 +39,7 @@ export CUDA_VISIBLE_DEVICES=-1
 我们不推荐用户使用 CPU 进行训练，这太过缓慢。我们支持这个功能是为了方便用户在没有 GPU 的机器上进行调试。
 ```
 
-### 使用多卡 GPU 训练
+#### 使用多卡 GPU 训练
 
 ```shell
 sh tools/dist_train.sh ${CONFIG_FILE} ${GPUS} [可选参数]
@@ -70,7 +72,7 @@ sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_512x512_80k_ade20k.py 8 --wo
 ln -s ${YOUR_WORK_DIRS} ${MMSEG}/work_dirs
 ```
 
-### 在单个机器上启动多个任务
+#### 在单个机器上启动多个任务
 
 如果您在单个机器上启动多个任务，例如在8卡 GPU 的一个机器上有2个4卡 GPU 的训练任务，您需要特别对每个任务指定不同的端口（默认为29500）来避免通讯冲突。否则，将会有报错信息 `RuntimeError: Address already in use`。
 
@@ -79,6 +81,40 @@ ln -s ${YOUR_WORK_DIRS} ${MMSEG}/work_dirs
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
 CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
+```
+
+### 使用多台机器训练
+
+如果您想使用由 ethernet 连接起来的多台机器， 您可以使用以下命令:
+
+在第一台机器上:
+
+```shell
+NNODES=2 NODE_RANK=0 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_train.sh $CONFIG $GPUS
+```
+
+在第二台机器上:
+
+```shell
+NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_train.sh $CONFIG $GPUS
+```
+
+但是，如果您不使用高速网路连接这几台机器的话，训练将会非常慢。
+
+#### 使用slurm管理任务
+
+Slurm是一个很好的计算集群作业调度系统。在由Slurm管理的集群中，可以使用slurm_train.sh来进行训练。它同时支持单节点和多节点训练。
+
+在多台机器上训练：
+
+```shell
+[GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} --work-dir ${WORK_DIR}
+```
+
+这里有一个在dev分区上使用16块GPUs来训练PSPNet的例子:
+
+```shell
+GPUS=16 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
 ```
 
 当使用 `slurm_train.sh` 在一个节点上启动多个任务时，需要指定不同的端口号，这里提供了三种设置:
@@ -120,38 +156,4 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_N
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 MASTER_PORT=29500 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2
-```
-
-### 使用多个机器训练
-
-如果您想使用由 ethernet 连接起来的多台机器， 您可以使用以下命令:
-
-在第一台机器上:
-
-```shell
-NNODES=2 NODE_RANK=0 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_train.sh $CONFIG $GPUS
-```
-
-在第二台机器上:
-
-```shell
-NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_train.sh $CONFIG $GPUS
-```
-
-但是，如果您不使用高速网路连接这几台机器的话，训练将会非常慢。
-
-### 使用slurm管理任务
-
-Slurm是一个很好的计算集群作业调度系统。在由Slurm管理的集群中，可以使用slurm_train.sh来进行训练。它同时支持单节点和多节点训练。
-
-在多台机器上训练：
-
-```shell
-[GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} --work-dir ${WORK_DIR}
-```
-
-这里有一个在dev分区上使用16块GPUs来训练PSPNet的例子:
-
-```shell
-GPUS=16 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
 ```
