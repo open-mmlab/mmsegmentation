@@ -17,7 +17,7 @@ Equivalently, you may also use 8 GPUs and 1 imgs/gpu since all models using cros
 
 To trade speed with GPU memory, you may pass in `--cfg-options model.backbone.with_cp=True` to enable checkpoint in backbone.
 
-### Train on single machine
+### Train on a single machine
 
 #### Train with a single GPU
 
@@ -111,7 +111,7 @@ NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_tr
 
 Usually it is slow if you do not have high speed networking like InfiniBand.
 
-#### Manage jobs with Slurm
+### Manage jobs with Slurm
 
 Slurm is a good job scheduling system for computing clusters. On a cluster managed by Slurm, you can use slurm_train.sh to spawn training jobs. It supports both single-node and multi-node training.
 

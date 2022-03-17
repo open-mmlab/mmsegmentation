@@ -101,7 +101,7 @@ NNODES=2 NODE_RANK=1 PORT=$MASTER_PORT MASTER_ADDR=$MASTER_ADDR sh tools/dist_tr
 
 但是，如果您不使用高速网路连接这几台机器的话，训练将会非常慢。
 
-#### 使用slurm管理任务
+### 使用slurm管理任务
 
 Slurm是一个很好的计算集群作业调度系统。在由Slurm管理的集群中，可以使用slurm_train.sh来进行训练。它同时支持单节点和多节点训练。
 
