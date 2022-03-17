@@ -122,12 +122,6 @@ Here is an example of using 16 GPUs to train PSPNet on the dev partition.
 GPUS=16 sh tools/slurm_train.sh dev pspr50 configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dirs/pspnet_r50-d8_512x1024_40k_cityscapes/
 ```
 
-You can check [slurm_train.sh](../tools/slurm_train.sh) for full arguments and environment variables.
-
-If you have just multiple machines connected with ethernet, you can refer to
-PyTorch [launch utility](https://pytorch.org/docs/stable/distributed.html#launch-utility).
-Usually it is slow if you do not have high speed networking like InfiniBand.
-
 ### Launch multiple jobs on a single machine
 
 If you launch multiple jobs on a single machine, e.g., 2 jobs of 4-GPU training on a machine with 8 GPUs,
@@ -159,15 +153,15 @@ dist_params = dict(backend='nccl', port=29501)
 Then you can launch two jobs with config1.py and config2.py.
 
 ```shell
-CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE}
-CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE}
+CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1
+CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2
 ```
 
 Option 2:
 
-You can set different communication ports without the need to modify the configuration file.
+You can set different communication ports without the need to modify the configuration file, but have to set the `cfg-options` to overwrite the default port in configuration file.
 
 ```shell
-MASTER_PORT=29500 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE}
-MASTER_PORT=29501 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE}
+CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1 --cfg-options dist_params.port=29500
+CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2 --cfg-options dist_params.port=29501
 ```
