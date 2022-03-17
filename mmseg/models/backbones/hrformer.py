@@ -85,7 +85,7 @@ class WindowMSA(BaseModule):
 
         self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop_rate)
-        self.proj = nn.Linear(embed_dims, embed_dims)
+        self.out_proj = nn.Linear(embed_dims, embed_dims)
         self.proj_drop = nn.Dropout(proj_drop_rate)
 
         self.softmax = nn.Softmax(dim=-1)
@@ -129,7 +129,7 @@ class WindowMSA(BaseModule):
         attn = self.attn_drop(attn)
 
         x = (attn @ v).transpose(1, 2).reshape(B, N, C)
-        x = self.proj(x)
+        x = self.out_proj(x)
         x = self.proj_drop(x)
         return x
 
