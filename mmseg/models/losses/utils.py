@@ -73,8 +73,7 @@ def weight_reduce_loss(loss, weight=None, reduction='mean', avg_factor=None):
             # Avoid causing ZeroDivisionError when avg_factor is 0.0,
             # i.e., all labels of an image belong to ignore index.
             eps = torch.finfo(torch.float32).eps
-            loss = loss.sum() / (avg_factor +
-                                 eps) if avg_factor != 0.0 else 0.0
+            loss = loss.sum() / (avg_factor + eps)
         # if reduction is 'none', then do nothing, otherwise raise an error
         elif reduction != 'none':
             raise ValueError('avg_factor can not be used with reduction="sum"')
