@@ -148,7 +148,24 @@ def test_ce_loss():
         fake_pred, fake_label, reduction='mean')
     assert torch.allclose(loss, torch_loss)
 
-    # TODO test bce loss if ignore index is adopted
+    fake_label[0, [1, 2, 5, 7]] = -1  # set ignore_index
+    fake_label[1, [0, 5, 8, 9]] = -1
+    loss = loss_cls(fake_pred, fake_label, ignore_index=-1)
+    torch_loss = torch.nn.functional.binary_cross_entropy_with_logits(
+        fake_pred[fake_label != -1],
+        fake_label[fake_label != -1],
+        reduction='mean')
+    assert torch.allclose(loss, torch_loss)
+
+    # test ignore index and weight
+    weight = torch.rand(2, 10)
+    loss = loss_cls(fake_pred, fake_label, weight=weight, ignore_index=-1)
+    torch_loss = torch.nn.functional.binary_cross_entropy_with_logits(
+        fake_pred[fake_label != -1],
+        fake_label[fake_label != -1],
+        reduction='mean',
+        weight=weight[fake_label != -1])
+    assert torch.allclose(loss, torch_loss)
 
     # test ignore index and weight
     weight = torch.rand(2, 10)

@@ -89,6 +89,7 @@ def binary_cross_entropy(pred,
                          avg_factor=None,
                          class_weight=None,
                          ignore_index=255,
+                         avg_non_ignore=False,
                          **kwargs):
     """Calculate the binary CrossEntropy loss.
 
@@ -102,7 +103,8 @@ def binary_cross_entropy(pred,
             the loss. Defaults to None.
         class_weight (list[float], optional): The weight for each class.
         ignore_index (int | None): The label index to be ignored. Default: 255.
-
+        avg_non_ignore (bool): The flag decides to whether the loss is
+            only averaged over non-ignored targets. Default: False.
     Returns:
         torch.Tensor: The calculated loss
     """
@@ -113,6 +115,16 @@ def binary_cross_entropy(pred,
             'H, W], label shape [N, H, W] are supported'
         label, weight = _expand_onehot_labels(label, weight, pred.shape,
                                               ignore_index)
+    elif avg_non_ignore:
+        # should mask out the ignored elements
+        valid_mask = ((label >= 0) & (label != ignore_index)).float()
+        if weight is not None:
+            weight *= valid_mask
+        else:
+            weight = valid_mask
+        # average loss over non-ignored elements
+        if avg_factor is None:
+            avg_factor = label.numel() - (label == ignore_index).sum().item()
 
     # weighted element-wise losses
     if weight is not None:
