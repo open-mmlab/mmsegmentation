@@ -28,10 +28,13 @@ def cross_entropy(pred,
             Options are "none", "mean" and "sum". Default: 'mean'.
         avg_factor (int, optional): Average factor that is used to average
             the loss. Default: None.
-        ignore_index (int): Index that will be ignored in evaluation.
-            Default: -100.
-        avg_non_ignore (bool, optional): Average factor whether to ignore index
-            when computing the mean of losses. Default: False.
+        ignore_index (int): Specifies a target value that is ignored and
+            does not contribute to the input gradients. When
+            ``avg_non_ignore `` is ``True``, and the ``reduction`` is
+            ``''mean''``, the loss is averaged over non-ignored targets.
+            Defaults: -100.
+        avg_non_ignore (bool): The flag decides to whether the loss is
+            only averaged over non-ignored targets. Default: False.
     """
     """The wrapper function for :func:`F.cross_entropy`"""
     # class_weight is a manual rescaling weight given to each class.
@@ -179,8 +182,8 @@ class CrossEntropyLoss(nn.Module):
         loss_name (str, optional): Name of the loss item. If you want this loss
             item to be included into the backward graph, `loss_` must be the
             prefix of the name. Defaults to 'loss_ce'.
-        avg_non_ignore (bool, optional): Average factor whether to ignore index
-            when computing the mean of losses. Default: False.
+        avg_non_ignore (bool): The flag decides to whether the loss is
+            only averaged over non-ignored targets. Default: False.
     """
 
     def __init__(self,
