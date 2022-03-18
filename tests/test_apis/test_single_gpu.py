@@ -28,8 +28,16 @@ class ExampleModel(nn.Module):
         self.test_cfg = None
         self.conv = nn.Conv2d(3, 3, 3)
 
-    def forward(self, img, img_metas, return_loss=False, **kwargs):
-        return img
+    def forward(self,
+                img,
+                img_metas,
+                return_loss=False,
+                return_all=False,
+                **kwargs):
+        if return_all:
+            return dict(seg_pred=img, seg_logits=img)
+        else:
+            return img
 
 
 def test_single_gpu():
