@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import warnings
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -214,6 +216,12 @@ class CrossEntropyLoss(nn.Module):
         self.loss_weight = loss_weight
         self.class_weight = get_class_weight(class_weight)
         self.avg_non_ignore = avg_non_ignore
+        if not self.avg_non_ignore:
+            warnings.warn(
+                'Default ``avg_non_ignore`` is False, if you would like to '
+                'ignore certain label and average loss over non-ignore label, '
+                'open ``avg_non_ignore=True`` and set ``ignore_index`` '
+                'in decoder or auxiliary heads config file')
 
         if self.use_sigmoid:
             self.cls_criterion = binary_cross_entropy
