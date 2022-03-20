@@ -4,6 +4,5 @@ _base_ = [
 ]
 checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_base_patch4_window12_384_22k_20220317-e5c09f74.pth'  # noqa
 model = dict(
-    pretrained=None,
     backbone=dict(
         init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file)))
