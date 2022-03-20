@@ -299,7 +299,9 @@ def eval_metrics(results,
                                             total_area_pred_label,
                                             total_area_label, metrics,
                                             nan_to_num, beta)
-
+    elif metrics == 'xxx':
+        # place holder for additional metric
+        pass
     return ret_metrics
 
 
