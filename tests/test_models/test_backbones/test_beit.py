@@ -48,6 +48,14 @@ def test_beit_backbone():
     model.init_weights()
     model.train()
 
+    # Test  qv_bias
+    model = BEiT(qv_bias=False)
+    model.train()
+
+    # Test out_indices = list
+    model = BEiT(out_indices=[-1, -2, -3])
+    model.train()
+
     assert check_norm_state(model.modules(), True)
 
     # Test normal size input image
