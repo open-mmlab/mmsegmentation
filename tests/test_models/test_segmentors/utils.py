@@ -78,7 +78,7 @@ class ExampleCascadeDecodeHead(BaseCascadeDecodeHead):
         return self.cls_seg(inputs[0])
 
 
-def _segmentor_forward_train_test(segmentor):
+def _segmentor_forward_train_test(segmentor, return_all):
     if isinstance(segmentor.decode_head, nn.ModuleList):
         num_classes = segmentor.decode_head[-1].num_classes
     else:
@@ -127,7 +127,12 @@ def _segmentor_forward_train_test(segmentor):
         # pack into lists
         img_list = [img[None, :] for img in imgs]
         img_meta_list = [[img_meta] for img_meta in img_metas]
-        segmentor.forward(img_list, img_meta_list, return_loss=False)
+        returns = segmentor.forward(
+            img_list, img_meta_list, return_loss=False, return_all=return_all)
+        if return_all:
+            assert isinstance(returns, dict)
+        else:
+            assert isinstance(returns, list)
 
     # Test forward aug test
     with torch.no_grad():
@@ -137,4 +142,9 @@ def _segmentor_forward_train_test(segmentor):
         img_list = img_list + img_list
         img_meta_list = [[img_meta] for img_meta in img_metas]
         img_meta_list = img_meta_list + img_meta_list
-        segmentor.forward(img_list, img_meta_list, return_loss=False)
+        returns = segmentor.forward(
+            img_list, img_meta_list, return_loss=False, return_all=return_all)
+        if return_all:
+            assert isinstance(returns, dict)
+        else:
+            assert isinstance(returns, list)
