@@ -151,7 +151,7 @@ Models:
 - Name: pspnet_r50-d8_rsb-pretrain_512x1024_adamw_80k_cityscapes
   In Collection: PSPNet
   Metadata:
-    backbone: R-50-D8 rsb
+    backbone: R-50b-D8 rsb
     crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
@@ -412,7 +412,7 @@ Models:
 - Name: pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes
   In Collection: PSPNet
   Metadata:
-    backbone: R-50-D32 rsb
+    backbone: R-50b-D32 rsb
     crop size: (512,1024)
     lr schd: 80000
     inference time (ms/im):
