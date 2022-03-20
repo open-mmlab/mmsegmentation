@@ -68,6 +68,9 @@ class CustomDataset(Dataset):
             Default: None
         gt_seg_map_loader_cfg (dict, optional): build LoadAnnotations to
             load gt for evaluation, load from disk by default. Default: None.
+        file_client_args (dict): Arguments to instantiate a FileClient.
+            See :class:`mmcv.fileio.FileClient` for details.
+            Defaults to ``dict(backend='disk')``.
     """
 
     CLASSES = None
