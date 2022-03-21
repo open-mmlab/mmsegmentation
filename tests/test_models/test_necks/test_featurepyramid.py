@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import pytest
 import torch
 
 from mmseg.models import Feature2Pyramid
@@ -33,4 +34,5 @@ def test_fpn():
 
     # test rescales = [4, 2, 0.25, 0]
     rescales = [4, 2, 0.25, 0]
-    fpn = Feature2Pyramid(embed_dim, rescales)
+    with pytest.raises(KeyError):
+        fpn = Feature2Pyramid(embed_dim, rescales)
