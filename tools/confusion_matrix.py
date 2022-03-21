@@ -26,6 +26,10 @@ def parse_args():
         default='winter',
         help='theme of the matrix color map')
     parser.add_argument(
+        '--title',
+        default='Normalized Confusion Matrix',
+        help='title of the matrix color map')
+    parser.add_argument(
         '--cfg-options',
         nargs='+',
         action=DictAction,
@@ -171,7 +175,9 @@ def main():
         confusion_matrix,
         dataset.CLASSES,
         save_dir=args.save_dir,
-        show=args.show)
+        show=args.show,
+        title=args.title,
+        color_theme=args.color_theme)
 
 
 if __name__ == '__main__':
