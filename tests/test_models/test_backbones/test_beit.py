@@ -53,7 +53,7 @@ def test_beit_backbone():
     model.train()
 
     # Test out_indices = list
-    model = BEiT(out_indices=[-1, -2, -3])
+    model = BEiT(out_indices=[2, 4, 8, 12])
     model.train()
 
     assert check_norm_state(model.modules(), True)
