@@ -23,14 +23,14 @@ class WindowMSA(BaseModule):
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
         window_size (tuple[int]): The height and width of the window.
-        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
+        qkv_bias (bool):  If True, add a learnable bias to q, k, v.
             Default: True.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
-        attn_drop_rate (float, optional): Dropout ratio of attention weight.
+        attn_drop_rate (float): Dropout ratio of attention weight.
             Default: 0.0
-        proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
-        with_rpe (bool, optional): If True, use relative position bias.
+        proj_drop_rate (float): Dropout ratio of output. Default: 0.
+        with_rpe (bool): If True, use relative position bias.
             Default: True.
         init_cfg (dict | None, optional): The Config for initialization.
             Default: None.
@@ -92,7 +92,8 @@ class WindowMSA(BaseModule):
 
     def init_weights(self):
         super(WindowMSA, self).init_weights()
-        trunc_normal_init(self.relative_position_bias_table, std=0.02)
+        if self.with_rpe:
+            trunc_normal_init(self.relative_position_bias_table, std=0.02)
 
     def forward(self, x, mask=None):
         """
@@ -139,20 +140,21 @@ class LocalWindowSelfAttention(BaseModule):
 
     This module is the short-range self-attention module in the
     Interlaced Sparse Self-Attention <https://arxiv.org/abs/1907.12273>`_.
+
     Args:
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
         window_size (tuple[int] | int): The height and width of the window.
-        qkv_bias (bool, optional):  If True, add a learnable bias to q, k, v.
+        qkv_bias (bool):  If True, add a learnable bias to q, k, v.
             Default: True.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
-        attn_drop_rate (float, optional): Dropout ratio of attention weight.
+        attn_drop_rate (float): Dropout ratio of attention weight.
             Default: 0.0
-        proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
-        with_rpe (bool, optional): If True, use relative position bias.
+        proj_drop_rate (float): Dropout ratio of output. Default: 0.
+        with_rpe (bool): If True, use relative position bias.
             Default: True.
-        with_pad_mask (bool, optional): If True, mask out the padded tokens in
+        with_pad_mask (bool): If True, mask out the padded tokens in
             the attention process. Default: False.
         init_cfg (dict | None, optional): The Config for initialization.
             Default: None.
@@ -186,7 +188,18 @@ class LocalWindowSelfAttention(BaseModule):
             init_cfg=init_cfg)
 
     def forward(self, x, H, W, **kwargs):
-        """Forward function."""
+        """Forward function.
+
+        Args:
+            x: (torch.Tensor): The input tensor with shape [B, N, C].
+            H: (int): The height of the original 4D feature map.
+            W: (int): The width of the original 4D feature map.
+            **kwargs: Other arguments input to the forward function
+                of `WindowMSA`
+
+        Returns:
+            torch.Tensor: The output tensor with shape [B, N, C]
+        """
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         Wh, Ww = self.window_size
@@ -232,16 +245,17 @@ class LocalWindowSelfAttention(BaseModule):
 
 class CrossFFN(BaseModule):
     r"""FFN with Depthwise Conv of HRFormer.
+
     Args:
         in_channels (int): The number of input channels.
-        hidden_channels (int, optional): The hidden channel of FFNs.
+        hidden_channels (int): The hidden channel of FFNs.
             Defaults: The same as in_features.
         out_channels (int): The number of output channels
-        act_cfg (dict, optional): Config of activation layer.
+        act_cfg (dict): Config of activation layer.
             Default: dict(type='GELU').
-        dw_act_cfg (dict, optional): Config of activation layer appended
-            right after DW Conv. Default: dict(type='GELU').
-        norm_cfg (dict, optional): Config of norm layer.
+        dw_act_cfg (dict): Config of activation layer appended
+            right after depth-wise Conv. Default: dict(type='GELU').
+        norm_cfg (dict): Config of norm layer.
             Default: dict(type='SyncBN').
         init_cfg (dict | list | None, optional): The init config.
             Default: None.
@@ -288,17 +302,17 @@ class HRFormerBlock(BaseModule):
         in_channels (int): The input number of channels.
         out_channels (int): The output number of channels.
         num_heads (int): The number of head within each LSA.
-        window_size (int, optional): The window size for the LSA.
+        window_size (int): The window size for the LSA.
             Default: 7
-        drop_path (float, optional): The drop path rate of HRFomer.
+        drop_path (float): The drop path rate of HRFomer.
             Default: 0.0
-        mlp_ratio (int, optional): The expansion ration of FFN.
+        mlp_ratio (int): The expansion ration of FFN.
             Default: 4
-        act_cfg (dict, optional): Config of activation layer.
+        act_cfg (dict): Config of activation layer.
             Default: dict(type='GELU').
-        norm_cfg (dict, optional): Config of norm layer.
+        norm_cfg (dict): Config of norm layer.
             Default: dict(type='SyncBN').
-        transformer_norm_cfg (dict, optional): Config of transformer norm
+        transformer_norm_cfg (dict): Config of transformer norm
             layer. Default: dict(type='LN', eps=1e-6).
         init_cfg (dict | list | None, optional): The init config.
             Default: None.
@@ -378,24 +392,24 @@ class HRFomerModule(HRModule):
         num_heads (tuple): The number of heads within the LSAs.
         num_window_sizes (tuple): The window size for the LSAs.
         num_mlp_ratios (tuple): The expansion ratio for the FFNs.
-        multiscale_output (bool, optional): Whether to output multi-level
+        multiscale_output (bool): Whether to output multi-level
             features produced by multiple branches. If False, only the first
             level feature will be output. Default: True.
-        drop_paths (list, optional): The drop path rate of HRFomer.
+        drop_paths (list): The drop path rate of HRFomer.
             Default: [0.0]
-        with_rpe (bool, optional): Whether to add relative positional embedding
+        with_rpe (bool): Whether to add relative positional embedding
             in ``LocalWindowSelfAttention`` block. Default: True
-        with_pad_mask (bool, optional): Whether to mask out padded pixels when
+        with_pad_mask (bool): Whether to mask out padded pixels when
             computing the attention. Default: False
         conv_cfg (dict, optional): Config of the conv layers.
             Default: None.
-        norm_cfg (dict, optional): Config of the norm layers appended
+        norm_cfg (dict): Config of the norm layers appended
             right after conv. Default: dict(type='SyncBN', requires_grad=True)
-        transformer_norm_cfg (dict, optional): Config of the norm layers.
+        transformer_norm_cfg (dict): Config of the norm layers.
             Default: dict(type='LN', eps=1e-6)
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
             memory while slowing down the training speed. Default: False
-        upsample_cfg(dict, optional): The config of upsample layers in fuse
+        upsample_cfg(dict): The config of upsample layers in fuse
             layers. Default: dict(mode='bilinear', align_corners=False)
     """
 
@@ -566,8 +580,8 @@ class HRFormer(HRNet):
                 - num_channels (tuple): The number of channels in each branch.
                     The length must be equal to num_branches.
         in_channels (int): Number of input image channels. Normally 3.
-        conv_cfg (dict): Dictionary to construct and config conv layer.
-            Default: None.
+        conv_cfg (dict, optional): Dictionary to construct and config conv
+            layer. Default: None.
         norm_cfg (dict): Config of norm layer.
             Use `SyncBN` by default.
         transformer_norm_cfg (dict): Config of transformer norm layer.
