@@ -5,6 +5,7 @@ from mmseg.models import Feature2Pyramid
 
 
 def test_fpn():
+    # test
     rescales = [4, 2, 1, 0.5]
     embed_dim = 64
     inputs = [torch.randn(1, embed_dim, 32, 32) for i in range(len(rescales))]
@@ -15,3 +16,21 @@ def test_fpn():
     assert outputs[1].shape == torch.Size([1, 64, 64, 64])
     assert outputs[2].shape == torch.Size([1, 64, 32, 32])
     assert outputs[3].shape == torch.Size([1, 64, 16, 16])
+
+    # test rescales = [2, 1, 0.5, 0.25]
+    rescales = [2, 1, 0.5, 0.25]
+    inputs = [torch.randn(1, embed_dim, 32, 32) for i in range(len(rescales))]
+
+    fpn = Feature2Pyramid(embed_dim, rescales, norm='bn')
+    outputs = fpn(inputs)
+    assert outputs[0].shape == torch.Size([1, 64, 64, 64])
+    assert outputs[1].shape == torch.Size([1, 64, 32, 32])
+    assert outputs[2].shape == torch.Size([1, 64, 16, 16])
+    assert outputs[3].shape == torch.Size([1, 64, 8, 8])
+
+    # test syncbn
+    fpn = Feature2Pyramid(embed_dim, rescales, norm='syncb')
+
+    # test rescales = [4, 2, 0.25, 0]
+    rescales = [4, 2, 0.25, 0]
+    fpn = Feature2Pyramid(embed_dim, rescales)

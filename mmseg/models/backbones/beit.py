@@ -404,7 +404,6 @@ class BEiT(BaseModule):
             state_dict (dict): Interpolate the relative pos_embed weights
                 in the pre-train model to the current model size.
         """
-
         if 'state_dict' in checkpoint:
             state_dict = checkpoint['state_dict']
         else:

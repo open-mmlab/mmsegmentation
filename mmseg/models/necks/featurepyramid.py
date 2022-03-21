@@ -20,6 +20,7 @@ class Feature2Pyramid(nn.Module):
     def __init__(self, embed_dim, rescales, norm='syncbn'):
         super(Feature2Pyramid, self).__init__()
         self.rescales = rescales
+        self.upsample_4x = None
         for k in self.rescales:
             if k == 4:
                 if norm == 'bn':

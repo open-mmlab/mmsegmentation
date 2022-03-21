@@ -137,6 +137,17 @@ def test_beit_init():
     with pytest.raises(OSError):
         model.init_weights()
 
+    # test resize_rel_pos_embed
+    value = torch.randn(732, 16)
+    ckpt = {
+        'state_dict': {
+            'layers.0.attn.relative_position_index': 0,
+            'layers.0.attn.relative_position_bias_table': value
+        }
+    }
+    model = BEiT(img_size=(512, 512))
+    model.resize_rel_pos_embed(ckpt)
+
     # pretrained=None
     # init_cfg=123, whose type is unsupported
     model = BEiT(pretrained=None, init_cfg=123)
