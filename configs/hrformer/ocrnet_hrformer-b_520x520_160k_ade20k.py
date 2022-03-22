@@ -1,7 +1,6 @@
 _base_ = [
-    '../_base_/models/ocrnet_hrformer-s.py',
-    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_80k.py'
+    '../_base_/models/ocrnet_hrformer-s.py', '../_base_/datasets/ade20k.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.1)
 model = dict(
@@ -125,5 +124,4 @@ train_pipeline = [
 ]
 
 # By default, models are trained on 4 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=2,
-            train = dict(pipeline=train_pipeline))
+data = dict(samples_per_gpu=2, train=dict(pipeline=train_pipeline))
