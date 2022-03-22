@@ -509,12 +509,7 @@ class HRFomerModule(HRModule):
                                 stride=1,
                                 bias=False),
                             build_norm_layer(self.norm_cfg,
-                                             num_inchannels[i])[1],
-                            nn.Upsample(
-                                scale_factor=2**(j - i),
-                                mode=self.upsample_cfg['mode'],
-                                align_corners=self.
-                                upsample_cfg['align_corners'])))
+                                             num_inchannels[i])[1]))
                 elif j == i:
                     fuse_layer.append(None)
                 else:

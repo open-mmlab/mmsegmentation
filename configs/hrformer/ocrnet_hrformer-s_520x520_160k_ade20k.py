@@ -1,15 +1,16 @@
 _base_ = [
-    '../_base_/models/ocrnet_hrformer-s.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
+    '../_base_/models/ocrnet_hrformer-s.py',
+    '../_base_/datasets/cityscapes.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_80k.py'
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.1)
 model = dict(
-    pretrained='pretrain/hrt_base.pth',
+    pretrained='pretrain/hrt_small.pth',
     backbone=dict(
         type='HRFormer',
         norm_cfg=norm_cfg,
         norm_eval=False,
-        drop_path_rate=0.4,
+        drop_path_rate=0.2,
         extra=dict(
             stage1=dict(
                 num_modules=1,
@@ -22,32 +23,32 @@ model = dict(
                 num_branches=2,
                 block='HRFORMERBLOCK',
                 window_sizes=(7, 7),
-                num_heads=(2, 4),
+                num_heads=(1, 2),
                 mlp_ratios=(4, 4),
                 num_blocks=(2, 2),
-                num_channels=(78, 156)),
+                num_channels=(32, 64)),
             stage3=dict(
                 num_modules=4,
                 num_branches=3,
                 block='HRFORMERBLOCK',
                 window_sizes=(7, 7, 7),
-                num_heads=(2, 4, 8),
+                num_heads=(1, 2, 4),
                 mlp_ratios=(4, 4, 4),
                 num_blocks=(2, 2, 2),
-                num_channels=(78, 156, 312)),
+                num_channels=(32, 64, 128)),
             stage4=dict(
                 num_modules=2,
                 num_branches=4,
                 block='HRFORMERBLOCK',
                 window_sizes=(7, 7, 7, 7),
-                num_heads=(2, 4, 8, 16),
+                num_heads=(1, 2, 4, 8),
                 mlp_ratios=(4, 4, 4, 4),
                 num_blocks=(2, 2, 2, 2),
-                num_channels=(78, 156, 312, 624)))),
+                num_channels=(32, 64, 128, 256)))),
     decode_head=[
         dict(
             type='FCNHead',
-            in_channels=[78, 156, 312, 624],
+            in_channels=[32, 64, 128, 256],
             channels=512,
             in_index=(0, 1, 2, 3),
             input_transform='resize_concat',
@@ -64,7 +65,7 @@ model = dict(
                          min_kept=100000)),
         dict(
             type='OCRHead',
-            in_channels=[78, 156, 312, 624],
+            in_channels=[32, 64, 128, 256],
             in_index=(0, 1, 2, 3),
             input_transform='resize_concat',
             channels=512,
