@@ -18,4 +18,4 @@ which is the result for the input image, and the value of `seg_logit` is also a 
 
 ### What is return from metric function
 
-The return from metric function is unlimited, but we recommend output type is dict like `{'aAcc': 0.9606, 'mIoU': 0.7822, 'mAcc': 0.8493`}`. The key is the abbreviation of metric, and the value is model performance of this metic.
+The return from metric function is unlimited, but we recommend output type is dict like `{'aAcc': 0.9606, 'mIoU': 0.7822, 'mAcc': 0.8493}`. The key is the abbreviation of metric, and the value is model performance of this metic.
