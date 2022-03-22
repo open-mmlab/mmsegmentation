@@ -38,7 +38,7 @@ class ExampleModel(nn.Module):
                 test_mode=False,
                 **kwargs):
         if return_all:
-            return dict(seg_pred=img, seg_logits=img)
+            return dict(seg_pred=img, seg_logit=img)
         else:
             return img
 
@@ -81,7 +81,7 @@ def test_iter_eval_hook():
             logger=logging.getLogger())
         runner.register_hook(eval_hook)
         runner.run([loader], [('train', 1)], 1)
-        test_dataset.evaluate.assert_called_with(['seg_pred', 'seg_logits'],
+        test_dataset.evaluate.assert_called_with(['seg_pred', 'seg_logit'],
                                                  logger=runner.logger)
 
 
@@ -120,7 +120,7 @@ def test_epoch_eval_hook():
         runner.register_hook(eval_hook)
         runner.run([loader], [('train', 1)], 2)
         test_dataset.evaluate.assert_called_once_with(
-            ['seg_pred', 'seg_logits'], logger=runner.logger)
+            ['seg_pred', 'seg_logit'], logger=runner.logger)
 
 
 def multi_gpu_test(model,

@@ -35,7 +35,7 @@ class ExampleModel(nn.Module):
                 return_all=False,
                 **kwargs):
         if return_all:
-            return dict(seg_pred=img, seg_logits=img)
+            return dict(seg_pred=img, seg_logit=img)
         else:
             return img
 
