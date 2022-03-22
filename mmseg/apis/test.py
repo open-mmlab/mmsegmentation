@@ -208,18 +208,22 @@ def multi_gpu_test(model,
 
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
-            result = model(return_loss=False, rescale=True, **data)
+            result = model(
+                return_loss=False, rescale=True, return_all=True, **data)
 
         if efficient_test:
-            result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
+            result = [
+                np2tmp(_, tmpdir='.efficient_test') for _ in result['seg_pred']
+            ]
 
         if format_only:
             result = dataset.format_results(
-                result, indices=batch_indices, **format_args)
+                result['seg_pred'], indices=batch_indices, **format_args)
         if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            result = dataset.pre_eval(result, indices=batch_indices)
+            result = dataset.pre_eval(
+                result['seg_pred'], indices=batch_indices)
 
         results.extend(result)
 
