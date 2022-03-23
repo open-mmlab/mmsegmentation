@@ -117,20 +117,17 @@ def binary_cross_entropy(pred,
             'H, W], label shape [N, H, W] are supported'
         label, weight = _expand_onehot_labels(label, weight, pred.shape,
                                               ignore_index)
-    elif avg_non_ignore:
+    else:
         # should mask out the ignored elements
         valid_mask = ((label >= 0) & (label != ignore_index)).float()
         if weight is not None:
             weight *= valid_mask
         else:
             weight = valid_mask
-        # average loss over non-ignored elements
-        if avg_factor is None:
-            avg_factor = label.numel() - (label == ignore_index).sum().item()
+    # average loss over non-ignored elements
+    if avg_factor is None:
+        avg_factor = label.numel() - (label == ignore_index).sum().item()
 
-    # weighted element-wise losses
-    if weight is not None:
-        weight = weight.float()
     loss = F.binary_cross_entropy_with_logits(
         pred, label.float(), pos_weight=class_weight, reduction='none')
     # do the reduction for the weighted loss
@@ -216,12 +213,12 @@ class CrossEntropyLoss(nn.Module):
         self.loss_weight = loss_weight
         self.class_weight = get_class_weight(class_weight)
         self.avg_non_ignore = avg_non_ignore
-        if not self.avg_non_ignore:
+        if not self.avg_non_ignore and self.reduction == 'mean':
             warnings.warn(
                 'Default ``avg_non_ignore`` is False, if you would like to '
                 'ignore certain label and average loss over non-ignore label, '
-                'open ``avg_non_ignore=True`` and set ``ignore_index`` '
-                'in decoder or auxiliary heads config file')
+                'set ``avg_non_ignore=True``, and the loss will be '
+                'slightly larger.')
 
         if self.use_sigmoid:
             self.cls_criterion = binary_cross_entropy

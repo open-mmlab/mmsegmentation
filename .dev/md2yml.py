@@ -265,8 +265,10 @@ def update_model_index():
     yml_files.sort()
 
     model_index = {
-        'Import':
-        [osp.relpath(yml_file, MMSEG_ROOT) for yml_file in yml_files]
+        'Import': [
+            osp.relpath(yml_file, MMSEG_ROOT).replace('\\', '/')
+            for yml_file in yml_files
+        ]
     }
     model_index_file = osp.join(MMSEG_ROOT, 'model-index.yml')
     is_different = dump_yaml_and_check_difference(model_index,
