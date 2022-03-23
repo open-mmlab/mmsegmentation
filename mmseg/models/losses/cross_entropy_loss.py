@@ -228,6 +228,11 @@ class CrossEntropyLoss(nn.Module):
             self.cls_criterion = cross_entropy
         self._loss_name = loss_name
 
+    def extra_repr(self):
+        """Extra repr."""
+        s = f'avg_non_ignore={self.avg_non_ignore}'
+        return s
+
     def forward(self,
                 cls_score,
                 label,

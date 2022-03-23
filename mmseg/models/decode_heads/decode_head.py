@@ -110,8 +110,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         """Extra repr."""
         s = f'input_transform={self.input_transform}, ' \
             f'ignore_index={self.ignore_index}, ' \
-            f'align_corners={self.align_corners}' \
-            f'avg_non_ignore={self.avg_non_ignore}'
+            f'align_corners={self.align_corners}'
         return s
 
     def _init_inputs(self, in_channels, in_index, input_transform):
