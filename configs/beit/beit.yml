@@ -21,7 +21,7 @@ Models:
       mIoU(ms+flip): 53.84
   Config: configs/beit/upernet_beit_base_12_640_slide_160k_ade20k_pt2ft.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/beit_base.pth
-- Name: upernet_beit_large_24_640_slide_160k_ade20k_ms
+- Name: upernet_beit_large_fp16_24_640_slide_160k_ade20k_pt2ft
   In Collection: UperNet
   Metadata:
     backbone: BEiT-L
@@ -41,5 +41,5 @@ Models:
     Metrics:
       mIoU: 56.33
       mIoU(ms+flip): 56.84
-  Config: configs/beit/upernet_beit_large_24_640_slide_160k_ade20k_ms.py
+  Config: configs/beit/upernet_beit_large_fp16_24_640_slide_160k_ade20k_pt2ft.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/beit_large.pth

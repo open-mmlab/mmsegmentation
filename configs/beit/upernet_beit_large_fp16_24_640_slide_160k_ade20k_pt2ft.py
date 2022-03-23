@@ -49,4 +49,6 @@ lr_config = dict(
 
 data = dict(samples_per_gpu=1)
 optimizer_config = dict(
-    type='GradientCumulativeOptimizerHook', cumulative_iters=2)
+    type='GradientCumulativeFp16OptimizerHook', cumulative_iters=2)
+
+fp16 = dict()
