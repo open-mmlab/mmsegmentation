@@ -21,7 +21,7 @@ We introduce a self-supervised vision representation model BEiT, which stands fo
 
 ```bibtex
 @article{beit,
-      title={{BEiT}: {BERT} Pre-Training of Image Transformers}, 
+      title={{BEiT}: {BERT} Pre-Training of Image Transformers},
       author={Hangbo Bao and Li Dong and Furu Wei},
       year={2021},
       eprint={2106.08254},
@@ -55,4 +55,4 @@ This script convert model from `PRETRAIN_PATH` and store the converted model in 
 | Method | Backbone | Crop Size | pretrain | pretrain img size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config | download |
 | ------ | -------- | --------- | ---------- | ------- | -------- | --- | --- | -------------- | ----- | ------------: | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | UperNet | BEiT-B | 640x640 | ImageNet-22K | 224x224 | 16          | 160000   | 16.27        | 2.00              | 53.08 | 53.84            | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/beit/upernet_beit_base_12_640_slide_160k_ade20k_pt2ft.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/beit_base.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/beit_base.log.json)     |
-| UperNet | BEiT-L | 640x640 | ImageNet-22K | 224x224 | 8           | 320000   | 23.18        | 0.96              | 56.33 | xxxx             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/beit/upernet_beit_large_24_640_slide_160k_ade20k_ms.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/beit_large.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/beit_large.log.json)     |
+| UperNet | BEiT-L | 640x640 | ImageNet-22K | 224x224 | 8           | 320000   | 23.18        | 0.96              | 56.33 | 56.84             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/beit/upernet_beit_large_24_640_slide_160k_ade20k_ms.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/beit_large.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/beit_large.log.json)     |
