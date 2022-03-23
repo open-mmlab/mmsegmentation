@@ -23,6 +23,7 @@ def test_ce_loss():
         loss_weight=1.0,
         loss_name='loss_ce')
     loss_cls = build_loss(loss_cls_cfg)
+    loss_cls.extra_repr
     fake_pred = torch.Tensor([[100, -100]])
     fake_label = torch.Tensor([1]).long()
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
