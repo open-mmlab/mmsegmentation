@@ -68,3 +68,21 @@ model = dict(
 In this way, `loss_weight` and `loss_name` will be weight and name in training log of corresponding loss, respectively.
 
 Note: If you want this loss item to be included into the backward graph, `loss_` must be the prefix of the name.
+
+## Ignore specified label index in loss calculation
+
+For loss calculation, we support ignore index of certain label by `avg_non_ignore` and `ignore_index`. Here is an example config of training `unet` on `DRIVE` dataset: in loss calculation it would ignore label 0 which is background and loss average is only calculated on non-ignore labels:
+
+```python
+_base_ = './fcn_unet_s5-d16_64x64_40k_drive.py'
+model = dict(
+    decode_head=dict(
+        ignore_index=0,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, avg_non_ignore=True),
+    auxiliary_head=dict(
+        ignore_index=0,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, avg_non_ignore=True)),
+    ))
+```

@@ -68,3 +68,26 @@ model = dict(
 通过这种方式，确定训练过程中损失函数的权重 `loss_weight` 和在训练日志里的名字 `loss_name`。
 
 注意： `loss_name` 的名字必须带有 `loss_` 前缀，这样它才能被包括在反传的图里。
+
+## 在损失函数中忽略特定的 label 类别
+
+对于训练时损失函数的计算，我们目前支持使用 `avg_non_ignore` 和 `ignore_index` 来忽略 label 特定的类别。 以 `unet` 使用 `DRIVE` 数据集训练为例，
+在计算损失函数时，忽略 label 为0的背景，并且仅在不被忽略的像素上计算均值。配置文件写为:
+
+```python
+_base_ = './fcn_unet_s5-d16_64x64_40k_drive.py'
+model = dict(
+    decode_head=dict(
+        ignore_index=0,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, avg_non_ignore=True),
+    auxiliary_head=dict(
+        ignore_index=0,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, avg_non_ignore=True)),
+    ))
+```
+
+通过这种方式，确定训练过程中损失函数的权重 `loss_weight` 和在训练日志里的名字 `loss_name`。
+
+注意： `loss_name` 的名字必须带有 `loss_` 前缀，这样它才能被包括在反传的图里。
