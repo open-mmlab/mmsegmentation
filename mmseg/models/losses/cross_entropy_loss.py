@@ -17,7 +17,7 @@ def cross_entropy(pred,
                   avg_factor=None,
                   ignore_index=-100,
                   avg_non_ignore=False):
-    """cross_entropy.
+    """cross_entropy. The wrapper function for :func:`F.cross_entropy`
 
     Args:
         pred (torch.Tensor): The prediction with shape (N, 1).
@@ -38,7 +38,7 @@ def cross_entropy(pred,
         avg_non_ignore (bool): The flag decides to whether the loss is
             only averaged over non-ignored targets. Default: False.
     """
-    """The wrapper function for :func:`F.cross_entropy`"""
+
     # class_weight is a manual rescaling weight given to each class.
     # If given, has to be a Tensor of size C element-wise losses
     loss = F.cross_entropy(
@@ -115,6 +115,8 @@ def binary_cross_entropy(pred,
                 pred.dim() == 4 and label.dim() == 3), \
             'Only pred shape [N, C], label shape [N] or pred shape [N, C, ' \
             'H, W], label shape [N, H, W] are supported'
+        # `weight` returned from `_expand_onehot_labels`
+        # has been treated for valid (non-ignore) pixels
         label, weight = _expand_onehot_labels(label, weight, pred.shape,
                                               ignore_index)
     else:
