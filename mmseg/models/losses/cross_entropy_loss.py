@@ -52,7 +52,7 @@ def cross_entropy(pred,
     # average loss over non-ignored elements
     # pytorch's official cross_entropy average loss over non-ignored elements
     # refer to https://github.com/pytorch/pytorch/blob/56b43f4fec1f76953f15a627694d4bba34588969/torch/nn/functional.py#L2660  # noqa
-    if (avg_factor is None) and avg_non_ignore:
+    if (avg_factor is None) and avg_non_ignore and reduction == 'mean':
         avg_factor = label.numel() - (label == ignore_index).sum().item()
     if weight is not None:
         weight = weight.float()
@@ -90,7 +90,7 @@ def binary_cross_entropy(pred,
                          reduction='mean',
                          avg_factor=None,
                          class_weight=None,
-                         ignore_index=255,
+                         ignore_index=-100,
                          avg_non_ignore=False,
                          **kwargs):
     """Calculate the binary CrossEntropy loss.
@@ -105,7 +105,8 @@ def binary_cross_entropy(pred,
         avg_factor (int, optional): Average factor that is used to average
             the loss. Defaults to None.
         class_weight (list[float], optional): The weight for each class.
-        ignore_index (int | None): The label index to be ignored. Default: 255.
+        ignore_index (int | None): The label index to be ignored.
+            Default: -100.
         avg_non_ignore (bool): The flag decides to whether the loss is
             only averaged over non-ignored targets. Default: False.
     Returns:
@@ -128,7 +129,7 @@ def binary_cross_entropy(pred,
         else:
             weight = valid_mask
     # average loss over non-ignored elements
-    if avg_factor is None:
+    if reduction == 'mean' and avg_factor is None:
         avg_factor = label.numel() - ((label >= 0) &
                                       (label == ignore_index)).sum().item()
 
@@ -147,7 +148,7 @@ def mask_cross_entropy(pred,
                        reduction='mean',
                        avg_factor=None,
                        class_weight=None,
-                       ignore_index=None,
+                       ignore_index=-100,
                        **kwargs):
     """Calculate the CrossEntropy loss for masks.
 
@@ -165,7 +166,7 @@ def mask_cross_entropy(pred,
             the loss. Defaults to None.
         class_weight (list[float], optional): The weight for each class.
         ignore_index (None): Placeholder, to be consistent with other loss.
-            Default: None.
+            Default: -100.
 
     Returns:
         torch.Tensor: The calculated loss
@@ -243,6 +244,7 @@ class CrossEntropyLoss(nn.Module):
                 weight=None,
                 avg_factor=None,
                 reduction_override=None,
+                ignore_index=-100,
                 **kwargs):
         """Forward function."""
         assert reduction_override in (None, 'none', 'mean', 'sum')
@@ -261,6 +263,7 @@ class CrossEntropyLoss(nn.Module):
             reduction=reduction,
             avg_factor=avg_factor,
             avg_non_ignore=self.avg_non_ignore,
+            ignore_index=ignore_index,
             **kwargs)
         return loss_cls
 
@@ -273,6 +276,7 @@ class CrossEntropyLoss(nn.Module):
         by simple sum operation. In addition, if you want this loss item to be
         included into the backward graph, `loss_` must be the prefix of the
         name.
+
         Returns:
             str: The name of this loss item.
         """

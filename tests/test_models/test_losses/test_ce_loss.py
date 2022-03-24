@@ -23,7 +23,7 @@ def test_ce_loss():
         loss_weight=1.0,
         loss_name='loss_ce')
     loss_cls = build_loss(loss_cls_cfg)
-    loss_cls.extra_repr
+    loss_cls.extra_repr()
     fake_pred = torch.Tensor([[100, -100]])
     fake_label = torch.Tensor([1]).long()
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
@@ -166,6 +166,40 @@ def test_ce_loss():
         fake_label[fake_label != 10],
         reduction='mean',
         weight=weight[fake_label != 10])
+    assert torch.allclose(loss, torch_loss)
+
+    # test ce loss with ignore index and reduction='none'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        reduction='none',
+        class_weight=None,
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls = build_loss(loss_cls_cfg)
+
+    fake_pred = torch.randn(2, 5, 10).float()  # 5-way classification
+    fake_label = torch.randint(0, 5, (2, 10)).long()
+    loss = loss_cls(fake_pred, fake_label)
+    torch_loss = torch.nn.functional.cross_entropy(
+        fake_pred, fake_label, reduction='none')
+    assert torch.allclose(loss, torch_loss)
+
+    # test ce loss with ignore index and reduction='sum'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        reduction='sum',
+        class_weight=None,
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls = build_loss(loss_cls_cfg)
+
+    fake_pred = torch.randn(2, 5, 10).float()  # 5-way classification
+    fake_label = torch.randint(0, 5, (2, 10)).long()
+    loss = loss_cls(fake_pred, fake_label)
+    torch_loss = torch.nn.functional.cross_entropy(
+        fake_pred, fake_label, reduction='sum')
     assert torch.allclose(loss, torch_loss)
 
     # TODO test use_mask
