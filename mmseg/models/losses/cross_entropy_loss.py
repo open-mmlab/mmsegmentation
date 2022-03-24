@@ -98,6 +98,7 @@ def binary_cross_entropy(pred,
     Args:
         pred (torch.Tensor): The prediction with shape (N, 1).
         label (torch.Tensor): The learning label of the prediction.
+            Note: In bce loss, label < 0 is invalid.
         weight (torch.Tensor, optional): Sample-wise loss weight.
         reduction (str, optional): The method used to reduce the loss.
             Options are "none", "mean" and "sum".
@@ -128,7 +129,8 @@ def binary_cross_entropy(pred,
             weight = valid_mask
     # average loss over non-ignored elements
     if avg_factor is None:
-        avg_factor = label.numel() - (label == ignore_index).sum().item()
+        avg_factor = label.numel() - ((label >= 0) &
+                                      (label == ignore_index)).sum().item()
 
     loss = F.binary_cross_entropy_with_logits(
         pred, label.float(), pos_weight=class_weight, reduction='none')
@@ -218,9 +220,9 @@ class CrossEntropyLoss(nn.Module):
         if not self.avg_non_ignore and self.reduction == 'mean':
             warnings.warn(
                 'Default ``avg_non_ignore`` is False, if you would like to '
-                'ignore certain label and average loss over non-ignore label, '
-                'set ``avg_non_ignore=True``, and the loss will be '
-                'slightly larger.')
+                'ignore the certain label and average loss over non-ignore '
+                'labels, which is the same with PyTorch official '
+                'cross_entropy, set ``avg_non_ignore=True``.')
 
         if self.use_sigmoid:
             self.cls_criterion = binary_cross_entropy
@@ -250,6 +252,7 @@ class CrossEntropyLoss(nn.Module):
             class_weight = cls_score.new_tensor(self.class_weight)
         else:
             class_weight = None
+        # Note: In cls_criterion, label < 0 is invalid.
         loss_cls = self.loss_weight * self.cls_criterion(
             cls_score,
             label,
