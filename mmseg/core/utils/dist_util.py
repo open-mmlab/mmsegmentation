@@ -21,13 +21,16 @@ def sync_random_seed(seed=None, device='cuda'):
     each rank shuffles the data indices in the same order based
     on the same seed. Then different ranks could use different indices
     to select non-overlapped data from the same data list.
+
     Args:
-        seed (int, Optional): The seed. Default to None.
+        seed (int, Optional): The seed. Default: None.
         device (str): The device where the seed will be put on.
-            Default to 'cuda'.
+            Default: 'cuda'.
+
     Returns:
         int: Seed to be used.
     """
+
     if seed is None:
         seed = np.random.randint(2**31)
     assert isinstance(seed, int)
