@@ -21,7 +21,7 @@
 我们按照下面的风格去命名配置文件，社区贡献者被建议使用同样的风格。
 
 ```
-{model}_{backbone}_[misc]_[gpu x batch_per_gpu]_{resolution}_{schedule}_{dataset}
+{model}_{backbone}_[misc]_[gpu x batch_per_gpu]_{resolution}_{iterations}_{dataset}
 ```
 
 `{xxx}` 是被要求的文件 `[yyy]` 是可选的。
@@ -30,7 +30,7 @@
 - `{backbone}`: 主干网络种类，例如 `r50` (ResNet-50)， `x101` (ResNeXt-101)
 - `[misc]`: 模型中各式各样的设置/插件，例如 `dconv`， `gcb`， `attention`， `mstrain`
 - `[gpu x batch_per_gpu]`: GPU数目 和每个 GPU 的样本数， 默认为 `8x2`
-- `{schedule}`: 训练方案， `20ki` 意思是 20k 迭代轮数
+- `{iterations}`: 训练迭代轮数，如`160k`
 - `{dataset}`: 数据集，如 `cityscapes`， `voc12aug`， `ade`
 
 ## PSPNet 的一个例子
