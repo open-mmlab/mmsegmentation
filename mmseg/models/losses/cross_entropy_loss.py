@@ -109,6 +109,7 @@ def binary_cross_entropy(pred,
             Default: -100.
         avg_non_ignore (bool): The flag decides to whether the loss is
             only averaged over non-ignored targets. Default: False.
+
     Returns:
         torch.Tensor: The calculated loss
     """
