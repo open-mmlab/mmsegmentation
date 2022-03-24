@@ -10,12 +10,11 @@ def check_dist_init():
 
 
 def sync_random_seed(seed=None, device='cuda'):
-    """Make sure different ranks share the same seed.
-
-    All workers must call
+    """Make sure different ranks share the same seed. All workers must call
     this function, otherwise it will deadlock. This method is generally used in
     `DistributedSampler`, because the seed should be identical across all
     processes in the distributed group.
+
     In distributed sampling, different ranks should sample non-overlapped
     data in the dataset. Therefore, this function is used to make sure that
     each rank shuffles the data indices in the same order based
@@ -23,10 +22,9 @@ def sync_random_seed(seed=None, device='cuda'):
     to select non-overlapped data from the same data list.
 
     Args:
-        seed (int, Optional): The seed. Default: None.
+        seed (int, Optional): The seed. Default to None.
         device (str): The device where the seed will be put on.
-            Default: 'cuda'.
-
+            Default to 'cuda'.
     Returns:
         int: Seed to be used.
     """
