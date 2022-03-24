@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
+from mmcv.cnn import build_norm_layer
 
 from ..builder import NECKS
 
@@ -17,30 +18,23 @@ class Feature2Pyramid(nn.Module):
         norm (str) : bn or syncbn.
     """
 
-    def __init__(self, embed_dim, rescales, norm='syncbn'):
+    def __init__(self,
+                 embed_dim,
+                 rescales,
+                 norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super(Feature2Pyramid, self).__init__()
         self.rescales = rescales
         self.upsample_4x = None
         for k in self.rescales:
             if k == 4:
-                if norm == 'bn':
-                    self.upsample_4x = nn.Sequential(
-                        nn.ConvTranspose2d(
-                            embed_dim, embed_dim, kernel_size=2, stride=2),
-                        nn.BatchNorm2d(embed_dim),
-                        nn.GELU(),
-                        nn.ConvTranspose2d(
-                            embed_dim, embed_dim, kernel_size=2, stride=2),
-                    )
-                elif norm == 'syncbn':
-                    self.upsample_4x = nn.Sequential(
-                        nn.ConvTranspose2d(
-                            embed_dim, embed_dim, kernel_size=2, stride=2),
-                        nn.SyncBatchNorm(embed_dim),
-                        nn.GELU(),
-                        nn.ConvTranspose2d(
-                            embed_dim, embed_dim, kernel_size=2, stride=2),
-                    )
+                self.upsample_4x = nn.Sequential(
+                    nn.ConvTranspose2d(
+                        embed_dim, embed_dim, kernel_size=2, stride=2),
+                    build_norm_layer(norm_cfg, embed_dim)[1],
+                    nn.GELU(),
+                    nn.ConvTranspose2d(
+                        embed_dim, embed_dim, kernel_size=2, stride=2),
+                )
             elif k == 2:
                 self.upsample_2x = nn.Sequential(
                     nn.ConvTranspose2d(
