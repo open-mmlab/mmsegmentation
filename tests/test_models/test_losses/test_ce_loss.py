@@ -28,6 +28,34 @@ def test_ce_loss():
     fake_label = torch.Tensor([1]).long()
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
 
+    # test loss with class weights, reduction='none'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        class_weight=[0.8, 0.2],
+        loss_weight=1.0,
+        reduction='none',
+        loss_name='loss_ce')
+    loss_cls = build_loss(loss_cls_cfg)
+    loss_cls.extra_repr()
+    fake_pred = torch.Tensor([[100, -100]])
+    fake_label = torch.Tensor([1]).long()
+    assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
+
+    # test loss with class weights, reduction='sum'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        class_weight=[0.8, 0.2],
+        loss_weight=1.0,
+        reduction='sum',
+        loss_name='loss_ce')
+    loss_cls = build_loss(loss_cls_cfg)
+    loss_cls.extra_repr()
+    fake_pred = torch.Tensor([[100, -100]])
+    fake_label = torch.Tensor([1]).long()
+    assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(40.))
+
     # test loss with class weights from file
     import os
     import tempfile
@@ -76,7 +104,7 @@ def test_ce_loss():
     fake_label[:, 0, 0] = 255
     assert torch.allclose(
         loss_cls(fake_pred, fake_label, ignore_index=255),
-        torch.tensor(0.9354),
+        torch.tensor(0.9503),
         atol=1e-4)
 
     # test cross entropy loss has name `loss_ce`
@@ -200,6 +228,23 @@ def test_ce_loss():
     loss = loss_cls(fake_pred, fake_label)
     torch_loss = torch.nn.functional.cross_entropy(
         fake_pred, fake_label, reduction='sum')
+    assert torch.allclose(loss, torch_loss)
+
+    # test ce loss with ignore index and reduction='none'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        reduction='none',
+        class_weight=None,
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls = build_loss(loss_cls_cfg)
+
+    fake_pred = torch.randn(2, 5, 10).float()  # 5-way classification
+    fake_label = torch.randint(0, 5, (2, 10)).long()
+    loss = loss_cls(fake_pred, fake_label)
+    torch_loss = torch.nn.functional.cross_entropy(
+        fake_pred, fake_label, reduction='none')
     assert torch.allclose(loss, torch_loss)
 
     # TODO test use_mask

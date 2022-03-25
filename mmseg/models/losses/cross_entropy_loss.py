@@ -75,13 +75,14 @@ def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
             bin_labels[inds[0], labels[valid_mask]] = 1
 
     valid_mask = valid_mask.unsqueeze(1).expand(target_shape).float()
+
     if label_weights is None:
         bin_label_weights = valid_mask
     else:
         bin_label_weights = label_weights.unsqueeze(1).expand(target_shape)
         bin_label_weights *= valid_mask
 
-    return bin_labels, bin_label_weights
+    return bin_labels, bin_label_weights, valid_mask
 
 
 def binary_cross_entropy(pred,
@@ -120,8 +121,8 @@ def binary_cross_entropy(pred,
             'H, W], label shape [N, H, W] are supported'
         # `weight` returned from `_expand_onehot_labels`
         # has been treated for valid (non-ignore) pixels
-        label, weight = _expand_onehot_labels(label, weight, pred.shape,
-                                              ignore_index)
+        label, weight, valid_mask = _expand_onehot_labels(
+            label, weight, pred.shape, ignore_index)
     else:
         # should mask out the ignored elements
         valid_mask = ((label >= 0) & (label != ignore_index)).float()
@@ -131,8 +132,7 @@ def binary_cross_entropy(pred,
             weight = valid_mask
     # average loss over non-ignored elements
     if reduction == 'mean' and avg_factor is None:
-        avg_factor = label.numel() - ((label >= 0) &
-                                      (label == ignore_index)).sum().item()
+        avg_factor = valid_mask.sum().item()
 
     loss = F.binary_cross_entropy_with_logits(
         pred, label.float(), pos_weight=class_weight, reduction='none')
