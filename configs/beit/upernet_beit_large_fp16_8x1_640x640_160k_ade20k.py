@@ -2,7 +2,7 @@ _base_ = [
     '../_base_/models/upernet_beit.py', '../_base_/datasets/ade20k_640x640.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_320k.py'
 ]
-crop_size=(640, 640)
+crop_size = (640, 640)
 
 model = dict(
     pretrained='pretrain/beit_large_patch16_224_pt22k_ft22k.pth',
@@ -17,8 +17,7 @@ model = dict(
         qv_bias=True,
         init_values=1e-6,
         drop_path_rate=0.2,
-        out_indices=[7, 11, 15, 23]
-    ),
+        out_indices=[7, 11, 15, 23]),
     neck=dict(embed_dim=1024, rescales=[4, 2, 1, 0.5]),
     decode_head=dict(
         in_channels=[1024, 1024, 1024, 1024],

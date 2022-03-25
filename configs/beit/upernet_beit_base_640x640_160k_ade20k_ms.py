@@ -2,7 +2,7 @@ _base_ = [
     '../_base_/models/upernet_beit.py', '../_base_/datasets/ade20k_640x640.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
-crop_size=(640, 640)
+crop_size = (640, 640)
 
 model = dict(
     pretrained='pretrain/beit_base_patch16_224_pt22k_ft22k_new1.pth',
@@ -66,5 +66,4 @@ test_pipeline = [
 data = dict(
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline),
-    samples_per_gpu=2
-)
+    samples_per_gpu=2)
