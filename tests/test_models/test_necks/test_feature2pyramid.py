@@ -5,7 +5,7 @@ import torch
 from mmseg.models import Feature2Pyramid
 
 
-def test_fpn():
+def test_Feature2Pyramid():
     # test
     rescales = [4, 2, 1, 0.5]
     embed_dim = 64

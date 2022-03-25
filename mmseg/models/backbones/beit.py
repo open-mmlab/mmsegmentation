@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import math
 import warnings
 
 import numpy as np
@@ -342,8 +341,7 @@ class BEiT(BaseModule):
             stride=patch_size,
             padding=0,
             norm_cfg=norm_cfg if patch_norm else None,
-            init_cfg=None,
-        )
+            init_cfg=None)
 
         window_size = (img_size[0] // patch_size, img_size[1] // patch_size)
         self.patch_shape = window_size
@@ -386,15 +384,6 @@ class BEiT(BaseModule):
     def norm1(self):
         return getattr(self, self.norm1_name)
 
-    def fix_init_weight(self):
-
-        def rescale(param, layer_id):
-            param.div_(math.sqrt(2.0 * layer_id))
-
-        for layer_id, layer in enumerate(self.layers):
-            rescale(layer.attn.proj.weight.data, layer_id + 1)
-            rescale(layer.ffn.layers[1].weight.data, layer_id + 1)
-
     def resize_rel_pos_embed(self, checkpoint):
         """Resize relative pos_embed weights.
 
@@ -423,6 +412,7 @@ class BEiT(BaseModule):
                 dst_patch_shape = self.patch_shape
                 if dst_patch_shape[0] != dst_patch_shape[1]:
                     raise NotImplementedError()
+                # Count the number of extra tokens.
                 num_extra_tokens = dst_num_pos - (
                     dst_patch_shape[0] * 2 - 1) * (
                         dst_patch_shape[1] * 2 - 1)
@@ -432,9 +422,11 @@ class BEiT(BaseModule):
                     extra_tokens = rel_pos_bias[-num_extra_tokens:, :]
                     rel_pos_bias = rel_pos_bias[:-num_extra_tokens, :]
 
+                    # Geometric sequence interpolation.
                     def geometric_progression(a, r, n):
                         return a * (1.0 - r**n) / (1.0 - r)
 
+                    # Here is a binary function.
                     left, right = 1.01, 1.5
                     while right - left > 1e-6:
                         q = (left + right) / 2.0
@@ -443,7 +435,8 @@ class BEiT(BaseModule):
                             right = q
                         else:
                             left = q
-
+                    # The position of each interpolated point is determined
+                    # by the ratio obtained by dichotomy.
                     dis = []
                     cur = 1
                     for i in range(src_size // 2):
@@ -458,7 +451,7 @@ class BEiT(BaseModule):
                     t = dst_size // 2.0
                     dx = np.arange(-t, t + 0.1, 1.0)
                     dy = np.arange(-t, t + 0.1, 1.0)
-
+                    # Interpolation functions are being executed and called.
                     all_rel_pos_bias = []
 
                     for i in range(num_attn_heads):
@@ -488,7 +481,6 @@ class BEiT(BaseModule):
                 nn.init.constant_(m.weight, 1.0)
 
         self.apply(_init_weights)
-        self.fix_init_weight()
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg.get('type') == 'Pretrained'):

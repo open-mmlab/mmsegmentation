@@ -93,7 +93,7 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
                     'param_names': parameter_groups[key]['param_names'],
                     'lr_scale': parameter_groups[key]['lr_scale'],
                     'lr': parameter_groups[key]['lr'],
-                    'weight_decay': parameter_groups[key]['weight_decay'],
+                    'weight_decay': parameter_groups[key]['weight_decay']
                 }
             logger.info(f'Param groups ={to_display}')
 
