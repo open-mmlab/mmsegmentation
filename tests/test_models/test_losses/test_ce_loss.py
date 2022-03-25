@@ -101,6 +101,13 @@ def test_ce_loss():
     fake_label = torch.ones(2, 8, 8).long()
     assert torch.allclose(
         loss_cls(fake_pred, fake_label), torch.tensor(0.9503), atol=1e-4)
+
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=True,
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls = build_loss(loss_cls_cfg)
     fake_label[:, 0, 0] = 255
     assert torch.allclose(
         loss_cls(fake_pred, fake_label, ignore_index=255),

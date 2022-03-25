@@ -131,7 +131,7 @@ def binary_cross_entropy(pred,
         else:
             weight = valid_mask
     # average loss over non-ignored elements
-    if reduction == 'mean' and avg_factor is None:
+    if reduction == 'mean' and avg_factor is None and avg_non_ignore:
         avg_factor = valid_mask.sum().item()
 
     loss = F.binary_cross_entropy_with_logits(
