@@ -114,6 +114,82 @@ def test_ce_loss():
         torch.tensor(0.9503),
         atol=1e-4)
 
+    # test avg_non_ignore=False for bce
+    # in this case, `avg_factor` would not be calculated
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=True,
+        loss_weight=1.0,
+        avg_non_ignore=False)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_label[:, 0, 0] = 255
+    assert torch.allclose(
+        loss_cls(fake_pred, fake_label, ignore_index=255),
+        torch.tensor(0.9354),
+        atol=1e-4)
+
+    # test avg_non_ignore=True would not affect bce
+    # when reduction='sum'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=True,
+        reduction='sum',
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_label[:, 0, 0] = 255
+    assert torch.allclose(
+        loss_cls(fake_pred, fake_label, ignore_index=255) / fake_pred.numel(),
+        torch.tensor(0.9354),
+        atol=1e-4)
+
+    # test avg_non_ignore=True would not affect bce
+    # when reduction='none'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=True,
+        reduction='none',
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_label[:, 0, 0] = 255
+    assert torch.allclose(
+        loss_cls(fake_pred, fake_label, ignore_index=255).sum() /
+        fake_pred.numel(),
+        torch.tensor(0.9354),
+        atol=1e-4)
+
+    # test avg_non_ignore=True would not affect ce
+    # when reduction='sum'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        reduction='sum',
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_label[:, 0, 0] = 255
+    assert torch.allclose(
+        loss_cls(fake_pred, fake_label, ignore_index=255) / fake_pred.numel(),
+        torch.tensor(0.1427),
+        atol=1e-4)
+
+    # test avg_non_ignore=True would not affect ce
+    # when reduction='none'
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        reduction='none',
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls = build_loss(loss_cls_cfg)
+    fake_label[:, 0, 0] = 255
+    assert torch.allclose(
+        loss_cls(fake_pred, fake_label, ignore_index=255).sum() /
+        fake_pred.numel(),
+        torch.tensor(0.1427),
+        atol=1e-4)
+
     # test cross entropy loss has name `loss_ce`
     loss_cls_cfg = dict(
         type='CrossEntropyLoss',
