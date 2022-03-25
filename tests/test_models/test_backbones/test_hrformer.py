@@ -72,7 +72,7 @@ def test_hrformer_module():
         num_window_sizes=(7, ),
         num_mlp_ratios=(4, ),
         drop_paths=(0.1, ),
-        norm_cfg=norm_cfg,
+        norm_cfg=norm_cfg
     )
 
     feats = [
