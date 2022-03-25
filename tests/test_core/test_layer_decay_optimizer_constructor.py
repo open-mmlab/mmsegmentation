@@ -5,6 +5,29 @@ import torch.nn as nn
 from mmseg.core.layer_decay_optimizer_constructor import \
     LayerDecayOptimizerConstructor
 
+layer_wise_gt_lst = [{
+    'weight_decay': 0.0,
+    'lr_scale': 16
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 8
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 8
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 4
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 4
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 2
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 2
+}]
+
 
 class BEiTExampleModel(nn.Module):
 
@@ -21,13 +44,27 @@ class BEiTExampleModel(nn.Module):
             self.backbone.layers.append(layer)
 
 
+def check_beit_adamw_optimizer(optimizer, gt_lst):
+    assert isinstance(optimizer, torch.optim.AdamW)
+    assert optimizer.defaults['lr'] == 1
+    assert optimizer.defaults['weight_decay'] == 0.05
+    param_groups = optimizer.param_groups
+    # 1 layer (cls_token and patch_embed) + 3 layers * 2 (w, b) = 7 layers
+    assert len(param_groups) == 7
+    for i, param_dict in enumerate(param_groups):
+        assert param_dict['weight_decay'] == gt_lst[i]['weight_decay']
+        assert param_dict['lr_scale'] == gt_lst[i]['lr_scale']
+        assert param_dict['lr_scale'] == param_dict['lr']
+
+
 def test_beit_layer_decay_optimizer_constructor():
 
     # paramwise_cfg with ConvNeXtExampleModel
-    model = BEiTExampleModel(depth=12)
+    model = BEiTExampleModel(depth=3)
     optimizer_cfg = dict(
         type='AdamW', lr=1, betas=(0.9, 0.999), weight_decay=0.05)
-    paramwise_cfg = dict(num_layers=12, layer_decay_rate=0.9)
+    paramwise_cfg = dict(num_layers=3, layer_decay_rate=2)
     optim_constructor = LayerDecayOptimizerConstructor(optimizer_cfg,
                                                        paramwise_cfg)
-    optim_constructor(model)
+    optimizer = optim_constructor(model)
+    check_beit_adamw_optimizer(optimizer, layer_wise_gt_lst)

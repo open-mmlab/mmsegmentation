@@ -69,7 +69,7 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
                 this_weight_decay = weight_decay
 
             layer_id = get_num_layer_for_vit(name, num_layers)
-            group_name = 'layer_%d_%s' % (layer_id, group_name)
+            group_name = f'layer_{layer_id}_{group_name}'
 
             if group_name not in parameter_groups:
                 scale = layer_decay_rate**(num_layers - layer_id - 1)
