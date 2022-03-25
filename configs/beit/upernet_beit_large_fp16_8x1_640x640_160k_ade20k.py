@@ -20,10 +20,7 @@ model = dict(
         out_indices=[7, 11, 15, 23]),
     neck=dict(embed_dim=1024, rescales=[4, 2, 1, 0.5]),
     decode_head=dict(
-        in_channels=[1024, 1024, 1024, 1024],
-        num_classes=150,
-        channels=1024,
-    ),
+        in_channels=[1024, 1024, 1024, 1024], num_classes=150, channels=1024),
     auxiliary_head=dict(in_channels=1024, num_classes=150),
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(426, 426)))
 

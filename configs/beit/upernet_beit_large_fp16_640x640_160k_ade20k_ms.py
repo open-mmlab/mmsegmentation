@@ -17,14 +17,10 @@ model = dict(
         qv_bias=True,
         init_values=1e-6,
         drop_path_rate=0.2,
-        out_indices=[7, 11, 15, 23],
-    ),
+        out_indices=[7, 11, 15, 23]),
     neck=dict(embed_dim=1024, rescales=[4, 2, 1, 0.5]),
     decode_head=dict(
-        in_channels=[1024, 1024, 1024, 1024],
-        num_classes=150,
-        channels=1024,
-    ),
+        in_channels=[1024, 1024, 1024, 1024], num_classes=150, channels=1024),
     auxiliary_head=dict(in_channels=1024, num_classes=150),
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(426, 426)))
 
@@ -49,8 +45,6 @@ lr_config = dict(
 
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
-
-find_unused_parameters = True
 
 test_pipeline = [
     dict(type='LoadImageFromFile'),
