@@ -48,6 +48,13 @@ python tools/model_converters/beit2mmseg.py https://unilm.blob.core.windows.net/
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
 
+In our default setting, pretrained models could be defined below:
+
+  | pretrained models | original models |
+  | ------ | -------- |
+  |BEiT_base.pth | ['BEiT_base'](https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k_ft22k.pth) |
+  |BEiT_large.pth | ['BEiT_large'](https://unilm.blob.core.windows.net/beit/beit_large_patch16_224_pt22k_ft22k.pth) |
+
 ## Results and models
 
 ### ADE20K
