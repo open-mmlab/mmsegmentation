@@ -27,7 +27,7 @@ def cross_entropy(pred,
         class_weight (list[float], optional): The weight for each class.
             Default: None.
         reduction (str, optional): The method used to reduce the loss.
-            Options are "none", "mean" and "sum". Default: 'mean'.
+            Options are 'none', 'mean' and 'sum'. Default: 'mean'.
         avg_factor (int, optional): Average factor that is used to average
             the loss. Default: None.
         ignore_index (int): Specifies a target value that is ignored and
@@ -149,7 +149,7 @@ def mask_cross_entropy(pred,
                        reduction='mean',
                        avg_factor=None,
                        class_weight=None,
-                       ignore_index=-100,
+                       ignore_index=None,
                        **kwargs):
     """Calculate the CrossEntropy loss for masks.
 
@@ -167,7 +167,7 @@ def mask_cross_entropy(pred,
             the loss. Defaults to None.
         class_weight (list[float], optional): The weight for each class.
         ignore_index (None): Placeholder, to be consistent with other loss.
-            Default: -100.
+            Default: None.
 
     Returns:
         torch.Tensor: The calculated loss
