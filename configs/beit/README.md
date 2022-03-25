@@ -55,6 +55,22 @@ In our default setting, pretrained models could be defined below:
   |BEiT_base.pth | ['BEiT_base'](https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k_ft22k.pth) |
   |BEiT_large.pth | ['BEiT_large'](https://unilm.blob.core.windows.net/beit/beit_large_patch16_224_pt22k_ft22k.pth) |
 
+Verify the single-scale results of the model:
+
+```shell
+sh tools/dist_test.sh \
+configs/beit/upernet_beit_large_fp16_8x1_640x640_160k_ade20k.py \
+upernet_beit_large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth $GPUS --eval mIoU
+```
+
+For multi-scale inference:
+
+```shell
+sh tools/dist_test.sh \
+configs/beit/upernet_beit_large_fp16_640x640_160k_ade20k_ms.py \
+upernet_beit_large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth $GPUS --eval mIoU
+```
+
 ## Results and models
 
 ### ADE20K
