@@ -112,7 +112,7 @@ def convert_hrformer(ckpt):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Convert keys in official pretrained swin models to'
+        description='Convert keys in official pretrained HRFormer models to'
         'MMSegmentation style.')
     parser.add_argument('src', help='src model path or url')
     # The dst path must be a full path of the new checkpoint.
