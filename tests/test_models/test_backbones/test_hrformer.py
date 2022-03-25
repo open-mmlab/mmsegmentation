@@ -76,7 +76,7 @@ def test_hrformer_module():
     )
 
     feats = [
-        torch.randn(1, in_channels[0], 64, 64),
+        torch.randn(1, in_channels[0], 64, 64)
     ]
     feats = hrmodule(feats)
 
