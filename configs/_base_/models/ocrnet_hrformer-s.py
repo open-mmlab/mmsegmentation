@@ -43,7 +43,7 @@ model = dict(
                 num_heads=(1, 2, 4, 8),
                 mlp_ratios=(4, 4, 4, 4),
                 num_blocks=(2, 2, 2, 2),
-                num_channels=(32, 64, 128, 256))))
+                num_channels=(32, 64, 128, 256)))),
     decode_head=[
         dict(
             type='FCNHead',
