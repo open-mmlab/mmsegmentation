@@ -200,6 +200,7 @@ class LocalWindowSelfAttention(BaseModule):
         Returns:
             torch.Tensor: The output tensor with shape [B, N, C]
         """
+
         B, N, C = x.shape
         x = x.view(B, H, W, C)
         Wh, Ww = self.window_size
@@ -290,7 +291,17 @@ class CrossFFN(BaseModule):
             build_activation_layer(act_cfg))
 
     def forward(self, x, H, W):
-        """Forward function."""
+        """Forward function.
+
+        Args:
+            x: (torch.Tensor): The input tensor with shape [B, N, C].
+            H: (int): The height of the original 4D feature map.
+            W: (int): The width of the original 4D feature map.
+
+        Returns:
+            torch.Tensor: The output tensor with shape [B, N, C]
+        """
+
         x = nlc2nchw2nlc(self.layers, x, (H, W))
         return x
 
