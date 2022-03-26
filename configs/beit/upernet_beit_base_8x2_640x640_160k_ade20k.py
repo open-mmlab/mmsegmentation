@@ -2,27 +2,10 @@ _base_ = [
     '../_base_/models/upernet_beit.py', '../_base_/datasets/ade20k_640x640.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
-crop_size = (640, 640)
 
 model = dict(
     pretrained='pretrain/beit_base_patch16_224_pt22k_ft22k.pth',
-    backbone=dict(
-        type='BEiT',
-        img_size=crop_size,
-        patch_size=16,
-        embed_dims=768,
-        num_layers=12,
-        num_heads=12,
-        mlp_ratio=4,
-        qv_bias=True,
-        init_values=0.1,
-        drop_path_rate=0.1,
-        out_indices=[3, 5, 7, 11]),
-    neck=dict(embed_dim=768, rescales=[4, 2, 1, 0.5]),
-    decode_head=dict(
-        in_channels=[768, 768, 768, 768], num_classes=150, channels=768),
-    auxiliary_head=dict(in_channels=768, num_classes=150),
-    test_cfg=dict(mode='slide', crop_size=crop_size, stride=(426, 426)))
+    test_cfg=dict(mode='slide', crop_size=(640, 640), stride=(426, 426)))
 
 optimizer = dict(
     _delete_=True,
