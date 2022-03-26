@@ -24,7 +24,7 @@ model = dict(
     neck=dict(type='Feature2Pyramid', embed_dim=768, rescales=[4, 2, 1, 0.5]),
     decode_head=dict(
         type='UPerHead',
-        in_channels=[384, 384, 384, 384],
+        in_channels=[768, 768, 768, 768],
         in_index=[0, 1, 2, 3],
         pool_scales=(1, 2, 3, 6),
         channels=512,
