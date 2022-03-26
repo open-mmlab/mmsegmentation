@@ -31,7 +31,7 @@ def get_num_layer_for_vit(var_name, num_max_layer):
 class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
     """Different learning rates are set for different layers of backbone."""
 
-    def add_params(self, params, module, prefix='', is_dcn_module=None):
+    def add_params(self, params, module):
         """Add all parameters of module to the params list.
 
         The parameters of the given module will be added to the list of param
@@ -40,10 +40,6 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
             params (list[dict]): A list of param groups, it will be modified
                 in place.
             module (nn.Module): The module to be added.
-            prefix (str): The prefix of the module
-            is_dcn_module (int|float|None): If the current module is a
-                submodule of DCN, `is_dcn_module` will be passed to
-                control conv_offset layer's learning rate. Defaults to None.
         """
         parameter_groups = {}
         logger = get_root_logger()
