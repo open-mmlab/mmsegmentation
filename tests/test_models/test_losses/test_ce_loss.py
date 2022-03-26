@@ -130,6 +130,12 @@ def test_ce_loss():
         torch.tensor(0.9354),
         atol=1e-4)
 
+    # test avg_non_ignore would not affect bce/ce
+    # when reduction='sum'/'mean'/'none'
+    fake_pred = torch.full(size=(2, 21, 8, 8), fill_value=0.5)
+    fake_label = torch.ones(2, 8, 8).long()
+    fake_label[:, 0, 0] = 255
+
     # test avg_non_ignore would not affect bce
     # when reduction='sum'
     loss_cls_cfg1 = dict(
@@ -146,8 +152,6 @@ def test_ce_loss():
         loss_weight=1.0,
         avg_non_ignore=False)
     loss_cls2 = build_loss(loss_cls_cfg2)
-
-    fake_label[:, 0, 0] = 255
     assert torch.allclose(
         loss_cls1(fake_pred, fake_label, ignore_index=255) / fake_pred.numel(),
         loss_cls2(fake_pred, fake_label, ignore_index=255) / fake_pred.numel(),
@@ -169,8 +173,29 @@ def test_ce_loss():
         loss_weight=1.0,
         avg_non_ignore=False)
     loss_cls2 = build_loss(loss_cls_cfg2)
+    assert torch.allclose(
+        loss_cls1(fake_pred, fake_label, ignore_index=255).sum() /
+        fake_pred.numel(),
+        loss_cls2(fake_pred, fake_label, ignore_index=255).sum() /
+        fake_pred.numel(),
+        atol=1e-4)
 
-    fake_label[:, 0, 0] = 255
+    # test avg_non_ignore would not affect bce
+    # when reduction='mean'
+    loss_cls_cfg1 = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=True,
+        reduction='mean',
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls1 = build_loss(loss_cls_cfg1)
+    loss_cls_cfg2 = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=True,
+        reduction='mean',
+        loss_weight=1.0,
+        avg_non_ignore=False)
+    loss_cls2 = build_loss(loss_cls_cfg2)
     assert torch.allclose(
         loss_cls1(fake_pred, fake_label, ignore_index=255).sum() /
         fake_pred.numel(),
@@ -194,7 +219,6 @@ def test_ce_loss():
         loss_weight=1.0,
         avg_non_ignore=False)
     loss_cls2 = build_loss(loss_cls_cfg2)
-    fake_label[:, 0, 0] = 255
     assert torch.allclose(
         loss_cls1(fake_pred, fake_label, ignore_index=255) / fake_pred.numel(),
         loss_cls2(fake_pred, fake_label, ignore_index=255) / fake_pred.numel(),
@@ -216,7 +240,29 @@ def test_ce_loss():
         loss_weight=1.0,
         avg_non_ignore=False)
     loss_cls2 = build_loss(loss_cls_cfg2)
-    fake_label[:, 0, 0] = 255
+    assert torch.allclose(
+        loss_cls1(fake_pred, fake_label, ignore_index=255).sum() /
+        fake_pred.numel(),
+        loss_cls2(fake_pred, fake_label, ignore_index=255).sum() /
+        fake_pred.numel(),
+        atol=1e-4)
+
+    # test avg_non_ignore would not affect ce
+    # when reduction='mean'
+    loss_cls_cfg1 = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        reduction='mean',
+        loss_weight=1.0,
+        avg_non_ignore=True)
+    loss_cls1 = build_loss(loss_cls_cfg1)
+    loss_cls_cfg2 = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=False,
+        reduction='mean',
+        loss_weight=1.0,
+        avg_non_ignore=False)
+    loss_cls2 = build_loss(loss_cls_cfg2)
     assert torch.allclose(
         loss_cls1(fake_pred, fake_label, ignore_index=255).sum() /
         fake_pred.numel(),
