@@ -44,6 +44,7 @@
    :caption: 说明
 
    changelog.md
+   faq.md
 
 .. toctree::
    :caption: 语言切换
