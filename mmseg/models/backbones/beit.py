@@ -32,7 +32,7 @@ class BEiTAttention(BaseModule):
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
         window_size (tuple[int]): The height and width of the window.
-        qv_bias (bool, optional):  If True, add a learnable bias to q, v.
+        qv_bias (bool):  If True, add a learnable bias to q, v.
             Default: True.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
@@ -61,9 +61,14 @@ class BEiTAttention(BaseModule):
         if qv_bias:
             self.q_bias = nn.Parameter(torch.zeros(embed_dims))
             self.v_bias = nn.Parameter(torch.zeros(embed_dims))
+            self.qkv_bias = torch.cat(
+                (self.q_bias,
+                 torch.zeros_like(self.v_bias,
+                                  requires_grad=False), self.v_bias))
         else:
             self.q_bias = None
             self.v_bias = None
+            self.qkv_bias = None
 
         self.window_size = window_size
         # cls to token & token 2 cls & cls to cls
@@ -116,14 +121,8 @@ class BEiTAttention(BaseModule):
             x (tensor): input features with shape of (num_windows*B, N, C).
         """
         B, N, C = x.shape
-        qkv_bias = None
-        if self.q_bias is not None:
-            qkv_bias = torch.cat(
-                (self.q_bias,
-                 torch.zeros_like(self.v_bias,
-                                  requires_grad=False), self.v_bias))
 
-        qkv = F.linear(input=x, weight=self.qkv.weight, bias=qkv_bias)
+        qkv = F.linear(input=x, weight=self.qkv.weight, bias=self.qkv_bias)
         qkv = qkv.reshape(B, N, 3, self.num_heads, -1).permute(2, 0, 3, 1, 4)
         q, k, v = qkv[0], qkv[1], qkv[2]
 
@@ -267,7 +266,7 @@ class BEiT(BaseModule):
         final_norm (bool): Whether to add a additional layer to normalize
             final feature map. Default: False.
         interpolate_mode (str): Select the interpolate mode for position
-            embeding vector resize. Default: bicubic.
+            embeding vector resize. Default: 'bicubic'.
         num_fcs (int): The number of fully-connected layers for FFNs.
             Default: 2.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
@@ -386,6 +385,11 @@ class BEiT(BaseModule):
 
     def resize_rel_pos_embed(self, checkpoint):
         """Resize relative pos_embed weights.
+
+        This function is modified from
+        https://github.com/microsoft/unilm/blob/master/beit/semantic_segmentation/mmcv_custom/checkpoint.py.  # noqa: E501
+        Copyright (c) Microsoft Corporation
+        Licensed under the MIT License
 
         Args:
             checkpoint (dict): Key and value of the pretrain model.
