@@ -12,8 +12,8 @@ class Feature2Pyramid(nn.Module):
     A neck structure connect ViT backbone and decoder_heads.
 
     Args:
-        embed_dims (int): embedding dimension.
-        rescales (list[float]): different sampling multiples were
+        embed_dims (int): Embedding dimension.
+        rescales (list[float]): Different sampling multiples were
             used to obtain pyramid features. Default: (4, 2, 1, 0.5).
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='SyncBN', requires_grad=True).

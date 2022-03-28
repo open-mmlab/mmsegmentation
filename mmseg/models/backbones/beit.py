@@ -156,10 +156,10 @@ class TransformerEncoderLayer(BaseModule):
         feedforward_channels (int): The hidden dimension for FFNs.
         attn_drop_rate (float): The drop out rate for attention layer.
             Default: 0.0.
-        drop_path_rate (float): stochastic depth rate. Default 0.0.
+        drop_path_rate (float): Stochastic depth rate. Default 0.0.
         num_fcs (int): The number of fully-connected layers for FFNs.
             Default: 2.
-        qkv_bias (bool): enable bias for qkv if True. Default: True
+        qkv_bias (bool): Enable bias for qkv if True. Default: True
         act_cfg (dict): The activation config for FFNs.
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
@@ -243,17 +243,17 @@ class BEiT(BaseModule):
         img_size (int | tuple): Input image size. Default: 224.
         patch_size (int): The patch size. Default: 16.
         in_channels (int): Number of input channels. Default: 3.
-        embed_dims (int): embedding dimension. Default: 768.
-        num_layers (int): depth of transformer. Default: 12.
-        num_heads (int): number of attention heads. Default: 12.
-        mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
+        embed_dims (int): Embedding dimension. Default: 768.
+        num_layers (int): Depth of transformer. Default: 12.
+        num_heads (int): Number of attention heads. Default: 12.
+        mlp_ratio (int): Ratio of mlp hidden dim to embedding dim.
             Default: 4.
         out_indices (list | tuple | int): Output from which stages.
             Default: -1.
-        qkv_bias (bool): enable bias for qkv if True. Default: True.
+        qkv_bias (bool): Enable bias for qkv if True. Default: True.
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
-        drop_path_rate (float): stochastic depth rate. Default 0.0.
+        drop_path_rate (float): Stochastic depth rate. Default 0.0.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
@@ -267,7 +267,7 @@ class BEiT(BaseModule):
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
-        pretrained (str, optional): model pretrained path. Default: None.
+        pretrained (str, optional): Model pretrained path. Default: None.
         init_values (float): Initialize the values of BEiTAttention and FFN
             with learnable scaling.
         init_cfg (dict or list[dict], optional): Initialization config dict.
@@ -370,6 +370,60 @@ class BEiT(BaseModule):
     def norm1(self):
         return getattr(self, self.norm1_name)
 
+    def _get_new_rel_pos_bias(self, src_size, dst_size, extra_tokens,
+                              rel_pos_bias, num_attn_heads):
+        """Get new relative position bias.
+
+        Args:
+            src_size (int): Number of pos_embedding in pre-trained model.
+            dst_size (int): Number of pos_embedding in the current model.
+            extra_tokens (tensor): The bias of the extra tokens.
+            rel_pos_bias (tensor): The relative position bias of the pretrain
+                model after removing the extra tokens.
+            num_attn_heads (int): Number of attention heads.
+        Returns:
+            new_rel_pos_bias (tensor): Interpolate the pre-trained relative
+                position bias to the size of the current model.
+        """
+
+        # Geometric sequence interpolation.
+        def geometric_progression(a, r, n):
+            return a * (1.0 - r**n) / (1.0 - r)
+
+        # Here is a binary function.
+        left, right = 1.01, 1.5
+        while right - left > 1e-6:
+            q = (left + right) / 2.0
+            gp = geometric_progression(1, q, src_size // 2)
+            if gp > dst_size // 2:
+                right = q
+            else:
+                left = q
+        # The position of each interpolated point is determined
+        # by the ratio obtained by dichotomy.
+        dis = []
+        cur = 1
+        for i in range(src_size // 2):
+            dis.append(cur)
+            cur += q**(i + 1)
+        r_ids = [-_ for _ in reversed(dis)]
+        x = r_ids + [0] + dis
+        y = r_ids + [0] + dis
+        t = dst_size // 2.0
+        dx = np.arange(-t, t + 0.1, 1.0)
+        dy = np.arange(-t, t + 0.1, 1.0)
+        # Interpolation functions are being executed and called.
+        all_rel_pos_bias = []
+        for i in range(num_attn_heads):
+            z = rel_pos_bias[:, i].view(src_size, src_size).float().numpy()
+            f = interpolate.interp2d(x, y, z, kind='cubic')
+            all_rel_pos_bias.append(
+                torch.Tensor(f(dx, dy)).contiguous().view(-1, 1).to(
+                    rel_pos_bias.device))
+        rel_pos_bias = torch.cat(all_rel_pos_bias, dim=-1)
+        new_rel_pos_bias = torch.cat((rel_pos_bias, extra_tokens), dim=0)
+        return new_rel_pos_bias
+
     def resize_rel_pos_embed(self, checkpoint):
         """Resize relative pos_embed weights.
 
@@ -412,50 +466,9 @@ class BEiT(BaseModule):
                 if src_size != dst_size:
                     extra_tokens = rel_pos_bias[-num_extra_tokens:, :]
                     rel_pos_bias = rel_pos_bias[:-num_extra_tokens, :]
-
-                    # Geometric sequence interpolation.
-                    def geometric_progression(a, r, n):
-                        return a * (1.0 - r**n) / (1.0 - r)
-
-                    # Here is a binary function.
-                    left, right = 1.01, 1.5
-                    while right - left > 1e-6:
-                        q = (left + right) / 2.0
-                        gp = geometric_progression(1, q, src_size // 2)
-                        if gp > dst_size // 2:
-                            right = q
-                        else:
-                            left = q
-                    # The position of each interpolated point is determined
-                    # by the ratio obtained by dichotomy.
-                    dis = []
-                    cur = 1
-                    for i in range(src_size // 2):
-                        dis.append(cur)
-                        cur += q**(i + 1)
-
-                    r_ids = [-_ for _ in reversed(dis)]
-
-                    x = r_ids + [0] + dis
-                    y = r_ids + [0] + dis
-
-                    t = dst_size // 2.0
-                    dx = np.arange(-t, t + 0.1, 1.0)
-                    dy = np.arange(-t, t + 0.1, 1.0)
-                    # Interpolation functions are being executed and called.
-                    all_rel_pos_bias = []
-
-                    for i in range(num_attn_heads):
-                        z = rel_pos_bias[:, i].view(src_size,
-                                                    src_size).float().numpy()
-                        f = interpolate.interp2d(x, y, z, kind='cubic')
-                        all_rel_pos_bias.append(
-                            torch.Tensor(f(dx, dy)).contiguous().view(
-                                -1, 1).to(rel_pos_bias.device))
-
-                    rel_pos_bias = torch.cat(all_rel_pos_bias, dim=-1)
-                    new_rel_pos_bias = torch.cat((rel_pos_bias, extra_tokens),
-                                                 dim=0)
+                    new_rel_pos_bias = self._get_new_rel_pos_bias(
+                        src_size, dst_size, extra_tokens, rel_pos_bias,
+                        num_attn_heads)
                     state_dict[key] = new_rel_pos_bias
 
         return state_dict
