@@ -557,10 +557,6 @@ class HRFomerModule(HRModule):
 
         return ModuleList(fuse_layers)
 
-    def get_num_inchannels(self):
-        """Return the number of input channels."""
-        return self.in_channels
-
 
 @BACKBONES.register_module()
 class HRFormer(HRNet):
@@ -741,6 +737,6 @@ class HRFormer(HRNet):
                     norm_cfg=self.norm_cfg,
                     transformer_norm_cfg=self.transformer_norm_cfg,
                     with_cp=self.with_cp))
-            num_inchannels = modules[-1].get_num_inchannels()
+            num_inchannels = modules[-1].in_channels
 
         return Sequential(*modules), num_inchannels
