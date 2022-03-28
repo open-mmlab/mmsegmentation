@@ -7,7 +7,7 @@ import torch.nn as nn
 from mmcv.cnn import (build_activation_layer, build_conv_layer,
                       build_norm_layer, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import build_dropout
-from mmcv.runner import BaseModule
+from mmcv.runner import BaseModule, Sequential
 from torch.nn.functional import pad
 
 from ..builder import BACKBONES
@@ -273,7 +273,7 @@ class CrossFFN(BaseModule):
         super().__init__(init_cfg=init_cfg)
         out_channels = out_channels or in_channels
         hidden_channels = hidden_channels or in_channels
-        self.layers = nn.Sequential(
+        self.layers = Sequential(
             nn.Conv2d(in_channels, hidden_channels, kernel_size=1),
             build_norm_layer(norm_cfg, hidden_channels)[1],
             build_activation_layer(act_cfg),
@@ -497,7 +497,7 @@ class HRFomerModule(HRModule):
                     init_cfg=None,
                     with_rpe=self.with_rpe,
                     with_pad_mask=self.with_pad_mask))
-        return nn.Sequential(*layers)
+        return Sequential(*layers)
 
     def _make_fuse_layers(self):
         """Build fuse layers."""
@@ -511,7 +511,7 @@ class HRFomerModule(HRModule):
             for j in range(num_branches):
                 if j > i:
                     fuse_layer.append(
-                        nn.Sequential(
+                        Sequential(
                             build_conv_layer(
                                 self.conv_cfg,
                                 num_inchannels[j],
@@ -558,8 +558,8 @@ class HRFomerModule(HRModule):
                         ]
                         if with_out_act:
                             sub_modules.append(nn.ReLU(False))
-                        conv3x3s.append(nn.Sequential(*sub_modules))
-                    fuse_layer.append(nn.Sequential(*conv3x3s))
+                        conv3x3s.append(Sequential(*sub_modules))
+                    fuse_layer.append(Sequential(*conv3x3s))
             fuse_layers.append(nn.ModuleList(fuse_layer))
 
         return nn.ModuleList(fuse_layers)
@@ -757,4 +757,4 @@ class HRFormer(HRNet):
                     upsample_cfg=self.upsample_cfg))
             num_inchannels = modules[-1].get_num_inchannels()
 
-        return nn.Sequential(*modules), num_inchannels
+        return Sequential(*modules), num_inchannels

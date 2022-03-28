@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import copy
+
 import pytest
 import torch
 
@@ -161,6 +163,23 @@ def test_hrformer_backbone():
 
     # Test HRFormer-S
     model = HRFormer(extra=extra, norm_cfg=norm_cfg)
+    model.init_weights()
+    model.train()
+
+    imgs = torch.randn(1, 3, 64, 64)
+    feats = model(imgs)
+    assert len(feats) == 4
+    assert feats[0].shape == torch.Size([1, 32, 16, 16])
+    assert feats[3].shape == torch.Size([1, 256, 2, 2])
+
+    # Test HRFormer-S with mask
+    extra_with_mask = copy.deepcopy(extra)
+    extra_with_mask['with_pad_mask'] = True
+
+    model = HRFormer(
+        extra=extra_with_mask,
+        norm_cfg=norm_cfg,
+    )
     model.init_weights()
     model.train()
 
