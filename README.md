@@ -154,6 +154,8 @@ We also provide many [training tricks](docs/en/tutorials/training_tricks.md) for
 
 A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 
+Please refer to [FAQ](docs/en/faq.md) for frequently asked questions.
+
 ## Citation
 
 If you find this project useful in your research, please consider cite:
