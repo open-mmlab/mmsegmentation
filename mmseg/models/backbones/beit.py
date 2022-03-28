@@ -251,8 +251,6 @@ class BEiT(BaseModule):
         out_indices (list | tuple | int): Output from which stages.
             Default: -1.
         qkv_bias (bool): enable bias for qkv if True. Default: True.
-        drop_rate (float): Probability of an element to be zeroed.
-            Default 0.0
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
         drop_path_rate (float): stochastic depth rate. Default 0.0.
@@ -269,8 +267,6 @@ class BEiT(BaseModule):
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
-        with_cp (bool): Use checkpoint or not. Using checkpoint will save
-            some memory while slowing down the training speed. Default: False.
         pretrained (str, optional): model pretrained path. Default: None.
         init_values (float): Initialize the values of BEiTAttention and FFN
             with learnable scaling.
@@ -288,7 +284,6 @@ class BEiT(BaseModule):
                  mlp_ratio=4,
                  out_indices=-1,
                  qv_bias=True,
-                 drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  norm_cfg=dict(type='LN'),
@@ -297,7 +292,6 @@ class BEiT(BaseModule):
                  final_norm=False,
                  num_fcs=2,
                  norm_eval=False,
-                 with_cp=False,
                  pretrained=None,
                  init_values=0.1,
                  init_cfg=None):
@@ -324,7 +318,6 @@ class BEiT(BaseModule):
         self.img_size = img_size
         self.patch_size = patch_size
         self.norm_eval = norm_eval
-        self.with_cp = with_cp
         self.pretrained = pretrained
 
         self.patch_embed = PatchEmbed(
@@ -340,7 +333,6 @@ class BEiT(BaseModule):
         window_size = (img_size[0] // patch_size, img_size[1] // patch_size)
         self.patch_shape = window_size
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
-        self.drop_after_pos = nn.Dropout(p=drop_rate)
 
         if isinstance(out_indices, int):
             if out_indices == -1:
@@ -493,6 +485,8 @@ class BEiT(BaseModule):
         else:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
+            # Copyright 2019 Ross Wightman
+            # Licensed under the Apache License, Version 2.0
             trunc_normal_(self.cls_token, std=.02)
             for n, m in self.named_modules():
                 if isinstance(m, nn.Linear):
