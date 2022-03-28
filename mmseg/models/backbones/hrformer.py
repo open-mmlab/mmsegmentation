@@ -49,7 +49,7 @@ class WindowMSA(BaseModule):
 
         super().__init__(init_cfg=init_cfg)
         self.embed_dims = embed_dims
-        self.window_size = window_size  # Wh, Ww
+        self.Wh, self.Ww = window_size  # Wh, Ww
         self.num_heads = num_heads
         head_embed_dims = embed_dims // num_heads
         self.scale = qk_scale or head_embed_dims**-0.5
@@ -58,13 +58,12 @@ class WindowMSA(BaseModule):
         if self.with_rpe:
             # define a parameter table of relative position bias
             self.relative_position_bias_table = nn.Parameter(
-                torch.zeros(
-                    (2 * window_size[0] - 1) * (2 * window_size[1] - 1),
-                    num_heads))  # 2*Wh-1 * 2*Ww-1, nH
+                torch.zeros((2 * self.Wh - 1) * (2 * self.Ww - 1),
+                            num_heads))  # (2*Wh-1) * (2*Ww-1), nH
 
             # pairwise relative position for each token inside the window
-            coords_h = torch.arange(self.window_size[0])
-            coords_w = torch.arange(self.window_size[1])
+            coords_h = torch.arange(self.Wh)
+            coords_w = torch.arange(self.Ww)
             # [2, Wh, Ww]
             coords = torch.stack(torch.meshgrid([coords_h, coords_w]))
             # [2, Wh*Ww]
@@ -75,9 +74,9 @@ class WindowMSA(BaseModule):
             # [Wh*Ww, Wh*Ww, 2]
             relative_coords = relative_coords.permute(1, 2, 0).contiguous()
             # shift the values to make them start from 0
-            relative_coords[:, :, 0] += self.window_size[0] - 1
-            relative_coords[:, :, 1] += self.window_size[1] - 1
-            relative_coords[:, :, 0] *= 2 * self.window_size[1] - 1
+            relative_coords[:, :, 0] += self.Wh - 1
+            relative_coords[:, :, 1] += self.Ww - 1
+            relative_coords[:, :, 0] *= 2 * self.Ww - 1
             # [Wh*Ww, Wh*Ww]
             relative_position_index = relative_coords.sum(-1)
             self.register_buffer('relative_position_index',
@@ -113,9 +112,7 @@ class WindowMSA(BaseModule):
         if self.with_rpe:
             relative_position_bias = self.relative_position_bias_table[
                 self.relative_position_index.view(-1)].view(
-                    self.window_size[0] * self.window_size[1],
-                    self.window_size[0] * self.window_size[1],
-                    -1)  # Wh*Ww,Wh*Ww,nH
+                    self.Wh * self.Ww, self.Wh * self.Ww, -1)  # Wh*Ww,Wh*Ww,nH
             relative_position_bias = relative_position_bias.permute(
                 2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
             attn = attn + relative_position_bias.unsqueeze(0)
@@ -420,8 +417,6 @@ class HRFomerModule(HRModule):
             Default: dict(type='LN', eps=1e-6)
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
             memory while slowing down the training speed. Default: False
-        upsample_cfg(dict): The config of upsample layers in fuse
-            layers. Default: dict(mode='bilinear', align_corners=False)
     """
 
     def __init__(self,
@@ -440,8 +435,7 @@ class HRFomerModule(HRModule):
                  conv_cfg=None,
                  norm_cfg=dict(type='SyncBN', requires_grad=True),
                  transformer_norm_cfg=dict(type='LN', eps=1e-6),
-                 with_cp=False,
-                 upsample_cfg=dict(mode='bilinear', align_corners=False)):
+                 with_cp=False):
 
         self.transformer_norm_cfg = transformer_norm_cfg
         self.drop_paths = drop_paths
@@ -450,7 +444,6 @@ class HRFomerModule(HRModule):
         self.num_mlp_ratios = num_mlp_ratios
         self.with_rpe = with_rpe
         self.with_pad_mask = with_pad_mask
-        self.upsample_cfg = upsample_cfg
 
         super().__init__(num_branches, block, num_blocks, num_inchannels,
                          num_channels, multiscale_output, with_cp, conv_cfg,
@@ -689,12 +682,6 @@ class HRFormer(HRNet):
         extra['stage3']['drop_path_rates'] = dpr[depth_s2:depth_s2 + depth_s3]
         extra['stage4']['drop_path_rates'] = dpr[depth_s2 + depth_s3:]
 
-        # HRFormer use bilinear upsample as default
-        upsample_cfg = extra.get('upsample', {
-            'mode': 'bilinear',
-            'align_corners': False
-        })
-        self.upsample_cfg = upsample_cfg
         self.transformer_norm_cfg = transformer_norm_cfg
         self.with_rpe = extra.get('with_rpe', True)
         self.with_pad_mask = extra.get('with_pad_mask', False)
@@ -753,8 +740,7 @@ class HRFormer(HRNet):
                     conv_cfg=self.conv_cfg,
                     norm_cfg=self.norm_cfg,
                     transformer_norm_cfg=self.transformer_norm_cfg,
-                    with_cp=self.with_cp,
-                    upsample_cfg=self.upsample_cfg))
+                    with_cp=self.with_cp))
             num_inchannels = modules[-1].get_num_inchannels()
 
         return Sequential(*modules), num_inchannels
