@@ -7,7 +7,7 @@ import torch.nn as nn
 from mmcv.cnn import (build_activation_layer, build_conv_layer,
                       build_norm_layer, trunc_normal_init)
 from mmcv.cnn.bricks.transformer import build_dropout
-from mmcv.runner import BaseModule, Sequential
+from mmcv.runner import BaseModule, ModuleList, Sequential
 from torch.nn.functional import pad
 
 from ..builder import BACKBONES
@@ -560,9 +560,9 @@ class HRFomerModule(HRModule):
                             sub_modules.append(nn.ReLU(False))
                         conv3x3s.append(Sequential(*sub_modules))
                     fuse_layer.append(Sequential(*conv3x3s))
-            fuse_layers.append(nn.ModuleList(fuse_layer))
+            fuse_layers.append(ModuleList(fuse_layer))
 
-        return nn.ModuleList(fuse_layers)
+        return ModuleList(fuse_layers)
 
     def get_num_inchannels(self):
         """Return the number of input channels."""
