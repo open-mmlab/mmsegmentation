@@ -85,8 +85,9 @@ def slide_crop_image(src_path, out_dir, mode, patch_H, patch_W, overlap):
 
             img_patch = img[y_str:y_end, x_str:x_end, :]
             img_patch = Image.fromarray(img_patch.astype(np.uint8))
-            image = osp.basename(src_path).split('.')[0] + '_' + str(y_str) + '_' + str(
-                    y_end) + '_' + str(x_str) + '_' + str(x_end) + '.png'
+            image = osp.basename(src_path).split('.')[0] + '_' + str(
+                y_str) + '_' + str(y_end) + '_' + str(x_str) + '_' + str(
+                    x_end) + '.png'
             # print(image)
             save_path_image = osp.join(out_dir, 'img_dir', mode, str(image))
             img_patch.save(save_path_image)
