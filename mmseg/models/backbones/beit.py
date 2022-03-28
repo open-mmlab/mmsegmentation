@@ -237,7 +237,7 @@ class TransformerEncoderLayer(BaseModule):
 
 @BACKBONES.register_module()
 class BEiT(BaseModule):
-    """VisionTransformer with support for patch.
+    """BERT Pre-Training of Image Transformers.
 
     Args:
         img_size (int | tuple): Input image size. Default: 224.
