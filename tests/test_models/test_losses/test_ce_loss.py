@@ -19,6 +19,8 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore):
         build_loss(loss_cfg)
 
     # test loss with simple case for ce/bce
+    fake_pred = torch.Tensor([[100, -100]])
+    fake_label = torch.Tensor([1]).long()
     loss_cls_cfg = dict(
         type='CrossEntropyLoss',
         use_sigmoid=use_sigmoid,
@@ -26,9 +28,6 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore):
         avg_non_ignore=avg_non_ignore,
         loss_name='loss_ce')
     loss_cls = build_loss(loss_cls_cfg)
-
-    fake_pred = torch.Tensor([[100, -100]])
-    fake_label = torch.Tensor([1]).long()
     if use_sigmoid:
         assert torch.allclose(
             loss_cls(fake_pred, fake_label), torch.tensor(100.))
@@ -36,12 +35,11 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore):
         assert torch.allclose(
             loss_cls(fake_pred, fake_label), torch.tensor(200.))
 
+    # test loss with complicated case for ce/bce
+    # when avg_non_ignore is False, `avg_factor` would not be calculated
     fake_pred = torch.full(size=(2, 21, 8, 8), fill_value=0.5)
     fake_label = torch.ones(2, 8, 8).long()
     fake_label[:, 0, 0] = 255
-
-    # test loss with complicated case for ce/bce
-    # when avg_non_ignore is False, `avg_factor` would not be calculated
     if use_sigmoid:
         if avg_non_ignore:
             assert torch.allclose(
@@ -163,18 +161,18 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore):
     fake_label[1, [0, 5, 8, 9]] = 10
     loss = loss_cls(fake_pred, fake_label, ignore_index=10)
     if use_sigmoid:
-        if not avg_non_ignore:
-            torch_loss = torch.nn.functional.binary_cross_entropy_with_logits(
-                fake_pred[fake_label != 10],
-                fake_label[fake_label != 10],
-                pos_weight=class_weight[fake_label != 10],
-                reduction='sum') / fake_label.numel()
-        else:
+        if avg_non_ignore:
             torch_loss = torch.nn.functional.binary_cross_entropy_with_logits(
                 fake_pred[fake_label != 10],
                 fake_label[fake_label != 10],
                 pos_weight=class_weight[fake_label != 10],
                 reduction='mean')
+        else:
+            torch_loss = torch.nn.functional.binary_cross_entropy_with_logits(
+                fake_pred[fake_label != 10],
+                fake_label[fake_label != 10],
+                pos_weight=class_weight[fake_label != 10],
+                reduction='sum') / fake_label.numel()
     else:
         if avg_non_ignore:
             torch_loss = torch.nn.functional.cross_entropy(
