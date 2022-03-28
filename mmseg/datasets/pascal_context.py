@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os.path as osp
 
 from .builder import DATASETS
 from .custom import CustomDataset
@@ -52,7 +51,7 @@ class PascalContextDataset(CustomDataset):
             split=split,
             reduce_zero_label=False,
             **kwargs)
-        assert osp.exists(self.img_dir) and self.split is not None
+        assert self.file_client.exists(self.img_dir) and self.split is not None
 
 
 @DATASETS.register_module()
@@ -101,4 +100,4 @@ class PascalContextDataset59(CustomDataset):
             split=split,
             reduce_zero_label=True,
             **kwargs)
-        assert osp.exists(self.img_dir) and self.split is not None
+        assert self.file_client.exists(self.img_dir) and self.split is not None
