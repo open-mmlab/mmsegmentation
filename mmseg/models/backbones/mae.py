@@ -96,9 +96,6 @@ class MAEAttention(BaseModule):
         self.proj = nn.Linear(embed_dims, embed_dims)
         self.proj_drop = nn.Dropout(proj_drop_rate)
 
-    def init_weights(self):
-        trunc_normal_(self.relative_position_bias_table, std=0.02)
-
     def forward(self, x):
         """
         Args:

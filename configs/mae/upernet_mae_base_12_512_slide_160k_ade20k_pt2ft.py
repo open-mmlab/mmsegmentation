@@ -5,7 +5,8 @@ _base_ = [
 crop_size = (512, 512)
 
 model = dict(
-    pretrained='pretrain/beit_base_patch16_224_pt22k_ft22k.pth',
+    pretrained=
+    '/mnt/cache/liuyuan1.vendor/detection/pretrained/mae_pretrain_vit_base_.pth',
     backbone=dict(
         type='MAE',
         img_size=(512, 512),
@@ -43,5 +44,8 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
+# mixed precision
+fp16 = dict(loss_scale='dynamic')
+
 # By default, models are trained on 8 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=2)
+data = dict(samples_per_gpu=1)
