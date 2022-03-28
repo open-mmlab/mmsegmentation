@@ -19,7 +19,6 @@ model = dict(
         norm_cfg=dict(type='LN', eps=1e-6),
         act_cfg=dict(type='GELU'),
         norm_eval=False,
-        interpolate_mode='bicubic',
         init_values=0.1),
     neck=dict(type='Feature2Pyramid', embed_dim=768, rescales=[4, 2, 1, 0.5]),
     decode_head=dict(

@@ -118,10 +118,8 @@ class BEiTAttention(BaseModule):
         B, N, C = x.shape
         qkv_bias = None
         if self.q_bias is not None:
-            qkv_bias = torch.cat(
-                (self.q_bias,
-                 torch.zeros_like(self.v_bias,
-                                  requires_grad=False), self.v_bias))
+            k_bias = torch.zeros_like(self.v_bias, requires_grad=False)
+            qkv_bias = torch.cat((self.q_bias, k_bias, self.v_bias))
 
         qkv = F.linear(input=x, weight=self.qkv.weight, bias=qkv_bias)
         qkv = qkv.reshape(B, N, 3, self.num_heads, -1).permute(2, 0, 3, 1, 4)
@@ -131,11 +129,11 @@ class BEiTAttention(BaseModule):
         attn = (q @ k.transpose(-2, -1))
 
         if self.relative_position_bias_table is not None:
-            relative_position_bias = \
-                self.relative_position_bias_table[
-                    self.relative_position_index.view(-1)].view(
-                        self.window_size[0] * self.window_size[1] + 1,
-                        self.window_size[0] * self.window_size[1] + 1, -1)
+            Wh = self.window_size[0]
+            Ww = self.window_size[1]
+            relative_position_bias = self.relative_position_bias_table[
+                self.relative_position_index.view(-1)].view(
+                    Wh * Ww + 1, Wh * Ww + 1, -1)
             relative_position_bias = relative_position_bias.permute(
                 2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
             attn = attn + relative_position_bias.unsqueeze(0)
@@ -266,8 +264,6 @@ class BEiT(BaseModule):
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
             final feature map. Default: False.
-        interpolate_mode (str): Select the interpolate mode for position
-            embeding vector resize. Default: 'bicubic'.
         num_fcs (int): The number of fully-connected layers for FFNs.
             Default: 2.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
@@ -299,7 +295,6 @@ class BEiT(BaseModule):
                  act_cfg=dict(type='GELU'),
                  patch_norm=False,
                  final_norm=False,
-                 interpolate_mode='bicubic',
                  num_fcs=2,
                  norm_eval=False,
                  with_cp=False,
@@ -328,7 +323,6 @@ class BEiT(BaseModule):
 
         self.img_size = img_size
         self.patch_size = patch_size
-        self.interpolate_mode = interpolate_mode
         self.norm_eval = norm_eval
         self.with_cp = with_cp
         self.pretrained = pretrained
