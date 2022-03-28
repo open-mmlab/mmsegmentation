@@ -153,6 +153,8 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb)。
 
+如果遇到问题，请参考 [常见问题解答](docs/zh_cn/faq.md)。
+
 ## 引用
 
 如果你觉得本项目对你的研究工作有所帮助，请参考如下 bibtex 引用 MMSegmentation。
