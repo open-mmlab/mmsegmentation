@@ -2,6 +2,9 @@
 import pytest
 import torch
 
+from mmseg.models.losses.cross_entropy_loss import _expand_onehot_labels
+from mmseg.models.losses.utils import weight_reduce_loss
+
 
 @pytest.mark.parametrize('use_sigmoid', [True, False])
 @pytest.mark.parametrize('reduction', ('mean', 'sum', 'none'))
@@ -40,30 +43,30 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore):
     fake_pred = torch.full(size=(2, 21, 8, 8), fill_value=0.5)
     fake_label = torch.ones(2, 8, 8).long()
     fake_label[:, 0, 0] = 255
+    avg_factor = None
+    loss_cls = build_loss(loss_cls_cfg)
+    loss = loss_cls(fake_pred, fake_label, ignore_index=255)
     if use_sigmoid:
+        label, weight, valid_mask = _expand_onehot_labels(
+            labels=fake_label,
+            label_weights=None,
+            target_shape=fake_pred.shape,
+            ignore_index=255)
+        torch_loss = torch.nn.functional.binary_cross_entropy_with_logits(
+            fake_pred, label.float(), reduction='none')
         if avg_non_ignore:
-            assert torch.allclose(
-                loss_cls(fake_pred, fake_label, ignore_index=255),
-                torch.tensor(0.9503),
-                atol=1e-4)
-        else:
-            loss_cls = build_loss(loss_cls_cfg)
-            assert torch.allclose(
-                loss_cls(fake_pred, fake_label, ignore_index=255),
-                torch.tensor(0.9354),
-                atol=1e-4)
+            avg_factor = valid_mask.sum().item()
+        torch_loss = weight_reduce_loss(
+            torch_loss, weight, reduction='mean', avg_factor=avg_factor)
     else:
         if avg_non_ignore:
-            assert torch.allclose(
-                loss_cls(fake_pred, fake_label, ignore_index=255),
-                torch.tensor(3.0445),
-                atol=1e-4)
+            torch_loss = torch.nn.functional.cross_entropy(
+                fake_pred, fake_label, reduction='mean', ignore_index=255)
         else:
-            loss_cls = build_loss(loss_cls_cfg)
-            assert torch.allclose(
-                loss_cls(fake_pred, fake_label, ignore_index=255),
-                torch.tensor(2.9970),
-                atol=1e-4)
+            torch_loss = torch.nn.functional.cross_entropy(
+                fake_pred, fake_label, reduction='sum',
+                ignore_index=255) / fake_label.numel()
+    assert torch.allclose(loss, torch_loss)
 
     # test loss with class weights from file
     fake_pred = torch.Tensor([[100, -100]])
@@ -103,7 +106,7 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore):
     loss_cls = build_loss(loss_cls_cfg)
     assert torch.allclose(loss_cls(fake_pred, fake_label), torch.tensor(200.))
 
-    # test `avg_non_ignore` would not affect ce/bce loss
+    # test `avg_non_ignore`  without ignore index would not affect ce/bce loss
     # when reduction='sum'/'none'/'mean'
     loss_cls_cfg1 = dict(
         type='CrossEntropyLoss',
