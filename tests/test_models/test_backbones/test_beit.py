@@ -95,12 +95,6 @@ def test_beit_backbone():
     feat = model(imgs)
     assert feat[-1].shape == (1, 768, 14, 21)
 
-    # Test with_cp=True
-    model = BEiT(with_cp=True)
-    imgs = torch.randn(1, 3, 224, 224)
-    feat = model(imgs)
-    assert feat[-1].shape == (1, 768, 14, 14)
-
     # Test init_values=0
     model = BEiT(init_values=0)
     imgs = torch.randn(1, 3, 224, 224)
