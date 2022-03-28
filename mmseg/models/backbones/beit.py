@@ -36,9 +36,9 @@ class BEiTAttention(BaseModule):
             Default: True.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
-        attn_drop_rate (float, optional): Dropout ratio of attention weight.
+        attn_drop_rate (float): Dropout ratio of attention weight.
             Default: 0.0
-        proj_drop_rate (float, optional): Dropout ratio of output. Default: 0.
+        proj_drop_rate (float): Dropout ratio of output. Default: 0.
         init_cfg (dict | None, optional): The Config for initialization.
             Default: None.
     """
