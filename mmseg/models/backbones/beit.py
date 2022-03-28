@@ -486,7 +486,7 @@ class BEiT(BaseModule):
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
             # Copyright 2019 Ross Wightman
-            # Licensed under the Apache License, Version 2.0
+            # Licensed under the Apache License, Version 2.0 (the "License")
             trunc_normal_(self.cls_token, std=.02)
             for n, m in self.named_modules():
                 if isinstance(m, nn.Linear):
