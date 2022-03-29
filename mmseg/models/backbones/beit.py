@@ -159,7 +159,7 @@ class TransformerEncoderLayer(BaseModule):
         drop_path_rate (float): Stochastic depth rate. Default 0.0.
         num_fcs (int): The number of fully-connected layers for FFNs.
             Default: 2.
-        qkv_bias (bool): Enable bias for qkv if True. Default: True
+        qv_bias (bool): Enable bias for qv if True. Default: True
         act_cfg (dict): The activation config for FFNs.
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
@@ -250,7 +250,7 @@ class BEiT(BaseModule):
             Default: 4.
         out_indices (list | tuple | int): Output from which stages.
             Default: -1.
-        qkv_bias (bool): Enable bias for qkv if True. Default: True.
+        qv_bias (bool): Enable bias for qv if True. Default: True.
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
         drop_path_rate (float): Stochastic depth rate. Default 0.0.
