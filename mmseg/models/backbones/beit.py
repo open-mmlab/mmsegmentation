@@ -372,6 +372,7 @@ class BEiT(BaseModule):
             new_rel_pos_bias (tensor): Interpolate the pre-trained relative
                 position bias to the size of the current model.
         """
+
         # Geometric sequence interpolation.
         def geometric_progression(a, r, n):
             return a * (1.0 - r**n) / (1.0 - r)

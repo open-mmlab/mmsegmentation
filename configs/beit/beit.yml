@@ -20,13 +20,13 @@ Models:
       mIoU: 53.08
       mIoU(ms+flip): 53.84
   Config: configs/beit/upernet_beit-base_8x2_640x640_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k-eead221d.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k-eead221d.pth
 - Name: upernet_beit-large_fp16_8x1_640x640_160k_ade20k
   In Collection: UperNet
   Metadata:
     backbone: BEiT-L
     crop size: (640,640)
-    lr schd: 160000
+    lr schd: 320000
     inference time (ms/im):
     - value: 1041.67
       hardware: V100
@@ -42,4 +42,4 @@ Models:
       mIoU: 56.33
       mIoU(ms+flip): 56.84
   Config: configs/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth
