@@ -404,9 +404,7 @@ class BEiT(BaseModule):
             z = sequence[:, i].view(src_size, src_size).float().numpy()
             f = interpolate.interp2d(x, y, z, kind='cubic')
             new_sequence.append(
-                torch.Tensor(f(dx,
-                               dy)).contiguous().view(-1,
-                                                      1).to(sequence.device))
+                torch.Tensor(f(dx, dy)).contiguous().view(-1, 1).to(sequence))
         new_sequence = torch.cat(new_sequence, dim=-1)
         return new_sequence
 
