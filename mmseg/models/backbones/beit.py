@@ -357,23 +357,21 @@ class BEiT(BaseModule):
     def norm1(self):
         return getattr(self, self.norm1_name)
 
-    def _get_new_rel_pos_bias(self, src_size, dst_size, extra_tokens,
-                              rel_pos_bias, num_attn_heads):
+    def _geometric_sequence_interpolation(self, src_size, dst_size, sequence,
+                                          num):
         """Get new relative position bias.
 
         Args:
             src_size (int): Number of pos_embedding in pre-trained model.
             dst_size (int): Number of pos_embedding in the current model.
-            extra_tokens (tensor): The bias of the extra tokens.
-            rel_pos_bias (tensor): The relative position bias of the pretrain
+            sequence (tensor): The relative position bias of the pretrain
                 model after removing the extra tokens.
-            num_attn_heads (int): Number of attention heads.
+            num (int): Number of attention heads.
         Returns:
-            new_rel_pos_bias (tensor): Interpolate the pre-trained relative
+            new_sequence (tensor): Interpolate the pre-trained relative
                 position bias to the size of the current model.
         """
 
-        # Geometric sequence interpolation.
         def geometric_progression(a, r, n):
             return a * (1.0 - r**n) / (1.0 - r)
 
@@ -400,16 +398,16 @@ class BEiT(BaseModule):
         dx = np.arange(-t, t + 0.1, 1.0)
         dy = np.arange(-t, t + 0.1, 1.0)
         # Interpolation functions are being executed and called.
-        all_rel_pos_bias = []
-        for i in range(num_attn_heads):
-            z = rel_pos_bias[:, i].view(src_size, src_size).float().numpy()
+        new_sequence = []
+        for i in range(num):
+            z = sequence[:, i].view(src_size, src_size).float().numpy()
             f = interpolate.interp2d(x, y, z, kind='cubic')
-            all_rel_pos_bias.append(
-                torch.Tensor(f(dx, dy)).contiguous().view(-1, 1).to(
-                    rel_pos_bias.device))
-        rel_pos_bias = torch.cat(all_rel_pos_bias, dim=-1)
-        new_rel_pos_bias = torch.cat((rel_pos_bias, extra_tokens), dim=0)
-        return new_rel_pos_bias
+            new_sequence.append(
+                torch.Tensor(f(dx,
+                               dy)).contiguous().view(-1,
+                                                      1).to(sequence.device))
+        new_sequence = torch.cat(new_sequence, dim=-1)
+        return new_sequence
 
     def resize_rel_pos_embed(self, checkpoint):
         """Resize relative pos_embed weights.
@@ -453,9 +451,10 @@ class BEiT(BaseModule):
                 if src_size != dst_size:
                     extra_tokens = rel_pos_bias[-num_extra_tokens:, :]
                     rel_pos_bias = rel_pos_bias[:-num_extra_tokens, :]
-                    new_rel_pos_bias = self._get_new_rel_pos_bias(
-                        src_size, dst_size, extra_tokens, rel_pos_bias,
-                        num_attn_heads)
+                    new_rel_pos_bias = self._geometric_sequence_interpolation(
+                        src_size, dst_size, rel_pos_bias, num_attn_heads)
+                    new_rel_pos_bias = torch.cat(
+                        (new_rel_pos_bias, extra_tokens), dim=0)
                     state_dict[key] = new_rel_pos_bias
 
         return state_dict
