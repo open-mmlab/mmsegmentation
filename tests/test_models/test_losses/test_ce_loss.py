@@ -3,7 +3,6 @@ import pytest
 import torch
 
 from mmseg.models.losses.cross_entropy_loss import _expand_onehot_labels
-from mmseg.models.losses.utils import weight_reduce_loss
 
 
 @pytest.mark.parametrize('use_sigmoid', [True, False])
@@ -56,8 +55,10 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore):
             fake_pred, label.float(), reduction='none')
         if avg_non_ignore:
             avg_factor = valid_mask.sum().item()
-        torch_loss = weight_reduce_loss(
-            torch_loss, weight, reduction='mean', avg_factor=avg_factor)
+        if avg_non_ignore:
+            torch_loss = (torch_loss * weight).sum() / avg_factor
+        else:
+            torch_loss = (torch_loss * weight).mean()
     else:
         if avg_non_ignore:
             torch_loss = torch.nn.functional.cross_entropy(

@@ -37,6 +37,7 @@ def cross_entropy(pred,
             Defaults: -100.
         avg_non_ignore (bool): The flag decides to whether the loss is
             only averaged over non-ignored targets. Default: False.
+            `New in version 0.23.0.`
     """
 
     # class_weight is a manual rescaling weight given to each class.
@@ -110,6 +111,7 @@ def binary_cross_entropy(pred,
             Default: -100.
         avg_non_ignore (bool): The flag decides to whether the loss is
             only averaged over non-ignored targets. Default: False.
+            `New in version 0.23.0.`
 
     Returns:
         torch.Tensor: The calculated loss
@@ -130,7 +132,7 @@ def binary_cross_entropy(pred,
             weight *= valid_mask
         else:
             weight = valid_mask
-    # average loss over non-ignored elements
+    # average loss over non-ignored and valid elements
     if reduction == 'mean' and avg_factor is None and avg_non_ignore:
         avg_factor = valid_mask.sum().item()
 
@@ -201,6 +203,7 @@ class CrossEntropyLoss(nn.Module):
             prefix of the name. Defaults to 'loss_ce'.
         avg_non_ignore (bool): The flag decides to whether the loss is
             only averaged over non-ignored targets. Default: False.
+            `New in version 0.23.0.`
     """
 
     def __init__(self,
@@ -255,7 +258,7 @@ class CrossEntropyLoss(nn.Module):
             class_weight = cls_score.new_tensor(self.class_weight)
         else:
             class_weight = None
-        # Note: In cls_criterion, label < 0 is invalid.
+        # Note: for BCE loss, label < 0 is invalid.
         loss_cls = self.loss_weight * self.cls_criterion(
             cls_score,
             label,

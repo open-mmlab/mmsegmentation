@@ -71,10 +71,12 @@ Note: If you want this loss item to be included into the backward graph, `loss_`
 
 ## Ignore specified label index in loss calculation
 
-For loss calculation, we support ignore index of certain label by `avg_non_ignore` and `ignore_index`. Here is an example config of training `unet` on `DRIVE` dataset: in loss calculation it would ignore label 0 which is background and loss average is only calculated on non-ignore labels:
+In default setting, `avg_non_ignore=False` which means each pixel counts for loss calculation although some of them belong to ignore-index labels.
+
+For loss calculation, we support ignore index of certain label by `avg_non_ignore` and `ignore_index`. In this way, the average loss would only be calculated in non-ignored labels which may achieve better performance. Here is an example config of training `unet` on `Cityscapes` dataset: in loss calculation it would ignore label 0 which is background and loss average is only calculated on non-ignore labels:
 
 ```python
-_base_ = './fcn_unet_s5-d16_64x64_40k_drive.py'
+_base_ = './fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes.py'
 model = dict(
     decode_head=dict(
         ignore_index=0,
