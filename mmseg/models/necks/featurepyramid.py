@@ -14,14 +14,14 @@ class Feature2Pyramid(nn.Module):
     Args:
         embed_dims (int): Embedding dimension.
         rescales (list[float]): Different sampling multiples were
-            used to obtain pyramid features. Default: (4, 2, 1, 0.5).
+            used to obtain pyramid features. Default: [4, 2, 1, 0.5].
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='SyncBN', requires_grad=True).
     """
 
     def __init__(self,
                  embed_dim,
-                 rescales,
+                 rescales=[4, 2, 1, 0.5],
                  norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super(Feature2Pyramid, self).__init__()
         self.rescales = rescales
