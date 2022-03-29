@@ -44,6 +44,7 @@ Welcome to MMSegmenation's documentation!
    :caption: Notes
 
    changelog.md
+   faq.md
 
 .. toctree::
    :caption: Switch Language

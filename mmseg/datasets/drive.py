@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os.path as osp
 
 from .builder import DATASETS
 from .custom import CustomDataset
@@ -25,4 +24,4 @@ class DRIVEDataset(CustomDataset):
             seg_map_suffix='_manual1.png',
             reduce_zero_label=False,
             **kwargs)
-        assert osp.exists(self.img_dir)
+        assert self.file_client.exists(self.img_dir)
