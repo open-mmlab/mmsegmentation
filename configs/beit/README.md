@@ -24,13 +24,12 @@ We introduce a self-supervised vision representation model BEiT, which stands fo
 ## Citation
 
 ```bibtex
-@article{beit,
+@inproceedings{beit,
       title={{BEiT}: {BERT} Pre-Training of Image Transformers},
-      author={Hangbo Bao and Li Dong and Furu Wei},
-      year={2021},
-      eprint={2106.08254},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+      author={Hangbo Bao and Li Dong and Songhao Piao and Furu Wei},
+      booktitle={International Conference on Learning Representations},
+      year={2022},
+      url={https://openreview.net/forum?id=p-BhZSz59o4}
 }
 ```
 
@@ -63,16 +62,16 @@ Verify the single-scale results of the model:
 
 ```shell
 sh tools/dist_test.sh \
-configs/beit/upernet_beit_large_fp16_8x1_640x640_160k_ade20k.py \
-upernet_beit_large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth $GPUS --eval mIoU
+configs/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k.py \
+upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth $GPUS --eval mIoU
 ```
 
 Since relative position embedding requires the input length and width to be equal, the sliding window is adopted for multi-scale inference. So we set min_size=640, that is, the shortest edge is 640. So the multi-scale inference of config is performed separately, instead of '--aug-test'. For multi-scale inference:
 
 ```shell
 sh tools/dist_test.sh \
-configs/beit/upernet_beit_large_fp16_640x640_160k_ade20k_ms.py \
-upernet_beit_large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth $GPUS --eval mIoU
+configs/beit/upernet_beit-large_fp16_640x640_160k_ade20k_ms.py \
+upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth $GPUS --eval mIoU
 ```
 
 ## Results and models
@@ -81,5 +80,5 @@ upernet_beit_large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth $GPUS --eval mIoU
 
 | Method | Backbone | Crop Size | pretrain | pretrain img size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config | download |
 | ------ | -------- | --------- | ---------- | ------- | -------- | --- | --- | -------------- | ----- | ------------: | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| UperNet | BEiT-B | 640x640 | ImageNet-22K | 224x224 | 16          | 160000   | 15.88        | 2.00              | 53.08 | 53.84            | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/beit/upernet_beit_base_8x2_640x640_160k_ade20k.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit_base_8x2_640x640_160k_ade20k-eead221d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit_base_8x2_640x640_160k_ade20k.log.json)     |
-| UperNet | BEiT-L | 640x640 | ImageNet-22K | 224x224 | 8           | 320000   | 22.64        | 0.96              | 56.33 | 56.84             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/beit/upernet_beit_large_fp16_8x1_640x640_160k_ade20k.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit_large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit_large_fp16_8x1_640x640_160k_ade20k.log.json)     |
+| UperNet | BEiT-B | 640x640 | ImageNet-22K | 224x224 | 16          | 160000   | 15.88        | 2.00              | 53.08 | 53.84            | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/beit/upernet_beit-base_8x2_640x640_160k_ade20k.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k-eead221d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k.log.json)     |
+| UperNet | BEiT-L | 640x640 | ImageNet-22K | 224x224 | 8           | 320000   | 22.64        | 0.96              | 56.33 | 56.84             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth) &#124; [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k.log.json)     |

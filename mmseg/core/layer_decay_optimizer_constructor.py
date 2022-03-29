@@ -44,15 +44,11 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
         parameter_groups = {}
         logger = get_root_logger()
         logger.info(self.paramwise_cfg)
-
         num_layers = self.paramwise_cfg.get('num_layers') + 2
         layer_decay_rate = self.paramwise_cfg.get('layer_decay_rate')
-
         logger.info(f'Build LayerDecayOptimizerConstructor '
                     f'{layer_decay_rate} - {num_layers}')
-
         weight_decay = self.base_wd
-
         for name, param in module.named_parameters():
             if not param.requires_grad:
                 continue  # frozen weights
@@ -63,22 +59,18 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
             else:
                 group_name = 'decay'
                 this_weight_decay = weight_decay
-
             layer_id = get_num_layer_for_vit(name, num_layers)
             group_name = f'layer_{layer_id}_{group_name}'
-
             if group_name not in parameter_groups:
                 scale = layer_decay_rate**(num_layers - layer_id - 1)
-
                 parameter_groups[group_name] = {
                     'weight_decay': this_weight_decay,
                     'params': [],
                     'param_names': [],
                     'lr_scale': scale,
                     'group_name': group_name,
-                    'lr': scale * self.base_lr,
+                    'lr': scale * self.base_lr
                 }
-
             parameter_groups[group_name]['params'].append(param)
             parameter_groups[group_name]['param_names'].append(name)
         rank, _ = get_dist_info()
@@ -92,5 +84,4 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
                     'weight_decay': parameter_groups[key]['weight_decay']
                 }
             logger.info(f'Param groups ={to_display}')
-
         params.extend(parameter_groups.values())

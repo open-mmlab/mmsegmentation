@@ -58,7 +58,7 @@ def test_beit_backbone():
 
     assert check_norm_state(model.modules(), True)
 
-    # Test normal size input image
+    # Test image size = (224, 224)
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert feat[-1].shape == (1, 768, 14, 14)

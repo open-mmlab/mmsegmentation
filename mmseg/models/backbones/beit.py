@@ -52,7 +52,6 @@ class BEiTAttention(BaseModule):
                  attn_drop_rate=0.,
                  proj_drop_rate=0.,
                  init_cfg=None):
-
         super().__init__(init_cfg=init_cfg)
         self.embed_dims = embed_dims
         self.num_heads = num_heads
@@ -92,7 +91,6 @@ class BEiTAttention(BaseModule):
         relative_position_index = torch.zeros(
             size=(window_size[0] * window_size[1] + 1, ) * 2,
             dtype=relative_coords.dtype)
-
         # relative_position_index shape is (Wh*Ww, Wh*Ww)
         relative_position_index[1:, 1:] = relative_coords.sum(-1)
         relative_position_index[0, 0:] = self.num_relative_distance - 3
@@ -101,7 +99,6 @@ class BEiTAttention(BaseModule):
 
         self.register_buffer('relative_position_index',
                              relative_position_index)
-
         self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=False)
         self.attn_drop = nn.Dropout(attn_drop_rate)
         self.proj = nn.Linear(embed_dims, embed_dims)
@@ -124,10 +121,8 @@ class BEiTAttention(BaseModule):
         qkv = F.linear(input=x, weight=self.qkv.weight, bias=qkv_bias)
         qkv = qkv.reshape(B, N, 3, self.num_heads, -1).permute(2, 0, 3, 1, 4)
         q, k, v = qkv[0], qkv[1], qkv[2]
-
         q = q * self.scale
         attn = (q @ k.transpose(-2, -1))
-
         if self.relative_position_bias_table is not None:
             Wh = self.window_size[0]
             Ww = self.window_size[1]
@@ -137,10 +132,8 @@ class BEiTAttention(BaseModule):
             relative_position_bias = relative_position_bias.permute(
                 2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
             attn = attn + relative_position_bias.unsqueeze(0)
-
         attn = attn.softmax(dim=-1)
         attn = self.attn_drop(attn)
-
         x = (attn @ v).transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
         x = self.proj_drop(x)
@@ -183,11 +176,9 @@ class TransformerEncoderLayer(BaseModule):
                  window_size=None,
                  init_values=None):
         super(TransformerEncoderLayer, self).__init__()
-
         self.norm1_name, norm1 = build_norm_layer(
             norm_cfg, embed_dims, postfix=1)
         self.add_module(self.norm1_name, norm1)
-
         self.attn = BEiTAttention(
             embed_dims=embed_dims,
             num_heads=num_heads,
@@ -205,17 +196,14 @@ class TransformerEncoderLayer(BaseModule):
             dropout_layer=None,
             act_cfg=act_cfg,
             add_identity=False)
-
         self.norm2_name, norm2 = build_norm_layer(
             norm_cfg, embed_dims, postfix=2)
         self.add_module(self.norm2_name, norm2)
-
         # NOTE: drop path for stochastic depth, we shall see if
         # this is better than dropout here
         dropout_layer = dict(type='DropPath', drop_prob=drop_path_rate)
         self.drop_path = build_dropout(
             dropout_layer) if dropout_layer else nn.Identity()
-
         self.gamma_1 = nn.Parameter(
             init_values * torch.ones((embed_dims)), requires_grad=True)
         self.gamma_2 = nn.Parameter(
@@ -296,7 +284,6 @@ class BEiT(BaseModule):
                  init_values=0.1,
                  init_cfg=None):
         super(BEiT, self).__init__(init_cfg=init_cfg)
-
         if isinstance(img_size, int):
             img_size = to_2tuple(img_size)
         elif isinstance(img_size, tuple):
