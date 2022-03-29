@@ -359,17 +359,18 @@ class BEiT(BaseModule):
 
     def _geometric_sequence_interpolation(self, src_size, dst_size, sequence,
                                           num):
-        """Get new relative position bias.
+        """Get new sequence via geometric sequence interpolation.
 
         Args:
-            src_size (int): Number of pos_embedding in pre-trained model.
-            dst_size (int): Number of pos_embedding in the current model.
+            src_size (int): Pos_embedding size in pre-trained model.
+            dst_size (int): Pos_embedding size in the current model.
             sequence (tensor): The relative position bias of the pretrain
                 model after removing the extra tokens.
             num (int): Number of attention heads.
         Returns:
-            new_sequence (tensor): Interpolate the pre-trained relative
-                position bias to the size of the current model.
+            new_sequence (tensor): Geometric sequence interpolate the
+                pre-trained relative position bias to the size of
+                the current model.
         """
 
         def geometric_progression(a, r, n):
