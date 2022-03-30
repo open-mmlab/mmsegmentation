@@ -1,6 +1,7 @@
 Import:
 - configs/ann/ann.yml
 - configs/apcnet/apcnet.yml
+- configs/beit/beit.yml
 - configs/bisenetv1/bisenetv1.yml
 - configs/bisenetv2/bisenetv2.yml
 - configs/ccnet/ccnet.yml
