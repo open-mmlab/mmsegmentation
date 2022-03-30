@@ -107,8 +107,7 @@ def binary_cross_entropy(pred,
         avg_factor (int, optional): Average factor that is used to average
             the loss. Defaults to None.
         class_weight (list[float], optional): The weight for each class.
-        ignore_index (int): The label index to be ignored.
-            Default: -100.
+        ignore_index (int): The label index to be ignored. Default: -100.
         avg_non_ignore (bool): The flag decides to whether the loss is
             only averaged over non-ignored targets. Default: False.
             `New in version 0.23.0.`
