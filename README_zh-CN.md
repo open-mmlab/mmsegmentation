@@ -146,6 +146,18 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 请参考[快速入门文档](docs/zh_cn/get_started.md#installation)进行安装，参考[数据集准备](docs/zh_cn/dataset_prepare.md)处理数据。
 
+以下是安装的简要步骤。
+
+```shell
+conda create -n open-mmlab python=3.8 pytorch=1.10 cudatoolkit=11.3 torchvision -c pytorch -y
+conda activate open-mmlab
+pip3 install openmim
+mim install mmcv-full
+git clone https://github.com/open-mmlab/mmsegmentation.git
+cd mmsegmentation
+pip3 install -e .
+```
+
 ## 快速入门
 
 请参考[训练教程](docs/zh_cn/train.md)和[测试教程](docs/zh_cn/inference.md)学习 MMSegmentation 的基本使用。
