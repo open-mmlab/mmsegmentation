@@ -72,7 +72,7 @@ Models:
       mIoU: 79.26
       mIoU(ms+flip): 80.86
   Config: configs/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes_20210928_053722-57749bed.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes_20210928_053722-57749bed.pth
 - Name: fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes
   In Collection: FastFCN
   Metadata:
