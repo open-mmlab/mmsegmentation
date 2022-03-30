@@ -68,3 +68,28 @@ model = dict(
 通过这种方式，确定训练过程中损失函数的权重 `loss_weight` 和在训练日志里的名字 `loss_name`。
 
 注意： `loss_name` 的名字必须带有 `loss_` 前缀，这样它才能被包括在反传的图里。
+
+## 在损失函数中忽略特定的 label 类别
+
+默认设置 `avg_non_ignore=False`， 即每个像素都用来计算损失函数。尽管其中的一些像素属于需要被忽略的类别。
+
+对于训练时损失函数的计算，我们目前支持使用 `avg_non_ignore` 和 `ignore_index` 来忽略 label 特定的类别。 这样损失函数将只在非忽略类别像素中求平均值，会获得更好的表现。这里是[相关 PR](https://github.com/open-mmlab/mmsegmentation/pull/1409)。以 `unet` 使用 `Cityscapes` 数据集训练为例，
+在计算损失函数时，忽略 label 为0的背景，并且仅在不被忽略的像素上计算均值。配置文件写为:
+
+```python
+_base_ = './fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes.py'
+model = dict(
+    decode_head=dict(
+        ignore_index=0,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, avg_non_ignore=True),
+    auxiliary_head=dict(
+        ignore_index=0,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, avg_non_ignore=True)),
+    ))
+```
+
+通过这种方式，确定训练过程中损失函数的权重 `loss_weight` 和在训练日志里的名字 `loss_name`。
+
+注意： `loss_name` 的名字必须带有 `loss_` 前缀，这样它才能被包括在反传的图里。
