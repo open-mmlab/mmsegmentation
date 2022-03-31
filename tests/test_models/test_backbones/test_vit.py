@@ -2,7 +2,8 @@
 import pytest
 import torch
 
-from mmseg.models.backbones.vit import VisionTransformer
+from mmseg.models.backbones.vit import (TransformerEncoderLayer,
+                                        VisionTransformer)
 from .utils import check_norm_state
 
 
@@ -118,6 +119,14 @@ def test_vit_backbone():
     feat = model(imgs)
     assert feat[0][0].shape == (1, 768, 14, 14)
     assert feat[0][1].shape == (1, 768)
+
+    # Test TransformerEncoderLayer with checkpoint forward
+    block = TransformerEncoderLayer(
+        embed_dims=64, num_heads=4, feedforward_channels=256, with_cp=True)
+    assert block.with_cp
+    x = torch.randn(1, 56 * 56, 64)
+    x_out = block(x)
+    assert x_out.shape == torch.Size([1, 56 * 56, 64])
 
 
 def test_vit_init():
