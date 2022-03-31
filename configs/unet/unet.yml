@@ -318,7 +318,7 @@ Models:
     Metrics:
       Dice: 80.87
   Config: configs/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf.py
-  Weights: https://download.openmmlab.com/mmsegmentation/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf_20211210_201821-c314da8a.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf_20211210_201821-c314da8a.pth
 - Name: pspnet_unet_s5-d16_256x256_40k_hrf
   In Collection: UNet
   Metadata:
