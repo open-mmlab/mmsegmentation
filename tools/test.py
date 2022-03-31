@@ -197,7 +197,6 @@ def main():
         num_gpus=len(cfg.gpu_ids),
         dist=distributed,
         shuffle=False,
-        round_up=True,
     )
     # The overall dataloader settings
     loader_cfg.update({

@@ -83,7 +83,6 @@ def train_segmentor(model,
         # cfg.gpus will be ignored if distributed
         num_gpus=len(cfg.gpu_ids),
         dist=distributed,
-        round_up=True,
         seed=cfg.seed,
         drop_last=True)
     # The overall dataloader settings
