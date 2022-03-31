@@ -2,7 +2,7 @@
 import torch
 import torch.nn as nn
 
-from mmseg.core.layer_decay_optimizer_constructor import \
+from mmseg.core.optimizers.layer_decay_optimizer_constructor import \
     LayerDecayOptimizerConstructor
 
 layer_wise_gt_lst = [{
