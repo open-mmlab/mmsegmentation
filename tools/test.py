@@ -196,8 +196,7 @@ def main():
         # cfg.gpus will be ignored if distributed
         num_gpus=len(cfg.gpu_ids),
         dist=distributed,
-        shuffle=False,
-    )
+        shuffle=False)
     # The overall dataloader settings
     loader_cfg.update({
         k: v
@@ -210,8 +209,7 @@ def main():
         **loader_cfg,
         'samples_per_gpu': 1,
         'shuffle': False,  # Not shuffle by default
-        'sampler_cfg': None,  # Not use sampler by default
-        **cfg.data.get('test_dataloader', {}),
+        **cfg.data.get('test_dataloader', {})
     }
     # build the dataloader
     data_loader = build_dataloader(dataset, **test_loader_cfg)

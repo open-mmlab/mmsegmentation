@@ -148,7 +148,6 @@ def train_segmentor(model,
             **loader_cfg,
             'samples_per_gpu': 1,
             'shuffle': False,  # Not shuffle by default
-            'sampler_cfg': None,  # Not use sampler by default
             **cfg.data.get('val_dataloader', {}),
         }
         val_dataloader = build_dataloader(val_dataset, **val_loader_cfg)
