@@ -209,6 +209,7 @@ def main():
     })
     test_loader_cfg = {
         **loader_cfg,
+        'samples_per_gpu': 1,
         'shuffle': False,  # Not shuffle by default
         'sampler_cfg': None,  # Not use sampler by default
         **cfg.data.get('test_dataloader', {}),
