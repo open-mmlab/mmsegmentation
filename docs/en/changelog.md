@@ -21,20 +21,19 @@
 **Improvements**
 
 - Synchronize random seed for distributed sampler ([#1411](https://github.com/open-mmlab/mmsegmentation/pull/1411))
-- Add faq document ([1420](https://github.com/open-mmlab/mmsegmentation/pull/1420))
 - Add script and documentation for multi-machine distributed training ([1383](https://github.com/open-mmlab/mmsegmentation/pull/1383))
 
 **Bug Fixes**
 
 - Add `avg_non_ignore` of CELoss to support average loss over non-ignored elements ([1409](https://github.com/open-mmlab/mmsegmentation/pull/1409))
-- Fix some wrong urls of models or log in ./configs ([#1336](https://github.com/open-mmlab/mmsegmentation/pull/1433))
+- Fix some wrong URLs of models or logs in `./configs` ([#1336](https://github.com/open-mmlab/mmsegmentation/pull/1433))
 - Make arguments effective in tools/confusion_matrix.py ([1401](https://github.com/open-mmlab/mmsegmentation/pull/1401))
 - Fix outdated link in Colab demo ([1392](https://github.com/open-mmlab/mmsegmentation/pull/1392))
 - Fix typos ([1424](https://github.com/open-mmlab/mmsegmentation/pull/1424) [1405](https://github.com/open-mmlab/mmsegmentation/pull/1405), [1371](https://github.com/open-mmlab/mmsegmentation/pull/1371) [1366](https://github.com/open-mmlab/mmsegmentation/pull/1366))
 
 **Documentation**
 
-- Add faq document ([1420](https://github.com/open-mmlab/mmsegmentation/pull/1420))
+- Add FAQ document ([1420](https://github.com/open-mmlab/mmsegmentation/pull/1420))
 - Fix the config name style description ([1414](https://github.com/open-mmlab/mmsegmentation/pull/1414))
 - Update config.md ([1363](https://github.com/open-mmlab/mmsegmentation/pull/1363))
 
