@@ -32,7 +32,7 @@
 - Fix outdated link in Colab demo ([1392](https://github.com/open-mmlab/mmsegmentation/pull/1392))
 - Fix typos ([1424](https://github.com/open-mmlab/mmsegmentation/pull/1424) [1405](https://github.com/open-mmlab/mmsegmentation/pull/1405), [1371](https://github.com/open-mmlab/mmsegmentation/pull/1371) [1366](https://github.com/open-mmlab/mmsegmentation/pull/1366))
 
-**Docs**
+**Documentation**
 
 - Add faq document ([1420](https://github.com/open-mmlab/mmsegmentation/pull/1420))
 - Fix the config name style description ([1414](https://github.com/open-mmlab/mmsegmentation/pull/1414))
