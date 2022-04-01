@@ -4,7 +4,7 @@
 
 **Highlights**
 
-- Support BEiT: BEiT: BERT Pre-Training of Image Transformers
+- Support BEiT: BERT Pre-Training of Image Transformers
 - Support K-Net: Towards Unified Image Segmentation
 - Add `avg_non_ignore` of CELoss to support average loss over non-ignored elements
 - Support dataset initialization with file client
