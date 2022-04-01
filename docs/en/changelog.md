@@ -20,7 +20,7 @@
 
 **Improvements**
 
-- Support random seed for distributed sampler ([#1411](https://github.com/open-mmlab/mmsegmentation/pull/1411))
+- Synchronize random seed for distributed sampler ([#1411](https://github.com/open-mmlab/mmsegmentation/pull/1411))
 - Add faq document ([1420](https://github.com/open-mmlab/mmsegmentation/pull/1420))
 - Add script and documentation for multi-machine distributed training ([1383](https://github.com/open-mmlab/mmsegmentation/pull/1383))
 
