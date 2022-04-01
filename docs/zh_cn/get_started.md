@@ -9,12 +9,13 @@
 
 可编译的 MMSegmentation 和 MMCV 版本如下所示，请对照对应版本安装以避免安装问题。
 
-| MMSegmentation 版本 |          MMCV 版本         | MMClassification 版本  |
-|:-----------------:|:--------------------------:|:----------------------:|
-|      master       |  mmcv-full>=1.4.4, <=1.5.0  | mmcls>=0.20.1, <=1.0.0 |
-|      0.22.0       |  mmcv-full>=1.4.4, <=1.5.0  | mmcls>=0.20.1, <=1.0.0 |
-|      0.21.1       |  mmcv-full>=1.4.4, <=1.5.0  | Not required             |
-|      0.20.2       | mmcv-full>=1.3.13, <=1.5.0  | Not required             |
+| MMSegmentation 版本 |          MMCV 版本         | MMClassification 版本    |
+|:-----------------:|:--------------------------:|:------------------------:|
+|      master       |  mmcv-full>=1.4.4, <=1.5.0 | mmcls>=0.20.1, <=1.0.0   |
+|      0.23.0       |  mmcv-full>=1.4.4, <=1.5.0 | mmcls>=0.20.1, <=1.0.0   |
+|      0.22.0       |  mmcv-full>=1.4.4, <=1.5.0 | mmcls>=0.20.1, <=1.0.0   |
+|      0.21.1       |  mmcv-full>=1.4.4, <=1.5.0 | Not required             |
+|      0.20.2       | mmcv-full>=1.3.13, <=1.5.0 | Not required             |
 |      0.19.0       | mmcv-full>=1.3.13, <1.3.17 | Not required             |
 |      0.18.0       | mmcv-full>=1.3.13, <1.3.17 | Not required             |
 |      0.17.0       | mmcv-full>=1.3.7, <1.3.17  | Not required             |
