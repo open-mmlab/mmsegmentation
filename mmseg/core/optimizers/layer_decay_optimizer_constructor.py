@@ -141,7 +141,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
             elif decay_type == 'layer_wise_vit':
                 warnings.warn(
                     'DeprecationWarning: Original '
-                    'LayerDecayOptimizerConstructor '
+                    'LayerDecayOptimizerConstructor of BEiT '
                     'has been deprecated. Please use '
                     'LearningRateDecayOptimizerConstructor instead, '
                     'and set decay_type = layer_wise_vit in paramwise_cfg.')
