@@ -16,7 +16,7 @@
 - Support dataset initialization with file client ([1402](https://github.com/open-mmlab/mmsegmentation/pull/1402))
 - Add class name function for STARE datasets ([1376](https://github.com/open-mmlab/mmsegmentation/pull/1376))
 - Support different seeds on different ranks when distributed training ([1362](https://github.com/open-mmlab/mmsegmentation/pull/1362))
-- Add nlc2nchw2nlc and nchw2nlc2nchw ([1249](https://github.com/open-mmlab/mmsegmentation/pull/1249))
+- Add `nlc2nchw2nlc` and `nchw2nlc2nchw` to simplify tensor with different dimension operation  ([1249](https://github.com/open-mmlab/mmsegmentation/pull/1249))
 
 **Improvements**
 
