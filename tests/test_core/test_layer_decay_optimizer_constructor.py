@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.core.optimizers.layer_decay_optimizer_constructor import (
-    LayerDecayOptimizerConstructor, LearningRateDecayOptimizerConstructor)
+from mmseg.core.optimizers.layer_decay_optimizer_constructor import \
+    LearningRateDecayOptimizerConstructor
 
 base_lr = 1
 decay_rate = 2
@@ -219,8 +219,9 @@ def test_beit_layer_decay_optimizer_constructor():
     model = BEiTExampleModel(depth=3)
     optimizer_cfg = dict(
         type='AdamW', lr=1, betas=(0.9, 0.999), weight_decay=0.05)
-    paramwise_cfg = dict(num_layers=3, layer_decay_rate=2)
-    optim_constructor = LayerDecayOptimizerConstructor(optimizer_cfg,
-                                                       paramwise_cfg)
+    paramwise_cfg = dict(
+        decay_rate=2, decay_type='layer_wise_vit', num_layers=3)
+    optim_constructor = LearningRateDecayOptimizerConstructor(
+        optimizer_cfg, paramwise_cfg)
     optimizer = optim_constructor(model)
     check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)
