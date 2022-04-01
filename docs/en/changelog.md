@@ -1,5 +1,42 @@
 ## Changelog
 
+### V0.23.0 (4/1/2022)
+
+**Highlights**
+
+- Support BEiT: BEiT: BERT Pre-Training of Image Transformers
+- Add `avg_non_ignore` of CELoss to support average loss over non-ignored elements
+- Support dataset initialization with file client
+
+**New Features**
+
+- Support BEiT: BEiT: BERT Pre-Training of Image Transformers ([1404](https://github.com/open-mmlab/mmsegmentation/pull/1404))
+- Support dataset initialization with file client ([1402](https://github.com/open-mmlab/mmsegmentation/pull/1402))
+- Add class name function support for STARE datasets ([1376](https://github.com/open-mmlab/mmsegmentation/pull/1376))
+- Support different seeds to different ranks when distributed training ([1362](https://github.com/open-mmlab/mmsegmentation/pull/1362))
+
+**Improvements**
+
+- Support random seed for distributed sampler ([#1411](https://github.com/open-mmlab/mmsegmentation/pull/1411))
+- Add faq document ([1420](https://github.com/open-mmlab/mmsegmentation/pull/1420))
+- Add script and documentation for multi-machine distributed training ([1383](https://github.com/open-mmlab/mmsegmentation/pull/1383))
+
+**Bug Fixes**
+
+- Add `avg_non_ignore` of CELoss to support average loss over non-ignored elements ([1409](https://github.com/open-mmlab/mmsegmentation/pull/1409))
+- Fix some wrong urls of models or log in ./configs ([#1336](https://github.com/open-mmlab/mmsegmentation/pull/1433))
+- Make arguments effective in tools/confusion_matrix.py ([1401](https://github.com/open-mmlab/mmsegmentation/pull/1401))
+- Fix outdated link in Colab demo ([1392](https://github.com/open-mmlab/mmsegmentation/pull/1392))
+- Fix typos ([1424](https://github.com/open-mmlab/mmsegmentation/pull/1424) [1405](https://github.com/open-mmlab/mmsegmentation/pull/1405), [1371](https://github.com/open-mmlab/mmsegmentation/pull/1371) [1366](https://github.com/open-mmlab/mmsegmentation/pull/1366))
+
+**Docs**
+
+- Add faq document ([1420](https://github.com/open-mmlab/mmsegmentation/pull/1420))
+- Fix the config name style description ([1414](https://github.com/open-mmlab/mmsegmentation/pull/1414))
+- Update config.md ([1363](https://github.com/open-mmlab/mmsegmentation/pull/1363))
+
+**Contributors**
+
 ### V0.22.1 (3/9/2022)
 
 **Bug Fixes**
@@ -44,7 +81,6 @@
 - Update correct `In Collection` in metafile of each configs. ([#1239](https://github.com/open-mmlab/mmsegmentation/pull/1239))
 - Upload completed STDC models. ([#1332](https://github.com/open-mmlab/mmsegmentation/pull/1332))
 - Fix `DNLHead` exports onnx inference difference type Cast error. ([#1161](https://github.com/open-mmlab/mmsegmentation/pull/1332))
-
 
 **Contributors**
 
@@ -120,13 +156,10 @@
 
 - Change options to cfg-options ([#1129](https://github.com/open-mmlab/mmsegmentation/pull/1129))
 
-
 **Bug Fixes**
 
 - Fix `<!-- [ABSTRACT] -->` in metafile. ([#1127](https://github.com/open-mmlab/mmsegmentation/pull/1127))
 - Fix correct `num_classes` of HRNet in `LoveDA` dataset ([#1136](https://github.com/open-mmlab/mmsegmentation/pull/1136))
-
-
 
 ### V0.20 (12/10/2021)
 
