@@ -5,15 +5,18 @@
 **Highlights**
 
 - Support BEiT: BEiT: BERT Pre-Training of Image Transformers
+- Support K-Net: Towards Unified Image Segmentation
 - Add `avg_non_ignore` of CELoss to support average loss over non-ignored elements
 - Support dataset initialization with file client
 
 **New Features**
 
-- Support BEiT: BEiT: BERT Pre-Training of Image Transformers ([1404](https://github.com/open-mmlab/mmsegmentation/pull/1404))
+- Support BEiT: BERT Pre-Training of Image Transformers ([1404](https://github.com/open-mmlab/mmsegmentation/pull/1404))
+- Support K-Net: Towards Unified Image Segmentation ([1289](https://github.com/open-mmlab/mmsegmentation/pull/1289))
 - Support dataset initialization with file client ([1402](https://github.com/open-mmlab/mmsegmentation/pull/1402))
 - Add class name function support for STARE datasets ([1376](https://github.com/open-mmlab/mmsegmentation/pull/1376))
 - Support different seeds to different ranks when distributed training ([1362](https://github.com/open-mmlab/mmsegmentation/pull/1362))
+- Add nlc2nchw2nlc and nchw2nlc2nchw ([1249](https://github.com/open-mmlab/mmsegmentation/pull/1249))
 
 **Improvements**
 
@@ -36,6 +39,12 @@
 - Update config.md ([1363](https://github.com/open-mmlab/mmsegmentation/pull/1363))
 
 **Contributors**
+
+* @kinglintianxia made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1371
+* @CCODING04 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1376
+* @mob5566 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1401
+* @xiongnemo made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1392
+* @Xiangxu-0103 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1405
 
 ### V0.22.1 (3/9/2022)
 
