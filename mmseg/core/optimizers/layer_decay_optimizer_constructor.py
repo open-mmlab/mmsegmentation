@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import json
+import warnings
 
 from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
                          get_dist_info)
@@ -138,6 +139,12 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                     name, self.paramwise_cfg.get('num_layers'))
                 logger.info(f'set param {name} as id {layer_id}')
             elif decay_type == 'layer_wise_vit':
+                warnings.warn(
+                    'DeprecationWarning: Original '
+                    'LayerDecayOptimizerConstructor '
+                    'has been deprecated. Please use '
+                    'LearningRateDecayOptimizerConstructor instead, '
+                    'and set decay_type = layer_wise_vit in paramwise_cfg.')
                 layer_id = get_num_layer_for_vit(name, num_layers)
                 logger.info(f'set param {name} as id {layer_id}')
             elif decay_type == 'stage_wise':
