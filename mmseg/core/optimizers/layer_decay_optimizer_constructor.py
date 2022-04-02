@@ -117,7 +117,12 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
         parameter_groups = {}
         logger.info(f'self.paramwise_cfg is {self.paramwise_cfg}')
         num_layers = self.paramwise_cfg.get('num_layers') + 2
-        decay_rate = self.paramwise_cfg.get('decay_rate')
+        if self.paramwise_cfg.get('layer_decay_rate'):
+            warnings.warn('DeprecationWarning: Layer_decay_rate will '
+                          'be deleted, please use decay_rate instead.')
+            decay_rate = self.paramwise_cfg.get('layer_decay_rate')
+        else:
+            decay_rate = self.paramwise_cfg.get('decay_rate')
         decay_type = self.paramwise_cfg.get('decay_type', 'layer_wise')
         logger.info('Build LearningRateDecayOptimizerConstructor  '
                     f'{decay_type} {decay_rate} - {num_layers}')
@@ -178,3 +183,18 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                 }
             logger.info(f'Param groups = {json.dumps(to_display, indent=2)}')
         params.extend(parameter_groups.values())
+
+
+@OPTIMIZER_BUILDERS.register_module()
+class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
+    """Different learning rates are set for different layers of backbone."""
+
+    def __init__(self, optimizer_cfg, paramwise_cfg):
+        warnings.warn('DeprecationWarning: Original '
+                      'LayerDecayOptimizerConstructor of BEiT '
+                      'will be deprecated. Please use '
+                      'LearningRateDecayOptimizerConstructor instead, '
+                      'and set decay_type = layer_wise_vit in paramwise_cfg.')
+        paramwise_cfg.update({'decay_type': 'layer_wise_vit'})
+        super(LayerDecayOptimizerConstructor,
+              self).__init__(optimizer_cfg, paramwise_cfg)

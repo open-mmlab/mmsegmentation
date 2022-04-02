@@ -27,12 +27,8 @@ optimizer = dict(
     lr=2e-5,
     betas=(0.9, 0.999),
     weight_decay=0.05,
-    constructor='LearningRateDecayOptimizerConstructor',
-    paramwise_cfg={
-        'decay_rate': 0.95,
-        'decay_type': 'layer_wise_vit',
-        'num_layers': 24
-    })
+    constructor='LayerDecayOptimizerConstructor',
+    paramwise_cfg=dict(num_layers=24, layer_decay_rate=0.95))
 
 lr_config = dict(
     _delete_=True,
