@@ -117,12 +117,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
         parameter_groups = {}
         logger.info(f'self.paramwise_cfg is {self.paramwise_cfg}')
         num_layers = self.paramwise_cfg.get('num_layers') + 2
-        if self.paramwise_cfg.get('layer_decay_rate'):
-            warnings.warn('DeprecationWarning: Layer_decay_rate will '
-                          'be deleted, please use decay_rate instead.')
-            decay_rate = self.paramwise_cfg.get('layer_decay_rate')
-        else:
-            decay_rate = self.paramwise_cfg.get('decay_rate')
+        decay_rate = self.paramwise_cfg.get('decay_rate')
         decay_type = self.paramwise_cfg.get('decay_type', 'layer_wise')
         logger.info('Build LearningRateDecayOptimizerConstructor  '
                     f'{decay_type} {decay_rate} - {num_layers}')
@@ -144,12 +139,6 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                     name, self.paramwise_cfg.get('num_layers'))
                 logger.info(f'set param {name} as id {layer_id}')
             elif decay_type == 'layer_wise_vit':
-                warnings.warn(
-                    'DeprecationWarning: Original '
-                    'LayerDecayOptimizerConstructor of BEiT '
-                    'has been deprecated. Please use '
-                    'LearningRateDecayOptimizerConstructor instead, '
-                    'and set decay_type = layer_wise_vit in paramwise_cfg.')
                 layer_id = get_num_layer_for_vit(name, num_layers)
                 logger.info(f'set param {name} as id {layer_id}')
             elif decay_type == 'stage_wise':
@@ -196,5 +185,8 @@ class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
                       'LearningRateDecayOptimizerConstructor instead, '
                       'and set decay_type = layer_wise_vit in paramwise_cfg.')
         paramwise_cfg.update({'decay_type': 'layer_wise_vit'})
+        warnings.warn('DeprecationWarning: Layer_decay_rate will '
+                      'be deleted, please use decay_rate instead.')
+        paramwise_cfg['decay_rate'] = paramwise_cfg.pop('layer_decay_rate')
         super(LayerDecayOptimizerConstructor,
               self).__init__(optimizer_cfg, paramwise_cfg)
