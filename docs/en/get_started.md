@@ -42,16 +42,16 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 a. Create a conda virtual environment and activate it.
 
 ```shell
-conda create -n open-mmlab python=3.7 -y
+conda create -n open-mmlab python=3.10 -y
 conda activate open-mmlab
 ```
 
 b. Install PyTorch and torchvision following the [official instructions](https://pytorch.org/).
-Here we use PyTorch 1.6.0 and CUDA 10.1.
+Here we use PyTorch 1.11.0 and CUDA 11.3.
 You may also switch to other version by specifying the version number.
 
 ```shell
-conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
 ```
 
 c. Install [MMCV](https://mmcv.readthedocs.io/en/latest/) following the [official instructions](https://mmcv.readthedocs.io/en/latest/#installation).
@@ -68,10 +68,10 @@ pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{
 Please replace ``{cu_version}`` and ``{torch_version}`` in the url to your desired one. mmcv-full is only compiled on
 PyTorch 1.x.0 because the compatibility usually holds between 1.x.0 and 1.x.1. If your PyTorch version is 1.x.1,
 you can install mmcv-full compiled with PyTorch 1.x.0 and it usually works well.
-For example, to install the ``mmcv-full`` with ``CUDA 10.1`` and ``PyTorch 1.6.0``, use the following command:
+For example, to install the ``mmcv-full`` with ``CUDA 11.3`` and ``PyTorch 1.11.0``, use the following command:
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.11/index.html
 ```
 
 See [here](https://github.com/open-mmlab/mmcv#installation) for different versions of MMCV compatible to different PyTorch and CUDA versions.
@@ -155,11 +155,11 @@ pip install -e .  # or "python setup.py develop"
 Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is $DATA_ROOT).
 
 ```shell
-conda create -n open-mmlab python=3.7 -y
+conda create -n open-mmlab python=3.10 -y
 conda activate open-mmlab
 
-conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
+conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.11.0/index.html
 git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -e .  # or "python setup.py develop"
@@ -174,10 +174,10 @@ Here is a full script for setting up mmsegmentation with conda and link the data
 %DATA_ROOT%. Notice: It must be an absolute path).
 
 ```shell
-conda create -n open-mmlab python=3.7 -y
+conda create -n open-mmlab python=3.10 -y
 conda activate open-mmlab
 
-conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
 set PATH=full\path\to\your\cpp\compiler;%PATH%
 pip install mmcv
 
