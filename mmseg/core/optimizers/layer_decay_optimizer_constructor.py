@@ -99,7 +99,8 @@ def get_num_layer_for_vit(var_name, num_max_layer):
 
 @OPTIMIZER_BUILDERS.register_module()
 class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
-    """Different learning rates are set for different layers of backbone."""
+    # Different learning rates are set for different layers of backbone.
+    # Note: Currently, this optimizer constructor is built for ConvNeXt.
 
     def add_params(self, params, module):
         """Add all parameters of module to the params list.
@@ -176,7 +177,8 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
 
 @OPTIMIZER_BUILDERS.register_module()
 class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
-    """Different learning rates are set for different layers of backbone."""
+    # Different learning rates are set for different layers of backbone.
+    # Note: Currently, this optimizer constructor is built for BEiT.
 
     def __init__(self, optimizer_cfg, paramwise_cfg):
         warnings.warn('DeprecationWarning: Original '
