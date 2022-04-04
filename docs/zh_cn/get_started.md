@@ -40,17 +40,17 @@
 a. 创建一个 conda 虚拟环境并激活它
 
 ```shell
-conda create -n open-mmlab python=3.7 -y
+conda create -n open-mmlab python=3.10 -y
 conda activate open-mmlab
 
 ```
 
 b. 按照[官方教程](https://pytorch.org/) 安装 PyTorch 和 totchvision，
-这里我们使用 PyTorch1.6.0 和 CUDA10.1，
+这里我们使用 PyTorch1.11.0 和 CUDA11.3，
 您也可以切换至其他版本
 
 ```shell
-conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
 ```
 
 c. 按照 [官方教程](https://mmcv.readthedocs.io/en/latest/#installation)
@@ -68,10 +68,10 @@ pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{
 请替换 url 里面的 ``{cu_version}`` 和 ``{torch_version}`` 为您想要使用的版本. mmcv-full 仅在
 PyTorch 1.x.0 上面编译, 因为在 1.x.0 和 1.x.1 之间通常是兼容的. 如果您的 PyTorch 版本是 1.x.1,
 您可以安装用 PyTorch 1.x.0 编译的 mmcv-full 而它通常是可以正常使用的.
-例如, 用 ``CUDA 10.1`` and ``PyTorch 1.6.0`` 安装使用 ``mmcv-full``, 使用如下命令:
+例如, 用 ``CUDA 11.1`` and ``PyTorch 1.11.0`` 安装使用 ``mmcv-full``, 使用如下命令:
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6/index.html
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.11/index.html
 ```
 
 请查看 [这里](https://github.com/open-mmlab/mmcv#installation) 来找到适配不同 PyTorch 和 CUDA 版本的 MMCV.
@@ -155,11 +155,11 @@ pip install -e .  # 或者 "python setup.py develop"
 这里便是一个完整安装 MMSegmentation 的脚本，使用 conda 并链接了数据集的路径（以您的数据集路径为 $DATA_ROOT 来安装）。
 
 ```shell
-conda create -n open-mmlab python=3.7 -y
+conda create -n open-mmlab python=3.10 -y
 conda activate open-mmlab
 
-conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
-pip install mmcv-full==latest+torch1.5.0+cu101 -f https://download.openmmlab.com/mmcv/dist/index.html
+conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.11.0/index.html
 git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -e .  # 或者 "python setup.py develop"
@@ -174,10 +174,10 @@ ln -s $DATA_ROOT data
 注意：它必须是一个绝对路径。
 
 ```shell
-conda create -n open-mmlab python=3.7 -y
+conda create -n open-mmlab python=3.10 -y
 conda activate open-mmlab
 
-conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
 set PATH=full\path\to\your\cpp\compiler;%PATH%
 pip install mmcv
 
