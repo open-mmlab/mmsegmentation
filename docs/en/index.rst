@@ -1,4 +1,4 @@
-Welcome to MMSegmenation's documentation!
+Welcome to MMSegmentation's documentation!
 =======================================
 
 .. toctree::

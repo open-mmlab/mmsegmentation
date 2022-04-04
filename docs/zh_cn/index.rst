@@ -1,4 +1,4 @@
-欢迎来到 MMSegmenation 的文档!
+欢迎来到 MMSegmentation 的文档!
 =======================================
 
 .. toctree::
