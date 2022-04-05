@@ -215,7 +215,7 @@ def check_beit_adamw_optimizer(optimizer, gt_lst):
 
 def test_beit_layer_decay_optimizer_constructor():
 
-    # paramwise_cfg with ConvNeXtExampleModel
+    # paramwise_cfg with BEiTExampleModel
     model = BEiTExampleModel(depth=3)
     optimizer_cfg = dict(
         type='AdamW', lr=1, betas=(0.9, 0.999), weight_decay=0.05)

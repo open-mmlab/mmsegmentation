@@ -135,16 +135,22 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
             else:
                 group_name = 'decay'
                 this_weight_decay = weight_decay
-            if decay_type == 'layer_wise':
-                layer_id = get_num_layer_layer_wise(
-                    name, self.paramwise_cfg.get('num_layers'))
-                logger.info(f'set param {name} as id {layer_id}')
-            elif decay_type == 'layer_wise_vit':
-                layer_id = get_num_layer_for_vit(name, num_layers)
-                logger.info(f'set param {name} as id {layer_id}')
+            if 'layer_wise' in decay_type:
+                if 'ConvNeXt' in module.__class__.__name__:
+                    layer_id = get_num_layer_layer_wise(
+                        name, self.paramwise_cfg.get('num_layers'))
+                    logger.info(f'set param {name} as id {layer_id}')
+                elif 'BEiT' in module.__class__.__name__:
+                    layer_id = get_num_layer_for_vit(name, num_layers)
+                    logger.info(f'set param {name} as id {layer_id}')
+                else:
+                    raise NotImplementedError()
             elif decay_type == 'stage_wise':
-                layer_id = get_num_layer_stage_wise(name, num_layers)
-                logger.info(f'set param {name} as id {layer_id}')
+                if 'ConvNeXt' in module.__class__.__name__:
+                    layer_id = get_num_layer_stage_wise(name, num_layers)
+                    logger.info(f'set param {name} as id {layer_id}')
+                else:
+                    raise NotImplementedError()
             group_name = f'layer_{layer_id}_{group_name}'
 
             if group_name not in parameter_groups:
