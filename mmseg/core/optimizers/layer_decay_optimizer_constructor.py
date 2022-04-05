@@ -100,7 +100,8 @@ def get_num_layer_for_vit(var_name, num_max_layer):
 @OPTIMIZER_BUILDERS.register_module()
 class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
     # Different learning rates are set for different layers of backbone.
-    # Note: Currently, this optimizer constructor is built for ConvNeXt.
+    # Note: Currently, this optimizer constructor is built for ConvNeXt
+    # and BEiT.
 
     def add_params(self, params, module):
         """Add all parameters of module to the params list.
@@ -134,7 +135,6 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
             else:
                 group_name = 'decay'
                 this_weight_decay = weight_decay
-
             if decay_type == 'layer_wise':
                 layer_id = get_num_layer_layer_wise(
                     name, self.paramwise_cfg.get('num_layers'))
@@ -178,7 +178,9 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
 @OPTIMIZER_BUILDERS.register_module()
 class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
     # Different learning rates are set for different layers of backbone.
-    # Note: Currently, this optimizer constructor is built for BEiT.
+    # Note: Currently, this optimizer constructor is built for BEiT,
+    # and it will be deprecated.
+    # Please use ``LearningRateDecayOptimizerConstructor`` instead.
 
     def __init__(self, optimizer_cfg, paramwise_cfg):
         warnings.warn('DeprecationWarning: Original '
