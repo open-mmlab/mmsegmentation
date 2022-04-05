@@ -1,4 +1,4 @@
-欢迎来到 MMSegmenation 的文档!
+欢迎来到 MMSegmentation 的文档!
 =======================================
 
 .. toctree::
@@ -44,6 +44,7 @@
    :caption: 说明
 
    changelog.md
+   faq.md
 
 .. toctree::
    :caption: 语言切换

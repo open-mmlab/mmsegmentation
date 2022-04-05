@@ -2,9 +2,10 @@ _base_ = [
     '../_base_/models/upernet_swin.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
+checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_tiny_patch4_window7_224_20220317-1cdeb081.pth'  # noqa
 model = dict(
-    pretrained='pretrain/swin_tiny_patch4_window7_224.pth',
     backbone=dict(
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
         embed_dims=96,
         depths=[2, 2, 6, 2],
         num_heads=[3, 6, 12, 24],

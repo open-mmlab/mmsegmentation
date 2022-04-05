@@ -65,7 +65,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新版本 v0.22.1 在 2022.3.9 发布。
+最新版本 v0.23.0 在 2022.4.1 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
 
 ## 基准测试和模型库
@@ -85,6 +85,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [Twins (NeurIPS'2021)](configs/twins)
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [HRFormer (NeurIPS'2021)](configs/hrformer)
+- [x] [BEiT (ICLR'2022)](configs/beit)
 
 已支持的算法：
 
@@ -153,6 +154,8 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 除此之外，我们也提供了很多实用的[训练技巧说明](docs/zh_cn/tutorials/training_tricks.md)和模型部署相关的[有用的工具](docs/zh_cn/useful_tools.md)。
 
 同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb)。
+
+如果遇到问题，请参考 [常见问题解答](docs/zh_cn/faq.md)。
 
 ## 引用
 

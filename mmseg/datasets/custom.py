@@ -68,6 +68,9 @@ class CustomDataset(Dataset):
             Default: None
         gt_seg_map_loader_cfg (dict, optional): build LoadAnnotations to
             load gt for evaluation, load from disk by default. Default: None.
+        file_client_args (dict): Arguments to instantiate a FileClient.
+            See :class:`mmcv.fileio.FileClient` for details.
+            Defaults to ``dict(backend='disk')``.
     """
 
     CLASSES = None
@@ -87,7 +90,8 @@ class CustomDataset(Dataset):
                  reduce_zero_label=False,
                  classes=None,
                  palette=None,
-                 gt_seg_map_loader_cfg=None):
+                 gt_seg_map_loader_cfg=None,
+                 file_client_args=dict(backend='disk')):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
         self.img_suffix = img_suffix
@@ -104,6 +108,9 @@ class CustomDataset(Dataset):
         self.gt_seg_map_loader = LoadAnnotations(
         ) if gt_seg_map_loader_cfg is None else LoadAnnotations(
             **gt_seg_map_loader_cfg)
+
+        self.file_client_args = file_client_args
+        self.file_client = mmcv.FileClient.infer_client(self.file_client_args)
 
         if test_mode:
             assert self.CLASSES is not None, \
@@ -146,16 +153,21 @@ class CustomDataset(Dataset):
 
         img_infos = []
         if split is not None:
-            with open(split) as f:
-                for line in f:
-                    img_name = line.strip()
-                    img_info = dict(filename=img_name + img_suffix)
-                    if ann_dir is not None:
-                        seg_map = img_name + seg_map_suffix
-                        img_info['ann'] = dict(seg_map=seg_map)
-                    img_infos.append(img_info)
+            lines = mmcv.list_from_file(
+                split, file_client_args=self.file_client_args)
+            for line in lines:
+                img_name = line.strip()
+                img_info = dict(filename=img_name + img_suffix)
+                if ann_dir is not None:
+                    seg_map = img_name + seg_map_suffix
+                    img_info['ann'] = dict(seg_map=seg_map)
+                img_infos.append(img_info)
         else:
-            for img in mmcv.scandir(img_dir, img_suffix, recursive=True):
+            for img in self.file_client.list_dir_or_file(
+                    dir_path=img_dir,
+                    list_dir=False,
+                    suffix=img_suffix,
+                    recursive=True):
                 img_info = dict(filename=img)
                 if ann_dir is not None:
                     seg_map = img.replace(img_suffix, seg_map_suffix)

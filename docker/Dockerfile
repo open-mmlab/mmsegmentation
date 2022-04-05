@@ -1,7 +1,7 @@
-ARG PYTORCH="1.6.0"
-ARG CUDA="10.1"
-ARG CUDNN="7"
-ARG MMCV="1.3.13"
+ARG PYTORCH="1.11.0"
+ARG CUDA="11.3"
+ARG CUDNN="8"
+ARG MMCV="1.4.8"
 
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
@@ -19,7 +19,7 @@ RUN conda clean --all
 ARG PYTORCH
 ARG CUDA
 ARG MMCV
-RUN ["/bin/bash", "-c", "pip install mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html"]
+RUN ["/bin/bash", "-c", "pip install --no-cache-dir mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html"]
 
 # Install MMSegmentation
 RUN git clone https://github.com/open-mmlab/mmsegmentation.git /mmsegmentation

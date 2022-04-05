@@ -1,0 +1,10 @@
+assign:
+  strategy:
+    # random
+    daily-shift-based
+  assignees:
+    - MeowZheng
+    - MengzhangLI
+    - linfangjian01
+    - RockeyCoss
+    - xiaoachen98
