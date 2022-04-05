@@ -31,8 +31,9 @@ def plot_curve(log_dicts, args):
             plot_epochs = []
             plot_iters = []
             plot_values = []
-            # In some log files, iters number is not correct, `mode` list
-            # is used to prevent generate wrong lines of validation set.
+            # In some log files, wrong iters number in validation lines
+            # would be kept, `mode` list is used to only kept iter number
+            # in training line.
             for epoch in epochs:
                 epoch_logs = log_dict[epoch]
                 if metric not in epoch_logs.keys():
