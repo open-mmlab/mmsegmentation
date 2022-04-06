@@ -88,6 +88,29 @@ layer_wise_gt_lst = [{
     'lr_scale': 1
 }]
 
+layer_wise_wd_lr = [{
+    'weight_decay': 0.0,
+    'lr_scale': 16
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 8
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 8
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 4
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 4
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 2
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 2
+}]
+
 
 class ConvNeXtExampleModel(nn.Module):
 
@@ -129,6 +152,21 @@ class PseudoDataParallel(nn.Module):
         return x
 
 
+class BEiTExampleModel(nn.Module):
+
+    def __init__(self, depth):
+        super().__init__()
+        self.backbone = nn.ModuleList()
+
+        # add some variables to meet unit test coverate rate
+        self.backbone.cls_token = nn.Parameter(torch.ones(1))
+        self.backbone.patch_embed = nn.Parameter(torch.ones(1))
+        self.backbone.layers = nn.ModuleList()
+        for _ in range(depth):
+            layer = nn.Conv2d(3, 3, 1)
+            self.backbone.layers.append(layer)
+
+
 def check_convnext_adamw_optimizer(optimizer, gt_lst):
     assert isinstance(optimizer, torch.optim.AdamW)
     assert optimizer.defaults['lr'] == base_lr
@@ -154,51 +192,20 @@ def test_learning_rate_decay_optimizer_constructor():
     optimizer = optim_constructor(model)
     check_convnext_adamw_optimizer(optimizer, stage_wise_gt_lst)
 
+    with pytest.raises(NotImplementedError):
+        model = BEiTExampleModel(depth=6)
+        optim_constructor = LearningRateDecayOptimizerConstructor(
+            optimizer_cfg, stagewise_paramwise_cfg)
+        optimizer = optim_constructor(model)
+        check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)
+
+    model = ConvNeXtExampleModel()
     layerwise_paramwise_cfg = dict(
         decay_rate=decay_rate, decay_type='layer_wise', num_layers=6)
     optim_constructor = LearningRateDecayOptimizerConstructor(
         optimizer_cfg, layerwise_paramwise_cfg)
     optimizer = optim_constructor(model)
     check_convnext_adamw_optimizer(optimizer, layer_wise_gt_lst)
-
-
-layer_wise_wd_lr = [{
-    'weight_decay': 0.0,
-    'lr_scale': 16
-}, {
-    'weight_decay': 0.05,
-    'lr_scale': 8
-}, {
-    'weight_decay': 0.0,
-    'lr_scale': 8
-}, {
-    'weight_decay': 0.05,
-    'lr_scale': 4
-}, {
-    'weight_decay': 0.0,
-    'lr_scale': 4
-}, {
-    'weight_decay': 0.05,
-    'lr_scale': 2
-}, {
-    'weight_decay': 0.0,
-    'lr_scale': 2
-}]
-
-
-class BEiTExampleModel(nn.Module):
-
-    def __init__(self, depth):
-        super().__init__()
-        self.backbone = nn.ModuleList()
-
-        # add some variables to meet unit test coverate rate
-        self.backbone.cls_token = nn.Parameter(torch.ones(1))
-        self.backbone.patch_embed = nn.Parameter(torch.ones(1))
-        self.backbone.layers = nn.ModuleList()
-        for _ in range(depth):
-            layer = nn.Conv2d(3, 3, 1)
-            self.backbone.layers.append(layer)
 
 
 def check_beit_adamw_optimizer(optimizer, gt_lst):
@@ -225,11 +232,3 @@ def test_beit_layer_decay_optimizer_constructor():
                                                        paramwise_cfg)
     optimizer = optim_constructor(model)
     check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)
-
-    with pytest.raises(NotImplementedError):
-        paramwise_cfg = dict(
-            decay_rate=decay_rate, decay_type='stage_wise', num_layers=3)
-        optim_constructor = LearningRateDecayOptimizerConstructor(
-            optimizer_cfg, paramwise_cfg)
-        optimizer = optim_constructor(model)
-        check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)
