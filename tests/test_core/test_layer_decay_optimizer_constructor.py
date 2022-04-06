@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import pytest
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
@@ -179,6 +178,19 @@ def check_convnext_adamw_optimizer(optimizer, gt_lst):
         assert param_dict['lr_scale'] == param_dict['lr']
 
 
+def check_beit_adamw_optimizer(optimizer, gt_lst):
+    assert isinstance(optimizer, torch.optim.AdamW)
+    assert optimizer.defaults['lr'] == 1
+    assert optimizer.defaults['weight_decay'] == 0.05
+    param_groups = optimizer.param_groups
+    # 1 layer (cls_token and patch_embed) + 3 layers * 2 (w, b) = 7 layers
+    assert len(param_groups) == 7
+    for i, param_dict in enumerate(param_groups):
+        assert param_dict['weight_decay'] == gt_lst[i]['weight_decay']
+        assert param_dict['lr_scale'] == gt_lst[i]['lr_scale']
+        assert param_dict['lr_scale'] == param_dict['lr']
+
+
 def test_learning_rate_decay_optimizer_constructor():
 
     # paramwise_cfg with ConvNeXtExampleModel
@@ -192,14 +204,6 @@ def test_learning_rate_decay_optimizer_constructor():
     optimizer = optim_constructor(model)
     check_convnext_adamw_optimizer(optimizer, stage_wise_gt_lst)
 
-    with pytest.raises(NotImplementedError):
-        model = BEiTExampleModel(depth=6)
-        optim_constructor = LearningRateDecayOptimizerConstructor(
-            optimizer_cfg, stagewise_paramwise_cfg)
-        optimizer = optim_constructor(model)
-        check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)
-
-    model = ConvNeXtExampleModel()
     layerwise_paramwise_cfg = dict(
         decay_rate=decay_rate, decay_type='layer_wise', num_layers=6)
     optim_constructor = LearningRateDecayOptimizerConstructor(
@@ -207,18 +211,13 @@ def test_learning_rate_decay_optimizer_constructor():
     optimizer = optim_constructor(model)
     check_convnext_adamw_optimizer(optimizer, layer_wise_gt_lst)
 
-
-def check_beit_adamw_optimizer(optimizer, gt_lst):
-    assert isinstance(optimizer, torch.optim.AdamW)
-    assert optimizer.defaults['lr'] == 1
-    assert optimizer.defaults['weight_decay'] == 0.05
-    param_groups = optimizer.param_groups
-    # 1 layer (cls_token and patch_embed) + 3 layers * 2 (w, b) = 7 layers
-    assert len(param_groups) == 7
-    for i, param_dict in enumerate(param_groups):
-        assert param_dict['weight_decay'] == gt_lst[i]['weight_decay']
-        assert param_dict['lr_scale'] == gt_lst[i]['lr_scale']
-        assert param_dict['lr_scale'] == param_dict['lr']
+    layerwise_paramwise_cfg = dict(
+        decay_rate=decay_rate, decay_type='layer_wise', num_layers=3)
+    model = BEiTExampleModel(depth=3)
+    optim_constructor = LearningRateDecayOptimizerConstructor(
+        optimizer_cfg, layerwise_paramwise_cfg)
+    optimizer = optim_constructor(model)
+    check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)
 
 
 def test_beit_layer_decay_optimizer_constructor():
