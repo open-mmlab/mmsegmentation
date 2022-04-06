@@ -120,10 +120,21 @@ def binary_cross_entropy(pred,
                 pred.dim() == 4 and label.dim() == 3), \
             'Only pred shape [N, C], label shape [N] or pred shape [N, C, ' \
             'H, W], label shape [N, H, W] are supported'
-        # `weight` returned from `_expand_onehot_labels`
-        # has been treated for valid (non-ignore) pixels
-        label, weight, valid_mask = _expand_onehot_labels(
-            label, weight, pred.shape, ignore_index)
+
+        if pred.size(1) == 1:
+            # For binary class segmentation, the shape of `pred` is
+            # [N, 1, H, W] and that of `label` is [N, H, W].
+            label = label.unsqueeze(1)
+            valid_mask = ((label >= 0) & (label != ignore_index)).float()
+            if weight is not None:
+                weight = weight.unsqueeze(1).float() * valid_mask
+            else:
+                weight = valid_mask
+        else:
+            # `weight` returned from `_expand_onehot_labels`
+            # has been treated for valid (non-ignore) pixels
+            label, weight, valid_mask = _expand_onehot_labels(
+                label, weight, pred.shape, ignore_index)
     else:
         # should mask out the ignored elements
         valid_mask = ((label >= 0) & (label != ignore_index)).float()

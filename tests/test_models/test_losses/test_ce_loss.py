@@ -223,3 +223,38 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore, bce_input_same_dim):
                 reduction='sum',
                 weight=class_weight) / fake_label.numel()
     assert torch.allclose(loss, torch_loss)
+
+
+@pytest.mark.parametrize('avg_non_ignore', [True, False])
+def test_binary_class_ce_loss(avg_non_ignore):
+    from mmseg.models import build_loss
+
+    fake_pred = torch.rand(3, 1, 10, 10)
+    fake_label = torch.randint(0, 2, (3, 10, 10))
+    fake_weight = torch.rand(3, 10, 10)
+    valid_mask = ((fake_label >= 0) & (fake_label != 255)).float()
+    weight = valid_mask
+    torch_loss = torch.nn.functional.binary_cross_entropy_with_logits(
+        fake_pred,
+        fake_label.unsqueeze(1).float(),
+        reduction='none',
+        weight=fake_weight.unsqueeze(1).float())
+    if avg_non_ignore:
+        eps = torch.finfo(torch.float32).eps
+        avg_factor = valid_mask.sum().item()
+        torch_loss = (torch_loss * weight.unsqueeze(1)).sum() / (
+            avg_factor + eps)
+    else:
+        torch_loss = (torch_loss * weight.unsqueeze(1)).mean()
+
+    loss_cls_cfg = dict(
+        type='CrossEntropyLoss',
+        use_sigmoid=True,
+        loss_weight=1.0,
+        avg_non_ignore=avg_non_ignore,
+        reduction='mean',
+        loss_name='loss_ce')
+    loss_cls = build_loss(loss_cls_cfg)
+    loss = loss_cls(
+        fake_pred, fake_label, weight=fake_weight, ignore_index=255)
+    assert torch.allclose(loss, torch_loss)
