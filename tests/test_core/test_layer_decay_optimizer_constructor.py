@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import pytest
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
@@ -140,7 +141,7 @@ def check_convnext_adamw_optimizer(optimizer, gt_lst):
         assert param_dict['lr_scale'] == param_dict['lr']
 
 
-def test_convnext_learning_rate_decay_optimizer_constructor():
+def test_learning_rate_decay_optimizer_constructor():
 
     # paramwise_cfg with ConvNeXtExampleModel
     model = ConvNeXtExampleModel()
@@ -224,3 +225,11 @@ def test_beit_layer_decay_optimizer_constructor():
                                                        paramwise_cfg)
     optimizer = optim_constructor(model)
     check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)
+
+    with pytest.raises(NotImplementedError):
+        paramwise_cfg = dict(
+            decay_rate=decay_rate, decay_type='stage_wise', num_layers=3)
+        optim_constructor = LearningRateDecayOptimizerConstructor(
+            optimizer_cfg, paramwise_cfg)
+        optimizer = optim_constructor(model)
+        check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)

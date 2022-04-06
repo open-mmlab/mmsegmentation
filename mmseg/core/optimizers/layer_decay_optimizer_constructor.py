@@ -8,7 +8,7 @@ from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
 from ...utils import get_root_logger
 
 
-def get_num_layer_layer_wise(var_name, num_max_layer=12):
+def get_num_layer_for_convnext(var_name, num_max_layer=12):
     """Get the layer id to set the different learning rates in ``layer_wise``
     decay_type.
 
@@ -51,7 +51,7 @@ def get_num_layer_layer_wise(var_name, num_max_layer=12):
         return num_max_layer + 1
 
 
-def get_num_layer_stage_wise(var_name, num_max_layer):
+def get_num_stage_for_convnext(var_name, num_max_layer):
     """Get the layer id to set the different learning rates in ``stage_wise``
     decay_type.
 
@@ -137,7 +137,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                 this_weight_decay = weight_decay
             if 'layer_wise' in decay_type:
                 if 'ConvNeXt' in module.__class__.__name__:
-                    layer_id = get_num_layer_layer_wise(
+                    layer_id = get_num_layer_for_convnext(
                         name, self.paramwise_cfg.get('num_layers'))
                     logger.info(f'set param {name} as id {layer_id}')
                 elif 'BEiT' in module.__class__.__name__:
@@ -147,7 +147,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                     raise NotImplementedError()
             elif decay_type == 'stage_wise':
                 if 'ConvNeXt' in module.__class__.__name__:
-                    layer_id = get_num_layer_stage_wise(name, num_layers)
+                    layer_id = get_num_stage_for_convnext(name, num_layers)
                     logger.info(f'set param {name} as id {layer_id}')
                 else:
                     raise NotImplementedError()
