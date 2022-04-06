@@ -1,8 +1,4 @@
-_base_ = [
-    './ocrnet_hrformer-s_4x2_512x1024_80k_cityscapes.py',
-    '../_base_/datasets/cityscapes.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_80k.py'
-]
+_base_ = './ocrnet_hrformer-s_4x2_512x1024_80k_cityscapes.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True, momentum=0.1)
 model = dict(
     backbone=dict(
