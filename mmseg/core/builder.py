@@ -1,9 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from mmcv.runner.optimizer import OPTIMIZER_BUILDERS as MMCV_OPTIMIZER_BUILDERS
-from mmcv.utils import Registry, build_from_cfg
 import copy
 
-OPTIMIZER_BUILDERS = Registry('optimizer builder', parent=MMCV_OPTIMIZER_BUILDERS)
+from mmcv.runner.optimizer import OPTIMIZER_BUILDERS as MMCV_OPTIMIZER_BUILDERS
+from mmcv.utils import Registry, build_from_cfg
+
+OPTIMIZER_BUILDERS = Registry(
+    'optimizer builder', parent=MMCV_OPTIMIZER_BUILDERS)
+
 
 def build_optimizer_constructor(cfg):
     return build_from_cfg(cfg, OPTIMIZER_BUILDERS)
