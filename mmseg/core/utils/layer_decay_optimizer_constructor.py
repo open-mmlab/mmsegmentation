@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import json
 
-from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
-                         get_dist_info)
+from mmcv.runner import DefaultOptimizerConstructor, get_dist_info
 
 from ...utils import get_root_logger
+from ..builder import OPTIMIZER_BUILDERS
 
 
 def get_num_layer_layer_wise(var_name, num_max_layer=12):

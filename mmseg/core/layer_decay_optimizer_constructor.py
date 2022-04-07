@@ -1,8 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
-                         get_dist_info)
+from mmcv.runner import DefaultOptimizerConstructor, get_dist_info
 
 from mmseg.utils import get_root_logger
+from .builder import OPTIMIZER_BUILDERS
 
 
 def get_num_layer_for_vit(var_name, num_max_layer):
