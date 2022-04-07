@@ -8,7 +8,7 @@ from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
 from ...utils import get_root_logger
 
 
-def get_num_layer_for_convnext(var_name, num_max_layer=12):
+def get_layer_id_for_convnext(var_name, max_layer_id=12):
     """Get the layer id to set the different learning rates in ``layer_wise``
     decay_type.
 
@@ -33,7 +33,7 @@ def get_num_layer_for_convnext(var_name, num_max_layer=12):
         elif stage_id == 2:
             layer_id = 3
         elif stage_id == 3:
-            layer_id = num_max_layer
+            layer_id = max_layer_id
         return layer_id
     elif var_name.startswith('backbone.stages'):
         stage_id = int(var_name.split('.')[2])
@@ -45,13 +45,13 @@ def get_num_layer_for_convnext(var_name, num_max_layer=12):
         elif stage_id == 2:
             layer_id = 3 + block_id // 3
         elif stage_id == 3:
-            layer_id = num_max_layer
+            layer_id = max_layer_id
         return layer_id
     else:
-        return num_max_layer + 1
+        return max_layer_id + 1
 
 
-def get_num_stage_for_convnext(var_name, num_max_layer):
+def get_stage_id_for_convnext(var_name, max_stage_id):
     """Get the layer id to set the different learning rates in ``stage_wise``
     decay_type.
 
@@ -72,10 +72,10 @@ def get_num_stage_for_convnext(var_name, num_max_layer):
         stage_id = int(var_name.split('.')[2])
         return stage_id + 1
     else:
-        return num_max_layer - 1
+        return max_stage_id - 1
 
 
-def get_num_layer_for_vit(var_name, num_max_layer):
+def get_layer_id_for_vit(var_name, max_layer_id):
     """Get the layer id to set the different learning rates.
 
     Args:
@@ -94,7 +94,7 @@ def get_num_layer_for_vit(var_name, num_max_layer):
         layer_id = int(var_name.split('.')[2])
         return layer_id + 1
     else:
-        return num_max_layer - 1
+        return max_layer_id - 1
 
 
 @OPTIMIZER_BUILDERS.register_module()
@@ -137,17 +137,17 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                 this_weight_decay = weight_decay
             if 'layer_wise' in decay_type:
                 if 'ConvNeXt' in module.__class__.__name__:
-                    layer_id = get_num_layer_for_convnext(
+                    layer_id = get_layer_id_for_convnext(
                         name, self.paramwise_cfg.get('num_layers'))
                     logger.info(f'set param {name} as id {layer_id}')
                 elif 'BEiT' in module.__class__.__name__:
-                    layer_id = get_num_layer_for_vit(name, num_layers)
+                    layer_id = get_layer_id_for_vit(name, num_layers)
                     logger.info(f'set param {name} as id {layer_id}')
                 else:
                     raise NotImplementedError()
             elif decay_type == 'stage_wise':
                 if 'ConvNeXt' in module.__class__.__name__:
-                    layer_id = get_num_stage_for_convnext(name, num_layers)
+                    layer_id = get_stage_id_for_convnext(name, num_layers)
                     logger.info(f'set param {name} as id {layer_id}')
                 else:
                     raise NotImplementedError()
