@@ -6,12 +6,12 @@ from unittest.mock import MagicMock
 import pytest
 import torch
 import torch.nn as nn
-
 from mmcv.runner import DefaultOptimizerConstructor
-from mmseg.core.builder import (
-    build_optimizer, build_optimizer_constructor, OPTIMIZER_BUILDERS)
 from mmcv.runner.optimizer.builder import TORCH_OPTIMIZERS
 from mmcv.utils.ext_loader import check_ops_exist
+
+from mmseg.core.builder import (OPTIMIZER_BUILDERS, build_optimizer,
+                                build_optimizer_constructor)
 
 OPS_AVAILABLE = check_ops_exist()
 if not OPS_AVAILABLE:
