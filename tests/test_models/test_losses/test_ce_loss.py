@@ -85,6 +85,35 @@ def test_ce_loss(use_sigmoid, reduction, avg_non_ignore, bce_input_same_dim):
                 ignore_index=255) / fake_label.numel()
     assert torch.allclose(loss, torch_loss)
 
+    if use_sigmoid:
+        # test loss with complicated case for ce/bce
+        # when avg_non_ignore is False, `avg_factor` would not be calculated
+        fake_pred = torch.full(size=(2, 21, 8, 8), fill_value=0.5)
+        fake_label = torch.ones(2, 8, 8).long()
+        fake_label[:, 0, 0] = 255
+        fake_weight = torch.rand(2, 8, 8)
+
+        loss_cls = build_loss(loss_cls_cfg)
+        loss = loss_cls(
+            fake_pred, fake_label, weight=fake_weight, ignore_index=255)
+        if use_sigmoid:
+            fake_label, weight, valid_mask = _expand_onehot_labels(
+                labels=fake_label,
+                label_weights=None,
+                target_shape=fake_pred.shape,
+                ignore_index=255)
+            torch_loss = torch.nn.functional.binary_cross_entropy_with_logits(
+                fake_pred,
+                fake_label.float(),
+                reduction='none',
+                weight=fake_weight.unsqueeze(1).expand(fake_pred.shape))
+            if avg_non_ignore:
+                avg_factor = valid_mask.sum().item()
+                torch_loss = (torch_loss * weight).sum() / avg_factor
+            else:
+                torch_loss = (torch_loss * weight).mean()
+        assert torch.allclose(loss, torch_loss)
+
     # test loss with class weights from file
     fake_pred = torch.Tensor([[100, -100]])
     fake_label = torch.Tensor([1]).long()
