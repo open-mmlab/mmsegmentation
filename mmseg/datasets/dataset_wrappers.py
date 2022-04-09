@@ -34,7 +34,7 @@ class ConcatDataset(_ConcatDataset):
         assert separate_eval in [True, False], \
             f'separate_eval can only be True or False,' \
             f'but get {separate_eval}'
-        self.is_same_type = \
+        self.have_same_type = \
             len(set([type(ds) for ds in self.datasets])) == 1
         if any([isinstance(ds, CityscapesDataset) for ds in datasets]):
             raise NotImplementedError(
@@ -90,7 +90,7 @@ class ConcatDataset(_ConcatDataset):
             # calculate the average metric of datasets
             # if they have same dataset type
             # e.g. results['mIoU'] = mean(results['0_mIoU], results['1_mIoU]..)
-            if self.is_same_type:
+            if self.have_same_type:
                 for m in metrics:
                     total_eval_results[m] = np.mean([
                         total_eval_results[k] for k in total_eval_results
@@ -98,7 +98,7 @@ class ConcatDataset(_ConcatDataset):
                     ])
             return total_eval_results
 
-        if not self.is_same_type:
+        if not self.have_same_type:
             raise NotImplementedError(
                 'All the datasets should have same types when '
                 'self.separate_eval=False')
