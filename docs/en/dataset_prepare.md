@@ -325,6 +325,9 @@ The following segmentation class is merged due to extreme rarity:
 
 - Speed bumper --> RD normal street (randomly parsing 50% of dataset results in only one sample containing the 'speed_bumper' semantic)
 
+In our default setting, it will generate 30,699 images for training, 3,426 images for validation and 7,332 images for testing.
+
+
 ### LoveDA
 
 The data could be downloaded from Google Drive [here](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing).
