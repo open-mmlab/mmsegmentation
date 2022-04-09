@@ -430,29 +430,25 @@ def test_eval_concat_custom_dataset(separate_eval):
     dataset2 = build_dataset(cfg2)
     assert isinstance(dataset2, ConcatDataset)
     assert len(dataset2) == 10
-    assert dataset2.have_same_type is True
 
     eval_results2 = dataset2.evaluate(
         pseudo_results * 2, metric=['mIoU', 'mDice', 'mFscore'])
 
     if separate_eval:
         assert eval_results1['mIoU'] == eval_results2[
-            '0_mIoU'] == eval_results2['1_mIoU'] == eval_results2['mIoU']
+            '0_mIoU'] == eval_results2['1_mIoU']
         assert eval_results1['mDice'] == eval_results2[
-            '0_mDice'] == eval_results2['1_mDice'] == eval_results2['mDice']
+            '0_mDice'] == eval_results2['1_mDice']
         assert eval_results1['mAcc'] == eval_results2[
-            '0_mAcc'] == eval_results2['1_mAcc'] == eval_results2['mAcc']
+            '0_mAcc'] == eval_results2['1_mAcc']
         assert eval_results1['aAcc'] == eval_results2[
-            '0_aAcc'] == eval_results2['1_aAcc'] == eval_results2['aAcc']
+            '0_aAcc'] == eval_results2['1_aAcc']
         assert eval_results1['mFscore'] == eval_results2[
-            '0_mFscore'] == eval_results2['1_mFscore'] == eval_results2[
-                'mFscore']
+            '0_mFscore'] == eval_results2['1_mFscore']
         assert eval_results1['mPrecision'] == eval_results2[
-            '0_mPrecision'] == eval_results2['1_mPrecision'] == eval_results2[
-                'mPrecision']
+            '0_mPrecision'] == eval_results2['1_mPrecision']
         assert eval_results1['mRecall'] == eval_results2[
-            '0_mRecall'] == eval_results2['1_mRecall'] == eval_results2[
-                'mRecall']
+            '0_mRecall'] == eval_results2['1_mRecall']
     else:
         assert eval_results1['mIoU'] == eval_results2['mIoU']
         assert eval_results1['mDice'] == eval_results2['mDice']
@@ -519,22 +515,19 @@ def test_eval_concat_custom_dataset(separate_eval):
 
     if separate_eval:
         assert eval_results1['mIoU'] == eval_results2[
-            '0_mIoU'] == eval_results2['1_mIoU'] == eval_results2['mIoU']
+            '0_mIoU'] == eval_results2['1_mIoU']
         assert eval_results1['mDice'] == eval_results2[
-            '0_mDice'] == eval_results2['1_mDice'] == eval_results2['mDice']
+            '0_mDice'] == eval_results2['1_mDice']
         assert eval_results1['mAcc'] == eval_results2[
-            '0_mAcc'] == eval_results2['1_mAcc'] == eval_results2['mAcc']
+            '0_mAcc'] == eval_results2['1_mAcc']
         assert eval_results1['aAcc'] == eval_results2[
-            '0_aAcc'] == eval_results2['1_aAcc'] == eval_results2['aAcc']
+            '0_aAcc'] == eval_results2['1_aAcc']
         assert eval_results1['mFscore'] == eval_results2[
-            '0_mFscore'] == eval_results2['1_mFscore'] == eval_results2[
-                'mFscore']
+            '0_mFscore'] == eval_results2['1_mFscore']
         assert eval_results1['mPrecision'] == eval_results2[
-            '0_mPrecision'] == eval_results2['1_mPrecision'] == eval_results2[
-                'mPrecision']
+            '0_mPrecision'] == eval_results2['1_mPrecision']
         assert eval_results1['mRecall'] == eval_results2[
-            '0_mRecall'] == eval_results2['1_mRecall'] == eval_results2[
-                'mRecall']
+            '0_mRecall'] == eval_results2['1_mRecall']
     else:
         assert eval_results1['mIoU'] == eval_results2['mIoU']
         assert eval_results1['mDice'] == eval_results2['mDice']
@@ -558,22 +551,19 @@ def test_eval_concat_custom_dataset(separate_eval):
 
     if separate_eval:
         assert eval_results1['mIoU'] == eval_results2[
-            '0_mIoU'] == eval_results2['1_mIoU'] == eval_results2['mIoU']
+            '0_mIoU'] == eval_results2['1_mIoU']
         assert eval_results1['mDice'] == eval_results2[
-            '0_mDice'] == eval_results2['1_mDice'] == eval_results2['mDice']
+            '0_mDice'] == eval_results2['1_mDice']
         assert eval_results1['mAcc'] == eval_results2[
-            '0_mAcc'] == eval_results2['1_mAcc'] == eval_results2['mAcc']
+            '0_mAcc'] == eval_results2['1_mAcc']
         assert eval_results1['aAcc'] == eval_results2[
-            '0_aAcc'] == eval_results2['1_aAcc'] == eval_results2['aAcc']
+            '0_aAcc'] == eval_results2['1_aAcc']
         assert eval_results1['mFscore'] == eval_results2[
-            '0_mFscore'] == eval_results2['1_mFscore'] == eval_results2[
-                'mFscore']
+            '0_mFscore'] == eval_results2['1_mFscore']
         assert eval_results1['mPrecision'] == eval_results2[
-            '0_mPrecision'] == eval_results2['1_mPrecision'] == eval_results2[
-                'mPrecision']
+            '0_mPrecision'] == eval_results2['1_mPrecision']
         assert eval_results1['mRecall'] == eval_results2[
-            '0_mRecall'] == eval_results2['1_mRecall'] == eval_results2[
-                'mRecall']
+            '0_mRecall'] == eval_results2['1_mRecall']
     else:
         assert eval_results1['mIoU'] == eval_results2['mIoU']
         assert eval_results1['mDice'] == eval_results2['mDice']
