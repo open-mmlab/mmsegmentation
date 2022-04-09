@@ -13,7 +13,7 @@ from mmcv.utils import build_from_cfg
 
 from mmseg import digit_version
 from mmseg.core import DistEvalHook, EvalHook
-from mmseg.datasets import build_dataloader, build_dataset
+from mmseg.datasets import ConcatDataset, build_dataloader, build_dataset
 from mmseg.utils import find_latest_checkpoint, get_root_logger
 
 
@@ -142,6 +142,16 @@ def train_segmentor(model,
     # register eval hooks
     if validate:
         val_dataset = build_dataset(cfg.data.val, dict(test_mode=True))
+        if isinstance(val_dataset, ConcatDataset):
+            separate_eval = val_dataset.separate_eval
+            have_same_type = val_dataset.have_same_type
+            save_best = cfg.evaluation.save_best
+            if separate_eval and not have_same_type and save_best is not None:
+                logger.warning('`save_best` will not take effect '
+                               'when test datasets have different data types '
+                               'and separate_eval is True.')
+                cfg.evaluation.save_best = None
+
         val_dataloader = build_dataloader(
             val_dataset,
             samples_per_gpu=1,

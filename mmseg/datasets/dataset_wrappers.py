@@ -34,6 +34,8 @@ class ConcatDataset(_ConcatDataset):
         assert separate_eval in [True, False], \
             f'separate_eval can only be True or False,' \
             f'but get {separate_eval}'
+        self.have_same_type = \
+            len(set([type(ds) for ds in self.datasets])) == 1
         if any([isinstance(ds, CityscapesDataset) for ds in datasets]):
             raise NotImplementedError(
                 'Evaluating ConcatDataset containing CityscapesDataset'
@@ -66,6 +68,7 @@ class ConcatDataset(_ConcatDataset):
         if self.separate_eval:
             dataset_idx = -1
             total_eval_results = dict()
+            metrics = set()
             for size, dataset in zip(self.cumulative_sizes, self.datasets):
                 start_idx = 0 if dataset_idx == -1 else \
                     self.cumulative_sizes[dataset_idx]
@@ -82,10 +85,20 @@ class ConcatDataset(_ConcatDataset):
                 dataset_idx += 1
                 for k, v in eval_results_per_dataset.items():
                     total_eval_results.update({f'{dataset_idx}_{k}': v})
+                    metrics.add(k)
 
+            # calculate the average metric of datasets
+            # if they have same dataset type
+            # e.g. results['mIoU'] = mean(results['0_mIoU], results['1_mIoU]..)
+            if self.have_same_type:
+                for m in metrics:
+                    total_eval_results[m] = np.mean([
+                        total_eval_results[k] for k in total_eval_results
+                        if k.endswith(m)
+                    ])
             return total_eval_results
 
-        if len(set([type(ds) for ds in self.datasets])) != 1:
+        if not self.have_same_type:
             raise NotImplementedError(
                 'All the datasets should have same types when '
                 'self.separate_eval=False')
