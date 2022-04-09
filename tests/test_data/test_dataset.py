@@ -430,7 +430,7 @@ def test_eval_concat_custom_dataset(separate_eval):
     dataset2 = build_dataset(cfg2)
     assert isinstance(dataset2, ConcatDataset)
     assert len(dataset2) == 10
-    assert dataset2.have_same_type is True
+    assert dataset2.is_same_type is True
 
     eval_results2 = dataset2.evaluate(
         pseudo_results * 2, metric=['mIoU', 'mDice', 'mFscore'])
