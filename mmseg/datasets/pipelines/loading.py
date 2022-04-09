@@ -136,7 +136,7 @@ class LoadAnnotations(object):
         # modify if custom classes
         if results.get('label_map', None) is not None:
             # Add deep copy to solve bug of repeatedly
-            # replace `gt_semantic_seg`, which is reported in 
+            # replace `gt_semantic_seg`, which is reported in
             # https://github.com/open-mmlab/mmsegmentation/pull/1445/
             gt_semantic_seg_copy = gt_semantic_seg.copy()
             for old_id, new_id in results['label_map'].items():
