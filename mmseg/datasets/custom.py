@@ -291,6 +291,10 @@ class CustomDataset(Dataset):
                     seg_map,
                     len(self.CLASSES),
                     self.ignore_index,
+                    # as the labels has been converted when dataset initialized
+                    # in `get_palette_for_custom_classes ` this `label_map`
+                    # should be `dict()`, see https://github.com/open-mmlab/mmsegmentation/issues/1415
+                    # for more ditails 
                     label_map=dict(),
                     reduce_zero_label=self.reduce_zero_label))
 
