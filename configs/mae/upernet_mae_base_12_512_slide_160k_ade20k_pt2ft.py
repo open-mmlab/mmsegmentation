@@ -5,8 +5,7 @@ _base_ = [
 crop_size = (512, 512)
 
 model = dict(
-    pretrained=
-    '/mnt/cache/liuyuan1.vendor/detection/pretrained/mae_pretrain_vit_base_.pth',
+    pretrained='mae_pretrain_vit_base_.pth',
     backbone=dict(
         type='MAE',
         img_size=(512, 512),
