@@ -3,7 +3,7 @@ import json
 
 from mmcv.runner import DefaultOptimizerConstructor, get_dist_info
 
-from ...utils import get_root_logger
+from mmseg.utils import get_root_logger
 from ..builder import OPTIMIZER_BUILDERS
 
 
