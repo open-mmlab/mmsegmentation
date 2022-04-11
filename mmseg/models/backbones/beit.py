@@ -32,8 +32,9 @@ class BEiTAttention(BaseModule):
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
         window_size (tuple[int]): The height and width of the window.
-        qv_bias (bool):  If True, add a learnable bias to q, v.
-            Default: True.
+        q_bias (bool):  If True, add a learnable bias to q. Default: True.
+        k_bias (bool):  If True, add a learnable bias to k. Default: False.
+        v_bias (bool):  If True, add a learnable bias to v. Default: True.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
         attn_drop_rate (float): Dropout ratio of attention weight.
@@ -47,6 +48,9 @@ class BEiTAttention(BaseModule):
                  embed_dims,
                  num_heads,
                  window_size,
+                 q_bias=True,
+                 k_bias=False,
+                 v_bias=True,
                  qv_bias=True,
                  qk_scale=None,
                  attn_drop_rate=0.,
@@ -57,12 +61,16 @@ class BEiTAttention(BaseModule):
         self.num_heads = num_heads
         head_embed_dims = embed_dims // num_heads
         self.scale = qk_scale or head_embed_dims**-0.5
-        if qv_bias:
-            self.q_bias = nn.Parameter(torch.zeros(embed_dims))
-            self.v_bias = nn.Parameter(torch.zeros(embed_dims))
-        else:
-            self.q_bias = None
-            self.v_bias = None
+
+        self.q_bias = nn.Parameter(
+            torch.zeros(embed_dims)) if q_bias else torch.zeros(
+                embed_dims, requires_grad=False)
+        self.k_bias = nn.Parameter(
+            torch.zeros(embed_dims)) if k_bias else torch.zeros(
+                embed_dims, requires_grad=False)
+        self.v_bias = nn.Parameter(
+            torch.zeros(embed_dims)) if v_bias else torch.zeros(
+                embed_dims, requires_grad=False)
 
         self.window_size = window_size
         # cls to token & token 2 cls & cls to cls
@@ -113,10 +121,7 @@ class BEiTAttention(BaseModule):
             x (tensor): input features with shape of (num_windows*B, N, C).
         """
         B, N, C = x.shape
-        qkv_bias = None
-        if self.q_bias is not None:
-            k_bias = torch.zeros_like(self.v_bias, requires_grad=False)
-            qkv_bias = torch.cat((self.q_bias, k_bias, self.v_bias))
+        qkv_bias = torch.cat((self.q_bias, self.k_bias, self.v_bias))
 
         qkv = F.linear(input=x, weight=self.qkv.weight, bias=qkv_bias)
         qkv = qkv.reshape(B, N, 3, self.num_heads, -1).permute(2, 0, 3, 1, 4)
