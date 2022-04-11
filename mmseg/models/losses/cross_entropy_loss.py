@@ -68,6 +68,9 @@ def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
     if target_shape[1] == 1:
         # For binary class segmentation, the shape of `pred` is
         # [N, 1, H, W] and that of `label` is [N, H, W].
+        assert labels.max() <= 1, \
+            'For pred with shape [N, 1, H, W], its label must have at ' \
+            'most 2 classes'
         bin_labels = labels.unsqueeze(1)
         valid_mask = ((bin_labels >= 0) & (bin_labels != ignore_index)).float()
         if label_weights is not None:
