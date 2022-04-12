@@ -63,14 +63,14 @@ class BEiTAttention(BaseModule):
         self.scale = qk_scale or head_embed_dims**-0.5
 
         self.q_bias = nn.Parameter(
-            torch.zeros(embed_dims)) if q_bias else torch.zeros(
-                embed_dims, requires_grad=False)
+            torch.zeros(embed_dims)) if q_bias else nn.Parameter(
+                torch.zeros(embed_dims), requires_grad=False)
         self.k_bias = nn.Parameter(
-            torch.zeros(embed_dims)) if k_bias else torch.zeros(
-                embed_dims, requires_grad=False)
+            torch.zeros(embed_dims)) if k_bias else nn.Parameter(
+                torch.zeros(embed_dims), requires_grad=False)
         self.v_bias = nn.Parameter(
-            torch.zeros(embed_dims)) if v_bias else torch.zeros(
-                embed_dims, requires_grad=False)
+            torch.zeros(embed_dims)) if v_bias else nn.Parameter(
+                torch.zeros(embed_dims), requires_grad=False)
 
         self.window_size = window_size
         # cls to token & token 2 cls & cls to cls
