@@ -158,6 +158,9 @@ class TransformerEncoderLayer(BaseModule):
         num_fcs (int): The number of fully-connected layers for FFNs.
             Default: 2.
         qv_bias (bool): Enable bias for qv if True. Default: True
+        q_bias (bool):  If True, add a learnable bias to q. Default: True.
+        k_bias (bool):  If True, add a learnable bias to k. Default: False.
+        v_bias (bool):  If True, add a learnable bias to v. Default: True.
         act_cfg (dict): The activation config for FFNs.
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
@@ -176,11 +179,16 @@ class TransformerEncoderLayer(BaseModule):
                  drop_path_rate=0.,
                  num_fcs=2,
                  qv_bias=True,
+                 q_bias=True,
+                 k_bias=False,
+                 v_bias=True,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  window_size=None,
                  init_values=None):
         super(TransformerEncoderLayer, self).__init__()
+        warnings.warn('qv_bias is deprecated, please use q_bias, k_bias and \
+            v_bias')
         self.norm1_name, norm1 = build_norm_layer(
             norm_cfg, embed_dims, postfix=1)
         self.add_module(self.norm1_name, norm1)
@@ -189,6 +197,9 @@ class TransformerEncoderLayer(BaseModule):
             num_heads=num_heads,
             window_size=window_size,
             qv_bias=qv_bias,
+            q_bias=q_bias,
+            k_bias=k_bias,
+            v_bias=v_bias,
             qk_scale=None,
             attn_drop_rate=attn_drop_rate,
             proj_drop_rate=0.,
