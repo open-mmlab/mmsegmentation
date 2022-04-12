@@ -62,15 +62,18 @@ class EncoderDecoder(BaseSegmentor):
 
     def extract_feat(self, img):
         """Extract features from images."""
+        output = []
         x = self.backbone(img)
+        output.append(x)
         if self.with_neck:
             x = self.neck(x)
-        return x
+            output.append(x)
+        return tuple(output)
 
     def encode_decode(self, img, img_metas):
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
-        x = self.extract_feat(img)
+        x = self.extract_feat(img)[-1]
         out = self._decode_head_forward_test(x, img_metas)
         out = resize(
             input=out,
@@ -140,13 +143,13 @@ class EncoderDecoder(BaseSegmentor):
 
         losses = dict()
 
-        loss_decode = self._decode_head_forward_train(x, img_metas,
+        loss_decode = self._decode_head_forward_train(x[-1], img_metas,
                                                       gt_semantic_seg)
         losses.update(loss_decode)
 
         if self.with_auxiliary_head:
             loss_aux = self._auxiliary_head_forward_train(
-                x, img_metas, gt_semantic_seg)
+                x[0], img_metas, gt_semantic_seg)
             losses.update(loss_aux)
 
         return losses
