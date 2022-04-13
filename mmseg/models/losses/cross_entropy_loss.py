@@ -135,7 +135,7 @@ def binary_cross_entropy(pred,
         # should mask out the ignored elements
         valid_mask = ((label >= 0) & (label != ignore_index)).float()
         if weight is not None:
-            weight *= valid_mask
+            weight = weight * valid_mask
         else:
             weight = valid_mask
     # average loss over non-ignored and valid elements
