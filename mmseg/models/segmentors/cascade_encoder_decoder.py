@@ -76,7 +76,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
         for i in range(1, self.num_stages):
             # forward test again, maybe unnecessary for most methods.
             if i == 1:
-                prev_outputs = self.decode_head[i - 1].forward_test(
+                prev_outputs = self.decode_head[0].forward_test(
                     x, img_metas, self.test_cfg)
             else:
                 prev_outputs = self.decode_head[i - 1].forward_test(
