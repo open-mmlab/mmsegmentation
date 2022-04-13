@@ -107,103 +107,19 @@ def check_default_optimizer(optimizer, model, prefix=''):
                            param_dict[prefix + param_names[i]])
 
 
-def check_sgd_optimizer(optimizer,
-                        model,
-                        prefix='',
-                        bias_lr_mult=1,
-                        bias_decay_mult=1,
-                        norm_decay_mult=1,
-                        dwconv_decay_mult=1,
-                        dcn_offset_lr_mult=1,
-                        bypass_duplicate=False):
-    param_groups = optimizer.param_groups
-    assert isinstance(optimizer, torch.optim.SGD)
-    assert optimizer.defaults['lr'] == base_lr
-    assert optimizer.defaults['momentum'] == momentum
-    assert optimizer.defaults['weight_decay'] == base_wd
-    model_parameters = list(model.parameters())
-    assert len(param_groups) == len(model_parameters)
-    for i, param in enumerate(model_parameters):
-        param_group = param_groups[i]
-        assert torch.equal(param_group['params'][0], param)
-        assert param_group['momentum'] == momentum
-
-    # param1
-    param1 = param_groups[0]
-    assert param1['lr'] == base_lr
-    assert param1['weight_decay'] == base_wd
-    # conv1.weight
-    conv1_weight = param_groups[1]
-    assert conv1_weight['lr'] == base_lr
-    assert conv1_weight['weight_decay'] == base_wd
-    # conv2.weight
-    conv2_weight = param_groups[2]
-    assert conv2_weight['lr'] == base_lr
-    assert conv2_weight['weight_decay'] == base_wd
-    # conv2.bias
-    conv2_bias = param_groups[3]
-    assert conv2_bias['lr'] == base_lr * bias_lr_mult
-    assert conv2_bias['weight_decay'] == base_wd * bias_decay_mult
-    # bn.weight
-    bn_weight = param_groups[4]
-    assert bn_weight['lr'] == base_lr
-    assert bn_weight['weight_decay'] == base_wd * norm_decay_mult
-    # bn.bias
-    bn_bias = param_groups[5]
-    assert bn_bias['lr'] == base_lr
-    assert bn_bias['weight_decay'] == base_wd * norm_decay_mult
-    # sub.param1
-    sub_param1 = param_groups[6]
-    assert sub_param1['lr'] == base_lr
-    assert sub_param1['weight_decay'] == base_wd
-    # sub.conv1.weight
-    sub_conv1_weight = param_groups[7]
-    assert sub_conv1_weight['lr'] == base_lr
-    assert sub_conv1_weight['weight_decay'] == base_wd * dwconv_decay_mult
-    # sub.conv1.bias
-    sub_conv1_bias = param_groups[8]
-    assert sub_conv1_bias['lr'] == base_lr * bias_lr_mult
-    assert sub_conv1_bias['weight_decay'] == base_wd * dwconv_decay_mult
-    # sub.gn.weight
-    sub_gn_weight = param_groups[9]
-    assert sub_gn_weight['lr'] == base_lr
-    assert sub_gn_weight['weight_decay'] == base_wd * norm_decay_mult
-    # sub.gn.bias
-    sub_gn_bias = param_groups[10]
-    assert sub_gn_bias['lr'] == base_lr
-    assert sub_gn_bias['weight_decay'] == base_wd * norm_decay_mult
-
-    if torch.cuda.is_available():
-        dcn_conv_weight = param_groups[11]
-        assert dcn_conv_weight['lr'] == base_lr
-        assert dcn_conv_weight['weight_decay'] == base_wd
-
-        dcn_offset_weight = param_groups[12]
-        assert dcn_offset_weight['lr'] == base_lr * dcn_offset_lr_mult
-        assert dcn_offset_weight['weight_decay'] == base_wd
-
-        dcn_offset_bias = param_groups[13]
-        assert dcn_offset_bias['lr'] == base_lr * dcn_offset_lr_mult
-        assert dcn_offset_bias['weight_decay'] == base_wd
-
-
 def test_build_optimizer_constructor():
     model = ExampleModel()
     optimizer_cfg = dict(
         type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
-    paramwise_cfg = dict(
-        bias_lr_mult=2,
-        bias_decay_mult=0.5,
-        norm_decay_mult=0,
-        dwconv_decay_mult=0.1,
-        dcn_offset_lr_mult=0.1)
+    paramwise_cfg = dict()
     optim_constructor_cfg = dict(
         type='DefaultOptimizerConstructor',
         optimizer_cfg=optimizer_cfg,
         paramwise_cfg=paramwise_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     optimizer = optim_constructor(model)
-    check_sgd_optimizer(optimizer, model, **paramwise_cfg)
+
+    assert isinstance(optimizer, torch.optim.SGD)
 
     from mmcv.runner import OPTIMIZERS
     from mmcv.utils import build_from_cfg
@@ -235,18 +151,7 @@ def test_build_optimizer_constructor():
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     optimizer = optim_constructor(model)
 
-    param_groups = optimizer.param_groups
     assert isinstance(optimizer, torch.optim.SGD)
-    assert optimizer.defaults['lr'] == base_lr
-    assert optimizer.defaults['momentum'] == momentum
-    assert optimizer.defaults['weight_decay'] == base_wd
-    for i, param in enumerate(model.parameters()):
-        param_group = param_groups[i]
-        assert torch.equal(param_group['params'][0], param)
-        assert param_group['momentum'] == momentum
-    # conv1.weight
-    assert param_groups[1]['lr'] == base_lr * paramwise_cfg['conv1_lr_mult']
-    assert param_groups[1]['weight_decay'] == base_wd
 
 
 def test_build_optimizer():
@@ -262,11 +167,7 @@ def test_build_optimizer():
         lr=base_lr,
         weight_decay=base_wd,
         momentum=momentum,
-        paramwise_cfg=dict(
-            bias_lr_mult=2,
-            bias_decay_mult=0.5,
-            norm_decay_mult=0,
-            dwconv_decay_mult=0.1,
-            dcn_offset_lr_mult=0.1))
+        paramwise_cfg=dict())
     optimizer = build_optimizer(model, optimizer_cfg)
-    check_sgd_optimizer(optimizer, model, **optimizer_cfg['paramwise_cfg'])
+
+    assert isinstance(optimizer, torch.optim.SGD)
