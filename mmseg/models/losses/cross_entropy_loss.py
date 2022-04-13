@@ -115,7 +115,14 @@ def binary_cross_entropy(pred,
     Returns:
         torch.Tensor: The calculated loss
     """
-    if pred.dim() != label.dim() and pred.size(1) != 1:
+    if pred.size(1) == 1:
+        # For binary class segmentation, the shape of pred is
+        # [N, 1, H, W] and that of label is [N, H, W].
+        assert label.max() <= 1, \
+            'For pred with shape [N, 1, H, W], its label must have at ' \
+            'most 2 classes'
+        pred = pred.squeeze()
+    if pred.dim() != label.dim():
         assert (pred.dim() == 2 and label.dim() == 1) or (
                 pred.dim() == 4 and label.dim() == 3), \
             'Only pred shape [N, C], label shape [N] or pred shape [N, C, ' \
@@ -125,13 +132,6 @@ def binary_cross_entropy(pred,
         label, weight, valid_mask = _expand_onehot_labels(
             label, weight, pred.shape, ignore_index)
     else:
-        if pred.dim() != label.dim():
-            # For binary class segmentation, the shape of `pred` is
-            # [N, 1, H, W] and that of `label` is [N, H, W].
-            assert label.max() <= 1, \
-                'For pred with shape [N, 1, H, W], its label must have at ' \
-                'most 2 classes'
-            pred = pred.squeeze()
         # should mask out the ignored elements
         valid_mask = ((label >= 0) & (label != ignore_index)).float()
         if weight is not None:
