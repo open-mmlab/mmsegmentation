@@ -28,10 +28,18 @@ class EvalHook(_EvalHook):
     def __init__(self,
                  *args,
                  by_epoch=False,
+                 early_stopping=True,
+                 max_epochs=5,
                  efficient_test=False,
                  pre_eval=False,
                  **kwargs):
-        super().__init__(*args, by_epoch=by_epoch, **kwargs)
+        super().__init__(*args,
+                         by_epoch=by_epoch,
+                         early_stopping=early_stopping,
+                         max_epochs=max_epochs,
+                         save_best='mIoU',
+                         **kwargs
+                         )
         self.pre_eval = pre_eval
         if efficient_test:
             warnings.warn(
@@ -75,6 +83,8 @@ class DistEvalHook(_DistEvalHook):
     def __init__(self,
                  *args,
                  by_epoch=False,
+                 early_stopping=True,
+                 max_epochs=5,
                  efficient_test=False,
                  pre_eval=False,
                  **kwargs):
