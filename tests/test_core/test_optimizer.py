@@ -34,32 +34,6 @@ class ExampleModel(nn.Module):
         return x
 
 
-class ExampleDuplicateModel(nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.param1 = nn.Parameter(torch.ones(1))
-        self.conv1 = nn.Sequential(nn.Conv2d(3, 4, kernel_size=1, bias=False))
-        self.conv2 = nn.Sequential(nn.Conv2d(4, 2, kernel_size=1))
-        self.bn = nn.BatchNorm2d(2)
-        self.sub = SubModel()
-        self.conv3 = nn.Sequential(nn.Conv2d(3, 4, kernel_size=1, bias=False))
-        self.conv3[0] = self.conv1[0]
-
-    def forward(self, x):
-        return x
-
-
-class PseudoDataParallel(nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.module = ExampleModel()
-
-    def forward(self, x):
-        return x
-
-
 base_lr = 0.01
 base_wd = 0.0001
 momentum = 0.9
