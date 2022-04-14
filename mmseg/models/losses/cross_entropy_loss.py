@@ -81,7 +81,7 @@ def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
         bin_label_weights = valid_mask
     else:
         bin_label_weights = label_weights.unsqueeze(1).expand(target_shape)
-        bin_label_weights *= valid_mask
+        bin_label_weights = bin_label_weights * valid_mask
 
     return bin_labels, bin_label_weights, valid_mask
 
@@ -115,6 +115,13 @@ def binary_cross_entropy(pred,
     Returns:
         torch.Tensor: The calculated loss
     """
+    if pred.size(1) == 1:
+        # For binary class segmentation, the shape of pred is
+        # [N, 1, H, W] and that of label is [N, H, W].
+        assert label.max() <= 1, \
+            'For pred with shape [N, 1, H, W], its label must have at ' \
+            'most 2 classes'
+        pred = pred.squeeze()
     if pred.dim() != label.dim():
         assert (pred.dim() == 2 and label.dim() == 1) or (
                 pred.dim() == 4 and label.dim() == 3), \
@@ -128,7 +135,7 @@ def binary_cross_entropy(pred,
         # should mask out the ignored elements
         valid_mask = ((label >= 0) & (label != ignore_index)).float()
         if weight is not None:
-            weight *= valid_mask
+            weight = weight * valid_mask
         else:
             weight = valid_mask
     # average loss over non-ignored and valid elements
