@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-
+import pytest
 import torch
 import torch.nn as nn
 from mmcv.runner import DefaultOptimizerConstructor
@@ -38,15 +38,10 @@ def test_build_optimizer_constructor():
     # Test whether optimizer constructor can be built from parent.
     assert type(optim_constructor) is DefaultOptimizerConstructor
 
-    from mmcv.runner import OPTIMIZERS
-    from mmcv.utils import build_from_cfg
-
     @OPTIMIZER_BUILDERS.register_module()
     class MyOptimizerConstructor(DefaultOptimizerConstructor):
 
-        def __call__(self):
-
-            return build_from_cfg(optimizer_cfg, OPTIMIZERS)
+        pass
 
     paramwise_cfg = dict(conv1_lr_mult=5)
     optim_constructor_cfg = dict(
@@ -55,7 +50,10 @@ def test_build_optimizer_constructor():
         paramwise_cfg=paramwise_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     # Test optimizer constructor can be built from child registry.
-    assert type(optim_constructor) is not DefaultOptimizerConstructor
+    assert type(optim_constructor) is MyOptimizerConstructor
+    # test invalid constructor cannot be built
+    with pytest.raises(KeyError):
+        build_optimizer_constructor(dict(type='A'))
 
 
 def test_build_optimizer():
