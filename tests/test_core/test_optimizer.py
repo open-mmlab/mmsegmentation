@@ -81,9 +81,11 @@ def test_build_optimizer_constructor():
         optimizer_cfg=optimizer_cfg,
         paramwise_cfg=paramwise_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
+    # Test whether optimizer constructor can be built from parent.
+    assert isinstance(optim_constructor, DefaultOptimizerConstructor)
     optimizer = optim_constructor(model)
     # Tests whether a new optimizer constructor can be registered.
-    assert isinstance(optimizer, torch.optim.SGD)
+    assert isinstance(optim_constructor, MyOptimizerConstructor)
 
 
 def test_build_optimizer():
