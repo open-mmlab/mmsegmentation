@@ -36,7 +36,7 @@ def test_build_optimizer_constructor():
         paramwise_cfg=paramwise_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     # Test whether optimizer constructor can be built from parent.
-    assert isinstance(optim_constructor, DefaultOptimizerConstructor)
+    assert type(optim_constructor) is DefaultOptimizerConstructor
 
     from mmcv.runner import OPTIMIZERS
     from mmcv.utils import build_from_cfg
@@ -44,19 +44,7 @@ def test_build_optimizer_constructor():
     @OPTIMIZER_BUILDERS.register_module()
     class MyOptimizerConstructor(DefaultOptimizerConstructor):
 
-        def __call__(self, model):
-            if hasattr(model, 'module'):
-                model = model.module
-
-            conv1_lr_mult = self.paramwise_cfg.get('conv1_lr_mult', 1.)
-
-            params = []
-            for name, param in model.named_parameters():
-                param_group = {'params': [param]}
-                if name.startswith('conv1') and param.requires_grad:
-                    param_group['lr'] = self.base_lr * conv1_lr_mult
-                params.append(param_group)
-            optimizer_cfg['params'] = params
+        def __call__(self):
 
             return build_from_cfg(optimizer_cfg, OPTIMIZERS)
 
@@ -66,10 +54,8 @@ def test_build_optimizer_constructor():
         optimizer_cfg=optimizer_cfg,
         paramwise_cfg=paramwise_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
-    # Test whether optimizer constructor can be built from parent.
-    assert isinstance(optim_constructor, DefaultOptimizerConstructor)
-    # Tests whether a new optimizer constructor can be registered.
-    assert isinstance(optim_constructor, MyOptimizerConstructor)
+    # Test optimizer constructor can be built from child registry.
+    assert type(optim_constructor) is not DefaultOptimizerConstructor
 
 
 def test_build_optimizer():
