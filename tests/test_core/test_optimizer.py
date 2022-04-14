@@ -8,18 +8,6 @@ from mmseg.core.builder import (OPTIMIZER_BUILDERS, build_optimizer,
                                 build_optimizer_constructor)
 
 
-class SubModel(nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(2, 2, kernel_size=1, groups=2)
-        self.gn = nn.GroupNorm(2, 2)
-        self.param1 = nn.Parameter(torch.ones(1))
-
-    def forward(self, x):
-        return x
-
-
 class ExampleModel(nn.Module):
 
     def __init__(self):
@@ -28,7 +16,6 @@ class ExampleModel(nn.Module):
         self.conv1 = nn.Conv2d(3, 4, kernel_size=1, bias=False)
         self.conv2 = nn.Conv2d(4, 2, kernel_size=1)
         self.bn = nn.BatchNorm2d(2)
-        self.sub = SubModel()
 
     def forward(self, x):
         return x
@@ -40,7 +27,6 @@ momentum = 0.9
 
 
 def test_build_optimizer_constructor():
-    model = ExampleModel()
     optimizer_cfg = dict(
         type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
     paramwise_cfg = dict()
@@ -49,9 +35,8 @@ def test_build_optimizer_constructor():
         optimizer_cfg=optimizer_cfg,
         paramwise_cfg=paramwise_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
-    optimizer = optim_constructor(model)
     # Test whether optimizer constructor can be built from parent.
-    assert isinstance(optimizer, torch.optim.SGD)
+    assert isinstance(optim_constructor, DefaultOptimizerConstructor)
 
     from mmcv.runner import OPTIMIZERS
     from mmcv.utils import build_from_cfg
@@ -83,7 +68,6 @@ def test_build_optimizer_constructor():
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     # Test whether optimizer constructor can be built from parent.
     assert isinstance(optim_constructor, DefaultOptimizerConstructor)
-    optimizer = optim_constructor(model)
     # Tests whether a new optimizer constructor can be registered.
     assert isinstance(optim_constructor, MyOptimizerConstructor)
 
