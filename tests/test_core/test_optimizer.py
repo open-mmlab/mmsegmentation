@@ -30,8 +30,7 @@ def test_build_optimizer_constructor():
     optimizer_cfg = dict(
         type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
     optim_constructor_cfg = dict(
-        type='DefaultOptimizerConstructor',
-        optimizer_cfg=optimizer_cfg)
+        type='DefaultOptimizerConstructor', optimizer_cfg=optimizer_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     # Test whether optimizer constructor can be built from parent.
     assert type(optim_constructor) is DefaultOptimizerConstructor
@@ -41,8 +40,7 @@ def test_build_optimizer_constructor():
         pass
 
     optim_constructor_cfg = dict(
-        type='MyOptimizerConstructor',
-        optimizer_cfg=optimizer_cfg)
+        type='MyOptimizerConstructor', optimizer_cfg=optimizer_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     # Test optimizer constructor can be built from child registry.
     assert type(optim_constructor) is MyOptimizerConstructor
