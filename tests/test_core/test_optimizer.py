@@ -40,7 +40,6 @@ def test_build_optimizer_constructor():
     class MyOptimizerConstructor(DefaultOptimizerConstructor):
         pass
 
-    paramwise_cfg = dict(conv1_lr_mult=5)
     optim_constructor_cfg = dict(
         type='MyOptimizerConstructor',
         optimizer_cfg=optimizer_cfg)
