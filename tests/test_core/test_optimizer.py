@@ -45,8 +45,7 @@ def test_build_optimizer_constructor():
     paramwise_cfg = dict(conv1_lr_mult=5)
     optim_constructor_cfg = dict(
         type='MyOptimizerConstructor',
-        optimizer_cfg=optimizer_cfg,
-        paramwise_cfg=paramwise_cfg)
+        optimizer_cfg=optimizer_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     # Test optimizer constructor can be built from child registry.
     assert type(optim_constructor) is MyOptimizerConstructor
