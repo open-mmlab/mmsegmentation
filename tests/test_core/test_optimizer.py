@@ -40,7 +40,6 @@ def test_build_optimizer_constructor():
 
     @OPTIMIZER_BUILDERS.register_module()
     class MyOptimizerConstructor(DefaultOptimizerConstructor):
-
         pass
 
     paramwise_cfg = dict(conv1_lr_mult=5)
@@ -51,7 +50,8 @@ def test_build_optimizer_constructor():
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     # Test optimizer constructor can be built from child registry.
     assert type(optim_constructor) is MyOptimizerConstructor
-    # test invalid constructor cannot be built
+
+    # Test unregistered constructor cannot be built
     with pytest.raises(KeyError):
         build_optimizer_constructor(dict(type='A'))
 
