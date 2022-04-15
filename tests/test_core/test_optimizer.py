@@ -31,8 +31,7 @@ def test_build_optimizer_constructor():
         type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
     optim_constructor_cfg = dict(
         type='DefaultOptimizerConstructor',
-        optimizer_cfg=optimizer_cfg,
-        paramwise_cfg=paramwise_cfg)
+        optimizer_cfg=optimizer_cfg)
     optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
     # Test whether optimizer constructor can be built from parent.
     assert type(optim_constructor) is DefaultOptimizerConstructor
