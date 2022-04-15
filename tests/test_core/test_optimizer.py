@@ -29,7 +29,6 @@ momentum = 0.9
 def test_build_optimizer_constructor():
     optimizer_cfg = dict(
         type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
-    paramwise_cfg = dict()
     optim_constructor_cfg = dict(
         type='DefaultOptimizerConstructor',
         optimizer_cfg=optimizer_cfg,
