@@ -88,7 +88,8 @@ class TransformerEncoderLayer(BaseModule):
                 feedforward_channels=feedforward_channels,
                 num_fcs=num_fcs,
                 ffn_drop=drop_rate,
-                dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
+                dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate)
+                if drop_path_rate > 0 else None,
                 act_cfg=act_cfg))
         self.build_ffn(ffn_cfg)
         self.with_cp = with_cp
