@@ -61,22 +61,22 @@ class BEiTAttention(BaseModule):
         self.scale = qk_scale or head_embed_dims**-0.5
 
         if bias == 'qv_bias':
-            self.init_qv_bias()
+            self._init_qv_bias()
             bias = False
 
         self.window_size = window_size
-        self.init_rel_pos_embedding()
+        self._init_rel_pos_embedding()
 
         self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=bias)
         self.attn_drop = nn.Dropout(attn_drop_rate)
         self.proj = nn.Linear(embed_dims, embed_dims)
         self.proj_drop = nn.Dropout(proj_drop_rate)
 
-    def init_qv_bias(self):
+    def _init_qv_bias(self):
         self.q_bias = nn.Parameter(torch.zeros(self.embed_dims))
         self.v_bias = nn.Parameter(torch.zeros(self.embed_dims))
 
-    def init_rel_pos_embedding(self):
+    def _init_rel_pos_embedding(self):
         wH, wW = self.window_size
         # cls to token & token 2 cls & cls to cls
         self.num_relative_distance = (2 * wH - 1) * (2 * wW - 1) + 3
