@@ -32,9 +32,7 @@ class BEiTAttention(BaseModule):
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
         window_size (tuple[int]): The height and width of the window.
-        bias (bool, str): The option works for bias of q, k v. If True,
-            add a learnable bias to q, k, v. If it is 'qv_bias', add a
-            learnalbe bias for q, v. Default: 'qv_bias'.
+        qv_bias (bool): Enable bias for qv if True. Default: True
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
         attn_drop_rate (float): Dropout ratio of attention weight.
@@ -48,7 +46,8 @@ class BEiTAttention(BaseModule):
                  embed_dims,
                  num_heads,
                  window_size,
-                 bias='qv_bias',
+                 qv_bias=True,
+                 qkv_bias=False,
                  qk_scale=None,
                  attn_drop_rate=0.,
                  proj_drop_rate=0.,
@@ -60,14 +59,14 @@ class BEiTAttention(BaseModule):
         head_embed_dims = embed_dims // num_heads
         self.scale = qk_scale or head_embed_dims**-0.5
 
-        if bias == 'qv_bias':
+        if qv_bias:
             self._init_qv_bias()
-            bias = False
+            qkv_bias = False
 
         self.window_size = window_size
         self._init_rel_pos_embedding()
 
-        self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=bias)
+        self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop_rate)
         self.proj = nn.Linear(embed_dims, embed_dims)
         self.proj_drop = nn.Dropout(proj_drop_rate)
@@ -177,7 +176,8 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  num_fcs=2,
-                 bias='qv_bias',
+                 qv_bias=True,
+                 qkv_bias=False,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  window_size=None,
@@ -185,7 +185,7 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
                  ffn_cfg=dict(add_identity=False),
                  init_values=None):
         attn_cfg.update(
-            dict(bias=bias, window_size=window_size, qk_scale=None))
+            dict(qv_bias=qv_bias, window_size=window_size, qk_scale=None))
 
         super(BEiTTransformerEncoderLayer, self).__init__(
             embed_dims=embed_dims,
@@ -195,7 +195,7 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
             drop_path_rate=0.,
             drop_rate=0.,
             num_fcs=num_fcs,
-            qkv_bias=False,
+            qkv_bias=qkv_bias,
             act_cfg=act_cfg,
             norm_cfg=norm_cfg,
             attn_cfg=attn_cfg,
@@ -338,7 +338,7 @@ class BEiT(BaseModule):
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[i],
                     num_fcs=num_fcs,
-                    bias='qv_bias' if qv_bias else False,
+                    qv_bias=qv_bias,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
                     window_size=window_size,
