@@ -182,8 +182,7 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
                  norm_cfg=dict(type='LN'),
                  window_size=None,
                  attn_cfg=dict(),
-                 ffn_cfg=dict(
-                     ffn_drop=0., dropout_layer=None, add_identity=False),
+                 ffn_cfg=dict(add_identity=False),
                  init_values=None):
         attn_cfg.update(
             dict(bias=bias, window_size=window_size, qk_scale=None))
@@ -194,6 +193,7 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
             feedforward_channels=feedforward_channels,
             attn_drop_rate=attn_drop_rate,
             drop_path_rate=0.,
+            drop_rate=0.,
             num_fcs=num_fcs,
             qkv_bias=False,
             act_cfg=act_cfg,
