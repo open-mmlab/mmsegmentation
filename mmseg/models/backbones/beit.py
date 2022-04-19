@@ -59,6 +59,7 @@ class BEiTAttention(BaseModule):
         self.embed_dims = embed_dims
         self.num_heads = num_heads
         head_embed_dims = embed_dims // num_heads
+        self.bias = bias
         self.scale = qk_scale or head_embed_dims**-0.5
 
         qkv_bias = bias
@@ -122,12 +123,14 @@ class BEiTAttention(BaseModule):
             x (tensor): input features with shape of (num_windows*B, N, C).
         """
         B, N, C = x.shape
-        qkv_bias = None
-        if hasattr(self, 'q_bias'):
+
+        if self.bias == 'qv_bias':
             k_bias = torch.zeros_like(self.v_bias, requires_grad=False)
             qkv_bias = torch.cat((self.q_bias, k_bias, self.v_bias))
+            qkv = F.linear(input=x, weight=self.qkv.weight, bias=qkv_bias)
+        else:
+            qkv = self.qkv(x)
 
-        qkv = F.linear(input=x, weight=self.qkv.weight, bias=qkv_bias)
         qkv = qkv.reshape(B, N, 3, self.num_heads, -1).permute(2, 0, 3, 1, 4)
         q, k, v = qkv[0], qkv[1], qkv[2]
         q = q * self.scale
