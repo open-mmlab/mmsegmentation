@@ -32,7 +32,10 @@ class BEiTAttention(BaseModule):
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
         window_size (tuple[int]): The height and width of the window.
-        qv_bias (bool): Enable bias for qv if True. Default: True
+        bias (bool): The option to add leanable bias for q, k, v. If bias is
+            True, it will add leanable bias. If bias is 'qv_bias', it will only
+            add leanable bias for q, v. If bias is False, it will not add bias
+            for q, k, v. Default to 'qv_bias'.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
         attn_drop_rate (float): Dropout ratio of attention weight.
@@ -46,8 +49,7 @@ class BEiTAttention(BaseModule):
                  embed_dims,
                  num_heads,
                  window_size,
-                 qv_bias=True,
-                 qkv_bias=False,
+                 bias='qv_bias',
                  qk_scale=None,
                  attn_drop_rate=0.,
                  proj_drop_rate=0.,
@@ -59,7 +61,8 @@ class BEiTAttention(BaseModule):
         head_embed_dims = embed_dims // num_heads
         self.scale = qk_scale or head_embed_dims**-0.5
 
-        if qv_bias:
+        qkv_bias = bias
+        if bias == 'qv_bias':
             self._init_qv_bias()
             qkv_bias = False
 
@@ -158,7 +161,10 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
         drop_path_rate (float): Stochastic depth rate. Default 0.0.
         num_fcs (int): The number of fully-connected layers for FFNs.
             Default: 2.
-        qv_bias (bool): Enable bias for qv if True. Default: True
+        bias (bool): The option to add leanable bias for q, k, v. If bias is
+            True, it will add leanable bias. If bias is 'qv_bias', it will only
+            add leanable bias for q, v. If bias is False, it will not add bias
+            for q, k, v. Default to 'qv_bias'.
         act_cfg (dict): The activation config for FFNs.
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
@@ -176,16 +182,14 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  num_fcs=2,
-                 qv_bias=True,
-                 qkv_bias=False,
+                 bias='qv_bias',
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  window_size=None,
                  attn_cfg=dict(),
                  ffn_cfg=dict(add_identity=False),
                  init_values=None):
-        attn_cfg.update(
-            dict(qv_bias=qv_bias, window_size=window_size, qk_scale=None))
+        attn_cfg.update(dict(window_size=window_size, qk_scale=None))
 
         super(BEiTTransformerEncoderLayer, self).__init__(
             embed_dims=embed_dims,
@@ -195,7 +199,7 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
             drop_path_rate=0.,
             drop_rate=0.,
             num_fcs=num_fcs,
-            qkv_bias=qkv_bias,
+            qkv_bias=bias,
             act_cfg=act_cfg,
             norm_cfg=norm_cfg,
             attn_cfg=attn_cfg,
@@ -338,7 +342,7 @@ class BEiT(BaseModule):
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[i],
                     num_fcs=num_fcs,
-                    qv_bias=qv_bias,
+                    bias='qv_bias' if qv_bias else False,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
                     window_size=window_size,
