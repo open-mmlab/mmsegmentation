@@ -12,11 +12,12 @@ import torch
 from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
-from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
-                            COCOStuffDataset, ConcatDataset, CustomDataset,
-                            ISPRSDataset, LoveDADataset, MultiImageMixDataset,
-                            PascalVOCDataset, PotsdamDataset, RepeatDataset,
-                            build_dataset, iSAIDDataset, CIHPDataset)
+from mmseg.datasets import (DATASETS, ADE20KDataset, CIHPDataset,
+                            CityscapesDataset, COCOStuffDataset, ConcatDataset,
+                            CustomDataset, ISPRSDataset, LoveDADataset,
+                            MultiImageMixDataset, PascalVOCDataset,
+                            PotsdamDataset, RepeatDataset, build_dataset,
+                            iSAIDDataset)
 
 
 def test_classes():

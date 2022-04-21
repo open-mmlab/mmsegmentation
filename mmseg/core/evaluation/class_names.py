@@ -129,10 +129,10 @@ def stare_classes():
 def cihp_classes():
     """CIHP class names for external use."""
     return [
-        'background', 'hat', 'hair', 'glove', 'sunglasses',
-        'upperclothes', 'dress', 'coat', 'socks', 'pants', 'torsoSkin',
-        'scarf', 'skirt', 'face', 'leftArm', 'rightArm', 'leftLeg',
-        'rightLeg', 'leftShoe', 'rightShoe'
+        'background', 'hat', 'hair', 'glove', 'sunglasses', 'upperclothes',
+        'dress', 'coat', 'socks', 'pants', 'torsoSkin', 'scarf', 'skirt',
+        'face', 'leftArm', 'rightArm', 'leftLeg', 'rightLeg', 'leftShoe',
+        'rightShoe'
     ]
 
 
@@ -278,8 +278,7 @@ def stare_palette():
 def cihp_palette():
     """CIHP palette for external use."""
     return [[0, 0, 0], [128, 0, 0], [255, 0, 0], [0, 85, 0], [170, 0, 51],
-            [255, 85, 0], [0, 0, 85], [0, 119, 221], [85, 85,
-                                                        0], [0, 85, 85],
+            [255, 85, 0], [0, 0, 85], [0, 119, 221], [85, 85, 0], [0, 85, 85],
             [85, 51, 0], [52, 86, 128], [0, 128, 0], [0, 0, 255],
             [51, 170, 221], [0, 255, 255], [85, 255, 170], [170, 255, 85],
             [255, 255, 0], [255, 170, 0]]
