@@ -119,6 +119,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── CIHP
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -316,3 +323,21 @@ python tools/convert_datasets/isaid.py /path/to/iSAID
 ```
 
 使用我们默认的配置 (`patch_width`=896, `patch_height`=896,　`overlap_area`=384)， 将生成 33978 张图片的训练集和 11644 张图片的验证集。
+
+### CIHP
+
+CIHP 数据集(训练集/验证集/测试集)的图像和注释可以从 [CIHP](https://lip.sysuhcp.com/overview.php) 下载.
+
+该数据集是一个多人人体解析数据集，总共19个语义类和一个背景类别。数据集被划分成28K/5K/5K的图像进行训练/验证/测试。
+
+下载后，在使用数据集进行训练前，您需要将数据集文件夹中的训练集和验证集（图像和注释）进行重新命名调整成如下格式.
+
+```
+│   ├── CIHP
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+```
