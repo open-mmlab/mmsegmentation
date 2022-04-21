@@ -77,6 +77,7 @@ def test_palette():
     assert PotsdamDataset.PALETTE == get_palette('potsdam')
     assert COCOStuffDataset.PALETTE == get_palette('cocostuff')
     assert iSAIDDataset.PALETTE == get_palette('isaid')
+    assert CIHPDataset.PALETTE == get_palette('cihp')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
