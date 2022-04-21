@@ -229,7 +229,7 @@ Models:
       mIoU: 80.65
       mIoU(ms+flip): 81.47
   Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20220406_154720-dfcc0b6.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20220406_154720-dfcc0b68.pth
 - Name: deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes
   In Collection: DeepLabV3+
   Metadata:
