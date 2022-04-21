@@ -138,6 +138,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── LIP
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -375,3 +382,21 @@ python tools/convert_datasets/isaid.py /path/to/iSAID
 ```
 
 In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+
+### LIP
+
+The data images and annotations could be download from [LIP](https://lip.sysuhcp.com/overview.php) (train/val/test)
+
+LIP is tasked for single human parsing. There are 19 semantic classes and 1 background class. The dataset is divided into 30K/10K/10K images for training, validation and testing.
+
+You may need to rename the training set and validation set (images and annotations) and follow the following structure for dataset preparation after downloading LIP dataset.
+
+```
+│   ├── LIP
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+```
