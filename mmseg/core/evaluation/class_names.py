@@ -121,6 +121,11 @@ def isaid_classes():
     ]
 
 
+def stare_classes():
+    """stare class names for external use."""
+    return ['background', 'vessel']
+
+
 def lip_classes():
     """LIP class names for external use."""
     return [
@@ -274,6 +279,11 @@ def lip_palette():
             [255, 255, 0], [255, 170, 0]]
 
 
+def stare_palette():
+    """STARE palette for external use."""
+    return [[120, 120, 120], [6, 230, 230]]
+
+
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
@@ -287,6 +297,7 @@ dataset_aliases = {
         'coco_stuff164k'
     ],
     'isaid': ['isaid', 'iSAID'],
+    'stare': ['stare', 'STARE'],
     'lip': ['lip']
 }
 
@@ -297,6 +308,7 @@ def get_classes(dataset):
     for name, aliases in dataset_aliases.items():
         for alias in aliases:
             alias2name[alias] = name
+
     if mmcv.is_str(dataset):
         if dataset in alias2name:
             labels = eval(alias2name[dataset] + '_classes()')
