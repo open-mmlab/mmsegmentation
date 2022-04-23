@@ -46,7 +46,7 @@ python tools/model_converters/beit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
 E.g.
 
 ```shell
-python tools/model_converters/beit2mmseg.py https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k_ft22k.pth pretrain/beit_base_patch16_224_pt22k_ft22k.pth
+python tools/model_converters/beit2mmseg.py https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22k.pth pretrain/beit_base_patch16_224_pt22k_ft22k.pth
 ```
 
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
@@ -55,8 +55,8 @@ In our default setting, pretrained models could be defined below:
 
   | pretrained models | original models |
   | ------ | -------- |
-  |BEiT_base.pth | ['BEiT_base'](https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k_ft22k.pth) |
-  |BEiT_large.pth | ['BEiT_large'](https://unilm.blob.core.windows.net/beit/beit_large_patch16_224_pt22k_ft22k.pth) |
+  |BEiT_base.pth | ['BEiT_base'](https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22k.pth) |
+  |BEiT_large.pth | ['BEiT_large'](https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_224_pt22k_ft22k.pth) |
 
 Verify the single-scale results of the model:
 
