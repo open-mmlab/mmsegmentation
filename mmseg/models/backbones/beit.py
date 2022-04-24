@@ -27,6 +27,7 @@ except ImportError:
 class BEiTAttention(BaseModule):
     """Window based multi-head self-attention (W-MSA) module with relative
     position bias.
+
     Args:
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
@@ -153,6 +154,7 @@ class BEiTAttention(BaseModule):
 
 class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
     """Implements one encoder layer in Vision Transformer.
+
     Args:
         embed_dims (int): The feature dimension.
         num_heads (int): Parallel attention heads.
@@ -228,6 +230,7 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
 @BACKBONES.register_module()
 class BEiT(BaseModule):
     """BERT Pre-Training of Image Transformers.
+
     Args:
         img_size (int | tuple): Input image size. Default: 224.
         patch_size (int): The patch size. Default: 16.
@@ -385,6 +388,7 @@ class BEiT(BaseModule):
     def _geometric_sequence_interpolation(self, src_size, dst_size, sequence,
                                           num):
         """Get new sequence via geometric sequence interpolation.
+
         Args:
             src_size (int): Pos_embedding size in pre-trained model.
             dst_size (int): Pos_embedding size in the current model.
@@ -434,6 +438,7 @@ class BEiT(BaseModule):
 
     def resize_rel_pos_embed(self, checkpoint):
         """Resize relative pos_embed weights.
+
         This function is modified from
         https://github.com/microsoft/unilm/blob/master/beit/semantic_segmentation/mmcv_custom/checkpoint.py.  # noqa: E501
         Copyright (c) Microsoft Corporation
