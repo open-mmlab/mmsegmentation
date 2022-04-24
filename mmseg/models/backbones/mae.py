@@ -81,7 +81,7 @@ class MAE(BaseModule):
                  num_heads=12,
                  mlp_ratio=4,
                  out_indices=-1,
-                 qv_bias=True,
+                 qv_bias=False,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
