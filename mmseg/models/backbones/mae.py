@@ -2,8 +2,8 @@
 import math
 import warnings
 
+import numpy as np
 import torch
-import torch.distributed as dist
 import torch.nn as nn
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
@@ -16,6 +16,11 @@ from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed
 from .beit import BEiTTransformerEncoderLayer
+
+try:
+    from scipy import interpolate
+except ImportError:
+    interpolate = None
 
 
 @BACKBONES.register_module()
@@ -61,8 +66,8 @@ class MAE(BaseModule):
         with_cp (bool): Use checkpoint or not. Using checkpoint will save
             some memory while slowing down the training speed. Default: False.
         pretrained (str, optional): model pretrained path. Default: None.
-        init_values (float): Initialize the values of MAEAttention and FFN
-            with learnable scaling.
+        init_values (float): Initialize the values of Attention and FFN
+            with learnable scaling. Defaults to 0.1.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     """
@@ -91,7 +96,7 @@ class MAE(BaseModule):
                  norm_eval=False,
                  with_cp=False,
                  pretrained=None,
-                 init_values=None,
+                 init_values=0.1,
                  init_cfg=None):
         super(MAE, self).__init__(init_cfg=init_cfg)
 
@@ -166,7 +171,7 @@ class MAE(BaseModule):
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[i],
                     num_fcs=num_fcs,
-                    qkv_bias='qv_bias' if qv_bias else False,
+                    bias='qv_bias' if qv_bias else False,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
                     window_size=window_size,
@@ -191,6 +196,57 @@ class MAE(BaseModule):
             rescale(layer.attn.proj.weight.data, layer_id + 1)
             rescale(layer.ffn.layers[1].weight.data, layer_id + 1)
 
+    def _geometric_sequence_interpolation(self, src_size, dst_size, sequence,
+                                          num):
+        """Get new sequence via geometric sequence interpolation.
+
+        Args:
+            src_size (int): Pos_embedding size in pre-trained model.
+            dst_size (int): Pos_embedding size in the current model.
+            sequence (tensor): The relative position bias of the pretrain
+                model after removing the extra tokens.
+            num (int): Number of attention heads.
+        Returns:
+            new_sequence (tensor): Geometric sequence interpolate the
+                pre-trained relative position bias to the size of
+                the current model.
+        """
+
+        def geometric_progression(a, r, n):
+            return a * (1.0 - r**n) / (1.0 - r)
+
+        # Here is a binary function.
+        left, right = 1.01, 1.5
+        while right - left > 1e-6:
+            q = (left + right) / 2.0
+            gp = geometric_progression(1, q, src_size // 2)
+            if gp > dst_size // 2:
+                right = q
+            else:
+                left = q
+        # The position of each interpolated point is determined
+        # by the ratio obtained by dichotomy.
+        dis = []
+        cur = 1
+        for i in range(src_size // 2):
+            dis.append(cur)
+            cur += q**(i + 1)
+        r_ids = [-_ for _ in reversed(dis)]
+        x = r_ids + [0] + dis
+        y = r_ids + [0] + dis
+        t = dst_size // 2.0
+        dx = np.arange(-t, t + 0.1, 1.0)
+        dy = np.arange(-t, t + 0.1, 1.0)
+        # Interpolation functions are being executed and called.
+        new_sequence = []
+        for i in range(num):
+            z = sequence[:, i].view(src_size, src_size).float().numpy()
+            f = interpolate.interp2d(x, y, z, kind='cubic')
+            new_sequence.append(
+                torch.Tensor(f(dx, dy)).contiguous().view(-1, 1).to(sequence))
+        new_sequence = torch.cat(new_sequence, dim=-1)
+        return new_sequence
+
     def init_weights(self):
 
         def _init_weights(m):
@@ -210,51 +266,15 @@ class MAE(BaseModule):
             logger = get_root_logger()
             checkpoint = _load_checkpoint(
                 self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
-
-            if 'state_dict' in checkpoint:
-                state_dict = checkpoint['state_dict']
-                state_dict = {
-                    key.replace('backbone.', ''): val
-                    for key, val in state_dict.items()
-                }
-            else:
-                state_dict = checkpoint
-
-        if 'pos_embed' in state_dict:
-            pos_embed_checkpoint = state_dict['pos_embed']
-            embedding_size = pos_embed_checkpoint.shape[-1]
-            num_extra_tokens = self.pos_embed.shape[-2] - self.num_patches
-            # height (== width) for the checkpoint position embedding
-            orig_size = int(
-                (pos_embed_checkpoint.shape[-2] - num_extra_tokens)**0.5)
-            # height (== width) for the new position embedding
-            new_size = int(self.num_patches**0.5)
-            # class_token and dist_token are kept unchanged
-            if orig_size != new_size:
-                if dist.get_rank() == 0:
-                    print('Position interpolate from %dx%d to %dx%d' %
-                          (orig_size, orig_size, new_size, new_size))
-                extra_tokens = pos_embed_checkpoint[:, :num_extra_tokens]
-                # only the position tokens are interpolated
-                pos_tokens = pos_embed_checkpoint[:, num_extra_tokens:]
-                pos_tokens = pos_tokens.reshape(-1, orig_size, orig_size,
-                                                embedding_size).permute(
-                                                    0, 3, 1, 2)
-                pos_tokens = torch.nn.functional.interpolate(
-                    pos_tokens,
-                    size=(new_size, new_size),
-                    mode='bicubic',
-                    align_corners=False)
-                pos_tokens = pos_tokens.permute(0, 2, 3, 1).flatten(1, 2)
-                new_pos_embed = torch.cat((extra_tokens, pos_tokens), dim=1)
-                state_dict['pos_embed'] = new_pos_embed
-
+            state_dict = self.resize_rel_pos_embed(checkpoint)
             self.load_state_dict(state_dict, False)
-
         elif self.init_cfg is not None:
             super(MAE, self).init_weights()
         else:
-            trunc_normal_(self.pos_embed, std=.02)
+            # We only implement the 'jax_impl' initialization implemented at
+            # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
+            # Copyright 2019 Ross Wightman
+            # Licensed under the Apache License, Version 2.0 (the "License")
             trunc_normal_(self.cls_token, std=.02)
             for n, m in self.named_modules():
                 if isinstance(m, nn.Linear):
