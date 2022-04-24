@@ -27,7 +27,6 @@ except ImportError:
 class BEiTAttention(BaseModule):
     """Window based multi-head self-attention (W-MSA) module with relative
     position bias.
-
     Args:
         embed_dims (int): Number of input channels.
         num_heads (int): Number of attention heads.
@@ -104,19 +103,7 @@ class BEiTAttention(BaseModule):
         relative_coords[:, :, 1] += Ww - 1
         relative_coords[:, :, 0] *= 2 * Ww - 1
         relative_position_index = torch.zeros(
-<<<<<<< HEAD
             size=(Wh * Ww + 1, ) * 2, dtype=relative_coords.dtype)
-=======
-            size=(window_size[0] * window_size[1] + 1, ) * 2,
-            dtype=relative_coords.dtype)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 04a61eb ([Fix]: Fix lint)
->>>>>>> 5fb8730 ([Fix]: Fix lint)
-=======
->>>>>>> 3db4b9e ([Fix]: Fix lint)
         # relative_position_index shape is (Wh*Ww, Wh*Ww)
         relative_position_index[1:, 1:] = relative_coords.sum(-1)
         relative_position_index[0, 0:] = self.num_relative_distance - 3
@@ -125,20 +112,6 @@ class BEiTAttention(BaseModule):
 
         self.register_buffer('relative_position_index',
                              relative_position_index)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> 04a61eb ([Fix]: Fix lint)
-=======
->>>>>>> 3db4b9e ([Fix]: Fix lint)
-        self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=False)
-        self.attn_drop = nn.Dropout(attn_drop_rate)
-        self.proj = nn.Linear(embed_dims, embed_dims)
-        self.proj_drop = nn.Dropout(proj_drop_rate)
->>>>>>> 5fb8730 ([Fix]: Fix lint)
 
     def init_weights(self):
         trunc_normal_(self.relative_position_bias_table, std=0.02)
@@ -180,7 +153,6 @@ class BEiTAttention(BaseModule):
 
 class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
     """Implements one encoder layer in Vision Transformer.
-
     Args:
         embed_dims (int): The feature dimension.
         num_heads (int): Parallel attention heads.
@@ -256,7 +228,6 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
 @BACKBONES.register_module()
 class BEiT(BaseModule):
     """BERT Pre-Training of Image Transformers.
-
     Args:
         img_size (int | tuple): Input image size. Default: 224.
         patch_size (int): The patch size. Default: 16.
@@ -414,7 +385,6 @@ class BEiT(BaseModule):
     def _geometric_sequence_interpolation(self, src_size, dst_size, sequence,
                                           num):
         """Get new sequence via geometric sequence interpolation.
-
         Args:
             src_size (int): Pos_embedding size in pre-trained model.
             dst_size (int): Pos_embedding size in the current model.
@@ -464,7 +434,6 @@ class BEiT(BaseModule):
 
     def resize_rel_pos_embed(self, checkpoint):
         """Resize relative pos_embed weights.
-
         This function is modified from
         https://github.com/microsoft/unilm/blob/master/beit/semantic_segmentation/mmcv_custom/checkpoint.py.  # noqa: E501
         Copyright (c) Microsoft Corporation
