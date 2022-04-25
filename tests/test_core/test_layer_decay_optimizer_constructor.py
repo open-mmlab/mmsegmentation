@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import pytest
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
@@ -173,6 +174,15 @@ class BEiTExampleModel(nn.Module):
         self.backbone.BEiT = nn.Conv2d(3, 3, 1)
 
 
+class ViTExampleModel(nn.Module):
+
+    def __init__(self):
+        super().__init__()
+        self.backbone = nn.ModuleList()
+        self.backbone.cls_token = nn.Parameter(torch.ones(1))
+        self.backbone.patch_embed = nn.Parameter(torch.ones(1))
+
+
 def check_convnext_adamw_optimizer(optimizer, gt_lst):
     assert isinstance(optimizer, torch.optim.AdamW)
     assert optimizer.defaults['lr'] == base_lr
@@ -225,6 +235,18 @@ def test_learning_rate_decay_optimizer_constructor():
         optimizer_cfg, layerwise_paramwise_cfg)
     optimizer = optim_constructor(model)
     check_beit_adamw_optimizer(optimizer, layer_wise_wd_lr)
+
+    with pytest.raises(NotImplementedError):
+        model = ViTExampleModel()
+        optim_constructor = LearningRateDecayOptimizerConstructor(
+            optimizer_cfg, layerwise_paramwise_cfg)
+        optimizer = optim_constructor(model)
+
+    with pytest.raises(NotImplementedError):
+        model = ViTExampleModel()
+        optim_constructor = LearningRateDecayOptimizerConstructor(
+            optimizer_cfg, stagewise_paramwise_cfg)
+        optimizer = optim_constructor(model)
 
 
 def test_beit_layer_decay_optimizer_constructor():
