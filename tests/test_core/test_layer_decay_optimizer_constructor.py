@@ -116,7 +116,6 @@ class ConvNeXtExampleModel(nn.Module):
 
     def __init__(self):
         super().__init__()
-        # self.backbone = nn.ModuleList()
         self.stages = nn.ModuleList()
         for i in range(4):
             stage = nn.Sequential(ConvModule(3, 4, kernel_size=1, bias=True))
@@ -155,7 +154,6 @@ class BEiTExampleModel(nn.Module):
 
     def __init__(self, depth):
         super().__init__()
-        self.backbone = nn.ModuleList()
         # add some variables to meet unit test coverate rate
         self.cls_token = nn.Parameter(torch.ones(1))
         self.patch_embed = nn.Parameter(torch.ones(1))
@@ -163,7 +161,6 @@ class BEiTExampleModel(nn.Module):
         for _ in range(depth):
             layer = nn.Conv2d(3, 3, 1)
             self.layers.append(layer)
-        # self.backbone.BEiT = nn.Conv2d(3, 3, 1)
 
 
 class PseudoDataParallel2(nn.Module):
