@@ -124,7 +124,6 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
         logger.info('Build LearningRateDecayOptimizerConstructor  '
                     f'{decay_type} {decay_rate} - {num_layers}')
         weight_decay = self.base_wd
-
         for name, param in module.named_parameters():
             if not param.requires_grad:
                 continue  # frozen weights
@@ -136,17 +135,17 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
                 group_name = 'decay'
                 this_weight_decay = weight_decay
             if 'layer_wise' in decay_type:
-                if 'ConvNeXt' in str(module.backbone):
+                if 'ConvNeXt' in module.backbone.__class__.__name__:
                     layer_id = get_layer_id_for_convnext(
                         name, self.paramwise_cfg.get('num_layers'))
                     logger.info(f'set param {name} as id {layer_id}')
-                elif 'BEiT' in str(module.backbone):
+                elif 'BEiT' in module.backbone.__class__.__name__:
                     layer_id = get_layer_id_for_vit(name, num_layers)
                     logger.info(f'set param {name} as id {layer_id}')
                 else:
                     raise NotImplementedError()
             elif decay_type == 'stage_wise':
-                if 'ConvNeXt' in str(module.backbone):
+                if 'ConvNeXt' in module.backbone.__class__.__name__:
                     layer_id = get_stage_id_for_convnext(name, num_layers)
                     logger.info(f'set param {name} as id {layer_id}')
                 else:
