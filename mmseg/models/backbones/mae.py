@@ -56,7 +56,6 @@ class MAE(BEiT):
             Default: 4.
         out_indices (list | tuple | int): Output from which stages.
             Default: -1.
-        qv_bias (bool): enable bias for qv if True. Default: True.
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
         drop_path_rate (float): stochastic depth rate. Default 0.0
@@ -93,7 +92,6 @@ class MAE(BEiT):
                  num_heads=12,
                  mlp_ratio=4,
                  out_indices=-1,
-                 qv_bias=False,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  with_cls_token=True,
@@ -116,7 +114,7 @@ class MAE(BEiT):
             num_heads=num_heads,
             mlp_ratio=mlp_ratio,
             out_indices=out_indices,
-            qv_bias=qv_bias,
+            qv_bias=False,
             attn_drop_rate=attn_drop_rate,
             drop_path_rate=drop_path_rate,
             norm_cfg=norm_cfg,
@@ -148,7 +146,7 @@ class MAE(BEiT):
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[i],
                     num_fcs=num_fcs,
-                    bias='qv_bias' if qv_bias else False,
+                    bias=False,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
                     window_size=self.patch_shape,
