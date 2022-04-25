@@ -2,10 +2,10 @@
 import json
 import warnings
 
-from mmcv.runner import (OPTIMIZER_BUILDERS, DefaultOptimizerConstructor,
-                         get_dist_info)
+from mmcv.runner import DefaultOptimizerConstructor, get_dist_info
 
-from ...utils import get_root_logger
+from mmseg.utils import get_root_logger
+from ..builder import OPTIMIZER_BUILDERS
 
 
 def get_layer_id_for_convnext(var_name, max_layer_id=12):
