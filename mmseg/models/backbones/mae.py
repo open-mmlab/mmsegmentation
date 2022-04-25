@@ -15,12 +15,35 @@ from torch.nn.modules.utils import _pair as to_2tuple
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils import PatchEmbed
-from .beit import BEiTTransformerEncoderLayer
+from .beit import BEiTTransformerEncoderLayer, BEiTAttention, BEiT
 
 try:
     from scipy import interpolate
 except ImportError:
     interpolate = None
+
+
+class MAEAttention(BEiTAttention):
+    """Window based multi-head self-attention (W-MSA) module with relative
+    position bias.
+    
+    This module is different from ``BEiTAttention`` by initializing the 
+    relative bias table with zeros.
+    """
+
+    def init_weights(self):
+        pass
+
+
+class MAETransformerEncoderLayer(BEiTTransformerEncoderLayer):
+    """Implements one encoder layer in Vision Transformer.
+    
+    This module is different from ``BEiTTransformerEncoderLayer`` by
+    replacing ``BEiTAttention`` with ``MAEAttention``.
+    """
+
+    def build_attn(self, attn_cfg):
+        self.attn = MAEAttention(**attn_cfg)
 
 
 @BACKBONES.register_module()
@@ -164,7 +187,7 @@ class MAE(BaseModule):
         self.layers = ModuleList()
         for i in range(num_layers):
             self.layers.append(
-                BEiTTransformerEncoderLayer(
+                MAETransformerEncoderLayer(
                     embed_dims=embed_dims,
                     num_heads=num_heads,
                     feedforward_channels=mlp_ratio * embed_dims,
