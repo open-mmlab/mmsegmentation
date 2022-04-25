@@ -24,8 +24,8 @@ class MAEAttention(BEiTAttention):
     def init_weights(self):
         """Initialize relative position bias with zeros.
 
-        BEiT initializes relative position bias with ``trunc_normal``,
-        but MAE with zero-initialization.
+        BEiT initializes relative position bias with ``trunc_normal``, but MAE
+        with zero-initialization.
         """
         pass
 
@@ -154,7 +154,7 @@ class MAE(BEiT):
 
     def fix_init_weight(self):
         """Borrow this code from  https://github.com/microsoft/unilm/blob/ \
-            master/beit/modeling_pretrain.py"""
+        master/beit/modeling_pretrain.py."""
 
         def rescale(param, layer_id):
             param.div_(math.sqrt(2.0 * layer_id))
