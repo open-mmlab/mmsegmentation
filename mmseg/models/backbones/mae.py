@@ -1,26 +1,16 @@
 # Copyright (c) OpenMMLab. All rights reserved.import math
 import math
-import warnings
 
-import numpy as np
 import torch
 import torch.nn as nn
-from mmcv.cnn import build_norm_layer
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
-from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
+from mmcv.runner import ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
-from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from ..utils import PatchEmbed
 from .beit import BEiTTransformerEncoderLayer, BEiTAttention, BEiT
-
-try:
-    from scipy import interpolate
-except ImportError:
-    interpolate = None
 
 
 class MAEAttention(BEiTAttention):
@@ -47,7 +37,7 @@ class MAETransformerEncoderLayer(BEiTTransformerEncoderLayer):
 
 
 @BACKBONES.register_module()
-class MAE(BaseModule):
+class MAE(BEiT):
     """VisionTransformer with support for patch.
 
     Args:
@@ -62,8 +52,6 @@ class MAE(BaseModule):
         out_indices (list | tuple | int): Output from which stages.
             Default: -1.
         qv_bias (bool): enable bias for qv if True. Default: True.
-        drop_rate (float): Probability of an element to be zeroed.
-            Default 0.0
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
         drop_path_rate (float): stochastic depth rate. Default 0.0
@@ -79,15 +67,11 @@ class MAE(BaseModule):
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
             final feature map. Default: False.
-        interpolate_mode (str): Select the interpolate mode for position
-            embeding vector resize. Default: bicubic.
         num_fcs (int): The number of fully-connected layers for FFNs.
             Default: 2.
         norm_eval (bool): Whether to set norm layers to eval mode, namely,
             freeze running stats (mean and var). Note: Effect on Batch Norm
             and its variants only. Default: False.
-        with_cp (bool): Use checkpoint or not. Using checkpoint will save
-            some memory while slowing down the training speed. Default: False.
         pretrained (str, optional): model pretrained path. Default: None.
         init_values (float): Initialize the values of Attention and FFN
             with learnable scaling. Defaults to 0.1.
@@ -105,7 +89,6 @@ class MAE(BaseModule):
                  mlp_ratio=4,
                  out_indices=-1,
                  qv_bias=False,
-                 drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  with_cls_token=True,
@@ -114,74 +97,40 @@ class MAE(BaseModule):
                  act_cfg=dict(type='GELU'),
                  patch_norm=False,
                  final_norm=False,
-                 interpolate_mode='bicubic',
                  num_fcs=2,
                  norm_eval=False,
-                 with_cp=False,
                  pretrained=None,
                  init_values=0.1,
                  init_cfg=None):
-        super(MAE, self).__init__(init_cfg=init_cfg)
-
-        if isinstance(img_size, int):
-            img_size = to_2tuple(img_size)
-        elif isinstance(img_size, tuple):
-            if len(img_size) == 1:
-                img_size = to_2tuple(img_size[0])
-            assert len(img_size) == 2, \
-                f'The size of image should have length 1 or 2, ' \
-                f'but got {len(img_size)}'
-
-        if output_cls_token:
-            assert with_cls_token is True, f'with_cls_token must be True if' \
-                f'set output_cls_token to True, but got {with_cls_token}'
-
-        assert not (init_cfg and pretrained), \
-            'init_cfg and pretrained cannot be set at the same time'
-        if isinstance(pretrained, str):
-            warnings.warn('DeprecationWarning: pretrained is deprecated, '
-                          'please use "init_cfg" instead')
-            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
-        elif pretrained is not None:
-            raise TypeError('pretrained must be a str or None')
-
-        self.img_size = img_size
-        self.patch_size = patch_size
-        self.interpolate_mode = interpolate_mode
-        self.norm_eval = norm_eval
-        self.with_cp = with_cp
-        self.pretrained = pretrained
-
-        self.patch_embed = PatchEmbed(
+        super(MAE, self).__init__(
+            img_size=img_size,
+            patch_size=patch_size,
             in_channels=in_channels,
             embed_dims=embed_dims,
-            conv_type='Conv2d',
-            kernel_size=patch_size,
-            stride=patch_size,
-            padding=0,
-            norm_cfg=norm_cfg if patch_norm else None,
-            init_cfg=None,
-        )
+            num_layers=num_layers,
+            num_heads=num_heads,
+            mlp_ratio=mlp_ratio,
+            out_indices=out_indices,
+            qv_bias=qv_bias,
+            attn_drop_rate=attn_drop_rate,
+            drop_path_rate=drop_path_rate,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg,
+            patch_norm=patch_norm,
+            final_norm=final_norm,
+            num_fcs=num_fcs,
+            norm_eval=norm_eval,
+            pretrained=pretrained,
+            init_values=init_values,
+            init_cfg=init_cfg)
 
-        window_size = (img_size[0] // patch_size, img_size[1] // patch_size)
-        self.patch_shape = window_size
         self.with_cls_token = with_cls_token
         self.output_cls_token = output_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
-        self.drop_after_pos = nn.Dropout(p=drop_rate)
 
-        self.num_patches = window_size[0] * window_size[1]
+        self.num_patches = self.patch_shape[0] * self.patch_shape[1]
         self.pos_embed = nn.Parameter(
             torch.zeros(1, self.num_patches + 1, embed_dims))
-
-        if isinstance(out_indices, int):
-            if out_indices == -1:
-                out_indices = num_layers - 1
-            self.out_indices = [out_indices]
-        elif isinstance(out_indices, list) or isinstance(out_indices, tuple):
-            self.out_indices = out_indices
-        else:
-            raise TypeError('out_indices must be type of int, list or tuple')
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, num_layers)]
         self.layers = ModuleList()
@@ -197,18 +146,8 @@ class MAE(BaseModule):
                     bias='qv_bias' if qv_bias else False,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
-                    window_size=window_size,
+                    window_size=self.patch_shape,
                     init_values=init_values))
-
-        self.final_norm = final_norm
-        if final_norm:
-            self.norm1_name, norm1 = build_norm_layer(
-                norm_cfg, embed_dims, postfix=1)
-            self.add_module(self.norm1_name, norm1)
-
-    @property
-    def norm1(self):
-        return getattr(self, self.norm1_name)
 
     def fix_init_weight(self):
 
@@ -218,57 +157,6 @@ class MAE(BaseModule):
         for layer_id, layer in enumerate(self.layers):
             rescale(layer.attn.proj.weight.data, layer_id + 1)
             rescale(layer.ffn.layers[1].weight.data, layer_id + 1)
-
-    def _geometric_sequence_interpolation(self, src_size, dst_size, sequence,
-                                          num):
-        """Get new sequence via geometric sequence interpolation.
-
-        Args:
-            src_size (int): Pos_embedding size in pre-trained model.
-            dst_size (int): Pos_embedding size in the current model.
-            sequence (tensor): The relative position bias of the pretrain
-                model after removing the extra tokens.
-            num (int): Number of attention heads.
-        Returns:
-            new_sequence (tensor): Geometric sequence interpolate the
-                pre-trained relative position bias to the size of
-                the current model.
-        """
-
-        def geometric_progression(a, r, n):
-            return a * (1.0 - r**n) / (1.0 - r)
-
-        # Here is a binary function.
-        left, right = 1.01, 1.5
-        while right - left > 1e-6:
-            q = (left + right) / 2.0
-            gp = geometric_progression(1, q, src_size // 2)
-            if gp > dst_size // 2:
-                right = q
-            else:
-                left = q
-        # The position of each interpolated point is determined
-        # by the ratio obtained by dichotomy.
-        dis = []
-        cur = 1
-        for i in range(src_size // 2):
-            dis.append(cur)
-            cur += q**(i + 1)
-        r_ids = [-_ for _ in reversed(dis)]
-        x = r_ids + [0] + dis
-        y = r_ids + [0] + dis
-        t = dst_size // 2.0
-        dx = np.arange(-t, t + 0.1, 1.0)
-        dy = np.arange(-t, t + 0.1, 1.0)
-        # Interpolation functions are being executed and called.
-        new_sequence = []
-        for i in range(num):
-            z = sequence[:, i].view(src_size, src_size).float().numpy()
-            f = interpolate.interp2d(x, y, z, kind='cubic')
-            new_sequence.append(
-                torch.Tensor(f(dx, dy)).contiguous().view(-1, 1).to(sequence))
-        new_sequence = torch.cat(new_sequence, dim=-1)
-        return new_sequence
 
     def init_weights(self):
 
@@ -346,10 +234,3 @@ class MAE(BaseModule):
                 outs.append(out)
 
         return tuple(outs)
-
-    def train(self, mode=True):
-        super(MAE, self).train(mode)
-        if mode and self.norm_eval:
-            for m in self.modules():
-                if isinstance(m, nn.LayerNorm):
-                    m.eval()
