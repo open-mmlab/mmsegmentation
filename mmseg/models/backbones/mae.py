@@ -153,6 +153,8 @@ class MAE(BEiT):
                     init_values=init_values))
 
     def fix_init_weight(self):
+        """Borrow this code from  https://github.com/microsoft/unilm/blob/ \
+            master/beit/modeling_pretrain.py"""
 
         def rescale(param, layer_id):
             param.div_(math.sqrt(2.0 * layer_id))
