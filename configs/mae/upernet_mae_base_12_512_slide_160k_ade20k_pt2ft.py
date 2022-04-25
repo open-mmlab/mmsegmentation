@@ -2,7 +2,6 @@ _base_ = [
     '../_base_/models/upernet_mae.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
-crop_size = (512, 512)
 
 model = dict(
     pretrained='mae_pretrain_vit_base_.pth',
@@ -22,7 +21,7 @@ model = dict(
     decode_head=dict(
         in_channels=[768, 768, 768, 768], num_classes=150, channels=768),
     auxiliary_head=dict(in_channels=768, num_classes=150),
-    test_cfg=dict(mode='slide', crop_size=crop_size, stride=(341, 341)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
 optimizer = dict(
     _delete_=True,
