@@ -108,6 +108,12 @@ layer_wise_wd_lr = [{
 }, {
     'weight_decay': 0.0,
     'lr_scale': 2
+}, {
+    'weight_decay': 0.05,
+    'lr_scale': 1
+}, {
+    'weight_decay': 0.0,
+    'lr_scale': 1
 }]
 
 
@@ -132,13 +138,14 @@ class ConvNeXtExampleModel(nn.Module):
         self.backbone.downsample_norm2 = nn.BatchNorm2d(2)
         self.backbone.lin = nn.Parameter(torch.ones(1))
         self.backbone.lin.requires_grad = False
-
         self.backbone.downsample_layers = nn.ModuleList()
         for i in range(4):
             stage = nn.Sequential(nn.Conv2d(3, 4, kernel_size=1, bias=True))
             self.backbone.downsample_layers.append(stage)
 
         self.decode_head = nn.Conv2d(2, 2, kernel_size=1, groups=2)
+        # for test
+        self.backbone.ConvNeXt = nn.Conv2d(2, 2, kernel_size=1, groups=2)
 
 
 class PseudoDataParallel(nn.Module):
@@ -156,7 +163,6 @@ class BEiTExampleModel(nn.Module):
     def __init__(self, depth):
         super().__init__()
         self.backbone = nn.ModuleList()
-
         # add some variables to meet unit test coverate rate
         self.backbone.cls_token = nn.Parameter(torch.ones(1))
         self.backbone.patch_embed = nn.Parameter(torch.ones(1))
@@ -164,6 +170,7 @@ class BEiTExampleModel(nn.Module):
         for _ in range(depth):
             layer = nn.Conv2d(3, 3, 1)
             self.backbone.layers.append(layer)
+        self.backbone.BEiT = nn.Conv2d(3, 3, 1)
 
 
 def check_convnext_adamw_optimizer(optimizer, gt_lst):
@@ -183,8 +190,8 @@ def check_beit_adamw_optimizer(optimizer, gt_lst):
     assert optimizer.defaults['lr'] == 1
     assert optimizer.defaults['weight_decay'] == 0.05
     param_groups = optimizer.param_groups
-    # 1 layer (cls_token and patch_embed) + 3 layers * 2 (w, b) = 7 layers
-    assert len(param_groups) == 7
+    # 1 layer (cls_token and patch_embed) + 4 layers * 2 (w, b) = 9 layers
+    assert len(param_groups) == 9
     for i, param_dict in enumerate(param_groups):
         assert param_dict['weight_decay'] == gt_lst[i]['weight_decay']
         assert param_dict['lr_scale'] == gt_lst[i]['lr_scale']

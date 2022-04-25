@@ -7,6 +7,5 @@ from .seg import *  # noqa: F401, F403
 from .utils import *  # noqa: F401, F403
 
 __all__ = [
-    'LayerDecayOptimizerConstructor', 'OPTIMIZER_BUILDERS', 'build_optimizer',
-    'build_optimizer_constructor'
+    'OPTIMIZER_BUILDERS', 'build_optimizer', 'build_optimizer_constructor'
 ]
