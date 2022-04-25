@@ -10,14 +10,14 @@ from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.utils import get_root_logger
 from ..builder import BACKBONES
-from .beit import BEiTTransformerEncoderLayer, BEiTAttention, BEiT
+from .beit import BEiT, BEiTAttention, BEiTTransformerEncoderLayer
 
 
 class MAEAttention(BEiTAttention):
     """Window based multi-head self-attention (W-MSA) module with relative
     position bias.
-    
-    This module is different from ``BEiTAttention`` by initializing the 
+
+    This module is different from ``BEiTAttention`` by initializing the
     relative bias table with zeros.
     """
 
@@ -27,9 +27,9 @@ class MAEAttention(BEiTAttention):
 
 class MAETransformerEncoderLayer(BEiTTransformerEncoderLayer):
     """Implements one encoder layer in Vision Transformer.
-    
-    This module is different from ``BEiTTransformerEncoderLayer`` by
-    replacing ``BEiTAttention`` with ``MAEAttention``.
+
+    This module is different from ``BEiTTransformerEncoderLayer`` by replacing
+    ``BEiTAttention`` with ``MAEAttention``.
     """
 
     def build_attn(self, attn_cfg):
