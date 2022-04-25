@@ -22,6 +22,11 @@ class MAEAttention(BEiTAttention):
     """
 
     def init_weights(self):
+        """Initialize relative position bias with zeros.
+
+        BEiT initializes relative position bias with ``trunc_normal``,
+        but MAE with zero-initialization.
+        """
         pass
 
 
