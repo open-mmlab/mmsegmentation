@@ -4,7 +4,8 @@ _base_ = [
 ]
 
 model = dict(
-    pretrained='mae_pretrain_vit_base_.pth',
+    pretrained=
+    '/mnt/cache/liuyuan1.vendor/detection/pretrained/mae_pretrain_vit_base_mmcls.pth',
     backbone=dict(
         type='MAE',
         img_size=(512, 512),
@@ -13,7 +14,6 @@ model = dict(
         num_layers=12,
         num_heads=12,
         mlp_ratio=4,
-        qv_bias=True,
         init_values=1.0,
         drop_path_rate=0.1,
         out_indices=[3, 5, 7, 11]),
