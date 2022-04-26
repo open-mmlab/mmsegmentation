@@ -12,7 +12,7 @@ decay_rate = 2
 base_wd = 0.05
 weight_decay = 0.05
 
-stage_wise_gt_lr_wd_convnext = [{
+expected_stage_wise_gt_lr_wd_convnext = [{
     'weight_decay': 0.0,
     'lr_scale': 128
 }, {
@@ -50,7 +50,7 @@ stage_wise_gt_lr_wd_convnext = [{
     'lr_scale': 1
 }]
 
-layer_wise_gt_lr_wd_convnext = [{
+expected_layer_wise_gt_lr_wd_convnext = [{
     'weight_decay': 0.0,
     'lr_scale': 128
 }, {
@@ -88,7 +88,7 @@ layer_wise_gt_lr_wd_convnext = [{
     'lr_scale': 1
 }]
 
-layer_wise_gt_wd_lr_beit = [{
+expected_layer_wise_gt_wd_lr_beit = [{
     'weight_decay': 0.0,
     'lr_scale': 16
 }, {
@@ -204,14 +204,14 @@ def test_learning_rate_decay_optimizer_constructor():
     optim_constructor = LearningRateDecayOptimizerConstructor(
         optimizer_cfg, stagewise_paramwise_cfg)
     optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, stage_wise_gt_lr_wd_convnext)
+    check_optimizer_lr_wd(optimizer, expected_stage_wise_gt_lr_wd_convnext)
     # layerwise decay
     layerwise_paramwise_cfg = dict(
         decay_rate=decay_rate, decay_type='layer_wise', num_layers=6)
     optim_constructor = LearningRateDecayOptimizerConstructor(
         optimizer_cfg, layerwise_paramwise_cfg)
     optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, layer_wise_gt_lr_wd_convnext)
+    check_optimizer_lr_wd(optimizer, expected_layer_wise_gt_lr_wd_convnext)
 
     # Test lr wd for BEiT
     backbone = ToyBEiT()
@@ -222,7 +222,7 @@ def test_learning_rate_decay_optimizer_constructor():
     optim_constructor = LearningRateDecayOptimizerConstructor(
         optimizer_cfg, layerwise_paramwise_cfg)
     optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, layer_wise_gt_wd_lr_beit)
+    check_optimizer_lr_wd(optimizer, expected_layer_wise_gt_wd_lr_beit)
 
     # Test invalidation of lr wd for Vit
     backbone = ToyViT()
@@ -248,4 +248,4 @@ def test_beit_layer_decay_optimizer_constructor():
     optim_constructor = LayerDecayOptimizerConstructor(optimizer_cfg,
                                                        paramwise_cfg)
     optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, layer_wise_gt_wd_lr_beit)
+    check_optimizer_lr_wd(optimizer, expected_layer_wise_gt_wd_lr_beit)
