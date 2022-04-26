@@ -48,10 +48,6 @@ def test_mae_backbone():
     model.init_weights()
     model.train()
 
-    # Test qv_bias
-    model = MAE(qv_bias=False)
-    model.train()
-
     # Test out_indices = list
     model = MAE(out_indices=[2, 4, 8, 12])
     model.train()
@@ -114,7 +110,7 @@ def test_mae_backbone():
     assert feat[-1].shape == (1, 768, 14, 14)
 
 
-def test_beit_init():
+def test_mae_init():
     path = 'PATH_THAT_DO_NOT_EXIST'
     # Test all combinations of pretrained and init_cfg
     # pretrained=None, init_cfg=None
@@ -140,7 +136,8 @@ def test_beit_init():
         }
     }
     model = MAE(img_size=(512, 512))
-    model.resize_rel_pos_embed(ckpt)
+    with pytest.raises(AttributeError):
+        model.resize_rel_pos_embed(ckpt)
 
     # pretrained=None
     # init_cfg=123, whose type is unsupported
