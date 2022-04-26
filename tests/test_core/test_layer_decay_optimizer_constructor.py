@@ -199,7 +199,7 @@ def check_beit_adamw_optimizer(optimizer, gt_lst):
     assert optimizer.defaults['lr'] == 1
     assert optimizer.defaults['weight_decay'] == 0.05
     param_groups = optimizer.param_groups
-    # 1 layer (cls_token and patch_embed) + 3 layers * 2 (w, b) = 9 layers
+    # 1 layer (cls_token and patch_embed) + 3 layers * 2 (w, b) = 7layers
     assert len(param_groups) == 7
     for i, param_dict in enumerate(param_groups):
         assert param_dict['weight_decay'] == gt_lst[i]['weight_decay']
