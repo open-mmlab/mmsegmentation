@@ -12,7 +12,7 @@ decay_rate = 2
 base_wd = 0.05
 weight_decay = 0.05
 
-expected_stage_wise_gt_lr_wd_convnext = [{
+expected_stage_wise_lr_wd_convnext = [{
     'weight_decay': 0.0,
     'lr_scale': 128
 }, {
@@ -204,7 +204,7 @@ def test_learning_rate_decay_optimizer_constructor():
     optim_constructor = LearningRateDecayOptimizerConstructor(
         optimizer_cfg, stagewise_paramwise_cfg)
     optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, expected_stage_wise_gt_lr_wd_convnext)
+    check_optimizer_lr_wd(optimizer, expected_stage_wise_lr_wd_convnext)
     # layerwise decay
     layerwise_paramwise_cfg = dict(
         decay_rate=decay_rate, decay_type='layer_wise', num_layers=6)
