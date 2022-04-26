@@ -2,6 +2,7 @@
 import math
 
 import torch
+import torch.distributed as dist
 import torch.nn as nn
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
@@ -183,6 +184,7 @@ class MAE(BEiT):
             checkpoint = _load_checkpoint(
                 self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
             state_dict = self.resize_rel_pos_embed(checkpoint)
+            state_dict = self.resize_abs_pos_embed(state_dict)
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:
             super(MAE, self).init_weights()
@@ -204,6 +206,37 @@ class MAE(BEiT):
                     kaiming_init(m, mode='fan_in', bias=0.)
                 elif isinstance(m, (_BatchNorm, nn.GroupNorm, nn.LayerNorm)):
                     constant_init(m, val=1.0, bias=0.)
+
+    def resize_abs_pos_embed(self, state_dict):
+        if 'pos_embed' in state_dict:
+            pos_embed_checkpoint = state_dict['pos_embed']
+            embedding_size = pos_embed_checkpoint.shape[-1]
+            num_extra_tokens = self.pos_embed.shape[-2] - self.num_patches
+            # height (== width) for the checkpoint position embedding
+            orig_size = int(
+                (pos_embed_checkpoint.shape[-2] - num_extra_tokens)**0.5)
+            # height (== width) for the new position embedding
+            new_size = int(self.num_patches**0.5)
+            # class_token and dist_token are kept unchanged
+            if orig_size != new_size:
+                if dist.get_rank() == 0:
+                    print('Position interpolate from %dx%d to %dx%d' %
+                          (orig_size, orig_size, new_size, new_size))
+                extra_tokens = pos_embed_checkpoint[:, :num_extra_tokens]
+                # only the position tokens are interpolated
+                pos_tokens = pos_embed_checkpoint[:, num_extra_tokens:]
+                pos_tokens = pos_tokens.reshape(-1, orig_size, orig_size,
+                                                embedding_size).permute(
+                                                    0, 3, 1, 2)
+                pos_tokens = torch.nn.functional.interpolate(
+                    pos_tokens,
+                    size=(new_size, new_size),
+                    mode='bicubic',
+                    align_corners=False)
+                pos_tokens = pos_tokens.permute(0, 2, 3, 1).flatten(1, 2)
+                new_pos_embed = torch.cat((extra_tokens, pos_tokens), dim=1)
+                state_dict['pos_embed'] = new_pos_embed
+        return state_dict
 
     def forward(self, inputs):
         B = inputs.shape[0]
