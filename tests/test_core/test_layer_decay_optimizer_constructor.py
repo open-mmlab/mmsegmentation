@@ -191,8 +191,7 @@ def check_optimizer_lr_wd(optimizer, gt_lr_wd):
         assert param_dict['lr_scale'] == param_dict['lr']
 
 
-@pytest.mark.parametrize('backbone', (ToyBEiT(), ))
-def test_learning_rate_decay_optimizer_constructor(backbone):
+def test_learning_rate_decay_optimizer_constructor():
 
     # Test lr wd for ConvNeXT
     backbone = ToyConvNeXt()
