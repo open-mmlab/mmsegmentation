@@ -37,7 +37,7 @@ If you want to specify the working directory in the command, you can add an argu
 
 #### Train with CPU
 
-The process of training on the CPU is consistent with single GPU training. We just need to disable GPUs before the training process.
+The process of training on the CPU is consistent with single GPU training if machine does not have GPU. If it has GPUs but not wanting to use it, we just need to disable GPUs before the training process.
 
 ```shell
 export CUDA_VISIBLE_DEVICES=-1

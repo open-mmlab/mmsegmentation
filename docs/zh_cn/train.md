@@ -27,7 +27,7 @@ python tools/train.py ${CONFIG_FILE} [可选参数]
 
 #### 使用 CPU 训练
 
-使用 CPU 训练的流程和使用单 GPU 训练的流程一致，我们仅需要在训练流程开始前禁用 GPU。
+如果计算机没有 GPU，那么使用 CPU 训练的流程和使用单 GPU 训练的流程一致。如果计算机有 GPU 但是想使用 CPU，我们仅需要在训练流程开始前禁用 GPU。
 
 ```shell
 export CUDA_VISIBLE_DEVICES=-1
