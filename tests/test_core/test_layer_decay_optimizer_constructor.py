@@ -88,7 +88,6 @@ layer_wise_gt_lr_wd_convnext = [{
     'lr_scale': 1
 }]
 
-# 1 layer (cls_token and patch_embed) + 3 layers * 2 (w, b) = 9 layers
 layer_wise_gt_wd_lr_beit = [{
     'weight_decay': 0.0,
     'lr_scale': 16
