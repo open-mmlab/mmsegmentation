@@ -82,7 +82,7 @@ def get_layer_id_for_vit(var_name, max_layer_id):
         var_name (str): The key of the model.
         num_max_layer (int): Maximum number of backbone layers.
     Returns:
-        layer id (int): Returns the layer id of the key.
+        int: Returns the layer id of the key.
     """
 
     if var_name in ('backbone.cls_token', 'backbone.mask_token',
