@@ -8,13 +8,13 @@ from mmseg.utils import get_root_logger
 from ..builder import OPTIMIZER_BUILDERS
 
 
-def get_layer_id_for_convnext(var_name, max_layer_id=12):
+def get_layer_id_for_convnext(var_name, max_layer_id):
     """Get the layer id to set the different learning rates in ``layer_wise``
     decay_type.
 
     Args:
         var_name (str): The key of the model.
-        num_max_layer (int): Maximum number of backbone layers.
+        max_layer_id (int): Maximum number of backbone layers.
 
     Returns:
         int: The id number corresponding to different　learning rate in
@@ -52,12 +52,12 @@ def get_layer_id_for_convnext(var_name, max_layer_id=12):
 
 
 def get_stage_id_for_convnext(var_name, max_stage_id):
-    """Get the layer id to set the different learning rates in ``stage_wise``
+    """Get the stage id to set the different learning rates in ``stage_wise``
     decay_type.
 
     Args:
         var_name (str): The key of the model.
-        num_max_layer (int): Maximum number of backbone layers.
+        max_stage_id (int): Maximum number of backbone layers.
     Returns:
         int: The id number corresponding to different　learning rate in
         ``LearningRateDecayOptimizerConstructor``.
@@ -103,7 +103,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
     # Note: Currently, this optimizer constructor is built for ConvNeXt
     # and BEiT.
 
-    def add_params(self, params, module):
+    def add_params(self, params, module, **kwargs):
         """Add all parameters of module to the params list.
 
         The parameters of the given module will be added to the list of param
