@@ -2,7 +2,6 @@
 import math
 
 import torch
-import torch.distributed as dist
 import torch.nn as nn
 from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
@@ -219,9 +218,6 @@ class MAE(BEiT):
             new_size = int(self.num_patches**0.5)
             # class_token and dist_token are kept unchanged
             if orig_size != new_size:
-                if dist.get_rank() == 0:
-                    print('Position interpolate from %dx%d to %dx%d' %
-                          (orig_size, orig_size, new_size, new_size))
                 extra_tokens = pos_embed_checkpoint[:, :num_extra_tokens]
                 # only the position tokens are interpolated
                 pos_tokens = pos_embed_checkpoint[:, num_extra_tokens:]

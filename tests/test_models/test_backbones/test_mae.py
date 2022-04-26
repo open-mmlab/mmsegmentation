@@ -129,7 +129,7 @@ def test_mae_init():
 
     # test resize_rel_pos_embed
     value = torch.randn(732, 16)
-    abs_pos_embed_value = torch.rand(1, 12, 768)
+    abs_pos_embed_value = torch.rand(1, 17, 768)
     ckpt = {
         'state_dict': {
             'layers.0.attn.relative_position_index': 0,
