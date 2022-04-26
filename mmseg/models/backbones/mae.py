@@ -146,7 +146,7 @@ class MAE(BEiT):
                     attn_drop_rate=attn_drop_rate,
                     drop_path_rate=dpr[i],
                     num_fcs=num_fcs,
-                    bias=False,
+                    bias=True,
                     act_cfg=act_cfg,
                     norm_cfg=norm_cfg,
                     window_size=self.patch_shape,
