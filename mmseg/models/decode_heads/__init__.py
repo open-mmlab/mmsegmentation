@@ -11,6 +11,7 @@ from .ema_head import EMAHead
 from .enc_head import EncHead
 from .fcn_head import FCNHead
 from .fpn_head import FPNHead
+from .fpt_head import FeaturePyramidTransformerHead
 from .gc_head import GCHead
 from .isa_head import ISAHead
 from .knet_head import IterativeDecodeHead, KernelUpdateHead, KernelUpdator
@@ -36,5 +37,5 @@ __all__ = [
     'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
     'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegmenterMaskTransformerHead',
     'SegformerHead', 'ISAHead', 'STDCHead', 'IterativeDecodeHead',
-    'KernelUpdateHead', 'KernelUpdator'
+    'KernelUpdateHead', 'KernelUpdator', 'FeaturePyramidTransformerHead'
 ]
