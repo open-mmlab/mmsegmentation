@@ -14,29 +14,29 @@ from .beit import BEiT, BEiTAttention, BEiTTransformerEncoderLayer
 
 
 class MAEAttention(BEiTAttention):
-    """Window based multi-head self-attention (W-MSA) module with relative
-    position bias.
+    """Multi-head self-attention with relative position bias used in MAE.
 
     This module is different from ``BEiTAttention`` by initializing the
     relative bias table with zeros.
     """
 
     def init_weights(self):
-        """Initialize relative position bias with zeros.
+        """Initialize relative position bias with zeros."""
 
-        BEiT initializes relative position bias with ``trunc_normal``, but MAE
-        with zero-initialization.
-        """
+        # As MAE initializes relative position bias as zeros and this class
+        # inherited from BEiT which initializes relative position bias
+        # with `trunc_normal`, `init_weights` here does
+        # nothing and just passes directly
+
         pass
 
 
 class MAETransformerEncoderLayer(BEiTTransformerEncoderLayer):
-    """Implements one encoder layer in Vision Transformer."""
+    """Implements one encoder layer in Vision Transformer.
 
-    # As MAE initializes relative position bias as zeros and this class
-    # inherited from BEiT which initializes relative position bias
-    # with `trunc_normal`, `init_weights` here does
-    # nothing and just passes directly
+    This module is different from ``BEiTTransformerEncoderLayer`` by replacing
+    ``BEiTAttention`` with ``MAEAttention``.
+    """
 
     def build_attn(self, attn_cfg):
         self.attn = MAEAttention(**attn_cfg)
