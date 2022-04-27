@@ -2,7 +2,7 @@ Models:
 - Name: upernet_mae-base_fp16_8x2_512x512_160k_ade20k
   In Collection: UperNet
   Metadata:
-    backbone: MAE-B
+    backbone: ViT-B
     crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
