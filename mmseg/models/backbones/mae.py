@@ -31,11 +31,12 @@ class MAEAttention(BEiTAttention):
 
 
 class MAETransformerEncoderLayer(BEiTTransformerEncoderLayer):
-    """Implements one encoder layer in Vision Transformer.
+    """Implements one encoder layer in Vision Transformer."""
 
-    This module is different from ``BEiTTransformerEncoderLayer`` by replacing
-    ``BEiTAttention`` with ``MAEAttention``.
-    """
+    # As MAE initializes relative position bias as zeros and this class
+    # inherited from BEiT which initializes relative position bias
+    # with `trunc_normal`, `init_weights` here does
+    # nothing and just passes directly
 
     def build_attn(self, attn_cfg):
         self.attn = MAEAttention(**attn_cfg)
@@ -149,8 +150,12 @@ class MAE(BEiT):
                     init_values=self.init_values))
 
     def fix_init_weight(self):
-        """Borrow this code from  https://github.com/microsoft/unilm/blob/ \
-        master/beit/modeling_pretrain.py."""
+        """Rescale the initialization according to layer id.
+
+        This function is copied from  https://github.com/microsoft/unilm/blob/master/beit/modeling_pretrain.py. # noqa: E501
+        Copyright (c) Microsoft Corporation
+        Licensed under the MIT License
+        """
 
         def rescale(param, layer_id):
             param.div_(math.sqrt(2.0 * layer_id))
