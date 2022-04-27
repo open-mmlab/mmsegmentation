@@ -55,6 +55,7 @@ In our default setting, pretrained models could be defined below:
   | pretrained models | original models |
   | ------ | -------- |
   |mae_pretrain_vit_base_mmcls.pth | ['mae_pretrain_vit_base'](https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth) |
+
 Verify the single-scale results of the model:
 
 ```shell
