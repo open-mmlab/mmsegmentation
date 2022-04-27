@@ -4,7 +4,7 @@ _base_ = [
 ]
 
 model = dict(
-    pretrained='mae_pretrain_vit_base_mmcls.pth',
+    pretrained='./pretrain/mae_pretrain_vit_base_mmcls.pth',
     backbone=dict(
         type='MAE',
         img_size=(512, 512),
