@@ -58,11 +58,7 @@ class MAE(BEiT):
             Default: -1.
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
-        drop_path_rate (float): stochastic depth rate. Default 0.0
-        with_cls_token (bool): Whether concatenating class token into image
-            tokens as transformer input. Default: True.
-        output_cls_token (bool): Whether output the cls_token. If set True,
-            `with_cls_token` must be True. Default: False.
+        drop_path_rate (float): stochastic depth rate. Default 0.0.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
@@ -94,8 +90,6 @@ class MAE(BEiT):
                  out_indices=-1,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
-                 with_cls_token=True,
-                 output_cls_token=False,
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
                  patch_norm=False,
@@ -127,30 +121,32 @@ class MAE(BEiT):
             init_values=init_values,
             init_cfg=init_cfg)
 
-        self.with_cls_token = with_cls_token
-        self.output_cls_token = output_cls_token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dims))
 
         self.num_patches = self.patch_shape[0] * self.patch_shape[1]
         self.pos_embed = nn.Parameter(
             torch.zeros(1, self.num_patches + 1, embed_dims))
 
-        dpr = [x.item() for x in torch.linspace(0, drop_path_rate, num_layers)]
+    def _build_layers(self):
+        dpr = [
+            x.item()
+            for x in torch.linspace(0, self.drop_path_rate, self.num_layers)
+        ]
         self.layers = ModuleList()
-        for i in range(num_layers):
+        for i in range(self.num_layers):
             self.layers.append(
                 MAETransformerEncoderLayer(
-                    embed_dims=embed_dims,
-                    num_heads=num_heads,
-                    feedforward_channels=mlp_ratio * embed_dims,
-                    attn_drop_rate=attn_drop_rate,
+                    embed_dims=self.embed_dims,
+                    num_heads=self.num_heads,
+                    feedforward_channels=self.mlp_ratio * self.embed_dims,
+                    attn_drop_rate=self.attn_drop_rate,
                     drop_path_rate=dpr[i],
-                    num_fcs=num_fcs,
+                    num_fcs=self.num_fcs,
                     bias=True,
-                    act_cfg=act_cfg,
-                    norm_cfg=norm_cfg,
+                    act_cfg=self.act_cfg,
+                    norm_cfg=self.norm_cfg,
                     window_size=self.patch_shape,
-                    init_values=init_values))
+                    init_values=self.init_values))
 
     def fix_init_weight(self):
         """Borrow this code from  https://github.com/microsoft/unilm/blob/ \
@@ -244,10 +240,6 @@ class MAE(BEiT):
         x = torch.cat((cls_tokens, x), dim=1)
         x = x + self.pos_embed
 
-        if not self.with_cls_token:
-            # Remove class token for transformer encoder input
-            x = x[:, 1:]
-
         outs = []
         for i, layer in enumerate(self.layers):
             x = layer(x)
@@ -255,16 +247,10 @@ class MAE(BEiT):
                 if self.final_norm:
                     x = self.norm1(x)
             if i in self.out_indices:
-                if self.with_cls_token:
-                    # Remove class token and reshape token for decoder head
-                    out = x[:, 1:]
-                else:
-                    out = x
+                out = x[:, 1:]
                 B, _, C = out.shape
                 out = out.reshape(B, hw_shape[0], hw_shape[1],
                                   C).permute(0, 3, 1, 2).contiguous()
-                if self.output_cls_token:
-                    out = [out, x[:, 0]]
                 outs.append(out)
 
         return tuple(outs)
