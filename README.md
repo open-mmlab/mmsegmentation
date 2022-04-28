@@ -84,8 +84,9 @@ Supported backbones:
 - [x] [Vision Transformer (ICLR'2021)](configs/vit)
 - [x] [Swin Transformer (ICCV'2021)](configs/swin)
 - [x] [Twins (NeurIPS'2021)](configs/twins)
-- [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [BEiT (ICLR'2022)](configs/beit)
+- [x] [ConvNeXt (CVPR'2022)](configs/convnext)
+- [x] [MAE (CVPR'2022)](configs/mae)
 
 Supported methods:
 
