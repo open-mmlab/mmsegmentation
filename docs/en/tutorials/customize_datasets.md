@@ -143,20 +143,20 @@ data = dict(
     train=dict( # Train dataset config
         type=dataset_type, # Type of dataset, refer to mmseg/datasets/ for details.
         data_root=data_root, # The root of dataset.
-        img_dir='images/training', # The image directory of dataset.
-        ann_dir='annotations/training',  # The annotation directory of dataset.
+        img_dir='img_dir/train', # The image directory of dataset.
+        ann_dir='ann_dir/train',  # The annotation directory of dataset.
         pipeline=train_pipeline), # pipeline, this is passed by the train_pipeline created before.
     val=dict( # Validation dataset config.
         type=dataset_type,
         data_root=data_root,
-        img_dir='images/validation',
-        ann_dir='annotations/validation',
+        img_dir='img_dir/val',
+        ann_dir='ann_dir/val',
         pipeline=test_pipeline), # Pipeline is passed by test_pipeline created before.
     test=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='images/validation',
-        ann_dir='annotations/validation',
+        img_dir='img_dir/val',
+        ann_dir='ann_dir/val',
         pipeline=test_pipeline))
 
 ```

@@ -142,20 +142,20 @@ data = dict(
     train=dict( # 训练数据集配置
         type=dataset_type, # 数据集的类别, 细节参考自 mmseg/datasets/
         data_root=data_root, # 数据集的根目录。
-        img_dir='images/training', # 数据集图像的文件夹
-        ann_dir='annotations/training', # 数据集注释的文件夹
+        img_dir='img_dir/train', # 数据集图像的文件夹
+        ann_dir='ann_dir/train', # 数据集注释的文件夹
         pipeline=train_pipeline), # 流程， 由之前创建的 train_pipeline 传递进来
     val=dict( # 验证数据集的配置
         type=dataset_type,
         data_root=data_root,
-        img_dir='images/validation',
-        ann_dir='annotations/validation',
+        img_dir='img_dir/val',
+        ann_dir='ann_dir/val',
         pipeline=test_pipeline), # 由之前创建的 test_pipeline 传递的流程
     test=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='images/validation',
-        ann_dir='annotations/validation',
+        img_dir='img_dir/val',
+        ann_dir='ann_dir/val',
         pipeline=test_pipeline))
 
 ```
