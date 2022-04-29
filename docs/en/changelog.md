@@ -33,7 +33,7 @@
 - Register optimizer constructor with mmseg ([#1456](https://github.com/open-mmlab/mmsegmentation/pull/1456))
 - Refactor transfomer encode layer in ViT and BEiT backbone ([#1481](https://github.com/open-mmlab/mmsegmentation/pull/1481))
 - Add build_pos_embed and build_layers for BEiT ([1517](https://github.com/open-mmlab/mmsegmentation/pull/1517))
-- Add with cp to mit and vit ([1431](https://github.com/open-mmlab/mmsegmentation/pull/1431))
+- Add `with_cp` to mit and vit ([1431](https://github.com/open-mmlab/mmsegmentation/pull/1431))
 - Fix inconsistent dtype of `seg_label` in stdc decode ([1463](https://github.com/open-mmlab/mmsegmentation/pull/1463))
 - Delete random seed for training in `dist_train.sh` ([1519](https://github.com/open-mmlab/mmsegmentation/pull/1519))
 - Revise high `workers_per_gpus` in config file ([#1506](https://github.com/open-mmlab/mmsegmentation/pull/1506))
