@@ -104,7 +104,7 @@ def train_segmentor(model,
     if distributed:
         find_unused_parameters = cfg.get('find_unused_parameters', False)
         # Sets the `find_unused_parameters` parameter in
-        # torch.nn.parallel.DistributedDataParallel
+        # DDP wrap
         model = build_ddp(
             model,
             cfg.device,
