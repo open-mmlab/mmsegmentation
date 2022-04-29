@@ -41,7 +41,7 @@
 - Update checkpoint for model in deeplabv3plus ([#1487](https://github.com/open-mmlab/mmsegmentation/pull/1487))
 - Add DistSamplerSeedHook for when runner is EpochBasedRunner ([1449](https://github.com/open-mmlab/mmsegmentation/pull/1449))
 - Provide URLs of Swin Transformer pretrained models ([1389](https://github.com/open-mmlab/mmsegmentation/pull/1389))
-- Updating Dockerfiles From Docker Directory and get_started.md to Reach Last Stable Version of Python, PyTorch and MMCV ([1446](https://github.com/open-mmlab/mmsegmentation/pull/1446))
+- Updating Dockerfiles From Docker Directory and `get_started.md` to reach lastest stable version of Python, PyTorch and MMCV ([1446](https://github.com/open-mmlab/mmsegmentation/pull/1446))
 
 **Documentation**
 
