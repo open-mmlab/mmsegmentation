@@ -39,7 +39,7 @@
 - Revise high `workers_per_gpus` in config file ([#1506](https://github.com/open-mmlab/mmsegmentation/pull/1506))
 - Add GPG keys and del mmcv version in Dockerfile ([1534](https://github.com/open-mmlab/mmsegmentation/pull/1534))
 - Update checkpoint for model in deeplabv3plus ([#1487](https://github.com/open-mmlab/mmsegmentation/pull/1487))
-- Add `DistSamplerSeedHook` to set epoch num to dataloader when runner is `EpochBasedRunner` ([1449](https://github.com/open-mmlab/mmsegmentation/pull/1449))
+- Add `DistSamplerSeedHook` to set epoch number to dataloader when runner is `EpochBasedRunner` ([1449](https://github.com/open-mmlab/mmsegmentation/pull/1449))
 - Provide URLs of Swin Transformer pretrained models ([1389](https://github.com/open-mmlab/mmsegmentation/pull/1389))
 - Updating Dockerfiles From Docker Directory and `get_started.md` to reach lastest stable version of Python, PyTorch and MMCV ([1446](https://github.com/open-mmlab/mmsegmentation/pull/1446))
 
