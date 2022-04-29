@@ -1,5 +1,7 @@
 # Tutorial 2: Customize Datasets
 
+## Data configuration
+
 ## Customize datasets by reorganizing data
 
 The simplest way is to convert your dataset to organize your data into folders.
