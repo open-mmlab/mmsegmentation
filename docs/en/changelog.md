@@ -1,5 +1,39 @@
 ## Changelog
 
+### V0.24.0 (4/29/2022)
+
+**Highlights**
+
+- Support MAE: Masked Autoencoders Are Scalable Vision Learners
+
+**New Features**
+
+- Support MAE: Masked Autoencoders Are Scalable Vision Learners ([1307](https://github.com/open-mmlab/mmsegmentation/pull/1307), [1523](https://github.com/open-mmlab/mmsegmentation/pull/1523))
+
+**Bug Fixes**
+
+- Fix input previous results for the last cascade_decode_head ([#1450](https://github.com/open-mmlab/mmsegmentation/pull/1450))
+- Fix validation loss logging ([#1494](https://github.com/open-mmlab/mmsegmentation/pull/1494))
+- Support single channel prediction for Binary Cross Entropy Loss ([#1454](https://github.com/open-mmlab/mmsegmentation/pull/1454))
+- Fix potential bugs in accuracy.py ([1496](https://github.com/open-mmlab/mmsegmentation/pull/1496))
+- Fix MMSegmentation Colab demo ([1501](https://github.com/open-mmlab/mmsegmentation/pull/1501), [1452](https://github.com/open-mmlab/mmsegmentation/pull/1452))
+- Migrate azure blob for beit checkpoints ([1503](https://github.com/open-mmlab/mmsegmentation/pull/1503))
+
+**Improvements**
+
+- Merge BEiT and ConvNext 's LR decay optimizer constructors ([#1438](https://github.com/open-mmlab/mmsegmentation/pull/1438))
+- Register optimizer constructor with mmseg ([#1456](https://github.com/open-mmlab/mmsegmentation/pull/1456))
+- Refactor transfomer encode layer in ViT and BEiT backbone ([#1481](https://github.com/open-mmlab/mmsegmentation/pull/1481))
+- Add build_pos_embed and build_layers for BEiT ([1517](https://github.com/open-mmlab/mmsegmentation/pull/1517))
+- Fix inconsistent dtype of seg_label in stdc decode ([1463](https://github.com/open-mmlab/mmsegmentation/pull/1463))
+- Delete seed in dist_train.sh ([1519](https://github.com/open-mmlab/mmsegmentation/pull/1519))
+- Revise high `workers_per_gpus` in config file ([#1506](https://github.com/open-mmlab/mmsegmentation/pull/1506))
+- Update checkpoint for model in deeplabv3plus ([#1487](https://github.com/open-mmlab/mmsegmentation/pull/1487))
+
+**Documentation**
+
+**Contributors**
+
 ### V0.23.0 (4/1/2022)
 
 **Highlights**
