@@ -15,8 +15,9 @@
 # 单卡 GPU 测试
 python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] [--eval ${评估指标}] [--show]
 
-# CPU: 禁用 GPU 并运行单 GPU 测试脚本
-export CUDA_VISIBLE_DEVICES=-1
+# CPU: 如果机器没有 GPU, 则跟上述单卡 GPU 测试一致
+# CPU: 如果机器有 GPU, 那么先禁用 GPU 再运行单 GPU 测试脚本
+export CUDA_VISIBLE_DEVICES=-1 # 禁用 GPU
 python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] [--eval ${评估指标}] [--show]
 
 # 多卡GPU 测试
