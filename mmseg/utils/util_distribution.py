@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import mmcv
 import torch
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
@@ -61,7 +62,8 @@ def build_ddp(model, device='cuda', *args, **kwargs):
 
 def is_mlu_available():
     """Returns a bool indicating if MLU is currently available."""
-    return hasattr(torch, 'is_mlu_available') and torch.is_mlu_available()
+    return hasattr(mmcv.utils,
+                   'IS_MLU_AVAILABLE') and mmcv.utils.IS_MLU_AVAILABLE
 
 
 def get_device():
