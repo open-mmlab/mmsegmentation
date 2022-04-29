@@ -10,16 +10,16 @@ ddp_factory = {'cuda': MMDistributedDataParallel}
 def build_dp(model, device='cuda', dim=0, *args, **kwargs):
     """build DataParallel module by device type.
 
-    if device is cuda, return a MMDataParallel model; if device is mlu,
-    return a MLUDataParallel model.
+    if device is cuda, return a MMDataParallel module; if device is mlu,
+    return a MLUDataParallel module.
 
     Args:
-        model (:class:`nn.Module`): model to be parallelized.
+        model (:class:`nn.Module`): module to be parallelized.
         device (str): device type, cuda, cpu or mlu. Defaults to cuda.
         dim (int): Dimension used to scatter the data. Defaults to 0.
 
     Returns:
-        :class:`nn.Module`: the module to be parallelized
+        :class:`nn.Module`: parallelized module.
     """
     if device == 'cuda':
         model = model.cuda()
@@ -34,15 +34,15 @@ def build_dp(model, device='cuda', dim=0, *args, **kwargs):
 def build_ddp(model, device='cuda', *args, **kwargs):
     """Build DistributedDataParallel module by device type.
 
-    If device is cuda, return a MMDistributedDataParallel model;
-    if device is mlu, return a MLUDistributedDataParallel model.
+    If device is cuda, return a MMDistributedDataParallel module;
+    if device is mlu, return a MLUDistributedDataParallel module.
 
     Args:
         model (:class:`nn.Module`): module to be parallelized.
         device (str): device type, mlu or cuda.
 
     Returns:
-        :class:`nn.Module`: the module to be parallelized
+        :class:`nn.Module`: parallelized module.
 
     References:
         .. [1] https://pytorch.org/docs/stable/generated/torch.nn.parallel.
