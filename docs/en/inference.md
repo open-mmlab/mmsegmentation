@@ -16,7 +16,7 @@ You can use the following commands to test a dataset.
 # single-gpu testing
 python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${RESULT_FILE}] [--eval ${EVAL_METRICS}] [--show]
 
-# CPU: If GPU unavailable, directly running sing-gpu testing command above
+# CPU: If GPU unavailable, directly running single-gpu testing command above
 # CPU: If GPU available, disable GPUs and run single-gpu testing script
 export CUDA_VISIBLE_DEVICES=-1
 python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${RESULT_FILE}] [--eval ${EVAL_METRICS}] [--show]
