@@ -15,7 +15,7 @@ from mmseg import digit_version
 from mmseg.core import DistEvalHook, EvalHook, build_optimizer
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import (build_ddp, build_dp, find_latest_checkpoint,
-                         get_device, get_root_logger)
+                         get_root_logger)
 
 
 def init_random_seed(seed=None, device='cuda'):
@@ -101,7 +101,6 @@ def train_segmentor(model,
     data_loaders = [build_dataloader(ds, **train_loader_cfg) for ds in dataset]
 
     # put model on gpus
-    cfg.device = get_device()
     if distributed:
         find_unused_parameters = cfg.get('find_unused_parameters', False)
         # Sets the `find_unused_parameters` parameter in
