@@ -22,13 +22,12 @@ Image segmentation is often ambiguous at the level of individual image patches a
 </div>
 
 ```bibtex
-@InProceedings{strudel2021Segmenter,
-  title     = {Segmenter: Transformer for Semantic Segmentation},
-  author    = {Strudel, Robin and Garcia, Ricardo and Laptev, Ivan and Schmid, Cordelia},
-  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
-  month     = {October},
-  year      = {2021},
-  pages     = {7262-7272}
+@inproceedings{strudel2021segmenter,
+  title={Segmenter: Transformer for semantic segmentation},
+  author={Strudel, Robin and Garcia, Ricardo and Laptev, Ivan and Schmid, Cordelia},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={7262--7272},
+  year={2021}
 }
 ```
 
