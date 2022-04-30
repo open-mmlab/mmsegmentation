@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from .align_resize import AlignResize
 from .compose import Compose
 from .formatting import (Collect, ImageToTensor, ToDataContainer, ToTensor,
                          Transpose, to_tensor)
@@ -15,5 +16,5 @@ __all__ = [
     'MultiScaleFlipAug', 'Resize', 'RandomFlip', 'Pad', 'RandomCrop',
     'Normalize', 'SegRescale', 'PhotoMetricDistortion', 'RandomRotate',
     'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray', 'RandomCutOut',
-    'RandomMosaic'
+    'RandomMosaic', 'AlignResize'
 ]
