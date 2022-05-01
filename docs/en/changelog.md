@@ -1,5 +1,11 @@
 ## Changelog
 
+### V0.24.1 (5/1/2022)
+
+**Bug Fixes**
+
+- Fix MAE LayerDecayOptimizerConstructor ([#1539](https://github.com/open-mmlab/mmsegmentation/pull/1539))
+
 ### V0.24.0 (4/29/2022)
 
 **Highlights**
