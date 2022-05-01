@@ -17,7 +17,7 @@ def get_layer_id_for_convnext(var_name, max_layer_id):
         max_layer_id (int): Maximum number of backbone layers.
 
     Returns:
-        int: The id number corresponding to different　learning rate in
+        int: The id number corresponding to different learning rate in
         ``LearningRateDecayOptimizerConstructor``.
     """
 
@@ -60,7 +60,7 @@ def get_stage_id_for_convnext(var_name, max_stage_id):
         max_stage_id (int): Maximum number of backbone layers.
 
     Returns:
-        int: The id number corresponding to different　learning rate in
+        int: The id number corresponding to different learning rate in
         ``LearningRateDecayOptimizerConstructor``.
     """
 
@@ -103,8 +103,8 @@ def get_layer_id_for_vit(var_name, max_layer_id):
 class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
     """Different learning rates are set for different layers of backbone.
 
-    Note: Currently, this optimizer constructor is built for ConvNeXt
-    and BEiT.
+    Note: Currently, this optimizer constructor is built for ConvNeXt,
+    BEiT and MAE.
     """
 
     def add_params(self, params, module, **kwargs):
