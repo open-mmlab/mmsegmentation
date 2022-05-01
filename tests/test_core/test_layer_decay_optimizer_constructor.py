@@ -157,6 +157,19 @@ class ToyBEiT(nn.Module):
             self.layers.append(layer)
 
 
+class ToyMAE(nn.Module):
+
+    def __init__(self):
+        super().__init__()
+        # add some variables to meet unit test coverate rate
+        self.cls_token = nn.Parameter(torch.ones(1))
+        self.patch_embed = nn.Parameter(torch.ones(1))
+        self.layers = nn.ModuleList()
+        for _ in range(3):
+            layer = nn.Conv2d(3, 3, 1)
+            self.layers.append(layer)
+
+
 class ToySegmentor(nn.Module):
 
     def __init__(self, backbone):
@@ -235,6 +248,17 @@ def test_learning_rate_decay_optimizer_constructor():
         optim_constructor = LearningRateDecayOptimizerConstructor(
             optimizer_cfg, stagewise_paramwise_cfg)
         optimizer = optim_constructor(model)
+
+    # Test lr wd for MAE
+    backbone = ToyMAE()
+    model = PseudoDataParallel(ToySegmentor(backbone))
+
+    layerwise_paramwise_cfg = dict(
+        decay_rate=decay_rate, decay_type='layer_wise', num_layers=3)
+    optim_constructor = LearningRateDecayOptimizerConstructor(
+        optimizer_cfg, layerwise_paramwise_cfg)
+    optimizer = optim_constructor(model)
+    check_optimizer_lr_wd(optimizer, expected_layer_wise_wd_lr_beit)
 
 
 def test_beit_layer_decay_optimizer_constructor():
