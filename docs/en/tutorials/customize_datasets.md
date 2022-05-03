@@ -75,8 +75,8 @@ data = dict(
     test_dataloader=dict(samples_per_gpu=1, workers_per_gpu=4, shuffle=False))
 ```
 
-**Note:** Default values in the script of mmseg for dataloader building used in model training are `shuffle=True, and drop_last=True`,
-in model testing and validation are `shuffle=False, and drop_last=False`
+**Note:** in model training, default values in the script of mmseg for dataloader are `shuffle=True, and drop_last=True`,
+in model testing and validation, defualt values are `shuffle=False, and drop_last=False`
 
 ## Customize datasets by reorganizing data
 
