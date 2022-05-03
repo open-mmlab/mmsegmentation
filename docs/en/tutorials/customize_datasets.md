@@ -2,6 +2,82 @@
 
 ## Data configuration
 
+You can use `data`, a variable for data configuration, to define the arguments that are used in datasets and dataloaders.
+
+Here is an example of data configuration:
+
+```python
+data = dict(
+    samples_per_gpu=4,
+    workers_per_gpu=4,
+    train=dict(
+        type='ADE20KDataset',
+        data_root='data/ade/ADEChallengeData2016',
+        img_dir='images/training',
+        ann_dir='annotations/training',
+        pipeline=train_pipeline),
+    val=dict(
+        type='ADE20KDataset',
+        data_root='data/ade/ADEChallengeData2016',
+        img_dir='images/validation',
+        ann_dir='annotations/validation',
+        pipeline=test_pipeline),
+    test=dict(
+        type='ADE20KDataset',
+        data_root='data/ade/ADEChallengeData2016',
+        img_dir='images/validation',
+        ann_dir='annotations/validation',
+        pipeline=test_pipeline))
+```
+
+- `train`, `val` and `test`: The [`config`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/config.md)s to build dataset instances for model training validation and testing by
+using [`build and registry`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/registry.md) mechanism.
+
+- `samples_per_gpu`: How many samples per batch and per gpu to load during model training, and the `batch_size` of training is equal to `samples_per_gpu` times gpu number. If you would like to define `batch_size` for testing and validation, please use `test_dataloaser` and
+`val_dataloader` with mmseg >=0.24.1.
+
+- `workers_per_gpu`: How many subprocesses per gpu to use for data loading. `0` means that the data will be loaded in the main process.
+
+**Note:** `samples_per_gpu` only works for model training, and `samples_per_gpu` default to 1 in mmseg when model testing and validataion.
+
+**Note:** before v0.24.1, except `train`, `val` `test`, `samples_per_gpu` and `workers_per_gpu`, the other keys in `data` must be the
+input keyword arguments for `dataloader` in pytorch, and the dataloaders used for model training, model validation and model test have same input arguments.
+In v0.24.1, mmseg supports to use `train_dataloader`, `test_dataloaser` and `val_dataloader` to specify different keyword arguments, and still supports overall arguments defination but specific dataloader setting has higher prioty.
+
+Here is an example for specific dataloader:
+
+```python
+data = dict(
+    samples_per_gpu=4,
+    workers_per_gpu=4,
+    shuffle=True,
+    train=dict(type='xxx', ...),
+    val=dict(type='xxx', ...),
+    test=dict(type='xxx', ...),
+    # Use different batch size during validation and testing.
+    val_dataloader=dict(samples_per_gpu=1, workers_per_gpu=4, shuffle=False),
+    test_dataloader=dict(samples_per_gpu=1, workers_per_gpu=4, shuffle=False))
+```
+
+Assuming only one gpu used for model training and testing, as prioty of the overall arguments defination is low, the batch_size for training
+is `4` and dataset will be shuffled, and batch_size for testing and validation is `1`, and dataset will not be shuffled.
+
+For data configuration is much clearer, we recommand use specific dataloader setting and avoid overall dataloader setting, just like:
+
+```python
+data = dict(
+    train=dict(type='xxx', ...),
+    val=dict(type='xxx', ...),
+    test=dict(type='xxx', ...),
+    # Use specific dataloader setting
+    train_dataloader=dict(samples_per_gpu=4, workers_per_gpu=4, shuffle=True),
+    val_dataloader=dict(samples_per_gpu=1, workers_per_gpu=4, shuffle=False),
+    test_dataloader=dict(samples_per_gpu=1, workers_per_gpu=4, shuffle=False))
+```
+
+**Note:** Default values in the script of mmseg for dataloader building used in model training are `shuffle=True, and drop_last=True`,
+in model testing and validation are `shuffle=False, and drop_last=False`
+
 ## Customize datasets by reorganizing data
 
 The simplest way is to convert your dataset to organize your data into folders.
