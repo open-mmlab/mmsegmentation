@@ -62,7 +62,7 @@ data = dict(
 Assuming only one gpu used for model training and testing, as prioty of the overall arguments defination is low, the batch_size for training
 is `4` and dataset will be shuffled, and batch_size for testing and validation is `1`, and dataset will not be shuffled.
 
-For data configuration is much clearer, we recommand use specific dataloader setting and avoid overall dataloader setting, just like:
+For data configuration is much clearer, we recommand use specific dataloader setting and avoid overall dataloader setting after v0.24.1, just like:
 
 ```python
 data = dict(
