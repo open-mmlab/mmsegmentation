@@ -42,7 +42,7 @@ using [`build and registry`](https://github.com/open-mmlab/mmcv/blob/master/docs
 
 **Note:** before v0.24.1, except `train`, `val` `test`, `samples_per_gpu` and `workers_per_gpu`, the other keys in `data` must be the
 input keyword arguments for `dataloader` in pytorch, and the dataloaders used for model training, model validation and model test have same input arguments.
-In v0.24.1, mmseg supports to use `train_dataloader`, `test_dataloaser` and `val_dataloader` to specify different keyword arguments, and still supports overall arguments defination but specific dataloader setting has higher prioty.
+In v0.24.1, mmseg supports to use `train_dataloader`, `test_dataloaser` and `val_dataloader` to specify different keyword arguments, and still supports the overall arguments definition but specific dataloader setting has higher prioty.
 
 Here is an example for specific dataloader:
 
@@ -59,10 +59,10 @@ data = dict(
     test_dataloader=dict(samples_per_gpu=1, workers_per_gpu=4, shuffle=False))
 ```
 
-Assuming only one gpu used for model training and testing, as prioty of the overall arguments defination is low, the batch_size for training
-is `4` and dataset will be shuffled, and batch_size for testing and validation is `1`, and dataset will not be shuffled.
+Assuming only one gpu used for model training and testing, as the priority of the overall arguments definition is low, the batch_size
+for training is `4` and dataset will be shuffled, and batch_size for testing and validation is `1`, and dataset will not be shuffled.
 
-For data configuration is much clearer, we recommand use specific dataloader setting and avoid overall dataloader setting after v0.24.1, just like:
+For data configuration is much clearer, we recommend use specific dataloader setting and avoid overall dataloader setting after v0.24.1, just like:
 
 ```python
 data = dict(
@@ -76,7 +76,7 @@ data = dict(
 ```
 
 **Note:** in model training, default values in the script of mmseg for dataloader are `shuffle=True, and drop_last=True`,
-in model testing and validation, defualt values are `shuffle=False, and drop_last=False`
+in model testing and validation, default values are `shuffle=False, and drop_last=False`
 
 ## Customize datasets by reorganizing data
 
