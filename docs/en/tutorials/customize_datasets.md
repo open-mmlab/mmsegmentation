@@ -38,11 +38,11 @@ using [`build and registry`](https://github.com/open-mmlab/mmcv/blob/master/docs
 
 - `workers_per_gpu`: How many subprocesses per gpu to use for data loading. `0` means that the data will be loaded in the main process.
 
-**Note:** `samples_per_gpu` only works for model training, and `samples_per_gpu` default to 1 in mmseg when model testing and validataion.
+**Note:** `samples_per_gpu` only works for model training, and `samples_per_gpu` defaults to 1 in mmseg when model testing and validation.
 
 **Note:** before v0.24.1, except `train`, `val` `test`, `samples_per_gpu` and `workers_per_gpu`, the other keys in `data` must be the
-input keyword arguments for `dataloader` in pytorch, and the dataloaders used for model training, model validation and model test have same input arguments.
-In v0.24.1, mmseg supports to use `train_dataloader`, `test_dataloaser` and `val_dataloader` to specify different keyword arguments, and still supports the overall arguments definition but specific dataloader setting has higher prioty.
+input keyword arguments for `dataloader` in pytorch, and the dataloaders used for model training, model validation and model test have the same input arguments.
+In v0.24.1, mmseg supports to use `train_dataloader`, `test_dataloaser` and `val_dataloader` to specify different keyword arguments, and still supports the overall arguments definition but the specific dataloader setting has a higher priority.
 
 Here is an example for specific dataloader:
 
