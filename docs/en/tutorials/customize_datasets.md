@@ -2,7 +2,7 @@
 
 ## Data configuration
 
-You can use `data`, a variable for data configuration, to define the arguments that are used in datasets and dataloaders.
+`data` in config file is the variable for data configuration, to define the arguments that are used in datasets and dataloaders.
 
 Here is an example of data configuration:
 
