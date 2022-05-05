@@ -8,7 +8,7 @@
 
 <a href="https://github.com/facebookresearch/mae">Official Repo</a>
 
-<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.24.0/mmseg/models/backbones/mae.py#46">Code Snippet</a>
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.24.0/mmseg/models/backbones/mae.py#L46">Code Snippet</a>
 
 ## Abstract
 
