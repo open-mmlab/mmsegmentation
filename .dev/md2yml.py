@@ -88,7 +88,7 @@ def parse_md(md_file):
     # should be set with head or neck of this config file.
     is_backbone = None
 
-    with open(md_file, 'r') as md:
+    with open(md_file, 'r', encoding='UTF-8') as md:
         lines = md.readlines()
         i = 0
         current_dataset = ''
