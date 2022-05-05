@@ -30,18 +30,19 @@ data = dict(
         pipeline=test_pipeline))
 ```
 
-- `train`, `val` and `test`: The [`config`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/config.md)s to build dataset instances for model training validation and testing by
+- `train`, `val` and `test`: The [`config`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/config.md)s to build dataset instances for model training, validation and testing by
 using [`build and registry`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/registry.md) mechanism.
 
-- `samples_per_gpu`: How many samples per batch and per gpu to load during model training, and the `batch_size` of training is equal to `samples_per_gpu` times gpu number. If you would like to define `batch_size` for testing and validation, please use `test_dataloaser` and
+- `samples_per_gpu`: How many samples per batch and per gpu to load during model training, and the `batch_size` of training is equal to `samples_per_gpu` times gpu number, e.g. when using 8 gpus for distributed data parallel trainig and `samples_per_gpu=2`, the `batch_size` is `8*2=16`.
+If you would like to define `batch_size` for testing and validation, please use `test_dataloaser` and
 `val_dataloader` with mmseg >=0.24.1.
 
 - `workers_per_gpu`: How many subprocesses per gpu to use for data loading. `0` means that the data will be loaded in the main process.
 
-**Note:** `samples_per_gpu` only works for model training, and `samples_per_gpu` defaults to 1 in mmseg when model testing and validation.
+**Note:** `samples_per_gpu` only works for model training, and the default setting of `samples_per_gpu` is 1 in mmseg when model testing and validation (DO NOT support batch inference yet).
 
 **Note:** before v0.24.1, except `train`, `val` `test`, `samples_per_gpu` and `workers_per_gpu`, the other keys in `data` must be the
-input keyword arguments for `dataloader` in pytorch, and the dataloaders used for model training, model validation and model test have the same input arguments.
+input keyword arguments for `dataloader` in pytorch, and the dataloaders used for model training, validation and testing have the same input arguments.
 In v0.24.1, mmseg supports to use `train_dataloader`, `test_dataloaser` and `val_dataloader` to specify different keyword arguments, and still supports the overall arguments definition but the specific dataloader setting has a higher priority.
 
 Here is an example for specific dataloader:
@@ -76,7 +77,7 @@ data = dict(
 ```
 
 **Note:** in model training, default values in the script of mmseg for dataloader are `shuffle=True, and drop_last=True`,
-in model testing and validation, default values are `shuffle=False, and drop_last=False`
+in model validation and testing, default values are `shuffle=False, and drop_last=False`
 
 ## Customize datasets by reorganizing data
 
