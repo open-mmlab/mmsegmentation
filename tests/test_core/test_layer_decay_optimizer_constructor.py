@@ -129,9 +129,6 @@ class ToyConvNeXt(nn.Module):
         self.norm0 = nn.BatchNorm2d(2)
 
         # add some variables to meet unit test coverate rate
-        self.cls_token = nn.Parameter(torch.ones(1))
-        self.mask_token = nn.Parameter(torch.ones(1))
-        self.pos_embed = nn.Parameter(torch.ones(1))
         self.stem_norm = nn.Parameter(torch.ones(1))
         self.downsample_norm0 = nn.BatchNorm2d(2)
         self.downsample_norm1 = nn.BatchNorm2d(2)
