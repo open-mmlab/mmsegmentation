@@ -21,10 +21,7 @@ def get_layer_id_for_convnext(var_name, max_layer_id):
         ``LearningRateDecayOptimizerConstructor``.
     """
 
-    if var_name in ('backbone.cls_token', 'backbone.mask_token',
-                    'backbone.pos_embed'):
-        return 0
-    elif var_name.startswith('backbone.downsample_layers'):
+    if var_name.startswith('backbone.downsample_layers'):
         stage_id = int(var_name.split('.')[2])
         if stage_id == 0:
             layer_id = 0
@@ -64,10 +61,7 @@ def get_stage_id_for_convnext(var_name, max_stage_id):
         ``LearningRateDecayOptimizerConstructor``.
     """
 
-    if var_name in ('backbone.cls_token', 'backbone.mask_token',
-                    'backbone.pos_embed'):
-        return 0
-    elif var_name.startswith('backbone.downsample_layers'):
+    if var_name.startswith('backbone.downsample_layers'):
         return 0
     elif var_name.startswith('backbone.stages'):
         stage_id = int(var_name.split('.')[2])
