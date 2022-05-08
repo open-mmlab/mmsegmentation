@@ -96,6 +96,7 @@ class WindowMSA(BaseModule):
 
     def forward(self, x, mask=None):
         """
+
         Args:
             x (tensor): input features with shape of (B*num_windows, N, C)
             mask (tensor | None, Optional): mask with shape of (num_windows,
