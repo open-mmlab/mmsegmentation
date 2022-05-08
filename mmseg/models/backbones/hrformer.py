@@ -563,6 +563,7 @@ class HRFormer(HRNet):
     """HRFormer backbone.
     This backbone is the implementation of `HRFormer: High-Resolution
     Transformer for Dense Prediction <https://arxiv.org/abs/2110.09408>`_.
+    
     Args:
         extra (dict): Detailed configuration for each stage of HRNet.
             There must be 4 stages, the configuration for each stage must have
