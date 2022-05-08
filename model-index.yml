@@ -24,6 +24,7 @@ Import:
 - configs/icnet/icnet.yml
 - configs/isanet/isanet.yml
 - configs/knet/knet.yml
+- configs/mae/mae.yml
 - configs/mobilenet_v2/mobilenet_v2.yml
 - configs/mobilenet_v3/mobilenet_v3.yml
 - configs/nonlocal_net/nonlocal_net.yml

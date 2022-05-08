@@ -135,8 +135,12 @@ class LoadAnnotations(object):
             backend=self.imdecode_backend).squeeze().astype(np.uint8)
         # modify if custom classes
         if results.get('label_map', None) is not None:
+            # Add deep copy to solve bug of repeatedly
+            # replace `gt_semantic_seg`, which is reported in
+            # https://github.com/open-mmlab/mmsegmentation/pull/1445/
+            gt_semantic_seg_copy = gt_semantic_seg.copy()
             for old_id, new_id in results['label_map'].items():
-                gt_semantic_seg[gt_semantic_seg == old_id] = new_id
+                gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
         # reduce zero_label
         if self.reduce_zero_label:
             # avoid using underflow conversion

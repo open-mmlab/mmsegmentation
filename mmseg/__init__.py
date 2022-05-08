@@ -7,7 +7,7 @@ from packaging.version import parse
 from .version import __version__, version_info
 
 MMCV_MIN = '1.3.13'
-MMCV_MAX = '1.5.0'
+MMCV_MAX = '1.6.0'
 
 
 def digit_version(version_str: str, length: int = 4):

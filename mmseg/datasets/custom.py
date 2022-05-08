@@ -298,9 +298,18 @@ class CustomDataset(Dataset):
         for pred, index in zip(preds, indices):
             seg_map = self.get_gt_seg_map_by_idx(index)
             pre_eval_results.append(
-                intersect_and_union(pred, seg_map, len(self.CLASSES),
-                                    self.ignore_index, self.label_map,
-                                    self.reduce_zero_label))
+                intersect_and_union(
+                    pred,
+                    seg_map,
+                    len(self.CLASSES),
+                    self.ignore_index,
+                    # as the labels has been converted when dataset initialized
+                    # in `get_palette_for_custom_classes ` this `label_map`
+                    # should be `dict()`, see
+                    # https://github.com/open-mmlab/mmsegmentation/issues/1415
+                    # for more ditails
+                    label_map=dict(),
+                    reduce_zero_label=self.reduce_zero_label))
 
         return pre_eval_results
 
@@ -417,7 +426,7 @@ class CustomDataset(Dataset):
                 num_classes,
                 self.ignore_index,
                 metric,
-                label_map=self.label_map,
+                label_map=dict(),
                 reduce_zero_label=self.reduce_zero_label)
         # test a list of pre_eval_results
         else:

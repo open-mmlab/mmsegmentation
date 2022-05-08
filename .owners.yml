@@ -1,10 +1,10 @@
 assign:
   strategy:
     # random
-    daily-shift-based
+    # daily-shift-based
+    round-robin
   assignees:
     - MeowZheng
     - MengzhangLI
     - linfangjian01
-    - RockeyCoss
     - xiaoachen98
