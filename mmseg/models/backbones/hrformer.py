@@ -4,9 +4,9 @@ import math
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import (build_activation_layer, build_conv_layer,
-                      build_norm_layer, trunc_normal_init)
+from mmcv.cnn import build_activation_layer, build_conv_layer, build_norm_layer
 from mmcv.cnn.bricks.transformer import build_dropout
+from mmcv.cnn.utils.weight_init import trunc_normal_
 from mmcv.runner import BaseModule, ModuleList, Sequential
 from torch.nn.functional import pad
 
@@ -92,7 +92,7 @@ class WindowMSA(BaseModule):
     def init_weights(self):
         super(WindowMSA, self).init_weights()
         if self.with_rpe:
-            trunc_normal_init(self.relative_position_bias_table, std=0.02)
+            trunc_normal_(self.relative_position_bias_table, std=0.02)
 
     def forward(self, x, mask=None):
         """
@@ -560,10 +560,11 @@ class HRFomerModule(HRModule):
 
 @BACKBONES.register_module()
 class HRFormer(HRNet):
-    """HRFormer backbone.
-    This backbone is the implementation of `HRFormer: High-Resolution
-    Transformer for Dense Prediction <https://arxiv.org/abs/2110.09408>`_.
-    
+    """HRFormer backbone. This backbone is the implementation of `HRFormer:
+    High-Resolution Transformer for Dense Prediction.
+
+    <https://arxiv.org/abs/2110.09408>`_.
+
     Args:
         extra (dict): Detailed configuration for each stage of HRNet.
             There must be 4 stages, the configuration for each stage must have
