@@ -7,7 +7,7 @@ from mmcv.runner import BaseModule, ModuleList, Sequential
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.ops import Upsample, resize
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from .resnet import BasicBlock, Bottleneck
 
 
@@ -214,7 +214,7 @@ class HRModule(BaseModule):
         return x_fuse
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class HRNet(BaseModule):
     """HRNet backbone.
 

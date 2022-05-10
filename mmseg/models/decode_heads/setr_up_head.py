@@ -3,11 +3,11 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 
 from mmseg.ops import Upsample
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class SETRUPHead(BaseDecodeHead):
     """Naive upsampling head and Progressive upsampling head of SETR.
 

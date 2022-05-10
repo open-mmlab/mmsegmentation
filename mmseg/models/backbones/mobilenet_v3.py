@@ -7,11 +7,11 @@ from mmcv.cnn.bricks import Conv2dAdaptivePadding
 from mmcv.runner import BaseModule
 from torch.nn.modules.batchnorm import _BatchNorm
 
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils import InvertedResidualV3 as InvertedResidual
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class MobileNetV3(BaseModule):
     """MobileNetV3 backbone.
 

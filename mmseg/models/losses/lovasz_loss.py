@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ..builder import LOSSES
+from mmseg.registry import MODELS
 from .utils import get_class_weight, weight_reduce_loss
 
 
@@ -222,7 +222,7 @@ def lovasz_softmax(probs,
     return loss
 
 
-@LOSSES.register_module()
+@MODELS.register_module()
 class LovaszLoss(nn.Module):
     """LovaszLoss.
 

@@ -3,12 +3,12 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.models.builder import HEADS
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.ops import resize
+from mmseg.registry import MODELS
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class SegformerHead(BaseDecodeHead):
     """The all mlp Head of segformer.
 

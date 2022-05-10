@@ -6,7 +6,7 @@ from mmcv.cnn import (ConvModule, DepthwiseSeparableConvModule,
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 
 
 class DetailBranch(BaseModule):
@@ -541,7 +541,7 @@ class BGALayer(BaseModule):
         return output
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class BiSeNetV2(BaseModule):
     """BiSeNetV2: Bilateral Network with Guided Aggregation for
     Real-time Semantic Segmentation.

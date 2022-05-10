@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 try:
@@ -14,7 +14,7 @@ except ModuleNotFoundError:
     PSAMask = None
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class PSAHead(BaseDecodeHead):
     """Point-wise Spatial Attention Network for Scene Parsing.
 

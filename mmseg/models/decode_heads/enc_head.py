@@ -5,7 +5,8 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule, build_norm_layer
 
 from mmseg.ops import Encoding, resize
-from ..builder import HEADS, build_loss
+from mmseg.registry import MODELS
+from ..builder import build_loss
 from .decode_head import BaseDecodeHead
 
 
@@ -59,7 +60,7 @@ class EncModule(nn.Module):
         return encoding_feat, output
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class EncHead(BaseDecodeHead):
     """Context Encoding for Semantic Segmentation.
 

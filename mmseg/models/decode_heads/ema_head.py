@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
@@ -76,7 +76,7 @@ class EMAModule(nn.Module):
         return feats_recon
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class EMAHead(BaseDecodeHead):
     """Expectation Maximization Attention Networks for Semantic Segmentation.
 

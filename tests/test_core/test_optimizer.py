@@ -2,10 +2,10 @@
 import pytest
 import torch
 import torch.nn as nn
-from mmcv.runner import DefaultOptimizerConstructor
+from mmengine.optim import DefaultOptimizerConstructor
 
-from mmseg.core.builder import (OPTIMIZER_BUILDERS, build_optimizer,
-                                build_optimizer_constructor)
+from mmseg.core.builder import build_optimizer, build_optimizer_constructor
+from mmseg.registry import OPTIMIZER_CONSTRUCTORS
 
 
 class ExampleModel(nn.Module):
@@ -35,7 +35,7 @@ def test_build_optimizer_constructor():
     # Test whether optimizer constructor can be built from parent.
     assert type(optim_constructor) is DefaultOptimizerConstructor
 
-    @OPTIMIZER_BUILDERS.register_module()
+    @OPTIMIZER_CONSTRUCTORS.register_module()
     class MyOptimizerConstructor(DefaultOptimizerConstructor):
         pass
 

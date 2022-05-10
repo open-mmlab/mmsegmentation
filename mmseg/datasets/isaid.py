@@ -3,8 +3,8 @@
 import mmcv
 from mmcv.utils import print_log
 
+from mmseg.registry import DATASETS
 from ..utils import get_root_logger
-from .builder import DATASETS
 from .custom import CustomDataset
 
 

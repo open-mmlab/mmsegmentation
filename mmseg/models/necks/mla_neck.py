@@ -2,7 +2,7 @@
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 
-from ..builder import NECKS
+from mmseg.registry import MODELS
 
 
 class MLAModule(nn.Module):
@@ -59,7 +59,7 @@ class MLAModule(nn.Module):
         return tuple(out_list)
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class MLANeck(nn.Module):
     """Multi-level Feature Aggregation.
 

@@ -6,7 +6,7 @@ from mmcv.runner import BaseModule
 
 from mmseg.models.decode_heads.psp_head import PPM
 from mmseg.ops import resize
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils import InvertedResidual
 
 
@@ -268,7 +268,7 @@ class FeatureFusionModule(nn.Module):
         return self.relu(out)
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class FastSCNN(BaseModule):
     """Fast-SCNN Backbone.
 

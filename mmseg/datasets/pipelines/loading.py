@@ -4,10 +4,10 @@ import os.path as osp
 import mmcv
 import numpy as np
 
-from ..builder import PIPELINES
+from mmseg.registry import TRANSFORMS
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class LoadImageFromFile(object):
     """Load an image from file.
 
@@ -87,7 +87,7 @@ class LoadImageFromFile(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class LoadAnnotations(object):
     """Load annotations for semantic segmentation.
 

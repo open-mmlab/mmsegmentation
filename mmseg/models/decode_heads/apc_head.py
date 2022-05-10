@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
@@ -107,7 +107,7 @@ class ACM(nn.Module):
         return z_out
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class APCHead(BaseDecodeHead):
     """Adaptive Pyramid Context Network for Semantic Segmentation.
 

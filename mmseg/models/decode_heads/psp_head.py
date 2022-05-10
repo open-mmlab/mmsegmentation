@@ -4,7 +4,7 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
@@ -59,7 +59,7 @@ class PPM(nn.ModuleList):
         return ppm_outs
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class PSPHead(BaseDecodeHead):
     """Pyramid Scene Parsing Network.
 

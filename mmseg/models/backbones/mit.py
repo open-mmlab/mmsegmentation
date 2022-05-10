@@ -12,7 +12,7 @@ from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
                                         trunc_normal_init)
 from mmcv.runner import BaseModule, ModuleList, Sequential
 
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw
 
 
@@ -295,7 +295,7 @@ class TransformerEncoderLayer(BaseModule):
         return x
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class MixVisionTransformer(BaseModule):
     """The backbone of Segformer.
 

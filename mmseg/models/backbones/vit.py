@@ -15,8 +15,8 @@ from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.ops import resize
+from mmseg.registry import MODELS
 from mmseg.utils import get_root_logger
-from ..builder import BACKBONES
 from ..utils import PatchEmbed
 
 
@@ -122,7 +122,7 @@ class TransformerEncoderLayer(BaseModule):
         return x
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class VisionTransformer(BaseModule):
     """Vision Transformer.
 

@@ -5,11 +5,11 @@ from mmcv import is_tuple_of
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class LRASPPHead(BaseDecodeHead):
     """Lite R-ASPP (LRASPP) head is proposed in Searching for MobileNetV3.
 

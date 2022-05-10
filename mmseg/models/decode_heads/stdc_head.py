@@ -2,11 +2,11 @@
 import torch
 import torch.nn.functional as F
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .fcn_head import FCNHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class STDCHead(FCNHead):
     """This head is the implementation of `Rethinking BiSeNet For Real-time
     Semantic Segmentation <https://arxiv.org/abs/2104.13188>`_.

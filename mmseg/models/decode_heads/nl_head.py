@@ -2,11 +2,11 @@
 import torch
 from mmcv.cnn import NonLocal2d
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .fcn_head import FCNHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class NLHead(FCNHead):
     """Non-local Neural Networks.
 

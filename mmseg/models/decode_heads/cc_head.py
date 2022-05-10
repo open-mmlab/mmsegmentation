@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .fcn_head import FCNHead
 
 try:
@@ -10,7 +10,7 @@ except ModuleNotFoundError:
     CrissCrossAttention = None
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class CCHead(FCNHead):
     """CCNet: Criss-Cross Attention for Semantic Segmentation.
 

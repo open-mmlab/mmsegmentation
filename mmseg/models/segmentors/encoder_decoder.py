@@ -5,12 +5,11 @@ import torch.nn.functional as F
 
 from mmseg.core import add_prefix
 from mmseg.ops import resize
-from .. import builder
-from ..builder import SEGMENTORS
+from mmseg.registry import MODELS
 from .base import BaseSegmentor
 
 
-@SEGMENTORS.register_module()
+@MODELS.register_module()
 class EncoderDecoder(BaseSegmentor):
     """Encoder Decoder segmentors.
 
@@ -33,9 +32,9 @@ class EncoderDecoder(BaseSegmentor):
             assert backbone.get('pretrained') is None, \
                 'both backbone and segmentor set pretrained weight'
             backbone.pretrained = pretrained
-        self.backbone = builder.build_backbone(backbone)
+        self.backbone = MODELS.build(backbone)
         if neck is not None:
-            self.neck = builder.build_neck(neck)
+            self.neck = MODELS.build(neck)
         self._init_decode_head(decode_head)
         self._init_auxiliary_head(auxiliary_head)
 
@@ -46,7 +45,7 @@ class EncoderDecoder(BaseSegmentor):
 
     def _init_decode_head(self, decode_head):
         """Initialize ``decode_head``"""
-        self.decode_head = builder.build_head(decode_head)
+        self.decode_head = MODELS.build(decode_head)
         self.align_corners = self.decode_head.align_corners
         self.num_classes = self.decode_head.num_classes
 
@@ -56,9 +55,9 @@ class EncoderDecoder(BaseSegmentor):
             if isinstance(auxiliary_head, list):
                 self.auxiliary_head = nn.ModuleList()
                 for head_cfg in auxiliary_head:
-                    self.auxiliary_head.append(builder.build_head(head_cfg))
+                    self.auxiliary_head.append(MODELS.build(head_cfg))
             else:
-                self.auxiliary_head = builder.build_head(auxiliary_head)
+                self.auxiliary_head = MODELS.build(auxiliary_head)
 
     def extract_feat(self, img):
         """Extract features from images."""

@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
 
-from .builder import DATASETS
+from mmseg.registry import DATASETS
 from .custom import CustomDataset
 
 

@@ -4,11 +4,11 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import Upsample
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class SETRMLAHead(BaseDecodeHead):
     """Multi level feature aggretation head of SETR.
 
