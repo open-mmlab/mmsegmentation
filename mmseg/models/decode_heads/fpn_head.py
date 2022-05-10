@@ -4,11 +4,11 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import Upsample, resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class FPNHead(BaseDecodeHead):
     """Panoptic Feature Pyramid Networks.
 

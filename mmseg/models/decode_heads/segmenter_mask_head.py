@@ -8,11 +8,11 @@ from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
 from mmcv.runner import ModuleList
 
 from mmseg.models.backbones.vit import TransformerEncoderLayer
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class SegmenterMaskTransformerHead(BaseDecodeHead):
     """Segmenter: Transformer for Semantic Segmentation.
 

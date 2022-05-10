@@ -5,11 +5,11 @@ from mmcv.cnn import ConvModule
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
-from ..builder import BACKBONES, build_backbone
+from mmseg.registry import MODELS
 from ..decode_heads.psp_head import PPM
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class ICNet(BaseModule):
     """ICNet for Real-Time Semantic Segmentation on High-Resolution Images.
 
@@ -66,7 +66,7 @@ class ICNet(BaseModule):
             ]
         super(ICNet, self).__init__(init_cfg=init_cfg)
         self.align_corners = align_corners
-        self.backbone = build_backbone(backbone_cfg)
+        self.backbone = MODELS.build(backbone_cfg)
 
         # Note: Default `ceil_mode` is false in nn.MaxPool2d, set
         # `ceil_mode=True` to keep information in the corner of feature map.

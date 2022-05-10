@@ -9,7 +9,7 @@ from mmcv.runner import BaseModule
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.ops import Upsample
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils import UpConvBlock
 
 
@@ -221,7 +221,7 @@ class InterpConv(nn.Module):
         return out
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class UNet(BaseModule):
     """UNet backbone.
 

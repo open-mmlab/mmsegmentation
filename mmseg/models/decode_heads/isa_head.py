@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import BaseDecodeHead
 
@@ -55,7 +55,7 @@ class SelfAttentionBlock(_SelfAttentionBlock):
         return self.output_project(context)
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class ISAHead(BaseDecodeHead):
     """Interlaced Sparse Self-Attention for Semantic Segmentation.
 

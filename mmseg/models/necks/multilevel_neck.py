@@ -3,10 +3,10 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule, xavier_init
 
 from mmseg.ops import resize
-from ..builder import NECKS
+from mmseg.registry import MODELS
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class MultiLevelNeck(nn.Module):
     """MultiLevelNeck.
 

@@ -5,7 +5,7 @@ from mmcv.cnn import build_activation_layer, build_conv_layer, build_norm_layer
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 
 
 class DownsamplerBlock(BaseModule):
@@ -191,7 +191,7 @@ class UpsamplerBlock(BaseModule):
         return output
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class ERFNet(BaseModule):
     """ERFNet backbone.
 

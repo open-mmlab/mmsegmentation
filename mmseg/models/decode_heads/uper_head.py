@@ -4,12 +4,12 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 from .psp_head import PPM
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class UPerHead(BaseDecodeHead):
     """Unified Perceptual Parsing for Scene Understanding.
 

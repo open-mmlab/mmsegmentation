@@ -6,10 +6,10 @@ import numpy as np
 from mmcv.utils import deprecated_api_warning, is_tuple_of
 from numpy import random
 
-from ..builder import PIPELINES
+from mmseg.registry import TRANSFORMS
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class ResizeToMultiple(object):
     """Resize images & seg to multiple of divisor.
 
@@ -66,7 +66,7 @@ class ResizeToMultiple(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class Resize(object):
     """Resize images & seg.
 
@@ -321,7 +321,7 @@ class Resize(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class RandomFlip(object):
     """Flip the image & seg.
 
@@ -376,7 +376,7 @@ class RandomFlip(object):
         return self.__class__.__name__ + f'(prob={self.prob})'
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class Pad(object):
     """Pad the image & mask.
 
@@ -447,7 +447,7 @@ class Pad(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class Normalize(object):
     """Normalize the image.
 
@@ -489,7 +489,7 @@ class Normalize(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class Rerange(object):
     """Rerange the image pixel value.
 
@@ -535,7 +535,7 @@ class Rerange(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class CLAHE(object):
     """Use CLAHE method to process the image.
 
@@ -580,7 +580,7 @@ class CLAHE(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class RandomCrop(object):
     """Random crop the image & seg.
 
@@ -653,7 +653,7 @@ class RandomCrop(object):
         return self.__class__.__name__ + f'(crop_size={self.crop_size})'
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class RandomRotate(object):
     """Rotate the image & seg.
 
@@ -736,7 +736,7 @@ class RandomRotate(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class RGB2Gray(object):
     """Convert RGB image to grayscale image.
 
@@ -791,7 +791,7 @@ class RGB2Gray(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class AdjustGamma(object):
     """Using gamma correction to process the image.
 
@@ -827,7 +827,7 @@ class AdjustGamma(object):
         return self.__class__.__name__ + f'(gamma={self.gamma})'
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class SegRescale(object):
     """Rescale semantic segmentation maps.
 
@@ -857,7 +857,7 @@ class SegRescale(object):
         return self.__class__.__name__ + f'(scale_factor={self.scale_factor})'
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class PhotoMetricDistortion(object):
     """Apply photometric distortion to image sequentially, every transformation
     is applied with a probability of 0.5. The position of random contrast is in
@@ -976,7 +976,7 @@ class PhotoMetricDistortion(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class RandomCutOut(object):
     """CutOut operation.
 
@@ -1068,7 +1068,7 @@ class RandomCutOut(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@TRANSFORMS.register_module()
 class RandomMosaic(object):
     """Mosaic augmentation. Given 4 images, mosaic transform combines them into
     one output image. The output image is composed of the parts from each sub-

@@ -5,10 +5,10 @@ from mmcv.cnn import ConvModule
 from mmcv.runner import BaseModule, auto_fp16
 
 from mmseg.ops import resize
-from ..builder import NECKS
+from mmseg.registry import MODELS
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class FPN(BaseModule):
     """Feature Pyramid Network.
 

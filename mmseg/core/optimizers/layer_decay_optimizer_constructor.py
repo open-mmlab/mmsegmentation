@@ -2,10 +2,11 @@
 import json
 import warnings
 
-from mmcv.runner import DefaultOptimizerConstructor, get_dist_info
+from mmengine.dist import get_dist_info
+from mmengine.optim import DefaultOptimizerConstructor
 
+from mmseg.registry import OPTIMIZER_CONSTRUCTORS
 from mmseg.utils import get_root_logger
-from ..builder import OPTIMIZER_BUILDERS
 
 
 def get_layer_id_for_convnext(var_name, max_layer_id):
@@ -99,7 +100,7 @@ def get_layer_id_for_vit(var_name, max_layer_id):
         return max_layer_id - 1
 
 
-@OPTIMIZER_BUILDERS.register_module()
+@OPTIMIZER_CONSTRUCTORS.register_module()
 class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
     """Different learning rates are set for different layers of backbone.
 
@@ -185,7 +186,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
         params.extend(parameter_groups.values())
 
 
-@OPTIMIZER_BUILDERS.register_module()
+@OPTIMIZER_CONSTRUCTORS.register_module()
 class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
     """Different learning rates are set for different layers of backbone.
 

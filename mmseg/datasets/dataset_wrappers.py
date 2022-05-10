@@ -6,10 +6,10 @@ from itertools import chain
 
 import mmcv
 import numpy as np
-from mmcv.utils import build_from_cfg, print_log
+from mmcv.utils import print_log
 from torch.utils.data.dataset import ConcatDataset as _ConcatDataset
 
-from .builder import DATASETS, PIPELINES
+from mmseg.registry import DATASETS, TRANSFORMS
 from .cityscapes import CityscapesDataset
 
 
@@ -225,7 +225,7 @@ class MultiImageMixDataset:
         for transform in pipeline:
             if isinstance(transform, dict):
                 self.pipeline_types.append(transform['type'])
-                transform = build_from_cfg(transform, PIPELINES)
+                transform = TRANSFORMS.build(transform)
                 self.pipeline.append(transform)
             else:
                 raise TypeError('pipeline must be a dict')

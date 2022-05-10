@@ -7,7 +7,7 @@ from mmcv.cnn import ConvModule, Linear, build_activation_layer
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
@@ -212,7 +212,7 @@ class FeatureFusionBlock(BaseModule):
         return x
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class DPTHead(BaseDecodeHead):
     """Vision Transformers for Dense Prediction.
 

@@ -10,8 +10,8 @@ try:
 except ModuleNotFoundError:
     point_sample = None
 
-from mmseg.models.builder import HEADS
 from mmseg.ops import resize
+from mmseg.registry import MODELS
 from ..losses import accuracy
 from .cascade_decode_head import BaseCascadeDecodeHead
 
@@ -36,7 +36,7 @@ def calculate_uncertainty(seg_logits):
     return (top2_scores[:, 1] - top2_scores[:, 0]).unsqueeze(1)
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class PointHead(BaseCascadeDecodeHead):
     """A mask point head use in PointRend.
 

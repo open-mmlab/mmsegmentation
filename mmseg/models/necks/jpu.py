@@ -5,10 +5,10 @@ from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
-from ..builder import NECKS
+from mmseg.registry import MODELS
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class JPU(BaseModule):
     """FastFCN: Rethinking Dilated Convolution in the Backbone
     for Semantic Segmentation.

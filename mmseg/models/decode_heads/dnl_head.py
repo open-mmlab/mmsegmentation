@@ -3,7 +3,7 @@ import torch
 from mmcv.cnn import NonLocal2d
 from torch import nn
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .fcn_head import FCNHead
 
 
@@ -89,7 +89,7 @@ class DisentangledNonLocal2d(NonLocal2d):
         return output
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class DNLHead(FCNHead):
     """Disentangled Non-Local Neural Networks.
 

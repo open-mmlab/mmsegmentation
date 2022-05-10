@@ -15,8 +15,8 @@ from mmcv.runner import (BaseModule, CheckpointLoader, ModuleList,
                          load_state_dict)
 from mmcv.utils import to_2tuple
 
+from mmseg.registry import MODELS
 from ...utils import get_root_logger
-from ..builder import BACKBONES
 from ..utils.embed import PatchEmbed, PatchMerging
 
 
@@ -462,7 +462,7 @@ class SwinBlockSequence(BaseModule):
             return x, hw_shape, x, hw_shape
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class SwinTransformer(BaseModule):
     """Swin Transformer backbone.
 

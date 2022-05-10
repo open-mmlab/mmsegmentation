@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .cascade_decode_head import BaseCascadeDecodeHead
 
@@ -82,7 +82,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
         return output
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class OCRHead(BaseCascadeDecodeHead):
     """Object-Contextual Representations for Semantic Segmentation.
 

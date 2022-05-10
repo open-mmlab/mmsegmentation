@@ -2,10 +2,10 @@
 import torch.nn as nn
 from mmcv.cnn import build_norm_layer
 
-from ..builder import NECKS
+from mmseg.registry import MODELS
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class Feature2Pyramid(nn.Module):
     """Feature2Pyramid.
 

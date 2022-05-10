@@ -4,7 +4,7 @@ from mmcv.cnn import ConvModule
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
-from ..builder import NECKS
+from mmseg.registry import MODELS
 
 
 class CascadeFeatureFusion(BaseModule):
@@ -77,7 +77,7 @@ class CascadeFeatureFusion(BaseModule):
         return x, x_low
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class ICNeck(BaseModule):
     """ICNet for Real-Time Semantic Segmentation on High-Resolution Images.
 

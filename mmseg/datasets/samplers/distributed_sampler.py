@@ -7,8 +7,10 @@ from torch.utils.data import Dataset
 from torch.utils.data import DistributedSampler as _DistributedSampler
 
 from mmseg.core.utils import sync_random_seed
+from mmseg.registry import DATA_SAMPLERS
 
 
+@DATA_SAMPLERS.register_module()
 class DistributedSampler(_DistributedSampler):
     """DistributedSampler inheriting from
     `torch.utils.data.DistributedSampler`.

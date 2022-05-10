@@ -8,8 +8,8 @@ from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
 from mmcv.runner import ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 
+from mmseg.registry import MODELS
 from mmseg.utils import get_root_logger
-from ..builder import BACKBONES
 from .beit import BEiT, BEiTAttention, BEiTTransformerEncoderLayer
 
 
@@ -42,7 +42,7 @@ class MAETransformerEncoderLayer(BEiTTransformerEncoderLayer):
         self.attn = MAEAttention(**attn_cfg)
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class MAE(BEiT):
     """VisionTransformer with support for patch.
 

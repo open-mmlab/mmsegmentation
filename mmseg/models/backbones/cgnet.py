@@ -8,7 +8,7 @@ from mmcv.cnn import ConvModule, build_conv_layer, build_norm_layer
 from mmcv.runner import BaseModule
 from mmcv.utils.parrots_wrapper import _BatchNorm
 
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 
 
 class GlobalContextExtractor(nn.Module):
@@ -183,7 +183,7 @@ class InputInjection(nn.Module):
         return x
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class CGNet(BaseModule):
     """CGNet backbone.
 

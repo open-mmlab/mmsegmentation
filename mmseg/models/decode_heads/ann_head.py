@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import BaseDecodeHead
 
@@ -181,7 +181,7 @@ class APNB(nn.Module):
         return output
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class ANNHead(BaseDecodeHead):
     """Asymmetric Non-local Neural Networks for Semantic Segmentation.
 

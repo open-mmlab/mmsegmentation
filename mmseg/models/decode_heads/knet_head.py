@@ -7,8 +7,8 @@ from mmcv.cnn.bricks.transformer import (FFN, TRANSFORMER_LAYER,
                                          MultiheadAttention,
                                          build_transformer_layer)
 
-from mmseg.models.builder import HEADS, build_head
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
+from mmseg.registry import MODELS
 from mmseg.utils import get_root_logger
 
 
@@ -139,7 +139,7 @@ class KernelUpdator(nn.Module):
         return features
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class KernelUpdateHead(nn.Module):
     """Kernel Update Head in K-Net.
 
@@ -391,7 +391,7 @@ class KernelUpdateHead(nn.Module):
             self.conv_kernel_size)
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class IterativeDecodeHead(BaseDecodeHead):
     """K-Net: Towards Unified Image Segmentation.
 
@@ -414,7 +414,7 @@ class IterativeDecodeHead(BaseDecodeHead):
         super(BaseDecodeHead, self).__init__(**kwargs)
         assert num_stages == len(kernel_update_head)
         self.num_stages = num_stages
-        self.kernel_generate_head = build_head(kernel_generate_head)
+        self.kernel_generate_head = (kernel_generate_head)
         self.kernel_update_head = nn.ModuleList()
         self.align_corners = self.kernel_generate_head.align_corners
         self.num_classes = self.kernel_generate_head.num_classes
@@ -422,7 +422,7 @@ class IterativeDecodeHead(BaseDecodeHead):
         self.ignore_index = self.kernel_generate_head.ignore_index
 
         for head_cfg in kernel_update_head:
-            self.kernel_update_head.append(build_head(head_cfg))
+            self.kernel_update_head.append(MODELS.build(head_cfg))
 
     def forward(self, inputs):
         """Forward function."""

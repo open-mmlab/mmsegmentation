@@ -14,7 +14,7 @@ from mmcv.runner import BaseModule, ModuleList
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.models.backbones.mit import EfficientMultiheadAttention
-from mmseg.models.builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils.embed import PatchEmbed
 
 
@@ -349,7 +349,7 @@ class ConditionalPositionEncoding(BaseModule):
         return x
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class PCPVT(BaseModule):
     """The backbone of Twins-PCPVT.
 
@@ -508,7 +508,7 @@ class PCPVT(BaseModule):
         return tuple(outputs)
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class SVT(PCPVT):
     """The backbone of Twins-SVT.
 

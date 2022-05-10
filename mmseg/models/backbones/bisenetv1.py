@@ -5,7 +5,7 @@ from mmcv.cnn import ConvModule
 from mmcv.runner import BaseModule
 
 from mmseg.ops import resize
-from ..builder import BACKBONES, build_backbone
+from mmseg.registry import MODELS
 
 
 class SpatialPath(BaseModule):
@@ -156,7 +156,7 @@ class ContextPath(BaseModule):
         assert len(context_channels) == 3, 'Length of input channels \
                                            of Context Path must be 3!'
 
-        self.backbone = build_backbone(backbone_cfg)
+        self.backbone = MODELS.build(backbone_cfg)
 
         self.align_corners = align_corners
         self.arm16 = AttentionRefinementModule(context_channels[1],
@@ -262,7 +262,7 @@ class FeatureFusionModule(BaseModule):
         return x_out
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class BiSeNetV1(BaseModule):
     """BiSeNetV1 backbone.
 

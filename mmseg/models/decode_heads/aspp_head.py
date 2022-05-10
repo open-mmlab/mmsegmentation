@@ -4,7 +4,7 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule
 
 from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
@@ -50,7 +50,7 @@ class ASPPModule(nn.ModuleList):
         return aspp_outs
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class ASPPHead(BaseDecodeHead):
     """Rethinking Atrous Convolution for Semantic Image Segmentation.
 

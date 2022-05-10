@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.ops import sigmoid_focal_loss as _sigmoid_focal_loss
 
-from ..builder import LOSSES
+from mmseg.registry import MODELS
 from .utils import weight_reduce_loss
 
 
@@ -133,7 +133,7 @@ def sigmoid_focal_loss(pred,
     return loss
 
 
-@LOSSES.register_module()
+@MODELS.register_module()
 class FocalLoss(nn.Module):
 
     def __init__(self,

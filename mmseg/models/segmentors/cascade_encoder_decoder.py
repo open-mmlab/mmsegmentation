@@ -3,12 +3,11 @@ from torch import nn
 
 from mmseg.core import add_prefix
 from mmseg.ops import resize
-from .. import builder
-from ..builder import SEGMENTORS
+from mmseg.registry import MODELS
 from .encoder_decoder import EncoderDecoder
 
 
-@SEGMENTORS.register_module()
+@MODELS.register_module()
 class CascadeEncoderDecoder(EncoderDecoder):
     """Cascade Encoder Decoder segmentors.
 
@@ -44,7 +43,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
         assert len(decode_head) == self.num_stages
         self.decode_head = nn.ModuleList()
         for i in range(self.num_stages):
-            self.decode_head.append(builder.build_head(decode_head[i]))
+            self.decode_head.append(MODELS.build(decode_head[i]))
         self.align_corners = self.decode_head[-1].align_corners
         self.num_classes = self.decode_head[-1].num_classes
 

@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule, build_activation_layer, build_norm_layer
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
@@ -89,7 +89,7 @@ class DCM(nn.Module):
         return output
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class DMHead(BaseDecodeHead):
     """Dynamic Multi-scale Filters for Semantic Segmentation.
 

@@ -7,10 +7,10 @@ except ImportError:
 from mmcv.cnn.bricks.registry import NORM_LAYERS
 from mmcv.runner import BaseModule
 
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class TIMMBackbone(BaseModule):
     """Wrapper to use backbones from timm library. More details can be found in
     `timm <https://github.com/rwightman/pytorch-image-models>`_ .
