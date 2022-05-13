@@ -244,7 +244,7 @@ python demo/image_demo.py demo/demo.png configs/pspnet/pspnet_r50-d8_512x1024_40
     checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --palette cityscapes
 ```
 
-A notebook demo can be found in [demo/inference_demo.ipynb](../demo/inference_demo.ipynb).
+A notebook demo can be found in [demo/inference_demo.ipynb](../../demo/inference_demo.ipynb).
 
 Now we also provide a demo script to test a single video.
 

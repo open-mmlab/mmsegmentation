@@ -244,4 +244,4 @@ python demo/image_demo.py demo/demo.jpg configs/pspnet/pspnet_r50-d8_512x1024_40
     checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --palette cityscapes
 ```
 
-推理的 demo 文档可在此查询：[demo/inference_demo.ipynb](../demo/inference_demo.ipynb) 。
+推理的 demo 文档可在此查询：[demo/inference_demo.ipynb](../../demo/inference_demo.ipynb) 。
