@@ -16,7 +16,7 @@ RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machi
 ARG GID=1000
 ARG UID=1000
 ENV USERNAME mmseg
-ENV HOME /home/$USERNAME 
+ENV HOME /home/$USERNAME
 RUN groupadd -f -g ${GID} ${USERNAME}
 RUN useradd -m $USERNAME -u ${UID} -g ${GID} && \
     echo "$USERNAME:$USERNAME" | chpasswd && \
