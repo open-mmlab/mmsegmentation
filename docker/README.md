@@ -6,7 +6,7 @@
 ./build_image.sh <mmseg_version>
 ```
 
-If you use mmsegmentation `0.24.1`, please type the following commnand.
+If you use mmsegmentation `0.24.1`, please type the following command.
 
 ```
 ./build_image.sh 0.24.1
@@ -20,7 +20,7 @@ If you use mmsegmentation `0.24.1`, please type the following commnand.
 ./launch_container.sh <mmseg_version>
 ```
 
-If you use mmsegmentation `0.24.1`, please type the following commnand.
+If you use mmsegmentation `0.24.1`, please type the following command.
 
 ```
 ./launch_container.sh 0.24.1
@@ -32,7 +32,7 @@ If you use mmsegmentation `0.24.1`, please type the following commnand.
 ./launch_container_x11.sh <mmseg_version>
 ```
 
-If you use mmsegmentation `0.24.1`, please type the following commnand.
+If you use mmsegmentation `0.24.1`, please type the following command.
 
 ```
 ./launch_container_x11.sh 0.24.1
