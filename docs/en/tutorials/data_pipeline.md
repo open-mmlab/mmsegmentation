@@ -68,21 +68,21 @@ For each operation, we list the related dict fields that are added/updated/remov
 `Resize`
 
 - add: scale, scale_idx, pad_shape, scale_factor, keep_ratio
-- update: img, img_shape, *seg_fields
+- update: img, img_shape, \*seg_fields
 
 `RandomFlip`
 
 - add: flip
-- update: img, *seg_fields
+- update: img, \*seg_fields
 
 `Pad`
 
 - add: pad_fixed_size, pad_size_divisor
-- update: img, pad_shape, *seg_fields
+- update: img, pad_shape, \*seg_fields
 
 `RandomCrop`
 
-- update: img, pad_shape, *seg_fields
+- update: img, pad_shape, \*seg_fields
 
 `Normalize`
 
@@ -132,40 +132,40 @@ For each operation, we list the related dict fields that are added/updated/remov
 
 1. Write a new pipeline in any file, e.g., `my_pipeline.py`. It takes a dict as input and return a dict.
 
-    ```python
-    from mmseg.datasets import PIPELINES
+   ```python
+   from mmseg.datasets import PIPELINES
 
-    @PIPELINES.register_module()
-    class MyTransform:
+   @PIPELINES.register_module()
+   class MyTransform:
 
-        def __call__(self, results):
-            results['dummy'] = True
-            return results
-    ```
+       def __call__(self, results):
+           results['dummy'] = True
+           return results
+   ```
 
 2. Import the new class.
 
-    ```python
-    from .my_pipeline import MyTransform
-    ```
+   ```python
+   from .my_pipeline import MyTransform
+   ```
 
 3. Use it in config files.
 
-    ```python
-    img_norm_cfg = dict(
-        mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
-    crop_size = (512, 1024)
-    train_pipeline = [
-        dict(type='LoadImageFromFile'),
-        dict(type='LoadAnnotations'),
-        dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
-        dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
-        dict(type='RandomFlip', flip_ratio=0.5),
-        dict(type='PhotoMetricDistortion'),
-        dict(type='Normalize', **img_norm_cfg),
-        dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
-        dict(type='MyTransform'),
-        dict(type='DefaultFormatBundle'),
-        dict(type='Collect', keys=['img', 'gt_semantic_seg']),
-    ]
-    ```
+   ```python
+   img_norm_cfg = dict(
+       mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+   crop_size = (512, 1024)
+   train_pipeline = [
+       dict(type='LoadImageFromFile'),
+       dict(type='LoadAnnotations'),
+       dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
+       dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
+       dict(type='RandomFlip', flip_ratio=0.5),
+       dict(type='PhotoMetricDistortion'),
+       dict(type='Normalize', **img_norm_cfg),
+       dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
+       dict(type='MyTransform'),
+       dict(type='DefaultFormatBundle'),
+       dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+   ]
+   ```

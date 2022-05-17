@@ -44,7 +44,7 @@ class MyOptimizer(Optimizer):
 
 - 修改 `mmseg/core/optimizer/__init__.py` 来导入它
 
-    新的被定义的模块应该被导入到 `mmseg/core/optimizer/__init__.py` 这样注册表将会发现新的模块并添加它
+  新的被定义的模块应该被导入到 `mmseg/core/optimizer/__init__.py` 这样注册表将会发现新的模块并添加它
 
 ```python
 from .my_optimizer import MyOptimizer
@@ -110,35 +110,35 @@ class MyOptimizerConstructor(object):
 
 - __使用梯度截断 (gradient clip) 去稳定训练__:
 
-    一些模型需要梯度截断去稳定训练过程，如下所示
+  一些模型需要梯度截断去稳定训练过程，如下所示
 
-    ```python
-    optimizer_config = dict(
-        _delete_=True, grad_clip=dict(max_norm=35, norm_type=2))
-    ```
+  ```python
+  optimizer_config = dict(
+      _delete_=True, grad_clip=dict(max_norm=35, norm_type=2))
+  ```
 
-    如果您的配置继承自已经设置了  `optimizer_config` 的基础配置 (base config)，您可能需要 `_delete_=True` 来重写那些不需要的设置。更多细节请参照 [配置文件文档](https://mmsegmentation.readthedocs.io/en/latest/config.html) 。
+  如果您的配置继承自已经设置了  `optimizer_config` 的基础配置 (base config)，您可能需要 `_delete_=True` 来重写那些不需要的设置。更多细节请参照 [配置文件文档](https://mmsegmentation.readthedocs.io/en/latest/config.html) 。
 
 - __使用动量计划表 (momentum schedule) 去加速模型收敛__:
 
-    我们支持动量计划表去让模型基于学习率修改动量，这样可能让模型收敛地更快。
-    动量计划表经常和学习率计划表 (LR scheduler) 一起使用，例如如下配置文件就在 3D 检测里经常使用以加速收敛。
-    更多细节请参考 [CyclicLrUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/lr_updater.py#L327) 和 [CyclicMomentumUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/momentum_updater.py#L130) 的实现。
+  我们支持动量计划表去让模型基于学习率修改动量，这样可能让模型收敛地更快。
+  动量计划表经常和学习率计划表 (LR scheduler) 一起使用，例如如下配置文件就在 3D 检测里经常使用以加速收敛。
+  更多细节请参考 [CyclicLrUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/lr_updater.py#L327) 和 [CyclicMomentumUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/momentum_updater.py#L130) 的实现。
 
-    ```python
-    lr_config = dict(
-        policy='cyclic',
-        target_ratio=(10, 1e-4),
-        cyclic_times=1,
-        step_ratio_up=0.4,
-    )
-    momentum_config = dict(
-        policy='cyclic',
-        target_ratio=(0.85 / 0.95, 1),
-        cyclic_times=1,
-        step_ratio_up=0.4,
-    )
-    ```
+  ```python
+  lr_config = dict(
+      policy='cyclic',
+      target_ratio=(10, 1e-4),
+      cyclic_times=1,
+      step_ratio_up=0.4,
+  )
+  momentum_config = dict(
+      policy='cyclic',
+      target_ratio=(0.85 / 0.95, 1),
+      cyclic_times=1,
+      step_ratio_up=0.4,
+  )
+  ```
 
 ## 自定义训练计划表
 
@@ -147,20 +147,20 @@ class MyOptimizerConstructor(object):
 
 - 步计划表 Step schedule:
 
-    ```python
-    lr_config = dict(policy='step', step=[9, 10])
-    ```
+  ```python
+  lr_config = dict(policy='step', step=[9, 10])
+  ```
 
 - 余弦退火计划表 ConsineAnnealing schedule:
 
-    ```python
-    lr_config = dict(
-        policy='CosineAnnealing',
-        warmup='linear',
-        warmup_iters=1000,
-        warmup_ratio=1.0 / 10,
-        min_lr_ratio=1e-5)
-    ```
+  ```python
+  lr_config = dict(
+      policy='CosineAnnealing',
+      warmup='linear',
+      warmup_iters=1000,
+      warmup_ratio=1.0 / 10,
+      min_lr_ratio=1e-5)
+  ```
 
 ## 自定义工作流 (workflow)
 
@@ -185,7 +185,7 @@ workflow = [('train', 1)]
 2. 配置文件里的关键词 `total_epochs` 仅控制训练的 epochs 数目，而不会影响验证时的工作流
 3. 工作流 `[('train', 1), ('val', 1)]` 和 `[('train', 1)]` 将不会改变 `EvalHook` 的行为，因为 `EvalHook` 被 `after_train_epoch`
    调用而且验证的工作流仅仅影响通过调用 `after_val_epoch` 的钩子 (hooks)。因此， `[('train', 1), ('val', 1)]` 和 `[('train', 1)]`
-    的区别仅在于 runner 将在每次训练 epoch 结束后计算在验证集上的损失
+   的区别仅在于 runner 将在每次训练 epoch 结束后计算在验证集上的损失
 
 ## 自定义钩 (hooks)
 

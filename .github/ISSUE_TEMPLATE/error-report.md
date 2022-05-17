@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 Thanks for your error report and we appreciate it a lot.
@@ -21,19 +20,20 @@ A clear and concise description of what the bug is.
 
 1. What command or script did you run?
 
-    ```none
-    A placeholder for the command.
-    ```
+   ```none
+   A placeholder for the command.
+   ```
 
 2. Did you make any modifications on the code or config? Did you understand what you have modified?
+
 3. What dataset did you use?
 
 **Environment**
 
 1. Please run `python mmseg/utils/collect_env.py` to collect necessary environment information and paste it here.
 2. You may add addition that may be helpful for locating the problem, such as
-    - How you installed PyTorch [e.g., pip, conda, source]
-    - Other environment variables that may be related (such as `$PATH`, `$LD_LIBRARY_PATH`, `$PYTHONPATH`, etc.)
+   - How you installed PyTorch \[e.g., pip, conda, source\]
+   - Other environment variables that may be related (such as `$PATH`, `$LD_LIBRARY_PATH`, `$PYTHONPATH`, etc.)
 
 **Error traceback**
 
