@@ -15,7 +15,7 @@ def resize(input,
         if size is not None and align_corners:
             input_h, input_w = tuple(int(x) for x in input.shape[2:])
             output_h, output_w = tuple(int(x) for x in size)
-            if output_h > input_h or output_w > output_h:
+            if output_h > input_h or output_w > input_w:
                 if ((output_h > 1 and output_w > 1 and input_h > 1
                      and input_w > 1) and (output_h - 1) % (input_h - 1)
                         and (output_w - 1) % (input_w - 1)):
