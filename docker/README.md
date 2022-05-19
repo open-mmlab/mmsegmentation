@@ -1,5 +1,11 @@
 # Dockerfile for mmsegmentation
 
+## Requirements
+
+- NVIDIA graphics driver
+- docker >=19.03
+- nvidia-docker2
+
 ## Build docker image
 
 ```
