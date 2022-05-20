@@ -375,3 +375,35 @@ python tools/convert_datasets/isaid.py /path/to/iSAID
 ```
 
 In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+
+### KITTI Segmentation
+
+This is the KITTI semantic segmentation benchmark. It consists of 200 semantically annotated train as well as 200 test images corresponding to the KITTI Stereo and Flow Benchmark 2015. The data format and metrics are conform with The Cityscapes Dataset.
+
+The data images could be download from [Download label for semantic and instance segmentation (314 MB)](http://www.cvlibs.net/datasets/kitti/eval_semseg.php?benchmark=semantics2015) (train/test)
+
+```angular2html
+kitti-seg
+├── ann_dir
+│   ├── train
+│   └── val
+├── img_dir
+│   ├── train
+│   └── val
+├── testing
+│   └── image_2
+└── training
+    ├── image_2
+    ├── instance
+    ├── semantic
+    └── semantic_rgb
+
+```
+
+Following scripts will convert the KITTI dataset to standard format.
+
+```shell
+python tools/convert_datasets/kitti.py /path/to/kitti-seg --ratio=0.25
+```
+
+Kitti semantic segmentation dataset is a lightweight dataset for semantic segmentation which shares the same label policy as cityscapes. It's an excellent starting point for segmentation and employs the weights pre-trained on cityscapes to perform transfer-learning.
