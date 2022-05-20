@@ -9,29 +9,29 @@
 
 The compatible MMSegmentation and MMCV versions are as below. Please install the correct version of MMCV to avoid installation issues.
 
-| MMSegmentation version |        MMCV version        | MMClassification version |
-|:----------------------:|:--------------------------:|:------------------------:|
-|         master         |  mmcv-full>=1.4.4, <=1.6.0  | mmcls>=0.20.1, <=1.0.0   |
-|         0.24.1         |  mmcv-full>=1.4.4, <=1.6.0  | mmcls>=0.20.1, <=1.0.0   |
-|         0.23.0         |  mmcv-full>=1.4.4, <=1.6.0  | mmcls>=0.20.1, <=1.0.0   |
-|         0.22.0         |  mmcv-full>=1.4.4, <=1.6.0  | mmcls>=0.20.1, <=1.0.0   |
-|         0.21.1         |  mmcv-full>=1.4.4, <=1.6.0  | Not required             |
-|         0.20.2         | mmcv-full>=1.3.13, <=1.6.0  | Not required             |
-|         0.19.0         | mmcv-full>=1.3.13, <1.3.17 | Not required             |
-|         0.18.0         | mmcv-full>=1.3.13, <1.3.17 | Not required             |
-|         0.17.0         | mmcv-full>=1.3.7, <1.3.17  | Not required             |
-|         0.16.0         | mmcv-full>=1.3.7, <1.3.17  | Not required             |
-|         0.15.0         | mmcv-full>=1.3.7, <1.3.17  | Not required             |
-|         0.14.1         | mmcv-full>=1.3.7, <1.3.17  | Not required             |
-|         0.14.0         |  mmcv-full>=1.3.1, <1.3.2  | Not required             |
-|         0.13.0         |  mmcv-full>=1.3.1, <1.3.2  | Not required             |
-|         0.12.0         |  mmcv-full>=1.1.4, <1.3.2  | Not required             |
-|         0.11.0         |  mmcv-full>=1.1.4, <1.3.0  | Not required             |
-|         0.10.0         |  mmcv-full>=1.1.4, <1.3.0  | Not required             |
-|         0.9.0          |  mmcv-full>=1.1.4, <1.3.0  | Not required             |
-|         0.8.0          |  mmcv-full>=1.1.4, <1.2.0  | Not required             |
-|         0.7.0          |  mmcv-full>=1.1.2, <1.2.0  | Not required             |
-|         0.6.0          |  mmcv-full>=1.1.2, <1.2.0  | Not required             |
+| MMSegmentation version |        MMCV version         | MMClassification version |
+| :--------------------: | :-------------------------: | :----------------------: |
+|         master         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
+|         0.24.1         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
+|         0.23.0         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
+|         0.22.0         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
+|         0.21.1         | mmcv-full>=1.4.4, \<=1.6.0  |       Not required       |
+|         0.20.2         | mmcv-full>=1.3.13, \<=1.6.0 |       Not required       |
+|         0.19.0         | mmcv-full>=1.3.13, \<1.3.17 |       Not required       |
+|         0.18.0         | mmcv-full>=1.3.13, \<1.3.17 |       Not required       |
+|         0.17.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
+|         0.16.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
+|         0.15.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
+|         0.14.1         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
+|         0.14.0         |  mmcv-full>=1.3.1, \<1.3.2  |       Not required       |
+|         0.13.0         |  mmcv-full>=1.3.1, \<1.3.2  |       Not required       |
+|         0.12.0         |  mmcv-full>=1.1.4, \<1.3.2  |       Not required       |
+|         0.11.0         |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
+|         0.10.0         |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
+|         0.9.0          |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
+|         0.8.0          |  mmcv-full>=1.1.4, \<1.2.0  |       Not required       |
+|         0.7.0          |  mmcv-full>=1.1.2, \<1.2.0  |       Not required       |
+|         0.6.0          |  mmcv-full>=1.1.2, \<1.2.0  |       Not required       |
 
 :::{note}
 You need to run `pip uninstall mmcv` first if you have mmcv installed.
@@ -66,10 +66,10 @@ Install MMCV, we recommend you to install the pre-built mmcv as below.
 pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
 ```
 
-Please replace ``{cu_version}`` and ``{torch_version}`` in the url to your desired one. mmcv-full is only compiled on
+Please replace `{cu_version}` and `{torch_version}` in the url to your desired one. mmcv-full is only compiled on
 PyTorch 1.x.0 because the compatibility usually holds between 1.x.0 and 1.x.1. If your PyTorch version is 1.x.1,
 you can install mmcv-full compiled with PyTorch 1.x.0 and it usually works well.
-For example, to install the ``mmcv-full`` with ``CUDA 11.3`` and ``PyTorch 1.11.0``, use the following command:
+For example, to install the `mmcv-full` with `CUDA 11.3` and `PyTorch 1.11.0`, use the following command:
 
 ```shell
 pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.11/index.html
@@ -88,7 +88,6 @@ cd ..
 ```
 
 **Important:** You need to run `pip uninstall mmcv` first if you have mmcv installed. Because if `mmcv` and `mmcv-full` are both installed, there will be `ModuleNotFoundError`.
-
 
 **Install mmcv for Windows (Experimental):**
 
@@ -147,7 +146,7 @@ pip install -e .  # or "python setup.py develop"
    you can install it before installing MMCV.
 5. Some dependencies are optional. Simply running `pip install -e .` will only install the minimum runtime requirements.
    To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
-:::
+   :::
 
 ### A from-scratch setup script
 

@@ -1,7 +1,7 @@
 ## Useful tools
 
 Apart from training/testing scripts, We provide lots of useful tools under the
- `tools/` directory.
+`tools/` directory.
 
 ### Get the FLOPs and params (experimental)
 
@@ -124,7 +124,7 @@ Description of all arguments
 - `--show-dir`: Directory where painted images will be saved
 - `--cfg-options`: Override some settings in the used config file, the key-value pair in `xxx=yyy` format will be merged into config file.
 - `--eval-options`: Custom options for evaluation, the key-value pair in `xxx=yyy` format will be kwargs for `dataset.evaluate()` function
-- `--opacity`: Opacity of painted segmentation map. In (0, 1] range.
+- `--opacity`: Opacity of painted segmentation map. In (0, 1\] range.
 
 #### Results and Models
 
@@ -232,7 +232,7 @@ Only tested on whole mode.
 ### Print the entire config
 
 `tools/print_config.py` prints the whole config verbatim, expanding all its
- imports.
+imports.
 
 ```shell
 python tools/print_config.py \
@@ -381,7 +381,7 @@ fcn
 
 ## Confusion Matrix
 
-In order to generate and plot a ```nxn``` confusion matrix where ```n``` is the number of classes, you can follow the steps:
+In order to generate and plot a `nxn` confusion matrix where `n` is the number of classes, you can follow the steps:
 
 ### 1.Generate a prediction result in pkl format using `test.py`
 
@@ -389,7 +389,7 @@ In order to generate and plot a ```nxn``` confusion matrix where ```n``` is the 
 python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${PATH_TO_RESULT_FILE}]
 ```
 
-Note that the argument for ```--eval``` should be  ```None``` so that the result file contains numpy type of prediction results. The usage for distribution test is just the same.
+Note that the argument for `--eval` should be  `None` so that the result file contains numpy type of prediction results. The usage for distribution test is just the same.
 
 Example:
 
@@ -400,7 +400,7 @@ checkpoint/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth \
 --out result/pred_result.pkl
 ```
 
-### 2. Use ```confusion_matrix.py``` to generate and plot a confusion matrix
+### 2. Use `confusion_matrix.py` to generate and plot a confusion matrix
 
 ```shell
 python tools/confusion_matrix.py ${CONFIG_FILE} ${PATH_TO_RESULT_FILE} ${SAVE_DIR} --show

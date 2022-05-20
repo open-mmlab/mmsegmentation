@@ -127,9 +127,11 @@ def parse_md(md_file):
             elif line[:15] == '<!-- [BACKBONE]':
                 is_backbone = True
                 i += 1
-            elif line[0] == '|' and (
-                    i + 1) < len(lines) and lines[i + 1][:3] == '| -':
+            elif (line[0] == '|' and (i + 1) < len(lines)
+                  and lines[i + 1][:3] == '| -' and 'Method' in line
+                  and 'Crop Size' in line and 'Mem (GB)' in line):
                 cols = [col.strip() for col in line.split('|')]
+                print(cols)
                 method_id = cols.index('Method')
                 backbone_id = cols.index('Backbone')
                 crop_size_id = cols.index('Crop Size')
