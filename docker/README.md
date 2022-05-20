@@ -37,7 +37,7 @@ If you use mmsegmentation `0.24.1`, please type the following command.
 ```
 ./launch_container_x11.sh <mmseg_version>
 ```
-
+Official [demo scripts](https://github.com/open-mmlab/mmsegmentation/tree/v0.24.1/demo) need X11. So, if you would like to visualize the results, please run the script `launch_container_x11.sh` to enable X11 in docker container.
 If you use mmsegmentation `0.24.1`, please type the following command.
 
 ```
