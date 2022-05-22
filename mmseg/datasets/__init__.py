@@ -12,13 +12,13 @@ from .drive import DRIVEDataset
 from .hrf import HRFDataset
 from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
+from .kitti_seg import KittiSegDataset
 from .loveda import LoveDADataset
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
 from .voc import PascalVOCDataset
-from .kitti_seg import KittiSegDataset
 
 __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',

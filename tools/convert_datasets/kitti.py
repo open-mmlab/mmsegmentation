@@ -33,23 +33,17 @@ def main():
     training_dir = osp.join(kitti_path, 'training')
 
     original_dataset = list(
-        mmcv.scandir(
-            osp.join(training_dir),
-            recursive=True
-        )
-    )
+        mmcv.scandir(osp.join(training_dir), recursive=True))
 
-    images_path = sorted(
-        [osp.join(training_dir, path)
-         for path in original_dataset
-         if 'image_2/' in path]
-    )
+    images_path = sorted([
+        osp.join(training_dir, path) for path in original_dataset
+        if 'image_2/' in path
+    ])
 
-    annotations_path = sorted(
-        [osp.join(training_dir, path)
-         for path in original_dataset
-         if 'semantic/' in path]
-    )
+    annotations_path = sorted([
+        osp.join(training_dir, path) for path in original_dataset
+        if 'semantic/' in path
+    ])
 
     # split the dataset into train and val
     # and copy the images and annotations to the new dir

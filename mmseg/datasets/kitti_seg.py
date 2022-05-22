@@ -20,6 +20,4 @@ class KittiSegDataset(CustomDataset):
     # The formats of image and segmentation map are both .png in this case
     def __init__(self, **kwargs):
         super(KittiSegDataset, self).__init__(
-            img_suffix='_10.png',
-            seg_map_suffix='_10.png',
-            **kwargs)
+            img_suffix='_10.png', seg_map_suffix='_10.png', **kwargs)
