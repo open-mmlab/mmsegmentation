@@ -62,8 +62,7 @@ def build_ddp(model, device='cuda', *args, **kwargs):
 
 def is_mlu_available():
     """Returns a bool indicating if MLU is currently available."""
-    return hasattr(mmcv.utils,
-                   'IS_MLU_AVAILABLE') and mmcv.utils.IS_MLU_AVAILABLE
+    return hasattr(torch, 'is_mlu_available') and torch.is_mlu_available()
 
 
 def get_device():
