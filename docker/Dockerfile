@@ -2,6 +2,7 @@ ARG PYTORCH="1.11.0"
 ARG CUDA="11.3"
 ARG CUDNN="8"
 ARG MMCV="1.5.0"
+ARG MMSEG="master"
 
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
@@ -44,8 +45,8 @@ ARG MMCV
 RUN pip install --no-cache-dir mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html
 
 # Install MMSegmentation
-ARG MMSEG_VERISON=master
-RUN git clone https://github.com/open-mmlab/mmsegmentation.git /home/$USERNAME/mmsegmentation -b ${MMSEG_VERISON}
+ARG MMSEG
+RUN git clone https://github.com/open-mmlab/mmsegmentation.git /home/$USERNAME/mmsegmentation -b ${MMSEG}
 WORKDIR /home/$USERNAME/mmsegmentation
 ENV FORCE_CUDA="1"
 RUN pip install -r requirements.txt
