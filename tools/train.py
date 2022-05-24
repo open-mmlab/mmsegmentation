@@ -166,7 +166,7 @@ def main():
     logger = get_root_logger(log_file=log_file, log_level=cfg.log_level)
 
     # set multi-process settings
-    setup_multi_processes(cfg)
+    setup_multi_processes(cfg, logger)
 
     # init the meta dict to record some important information such as
     # environment info and seed, which will be logged
