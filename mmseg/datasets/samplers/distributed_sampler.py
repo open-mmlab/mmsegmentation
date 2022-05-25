@@ -7,6 +7,7 @@ from torch.utils.data import Dataset
 from torch.utils.data import DistributedSampler as _DistributedSampler
 
 from mmseg.core.utils import sync_random_seed
+from mmseg.utils import get_device
 
 
 class DistributedSampler(_DistributedSampler):
@@ -41,7 +42,8 @@ class DistributedSampler(_DistributedSampler):
         # in the same order based on the same seed. Then different ranks
         # could use different indices to select non-overlapped data from the
         # same data list.
-        self.seed = sync_random_seed(seed)
+        device = get_device()
+        self.seed = sync_random_seed(seed, device)
 
     def __iter__(self) -> Iterator:
         """
