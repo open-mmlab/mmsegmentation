@@ -2,7 +2,7 @@
 from unittest.mock import MagicMock, patch
 
 import torch.nn as nn
-from mmcv.device.mlu import MLUDataParallel, MLUDistributedDataParallel
+import mmcv
 from mmcv.parallel import (MMDataParallel, MMDistributedDataParallel,
                            is_module_wrapper)
 from mmcv.utils import IS_CUDA_AVAILABLE, IS_MLU_AVAILABLE
