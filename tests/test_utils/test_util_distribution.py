@@ -35,7 +35,7 @@ def test_build_dp():
     mmdp = build_dp(model, 'cpu')
     assert isinstance(mmdp, MMDataParallel)
 
-    if IS_CUDA_AVAILABLE:
+    if torch.cuda.is_available():
         mmdp = build_dp(model, 'cuda')
         assert isinstance(mmdp, MMDataParallel)
 
