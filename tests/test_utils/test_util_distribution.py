@@ -7,6 +7,7 @@ from mmcv.parallel import (MMDataParallel, MMDistributedDataParallel,
                            is_module_wrapper)
 from mmcv.utils import IS_CUDA_AVAILABLE, IS_MLU_AVAILABLE
 
+from mmseg import digit_version
 from mmseg.utils import build_ddp, build_dp
 
 
