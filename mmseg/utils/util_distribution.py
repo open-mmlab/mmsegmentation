@@ -55,6 +55,8 @@ def build_ddp(model, device='cuda', *args, **kwargs):
     if device == 'cuda':
         model = model.cuda()
     elif device == 'mlu':
+        assert digit_version(mmcv.__version__) >= digit_version('1.5.0'), \
+            'Please use MMCV >= 1.5.0 for MLU training!'
         from mmcv.device.mlu import MLUDistributedDataParallel
         ddp_factory['mlu'] = MLUDistributedDataParallel
         model = model.mlu()
