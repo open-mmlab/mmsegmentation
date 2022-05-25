@@ -39,9 +39,12 @@ def test_build_dp():
         mmdp = build_dp(model, 'cuda')
         assert isinstance(mmdp, MMDataParallel)
 
-    if IS_MLU_AVAILABLE:
-        mludp = build_dp(model, 'mlu')
-        assert isinstance(mludp, MLUDataParallel)
+    if digit_version(mmcv.__version__) >= digit_version('1.5.0'):
+        from mmcv.device.mlu import MLUDataParallel
+        from mmcv.utils import IS_MLU_AVAILABLE
+        if IS_MLU_AVAILABLE:
+            mludp = build_dp(model, 'mlu')
+            assert isinstance(mludp, MLUDataParallel)
 
 
 @patch('torch.distributed._broadcast_coalesced', mock)
