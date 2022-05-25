@@ -1,6 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import mmcv
 import torch
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
+
 from mmseg import digit_version
 
 dp_factory = {'cuda': MMDataParallel, 'cpu': MMDataParallel}
