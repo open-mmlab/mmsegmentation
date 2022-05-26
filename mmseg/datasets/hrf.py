@@ -13,15 +13,14 @@ class HRFDataset(CustomDataset):
     ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is fixed to
     '.png'.
     """
+    METAINFO = dict(
+        classes=('background', 'vessel'),
+        palette=[[120, 120, 120], [6, 230, 230]])
 
-    CLASSES = ('background', 'vessel')
-
-    PALETTE = [[120, 120, 120], [6, 230, 230]]
-
-    def __init__(self, **kwargs):
-        super(HRFDataset, self).__init__(
+    def __init__(self, **kwargs) -> None:
+        super().__init__(
             img_suffix='.png',
             seg_map_suffix='.png',
             reduce_zero_label=False,
             **kwargs)
-        assert self.file_client.exists(self.img_dir)
+        assert self.file_client.exists(self.data_prefix['img_path'])
