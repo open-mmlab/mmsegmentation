@@ -1,67 +1,95 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from collections.abc import Sequence
-
-import mmcv
 import numpy as np
-import torch
 from mmcv.parallel import DataContainer as DC
+from mmcv.transforms import to_tensor
+from mmcv.transforms.base import BaseTransform
+from mmengine.data import PixelData
 
+from mmseg.core import SegDataSample
 from mmseg.registry import TRANSFORMS
 
 
-def to_tensor(data):
-    """Convert objects of various python types to :obj:`torch.Tensor`.
-
-    Supported types are: :class:`numpy.ndarray`, :class:`torch.Tensor`,
-    :class:`Sequence`, :class:`int` and :class:`float`.
-
-    Args:
-        data (torch.Tensor | numpy.ndarray | Sequence | int | float): Data to
-            be converted.
-    """
-
-    if isinstance(data, torch.Tensor):
-        return data
-    elif isinstance(data, np.ndarray):
-        return torch.from_numpy(data)
-    elif isinstance(data, Sequence) and not mmcv.is_str(data):
-        return torch.tensor(data)
-    elif isinstance(data, int):
-        return torch.LongTensor([data])
-    elif isinstance(data, float):
-        return torch.FloatTensor([data])
-    else:
-        raise TypeError(f'type {type(data)} cannot be converted to tensor.')
-
-
 @TRANSFORMS.register_module()
-class ToTensor(object):
-    """Convert some results to :obj:`torch.Tensor` by given keys.
+class PackSegInputs(BaseTransform):
+    """Pack the inputs data for the semantic segmentation.
+
+    The ``img_meta`` item is always populated.  The contents of the
+    ``img_meta`` dictionary depends on ``meta_keys``. By default this includes:
+
+        - ``filename``: filename of the image
+
+        - ``ori_filename``: original filename of the image file
+
+        - ``ori_shape``: original shape of the image as a tuple (h, w, c)
+
+        - ``img_shape``: shape of the image input to the network as a tuple \
+            (h, w, c).  Note that images may be zero padded on the \
+            bottom/right if the batch tensor is larger than this shape.
+
+        - ``pad_shape``: shape of padded images
+
+        - ``scale_factor``: a float indicating the preprocessing scale
+
+        - ``flip``: a boolean indicating if image flip transform was used
+
+        - ``flip_direction``: the flipping direction
+
+        - ``img_norm_cfg``: config of image pixel normalization
 
     Args:
-        keys (Sequence[str]): Keys that need to be converted to Tensor.
+        meta_keys (Sequence[str], optional): Meta keys to be packed from
+            ``SegDataSample`` and collected in ``data[img_metas]``.
+            Default: ``('filename', 'ori_filename', 'ori_shape',
+            'img_shape', 'pad_shape', 'scale_factor', 'flip',
+            'flip_direction', 'img_norm_cfg')``
     """
 
-    def __init__(self, keys):
-        self.keys = keys
+    def __init__(self,
+                 meta_keys=('filename', 'ori_filename', 'ori_shape',
+                            'img_shape', 'pad_shape', 'scale_factor', 'flip',
+                            'flip_direction', 'img_norm_cfg')):
+        self.meta_keys = meta_keys
 
-    def __call__(self, results):
-        """Call function to convert data in results to :obj:`torch.Tensor`.
+    def transform(self, results: dict) -> dict:
+        """Method to pack the input data.
 
         Args:
-            results (dict): Result dict contains the data to convert.
+            results (dict): Result dict from the data pipeline.
 
         Returns:
-            dict: The result dict contains the data converted
-                to :obj:`torch.Tensor`.
+            dict:
+
+            - 'inputs' (obj:`torch.Tensor`): The forward data of models.
+            - 'data_sample' (obj:`SegDataSample`): The annotation info of the
+                sample.
         """
+        packed_results = dict()
+        if 'img' in results:
+            img = results['img']
+            if len(img.shape) < 3:
+                img = np.expand_dims(img, -1)
+            img = np.ascontiguousarray(img.transpose(2, 0, 1))
+            packed_results['inputs'] = to_tensor(img)
 
-        for key in self.keys:
-            results[key] = to_tensor(results[key])
-        return results
+        data_sample = SegDataSample()
+        if 'gt_seg_map' in results:
+            gt_sem_seg_data = dict(
+                data=results['gt_seg_map'][None, ...].astype(np.int64))
+            data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
 
-    def __repr__(self):
-        return self.__class__.__name__ + f'(keys={self.keys})'
+        img_meta = {}
+        for key in self.meta_keys:
+            if key in results:
+                img_meta[key] = results[key]
+        data_sample.set_metainfo(img_meta)
+        packed_results['data_sample'] = data_sample
+
+        return packed_results
+
+    def __repr__(self) -> str:
+        repr_str = self.__class__.__name__
+        repr_str += f'(meta_keys={self.meta_keys})'
+        return repr_str
 
 
 @TRANSFORMS.register_module()
@@ -173,117 +201,3 @@ class ToDataContainer(object):
 
     def __repr__(self):
         return self.__class__.__name__ + f'(fields={self.fields})'
-
-
-@TRANSFORMS.register_module()
-class DefaultFormatBundle(object):
-    """Default formatting bundle.
-
-    It simplifies the pipeline of formatting common fields, including "img"
-    and "gt_semantic_seg". These fields are formatted as follows.
-
-    - img: (1)transpose, (2)to tensor, (3)to DataContainer (stack=True)
-    - gt_semantic_seg: (1)unsqueeze dim-0 (2)to tensor,
-                       (3)to DataContainer (stack=True)
-    """
-
-    def __call__(self, results):
-        """Call function to transform and format common fields in results.
-
-        Args:
-            results (dict): Result dict contains the data to convert.
-
-        Returns:
-            dict: The result dict contains the data that is formatted with
-                default bundle.
-        """
-
-        if 'img' in results:
-            img = results['img']
-            if len(img.shape) < 3:
-                img = np.expand_dims(img, -1)
-            img = np.ascontiguousarray(img.transpose(2, 0, 1))
-            results['img'] = DC(to_tensor(img), stack=True)
-        if 'gt_semantic_seg' in results:
-            # convert to long
-            results['gt_semantic_seg'] = DC(
-                to_tensor(results['gt_semantic_seg'][None,
-                                                     ...].astype(np.int64)),
-                stack=True)
-        return results
-
-    def __repr__(self):
-        return self.__class__.__name__
-
-
-@TRANSFORMS.register_module()
-class Collect(object):
-    """Collect data from the loader relevant to the specific task.
-
-    This is usually the last stage of the data loader pipeline. Typically keys
-    is set to some subset of "img", "gt_semantic_seg".
-
-    The "img_meta" item is always populated.  The contents of the "img_meta"
-    dictionary depends on "meta_keys". By default this includes:
-
-        - "img_shape": shape of the image input to the network as a tuple
-            (h, w, c).  Note that images may be zero padded on the bottom/right
-            if the batch tensor is larger than this shape.
-
-        - "scale_factor": a float indicating the preprocessing scale
-
-        - "flip": a boolean indicating if image flip transform was used
-
-        - "filename": path to the image file
-
-        - "ori_shape": original shape of the image as a tuple (h, w, c)
-
-        - "pad_shape": image shape after padding
-
-        - "img_norm_cfg": a dict of normalization information:
-            - mean - per channel mean subtraction
-            - std - per channel std divisor
-            - to_rgb - bool indicating if bgr was converted to rgb
-
-    Args:
-        keys (Sequence[str]): Keys of results to be collected in ``data``.
-        meta_keys (Sequence[str], optional): Meta keys to be converted to
-            ``mmcv.DataContainer`` and collected in ``data[img_metas]``.
-            Default: (``filename``, ``ori_filename``, ``ori_shape``,
-            ``img_shape``, ``pad_shape``, ``scale_factor``, ``flip``,
-            ``flip_direction``, ``img_norm_cfg``)
-    """
-
-    def __init__(self,
-                 keys,
-                 meta_keys=('filename', 'ori_filename', 'ori_shape',
-                            'img_shape', 'pad_shape', 'scale_factor', 'flip',
-                            'flip_direction', 'img_norm_cfg')):
-        self.keys = keys
-        self.meta_keys = meta_keys
-
-    def __call__(self, results):
-        """Call function to collect keys in results. The keys in ``meta_keys``
-        will be converted to :obj:mmcv.DataContainer.
-
-        Args:
-            results (dict): Result dict contains the data to collect.
-
-        Returns:
-            dict: The result dict contains the following keys
-                - keys in``self.keys``
-                - ``img_metas``
-        """
-
-        data = {}
-        img_meta = {}
-        for key in self.meta_keys:
-            img_meta[key] = results[key]
-        data['img_metas'] = DC(img_meta, cpu_only=True)
-        for key in self.keys:
-            data[key] = results[key]
-        return data
-
-    def __repr__(self):
-        return self.__class__.__name__ + \
-               f'(keys={self.keys}, meta_keys={self.meta_keys})'

@@ -1,19 +1,21 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from mmcv.transforms import (LoadImageFromFile, MultiScaleFlipAug, Normalize,
+                             Pad, RandomChoiceResize, RandomFlip, RandomResize,
+                             Resize)
+
 from .compose import Compose
-from .formatting import (Collect, ImageToTensor, ToDataContainer, ToTensor,
-                         Transpose, to_tensor)
-from .loading import LoadAnnotations, LoadImageFromFile
-from .test_time_aug import MultiScaleFlipAug
-from .transforms import (CLAHE, AdjustGamma, Normalize, Pad,
-                         PhotoMetricDistortion, RandomCrop, RandomCutOut,
-                         RandomFlip, RandomMosaic, RandomRotate, Rerange,
-                         Resize, RGB2Gray, SegRescale)
+from .formatting import (ImageToTensor, PackSegInputs, ToDataContainer,
+                         Transpose)
+from .loading import LoadAnnotations
+from .transforms import (CLAHE, AdjustGamma, PhotoMetricDistortion, RandomCrop,
+                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
+                         RGB2Gray, SegRescale)
 
 __all__ = [
-    'Compose', 'to_tensor', 'ToTensor', 'ImageToTensor', 'ToDataContainer',
-    'Transpose', 'Collect', 'LoadAnnotations', 'LoadImageFromFile',
-    'MultiScaleFlipAug', 'Resize', 'RandomFlip', 'Pad', 'RandomCrop',
+    'Compose', 'ImageToTensor', 'ToDataContainer', 'Transpose',
+    'LoadAnnotations', 'LoadImageFromFile', 'RandomFlip', 'Pad', 'RandomCrop',
     'Normalize', 'SegRescale', 'PhotoMetricDistortion', 'RandomRotate',
     'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray', 'RandomCutOut',
-    'RandomMosaic'
+    'RandomMosaic', 'PackSegInputs', 'Resize', 'RandomResize',
+    'RandomChoiceResize', 'MultiScaleFlipAug'
 ]
