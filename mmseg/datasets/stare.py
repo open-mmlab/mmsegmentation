@@ -1,6 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os.path as osp
-
 from mmseg.registry import DATASETS
 from .custom import CustomDataset
 
@@ -14,15 +12,14 @@ class STAREDataset(CustomDataset):
     ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is fixed to
     '.ah.png'.
     """
+    METAINFO = dict(
+        classes=('background', 'vessel'),
+        palette=[[120, 120, 120], [6, 230, 230]])
 
-    CLASSES = ('background', 'vessel')
-
-    PALETTE = [[120, 120, 120], [6, 230, 230]]
-
-    def __init__(self, **kwargs):
-        super(STAREDataset, self).__init__(
+    def __init__(self, **kwargs) -> None:
+        super().__init__(
             img_suffix='.png',
             seg_map_suffix='.ah.png',
             reduce_zero_label=False,
             **kwargs)
-        assert osp.exists(self.img_dir)
+        assert self.file_client.exists(self.data_prefix['img_path'])

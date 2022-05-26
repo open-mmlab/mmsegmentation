@@ -7,7 +7,7 @@ from .cityscapes import CityscapesDataset
 class NightDrivingDataset(CityscapesDataset):
     """NightDrivingDataset dataset."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super().__init__(
             img_suffix='_leftImg8bit.png',
             seg_map_suffix='_gtCoarse_labelTrainIds.png',

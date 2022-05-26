@@ -11,14 +11,14 @@ class PotsdamDataset(CustomDataset):
     ``reduce_zero_label`` should be set to True. The ``img_suffix`` and
     ``seg_map_suffix`` are both fixed to '.png'.
     """
-    CLASSES = ('impervious_surface', 'building', 'low_vegetation', 'tree',
-               'car', 'clutter')
+    METAINFO = dict(
+        classes=('impervious_surface', 'building', 'low_vegetation', 'tree',
+                 'car', 'clutter'),
+        palette=[[255, 255, 255], [0, 0, 255], [0, 255, 255], [0, 255, 0],
+                 [255, 255, 0], [255, 0, 0]])
 
-    PALETTE = [[255, 255, 255], [0, 0, 255], [0, 255, 255], [0, 255, 0],
-               [255, 255, 0], [255, 0, 0]]
-
-    def __init__(self, **kwargs):
-        super(PotsdamDataset, self).__init__(
+    def __init__(self, **kwargs) -> None:
+        super().__init__(
             img_suffix='.png',
             seg_map_suffix='.png',
             reduce_zero_label=True,
