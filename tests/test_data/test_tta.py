@@ -149,3 +149,41 @@ def test_multi_scale_flip_aug():
     assert tta_results['scale'] == [(256, 256), (256, 256), (512, 512),
                                     (512, 512), (1024, 1024), (1024, 1024)]
     assert tta_results['flip'] == [False, True, False, True, False, True]
+
+    #  test assertion if flip is True and Pad executed before RandomFlip
+    with pytest.raises(AssertionError):
+        tta_transform = dict(
+            type='MultiScaleFlipAug',
+            img_scale=[(256, 256), (512, 512), (1024, 1024)],
+            img_ratios=None,
+            flip=True,
+            transforms=[
+                dict(type='Resize', keep_ratio=False),
+                dict(type='Pad', size_divisor=32),
+                dict(type='RandomFlip'),
+            ])
+        tta_module = build_from_cfg(tta_transform, PIPELINES)
+
+    tta_transform = dict(
+        type='MultiScaleFlipAug',
+        img_scale=[(256, 256), (512, 512), (1024, 1024)],
+        img_ratios=None,
+        flip=True,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(type='Pad', size_divisor=32),
+        ])
+    tta_module = build_from_cfg(tta_transform, PIPELINES)
+    tta_results = tta_module(results.copy())
+    assert tta_results['scale'] == [(256, 256), (256, 256), (512, 512),
+                                    (512, 512), (1024, 1024), (1024, 1024)]
+    assert tta_results['flip'] == [False, True, False, True, False, True]
+    assert tta_results['img_shape'] == [(144, 256, 3), (144, 256, 3),
+                                        (288, 512, 3), (288, 512, 3),
+                                        (576, 1024, 3), (576, 1024, 3)]
+    assert tta_results['pad_shape'] == [(160, 256, 3), (160, 256, 3),
+                                        (288, 512, 3), (288, 512, 3),
+                                        (576, 1024, 3), (576, 1024, 3)]
+    for i in range(len(tta_results['img'])):
+        assert tta_results['img'][i].shape == tta_results['pad_shape'][i]
