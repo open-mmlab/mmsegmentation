@@ -1,138 +1,89 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os.path as osp
-
 import mmcv
 import numpy as np
+from mmcv.transforms import LoadAnnotations as MMCV_LoadAnnotations
 
 from mmseg.registry import TRANSFORMS
 
 
 @TRANSFORMS.register_module()
-class LoadImageFromFile(object):
-    """Load an image from file.
+class LoadAnnotations(MMCV_LoadAnnotations):
+    """Load annotations for semantic segmentation provided by dataset.
 
-    Required keys are "img_prefix" and "img_info" (a dict that must contain the
-    key "filename"). Added or updated keys are "filename", "img", "img_shape",
-    "ori_shape" (same as `img_shape`), "pad_shape" (same as `img_shape`),
-    "scale_factor" (1.0) and "img_norm_cfg" (means=0 and stds=1).
+    The annotation format is as the following:
 
-    Args:
-        to_float32 (bool): Whether to convert the loaded image to a float32
-            numpy array. If set to False, the loaded image is an uint8 array.
-            Defaults to False.
-        color_type (str): The flag argument for :func:`mmcv.imfrombytes`.
-            Defaults to 'color'.
-        file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:`mmcv.fileio.FileClient` for details.
-            Defaults to ``dict(backend='disk')``.
-        imdecode_backend (str): Backend for :func:`mmcv.imdecode`. Default:
-            'cv2'
-    """
+    .. code-block:: python
 
-    def __init__(self,
-                 to_float32=False,
-                 color_type='color',
-                 file_client_args=dict(backend='disk'),
-                 imdecode_backend='cv2'):
-        self.to_float32 = to_float32
-        self.color_type = color_type
-        self.file_client_args = file_client_args.copy()
-        self.file_client = None
-        self.imdecode_backend = imdecode_backend
+        {
+            # Filename of semantic segmentation ground truth file.
+            'seg_map_path': 'a/b/c'
+        }
 
-    def __call__(self, results):
-        """Call functions to load image and get image meta information.
+    After this module, the annotation has been changed to the format below:
 
-        Args:
-            results (dict): Result dict from :obj:`mmseg.CustomDataset`.
+    .. code-block:: python
 
-        Returns:
-            dict: The dict contains loaded image and meta information.
-        """
+        {
+            # in str
+            'seg_fields': List
+             # In uint8 type.
+            'gt_seg_map': np.ndarray (H, W)
+        }
 
-        if self.file_client is None:
-            self.file_client = mmcv.FileClient(**self.file_client_args)
+    Required Keys:
 
-        if results.get('img_prefix') is not None:
-            filename = osp.join(results['img_prefix'],
-                                results['img_info']['filename'])
-        else:
-            filename = results['img_info']['filename']
-        img_bytes = self.file_client.get(filename)
-        img = mmcv.imfrombytes(
-            img_bytes, flag=self.color_type, backend=self.imdecode_backend)
-        if self.to_float32:
-            img = img.astype(np.float32)
+    - seg_map_path (str): Path of semantic segmentation ground truth file.
 
-        results['filename'] = filename
-        results['ori_filename'] = results['img_info']['filename']
-        results['img'] = img
-        results['img_shape'] = img.shape
-        results['ori_shape'] = img.shape
-        # Set initial values for default meta_keys
-        results['pad_shape'] = img.shape
-        results['scale_factor'] = 1.0
-        num_channels = 1 if len(img.shape) < 3 else img.shape[2]
-        results['img_norm_cfg'] = dict(
-            mean=np.zeros(num_channels, dtype=np.float32),
-            std=np.ones(num_channels, dtype=np.float32),
-            to_rgb=False)
-        return results
+    Added Keys:
 
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += f'(to_float32={self.to_float32},'
-        repr_str += f"color_type='{self.color_type}',"
-        repr_str += f"imdecode_backend='{self.imdecode_backend}')"
-        return repr_str
-
-
-@TRANSFORMS.register_module()
-class LoadAnnotations(object):
-    """Load annotations for semantic segmentation.
+    - seg_fields (List)
+    - gt_seg_map (np.uint8)
 
     Args:
         reduce_zero_label (bool): Whether reduce all label value by 1.
             Usually used for datasets where 0 is background label.
-            Default: False.
+            Defaults to False.
+        imdecode_backend (str): The image decoding backend type. The backend
+            argument for :func:``mmcv.imfrombytes``.
+            See :fun:``mmcv.imfrombytes`` for details.
+            Defaults to 'pillow'.
         file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:`mmcv.fileio.FileClient` for details.
+            See :class:``mmcv.fileio.FileClient`` for details.
             Defaults to ``dict(backend='disk')``.
-        imdecode_backend (str): Backend for :func:`mmcv.imdecode`. Default:
-            'pillow'
     """
 
-    def __init__(self,
-                 reduce_zero_label=False,
-                 file_client_args=dict(backend='disk'),
-                 imdecode_backend='pillow'):
+    def __init__(
+        self,
+        reduce_zero_label=False,
+        file_client_args=dict(backend='disk'),
+        imdecode_backend='pillow',
+    ) -> None:
+        super().__init__(
+            with_bbox=False,
+            with_label=False,
+            with_seg=True,
+            with_keypoints=False,
+            imdecode_backend=imdecode_backend,
+            file_client_args=file_client_args)
         self.reduce_zero_label = reduce_zero_label
         self.file_client_args = file_client_args.copy()
-        self.file_client = None
         self.imdecode_backend = imdecode_backend
 
-    def __call__(self, results):
-        """Call function to load multiple types annotations.
+    def _load_seg_map(self, results: dict) -> None:
+        """Private function to load semantic segmentation annotations.
 
         Args:
-            results (dict): Result dict from :obj:`mmseg.CustomDataset`.
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
 
         Returns:
             dict: The dict contains loaded semantic segmentation annotations.
         """
 
-        if self.file_client is None:
-            self.file_client = mmcv.FileClient(**self.file_client_args)
-
-        if results.get('seg_prefix', None) is not None:
-            filename = osp.join(results['seg_prefix'],
-                                results['ann_info']['seg_map'])
-        else:
-            filename = results['ann_info']['seg_map']
-        img_bytes = self.file_client.get(filename)
+        img_bytes = self.file_client.get(results['seg_map_path'])
         gt_semantic_seg = mmcv.imfrombytes(
             img_bytes, flag='unchanged',
             backend=self.imdecode_backend).squeeze().astype(np.uint8)
+
         # modify if custom classes
         if results.get('label_map', None) is not None:
             # Add deep copy to solve bug of repeatedly
@@ -147,12 +98,12 @@ class LoadAnnotations(object):
             gt_semantic_seg[gt_semantic_seg == 0] = 255
             gt_semantic_seg = gt_semantic_seg - 1
             gt_semantic_seg[gt_semantic_seg == 254] = 255
-        results['gt_semantic_seg'] = gt_semantic_seg
-        results['seg_fields'].append('gt_semantic_seg')
-        return results
+        results['gt_seg_map'] = gt_semantic_seg
+        results['seg_fields'].append('gt_seg_map')
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         repr_str = self.__class__.__name__
         repr_str += f'(reduce_zero_label={self.reduce_zero_label},'
         repr_str += f"imdecode_backend='{self.imdecode_backend}')"
+        repr_str += f'file_client_args={self.file_client_args})'
         return repr_str
