@@ -4,7 +4,6 @@ import os.path as osp
 import mmcv
 import numpy as np
 import pytest
-from mmcv.transforms.wrappers import TransformBroadcaster
 from PIL import Image
 
 from mmseg.datasets.pipelines import PhotoMetricDistortion, RandomCrop
@@ -28,14 +27,8 @@ def test_random_crop():
     results['scale_factor'] = 1.0
 
     h, w, _ = img.shape
-    pipeline = TransformBroadcaster(
-        transforms=[RandomCrop(crop_size=(h - 20, w - 20))],
-        mapping={
-            'img': ['img', 'gt_semantic_seg'],
-            'img_shape': [..., 'img_shape']
-        },
-        auto_remap=True,
-        share_random_params=True)
+    pipeline = RandomCrop(crop_size=(h - 20, w - 20))
+
     results = pipeline(results)
     assert results['img'].shape[:2] == (h - 20, w - 20)
     assert results['img_shape'][:2] == (h - 20, w - 20)
