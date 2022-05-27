@@ -4,7 +4,8 @@ assign:
     # daily-shift-based
     round-robin
   assignees:
+    - MengzhangLI
+    - linfangjian01
     - MeowZheng
     - MengzhangLI
     - linfangjian01
-    - xiaoachen98
