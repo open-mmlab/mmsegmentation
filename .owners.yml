@@ -1,8 +1,8 @@
 assign:
   strategy:
     # random
-    # daily-shift-based
-    round-robin
+    # round-robin
+    daily-shift-based
   assignees:
     - MengzhangLI
     - linfangjian01
