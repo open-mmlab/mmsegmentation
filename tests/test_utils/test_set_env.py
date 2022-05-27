@@ -1,13 +1,17 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import datetime
 import multiprocessing as mp
 import os
 import platform
+import sys
+from unittest import TestCase
 
 import cv2
 import pytest
 from mmcv import Config
+from mmengine import DefaultScope
 
-from mmseg.utils import setup_multi_processes
+from mmseg.utils import register_all_modules, setup_multi_processes
 
 
 @pytest.mark.parametrize('workers_per_gpu', (0, 2))
@@ -83,3 +87,34 @@ def test_setup_multi_processes(workers_per_gpu, valid, env_cfg):
         assert cv2.getNumThreads() == sys_cv_threads
         assert 'OMP_NUM_THREADS' not in os.environ
         assert 'MKL_NUM_THREADS' not in os.environ
+
+
+class TestSetupEnv(TestCase):
+
+    def test_register_all_modules(self):
+        from mmseg.registry import DATASETS
+
+        # not init default scope
+        sys.modules.pop('mmseg.datasets', None)
+        sys.modules.pop('mmseg.datasets.ade', None)
+        DATASETS._module_dict.pop('ADE20KDataset', None)
+        self.assertFalse('ADE20KDataset' in DATASETS.module_dict)
+        register_all_modules(init_default_scope=False)
+        self.assertTrue('ADE20KDataset' in DATASETS.module_dict)
+
+        # init default scope
+        sys.modules.pop('mmseg.datasets')
+        sys.modules.pop('mmseg.datasets.ade')
+        DATASETS._module_dict.pop('ADE20KDataset', None)
+        self.assertFalse('ADE20KDataset' in DATASETS.module_dict)
+        register_all_modules(init_default_scope=True)
+        self.assertTrue('ADE20KDataset' in DATASETS.module_dict)
+        self.assertEqual(DefaultScope.get_current_instance().scope_name,
+                         'mmseg')
+
+        # init default scope when another scope is init
+        name = f'test-{datetime.datetime.now()}'
+        DefaultScope.get_instance(name, scope_name='test')
+        with self.assertWarnsRegex(
+                Warning, 'The current default scope "test" is not "mmseg"'):
+            register_all_modules(init_default_scope=True)
