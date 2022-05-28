@@ -179,39 +179,37 @@ class DepthDownsample(BaseModule):
 @BACKBONES.register_module()
 class EDFT(BaseModule):
 
-    def __init__(self, in_channels, **kwargs):
+    def __init__(self,
+                 in_channels,
+                 weight=0.5,
+                 overlap=True,
+                 attention_type='dsa-add',
+                 same_branch=False,
+                 backbone='Segformer',
+                 **kwargs):
         super(EDFT, self).__init__()
         assert (in_channels == 4)
 
         self.num_heads = kwargs["num_heads"]
         self.num_stages = 4
+        self.overlap = overlap
+        self.weight = weight
 
-        self.weight = kwargs["weight"]
-        self.overlap = kwargs["overlap"]
-        self.attention_type = kwargs["attention_type"]
-        self.same_branch = kwargs["same_branch"]
-        self.backbone = kwargs["backbone"]
-        kwargs.pop("weight")
-        kwargs.pop("overlap")
-        kwargs.pop("attention_type")
-        kwargs.pop("same_branch")
-        kwargs.pop("backbone")
-
-        if (self.backbone == "Segformer"):
+        if (backbone == "Segformer"):
             self.color = MixVisionTransformer(3, **kwargs)
             self.embed_dims = kwargs["embed_dims"]
-        elif (self.backbone == "Twins_svt"):
+        elif (backbone == "Twins_svt"):
             self.color = SVT(3, **kwargs)
             self.embed_dims = kwargs["embed_dims"][0]
-            self.num_heads = [1,2,4,8]
+            self.num_heads = [1, 2, 4, 8]
         else:
             raise NotImplementedError("{} backbone is not supported".format(
                 self.backbone))
 
-        if self.same_branch:
-            if (self.backbone == "Segformer"):
+        if same_branch:
+            if (backbone == "Segformer"):
                 self.depth = MixVisionTransformer(1, **kwargs)
-            elif (self.backbone == "Twins_svt"):
+            elif (backbone == "Twins_svt"):
                 self.depth = SVT(1, **kwargs)
             else:
                 raise NotImplementedError(
@@ -228,16 +226,16 @@ class EDFT(BaseModule):
         self.dfms = ModuleList()
         for i in range(self.num_stages):
             embed_dims_i = self.embed_dims * self.num_heads[i]
-            if self.attention_type == 'dsa-concat':
+            if attention_type == 'dsa-concat':
                 self.dfms.append(
                     DepthFusionModule1(embed_dims_i, self.num_heads[i]))
-            elif self.attention_type == 'dsa-add':
+            elif attention_type == 'dsa-add':
                 self.dfms.append(
                     DepthFusionModule2(
                         embed_dims_i, self.num_heads[i], weight=self.weight))
-            elif self.attention_type == 'ca':
+            elif attention_type == 'ca':
                 self.dfms.append(DepthFusionModule4(embed_dims_i))
-            elif self.attention_type == 'cbam':
+            elif attention_type == 'cbam':
                 self.dfms.append(DepthFusionModule3(embed_dims_i))
             else:
                 pass  # self.attention_type == 'none'  just add

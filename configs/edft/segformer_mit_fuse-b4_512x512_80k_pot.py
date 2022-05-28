@@ -1,4 +1,4 @@
-_base_ = ['./segformer_mit_fuse-b0_256x256_20k_pot.py']
+_base_ = ['./segformer_mit_fuse-b0_512x512_80k_pot.py']
 
 # model settings
 model = dict(
