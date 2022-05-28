@@ -9,20 +9,7 @@ train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
     dict(type='Resize', img_scale=img_scale, ratio_range=(0.5, 2.0)),
-    dict(
-        type='TransformBroadcaster',
-        mapping={
-            'img': ['img', 'gt_semantic_seg'],
-            'img_shape': [..., 'img_shape']
-        },
-        auto_remap=True,
-        share_random_params=True,
-        transforms=[
-            dict(
-                type='mmseg.RandomCrop',
-                crop_size=crop_size,
-                cat_max_ratio=0.75),
-        ]),
+    dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
     dict(type='Normalize', **img_norm_cfg),
