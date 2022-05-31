@@ -1,9 +1,9 @@
 _base_ = './pascal_voc12.py'
 # dataset settings
-data = dict(
-    train=dict(
+train_dataloader = dict(
+    dataset=dict(
         ann_dir=['SegmentationClass', 'SegmentationClassAug'],
-        split=[
+        ann_file=[
             'ImageSets/Segmentation/train.txt',
             'ImageSets/Segmentation/aug.txt'
         ]))

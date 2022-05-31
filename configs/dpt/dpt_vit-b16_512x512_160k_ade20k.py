@@ -29,4 +29,6 @@ lr_config = dict(
     by_epoch=False)
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=2, workers_per_gpu=2)
+train_dataloader = dict(batch_size=2, num_workers=2)
+val_dataloader = dict(batch_size=2, num_workers=2)
+test_dataloader = val_dataloader

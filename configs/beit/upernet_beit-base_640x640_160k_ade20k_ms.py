@@ -5,20 +5,12 @@ img_norm_cfg = dict(
 
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(
-        type='MultiScaleFlipAug',
-        img_scale=(2560, 640),
-        img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
-        flip=True,
-        transforms=[
-            dict(type='Resize', keep_ratio=True, min_size=640),
-            dict(type='RandomFlip'),
-            dict(type='Normalize', **img_norm_cfg),
-            dict(type='ImageToTensor', keys=['img']),
-            dict(type='Collect', keys=['img']),
-        ])
+    # TODO: Refactor 'MultiScaleFlipAug' which supports
+    # `min_size` feature in `Resize` class
+    # img_ratios is [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
+    # original image scale is (2560, 640)
+    dict(type='Resize', scale=(2560, 640), keep_ratio=True),
+    dict(type='PackSegInputs'),
 ]
-data = dict(
-    val=dict(pipeline=test_pipeline),
-    test=dict(pipeline=test_pipeline),
-    samples_per_gpu=2)
+val_dataloader = dict(batch_size=2, dataset=dict(pipeline=test_pipeline))
+test_dataloader = val_dataloader

@@ -22,8 +22,7 @@ class TestPackSegInputs(unittest.TestCase):
         img_path = osp.join(data_prefix, 'color.jpg')
         rng = np.random.RandomState(0)
         self.results = {
-            'filename': img_path,
-            'ori_filename': 'color.jpg',
+            'img_path': img_path,
             'ori_shape': (300, 400),
             'pad_shape': (600, 800),
             'img_shape': (600, 800),
@@ -34,9 +33,8 @@ class TestPackSegInputs(unittest.TestCase):
             'img': rng.rand(300, 400),
             'gt_seg_map': rng.rand(300, 400),
         }
-        self.meta_keys = ('filename', 'ori_filename', 'ori_shape', 'img_shape',
-                          'pad_shape', 'scale_factor', 'flip',
-                          'flip_direction', 'img_norm_cfg')
+        self.meta_keys = ('img_path', 'ori_shape', 'img_shape', 'pad_shape',
+                          'scale_factor', 'flip', 'flip_direction')
 
     def test_transform(self):
         transform = PackSegInputs(meta_keys=self.meta_keys)

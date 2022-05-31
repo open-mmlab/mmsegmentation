@@ -64,4 +64,6 @@ optimizer = dict(
     paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}))
 
 # num_gpus: 8 -> batch_size: 16
-data = dict(samples_per_gpu=2)
+train_dataloader = dict(batch_size=2)
+val_dataloader = dict(batch_size=2)
+test_dataloader = val_dataloader

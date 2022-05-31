@@ -90,4 +90,6 @@ lr_config = dict(
     step=[60000, 72000],
     by_epoch=False)
 # In K-Net implementation we use batch size 2 per GPU as default
-data = dict(samples_per_gpu=2, workers_per_gpu=2)
+train_dataloader = dict(batch_size=2, num_workers=2)
+val_dataloader = dict(batch_size=2, num_workers=2)
+test_dataloader = val_dataloader

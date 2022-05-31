@@ -40,7 +40,9 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-data = dict(samples_per_gpu=1)
+train_dataloader = dict(batch_size=1)
+val_dataloader = dict(batch_size=1)
+test_dataloader = val_dataloader
 optimizer_config = dict(
     type='GradientCumulativeFp16OptimizerHook', cumulative_iters=2)
 
