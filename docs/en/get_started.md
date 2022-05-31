@@ -182,7 +182,7 @@ Within Jupyter, the exclamation mark `!` is used to call external executables an
 
 We provide a [Dockerfile](https://github.com/open-mmlab/mmsegmentation/blob/master/docker/Dockerfile) to build an image. Ensure that your [docker version](https://docs.docker.com/engine/install/) >=19.03.
 
-See [Useful toos](../en/useful_tools.md#2-build-mmseg-serve-docker-image) for more information.
+See [Useful tools](../en/useful_tools.md#2-build-mmseg-serve-docker-image) for more information.
 
 ## Trouble shooting
 

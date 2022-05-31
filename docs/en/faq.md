@@ -35,10 +35,10 @@ You need to run `pip uninstall mmcv` first if you have mmcv installed.
 If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 :::
 
-- "No module named 'mmcv.ops'"; "No module named 'mmcv._ext'".
+- "No module named 'mmcv.ops'"; "No module named 'mmcv.\_ext'".
 
-    1. Uninstall existing mmcv in the environment using `pip uninstall mmcv`.
-    2. Install mmcv-full following the [installation instruction](get_started#best-practices).
+  1. Uninstall existing mmcv in the environment using `pip uninstall mmcv`.
+  2. Install mmcv-full following the [installation instruction](get_started#best-practices).
 
 ## How to know the number of GPUs needed to train the model
 
