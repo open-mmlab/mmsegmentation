@@ -36,7 +36,6 @@ model = dict(
     ])
 lr_config = dict(warmup='linear', warmup_iters=1000)
 optimizer = dict(lr=0.05)
-data = dict(
-    samples_per_gpu=4,
-    workers_per_gpu=4,
-)
+train_dataloader = dict(batch_size=4, num_workers=4)
+val_dataloader = dict(batch_size=4, num_workers=4)
+test_dataloader = val_dataloader

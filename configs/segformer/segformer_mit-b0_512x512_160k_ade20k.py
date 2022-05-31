@@ -29,5 +29,6 @@ lr_config = dict(
     power=1.0,
     min_lr=0.0,
     by_epoch=False)
-
-data = dict(samples_per_gpu=2, workers_per_gpu=2)
+train_dataloader = dict(batch_size=2, num_workers=2)
+val_dataloader = dict(batch_size=2, num_workers=2)
+test_dataloader = val_dataloader

@@ -16,9 +16,7 @@ class PackSegInputs(BaseTransform):
     The ``img_meta`` item is always populated.  The contents of the
     ``img_meta`` dictionary depends on ``meta_keys``. By default this includes:
 
-        - ``filename``: filename of the image
-
-        - ``ori_filename``: original filename of the image file
+        - ``img_path``: filename of the image
 
         - ``ori_shape``: original shape of the image as a tuple (h, w, c)
 
@@ -34,20 +32,17 @@ class PackSegInputs(BaseTransform):
 
         - ``flip_direction``: the flipping direction
 
-        - ``img_norm_cfg``: config of image pixel normalization
-
     Args:
         meta_keys (Sequence[str], optional): Meta keys to be packed from
             ``SegDataSample`` and collected in ``data[img_metas]``.
-            Default: ``('filename', 'ori_filename', 'ori_shape',
+            Default: ``('img_path', 'ori_shape',
             'img_shape', 'pad_shape', 'scale_factor', 'flip',
-            'flip_direction', 'img_norm_cfg')``
+            'flip_direction')``
     """
 
     def __init__(self,
-                 meta_keys=('filename', 'ori_filename', 'ori_shape',
-                            'img_shape', 'pad_shape', 'scale_factor', 'flip',
-                            'flip_direction', 'img_norm_cfg')):
+                 meta_keys=('img_path', 'ori_shape', 'img_shape', 'pad_shape',
+                            'scale_factor', 'flip', 'flip_direction')):
         self.meta_keys = meta_keys
 
     def transform(self, results: dict) -> dict:
