@@ -182,7 +182,26 @@ Within Jupyter, the exclamation mark `!` is used to call external executables an
 
 We provide a [Dockerfile](https://github.com/open-mmlab/mmsegmentation/blob/master/docker/Dockerfile) to build an image. Ensure that your [docker version](https://docs.docker.com/engine/install/) >=19.03.
 
-See [Useful tools](../en/useful_tools.md#2-build-mmseg-serve-docker-image) for more information.
+```shell
+# build an image with PyTorch 1.11, CUDA 11.3
+# If you prefer other versions, just modified the Dockerfile
+docker build -t mmseg-serve:latest docker/serve/
+```
+
+Check the official docs for [running TorchServe with docker](https://github.com/pytorch/serve/blob/master/docker/README.md#running-torchserve-in-a-production-docker-environment).
+
+In order to run in GPU, you need to install [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html). You can omit the `--gpus` argument in order to run in CPU.
+
+Example:
+
+```shell
+docker run --rm \
+--cpus 8 \
+--gpus device=0 \
+-p8080:8080 -p8081:8081 -p8082:8082 \
+--mount type=bind,source=$MODEL_STORE,target=/home/model-server/model-store \
+mmseg-serve:latest
+```
 
 ## Trouble shooting
 
