@@ -113,7 +113,7 @@ for frame in video:
    model.show_result(frame, result, wait_time=1)
 ```
 
-You can modify the code above to test a single image or a video, both of these options can verify that the installation was successfull.
+You can modify the code above to test a single image or a video, both of these options can verify that the installation was successful.
 
 ## Customize Installation
 
