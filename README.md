@@ -29,7 +29,12 @@
 [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 
-Documentation: https://mmsegmentation.readthedocs.io/
+[📘Documentation](https://mmsegmentation.readthedocs.io/en/latest/) |
+[🛠️Installation](https://mmsegmentation.readthedocs.io/en/latest/get_started.html) |
+[👀Model Zoo](https://mmdetection.readthedocs.io/en/v2.20.0/model_zoo.html) |
+[🆕Update News](https://mmdetection.readthedocs.io/en/v2.20.0/changelog.html) |
+[🚀Ongoing Projects](https://github.com/open-mmlab/mmdetection/projects) |
+[🤔Reporting Issues](https://github.com/open-mmlab/mmdetection/issues/new/choose)
 
 English | [简体中文](README_zh-CN.md)
 
