@@ -6,6 +6,8 @@
 
 <!-- [BACKBONE] -->
 
+<!-- [ALGORITHM] -->
+
 <a href="https://github.com/tensorflow/models/tree/master/research/deeplab">Official Repo</a>
 
 <a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15">Code Snippet</a>
