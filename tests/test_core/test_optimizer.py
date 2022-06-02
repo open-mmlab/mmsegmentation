@@ -1,11 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import pytest
 import torch
 import torch.nn as nn
-from mmengine.optim import DefaultOptimizerConstructor
 
-from mmseg.core.builder import build_optimizer, build_optimizer_constructor
-from mmseg.registry import OPTIMIZER_CONSTRUCTORS
+from mmseg.core.builder import build_optimizer
 
 
 class ExampleModel(nn.Module):
@@ -26,34 +23,12 @@ base_wd = 0.0001
 momentum = 0.9
 
 
-def test_build_optimizer_constructor():
-    optimizer_cfg = dict(
-        type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
-    optim_constructor_cfg = dict(
-        type='DefaultOptimizerConstructor', optimizer_cfg=optimizer_cfg)
-    optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
-    # Test whether optimizer constructor can be built from parent.
-    assert type(optim_constructor) is DefaultOptimizerConstructor
-
-    @OPTIMIZER_CONSTRUCTORS.register_module()
-    class MyOptimizerConstructor(DefaultOptimizerConstructor):
-        pass
-
-    optim_constructor_cfg = dict(
-        type='MyOptimizerConstructor', optimizer_cfg=optimizer_cfg)
-    optim_constructor = build_optimizer_constructor(optim_constructor_cfg)
-    # Test optimizer constructor can be built from child registry.
-    assert type(optim_constructor) is MyOptimizerConstructor
-
-    # Test unregistered constructor cannot be built
-    with pytest.raises(KeyError):
-        build_optimizer_constructor(dict(type='A'))
-
-
 def test_build_optimizer():
     model = ExampleModel()
-    optimizer_cfg = dict(
-        type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum)
-    optimizer = build_optimizer(model, optimizer_cfg)
+    optim_wrapper_cfg = dict(
+        type='OptimWrapper',
+        optimizer=dict(
+            type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum))
+    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
     # test whether optimizer is successfully built from parent.
-    assert isinstance(optimizer, torch.optim.SGD)
+    assert isinstance(optim_wrapper.optimizer, torch.optim.SGD)
