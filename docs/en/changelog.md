@@ -27,7 +27,7 @@
 
 - Rewrite the installation guidance ([1630](https://github.com/open-mmlab/mmsegmentation/pull/1630))
 - Format readme ([1635](https://github.com/open-mmlab/mmsegmentation/pull/1635))
-- Replace markdownlint with mdformat for avoiding installing ruby ([1591](https://github.com/open-mmlab/mmsegmentation/pull/1591))
+- Replace markdownlint with mdformat to avoid ruby installation ([1591](https://github.com/open-mmlab/mmsegmentation/pull/1591))
 - Add explanation and usage instructions for data configuration ([1548](https://github.com/open-mmlab/mmsegmentation/pull/1548))
 - Configure Myst-parser to parse anchor tag ([1589](https://github.com/open-mmlab/mmsegmentation/pull/1589))
 - Update QR code and link for QQ group ([1598](https://github.com/open-mmlab/mmsegmentation/pull/1598), [1574](https://github.com/open-mmlab/mmsegmentation/pull/1574))
