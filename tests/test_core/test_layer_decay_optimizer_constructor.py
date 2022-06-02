@@ -1,11 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+# from copyreg import constructor
 import pytest
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.core.optimizers.layer_decay_optimizer_constructor import (
-    LayerDecayOptimizerConstructor, LearningRateDecayOptimizerConstructor)
+from mmseg.core.builder import build_optimizer
+from mmseg.core.optimizers.layer_decay_optimizer_constructor import \
+    LearningRateDecayOptimizerConstructor
 
 base_lr = 1
 decay_rate = 2
@@ -209,22 +211,30 @@ def test_learning_rate_decay_optimizer_constructor():
     # Test lr wd for ConvNeXT
     backbone = ToyConvNeXt()
     model = PseudoDataParallel(ToySegmentor(backbone))
-    optimizer_cfg = dict(
-        type='AdamW', lr=base_lr, betas=(0.9, 0.999), weight_decay=0.05)
     # stagewise decay
     stagewise_paramwise_cfg = dict(
         decay_rate=decay_rate, decay_type='stage_wise', num_layers=6)
-    optim_constructor = LearningRateDecayOptimizerConstructor(
-        optimizer_cfg, stagewise_paramwise_cfg)
-    optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, expected_stage_wise_lr_wd_convnext)
+    optimizer_cfg = dict(
+        type='AdamW', lr=base_lr, betas=(0.9, 0.999), weight_decay=0.05)
+    optim_wrapper_cfg = dict(
+        type='OptimWrapper',
+        optimizer=optimizer_cfg,
+        paramwise_cfg=stagewise_paramwise_cfg,
+        constructor='LearningRateDecayOptimizerConstructor')
+    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    check_optimizer_lr_wd(optim_wrapper.optimizer,
+                          expected_stage_wise_lr_wd_convnext)
     # layerwise decay
     layerwise_paramwise_cfg = dict(
         decay_rate=decay_rate, decay_type='layer_wise', num_layers=6)
-    optim_constructor = LearningRateDecayOptimizerConstructor(
-        optimizer_cfg, layerwise_paramwise_cfg)
-    optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, expected_layer_wise_lr_wd_convnext)
+    optim_wrapper_cfg = dict(
+        type='OptimWrapper',
+        optimizer=optimizer_cfg,
+        paramwise_cfg=layerwise_paramwise_cfg,
+        constructor='LearningRateDecayOptimizerConstructor')
+    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    check_optimizer_lr_wd(optim_wrapper.optimizer,
+                          expected_layer_wise_lr_wd_convnext)
 
     # Test lr wd for BEiT
     backbone = ToyBEiT()
@@ -232,22 +242,26 @@ def test_learning_rate_decay_optimizer_constructor():
 
     layerwise_paramwise_cfg = dict(
         decay_rate=decay_rate, decay_type='layer_wise', num_layers=3)
-    optim_constructor = LearningRateDecayOptimizerConstructor(
-        optimizer_cfg, layerwise_paramwise_cfg)
-    optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, expected_layer_wise_wd_lr_beit)
+    optim_wrapper_cfg = dict(
+        type='OptimWrapper',
+        optimizer=optimizer_cfg,
+        paramwise_cfg=layerwise_paramwise_cfg,
+        constructor='LearningRateDecayOptimizerConstructor')
+    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    check_optimizer_lr_wd(optim_wrapper.optimizer,
+                          expected_layer_wise_wd_lr_beit)
 
     # Test invalidation of lr wd for Vit
     backbone = ToyViT()
     model = PseudoDataParallel(ToySegmentor(backbone))
     with pytest.raises(NotImplementedError):
         optim_constructor = LearningRateDecayOptimizerConstructor(
-            optimizer_cfg, layerwise_paramwise_cfg)
-        optimizer = optim_constructor(model)
+            optim_wrapper_cfg, layerwise_paramwise_cfg)
+        optim_constructor(model)
     with pytest.raises(NotImplementedError):
         optim_constructor = LearningRateDecayOptimizerConstructor(
-            optimizer_cfg, stagewise_paramwise_cfg)
-        optimizer = optim_constructor(model)
+            optim_wrapper_cfg, stagewise_paramwise_cfg)
+        optim_constructor(model)
 
     # Test lr wd for MAE
     backbone = ToyMAE()
@@ -255,10 +269,14 @@ def test_learning_rate_decay_optimizer_constructor():
 
     layerwise_paramwise_cfg = dict(
         decay_rate=decay_rate, decay_type='layer_wise', num_layers=3)
-    optim_constructor = LearningRateDecayOptimizerConstructor(
-        optimizer_cfg, layerwise_paramwise_cfg)
-    optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, expected_layer_wise_wd_lr_beit)
+    optim_wrapper_cfg = dict(
+        type='OptimWrapper',
+        optimizer=optimizer_cfg,
+        paramwise_cfg=layerwise_paramwise_cfg,
+        constructor='LearningRateDecayOptimizerConstructor')
+    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    check_optimizer_lr_wd(optim_wrapper.optimizer,
+                          expected_layer_wise_wd_lr_beit)
 
 
 def test_beit_layer_decay_optimizer_constructor():
@@ -266,10 +284,14 @@ def test_beit_layer_decay_optimizer_constructor():
     # paramwise_cfg with BEiTExampleModel
     backbone = ToyBEiT()
     model = PseudoDataParallel(ToySegmentor(backbone))
-    optimizer_cfg = dict(
-        type='AdamW', lr=1, betas=(0.9, 0.999), weight_decay=0.05)
     paramwise_cfg = dict(layer_decay_rate=2, num_layers=3)
-    optim_constructor = LayerDecayOptimizerConstructor(optimizer_cfg,
-                                                       paramwise_cfg)
-    optimizer = optim_constructor(model)
-    check_optimizer_lr_wd(optimizer, expected_layer_wise_wd_lr_beit)
+    optim_wrapper_cfg = dict(
+        type='OptimWrapper',
+        constructor='LayerDecayOptimizerConstructor',
+        paramwise_cfg=paramwise_cfg,
+        optimizer=dict(
+            type='AdamW', lr=1, betas=(0.9, 0.999), weight_decay=0.05))
+    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    # optimizer = optim_wrapper_builder(model)
+    check_optimizer_lr_wd(optim_wrapper.optimizer,
+                          expected_layer_wise_wd_lr_beit)

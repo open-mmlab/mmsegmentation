@@ -61,7 +61,7 @@ from .cocktail_optimizer import CocktailOptimizer
 @OPTIMIZER_BUILDERS.register_module
 class CocktailOptimizerConstructor(object):
 
-    def __init__(self, optimizer_cfg, paramwise_cfg=None):
+    def __init__(self, optim_wrapper_cfg, paramwise_cfg=None):
 
     def __call__(self, model):
 

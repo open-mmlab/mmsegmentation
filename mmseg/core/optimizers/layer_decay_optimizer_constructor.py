@@ -3,9 +3,9 @@ import json
 import warnings
 
 from mmengine.dist import get_dist_info
-from mmengine.optim import DefaultOptimizerConstructor
+from mmengine.optim import DefaultOptimWrapperConstructor
 
-from mmseg.registry import OPTIMIZER_CONSTRUCTORS
+from mmseg.registry import OPTIM_WRAPPER_CONSTRUCTORS
 from mmseg.utils import get_root_logger
 
 
@@ -100,8 +100,8 @@ def get_layer_id_for_vit(var_name, max_layer_id):
         return max_layer_id - 1
 
 
-@OPTIMIZER_CONSTRUCTORS.register_module()
-class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
+@OPTIM_WRAPPER_CONSTRUCTORS.register_module()
+class LearningRateDecayOptimizerConstructor(DefaultOptimWrapperConstructor):
     """Different learning rates are set for different layers of backbone.
 
     Note: Currently, this optimizer constructor is built for ConvNeXt,
@@ -186,7 +186,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimizerConstructor):
         params.extend(parameter_groups.values())
 
 
-@OPTIMIZER_CONSTRUCTORS.register_module()
+@OPTIM_WRAPPER_CONSTRUCTORS.register_module()
 class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
     """Different learning rates are set for different layers of backbone.
 
@@ -195,7 +195,7 @@ class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
     Please use ``LearningRateDecayOptimizerConstructor`` instead.
     """
 
-    def __init__(self, optimizer_cfg, paramwise_cfg):
+    def __init__(self, optim_wrapper_cfg, paramwise_cfg):
         warnings.warn('DeprecationWarning: Original '
                       'LayerDecayOptimizerConstructor of BEiT '
                       'will be deprecated. Please use '
@@ -206,4 +206,4 @@ class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
                       'be deleted, please use decay_rate instead.')
         paramwise_cfg['decay_rate'] = paramwise_cfg.pop('layer_decay_rate')
         super(LayerDecayOptimizerConstructor,
-              self).__init__(optimizer_cfg, paramwise_cfg)
+              self).__init__(optim_wrapper_cfg, paramwise_cfg)
