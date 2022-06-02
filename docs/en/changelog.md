@@ -1,5 +1,44 @@
 ## Changelog
 
+### V0.25.0 (6/2/2022)
+
+**Highlights**
+
+- Support PyTorch backend on MLU ([1515](https://github.com/open-mmlab/mmsegmentation/pull/1515))
+
+**Bug Fixes**
+
+- Fix the error of BCE loss when batch size is 1 ([1629](https://github.com/open-mmlab/mmsegmentation/pull/1629))
+- Fix bug of `resize` function when align_corners is True ([1592](https://github.com/open-mmlab/mmsegmentation/pull/1592))
+- Fix Dockerfile to run demo script in docker container ([1568](https://github.com/open-mmlab/mmsegmentation/pull/1568))
+- Correct inference_demo.ipynb path ([1576](https://github.com/open-mmlab/mmsegmentation/pull/1576))
+- Fix the `build_segmentor` in colab demo ([1551](https://github.com/open-mmlab/mmsegmentation/pull/1551))
+- Fix md2yml script ([1633](https://github.com/open-mmlab/mmsegmentation/pull/1633), [1555](https://github.com/open-mmlab/mmsegmentation/pull/1555))
+- Fix main line link in MAE README.md ([1556](https://github.com/open-mmlab/mmsegmentation/pull/1556))
+- Fix fastfcn `crop_size` in README.md by ([1597](https://github.com/open-mmlab/mmsegmentation/pull/1597))
+- Pip upgrade when testing windows platform ([1610](https://github.com/open-mmlab/mmsegmentation/pull/1610))
+
+**Improvements**
+
+- Delete DS_Store file ([1549](https://github.com/open-mmlab/mmsegmentation/pull/1549))
+- Revise owners.yml ([1621](https://github.com/open-mmlab/mmsegmentation/pull/1621), [1534](https://github.com/open-mmlab/mmsegmentation/pull/1543))
+
+**Documentation**
+
+- Rewrite the installation guidance ([1630](https://github.com/open-mmlab/mmsegmentation/pull/1630))
+- Format readme ([1635](https://github.com/open-mmlab/mmsegmentation/pull/1635))
+- Replace markdownlint with mdformat to avoid ruby installation ([1591](https://github.com/open-mmlab/mmsegmentation/pull/1591))
+- Add explanation and usage instructions for data configuration ([1548](https://github.com/open-mmlab/mmsegmentation/pull/1548))
+- Configure Myst-parser to parse anchor tag ([1589](https://github.com/open-mmlab/mmsegmentation/pull/1589))
+- Update QR code and link for QQ group ([1598](https://github.com/open-mmlab/mmsegmentation/pull/1598), [1574](https://github.com/open-mmlab/mmsegmentation/pull/1574))
+
+**Contributors**
+
+- @atinfinity made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1568
+- @DoubleChuang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1576
+- @alpha-baymax made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1515
+- @274869388 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1629
+
 ### V0.24.1 (5/1/2022)
 
 **Bug Fixes**
