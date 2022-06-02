@@ -1,6 +1,6 @@
 Models:
 - Name: upernet_beit-base_8x2_640x640_160k_ade20k
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: BEiT-B
     crop size: (640,640)
@@ -22,7 +22,7 @@ Models:
   Config: configs/beit/upernet_beit-base_8x2_640x640_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k-eead221d.pth
 - Name: upernet_beit-large_fp16_8x1_640x640_160k_ade20k
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: BEiT-L
     crop size: (640,640)

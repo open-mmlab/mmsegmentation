@@ -12,10 +12,19 @@ import os.path as osp
 import re
 import sys
 
-import mmcv
 from lxml import etree
+from mmcv.fileio import dump
 
 MMSEG_ROOT = osp.dirname(osp.dirname((osp.dirname(__file__))))
+
+COLLECTIONS = [
+    'ANN', 'APCNet', 'BiSeNetV1', 'BiSeNetV2', 'CCNet', 'CGNet', 'DANet',
+    'DeepLabV3', 'DeepLabV3+', 'DMNet', 'DNLNet', 'DPT', 'EMANet', 'EncNet',
+    'ERFNet', 'FastFCN', 'FastSCNN', 'FCN', 'GCNet', 'ICNet', 'ISANet', 'KNet',
+    'NonLocalNet', 'OCRNet', 'PointRend', 'PSANet', 'PSPNet', 'Segformer',
+    'Segmenter', 'FPN', 'SETR', 'STDC', 'UNet', 'UPerNet'
+]
+COLLECTIONS_TEMP = []
 
 
 def dump_yaml_and_check_difference(obj, filename, sort_keys=False):
@@ -30,7 +39,7 @@ def dump_yaml_and_check_difference(obj, filename, sort_keys=False):
         Bool: If the target YAML file is different from the original.
     """
 
-    str_dump = mmcv.dump(obj, None, file_format='yaml', sort_keys=sort_keys)
+    str_dump = dump(obj, None, file_format='yaml', sort_keys=sort_keys)
     if osp.isfile(filename):
         file_exists = True
         with open(filename, 'r', encoding='utf-8') as f:
@@ -131,7 +140,6 @@ def parse_md(md_file):
                   and lines[i + 1][:3] == '| -' and 'Method' in line
                   and 'Crop Size' in line and 'Mem (GB)' in line):
                 cols = [col.strip() for col in line.split('|')]
-                print(cols)
                 method_id = cols.index('Method')
                 backbone_id = cols.index('Backbone')
                 crop_size_id = cols.index('Crop Size')
@@ -248,11 +256,21 @@ def parse_md(md_file):
                     collection.pop(check_key)
                 else:
                     collection[check_key].pop(key)
-    if is_backbone:
-        result = {'Models': models}
-    else:
-        result = {'Collections': [collection], 'Models': models}
     yml_file = f'{md_file[:-9]}{collection_name}.yml'
+    if is_backbone:
+        if collection['Name'] not in COLLECTIONS:
+            result = {
+                'Collections': [collection],
+                'Models': models,
+                'Yml': yml_file
+            }
+            COLLECTIONS_TEMP.append(result)
+            return False
+        else:
+            result = {'Models': models}
+    else:
+        COLLECTIONS.append(collection['Name'])
+        result = {'Collections': [collection], 'Models': models}
     return dump_yaml_and_check_difference(result, yml_file)
 
 
@@ -288,6 +306,12 @@ if __name__ == '__main__':
     for fn in file_list:
         file_modified |= parse_md(fn)
 
-    file_modified |= update_model_index()
+    for result in COLLECTIONS_TEMP:
+        collection = result['Collections'][0]
+        yml_file = result.pop('Yml', None)
+        if collection['Name'] in COLLECTIONS:
+            result.pop('Collections')
+        file_modified |= dump_yaml_and_check_difference(result, yml_file)
 
+    file_modified |= update_model_index()
     sys.exit(1 if file_modified else 0)
