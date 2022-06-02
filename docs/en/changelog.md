@@ -15,7 +15,7 @@
 - Fix the `build_segmentor` in colab demo ([1551](https://github.com/open-mmlab/mmsegmentation/pull/1551))
 - Fix md2yml script ([1633](https://github.com/open-mmlab/mmsegmentation/pull/1633), [1555](https://github.com/open-mmlab/mmsegmentation/pull/1555))
 - Fix main line link in MAE README.md ([1556](https://github.com/open-mmlab/mmsegmentation/pull/1556))
-- Fix fastfcn crop_size in README.md by ([1597](https://github.com/open-mmlab/mmsegmentation/pull/1597))
+- Fix fastfcn `crop_size` in README.md by ([1597](https://github.com/open-mmlab/mmsegmentation/pull/1597))
 - Pip upgrade when testing windows platform ([1610](https://github.com/open-mmlab/mmsegmentation/pull/1610))
 
 **Improvements**
