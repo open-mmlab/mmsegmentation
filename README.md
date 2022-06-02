@@ -73,7 +73,7 @@ The master branch works with **PyTorch 1.5+**.
 
 </details>
 
-## Changelog
+## What's New
 
 v0.24.1 was released in 5/1/2022.
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
