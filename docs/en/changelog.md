@@ -25,7 +25,7 @@
 
 **Documentation**
 
-- Rewrite the installation guide by ([1630](https://github.com/open-mmlab/mmsegmentation/pull/1630))
+- Rewrite the installation guidance ([1630](https://github.com/open-mmlab/mmsegmentation/pull/1630))
 - Format readme ([1635](https://github.com/open-mmlab/mmsegmentation/pull/1635))
 - Replace markdownlint with mdformat for avoiding installing ruby ([1591](https://github.com/open-mmlab/mmsegmentation/pull/1591))
 - Add explanation and usage instructions for data configuration ([1548](https://github.com/open-mmlab/mmsegmentation/pull/1548))
