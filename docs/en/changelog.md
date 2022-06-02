@@ -12,7 +12,7 @@
 - Fix bug of `resize` function when align_corners is True ([1592](https://github.com/open-mmlab/mmsegmentation/pull/1592))
 - Fix Dockerfile to run demo script in docker container ([1568](https://github.com/open-mmlab/mmsegmentation/pull/1568))
 - Correct inference_demo.ipynb path ([1576](https://github.com/open-mmlab/mmsegmentation/pull/1576))
-- Fix the build_segmentor in colab demo ([1551](https://github.com/open-mmlab/mmsegmentation/pull/1551))
+- Fix the `build_segmentor` in colab demo ([1551](https://github.com/open-mmlab/mmsegmentation/pull/1551))
 - Fix md2yml script ([1633](https://github.com/open-mmlab/mmsegmentation/pull/1633), [1555](https://github.com/open-mmlab/mmsegmentation/pull/1555))
 - Fix main line link in MAE README.md ([1556](https://github.com/open-mmlab/mmsegmentation/pull/1556))
 - Fix fastfcn crop_size in README.md by ([1597](https://github.com/open-mmlab/mmsegmentation/pull/1597))
