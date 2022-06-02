@@ -26,7 +26,7 @@
 **Documentation**
 
 - Rewrite the installation guide by ([1630](https://github.com/open-mmlab/mmsegmentation/pull/1630))
-- Format readme by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/1635
+- Format readme ([1635](https://github.com/open-mmlab/mmsegmentation/pull/1635))
 - Replace markdownlint with mdformat for avoiding installing ruby ([1591](https://github.com/open-mmlab/mmsegmentation/pull/1591))
 - Add explanation and usage instructions for data configuration ([1548](https://github.com/open-mmlab/mmsegmentation/pull/1548))
 - Configure Myst-parser to parse anchor tag ([1589](https://github.com/open-mmlab/mmsegmentation/pull/1589))
