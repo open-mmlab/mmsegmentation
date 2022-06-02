@@ -1,213 +1,98 @@
-## Prerequisites
+# Prerequisites
 
-- Linux or macOS (Windows is in experimental support)
-- Python 3.6+
-- PyTorch 1.3+
-- CUDA 9.2+ (If you build PyTorch from source, CUDA 9.0 is also compatible)
-- GCC 5+
-- [MMCV](https://mmcv.readthedocs.io/en/latest/#installation)
+In this section we demonstrate how to prepare an environment with PyTorch.
 
-The compatible MMSegmentation and MMCV versions are as below. Please install the correct version of MMCV to avoid installation issues.
+MMSegmentation works on Linux, Windows and macOS. It requires Python 3.6+, CUDA 9.2+ and PyTorch 1.3+.
 
-| MMSegmentation version |        MMCV version         | MMClassification version |
-| :--------------------: | :-------------------------: | :----------------------: |
-|         master         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
-|         0.24.1         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
-|         0.23.0         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
-|         0.22.0         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
-|         0.21.1         | mmcv-full>=1.4.4, \<=1.6.0  |       Not required       |
-|         0.20.2         | mmcv-full>=1.3.13, \<=1.6.0 |       Not required       |
-|         0.19.0         | mmcv-full>=1.3.13, \<1.3.17 |       Not required       |
-|         0.18.0         | mmcv-full>=1.3.13, \<1.3.17 |       Not required       |
-|         0.17.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
-|         0.16.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
-|         0.15.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
-|         0.14.1         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
-|         0.14.0         |  mmcv-full>=1.3.1, \<1.3.2  |       Not required       |
-|         0.13.0         |  mmcv-full>=1.3.1, \<1.3.2  |       Not required       |
-|         0.12.0         |  mmcv-full>=1.1.4, \<1.3.2  |       Not required       |
-|         0.11.0         |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
-|         0.10.0         |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
-|         0.9.0          |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
-|         0.8.0          |  mmcv-full>=1.1.4, \<1.2.0  |       Not required       |
-|         0.7.0          |  mmcv-full>=1.1.2, \<1.2.0  |       Not required       |
-|         0.6.0          |  mmcv-full>=1.1.2, \<1.2.0  |       Not required       |
-
-:::{note}
-You need to run `pip uninstall mmcv` first if you have mmcv installed.
-If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
-:::
-
-## Installation
-
-a. Create a conda virtual environment and activate it.
-
-```shell
-conda create -n open-mmlab python=3.10 -y
-conda activate open-mmlab
+```{note}
+If you are experienced with PyTorch and have already installed it, just skip this part and jump to the [next section](#installation). Otherwise, you can follow these steps for the preparation.
 ```
 
-b. Install PyTorch and torchvision following the [official instructions](https://pytorch.org/).
-Here we use PyTorch 1.11.0 and CUDA 11.3.
-You may also switch to other version by specifying the version number.
+**Step 0.** Download and install Miniconda from the [official website](https://docs.conda.io/en/latest/miniconda.html).
+
+**Step 1.** Create a conda environment and activate it.
 
 ```shell
-conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
+conda create --name openmmlab python=3.8 -y
+conda activate openmmlab
 ```
 
-c. Install [MMCV](https://mmcv.readthedocs.io/en/latest/) following the [official instructions](https://mmcv.readthedocs.io/en/latest/#installation).
-Either `mmcv` or `mmcv-full` is compatible with MMSegmentation, but for methods like CCNet and PSANet, CUDA ops in `mmcv-full` is required.
+**Step 2.** Install PyTorch following [official instructions](https://pytorch.org/get-started/locally/), e.g.
 
-**Install mmcv for Linux:**
-
-Install MMCV, we recommend you to install the pre-built mmcv as below.
+On GPU platforms:
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
+conda install pytorch torchvision -c pytorch
 ```
 
-Please replace `{cu_version}` and `{torch_version}` in the url to your desired one. mmcv-full is only compiled on
-PyTorch 1.x.0 because the compatibility usually holds between 1.x.0 and 1.x.1. If your PyTorch version is 1.x.1,
-you can install mmcv-full compiled with PyTorch 1.x.0 and it usually works well.
-For example, to install the `mmcv-full` with `CUDA 11.3` and `PyTorch 1.11.0`, use the following command:
+On CPU platforms:
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.11/index.html
+conda install pytorch torchvision cpuonly -c pytorch
 ```
 
-See [here](https://github.com/open-mmlab/mmcv#installation) for different versions of MMCV compatible to different PyTorch and CUDA versions.
+# Installation
 
-Optionally you can choose to compile mmcv from source by the following command
+We recommend that users follow our best practices to install MMSegmentation. However, the whole process is highly customizable. See [Customize Installation](#customize-installation) section for more information.
+
+## Best Practices
+
+**Step 0.** Install [MMCV](https://github.com/open-mmlab/mmcv) using [MIM](https://github.com/open-mmlab/mim).
 
 ```shell
-git clone https://github.com/open-mmlab/mmcv.git
-cd mmcv
-MMCV_WITH_OPS=1 pip install -e .  # package mmcv-full, which contains cuda ops, will be installed after this step
-# OR pip install -e .  # package mmcv, which contains no cuda ops, will be installed after this step
-cd ..
+pip install -U openmim
+mim install mmcv-full
 ```
 
-**Important:** You need to run `pip uninstall mmcv` first if you have mmcv installed. Because if `mmcv` and `mmcv-full` are both installed, there will be `ModuleNotFoundError`.
+**Step 1.** Install MMSegmentation.
 
-**Install mmcv for Windows (Experimental):**
-
-For Windows, the installation of MMCV requires native C++ compilers, such as cl.exe. Please add the compiler to %PATH%.
-
-A typical path for cl.exe looks like the following if you have Windows SDK and Visual Studio installed on your computer:
-
-```shell
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.26.28801\bin\Hostx86\x64
-```
-
-Or you should download the cl compiler from web and then set up the path.
-
-Then, clone mmcv from github and install mmcv via pip:
-
-```shell
-git clone https://github.com/open-mmlab/mmcv.git
-cd mmcv
-pip install -e .
-```
-
-Or simply:
-
-```shell
-pip install mmcv
-```
-
-Currently, mmcv-full is not supported on Windows.
-
-d. Install MMSegmentation.
-
-```shell
-pip install mmsegmentation # install the latest release
-```
-
-or
-
-```shell
-pip install git+https://github.com/open-mmlab/mmsegmentation.git # install the master branch
-```
-
-Instead, if you would like to install MMSegmentation in `dev` mode, run following
+Case a: If you develop and run mmseg directly, install it from source:
 
 ```shell
 git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
-pip install -e .  # or "python setup.py develop"
+pip install -v -e .
+# "-v" means verbose, or more output
+# "-e" means installing a project in editable mode,
+# thus any local modifications made to the code will take effect without reinstallation.
 ```
 
-:::{note}
-
-1. When training or testing models on Windows, please ensure that all the '\\' in paths are replaced with '/'. Add .replace('\\', '/') to your python code wherever path strings occur.
-2. The `version+git_hash` will also be saved in trained models meta, e.g. 0.5.0+c415a2e.
-3. When MMsegmentation is installed on `dev` mode, any local modifications made to the code will take effect without the need to reinstall it.
-4. If you would like to use `opencv-python-headless` instead of `opencv-python`,
-   you can install it before installing MMCV.
-5. Some dependencies are optional. Simply running `pip install -e .` will only install the minimum runtime requirements.
-   To use optional dependencies like `cityscapessripts`  either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
-   :::
-
-### A from-scratch setup script
-
-#### Linux
-
-Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is $DATA_ROOT).
+Case b: If you use mmsegmentation as a dependency or third-party package, install it with pip:
 
 ```shell
-conda create -n open-mmlab python=3.10 -y
-conda activate open-mmlab
-
-conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.11.0/index.html
-git clone https://github.com/open-mmlab/mmsegmentation.git
-cd mmsegmentation
-pip install -e .  # or "python setup.py develop"
-
-mkdir data
-ln -s $DATA_ROOT data
+pip install mmsegmentation
 ```
 
-#### Windows(Experimental)
+## Verify the installation
 
-Here is a full script for setting up mmsegmentation with conda and link the dataset path (supposing that your dataset path is
-%DATA_ROOT%. Notice: It must be an absolute path).
+To verify whether MMSegmentation is installed correctly, we provide some sample codes to run an inference demo.
+
+**Step 1.** We need to download config and checkpoint files.
 
 ```shell
-conda create -n open-mmlab python=3.10 -y
-conda activate open-mmlab
-
-conda install pytorch=1.11.0 torchvision cudatoolkit=11.3 -c pytorch
-set PATH=full\path\to\your\cpp\compiler;%PATH%
-pip install mmcv
-
-git clone https://github.com/open-mmlab/mmsegmentation.git
-cd mmsegmentation
-pip install -e .  # or "python setup.py develop"
-
-mklink /D data %DATA_ROOT%
+mim download mmsegmentation --config pspnet_r50-d8_512x1024_40k_cityscapes --dest .
 ```
 
-#### Developing with multiple MMSegmentation versions
+The downloading will take several seconds or more, depending on your network environment. When it is done, you will find two files `pspnet_r50-d8_512x1024_40k_cityscapes.py` and `pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth` in your current folder.
 
-The train and test scripts already modify the `PYTHONPATH` to ensure the script use the MMSegmentation in the current directory.
+**Step 2.** Verify the inference demo.
 
-To use the default MMSegmentation installed in the environment rather than that you are working with, you can remove the following line in those scripts
+Option (a). If you install mmsegmentation from source, just run the following command.
 
 ```shell
-PYTHONPATH="$(dirname $0)/..":$PYTHONPATH
+python demo/image_demo.py demo/demo.jpg pspnet_r50-d8_512x1024_40k_cityscapes.py pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cpu --out-file result.jpg
 ```
 
-## Verification
+You will see a new image `result.jpg` on your current folder, where segmentation masks are covered on all objects.
 
-To verify whether MMSegmentation and the required environment are installed correctly, we can run sample python codes to initialize a segmentor and inference a demo image:
+Option (b). If you install mmsegmentation with pip, open you python interpreter and copy&paste the following codes.
 
 ```python
 from mmseg.apis import inference_segmentor, init_segmentor
 import mmcv
 
-config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py'
-checkpoint_file = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
+config_file = 'pspnet_r50-d8_512x1024_40k_cityscapes.py'
+checkpoint_file = 'pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
 # build the model from a config file and a checkpoint file
 model = init_segmentor(config_file, checkpoint_file, device='cuda:0')
@@ -228,37 +113,88 @@ for frame in video:
    model.show_result(frame, result, wait_time=1)
 ```
 
-The above code is supposed to run successfully upon you finish the installation.
+You can modify the code above to test a single image or a video, both of these options can verify that the installation was successful.
 
-We also provide a demo script to test a single image.
+## Customize Installation
 
-```shell
-python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}]
+### CUDA versions
+
+When installing PyTorch, you need to specify the version of CUDA. If you are not clear on which to choose, follow our recommendations:
+
+- For Ampere-based NVIDIA GPUs, such as GeForce 30 series and NVIDIA A100, CUDA 11 is a must.
+- For older NVIDIA GPUs, CUDA 11 is backward compatible, but CUDA 10.2 offers better compatibility and is more lightweight.
+
+Please make sure the GPU driver satisfies the minimum version requirements. See [this table](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions__table-cuda-toolkit-driver-versions) for more information.
+
+```{note}
+Installing CUDA runtime libraries is enough if you follow our best practices, because no CUDA code will be compiled locally. However if you hope to compile MMCV from source or develop other CUDA operators, you need to install the complete CUDA toolkit from NVIDIA's [website](https://developer.nvidia.com/cuda-downloads), and its version should match the CUDA version of PyTorch. i.e., the specified version of cudatoolkit in `conda install` command.
 ```
 
-Examples:
+### Install MMCV without MIM
+
+MMCV contains C++ and CUDA extensions, thus depending on PyTorch in a complex way. MIM solves such dependencies automatically and makes the installation easier. However, it is not a must.
+
+To install MMCV with pip instead of MIM, please follow [MMCV installation guides](https://mmcv.readthedocs.io/en/latest/get_started/installation.html). This requires manually specifying a find-url based on PyTorch version and its CUDA version.
+
+For example, the following command install mmcv-full built for PyTorch 1.10.x and CUDA 11.3.
 
 ```shell
-python demo/image_demo.py demo/demo.png configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-    checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --palette cityscapes
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.10/index.html
 ```
 
-A notebook demo can be found in [demo/inference_demo.ipynb](../../demo/inference_demo.ipynb).
+### Install on CPU-only platforms
 
-Now we also provide a demo script to test a single video.
+MMSegmentation can be built for CPU only environment. In CPU mode you can train (requires MMCV version >= 1.4.4), test or inference a model.
+
+### Install on Google Colab
+
+[Google Colab](https://research.google.com/) usually has PyTorch installed,
+thus we only need to install MMCV and MMSegmentation with the following commands.
+
+**Step 1.** Install [MMCV](https://github.com/open-mmlab/mmcv) using [MIM](https://github.com/open-mmlab/mim).
 
 ```shell
-wget -O demo/demo.mp4 https://user-images.githubusercontent.com/22089207/144212749-44411ef4-b564-4b37-96d4-04bedec629ab.mp4
-python demo/video_demo.py ${VIDEO_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}] \
-    [--show] [--show-wait-time {SHOW_WAIT_TIME}] [--output-file {OUTPUT_FILE}] [--output-fps {OUTPUT_FPS}] \
-    [--output-height {OUTPUT_HEIGHT}] [--output-width {OUTPUT_WIDTH}] [--opacity {OPACITY}]
+!pip3 install openmim
+!mim install mmcv-full
 ```
 
-Examples:
+**Step 2.** Install MMSegmentation from the source.
 
 ```shell
-wget -O demo/demo.mp4 https://user-images.githubusercontent.com/22089207/144212749-44411ef4-b564-4b37-96d4-04bedec629ab.mp4
-python demo/video_demo.py demo/demo.mp4 configs/cgnet/cgnet_680x680_60k_cityscapes.py \
-    checkpoints/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth \
-    --device cuda:0 --palette cityscapes --show
+!git clone https://github.com/open-mmlab/mmsegmentation.git
+%cd mmsegmentation
+!pip install -e .
 ```
+
+**Step 3.** Verification.
+
+```python
+import mmseg
+print(mmseg.__version__)
+# Example output: 0.24.1
+```
+
+```{note}
+Within Jupyter, the exclamation mark `!` is used to call external executables and `%cd` is a [magic command](https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-cd) to change the current working directory of Python.
+```
+
+### Using MMSegmentation with Docker
+
+We provide a [Dockerfile](https://github.com/open-mmlab/mmsegmentation/blob/master/docker/Dockerfile) to build an image. Ensure that your [docker version](https://docs.docker.com/engine/install/) >=19.03.
+
+```shell
+# build an image with PyTorch 1.11, CUDA 11.3
+# If you prefer other versions, just modified the Dockerfile
+docker build -t mmsegmentation docker/
+```
+
+Run it with
+
+```shell
+docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmsegmentation
+```
+
+## Trouble shooting
+
+If you have some issues during the installation, please first view the [FAQ](faq.md) page.
+You may [open an issue](https://github.com/open-mmlab/mmsegmentation/issues/new/choose) on GitHub if no solution is found.
