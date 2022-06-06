@@ -378,8 +378,6 @@ In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=
 
 ### KITTI Segmentation
 
-This is the KITTI semantic segmentation benchmark. It consists of 200 semantically annotated train as well as 200 test images corresponding to the KITTI Stereo and Flow Benchmark 2015. The data format and metrics are conform with The Cityscapes Dataset.
-
 The data images could be download from [Download label for semantic and instance segmentation (314 MB)](http://www.cvlibs.net/datasets/kitti/eval_semseg.php?benchmark=semantics2015) (train/test)
 
 ```angular2html
