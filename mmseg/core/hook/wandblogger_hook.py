@@ -8,7 +8,7 @@ from mmcv.runner.dist_utils import master_only
 from mmcv.runner.hooks.checkpoint import CheckpointHook
 from mmcv.runner.hooks.logger.wandb import WandbLoggerHook
 
-from mmseg.apis.test import multi_gpu_test, single_gpu_test
+import mmseg.apis as mmseg_apis
 from mmseg.core import DistEvalHook, EvalHook
 
 
@@ -112,10 +112,10 @@ class MMSegWandbHook(WandbLoggerHook):
                 self.ckpt_hook = hook
             if isinstance(hook, EvalHook):
                 self.eval_hook = hook
-                self.test_fn = single_gpu_test
+                self.test_fn = mmseg_apis.single_gpu_test
             if isinstance(hook, DistEvalHook):
                 self.eval_hook = hook
-                self.test_fn = multi_gpu_test
+                self.test_fn = mmseg_apis.multi_gpu_test
 
         # Check conditions to log checkpoint
         if self.log_checkpoint:
@@ -315,7 +315,7 @@ class MMSegWandbHook(WandbLoggerHook):
 
             if pred_mask.ndim == 2:
                 wandb_masks = {
-                    'ground_truth': {
+                    'prediction': {
                         'mask_data': pred_mask,
                         'class_labels': self.class_id_to_label
                     }
