@@ -22,10 +22,10 @@ class SegDataSample(BaseDataElement):
          >>> img_meta = dict(img_shape=(4, 4, 3),
          ...                 pad_shape=(4, 4, 3))
          >>> gt_segmentations = PixelData(metainfo=img_meta)
-         >>> gt_segmentations.gt_sem_seg = torch.randint(0, 2, (1, 4, 4))
-         >>> data_sample.gt_segmentations = gt_segmentations
-         >>> assert 'img_shape' in data_sample.gt_segmentations.metainfo_keys()
-         >>> data_sample.gt_segmentations
+         >>> gt_segmentations.data = torch.randint(0, 2, (1, 4, 4))
+         >>> data_sample.gt_sem_seg = gt_segmentations
+         >>> assert 'img_shape' in data_sample.gt_sem_seg.metainfo_keys()
+         >>> data_sample.gt_sem_seg.shape
          (4, 4)
          >>> print(data_sample)
         <SegDataSample(
@@ -33,14 +33,14 @@ class SegDataSample(BaseDataElement):
             META INFORMATION
 
             DATA FIELDS
-            gt_segmentations: <PixelData(
+            gt_sem_seg: <PixelData(
 
                     META INFORMATION
                     img_shape: (4, 4, 3)
                     pad_shape: (4, 4, 3)
 
                     DATA FIELDS
-                    gt_sem_seg: tensor([[[1, 1, 1, 0],
+                    data: tensor([[[1, 1, 1, 0],
                                  [1, 0, 1, 1],
                                  [1, 1, 1, 1],
                                  [0, 1, 0, 1]]])
