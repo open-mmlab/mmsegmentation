@@ -8,4 +8,4 @@ model = dict(
     auxiliary_head=dict(num_classes=19),
     # model training and testing settings
     train_cfg=dict(),
-    test_cfg=dict(mode='whole'))
+    test_cfg=dict(mode='slide', crop_size=(368, 368), stride=(246, 246)))
