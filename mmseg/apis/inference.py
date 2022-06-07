@@ -138,5 +138,5 @@ def show_result_pyplot(model,
     plt.tight_layout()
     plt.show(block=block)
     if out_file is not None:
-        plt.savefig(out_file)
+        mmcv.imwrite(img, out_file)
     plt.cla()
