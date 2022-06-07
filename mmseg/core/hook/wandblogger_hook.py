@@ -14,7 +14,7 @@ from mmseg.core import DistEvalHook, EvalHook
 
 @HOOKS.register_module()
 class MMSegWandbHook(WandbLoggerHook):
-    """Enhanced Wandb logger hook for MMDetection.
+    """Enhanced Wandb logger hook for MMSegmentation.
 
     Comparing with the :cls:`mmcv.runner.WandbLoggerHook`, this hook can not
     only automatically log all the metrics but also log the following extra
