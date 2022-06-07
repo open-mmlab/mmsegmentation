@@ -43,7 +43,7 @@ markdown_file ='markdowns/lr_in_trans.json.md'
 json_file = 'jsons/trans_in_cnn.json'
 ```
 
- The structure of the work-dir directory should be like：
+The structure of the work-dir directory should be like：
 
 ```text
 ├── work-dir
@@ -69,14 +69,15 @@ python log_collector.py ./example_config.py
 
 The output markdown file is like:
 
-|exp_num|method|mIoU best|best index|mIoU last|last index|last iter num|
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|1|segformer_mit-b5_512x512_160k_ade20k_cnn_lr_with_warmup|0.2776|10|0.2776|10|160000|
-|2|segformer_mit-b5_512x512_160k_ade20k_cnn_no_warmup_lr|0.2802|10|0.2802|10|160000|
-|3|segformer_mit-b5_512x512_160k_ade20k_mit_trans_lr|0.4943|11|0.4943|11|160000|
-|4|segformer_mit-b5_512x512_160k_ade20k_swin_trans_lr|0.4883|11|0.4883|11|160000|
+| exp_num |                         method                          | mIoU best | best index | mIoU last | last index | last iter num |
+| :-----: | :-----------------------------------------------------: | :-------: | :--------: | :-------: | :--------: | :-----------: |
+|    1    | segformer_mit-b5_512x512_160k_ade20k_cnn_lr_with_warmup |  0.2776   |     10     |  0.2776   |     10     |    160000     |
+|    2    |  segformer_mit-b5_512x512_160k_ade20k_cnn_no_warmup_lr  |  0.2802   |     10     |  0.2802   |     10     |    160000     |
+|    3    |    segformer_mit-b5_512x512_160k_ade20k_mit_trans_lr    |  0.4943   |     11     |  0.4943   |     11     |    160000     |
+|    4    |   segformer_mit-b5_512x512_160k_ade20k_swin_trans_lr    |  0.4883   |     11     |  0.4883   |     11     |    160000     |
 
 The output json file is like:
+
 ```json
 [
     {

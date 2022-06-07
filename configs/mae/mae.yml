@@ -1,6 +1,6 @@
 Models:
 - Name: upernet_mae-base_fp16_8x2_512x512_160k_ade20k
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: ViT-B
     crop size: (512,512)

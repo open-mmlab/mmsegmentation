@@ -122,19 +122,19 @@ python tools/deploy_test.py \
 - `--show-dir`: 涂上结果的图像被保存的文件夹的路径
 - `--cfg-options`: 重写配置文件里的一些设置，`xxx=yyy` 格式的键值对将被覆盖到配置文件里
 - `--eval-options`: 自定义的评估的选项， `xxx=yyy` 格式的键值对将成为  `dataset.evaluate()` 函数的参数变量
-- `--opacity`: 涂上结果的分割图的透明度，范围在 (0, 1] 之间
+- `--opacity`: 涂上结果的分割图的透明度，范围在 (0, 1\] 之间
 
 #### 结果和模型
 
-|   模型    |                     配置文件                       |  数据集   |  评价指标 | PyTorch | ONNXRuntime | TensorRT-fp32 | TensorRT-fp16 |
-| :--------: | :---------------------------------------------: | :--------: | :----: | :-----: | :---------: | :-----------: | :-----------: |
-|    FCN     |      fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |  mIoU  |  72.2   |    72.2     |     72.2      |     72.2      |
-|   PSPNet   |    pspnet_r50-d8_512x1024_40k_cityscapes.py     | cityscapes |  mIoU  |  77.8   |    77.8     |     77.8      |     77.8      |
-| deeplabv3  |   deeplabv3_r50-d8_512x1024_40k_cityscapes.py   | cityscapes |  mIoU  |  79.0   |    79.0     |     79.0      |     79.0      |
-| deeplabv3+ | deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py | cityscapes |  mIoU  |  79.6   |    79.5     |     79.5      |     79.5      |
-|   PSPNet   |     pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes |  mIoU  |  78.2   |    78.1     |               |               |
-| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py    | cityscapes |  mIoU  |  78.5   |    78.3     |               |               |
-| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py  | cityscapes |  mIoU  |  78.9   |    78.7     |               |               |
+|     模型     |                      配置文件                       |    数据集     | 评价指标 | PyTorch | ONNXRuntime | TensorRT-fp32 | TensorRT-fp16 |
+| :--------: | :---------------------------------------------: | :--------: | :--: | :-----: | :---------: | :-----------: | :-----------: |
+|    FCN     |      fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes | mIoU |  72.2   |    72.2     |     72.2      |     72.2      |
+|   PSPNet   |    pspnet_r50-d8_512x1024_40k_cityscapes.py     | cityscapes | mIoU |  77.8   |    77.8     |     77.8      |     77.8      |
+| deeplabv3  |   deeplabv3_r50-d8_512x1024_40k_cityscapes.py   | cityscapes | mIoU |  79.0   |    79.0     |     79.0      |     79.0      |
+| deeplabv3+ | deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py | cityscapes | mIoU |  79.6   |    79.5     |     79.5      |     79.5      |
+|   PSPNet   |     pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes | mIoU |  78.2   |    78.1     |               |               |
+| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py    | cityscapes | mIoU |  78.5   |    78.3     |               |               |
+| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py  | cityscapes | mIoU |  78.9   |    78.7     |               |               |
 
 **注意**: TensorRT 仅在使用 `whole mode` 测试模式时的配置文件里可用。
 
@@ -269,9 +269,9 @@ python tools/analyze_logs.py xxx.log.json [--keys ${KEYS}] [--legend ${LEGEND}] 
 
 `tools/model_converters/vit2mmseg.py` 将 timm 预训练模型转换到 MMSegmentation。
 
-  ```shell
-  python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
-  ```
+```shell
+python tools/model_converters/vit2mmseg.py ${SRC} ${DST}
+```
 
 - Swin
 
