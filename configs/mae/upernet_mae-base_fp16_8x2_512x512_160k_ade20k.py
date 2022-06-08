@@ -27,9 +27,13 @@ optimizer = dict(
     type='AdamW',
     lr=1e-4,
     betas=(0.9, 0.999),
-    weight_decay=0.05,
-    constructor='LayerDecayOptimizerConstructor',
-    paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.65))
+    weight_decay=0.05)
+
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=optimizer,
+    paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.65),
+    constructor='LayerDecayOptimizerConstructor')
 
 lr_config = dict(
     _delete_=True,

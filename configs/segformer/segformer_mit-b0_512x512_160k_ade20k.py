@@ -12,7 +12,11 @@ optimizer = dict(
     type='AdamW',
     lr=0.00006,
     betas=(0.9, 0.999),
-    weight_decay=0.01,
+    weight_decay=0.01)
+
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=optimizer,
     paramwise_cfg=dict(
         custom_keys={
             'pos_block': dict(decay_mult=0.),

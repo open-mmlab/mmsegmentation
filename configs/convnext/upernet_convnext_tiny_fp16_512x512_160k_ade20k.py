@@ -24,17 +24,21 @@ model = dict(
 )
 
 optimizer = dict(
-    constructor='LearningRateDecayOptimizerConstructor',
     _delete_=True,
     type='AdamW',
     lr=0.0001,
     betas=(0.9, 0.999),
-    weight_decay=0.05,
+    weight_decay=0.05)
+
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=optimizer,
     paramwise_cfg={
         'decay_rate': 0.9,
         'decay_type': 'stage_wise',
         'num_layers': 6
-    })
+    },
+    constructor='LearningRateDecayOptimizerConstructor')
 
 lr_config = dict(
     _delete_=True,
@@ -51,6 +55,7 @@ train_dataloader = dict(batch_size=2)
 val_dataloader = dict(batch_size=2)
 test_dataloader = val_dataloader
 # fp16 settings
-optimizer_config = dict(type='Fp16OptimizerHook', loss_scale='dynamic')
+default_hooks = dict(
+    optimizer=dict(type='Fp16OptimizerHook', loss_scale='dynamic'))
 # fp16 placeholder
 fp16 = dict()
