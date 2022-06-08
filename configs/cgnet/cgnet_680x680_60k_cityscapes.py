@@ -7,7 +7,15 @@ _base_ = [
 optimizer = dict(type='Adam', lr=0.001, eps=1e-08, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
 # learning policy
-lr_config = dict(policy='poly', power=0.9, min_lr=1e-4, by_epoch=False)
+param_scheduler = [
+    dict(
+        type='PolyLR',
+        eta_min=1e-4,
+        power=0.9,
+        by_epoch=False,
+        begin=0,
+        end=60000)
+]
 # runtime settings
 total_iters = 60000
 train_cfg = dict(
@@ -15,7 +23,6 @@ train_cfg = dict(
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 default_hooks = dict(checkpoint=dict(by_epoch=False, interval=4000))
-evaluation = dict(interval=4000, metric='mIoU')
 
 img_norm_cfg = dict(
     mean=[72.39239876, 82.90891754, 73.15835921], std=[1, 1, 1], to_rgb=True)

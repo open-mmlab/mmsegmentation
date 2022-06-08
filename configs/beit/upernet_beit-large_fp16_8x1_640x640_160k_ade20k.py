@@ -33,15 +33,19 @@ optim_wrapper = dict(
     optimizer=optimizer,
     constructor='LayerDecayOptimizerConstructor',
     paramwise_cfg=dict(num_layers=24, layer_decay_rate=0.95))
-lr_config = dict(
-    _delete_=True,
-    policy='poly',
-    warmup='linear',
-    warmup_iters=3000,
-    warmup_ratio=1e-6,
-    power=1.0,
-    min_lr=0.0,
-    by_epoch=False)
+
+param_scheduler = [
+    dict(
+        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=3000),
+    dict(
+        type='PolyLR',
+        power=1.0,
+        begin=3000,
+        end=160000,
+        eta_min=0.0,
+        by_epoch=False,
+    )
+]
 
 train_dataloader = dict(batch_size=1)
 val_dataloader = dict(batch_size=1)
