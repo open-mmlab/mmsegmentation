@@ -18,11 +18,15 @@ default_hooks = dict(
         type='OptimizerHook',
         grad_clip=dict(max_norm=1, norm_type=2)))
 # learning policy
-lr_config = dict(
-    _delete_=True,
-    policy='step',
-    warmup='linear',
-    warmup_iters=1000,
-    warmup_ratio=0.001,
-    step=[60000, 72000],
-    by_epoch=False)
+param_scheduler = [
+    dict(
+        type='LinearLR', start_factor=0.001, by_epoch=False, begin=0,
+        end=1000),
+    dict(
+        type='MultiStepLR',
+        begin=1000,
+        end=80000,
+        by_epoch=False,
+        milestones=[60000, 72000],
+    )
+]

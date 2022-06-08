@@ -29,4 +29,14 @@ model = dict(decode_head=[
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
 ])
-lr_config = dict(warmup='linear', warmup_iters=200)
+param_scheduler = [
+    dict(type='LinearLR', by_epoch=False, start_factor=0.1, begin=0, end=200),
+    dict(
+        type='PolyLR',
+        eta_min=1e-4,
+        power=0.9,
+        begin=200,
+        end=160000,
+        by_epoch=False,
+    )
+]

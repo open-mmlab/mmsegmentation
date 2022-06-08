@@ -85,14 +85,18 @@ default_hooks = dict(
         type='OptimizerHook',
         grad_clip=dict(max_norm=1, norm_type=2)))
 # learning policy
-lr_config = dict(
-    _delete_=True,
-    policy='step',
-    warmup='linear',
-    warmup_iters=1000,
-    warmup_ratio=0.001,
-    step=[60000, 72000],
-    by_epoch=False)
+param_scheduler = [
+    dict(
+        type='LinearLR', start_factor=0.001, by_epoch=False, begin=0,
+        end=1000),
+    dict(
+        type='MultiStepLR',
+        begin=1000,
+        end=80000,
+        milestones=[60000, 72000],
+        by_epoch=False,
+    )
+]
 # In K-Net implementation we use batch size 2 per GPU as default
 train_dataloader = dict(batch_size=2, num_workers=2)
 val_dataloader = dict(batch_size=2, num_workers=2)

@@ -22,15 +22,18 @@ optim_wrapper = dict(
             'norm': dict(decay_mult=0.)
         }))
 
-lr_config = dict(
-    _delete_=True,
-    policy='poly',
-    warmup='linear',
-    warmup_iters=1500,
-    warmup_ratio=1e-6,
-    power=1.0,
-    min_lr=0.0,
-    by_epoch=False)
+param_scheduler = [
+    dict(
+        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=1500),
+    dict(
+        type='PolyLR',
+        eta_min=0.0,
+        power=1.0,
+        begin=1500,
+        end=160000,
+        by_epoch=False,
+    )
+]
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 train_dataloader = dict(batch_size=2, num_workers=2)

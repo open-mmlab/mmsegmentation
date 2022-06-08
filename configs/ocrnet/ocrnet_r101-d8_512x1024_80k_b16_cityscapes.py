@@ -5,4 +5,12 @@ _base_ = [
 model = dict(pretrained='open-mmlab://resnet101_v1c', backbone=dict(depth=101))
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
-lr_config = dict(min_lr=2e-4)
+param_scheduler = [
+    dict(
+        type='PolyLR',
+        eta_min=2e-4,
+        power=0.9,
+        begin=0,
+        end=40000,
+        by_epoch=False)
+]

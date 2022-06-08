@@ -35,15 +35,18 @@ optim_wrapper = dict(
     paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.65),
     constructor='LayerDecayOptimizerConstructor')
 
-lr_config = dict(
-    _delete_=True,
-    policy='poly',
-    warmup='linear',
-    warmup_iters=1500,
-    warmup_ratio=1e-6,
-    power=1.0,
-    min_lr=0.0,
-    by_epoch=False)
+param_scheduler = [
+    dict(
+        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=1500),
+    dict(
+        type='PolyLR',
+        eta_min=0.0,
+        power=1.0,
+        begin=1500,
+        end=160000,
+        by_epoch=False,
+    )
+]
 
 # mixed precision
 fp16 = dict(loss_scale='dynamic')

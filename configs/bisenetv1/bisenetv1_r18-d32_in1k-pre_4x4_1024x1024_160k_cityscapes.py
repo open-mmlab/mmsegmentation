@@ -8,7 +8,17 @@ model = dict(
         backbone_cfg=dict(
             init_cfg=dict(
                 type='Pretrained', checkpoint='open-mmlab://resnet18_v1c'))))
-lr_config = dict(warmup='linear', warmup_iters=1000)
+param_scheduler = [
+    dict(type='LinearLR', by_epoch=False, start_factor=0.1, begin=0, end=1000),
+    dict(
+        type='PolyLR',
+        eta_min=1e-4,
+        power=0.9,
+        begin=1000,
+        end=160000,
+        by_epoch=False,
+    )
+]
 optimizer = dict(type='SGD', lr=0.025, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
 train_dataloader = dict(batch_size=4, num_workers=4)
