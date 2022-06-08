@@ -414,7 +414,7 @@ class IterativeDecodeHead(BaseDecodeHead):
         super(BaseDecodeHead, self).__init__(**kwargs)
         assert num_stages == len(kernel_update_head)
         self.num_stages = num_stages
-        self.kernel_generate_head = (kernel_generate_head)
+        self.kernel_generate_head = MODELS.build(kernel_generate_head)
         self.kernel_update_head = nn.ModuleList()
         self.align_corners = self.kernel_generate_head.align_corners
         self.num_classes = self.kernel_generate_head.num_classes
