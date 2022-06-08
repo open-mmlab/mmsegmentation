@@ -47,3 +47,6 @@ val_dataloader = dict(
         ann_file='ImageSets/SegmentationContext/val.txt',
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
+
+val_evaluator = dict(type='IoUMetric', metrics=['mIoU'])
+test_evaluator = val_evaluator
