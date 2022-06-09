@@ -22,30 +22,30 @@ class MMSegWandbHook(WandbLoggerHook):
     logs model prediction as interactive W&B Tables.
 
     - Metrics: The MMSegWandbHook will automatically log training
-        and validation metrics along with system metrics (CPU/GPU).
+      and validation metrics along with system metrics (CPU/GPU).
 
     - Checkpointing: If `log_checkpoint` is True, the checkpoint saved at
-        every checkpoint interval will be saved as W&B Artifacts.
-        This depends on the : class:`mmcv.runner.CheckpointHook` whose priority
-        is higher than this hook. Please refer to
-        https://docs.wandb.ai/guides/artifacts/model-versioning
-        to learn more about model versioning with W&B Artifacts.
+      every checkpoint interval will be saved as W&B Artifacts.
+      This depends on the : class:`mmcv.runner.CheckpointHook` whose priority
+      is higher than this hook. Please refer to
+      https://docs.wandb.ai/guides/artifacts/model-versioning
+      to learn more about model versioning with W&B Artifacts.
 
     - Checkpoint Metadata: If evaluation results are available for a given
-        checkpoint artifact, it will have a metadata associated with it.
-        The metadata contains the evaluation metrics computed on validation
-        data with that checkpoint along with the current epoch. It depends
-        on `EvalHook` whose priority is more than MMSegWandbHook.
+      checkpoint artifact, it will have a metadata associated with it.
+      The metadata contains the evaluation metrics computed on validation
+      data with that checkpoint along with the current epoch. It depends
+      on `EvalHook` whose priority is more than MMSegWandbHook.
 
     - Evaluation: At every evaluation interval, the `MMSegWandbHook` logs the
-        model prediction as interactive W&B Tables. The number of samples
-        logged is given by `num_eval_images`. Currently, the `MMSegWandbHook`
-        logs the predicted segmentation masks along with the ground truth at
-        every evaluation interval. This depends on the `EvalHook` whose
-        priority is more than `MMSegWandbHook`. Also note that the data is just
-        logged once and subsequent evaluation tables uses reference to the
-        logged data to save memory usage. Please refer to
-        https://docs.wandb.ai/guides/data-vis to learn more about W&B Tables.
+      model prediction as interactive W&B Tables. The number of samples
+      logged is given by `num_eval_images`. Currently, the `MMSegWandbHook`
+      logs the predicted segmentation masks along with the ground truth at
+      every evaluation interval. This depends on the `EvalHook` whose
+      priority is more than `MMSegWandbHook`. Also note that the data is just
+      logged once and subsequent evaluation tables uses reference to the
+      logged data to save memory usage. Please refer to
+      https://docs.wandb.ai/guides/data-vis to learn more about W&B Tables.
 
     ```
     Example:
