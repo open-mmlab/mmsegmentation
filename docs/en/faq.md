@@ -31,10 +31,8 @@ The compatible MMSegmentation and MMCV versions are as below. Please install the
 |         0.7.0          |  mmcv-full>=1.1.2, \<1.2.0  |       Not required       |
 |         0.6.0          |  mmcv-full>=1.1.2, \<1.2.0  |       Not required       |
 
-:::{note}
 You need to run `pip uninstall mmcv` first if you have mmcv installed.
 If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
-:::
 
 - "No module named 'mmcv.ops'"; "No module named 'mmcv.\_ext'".
 
@@ -45,3 +43,7 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 
 - Infer from the name of the config file of the model. You can refer to the `Config Name Style` part of [Learn about Configs](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/tutorials/config.md). For example, for config file with name `segformer_mit-b0_8x1_1024x1024_160k_cityscapes.py`, `8x1` means training the model corresponding to it needs 8 GPUs, and the batch size of each GPU is 1.
 - Infer from the log file. Open the log file of the model and search `nGPU` in the file. The number of figures following `nGPU` is the number of GPUs needed to train the model. For instance, searching for `nGPU` in the log file yields the record `nGPU 0,1,2,3,4,5,6,7`, which indicates that eight GPUs are needed to train the model.
+
+## What does the auxiliary head mean
+
+It is a deep supervision trick to improve the accuracy. You may read this [paper](https://arxiv.org/pdf/1612.01105.pdf) for more information.
