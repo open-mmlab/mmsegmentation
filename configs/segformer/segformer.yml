@@ -1,0 +1,303 @@
+Collections:
+- Name: Segformer
+  Metadata:
+    Training Data:
+    - ADE20K
+    - Cityscapes
+  Paper:
+    URL: https://arxiv.org/abs/2105.15203
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+  README: configs/segformer/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/NVlabs/SegFormer
+Models:
+- Name: segformer_mit-b0_512x512_160k_ade20k
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B0
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 19.49
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.1
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 37.41
+      mIoU(ms+flip): 38.34
+  Config: configs/segformer/segformer_mit-b0_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530-8ffa8fda.pth
+- Name: segformer_mit-b1_512x512_160k_ade20k
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B1
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 20.98
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.6
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 40.97
+      mIoU(ms+flip): 42.54
+  Config: configs/segformer/segformer_mit-b1_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20210726_112106-d70e859d.pth
+- Name: segformer_mit-b2_512x512_160k_ade20k
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B2
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 32.38
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 3.6
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.58
+      mIoU(ms+flip): 47.03
+  Config: configs/segformer/segformer_mit-b2_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20210726_112103-cbd414ac.pth
+- Name: segformer_mit-b3_512x512_160k_ade20k
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B3
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 45.23
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 4.8
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.82
+      mIoU(ms+flip): 48.81
+  Config: configs/segformer/segformer_mit-b3_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20210726_081410-962b98d2.pth
+- Name: segformer_mit-b4_512x512_160k_ade20k
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B4
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 64.72
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.1
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.46
+      mIoU(ms+flip): 49.76
+  Config: configs/segformer/segformer_mit-b4_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20210728_183055-7f509d7d.pth
+- Name: segformer_mit-b5_512x512_160k_ade20k
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B5
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 84.1
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 7.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.13
+      mIoU(ms+flip): 50.22
+  Config: configs/segformer/segformer_mit-b5_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235-94cedf59.pth
+- Name: segformer_mit-b5_640x640_160k_ade20k
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B5
+    crop size: (640,640)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 88.5
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (640,640)
+    Training Memory (GB): 11.5
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.62
+      mIoU(ms+flip): 50.36
+  Config: configs/segformer/segformer_mit-b5_640x640_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20210801_121243-41d2845b.pth
+- Name: segformer_mit-b0_8x1_1024x1024_160k_cityscapes
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B0
+    crop size: (1024,1024)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 210.97
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 3.64
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.54
+      mIoU(ms+flip): 78.22
+  Config: configs/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes/segformer_mit-b0_8x1_1024x1024_160k_cityscapes_20211208_101857-e7f88502.pth
+- Name: segformer_mit-b1_8x1_1024x1024_160k_cityscapes
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B1
+    crop size: (1024,1024)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 232.56
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 4.49
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.56
+      mIoU(ms+flip): 79.73
+  Config: configs/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes/segformer_mit-b1_8x1_1024x1024_160k_cityscapes_20211208_064213-655c7b3f.pth
+- Name: segformer_mit-b2_8x1_1024x1024_160k_cityscapes
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B2
+    crop size: (1024,1024)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 297.62
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 7.42
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 81.08
+      mIoU(ms+flip): 82.18
+  Config: configs/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes/segformer_mit-b2_8x1_1024x1024_160k_cityscapes_20211207_134205-6096669a.pth
+- Name: segformer_mit-b3_8x1_1024x1024_160k_cityscapes
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B3
+    crop size: (1024,1024)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 395.26
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 10.86
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 81.94
+      mIoU(ms+flip): 83.14
+  Config: configs/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes/segformer_mit-b3_8x1_1024x1024_160k_cityscapes_20211206_224823-a8f8a177.pth
+- Name: segformer_mit-b4_8x1_1024x1024_160k_cityscapes
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B4
+    crop size: (1024,1024)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 531.91
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 15.07
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 81.89
+      mIoU(ms+flip): 83.38
+  Config: configs/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes/segformer_mit-b4_8x1_1024x1024_160k_cityscapes_20211207_080709-07f6c333.pth
+- Name: segformer_mit-b5_8x1_1024x1024_160k_cityscapes
+  In Collection: Segformer
+  Metadata:
+    backbone: MIT-B5
+    crop size: (1024,1024)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 719.42
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 18.0
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 82.25
+      mIoU(ms+flip): 83.48
+  Config: configs/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes/segformer_mit-b5_8x1_1024x1024_160k_cityscapes_20211206_072934-87a052ec.pth

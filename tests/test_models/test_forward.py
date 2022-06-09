@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 """pytest tests/test_forward.py."""
 import copy
 from os.path import dirname, exists, join
@@ -7,7 +8,7 @@ import numpy as np
 import pytest
 import torch
 import torch.nn as nn
-from mmcv.utils.parrots_wrapper import SyncBatchNorm, _BatchNorm
+from mmcv.cnn.utils import revert_sync_batchnorm
 
 
 def _demo_mm_inputs(input_shape=(2, 3, 8, 16), num_classes=10):
@@ -76,12 +77,9 @@ def _get_segmentor_cfg(fname):
     These are deep copied to allow for safe modification of parameters without
     influencing other tests.
     """
-    import mmcv
     config = _get_config_module(fname)
     model = copy.deepcopy(config.model)
-    train_cfg = mmcv.Config(copy.deepcopy(config.train_cfg))
-    test_cfg = mmcv.Config(copy.deepcopy(config.test_cfg))
-    return model, train_cfg, test_cfg
+    return model
 
 
 def test_pspnet_forward():
@@ -153,6 +151,35 @@ def test_encnet_forward():
         'encnet/encnet_r50-d8_512x1024_40k_cityscapes.py')
 
 
+def test_sem_fpn_forward():
+    _test_encoder_decoder_forward('sem_fpn/fpn_r50_512x1024_80k_cityscapes.py')
+
+
+def test_point_rend_forward():
+    _test_encoder_decoder_forward(
+        'point_rend/pointrend_r50_512x1024_80k_cityscapes.py')
+
+
+def test_mobilenet_v2_forward():
+    _test_encoder_decoder_forward(
+        'mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes.py')
+
+
+def test_dnlnet_forward():
+    _test_encoder_decoder_forward(
+        'dnlnet/dnl_r50-d8_512x1024_40k_cityscapes.py')
+
+
+def test_emanet_forward():
+    _test_encoder_decoder_forward(
+        'emanet/emanet_r50-d8_512x1024_80k_cityscapes.py')
+
+
+def test_isanet_forward():
+    _test_encoder_decoder_forward(
+        'isanet/isanet_r50-d8_512x1024_40k_cityscapes.py')
+
+
 def get_world_size(process_group):
 
     return 1
@@ -162,38 +189,17 @@ def _check_input_dim(self, inputs):
     pass
 
 
-def _convert_batchnorm(module):
-    module_output = module
-    if isinstance(module, SyncBatchNorm):
-        # to be consistent with SyncBN, we hack dim check function in BN
-        module_output = _BatchNorm(module.num_features, module.eps,
-                                   module.momentum, module.affine,
-                                   module.track_running_stats)
-        if module.affine:
-            module_output.weight.data = module.weight.data.clone().detach()
-            module_output.bias.data = module.bias.data.clone().detach()
-            # keep requires_grad unchanged
-            module_output.weight.requires_grad = module.weight.requires_grad
-            module_output.bias.requires_grad = module.bias.requires_grad
-        module_output.running_mean = module.running_mean
-        module_output.running_var = module.running_var
-        module_output.num_batches_tracked = module.num_batches_tracked
-    for name, child in module.named_children():
-        module_output.add_module(name, _convert_batchnorm(child))
-    del module
-    return module_output
-
-
 @patch('torch.nn.modules.batchnorm._BatchNorm._check_input_dim',
        _check_input_dim)
 @patch('torch.distributed.get_world_size', get_world_size)
 def _test_encoder_decoder_forward(cfg_file):
-    model, train_cfg, test_cfg = _get_segmentor_cfg(cfg_file)
+    model = _get_segmentor_cfg(cfg_file)
     model['pretrained'] = None
-    test_cfg['mode'] = 'whole'
+    model['test_cfg']['mode'] = 'whole'
 
     from mmseg.models import build_segmentor
-    segmentor = build_segmentor(model, train_cfg=train_cfg, test_cfg=test_cfg)
+    segmentor = build_segmentor(model)
+    segmentor.init_weights()
 
     if isinstance(segmentor.decode_head, nn.ModuleList):
         num_classes = segmentor.decode_head[-1].num_classes
@@ -213,7 +219,7 @@ def _test_encoder_decoder_forward(cfg_file):
         imgs = imgs.cuda()
         gt_semantic_seg = gt_semantic_seg.cuda()
     else:
-        segmentor = _convert_batchnorm(segmentor)
+        segmentor = revert_sync_batchnorm(segmentor)
 
     # Test forward train
     losses = segmentor.forward(

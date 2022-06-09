@@ -1,0 +1,133 @@
+Models:
+- Name: upernet_convnext_tiny_fp16_512x512_160k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: ConvNeXt-T
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 50.25
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (512,512)
+    Training Memory (GB): 4.23
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.11
+      mIoU(ms+flip): 46.62
+  Config: configs/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k/upernet_convnext_tiny_fp16_512x512_160k_ade20k_20220227_124553-cad485de.pth
+- Name: upernet_convnext_small_fp16_512x512_160k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: ConvNeXt-S
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 65.88
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (512,512)
+    Training Memory (GB): 5.16
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.56
+      mIoU(ms+flip): 49.02
+  Config: configs/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k/upernet_convnext_small_fp16_512x512_160k_ade20k_20220227_131208-1b1e394f.pth
+- Name: upernet_convnext_base_fp16_512x512_160k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: ConvNeXt-B
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 69.4
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (512,512)
+    Training Memory (GB): 6.33
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.71
+      mIoU(ms+flip): 49.54
+  Config: configs/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k/upernet_convnext_base_fp16_512x512_160k_ade20k_20220227_181227-02a24fc6.pth
+- Name: upernet_convnext_base_fp16_640x640_160k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: ConvNeXt-B
+    crop size: (640,640)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 91.91
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (640,640)
+    Training Memory (GB): 8.53
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 52.13
+      mIoU(ms+flip): 52.66
+  Config: configs/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k/upernet_convnext_base_fp16_640x640_160k_ade20k_20220227_182859-9280e39b.pth
+- Name: upernet_convnext_large_fp16_640x640_160k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: ConvNeXt-L
+    crop size: (640,640)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 130.04
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (640,640)
+    Training Memory (GB): 12.08
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 53.16
+      mIoU(ms+flip): 53.38
+  Config: configs/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k/upernet_convnext_large_fp16_640x640_160k_ade20k_20220226_040532-e57aa54d.pth
+- Name: upernet_convnext_xlarge_fp16_640x640_160k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: ConvNeXt-XL
+    crop size: (640,640)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 157.98
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (640,640)
+    Training Memory (GB): 26.16
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 53.58
+      mIoU(ms+flip): 54.11
+  Config: configs/convnext/upernet_convnext_xlarge_fp16_640x640_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_xlarge_fp16_640x640_160k_ade20k/upernet_convnext_xlarge_fp16_640x640_160k_ade20k_20220226_080344-95fc38c2.pth

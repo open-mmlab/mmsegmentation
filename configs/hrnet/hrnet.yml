@@ -1,0 +1,695 @@
+Models:
+- Name: fcn_hr18s_512x1024_40k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 42.12
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 1.7
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.86
+      mIoU(ms+flip): 75.91
+  Config: configs/hrnet/fcn_hr18s_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x1024_40k_cityscapes/fcn_hr18s_512x1024_40k_cityscapes_20200601_014216-93db27d0.pth
+- Name: fcn_hr18_512x1024_40k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 77.1
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 2.9
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.19
+      mIoU(ms+flip): 78.92
+  Config: configs/hrnet/fcn_hr18_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x1024_40k_cityscapes/fcn_hr18_512x1024_40k_cityscapes_20200601_014216-f196fb4e.pth
+- Name: fcn_hr48_512x1024_40k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 155.76
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 6.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.48
+      mIoU(ms+flip): 79.69
+  Config: configs/hrnet/fcn_hr48_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x1024_40k_cityscapes/fcn_hr48_512x1024_40k_cityscapes_20200601_014240-a989b146.pth
+- Name: fcn_hr18s_512x1024_80k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.31
+      mIoU(ms+flip): 77.48
+  Config: configs/hrnet/fcn_hr18s_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x1024_80k_cityscapes/fcn_hr18s_512x1024_80k_cityscapes_20200601_202700-1462b75d.pth
+- Name: fcn_hr18_512x1024_80k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.65
+      mIoU(ms+flip): 80.35
+  Config: configs/hrnet/fcn_hr18_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x1024_80k_cityscapes/fcn_hr18_512x1024_80k_cityscapes_20200601_223255-4e7b345e.pth
+- Name: fcn_hr48_512x1024_80k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.93
+      mIoU(ms+flip): 80.72
+  Config: configs/hrnet/fcn_hr48_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x1024_80k_cityscapes/fcn_hr48_512x1024_80k_cityscapes_20200601_202606-58ea95d6.pth
+- Name: fcn_hr18s_512x1024_160k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,1024)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.31
+      mIoU(ms+flip): 78.31
+  Config: configs/hrnet/fcn_hr18s_512x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x1024_160k_cityscapes/fcn_hr18s_512x1024_160k_cityscapes_20200602_190901-4a0797ea.pth
+- Name: fcn_hr18_512x1024_160k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,1024)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.8
+      mIoU(ms+flip): 80.74
+  Config: configs/hrnet/fcn_hr18_512x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x1024_160k_cityscapes/fcn_hr18_512x1024_160k_cityscapes_20200602_190822-221e4a4f.pth
+- Name: fcn_hr48_512x1024_160k_cityscapes
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,1024)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.65
+      mIoU(ms+flip): 81.92
+  Config: configs/hrnet/fcn_hr48_512x1024_160k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x1024_160k_cityscapes/fcn_hr48_512x1024_160k_cityscapes_20200602_190946-59b7973e.pth
+- Name: fcn_hr18s_512x512_80k_ade20k
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 25.87
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 3.8
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 31.38
+      mIoU(ms+flip): 32.45
+  Config: configs/hrnet/fcn_hr18s_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_ade20k/fcn_hr18s_512x512_80k_ade20k_20200614_144345-77fc814a.pth
+- Name: fcn_hr18_512x512_80k_ade20k
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 44.31
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 4.9
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 36.27
+      mIoU(ms+flip): 37.28
+  Config: configs/hrnet/fcn_hr18_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_ade20k/fcn_hr18_512x512_80k_ade20k_20210827_114910-6c9382c0.pth
+- Name: fcn_hr48_512x512_80k_ade20k
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 47.1
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 8.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.9
+      mIoU(ms+flip): 43.27
+  Config: configs/hrnet/fcn_hr48_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_ade20k/fcn_hr48_512x512_80k_ade20k_20200614_193946-7ba5258d.pth
+- Name: fcn_hr18s_512x512_160k_ade20k
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 33.07
+      mIoU(ms+flip): 34.56
+  Config: configs/hrnet/fcn_hr18s_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_160k_ade20k/fcn_hr18s_512x512_160k_ade20k_20210829_174739-f1e7c2e7.pth
+- Name: fcn_hr18_512x512_160k_ade20k
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 36.79
+      mIoU(ms+flip): 38.58
+  Config: configs/hrnet/fcn_hr18_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_160k_ade20k/fcn_hr18_512x512_160k_ade20k_20200614_214426-ca961836.pth
+- Name: fcn_hr48_512x512_160k_ade20k
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.02
+      mIoU(ms+flip): 43.86
+  Config: configs/hrnet/fcn_hr48_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_160k_ade20k/fcn_hr48_512x512_160k_ade20k_20200614_214407-a52fc02c.pth
+- Name: fcn_hr18s_512x512_20k_voc12aug
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 23.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.8
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 65.5
+      mIoU(ms+flip): 68.89
+  Config: configs/hrnet/fcn_hr18s_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_20k_voc12aug/fcn_hr18s_512x512_20k_voc12aug_20210829_174910-0aceadb4.pth
+- Name: fcn_hr18_512x512_20k_voc12aug
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 42.59
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.9
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 72.3
+      mIoU(ms+flip): 74.71
+  Config: configs/hrnet/fcn_hr18_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_20k_voc12aug/fcn_hr18_512x512_20k_voc12aug_20200617_224503-488d45f7.pth
+- Name: fcn_hr48_512x512_20k_voc12aug
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 45.35
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 75.87
+      mIoU(ms+flip): 78.58
+  Config: configs/hrnet/fcn_hr48_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_20k_voc12aug/fcn_hr48_512x512_20k_voc12aug_20200617_224419-89de05cd.pth
+- Name: fcn_hr18s_512x512_40k_voc12aug
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 66.61
+      mIoU(ms+flip): 70.0
+  Config: configs/hrnet/fcn_hr18s_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_40k_voc12aug/fcn_hr18s_512x512_40k_voc12aug_20200614_000648-4f8d6e7f.pth
+- Name: fcn_hr18_512x512_40k_voc12aug
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 72.9
+      mIoU(ms+flip): 75.59
+  Config: configs/hrnet/fcn_hr18_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_40k_voc12aug/fcn_hr18_512x512_40k_voc12aug_20200613_224401-1b4b76cd.pth
+- Name: fcn_hr48_512x512_40k_voc12aug
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.24
+      mIoU(ms+flip): 78.49
+  Config: configs/hrnet/fcn_hr48_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_40k_voc12aug/fcn_hr48_512x512_40k_voc12aug_20200613_222111-1b0f18bc.pth
+- Name: fcn_hr48_480x480_40k_pascal_context
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (480,480)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 112.87
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,480)
+    Training Memory (GB): 6.1
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 45.14
+      mIoU(ms+flip): 47.42
+  Config: configs/hrnet/fcn_hr48_480x480_40k_pascal_context.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_40k_pascal_context/fcn_hr48_480x480_40k_pascal_context_20200911_164852-667d00b0.pth
+- Name: fcn_hr48_480x480_80k_pascal_context
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (480,480)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 45.84
+      mIoU(ms+flip): 47.84
+  Config: configs/hrnet/fcn_hr48_480x480_80k_pascal_context.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_80k_pascal_context/fcn_hr48_480x480_80k_pascal_context_20200911_155322-847a6711.pth
+- Name: fcn_hr48_480x480_40k_pascal_context_59
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (480,480)
+    lr schd: 40000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 50.33
+      mIoU(ms+flip): 52.83
+  Config: configs/hrnet/fcn_hr48_480x480_40k_pascal_context_59.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_40k_pascal_context_59/fcn_hr48_480x480_40k_pascal_context_59_20210410_122738-b808b8b2.pth
+- Name: fcn_hr48_480x480_80k_pascal_context_59
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (480,480)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 51.12
+      mIoU(ms+flip): 53.56
+  Config: configs/hrnet/fcn_hr48_480x480_80k_pascal_context_59.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_480x480_80k_pascal_context_59/fcn_hr48_480x480_80k_pascal_context_59_20210411_003240-3ae7081e.pth
+- Name: fcn_hr18s_512x512_80k_loveda
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 40.21
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.59
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 49.28
+      mIoU(ms+flip): 49.42
+  Config: configs/hrnet/fcn_hr18s_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_loveda/fcn_hr18s_512x512_80k_loveda_20211210_203228-60a86a7a.pth
+- Name: fcn_hr18_512x512_80k_loveda
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 77.4
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.76
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 50.81
+      mIoU(ms+flip): 50.95
+  Config: configs/hrnet/fcn_hr18_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_loveda/fcn_hr18_512x512_80k_loveda_20211210_203952-93d9c3b3.pth
+- Name: fcn_hr48_512x512_80k_loveda
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 104.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 51.42
+      mIoU(ms+flip): 51.64
+  Config: configs/hrnet/fcn_hr48_512x512_80k_loveda.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_loveda/fcn_hr48_512x512_80k_loveda_20211211_044756-67072f55.pth
+- Name: fcn_hr18s_512x512_80k_potsdam
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 27.78
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.58
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 77.64
+      mIoU(ms+flip): 78.8
+  Config: configs/hrnet/fcn_hr18s_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_512x512_80k_potsdam/fcn_hr18s_512x512_80k_potsdam_20211218_205517-ba32af63.pth
+- Name: fcn_hr18_512x512_80k_potsdam
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 51.95
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.76
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.26
+      mIoU(ms+flip): 79.24
+  Config: configs/hrnet/fcn_hr18_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_512x512_80k_potsdam/fcn_hr18_512x512_80k_potsdam_20211218_205517-5d0387ad.pth
+- Name: fcn_hr48_512x512_80k_potsdam
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 60.9
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.39
+      mIoU(ms+flip): 79.34
+  Config: configs/hrnet/fcn_hr48_512x512_80k_potsdam.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_512x512_80k_potsdam/fcn_hr48_512x512_80k_potsdam_20211219_020601-97434c78.pth
+- Name: fcn_hr18s_4x4_512x512_80k_vaihingen
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 26.24
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.58
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 71.81
+      mIoU(ms+flip): 73.1
+  Config: configs/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_4x4_512x512_80k_vaihingen/fcn_hr18s_4x4_512x512_80k_vaihingen_20211231_230909-b23aae02.pth
+- Name: fcn_hr18_4x4_512x512_80k_vaihingen
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 51.15
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.76
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 72.57
+      mIoU(ms+flip): 74.09
+  Config: configs/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_4x4_512x512_80k_vaihingen/fcn_hr18_4x4_512x512_80k_vaihingen_20211231_231216-2ec3ae8a.pth
+- Name: fcn_hr48_4x4_512x512_80k_vaihingen
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 57.97
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 72.5
+      mIoU(ms+flip): 73.52
+  Config: configs/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_4x4_512x512_80k_vaihingen/fcn_hr48_4x4_512x512_80k_vaihingen_20211231_231244-7133cb22.pth
+- Name: fcn_hr18s_4x4_896x896_80k_isaid
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18-Small
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 72.25
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 4.95
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 62.3
+      mIoU(ms+flip): 62.97
+  Config: configs/hrnet/fcn_hr18s_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18s_4x4_896x896_80k_isaid/fcn_hr18s_4x4_896x896_80k_isaid_20220118_001603-3cc0769b.pth
+- Name: fcn_hr18_4x4_896x896_80k_isaid
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W18
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 129.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 8.3
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 65.06
+      mIoU(ms+flip): 65.6
+  Config: configs/hrnet/fcn_hr18_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr18_4x4_896x896_80k_isaid/fcn_hr18_4x4_896x896_80k_isaid_20220110_182230-49bf752e.pth
+- Name: fcn_hr48_4x4_896x896_80k_isaid
+  In Collection: FCN
+  Metadata:
+    backbone: HRNetV2p-W48
+    crop size: (896,896)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 136.24
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (896,896)
+    Training Memory (GB): 16.89
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 67.8
+      mIoU(ms+flip): 68.53
+  Config: configs/hrnet/fcn_hr48_4x4_896x896_80k_isaid.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/hrnet/fcn_hr48_4x4_896x896_80k_isaid/fcn_hr48_4x4_896x896_80k_isaid_20220114_174643-547fc420.pth

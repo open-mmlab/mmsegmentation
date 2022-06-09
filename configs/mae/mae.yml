@@ -1,0 +1,23 @@
+Models:
+- Name: upernet_mae-base_fp16_8x2_512x512_160k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: ViT-B
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 140.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP16
+      resolution: (512,512)
+    Training Memory (GB): 9.96
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.13
+      mIoU(ms+flip): 48.7
+  Config: configs/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752-f92a2975.pth

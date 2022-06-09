@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import math
 import os.path as osp
 
@@ -5,8 +6,8 @@ import pytest
 from torch.utils.data import (DistributedSampler, RandomSampler,
                               SequentialSampler)
 
-from mmseg.datasets import (DATASETS, ConcatDataset, build_dataloader,
-                            build_dataset)
+from mmseg.datasets import (DATASETS, ConcatDataset, MultiImageMixDataset,
+                            build_dataloader, build_dataset)
 
 
 @DATASETS.register_module()
@@ -47,6 +48,11 @@ def test_build_dataset():
     assert isinstance(dataset, ConcatDataset)
     assert len(dataset) == 10
 
+    cfg = dict(type='MultiImageMixDataset', dataset=cfg, pipeline=[])
+    dataset = build_dataset(cfg)
+    assert isinstance(dataset, MultiImageMixDataset)
+    assert len(dataset) == 10
+
     # with ann_dir, split
     cfg = dict(
         type='CustomDataset',
@@ -77,7 +83,8 @@ def test_build_dataset():
         pipeline=[],
         data_root=data_root,
         img_dir=[img_dir, img_dir],
-        test_mode=True)
+        test_mode=True,
+        classes=('pseudo_class', ))
     dataset = build_dataset(cfg)
     assert isinstance(dataset, ConcatDataset)
     assert len(dataset) == 10
@@ -89,7 +96,8 @@ def test_build_dataset():
         data_root=data_root,
         img_dir=[img_dir, img_dir],
         split=['splits/val.txt', 'splits/val.txt'],
-        test_mode=True)
+        test_mode=True,
+        classes=('pseudo_class', ))
     dataset = build_dataset(cfg)
     assert isinstance(dataset, ConcatDataset)
     assert len(dataset) == 2

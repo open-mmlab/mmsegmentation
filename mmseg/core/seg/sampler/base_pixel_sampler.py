@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from abc import ABCMeta, abstractmethod
 
 
@@ -10,4 +11,3 @@ class BasePixelSampler(metaclass=ABCMeta):
     @abstractmethod
     def sample(self, seg_logit, seg_label):
         """Placeholder for sample function."""
-        pass

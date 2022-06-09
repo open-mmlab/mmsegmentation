@@ -1,3 +1,5 @@
+# Copyright (c) OpenMMLab. All rights reserved.
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -24,8 +26,13 @@ class EncoderDecoder(BaseSegmentor):
                  auxiliary_head=None,
                  train_cfg=None,
                  test_cfg=None,
-                 pretrained=None):
-        super(EncoderDecoder, self).__init__()
+                 pretrained=None,
+                 init_cfg=None):
+        super(EncoderDecoder, self).__init__(init_cfg)
+        if pretrained is not None:
+            assert backbone.get('pretrained') is None, \
+                'both backbone and segmentor set pretrained weight'
+            backbone.pretrained = pretrained
         self.backbone = builder.build_backbone(backbone)
         if neck is not None:
             self.neck = builder.build_neck(neck)
@@ -34,8 +41,6 @@ class EncoderDecoder(BaseSegmentor):
 
         self.train_cfg = train_cfg
         self.test_cfg = test_cfg
-
-        self.init_weights(pretrained=pretrained)
 
         assert self.with_decode_head
 
@@ -54,24 +59,6 @@ class EncoderDecoder(BaseSegmentor):
                     self.auxiliary_head.append(builder.build_head(head_cfg))
             else:
                 self.auxiliary_head = builder.build_head(auxiliary_head)
-
-    def init_weights(self, pretrained=None):
-        """Initialize the weights in backbone and heads.
-
-        Args:
-            pretrained (str, optional): Path to pre-trained weights.
-                Defaults to None.
-        """
-
-        super(EncoderDecoder, self).init_weights(pretrained)
-        self.backbone.init_weights(pretrained=pretrained)
-        self.decode_head.init_weights()
-        if self.with_auxiliary_head:
-            if isinstance(self.auxiliary_head, nn.ModuleList):
-                for aux_head in self.auxiliary_head:
-                    aux_head.init_weights()
-            else:
-                self.auxiliary_head.init_weights()
 
     def extract_feat(self, img):
         """Extract features from images."""
@@ -166,7 +153,11 @@ class EncoderDecoder(BaseSegmentor):
 
     # TODO refactor
     def slide_inference(self, img, img_meta, rescale):
-        """Inference by sliding-window with overlap."""
+        """Inference by sliding-window with overlap.
+
+        If h_crop > h_img or w_crop > w_img, the small patch will be used to
+        decode without padding.
+        """
 
         h_stride, w_stride = self.test_cfg.stride
         h_crop, w_crop = self.test_cfg.crop_size
@@ -185,14 +176,17 @@ class EncoderDecoder(BaseSegmentor):
                 y1 = max(y2 - h_crop, 0)
                 x1 = max(x2 - w_crop, 0)
                 crop_img = img[:, :, y1:y2, x1:x2]
-                pad_img = crop_img.new_zeros(
-                    (crop_img.size(0), crop_img.size(1), h_crop, w_crop))
-                pad_img[:, :, :y2 - y1, :x2 - x1] = crop_img
-                pad_seg_logit = self.encode_decode(pad_img, img_meta)
-                preds[:, :, y1:y2,
-                      x1:x2] += pad_seg_logit[:, :, :y2 - y1, :x2 - x1]
+                crop_seg_logit = self.encode_decode(crop_img, img_meta)
+                preds += F.pad(crop_seg_logit,
+                               (int(x1), int(preds.shape[3] - x2), int(y1),
+                                int(preds.shape[2] - y2)))
+
                 count_mat[:, :, y1:y2, x1:x2] += 1
         assert (count_mat == 0).sum() == 0
+        if torch.onnx.is_in_onnx_export():
+            # cast count_mat to constant while exporting to ONNX
+            count_mat = torch.from_numpy(
+                count_mat.cpu().detach().numpy()).to(device=img.device)
         preds = preds / count_mat
         if rescale:
             preds = resize(
@@ -201,7 +195,6 @@ class EncoderDecoder(BaseSegmentor):
                 mode='bilinear',
                 align_corners=self.align_corners,
                 warning=False)
-
         return preds
 
     def whole_inference(self, img, img_meta, rescale):
@@ -209,9 +202,14 @@ class EncoderDecoder(BaseSegmentor):
 
         seg_logit = self.encode_decode(img, img_meta)
         if rescale:
+            # support dynamic shape for onnx
+            if torch.onnx.is_in_onnx_export():
+                size = img.shape[2:]
+            else:
+                size = img_meta[0]['ori_shape'][:2]
             seg_logit = resize(
                 seg_logit,
-                size=img_meta[0]['ori_shape'][:2],
+                size=size,
                 mode='bilinear',
                 align_corners=self.align_corners,
                 warning=False)
@@ -243,8 +241,8 @@ class EncoderDecoder(BaseSegmentor):
             seg_logit = self.whole_inference(img, img_meta, rescale)
         output = F.softmax(seg_logit, dim=1)
         flip = img_meta[0]['flip']
-        flip_direction = img_meta[0]['flip_direction']
         if flip:
+            flip_direction = img_meta[0]['flip_direction']
             assert flip_direction in ['horizontal', 'vertical']
             if flip_direction == 'horizontal':
                 output = output.flip(dims=(3, ))
@@ -257,6 +255,10 @@ class EncoderDecoder(BaseSegmentor):
         """Simple test with single image."""
         seg_logit = self.inference(img, img_meta, rescale)
         seg_pred = seg_logit.argmax(dim=1)
+        if torch.onnx.is_in_onnx_export():
+            # our inference backend only support 4D output
+            seg_pred = seg_pred.unsqueeze(0)
+            return seg_pred
         seg_pred = seg_pred.cpu().numpy()
         # unravel batch dim
         seg_pred = list(seg_pred)

@@ -3,12 +3,8 @@ repos:
     rev: 3.8.3
     hooks:
       - id: flake8
-  - repo: https://github.com/asottile/seed-isort-config
-    rev: v2.2.0
-    hooks:
-      - id: seed-isort-config
-  - repo: https://github.com/timothycrosley/isort
-    rev: 4.3.21
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
     hooks:
       - id: isort
   - repo: https://github.com/pre-commit/mirrors-yapf
@@ -28,8 +24,37 @@ repos:
         args: ["--remove"]
       - id: mixed-line-ending
         args: ["--fix=lf"]
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.14
+    hooks:
+      - id: mdformat
+        args: ["--number"]
+        additional_dependencies:
+          - mdformat-gfm
+          - mdformat_frontmatter
+          - linkify-it-py
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
   - repo: https://github.com/myint/docformatter
     rev: v1.3.1
     hooks:
       - id: docformatter
         args: ["--in-place", "--wrap-descriptions", "79"]
+  - repo: local
+    hooks:
+      - id: update-model-index
+        name: update-model-index
+        description: Collect model information and update model-index.yml
+        entry: .dev/md2yml.py
+        additional_dependencies: [mmcv, lxml, opencv-python]
+        language: python
+        files: ^configs/.*\.md$
+        require_serial: true
+  - repo: https://github.com/open-mmlab/pre-commit-hooks
+    rev: v0.2.0  # Use the rev to fix revision
+    hooks:
+      - id: check-algo-readme
+      - id: check-copyright
+        args: ["mmseg", "tools", "tests", "demo"]  # the dir_to_check with expected directory to check

@@ -1,0 +1,125 @@
+Collections:
+- Name: Segmenter
+  Metadata:
+    Training Data:
+    - ADE20K
+  Paper:
+    URL: https://arxiv.org/abs/2105.05633
+    Title: 'Segmenter: Transformer for Semantic Segmentation'
+  README: configs/segmenter/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/decode_heads/segmenter_mask_head.py#L15
+    Version: v0.21.0
+  Converted From:
+    Code: https://github.com/rstrudel/segmenter
+Models:
+- Name: segmenter_vit-t_mask_8x1_512x512_160k_ade20k
+  In Collection: Segmenter
+  Metadata:
+    backbone: ViT-T_16
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 35.74
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.21
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 39.99
+      mIoU(ms+flip): 40.83
+  Config: configs/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k/segmenter_vit-t_mask_8x1_512x512_160k_ade20k_20220105_151706-ffcf7509.pth
+- Name: segmenter_vit-s_linear_8x1_512x512_160k_ade20k
+  In Collection: Segmenter
+  Metadata:
+    backbone: ViT-S_16
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 35.63
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 1.78
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.75
+      mIoU(ms+flip): 46.82
+  Config: configs/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713-39658c46.pth
+- Name: segmenter_vit-s_mask_8x1_512x512_160k_ade20k
+  In Collection: Segmenter
+  Metadata:
+    backbone: ViT-S_16
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 40.32
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 2.03
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.19
+      mIoU(ms+flip): 47.85
+  Config: configs/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k/segmenter_vit-s_mask_8x1_512x512_160k_ade20k_20220105_151706-511bb103.pth
+- Name: segmenter_vit-b_mask_8x1_512x512_160k_ade20k
+  In Collection: Segmenter
+  Metadata:
+    backbone: ViT-B_16
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 75.76
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 4.2
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.6
+      mIoU(ms+flip): 51.07
+  Config: configs/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k/segmenter_vit-b_mask_8x1_512x512_160k_ade20k_20220105_151706-bc533b08.pth
+- Name: segmenter_vit-l_mask_8x1_512x512_160k_ade20k
+  In Collection: Segmenter
+  Metadata:
+    backbone: ViT-L_16
+    crop size: (640,640)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 381.68
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (640,640)
+    Training Memory (GB): 16.56
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 52.16
+      mIoU(ms+flip): 53.65
+  Config: configs/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k/segmenter_vit-l_mask_8x1_512x512_160k_ade20k_20220105_162750-7ef345be.pth

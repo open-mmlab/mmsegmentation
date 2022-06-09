@@ -1,0 +1,11 @@
+assign:
+  strategy:
+    # random
+    # round-robin
+    daily-shift-based
+  assignees:
+    - MengzhangLI
+    - linfangjian01
+    - MeowZheng
+    - MengzhangLI
+    - linfangjian01

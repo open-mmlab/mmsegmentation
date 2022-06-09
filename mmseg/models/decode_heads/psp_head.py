@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
@@ -22,7 +23,7 @@ class PPM(nn.ModuleList):
     """
 
     def __init__(self, pool_scales, in_channels, channels, conv_cfg, norm_cfg,
-                 act_cfg, align_corners):
+                 act_cfg, align_corners, **kwargs):
         super(PPM, self).__init__()
         self.pool_scales = pool_scales
         self.align_corners = align_corners
@@ -41,7 +42,8 @@ class PPM(nn.ModuleList):
                         1,
                         conv_cfg=self.conv_cfg,
                         norm_cfg=self.norm_cfg,
-                        act_cfg=self.act_cfg)))
+                        act_cfg=self.act_cfg,
+                        **kwargs)))
 
     def forward(self, x):
         """Forward function."""
@@ -90,12 +92,26 @@ class PSPHead(BaseDecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
 
-    def forward(self, inputs):
-        """Forward function."""
+    def _forward_feature(self, inputs):
+        """Forward function for feature maps before classifying each pixel with
+        ``self.cls_seg`` fc.
+
+        Args:
+            inputs (list[Tensor]): List of multi-level img features.
+
+        Returns:
+            feats (Tensor): A tensor of shape (batch_size, self.channels,
+                H, W) which is feature map for last layer of decoder head.
+        """
         x = self._transform_inputs(inputs)
         psp_outs = [x]
         psp_outs.extend(self.psp_modules(x))
         psp_outs = torch.cat(psp_outs, dim=1)
-        output = self.bottleneck(psp_outs)
+        feats = self.bottleneck(psp_outs)
+        return feats
+
+    def forward(self, inputs):
+        """Forward function."""
+        output = self._forward_feature(inputs)
         output = self.cls_seg(output)
         return output

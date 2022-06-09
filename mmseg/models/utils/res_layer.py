@@ -1,8 +1,10 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.cnn import build_conv_layer, build_norm_layer
+from mmcv.runner import Sequential
 from torch import nn as nn
 
 
-class ResLayer(nn.Sequential):
+class ResLayer(Sequential):
     """ResLayer to build ResNet style backbone.
 
     Args:
@@ -42,8 +44,7 @@ class ResLayer(nn.Sequential):
         if stride != 1 or inplanes != planes * block.expansion:
             downsample = []
             conv_stride = stride
-            # check dilation for dilated ResNet
-            if avg_down and (stride != 1 or dilation != 1):
+            if avg_down:
                 conv_stride = 1
                 downsample.append(
                     nn.AvgPool2d(

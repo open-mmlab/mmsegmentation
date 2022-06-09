@@ -1,3 +1,0 @@
-# These must be installed before building mmsegmentation
-numpy
-# torch

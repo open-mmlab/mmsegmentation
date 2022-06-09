@@ -64,7 +64,8 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+docs/en/_build/
+docs/zh_cn/_build/
 
 # PyBuilder
 target/
@@ -89,6 +90,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.DS_Store
 
 # Spyder project settings
 .spyderproject
@@ -103,7 +105,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-mmseg/version.py
 data
 .vscode
 .idea
@@ -113,6 +114,7 @@ data
 *.pkl.json
 *.log.json
 work_dirs/
+mmseg/.mim
 
 # Pytorch
 *.pth

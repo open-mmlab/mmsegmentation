@@ -1,12 +1,11 @@
-#!/usr/bin/env python
+# Copyright (c) OpenMMLab. All rights reserved.
 import os
-import subprocess
-import time
+import os.path as osp
+import platform
+import shutil
+import sys
+import warnings
 from setuptools import find_packages, setup
-
-import torch
-from mmcv.utils.parrots_wrapper import (BuildExtension, CppExtension,
-                                        CUDAExtension)
 
 
 def readme():
@@ -18,97 +17,10 @@ def readme():
 version_file = 'mmseg/version.py'
 
 
-def get_git_hash():
-
-    def _minimal_ext_cmd(cmd):
-        # construct minimal environment
-        env = {}
-        for k in ['SYSTEMROOT', 'PATH', 'HOME']:
-            v = os.environ.get(k)
-            if v is not None:
-                env[k] = v
-        # LANGUAGE is used on win32
-        env['LANGUAGE'] = 'C'
-        env['LANG'] = 'C'
-        env['LC_ALL'] = 'C'
-        out = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, env=env).communicate()[0]
-        return out
-
-    try:
-        out = _minimal_ext_cmd(['git', 'rev-parse', 'HEAD'])
-        sha = out.strip().decode('ascii')
-    except OSError:
-        sha = 'unknown'
-
-    return sha
-
-
-def get_hash():
-    if os.path.exists('.git'):
-        sha = get_git_hash()[:7]
-    elif os.path.exists(version_file):
-        try:
-            from mmseg.version import __version__
-            sha = __version__.split('+')[-1]
-        except ImportError:
-            raise ImportError('Unable to get git version')
-    else:
-        sha = 'unknown'
-
-    return sha
-
-
-def write_version_py():
-    content = """# GENERATED VERSION FILE
-# TIME: {}
-
-__version__ = '{}'
-short_version = '{}'
-version_info = ({})
-"""
-    sha = get_hash()
-    with open('mmseg/VERSION', 'r') as f:
-        SHORT_VERSION = f.read().strip()
-    VERSION_INFO = ', '.join(SHORT_VERSION.split('.'))
-    VERSION = SHORT_VERSION + '+' + sha
-
-    version_file_str = content.format(time.asctime(), VERSION, SHORT_VERSION,
-                                      VERSION_INFO)
-    with open(version_file, 'w') as f:
-        f.write(version_file_str)
-
-
 def get_version():
     with open(version_file, 'r') as f:
         exec(compile(f.read(), version_file, 'exec'))
     return locals()['__version__']
-
-
-def make_cuda_ext(name, module, sources, sources_cuda=[]):
-
-    define_macros = []
-    extra_compile_args = {'cxx': []}
-
-    if torch.cuda.is_available() or os.getenv('FORCE_CUDA', '0') == '1':
-        define_macros += [('WITH_CUDA', None)]
-        extension = CUDAExtension
-        extra_compile_args['nvcc'] = [
-            '-D__CUDA_NO_HALF_OPERATORS__',
-            '-D__CUDA_NO_HALF_CONVERSIONS__',
-            '-D__CUDA_NO_HALF2_OPERATORS__',
-        ]
-        sources += sources_cuda
-    else:
-        print('Compiling {} without CUDA'.format(name))
-        extension = CppExtension
-        # raise EnvironmentError('CUDA is required to compile MMSegmentation!')
-
-    return extension(
-        name='{}.{}'.format(module, name),
-        sources=[os.path.join(*module.split('.'), p) for p in sources],
-        define_macros=define_macros,
-        extra_compile_args=extra_compile_args)
 
 
 def parse_requirements(fname='requirements.txt', with_version=True):
@@ -125,9 +37,9 @@ def parse_requirements(fname='requirements.txt', with_version=True):
     CommandLine:
         python -c "import setup; print(setup.parse_requirements())"
     """
+    import re
     import sys
     from os.path import exists
-    import re
     require_fpath = fname
 
     def parse_line(line):
@@ -187,19 +99,86 @@ def parse_requirements(fname='requirements.txt', with_version=True):
     return packages
 
 
+def add_mim_extension():
+    """Add extra files that are required to support MIM into the package.
+
+    These files will be added by creating a symlink to the originals if the
+    package is installed in `editable` mode (e.g. pip install -e .), or by
+    copying from the originals otherwise.
+    """
+
+    # parse installment mode
+    if 'develop' in sys.argv:
+        # installed by `pip install -e .`
+        if platform.system() == 'Windows':
+            # set `copy` mode here since symlink fails on Windows.
+            mode = 'copy'
+        else:
+            mode = 'symlink'
+    elif 'sdist' in sys.argv or 'bdist_wheel' in sys.argv or \
+            platform.system() == 'Windows':
+        # installed by `pip install .`
+        # or create source distribution by `python setup.py sdist`
+        # set `copy` mode here since symlink fails with WinError on Windows.
+        mode = 'copy'
+    else:
+        return
+
+    filenames = ['tools', 'configs', 'model-index.yml']
+    repo_path = osp.dirname(__file__)
+    mim_path = osp.join(repo_path, 'mmseg', '.mim')
+    os.makedirs(mim_path, exist_ok=True)
+
+    for filename in filenames:
+        if osp.exists(filename):
+            src_path = osp.join(repo_path, filename)
+            tar_path = osp.join(mim_path, filename)
+
+            if osp.isfile(tar_path) or osp.islink(tar_path):
+                os.remove(tar_path)
+            elif osp.isdir(tar_path):
+                shutil.rmtree(tar_path)
+
+            if mode == 'symlink':
+                src_relpath = osp.relpath(src_path, osp.dirname(tar_path))
+                try:
+                    os.symlink(src_relpath, tar_path)
+                except OSError:
+                    # Creating a symbolic link on windows may raise an
+                    # `OSError: [WinError 1314]` due to privilege. If
+                    # the error happens, the src file will be copied
+                    mode = 'copy'
+                    warnings.warn(
+                        f'Failed to create a symbolic link for {src_relpath}, '
+                        f'and it will be copied to {tar_path}')
+                else:
+                    continue
+
+            if mode == 'copy':
+                if osp.isfile(src_path):
+                    shutil.copyfile(src_path, tar_path)
+                elif osp.isdir(src_path):
+                    shutil.copytree(src_path, tar_path)
+                else:
+                    warnings.warn(f'Cannot copy file {src_path}.')
+            else:
+                raise ValueError(f'Invalid mode {mode}')
+
+
 if __name__ == '__main__':
-    write_version_py()
+    add_mim_extension()
     setup(
-        name='mmseg',
+        name='mmsegmentation',
         version=get_version(),
         description='Open MMLab Semantic Segmentation Toolbox and Benchmark',
         long_description=readme(),
-        author='MMSegmentation Authors',
+        long_description_content_type='text/markdown',
+        author='MMSegmentation Contributors',
         author_email='openmmlab@gmail.com',
         keywords='computer vision, semantic segmentation',
         url='http://github.com/open-mmlab/mmsegmentation',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
-        package_data={'mmseg.ops': ['*/*.so']},
+        include_package_data=True,
         classifiers=[
             'Development Status :: 4 - Beta',
             'License :: OSI Approved :: Apache Software License',
@@ -207,10 +186,9 @@ if __name__ == '__main__':
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
+            'Programming Language :: Python :: 3.9',
         ],
         license='Apache License 2.0',
-        setup_requires=parse_requirements('requirements/build.txt'),
-        tests_require=parse_requirements('requirements/tests.txt'),
         install_requires=parse_requirements('requirements/runtime.txt'),
         extras_require={
             'all': parse_requirements('requirements.txt'),
@@ -219,5 +197,4 @@ if __name__ == '__main__':
             'optional': parse_requirements('requirements/optional.txt'),
         },
         ext_modules=[],
-        cmdclass={'build_ext': BuildExtension},
         zip_safe=False)

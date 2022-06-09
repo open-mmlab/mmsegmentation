@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 def add_prefix(inputs, prefix):
     """Add prefix for dict.
 

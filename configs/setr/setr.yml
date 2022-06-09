@@ -1,0 +1,164 @@
+Collections:
+- Name: SETR
+  Metadata:
+    Training Data:
+    - ADE20K
+    - Cityscapes
+  Paper:
+    URL: https://arxiv.org/abs/2012.15840
+    Title: Rethinking Semantic Segmentation from a Sequence-to-Sequence Perspective
+      with Transformers
+  README: configs/setr/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/setr_up_head.py#L11
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/fudan-zvg/SETR
+Models:
+- Name: setr_naive_512x512_160k_b16_ade20k
+  In Collection: SETR
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 211.86
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 18.4
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.28
+      mIoU(ms+flip): 49.56
+  Config: configs/setr/setr_naive_512x512_160k_b16_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_naive_512x512_160k_b16_ade20k/setr_naive_512x512_160k_b16_ade20k_20210619_191258-061f24f5.pth
+- Name: setr_pup_512x512_160k_b16_ade20k
+  In Collection: SETR
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 222.22
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 19.54
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.24
+      mIoU(ms+flip): 49.99
+  Config: configs/setr/setr_pup_512x512_160k_b16_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_pup_512x512_160k_b16_ade20k/setr_pup_512x512_160k_b16_ade20k_20210619_191343-7e0ce826.pth
+- Name: setr_mla_512x512_160k_b8_ade20k
+  In Collection: SETR
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+    Training Memory (GB): 10.96
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.34
+      mIoU(ms+flip): 49.05
+  Config: configs/setr/setr_mla_512x512_160k_b8_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_mla_512x512_160k_b8_ade20k/setr_mla_512x512_160k_b8_ade20k_20210619_191118-c6d21df0.pth
+- Name: setr_mla_512x512_160k_b16_ade20k
+  In Collection: SETR
+  Metadata:
+    backbone: ViT-L
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 190.48
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 17.3
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.54
+      mIoU(ms+flip): 49.37
+  Config: configs/setr/setr_mla_512x512_160k_b16_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_mla_512x512_160k_b16_ade20k/setr_mla_512x512_160k_b16_ade20k_20210619_191057-f9741de7.pth
+- Name: setr_vit-large_naive_8x1_768x768_80k_cityscapes
+  In Collection: SETR
+  Metadata:
+    backbone: ViT-L
+    crop size: (768,768)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 2564.1
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (768,768)
+    Training Memory (GB): 24.06
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.1
+      mIoU(ms+flip): 80.22
+  Config: configs/setr/setr_vit-large_naive_8x1_768x768_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_naive_vit-large_8x1_768x768_80k_cityscapes/setr_naive_vit-large_8x1_768x768_80k_cityscapes_20211123_000505-20728e80.pth
+- Name: setr_vit-large_pup_8x1_768x768_80k_cityscapes
+  In Collection: SETR
+  Metadata:
+    backbone: ViT-L
+    crop size: (768,768)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 2702.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (768,768)
+    Training Memory (GB): 27.96
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.21
+      mIoU(ms+flip): 81.02
+  Config: configs/setr/setr_vit-large_pup_8x1_768x768_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_pup_vit-large_8x1_768x768_80k_cityscapes/setr_pup_vit-large_8x1_768x768_80k_cityscapes_20211122_155115-f6f37b8f.pth
+- Name: setr_vit-large_mla_8x1_768x768_80k_cityscapes
+  In Collection: SETR
+  Metadata:
+    backbone: ViT-L
+    crop size: (768,768)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 2439.02
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (768,768)
+    Training Memory (GB): 24.1
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.0
+      mIoU(ms+flip): 79.59
+  Config: configs/setr/setr_vit-large_mla_8x1_768x768_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_mla_vit-large_8x1_768x768_80k_cityscapes/setr_mla_vit-large_8x1_768x768_80k_cityscapes_20211119_101003-7f8dccbe.pth

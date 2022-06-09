@@ -1,0 +1,103 @@
+Collections:
+- Name: LRASPP
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    URL: https://arxiv.org/abs/1905.02244
+    Title: Searching for MobileNetV3
+  README: configs/mobilenet_v3/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/tensorflow/models/tree/master/research/deeplab
+Models:
+- Name: lraspp_m-v3-d8_512x1024_320k_cityscapes
+  In Collection: LRASPP
+  Metadata:
+    backbone: M-V3-D8
+    crop size: (512,1024)
+    lr schd: 320000
+    inference time (ms/im):
+    - value: 65.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 8.9
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 69.54
+      mIoU(ms+flip): 70.89
+  Config: configs/mobilenet_v3/lraspp_m-v3-d8_512x1024_320k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3-d8_512x1024_320k_cityscapes/lraspp_m-v3-d8_512x1024_320k_cityscapes_20201224_220337-cfe8fb07.pth
+- Name: lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes
+  In Collection: LRASPP
+  Metadata:
+    backbone: M-V3-D8 (scratch)
+    crop size: (512,1024)
+    lr schd: 320000
+    inference time (ms/im):
+    - value: 67.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 8.9
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 67.87
+      mIoU(ms+flip): 69.78
+  Config: configs/mobilenet_v3/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes_20201224_220337-9f29cd72.pth
+- Name: lraspp_m-v3s-d8_512x1024_320k_cityscapes
+  In Collection: LRASPP
+  Metadata:
+    backbone: M-V3s-D8
+    crop size: (512,1024)
+    lr schd: 320000
+    inference time (ms/im):
+    - value: 42.3
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 5.3
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 64.11
+      mIoU(ms+flip): 66.42
+  Config: configs/mobilenet_v3/lraspp_m-v3s-d8_512x1024_320k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3s-d8_512x1024_320k_cityscapes/lraspp_m-v3s-d8_512x1024_320k_cityscapes_20201224_223935-61565b34.pth
+- Name: lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes
+  In Collection: LRASPP
+  Metadata:
+    backbone: M-V3s-D8 (scratch)
+    crop size: (512,1024)
+    lr schd: 320000
+    inference time (ms/im):
+    - value: 40.82
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 5.3
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 62.74
+      mIoU(ms+flip): 65.01
+  Config: configs/mobilenet_v3/lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes/lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes_20201224_223935-03daeabb.pth

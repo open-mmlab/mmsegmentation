@@ -1,21 +1,25 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import platform
 import random
 from functools import partial
 
 import numpy as np
+import torch
 from mmcv.parallel import collate
 from mmcv.runner import get_dist_info
-from mmcv.utils import Registry, build_from_cfg
-from mmcv.utils.parrots_wrapper import DataLoader, PoolDataLoader
-from torch.utils.data import DistributedSampler
+from mmcv.utils import Registry, build_from_cfg, digit_version
+from torch.utils.data import DataLoader
+
+from .samplers import DistributedSampler
 
 if platform.system() != 'Windows':
     # https://github.com/pytorch/pytorch/issues/973
     import resource
     rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)
+    base_soft_limit = rlimit[0]
     hard_limit = rlimit[1]
-    soft_limit = min(4096, hard_limit)
+    soft_limit = min(max(4096, base_soft_limit), hard_limit)
     resource.setrlimit(resource.RLIMIT_NOFILE, (soft_limit, hard_limit))
 
 DATASETS = Registry('dataset')
@@ -28,6 +32,8 @@ def _concat_dataset(cfg, default_args=None):
     img_dir = cfg['img_dir']
     ann_dir = cfg.get('ann_dir', None)
     split = cfg.get('split', None)
+    # pop 'separate_eval' since it is not a valid key for common datasets.
+    separate_eval = cfg.pop('separate_eval', True)
     num_img_dir = len(img_dir) if isinstance(img_dir, (list, tuple)) else 1
     if ann_dir is not None:
         num_ann_dir = len(ann_dir) if isinstance(ann_dir, (list, tuple)) else 1
@@ -55,17 +61,23 @@ def _concat_dataset(cfg, default_args=None):
             data_cfg['split'] = split[i]
         datasets.append(build_dataset(data_cfg, default_args))
 
-    return ConcatDataset(datasets)
+    return ConcatDataset(datasets, separate_eval)
 
 
 def build_dataset(cfg, default_args=None):
     """Build datasets."""
-    from .dataset_wrappers import ConcatDataset, RepeatDataset
+    from .dataset_wrappers import (ConcatDataset, MultiImageMixDataset,
+                                   RepeatDataset)
     if isinstance(cfg, (list, tuple)):
         dataset = ConcatDataset([build_dataset(c, default_args) for c in cfg])
     elif cfg['type'] == 'RepeatDataset':
         dataset = RepeatDataset(
             build_dataset(cfg['dataset'], default_args), cfg['times'])
+    elif cfg['type'] == 'MultiImageMixDataset':
+        cp_cfg = copy.deepcopy(cfg)
+        cp_cfg['dataset'] = build_dataset(cp_cfg['dataset'])
+        cp_cfg.pop('type')
+        dataset = MultiImageMixDataset(**cp_cfg)
     elif isinstance(cfg.get('img_dir'), (list, tuple)) or isinstance(
             cfg.get('split', None), (list, tuple)):
         dataset = _concat_dataset(cfg, default_args)
@@ -84,7 +96,7 @@ def build_dataloader(dataset,
                      seed=None,
                      drop_last=False,
                      pin_memory=True,
-                     dataloader_type='PoolDataLoader',
+                     persistent_workers=True,
                      **kwargs):
     """Build PyTorch DataLoader.
 
@@ -106,7 +118,11 @@ def build_dataloader(dataset,
             Default: False
         pin_memory (bool): Whether to use pin_memory in DataLoader.
             Default: True
-        dataloader_type (str): Type of dataloader. Default: 'PoolDataLoader'
+        persistent_workers (bool): If True, the data loader will not shutdown
+            the worker processes after a dataset has been consumed once.
+            This allows to maintain the workers Dataset instances alive.
+            The argument also has effect in PyTorch>=1.7.0.
+            Default: True
         kwargs: any keyword argument to be used to initialize DataLoader
 
     Returns:
@@ -115,7 +131,7 @@ def build_dataloader(dataset,
     rank, world_size = get_dist_info()
     if dist:
         sampler = DistributedSampler(
-            dataset, world_size, rank, shuffle=shuffle)
+            dataset, world_size, rank, shuffle=shuffle, seed=seed)
         shuffle = False
         batch_size = samples_per_gpu
         num_workers = workers_per_gpu
@@ -128,26 +144,31 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    assert dataloader_type in (
-        'DataLoader',
-        'PoolDataLoader'), f'unsupported dataloader {dataloader_type}'
-
-    if dataloader_type == 'PoolDataLoader':
-        dataloader = PoolDataLoader
-    elif dataloader_type == 'DataLoader':
-        dataloader = DataLoader
-
-    data_loader = dataloader(
-        dataset,
-        batch_size=batch_size,
-        sampler=sampler,
-        num_workers=num_workers,
-        collate_fn=partial(collate, samples_per_gpu=samples_per_gpu),
-        pin_memory=pin_memory,
-        shuffle=shuffle,
-        worker_init_fn=init_fn,
-        drop_last=drop_last,
-        **kwargs)
+    if digit_version(torch.__version__) >= digit_version('1.8.0'):
+        data_loader = DataLoader(
+            dataset,
+            batch_size=batch_size,
+            sampler=sampler,
+            num_workers=num_workers,
+            collate_fn=partial(collate, samples_per_gpu=samples_per_gpu),
+            pin_memory=pin_memory,
+            shuffle=shuffle,
+            worker_init_fn=init_fn,
+            drop_last=drop_last,
+            persistent_workers=persistent_workers,
+            **kwargs)
+    else:
+        data_loader = DataLoader(
+            dataset,
+            batch_size=batch_size,
+            sampler=sampler,
+            num_workers=num_workers,
+            collate_fn=partial(collate, samples_per_gpu=samples_per_gpu),
+            pin_memory=pin_memory,
+            shuffle=shuffle,
+            worker_init_fn=init_fn,
+            drop_last=drop_last,
+            **kwargs)
 
     return data_loader
 
@@ -167,3 +188,4 @@ def worker_init_fn(worker_id, num_workers, rank, seed):
     worker_seed = num_workers * rank + worker_id + seed
     np.random.seed(worker_seed)
     random.seed(worker_seed)
+    torch.manual_seed(worker_seed)

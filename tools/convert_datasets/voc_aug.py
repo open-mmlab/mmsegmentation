@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import os.path as osp
 from functools import partial
@@ -50,8 +51,12 @@ def main():
         list(mmcv.scandir(in_dir, suffix='.mat')),
         nproc=nproc)
 
-    with open(osp.join(aug_path, 'dataset', 'trainval.txt')) as f:
-        full_aug_list = [line.strip() for line in f]
+    full_aug_list = []
+    with open(osp.join(aug_path, 'dataset', 'train.txt')) as f:
+        full_aug_list += [line.strip() for line in f]
+    with open(osp.join(aug_path, 'dataset', 'val.txt')) as f:
+        full_aug_list += [line.strip() for line in f]
+
     with open(
             osp.join(devkit_path, 'VOC2012/ImageSets/Segmentation',
                      'train.txt')) as f:
