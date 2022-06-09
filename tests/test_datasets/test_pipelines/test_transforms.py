@@ -49,7 +49,7 @@ def test_photo_metric_distortion():
     results['pad_shape'] = img.shape
     results['scale_factor'] = 1.0
 
-    pipeline = PhotoMetricDistortion()
+    pipeline = PhotoMetricDistortion(saturation_range=(1., 1.))
     results = pipeline(results)
 
     assert not ((results['img'] == img).all())

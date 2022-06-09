@@ -47,13 +47,14 @@ class TestLoading(object):
 
     def test_load_seg(self):
         seg_path = osp.join(self.data_prefix, 'seg.png')
-        results = dict(seg_map_path=seg_path, seg_fields=[])
+        results = dict(
+            seg_map_path=seg_path, reduce_zero_label=True, seg_fields=[])
         transform = LoadAnnotations()
         results = transform(copy.deepcopy(results))
         assert results['gt_seg_map'].shape == (288, 512)
         assert results['gt_seg_map'].dtype == np.uint8
         assert repr(transform) == transform.__class__.__name__ + \
-            "(reduce_zero_label=False,imdecode_backend='pillow')" + \
+            "(reduce_zero_label=True,imdecode_backend='pillow')" + \
             "file_client_args={'backend': 'disk'})"
 
         # reduce_zero_label
@@ -89,6 +90,7 @@ class TestLoading(object):
                 3: 1,
                 4: 0
             },
+            reduce_zero_label=False,
             seg_fields=[])
 
         load_imgs = LoadImageFromFile()
@@ -118,6 +120,7 @@ class TestLoading(object):
                 3: 2,
                 4: 1
             },
+            reduce_zero_label=False,
             seg_fields=[])
 
         load_imgs = LoadImageFromFile()
@@ -138,7 +141,11 @@ class TestLoading(object):
         np.testing.assert_array_equal(gt_array, true_mask)
 
         # test no custom classes
-        results = dict(img_path=img_path, seg_map_path=gt_path, seg_fields=[])
+        results = dict(
+            img_path=img_path,
+            seg_map_path=gt_path,
+            reduce_zero_label=False,
+            seg_fields=[])
 
         load_imgs = LoadImageFromFile()
         results = load_imgs(copy.deepcopy(results))
