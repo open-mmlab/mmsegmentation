@@ -122,6 +122,10 @@ class CustomDataset(BaseDataset):
         # Get label map for custom classes
         new_classes = self._metainfo.get('classes', None)
         self.label_map = self.get_label_map(new_classes)
+        self._metainfo.update(
+            dict(
+                label_map=self.label_map,
+                reduce_zero_label=self.reduce_zero_label))
 
         # Update palette based on label map or generate palette
         # if it is not defined
@@ -240,7 +244,8 @@ class CustomDataset(BaseDataset):
                     seg_map = img_name + self.seg_map_suffix
                     data_info['seg_map_path'] = osp.join(ann_dir, seg_map)
                 data_info['label_map'] = self.label_map
-                data_info['seg_field'] = []
+                data_info['reduce_zero_label'] = self.reduce_zero_label
+                data_info['seg_fields'] = []
                 data_list.append(data_info)
         else:
             img_dir = self.data_prefix['img_path']
@@ -254,7 +259,8 @@ class CustomDataset(BaseDataset):
                     seg_map = img.replace(self.img_suffix, self.seg_map_suffix)
                     data_info['seg_map_path'] = osp.join(ann_dir, seg_map)
                 data_info['label_map'] = self.label_map
-                data_info['seg_field'] = []
+                data_info['reduce_zero_label'] = self.reduce_zero_label
+                data_info['seg_fields'] = []
                 data_list.append(data_info)
             data_list = sorted(data_list, key=lambda x: x['img_path'])
         return data_list

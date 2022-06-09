@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import warnings
+
 import mmcv
 import numpy as np
 from mmcv.transforms import LoadAnnotations as MMCV_LoadAnnotations
@@ -40,9 +42,9 @@ class LoadAnnotations(MMCV_LoadAnnotations):
     - gt_seg_map (np.uint8)
 
     Args:
-        reduce_zero_label (bool): Whether reduce all label value by 1.
-            Usually used for datasets where 0 is background label.
-            Defaults to False.
+        reduce_zero_label (bool, optional): Whether reduce all label value
+            by 1. Usually used for datasets where 0 is background label.
+            Defaults to None.
         imdecode_backend (str): The image decoding backend type. The backend
             argument for :func:``mmcv.imfrombytes``.
             See :fun:``mmcv.imfrombytes`` for details.
@@ -54,7 +56,7 @@ class LoadAnnotations(MMCV_LoadAnnotations):
 
     def __init__(
         self,
-        reduce_zero_label=False,
+        reduce_zero_label=None,
         file_client_args=dict(backend='disk'),
         imdecode_backend='pillow',
     ) -> None:
@@ -66,6 +68,11 @@ class LoadAnnotations(MMCV_LoadAnnotations):
             imdecode_backend=imdecode_backend,
             file_client_args=file_client_args)
         self.reduce_zero_label = reduce_zero_label
+        if self.reduce_zero_label is not None:
+            warnings.warn('`reduce_zero_label` will be deprecated, '
+                          'if you would like to ignore the zero label, please '
+                          'set `reduce_zero_label=True` when dataset '
+                          'initialized')
         self.file_client_args = file_client_args.copy()
         self.imdecode_backend = imdecode_backend
 
@@ -93,6 +100,12 @@ class LoadAnnotations(MMCV_LoadAnnotations):
             for old_id, new_id in results['label_map'].items():
                 gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
         # reduce zero_label
+        if self.reduce_zero_label is None:
+            self.reduce_zero_label = results['reduce_zero_label']
+        assert self.reduce_zero_label == results['reduce_zero_label'], \
+            'Initialize dataset with `reduce_zero_label` as ' \
+            f'{results["reduce_zero_label"]} but when load annotation ' \
+            f'the `reduce_zero_label` is {self.reduce_zero_label}'
         if self.reduce_zero_label:
             # avoid using underflow conversion
             gt_semantic_seg[gt_semantic_seg == 0] = 255
