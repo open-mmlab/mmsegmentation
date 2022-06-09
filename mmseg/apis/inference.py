@@ -139,4 +139,3 @@ def show_result_pyplot(model,
     plt.show(block=block)
     if out_file is not None:
         mmcv.imwrite(img, out_file)
-    plt.cla()
