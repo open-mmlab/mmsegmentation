@@ -3,8 +3,10 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
 ]
 
-img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+crop_size = (512, 1024)
+preprocess_cfg = dict(size=crop_size)
+model = dict(preprocess_cfg=preprocess_cfg)
+
 test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='Resize', scale=(1920, 1080), keep_ratio=True),

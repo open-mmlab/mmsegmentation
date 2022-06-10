@@ -3,7 +3,10 @@ _base_ = [
     '../_base_/datasets/cityscapes_768x768.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_80k.py'
 ]
+crop_size = (768, 768)
+preprocess_cfg = dict(size=crop_size)
 model = dict(
+    preprocess_cfg=preprocess_cfg,
     pretrained=None,
     backbone=dict(
         drop_rate=0.,

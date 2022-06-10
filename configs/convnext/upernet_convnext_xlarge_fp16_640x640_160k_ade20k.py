@@ -4,8 +4,10 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (640, 640)
+preprocess_cfg = dict(size=crop_size)
 checkpoint_file = 'https://download.openmmlab.com/mmclassification/v0/convnext/downstream/convnext-xlarge_3rdparty_in21k_20220301-08aa5ddc.pth'  # noqa
 model = dict(
+    preprocess_cfg=preprocess_cfg,
     backbone=dict(
         type='mmcls.ConvNeXt',
         arch='xlarge',

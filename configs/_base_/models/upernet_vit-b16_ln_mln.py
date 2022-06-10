@@ -1,7 +1,14 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
+preprocess_cfg = dict(
+    mean=[123.675, 116.28, 103.53],
+    std=[58.395, 57.12, 57.375],
+    to_rgb=True,
+    pad_val=0,
+    seg_pad_val=255)
 model = dict(
     type='EncoderDecoder',
+    preprocess_cfg=preprocess_cfg,
     pretrained='pretrain/jx_vit_base_p16_224-80ecf9dd.pth',
     backbone=dict(
         type='VisionTransformer',

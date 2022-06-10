@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import copy
 import warnings
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
@@ -8,14 +9,53 @@ import numpy as np
 import torch
 import torch.distributed as dist
 from mmcv.runner import BaseModule, auto_fp16
+from mmengine.data import PixelData
+
+from mmseg.core import SegDataSample
+from mmseg.core.utils import stack_batch
 
 
 class BaseSegmentor(BaseModule, metaclass=ABCMeta):
-    """Base class for segmentors."""
+    """Base class for segmentors.
 
-    def __init__(self, init_cfg=None):
+    Args:
+        preprocess_cfg (dict, optional): Model preprocessing config
+            for processing the input data. it usually includes
+            ``to_rgb``, ``pad_size_divisor``, ``pad_value``,
+            ``mean`` and ``std``. Default to None.
+       init_cfg (dict, optional): the config to control the
+           initialization. Default to None.
+    """
+
+    def __init__(self, preprocess_cfg=None, init_cfg=None):
         super(BaseSegmentor, self).__init__(init_cfg)
         self.fp16_enabled = False
+        self.preprocess_cfg = preprocess_cfg
+
+        self.pad_value = 0
+
+        if self.preprocess_cfg is not None:
+            assert isinstance(self.preprocess_cfg, dict)
+            self.preprocess_cfg = copy.deepcopy(self.preprocess_cfg)
+
+            self.to_rgb = preprocess_cfg.get('to_rgb', False)
+            self.pad_value = preprocess_cfg.get('pad_value', 0)
+            self.size = preprocess_cfg.get('size')
+            self.seg_pad_val = preprocess_cfg.get('seg_pad_val', 255)
+
+            self.register_buffer(
+                'pixel_mean',
+                torch.tensor(preprocess_cfg['mean']).view(-1, 1, 1), False)
+            self.register_buffer(
+                'pixel_std',
+                torch.tensor(preprocess_cfg['std']).view(-1, 1, 1), False)
+        else:
+            # Only used to provide device information
+            self.register_buffer('pixel_mean', torch.tensor(1), False)
+
+    @property
+    def device(self):
+        return self.pixel_mean.device
 
     @property
     def with_neck(self):
@@ -34,82 +74,157 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         return hasattr(self, 'decode_head') and self.decode_head is not None
 
     @abstractmethod
-    def extract_feat(self, imgs):
+    def extract_feat(self, batch_inputs):
         """Placeholder for extract features from images."""
         pass
 
     @abstractmethod
-    def encode_decode(self, img, img_metas):
+    def encode_decode(self, batch_inputs, batch_data_samples):
         """Placeholder for encode images with backbone and decode into a
         semantic segmentation map of the same size as input."""
         pass
 
-    @abstractmethod
-    def forward_train(self, imgs, img_metas, **kwargs):
+    @auto_fp16(apply_to=('batch_inputs', ))
+    def forward_train(self, batch_inputs, batch_data_samples, **kwargs):
         """Placeholder for Forward function for training."""
         pass
 
     @abstractmethod
-    def simple_test(self, img, img_meta, **kwargs):
+    def simple_test(self, batch_inputs, batch_img_metas, **kwargs):
         """Placeholder for single image test."""
         pass
 
     @abstractmethod
-    def aug_test(self, imgs, img_metas, **kwargs):
+    def aug_test(self, batch_inputs, batch_img_metas, **kwargs):
         """Placeholder for augmentation test."""
         pass
 
-    def forward_test(self, imgs, img_metas, **kwargs):
+    @auto_fp16(apply_to=('batch_inputs', ))
+    def forward_test(self, batch_inputs, batch_data_samples, **kwargs):
         """
         Args:
-            imgs (List[Tensor]): the outer list indicates test-time
+            batch_inputs (List[Tensor]): the outer list indicates test-time
                 augmentations and inner Tensor should have a shape NxCxHxW,
                 which contains all images in the batch.
-            img_metas (List[List[dict]]): the outer list indicates test-time
-                augs (multiscale, flip, etc.) and the inner list indicates
-                images in a batch.
+            batch_data_samples (List[:obj:`SegDataSample`]): The Data
+                Samples. It usually includes information such as
+                `batch_img_metas`.
         """
-        for var, name in [(imgs, 'imgs'), (img_metas, 'img_metas')]:
-            if not isinstance(var, list):
-                raise TypeError(f'{name} must be a list, but got '
-                                f'{type(var)}')
+        batch_size = len(batch_data_samples)
+        batch_img_metas = []
+        for batch_index in range(batch_size):
+            metainfo = batch_data_samples[batch_index].metainfo
+            metainfo['batch_input_shape'] = \
+                tuple(batch_inputs[batch_index].size()[-2:])
+            batch_img_metas.append(metainfo)
 
-        num_augs = len(imgs)
-        if num_augs != len(img_metas):
-            raise ValueError(f'num of augmentations ({len(imgs)}) != '
-                             f'num of image meta ({len(img_metas)})')
-        # all images in the same aug batch all of the same ori_shape and pad
-        # shape
-        for img_meta in img_metas:
-            ori_shapes = [_['ori_shape'] for _ in img_meta]
-            assert all(shape == ori_shapes[0] for shape in ori_shapes)
-            img_shapes = [_['img_shape'] for _ in img_meta]
-            assert all(shape == img_shapes[0] for shape in img_shapes)
-            pad_shapes = [_['pad_shape'] for _ in img_meta]
-            assert all(shape == pad_shapes[0] for shape in pad_shapes)
-
+        # TODO: support aug_test
+        num_augs = 1
         if num_augs == 1:
-            return self.simple_test(imgs[0], img_metas[0], **kwargs)
+            return self.simple_test(
+                torch.unsqueeze(batch_inputs[0], 0), batch_img_metas, **kwargs)
         else:
-            return self.aug_test(imgs, img_metas, **kwargs)
+            # TODO: refactor and support aug test later
+            return self.aug_test(batch_inputs, batch_img_metas, **kwargs)
 
-    @auto_fp16(apply_to=('img', ))
-    def forward(self, img, img_metas, return_loss=True, **kwargs):
+    def forward(self, data, return_loss=False, **kwargs):
         """Calls either :func:`forward_train` or :func:`forward_test` depending
         on whether ``return_loss`` is ``True``.
 
-        Note this setting will change the expected inputs. When
-        ``return_loss=True``, img and img_meta are single-nested (i.e. Tensor
-        and List[dict]), and when ``resturn_loss=False``, img and img_meta
-        should be double nested (i.e.  List[Tensor], List[List[dict]]), with
-        the outer list indicating test time augmentations.
-        """
-        if return_loss:
-            return self.forward_train(img, img_metas, **kwargs)
-        else:
-            return self.forward_test(img, img_metas, **kwargs)
+        Args:
+            data (list[dict]): The output of dataloader.
+            return_loss (bool): Whether to return loss. In general,
+                it will be set to True during training and False
+                during testing. Default to False.
 
-    def train_step(self, data_batch, optimizer, **kwargs):
+        Returns:
+            during training
+                dict: It should contain at least 3 keys: ``loss``,
+                ``log_vars``, ``num_samples``.
+                    - ``loss`` is a tensor for back propagation, which can be a
+                      weighted sum of multiple losses.
+                    - ``log_vars`` contains all the variables to be sent to the
+                        logger.
+                    - ``num_samples`` indicates the batch size (when the model
+                        is DDP, it means the batch size on each GPU), which is
+                        used for averaging the logs.
+
+            during testing
+                list[np.ndarray]: The predicted value obtained.
+        """
+        batch_inputs, batch_data_samples = self.preprocss_data(
+            data, return_loss)
+        if return_loss:
+            losses = self.forward_train(batch_inputs, batch_data_samples,
+                                        **kwargs)
+            loss, log_vars = self._parse_losses(losses)
+
+            outputs = dict(
+                loss=loss,
+                log_vars=log_vars,
+                num_samples=len(batch_data_samples))
+            return outputs
+        else:
+            return self.forward_test(batch_inputs, batch_data_samples,
+                                     **kwargs)
+
+    def preprocss_data(self, data, return_loss):
+        """ Process input data during training and simple testing phases.
+        Args:
+            data (list[dict]): The data to be processed, which
+                comes from dataloader.
+            return_loss (bool): Train or test.
+
+        Returns:
+            tuple:  It should contain 2 item.
+                 - batch_inputs (Tensor): The batch input tensor.
+                 - batch_data_samples (list[:obj:`SegDataSample`]): The Data
+                     Samples. It usually includes information such as
+                     `gt_sem_seg`.
+        """
+        inputs = [data_['inputs'] for data_ in data]
+        data_samples = [data_['data_sample'] for data_ in data]
+
+        batch_data_samples = [
+            data_sample.to(self.device) for data_sample in data_samples
+        ]
+        inputs = [_input.to(self.device) for _input in inputs]
+
+        if self.preprocess_cfg is None:
+            batch_inputs, batch_data_samples = stack_batch(
+                inputs, batch_data_samples)
+            return batch_inputs.float(), batch_data_samples
+
+        if self.to_rgb and inputs[0].size(0) == 3:
+            inputs = [_input[[2, 1, 0], ...] for _input in inputs]
+        batch_inputs = [(_input - self.pixel_mean) / self.pixel_std
+                        for _input in inputs]
+        if return_loss:
+            batch_inputs, batch_data_samples = stack_batch(
+                batch_inputs, batch_data_samples, self.size, self.pad_value,
+                self.seg_pad_val)
+        return batch_inputs, batch_data_samples
+
+    def postprocess_result(self, results_dict: dict) -> list:
+        """ Convert results list to `SegDataSample`.
+        Args:
+            results_dict (dict): Segmentation results of
+                each image. It usually contain 'seg_logits' and 'pred_sem_seg'
+
+        Returns:
+            dict: Segmentation results of the input images.
+                It usually contain 'seg_logits' and 'pred_sem_seg'.
+        """
+        batch_datasampes = [
+            SegDataSample()
+            for _ in range(results_dict['pred_sem_seg'].shape[0])
+        ]
+        for key, value in results_dict.items():
+            for i in range(value.shape[0]):
+                batch_datasampes[i].set_data({key: PixelData(data=value[i])})
+        return batch_datasampes
+
+    def train_step(self, data_batch, optim_wrapper, **kwargs):
         """The iteration step during training.
 
         This method defines an iteration step during training, except for the
@@ -135,7 +250,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
                 DDP, it means the batch size on each GPU), which is used for
                 averaging the logs.
         """
-        losses = self(**data_batch)
+        losses = self(data_batch, True)
         loss, log_vars = self._parse_losses(losses)
 
         outputs = dict(
@@ -145,7 +260,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
 
         return outputs
 
-    def val_step(self, data_batch, optimizer=None, **kwargs):
+    def val_step(self, data_batch, optim_wrapper=None, **kwargs):
         """The iteration step during validation.
 
         This method shares the same signature as :func:`train_step`, but used
@@ -166,6 +281,12 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
             num_samples=len(data_batch['img_metas']))
 
         return outputs
+
+    def test_step(self, data_batch):
+        """The iteration step during test."""
+        predictions = self(data_batch)
+
+        return predictions
 
     @staticmethod
     def _parse_losses(losses):

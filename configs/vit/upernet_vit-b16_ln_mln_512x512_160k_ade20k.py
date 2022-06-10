@@ -3,8 +3,10 @@ _base_ = [
     '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_160k.py'
 ]
-
+crop_size = (512, 512)
+preprocess_cfg = dict(size=crop_size)
 model = dict(
+    preprocess_cfg=preprocess_cfg,
     pretrained='pretrain/vit_base_patch16_224.pth',
     backbone=dict(drop_path_rate=0.1, final_norm=True),
     decode_head=dict(num_classes=150),

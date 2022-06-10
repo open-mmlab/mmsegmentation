@@ -2,8 +2,10 @@ _base_ = [
     '../_base_/models/upernet_beit.py', '../_base_/datasets/ade20k_640x640.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_320k.py'
 ]
-
+crop_size = (640, 640)
+preprocess_cfg = dict(size=crop_size)
 model = dict(
+    preprocess_cfg=preprocess_cfg,
     pretrained='pretrain/beit_large_patch16_224_pt22k_ft22k.pth',
     backbone=dict(
         type='BEiT',

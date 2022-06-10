@@ -1,7 +1,14 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
+preprocess_cfg = dict(
+    mean=[123.675, 116.28, 103.53],
+    std=[58.395, 57.12, 57.375],
+    to_rgb=True,
+    pad_val=0,
+    seg_pad_val=255)
 model = dict(
     type='CascadeEncoderDecoder',
+    preprocess_cfg=preprocess_cfg,
     num_stages=2,
     pretrained='open-mmlab://resnet50_v1c',
     backbone=dict(

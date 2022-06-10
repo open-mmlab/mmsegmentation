@@ -1,9 +1,8 @@
 _base_ = ['./segformer_mit-b0_512x512_160k_ade20k.py']
 
 # dataset settings
-img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 crop_size = (640, 640)
+preprocess_cfg = dict(size=crop_size)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', reduce_zero_label=True),
@@ -11,7 +10,6 @@ train_pipeline = [
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
-    dict(type='Pad', size=crop_size),
     dict(type='PackSegInputs')
 ]
 test_pipeline = [
@@ -25,6 +23,7 @@ test_dataloader = val_dataloader
 
 # model settings
 model = dict(
+    preprocess_cfg=preprocess_cfg,
     pretrained='pretrain/mit_b5.pth',
     backbone=dict(
         embed_dims=64, num_heads=[1, 2, 5, 8], num_layers=[3, 6, 40, 3]),

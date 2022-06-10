@@ -3,7 +3,10 @@ _base_ = [
     '../_base_/datasets/coco-stuff164k.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_160k.py'
 ]
+crop_size = (512, 512)
+preprocess_cfg = dict(size=crop_size)
 model = dict(
+    preprocess_cfg=preprocess_cfg,
     backbone=dict(
         context_channels=(512, 1024, 2048),
         spatial_channels=(256, 256, 256, 512),

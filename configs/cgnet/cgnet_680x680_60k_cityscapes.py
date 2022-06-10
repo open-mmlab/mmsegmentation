@@ -24,16 +24,15 @@ val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 default_hooks = dict(checkpoint=dict(by_epoch=False, interval=4000))
 
-img_norm_cfg = dict(
-    mean=[72.39239876, 82.90891754, 73.15835921], std=[1, 1, 1], to_rgb=True)
 crop_size = (680, 680)
+preprocess_cfg = dict(size=crop_size)
+model = dict(preprocess_cfg=preprocess_cfg)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
     dict(type='RandomResize', scale=(2048, 1024), ratio_range=(0.5, 2.0)),
     dict(type='RandomCrop', crop_size=crop_size),
     dict(type='RandomFlip', prob=0.5),
-    dict(type='Pad', size=crop_size),
     dict(type='PackSegInputs')
 ]
 test_pipeline = [

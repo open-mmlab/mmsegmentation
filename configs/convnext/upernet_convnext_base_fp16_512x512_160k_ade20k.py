@@ -3,7 +3,9 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
+preprocess_cfg = dict(size=crop_size)
 model = dict(
+    preprocess_cfg=preprocess_cfg,
     decode_head=dict(in_channels=[128, 256, 512, 1024], num_classes=150),
     auxiliary_head=dict(in_channels=512, num_classes=150),
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(341, 341)),
