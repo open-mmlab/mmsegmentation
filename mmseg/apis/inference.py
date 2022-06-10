@@ -106,7 +106,8 @@ def show_result_pyplot(model,
                        fig_size=(15, 10),
                        opacity=0.5,
                        title='',
-                       block=True):
+                       block=True,
+                       out_file=None):
     """Visualize the segmentation results on the image.
 
     Args:
@@ -124,6 +125,8 @@ def show_result_pyplot(model,
             Default is ''.
         block (bool): Whether to block the pyplot figure.
             Default is True.
+        out_file (str or None): The path to write the image.
+            Default: None.
     """
     if hasattr(model, 'module'):
         model = model.module
@@ -134,3 +137,5 @@ def show_result_pyplot(model,
     plt.title(title)
     plt.tight_layout()
     plt.show(block=block)
+    if out_file is not None:
+        mmcv.imwrite(img, out_file)
