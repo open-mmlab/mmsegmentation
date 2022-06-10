@@ -47,3 +47,10 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 ## What does the auxiliary head mean
 
 It is a deep supervision trick to improve the accuracy, you may read this [paper](https://arxiv.org/pdf/1612.01105.pdf) for more information. Briefly, `decode_head` is for decoding semantic segmentation output, `auxiliary_head` is just adding an auxiliary loss.
+
+## Why is the log file not created
+
+In the training script, we call `get_root_logger`at Line 167, and `get_root_logger` in mmseg calls `get_logger` in mmcv, mmcv will return the same logger which has beed initialized in mmsegmentation/tools/train.py with the parameter log_file. There is only one logger (initialized with log_file)during training.
+Ref: [https://github.com/open-mmlab/mmcv/blob/21bada32560c7ed7b15b017dc763d862789e29a8/mmcv/utils/logging.py#L9-L16](https://github.com/open-mmlab/mmcv/blob/21bada32560c7ed7b15b017dc763d862789e29a8/mmcv/utils/logging.py#L9-L16)
+
+If you find the log file not been created, you might check if `mmcv.utils.get_logger` is called elsewhere.
