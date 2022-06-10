@@ -46,4 +46,4 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 
 ## What does the auxiliary head mean
 
-It is a deep supervision trick to improve the accuracy. You may read this [paper](https://arxiv.org/pdf/1612.01105.pdf) for more information.
+It is a deep supervision trick to improve the accuracy, you may read this [paper](https://arxiv.org/pdf/1612.01105.pdf) for more information. Briefly, `decode_head` is for decoding semantic segmentation output, `auxiliary_head` is just adding an auxiliary loss.
