@@ -2,7 +2,10 @@ _base_ = 'knet_s3_upernet_swin-t_8x2_512x512_adamw_80k_ade20k.py'
 
 checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_large_patch4_window7_224_22k_20220308-d5bdebaf.pth'  # noqa
 # model settings
+crop_size = (640, 640)
+preprocess_cfg = dict(size=crop_size)
 model = dict(
+    preprocess_cfg=preprocess_cfg,
     pretrained=checkpoint_file,
     backbone=dict(
         embed_dims=192,
@@ -16,8 +19,6 @@ model = dict(
         kernel_generate_head=dict(in_channels=[192, 384, 768, 1536])),
     auxiliary_head=dict(in_channels=768))
 
-img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 crop_size = (640, 640)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -26,7 +27,6 @@ train_pipeline = [
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
-    dict(type='Pad', size=crop_size),
     dict(type='PackSegInputs')
 ]
 test_pipeline = [

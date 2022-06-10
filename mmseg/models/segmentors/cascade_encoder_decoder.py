@@ -24,6 +24,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
                  auxiliary_head=None,
                  train_cfg=None,
                  test_cfg=None,
+                 preprocess_cfg=None,
                  pretrained=None,
                  init_cfg=None):
         self.num_stages = num_stages
@@ -34,6 +35,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
             auxiliary_head=auxiliary_head,
             train_cfg=train_cfg,
             test_cfg=test_cfg,
+            preprocess_cfg=preprocess_cfg,
             pretrained=pretrained,
             init_cfg=init_cfg)
 
@@ -47,41 +49,50 @@ class CascadeEncoderDecoder(EncoderDecoder):
         self.align_corners = self.decode_head[-1].align_corners
         self.num_classes = self.decode_head[-1].num_classes
 
-    def encode_decode(self, img, img_metas):
+    def encode_decode(self, batch_inputs, batch_img_metas):
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
-        x = self.extract_feat(img)
-        out = self.decode_head[0].forward_test(x, img_metas, self.test_cfg)
+        x = self.extract_feat(batch_inputs)
+        out = self.decode_head[0].forward_test(x, batch_img_metas,
+                                               self.test_cfg)
         for i in range(1, self.num_stages):
-            out = self.decode_head[i].forward_test(x, out, img_metas,
+            out = self.decode_head[i].forward_test(x, out, batch_img_metas,
                                                    self.test_cfg)
         out = resize(
             input=out,
-            size=img.shape[2:],
+            size=batch_inputs.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
         return out
 
-    def _decode_head_forward_train(self, x, img_metas, gt_semantic_seg):
+    def _decode_head_forward_train(self, batch_inputs, batch_data_samples):
         """Run forward function and calculate loss for decode head in
         training."""
         losses = dict()
 
         loss_decode = self.decode_head[0].forward_train(
-            x, img_metas, gt_semantic_seg, self.train_cfg)
+            batch_inputs, batch_data_samples, self.train_cfg)
 
         losses.update(add_prefix(loss_decode, 'decode_0'))
+        # get batch_img_metas
+        batch_size = len(batch_data_samples)
+        batch_img_metas = []
+        for batch_index in range(batch_size):
+            metainfo = batch_data_samples[batch_index].metainfo
+            metainfo['batch_input_shape'] = \
+                tuple(batch_inputs[batch_index].size()[-2:])
+            batch_img_metas.append(metainfo)
 
         for i in range(1, self.num_stages):
             # forward test again, maybe unnecessary for most methods.
             if i == 1:
                 prev_outputs = self.decode_head[0].forward_test(
-                    x, img_metas, self.test_cfg)
+                    batch_inputs, batch_img_metas, self.test_cfg)
             else:
                 prev_outputs = self.decode_head[i - 1].forward_test(
-                    x, prev_outputs, img_metas, self.test_cfg)
+                    batch_inputs, prev_outputs, batch_img_metas, self.test_cfg)
             loss_decode = self.decode_head[i].forward_train(
-                x, prev_outputs, img_metas, gt_semantic_seg, self.train_cfg)
+                batch_inputs, prev_outputs, batch_data_samples, self.train_cfg)
             losses.update(add_prefix(loss_decode, f'decode_{i}'))
 
         return losses

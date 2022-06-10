@@ -4,8 +4,11 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
+crop_size = (1024, 1024)
+preprocess_cfg = dict(size=crop_size)
 model = dict(
     type='EncoderDecoder',
+    preprocess_cfg=preprocess_cfg,
     backbone=dict(
         type='BiSeNetV1',
         context_channels=(512, 1024, 2048),

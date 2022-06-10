@@ -1,7 +1,14 @@
 # model settings
 norm_cfg = dict(type='SyncBN', eps=1e-03, requires_grad=True)
+preprocess_cfg = dict(
+    mean=[72.39239876, 82.90891754, 73.15835921],
+    std=[1, 1, 1],
+    to_rgb=True,
+    pad_val=0,
+    seg_pad_val=255)
 model = dict(
     type='EncoderDecoder',
+    preprocess_cfg=preprocess_cfg,
     backbone=dict(
         type='CGNet',
         norm_cfg=norm_cfg,

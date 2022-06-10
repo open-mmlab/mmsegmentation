@@ -2,7 +2,9 @@ _base_ = [
     '../_base_/models/dpt_vit-b16.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
-
+crop_size = (512, 512)
+preprocess_cfg = dict(size=crop_size)
+model = dict(preprocess_cfg=preprocess_cfg)
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
 optimizer = dict(
