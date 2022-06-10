@@ -24,7 +24,7 @@ train_dataloader = dict(
     batch_size=4,
     num_workers=4,
     persistent_workers=True,
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type='InfiniteSampler', shuffle=True),
     type='RepeatDataset',
     times=40000,
     dataset=dict(
