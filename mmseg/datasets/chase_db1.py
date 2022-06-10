@@ -13,7 +13,7 @@ class ChaseDB1Dataset(CustomDataset):
     The ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is fixed to
     '_1stHO.png'.
     """
-    METAFILE = dict(
+    METAINFO = dict(
         classes=('background', 'vessel'),
         palette=[[120, 120, 120], [6, 230, 230]])
 
