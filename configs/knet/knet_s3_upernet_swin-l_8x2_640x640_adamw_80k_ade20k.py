@@ -39,5 +39,5 @@ val_dataloader = dict(dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 # In K-Net implementation we use batch size 2 per GPU as default
 train_dataloader = dict(batch_size=2, num_workers=2)
-val_dataloader = dict(batch_size=2, num_workers=2)
+val_dataloader = dict(batch_size=1, num_workers=4)
 test_dataloader = val_dataloader

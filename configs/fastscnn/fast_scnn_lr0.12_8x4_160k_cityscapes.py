@@ -7,7 +7,7 @@ preprocess_cfg = dict(size=crop_size)
 model = dict(preprocess_cfg=preprocess_cfg)
 # Re-config the data sampler.
 train_dataloader = dict(batch_size=4, num_workers=4)
-val_dataloader = dict(batch_size=4, num_workers=4)
+val_dataloader = dict(batch_size=1, num_workers=4)
 test_dataloader = val_dataloader
 
 # Re-config the optimizer.

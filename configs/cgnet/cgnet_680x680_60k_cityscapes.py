@@ -43,5 +43,5 @@ test_pipeline = [
 train_dataloader = dict(
     batch_size=8, num_workers=4, dataset=dict(pipeline=train_pipeline))
 val_dataloader = dict(
-    batch_size=8, num_workers=4, dataset=dict(pipeline=test_pipeline))
+    batch_size=1, num_workers=4, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader

@@ -29,7 +29,7 @@ train_dataloader = dict(
         ann_file='ImageSets/Segmentation/train.txt',
         pipeline=train_pipeline))
 val_dataloader = dict(
-    batch_size=4,
+    batch_size=1,
     num_workers=4,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=False),
