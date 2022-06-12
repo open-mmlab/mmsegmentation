@@ -9,5 +9,5 @@ test_pipeline = [
     dict(type='Resize', scale=(2048, 512), keep_ratio=True),
     dict(type='PackSegInputs')
 ]
-val_dataloader = dict(batch_size=2, dataset=dict(pipeline=test_pipeline))
+val_dataloader = dict(batch_size=1, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader

@@ -29,5 +29,5 @@ preprocess_cfg = dict(size=crop_size)
 model = dict(preprocess_cfg=preprocess_cfg)
 
 train_dataloader = dict(batch_size=8)
-val_dataloader = dict(batch_size=8)
+val_dataloader = dict(batch_size=1)
 test_dataloader = val_dataloader
