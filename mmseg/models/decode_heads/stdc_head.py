@@ -73,7 +73,7 @@ class STDCHead(FCNHead):
 
         boundary_targets_pyramids = boundary_targets_pyramids.squeeze(2)
         boundary_targets_pyramid = F.conv2d(boundary_targets_pyramids,
-                                           self.fusion_kernel)
+                                            self.fusion_kernel)
 
         boundary_targets_pyramid[
             boundary_targets_pyramid > self.boundary_threshold] = 1
