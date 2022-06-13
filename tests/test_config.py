@@ -92,6 +92,8 @@ def test_config_data_pipeline():
         to_float32 = load_img_pipeline.get('to_float32', False)
         config_mod.train_pipeline.pop(0)
         config_mod.test_pipeline.pop(0)
+        # remove loading annotation in test pipeline
+        config_mod.test_pipeline.pop(1)
 
         train_pipeline = Compose(config_mod.train_pipeline)
         test_pipeline = Compose(config_mod.test_pipeline)

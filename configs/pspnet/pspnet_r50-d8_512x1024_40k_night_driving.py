@@ -10,6 +10,9 @@ model = dict(preprocess_cfg=preprocess_cfg)
 test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='Resize', scale=(1920, 1080), keep_ratio=True),
+    # add loading annotation after ``Resize`` because ground truth
+    # does not need to do resize data transform
+    dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
 ]
 test_dataloader = dict(
