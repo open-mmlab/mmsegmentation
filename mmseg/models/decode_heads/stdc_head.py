@@ -69,7 +69,7 @@ class STDCHead(FCNHead):
 
         boundary_targets_pyramids = torch.stack(
             (boundary_targets, boundary_targets_x2_up, boundary_targets_x4_up),
-            dim=1)
+             dim=1)
 
         boundary_targets_pyramids = boundary_targets_pyramids.squeeze(2)
         boundary_targets_pyramid = F.conv2d(boundary_targets_pyramids,
