@@ -65,6 +65,7 @@ class TestIoUMetric(TestCase):
         results_dict['seg_logits'] = seg_logit
         seg_pred = np.random.randint(
             0, num_classes, (batch_size, h, w), dtype=np.uint8)
+        seg_pred = torch.LongTensor(seg_pred)
         results_dict['pred_sem_seg'] = seg_pred
 
         batch_datasampes = [

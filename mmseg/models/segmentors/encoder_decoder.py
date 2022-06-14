@@ -256,8 +256,7 @@ class EncoderDecoder(BaseSegmentor):
         results_dict = dict()
         seg_logit = self.inference(batch_inputs, batch_img_metas, rescale)
         results_dict['seg_logits'] = seg_logit
-        seg_pred = seg_logit.argmax(dim=1)
-        seg_pred = seg_pred.cpu().numpy()
+        seg_pred = seg_logit.argmax(dim=1, keepdim=True)
         results_dict['pred_sem_seg'] = seg_pred
         results_list = self.postprocess_result(results_dict)
         return results_list
