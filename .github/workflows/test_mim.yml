@@ -1,6 +1,15 @@
 name: test-mim
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'model-index.yml'
+      - 'configs/**'
+
+  pull_request:
+    paths:
+      - 'model-index.yml'
+      - 'configs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
