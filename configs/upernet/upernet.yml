@@ -103,6 +103,26 @@ Models:
       mIoU(ms+flip): 80.77
   Config: configs/upernet/upernet_r101_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819-83c95d01.pth
+- Name: upernet_r18_512x1024_80k_cityscapes
+  In Collection: UPerNet
+  Metadata:
+    backbone: R-18
+    crop size: (512,1024)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 235.29
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.02
+  Config: configs/upernet/upernet_r18_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827-aa54cb54.pth
 - Name: upernet_r50_512x1024_80k_cityscapes
   In Collection: UPerNet
   Metadata:
