@@ -63,7 +63,7 @@ class IoUMetric(BaseMetric):
         reduce_zero_label = self.dataset_meta['reduce_zero_label']
         for data, pred in zip(data_batch, predictions):
             label = data['data_sample']['gt_sem_seg']['data'][0].cpu().numpy()
-            pred_label = pred['pred_sem_seg']['data'][0]
+            pred_label = pred['pred_sem_seg']['data'][0].cpu().numpy()
             self.results.append(
                 self.intersect_and_union(pred_label, label, num_classes,
                                          self.ignore_index, label_map,
