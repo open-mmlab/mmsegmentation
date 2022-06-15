@@ -45,4 +45,20 @@
 
 ## auxiliary head 是什么
 
-这是一个提高准确率的深度监督技巧。你可以阅读这篇[论文](https://arxiv.org/pdf/1612.01105.pdf)以了解更多信息。
+简单来说，这是一个提高准确率的深度监督技术。在训练阶段，`decode_head`用于输出语义分割的结果，`auxiliary_head`只是增加了一个辅助损失，其产生的分割结果对你的模型结果没有影响，仅在在训练中起作用。你可以阅读这篇\[论文\]（<https://arxiv.org/pdf/1612.01105.pdf>）了解更多信息。
+
+## 为什么日志文件没有被创建
+
+在训练脚本中，我们在第167行调用 `get_root_logger` 方法，然后 mmseg 的 `get_root_logger` 方法调用 mmcv 的 `get_logger`，mmcv 将返回在 'mmsegmentation/tools/train.py' 中使用参数 `log_file` 初始化的同一个 logger。在训练期间只存在一个用 `log_file` 初始化的 logger。
+
+参考：[https://github.com/open-mmlab/mmcv/blob/21bada32560c7ed7b15b017dc763d862789e29a8/mmcv/utils/logging.py#L9-L16](https://github.com/open-mmlab/mmcv/blob/21bada32560c7ed7b15b017dc763d862789e29a8/mmcv/utils/logging.py#L9-L16)
+
+如果你发现日志文件没有被创建，可以检查 `mmcv.utils.get_logger` 是否在其他地方被调用。
+
+## 运行测试脚本时如何输出绘制分割掩膜的图像
+
+在测试脚本中，我们提供了`show-dir`参数来控制是否输出绘制的图像。用户可以运行以下命令:
+
+```shell
+python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --opacity 1
+```
