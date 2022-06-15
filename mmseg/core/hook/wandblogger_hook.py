@@ -8,7 +8,6 @@ from mmcv.runner.dist_utils import master_only
 from mmcv.runner.hooks.checkpoint import CheckpointHook
 from mmcv.runner.hooks.logger.wandb import WandbLoggerHook
 
-from mmseg.apis.test import multi_gpu_test, single_gpu_test
 from mmseg.core import DistEvalHook, EvalHook
 
 
@@ -111,9 +110,11 @@ class MMSegWandbHook(WandbLoggerHook):
             if isinstance(hook, CheckpointHook):
                 self.ckpt_hook = hook
             if isinstance(hook, EvalHook):
+                from mmseg.apis import single_gpu_test
                 self.eval_hook = hook
                 self.test_fn = single_gpu_test
             if isinstance(hook, DistEvalHook):
+                from mmseg.apis import multi_gpu_test
                 self.eval_hook = hook
                 self.test_fn = multi_gpu_test
 
