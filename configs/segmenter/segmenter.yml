@@ -101,7 +101,7 @@ Models:
       mIoU(ms+flip): 51.07
   Config: configs/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k/segmenter_vit-b_mask_8x1_512x512_160k_ade20k_20220105_151706-bc533b08.pth
-- Name: segmenter_vit-l_mask_8x1_512x512_160k_ade20k
+- Name: ''
   In Collection: Segmenter
   Metadata:
     backbone: ViT-L_16
@@ -121,5 +121,5 @@ Models:
     Metrics:
       mIoU: 52.16
       mIoU(ms+flip): 53.65
-  Config: configs/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k/segmenter_vit-l_mask_8x1_512x512_160k_ade20k_20220105_162750-7ef345be.pth
+  Config: ''
+  Weights: ''
