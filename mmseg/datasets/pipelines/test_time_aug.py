@@ -57,6 +57,14 @@ class MultiScaleFlipAug(object):
                  img_ratios=None,
                  flip=False,
                  flip_direction='horizontal'):
+        if flip:
+            trans_index = {
+                key['type']: index
+                for index, key in enumerate(transforms)
+            }
+            if 'RandomFlip' in trans_index and 'Pad' in trans_index:
+                assert trans_index['RandomFlip'] < trans_index['Pad'], \
+                    'Pad must be executed after RandomFlip when flip is True'
         self.transforms = Compose(transforms)
         if img_ratios is not None:
             img_ratios = img_ratios if isinstance(img_ratios,
