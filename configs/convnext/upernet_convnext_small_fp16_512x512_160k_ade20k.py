@@ -33,14 +33,16 @@ optimizer = dict(
     weight_decay=0.05)
 
 optim_wrapper = dict(
-    type='OptimWrapper',
+    _delete_=True,
+    type='AmpOptimWrapper',
     optimizer=optimizer,
     paramwise_cfg={
         'decay_rate': 0.9,
         'decay_type': 'stage_wise',
         'num_layers': 12
     },
-    constructor='LearningRateDecayOptimizerConstructor')
+    constructor='LearningRateDecayOptimizerConstructor',
+    loss_scale='dynamic')
 
 param_scheduler = [
     dict(
@@ -59,8 +61,3 @@ param_scheduler = [
 train_dataloader = dict(batch_size=2)
 val_dataloader = dict(batch_size=1)
 test_dataloader = val_dataloader
-# fp16 settings
-default_hooks = dict(
-    optimizer=dict(type='Fp16OptimizerHook', loss_scale='dynamic'))
-# fp16 placeholder
-fp16 = dict()

@@ -31,10 +31,12 @@ optimizer = dict(
     weight_decay=0.05)
 
 optim_wrapper = dict(
-    type='OptimWrapper',
+    _delete_=True,
+    type='AmpOptimWrapper',
     optimizer=optimizer,
     constructor='LayerDecayOptimizerConstructor',
-    paramwise_cfg=dict(num_layers=24, layer_decay_rate=0.95))
+    paramwise_cfg=dict(num_layers=24, layer_decay_rate=0.95),
+    accumulative_counts=2)
 
 param_scheduler = [
     dict(
@@ -52,7 +54,3 @@ param_scheduler = [
 train_dataloader = dict(batch_size=1)
 val_dataloader = dict(batch_size=1)
 test_dataloader = val_dataloader
-optimizer_config = dict(
-    type='GradientCumulativeFp16OptimizerHook', cumulative_iters=2)
-
-fp16 = dict()
