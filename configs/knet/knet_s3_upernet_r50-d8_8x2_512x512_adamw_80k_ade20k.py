@@ -81,12 +81,11 @@ model = dict(
     test_cfg=dict(mode='whole'))
 # optimizer
 optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, weight_decay=0.0005)
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
-default_hooks = dict(
-    optimizer=dict(
-        _delete_=True,
-        type='OptimizerHook',
-        grad_clip=dict(max_norm=1, norm_type=2)))
+optim_wrapper = dict(
+    _delete_=True,
+    type='OptimWrapper',
+    optimizer=optimizer,
+    clip_grad=dict(max_norm=1, norm_type=2))
 # learning policy
 param_scheduler = [
     dict(

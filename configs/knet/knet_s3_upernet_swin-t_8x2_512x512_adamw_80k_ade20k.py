@@ -39,6 +39,7 @@ optimizer = dict(
     weight_decay=0.0005)
 
 optim_wrapper = dict(
+    _delete_=True,
     type='OptimWrapper',
     optimizer=optimizer,
     paramwise_cfg=dict(
@@ -46,13 +47,9 @@ optim_wrapper = dict(
             'absolute_pos_embed': dict(decay_mult=0.),
             'relative_position_bias_table': dict(decay_mult=0.),
             'norm': dict(decay_mult=0.)
-        }))
+        }),
+    clip_grad=dict(max_norm=1, norm_type=2))
 
-default_hooks = dict(
-    optimizer=dict(
-        _delete_=True,
-        type='OptimizerHook',
-        grad_clip=dict(max_norm=1, norm_type=2)))
 # learning policy
 param_scheduler = [
     dict(
