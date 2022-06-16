@@ -303,7 +303,7 @@ Models:
       mIoU(ms+flip): 44.85
   Config: configs/upernet/upernet_r101_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951-91b32684.pth
-- Name: ''
+- Name: upernet_r18_512x512_20k_voc12aug
   In Collection: UPerNet
   Metadata:
     backbone: R-18
@@ -323,8 +323,8 @@ Models:
     Metrics:
       mIoU: 72.9
       mIoU(ms+flip): 74.71
-  Config: ''
-  Weights: ''
+  Config: configs/upernet/upernet_r18_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r18_512x512_20k_voc12aug/upernet_r18_512x512_20k_voc12aug_20220614_123910-ed66e455.pth
 - Name: upernet_r50_512x512_20k_voc12aug
   In Collection: UPerNet
   Metadata:
@@ -369,7 +369,7 @@ Models:
       mIoU(ms+flip): 78.29
   Config: configs/upernet/upernet_r101_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629-f14e7f27.pth
-- Name: ''
+- Name: upernet_r18_512x512_40k_voc12aug
   In Collection: UPerNet
   Metadata:
     backbone: R-18
@@ -381,8 +381,8 @@ Models:
     Metrics:
       mIoU: 73.71
       mIoU(ms+flip): 74.61
-  Config: ''
-  Weights: ''
+  Config: configs/upernet/upernet_r18_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r18_512x512_40k_voc12aug/upernet_r18_512x512_40k_voc12aug_20220614_153605-fafeb868.pth
 - Name: upernet_r50_512x512_40k_voc12aug
   In Collection: UPerNet
   Metadata:
