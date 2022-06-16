@@ -126,15 +126,15 @@ python tools/deploy_test.py \
 
 #### 结果和模型
 
-|     模型     |                      配置文件                       |    数据集     | 评价指标 | PyTorch | ONNXRuntime | TensorRT-fp32 | TensorRT-fp16 |
-| :--------: | :---------------------------------------------: | :--------: | :--: | :-----: | :---------: | :-----------: | :-----------: |
-|    FCN     |      fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes | mIoU |  72.2   |    72.2     |     72.2      |     72.2      |
-|   PSPNet   |    pspnet_r50-d8_512x1024_40k_cityscapes.py     | cityscapes | mIoU |  77.8   |    77.8     |     77.8      |     77.8      |
-| deeplabv3  |   deeplabv3_r50-d8_512x1024_40k_cityscapes.py   | cityscapes | mIoU |  79.0   |    79.0     |     79.0      |     79.0      |
-| deeplabv3+ | deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py | cityscapes | mIoU |  79.6   |    79.5     |     79.5      |     79.5      |
-|   PSPNet   |     pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes | mIoU |  78.2   |    78.1     |               |               |
-| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py    | cityscapes | mIoU |  78.5   |    78.3     |               |               |
-| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py  | cityscapes | mIoU |  78.9   |    78.7     |               |               |
+|    模型    |                    配置文件                     |   数据集   | 评价指标 | PyTorch | ONNXRuntime | TensorRT-fp32 | TensorRT-fp16 |
+| :--------: | :---------------------------------------------: | :--------: | :------: | :-----: | :---------: | :-----------: | :-----------: |
+|    FCN     |      fcn_r50-d8_512x1024_40k_cityscapes.py      | cityscapes |   mIoU   |  72.2   |    72.2     |     72.2      |     72.2      |
+|   PSPNet   |    pspnet_r50-d8_512x1024_40k_cityscapes.py     | cityscapes |   mIoU   |  77.8   |    77.8     |     77.8      |     77.8      |
+| deeplabv3  |   deeplabv3_r50-d8_512x1024_40k_cityscapes.py   | cityscapes |   mIoU   |  79.0   |    79.0     |     79.0      |     79.0      |
+| deeplabv3+ | deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py | cityscapes |   mIoU   |  79.6   |    79.5     |     79.5      |     79.5      |
+|   PSPNet   |     pspnet_r50-d8_769x769_40k_cityscapes.py     | cityscapes |   mIoU   |  78.2   |    78.1     |               |               |
+| deeplabv3  |   deeplabv3_r50-d8_769x769_40k_cityscapes.py    | cityscapes |   mIoU   |  78.5   |    78.3     |               |               |
+| deeplabv3+ | deeplabv3plus_r50-d8_769x769_40k_cityscapes.py  | cityscapes |   mIoU   |  78.9   |    78.7     |               |               |
 
 **注意**: TensorRT 仅在使用 `whole mode` 测试模式时的配置文件里可用。
 
