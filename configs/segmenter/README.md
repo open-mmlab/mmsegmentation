@@ -75,4 +75,4 @@ In our default setting, pretrained models and their corresponding [ViT-AugReg](h
 
 Note:
 
-- This model performance is greatly influenced by the seed, please refer to the log file for the specific settings of the seed. If you change the seed, the results might be different from the results in this table.
+- This model performance is sensitive to the seed values used, please refer to the log file for the specific settings of the seed. If you choose a different seed, the results might differ from the table results.
