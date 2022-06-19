@@ -3,11 +3,11 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
 crop_size = (512, 512)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/twins/alt_gvt_small_20220308-7e1c3695.pth'  # noqa
 
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     backbone=dict(
         type='SVT',
         init_cfg=dict(type='Pretrained', checkpoint=checkpoint),

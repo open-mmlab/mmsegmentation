@@ -4,9 +4,9 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     backbone=dict(
         context_channels=(512, 1024, 2048),
         spatial_channels=(256, 256, 256, 512),

@@ -8,13 +8,18 @@ import numpy as np
 import pytest
 import torch
 import torch.nn as nn
+from mmcv import is_list_of, is_tuple_of
 from mmcv.cnn.utils import revert_sync_batchnorm
 from mmengine.data import PixelData
+from torch import Tensor
 
 from mmseg.core import SegDataSample
+from mmseg.utils import register_all_modules
+
+register_all_modules()
 
 
-def _demo_mm_inputs(batch_size=2, image_shapes=(3, 128, 128), num_classes=10):
+def _demo_mm_inputs(batch_size=2, image_shapes=(3, 32, 32), num_classes=5):
     """Create a superset of inputs needed to run test or train batches.
 
     Args:
@@ -40,9 +45,9 @@ def _demo_mm_inputs(batch_size=2, image_shapes=(3, 128, 128), num_classes=10):
 
         img_meta = {
             'img_id': idx,
-            'img_shape': image_shape,
-            'ori_shape': image_shape,
-            'pad_shape': image_shape,
+            'img_shape': image_shape[1:],
+            'ori_shape': image_shape[1:],
+            'pad_shape': image_shape[1:],
             'filename': '<demo>.png',
             'scale_factor': 1.0,
             'flip': False,
@@ -100,21 +105,21 @@ def _get_segmentor_cfg(fname):
 
 def test_pspnet_forward():
     _test_encoder_decoder_forward(
-        'pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py')
+        'pspnet/pspnet_r18-d8_512x1024_80k_cityscapes.py')
 
 
 def test_fcn_forward():
-    _test_encoder_decoder_forward('fcn/fcn_r50-d8_512x1024_40k_cityscapes.py')
+    _test_encoder_decoder_forward('fcn/fcn_r18-d8_512x1024_80k_cityscapes.py')
 
 
 def test_deeplabv3_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes.py')
+        'deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes.py')
 
 
 def test_deeplabv3plus_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py')
+        'deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py')
 
 
 def test_gcnet_forward():
@@ -221,14 +226,27 @@ def _test_encoder_decoder_forward(cfg_file):
         segmentor = revert_sync_batchnorm(segmentor)
 
     # Test forward train
-    losses = segmentor.forward(packed_inputs, return_loss=True)
+    batch_inputs, data_samples = segmentor.data_preprocessor(
+        packed_inputs, True)
+    losses = segmentor.forward(batch_inputs, data_samples, mode='loss')
     assert isinstance(losses, dict)
 
-    # Test forward test
     packed_inputs = _demo_mm_inputs(
         batch_size=1, image_shapes=(3, 32, 32), num_classes=num_classes)
+    batch_inputs, data_samples = segmentor.data_preprocessor(
+        packed_inputs, False)
     with torch.no_grad():
         segmentor.eval()
-        # pack into lists
-        batch_results = segmentor.forward(packed_inputs, return_loss=False)
+        # Test forward predict
+        batch_results = segmentor.forward(
+            batch_inputs, data_samples, mode='predict')
         assert len(batch_results) == 1
+        assert is_list_of(batch_results, SegDataSample)
+        assert batch_results[0].pred_sem_seg.shape == (32, 32)
+        assert batch_results[0].seg_logits.data.shape == (num_classes, 32, 32)
+
+        # Test forward tensor
+        batch_results = segmentor.forward(
+            batch_inputs, data_samples, mode='tensor')
+        assert isinstance(batch_results, Tensor) or is_tuple_of(
+            batch_results, Tensor)

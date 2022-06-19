@@ -3,9 +3,9 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
 crop_size = (512, 1024)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     pretrained='open-mmlab://resnet101_v1c',
     backbone=dict(depth=101))
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0005)

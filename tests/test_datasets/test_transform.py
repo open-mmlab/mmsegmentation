@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
+from mmseg.datasets.pipelines import PhotoMetricDistortion, RandomCrop
 from mmseg.registry import TRANSFORMS
 
 
@@ -38,7 +39,8 @@ def test_resize():
         type='RandomResize',
         scale=(1280, 800),
         ratio_range=(1.0, 1.0),
-        resize_cfg=dict(type='Resize', keep_ratio=False))
+        resize_type='Resize',
+        keep_ratio=False)
     resize_module = TRANSFORMS.build(transform)
     resized_results = resize_module(results.copy())
     assert resized_results['img_shape'] == (800, 1280)
@@ -57,10 +59,11 @@ def test_resize():
     transform = dict(
         type='RandomChoiceResize',
         scales=[(1333, 800), (1333, 400)],
-        resize_cfg=dict(type='Resize', keep_ratio=True))
+        resize_type='Resize',
+        keep_ratio=False)
     resize_module = TRANSFORMS.build(transform)
     resized_results = resize_module(results.copy())
-    assert resized_results['img_shape'] in [(750, 1333), (400, 711)]
+    assert resized_results['img_shape'] in [(800, 1333), (400, 1333)]
 
     transform = dict(type='Resize', scale_factor=(0.9, 1.1), keep_ratio=True)
     resize_module = TRANSFORMS.build(transform)
@@ -199,3 +202,50 @@ def test_normalize():
     std = np.array(img_norm_cfg['std'])
     converted_img = (original_img[..., ::-1] - mean) / std
     assert np.allclose(results['img'], converted_img)
+
+
+def test_random_crop():
+    # test assertion for invalid random crop
+    with pytest.raises(AssertionError):
+        RandomCrop(crop_size=(-1, 0))
+
+    results = dict()
+    img = mmcv.imread(osp.join('tests/data/color.jpg'), 'color')
+    seg = np.array(Image.open(osp.join('tests/data/seg.png')))
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    h, w, _ = img.shape
+    pipeline = RandomCrop(crop_size=(h - 20, w - 20))
+
+    results = pipeline(results)
+    assert results['img'].shape[:2] == (h - 20, w - 20)
+    assert results['img_shape'][:2] == (h - 20, w - 20)
+    assert results['gt_semantic_seg'].shape[:2] == (h - 20, w - 20)
+
+
+def test_photo_metric_distortion():
+
+    results = dict()
+    img = mmcv.imread(osp.join('tests/data/color.jpg'), 'color')
+    seg = np.array(Image.open(osp.join('tests/data/seg.png')))
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    pipeline = PhotoMetricDistortion(saturation_range=(1., 1.))
+    results = pipeline(results)
+
+    assert (results['gt_semantic_seg'] == seg).all()
+    assert results['img_shape'] == img.shape

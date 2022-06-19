@@ -2,7 +2,7 @@ _base_ = ['./segformer_mit-b0_512x512_160k_ade20k.py']
 
 # dataset settings
 crop_size = (640, 640)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', reduce_zero_label=True),
@@ -26,7 +26,7 @@ test_dataloader = val_dataloader
 
 # model settings
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     pretrained='pretrain/mit_b5.pth',
     backbone=dict(
         embed_dims=64, num_heads=[1, 2, 5, 8], num_layers=[3, 6, 40, 3]),

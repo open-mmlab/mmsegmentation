@@ -4,9 +4,9 @@ _base_ = [
     '../_base_/schedules/schedule_40k.py'
 ]
 crop_size = (480, 480)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     decode_head=dict(num_classes=60),
     auxiliary_head=dict(num_classes=60),
     test_cfg=dict(mode='slide', crop_size=(480, 480), stride=(320, 320)))

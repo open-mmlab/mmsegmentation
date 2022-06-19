@@ -3,9 +3,9 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_320k.py'
 ]
 crop_size = (640, 640)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     pretrained='pretrain/beit_large_patch16_224_pt22k_ft22k.pth',
     backbone=dict(
         type='BEiT',
