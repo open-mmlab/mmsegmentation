@@ -3,9 +3,9 @@ _base_ = 'knet_s3_upernet_swin-t_8x2_512x512_adamw_80k_ade20k.py'
 checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_large_patch4_window7_224_22k_20220308-d5bdebaf.pth'  # noqa
 # model settings
 crop_size = (640, 640)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     pretrained=checkpoint_file,
     backbone=dict(
         embed_dims=192,

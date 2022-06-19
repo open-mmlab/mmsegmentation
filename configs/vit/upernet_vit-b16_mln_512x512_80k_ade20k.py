@@ -4,9 +4,9 @@ _base_ = [
     '../_base_/schedules/schedule_80k.py'
 ]
 crop_size = (512, 512)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     pretrained='pretrain/vit_base_patch16_224.pth',
     decode_head=dict(num_classes=150),
     auxiliary_head=dict(num_classes=150))

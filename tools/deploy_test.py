@@ -13,10 +13,12 @@ from mmcv.parallel import MMDataParallel
 from mmcv.runner import get_dist_info
 from mmcv.utils import DictAction
 
-from mmseg.apis import single_gpu_test
+# from mmseg.apis import single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models.segmentors.base import BaseSegmentor
 from mmseg.ops import resize
+
+single_gpu_test = None
 
 
 class ONNXRuntimeSegmentor(BaseSegmentor):

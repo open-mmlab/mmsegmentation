@@ -90,7 +90,7 @@ class TestIoUMetric(TestCase):
         data_batch = self._demo_mm_inputs()
         predictions = self._demo_mm_model_output()
 
-        iou_metric = IoUMetric(metrics=['mIoU'])
+        iou_metric = IoUMetric(iou_metrics=['mIoU'])
         iou_metric.dataset_meta = dict(
             classes=['wall', 'building', 'sky', 'floor', 'tree'],
             label_map=dict(),

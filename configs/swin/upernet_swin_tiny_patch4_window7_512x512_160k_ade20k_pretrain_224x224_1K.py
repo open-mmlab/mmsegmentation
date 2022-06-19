@@ -3,10 +3,10 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_tiny_patch4_window7_224_20220317-1cdeb081.pth'  # noqa
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     backbone=dict(
         init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
         embed_dims=96,

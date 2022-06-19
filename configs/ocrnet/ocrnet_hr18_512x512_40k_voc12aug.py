@@ -4,10 +4,10 @@ _base_ = [
     '../_base_/schedules/schedule_40k.py'
 ]
 crop_size = (512, 512)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     decode_head=[
         dict(
             type='FCNHead',

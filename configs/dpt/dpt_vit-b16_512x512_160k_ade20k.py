@@ -3,8 +3,8 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
-preprocess_cfg = dict(size=crop_size)
-model = dict(preprocess_cfg=preprocess_cfg)
+data_preprocessor = dict(size=crop_size)
+model = dict(data_preprocessor=data_preprocessor)
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
 optimizer = dict(

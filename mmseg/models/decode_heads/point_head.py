@@ -10,6 +10,9 @@ try:
 except ModuleNotFoundError:
     point_sample = None
 
+from typing import List
+
+from mmseg.core.utils import SampleList
 from mmseg.ops import resize
 from mmseg.registry import MODELS
 from ..losses import accuracy
@@ -170,19 +173,15 @@ class PointHead(BaseCascadeDecodeHead):
 
         return coarse_feats
 
-    def forward_train(self, inputs, prev_output, img_metas, gt_semantic_seg,
-                      train_cfg):
+    def loss(self, inputs, prev_output, batch_data_samples: SampleList,
+             train_cfg, **kwargs):
         """Forward function for training.
         Args:
             inputs (list[Tensor]): List of multi-level img features.
             prev_output (Tensor): The output of previous decode head.
-            img_metas (list[dict]): List of image info dict where each dict
-                has: 'img_shape', 'scale_factor', 'flip', and may also contain
-                'filename', 'ori_shape', 'pad_shape', and 'img_norm_cfg'.
-                For details on the values of these keys see
-                `mmseg/datasets/pipelines/formatting.py:Collect`.
-            gt_semantic_seg (Tensor): Semantic segmentation masks
-                used if the architecture supports semantic segmentation task.
+            batch_data_samples (list[:obj:`SegDataSample`]): The seg
+                data samples. It usually includes information such
+                as `img_metas` or `gt_semantic_seg`.
             train_cfg (dict): The training config.
 
         Returns:
@@ -197,18 +196,13 @@ class PointHead(BaseCascadeDecodeHead):
         coarse_point_feats = self._get_coarse_point_feats(prev_output, points)
         point_logits = self.forward(fine_grained_point_feats,
                                     coarse_point_feats)
-        point_label = point_sample(
-            gt_semantic_seg.float(),
-            points,
-            mode='nearest',
-            align_corners=self.align_corners)
-        point_label = point_label.squeeze(1).long()
 
-        losses = self.losses(point_logits, point_label)
+        losses = self.loss_by_feat(point_logits, points, batch_data_samples)
 
         return losses
 
-    def forward_test(self, inputs, prev_output, img_metas, test_cfg):
+    def predict(self, inputs, prev_output, batch_img_metas: List[dict],
+                test_cfg, **kwargs):
         """Forward function for testing.
 
         Args:
@@ -251,10 +245,19 @@ class PointHead(BaseCascadeDecodeHead):
             refined_seg_logits = refined_seg_logits.view(
                 batch_size, channels, height, width)
 
-        return refined_seg_logits
+        return self.predict_by_feat(refined_seg_logits, batch_img_metas,
+                                    **kwargs)
 
-    def losses(self, point_logits, point_label):
+    def loss_by_feat(self, point_logits, points, batch_data_samples, **kwargs):
         """Compute segmentation loss."""
+        gt_semantic_seg = self._stack_batch_gt(batch_data_samples)
+        point_label = point_sample(
+            gt_semantic_seg.float(),
+            points,
+            mode='nearest',
+            align_corners=self.align_corners)
+        point_label = point_label.squeeze(1).long()
+
         loss = dict()
         if not isinstance(self.loss_decode, nn.ModuleList):
             losses_decode = [self.loss_decode]

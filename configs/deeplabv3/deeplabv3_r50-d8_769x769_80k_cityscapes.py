@@ -4,9 +4,9 @@ _base_ = [
     '../_base_/schedules/schedule_80k.py'
 ]
 crop_size = (769, 769)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     decode_head=dict(align_corners=True),
     auxiliary_head=dict(align_corners=True),
     test_cfg=dict(mode='slide', crop_size=(769, 769), stride=(513, 513)))

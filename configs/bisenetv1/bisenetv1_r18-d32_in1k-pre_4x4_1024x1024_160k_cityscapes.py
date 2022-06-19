@@ -4,9 +4,9 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (1024, 1024)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     backbone=dict(
         backbone_cfg=dict(
             init_cfg=dict(

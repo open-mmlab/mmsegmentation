@@ -5,10 +5,10 @@ _base_ = [
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 crop_size = (1024, 1024)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 model = dict(
     type='EncoderDecoder',
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     backbone=dict(
         type='BiSeNetV1',
         context_channels=(512, 1024, 2048),

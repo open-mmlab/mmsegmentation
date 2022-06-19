@@ -1,10 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from typing import List, Tuple
+
 import torch
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule, Scale
-from torch import nn
+from torch import Tensor, nn
 
 from mmseg.core import add_prefix
+from mmseg.core.utils import SampleList
 from mmseg.registry import MODELS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import BaseDecodeHead
@@ -158,22 +161,28 @@ class DAHead(BaseDecodeHead):
 
         return pam_cam_out, pam_out, cam_out
 
-    def forward_test(self, inputs, img_metas, test_cfg):
+    def predict(self, inputs, batch_img_metas: List[dict], test_cfg,
+                **kwargs) -> List[Tensor]:
         """Forward function for testing, only ``pam_cam`` is used."""
-        return self.forward(inputs)[0]
+        seg_logits = self.forward(inputs)[0]
+        return self.predict_by_feat(seg_logits, batch_img_metas, **kwargs)
 
-    def losses(self, seg_logit, seg_label):
+    def loss_by_feat(self, seg_logit: Tuple[Tensor],
+                     batch_data_samples: SampleList, **kwargs) -> dict:
         """Compute ``pam_cam``, ``pam``, ``cam`` loss."""
         pam_cam_seg_logit, pam_seg_logit, cam_seg_logit = seg_logit
         loss = dict()
         loss.update(
             add_prefix(
-                super(DAHead, self).losses(pam_cam_seg_logit, seg_label),
+                super(DAHead, self).loss_by_feat(pam_cam_seg_logit,
+                                                 batch_data_samples),
                 'pam_cam'))
         loss.update(
             add_prefix(
-                super(DAHead, self).losses(pam_seg_logit, seg_label), 'pam'))
+                super(DAHead, self).loss_by_feat(pam_seg_logit,
+                                                 batch_data_samples), 'pam'))
         loss.update(
             add_prefix(
-                super(DAHead, self).losses(cam_seg_logit, seg_label), 'cam'))
+                super(DAHead, self).loss_by_feat(cam_seg_logit,
+                                                 batch_data_samples), 'cam'))
         return loss

@@ -1,6 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from abc import ABCMeta, abstractmethod
+from typing import List
 
+from torch import Tensor
+
+from mmseg.core.utils import ConfigType
 from .decode_head import BaseDecodeHead
 
 
@@ -16,36 +20,44 @@ class BaseCascadeDecodeHead(BaseDecodeHead, metaclass=ABCMeta):
         """Placeholder of forward function."""
         pass
 
-    def forward_train(self, inputs, prev_output, batch_data_samples,
-                      train_cfg):
+    def loss(self, inputs: List[Tensor], prev_output: Tensor,
+             batch_data_samples: List[dict], train_cfg: ConfigType,
+             **kwargs) -> Tensor:
         """Forward function for training.
+
         Args:
-            inputs (list[Tensor]): List of multi-level img features.
+            inputs (List[Tensor]): List of multi-level img features.
             prev_output (Tensor): The output of previous decode head.
-            batch_data_samples (list[:obj:`SegDataSample`]): The seg
+            batch_data_samples (List[:obj:`SegDataSample`]): The seg
                 data samples. It usually includes information such
-                as `img_metas` or `gt_semantic_seg`.
+                as `metainfo` and `gt_sem_seg`.
             train_cfg (dict): The training config.
 
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
         seg_logits = self.forward(inputs, prev_output)
-        losses = self.losses(seg_logits, batch_data_samples)
+        losses = self.loss_by_feat(seg_logits, batch_data_samples, **kwargs)
 
         return losses
 
-    def forward_test(self, inputs, prev_output, batch_img_metas, test_cfg):
+    def predict(self, inputs: List[Tensor], prev_output: Tensor,
+                batch_img_metas: List[dict], tese_cfg: ConfigType, **kwargs):
         """Forward function for testing.
 
         Args:
-            inputs (list[Tensor]): List of multi-level img features.
+            inputs (List[Tensor]): List of multi-level img features.
             prev_output (Tensor): The output of previous decode head.
-            batch_img_metas (list[dict]): Meta information of each image, e.g.,
-                image size, scaling factor, etc.
+            batch_img_metas (dict): List Image info where each dict may also
+                contain: 'img_shape', 'scale_factor', 'flip', 'img_path',
+                'ori_shape', and 'pad_shape'.
+                For details on the values of these keys see
+                `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
             test_cfg (dict): The testing config.
 
         Returns:
             Tensor: Output segmentation map.
         """
-        return self.forward(inputs, prev_output)
+        seg_logits = self.forward(inputs, prev_output)
+
+        return self.predict_by_feat(seg_logits, batch_img_metas, **kwargs)

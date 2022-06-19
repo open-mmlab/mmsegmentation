@@ -18,7 +18,8 @@ class IoUMetric(BaseMetric):
     Args:
         ignore_index (int): Index that will be ignored in evaluation.
             Default: 255.
-        metrics (list[str] | str): Metrics to be evaluated, 'mIoU' and 'mDice'.
+        iou_metrics (list[str] | str): Metrics to be calculated, the options
+            includes 'mIoU', 'mDice' and 'mFscore'.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
         beta (int): Determines the weight of recall in the combined score.
@@ -34,7 +35,7 @@ class IoUMetric(BaseMetric):
 
     def __init__(self,
                  ignore_index: int = 255,
-                 metrics: List[str] = ['mIoU'],
+                 iou_metrics: List[str] = ['mIoU'],
                  nan_to_num: Optional[int] = None,
                  beta: int = 1,
                  collect_device: str = 'cpu',
@@ -42,7 +43,7 @@ class IoUMetric(BaseMetric):
         super().__init__(collect_device=collect_device, prefix=prefix)
 
         self.ignore_index = ignore_index
-        self.metrics = metrics
+        self.metrics = iou_metrics
         self.nan_to_num = nan_to_num
         self.beta = beta
 
@@ -59,8 +60,9 @@ class IoUMetric(BaseMetric):
         """
         num_classes = len(self.dataset_meta['classes'])
         for data, pred in zip(data_batch, predictions):
-            label = data['data_sample']['gt_sem_seg']['data'][0].cpu()
-            pred_label = pred['pred_sem_seg']['data'][0].cpu()
+            pred_label = pred['pred_sem_seg']['data'].squeeze()
+            label = data['data_sample']['gt_sem_seg']['data'].squeeze().to(
+                pred_label)
             self.results.append(
                 self.intersect_and_union(pred_label, label, num_classes,
                                          self.ignore_index))
@@ -152,11 +154,14 @@ class IoUMetric(BaseMetric):
 
         intersect = pred_label[pred_label == label]
         area_intersect = torch.histc(
-            intersect.float(), bins=(num_classes), min=0, max=num_classes - 1)
+            intersect.float(), bins=(num_classes), min=0,
+            max=num_classes - 1).cpu()
         area_pred_label = torch.histc(
-            pred_label.float(), bins=(num_classes), min=0, max=num_classes - 1)
+            pred_label.float(), bins=(num_classes), min=0,
+            max=num_classes - 1).cpu()
         area_label = torch.histc(
-            label.float(), bins=(num_classes), min=0, max=num_classes - 1)
+            label.float(), bins=(num_classes), min=0,
+            max=num_classes - 1).cpu()
         area_union = area_pred_label + area_label - area_intersect
         return area_intersect, area_union, area_pred_label, area_label
 

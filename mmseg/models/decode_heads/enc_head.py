@@ -1,9 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from typing import List, Tuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule, build_norm_layer
+from torch import Tensor
 
+from mmseg.core.utils import SampleList
 from mmseg.ops import Encoding, resize
 from mmseg.registry import MODELS
 from ..builder import build_loss
@@ -150,12 +154,14 @@ class EncHead(BaseDecodeHead):
         else:
             return output
 
-    def forward_test(self, inputs, img_metas, test_cfg):
+    def predict(self, inputs: Tuple[Tensor], batch_img_metas: List[dict],
+                **kwargs):
         """Forward function for testing, ignore se_loss."""
         if self.use_se_loss:
-            return self.forward(inputs)[0]
+            seg_logits = self.forward(inputs)[0]
         else:
-            return self.forward(inputs)
+            seg_logits = self.forward(inputs)
+        return self.predict_by_feat(seg_logits, batch_img_metas, **kwargs)
 
     @staticmethod
     def _convert_to_onehot_labels(seg_label, num_classes):
@@ -177,11 +183,14 @@ class EncHead(BaseDecodeHead):
             onehot_labels[i] = hist > 0
         return onehot_labels
 
-    def losses(self, seg_logit, seg_label):
+    def loss_by_feat(self, seg_logit: Tuple[Tensor],
+                     batch_data_samples: SampleList, **kwargs) -> dict:
         """Compute segmentation and semantic encoding loss."""
         seg_logit, se_seg_logit = seg_logit
         loss = dict()
-        loss.update(super(EncHead, self).losses(seg_logit, seg_label))
+        loss.update(super(EncHead, self).losses(seg_logit, batch_data_samples))
+
+        seg_label = self._stack_batch_gt(batch_data_samples)
         se_loss = self.loss_se_decode(
             se_seg_logit,
             self._convert_to_onehot_labels(seg_label, self.num_classes))

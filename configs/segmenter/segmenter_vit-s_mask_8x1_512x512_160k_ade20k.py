@@ -4,12 +4,12 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (512, 512)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segmenter/vit_small_p16_384_20220308-410f6037.pth'  # noqa
 
 backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     pretrained=checkpoint,
     backbone=dict(
         img_size=(512, 512),

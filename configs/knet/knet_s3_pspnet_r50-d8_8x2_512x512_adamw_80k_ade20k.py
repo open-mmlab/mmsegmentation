@@ -3,14 +3,14 @@ _base_ = [
     '../_base_/schedules/schedule_80k.py'
 ]
 crop_size = (512, 512)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 num_stages = 3
 conv_kernel_size = 1
 model = dict(
     type='EncoderDecoder',
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     pretrained='open-mmlab://resnet50_v1c',
     backbone=dict(
         type='ResNetV1c',

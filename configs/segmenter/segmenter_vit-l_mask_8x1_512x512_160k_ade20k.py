@@ -4,11 +4,11 @@ _base_ = [
     '../_base_/schedules/schedule_160k.py'
 ]
 crop_size = (640, 640)
-preprocess_cfg = dict(size=crop_size)
+data_preprocessor = dict(size=crop_size)
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segmenter/vit_large_p16_384_20220308-d4efb41d.pth'  # noqa
 
 model = dict(
-    preprocess_cfg=preprocess_cfg,
+    data_preprocessor=data_preprocessor,
     pretrained=checkpoint,
     backbone=dict(
         type='VisionTransformer',
