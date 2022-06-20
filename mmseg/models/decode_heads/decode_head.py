@@ -260,7 +260,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         ]
         return torch.stack(gt_semantic_segs, dim=0)
 
-    def loss_by_feat(self, seg_logit: Tensor, batch_data_samples: SampleList,
+    def loss_by_feat(self, seg_logits: Tensor, batch_data_samples: SampleList,
                      **kwargs) -> dict:
         """Compute segmentation loss.
 
@@ -276,13 +276,13 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
 
         seg_label = self._stack_batch_gt(batch_data_samples)
         loss = dict()
-        seg_logit = resize(
-            input=seg_logit,
+        seg_logits = resize(
+            input=seg_logits,
             size=seg_label.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
         if self.sampler is not None:
-            seg_weight = self.sampler.sample(seg_logit, seg_label)
+            seg_weight = self.sampler.sample(seg_logits, seg_label)
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
@@ -294,24 +294,24 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         for loss_decode in losses_decode:
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
-                    seg_logit,
+                    seg_logits,
                     seg_label,
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
             else:
                 loss[loss_decode.loss_name] += loss_decode(
-                    seg_logit,
+                    seg_logits,
                     seg_label,
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
 
         loss['acc_seg'] = accuracy(
-            seg_logit, seg_label, ignore_index=self.ignore_index)
+            seg_logits, seg_label, ignore_index=self.ignore_index)
         return loss
 
     def predict_by_feat(self, seg_logits: Tensor, batch_img_metas: List[dict],
                         **kwargs) -> List[Tensor]:
-        """Trnasform a batch of output seg_logits to the input shape.
+        """Transform a batch of output seg_logits to the input shape.
 
         Args:
             seg_logits (Tensor): The output from decode head forward function.

@@ -3,7 +3,14 @@ _base_ = [
     '../_base_/schedules/schedule_80k.py'
 ]
 crop_size = (512, 512)
-data_preprocessor = dict(size=crop_size)
+data_preprocessor = dict(
+    type='SegDataPreProcessor',
+    mean=[123.675, 116.28, 103.53],
+    std=[58.395, 57.12, 57.375],
+    bgr_to_rgb=True,
+    pad_val=0,
+    size=crop_size,
+    seg_pad_val=255)
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 num_stages = 3
@@ -79,11 +86,10 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 # optimizer
-optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, weight_decay=0.0005)
 optim_wrapper = dict(
     _delete_=True,
     type='OptimWrapper',
-    optimizer=optimizer,
+    optimizer=dict(type='AdamW', lr=0.0001, weight_decay=0.0005),
     clip_grad=dict(max_norm=1, norm_type=2))
 # learning policy
 param_scheduler = [
