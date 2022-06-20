@@ -13,11 +13,10 @@ model = dict(
         init_cfg=dict(
             type='Pretrained', prefix='backbone.', checkpoint=checkpoint)))
 
-optimizer = dict(_delete_=True, type='AdamW', lr=0.0005, weight_decay=0.05)
 optim_wrapper = dict(
     _delete_=True,
     type='OptimWrapper',
-    optimizer=optimizer,
+    optimizer=dict(type='AdamW', lr=0.0005, weight_decay=0.05),
     clip_grad=dict(max_norm=1, norm_type=2))
 # learning policy
 param_scheduler = [

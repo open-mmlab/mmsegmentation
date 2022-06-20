@@ -9,17 +9,11 @@ model = dict(
     pretrained='pretrain/mit_b0.pth',
     decode_head=dict(num_classes=150))
 
-# optimizer
-optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=0.00006,
-    betas=(0.9, 0.999),
-    weight_decay=0.01)
-
 optim_wrapper = dict(
+    _delete_=True,
     type='OptimWrapper',
-    optimizer=optimizer,
+    optimizer=dict(
+        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),
     paramwise_cfg=dict(
         custom_keys={
             'pos_block': dict(decay_mult=0.),
