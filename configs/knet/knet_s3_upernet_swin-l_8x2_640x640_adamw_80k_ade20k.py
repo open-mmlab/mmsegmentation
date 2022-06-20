@@ -3,7 +3,14 @@ _base_ = 'knet_s3_upernet_swin-t_8x2_512x512_adamw_80k_ade20k.py'
 checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_large_patch4_window7_224_22k_20220308-d5bdebaf.pth'  # noqa
 # model settings
 crop_size = (640, 640)
-data_preprocessor = dict(size=crop_size)
+data_preprocessor = dict(
+    type='SegDataPreProcessor',
+    mean=[123.675, 116.28, 103.53],
+    std=[58.395, 57.12, 57.375],
+    bgr_to_rgb=True,
+    pad_val=0,
+    size=crop_size,
+    seg_pad_val=255)
 model = dict(
     data_preprocessor=data_preprocessor,
     pretrained=checkpoint_file,

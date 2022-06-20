@@ -30,18 +30,12 @@ model = dict(
         kernel_generate_head=dict(in_channels=[96, 192, 384, 768])),
     auxiliary_head=dict(in_channels=384))
 
-# modify learning rate following the official implementation of Swin Transformer # noqa
-optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=0.00006,
-    betas=(0.9, 0.999),
-    weight_decay=0.0005)
-
 optim_wrapper = dict(
     _delete_=True,
     type='OptimWrapper',
-    optimizer=optimizer,
+    # modify learning rate following the official implementation of Swin Transformer # noqa
+    optimizer=dict(
+        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.0005),
     paramwise_cfg=dict(
         custom_keys={
             'absolute_pos_embed': dict(decay_mult=0.),

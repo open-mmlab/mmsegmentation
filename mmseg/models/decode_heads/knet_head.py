@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from typing import List
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -6,7 +8,9 @@ from mmcv.cnn import ConvModule, build_activation_layer, build_norm_layer
 from mmcv.cnn.bricks.transformer import (FFN, TRANSFORMER_LAYER,
                                          MultiheadAttention,
                                          build_transformer_layer)
+from torch import Tensor
 
+from mmseg.core.utils import SampleList
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.registry import MODELS
 from mmseg.utils import get_root_logger
@@ -443,10 +447,12 @@ class IterativeDecodeHead(BaseDecodeHead):
         # only return the prediction of the last stage during testing
         return stage_segs[-1]
 
-    def losses(self, seg_logit, seg_label):
+    def loss_by_feat(self, seg_logits: List[Tensor],
+                     batch_data_samples: SampleList, **kwargs) -> dict:
         losses = dict()
-        for i, logit in enumerate(seg_logit):
-            loss = self.kernel_generate_head.losses(logit, seg_label)
+        for i, logit in enumerate(seg_logits):
+            loss = self.kernel_generate_head.loss_by_feat(
+                logit, batch_data_samples)
             for k, v in loss.items():
                 losses[f'{k}.s{i}'] = v
 
