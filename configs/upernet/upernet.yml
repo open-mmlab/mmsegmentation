@@ -15,6 +15,28 @@ Collections:
   Converted From:
     Code: https://github.com/CSAILVision/unifiedparsing
 Models:
+- Name: upernet_r18_512x1024_40k_cityscapes
+  In Collection: UPerNet
+  Metadata:
+    backbone: R-18
+    crop size: (512,1024)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 223.71
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 4.8
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.39
+      mIoU(ms+flip): 77.0
+  Config: configs/upernet/upernet_r18_512x1024_40k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r18_512x1024_40k_cityscapes/upernet_r18_512x1024_40k_cityscapes_20220615_113231-12ee861d.pth
 - Name: upernet_r50_512x1024_40k_cityscapes
   In Collection: UPerNet
   Metadata:
@@ -103,6 +125,20 @@ Models:
       mIoU(ms+flip): 80.77
   Config: configs/upernet/upernet_r101_769x769_40k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819-83c95d01.pth
+- Name: upernet_r18_512x1024_80k_cityscapes
+  In Collection: UPerNet
+  Metadata:
+    backbone: R-18
+    crop size: (512,1024)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.02
+      mIoU(ms+flip): 77.38
+  Config: configs/upernet/upernet_r18_512x1024_80k_cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r18_512x1024_80k_cityscapes/upernet_r18_512x1024_80k_cityscapes_20220614_110712-c89a9188.pth
 - Name: upernet_r50_512x1024_80k_cityscapes
   In Collection: UPerNet
   Metadata:
@@ -159,6 +195,28 @@ Models:
       mIoU(ms+flip): 81.49
   Config: configs/upernet/upernet_r101_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014-082fc334.pth
+- Name: upernet_r18_512x512_80k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: R-18
+    crop size: (512,512)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 40.39
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 6.6
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 38.76
+      mIoU(ms+flip): 39.81
+  Config: configs/upernet/upernet_r18_512x512_80k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r18_512x512_80k_ade20k/upernet_r18_512x512_80k_ade20k_20220614_110319-22e81719.pth
 - Name: upernet_r50_512x512_80k_ade20k
   In Collection: UPerNet
   Metadata:
@@ -203,6 +261,20 @@ Models:
       mIoU(ms+flip): 43.96
   Config: configs/upernet/upernet_r101_512x512_80k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117-32e4db94.pth
+- Name: upernet_r18_512x512_160k_ade20k
+  In Collection: UPerNet
+  Metadata:
+    backbone: R-18
+    crop size: (512,512)
+    lr schd: 160000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 39.23
+      mIoU(ms+flip): 39.97
+  Config: configs/upernet/upernet_r18_512x512_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r18_512x512_160k_ade20k/upernet_r18_512x512_160k_ade20k_20220615_113300-791c3f3e.pth
 - Name: upernet_r50_512x512_160k_ade20k
   In Collection: UPerNet
   Metadata:
@@ -231,6 +303,28 @@ Models:
       mIoU(ms+flip): 44.85
   Config: configs/upernet/upernet_r101_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951-91b32684.pth
+- Name: upernet_r18_512x512_20k_voc12aug
+  In Collection: UPerNet
+  Metadata:
+    backbone: R-18
+    crop size: (512,512)
+    lr schd: 20000
+    inference time (ms/im):
+    - value: 38.76
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 4.8
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 72.9
+      mIoU(ms+flip): 74.71
+  Config: configs/upernet/upernet_r18_512x512_20k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r18_512x512_20k_voc12aug/upernet_r18_512x512_20k_voc12aug_20220614_123910-ed66e455.pth
 - Name: upernet_r50_512x512_20k_voc12aug
   In Collection: UPerNet
   Metadata:
@@ -275,6 +369,20 @@ Models:
       mIoU(ms+flip): 78.29
   Config: configs/upernet/upernet_r101_512x512_20k_voc12aug.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629-f14e7f27.pth
+- Name: upernet_r18_512x512_40k_voc12aug
+  In Collection: UPerNet
+  Metadata:
+    backbone: R-18
+    crop size: (512,512)
+    lr schd: 40000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 73.71
+      mIoU(ms+flip): 74.61
+  Config: configs/upernet/upernet_r18_512x512_40k_voc12aug.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r18_512x512_40k_voc12aug/upernet_r18_512x512_40k_voc12aug_20220614_153605-fafeb868.pth
 - Name: upernet_r50_512x512_40k_voc12aug
   In Collection: UPerNet
   Metadata:
