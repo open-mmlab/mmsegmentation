@@ -80,7 +80,7 @@ The downloading will take several seconds or more, depending on your network env
 Option (a). If you install mmsegmentation from source, just run the following command.
 
 ```shell
-python demo/image_demo.py demo/demo.jpg pspnet_r50-d8_512x1024_40k_cityscapes.py pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cpu --out-file result.jpg
+python demo/image_demo.py demo/demo.png configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cuda:0 --out-file result.jpg
 ```
 
 You will see a new image `result.jpg` on your current folder, where segmentation masks are covered on all objects.

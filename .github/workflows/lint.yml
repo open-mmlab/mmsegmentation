@@ -21,9 +21,6 @@ jobs:
           pre-commit install
       - name: Linting
         run: |
-          sudo apt-add-repository ppa:brightbox/ruby-ng -y
-          sudo apt-get update
-          sudo apt-get install -y ruby2.7
           pre-commit run --all-files
       - name: Check docstring coverage
         run: |
