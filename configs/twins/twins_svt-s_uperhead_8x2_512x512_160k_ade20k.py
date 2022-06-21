@@ -21,16 +21,11 @@ model = dict(
     decode_head=dict(in_channels=[64, 128, 256, 512]),
     auxiliary_head=dict(in_channels=256))
 
-optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=0.00006,
-    betas=(0.9, 0.999),
-    weight_decay=0.01)
-
 optim_wrapper = dict(
+    _delete_=True,
     type='OptimWrapper',
-    optimizer=optimizer,
+    optimizer=dict(
+        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),
     paramwise_cfg=dict(custom_keys={
         'pos_block': dict(decay_mult=0.),
         'norm': dict(decay_mult=0.)

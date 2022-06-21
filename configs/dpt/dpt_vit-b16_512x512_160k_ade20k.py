@@ -7,16 +7,11 @@ data_preprocessor = dict(size=crop_size)
 model = dict(data_preprocessor=data_preprocessor)
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
-optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=0.00006,
-    betas=(0.9, 0.999),
-    weight_decay=0.01)
 
 optim_wrapper = dict(
     type='OptimWrapper',
-    optimizer=optimizer,
+    optimizer=dict(
+        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),
     paramwise_cfg=dict(
         custom_keys={
             'pos_embed': dict(decay_mult=0.),

@@ -9,16 +9,11 @@ model = dict(
     pretrained='pretrain/beit_base_patch16_224_pt22k_ft22k.pth',
     test_cfg=dict(mode='slide', crop_size=(640, 640), stride=(426, 426)))
 
-optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=3e-5,
-    betas=(0.9, 0.999),
-    weight_decay=0.05)
-
 optim_wrapper = dict(
+    _delete_=True,
     type='OptimWrapper',
-    optimizer=optimizer,
+    optimizer=dict(
+        type='AdamW', lr=3e-5, betas=(0.9, 0.999), weight_decay=0.05),
     constructor='LayerDecayOptimizerConstructor',
     paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.9))
 

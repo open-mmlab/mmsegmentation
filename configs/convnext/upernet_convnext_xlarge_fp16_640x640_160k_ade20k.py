@@ -26,17 +26,11 @@ model = dict(
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(426, 426)),
 )
 
-optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=0.00008,
-    betas=(0.9, 0.999),
-    weight_decay=0.05)
-
 optim_wrapper = dict(
     _delete_=True,
     type='AmpOptimWrapper',
-    optimizer=optimizer,
+    optimizer=dict(
+        type='AdamW', lr=0.00008, betas=(0.9, 0.999), weight_decay=0.05),
     paramwise_cfg={
         'decay_rate': 0.9,
         'decay_type': 'stage_wise',

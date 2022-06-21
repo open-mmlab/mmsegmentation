@@ -24,16 +24,10 @@ model = dict(
     auxiliary_head=dict(in_channels=768, num_classes=150),
     test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
-optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=1e-4,
-    betas=(0.9, 0.999),
-    weight_decay=0.05)
-
 optim_wrapper = dict(
     type='OptimWrapper',
-    optimizer=optimizer,
+    optimizer=dict(
+        type='AdamW', lr=1e-4, betas=(0.9, 0.999), weight_decay=0.05),
     paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.65),
     constructor='LayerDecayOptimizerConstructor')
 
