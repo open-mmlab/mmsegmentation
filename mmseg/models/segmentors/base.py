@@ -53,7 +53,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
 
     @abstractmethod
     def encode_decode(self, batch_inputs: Tensor,
-                      batch_data_samples: SampleList, **kwargs):
+                      batch_data_samples: SampleList):
         """Placeholder for encode images with backbone and decode into a
         semantic segmentation map of the same size as input."""
         pass
@@ -61,8 +61,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
     def forward(self,
                 batch_inputs: Tensor,
                 batch_data_samples: OptSampleList = None,
-                mode: str = 'tensor',
-                **kwargs) -> ForwardResults:
+                mode: str = 'tensor') -> ForwardResults:
         """The unified entry for a forward process in both training and test.
 
         The method should accept three modes: "tensor", "predict" and "loss":
@@ -92,33 +91,33 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             - If ``mode="loss"``, return a dict of tensor.
         """
         if mode == 'loss':
-            return self.loss(batch_inputs, batch_data_samples, **kwargs)
+            return self.loss(batch_inputs, batch_data_samples)
         elif mode == 'predict':
-            return self.predict(batch_inputs, batch_data_samples, **kwargs)
+            return self.predict(batch_inputs, batch_data_samples)
         elif mode == 'tensor':
-            return self._forward(batch_inputs, batch_data_samples, **kwargs)
+            return self._forward(batch_inputs, batch_data_samples)
         else:
             raise RuntimeError(f'Invalid mode "{mode}". '
                                'Only supports loss, predict and tensor mode')
 
     @abstractmethod
-    def loss(self, batch_inputs: Tensor, batch_data_samples: SampleList,
-             **kwargs) -> dict:
+    def loss(self, batch_inputs: Tensor,
+             batch_data_samples: SampleList) -> dict:
         """Calculate losses from a batch of inputs and data samples."""
         pass
 
     @abstractmethod
-    def predict(self, batch_inputs: Tensor, batch_data_samples: SampleList,
-                **kwargs) -> SampleList:
+    def predict(self, batch_inputs: Tensor,
+                batch_data_samples: SampleList) -> SampleList:
         """Predict results from a batch of inputs and data samples with post-
         processing."""
         pass
 
     @abstractmethod
-    def _forward(self,
-                 batch_inputs: Tensor,
-                 batch_data_samples: OptSampleList = None,
-                 **kwargs) -> Tuple[List[Tensor]]:
+    def _forward(
+            self,
+            batch_inputs: Tensor,
+            batch_data_samples: OptSampleList = None) -> Tuple[List[Tensor]]:
         """Network forward process.
 
         Usually includes backbone, neck and head forward without any post-
@@ -127,7 +126,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def aug_test(self, batch_inputs, batch_img_metas, **kwargs):
+    def aug_test(self, batch_inputs, batch_img_metas):
         """Placeholder for augmentation test."""
         pass
 
