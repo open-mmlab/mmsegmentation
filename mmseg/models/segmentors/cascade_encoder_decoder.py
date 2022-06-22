@@ -70,29 +70,28 @@ class CascadeEncoderDecoder(EncoderDecoder):
         self.align_corners = self.decode_head[-1].align_corners
         self.num_classes = self.decode_head[-1].num_classes
 
-    def encode_decode(self, batch_inputs: Tensor, batch_img_metas: List[dict],
-                      **kwargs) -> List[Tensor]:
+    def encode_decode(self, batch_inputs: Tensor,
+                      batch_img_metas: List[dict]) -> List[Tensor]:
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
         x = self.extract_feat(batch_inputs)
-        out = self.decode_head[0].forward(x, **kwargs)
+        out = self.decode_head[0].forward(x)
         for i in range(1, self.num_stages - 1):
-            out = self.decode_head[i].forward(x, out, **kwargs)
+            out = self.decode_head[i].forward(x, out)
         seg_logits_list = self.decode_head[-1].predict(x, out, batch_img_metas,
-                                                       self.test_cfg, **kwargs)
+                                                       self.test_cfg)
 
         return seg_logits_list
 
     def _decode_head_forward_train(self, batch_inputs: Tensor,
-                                   batch_data_samples: SampleList,
-                                   **kwargs) -> dict:
+                                   batch_data_samples: SampleList) -> dict:
         """Run forward function and calculate loss for decode head in
         training."""
         losses = dict()
 
         loss_decode = self.decode_head[0].loss(batch_inputs,
                                                batch_data_samples,
-                                               self.train_cfg, **kwargs)
+                                               self.train_cfg)
 
         losses.update(add_prefix(loss_decode, 'decode_0'))
         # get batch_img_metas
@@ -105,22 +104,20 @@ class CascadeEncoderDecoder(EncoderDecoder):
         for i in range(1, self.num_stages):
             # forward test again, maybe unnecessary for most methods.
             if i == 1:
-                prev_outputs = self.decode_head[0].forward(
-                    batch_inputs, **kwargs)
+                prev_outputs = self.decode_head[0].forward(batch_inputs)
             else:
                 prev_outputs = self.decode_head[i - 1].forward(
-                    batch_inputs, prev_outputs, **kwargs)
+                    batch_inputs, prev_outputs)
             loss_decode = self.decode_head[i].loss(batch_inputs, prev_outputs,
                                                    batch_data_samples,
-                                                   self.train_cfg, **kwargs)
+                                                   self.train_cfg)
             losses.update(add_prefix(loss_decode, f'decode_{i}'))
 
         return losses
 
     def _forward(self,
                  batch_inputs: Tensor,
-                 data_samples: OptSampleList = None,
-                 **kwargs) -> Tensor:
+                 data_samples: OptSampleList = None) -> Tensor:
         """Network forward process.
 
         Args:
@@ -137,6 +134,6 @@ class CascadeEncoderDecoder(EncoderDecoder):
         out = self.decode_head[0].forward(x)
         for i in range(1, self.num_stages):
             # TODO support PointRend tensor mode
-            out = self.decode_head[i].forward(x, out, **kwargs)
+            out = self.decode_head[i].forward(x, out)
 
         return out

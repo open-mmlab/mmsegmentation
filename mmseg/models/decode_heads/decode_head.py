@@ -205,7 +205,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         return inputs
 
     @abstractmethod
-    def forward(self, inputs, **kwargs):
+    def forward(self, inputs):
         """Placeholder of forward function."""
         pass
 
@@ -217,7 +217,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         return output
 
     def loss(self, inputs: Tuple[Tensor], batch_data_samples: SampleList,
-             train_cfg: ConfigType, **kwargs) -> dict:
+             train_cfg: ConfigType) -> dict:
         """Forward function for training.
 
         Args:
@@ -230,12 +230,12 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
-        seg_logits = self.forward(inputs, **kwargs)
-        losses = self.loss_by_feat(seg_logits, batch_data_samples, **kwargs)
+        seg_logits = self.forward(inputs)
+        losses = self.loss_by_feat(seg_logits, batch_data_samples)
         return losses
 
     def predict(self, inputs: Tuple[Tensor], batch_img_metas: List[dict],
-                test_cfg: ConfigType, **kwargs) -> List[Tensor]:
+                test_cfg: ConfigType) -> List[Tensor]:
         """Forward function for prediction.
 
         Args:
@@ -250,9 +250,9 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         Returns:
             List[Tensor]: Outputs segmentation logits map.
         """
-        seg_logits = self.forward(inputs, **kwargs)
+        seg_logits = self.forward(inputs)
 
-        return self.predict_by_feat(seg_logits, batch_img_metas, **kwargs)
+        return self.predict_by_feat(seg_logits, batch_img_metas)
 
     def _stack_batch_gt(self, batch_data_samples: SampleList) -> Tensor:
         gt_semantic_segs = [
@@ -260,8 +260,8 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         ]
         return torch.stack(gt_semantic_segs, dim=0)
 
-    def loss_by_feat(self, seg_logits: Tensor, batch_data_samples: SampleList,
-                     **kwargs) -> dict:
+    def loss_by_feat(self, seg_logits: Tensor,
+                     batch_data_samples: SampleList) -> dict:
         """Compute segmentation loss.
 
         Args:
@@ -309,8 +309,8 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             seg_logits, seg_label, ignore_index=self.ignore_index)
         return loss
 
-    def predict_by_feat(self, seg_logits: Tensor, batch_img_metas: List[dict],
-                        **kwargs) -> List[Tensor]:
+    def predict_by_feat(self, seg_logits: Tensor,
+                        batch_img_metas: List[dict]) -> List[Tensor]:
         """Transform a batch of output seg_logits to the input shape.
 
         Args:

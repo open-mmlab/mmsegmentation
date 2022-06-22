@@ -21,8 +21,7 @@ class BaseCascadeDecodeHead(BaseDecodeHead, metaclass=ABCMeta):
         pass
 
     def loss(self, inputs: List[Tensor], prev_output: Tensor,
-             batch_data_samples: List[dict], train_cfg: ConfigType,
-             **kwargs) -> Tensor:
+             batch_data_samples: List[dict], train_cfg: ConfigType) -> Tensor:
         """Forward function for training.
 
         Args:
@@ -37,12 +36,12 @@ class BaseCascadeDecodeHead(BaseDecodeHead, metaclass=ABCMeta):
             dict[str, Tensor]: a dictionary of loss components
         """
         seg_logits = self.forward(inputs, prev_output)
-        losses = self.loss_by_feat(seg_logits, batch_data_samples, **kwargs)
+        losses = self.loss_by_feat(seg_logits, batch_data_samples)
 
         return losses
 
     def predict(self, inputs: List[Tensor], prev_output: Tensor,
-                batch_img_metas: List[dict], tese_cfg: ConfigType, **kwargs):
+                batch_img_metas: List[dict], tese_cfg: ConfigType):
         """Forward function for testing.
 
         Args:
@@ -60,4 +59,4 @@ class BaseCascadeDecodeHead(BaseDecodeHead, metaclass=ABCMeta):
         """
         seg_logits = self.forward(inputs, prev_output)
 
-        return self.predict_by_feat(seg_logits, batch_img_metas, **kwargs)
+        return self.predict_by_feat(seg_logits, batch_img_metas)

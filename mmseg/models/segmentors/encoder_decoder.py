@@ -120,49 +120,50 @@ class EncoderDecoder(BaseSegmentor):
             x = self.neck(x)
         return x
 
-    def encode_decode(self, batch_inputs: Tensor, batch_img_metas: List[dict],
-                      **kwargs) -> List[Tensor]:
+    def encode_decode(self, batch_inputs: Tensor,
+                      batch_img_metas: List[dict]) -> List[Tensor]:
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
         x = self.extract_feat(batch_inputs)
         seg_logits_list = self.decode_head.predict(x, batch_img_metas,
-                                                   self.test_cfg, **kwargs)
+                                                   self.test_cfg)
 
         return seg_logits_list
 
     def _decode_head_forward_train(self, batch_inputs: List[Tensor],
-                                   batch_data_samples: SampleList,
-                                   **kwargs) -> dict:
+                                   batch_data_samples: SampleList) -> dict:
         """Run forward function and calculate loss for decode head in
         training."""
         losses = dict()
         loss_decode = self.decode_head.loss(batch_inputs, batch_data_samples,
-                                            self.train_cfg, **kwargs)
+                                            self.train_cfg)
 
         losses.update(add_prefix(loss_decode, 'decode'))
         return losses
 
-    def _auxiliary_head_forward_train(self, batch_inputs: List[Tensor],
-                                      batch_data_samples: SampleList,
-                                      **kwargs) -> dict:
+    def _auxiliary_head_forward_train(
+        self,
+        batch_inputs: List[Tensor],
+        batch_data_samples: SampleList,
+    ) -> dict:
         """Run forward function and calculate loss for auxiliary head in
         training."""
         losses = dict()
         if isinstance(self.auxiliary_head, nn.ModuleList):
             for idx, aux_head in enumerate(self.auxiliary_head):
                 loss_aux = aux_head.loss(batch_inputs, batch_data_samples,
-                                         self.train_cfg, **kwargs)
+                                         self.train_cfg)
                 losses.update(add_prefix(loss_aux, f'aux_{idx}'))
         else:
             loss_aux = self.auxiliary_head.loss(batch_inputs,
                                                 batch_data_samples,
-                                                self.train_cfg, **kwargs)
+                                                self.train_cfg)
             losses.update(add_prefix(loss_aux, 'aux'))
 
         return losses
 
-    def loss(self, batch_inputs: Tensor, batch_data_samples: SampleList,
-             **kwargs) -> dict:
+    def loss(self, batch_inputs: Tensor,
+             batch_data_samples: SampleList) -> dict:
         """Calculate losses from a batch of inputs and data samples.
 
         Args:
@@ -179,19 +180,18 @@ class EncoderDecoder(BaseSegmentor):
 
         losses = dict()
 
-        loss_decode = self._decode_head_forward_train(x, batch_data_samples,
-                                                      **kwargs)
+        loss_decode = self._decode_head_forward_train(x, batch_data_samples)
         losses.update(loss_decode)
 
         if self.with_auxiliary_head:
             loss_aux = self._auxiliary_head_forward_train(
-                x, batch_data_samples, **kwargs)
+                x, batch_data_samples)
             losses.update(loss_aux)
 
         return losses
 
-    def predict(self, batch_inputs: Tensor, batch_data_samples: SampleList,
-                **kwargs) -> SampleList:
+    def predict(self, batch_inputs: Tensor,
+                batch_data_samples: SampleList) -> SampleList:
         """Predict results from a batch of inputs and data samples with post-
         processing.
 
@@ -213,15 +213,13 @@ class EncoderDecoder(BaseSegmentor):
         for data_sample in batch_data_samples:
             batch_img_metas.append(data_sample.metainfo)
 
-        seg_logit_list = self.inference(batch_inputs, batch_img_metas,
-                                        **kwargs)
+        seg_logit_list = self.inference(batch_inputs, batch_img_metas)
 
         return self.postprocess_result(seg_logit_list, batch_img_metas)
 
     def _forward(self,
                  batch_inputs: Tensor,
-                 data_samples: OptSampleList = None,
-                 **kwargs) -> Tensor:
+                 data_samples: OptSampleList = None) -> Tensor:
         """Network forward process.
 
         Args:
@@ -234,10 +232,10 @@ class EncoderDecoder(BaseSegmentor):
             Tensor: Forward output of model without any post-processes.
         """
         x = self.extract_feat(batch_inputs)
-        return self.decode_head.forward(x, **kwargs)
+        return self.decode_head.forward(x)
 
     def slide_inference(self, batch_inputs: Tensor,
-                        batch_img_metas: List[dict], **kwargs) -> List[Tensor]:
+                        batch_img_metas: List[dict]) -> List[Tensor]:
         """Inference by sliding-window with overlap.
 
         If h_crop > h_img or w_crop > w_img, the small patch will be used to
@@ -279,8 +277,7 @@ class EncoderDecoder(BaseSegmentor):
                 # the output of encode_decode is list of seg logits map
                 # with shape [C, H, W]
                 crop_seg_logit = torch.stack(
-                    self.encode_decode(crop_img, batch_img_metas, **kwargs),
-                    dim=0)
+                    self.encode_decode(crop_img, batch_img_metas), dim=0)
                 preds += F.pad(crop_seg_logit,
                                (int(x1), int(preds.shape[3] - x2), int(y1),
                                 int(preds.shape[2] - y2)))
@@ -292,7 +289,7 @@ class EncoderDecoder(BaseSegmentor):
         return seg_logits_list
 
     def whole_inference(self, batch_inputs: Tensor,
-                        batch_img_metas: List[dict], **kwargs) -> List[Tensor]:
+                        batch_img_metas: List[dict]) -> List[Tensor]:
         """Inference with full image.
 
         Args:
@@ -309,13 +306,12 @@ class EncoderDecoder(BaseSegmentor):
                 model of each input image.
         """
 
-        seg_logits_list = self.encode_decode(batch_inputs, batch_img_metas,
-                                             **kwargs)
+        seg_logits_list = self.encode_decode(batch_inputs, batch_img_metas)
 
         return seg_logits_list
 
-    def inference(self, batch_inputs: Tensor, batch_img_metas: List[dict],
-                  **kwargs) -> List[Tensor]:
+    def inference(self, batch_inputs: Tensor,
+                  batch_img_metas: List[dict]) -> List[Tensor]:
         """Inference with slide/whole style.
 
         Args:
@@ -336,10 +332,10 @@ class EncoderDecoder(BaseSegmentor):
         assert all(_['ori_shape'] == ori_shape for _ in batch_img_metas)
         if self.test_cfg.mode == 'slide':
             seg_logit_list = self.slide_inference(batch_inputs,
-                                                  batch_img_metas, **kwargs)
+                                                  batch_img_metas)
         else:
             seg_logit_list = self.whole_inference(batch_inputs,
-                                                  batch_img_metas, **kwargs)
+                                                  batch_img_metas)
 
         return seg_logit_list
 
