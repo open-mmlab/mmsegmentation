@@ -1,4 +1,9 @@
-# Copyright (c) OpenMMLab. All rights reserved.
+# Modified from
+# https://github.com/NVlabs/SegFormer/blob/master/mmseg/models/decode_heads/segformer_head.py
+# Copyright (c) 2021, NVIDIA Corporation. All rights reserved.
+#
+# This work is licensed under the NVIDIA Source Code License.
+
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
