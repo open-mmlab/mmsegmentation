@@ -32,7 +32,7 @@ def setup_multi_processes(cfg):
         logger.info(f'OpenCV num_threads is `{opencv_num_threads}`')
         cv2.setNumThreads(opencv_num_threads)
     else:
-        logger.info(f'OpenCV num_threads is `{cv2.getNumThreads}')
+        logger.info(f'OpenCV num_threads is `{cv2.getNumThreads()}')
 
     if cfg.data.workers_per_gpu > 1:
         # setup OMP threads
