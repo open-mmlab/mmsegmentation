@@ -108,13 +108,13 @@ Models:
     crop size: (640,640)
     lr schd: 160000
     inference time (ms/im):
-    - value: 381.68
+    - value: 330.03
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (640,640)
-    Training Memory (GB): 16.56
+    Training Memory (GB): 16.99
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
