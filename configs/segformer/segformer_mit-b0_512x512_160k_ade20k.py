@@ -3,8 +3,9 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
-model = dict(
-    pretrained='pretrain/mit_b0.pth', decode_head=dict(num_classes=150))
+checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segformer/mit_b0_20220624-7e0fe6dd.pth'  # noqa
+
+model = dict(pretrained=checkpoint, decode_head=dict(num_classes=150))
 
 # optimizer
 optimizer = dict(
