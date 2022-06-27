@@ -25,14 +25,16 @@ train_dataloader = dict(
     num_workers=4,
     persistent_workers=True,
     sampler=dict(type='InfiniteSampler', shuffle=True),
-    type='RepeatDataset',
-    times=40000,
     dataset=dict(
-        type=dataset_type,
-        data_root=data_root,
-        data_prefix=dict(
-            img_path='images/training', seg_map_path='annotations/training'),
-        pipeline=train_pipeline))
+        type='RepeatDataset',
+        times=40000,
+        dataset=dict(
+            type=dataset_type,
+            data_root=data_root,
+            data_prefix=dict(
+                img_path='images/training',
+                seg_map_path='annotations/training'),
+            pipeline=train_pipeline)))
 val_dataloader = dict(
     batch_size=1,
     num_workers=4,

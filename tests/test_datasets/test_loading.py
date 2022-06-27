@@ -25,7 +25,7 @@ class TestLoading(object):
         assert results['img'].dtype == np.uint8
         assert results['ori_shape'] == results['img'].shape[:2]
         assert repr(transform) == transform.__class__.__name__ + \
-               "(to_float32=False, color_type='color'," + \
+               "(ignore_empty=False, to_float32=False, color_type='color'," + \
                " imdecode_backend='cv2', file_client_args={'backend': 'disk'})"
 
         # to_float32

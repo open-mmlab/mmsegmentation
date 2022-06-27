@@ -8,7 +8,7 @@ import mmcv
 import numpy as np
 from mmcv import Config, DictAction
 
-from mmseg.datasets.builder import build_dataset
+from mmseg.datasets import DATASETS
 
 
 def parse_args():
@@ -159,7 +159,7 @@ def main():
     args = parse_args()
     cfg = retrieve_data_cfg(args.config, args.skip_type, args.cfg_options,
                             args.show_origin)
-    dataset = build_dataset(cfg.data.train)
+    dataset = DATASETS.build(cfg.data.train)
     progress_bar = mmcv.ProgressBar(len(dataset))
     for item in dataset:
         filename = os.path.join(args.output_dir,
