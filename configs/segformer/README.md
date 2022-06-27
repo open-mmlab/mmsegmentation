@@ -124,4 +124,4 @@ if args.aug_test:
 
 - Training of SegFormer is not very stable, which is sensitive to random seeds.
 
-- We adopt default training setting in MMSegmentation while original SegFormer repo uses `RepeatDataset` to accelerate [training](https://github.com/NVlabs/SegFormer/blob/master/local_configs/_base_/datasets/ade20k_repeat.py#L38-L39), here is its related [issue](https://github.com/NVlabs/SegFormer/issues/25).
+- We use default training setting in MMSegmentation rather than `RepeatDataset` adopted in SegFormer original repo to accelerate [training](https://github.com/NVlabs/SegFormer/blob/master/local_configs/_base_/datasets/ade20k_repeat.py#L38-L39), here is its related [issue](https://github.com/NVlabs/SegFormer/issues/25).
