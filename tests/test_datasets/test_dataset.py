@@ -173,10 +173,10 @@ def test_cityscapes():
         data_prefix=dict(
             img_path=osp.join(
                 osp.dirname(__file__),
-                '../data/pseudo_cityscapes_dataset/leftImg8bit'),
+                '../data/pseudo_cityscapes_dataset/leftImg8bit/val'),
             seg_map_path=osp.join(
                 osp.dirname(__file__),
-                '../data/pseudo_cityscapes_dataset/gtFine')))
+                '../data/pseudo_cityscapes_dataset/gtFine/val')))
     assert len(test_dataset) == 1
 
 
