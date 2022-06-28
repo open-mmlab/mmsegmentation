@@ -41,8 +41,9 @@ class PackSegInputs(BaseTransform):
     """
 
     def __init__(self,
-                 meta_keys=('img_path', 'ori_shape', 'img_shape', 'pad_shape',
-                            'scale_factor', 'flip', 'flip_direction')):
+                 meta_keys=('img_path', 'seg_map_path', 'ori_shape',
+                            'img_shape', 'pad_shape', 'scale_factor', 'flip',
+                            'flip_direction')):
         self.meta_keys = meta_keys
 
     def transform(self, results: dict) -> dict:
