@@ -8,16 +8,16 @@ from ..builder import BACKBONES, build_backbone
 from mmcv.runner import BaseModule
 from mmcv.cnn import ConvModule, build_norm_layer
 
-class BasicBlock(nn.Module):
+class BasicBlock(BaseModule):
     expansion = 1
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None, no_relu=False,norm_cfg=dict(type='SyncBN')):
-        super(BasicBlock, self).__init__()
+    def __init__(self, inplanes, planes, stride=1, downsample=None, no_relu=False,norm_cfg=dict(type='SyncBN'), init_cfg=None):
+        super(BasicBlock, self).__init__(init_cfg=init_cfg)
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=3, stride=stride,bias=False,padding=1)    
-        self.bn1 =build_norm_layer(norm_cfg, planes)[1]  # BatchNorm2d(planes, momentum=bn_mom)
+        self.bn1 =build_norm_layer(norm_cfg, planes)[1]   
         self.relu = nn.ReLU(inplace=True)
         self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=1,bias=False,padding=1)     
-        self.bn2 = build_norm_layer(norm_cfg, planes)[1]  #BatchNorm2d(planes, momentum=bn_mom)
+        self.bn2 = build_norm_layer(norm_cfg, planes)[1]  
         self.downsample = downsample
         self.stride = stride
         self.no_relu = no_relu
@@ -42,19 +42,19 @@ class BasicBlock(nn.Module):
         else:
             return self.relu(out)
 
-class Bottleneck(nn.Module):
+class Bottleneck(BaseModule):
     expansion = 2
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None, no_relu=True,norm_cfg=dict(type='SyncBN')):
-        super(Bottleneck, self).__init__()
+    def __init__(self, inplanes, planes, stride=1, downsample=None, no_relu=True,norm_cfg=dict(type='SyncBN'), init_cfg=None):
+        super(Bottleneck, self).__init__(init_cfg=init_cfg)
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
-        self.bn1 = build_norm_layer(norm_cfg, planes)[1]  #BatchNorm2d(planes, momentum=bn_mom)
+        self.bn1 = build_norm_layer(norm_cfg, planes)[1]   
         self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride,
                                padding=1, bias=False)
-        self.bn2 =  build_norm_layer(norm_cfg, planes)[1]  #BatchNorm2d(planes, momentum=bn_mom)
+        self.bn2 =  build_norm_layer(norm_cfg, planes)[1]   
         self.conv3 = nn.Conv2d(planes, planes * self.expansion, kernel_size=1,
                                bias=False)
-        self.bn3 = build_norm_layer(norm_cfg,planes * self.expansion )[1]  #BatchNorm2d(planes * self.expansion, momentum=bn_mom)
+        self.bn3 = build_norm_layer(norm_cfg,planes * self.expansion )[1]  
         self.relu = nn.ReLU(inplace=True)
         self.downsample = downsample
         self.stride = stride
@@ -84,9 +84,9 @@ class Bottleneck(nn.Module):
             return self.relu(out)
 
 
-class BNReLuConv(nn.Module):
-    def __init__(self, inplanes, planes, kernel_size,padding=0,stride=1,norm_cfg=dict(type='BN')):
-        super(BNReLuConv, self).__init__()
+class BNReLuConv(BaseModule):
+    def __init__(self, inplanes, planes, kernel_size,padding=0,stride=1,norm_cfg=dict(type='BN'), init_cfg=None):
+        super(BNReLuConv, self).__init__(init_cfg=init_cfg)
         self.f=nn.Sequential(
             build_norm_layer(norm_cfg, inplanes)[1],
             nn.ReLU(inplace=True),
@@ -97,8 +97,8 @@ class BNReLuConv(nn.Module):
         return x
 
 class DAPPM(BaseModule):
-    def __init__(self, inplanes, branch_planes, out_planes, norm_cfg=dict(type='SyncBN'), align_corners=False):
-        super(DAPPM, self).__init__(init_cfg= dict(type='Kaiming', distribution='normal'))
+    def __init__(self, inplanes, branch_planes, out_planes, norm_cfg=dict(type='SyncBN'), align_corners=False, init_cfg=dict(type='Kaiming', distribution='normal')):
+        super(DAPPM, self).__init__(init_cfg)
 
     # scale
         self.scale_kernel_sizes=[5,9,17]
@@ -147,10 +147,6 @@ class DAPPM(BaseModule):
             
         out = self.compression(torch.cat(x_list, 1)) + self.shortcut(x)
         return out
-    
-
-
-
 
 def _make_layer(  block, inplanes, planes, blocks, stride=1,norm_cfg=dict(type='SyncBN')):
         downsample = None
@@ -172,14 +168,14 @@ def _make_layer(  block, inplanes, planes, blocks, stride=1,norm_cfg=dict(type='
 
         return nn.Sequential(*layers)
 
-class layer_with_fusion(nn.Module):
+class layer_with_fusion(BaseModule):
     def __init__(self,block_type,block_nums,
                  main_stride,main_inplanes,main_outplanes,
                  sub_stride,sub_inplanes,sub_outplanes,
                  down_type='one',
                  norm_cfg=dict(type='SyncBN'),
-                 align_corners=False):
-        super(layer_with_fusion, self).__init__()
+                 align_corners=False, init_cfg=None):
+        super(layer_with_fusion, self).__init__(init_cfg=init_cfg)
         self.align_corners=align_corners
         self.main_layer =  _make_layer(block_type, main_inplanes, main_outplanes, block_nums, stride=main_stride, norm_cfg=norm_cfg)
         self.sub_layer =  _make_layer(block_type,sub_inplanes, sub_outplanes, block_nums, stride=sub_stride, norm_cfg=norm_cfg)
@@ -225,11 +221,10 @@ class DualResNet( BaseModule):
 
         self.conv1 =  nn.Sequential(
                           nn.Conv2d(3,planes,kernel_size=3, stride=2, padding=1),
-                          build_norm_layer(norm_cfg,planes )[1]   ,#BatchNorm2d(planes, momentum=bn_mom),
+                          build_norm_layer(norm_cfg,planes )[1]  ,
                           nn.ReLU(inplace=True),
                           nn.Conv2d(planes,planes,kernel_size=3, stride=2, padding=1),
-                          build_norm_layer(norm_cfg,planes )[1]   ,#
-                          #BatchNorm2d(planes, momentum=bn_mom),
+                          build_norm_layer(norm_cfg,planes )[1]   ,
                           nn.ReLU(inplace=True),
                       )
 
@@ -262,14 +257,12 @@ class DualResNet( BaseModule):
 
         self.spp = DAPPM(planes * 16,  spp_planes, planes * 4, norm_cfg=norm_cfg,align_corners= align_corners)
     
-
- 
         self.extra_process = nn.Sequential(
-                          build_norm_layer(norm_cfg,highres_planes )[1]   ,#BatchNorm2d(planes, momentum=bn_mom),
+                          build_norm_layer(norm_cfg,highres_planes )[1]   , 
                           nn.ReLU(inplace=True),
                          )
         self.final_process = nn.Sequential(
-                          build_norm_layer(norm_cfg,planes * 4 )[1]   ,#BatchNorm2d(planes, momentum=bn_mom),
+                          build_norm_layer(norm_cfg,planes * 4 )[1]   , 
                           nn.ReLU(inplace=True),
                          )
        

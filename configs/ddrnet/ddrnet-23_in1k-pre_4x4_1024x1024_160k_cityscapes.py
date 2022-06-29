@@ -5,14 +5,13 @@ _base_ = [
 ]
  
 data = dict(
-    samples_per_gpu=8,
-    workers_per_gpu=8,
+    samples_per_gpu=4,
+    workers_per_gpu=4,
 )
 log_config = dict(
     interval=50,
     hooks=[
-        dict(type='TextLoggerHook'),
-        dict(type='TensorboardLoggerHook')
+        dict(type='TextLoggerHook')
     ])
 
 # model settings
