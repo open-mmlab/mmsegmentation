@@ -200,6 +200,9 @@ class MMSegWandbHook(WandbLoggerHook):
 
         # Save prediction table
         if self.log_evaluation and self.eval_hook._should_evaluate(runner):
+            # Currently the results of eval_hook is not reused by wandb, so
+            # wandb will run evaluation again internally. We will consider
+            # refactoring this function afterwards
             results = self.test_fn(
                 runner.model, self.eval_hook.dataloader, show=False)
             # Initialize evaluation table
