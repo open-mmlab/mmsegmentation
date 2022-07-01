@@ -77,7 +77,8 @@ The master branch works with **PyTorch 1.5+**.
 
 v0.26.0 was released in 7/1/2022:
 
-- Support PyTorch backend on MLU
+- Update New SegFormer models on ADE20K
+- Dedicated MMSegWandbHook for MMSegmentation to use wandb visualization tool
 
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 
