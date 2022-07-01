@@ -1,5 +1,42 @@
 ## Changelog
 
+### V0.26.0 (7/1/2022)
+
+**Highlights**
+
+- Update New SegFormer models on ADE20K ([1705](https://github.com/open-mmlab/mmsegmentation/pull/1705))
+- Dedicated MMSegWandbHook for MMSegmentation ([1603](https://github.com/open-mmlab/mmsegmentation/pull/1603))
+
+**New Features**
+
+- Update New SegFormer models on ADE20K ([1705](https://github.com/open-mmlab/mmsegmentation/pull/1705))
+- Dedicated MMSegWandbHook for MMSegmentation ([1603](https://github.com/open-mmlab/mmsegmentation/pull/1603))
+- Add UPerNet r18 results ([1669](https://github.com/open-mmlab/mmsegmentation/pull/1669))
+
+**Enhancement**
+
+- Keep dimension of `cls_token_weight` for easier ONNX deployment ([1642](https://github.com/open-mmlab/mmsegmentation/pull/1642))
+- Support infererence with padding ([1607](https://github.com/open-mmlab/mmsegmentation/pull/1607))
+
+**Bug Fixes**
+
+- Fix typos ([#1640](https://github.com/open-mmlab/mmsegmentation/pull/1640), [#1667](https://github.com/open-mmlab/mmsegmentation/pull/1667), [#1656](https://github.com/open-mmlab/mmsegmentation/pull/1656), [#1699](https://github.com/open-mmlab/mmsegmentation/pull/1699), [#1702](https://github.com/open-mmlab/mmsegmentation/pull/1702), [#1695](https://github.com/open-mmlab/mmsegmentation/pull/1695), [#1707](https://github.com/open-mmlab/mmsegmentation/pull/1707), [#1708](https://github.com/open-mmlab/mmsegmentation/pull/1708), [#1721](https://github.com/open-mmlab/mmsegmentation/pull/1721))
+
+**Documentation**
+
+- Fix `mdformat` version to support python3.6 and remove ruby installation ([1672](https://github.com/open-mmlab/mmsegmentation/pull/1672))
+
+**Contributors**
+
+- @RunningLeon made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1642
+- @zhouzaida made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1655
+- @tkhe made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1667
+- @rotorliu made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1656
+- @EvelynWang-0423 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1679
+- @ZhaoYi1222 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1616
+- @Sanster made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1704
+- @ayulockin made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1603
+
 ### V0.25.0 (6/2/2022)
 
 **Highlights**
