@@ -75,7 +75,7 @@ The master branch works with **PyTorch 1.5+**.
 
 ## What's New
 
-v0.25.0 was released in 6/2/2022:
+v0.26.0 was released in 7/1/2022:
 
 - Support PyTorch backend on MLU
 
