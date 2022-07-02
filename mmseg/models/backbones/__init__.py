@@ -6,6 +6,7 @@ from .cgnet import CGNet
 from .erfnet import ERFNet
 from .fast_scnn import FastSCNN
 from .hrnet import HRNet
+from .hrvit import HRViT
 from .icnet import ICNet
 from .mae import MAE
 from .mit import MixVisionTransformer
@@ -26,5 +27,5 @@ __all__ = [
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
     'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
     'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'ERFNet', 'PCPVT',
-    'SVT', 'STDCNet', 'STDCContextPathNet', 'BEiT', 'MAE'
+    'SVT', 'STDCNet', 'STDCContextPathNet', 'BEiT', 'MAE', 'HRViT'
 ]
