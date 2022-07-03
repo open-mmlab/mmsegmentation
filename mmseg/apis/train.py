@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os
 import random
 import warnings
 
@@ -6,7 +7,6 @@ import mmcv
 import numpy as np
 import torch
 import torch.distributed as dist
-from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import (HOOKS, DistSamplerSeedHook, EpochBasedRunner,
                          build_runner, get_dist_info)
 from mmcv.utils import build_from_cfg
@@ -14,7 +14,8 @@ from mmcv.utils import build_from_cfg
 from mmseg import digit_version
 from mmseg.core import DistEvalHook, EvalHook, build_optimizer
 from mmseg.datasets import build_dataloader, build_dataset
-from mmseg.utils import find_latest_checkpoint, get_root_logger
+from mmseg.utils import (build_ddp, build_dp, find_latest_checkpoint,
+                         get_root_logger)
 
 
 def init_random_seed(seed=None, device='cuda'):
@@ -99,21 +100,23 @@ def train_segmentor(model,
     train_loader_cfg = {**loader_cfg, **cfg.data.get('train_dataloader', {})}
     data_loaders = [build_dataloader(ds, **train_loader_cfg) for ds in dataset]
 
-    # put model on gpus
+    # put model on devices
     if distributed:
         find_unused_parameters = cfg.get('find_unused_parameters', False)
         # Sets the `find_unused_parameters` parameter in
-        # torch.nn.parallel.DistributedDataParallel
-        model = MMDistributedDataParallel(
-            model.cuda(),
-            device_ids=[torch.cuda.current_device()],
+        # DDP wrapper
+        model = build_ddp(
+            model,
+            cfg.device,
+            device_ids=[int(os.environ['LOCAL_RANK'])],
             broadcast_buffers=False,
             find_unused_parameters=find_unused_parameters)
     else:
         if not torch.cuda.is_available():
             assert digit_version(mmcv.__version__) >= digit_version('1.4.4'), \
                 'Please use MMCV >= 1.4.4 for CPU training!'
-        model = MMDataParallel(model, device_ids=cfg.gpu_ids)
+        model = build_dp(model, cfg.device, device_ids=cfg.gpu_ids)
+
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
 

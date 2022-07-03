@@ -17,7 +17,7 @@
     </sup>
   </div>
   <div>&nbsp;</div>
-</div>
+
 <br />
 
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mmsegmentation)](https://pypi.org/project/mmsegmentation/)
@@ -29,20 +29,31 @@
 [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 
-Documentation: https://mmsegmentation.readthedocs.io/
+[📘Documentation](https://mmsegmentation.readthedocs.io/en/latest/) |
+[🛠️Installation](https://mmsegmentation.readthedocs.io/en/latest/get_started.html) |
+[👀Model Zoo](https://mmsegmentation.readthedocs.io/en/latest/model_zoo.html) |
+[🆕Update News](https://mmsegmentation.readthedocs.io/en/latest/changelog.html) |
+[🤔Reporting Issues](https://github.com/open-mmlab/mmsegmentation/issues/new/choose)
+
+</div>
+
+<div align="center">
 
 English | [简体中文](README_zh-CN.md)
+
+</div>
 
 ## Introduction
 
 MMSegmentation is an open source semantic segmentation toolbox based on PyTorch.
-It is a part of the OpenMMLab project.
+It is a part of the [OpenMMLab](https://openmmlab.com/) project.
 
 The master branch works with **PyTorch 1.5+**.
 
 ![demo image](resources/seg_demo.gif)
 
-### Major features
+<details open>
+<summary>Major features</summary>
 
 - **Unified Benchmark**
 
@@ -60,14 +71,34 @@ The master branch works with **PyTorch 1.5+**.
 
   The training speed is faster than or comparable to other codebases.
 
-## License
+</details>
 
-This project is released under the [Apache 2.0 license](LICENSE).
+## What's New
 
-## Changelog
+v0.26.0 was released in 7/1/2022:
 
-v0.24.1 was released in 5/1/2022.
+- Update New SegFormer models on ADE20K
+- Dedicated MMSegWandbHook for MMSegmentation to use wandb visualization tool
+
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
+
+## Installation
+
+Please refer to [get_started.md](docs/en/get_started.md#installation) for installation and [dataset_prepare.md](docs/en/dataset_prepare.md#prepare-datasets) for dataset preparation.
+
+## Get Started
+
+Please see [train.md](docs/en/train.md) and [inference.md](docs/en/inference.md) for the basic usage of MMSegmentation.
+There are also tutorials for:
+
+- [customizing dataset](docs/en/tutorials/customize_datasets.md)
+- [designing data pipeline](docs/en/tutorials/data_pipeline.md)
+- [customizing modules](docs/en/tutorials/customize_models.md)
+- [customizing runtime](docs/en/tutorials/customize_runtime.md)
+- [training tricks](docs/en/tutorials/training_tricks.md)
+- [useful tools](docs/en/useful_tools.md)
+
+A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 
 ## Benchmark and model zoo
 
@@ -144,19 +175,20 @@ Supported datasets:
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#isaid)
 
-## Installation
-
-Please refer to [get_started.md](docs/en/get_started.md#installation) for installation and [dataset_prepare.md](docs/en/dataset_prepare.md#prepare-datasets) for dataset preparation.
-
-## Get Started
-
-Please see [train.md](docs/en/train.md) and [inference.md](docs/en/inference.md) for the basic usage of MMSegmentation.
-There are also tutorials for [customizing dataset](docs/en/tutorials/customize_datasets.md), [designing data pipeline](docs/en/tutorials/data_pipeline.md), [customizing modules](docs/en/tutorials/customize_models.md), and [customizing runtime](docs/en/tutorials/customize_runtime.md).
-We also provide many [training tricks](docs/en/tutorials/training_tricks.md) for better training and [useful tools](docs/en/useful_tools.md) for deployment.
-
-A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb) on Colab.
+## FAQ
 
 Please refer to [FAQ](docs/en/faq.md) for frequently asked questions.
+
+## Contributing
+
+We appreciate all contributions to improve MMSegmentation. Please refer to [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the contributing guideline.
+
+## Acknowledgement
+
+MMSegmentation is an open source project that welcome any contribution and feedback.
+We wish that the toolbox and benchmark could serve the growing research
+community by providing a flexible as well as standardized toolkit to reimplement existing methods
+and develop their own new semantic segmentation methods.
 
 ## Citation
 
@@ -171,16 +203,9 @@ If you find this project useful in your research, please consider cite:
 }
 ```
 
-## Contributing
+## License
 
-We appreciate all contributions to improve MMSegmentation. Please refer to [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the contributing guideline.
-
-## Acknowledgement
-
-MMSegmentation is an open source project that welcome any contribution and feedback.
-We wish that the toolbox and benchmark could serve the growing research
-community by providing a flexible as well as standardized toolkit to reimplement existing methods
-and develop their own new semantic segmentation methods.
+MMSegmentation is released under the Apache 2.0 license, while some specific features in this library are with other licenses. Please refer to [LICENSES.md](LICENSES.md) for the careful check, if you are using our code for commercial matters.
 
 ## Projects in OpenMMLab
 

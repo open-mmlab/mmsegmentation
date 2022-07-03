@@ -29,7 +29,7 @@ model=dict(
         sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000)) )
 ```
 
-通过这种方式，只有置信分数在0.7以下的像素值点会被拿来训练。在训练时我们至少要保留100000个像素值点。如果 `thresh` 并未被指定，前 ``min_kept``
+通过这种方式，只有置信分数在0.7以下的像素值点会被拿来训练。在训练时我们至少要保留100000个像素值点。如果 `thresh` 并未被指定，前 `min_kept`
 个损失的像素值点才会被选择。
 
 ## 类别平衡损失 (Class Balanced Loss)

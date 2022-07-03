@@ -38,35 +38,35 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
 
 1. 测试 PSPNet 并可视化结果。按下任何键会进行到下一张图
 
-    ```shell
-    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-        --show
-    ```
+   ```shell
+   python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+       checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+       --show
+   ```
 
 2. 测试 PSPNet 并保存画出的图以便于之后的可视化
 
-    ```shell
-    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-        --show-dir psp_r50_512x1024_40ki_cityscapes_results
-    ```
+   ```shell
+   python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+       checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+       --show-dir psp_r50_512x1024_40ki_cityscapes_results
+   ```
 
 3. 在数据集 PASCAL VOC (不保存测试结果) 上测试 PSPNet 并评估 mIoU
 
-    ```shell
-    python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
-        checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth \
-        --eval mAP
-    ```
+   ```shell
+   python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
+       checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth \
+       --eval mAP
+   ```
 
 4. 使用4卡 GPU 测试 PSPNet，并且在标准 mIoU 和 cityscapes 指标里评估模型
 
-    ```shell
-    ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-        4 --out results.pkl --eval mIoU cityscapes
-    ```
+   ```shell
+   ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+       checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+       4 --out results.pkl --eval mIoU cityscapes
+   ```
 
    注意：在 cityscapes mIoU 和我们的 mIoU 指标会有一些差异 (~0.1%) 。因为 cityscapes 默认是根据类别样本数的多少进行加权平均，而我们对所有的数据集都是采取直接平均的方法来得到 mIoU。
 
@@ -74,54 +74,54 @@ python tools/test.py ${配置文件} ${检查点文件} [--out ${结果文件}] 
 
    首先，在配置文件里添加内容： `configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py`，
 
-    ```python
-    data = dict(
-        test=dict(
-            img_dir='leftImg8bit/test',
-            ann_dir='gtFine/test'))
-    ```
+   ```python
+   data = dict(
+       test=dict(
+           img_dir='leftImg8bit/test',
+           ann_dir='gtFine/test'))
+   ```
 
    随后，进行测试。
 
-    ```shell
-    ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
-        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
-        4 --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
-    ```
+   ```shell
+   ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+       checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth \
+       4 --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
+   ```
 
    您会在文件夹 `./pspnet_test_results` 里得到生成的 png 文件。
    您也许可以运行 `zip -r results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://www.cityscapes-dataset.com/submit/) 。
 
 6. 在 Cityscapes 数据集上使用 CPU 高效内存选项来测试 DeeplabV3+ `mIoU` 指标 (没有保存测试结果)
 
-    ```shell
-    python tools/test.py \
-    configs/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py \
-    deeplabv3plus_r18-d8_512x1024_80k_cityscapes_20201226_080942-cff257fe.pth \
-    --eval-options efficient_test=True \
-    --eval mIoU
-    ```
+   ```shell
+   python tools/test.py \
+   configs/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py \
+   deeplabv3plus_r18-d8_512x1024_80k_cityscapes_20201226_080942-cff257fe.pth \
+   --eval-options efficient_test=True \
+   --eval mIoU
+   ```
 
-    使用 ```pmap``` 可查看 CPU 内存情况,  ```efficient_test=True``` 会使用约 2.25GB 的 CPU 内存， ```efficient_test=False``` 会使用约 11.06GB 的 CPU 内存。 这个可选参数可以节约很多 CPU 内存。（MMseg v0.17 之后, `efficient_test` 参数将不再生效, 我们使用了一种渐近的方式来更加有效快速地评估和保存结果。）
+   使用 `pmap` 可查看 CPU 内存情况,  `efficient_test=True` 会使用约 2.25GB 的 CPU 内存， `efficient_test=False` 会使用约 11.06GB 的 CPU 内存。 这个可选参数可以节约很多 CPU 内存。（MMseg v0.17 之后, `efficient_test` 参数将不再生效, 我们使用了一种渐近的方式来更加有效快速地评估和保存结果。）
 
 7. 在 LoveDA 数据集上1卡 GPU 测试 PSPNet， 并生成 png 文件以便提交给官方评估服务器
 
    首先，在配置文件里添加内容： `configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py`,
 
-    ```python
-    data = dict(
-        test=dict(
-            img_dir='img_dir/test',
-            ann_dir='ann_dir/test'))
-    ```
+   ```python
+   data = dict(
+       test=dict(
+           img_dir='img_dir/test',
+           ann_dir='ann_dir/test'))
+   ```
 
    随后，进行测试。
 
-    ```shell
+   ```shell
    python ./tools/test.py configs/pspnet/pspnet_r50-d8_512x512_80k_loveda.py \
-        checkpoints/pspnet_r50-d8_512x512_80k_loveda_20211104_155728-88610f9f.pth \
-        --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
-    ```
+       checkpoints/pspnet_r50-d8_512x512_80k_loveda_20211104_155728-88610f9f.pth \
+       --format-only --eval-options "imgfile_prefix=./pspnet_test_results"
+   ```
 
    您会在文件夹 `./pspnet_test_results` 里得到生成的 png 文件。
    您也许可以运行 `zip -r -j Results.zip pspnet_test_results/` 并提交 zip 文件给 [evaluation server](https://codalab.lisn.upsaclay.fr/competitions/421) 。
