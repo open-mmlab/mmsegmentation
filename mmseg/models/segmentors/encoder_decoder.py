@@ -102,13 +102,10 @@ class EncoderDecoder(BaseSegmentor):
         losses = dict()
         if isinstance(self.auxiliary_head, nn.ModuleList):
             for idx, aux_head in enumerate(self.auxiliary_head):
-                loss_aux = aux_head.forward_train(x, img_metas,
-                                                  gt_semantic_seg,
-                                                  self.train_cfg)
+                loss_aux = aux_head.forward_train(x, img_metas, gt_semantic_seg, self.train_cfg)
                 losses.update(add_prefix(loss_aux, f'aux_{idx}'))
         else:
-            loss_aux = self.auxiliary_head.forward_train(
-                x, img_metas, gt_semantic_seg, self.train_cfg)
+            loss_aux = self.auxiliary_head.forward_train(x, img_metas, gt_semantic_seg, self.train_cfg)
             losses.update(add_prefix(loss_aux, 'aux'))
 
         return losses
@@ -145,8 +142,7 @@ class EncoderDecoder(BaseSegmentor):
         losses.update(loss_decode)
 
         if self.with_auxiliary_head:
-            loss_aux = self._auxiliary_head_forward_train(
-                x, img_metas, gt_semantic_seg)
+            loss_aux = self._auxiliary_head_forward_train(x, img_metas, gt_semantic_seg)
             losses.update(loss_aux)
 
         return losses
@@ -177,16 +173,13 @@ class EncoderDecoder(BaseSegmentor):
                 x1 = max(x2 - w_crop, 0)
                 crop_img = img[:, :, y1:y2, x1:x2]
                 crop_seg_logit = self.encode_decode(crop_img, img_meta)
-                preds += F.pad(crop_seg_logit,
-                               (int(x1), int(preds.shape[3] - x2), int(y1),
-                                int(preds.shape[2] - y2)))
+                preds += F.pad(crop_seg_logit, (int(x1), int(preds.shape[3] - x2), int(y1), int(preds.shape[2] - y2)))
 
                 count_mat[:, :, y1:y2, x1:x2] += 1
         assert (count_mat == 0).sum() == 0
         if torch.onnx.is_in_onnx_export():
             # cast count_mat to constant while exporting to ONNX
-            count_mat = torch.from_numpy(
-                count_mat.cpu().detach().numpy()).to(device=img.device)
+            count_mat = torch.from_numpy(count_mat.cpu().detach().numpy()).to(device=img.device)
         preds = preds / count_mat
         if rescale:
             # remove padding area
@@ -245,22 +238,24 @@ class EncoderDecoder(BaseSegmentor):
             seg_logit = self.slide_inference(img, img_meta, rescale)
         else:
             seg_logit = self.whole_inference(img, img_meta, rescale)
-        output = F.softmax(seg_logit, dim=1)
+        # output = F.softmax(seg_logit, dim=1)
         flip = img_meta[0]['flip']
         if flip:
             flip_direction = img_meta[0]['flip_direction']
             assert flip_direction in ['horizontal', 'vertical']
             if flip_direction == 'horizontal':
-                output = output.flip(dims=(3, ))
+                seg_logit = seg_logit.flip(dims=(3, ))
             elif flip_direction == 'vertical':
-                output = output.flip(dims=(2, ))
-
-        return output
+                seg_logit = seg_logit.flip(dims=(2, ))
+        return seg_logit
 
     def simple_test(self, img, img_meta, rescale=True):
         """Simple test with single image."""
         seg_logit = self.inference(img, img_meta, rescale)
-        seg_pred = seg_logit.argmax(dim=1)
+        seg_pred = F.softmax(seg_logit, dim=1).argmax(dim=1)
+        seg_pred_max_softmax = F.softmax(seg_logit, dim=1).max(dim=1)[0]
+        seg_pred_max_logit = seg_logit.max(dim=1)[0]
+        seg_pred_entropy = - (F.softmax(seg_logit, dim=1) * F.softmax(seg_logit, dim=1).log()).sum(1)
         if torch.onnx.is_in_onnx_export():
             # our inference backend only support 4D output
             seg_pred = seg_pred.unsqueeze(0)
@@ -268,7 +263,9 @@ class EncoderDecoder(BaseSegmentor):
         seg_pred = seg_pred.cpu().numpy()
         # unravel batch dim
         seg_pred = list(seg_pred)
-        return seg_pred
+        return seg_pred, {"max_softmax": seg_pred_max_softmax.cpu().numpy(),
+                          "max_logit": seg_pred_max_logit.cpu().numpy(),
+                          "entropy": seg_pred_entropy.cpu().numpy()}
 
     def aug_test(self, imgs, img_metas, rescale=True):
         """Test with augmentations.

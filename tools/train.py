@@ -5,7 +5,7 @@ import os
 import os.path as osp
 import time
 import warnings
-
+from datetime import datetime
 import mmcv
 import torch
 import torch.distributed as dist
@@ -82,6 +82,11 @@ def parse_args():
         'Note that the quotation marks are necessary and that no white space '
         'is allowed.')
     parser.add_argument(
+        '--experiment-tag', '--tag', type=str, default='',
+        help="Extra tag to characterize the experiment (modified hyperparams...)"
+    )
+
+    parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
         default='none',
@@ -125,8 +130,9 @@ def main():
         cfg.work_dir = args.work_dir
     elif cfg.get('work_dir', None) is None:
         # use config filename as default work_dir if cfg.work_dir is None
-        cfg.work_dir = osp.join('./work_dirs',
-                                osp.splitext(osp.basename(args.config))[0])
+        cfg.work_dir = osp.join('./work_dirs', "_".join([osp.splitext(osp.basename(args.config))
+                                [0], datetime.now().strftime("%Y%m%d%H%M%S"), args.experiment_tag]))
+
     if args.load_from is not None:
         cfg.load_from = args.load_from
     if args.resume_from is not None:
@@ -226,6 +232,7 @@ def main():
             PALETTE=datasets[0].PALETTE)
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
+    # datasets[0].get_class_count()
     # passing checkpoint meta for saving best checkpoint
     meta.update(cfg.checkpoint_config.meta)
     train_segmentor(

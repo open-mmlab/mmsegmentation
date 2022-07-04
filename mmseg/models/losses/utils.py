@@ -7,6 +7,24 @@ import torch
 import torch.nn.functional as F
 
 
+def get_class_count(class_frequency):
+    """Get class frequency for loss function.
+
+    Args:
+        class_frequency (list[float] | str | None): If class_frequency is a str,
+            take it as a file name and read from it.
+    """
+    if isinstance(class_frequency, str):
+        # take it as a file path
+        if class_frequency.endswith('.npy'):
+            class_frequency = np.load(class_frequency)
+        else:
+            # pkl, json or yaml
+            class_frequency = mmcv.load(class_frequency)
+
+    return class_frequency
+
+
 def get_class_weight(class_weight):
     """Get class weight for loss function.
 

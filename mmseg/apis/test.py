@@ -9,6 +9,8 @@ import torch
 from mmcv.engine import collect_results_cpu, collect_results_gpu
 from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
+import seaborn as sns; sns.set_theme()
+import matplotlib.pyplot as plt
 
 
 def np2tmp(array, temp_file_name=None, tmpdir=None):
@@ -77,6 +79,8 @@ def single_gpu_test(model,
 
     model.eval()
     results = []
+    results_in_scores = {"max_softmax": [], "max_logit": [], "entropy": []}
+    results_out_scores = {"max_softmax": [], "max_logit": [], "entropy": []}
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
     # The pipeline about how the data_loader retrieval samples from dataset:
@@ -85,15 +89,28 @@ def single_gpu_test(model,
     # data_fetcher -> collate_fn(dataset[index]) -> data_sample
     # we use batch_sampler to get correct data idx
     loader_indices = data_loader.batch_sampler
-
+    # all_cls for street_hazards is {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
-            result = model(return_loss=False, **data)
-
-        if show or out_dir:
+            result, pred_confs = model(return_loss=False, **data)
+        has_ood = False
+        if hasattr(dataset, "ood_indices"):
+            assert len(batch_indices) == 1
+            out_scores, in_scores = dataset.get_in_out_conf(pred_confs, batch_indices[0])
+            if (len(next(iter(out_scores.values()))) != 0) and (len(next(iter(in_scores.values()))) != 0):
+                has_ood = True
+                for k in ("max_softmax", "max_logit", "entropy"):
+                    results_in_scores[k].append(in_scores[k])
+                    results_out_scores[k].append(out_scores[k])
+            else:
+                has_ood = False
+        if (show or out_dir):
+            # produce 3 images
+            # gt_seg_map, pred_seg_map, confidence_map
             img_tensor = data['img'][0]
             img_metas = data['img_metas'][0].data[0]
             imgs = tensor2imgs(img_tensor, **img_metas[0]['img_norm_cfg'])
+
             assert len(imgs) == len(img_metas)
 
             for img, img_meta in zip(imgs, img_metas):
@@ -102,7 +119,6 @@ def single_gpu_test(model,
 
                 ori_h, ori_w = img_meta['ori_shape'][:-1]
                 img_show = mmcv.imresize(img_show, (ori_w, ori_h))
-
                 if out_dir:
                     out_file = osp.join(out_dir, img_meta['ori_filename'])
                 else:
@@ -115,13 +131,38 @@ def single_gpu_test(model,
                     show=show,
                     out_file=out_file,
                     opacity=opacity)
+                if has_ood:
+                    seg_gt = dataset.get_gt_seg_map_by_idx(batch_indices[0])
+                    if dataset.reduce_zero_label:
+                        seg_gt[seg_gt == 0] = 255
+                        seg_gt = seg_gt - 1
+                        seg_gt[seg_gt == 254] = 255
+                    ood_mask = (seg_gt == dataset.ood_indices[0]).astype(np.uint8)
+                    model.module.show_result(
+                        img_show,
+                        [seg_gt, ],
+                        palette=dataset.PALETTE,
+                        show=show,
+                        out_file=out_file[:-4] + "_gt" + out_file[-4:],
+                        opacity=opacity)
+                    plt.cla(); plt.clf()
+                    plt.figure()
+                    # 1-MSP
+                    sns.heatmap(
+                        1 - pred_confs["max_softmax"],
+                        xticklabels=False, yticklabels=False).get_figure().savefig(
+                        out_file[: -4] + "_conf" + out_file[-4:])
+                    plt.cla(); plt.clf()
+                    plt.figure()
+                    sns.heatmap(ood_mask, xticklabels=False, yticklabels=False).get_figure().savefig(out_file[:-4] + "_ood_mask" + out_file[-4:])
+                    plt.cla(); plt.clf()
 
         if efficient_test:
             result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
 
         if format_only:
-            result = dataset.format_results(
-                result, indices=batch_indices, **format_args)
+            result = dataset.format_results(result, indices=batch_indices, **format_args)
+
         if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
@@ -133,8 +174,15 @@ def single_gpu_test(model,
         batch_size = len(result)
         for _ in range(batch_size):
             prog_bar.update()
-
-    return results
+    # all result shall be changed into a dict to make it simpler
+    results_ = {
+        "seg_pre_results": results,
+        "ood_pre_resuts": {
+            "in_dist_conf": results_in_scores,
+            "oo_dist_conf": results_out_scores
+        }
+    }
+    return results_
 
 
 def multi_gpu_test(model,

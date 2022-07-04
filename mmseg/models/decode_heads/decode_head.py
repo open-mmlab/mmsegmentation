@@ -247,6 +247,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             losses_decode = [self.loss_decode]
         else:
             losses_decode = self.loss_decode
+        loss['acc_seg'] = accuracy(seg_logit, seg_label, ignore_index=self.ignore_index)
         for loss_decode in losses_decode:
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
@@ -254,6 +255,11 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                     seg_label,
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
+                if loss_decode.loss_name.endswith("edl"):
+                    loss["mean_ev"], loss["mean_ev_succ"], loss["mean_ev_fail"] = loss_decode.get_evidence(seg_logit,
+                                                                                                           seg_label,
+                                                                                                           self.ignore_index)
+                    loss["lam"] = loss_decode.lam
             else:
                 loss[loss_decode.loss_name] += loss_decode(
                     seg_logit,
@@ -261,6 +267,4 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
 
-        loss['acc_seg'] = accuracy(
-            seg_logit, seg_label, ignore_index=self.ignore_index)
         return loss

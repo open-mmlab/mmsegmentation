@@ -1,4 +1,2 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-from .wandblogger_hook import MMSegWandbHook
-
-__all__ = ['MMSegWandbHook']
+from .update_loss_annealer_hook import UpdateLossAnnealerHook
+__all__ = ["UpdateLossAnnealerHook"]

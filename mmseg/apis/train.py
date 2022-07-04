@@ -12,7 +12,7 @@ from mmcv.runner import (HOOKS, DistSamplerSeedHook, EpochBasedRunner,
 from mmcv.utils import build_from_cfg
 
 from mmseg import digit_version
-from mmseg.core import DistEvalHook, EvalHook, build_optimizer
+from mmseg.core import DistEvalHook, EvalHook, UpdateLossAnnealerHook, build_optimizer
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import (build_ddp, build_dp, find_latest_checkpoint,
                          get_root_logger)
@@ -77,7 +77,6 @@ def train_segmentor(model,
                     meta=None):
     """Launch segmentor training."""
     logger = get_root_logger(cfg.log_level)
-
     # prepare data loaders
     dataset = dataset if isinstance(dataset, (list, tuple)) else [dataset]
     # The default loader config
@@ -137,9 +136,12 @@ def train_segmentor(model,
             meta=meta))
 
     # register hooks
+    # import ipdb; ipdb.set_trace()
     runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config,
                                    cfg.get('momentum_config', None))
+
+    runner.register_hook(UpdateLossAnnealerHook(), priority='NORMAL')
     if distributed:
         # when distributed training by epoch, using`DistSamplerSeedHook` to set
         # the different seed to distributed sampler for each epoch, it will

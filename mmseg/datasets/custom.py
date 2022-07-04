@@ -284,19 +284,27 @@ class CustomDataset(Dataset):
                 indices.
 
         Returns:
-            list[torch.Tensor]: (area_intersect, area_union, area_prediction,
-                area_ground_truth).
+            list[torch.Tensor]: (area_intersect, area_union, area_prediction, area_ground_truth).
         """
         # In order to compat with batch inference
         if not isinstance(indices, list):
             indices = [indices]
         if not isinstance(preds, list):
             preds = [preds]
-
+        # all_cls = set()
         pre_eval_results = []
 
         for pred, index in zip(preds, indices):
             seg_map = self.get_gt_seg_map_by_idx(index)
+            # all_cls = all_cls.union(set([*seg_map.reshape(-1)]))
+            # Mask ood examples
+            if hasattr(self, "ood_indices"):
+                ood_masker = self.get_ood_masker(seg_map)
+            else:
+                ood_masker = np.ones_like(seg_map)
+            seg_map = seg_map[ood_masker]
+            pred = pred[ood_masker]
+
             pre_eval_results.append(
                 intersect_and_union(
                     pred,
@@ -397,8 +405,7 @@ class CustomDataset(Dataset):
             results (list[tuple[torch.Tensor]] | list[str]): per image pre_eval
                  results or predict segmentation map for computing evaluation
                  metric.
-            metric (str | list[str]): Metrics to be evaluated. 'mIoU',
-                'mDice' and 'mFscore' are supported.
+            metric (str | list[str]): Metrics to be evaluated. 'mIoU', 'mDice' and 'mFscore' are supported.
             logger (logging.Logger | None | str): Logger used for printing
                 related information during evaluation. Default: None.
             gt_seg_maps (generator[ndarray]): Custom gt seg maps as input,
@@ -415,13 +422,12 @@ class CustomDataset(Dataset):
 
         eval_results = {}
         # test a list of files
-        if mmcv.is_list_of(results, np.ndarray) or mmcv.is_list_of(
-                results, str):
+        if mmcv.is_list_of(results["seg_pre_results"], np.ndarray) or mmcv.is_list_of(results["seg_pre_results"], str):
             if gt_seg_maps is None:
                 gt_seg_maps = self.get_gt_seg_maps()
             num_classes = len(self.CLASSES)
             ret_metrics = eval_metrics(
-                results,
+                results["seg_pre_results"],
                 gt_seg_maps,
                 num_classes,
                 self.ignore_index,
@@ -430,7 +436,7 @@ class CustomDataset(Dataset):
                 reduce_zero_label=self.reduce_zero_label)
         # test a list of pre_eval_results
         else:
-            ret_metrics = pre_eval_to_metrics(results, metric)
+            ret_metrics = pre_eval_to_metrics(results["seg_pre_results"], metric)
 
         # Because dataset.CLASSES is required for per-eval.
         if self.CLASSES is None:
@@ -469,6 +475,36 @@ class CustomDataset(Dataset):
         print_log('\n' + class_table_data.get_string(), logger=logger)
         print_log('Summary:', logger)
         print_log('\n' + summary_table_data.get_string(), logger=logger)
+
+        # ood related metrics called only when there is ood objects in val/test examples
+        if hasattr(self, "ood_indices"):
+            # gather confidence metrics per image then average them
+            aurocs = {"max_softmax": [], "max_logit": [], "entropy": []}
+            auprs = {"max_softmax": [], "max_logit": [], "entropy": []}
+            fprs = {"max_softmax": [], "max_logit": [], "entropy": []}
+            eces = {"max_softmax": [], "max_logit": [], "entropy": []}
+            for k in ("max_softmax", "max_logit", "entropy"):
+                for in_scores, out_scores in zip(results["ood_pre_resuts"]["in_dist_conf"][k], results["ood_pre_resuts"]["oo_dist_conf"][k]):
+                    if k == "max_softmax":
+                        auroc, aupr, fpr, ece = self.evaluate_ood(out_scores, in_scores)
+                        aurocs[k].append(auroc); auprs[k].append(aupr); fprs[k].append(fpr); eces[k].append(ece)
+                    else:
+                        auroc, aupr, fpr, _ = self.evaluate_ood(out_scores, in_scores)
+                        aurocs[k].append(auroc); auprs[k].append(aupr); fprs[k].append(fpr); eces[k].append(np.nan)
+            if len(next(iter(aurocs.values()))) == 0 or \
+                    len(next(iter(auprs.values()))) == 0 or \
+                    len(next(iter(fprs.values()))) == 0 or \
+                    len(next(iter(eces.values()))) == 0:
+                print_log("No image w/ OOD objects or all images have just OOD objects", logger)
+            else:
+                for k in ("max_softmax", "max_logit", "entropy"):
+                    auroc, aupr, fpr, ece = np.mean(aurocs[k]), np.mean(auprs[k]), np.mean(fprs[k]), np.mean(eces[k])
+                    self.print_ood_measures_with_std(aurocs[k], auprs[k], fprs[k], eces[k], logger, text=k)
+                    # across images (lower, cannot get std vals)
+                    eval_results[f"{k}.auroc"] = auroc
+                    eval_results[f"{k}.aupr"] = aupr
+                    eval_results[f"{k}.ece"] = ece
+                    eval_results[f"{k}.fpr(fpr@95tpr)"] = fpr
 
         # each metric dict
         for key, value in ret_metrics_summary.items():
