@@ -291,17 +291,18 @@ class CustomDataset(Dataset):
             indices = [indices]
         if not isinstance(preds, list):
             preds = [preds]
-        # all_cls = set()
+
         pre_eval_results = []
 
         for pred, index in zip(preds, indices):
             seg_map = self.get_gt_seg_map_by_idx(index)
-            # all_cls = all_cls.union(set([*seg_map.reshape(-1)]))
+
             # Mask ood examples
             if hasattr(self, "ood_indices"):
                 ood_masker = self.get_ood_masker(seg_map)
             else:
                 ood_masker = np.ones_like(seg_map)
+
             seg_map = seg_map[ood_masker]
             pred = pred[ood_masker]
 

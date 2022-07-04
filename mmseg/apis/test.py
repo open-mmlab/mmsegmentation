@@ -89,7 +89,6 @@ def single_gpu_test(model,
     # data_fetcher -> collate_fn(dataset[index]) -> data_sample
     # we use batch_sampler to get correct data idx
     loader_indices = data_loader.batch_sampler
-    # all_cls for street_hazards is {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
             result, pred_confs = model(return_loss=False, **data)
@@ -102,8 +101,8 @@ def single_gpu_test(model,
                 for k in ("max_softmax", "max_logit", "entropy"):
                     results_in_scores[k].append(in_scores[k])
                     results_out_scores[k].append(out_scores[k])
-            else:
-                has_ood = False
+
+
         if (show or out_dir):
             # produce 3 images
             # gt_seg_map, pred_seg_map, confidence_map
