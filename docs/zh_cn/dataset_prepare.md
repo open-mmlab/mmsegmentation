@@ -283,6 +283,7 @@ python tools/convert_datasets/vaihingen.py /path/to/vaihingen
 使用我们默认的配置 (`clip_size`=512, `stride_size`=256)， 将生成 344 张图片的训练集和 398 张图片的验证集。
 
 ### iSAID
+
 iSAID 数据集(训练集/验证集/测试集)的图像可以从 [DOTA-v1.0](https://captain-whu.github.io/DOTA/dataset.html) 下载.
 
 iSAID 数据集(训练集/验证集)的注释可以从 [iSAID](https://captain-whu.github.io/iSAID/dataset.html) 下载.

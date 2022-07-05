@@ -30,7 +30,7 @@ model=dict(
         sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000)) )
 ```
 
-In this way, only pixels with confidence score under 0.7 are used to train. And we keep at least 100000 pixels during training. If `thresh` is not specified, pixels of top ``min_kept`` loss will be selected.
+In this way, only pixels with confidence score under 0.7 are used to train. And we keep at least 100000 pixels during training. If `thresh` is not specified, pixels of top `min_kept` loss will be selected.
 
 ## Class Balanced Loss
 
