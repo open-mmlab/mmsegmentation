@@ -7,7 +7,7 @@ from .custom import CustomDataset
 class ISPRSDataset(CustomDataset):
     """ISPRS dataset.
 
-    In segmentation map annotation for LoveDA, 0 is the ignore index.
+    In segmentation map annotation for ISPRS, 0 is the ignore index.
     ``reduce_zero_label`` should be set to True. The ``img_suffix`` and
     ``seg_map_suffix`` are both fixed to '.png'.
     """
