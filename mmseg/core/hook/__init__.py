@@ -1,2 +1,2 @@
-from .update_loss_annealer_hook import UpdateLossAnnealerHook
-__all__ = ["UpdateLossAnnealerHook"]
+from .parse_epoch_to_loss_hook import ParseEpochToLossHook
+__all__ = ["ParseEpochToLossHook"]

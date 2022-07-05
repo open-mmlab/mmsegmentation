@@ -6,8 +6,8 @@ _base_ = [
 model = dict(
     decode_head=dict(align_corners=True),
     # auxiliary_head=dict(align_corners=True),
-    test_cfg=dict(mode='slide', crop_size=(720, 720), stride=(513, 513)),
+    # test_cfg=dict(mode='slide', crop_size=(720, 720), stride=(513, 513)),
 
 )
-data = dict(samples_per_gpu=3,
-            workers_per_gpu=50)
+data = dict(samples_per_gpu=4,
+            workers_per_gpu=4)

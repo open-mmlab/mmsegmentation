@@ -1,9 +1,8 @@
-import torch
 from mmcv.runner.hooks import HOOKS, Hook
 
 
 @HOOKS.register_module()
-class UpdateLossAnnealerHook(Hook):
+class ParseEpochToLossHook(Hook):
     """Check invalid loss hook.
     This hook will regularly check whether the loss is valid
     during training.
