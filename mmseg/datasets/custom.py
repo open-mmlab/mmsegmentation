@@ -297,14 +297,11 @@ class CustomDataset(Dataset):
         for pred, index in zip(preds, indices):
             seg_map = self.get_gt_seg_map_by_idx(index)
 
-            # Mask ood examples
+            # # Mask ood examples
             if hasattr(self, "ood_indices"):
                 ood_masker = self.get_ood_masker(seg_map)
-            else:
-                ood_masker = np.ones_like(seg_map)
-
-            seg_map = seg_map[ood_masker]
-            pred = pred[ood_masker]
+                seg_map = seg_map[ood_masker]
+                pred = pred[ood_masker]
 
             pre_eval_results.append(
                 intersect_and_union(
