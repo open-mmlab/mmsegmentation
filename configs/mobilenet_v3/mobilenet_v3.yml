@@ -1,3 +1,17 @@
+Collections:
+- Name: LRASPP
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    URL: https://arxiv.org/abs/1905.02244
+    Title: Searching for MobileNetV3
+  README: configs/mobilenet_v3/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15
+    Version: v0.17.0
+  Converted From:
+    Code: https://github.com/tensorflow/models/tree/master/research/deeplab
 Models:
 - Name: lraspp_m-v3-d8_512x1024_320k_cityscapes
   In Collection: LRASPP

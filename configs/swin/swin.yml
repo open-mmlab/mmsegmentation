@@ -1,6 +1,6 @@
 Models:
 - Name: upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: Swin-T
     crop size: (512,512)
@@ -22,7 +22,7 @@ Models:
   Config: configs/swin/upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/swin/upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K/upernet_swin_tiny_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K_20210531_112542-e380ad3e.pth
 - Name: upernet_swin_small_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: Swin-S
     crop size: (512,512)
@@ -44,7 +44,7 @@ Models:
   Config: configs/swin/upernet_swin_small_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/swin/upernet_swin_small_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K/upernet_swin_small_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K_20210526_192015-ee2fff1c.pth
 - Name: upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: Swin-B
     crop size: (512,512)
@@ -66,7 +66,7 @@ Models:
   Config: configs/swin/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/swin/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_1K_20210526_192340-593b0e13.pth
 - Name: upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_22K
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: Swin-B
     crop size: (512,512)
@@ -80,7 +80,7 @@ Models:
   Config: configs/swin/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_22K.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/swin/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_22K/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_22K_20210526_211650-762e2178.pth
 - Name: upernet_swin_base_patch4_window12_512x512_160k_ade20k_pretrain_384x384_1K
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: Swin-B
     crop size: (512,512)
@@ -102,7 +102,7 @@ Models:
   Config: configs/swin/upernet_swin_base_patch4_window12_512x512_160k_ade20k_pretrain_384x384_1K.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/swin/upernet_swin_base_patch4_window12_512x512_160k_ade20k_pretrain_384x384_1K/upernet_swin_base_patch4_window12_512x512_160k_ade20k_pretrain_384x384_1K_20210531_132020-05b22ea4.pth
 - Name: upernet_swin_base_patch4_window12_512x512_160k_ade20k_pretrain_384x384_22K
-  In Collection: UperNet
+  In Collection: UPerNet
   Metadata:
     backbone: Swin-B
     crop size: (512,512)

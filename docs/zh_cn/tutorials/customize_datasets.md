@@ -73,62 +73,62 @@ dataset_A_train = dict(
 有2种方式去拼接数据集。
 
 1. 如果您想拼接的数据集是同样的类型，但有不同的标注文件，
-    您可以按如下操作去拼接数据集的配置文件：
+   您可以按如下操作去拼接数据集的配置文件：
 
-    1. 您也许可以拼接两个标注文件夹 `ann_dir`
+   1. 您也许可以拼接两个标注文件夹 `ann_dir`
 
-        ```python
-        dataset_A_train = dict(
-            type='Dataset_A',
-            img_dir = 'img_dir',
-            ann_dir = ['anno_dir_1', 'anno_dir_2'],
-            pipeline=train_pipeline
-        )
-        ```
+      ```python
+      dataset_A_train = dict(
+          type='Dataset_A',
+          img_dir = 'img_dir',
+          ann_dir = ['anno_dir_1', 'anno_dir_2'],
+          pipeline=train_pipeline
+      )
+      ```
 
-    2. 您也可以去拼接两个 `split` 文件列表
+   2. 您也可以去拼接两个 `split` 文件列表
 
-        ```python
-        dataset_A_train = dict(
-            type='Dataset_A',
-            img_dir = 'img_dir',
-            ann_dir = 'anno_dir',
-            split = ['split_1.txt', 'split_2.txt'],
-            pipeline=train_pipeline
-        )
-        ```
+      ```python
+      dataset_A_train = dict(
+          type='Dataset_A',
+          img_dir = 'img_dir',
+          ann_dir = 'anno_dir',
+          split = ['split_1.txt', 'split_2.txt'],
+          pipeline=train_pipeline
+      )
+      ```
 
-    3. 您也可以同时拼接 `ann_dir` 文件夹和 `split` 文件列表
+   3. 您也可以同时拼接 `ann_dir` 文件夹和 `split` 文件列表
 
-        ```python
-        dataset_A_train = dict(
-            type='Dataset_A',
-            img_dir = 'img_dir',
-            ann_dir = ['anno_dir_1', 'anno_dir_2'],
-            split = ['split_1.txt', 'split_2.txt'],
-            pipeline=train_pipeline
-        )
-        ```
+      ```python
+      dataset_A_train = dict(
+          type='Dataset_A',
+          img_dir = 'img_dir',
+          ann_dir = ['anno_dir_1', 'anno_dir_2'],
+          split = ['split_1.txt', 'split_2.txt'],
+          pipeline=train_pipeline
+      )
+      ```
 
-        在这样的情况下， `ann_dir_1` 和 `ann_dir_2` 分别对应于 `split_1.txt` 和 `split_2.txt`
+      在这样的情况下， `ann_dir_1` 和 `ann_dir_2` 分别对应于 `split_1.txt` 和 `split_2.txt`
 
 2. 如果您想拼接不同的数据集，您可以如下去拼接数据集的配置文件：
 
-    ```python
-    dataset_A_train = dict()
-    dataset_B_train = dict()
+   ```python
+   dataset_A_train = dict()
+   dataset_B_train = dict()
 
-    data = dict(
-        imgs_per_gpu=2,
-        workers_per_gpu=2,
-        train = [
-            dataset_A_train,
-            dataset_B_train
-        ],
-        val = dataset_A_val,
-        test = dataset_A_test
-        )
-    ```
+   data = dict(
+       imgs_per_gpu=2,
+       workers_per_gpu=2,
+       train = [
+           dataset_A_train,
+           dataset_B_train
+       ],
+       val = dataset_A_val,
+       test = dataset_A_test
+       )
+   ```
 
 一个更复杂的例子如下：分别重复 `Dataset_A` 和 `Dataset_B` N 次和 M 次，然后再去拼接重复后的数据集
 
