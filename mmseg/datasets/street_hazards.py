@@ -132,13 +132,83 @@ class StreetHazardsDataset(CustomDataset):
             for i in class_count_pixel.keys():
                 class_count_pixel[i] += int((seg_gt == i).sum())
                 class_count_semantic[i] += int((np.unique(seg_gt) == i).sum())
-        class_count_pixel = np.array([*class_count_pixel.values()])
-        class_count_semantic = np.array([*class_count_semantic.values()])
+        self.class_count_pixel = np.array([*class_count_pixel.values()])
+        self.class_count_semantic = np.array([*class_count_semantic.values()])
 
         filename = f"class_count_street_hazards_pixel.npy"
         with open(osp.join(path, filename), "wb") as f:
-            np.save(f, class_count_pixel)
+            np.save(f, self.class_count_pixel)
 
         filename = f"class_count_street_hazards_semantic.npy"
         with open(osp.join(path, filename), "wb") as f:
-            np.save(f, class_count_semantic)
+            np.save(f, self.class_count_semantic)
+
+    def get_bins(self, num_bins='auto'):
+        if not hasattr(self, "class_count_pixel"):
+            try:
+                with open("class_count_street_hazards_pixel.npy", "rb") as f:
+                    self.class_count_pixel = np.load(f)
+            except FileNotFoundError:
+                self.get_class_count()
+
+        class_count = self.class_count_pixel[:-1]
+        if num_bins == 'auto':
+            low = 0.1
+            hi = 10
+            used = np.zeros(self.num_classes, dtype=bool)
+            bin_masks = []
+            ratios = []
+            bin_index = 0
+            label2bin = {}
+            bin_label_maps = []
+            bin_counts = []
+            for cls in range(self.num_classes):
+                if used[cls]:
+                    continue
+                ratio_ = class_count / class_count[cls]
+                ratios.append(ratio_)
+                bin_mask = np.logical_and((ratio_ >= low), (ratio_ <= hi))
+                if np.logical_and(bin_mask, used).any():
+                    # check if conflicts with used
+                    for c in np.where(np.logical_and(bin_mask, used))[0]:
+                        conflict_bin_idx = label2bin[c]
+                        conflict_bin_mask = bin_masks[conflict_bin_idx]
+                        if bin_mask.sum() > conflict_bin_mask.sum():
+                            bin_mask[c] = False
+                        else:
+                            conflict_bin_mask[c] = False
+                            bin_masks[conflict_bin_idx] = conflict_bin_mask
+                used = np.logical_or(used, bin_mask)
+                bin_masks.append(bin_mask)
+
+                for c in np.where(bin_mask)[0]:
+                    label2bin[c] = bin_index
+
+                bin_index += 1
+            num_bins = len(bin_masks)
+
+            for i in range(num_bins):
+                label_map = []
+                for c in range(self.num_classes):
+                    if bin_masks[i][c]:
+                        label_map.append(c)
+                    else:
+                        label_map.append(self.num_classes + bin_index)
+                bin_label_maps.append(label_map)
+
+                bin_count = class_count[bin_masks[i]]
+                bin_count = np.append(bin_count, class_count[~bin_masks[i]].sum())
+                bin_counts.append(bin_count)
+
+                oth_mask = np.zeros(num_bins, dtype=bool)
+                oth_mask[i] = True
+                bin_masks[i] = np.concatenate((bin_masks[i], oth_mask))
+
+            assert all([bin_count.sum() == class_count.sum() for bin_count in bin_counts])
+            assert np.sum([bin_mask.sum() for bin_mask in bin_masks]) == self.num_classes + num_bins
+
+            self.num_bins = num_bins
+            self.label2bin = label2bin
+            self.bin_label_maps = bin_label_maps
+            self.bin_masks = bin_masks
+            self.bin_counts = bin_counts

@@ -201,6 +201,27 @@ def main():
     meta['seed'] = seed
     meta['exp_name'] = osp.basename(args.config)
 
+    datasets = [build_dataset(cfg.data.train)]
+    if len(cfg.workflow) == 2:
+        val_dataset = copy.deepcopy(cfg.data.val)
+        val_dataset.pipeline = cfg.data.train.pipeline
+        datasets.append(build_dataset(val_dataset))
+    if cfg.checkpoint_config is not None:
+        # save mmseg version, config file content and class names in
+        # checkpoints as meta data
+        cfg.checkpoint_config.meta = dict(
+            mmseg_version=f'{__version__}+{get_git_hash()[:7]}',
+            config=cfg.pretty_text,
+            CLASSES=datasets[0].CLASSES,
+            PALETTE=datasets[0].PALETTE)
+
+    use_bags = True
+    # Used by bags, ldam...
+    # datasets[0].get_class_count()
+    if use_bags:
+        datasets[0].get_bins()
+        cfg.model.decode_head.num_classes += datasets[0].num_bins
+
     model = build_segmentor(
         cfg.model,
         train_cfg=cfg.get('train_cfg'),
@@ -216,23 +237,16 @@ def main():
         model = revert_sync_batchnorm(model)
 
     logger.info(model)
+    if use_bags:
+        setattr(model.decode_head, "num_bins", datasets[0].num_bins)
+        setattr(model.decode_head, "label2bin", datasets[0].label2bin)
+        setattr(model.decode_head, "bin_label_maps", datasets[0].bin_label_maps)
+        setattr(model.decode_head, "bin_masks", datasets[0].bin_masks)
+        setattr(model.decode_head, "bin_counts", datasets[0].bin_counts)
 
-    datasets = [build_dataset(cfg.data.train)]
-    if len(cfg.workflow) == 2:
-        val_dataset = copy.deepcopy(cfg.data.val)
-        val_dataset.pipeline = cfg.data.train.pipeline
-        datasets.append(build_dataset(val_dataset))
-    if cfg.checkpoint_config is not None:
-        # save mmseg version, config file content and class names in
-        # checkpoints as meta data
-        cfg.checkpoint_config.meta = dict(
-            mmseg_version=f'{__version__}+{get_git_hash()[:7]}',
-            config=cfg.pretty_text,
-            CLASSES=datasets[0].CLASSES,
-            PALETTE=datasets[0].PALETTE)
+    import ipdb; ipdb.set_trace()
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
-    # datasets[0].get_class_count()
     # passing checkpoint meta for saving best checkpoint
     meta.update(cfg.checkpoint_config.meta)
     train_segmentor(

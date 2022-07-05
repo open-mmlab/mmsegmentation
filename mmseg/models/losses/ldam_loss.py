@@ -20,7 +20,7 @@ class LDAMLoss(nn.Module):
         self.scale = scale
         self.reduction = reduction
         self.class_weight = class_weight
-        self.class_count = get_class_count(class_count)  # last item is for 255
+        self.class_count = get_class_count(class_count)[:-1]  # last item is for 255
         delta = 1.0 / (self.class_count**0.25)
         delta = delta * (max_m / np.max(delta))
         self.delta = torch.cuda.FloatTensor(delta)
@@ -34,14 +34,12 @@ class LDAMLoss(nn.Module):
                 avg_factor=None,
                 reduction_override=None,
                 ignore_index=255):
-        import ipdb; ipdb.set_trace()
-
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (reduction_override if reduction_override else self.reduction)
         batch_target_ = target.data.unsqueeze(1).clone()
         # Label 255 is causing this error in gather and scatter_
         batch_target_[batch_target_ == 255] = 0
-        delta_ = self.delta[None, :-1].reshape(1, -1, 1, 1).repeat(batch_target_.shape)
+        delta_ = self.delta[None, :].reshape(1, -1, 1, 1).repeat(batch_target_.shape)
         batch_delta = torch.gather(input=delta_, dim=1, index=batch_target_)
         diff = pred - batch_delta
         one_hot_gt = torch.zeros_like(pred, dtype=torch.uint8).scatter_(1, batch_target_, 1)
