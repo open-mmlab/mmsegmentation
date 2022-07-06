@@ -9,6 +9,7 @@ model = dict(data_preprocessor=data_preprocessor)
 # in backbone
 
 optim_wrapper = dict(
+    _delete_=True,
     type='OptimWrapper',
     optimizer=dict(
         type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),

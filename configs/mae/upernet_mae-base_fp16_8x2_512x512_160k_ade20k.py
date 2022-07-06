@@ -25,6 +25,7 @@ model = dict(
     test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
 
 optim_wrapper = dict(
+    _delete_=True,
     type='OptimWrapper',
     optimizer=dict(
         type='AdamW', lr=1e-4, betas=(0.9, 0.999), weight_decay=0.05),
