@@ -85,7 +85,7 @@ def parse_args():
         '--experiment-tag', '--tag', type=str, default='',
         help="Extra tag to characterize the experiment (modified hyperparams...)"
     )
-
+    parser.add_argument("--use-bags", action='store_true', help='determines weather to use bags of predictors')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
@@ -215,12 +215,11 @@ def main():
             CLASSES=datasets[0].CLASSES,
             PALETTE=datasets[0].PALETTE)
 
-    use_bags = True
     # Used by bags, ldam...
     # datasets[0].get_class_count()
-    if use_bags:
-        datasets[0].get_bins()
-        cfg.model.decode_head.num_classes += datasets[0].num_bins
+    if args.use_bags:
+        datasets[0].get_bags()
+        cfg.model.decode_head.num_classes += datasets[0].num_bags
 
     model = build_segmentor(
         cfg.model,
@@ -237,14 +236,14 @@ def main():
         model = revert_sync_batchnorm(model)
 
     logger.info(model)
-    if use_bags:
-        setattr(model.decode_head, "num_bins", datasets[0].num_bins)
-        setattr(model.decode_head, "label2bin", datasets[0].label2bin)
-        setattr(model.decode_head, "bin_label_maps", datasets[0].bin_label_maps)
-        setattr(model.decode_head, "bin_masks", datasets[0].bin_masks)
-        setattr(model.decode_head, "bin_counts", datasets[0].bin_counts)
+    if args.use_bags:
+        setattr(model.decode_head, "use_bags", True)
+        setattr(model.decode_head, "num_bags", datasets[0].num_bags)
+        setattr(model.decode_head, "label2bag", datasets[0].label2bag)
+        setattr(model.decode_head, "bag_label_maps", datasets[0].bag_label_maps)
+        setattr(model.decode_head, "bag_masks", datasets[0].bag_masks)
+        setattr(model.decode_head, "bag_class_counts", datasets[0].bag_class_counts)
 
-    import ipdb; ipdb.set_trace()
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
     # passing checkpoint meta for saving best checkpoint
