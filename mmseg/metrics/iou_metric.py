@@ -129,7 +129,7 @@ class IoUMetric(BaseMetric):
     @staticmethod
     def intersect_and_union(pred_label: torch.tensor, label: torch.tensor,
                             num_classes: int, ignore_index: int):
-        """Calculate intersection and Union.
+        """Calculate Intersection and Union.
 
         Args:
             pred_label (torch.tensor): Prediction segmentation map
@@ -175,22 +175,22 @@ class IoUMetric(BaseMetric):
                               beta: int = 1):
         """Calculate evaluation metrics
         Args:
-            total_area_intersect (ndarray): The intersection of prediction and
-                ground truth histogram on all classes.
-            total_area_union (ndarray): The union of prediction and ground
+            total_area_intersect (np.ndarray): The intersection of prediction
+                and ground truth histogram on all classes.
+            total_area_union (np.ndarray): The union of prediction and ground
                 truth histogram on all classes.
-            total_area_pred_label (ndarray): The prediction histogram on all
-                classes.
-            total_area_label (ndarray): The ground truth histogram on
+            total_area_pred_label (np.ndarray): The prediction histogram on
                 all classes.
-            metrics (list[str] | str): Metrics to be evaluated, 'mIoU' and
+            total_area_label (np.ndarray): The ground truth histogram on
+                all classes.
+            metrics (List[str] | str): Metrics to be evaluated, 'mIoU' and
                 'mDice'.
             nan_to_num (int, optional): If specified, NaN values will be
                 replaced by the numbers defined by the user. Default: None.
             beta (int): Determines the weight of recall in the combined score.
                 Default: 1.
         Returns:
-            Dict[str, ndarray]: per category evaluation metrics,
+            Dict[str, np.ndarray]: per category evaluation metrics,
                 shape (num_classes, ).
         """
 

@@ -44,7 +44,7 @@ class EncoderDecoder(BaseSegmentor):
      whole_inference()/slide_inference(): encoder_decoder()
      encoder_decoder(): extract_feat() -> decode_head.predict()
 
-    4 The ``_forward`` method is used to output the tensor by running the model,
+    3. The ``_forward`` method is used to output the tensor by running the model,
     which includes two steps: (1) Extracts features to obtain the feature maps
     (2)Call the decode head forward function to forward decode head model.
 
