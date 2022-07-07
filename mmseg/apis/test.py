@@ -11,6 +11,7 @@ from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
 import seaborn as sns; sns.set_theme()
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 
 
 def np2tmp(array, temp_file_name=None, tmpdir=None):
@@ -79,6 +80,7 @@ def single_gpu_test(model,
 
     model.eval()
     results = []
+    results_others_cms = []  # list of np arrays[tn, fp, fn, tp]
     results_in_scores = {"max_softmax": [], "max_logit": [], "entropy": []}
     results_out_scores = {"max_softmax": [], "max_logit": [], "entropy": []}
     dataset = data_loader.dataset
@@ -92,10 +94,18 @@ def single_gpu_test(model,
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
             result, pred_confs = model(return_loss=False, **data)
+
         has_ood = False
         if hasattr(dataset, "ood_indices"):
             assert len(batch_indices) == 1
             seg_gt = dataset.get_gt_seg_map_by_idx(batch_indices[0])
+            ood_mask = (seg_gt == dataset.ood_indices[0]).astype(np.uint8)
+
+            if model.module.decode_head.use_bags:
+                other_is_selected = pred_confs.pop("pred_all_other").astype(np.uint8)
+                cm = confusion_matrix(ood_mask.ravel(), other_is_selected.ravel()).ravel()
+                results_others_cms.append(cm)
+
             out_scores, in_scores = dataset.get_in_out_conf(pred_confs, seg_gt)
             if (len(next(iter(out_scores.values()))) != 0) and (len(next(iter(in_scores.values()))) != 0):
                 has_ood = True
@@ -152,7 +162,6 @@ def single_gpu_test(model,
                         out_file[: -4] + "_conf" + out_file[-4:])
                     plt.cla(); plt.clf(); plt.close('all')
                     # Mask of ood samples
-                    ood_mask = (seg_gt == dataset.ood_indices[0]).astype(np.uint8)
                     plt.figure()
                     sns.heatmap(ood_mask, xticklabels=False, yticklabels=False).get_figure().savefig(out_file[:-4] + "_ood_mask" + out_file[-4:])
                     plt.cla(); plt.clf(); plt.close('all')
@@ -188,8 +197,8 @@ def single_gpu_test(model,
         "ood_pre_resuts": {
             "in_dist_conf": results_in_scores,
             "oo_dist_conf": results_out_scores
-        }
-    }
+        },
+        "bags_others_cms": results_others_cms}
     return results_
 
 

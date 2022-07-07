@@ -251,10 +251,39 @@ class EncoderDecoder(BaseSegmentor):
     def simple_test(self, img, img_meta, rescale=True):
         """Simple test with single image."""
         seg_logit = self.inference(img, img_meta, rescale)
-        seg_pred = F.softmax(seg_logit, dim=1).argmax(dim=1)
-        seg_pred_max_softmax = F.softmax(seg_logit, dim=1).max(dim=1)[0]
-        seg_pred_max_logit = seg_logit.max(dim=1)[0]
-        seg_pred_entropy = - (F.softmax(seg_logit, dim=1) * F.softmax(seg_logit, dim=1).log()).sum(1)
+        if self.decode_head.use_bags:
+            smp = torch.zeros_like(seg_logit[:, :-self.decode_head.num_bags, :, :])
+            logits = torch.zeros_like(seg_logit[:, :-self.decode_head.num_bags, :, :])
+            is_all_other = torch.zeros_like(seg_logit[:, :self.decode_head.num_bags, :, :])
+            seg_pred_entropy = 0
+
+            for bag_idx in range(self.decode_head.num_bags):
+                cp_seg_logit = seg_logit.detach().clone()
+                bag_seg_logit = cp_seg_logit[:, self.decode_head.bag_masks[bag_idx], :, :]
+                # ignores other after softmax
+                bag_smp = F.softmax(bag_seg_logit, dim=1)
+                oth_index = len(self.decode_head.bags_classes[bag_idx]) - 1
+                is_all_other[:, bag_idx, :, :] = (bag_smp.argmax(dim=1) == oth_index)
+                seg_pred_entropy += -(bag_smp * bag_smp.log()).sum(1)
+                bag_smp_no_other = bag_smp[:, :-1, :, :]
+                bag_seg_logit_no_other = bag_seg_logit[:, :-1, :, :]
+                mask = self.decode_head.bag_masks[bag_idx][:-self.decode_head.num_bags]
+                smp[:, mask, :, :] = bag_smp_no_other
+                logits[:, mask, :, :] = bag_seg_logit_no_other
+
+            seg_pred_all_other = is_all_other.all(1, True)
+
+            seg_pred = smp.argmax(dim=1)
+            seg_pred_max_softmax = smp.max(dim=1)[0]
+            seg_pred_max_logit = logits.max(dim=1)[0]
+            seg_pred_entropy = seg_pred_entropy / self.decode_head.num_bags
+        else:
+            seg_pred = F.softmax(seg_logit, dim=1).argmax(dim=1)  # change here
+
+            seg_pred_max_softmax = F.softmax(seg_logit, dim=1).max(dim=1)[0]
+            seg_pred_max_logit = seg_logit.max(dim=1)[0]
+            seg_pred_entropy = - (F.softmax(seg_logit, dim=1) * F.softmax(seg_logit, dim=1).log()).sum(1)
+            seg_pred_all_other = torch.zeros_like(seg_logit[:, 0, :, :], dtype=torch.bool)
         if torch.onnx.is_in_onnx_export():
             # our inference backend only support 4D output
             seg_pred = seg_pred.unsqueeze(0)
@@ -264,7 +293,8 @@ class EncoderDecoder(BaseSegmentor):
         seg_pred = list(seg_pred)
         return seg_pred, {"max_softmax": seg_pred_max_softmax.cpu().numpy(),
                           "max_logit": seg_pred_max_logit.cpu().numpy(),
-                          "entropy": seg_pred_entropy.cpu().numpy()}
+                          "entropy": seg_pred_entropy.cpu().numpy(),
+                          "pred_all_other": seg_pred_all_other.cpu().numpy()}
 
     def aug_test(self, imgs, img_metas, rescale=True):
         """Test with augmentations.

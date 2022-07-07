@@ -503,8 +503,15 @@ class CustomDataset(Dataset):
                     eval_results[f"{k}.aupr"] = aupr
                     eval_results[f"{k}.ece"] = ece
                     eval_results[f"{k}.fpr(fpr@95tpr)"] = fpr
-
-        # each metric dict
+            if len(results["bags_others_cms"]) > 0:
+                # using bags
+                cm = sum(results["bags_others_cms"])  # tn, fp, fn, tp
+                precision = cm[3] / (cm[3] + cm[1] + 1e-8)
+                recall = cm[3] / (cm[3] + cm[2] + 1e-8)
+                eval_results["bags.all_oth." + "precision"] = precision
+                eval_results["bags.all_oth." + "recall"] = recall
+                eval_results["bags.all_oth." + "f1"] = 2 * precision * recall / (precision + recall)
+                # each metric dict
         for key, value in ret_metrics_summary.items():
             if key == 'aAcc':
                 eval_results[key] = value / 100.0
