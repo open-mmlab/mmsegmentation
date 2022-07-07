@@ -22,7 +22,8 @@ train_cfg = dict(
     type='IterBasedTrainLoop', max_iters=total_iters, val_interval=4000)
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
-default_hooks = dict(checkpoint=dict(by_epoch=False, interval=4000))
+default_hooks = dict(
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=4000))
 
 crop_size = (680, 680)
 data_preprocessor = dict(size=crop_size)
