@@ -2,8 +2,8 @@ import numpy as np
 import sklearn.metrics as sk
 from mmcv.utils import print_log
 from ood_metrics import fpr_at_95_tpr
-RECALL_LEVEL_DEFAULT = 0.95
 
+RECALL_LEVEL_DEFAULT = 0.95
 np.seterr(invalid='ignore')
 
 

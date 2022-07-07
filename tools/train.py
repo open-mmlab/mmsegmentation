@@ -115,6 +115,10 @@ def parse_args():
 
 def main():
     args = parse_args()
+    import gc
+
+    gc.collect()
+    torch.cuda.empty_cache()
 
     cfg = Config.fromfile(args.config)
     if args.cfg_options is not None:
@@ -242,8 +246,10 @@ def main():
         setattr(model.decode_head, "label2bag", datasets[0].label2bag)
         setattr(model.decode_head, "bag_label_maps", datasets[0].bag_label_maps)
         setattr(model.decode_head, "bag_masks", datasets[0].bag_masks)
+        setattr(model.decode_head, "bags_classes", datasets[0].bags_classes)
         setattr(model.decode_head, "bag_class_counts", datasets[0].bag_class_counts)
-
+    else:
+        setattr(model.decode_head, "use_bags", False)
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
     # passing checkpoint meta for saving best checkpoint

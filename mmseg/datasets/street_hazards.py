@@ -3,12 +3,12 @@ import os.path as osp
 
 
 import numpy as np
-from mmcv.utils import print_log
-from PIL import Image
 from typing import Tuple
 from .builder import DATASETS
 from .custom import CustomDataset
 from ..utils import get_ood_measures, print_measures_with_std, print_measures
+import torch
+from copy import deepcopy
 
 
 @DATASETS.register_module()
@@ -72,10 +72,10 @@ class StreetHazardsDataset(CustomDataset):
         else:
             return None, None, None, None
 
-    def get_in_out_conf(self, conf, index):
+    def get_in_out_conf(self, pred_confs, seg_gt):
         in_scores = {}
         out_scores = {}
-        seg_gt = self.get_gt_seg_map_by_idx(index)
+        confs = deepcopy(pred_confs)
         if self.reduce_zero_label:
             seg_gt[seg_gt == 0] = 255
             seg_gt = seg_gt - 1
@@ -87,15 +87,15 @@ class StreetHazardsDataset(CustomDataset):
         out_index = (seg_gt == self.ood_indices[0])
         for label in self.ood_indices:
             out_index = np.logical_or(out_index, (seg_gt == label))
-        for k in conf.keys():
-            conf[k] = conf[k].squeeze()[mask]
+        for k in confs.keys():
+            confs[k] = confs[k].squeeze()[mask]
             if k in ("max_softmax", "max_logit"):
                 # gather their respective conf values
-                in_scores[k] = - conf[k][np.logical_not(out_index)]
-                out_scores[k] = - conf[k][out_index]
+                in_scores[k] = - confs[k][np.logical_not(out_index)]
+                out_scores[k] = - confs[k][out_index]
             elif k == "entropy":
-                in_scores[k] = conf[k][np.logical_not(out_index)]
-                out_scores[k] = conf[k][out_index]
+                in_scores[k] = confs[k][np.logical_not(out_index)]
+                out_scores[k] = confs[k][out_index]
             else:
                 raise KeyError(k)
 
@@ -117,6 +117,54 @@ class StreetHazardsDataset(CustomDataset):
         for label in self.ood_indices:
             ood_mask = np.logical_or(ood_mask, seg_gt == label)
         return (~ood_mask)
+
+    def edge_detector(self, seg_gt, kernel_size=2):
+        seg_gt = torch.from_numpy(seg_gt)
+        assert len(seg_gt.size()) == 2
+        stride = kernel_size
+
+        patches = seg_gt.unfold(0, kernel_size, stride).unfold(1, kernel_size, stride)
+        unfold_shape = patches.size()
+
+        # DO Whatever ops that doesn't change the shape
+        ones = torch.ones_like(patches, dtype=torch.bool)
+        zeros = torch.zeros_like(patches, dtype=torch.bool)
+        patches_eq_elems = (patches == patches[:, :, 0:1, 0:1]).all(-1, True).all(-2, True).repeat(1, 1, kernel_size, kernel_size)
+        patches = torch.where(patches_eq_elems, zeros, ones)
+
+        assert patches.size() == unfold_shape
+
+        patches = patches.contiguous().view(-1, kernel_size, kernel_size)
+
+        # Reshape back
+        patches_orig = patches.view(unfold_shape)
+        output_h = unfold_shape[0] * unfold_shape[2]
+        output_w = unfold_shape[1] * unfold_shape[3]
+        patches_orig = patches_orig.permute(0, 2, 1, 3).contiguous()
+        patches_orig = patches_orig.view(output_h, output_w)
+
+        assert patches_orig.size() == seg_gt.size()
+        return patches_orig
+
+    def unfold_fold(self, seg_gt, kernel_size=2, stride=2):
+        seg_gt = torch.from_numpy(seg_gt)
+        assert len(seg_gt.size()) == 2
+
+        patches = seg_gt.unfold(0, kernel_size, stride).unfold(1, kernel_size, stride)
+        unfold_shape = patches.size()
+
+        # DO Whatever ops that doesn't change the shape
+
+        patches = patches.contiguous().view(-1, kernel_size, kernel_size)
+
+        # Reshape back
+        patches_orig = patches.view(unfold_shape)
+        output_h = unfold_shape[0] * unfold_shape[2]
+        output_w = unfold_shape[1] * unfold_shape[3]
+        patches_orig = patches_orig.permute(0, 2, 1, 3).contiguous()
+        patches_orig = patches_orig.view(output_h, output_w)
+
+        assert (patches_orig == seg_gt).all()
 
     def get_class_count(self, path="."):
         class_count_pixel = {i: 0 for i in range(len(self.CLASSES))}
@@ -161,6 +209,7 @@ class StreetHazardsDataset(CustomDataset):
             bag_index = 0
             label2bag = {}
             bag_label_maps = []
+            bags_classes = []
             bag_class_counts = []
             for cls in range(self.num_classes):
                 if used[cls]:
@@ -203,6 +252,7 @@ class StreetHazardsDataset(CustomDataset):
                 oth_mask = np.zeros(num_bags, dtype=bool)
                 oth_mask[i] = True
                 bag_masks[i] = np.concatenate((bag_masks[i], oth_mask))
+                bags_classes.append([*np.where(bag_masks[i])[0]])
 
             assert all([bag_class_count.sum() == class_count.sum() for bag_class_count in bag_class_counts])
             assert np.sum([bag_mask.sum() for bag_mask in bag_masks]) == self.num_classes + num_bags
@@ -212,3 +262,4 @@ class StreetHazardsDataset(CustomDataset):
             self.bag_label_maps = bag_label_maps
             self.bag_masks = bag_masks
             self.bag_class_counts = bag_class_counts
+            self.bags_classes = bags_classes

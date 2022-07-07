@@ -9,6 +9,7 @@ from mmseg.core import build_pixel_sampler
 from mmseg.ops import resize
 from ..builder import build_loss
 from ..losses import accuracy
+import torch.nn.functional as F
 
 
 class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
@@ -231,8 +232,9 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
     @force_fp32(apply_to=('seg_logit', ))
     def losses(self, seg_logit, seg_label):
         """Compute segmentation loss."""
-        # TODO: Implement use of Bags and Groups
-        import ipdb; ipdb.set_trace()
+        # unfold_fold(seg_label)
+        # edge_detector(seg_label)
+
         loss = dict()
         seg_logit = resize(
             input=seg_logit,
@@ -249,24 +251,61 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             losses_decode = [self.loss_decode]
         else:
             losses_decode = self.loss_decode
-        loss['acc_seg'] = accuracy(seg_logit, seg_label, ignore_index=self.ignore_index)
+        if self.use_bags:
+            smp = torch.zeros_like(seg_logit[:, :-self.num_bags, :, :])
+            for bag_idx in range(self.num_bags):
+                cp_seg_logit = seg_logit.detach().clone()
+                bag_seg_logit = cp_seg_logit[:, self.bag_masks[bag_idx], :, :]
+                # ignores other after softmax
+                bag_smp = F.softmax(bag_seg_logit, dim=1)[:, :-1, :, :]
+                # orig_indices = self.bags_classes[bag_idx][:-1]
+                mask = self.bag_masks[bag_idx][:-self.num_bags]
+                smp[:, mask, :, :] = bag_smp
+            loss['acc_seg'] = accuracy(smp, seg_label, ignore_index=self.ignore_index)
+        else:
+            loss['acc_seg'] = accuracy(seg_logit, seg_label, ignore_index=self.ignore_index)
+
         for loss_decode in losses_decode:
             if loss_decode.loss_name not in loss:
-                loss[loss_decode.loss_name] = loss_decode(
-                    seg_logit,
-                    seg_label,
-                    weight=seg_weight,
-                    ignore_index=self.ignore_index)
-                if loss_decode.loss_name.endswith("edl"):
-                    loss["mean_ev"], loss["mean_ev_succ"], loss["mean_ev_fail"] = loss_decode.get_evidence(seg_logit,
-                                                                                                           seg_label,
-                                                                                                           self.ignore_index)
-                    loss["lam"] = loss_decode.lam
+                if self.use_bags:
+                    loss_bags = []
+                    for bag_idx in range(self.num_bags):
+
+                        bag_seg_logit = seg_logit[:, self.bag_masks[bag_idx], :, :]
+
+                        bag_seg_label = seg_label
+                        for c in range(self.num_classes - self.num_bags):
+                            remapped_index = self.bags_classes[bag_idx].index(self.bag_label_maps[bag_idx][c])
+                            # bag_seg_label[bag_seg_label == c] = remapped_index # throws a cuda error
+                            bag_seg_label = torch.where(bag_seg_label != c, bag_seg_label, remapped_index)
+                        loss_bag = loss_decode(
+                            bag_seg_logit,
+                            bag_seg_label,
+                            weight=seg_weight,
+                            ignore_index=self.ignore_index)
+                        loss[loss_decode.loss_name + f"_bag_{bag_idx}"] = loss_bag.detach()
+                        loss_bags.append(loss_bag)
+
+                    loss[loss_decode.loss_name] = sum(loss_bags)
+                else:
+                    loss[loss_decode.loss_name] = loss_decode(
+                        seg_logit,
+                        seg_label,
+                        weight=seg_weight,
+                        ignore_index=self.ignore_index)
+                    if loss_decode.loss_name.endswith("edl"):
+                        loss["mean_ev"], loss["mean_ev_succ"], loss["mean_ev_fail"] = loss_decode.get_evidence(seg_logit,
+                                                                                                               seg_label,
+                                                                                                               self.ignore_index)
+                        loss["lam"] = loss_decode.lam
             else:
-                loss[loss_decode.loss_name] += loss_decode(
-                    seg_logit,
-                    seg_label,
-                    weight=seg_weight,
-                    ignore_index=self.ignore_index)
+                if self.use_bags:
+                    raise NotImplementedError
+                else:
+                    loss[loss_decode.loss_name] += loss_decode(
+                        seg_logit,
+                        seg_label,
+                        weight=seg_weight,
+                        ignore_index=self.ignore_index)
 
         return loss

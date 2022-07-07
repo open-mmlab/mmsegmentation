@@ -95,13 +95,13 @@ def single_gpu_test(model,
         has_ood = False
         if hasattr(dataset, "ood_indices"):
             assert len(batch_indices) == 1
-            out_scores, in_scores = dataset.get_in_out_conf(pred_confs, batch_indices[0])
+            seg_gt = dataset.get_gt_seg_map_by_idx(batch_indices[0])
+            out_scores, in_scores = dataset.get_in_out_conf(pred_confs, seg_gt)
             if (len(next(iter(out_scores.values()))) != 0) and (len(next(iter(in_scores.values()))) != 0):
                 has_ood = True
                 for k in ("max_softmax", "max_logit", "entropy"):
                     results_in_scores[k].append(in_scores[k])
                     results_out_scores[k].append(out_scores[k])
-
 
         if (show or out_dir):
             # produce 3 images
@@ -131,12 +131,11 @@ def single_gpu_test(model,
                     out_file=out_file,
                     opacity=opacity)
                 if has_ood:
-                    seg_gt = dataset.get_gt_seg_map_by_idx(batch_indices[0])
+
                     if dataset.reduce_zero_label:
                         seg_gt[seg_gt == 0] = 255
                         seg_gt = seg_gt - 1
                         seg_gt[seg_gt == 254] = 255
-                    ood_mask = (seg_gt == dataset.ood_indices[0]).astype(np.uint8)
                     model.module.show_result(
                         img_show,
                         [seg_gt, ],
@@ -144,17 +143,27 @@ def single_gpu_test(model,
                         show=show,
                         out_file=out_file[:-4] + "_gt" + out_file[-4:],
                         opacity=opacity)
-                    plt.cla(); plt.clf()
+
+                    # 1-MSP confidence map
                     plt.figure()
-                    # 1-MSP
                     sns.heatmap(
                         1 - pred_confs["max_softmax"],
                         xticklabels=False, yticklabels=False).get_figure().savefig(
                         out_file[: -4] + "_conf" + out_file[-4:])
-                    plt.cla(); plt.clf()
+                    plt.cla(); plt.clf(); plt.close('all')
+                    # Mask of ood samples
+                    ood_mask = (seg_gt == dataset.ood_indices[0]).astype(np.uint8)
                     plt.figure()
                     sns.heatmap(ood_mask, xticklabels=False, yticklabels=False).get_figure().savefig(out_file[:-4] + "_ood_mask" + out_file[-4:])
-                    plt.cla(); plt.clf()
+                    plt.cla(); plt.clf(); plt.close('all')
+                    # Mask for edges between separate labels
+                    edge_mask = dataset.edge_detector(seg_gt, 2, 2)
+                    plt.figure()
+                    sns.heatmap(
+                        edge_mask.cpu().numpy(),
+                        xticklabels=False, yticklabels=False).get_figure().savefig(
+                        out_file[: -4] + "_edge_mask" + out_file[-4:])
+                    plt.cla(); plt.clf(); plt.close('all')
 
         if efficient_test:
             result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]

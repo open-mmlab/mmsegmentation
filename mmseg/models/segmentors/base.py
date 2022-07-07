@@ -69,6 +69,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
                 augs (multiscale, flip, etc.) and the inner list indicates
                 images in a batch.
         """
+        # import ipdb; ipdb.set_trace()
         for var, name in [(imgs, 'imgs'), (img_metas, 'img_metas')]:
             if not isinstance(var, list):
                 raise TypeError(f'{name} must be a list, but got '
@@ -87,7 +88,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
             assert all(shape == img_shapes[0] for shape in img_shapes)
             pad_shapes = [_['pad_shape'] for _ in img_meta]
             assert all(shape == pad_shapes[0] for shape in pad_shapes)
-
+        # import ipdb; ipdb.set_trace()
         if num_augs == 1:
             return self.simple_test(imgs[0], img_metas[0], **kwargs)
         else:
@@ -104,6 +105,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         should be double nested (i.e.  List[Tensor], List[List[dict]]), with
         the outer list indicating test time augmentations.
         """
+        # import ipdb; ipdb.set_trace()
         if return_loss:
             return self.forward_train(img, img_metas, **kwargs)
         else:
@@ -152,6 +154,7 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         during val epochs. Note that the evaluation after training epochs is
         not implemented with this method, but an evaluation hook.
         """
+        # import ipdb; ipdb.set_trace()
         losses = self(**data_batch)
         loss, log_vars = self._parse_losses(losses)
 
