@@ -1333,3 +1333,110 @@ class RandomMosaic(object):
         repr_str += f'pad_val={self.pad_val}, '
         repr_str += f'seg_pad_val={self.pad_val})'
         return repr_str
+
+
+@PIPELINES.register_module()
+class AlignResize(Resize):
+    """Resize images & seg.
+
+    Align
+    """
+
+    def __init__(self,
+                 img_scale=None,
+                 multiscale_mode='range',
+                 ratio_range=None,
+                 keep_ratio=True,
+                 size_divisor=32):
+        super(AlignResize, self).__init__(
+            img_scale=img_scale,
+            multiscale_mode=multiscale_mode,
+            ratio_range=ratio_range,
+            keep_ratio=keep_ratio,
+        )
+        self.size_divisor = size_divisor
+
+    def _align(self, img, size_divisor, interpolation=None):
+        align_h = int(np.ceil(img.shape[0] / size_divisor)) * size_divisor
+        align_w = int(np.ceil(img.shape[1] / size_divisor)) * size_divisor
+        if interpolation is None:
+            img = mmcv.imresize(img, (align_w, align_h))
+        else:
+            img = mmcv.imresize(
+                img, (align_w, align_h), interpolation=interpolation)
+        return img
+
+    def _resize_img(self, results):
+        """Resize images with ``results['scale']``."""
+        if self.keep_ratio:
+            img, scale_factor = mmcv.imrescale(
+                results['img'], results['scale'], return_scale=True)
+            # align
+            img = self._align(img, self.size_divisor)
+            # the w_scale and h_scale has minor difference
+            # a real fix should be done in the mmcv.imrescale in the future
+            new_h, new_w = img.shape[:2]
+            h, w = results['img'].shape[:2]
+            w_scale = new_w / w
+            h_scale = new_h / h
+        else:
+            img, w_scale, h_scale = mmcv.imresize(
+                results['img'], results['scale'], return_scale=True)
+
+            h, w = img.shape[:2]
+            assert int(np.ceil(h / self.size_divisor)) * self.size_divisor \
+                   == h and \
+                   int(np.ceil(w / self.size_divisor)) * self.size_divisor \
+                   == w, 'img size not align. h:{} w:{}'.format(h, w)
+        scale_factor = np.array([w_scale, h_scale, w_scale, h_scale],
+                                dtype=np.float32)
+        results['img'] = img
+        results['img_shape'] = img.shape
+        results['pad_shape'] = img.shape  # in case that there is no padding
+        results['scale_factor'] = scale_factor
+        results['keep_ratio'] = self.keep_ratio
+
+    def _resize_seg(self, results):
+        """Resize semantic segmentation map with ``results['scale']``."""
+        for key in results.get('seg_fields', []):
+            if self.keep_ratio:
+                gt_seg = mmcv.imrescale(
+                    results[key], results['scale'], interpolation='nearest')
+                gt_seg = self._align(
+                    gt_seg, self.size_divisor, interpolation='nearest')
+            else:
+                gt_seg = mmcv.imresize(
+                    results[key], results['scale'], interpolation='nearest')
+                h, w = gt_seg.shape[:2]
+                assert int(np.ceil(h / self.size_divisor)) * \
+                       self.size_divisor == h and \
+                       int(np.ceil(w / self.size_divisor)) * \
+                       self.size_divisor == w, \
+                       'gt_seg size not align. h:{} w:{}'.format(h, w)
+            results[key] = gt_seg
+
+    def __call__(self, results):
+        """Call function to resize images, bounding boxes, masks, semantic
+        segmentation map.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Resized results, 'img_shape', 'pad_shape', 'scale_factor',
+                'keep_ratio' keys are added into result dict.
+        """
+
+        if 'scale' not in results:
+            self._random_scale(results)
+        self._resize_img(results)
+        self._resize_seg(results)
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(img_scale={self.img_scale}, '
+                     f'multiscale_mode={self.multiscale_mode}, '
+                     f'ratio_range={self.ratio_range}, '
+                     f'keep_ratio={self.keep_ratio})')
+        return repr_str

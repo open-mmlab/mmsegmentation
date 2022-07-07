@@ -688,3 +688,23 @@ def test_mosaic():
     mosaic_module = build_from_cfg(transform, PIPELINES)
     results = mosaic_module(results)
     assert results['img'].shape[:2] == (20, 24)
+
+
+def test_align_resize():
+    transform = dict(
+        type='AlignResize', img_scale=(1333, 800), keep_ratio=True)
+    resize_module = build_from_cfg(transform, PIPELINES)
+
+    results = dict()
+    # (288, 512, 3)
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    results['img'] = img
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    resized_results = resize_module(results.copy())
+    assert resized_results['img_shape'] == (768, 1344, 3)

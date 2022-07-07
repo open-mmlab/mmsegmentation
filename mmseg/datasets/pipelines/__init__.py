@@ -1,11 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from .align_resize import AlignResize
+# from .align_resize import AlignResize
 from .compose import Compose
 from .formatting import (Collect, ImageToTensor, ToDataContainer, ToTensor,
                          Transpose, to_tensor)
 from .loading import LoadAnnotations, LoadImageFromFile
 from .test_time_aug import MultiScaleFlipAug
-from .transforms import (CLAHE, AdjustGamma, Normalize, Pad,
+from .transforms import (CLAHE, AdjustGamma, AlignResize, Normalize, Pad,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomFlip, RandomMosaic, RandomRotate, Rerange,
                          Resize, RGB2Gray, SegRescale)
