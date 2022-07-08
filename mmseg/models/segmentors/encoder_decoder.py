@@ -125,10 +125,10 @@ class EncoderDecoder(BaseSegmentor):
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
         x = self.extract_feat(batch_inputs)
-        seg_logits_list = self.decode_head.predict(x, batch_img_metas,
-                                                   self.test_cfg)
+        seg_logits = self.decode_head.predict(x, batch_img_metas,
+                                              self.test_cfg)
 
-        return seg_logits_list
+        return list(seg_logits)
 
     def _decode_head_forward_train(self, batch_inputs: List[Tensor],
                                    batch_data_samples: SampleList) -> dict:
