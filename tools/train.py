@@ -157,6 +157,11 @@ def main():
         _, world_size = get_dist_info()
         cfg.gpu_ids = range(world_size)
 
+    # log configs to wandb
+    for hook in cfg.log_config.hooks:
+        if hook['type'] == 'MMSegWandbHook':
+            hook['init_kwargs'].update({'config': cfg._cfg_dict.to_dict()})
+
     # create work_dir
     mmcv.mkdir_or_exist(osp.abspath(cfg.work_dir))
     # dump config
