@@ -310,7 +310,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         return loss
 
     def predict_by_feat(self, seg_logits: Tensor,
-                        batch_img_metas: List[dict]) -> List[Tensor]:
+                        batch_img_metas: List[dict]) -> Tensor:
         """Transform a batch of output seg_logits to the input shape.
 
         Args:
@@ -319,7 +319,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                 image size, scaling factor, etc.
 
         Returns:
-            List[Tensor]: Outputs segmentation logits map.
+            Tensor: Outputs segmentation logits map.
         """
 
         seg_logits = resize(
@@ -327,4 +327,4 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             size=batch_img_metas[0]['img_shape'],
             mode='bilinear',
             align_corners=self.align_corners)
-        return list(seg_logits)
+        return seg_logits
