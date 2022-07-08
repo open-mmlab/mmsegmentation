@@ -9,6 +9,7 @@ from .custom import CustomDataset
 from ..utils import get_ood_measures, print_measures_with_std, print_measures
 import torch
 from copy import deepcopy
+from collections import OrderedDict
 
 
 @DATASETS.register_module()
@@ -72,14 +73,22 @@ class StreetHazardsDataset(CustomDataset):
         else:
             return None, None, None, None
 
-    def get_in_out_conf(self, pred_confs, seg_gt):
-        in_scores = {}
-        out_scores = {}
-        confs = deepcopy(pred_confs)
+    def get_gt_seg_map_by_idx_(self, index):
+        seg_gt = self.get_gt_seg_map_by_idx(index)
         if self.reduce_zero_label:
             seg_gt[seg_gt == 0] = 255
             seg_gt = seg_gt - 1
             seg_gt[seg_gt == 254] = 255
+        return seg_gt
+
+    def get_in_out_conf(self, pred_confs, seg_gt):
+        in_scores = {}
+        out_scores = {}
+        confs = deepcopy(pred_confs)
+        # if self.reduce_zero_label:
+        #     seg_gt[seg_gt == 0] = 255
+        #     seg_gt = seg_gt - 1
+        #     seg_gt[seg_gt == 254] = 255
         # Mask ignored index
         mask = (seg_gt != self.ignore_index)
         seg_gt = seg_gt[mask]
@@ -109,10 +118,10 @@ class StreetHazardsDataset(CustomDataset):
 
     def get_ood_masker(self, seg_gt):
         # Find out which pixels are OOD and which are not
-        if self.reduce_zero_label:
-            seg_gt[seg_gt == 0] = 255
-            seg_gt = seg_gt - 1
-            seg_gt[seg_gt == 254] = 255
+        # if self.reduce_zero_label:
+        #     seg_gt[seg_gt == 0] = 255
+        #     seg_gt = seg_gt - 1
+        #     seg_gt[seg_gt == 254] = 255
         ood_mask = seg_gt == self.ood_indices[0]
         for label in self.ood_indices:
             ood_mask = np.logical_or(ood_mask, seg_gt == label)
@@ -167,9 +176,9 @@ class StreetHazardsDataset(CustomDataset):
         assert (patches_orig == seg_gt).all()
 
     def get_class_count(self, path="."):
-        class_count_pixel = {i: 0 for i in range(len(self.CLASSES))}
+        class_count_pixel = OrderedDict({i: 0 for i in range(len(self.CLASSES))})
         class_count_pixel[255] = 0  # ignore background
-        class_count_semantic = {i: 0 for i in range(len(self.CLASSES))}
+        class_count_semantic = OrderedDict({i: 0 for i in range(len(self.CLASSES))})
         class_count_semantic[255] = 0  # ignore background
         for index in range(self.__len__()):
             seg_gt = self.get_gt_seg_map_by_idx(index)
@@ -191,75 +200,74 @@ class StreetHazardsDataset(CustomDataset):
         with open(osp.join(path, filename), "wb") as f:
             np.save(f, self.class_count_semantic)
 
-    def get_bags(self, num_bags='auto'):
+    def get_bags(self, mul=10):
         if not hasattr(self, "class_count_pixel"):
             try:
-                with open("class_count_street_hazards_pixel.npy", "rb") as f:
+                with open("class_count_street_cityscapes.npy", "rb") as f:
                     self.class_count_pixel = np.load(f)
-            except FileNotFoundError:
+            except FileNotFoundError as e:
                 self.get_class_count()
 
         class_count = self.class_count_pixel[:-1]
-        if num_bags == 'auto':
-            low = 0.1
-            hi = 10
-            used = np.zeros(self.num_classes, dtype=bool)
-            bag_masks = []
-            ratios = []
-            bag_index = 0
-            label2bag = {}
-            bag_label_maps = []
-            bags_classes = []
-            bag_class_counts = []
-            for cls in range(self.num_classes):
-                if used[cls]:
-                    continue
-                ratio_ = class_count / class_count[cls]
-                ratios.append(ratio_)
-                bag_mask = np.logical_and((ratio_ >= low), (ratio_ <= hi))
-                if np.logical_and(bag_mask, used).any():
-                    # check if conflicts with used
-                    for c in np.where(np.logical_and(bag_mask, used))[0]:
-                        conflict_bag_idx = label2bag[c]
-                        conflict_bag_mask = bag_masks[conflict_bag_idx]
-                        if bag_mask.sum() > conflict_bag_mask.sum():
-                            bag_mask[c] = False
-                        else:
-                            conflict_bag_mask[c] = False
-                            bag_masks[conflict_bag_idx] = conflict_bag_mask
-                used = np.logical_or(used, bag_mask)
-                bag_masks.append(bag_mask)
-
-                for c in np.where(bag_mask)[0]:
-                    label2bag[c] = bag_index
-
-                bag_index += 1
-            num_bags = len(bag_masks)
-
-            for i in range(num_bags):
-                label_map = []
-                for c in range(self.num_classes):
-                    if bag_masks[i][c]:
-                        label_map.append(c)
+        low = float(1 / mul)
+        hi = float(mul)
+        used = np.zeros(self.num_classes, dtype=bool)
+        bag_masks = []
+        ratios = []
+        bag_index = 0
+        label2bag = {}
+        bag_label_maps = []
+        bags_classes = []
+        bag_class_counts = []
+        for cls in range(self.num_classes):
+            if used[cls]:
+                continue
+            ratio_ = class_count / class_count[cls]
+            ratios.append(ratio_)
+            bag_mask = np.logical_and((ratio_ >= low), (ratio_ <= hi))
+            if np.logical_and(bag_mask, used).any():
+                # check if conflicts with used
+                for c in np.where(np.logical_and(bag_mask, used))[0]:
+                    conflict_bag_idx = label2bag[c]
+                    conflict_bag_mask = bag_masks[conflict_bag_idx]
+                    if bag_mask.sum() > conflict_bag_mask.sum():
+                        bag_mask[c] = False
                     else:
-                        label_map.append(self.num_classes + i)
-                bag_label_maps.append(label_map)
+                        conflict_bag_mask[c] = False
+                        bag_masks[conflict_bag_idx] = conflict_bag_mask
+            used = np.logical_or(used, bag_mask)
+            bag_masks.append(bag_mask)
 
-                bag_clas_count = class_count[bag_masks[i]]
-                bag_clas_count = np.append(bag_clas_count, class_count[~bag_masks[i]].sum())
-                bag_class_counts.append(bag_clas_count)
+            for c in np.where(bag_mask)[0]:
+                label2bag[c] = bag_index
 
-                oth_mask = np.zeros(num_bags, dtype=bool)
-                oth_mask[i] = True
-                bag_masks[i] = np.concatenate((bag_masks[i], oth_mask))
-                bags_classes.append([*np.where(bag_masks[i])[0]])
+            bag_index += 1
+        num_bags = len(bag_masks)
 
-            assert all([bag_class_count.sum() == class_count.sum() for bag_class_count in bag_class_counts])
-            assert np.sum([bag_mask.sum() for bag_mask in bag_masks]) == self.num_classes + num_bags
+        for i in range(num_bags):
+            label_map = []
+            for c in range(self.num_classes):
+                if bag_masks[i][c]:
+                    label_map.append(c)
+                else:
+                    label_map.append(self.num_classes + i)
+            bag_label_maps.append(label_map)
 
-            self.num_bags = num_bags
-            self.label2bag = label2bag
-            self.bag_label_maps = bag_label_maps
-            self.bag_masks = bag_masks
-            self.bag_class_counts = bag_class_counts
-            self.bags_classes = bags_classes
+            bag_clas_count = class_count[bag_masks[i]]
+            bag_clas_count = np.append(bag_clas_count, class_count[~bag_masks[i]].sum())
+            bag_class_counts.append(bag_clas_count)
+
+            oth_mask = np.zeros(num_bags, dtype=bool)
+            oth_mask[i] = True
+            bag_masks[i] = np.concatenate((bag_masks[i], oth_mask))
+            bags_classes.append([*np.where(bag_masks[i])[0]])
+
+        assert all([bag_class_count.sum() == class_count.sum() for bag_class_count in bag_class_counts])
+        assert np.sum([bag_mask.sum() for bag_mask in bag_masks]) == self.num_classes + num_bags
+
+        self.num_bags = num_bags
+        self.label2bag = label2bag
+        self.bag_label_maps = bag_label_maps
+        self.bag_masks = bag_masks
+        self.bag_class_counts = bag_class_counts
+        self.bags_classes = bags_classes

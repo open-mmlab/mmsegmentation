@@ -18,13 +18,16 @@ from mmseg.apis import multi_gpu_test, single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
 from mmseg.utils import build_ddp, build_dp, get_device, setup_multi_processes
+from tensorboardX import SummaryWriter
+
+import json
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
         description='mmseg test (and eval) a model')
     parser.add_argument('config', help='test config file path')
-    parser.add_argument('checkpoint', help='checkpoint file')
+
     parser.add_argument(
         '--work-dir',
         help=('if specified, the evaluation metric results will be dumped'
@@ -47,6 +50,8 @@ def parse_args():
     parser.add_argument('--show', action='store_true', help='show results')
     parser.add_argument(
         '--show-dir', help='directory where painted images will be saved')
+    parser.add_argument("--use-bags", action='store_true', help='determines weather to use bags of predictors')
+    parser.add_argument("--all", action='store_true', help='determines weather to test all checkpoints')
     parser.add_argument(
         '--gpu-collect',
         action='store_true',
@@ -190,6 +195,9 @@ def main():
     # build the dataloader
     # TODO: support multiple images per gpu (only minor changes are needed)
     dataset = build_dataset(cfg.data.test)
+    if args.use_bags:
+        dataset.get_bags()
+        cfg.model.decode_head.num_classes += dataset.num_bags
     # The default loader config
     loader_cfg = dict(
         # cfg.gpus will be ignored if distributed
@@ -212,108 +220,147 @@ def main():
     }
     # build the dataloader
     data_loader = build_dataloader(dataset, **test_loader_cfg)
+    all_checkpoints = [os.path.join(args.work_dir, file) for file in os.listdir(args.work_dir)
+                       if file.endswith(".pth") and file != "latest.pth"]
+    all_checkpoints_iter = [int(file.split(".")[0].split("_")[1]) for file in os.listdir(args.work_dir)
+                            if file.endswith(".pth") and file != "latest.pth"]
+    if not args.all:
+        index_last = max(range(len(all_checkpoints_iter)), key=all_checkpoints_iter.__getitem__)
+        all_checkpoints = [all_checkpoints[index_last]]
+        all_checkpoints_iter = [all_checkpoints_iter[index_last]]
+    if args.all:
+        writer = SummaryWriter(log_dir=os.path.join(args.work_dir, "tf_logs"))
+    ans = []
 
-    # build the model and load checkpoint
-    cfg.model.train_cfg = None
-    model = build_segmentor(cfg.model, test_cfg=cfg.get('test_cfg'))
-    fp16_cfg = cfg.get('fp16', None)
-    if fp16_cfg is not None:
-        wrap_fp16_model(model)
-    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
-    if 'CLASSES' in checkpoint.get('meta', {}):
-        model.CLASSES = checkpoint['meta']['CLASSES']
-    else:
-        print('"CLASSES" not found in meta, use dataset.CLASSES instead')
-        model.CLASSES = dataset.CLASSES
-    if 'PALETTE' in checkpoint.get('meta', {}):
-        model.PALETTE = checkpoint['meta']['PALETTE']
-    else:
-        print('"PALETTE" not found in meta, use dataset.PALETTE instead')
-        model.PALETTE = dataset.PALETTE
-
-    # clean gpu memory when starting a new evaluation.
-    torch.cuda.empty_cache()
-    eval_kwargs = {} if args.eval_options is None else args.eval_options
-
-    # Deprecated
-    efficient_test = eval_kwargs.get('efficient_test', False)
-    if efficient_test:
-        warnings.warn(
-            '``efficient_test=True`` does not have effect in tools/test.py, '
-            'the evaluation and format results are CPU memory efficient by '
-            'default')
-
-    eval_on_format_results = (
-        args.eval is not None and 'cityscapes' in args.eval)
-    if eval_on_format_results:
-        assert len(args.eval) == 1, 'eval on format results is not ' \
-                                    'applicable for metrics other than ' \
-                                    'cityscapes'
-    if args.format_only or eval_on_format_results:
-        if 'imgfile_prefix' in eval_kwargs:
-            tmpdir = eval_kwargs['imgfile_prefix']
+    for i, checkpoint in enumerate(all_checkpoints):
+        # build the model and load checkpoint
+        if args.show_dir:
+            args.show_dir = args.show_dir + f"_{all_checkpoints_iter[i]}"
+        cfg.model.train_cfg = None
+        model = build_segmentor(cfg.model, test_cfg=cfg.get('test_cfg'))
+        fp16_cfg = cfg.get('fp16', None)
+        if fp16_cfg is not None:
+            wrap_fp16_model(model)
+        checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
+        if 'CLASSES' in checkpoint.get('meta', {}):
+            model.CLASSES = checkpoint['meta']['CLASSES']
         else:
-            tmpdir = '.format_cityscapes'
-            eval_kwargs.setdefault('imgfile_prefix', tmpdir)
-        mmcv.mkdir_or_exist(tmpdir)
-    else:
-        tmpdir = None
+            print('"CLASSES" not found in meta, use dataset.CLASSES instead')
+            model.CLASSES = dataset.CLASSES
+        if 'PALETTE' in checkpoint.get('meta', {}):
+            model.PALETTE = checkpoint['meta']['PALETTE']
+        else:
+            print('"PALETTE" not found in meta, use dataset.PALETTE instead')
+            model.PALETTE = dataset.PALETTE
+        if args.use_bags:
+            setattr(model.decode_head, "use_bags", True)
+            setattr(model.decode_head, "num_bags", dataset.num_bags)
+            setattr(model.decode_head, "label2bag", dataset.label2bag)
+            setattr(model.decode_head, "bag_label_maps", dataset.bag_label_maps)
+            setattr(model.decode_head, "bag_masks", dataset.bag_masks)
+            setattr(model.decode_head, "bags_classes", dataset.bags_classes)
+            setattr(model.decode_head, "bag_class_counts", dataset.bag_class_counts)
+        else:
+            setattr(model.decode_head, "use_bags", False)
+        # clean gpu memory when starting a new evaluation.
+        torch.cuda.empty_cache()
+        eval_kwargs = {} if args.eval_options is None else args.eval_options
 
-    cfg.device = get_device()
-    if not distributed:
-        warnings.warn(
-            'SyncBN is only supported with DDP. To be compatible with DP, '
-            'we convert SyncBN to BN. Please use dist_train.sh which can '
-            'avoid this error.')
-        if not torch.cuda.is_available():
-            assert digit_version(mmcv.__version__) >= digit_version('1.4.4'), \
-                'Please use MMCV >= 1.4.4 for CPU training!'
-        model = revert_sync_batchnorm(model)
-        model = build_dp(model, cfg.device, device_ids=cfg.gpu_ids)
-        results = single_gpu_test(
-            model,
-            data_loader,
-            args.show,
-            args.show_dir,
-            False,
-            args.opacity,
-            pre_eval=args.eval is not None and not eval_on_format_results,
-            format_only=args.format_only or eval_on_format_results,
-            format_args=eval_kwargs)
-    else:
-        model = build_ddp(
-            model,
-            cfg.device,
-            device_ids=[int(os.environ['LOCAL_RANK'])],
-            broadcast_buffers=False)
-        results = multi_gpu_test(
-            model,
-            data_loader,
-            args.tmpdir,
-            args.gpu_collect,
-            False,
-            pre_eval=args.eval is not None and not eval_on_format_results,
-            format_only=args.format_only or eval_on_format_results,
-            format_args=eval_kwargs)
-
-    rank, _ = get_dist_info()
-    if rank == 0:
-        if args.out:
+        # Deprecated
+        efficient_test = eval_kwargs.get('efficient_test', False)
+        if efficient_test:
             warnings.warn(
-                'The behavior of ``args.out`` has been changed since MMSeg '
-                'v0.16, the pickled outputs could be seg map as type of '
-                'np.array, pre-eval results or file paths for '
-                '``dataset.format_results()``.')
-            print(f'\nwriting results to {args.out}')
-            mmcv.dump(results, args.out)
-        if args.eval:
-            eval_kwargs.update(metric=args.eval)
-            metric = dataset.evaluate(results, **eval_kwargs)
-            metric_dict = dict(config=args.config, metric=metric)
-            mmcv.dump(metric_dict, json_file, indent=4)
-            if tmpdir is not None and eval_on_format_results:
-                # remove tmp dir when cityscapes evaluation
-                shutil.rmtree(tmpdir)
+                '``efficient_test=True`` does not have effect in tools/test.py, '
+                'the evaluation and format results are CPU memory efficient by '
+                'default')
+
+        eval_on_format_results = (
+            args.eval is not None and 'cityscapes' in args.eval)
+        if eval_on_format_results:
+            assert len(args.eval) == 1, 'eval on format results is not ' \
+                                        'applicable for metrics other than ' \
+                                        'cityscapes'
+        if args.format_only or eval_on_format_results:
+            if 'imgfile_prefix' in eval_kwargs:
+                tmpdir = eval_kwargs['imgfile_prefix']
+            else:
+                tmpdir = '.format_cityscapes'
+                eval_kwargs.setdefault('imgfile_prefix', tmpdir)
+            mmcv.mkdir_or_exist(tmpdir)
+        else:
+            tmpdir = None
+
+        cfg.device = get_device()
+        if not distributed:
+            warnings.warn(
+                'SyncBN is only supported with DDP. To be compatible with DP, '
+                'we convert SyncBN to BN. Please use dist_train.sh which can '
+                'avoid this error.')
+            if not torch.cuda.is_available():
+                assert digit_version(mmcv.__version__) >= digit_version('1.4.4'), \
+                    'Please use MMCV >= 1.4.4 for CPU training!'
+            model = revert_sync_batchnorm(model)
+            model = build_dp(model, cfg.device, device_ids=cfg.gpu_ids)
+            results = single_gpu_test(
+                model,
+                data_loader,
+                args.show,
+                args.show_dir,
+                False,
+                args.opacity,
+                pre_eval=args.eval is not None and not eval_on_format_results,
+                format_only=args.format_only or eval_on_format_results,
+                format_args=eval_kwargs)
+        else:
+            model = build_ddp(
+                model,
+                cfg.device,
+                device_ids=[int(os.environ['LOCAL_RANK'])],
+                broadcast_buffers=False)
+            results = multi_gpu_test(
+                model,
+                data_loader,
+                args.tmpdir,
+                args.gpu_collect,
+                False,
+                pre_eval=args.eval is not None and not eval_on_format_results,
+                format_only=args.format_only or eval_on_format_results,
+                format_args=eval_kwargs)
+
+        rank, _ = get_dist_info()
+        if rank == 0:
+            if args.out:
+                warnings.warn(
+                    'The behavior of ``args.out`` has been changed since MMSeg '
+                    'v0.16, the pickled outputs could be seg map as type of '
+                    'np.array, pre-eval results or file paths for '
+                    '``dataset.format_results()``.')
+                print(f'\nwriting results to {args.out}')
+                mmcv.dump(results, args.out)
+            if args.eval:
+                eval_kwargs.update(metric=args.eval)
+                metric = dataset.evaluate(results, **eval_kwargs)
+                metric_dict = dict(config=args.config, metric=metric)
+                mmcv.dump(metric_dict, json_file, indent=4)
+                if tmpdir is not None and eval_on_format_results:
+                    # remove tmp dir when cityscapes evaluation
+                    shutil.rmtree(tmpdir)
+                metric_dict["iter"] = all_checkpoints_iter[i]
+                ans.append(metric_dict['metric'])
+                if args.all:
+                    for a in ("max_softmax", "max_logit", "entropy"):
+                        for b in ("auroc", "aupr", "fpr(fpr@95tpr)"):
+                            writer.add_scalar(f"test/{a}.{b}", metric_dict['metric'][f"{a}.{b}"], all_checkpoints_iter[i])
+                    writer.add_scalar(f"test/max_softmax.ece", metric_dict['metric']["max_softmax.ece"], all_checkpoints_iter[i])
+                    writer.add_scalar(f"test/mIoU", metric_dict['metric']["mIoU"], all_checkpoints_iter[i])
+                    writer.add_scalar(f"test/mAcc", metric_dict['metric']["mAcc"], all_checkpoints_iter[i])
+                    writer.add_scalar(f"test/aAcc", metric_dict['metric']["aAcc"], all_checkpoints_iter[i])
+
+    with open(os.path.join(args.work_dir, "test_results_all.json" if args.all else "test_results.json"), "w") as f:
+        json.dump(ans, f)
+
+    if args.all:
+        writer.close()
 
 
 if __name__ == '__main__':

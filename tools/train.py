@@ -19,6 +19,7 @@ from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
 from mmseg.utils import (collect_env, get_device, get_root_logger,
                          setup_multi_processes)
+import subprocess
 
 
 def parse_args():
@@ -262,6 +263,19 @@ def main():
         validate=(not args.no_validate),
         timestamp=timestamp,
         meta=meta)
+
+    # When testing on cityscapes use roadanomaly
+    conf = args.config.replace("cityscapes", "roadanomaly")
+    if not args.use_bags:
+        subprocess.run(["python", os.path.join("tools", "test.py"),
+                        conf, "--work-dir", cfg.work_dir, "--eval", "mIoU", "--all"
+                        # "--show-dir", os.path.join(cfg.work_dir, "test_results_img"),
+                        ], cwd=".")
+    else:
+        subprocess.run(["python", os.path.join("tools", "test.py"),
+                        conf, "--work-dir", cfg.work_dir, "--eval", "mIoU", "--use-bags", "--all"
+                        # "--show-dir", os.path.join(cfg.work_dir, "test_results_img"),
+                        ], cwd=".")
 
 
 if __name__ == '__main__':

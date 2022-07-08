@@ -98,13 +98,16 @@ def single_gpu_test(model,
         has_ood = False
         if hasattr(dataset, "ood_indices"):
             assert len(batch_indices) == 1
-            seg_gt = dataset.get_gt_seg_map_by_idx(batch_indices[0])
+            seg_gt = dataset.get_gt_seg_map_by_idx_(batch_indices[0])
+
             ood_mask = (seg_gt == dataset.ood_indices[0]).astype(np.uint8)
 
             if model.module.decode_head.use_bags:
                 other_is_selected = pred_confs.pop("pred_all_other").astype(np.uint8)
                 cm = confusion_matrix(ood_mask.ravel(), other_is_selected.ravel()).ravel()
                 results_others_cms.append(cm)
+            else:
+                pred_confs.pop("pred_all_other")
 
             out_scores, in_scores = dataset.get_in_out_conf(pred_confs, seg_gt)
             if (len(next(iter(out_scores.values()))) != 0) and (len(next(iter(in_scores.values()))) != 0):
@@ -132,7 +135,7 @@ def single_gpu_test(model,
                     out_file = osp.join(out_dir, img_meta['ori_filename'])
                 else:
                     out_file = None
-
+                # Todo implement bg mask and set it to transparent color
                 model.module.show_result(
                     img_show,
                     result,
@@ -157,7 +160,7 @@ def single_gpu_test(model,
                     # 1-MSP confidence map
                     plt.figure()
                     sns.heatmap(
-                        1 - pred_confs["max_softmax"],
+                        1 - pred_confs["max_softmax"].squeeze(),
                         xticklabels=False, yticklabels=False).get_figure().savefig(
                         out_file[: -4] + "_conf" + out_file[-4:])
                     plt.cla(); plt.clf(); plt.close('all')
@@ -166,7 +169,7 @@ def single_gpu_test(model,
                     sns.heatmap(ood_mask, xticklabels=False, yticklabels=False).get_figure().savefig(out_file[:-4] + "_ood_mask" + out_file[-4:])
                     plt.cla(); plt.clf(); plt.close('all')
                     # Mask for edges between separate labels
-                    edge_mask = dataset.edge_detector(seg_gt, 2, 2)
+                    edge_mask = dataset.edge_detector(seg_gt)
                     plt.figure()
                     sns.heatmap(
                         edge_mask.cpu().numpy(),
