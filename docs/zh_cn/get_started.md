@@ -58,7 +58,7 @@ git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -v -e .
 # "-v "指详细说明，或更多的输出
-# "-e" 表示在可编辑模式下安装项目，因此对代码所做的任何本地修改都会生效，从而无需重新安# 装。
+# "-e" 表示在可编辑模式下安装项目，因此对代码所做的任何本地修改都会生效，从而无需重新安装。
 ```
 
 ### 作为 Python 包安装
