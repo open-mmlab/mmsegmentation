@@ -55,7 +55,7 @@ mmcv_max_version = digit_version(MMCV_MAX)
 mmcv_version = digit_version(mmcv.__version__)
 
 
-assert (mmcv_min_version <= mmcv_version <= mmcv_max_version), \
+assert (mmcv_min_version <= mmcv_version < mmcv_max_version), \
     f'MMCV=={mmcv.__version__} is used but incompatible. ' \
     f'Please install mmcv>={mmcv_min_version}, <{mmcv_max_version}.'
 
