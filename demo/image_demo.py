@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from argparse import ArgumentParser
 
-from mmseg.apis import inference_segmentor, init_segmentor, show_result_pyplot
+from mmseg.apis import inference_model, init_model, show_result_pyplot
 from mmseg.core.evaluation import get_palette
 
 
@@ -24,9 +24,9 @@ def main():
     args = parser.parse_args()
 
     # build the model from a config file and a checkpoint file
-    model = init_segmentor(args.config, args.checkpoint, device=args.device)
+    model = init_model(args.config, args.checkpoint, device=args.device)
     # test a single image
-    result = inference_segmentor(model, args.img)
+    result = inference_model(model, args.img)
     # show the results
     show_result_pyplot(
         model,

@@ -9,7 +9,7 @@ from mmseg.datasets.pipelines import Compose
 from mmseg.models import build_segmentor
 
 
-def init_segmentor(config, checkpoint=None, device='cuda:0'):
+def init_model(config, checkpoint=None, device='cuda:0'):
     """Initialize a segmentor from config file.
 
     Args:
@@ -67,7 +67,7 @@ class LoadImage:
         return results
 
 
-def inference_segmentor(model, img):
+def inference_model(model, img):
     """Inference image(s) with the segmentor.
 
     Args:

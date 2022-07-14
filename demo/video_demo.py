@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 
 import cv2
 
-from mmseg.apis import inference_segmentor, init_segmentor
+from mmseg.apis import inference_model, init_model
 from mmseg.core.evaluation import get_palette
 
 
@@ -52,7 +52,7 @@ def main():
         'At least one output should be enabled.'
 
     # build the model from a config file and a checkpoint file
-    model = init_segmentor(args.config, args.checkpoint, device=args.device)
+    model = init_model(args.config, args.checkpoint, device=args.device)
 
     # build input video
     cap = cv2.VideoCapture(args.video)
@@ -83,7 +83,7 @@ def main():
                 break
 
             # test a single image
-            result = inference_segmentor(model, frame)
+            result = inference_model(model, frame)
 
             # blend raw image and prediction
             draw_img = model.show_result(

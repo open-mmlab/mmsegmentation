@@ -4,7 +4,7 @@ import warnings
 
 from mmcv import Config, DictAction
 
-from mmseg.apis import init_segmentor
+from mmseg.apis import init_model
 
 
 def parse_args():
@@ -59,7 +59,7 @@ def main():
     cfg.dump('example.py')
     # dump models graph
     if args.graph:
-        model = init_segmentor(args.config, device='cpu')
+        model = init_model(args.config, device='cpu')
         print(f'Model graph:\n{str(model)}')
         with open('example-graph.txt', 'w') as f:
             f.writelines(str(model))

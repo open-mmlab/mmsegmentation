@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 import requests
 from mmcv import Config
 
-from mmseg.apis import inference_segmentor, init_segmentor, show_result_pyplot
+from mmseg.apis import inference_model, init_model, show_result_pyplot
 from mmseg.utils import get_root_logger
 
 # ignore warnings when segmentors inference
@@ -57,7 +57,7 @@ def parse_args():
     return args
 
 
-def inference_model(config_name, checkpoint, args, logger=None):
+def inference(config_name, checkpoint, args, logger=None):
     cfg = Config.fromfile(config_name)
     if args.aug:
         if 'flip' in cfg.data.test.pipeline[
@@ -72,9 +72,9 @@ def inference_model(config_name, checkpoint, args, logger=None):
             else:
                 print(f'{config_name}: unable to start aug test', flush=True)
 
-    model = init_segmentor(cfg, checkpoint, device=args.device)
+    model = init_model(cfg, checkpoint, device=args.device)
     # test a single image
-    result = inference_segmentor(model, args.img)
+    result = inference_model(model, args.img)
 
     # show the results
     if args.show:
@@ -102,7 +102,7 @@ def main(args):
                                       model_info['checkpoint'].strip())
                 try:
                     # build the model from a config file and a checkpoint file
-                    inference_model(config_name, checkpoint, args)
+                    inference(config_name, checkpoint, args)
                 except Exception:
                     print(f'{config_name} test failed!')
                     continue
@@ -139,7 +139,7 @@ def main(args):
             # test model inference with checkpoint
             try:
                 # build the model from a config file and a checkpoint file
-                inference_model(config_path, checkpoint, args, logger)
+                inference(config_path, checkpoint, args, logger)
             except Exception as e:
                 logger.error(f'{config_path} " : {repr(e)}')
 
