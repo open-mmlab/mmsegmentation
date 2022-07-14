@@ -12,3 +12,4 @@ test_dataloader = val_dataloader
 
 # Re-config the optimizer.
 optimizer = dict(type='SGD', lr=0.12, momentum=0.9, weight_decay=4e-5)
+optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)

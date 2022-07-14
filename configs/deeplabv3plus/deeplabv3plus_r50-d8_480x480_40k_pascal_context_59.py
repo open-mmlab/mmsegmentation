@@ -11,3 +11,4 @@ model = dict(
     auxiliary_head=dict(num_classes=59),
     test_cfg=dict(mode='slide', crop_size=(480, 480), stride=(320, 320)))
 optimizer = dict(type='SGD', lr=0.004, momentum=0.9, weight_decay=0.0001)
+optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)

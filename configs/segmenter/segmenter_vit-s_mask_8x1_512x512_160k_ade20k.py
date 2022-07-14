@@ -29,7 +29,7 @@ model = dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)))
 
 optimizer = dict(lr=0.001, weight_decay=0.0)
-
+optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
 train_dataloader = dict(
     # num_gpus: 8 -> batch_size: 8
     batch_size=1)
