@@ -59,8 +59,10 @@ model = dict(
     ],
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(512, 512)))
 
-optimizer = dict(
-    weight_decay=0.0,
+optimizer = dict(weight_decay=0.0)
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=optimizer,
     paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}))
 
 train_dataloader = dict(batch_size=1)

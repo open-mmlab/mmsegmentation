@@ -14,10 +14,11 @@ model = dict(
             type='Pretrained', checkpoint='pretrain/vit_large_p16.pth')),
     test_cfg=dict(mode='slide', crop_size=(768, 768), stride=(512, 512)))
 
-optimizer = dict(
-    weight_decay=0.0,
+optimizer = dict(weight_decay=0.0)
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=optimizer,
     paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10.)}))
-
 train_dataloader = dict(batch_size=1)
 val_dataloader = dict(batch_size=1)
 test_dataloader = val_dataloader

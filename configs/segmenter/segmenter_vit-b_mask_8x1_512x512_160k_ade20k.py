@@ -7,7 +7,7 @@ crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
 model = dict(data_preprocessor=data_preprocessor)
 optimizer = dict(lr=0.001, weight_decay=0.0)
-
+optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
 train_dataloader = dict(
     # num_gpus: 8 -> batch_size: 8
     batch_size=1)
