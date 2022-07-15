@@ -1338,6 +1338,7 @@ class RandomMosaic(object):
         repr_str += f'seg_pad_val={self.pad_val})'
         return repr_str
 
+
 @PIPELINES.register_module()
 class Albu:
     """Albumentation augmentation.
