@@ -13,7 +13,7 @@ from mmcv.cnn.utils import revert_sync_batchnorm
 from mmengine.data import PixelData
 from torch import Tensor
 
-from mmseg.core import SegDataSample
+from mmseg.data import SegDataSample
 from mmseg.utils import register_all_modules
 
 register_all_modules()

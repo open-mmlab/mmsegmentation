@@ -3,10 +3,10 @@ import json
 import warnings
 
 from mmengine.dist import get_dist_info
+from mmengine.logging import print_log
 from mmengine.optim import DefaultOptimWrapperConstructor
 
 from mmseg.registry import OPTIM_WRAPPER_CONSTRUCTORS
-from mmseg.utils import get_root_logger
 
 
 def get_layer_id_for_convnext(var_name, max_layer_id):
@@ -119,15 +119,14 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimWrapperConstructor):
                 in place.
             module (nn.Module): The module to be added.
         """
-        logger = get_root_logger()
 
         parameter_groups = {}
-        logger.info(f'self.paramwise_cfg is {self.paramwise_cfg}')
+        print_log(f'self.paramwise_cfg is {self.paramwise_cfg}')
         num_layers = self.paramwise_cfg.get('num_layers') + 2
         decay_rate = self.paramwise_cfg.get('decay_rate')
         decay_type = self.paramwise_cfg.get('decay_type', 'layer_wise')
-        logger.info('Build LearningRateDecayOptimizerConstructor  '
-                    f'{decay_type} {decay_rate} - {num_layers}')
+        print_log('Build LearningRateDecayOptimizerConstructor  '
+                  f'{decay_type} {decay_rate} - {num_layers}')
         weight_decay = self.base_wd
         for name, param in module.named_parameters():
             if not param.requires_grad:
@@ -143,17 +142,17 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimWrapperConstructor):
                 if 'ConvNeXt' in module.backbone.__class__.__name__:
                     layer_id = get_layer_id_for_convnext(
                         name, self.paramwise_cfg.get('num_layers'))
-                    logger.info(f'set param {name} as id {layer_id}')
+                    print_log(f'set param {name} as id {layer_id}')
                 elif 'BEiT' in module.backbone.__class__.__name__ or \
                      'MAE' in module.backbone.__class__.__name__:
                     layer_id = get_layer_id_for_vit(name, num_layers)
-                    logger.info(f'set param {name} as id {layer_id}')
+                    print_log(f'set param {name} as id {layer_id}')
                 else:
                     raise NotImplementedError()
             elif decay_type == 'stage_wise':
                 if 'ConvNeXt' in module.backbone.__class__.__name__:
                     layer_id = get_stage_id_for_convnext(name, num_layers)
-                    logger.info(f'set param {name} as id {layer_id}')
+                    print_log(f'set param {name} as id {layer_id}')
                 else:
                     raise NotImplementedError()
             group_name = f'layer_{layer_id}_{group_name}'
@@ -182,7 +181,7 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimWrapperConstructor):
                     'lr': parameter_groups[key]['lr'],
                     'weight_decay': parameter_groups[key]['weight_decay'],
                 }
-            logger.info(f'Param groups = {json.dumps(to_display, indent=2)}')
+            print_log(f'Param groups = {json.dumps(to_display, indent=2)}')
         params.extend(parameter_groups.values())
 
 

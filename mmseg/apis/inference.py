@@ -5,7 +5,7 @@ import torch
 from mmcv.parallel import collate, scatter
 from mmcv.runner import load_checkpoint
 
-from mmseg.datasets.pipelines import Compose
+from mmseg.datasets.transforms import Compose
 from mmseg.models import build_segmentor
 
 

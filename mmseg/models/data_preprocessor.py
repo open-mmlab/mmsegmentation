@@ -6,9 +6,8 @@ import torch
 from mmengine.model import BaseDataPreprocessor
 from torch import Tensor
 
-from mmseg.core import stack_batch
-from mmseg.core.utils import OptSampleList
 from mmseg.registry import MODELS
+from mmseg.utils import OptSampleList, stack_batch
 
 
 @MODELS.register_module()

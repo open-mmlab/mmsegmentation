@@ -6,9 +6,8 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule, Scale
 from torch import Tensor, nn
 
-from mmseg.core import add_prefix
-from mmseg.core.utils import SampleList
 from mmseg.registry import MODELS
+from mmseg.utils import SampleList, add_prefix
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import BaseDecodeHead
 

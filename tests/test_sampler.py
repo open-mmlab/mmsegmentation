@@ -2,7 +2,7 @@
 import pytest
 import torch
 
-from mmseg.core import OHEMPixelSampler
+from mmseg.data import OHEMPixelSampler
 from mmseg.models.decode_heads import FCNHead
 
 

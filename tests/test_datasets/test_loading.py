@@ -7,7 +7,7 @@ import mmcv
 import numpy as np
 from mmcv.transforms import LoadImageFromFile
 
-from mmseg.datasets.pipelines import LoadAnnotations
+from mmseg.datasets.transforms import LoadAnnotations
 
 
 class TestLoading(object):

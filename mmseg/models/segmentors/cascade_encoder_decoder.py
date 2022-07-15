@@ -3,10 +3,9 @@ from typing import List, Optional
 
 from torch import Tensor, nn
 
-from mmseg.core import add_prefix
-from mmseg.core.utils import ConfigType, OptSampleList, SampleList
-from mmseg.core.utils.typing import OptConfigType, OptMultiConfig
 from mmseg.registry import MODELS
+from mmseg.utils import (ConfigType, OptConfigType, OptMultiConfig,
+                         OptSampleList, SampleList, add_prefix)
 from .encoder_decoder import EncoderDecoder
 
 

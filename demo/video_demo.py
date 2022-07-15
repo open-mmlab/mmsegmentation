@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 import cv2
 
 from mmseg.apis import inference_model, init_model
-from mmseg.core.evaluation import get_palette
+from mmseg.utils import get_palette
 
 
 def main():

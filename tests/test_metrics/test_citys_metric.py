@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from mmengine.data import BaseDataElement, PixelData
 
-from mmseg.core import SegDataSample
+from mmseg.data import SegDataSample
 from mmseg.metrics import CitysMetric
 
 

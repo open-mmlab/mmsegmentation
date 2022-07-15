@@ -6,8 +6,8 @@ import unittest
 import numpy as np
 from mmengine.data import BaseDataElement
 
-from mmseg.core import SegDataSample
-from mmseg.datasets.pipelines import PackSegInputs
+from mmseg.data import SegDataSample
+from mmseg.datasets.transforms import PackSegInputs
 
 
 class TestPackSegInputs(unittest.TestCase):

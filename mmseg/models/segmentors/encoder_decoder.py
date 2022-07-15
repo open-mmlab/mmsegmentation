@@ -6,10 +6,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
 
-from mmseg.core import add_prefix
-from mmseg.core.utils import (ConfigType, OptConfigType, OptMultiConfig,
-                              OptSampleList, SampleList)
 from mmseg.registry import MODELS
+from mmseg.utils import (ConfigType, OptConfigType, OptMultiConfig,
+                         OptSampleList, SampleList, add_prefix)
 from .base import BaseSegmentor
 
 

@@ -8,12 +8,12 @@ from mmcv.cnn import ConvModule, build_activation_layer, build_norm_layer
 from mmcv.cnn.bricks.transformer import (FFN, TRANSFORMER_LAYER,
                                          MultiheadAttention,
                                          build_transformer_layer)
+from mmengine.logging import print_log
 from torch import Tensor
 
-from mmseg.core.utils import SampleList
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.registry import MODELS
-from mmseg.utils import get_root_logger
+from mmseg.utils import SampleList
 
 
 @TRANSFORMER_LAYER.register_module()
@@ -276,8 +276,7 @@ class KernelUpdateHead(nn.Module):
                 # the weight and bias of the layer norm
                 pass
         if self.kernel_init:
-            logger = get_root_logger()
-            logger.info(
+            print_log(
                 'mask kernel in mask head is normal initialized by std 0.01')
             nn.init.normal_(self.fc_mask.weight, mean=0, std=0.01)
 

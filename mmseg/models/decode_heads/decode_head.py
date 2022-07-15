@@ -7,10 +7,9 @@ import torch.nn as nn
 from mmcv.runner import BaseModule
 from torch import Tensor
 
-from mmseg.core import build_pixel_sampler
-from mmseg.core.utils import SampleList
-from mmseg.core.utils.typing import ConfigType
+from mmseg.data import build_pixel_sampler
 from mmseg.ops import resize
+from mmseg.utils import ConfigType, SampleList
 from ..builder import build_loss
 from ..losses import accuracy
 
