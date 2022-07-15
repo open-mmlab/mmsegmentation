@@ -4,10 +4,13 @@ import pytest
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
+from mmengine.optim.optimizer import build_optim_wrapper
 
-from mmseg.core.builder import build_optimizer
-from mmseg.core.optimizers.layer_decay_optimizer_constructor import \
+from mmseg.engine.optimizers.layer_decay_optimizer_constructor import \
     LearningRateDecayOptimizerConstructor
+from mmseg.utils import register_all_modules
+
+register_all_modules()
 
 base_lr = 1
 decay_rate = 2
@@ -221,7 +224,7 @@ def test_learning_rate_decay_optimizer_constructor():
         optimizer=optimizer_cfg,
         paramwise_cfg=stagewise_paramwise_cfg,
         constructor='LearningRateDecayOptimizerConstructor')
-    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    optim_wrapper = build_optim_wrapper(model, optim_wrapper_cfg)
     check_optimizer_lr_wd(optim_wrapper.optimizer,
                           expected_stage_wise_lr_wd_convnext)
     # layerwise decay
@@ -232,7 +235,7 @@ def test_learning_rate_decay_optimizer_constructor():
         optimizer=optimizer_cfg,
         paramwise_cfg=layerwise_paramwise_cfg,
         constructor='LearningRateDecayOptimizerConstructor')
-    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    optim_wrapper = build_optim_wrapper(model, optim_wrapper_cfg)
     check_optimizer_lr_wd(optim_wrapper.optimizer,
                           expected_layer_wise_lr_wd_convnext)
 
@@ -247,7 +250,7 @@ def test_learning_rate_decay_optimizer_constructor():
         optimizer=optimizer_cfg,
         paramwise_cfg=layerwise_paramwise_cfg,
         constructor='LearningRateDecayOptimizerConstructor')
-    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    optim_wrapper = build_optim_wrapper(model, optim_wrapper_cfg)
     check_optimizer_lr_wd(optim_wrapper.optimizer,
                           expected_layer_wise_wd_lr_beit)
 
@@ -274,7 +277,7 @@ def test_learning_rate_decay_optimizer_constructor():
         optimizer=optimizer_cfg,
         paramwise_cfg=layerwise_paramwise_cfg,
         constructor='LearningRateDecayOptimizerConstructor')
-    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    optim_wrapper = build_optim_wrapper(model, optim_wrapper_cfg)
     check_optimizer_lr_wd(optim_wrapper.optimizer,
                           expected_layer_wise_wd_lr_beit)
 
@@ -291,7 +294,7 @@ def test_beit_layer_decay_optimizer_constructor():
         paramwise_cfg=paramwise_cfg,
         optimizer=dict(
             type='AdamW', lr=1, betas=(0.9, 0.999), weight_decay=0.05))
-    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    optim_wrapper = build_optim_wrapper(model, optim_wrapper_cfg)
     # optimizer = optim_wrapper_builder(model)
     check_optimizer_lr_wd(optim_wrapper.optimizer,
                           expected_layer_wise_wd_lr_beit)

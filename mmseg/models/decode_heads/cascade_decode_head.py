@@ -4,7 +4,7 @@ from typing import List
 
 from torch import Tensor
 
-from mmseg.core.utils import ConfigType
+from mmseg.utils import ConfigType
 from .decode_head import BaseDecodeHead
 
 

@@ -4,7 +4,7 @@ import os.path as osp
 import mmcv
 import pytest
 
-from mmseg.datasets.pipelines import *  # noqa
+from mmseg.datasets.transforms import *  # noqa
 from mmseg.registry import TRANSFORMS
 
 

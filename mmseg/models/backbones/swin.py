@@ -14,9 +14,9 @@ from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
 from mmcv.runner import (BaseModule, CheckpointLoader, ModuleList,
                          load_state_dict)
 from mmcv.utils import to_2tuple
+from mmengine.logging import print_log
 
 from mmseg.registry import MODELS
-from ...utils import get_root_logger
 from ..utils.embed import PatchEmbed, PatchMerging
 
 
@@ -662,11 +662,10 @@ class SwinTransformer(BaseModule):
                 param.requires_grad = False
 
     def init_weights(self):
-        logger = get_root_logger()
         if self.init_cfg is None:
-            logger.warn(f'No pre-trained weights for '
-                        f'{self.__class__.__name__}, '
-                        f'training start from scratch')
+            print_log(f'No pre-trained weights for '
+                      f'{self.__class__.__name__}, '
+                      f'training start from scratch')
             if self.use_abs_pos_embed:
                 trunc_normal_(self.absolute_pos_embed, std=0.02)
             for m in self.modules():
@@ -680,7 +679,7 @@ class SwinTransformer(BaseModule):
                                                   f'`init_cfg` in ' \
                                                   f'{self.__class__.__name__} '
             ckpt = CheckpointLoader.load_checkpoint(
-                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
+                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
             if 'state_dict' in ckpt:
                 _state_dict = ckpt['state_dict']
             elif 'model' in ckpt:
@@ -705,7 +704,7 @@ class SwinTransformer(BaseModule):
                 N1, L, C1 = absolute_pos_embed.size()
                 N2, C2, H, W = self.absolute_pos_embed.size()
                 if N1 != N2 or C1 != C2 or L != H * W:
-                    logger.warning('Error in loading absolute_pos_embed, pass')
+                    print_log('Error in loading absolute_pos_embed, pass')
                 else:
                     state_dict['absolute_pos_embed'] = absolute_pos_embed.view(
                         N2, H, W, C2).permute(0, 3, 1, 2).contiguous()
@@ -721,7 +720,7 @@ class SwinTransformer(BaseModule):
                 L1, nH1 = table_pretrained.size()
                 L2, nH2 = table_current.size()
                 if nH1 != nH2:
-                    logger.warning(f'Error in loading {table_key}, pass')
+                    print_log(f'Error in loading {table_key}, pass')
                 elif L1 != L2:
                     S1 = int(L1**0.5)
                     S2 = int(L2**0.5)
@@ -733,7 +732,7 @@ class SwinTransformer(BaseModule):
                         nH2, L2).permute(1, 0).contiguous()
 
             # load state_dict
-            load_state_dict(self, state_dict, strict=False, logger=logger)
+            load_state_dict(self, state_dict, strict=False, logger=None)
 
     def forward(self, x):
         x, hw_shape = self.patch_embed(x)

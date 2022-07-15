@@ -1,8 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
-
-from mmseg.core.builder import build_optimizer
+from mmengine.optim import build_optim_wrapper
 
 
 class ExampleModel(nn.Module):
@@ -29,6 +28,6 @@ def test_build_optimizer():
         type='OptimWrapper',
         optimizer=dict(
             type='SGD', lr=base_lr, weight_decay=base_wd, momentum=momentum))
-    optim_wrapper = build_optimizer(model, optim_wrapper_cfg)
+    optim_wrapper = build_optim_wrapper(model, optim_wrapper_cfg)
     # test whether optimizer is successfully built from parent.
     assert isinstance(optim_wrapper.optimizer, torch.optim.SGD)

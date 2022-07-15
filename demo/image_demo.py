@@ -2,7 +2,7 @@
 from argparse import ArgumentParser
 
 from mmseg.apis import inference_model, init_model, show_result_pyplot
-from mmseg.core.evaluation import get_palette
+from mmseg.utils import get_palette
 
 
 def main():

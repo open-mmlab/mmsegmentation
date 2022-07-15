@@ -14,7 +14,6 @@ from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
 from mmseg.registry import MODELS
-from mmseg.utils import get_root_logger
 from ..utils import PatchEmbed
 from .vit import TransformerEncoderLayer as VisionTransformerEncoderLayer
 
@@ -500,9 +499,8 @@ class BEiT(BaseModule):
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg.get('type') == 'Pretrained'):
-            logger = get_root_logger()
             checkpoint = _load_checkpoint(
-                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
+                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
             state_dict = self.resize_rel_pos_embed(checkpoint)
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:

@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from mmseg.datasets.pipelines import PhotoMetricDistortion, RandomCrop
+from mmseg.datasets.transforms import PhotoMetricDistortion, RandomCrop
 from mmseg.registry import TRANSFORMS
 
 

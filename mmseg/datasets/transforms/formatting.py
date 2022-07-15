@@ -5,7 +5,7 @@ from mmcv.transforms import to_tensor
 from mmcv.transforms.base import BaseTransform
 from mmengine.data import PixelData
 
-from mmseg.core import SegDataSample
+from mmseg.data import SegDataSample
 from mmseg.registry import TRANSFORMS
 
 

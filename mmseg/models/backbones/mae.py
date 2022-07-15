@@ -9,7 +9,6 @@ from mmcv.runner import ModuleList, _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.registry import MODELS
-from mmseg.utils import get_root_logger
 from .beit import BEiT, BEiTAttention, BEiTTransformerEncoderLayer
 
 
@@ -180,9 +179,8 @@ class MAE(BEiT):
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg.get('type') == 'Pretrained'):
-            logger = get_root_logger()
             checkpoint = _load_checkpoint(
-                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
+                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
             state_dict = self.resize_rel_pos_embed(checkpoint)
             state_dict = self.resize_abs_pos_embed(state_dict)
             self.load_state_dict(state_dict, False)
