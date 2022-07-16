@@ -12,7 +12,7 @@ from .drive import DRIVEDataset
 from .hrf import HRFDataset
 from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
-from .kitti_seg import KittiDataset
+from .kitti import KittiDataset
 from .loveda import LoveDADataset
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
