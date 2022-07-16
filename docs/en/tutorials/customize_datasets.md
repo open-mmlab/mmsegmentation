@@ -262,6 +262,8 @@ An example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
 
 ```python
 train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations'),
     dict(type='RandomMosaic', prob=1),
     dict(type='Resize', img_scale=(1024, 512), keep_ratio=True),
     dict(type='RandomFlip', prob=0.5),
