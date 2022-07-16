@@ -216,7 +216,7 @@ def mean_fscore(results,
                 label_map=dict(),
                 reduce_zero_label=False,
                 beta=1):
-    """Calculate Mean Intersection and Union (mIoU)
+    """Calculate Mean F-Score (mFscore)
 
     Args:
         results (list[ndarray] | list[str]): List of prediction segmentation

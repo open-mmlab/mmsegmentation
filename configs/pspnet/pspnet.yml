@@ -169,7 +169,7 @@ Models:
       mIoU: 78.47
       mIoU(ms+flip): 79.45
   Config: configs/pspnet/pspnet_r50-d8_rsb-pretrain_512x1024_adamw_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220315_123238-588c30be.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_rsb-pretrain_512x1024_adamw_80k_cityscapes/pspnet_r50-d8_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220315_123238-588c30be.pth
 - Name: pspnet_r101-d8_512x1024_80k_cityscapes
   In Collection: PSPNet
   Metadata:

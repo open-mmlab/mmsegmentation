@@ -17,7 +17,7 @@
     </sup>
   </div>
   <div>&nbsp;</div>
-</div>
+
 <br />
 
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mmsegmentation)](https://pypi.org/project/mmsegmentation/)
@@ -29,9 +29,15 @@
 [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 
-文档: https://mmsegmentation.readthedocs.io/zh_CN/latest
+[📘使用文档](https://mmsegmentation.readthedocs.io/en/latest/) |
+[🛠️安装指南](https://mmsegmentation.readthedocs.io/en/latest/get_started.html) |
+[👀模型库](https://mmsegmentation.readthedocs.io/en/latest/model_zoo.html) |
+[🆕更新日志](https://mmsegmentation.readthedocs.io/en/latest/changelog.html) |
+[🤔报告问题](https://github.com/open-mmlab/mmsegmentation/issues/new/choose)
 
 [English](README.md) | 简体中文
+
+</div>
 
 ## 简介
 
@@ -40,6 +46,9 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 主分支代码目前支持 PyTorch 1.5 以上的版本。
 
 ![示例图片](resources/seg_demo.gif)
+
+<details open>
+<summary>Major features</summary>
 
 ### 主要特性
 
@@ -59,14 +68,34 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
   训练速度比其他语义分割代码库更快或者相当。
 
-## 开源许可证
+</details>
 
-该项目采用 [Apache 2.0 开源许可证](LICENSE)。
+## 最新进展
 
-## 更新日志
+最新版本 v0.26.0 在 2022.7.1 发布：
 
-最新版本 v0.24.1 在 2022.5.1 发布。
+- 更新了 SegFormer 在 ADE20K 数据集上的模型结果
+- 在 MMSegmentation 增加 MMSegWandbHook 以使用 wandb 可视化工具
+
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
+
+## 安装
+
+请参考[快速入门文档](docs/zh_cn/get_started.md#installation)进行安装，参考[数据集准备](docs/zh_cn/dataset_prepare.md)处理数据。
+
+## 快速入门
+
+请参考[训练教程](docs/zh_cn/train.md)和[测试教程](docs/zh_cn/inference.md)学习 MMSegmentation 的基本使用。
+我们也提供了一些进阶教程，内容覆盖了:
+
+- [增加自定义数据集](docs/zh_cn/tutorials/customize_datasets.md)
+- [设计新的数据预处理流程](docs/zh_cn/tutorials/data_pipeline.md)
+- [增加自定义模型](docs/zh_cn/tutorials/customize_models.md)
+- [增加自定义的运行时配置](docs/zh_cn/tutorials/customize_runtime.md)。
+- [训练技巧说明](docs/zh_cn/tutorials/training_tricks.md)
+- [有用的工具](docs/zh_cn/useful_tools.md)。
+
+同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb)。
 
 ## 基准测试和模型库
 
@@ -143,19 +172,17 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/dataset_prepare.md#isaid)
 
-## 安装
-
-请参考[快速入门文档](docs/zh_cn/get_started.md#installation)进行安装，参考[数据集准备](docs/zh_cn/dataset_prepare.md)处理数据。
-
-## 快速入门
-
-请参考[训练教程](docs/zh_cn/train.md)和[测试教程](docs/zh_cn/inference.md)学习 MMSegmentation 的基本使用。
-我们也提供了一些进阶教程，内容覆盖了[增加自定义数据集](docs/zh_cn/tutorials/customize_datasets.md)，[设计新的数据预处理流程](docs/zh_cn/tutorials/data_pipeline.md)，[增加自定义模型](docs/zh_cn/tutorials/customize_models.md)，[增加自定义的运行时配置](docs/zh_cn/tutorials/customize_runtime.md)。
-除此之外，我们也提供了很多实用的[训练技巧说明](docs/zh_cn/tutorials/training_tricks.md)和模型部署相关的[有用的工具](docs/zh_cn/useful_tools.md)。
-
-同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb)。
+## 常见问题
 
 如果遇到问题，请参考 [常见问题解答](docs/zh_cn/faq.md)。
+
+## 贡献指南
+
+我们感谢所有的贡献者为改进和提升 MMSegmentation 所作出的努力。请参考[贡献指南](.github/CONTRIBUTING.md)来了解参与项目贡献的相关指引。
+
+## 致谢
+
+MMSegmentation 是一个由来自不同高校和企业的研发人员共同参与贡献的开源项目。我们感谢所有为项目提供算法复现和新功能支持的贡献者，以及提供宝贵反馈的用户。 我们希望这个工具箱和基准测试可以为社区提供灵活的代码工具，供用户复现已有算法并开发自己的新模型，从而不断为开源社区提供贡献。
 
 ## 引用
 
@@ -170,13 +197,9 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 }
 ```
 
-## 贡献指南
+## 开源许可证
 
-我们感谢所有的贡献者为改进和提升 MMSegmentation 所作出的努力。请参考[贡献指南](.github/CONTRIBUTING.md)来了解参与项目贡献的相关指引。
-
-## 致谢
-
-MMSegmentation 是一个由来自不同高校和企业的研发人员共同参与贡献的开源项目。我们感谢所有为项目提供算法复现和新功能支持的贡献者，以及提供宝贵反馈的用户。 我们希望这个工具箱和基准测试可以为社区提供灵活的代码工具，供用户复现已有算法并开发自己的新模型，从而不断为开源社区提供贡献。
+`MMSegmentation` 目前以 Apache 2.0 的许可证发布，但是其中有一部分功能并不是使用的 Apache2.0 许可证，我们在 [许可证](LICENSES.md) 中详细地列出了这些功能以及他们对应的许可证，如果您正在从事盈利性活动，请谨慎参考此文档。
 
 ## OpenMMLab 的其他项目
 
@@ -202,13 +225,13 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 
 ## 欢迎加入 OpenMMLab 社区
 
- 扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，加入 [OpenMMLab 团队](https://jq.qq.com/?_wv=1027&k=aCvMxdr3) 以及 [MMSegmentation](https://jq.qq.com/?_wv=1027&k=ukevz6Ie) 的 QQ 群。
+扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，加入 [OpenMMLab 团队](https://jq.qq.com/?_wv=1027&k=aCvMxdr3) 以及 [MMSegmentation](https://jq.qq.com/?_wv=1027&k=9sprS2YO) 的 QQ 群。
 
- <div align="center">
- <img src="docs/zh_cn/imgs/zhihu_qrcode.jpg" height="400" />  <img src="docs/zh_cn/imgs/qq_group_qrcode.jpg" height="400" />  <img src="docs/zh_cn/imgs/seggroup_qrcode.jpg" height="400" />
+<div align="center">
+ <img src="docs/zh_cn/imgs/zhihu_qrcode.jpg" height="400" />  <img src="docs/zh_cn/imgs/qq_group_qrcode.jpg" height="400" />
  </div>
 
- 我们会在 OpenMMLab 社区为大家
+我们会在 OpenMMLab 社区为大家
 
 - 📢 分享 AI 框架的前沿核心技术
 - 💻 解读 PyTorch 常用模块源码
@@ -217,4 +240,4 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - 🏃 获取更高效的问题答疑和意见反馈
 - 🔥 提供与各行各业开发者充分交流的平台
 
- 干货满满 📘，等你来撩 💗，OpenMMLab 社区期待您的加入 👬
+干货满满 📘，等你来撩 💗，OpenMMLab 社区期待您的加入 👬
