@@ -56,6 +56,16 @@ class WindowMSA(BaseModule):
         head_embed_dims = embed_dims // num_heads
         self.scale = qk_scale or head_embed_dims**-0.5
 
+        self.register_relative_position_index(window_size, num_heads)
+
+        self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=qkv_bias)
+        self.attn_drop = nn.Dropout(attn_drop_rate)
+        self.proj = nn.Linear(embed_dims, embed_dims)
+        self.proj_drop = nn.Dropout(proj_drop_rate)
+
+        self.softmax = nn.Softmax(dim=-1)
+
+    def register_relative_position_index(self, window_size, num_heads):
         # define a parameter table of relative position bias
         self.relative_position_bias_table = nn.Parameter(
             torch.zeros((2 * window_size[0] - 1) * (2 * window_size[1] - 1),
@@ -67,31 +77,8 @@ class WindowMSA(BaseModule):
         rel_position_index = rel_index_coords + rel_index_coords.T
         rel_position_index = rel_position_index.flip(1).contiguous()
         self.register_buffer('relative_position_index', rel_position_index)
-
-        self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=qkv_bias)
-        self.attn_drop = nn.Dropout(attn_drop_rate)
-        self.proj = nn.Linear(embed_dims, embed_dims)
-        self.proj_drop = nn.Dropout(proj_drop_rate)
-
-        self.softmax = nn.Softmax(dim=-1)
-
-    def init_weights(self):
-        trunc_normal_(self.relative_position_bias_table, std=0.02)
-
-    def forward(self, x, mask=None):
-        """
-        Args:
-
-            x (tensor): input features with shape of (num_windows*B, N, C)
-            mask (tensor | None, Optional): mask with shape of (num_windows,
-                Wh*Ww, Wh*Ww), value should be between (-inf, 0].
-        """
-        B, N, C = x.shape
-        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads,
-                                  C // self.num_heads).permute(2, 0, 3, 1, 4)
-        # make torchscript happy (cannot use tensor as tuple)
-        q, k, v = qkv[0], qkv[1], qkv[2]
-
+    
+    def attention(self, q, k, mask, B, N, C):
         q = q * self.scale
         attn = (q @ k.transpose(-2, -1))
 
@@ -112,6 +99,26 @@ class WindowMSA(BaseModule):
         attn = self.softmax(attn)
 
         attn = self.attn_drop(attn)
+        return attn
+    
+    def init_weights(self):
+        trunc_normal_(self.relative_position_bias_table, std=0.02)
+
+    def forward(self, x, mask=None):
+        """
+        Args:
+
+            x (tensor): input features with shape of (num_windows*B, N, C)
+            mask (tensor | None, Optional): mask with shape of (num_windows,
+                Wh*Ww, Wh*Ww), value should be between (-inf, 0].
+        """
+        B, N, C = x.shape
+        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads,
+                                  C // self.num_heads).permute(2, 0, 3, 1, 4)
+        # make torchscript happy (cannot use tensor as tuple)
+        q, k, v = qkv[0], qkv[1], qkv[2]
+
+        attn = self.attention(q, k, mask, B, N, C)
 
         x = (attn @ v).transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
