@@ -123,6 +123,7 @@ class WindowsMSAV2(WindowMSA):
             attn = self.softmax(attn)
 
         attn = self.attn_drop(attn)
+        return attn
 
 
 class ShiftWindowMSAV2(ShiftWindowMSA):
@@ -412,7 +413,8 @@ class SwinTransformerV2(SwinTransformer):
         dpr = [
             x.item() for x in torch.linspace(0, drop_path_rate, total_depth)
         ]
-
+        
+        self.stages = ModuleList()
         for i in range(num_layers):
             if i < num_layers - 1:
                 downsample = PatchMerging(
