@@ -148,7 +148,7 @@ class RoadAnomalyDataset(CustomDataset):
     def get_bags(self, mul=10):
         if not hasattr(self, "class_count_pixel"):
             try:
-                with open("class_count_street_cityscapes.npy", "rb") as f:
+                with open("class_count_cityscapes_pixel.npy", "rb") as f:
                     self.class_count_pixel = np.load(f)
             except FileNotFoundError as e:
                 raise e

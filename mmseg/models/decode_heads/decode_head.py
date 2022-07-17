@@ -226,6 +226,9 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         """Classify each pixel."""
         if self.dropout is not None:
             feat = self.dropout(feat)
+            # Here I can add weight normalization
+        # with torch.no_grad():
+        #     self.conv_seg.weight.div_(torch.norm(self.conv_seg.weight, dim=1, keepdim=True))
         output = self.conv_seg(feat)
         return output
 

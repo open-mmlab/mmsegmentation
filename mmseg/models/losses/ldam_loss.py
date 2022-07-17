@@ -9,12 +9,15 @@ import torch.nn.functional as F
 
 @LOSSES.register_module
 class LDAMLoss(nn.Module):
-    """Reference: https://github.com/kaidic/LDAM-DRW/blob/master/losses.py"""
     """
+    Reference: https://github.com/kaidic/LDAM-DRW/blob/master/losses.py
     Works only with ignore index
     """
 
-    def __init__(self, class_count, max_m=0.5, class_weight=None, scale=30, reduction="mean", loss_weight=1.0, avg_non_ignore=False, loss_name='loss_ldam'):
+    def __init__(
+            self, class_count, max_margin=0.5, class_weight=None, scale=30, reduction="mean", loss_weight=1.0, avg_non_ignore=False,
+            loss_name='loss_ldam'):
+
         super(LDAMLoss, self).__init__()
         self.loss_name = loss_name
         self.scale = scale
@@ -22,7 +25,8 @@ class LDAMLoss(nn.Module):
         self.class_weight = class_weight
         self.class_count = get_class_count(class_count)[:-1]  # last item is for 255
         delta = 1.0 / (self.class_count**0.25)
-        delta = delta * (max_m / np.max(delta))
+        delta = max_margin * (delta / np.max(delta))
+
         self.delta = torch.cuda.FloatTensor(delta)
         self.loss_weight = loss_weight
         self.avg_non_ignore = avg_non_ignore

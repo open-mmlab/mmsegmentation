@@ -21,6 +21,7 @@ from mmseg.utils import build_ddp, build_dp, get_device, setup_multi_processes
 from tensorboardX import SummaryWriter
 
 import json
+import re
 
 
 def parse_args():
@@ -51,6 +52,7 @@ def parse_args():
     parser.add_argument(
         '--show-dir', help='directory where painted images will be saved')
     parser.add_argument("--use-bags", action='store_true', help='determines weather to use bags of predictors')
+    parser.add_argument("--bags-mul", type=int, default=10, help='determines weather to use bags of predictors')
     parser.add_argument("--all", action='store_true', help='determines weather to test all checkpoints')
     parser.add_argument(
         '--gpu-collect',
@@ -196,7 +198,8 @@ def main():
     # TODO: support multiple images per gpu (only minor changes are needed)
     dataset = build_dataset(cfg.data.test)
     if args.use_bags:
-        dataset.get_bags()
+        dataset.get_bags(mul=args.bags_mul)
+        print(dataset.bag_class_counts)
         cfg.model.decode_head.num_classes += dataset.num_bags
     # The default loader config
     loader_cfg = dict(
@@ -242,6 +245,13 @@ def main():
         if fp16_cfg is not None:
             wrap_fp16_model(model)
         checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
+        # import torch.nn as nn
+        # model.decode_head.conv_seg = nn.utils.weight_norm(
+        #     nn.Conv2d(model.decode_head.channels, model.decode_head.num_classes, kernel_size=1), "weight", dim=1)
+
+        # with torch.no_grad():
+        #     model.decode_head.conv_seg.weight.div_(torch.norm(model.decode_head.conv_seg.weight, dim=1, keepdim=True))
+
         if 'CLASSES' in checkpoint.get('meta', {}):
             model.CLASSES = checkpoint['meta']['CLASSES']
         else:
@@ -262,6 +272,22 @@ def main():
             setattr(model.decode_head, "bag_class_counts", dataset.bag_class_counts)
         else:
             setattr(model.decode_head, "use_bags", False)
+        if not args.all:
+            conv_layer_weight_mag = torch.norm(model.decode_head.conv_seg.weight.squeeze(), dim=1)
+            if args.use_bags:
+                conv_layer_weight_mag = torch.norm(model.decode_head.conv_seg.weight[:-dataset.num_bags, :, :].squeeze(), dim=1)
+            print("conv_seg layer weight magnitude")
+            print(conv_layer_weight_mag)
+            print("conv_seg layer weight magnitude max-min")
+            print(conv_layer_weight_mag.max() - conv_layer_weight_mag.min())
+            conv_layer_bias_mag = torch.norm(model.decode_head.conv_seg.bias.unsqueeze(1), dim=1)
+            if args.use_bags:
+                conv_layer_bias_mag = torch.norm(model.decode_head.conv_seg.bias[:-dataset.num_bags].unsqueeze(1), dim=1)
+            print("conv_seg layer bias magnitude")
+            print(conv_layer_bias_mag)
+            print("conv_seg layer bias magnitude max-min")
+            print(conv_layer_bias_mag.max() - conv_layer_bias_mag.min())
+
         # clean gpu memory when starting a new evaluation.
         torch.cuda.empty_cache()
         eval_kwargs = {} if args.eval_options is None else args.eval_options
@@ -346,21 +372,24 @@ def main():
                     # remove tmp dir when cityscapes evaluation
                     shutil.rmtree(tmpdir)
                 metric_dict["iter"] = all_checkpoints_iter[i]
-                ans.append(metric_dict['metric'])
+                curr_res = {}
+                for a in ("max_softmax", "max_logit", "entropy"):
+                    for b in ("auroc", "aupr", "fpr(fpr@95tpr)"):
+                        curr_res[f"{a}.{b}"] = metric_dict['metric'][f"{a}.{b}"]
+                curr_res["max_softmax.ece"] = metric_dict['metric']["max_softmax.ece"]
+                curr_res["mIoU"] = metric_dict['metric']["mIoU"]
+                curr_res["mAcc"] = metric_dict['metric']["mAcc"]
+                curr_res["aAcc"] = metric_dict['metric']["aAcc"]
                 if args.all:
-                    for a in ("max_softmax", "max_logit", "entropy"):
-                        for b in ("auroc", "aupr", "fpr(fpr@95tpr)"):
-                            writer.add_scalar(f"test/{a}.{b}", metric_dict['metric'][f"{a}.{b}"], all_checkpoints_iter[i])
-                    writer.add_scalar(f"test/max_softmax.ece", metric_dict['metric']["max_softmax.ece"], all_checkpoints_iter[i])
-                    writer.add_scalar(f"test/mIoU", metric_dict['metric']["mIoU"], all_checkpoints_iter[i])
-                    writer.add_scalar(f"test/mAcc", metric_dict['metric']["mAcc"], all_checkpoints_iter[i])
-                    writer.add_scalar(f"test/aAcc", metric_dict['metric']["aAcc"], all_checkpoints_iter[i])
+                    for k, v in curr_res.items():
+                        writer.add_scalar(f"test/{k}", v, all_checkpoints_iter[i])
 
-    with open(os.path.join(args.work_dir, "test_results_all.json" if args.all else "test_results.json"), "w") as f:
+                curr_res["iter"] = all_checkpoints_iter[i]
+                ans.append(curr_res)
+
+    suffixe = re.search(r"(?:[0-9]{14})_(.*)$", args.work_dir).groups()[0]
+    with open(os.path.join(args.work_dir, f"test_results_all_{suffixe}.json" if args.all else f"test_results_{suffixe}.json"), "w") as f:
         json.dump(ans, f)
-
-    if args.all:
-        writer.close()
 
 
 if __name__ == '__main__':

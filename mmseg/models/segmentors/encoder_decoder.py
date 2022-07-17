@@ -256,7 +256,7 @@ class EncoderDecoder(BaseSegmentor):
             logits = torch.zeros_like(seg_logit[:, :-self.decode_head.num_bags, :, :])
             is_all_other = torch.zeros_like(seg_logit[:, :self.decode_head.num_bags, :, :])
             seg_pred_entropy = 0
-
+            # seg_logit_diff = logits.max(dim=1) - logits.min(dim=1)
             for bag_idx in range(self.decode_head.num_bags):
                 cp_seg_logit = seg_logit.detach().clone()
                 bag_seg_logit = cp_seg_logit[:, self.decode_head.bag_masks[bag_idx], :, :]

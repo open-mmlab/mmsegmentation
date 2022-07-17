@@ -268,12 +268,12 @@ def main():
     conf = args.config.replace("cityscapes", "roadanomaly")
     if not args.use_bags:
         subprocess.run(["python", os.path.join("tools", "test.py"),
-                        conf, "--work-dir", cfg.work_dir, "--eval", "mIoU", "--all"
+                        conf, "--work-dir", cfg.work_dir, "--eval", "mIoU",
                         # "--show-dir", os.path.join(cfg.work_dir, "test_results_img"),
                         ], cwd=".")
     else:
         subprocess.run(["python", os.path.join("tools", "test.py"),
-                        conf, "--work-dir", cfg.work_dir, "--eval", "mIoU", "--use-bags", "--all"
+                        conf, "--work-dir", cfg.work_dir, "--eval", "mIoU", "--use-bags",
                         # "--show-dir", os.path.join(cfg.work_dir, "test_results_img"),
                         ], cwd=".")
 
