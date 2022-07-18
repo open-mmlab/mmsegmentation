@@ -2,7 +2,7 @@
 from argparse import ArgumentParser
 
 from mmseg.apis import inference_model, init_model, show_result_pyplot
-from mmseg.utils import get_palette
+from mmseg.utils import get_palette, register_all_modules
 
 
 def main():
@@ -22,6 +22,8 @@ def main():
         default=0.5,
         help='Opacity of painted segmentation map. In (0, 1] range.')
     args = parser.parse_args()
+
+    register_all_modules()
 
     # build the model from a config file and a checkpoint file
     model = init_model(args.config, args.checkpoint, device=args.device)
