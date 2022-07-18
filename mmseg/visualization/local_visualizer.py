@@ -42,7 +42,7 @@ class SegLocalVisualizer(Visualizer):
         >>> seg_local_visualizer.dataset_meta = dict(
         >>>     classes=('background', 'foreground'),
         >>>     palette=[[120, 120, 120], [6, 230, 230]])
-        >>> seg_local_visualizer.add_datasample('out_file_name',
+        >>> seg_local_visualizer.add_datasample('visualizer_example',
         ...                         image, gt_seg_data_sample)
         >>> seg_local_visualizer.add_datasample(
         ...                        'out_file_name', image, gt_seg_data_sample,
