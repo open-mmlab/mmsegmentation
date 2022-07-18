@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class LoveDADataset(CustomDataset):
+class LoveDADataset(BaseSegDataset):
     """LoveDA dataset.
 
     In segmentation map annotation for LoveDA, 0 is the ignore index.

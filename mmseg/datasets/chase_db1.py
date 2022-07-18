@@ -1,11 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class ChaseDB1Dataset(CustomDataset):
+class ChaseDB1Dataset(BaseSegDataset):
     """Chase_db1 dataset.
 
     In segmentation map annotation for Chase_db1, 0 stands for background,

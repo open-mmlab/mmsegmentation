@@ -2,11 +2,11 @@
 import os.path as osp
 
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class PascalVOCDataset(CustomDataset):
+class PascalVOCDataset(BaseSegDataset):
     """Pascal VOC dataset.
 
     Args:
