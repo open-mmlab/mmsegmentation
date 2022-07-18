@@ -1,7 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from mmengine.dataset import ConcatDataset, RepeatDataset
-
-from mmseg.registry import DATASETS, TRANSFORMS
 from .ade import ADE20KDataset
 from .chase_db1 import ChaseDB1Dataset
 from .cityscapes import CityscapesDataset
@@ -21,8 +18,7 @@ from .stare import STAREDataset
 from .voc import PascalVOCDataset
 
 __all__ = [
-    'CustomDataset', 'ConcatDataset', 'RepeatDataset', 'DATASETS',
-    'TRANSFORMS', 'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
+    'CustomDataset', 'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
     'PascalContextDataset', 'PascalContextDataset59', 'ChaseDB1Dataset',
     'DRIVEDataset', 'HRFDataset', 'STAREDataset', 'DarkZurichDataset',
     'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',
