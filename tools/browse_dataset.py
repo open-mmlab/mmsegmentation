@@ -6,9 +6,11 @@ from pathlib import Path
 
 import mmcv
 import numpy as np
-from mmcv import Config, DictAction
+import torch
+from mmengine import Config, DictAction
+from mmengine.runner import Runner
 
-from mmseg.datasets import DATASETS
+from mmseg.utils import register_all_modules
 
 
 def parse_args():
@@ -89,7 +91,14 @@ def imshow_semantic(img,
     Returns:
         img (Tensor): Only if not `show` or `out_file`
     """
-    img = mmcv.imread(img)
+    if isinstance(img, str):
+        img = mmcv.imread(img)
+    elif isinstance(img, torch.Tensor):
+        img = img.permute(1, 2, 0).numpy()
+    else:
+        raise f'Unexpected image data type, expect str or Tensor,\
+            but got {type(img)}'
+
     img = img.copy()
     if palette is None:
         palette = np.random.randint(0, 255, size=(len(class_names), 3))
@@ -137,7 +146,7 @@ def retrieve_data_cfg(config_path, skip_type, cfg_options, show_origin=False):
     cfg = Config.fromfile(config_path)
     if cfg_options is not None:
         cfg.merge_from_dict(cfg_options)
-    train_data_cfg = cfg.data.train
+    train_data_cfg = cfg.train_dataloader.dataset
     if isinstance(train_data_cfg, list):
         for _data_cfg in train_data_cfg:
             while 'dataset' in _data_cfg and _data_cfg[
@@ -157,19 +166,21 @@ def retrieve_data_cfg(config_path, skip_type, cfg_options, show_origin=False):
 
 def main():
     args = parse_args()
+    register_all_modules()
     cfg = retrieve_data_cfg(args.config, args.skip_type, args.cfg_options,
                             args.show_origin)
-    dataset = DATASETS.build(cfg.data.train)
+    dataset = Runner.build_dataloader(cfg.train_dataloader).dataset
     progress_bar = mmcv.ProgressBar(len(dataset))
     for item in dataset:
-        filename = os.path.join(args.output_dir,
-                                Path(item['filename']).name
-                                ) if args.output_dir is not None else None
+        filename = os.path.join(
+            args.output_dir,
+            Path(item['data_sample'].metainfo['img_path']).name
+        ) if args.output_dir is not None else None
         imshow_semantic(
-            item['img'],
-            item['gt_semantic_seg'],
-            dataset.CLASSES,
-            dataset.PALETTE,
+            item['inputs'],
+            item['data_sample'].gt_sem_seg,
+            dataset.METAINFO['classes'],
+            dataset.METAINFO['palette'],
             show=args.show,
             wait_time=args.show_interval,
             out_file=filename,

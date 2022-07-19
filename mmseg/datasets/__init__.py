@@ -18,6 +18,7 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
+from .transforms import *  # noqa
 from .voc import PascalVOCDataset
 
 __all__ = [
