@@ -1,10 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 
+import torch
 from mmcv import Config
 from mmcv.cnn import get_model_complexity_info
+from mmengine.utils import revert_sync_batchnorm
 
-from mmseg.models import build_segmentor
+from mmseg.registry import MODELS
+from mmseg.utils import register_all_modules
 
 
 def parse_args():
@@ -17,6 +20,8 @@ def parse_args():
         nargs='+',
         default=[2048, 1024],
         help='input image size')
+    parser.add_argument(
+        '--device', default='cuda:0', help='Device used for inference')
     args = parser.parse_args()
     return args
 
@@ -32,20 +37,16 @@ def main():
     else:
         raise ValueError('invalid input shape')
 
+    register_all_modules()
+
     cfg = Config.fromfile(args.config)
     cfg.model.pretrained = None
-    model = build_segmentor(
-        cfg.model,
-        train_cfg=cfg.get('train_cfg'),
-        test_cfg=cfg.get('test_cfg')).cuda()
-    model.eval()
-
-    if hasattr(model, 'forward_dummy'):
-        model.forward = model.forward_dummy
+    model = MODELS.build(cfg.model)
+    if not torch.cuda.is_available() or args.device == 'cpu':
+        model = revert_sync_batchnorm(model)
     else:
-        raise NotImplementedError(
-            'FLOPs counter is currently not currently supported with {}'.
-            format(model.__class__.__name__))
+        model = model.to(args.device)
+    model.eval()
 
     flops, params = get_model_complexity_info(model, input_shape)
     split_line = '=' * 30
