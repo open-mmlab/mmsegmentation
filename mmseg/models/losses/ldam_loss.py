@@ -15,7 +15,7 @@ class LDAMLoss(nn.Module):
     """
 
     def __init__(
-            self, class_count, max_margin=0.5, class_weight=None, scale=30, reduction="mean", loss_weight=1.0, avg_non_ignore=False,
+            self, class_count, max_margin=0.5, class_weight=None, scale=30, reduction="mean", warm=50, loss_weight=1.0, avg_non_ignore=False,
             loss_name='loss_ldam'):
 
         super(LDAMLoss, self).__init__()
@@ -30,6 +30,8 @@ class LDAMLoss(nn.Module):
         self.delta = torch.cuda.FloatTensor(delta)
         self.loss_weight = loss_weight
         self.avg_non_ignore = avg_non_ignore
+        self.warm = warm
+        self.epoch_num = 0
 
     def forward(self,
                 pred,  # logits
@@ -40,22 +42,31 @@ class LDAMLoss(nn.Module):
                 ignore_index=255):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (reduction_override if reduction_override else self.reduction)
-        batch_target_ = target.data.unsqueeze(1).clone()
-        # Label 255 is causing this error in gather and scatter_
-        batch_target_[batch_target_ == 255] = 0
-        delta_ = self.delta[None, :].reshape(1, -1, 1, 1).repeat(batch_target_.shape)
-        batch_delta = torch.gather(input=delta_, dim=1, index=batch_target_)
-        diff = pred - batch_delta
-        one_hot_gt = torch.zeros_like(pred, dtype=torch.uint8).scatter_(1, batch_target_, 1)
-        output = torch.where(one_hot_gt.type(torch.bool), diff, pred)
-        loss = F.cross_entropy(self.scale * output, target, weight=self.class_weight, reduction="none",
-                               ignore_index=ignore_index)
 
-        if (avg_factor is None) and self.avg_non_ignore and reduction == 'mean':
-            avg_factor = target.numel() - (target == ignore_index).sum().item()
-        if weight is not None:
-            weight = weight.float()
-        loss_cls = weight_reduce_loss(
-            loss, weight=weight, reduction=reduction, avg_factor=avg_factor)
+        if self.epoch_num > self.warm:
+            batch_target_ = target.data.unsqueeze(1).clone()
+            # Label 255 is causing this error in gather and scatter_
+            batch_target_[batch_target_ == 255] = 0
+
+            target_expanded = target.data.unsqueeze(1).clone()
+            mask_ignore = (target_expanded == 255)
+            batch_target_[mask_ignore] = 0
+
+            delta_ = self.delta[None, :].reshape(1, -1, 1, 1).repeat(batch_target_.shape)
+            batch_delta = torch.gather(input=delta_, dim=1, index=batch_target_)
+            diff = pred - batch_delta
+            one_hot_gt = torch.zeros_like(pred, dtype=torch.uint8).scatter_(1, batch_target_, 1)
+            output = torch.where(one_hot_gt.type(torch.bool), diff, pred)
+            loss = F.cross_entropy(self.scale * output, target, weight=self.class_weight, reduction="none", ignore_index=ignore_index)
+        else:
+            loss = F.cross_entropy(pred, target, weight=self.class_weight, reduction="none", ignore_index=ignore_index)
+
+        avg_factor = target.numel() - (target == ignore_index).sum().item()
+        if reduction == 'mean':
+            loss_cls = loss.sum() / avg_factor
+        elif reduction == 'sum':
+            loss_cls = loss.sum()
+        else:
+            loss_cls = loss
 
         return self.loss_weight * loss_cls
