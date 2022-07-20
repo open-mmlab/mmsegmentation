@@ -268,11 +268,10 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         for loss_decode in losses_decode:
             if loss_decode.loss_name not in loss:
                 if self.use_bags:
+                    # Compute loss using bags
                     loss_bags = []
                     for bag_idx in range(self.num_bags):
-
                         bag_seg_logit = seg_logit[:, self.bag_masks[bag_idx], :, :]
-
                         bag_seg_label = seg_label
                         for c in range(self.num_classes - self.num_bags):
                             remapped_index = self.bags_classes[bag_idx].index(self.bag_label_maps[bag_idx][c])
@@ -283,7 +282,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                             bag_seg_label,
                             weight=seg_weight,
                             ignore_index=self.ignore_index)
-                        loss[loss_decode.loss_name + f"_bag_{bag_idx}"] = loss_bag.detach()
+                        loss[loss_decode.loss_name.replace("loss", "L") + f"_bag_{bag_idx}"] = loss_bag.detach()
                         loss_bags.append(loss_bag)
 
                     loss[loss_decode.loss_name] = sum(loss_bags)
@@ -293,11 +292,12 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                         seg_label,
                         weight=seg_weight,
                         ignore_index=self.ignore_index)
-                    if loss_decode.loss_name.endswith("edl"):
-                        loss["mean_ev"], loss["mean_ev_succ"], loss["mean_ev_fail"] = loss_decode.get_evidence(seg_logit,
-                                                                                                               seg_label,
-                                                                                                               self.ignore_index)
-                        loss["lam"] = loss_decode.lam
+                    if loss_decode.loss_name.startswith("loss_edl"):
+                        # load
+                        logs = loss_decode.get_logs(seg_logit,
+                                                    seg_label,
+                                                    self.ignore_index)
+                        loss.update(logs)
             else:
                 if self.use_bags:
                     raise NotImplementedError
@@ -307,5 +307,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                         seg_label,
                         weight=seg_weight,
                         ignore_index=self.ignore_index)
+                    if loss_decode.loss_name.startswith("loss_edl"):
+                        raise NotImplementedError
 
         return loss
