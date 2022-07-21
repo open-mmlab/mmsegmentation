@@ -15,6 +15,10 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
+from .transforms import (CLAHE, AdjustGamma, LoadAnnotations, PackSegInputs,
+                         PhotoMetricDistortion, RandomCrop, RandomCutOut,
+                         RandomMosaic, RandomRotate, Rerange, ResizeToMultiple,
+                         RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
 
 __all__ = [
@@ -22,5 +26,8 @@ __all__ = [
     'PascalContextDataset', 'PascalContextDataset59', 'ChaseDB1Dataset',
     'DRIVEDataset', 'HRFDataset', 'STAREDataset', 'DarkZurichDataset',
     'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',
-    'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset'
+    'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset',
+    'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
+    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
+    'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple'
 ]
