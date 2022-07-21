@@ -1,8 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from argparse import ArgumentParser
 
+from mmengine.utils import revert_sync_batchnorm
+
 from mmseg.apis import inference_model, init_model, show_result_pyplot
-from mmseg.utils import get_palette, register_all_modules
+from mmseg.utils import register_all_modules
 
 
 def main():
@@ -13,20 +15,24 @@ def main():
     parser.add_argument(
         '--device', default='cuda:0', help='Device used for inference')
     parser.add_argument(
-        '--palette',
-        default='cityscapes',
-        help='Color palette used for segmentation map')
+        '--save-dir',
+        default=None,
+        help='Save file dir for all storage backends.')
     parser.add_argument(
         '--opacity',
         type=float,
         default=0.5,
         help='Opacity of painted segmentation map. In (0, 1] range.')
+    parser.add_argument(
+        '--title', default='result', help='The image identifier.')
     args = parser.parse_args()
 
     register_all_modules()
 
     # build the model from a config file and a checkpoint file
     model = init_model(args.config, args.checkpoint, device=args.device)
+    if args.device == 'cpu':
+        model = revert_sync_batchnorm(model)
     # test a single image
     result = inference_model(model, args.img)
     # show the results
@@ -34,8 +40,11 @@ def main():
         model,
         args.img,
         result,
-        get_palette(args.palette),
-        opacity=args.opacity)
+        title=args.title,
+        opacity=args.opacity,
+        draw_gt=False,
+        show=False if args.save_dir is not None else True,
+        save_dir=args.save_dir)
 
 
 if __name__ == '__main__':
