@@ -8,7 +8,7 @@ import mmcv
 import numpy as np
 from mmcv import Config, DictAction
 
-from mmseg.datasets import DATASETS
+from mmseg.registry import DATASETS
 
 
 def parse_args():

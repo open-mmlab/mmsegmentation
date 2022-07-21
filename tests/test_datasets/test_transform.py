@@ -9,6 +9,9 @@ from PIL import Image
 
 from mmseg.datasets.transforms import PhotoMetricDistortion, RandomCrop
 from mmseg.registry import TRANSFORMS
+from mmseg.utils import register_all_modules
+
+register_all_modules()
 
 
 def test_resize():

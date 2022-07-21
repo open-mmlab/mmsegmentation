@@ -6,7 +6,7 @@ import torch
 from mmengine.data import BaseDataElement, PixelData
 
 from mmseg.data import SegDataSample
-from mmseg.metrics import CitysMetric
+from mmseg.evaluation import CitysMetric
 
 
 class TestCitysMetric(TestCase):
