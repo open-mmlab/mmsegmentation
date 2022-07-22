@@ -19,7 +19,7 @@ def register_all_modules(init_default_scope: bool = True) -> None:
     import mmseg.data  # noqa: F401,F403
     import mmseg.datasets  # noqa: F401,F403
     import mmseg.engine  # noqa: F401,F403
-    import mmseg.metrics  # noqa: F401,F403
+    import mmseg.evaluation  # noqa: F401,F403
     import mmseg.models  # noqa: F401,F403
 
     if init_default_scope:
