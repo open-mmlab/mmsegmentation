@@ -4,6 +4,7 @@ import warnings
 import mmcv
 import numpy as np
 from mmcv.transforms import LoadAnnotations as MMCV_LoadAnnotations
+from mmcv.transforms import LoadImageFromFile
 
 from mmseg.registry import TRANSFORMS
 
@@ -120,3 +121,50 @@ class LoadAnnotations(MMCV_LoadAnnotations):
         repr_str += f"imdecode_backend='{self.imdecode_backend}')"
         repr_str += f'file_client_args={self.file_client_args})'
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class LoadImageFromNDArray(LoadImageFromFile):
+    """Load an image from ``results['img']``.
+
+    Similar with :obj:`LoadImageFromFile`, but the image has been loaded as
+    :obj:`np.ndarray` in ``results['img']``. Can be used when loading image
+    from webcam.
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+    - img_path
+    - img_shape
+    - ori_shape
+
+    Args:
+        to_float32 (bool): Whether to convert the loaded image to a float32
+            numpy array. If set to False, the loaded image is an uint8 array.
+            Defaults to False.
+    """
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to add image meta information.
+
+        Args:
+            results (dict): Result dict with Webcam read image in
+                ``results['img']``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+
+        img = results['img']
+        if self.to_float32:
+            img = img.astype(np.float32)
+
+        results['img_path'] = None
+        results['img'] = img
+        results['img_shape'] = img.shape[:2]
+        results['ori_shape'] = img.shape[:2]
+        return results

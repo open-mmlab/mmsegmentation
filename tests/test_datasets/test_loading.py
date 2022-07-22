@@ -7,7 +7,7 @@ import mmcv
 import numpy as np
 from mmcv.transforms import LoadImageFromFile
 
-from mmseg.datasets.transforms import LoadAnnotations
+from mmseg.datasets.transforms import LoadAnnotations, LoadImageFromNDArray
 
 
 class TestLoading(object):
@@ -161,3 +161,27 @@ class TestLoading(object):
         np.testing.assert_array_equal(gt_array, test_gt)
 
         tmp_dir.cleanup()
+
+    def test_load_image_from_ndarray(self):
+        results = {'img': np.zeros((256, 256, 3), dtype=np.uint8)}
+        transform = LoadImageFromNDArray()
+        results = transform(results)
+
+        assert results['img'].shape == (256, 256, 3)
+        assert results['img'].dtype == np.uint8
+        assert results['img_shape'] == (256, 256)
+        assert results['ori_shape'] == (256, 256)
+
+        # to_float32
+        transform = LoadImageFromNDArray(to_float32=True)
+        results = transform(copy.deepcopy(results))
+        assert results['img'].dtype == np.float32
+
+        # test repr
+        transform = LoadImageFromNDArray()
+        assert repr(transform) == ('LoadImageFromNDArray('
+                                   'ignore_empty=False, '
+                                   'to_float32=False, '
+                                   "color_type='color', "
+                                   "imdecode_backend='cv2', "
+                                   "file_client_args={'backend': 'disk'})")
