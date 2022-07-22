@@ -15,7 +15,8 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
-from .transforms import (CLAHE, AdjustGamma, LoadAnnotations, PackSegInputs,
+from .transforms import (CLAHE, AdjustGamma, LoadAnnotations,
+                         LoadImageFromNDArray, PackSegInputs,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, Rerange, ResizeToMultiple,
                          RGB2Gray, SegRescale)
@@ -29,5 +30,6 @@ __all__ = [
     'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset',
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
     'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
-    'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple'
+    'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
+    'LoadImageFromNDArray'
 ]
