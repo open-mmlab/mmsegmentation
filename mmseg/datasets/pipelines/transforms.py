@@ -3,7 +3,8 @@ import copy
 
 import mmcv
 import numpy as np
-from mmcv.utils import deprecated_api_warning, is_tuple_of
+from mmcv.utils import (deprecated_api_warning, is_list_of, is_tuple_of,
+                        list_cast)
 from numpy import random
 
 from ..builder import PIPELINES
@@ -330,18 +331,35 @@ class RandomFlip(object):
     method.
 
     Args:
-        prob (float, optional): The flipping probability. Default: None.
+        prob (float, optional): The flipping probability or a list of flipping
+            probabilities. Default: None.
         direction(str, optional): The flipping direction. Options are
-            'horizontal' and 'vertical'. Default: 'horizontal'.
+            'horizontal', 'vertical' or a list containing both values. Default:
+            'horizontal'.
     """
 
     @deprecated_api_warning({'flip_ratio': 'prob'}, cls_name='RandomFlip')
     def __init__(self, prob=None, direction='horizontal'):
-        self.prob = prob
-        self.direction = direction
-        if prob is not None:
-            assert prob >= 0 and prob <= 1
-        assert direction in ['horizontal', 'vertical']
+        if prob is None:
+            prob = 0.5
+
+        self.prob = self._ensure_list(prob)
+        self.prob = list_cast(self.prob, float)
+        for value in self.prob:
+            assert 0 <= value <= 1
+
+        self.direction = self._ensure_list(direction)
+        assert is_list_of(self.direction, str)
+        for value in self.direction:
+            assert value in ['horizontal', 'vertical']
+
+        assert len(self.prob) == len(self.direction)
+
+    @staticmethod
+    def _ensure_list(entity):
+        if not isinstance(entity, list):
+            entity = [entity]
+        return entity
 
     def __call__(self, results):
         """Call function to flip bounding boxes, masks, semantic segmentation
@@ -354,22 +372,23 @@ class RandomFlip(object):
             dict: Flipped results, 'flip', 'flip_direction' keys are added into
                 result dict.
         """
-
+        flip = [np.random.rand() < value for value in self.prob]
         if 'flip' not in results:
-            flip = True if np.random.rand() < self.prob else False
             results['flip'] = flip
         if 'flip_direction' not in results:
             results['flip_direction'] = self.direction
-        if results['flip']:
-            # flip image
-            results['img'] = mmcv.imflip(
-                results['img'], direction=results['flip_direction'])
 
-            # flip segs
-            for key in results.get('seg_fields', []):
-                # use copy() to make numpy stride positive
-                results[key] = mmcv.imflip(
-                    results[key], direction=results['flip_direction']).copy()
+        for flip_value, direction_value in zip(flip, self.direction):
+            if flip_value:
+                # flip image
+                results['img'] = mmcv.imflip(
+                    results['img'], direction=direction_value)
+
+                # flip segs
+                for key in results.get('seg_fields', []):
+                    # use copy() to make numpy stride positive
+                    results[key] = mmcv.imflip(
+                        results[key], direction=direction_value).copy()
         return results
 
     def __repr__(self):
