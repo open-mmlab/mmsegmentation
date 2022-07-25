@@ -5,8 +5,8 @@ import mmcv
 import numpy as np
 import torch
 from mmcv.runner import load_checkpoint
-from mmcv.transforms import Compose
 
+from mmseg.datasets.transforms.compose import Compose
 from mmseg.models import BaseSegmentor
 from mmseg.registry import MODELS
 from mmseg.utils import SampleList
