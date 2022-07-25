@@ -5,8 +5,8 @@ import mmcv
 import numpy as np
 import torch
 from mmcv.runner import load_checkpoint
+from mmcv.transforms import Compose
 
-from mmseg.datasets.transforms import Compose
 from mmseg.models import BaseSegmentor
 from mmseg.registry import MODELS
 from mmseg.utils import SampleList
@@ -44,47 +44,32 @@ def init_model(config, checkpoint=None, device='cuda:0'):
     return model
 
 
-def _preprare_data(img, model: BaseSegmentor):
+def _preprare_data(imgs, model: BaseSegmentor):
 
     cfg = model.cfg
     if dict(type='LoadAnnotations') in cfg.test_pipeline:
         cfg.test_pipeline.remove(dict(type='LoadAnnotations'))
+
+    if not isinstance(imgs, (list, tuple)):
+        imgs = [imgs]
+
+    if isinstance(imgs[0], np.ndarray):
+        cfg.test_pipeline[0].type = 'LoadImageFromNDArray'
+
     # TODO: Consider using the singleton pattern to avoid building
     # a pipeline for each inference
     pipeline = Compose(cfg.test_pipeline)
 
-    if isinstance(img, str):
-        data, data_samples = model.data_preprocessor(
-            [pipeline(dict(img_path=img))], False)
-    elif isinstance(img, np.ndarray):
-        pipeline.transforms.pop(0)
-        data, data_samples = model.data_preprocessor([
-            pipeline(
-                dict(
-                    img=img, img_shape=img.shape[:2], ori_shape=img.shape[:2]))
-        ], False)
-    elif isinstance(img, list) and len(img) >= 0:
-        if isinstance(img[0], str):
-            data, data_samples = model.data_preprocessor(
-                [pipeline(dict(img_path=_img)) for _img in img], False)
-        elif isinstance(img[0], np.ndarray):
-            pipeline.transforms.pop(0)
-            data, data_samples = model.data_preprocessor([
-                pipeline(
-                    dict(
-                        img=img,
-                        img_shape=img.shape[:2],
-                        ori_shape=img.shape[:2])) for _img in img
-            ], False)
+    data = []
+    for img in imgs:
+        if isinstance(img, np.ndarray):
+            data_ = dict(img=img)
         else:
-            raise f'Unexpected img type, support str/ndarray\
-                but got {type(img)}'
+            data_ = dict(img_path=img)
+        data_ = pipeline(data_)
+        data.append(data_)
 
-    else:
-        raise f'Unexpected img type, support str/ndarray or list[str/ndarray]\
-            but got {type(img)}'
-
-    return data, data_samples
+    return data
 
 
 def inference_model(model: BaseSegmentor, img):
@@ -99,11 +84,11 @@ def inference_model(model: BaseSegmentor, img):
         (list[Tensor]): The segmentation result.
     """
     # prepare data
-    data, data_samples = _preprare_data(img, model)
+    data = _preprare_data(img, model)
 
     # forward the model
     with torch.no_grad():
-        result = model.forward(data, data_samples, mode='predict')
+        result = model.test_step(data)
 
     return result
 
