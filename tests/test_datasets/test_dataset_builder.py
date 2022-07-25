@@ -3,7 +3,8 @@ import os.path as osp
 
 from mmengine.dataset import ConcatDataset, RepeatDataset
 
-from mmseg.datasets import DATASETS, MultiImageMixDataset
+from mmseg.datasets import MultiImageMixDataset
+from mmseg.registry import DATASETS
 from mmseg.utils import register_all_modules
 
 register_all_modules()

@@ -5,8 +5,7 @@ import os.path as osp
 import mmcv
 from mmcv import Config, DictAction
 
-from mmseg.datasets import DATASETS
-from mmseg.registry import VISUALIZERS
+from mmseg.registry import DATASETS, VISUALIZERS
 from mmseg.utils import register_all_modules
 
 
