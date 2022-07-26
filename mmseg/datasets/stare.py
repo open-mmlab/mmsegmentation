@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class STAREDataset(CustomDataset):
+class STAREDataset(BaseSegDataset):
     """STARE dataset.
 
     In segmentation map annotation for STARE, 0 stands for background, which is

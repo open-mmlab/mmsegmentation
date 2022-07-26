@@ -2,11 +2,11 @@
 import os.path as osp
 
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class PascalContextDataset(CustomDataset):
+class PascalContextDataset(BaseSegDataset):
     """PascalContext dataset.
 
     In segmentation map annotation for PascalContext, 0 stands for background,
@@ -57,7 +57,7 @@ class PascalContextDataset(CustomDataset):
 
 
 @DATASETS.register_module()
-class PascalContextDataset59(CustomDataset):
+class PascalContextDataset59(BaseSegDataset):
     """PascalContext dataset.
 
     In segmentation map annotation for PascalContext, 0 stands for background,

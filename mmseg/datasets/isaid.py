@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class iSAIDDataset(CustomDataset):
+class iSAIDDataset(BaseSegDataset):
     """ iSAID: A Large-scale Dataset for Instance Segmentation in Aerial Images
     In segmentation map annotation for iSAID dataset, which is included
     in 16 categories. ``reduce_zero_label`` is fixed to False. The

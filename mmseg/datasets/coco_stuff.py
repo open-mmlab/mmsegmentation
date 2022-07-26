@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class COCOStuffDataset(CustomDataset):
+class COCOStuffDataset(BaseSegDataset):
     """COCO-Stuff dataset.
 
     In segmentation map annotation for COCO-Stuff, Train-IDs of the 10k version
