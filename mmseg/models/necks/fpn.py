@@ -2,7 +2,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
-from mmcv.runner import BaseModule, auto_fp16
+from mmcv.runner import auto_fp16
+from mmengine.model import BaseModule
 
 from mmseg.ops import resize
 from mmseg.registry import MODELS
