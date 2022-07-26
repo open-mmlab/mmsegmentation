@@ -3,7 +3,7 @@ from .ade import ADE20KDataset
 from .chase_db1 import ChaseDB1Dataset
 from .cityscapes import CityscapesDataset
 from .coco_stuff import COCOStuffDataset
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 from .dark_zurich import DarkZurichDataset
 from .dataset_wrappers import MultiImageMixDataset
 from .drive import DRIVEDataset
@@ -23,7 +23,7 @@ from .transforms import (CLAHE, AdjustGamma, LoadAnnotations,
 from .voc import PascalVOCDataset
 
 __all__ = [
-    'CustomDataset', 'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
+    'BaseSegDataset', 'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
     'PascalContextDataset', 'PascalContextDataset59', 'ChaseDB1Dataset',
     'DRIVEDataset', 'HRFDataset', 'STAREDataset', 'DarkZurichDataset',
     'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',

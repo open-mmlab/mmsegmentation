@@ -37,7 +37,7 @@ def test_build_dataset():
 
     # test RepeatDataset
     cfg = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=data_prefix,
@@ -51,13 +51,13 @@ def test_build_dataset():
     # We use same dir twice for simplicity
     # with data_prefix.seg_map_path
     cfg1 = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=data_prefix,
         serialize_data=False)
     cfg2 = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=data_prefix,
@@ -81,14 +81,14 @@ def test_build_dataset():
 
     # with data_prefix.seg_map_path, ann_file
     cfg1 = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=data_prefix,
         ann_file='splits/train.txt',
         serialize_data=False)
     cfg2 = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=data_prefix,
@@ -103,7 +103,7 @@ def test_build_dataset():
 
     # test mode
     cfg1 = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=dict(img_path='imgs/'),
@@ -111,7 +111,7 @@ def test_build_dataset():
         metainfo=dict(classes=('pseudo_class', )),
         serialize_data=False)
     cfg2 = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=dict(img_path='imgs/'),
@@ -127,7 +127,7 @@ def test_build_dataset():
 
     # test mode with ann_files
     cfg1 = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=dict(img_path='imgs/'),
@@ -136,7 +136,7 @@ def test_build_dataset():
         metainfo=dict(classes=('pseudo_class', )),
         serialize_data=False)
     cfg2 = dict(
-        type='CustomDataset',
+        type='BaseSegDataset',
         pipeline=[],
         data_root=data_root,
         data_prefix=dict(img_path='imgs/'),

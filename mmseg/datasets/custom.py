@@ -11,7 +11,7 @@ from mmseg.registry import DATASETS
 
 
 @DATASETS.register_module()
-class CustomDataset(BaseDataset):
+class BaseSegDataset(BaseDataset):
     """Custom dataset for semantic segmentation. An example of file structure
     is as followed.
 
@@ -32,7 +32,7 @@ class CustomDataset(BaseDataset):
         │   │   │   │   ├── zzz{seg_map_suffix}
         │   │   │   ├── val
 
-    The img/gt_semantic_seg pair of CustomDataset should be of the same
+    The img/gt_semantic_seg pair of BaseSegDataset should be of the same
     except suffix. A valid img/gt_semantic_seg filename pair should be like
     ``xxx{img_suffix}`` and ``xxx{seg_map_suffix}`` (extension is also included
     in the suffix). If split is given, then ``xxx`` is specified in txt file.
