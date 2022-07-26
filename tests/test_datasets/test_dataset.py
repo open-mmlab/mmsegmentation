@@ -6,10 +6,10 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from mmseg.datasets import (ADE20KDataset, BaseSegDataset,
-                            CityscapesDataset, COCOStuffDataset, ISPRSDataset,
-                            LoveDADataset, PascalVOCDataset, PotsdamDataset,
-                            iSAIDDataset)
+from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
+                            COCOStuffDataset, ISPRSDataset, LoveDADataset,
+                            PascalVOCDataset, PotsdamDataset, iSAIDDataset)
+from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
 
