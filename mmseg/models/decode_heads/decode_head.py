@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import torch
 import torch.nn as nn
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
 from torch import Tensor
 
 from mmseg.data import build_pixel_sampler
