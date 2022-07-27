@@ -1,11 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class HRFDataset(CustomDataset):
+class HRFDataset(BaseSegDataset):
     """HRF dataset.
 
     In segmentation map annotation for HRF, 0 stands for background, which is

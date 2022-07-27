@@ -8,8 +8,8 @@ from mmengine.hooks import Hook
 from mmengine.runner import Runner
 
 from mmseg.data import SegDataSample
+from mmseg.engine.visualization import SegLocalVisualizer
 from mmseg.registry import HOOKS
-from mmseg.visualization import SegLocalVisualizer
 
 
 @HOOKS.register_module()

@@ -1,11 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class DRIVEDataset(CustomDataset):
+class DRIVEDataset(BaseSegDataset):
     """DRIVE dataset.
 
     In segmentation map annotation for DRIVE, 0 stands for background, which is

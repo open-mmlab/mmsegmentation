@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class ADE20KDataset(CustomDataset):
+class ADE20KDataset(BaseSegDataset):
     """ADE20K dataset.
 
     In segmentation map annotation for ADE20K, 0 stands for background, which

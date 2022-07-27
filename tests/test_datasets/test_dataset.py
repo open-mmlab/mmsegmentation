@@ -6,8 +6,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from mmseg.datasets import (ADE20KDataset, CityscapesDataset, COCOStuffDataset,
-                            CustomDataset, ISPRSDataset, LoveDADataset,
+from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
+                            COCOStuffDataset, ISPRSDataset, LoveDADataset,
                             PascalVOCDataset, PotsdamDataset, iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
@@ -87,7 +87,7 @@ def test_palette():
 def test_custom_dataset():
 
     # with 'img_path' and 'seg_map_path' in data_prefix
-    train_dataset = CustomDataset(
+    train_dataset = BaseSegDataset(
         data_root=osp.join(osp.dirname(__file__), '../data/pseudo_dataset'),
         data_prefix=dict(
             img_path='imgs/',
@@ -98,7 +98,7 @@ def test_custom_dataset():
     assert len(train_dataset) == 5
 
     # with 'img_path' and 'seg_map_path' in data_prefix and ann_file
-    train_dataset = CustomDataset(
+    train_dataset = BaseSegDataset(
         data_root=osp.join(osp.dirname(__file__), '../data/pseudo_dataset'),
         data_prefix=dict(
             img_path='imgs/',
@@ -110,7 +110,7 @@ def test_custom_dataset():
     assert len(train_dataset) == 4
 
     # no data_root
-    train_dataset = CustomDataset(
+    train_dataset = BaseSegDataset(
         data_prefix=dict(
             img_path=osp.join(
                 osp.dirname(__file__), '../data/pseudo_dataset/imgs'),
@@ -122,7 +122,7 @@ def test_custom_dataset():
 
     # with data_root but 'img_path' and 'seg_map_path' in data_prefix are
     # abs path
-    train_dataset = CustomDataset(
+    train_dataset = BaseSegDataset(
         data_root=osp.join(osp.dirname(__file__), '../data/pseudo_dataset'),
         data_prefix=dict(
             img_path=osp.join(
@@ -134,7 +134,7 @@ def test_custom_dataset():
     assert len(train_dataset) == 5
 
     # test_mode=True
-    test_dataset = CustomDataset(
+    test_dataset = BaseSegDataset(
         data_prefix=dict(
             img_path=osp.join(
                 osp.dirname(__file__), '../data/pseudo_dataset/imgs')),
@@ -245,7 +245,7 @@ def test_isaid():
 @pytest.mark.parametrize('dataset, classes', [
     ('ADE20KDataset', ('wall', 'building')),
     ('CityscapesDataset', ('road', 'sidewalk')),
-    ('CustomDataset', ('bus', 'car')),
+    ('BaseSegDataset', ('bus', 'car')),
     ('PascalVOCDataset', ('aeroplane', 'bicycle')),
 ])
 def test_custom_classes_override_default(dataset, classes):
@@ -269,7 +269,7 @@ def test_custom_classes_override_default(dataset, classes):
 
     assert custom_dataset.metainfo['classes'] != original_classes
     assert custom_dataset.metainfo['classes'] == classes
-    if not isinstance(custom_dataset, CustomDataset):
+    if not isinstance(custom_dataset, BaseSegDataset):
         assert isinstance(custom_dataset.label_map, dict)
 
     # Test setting classes as a list
@@ -282,7 +282,7 @@ def test_custom_classes_override_default(dataset, classes):
 
     assert custom_dataset.metainfo['classes'] != original_classes
     assert custom_dataset.metainfo['classes'] == list(classes)
-    if not isinstance(custom_dataset, CustomDataset):
+    if not isinstance(custom_dataset, BaseSegDataset):
         assert isinstance(custom_dataset.label_map, dict)
 
     # Test overriding not a subset
@@ -295,11 +295,11 @@ def test_custom_classes_override_default(dataset, classes):
 
     assert custom_dataset.metainfo['classes'] != original_classes
     assert custom_dataset.metainfo['classes'] == [classes[0]]
-    if not isinstance(custom_dataset, CustomDataset):
+    if not isinstance(custom_dataset, BaseSegDataset):
         assert isinstance(custom_dataset.label_map, dict)
 
     # Test default behavior
-    if dataset_class is CustomDataset:
+    if dataset_class is BaseSegDataset:
         with pytest.raises(AssertionError):
             custom_dataset = dataset_class(
                 ann_file=ann_file,
@@ -320,7 +320,7 @@ def test_custom_classes_override_default(dataset, classes):
 
 
 def test_custom_dataset_random_palette_is_generated():
-    dataset = CustomDataset(
+    dataset = BaseSegDataset(
         pipeline=[],
         data_prefix=dict(img_path=MagicMock()),
         ann_file=MagicMock(),
@@ -334,7 +334,7 @@ def test_custom_dataset_random_palette_is_generated():
 
 
 def test_custom_dataset_custom_palette():
-    dataset = CustomDataset(
+    dataset = BaseSegDataset(
         data_prefix=dict(img_path=MagicMock()),
         ann_file=MagicMock(),
         metainfo=dict(
@@ -346,7 +346,7 @@ def test_custom_dataset_custom_palette():
                                                         [200, 200, 200]])
     # test custom class and palette don't match
     with pytest.raises(ValueError):
-        dataset = CustomDataset(
+        dataset = BaseSegDataset(
             data_prefix=dict(img_path=MagicMock()),
             ann_file=MagicMock(),
             metainfo=dict(classes=('bus', 'car'), palette=[[200, 200, 200]]),

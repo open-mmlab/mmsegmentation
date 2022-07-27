@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.registry import DATASETS
-from .custom import CustomDataset
+from .custom import BaseSegDataset
 
 
 @DATASETS.register_module()
-class ISPRSDataset(CustomDataset):
+class ISPRSDataset(BaseSegDataset):
     """ISPRS dataset.
 
     In segmentation map annotation for ISPRS, 0 is the ignore index.

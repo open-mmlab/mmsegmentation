@@ -2,7 +2,7 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import build_activation_layer, build_conv_layer, build_norm_layer
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
 
 from mmseg.ops import resize
 from mmseg.registry import MODELS

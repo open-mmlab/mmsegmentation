@@ -4,8 +4,8 @@ import warnings
 import torch.nn as nn
 import torch.utils.checkpoint as cp
 from mmcv.cnn import build_conv_layer, build_norm_layer, build_plugin_layer
-from mmcv.runner import BaseModule
 from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmengine.model import BaseModule
 
 from mmseg.registry import MODELS
 from ..utils import ResLayer
