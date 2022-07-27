@@ -2,7 +2,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
-from mmcv.runner import auto_fp16
 from mmengine.model import BaseModule
 
 from mmseg.ops import resize
@@ -160,7 +159,6 @@ class FPN(BaseModule):
                     inplace=False)
                 self.fpn_convs.append(extra_fpn_conv)
 
-    @auto_fp16()
     def forward(self, inputs):
         assert len(inputs) == len(self.in_channels)
 
