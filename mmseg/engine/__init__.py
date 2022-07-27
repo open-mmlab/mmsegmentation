@@ -1,8 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from mmseg.visualization import SegLocalVisualizer
 from .hooks import SegVisualizationHook
 from .optimizers import (LayerDecayOptimizerConstructor,
                          LearningRateDecayOptimizerConstructor)
+from .visualization import SegLocalVisualizer
 
 __all__ = [
     'LearningRateDecayOptimizerConstructor', 'LayerDecayOptimizerConstructor',

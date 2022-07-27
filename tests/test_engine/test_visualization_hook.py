@@ -7,7 +7,7 @@ from mmengine.data import PixelData
 
 from mmseg.data import SegDataSample
 from mmseg.engine.hooks import SegVisualizationHook
-from mmseg.visualization import SegLocalVisualizer
+from mmseg.engine.visualization import SegLocalVisualizer
 
 
 class TestVisualizationHook(TestCase):

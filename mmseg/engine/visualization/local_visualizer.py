@@ -30,7 +30,7 @@ class SegLocalVisualizer(Visualizer):
         >>> import torch
         >>> from mmengine.data import PixelData
         >>> from mmseg.data import SegDataSample
-        >>> from mmseg.visualization import SegLocalVisualizer
+        >>> from mmseg.engine.visualization import SegLocalVisualizer
 
         >>> seg_local_visualizer = SegLocalVisualizer()
         >>> image = np.random.randint(0, 256,
