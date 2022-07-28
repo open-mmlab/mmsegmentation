@@ -75,7 +75,7 @@ The master branch works with **PyTorch 1.5+**.
 
 ## What's New
 
-v0.26.1 was released in 7/28/2022:
+v0.27.0 was released in 7/28/2022:
 
 - Add Swin-L Transformer models
 - Update ERFNet result on Cityscapes
