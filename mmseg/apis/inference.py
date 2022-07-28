@@ -5,12 +5,13 @@ import mmcv
 import numpy as np
 import torch
 from mmcv.runner import load_checkpoint
+from mmengine import Config
+from mmengine.dataset import Compose
 
-from mmseg.datasets.transforms.compose import Compose
+from mmseg.engine import SegLocalVisualizer
 from mmseg.models import BaseSegmentor
 from mmseg.registry import MODELS
 from mmseg.utils import SampleList
-from mmseg.visualization import SegLocalVisualizer
 
 
 def init_model(config, checkpoint=None, device='cuda:0'):
@@ -27,7 +28,7 @@ def init_model(config, checkpoint=None, device='cuda:0'):
         nn.Module: The constructed segmentor.
     """
     if isinstance(config, str):
-        config = mmcv.Config.fromfile(config)
+        config = Config.fromfile(config)
     elif not isinstance(config, mmcv.Config):
         raise TypeError('config must be a filename or Config object, '
                         'but got {}'.format(type(config)))
