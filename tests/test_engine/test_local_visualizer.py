@@ -97,13 +97,13 @@ class TestSegLocalVisualizer(TestCase):
         image = mmcv.imread(
             osp.join(
                 osp.dirname(__file__),
-                '../data/pseudo_cityscapes_dataset/leftImg8bit/frankfurt_000000_000294_leftImg8bit.png'  # noqa
+                '../data/pseudo_cityscapes_dataset/leftImg8bit/val/frankfurt/frankfurt_000000_000294_leftImg8bit.png'  # noqa
             ),
             'color')
         sem_seg = mmcv.imread(
             osp.join(
                 osp.dirname(__file__),
-                '../data/pseudo_cityscapes_dataset/gtFine/frankfurt_000000_000294_gtFine_labelTrainIds.png'  # noqa
+                '../data/pseudo_cityscapes_dataset/gtFine/val/frankfurt/frankfurt_000000_000294_gtFine_labelTrainIds.png'  # noqa
             ),
             'unchanged')
         sem_seg = torch.unsqueeze(torch.from_numpy(sem_seg), 0)
