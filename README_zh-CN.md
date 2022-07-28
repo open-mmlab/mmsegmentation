@@ -72,10 +72,10 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 最新进展
 
-最新版本 v0.26.0 在 2022.7.1 发布：
+最新版本 v0.27.0 在 2022.7.28 发布：
 
-- 更新了 SegFormer 在 ADE20K 数据集上的模型结果
-- 在 MMSegmentation 增加 MMSegWandbHook 以使用 wandb 可视化工具
+- 添加 Swin-L Transformer 模型
+- 更新了 ERFNet 在 Cityscapes 上的结果
 
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
 

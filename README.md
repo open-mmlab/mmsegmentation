@@ -75,10 +75,10 @@ The master branch works with **PyTorch 1.5+**.
 
 ## What's New
 
-v0.26.0 was released in 7/1/2022:
+v0.27.0 was released in 7/28/2022:
 
-- Update New SegFormer models on ADE20K
-- Dedicated MMSegWandbHook for MMSegmentation to use wandb visualization tool
+- Add Swin-L Transformer models
+- Update ERFNet result on Cityscapes
 
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 
