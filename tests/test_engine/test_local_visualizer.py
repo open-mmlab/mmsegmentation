@@ -10,7 +10,7 @@ import torch
 from mmengine.data import PixelData
 
 from mmseg.data import SegDataSample
-from mmseg.engine.visualization import SegLocalVisualizer
+from mmseg.visualization import SegLocalVisualizer
 
 
 class TestSegLocalVisualizer(TestCase):
