@@ -91,7 +91,7 @@ def inference_model(model: BaseSegmentor,
     Returns:
         :obj:`SegDataSample` or list[:obj:`SegDataSample`]:
         If imgs is a list or tuple, the same length list type results
-        will be returned, otherwise return the detection results directly.
+        will be returned, otherwise return the segmentation results directly.
     """
     # prepare data
     data, is_batch = _preprare_data(img, model)
