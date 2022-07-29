@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from typing import Union
+from typing import Sequence, Union
 
 import mmcv
 import numpy as np
@@ -8,6 +8,7 @@ from mmcv.runner import load_checkpoint
 from mmengine import Config
 from mmengine.dataset import Compose
 
+from mmseg.data import SegDataSample
 from mmseg.models import BaseSegmentor
 from mmseg.registry import MODELS
 from mmseg.utils import SampleList
@@ -45,14 +46,19 @@ def init_model(config, checkpoint=None, device='cuda:0'):
     return model
 
 
-def _preprare_data(imgs, model: BaseSegmentor):
+ImageType = Union[str, np.ndarray, Sequence[str], Sequence[np.ndarray]]
+
+
+def _preprare_data(imgs: ImageType, model: BaseSegmentor):
 
     cfg = model.cfg
     if dict(type='LoadAnnotations') in cfg.test_pipeline:
         cfg.test_pipeline.remove(dict(type='LoadAnnotations'))
 
+    is_batch = True
     if not isinstance(imgs, (list, tuple)):
         imgs = [imgs]
+        is_batch = False
 
     if isinstance(imgs[0], np.ndarray):
         cfg.test_pipeline[0].type = 'LoadImageFromNDArray'
@@ -70,10 +76,11 @@ def _preprare_data(imgs, model: BaseSegmentor):
         data_ = pipeline(data_)
         data.append(data_)
 
-    return data
+    return data, is_batch
 
 
-def inference_model(model: BaseSegmentor, img):
+def inference_model(model: BaseSegmentor,
+                    img: ImageType) -> Union[SegDataSample, SampleList]:
     """Inference image(s) with the segmentor.
 
     Args:
@@ -82,16 +89,18 @@ def inference_model(model: BaseSegmentor, img):
             images.
 
     Returns:
-        (list[Tensor]): The segmentation result.
+        :obj:`SegDataSample` or list[:obj:`SegDataSample`]:
+        If imgs is a list or tuple, the same length list type results
+        will be returned, otherwise return the detection results directly.
     """
     # prepare data
-    data = _preprare_data(img, model)
+    data, is_batch = _preprare_data(img, model)
 
     # forward the model
     with torch.no_grad():
-        result = model.test_step(data)
+        results = model.test_step(data)
 
-    return result
+    return results if is_batch else results[0]
 
 
 def show_result_pyplot(model: BaseSegmentor,
@@ -111,12 +120,17 @@ def show_result_pyplot(model: BaseSegmentor,
         img (str or np.ndarray): Image filename or loaded image.
         result (list): The prediction SegDataSample result.
         opacity(float): Opacity of painted segmentation map.
-            Default 0.5.
-            Must be in (0, 1] range.
+            Default 0.5. Must be in (0, 1] range.
         title (str): The title of pyplot figure.
             Default is ''.
+        draw_gt (bool): Whether to draw GT SegDataSample. Default to True.
+        draw_pred (bool): Whether to draw Prediction SegDataSample.
+            Defaults to True.
+        wait_time (float): The interval of show (s). Defaults to 0.
         show (bool): Whether to display the drawn image.
             Default to True.
+        save_dir (str, optional): Save file dir for all storage backends.
+            If it is None, the backend storage will not save any data.
     """
     if hasattr(model, 'module'):
         model = model.module

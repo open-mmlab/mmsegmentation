@@ -38,8 +38,7 @@ def main():
     # show the results
     show_result_pyplot(
         model,
-        args.img,
-        result,
+        args.img, [result],
         title=args.title,
         opacity=args.opacity,
         draw_gt=False,
