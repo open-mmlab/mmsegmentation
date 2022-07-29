@@ -1,12 +1,18 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import matplotlib.pyplot as plt
-import mmcv
-import torch
-from mmcv.parallel import collate, scatter
-from mmcv.runner import load_checkpoint
+from typing import Sequence, Union
 
-from mmseg.datasets.transforms import Compose
-from mmseg.models import build_segmentor
+import mmcv
+import numpy as np
+import torch
+from mmcv.runner import load_checkpoint
+from mmengine import Config
+from mmengine.dataset import Compose
+
+from mmseg.data import SegDataSample
+from mmseg.models import BaseSegmentor
+from mmseg.registry import MODELS
+from mmseg.utils import SampleList
+from mmseg.visualization import SegLocalVisualizer
 
 
 def init_model(config, checkpoint=None, device='cuda:0'):
@@ -23,13 +29,13 @@ def init_model(config, checkpoint=None, device='cuda:0'):
         nn.Module: The constructed segmentor.
     """
     if isinstance(config, str):
-        config = mmcv.Config.fromfile(config)
+        config = Config.fromfile(config)
     elif not isinstance(config, mmcv.Config):
         raise TypeError('config must be a filename or Config object, '
                         'but got {}'.format(type(config)))
     config.model.pretrained = None
     config.model.train_cfg = None
-    model = build_segmentor(config.model, test_cfg=config.get('test_cfg'))
+    model = MODELS.build(config.model)
     if checkpoint is not None:
         checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
         model.CLASSES = checkpoint['meta']['CLASSES']
@@ -40,34 +46,41 @@ def init_model(config, checkpoint=None, device='cuda:0'):
     return model
 
 
-class LoadImage:
-    """A simple pipeline to load image."""
+ImageType = Union[str, np.ndarray, Sequence[str], Sequence[np.ndarray]]
 
-    def __call__(self, results):
-        """Call function to load images into results.
 
-        Args:
-            results (dict): A result dict contains the file name
-                of the image to be read.
+def _preprare_data(imgs: ImageType, model: BaseSegmentor):
 
-        Returns:
-            dict: ``results`` will be returned containing loaded image.
-        """
+    cfg = model.cfg
+    if dict(type='LoadAnnotations') in cfg.test_pipeline:
+        cfg.test_pipeline.remove(dict(type='LoadAnnotations'))
 
-        if isinstance(results['img'], str):
-            results['filename'] = results['img']
-            results['ori_filename'] = results['img']
+    is_batch = True
+    if not isinstance(imgs, (list, tuple)):
+        imgs = [imgs]
+        is_batch = False
+
+    if isinstance(imgs[0], np.ndarray):
+        cfg.test_pipeline[0].type = 'LoadImageFromNDArray'
+
+    # TODO: Consider using the singleton pattern to avoid building
+    # a pipeline for each inference
+    pipeline = Compose(cfg.test_pipeline)
+
+    data = []
+    for img in imgs:
+        if isinstance(img, np.ndarray):
+            data_ = dict(img=img)
         else:
-            results['filename'] = None
-            results['ori_filename'] = None
-        img = mmcv.imread(results['img'])
-        results['img'] = img
-        results['img_shape'] = img.shape
-        results['ori_shape'] = img.shape
-        return results
+            data_ = dict(img_path=img)
+        data_ = pipeline(data_)
+        data.append(data_)
+
+    return data, is_batch
 
 
-def inference_model(model, img):
+def inference_model(model: BaseSegmentor,
+                    img: ImageType) -> Union[SegDataSample, SampleList]:
     """Inference image(s) with the segmentor.
 
     Args:
@@ -76,61 +89,70 @@ def inference_model(model, img):
             images.
 
     Returns:
-        (list[Tensor]): The segmentation result.
+        :obj:`SegDataSample` or list[:obj:`SegDataSample`]:
+        If imgs is a list or tuple, the same length list type results
+        will be returned, otherwise return the segmentation results directly.
     """
-    cfg = model.cfg
-    device = next(model.parameters()).device  # model device
-    # build the data pipeline
-    test_pipeline = [LoadImage()] + cfg.data.test.pipeline[1:]
-    test_pipeline = Compose(test_pipeline)
     # prepare data
-    data = dict(img=img)
-    data = test_pipeline(data)
-    data = collate([data], samples_per_gpu=1)
-    if next(model.parameters()).is_cuda:
-        # scatter to specified GPU
-        data = scatter(data, [device])[0]
-    else:
-        data['img_metas'] = [i.data[0] for i in data['img_metas']]
+    data, is_batch = _preprare_data(img, model)
 
     # forward the model
     with torch.no_grad():
-        result = model(return_loss=False, rescale=True, **data)
-    return result
+        results = model.test_step(data)
+
+    return results if is_batch else results[0]
 
 
-def show_result_pyplot(model,
-                       img,
-                       result,
-                       palette=None,
-                       fig_size=(15, 10),
-                       opacity=0.5,
-                       title='',
-                       block=True):
+def show_result_pyplot(model: BaseSegmentor,
+                       img: Union[str, np.ndarray],
+                       result: SampleList,
+                       opacity: float = 0.5,
+                       title: str = '',
+                       draw_gt: bool = True,
+                       draw_pred: bool = True,
+                       wait_time: float = 0,
+                       show: bool = True,
+                       save_dir=None):
     """Visualize the segmentation results on the image.
 
     Args:
         model (nn.Module): The loaded segmentor.
         img (str or np.ndarray): Image filename or loaded image.
-        result (list): The segmentation result.
-        palette (list[list[int]]] | None): The palette of segmentation
-            map. If None is given, random palette will be generated.
-            Default: None
-        fig_size (tuple): Figure size of the pyplot figure.
+        result (list): The prediction SegDataSample result.
         opacity(float): Opacity of painted segmentation map.
-            Default 0.5.
-            Must be in (0, 1] range.
+            Default 0.5. Must be in (0, 1] range.
         title (str): The title of pyplot figure.
             Default is ''.
-        block (bool): Whether to block the pyplot figure.
-            Default is True.
+        draw_gt (bool): Whether to draw GT SegDataSample. Default to True.
+        draw_pred (bool): Whether to draw Prediction SegDataSample.
+            Defaults to True.
+        wait_time (float): The interval of show (s). Defaults to 0.
+        show (bool): Whether to display the drawn image.
+            Default to True.
+        save_dir (str, optional): Save file dir for all storage backends.
+            If it is None, the backend storage will not save any data.
     """
     if hasattr(model, 'module'):
         model = model.module
-    img = model.show_result(
-        img, result, palette=palette, show=False, opacity=opacity)
-    plt.figure(figsize=fig_size)
-    plt.imshow(mmcv.bgr2rgb(img))
-    plt.title(title)
-    plt.tight_layout()
-    plt.show(block=block)
+    if isinstance(img, str):
+        image = mmcv.imread(img)
+    else:
+        image = img
+    if save_dir is not None:
+        mmcv.mkdir_or_exist(save_dir)
+    # init visualizer
+    visualizer = SegLocalVisualizer(
+        vis_backends=[dict(type='LocalVisBackend')],
+        save_dir=save_dir,
+        alpha=opacity)
+    visualizer.dataset_meta = dict(
+        classes=model.CLASSES, palette=model.PALETTE)
+    visualizer.add_datasample(
+        name=title,
+        image=image,
+        pred_sample=result[0],
+        draw_gt=draw_gt,
+        draw_pred=draw_pred,
+        wait_time=wait_time,
+        show=show)
+    return visualizer.get_image()
