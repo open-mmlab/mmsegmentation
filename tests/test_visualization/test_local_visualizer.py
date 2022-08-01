@@ -29,6 +29,8 @@ class TestSegLocalVisualizer(TestCase):
         gt_sem_seg_data = dict(data=torch.randint(0, num_class, (1, h, w)))
         gt_sem_seg = PixelData(**gt_sem_seg_data)
 
+        @pytest.mark.skipif(
+            not torch.cuda.is_available(), reason='CUDA not available')
         @pytest.mark.parametrize('gt_sem_seg', (gt_sem_seg, gt_sem_seg.cuda()))
         def test_add_datasample_forward(gt_sem_seg):
             gt_seg_data_sample = SegDataSample()
@@ -101,6 +103,8 @@ class TestSegLocalVisualizer(TestCase):
         gt_sem_seg_data = dict(data=sem_seg)
         gt_sem_seg = PixelData(**gt_sem_seg_data)
 
+        @pytest.mark.skipif(
+            not torch.cuda.is_available(), reason='CUDA not available')
         @pytest.mark.parametrize('gt_sem_seg', (gt_sem_seg, gt_sem_seg.cuda()))
         def test_cityscapes_add_datasample_forward(gt_sem_seg):
             gt_seg_data_sample = SegDataSample()
