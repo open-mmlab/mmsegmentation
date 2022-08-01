@@ -105,8 +105,8 @@ class MultiImageMixDataset:
                     transform_type in self._skip_type_keys:
                 continue
 
-            if hasattr(transform, 'get_indexes'):
-                indexes = transform.get_indexes(self.dataset)
+            if hasattr(transform, 'get_indices'):
+                indexes = transform.get_indices(self.dataset)
                 if not isinstance(indexes, collections.abc.Sequence):
                     indexes = [indexes]
                 mix_results = [
