@@ -9,12 +9,24 @@ from mmcv.transforms.utils import cache_randomness
 from mmcv.utils import is_tuple_of
 from numpy import random
 
+from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
 
 
 @TRANSFORMS.register_module()
-class ResizeToMultiple(object):
+class ResizeToMultiple(BaseTransform):
     """Resize images & seg to multiple of divisor.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - pad_shape
 
     Args:
         size_divisor (int): images and gt seg maps need to resize to multiple
@@ -27,7 +39,7 @@ class ResizeToMultiple(object):
         self.size_divisor = size_divisor
         self.interpolation = interpolation
 
-    def __call__(self, results):
+    def transform(self, results: dict) -> dict:
         """Call function to resize images, semantic segmentation map to
         multiple of size divisor.
 
@@ -70,8 +82,16 @@ class ResizeToMultiple(object):
 
 
 @TRANSFORMS.register_module()
-class Rerange(object):
+class Rerange(BaseTransform):
     """Rerange the image pixel value.
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
 
     Args:
         min_value (float or int): Minimum value of the reranged image.
@@ -87,7 +107,7 @@ class Rerange(object):
         self.min_value = min_value
         self.max_value = max_value
 
-    def __call__(self, results):
+    def transform(self, results: dict) -> dict:
         """Call function to rerange images.
 
         Args:
@@ -116,11 +136,19 @@ class Rerange(object):
 
 
 @TRANSFORMS.register_module()
-class CLAHE(object):
+class CLAHE(BaseTransform):
     """Use CLAHE method to process the image.
 
     See `ZUIDERVELD,K. Contrast Limited Adaptive Histogram Equalization[J].
     Graphics Gems, 1994:474-485.` for more information.
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
 
     Args:
         clip_limit (float): Threshold for contrast limiting. Default: 40.0.
@@ -136,7 +164,7 @@ class CLAHE(object):
         assert len(tile_grid_size) == 2
         self.tile_grid_size = tile_grid_size
 
-    def __call__(self, results):
+    def transform(self, results: dict) -> dict:
         """Call function to Use CLAHE method process images.
 
         Args:
@@ -167,13 +195,13 @@ class RandomCrop(BaseTransform):
     Required Keys:
 
     - img
-    - gt_semantic_seg
+    - gt_seg_map
 
     Modified Keys:
 
     - img
     - img_shape
-    - gt_semantic_seg
+    - gt_seg_map
 
 
     Args:
@@ -293,8 +321,18 @@ class RandomCrop(BaseTransform):
 
 
 @TRANSFORMS.register_module()
-class RandomRotate(object):
+class RandomRotate(BaseTransform):
     """Rotate the image & seg.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
 
     Args:
         prob (float): The rotation probability.
@@ -332,7 +370,12 @@ class RandomRotate(object):
         self.center = center
         self.auto_bound = auto_bound
 
-    def __call__(self, results):
+    @cache_randomness
+    def generate_degree(self):
+        return np.random.rand() < self.prob, np.random.uniform(
+            min(*self.degree), max(*self.degree))
+
+    def transform(self, results: dict) -> dict:
         """Call function to rotate image, semantic segmentation maps.
 
         Args:
@@ -342,8 +385,7 @@ class RandomRotate(object):
             dict: Rotated results.
         """
 
-        rotate = True if np.random.rand() < self.prob else False
-        degree = np.random.uniform(min(*self.degree), max(*self.degree))
+        rotate, degree = self.generate_degree()
         if rotate:
             # rotate image
             results['img'] = mmcv.imrotate(
@@ -376,8 +418,17 @@ class RandomRotate(object):
 
 
 @TRANSFORMS.register_module()
-class RGB2Gray(object):
+class RGB2Gray(BaseTransform):
     """Convert RGB image to grayscale image.
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+    - img_shape
 
     This transform calculate the weighted mean of input image channels with
     ``weights`` and then expand the channels to ``out_channels``. When
@@ -399,7 +450,7 @@ class RGB2Gray(object):
             assert isinstance(item, (float, int))
         self.weights = weights
 
-    def __call__(self, results):
+    def transform(self, results: dict) -> dict:
         """Call function to convert RGB image to grayscale image.
 
         Args:
@@ -431,8 +482,16 @@ class RGB2Gray(object):
 
 
 @TRANSFORMS.register_module()
-class AdjustGamma(object):
+class AdjustGamma(BaseTransform):
     """Using gamma correction to process the image.
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
 
     Args:
         gamma (float or int): Gamma value used in gamma correction.
@@ -447,7 +506,7 @@ class AdjustGamma(object):
         self.table = np.array([(i / 255.0)**inv_gamma * 255
                                for i in np.arange(256)]).astype('uint8')
 
-    def __call__(self, results):
+    def transform(self, results: dict) -> dict:
         """Call function to process the image with gamma correction.
 
         Args:
@@ -467,8 +526,16 @@ class AdjustGamma(object):
 
 
 @TRANSFORMS.register_module()
-class SegRescale(object):
+class SegRescale(BaseTransform):
     """Rescale semantic segmentation maps.
+
+    Required Keys:
+
+    - gt_seg_map
+
+    Modified Keys:
+
+    - gt_seg_map
 
     Args:
         scale_factor (float): The scale factor of the final output.
@@ -477,7 +544,7 @@ class SegRescale(object):
     def __init__(self, scale_factor=1):
         self.scale_factor = scale_factor
 
-    def __call__(self, results):
+    def transform(self, results: dict) -> dict:
         """Call function to scale the semantic segmentation map.
 
         Args:
@@ -667,11 +734,22 @@ class PhotoMetricDistortion(BaseTransform):
 
 
 @TRANSFORMS.register_module()
-class RandomCutOut(object):
+class RandomCutOut(BaseTransform):
     """CutOut operation.
 
     Randomly drop some regions of image used in
     `Cutout <https://arxiv.org/abs/1708.04552>`_.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+
     Args:
         prob (float): cutout probability.
         n_holes (int | tuple[int, int]): Number of regions to be dropped.
@@ -721,16 +799,38 @@ class RandomCutOut(object):
         if not isinstance(self.candidates, list):
             self.candidates = [self.candidates]
 
-    def __call__(self, results):
+    @cache_randomness
+    def do_cutout(self):
+        return np.random.rand() < self.prob
+
+    @cache_randomness
+    def generate_patches(self, results):
+        cutout = self.do_cutout()
+
+        h, w, _ = results['img'].shape
+        if cutout:
+            n_holes = np.random.randint(self.n_holes[0], self.n_holes[1] + 1)
+        else:
+            n_holes = 0
+        x1_lst = []
+        y1_lst = []
+        index_lst = []
+        for _ in range(n_holes):
+            x1_lst.append(np.random.randint(0, w))
+            y1_lst.append(np.random.randint(0, h))
+            index_lst.append(np.random.randint(0, len(self.candidates)))
+        return cutout, n_holes, x1_lst, y1_lst, index_lst
+
+    def transform(self, results: dict) -> dict:
         """Call function to drop some regions of image."""
-        cutout = True if np.random.rand() < self.prob else False
+        cutout, n_holes, x1_lst, y1_lst, index_lst = self.generate_patches(
+            results)
         if cutout:
             h, w, c = results['img'].shape
-            n_holes = np.random.randint(self.n_holes[0], self.n_holes[1] + 1)
-            for _ in range(n_holes):
-                x1 = np.random.randint(0, w)
-                y1 = np.random.randint(0, h)
-                index = np.random.randint(0, len(self.candidates))
+            for i in range(n_holes):
+                x1 = x1_lst[i]
+                y1 = y1_lst[i]
+                index = index_lst[i]
                 if not self.with_ratio:
                     cutout_w, cutout_h = self.candidates[index]
                 else:
@@ -759,7 +859,7 @@ class RandomCutOut(object):
 
 
 @TRANSFORMS.register_module()
-class RandomMosaic(object):
+class RandomMosaic(BaseTransform):
     """Mosaic augmentation. Given 4 images, mosaic transform combines them into
     one output image. The output image is composed of the parts from each sub-
     image.
@@ -789,6 +889,19 @@ class RandomMosaic(object):
             sample another 3 images from the custom dataset.
          3. Sub image will be cropped if image is larger than mosaic patch
 
+    Required Keys:
+
+    - img
+    - gt_seg_map
+    - mix_results
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - ori_shape
+    - gt_seg_map
+
     Args:
         prob (float): mosaic probability.
         img_scale (Sequence[int]): Image size after mosaic pipeline of
@@ -815,7 +928,11 @@ class RandomMosaic(object):
         self.pad_val = pad_val
         self.seg_pad_val = seg_pad_val
 
-    def __call__(self, results):
+    @cache_randomness
+    def do_mosaic(self):
+        return np.random.rand() < self.prob
+
+    def transform(self, results: dict) -> dict:
         """Call function to make a mosaic of image.
 
         Args:
@@ -824,13 +941,13 @@ class RandomMosaic(object):
         Returns:
             dict: Result dict with mosaic transformed.
         """
-        mosaic = True if np.random.rand() < self.prob else False
+        mosaic = self.do_mosaic()
         if mosaic:
             results = self._mosaic_transform_img(results)
             results = self._mosaic_transform_seg(results)
         return results
 
-    def get_indexes(self, dataset):
+    def get_indices(self, dataset: MultiImageMixDataset) -> list:
         """Call function to collect indexes.
 
         Args:
@@ -843,7 +960,16 @@ class RandomMosaic(object):
         indexes = [random.randint(0, len(dataset)) for _ in range(3)]
         return indexes
 
-    def _mosaic_transform_img(self, results):
+    @cache_randomness
+    def generate_mosaic_center(self):
+        # mosaic center x, y
+        center_x = int(
+            random.uniform(*self.center_ratio_range) * self.img_scale[1])
+        center_y = int(
+            random.uniform(*self.center_ratio_range) * self.img_scale[0])
+        return center_x, center_y
+
+    def _mosaic_transform_img(self, results: dict) -> dict:
         """Mosaic transform function.
 
         Args:
@@ -866,10 +992,7 @@ class RandomMosaic(object):
                 dtype=results['img'].dtype)
 
         # mosaic center x, y
-        self.center_x = int(
-            random.uniform(*self.center_ratio_range) * self.img_scale[1])
-        self.center_y = int(
-            random.uniform(*self.center_ratio_range) * self.img_scale[0])
+        self.center_x, self.center_y = self.generate_mosaic_center()
         center_position = (self.center_x, self.center_y)
 
         loc_strs = ('top_left', 'top_right', 'bottom_left', 'bottom_right')
@@ -902,7 +1025,7 @@ class RandomMosaic(object):
 
         return results
 
-    def _mosaic_transform_seg(self, results):
+    def _mosaic_transform_seg(self, results: dict) -> dict:
         """Mosaic transform function for label annotations.
 
         Args:
@@ -953,7 +1076,8 @@ class RandomMosaic(object):
 
         return results
 
-    def _mosaic_combine(self, loc, center_position_xy, img_shape_wh):
+    def _mosaic_combine(self, loc: str, center_position_xy: Sequence[float],
+                        img_shape_wh: Sequence[int]) -> tuple:
         """Calculate global coordinate of mosaic image and local coordinate of
         cropped sub-image.
 
