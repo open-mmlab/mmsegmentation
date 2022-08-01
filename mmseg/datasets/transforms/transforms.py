@@ -799,9 +799,12 @@ class RandomCutOut(BaseTransform):
         if not isinstance(self.candidates, list):
             self.candidates = [self.candidates]
 
+    def do_cutout(self):
+        return np.random.rand() < self.prob
+
     @cache_randomness
     def generate_patches(self, results):
-        cutout = True if np.random.rand() < self.prob else False
+        cutout = self.do_cutout()
 
         h, w, _ = results['img'].shape
         if cutout:
@@ -924,6 +927,9 @@ class RandomMosaic(BaseTransform):
         self.pad_val = pad_val
         self.seg_pad_val = seg_pad_val
 
+    def do_mosaic(self):
+        return np.random.rand() < self.prob
+
     def transform(self, results: dict) -> dict:
         """Call function to make a mosaic of image.
 
@@ -933,14 +939,14 @@ class RandomMosaic(BaseTransform):
         Returns:
             dict: Result dict with mosaic transformed.
         """
-        mosaic = True if np.random.rand() < self.prob else False
+        mosaic = self.do_mosaic()
         if mosaic:
             results = self._mosaic_transform_img(results)
             results = self._mosaic_transform_seg(results)
         return results
 
     @cache_randomness
-    def get_indexes(self, dataset: MultiImageMixDataset) -> list:
+    def get_indices(self, dataset: MultiImageMixDataset) -> list:
         """Call function to collect indexes.
 
         Args:
@@ -956,11 +962,11 @@ class RandomMosaic(BaseTransform):
     @cache_randomness
     def generate_mosaic_center(self):
         # mosaic center x, y
-        self.center_x = int(
+        center_x = int(
             random.uniform(*self.center_ratio_range) * self.img_scale[1])
-        self.center_y = int(
+        center_y = int(
             random.uniform(*self.center_ratio_range) * self.img_scale[0])
-        return self.center_x, self.center_y
+        return center_x, center_y
 
     def _mosaic_transform_img(self, results: dict) -> dict:
         """Mosaic transform function.
@@ -1069,7 +1075,6 @@ class RandomMosaic(BaseTransform):
 
         return results
 
-    @cache_randomness
     def _mosaic_combine(self, loc: str, center_position_xy: Sequence[float],
                         img_shape_wh: Sequence[int]) -> tuple:
         """Calculate global coordinate of mosaic image and local coordinate of
