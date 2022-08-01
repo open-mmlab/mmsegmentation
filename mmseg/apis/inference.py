@@ -100,7 +100,6 @@ def inference_segmentor(model, imgs):
         data = scatter(data, [device])[0]
     else:
         data['img_metas'] = [i.data[0] for i in data['img_metas']]
-    breakpoint()
 
     # forward the model
     with torch.no_grad():
