@@ -47,10 +47,10 @@ class TestSegLocalVisualizer(TestCase):
                                                     gt_seg_data_sample)
 
                 assert os.path.exists(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'))
                 drawn_img = cv2.imread(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'))
                 assert drawn_img.shape == (h, w, 3)
 
@@ -66,7 +66,7 @@ class TestSegLocalVisualizer(TestCase):
                                                     gt_seg_data_sample,
                                                     pred_seg_data_sample)
                 self._assert_image_and_shape(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w * 2, 3))
 
                 seg_local_visualizer.add_datasample(
@@ -76,17 +76,7 @@ class TestSegLocalVisualizer(TestCase):
                     pred_seg_data_sample,
                     draw_gt=False)
                 self._assert_image_and_shape(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
-                             out_file + '_0.png'), (h, w, 3))
-
-                seg_local_visualizer.add_datasample(
-                    out_file,
-                    image,
-                    gt_seg_data_sample,
-                    pred_seg_data_sample,
-                    draw_pred=False)
-                self._assert_image_and_shape(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w, 3))
 
     def test_cityscapes_add_datasample(self):
@@ -139,10 +129,10 @@ class TestSegLocalVisualizer(TestCase):
                 seg_local_visualizer.add_datasample(out_file, image,
                                                     gt_seg_data_sample)
                 assert os.path.exists(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'))
                 drawn_img = cv2.imread(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'))
                 assert drawn_img.shape == (h, w, 3)
 
@@ -158,7 +148,7 @@ class TestSegLocalVisualizer(TestCase):
                                                     gt_seg_data_sample,
                                                     pred_seg_data_sample)
                 self._assert_image_and_shape(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w * 2, 3))
 
                 seg_local_visualizer.add_datasample(
@@ -168,17 +158,7 @@ class TestSegLocalVisualizer(TestCase):
                     pred_seg_data_sample,
                     draw_gt=False)
                 self._assert_image_and_shape(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
-                             out_file + '_0.png'), (h, w, 3))
-
-                seg_local_visualizer.add_datasample(
-                    out_file,
-                    image,
-                    gt_seg_data_sample,
-                    pred_seg_data_sample,
-                    draw_pred=False)
-                self._assert_image_and_shape(
-                    osp.join(tmp_dir + '/vis_data/vis_image',
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w, 3))
 
     def _assert_image_and_shape(self, out_file, out_shape):
