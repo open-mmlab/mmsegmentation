@@ -799,6 +799,7 @@ class RandomCutOut(BaseTransform):
         if not isinstance(self.candidates, list):
             self.candidates = [self.candidates]
 
+    @cache_randomness
     def do_cutout(self):
         return np.random.rand() < self.prob
 
@@ -927,6 +928,7 @@ class RandomMosaic(BaseTransform):
         self.pad_val = pad_val
         self.seg_pad_val = seg_pad_val
 
+    @cache_randomness
     def do_mosaic(self):
         return np.random.rand() < self.prob
 
@@ -945,7 +947,6 @@ class RandomMosaic(BaseTransform):
             results = self._mosaic_transform_seg(results)
         return results
 
-    @cache_randomness
     def get_indices(self, dataset: MultiImageMixDataset) -> list:
         """Call function to collect indexes.
 
