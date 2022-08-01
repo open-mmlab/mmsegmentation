@@ -134,6 +134,7 @@ workflows:
             branches:
               ignore:
                 - dev-1.x
+                - test-1.x
   pr_stage_test:
     when:
       not:
@@ -145,6 +146,7 @@ workflows:
             branches:
               ignore:
                 - dev-1.x
+                - test-1.x
       - build_cpu:
           name: minimum_version_cpu
           torch: 1.6.0
@@ -190,3 +192,4 @@ workflows:
             branches:
               only:
                 - dev-1.x
+                - test-1.x
