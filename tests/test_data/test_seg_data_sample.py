@@ -6,7 +6,7 @@ import pytest
 import torch
 from mmengine.data import PixelData
 
-from mmseg.data import SegDataSample
+from mmseg.structures import SegDataSample
 
 
 def _equal(a, b):

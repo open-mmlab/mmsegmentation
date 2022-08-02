@@ -9,7 +9,7 @@ import numpy as np
 import torch
 from mmengine.data import PixelData
 
-from mmseg.data import SegDataSample
+from mmseg.structures import SegDataSample
 from mmseg.visualization import SegLocalVisualizer
 
 
