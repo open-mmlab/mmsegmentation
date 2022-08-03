@@ -16,11 +16,11 @@ def register_all_modules(init_default_scope: bool = True) -> None:
             to https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/registry.md
             Defaults to True.
     """  # noqa
-    import mmseg.data  # noqa: F401,F403
     import mmseg.datasets  # noqa: F401,F403
     import mmseg.engine  # noqa: F401,F403
     import mmseg.evaluation  # noqa: F401,F403
     import mmseg.models  # noqa: F401,F403
+    import mmseg.structures  # noqa: F401,F403
 
     if init_default_scope:
         never_created = DefaultScope.get_current_instance() is None \

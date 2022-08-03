@@ -5,8 +5,8 @@ import numpy as np
 import torch
 from mmengine.data import BaseDataElement, PixelData
 
-from mmseg.data import SegDataSample
 from mmseg.evaluation import IoUMetric
+from mmseg.structures import SegDataSample
 
 
 class TestIoUMetric(TestCase):

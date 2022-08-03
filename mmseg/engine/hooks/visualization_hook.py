@@ -7,8 +7,8 @@ import mmcv
 from mmengine.hooks import Hook
 from mmengine.runner import Runner
 
-from mmseg.data import SegDataSample
 from mmseg.registry import HOOKS
+from mmseg.structures import SegDataSample
 from mmseg.visualization import SegLocalVisualizer
 
 
