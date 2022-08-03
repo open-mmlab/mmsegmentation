@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Sequence, Tuple, Union
 import torch
 from mmengine.config import ConfigDict
 
-from mmseg.data import SegDataSample
+from mmseg.structures import SegDataSample
 
 # Type hint of config data
 ConfigType = Union[ConfigDict, dict]

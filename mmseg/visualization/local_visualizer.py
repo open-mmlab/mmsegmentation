@@ -6,8 +6,8 @@ from mmengine import Visualizer
 from mmengine.data import PixelData
 from mmengine.dist import master_only
 
-from mmseg.data import SegDataSample
 from mmseg.registry import VISUALIZERS
+from mmseg.structures import SegDataSample
 
 
 @VISUALIZERS.register_module()

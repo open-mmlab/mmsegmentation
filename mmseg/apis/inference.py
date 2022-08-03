@@ -8,9 +8,9 @@ from mmcv.runner import load_checkpoint
 from mmengine import Config
 from mmengine.dataset import Compose
 
-from mmseg.data import SegDataSample
 from mmseg.models import BaseSegmentor
 from mmseg.registry import MODELS
+from mmseg.structures import SegDataSample
 from mmseg.utils import SampleList
 from mmseg.visualization import SegLocalVisualizer
 
