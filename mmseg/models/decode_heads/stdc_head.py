@@ -4,8 +4,8 @@ import torch.nn.functional as F
 from mmengine.data import PixelData
 from torch import Tensor
 
-from mmseg.data import SegDataSample
 from mmseg.registry import MODELS
+from mmseg.structures import SegDataSample
 from mmseg.utils import SampleList
 from .fcn_head import FCNHead
 

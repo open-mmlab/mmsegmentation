@@ -4,8 +4,8 @@ from unittest import TestCase
 import torch
 from mmengine.data import PixelData
 
-from mmseg.data import SegDataSample
 from mmseg.models import SegDataPreProcessor
+from mmseg.structures import SegDataSample
 
 
 class TestSegDataPreProcessor(TestCase):

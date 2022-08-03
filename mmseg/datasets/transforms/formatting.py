@@ -5,8 +5,8 @@ from mmcv.transforms import to_tensor
 from mmcv.transforms.base import BaseTransform
 from mmengine.data import PixelData
 
-from mmseg.data import SegDataSample
 from mmseg.registry import TRANSFORMS
+from mmseg.structures import SegDataSample
 
 
 @TRANSFORMS.register_module()
