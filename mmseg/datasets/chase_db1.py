@@ -23,4 +23,4 @@ class ChaseDB1Dataset(BaseSegDataset):
             seg_map_suffix='_1stHO.png',
             reduce_zero_label=False,
             **kwargs)
-        assert self.file_client.exists(self.data_prefix['img_list'])
+        assert self.file_client.exists(self.data_prefix['img_path'])
