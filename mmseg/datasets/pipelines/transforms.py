@@ -1374,7 +1374,10 @@ class Blur(object):
             blur = True if np.random.rand() < self.prob else False
             results['blur'] = blur
             # Choose random kernel size up to given max (inclusive)
-            results['blur_kernel_size'] = np.random.randint(0, self.max_kernel_size + 1)
+            results['blur_kernel_size'] = np.random.randint(
+                0,
+                self.max_kernel_size + 1,
+            )
         if results['blur']:
             # blur image
             k = results['blur_kernel_size']
@@ -1384,8 +1387,7 @@ class Blur(object):
                 # of 1.0 gives the original image. And a factor of 2.0 gives a
                 # sharpened image.
                 factor=0.0,
-                kernel=np.ones((k, k))/k**2
-            )
+                kernel=np.ones((k, k)) / k**2)
 
         return results
 
@@ -1430,7 +1432,11 @@ class Perspective(object):
         seg_pad_val (int): Pad value of segmentation map. Default: 255.
     """
 
-    def __init__(self, prob=None, h_ratio=0.1, w_ratio=0.1, pad_val=(0,0,0),
+    def __init__(self,
+                 prob=None,
+                 h_ratio=0.1,
+                 w_ratio=0.1,
+                 pad_val=(0, 0, 0),
                  seg_pad_val=255):
         self.prob = prob
         self.h_ratio = h_ratio
@@ -1444,7 +1450,7 @@ class Perspective(object):
             assert isinstance(ratio, float)
             assert ratio > 0 and ratio <= 0.5
         assert len(self.pad_val) == 3
-        for pad in self.pad_val + (self.seg_pad_val,):
+        for pad in self.pad_val + (self.seg_pad_val, ):
             assert isinstance(pad, int)
             assert pad >= 0 and pad <= 255
 
@@ -1469,17 +1475,14 @@ class Perspective(object):
             w_perturb = np.random.randint(0, self.w_ratio * shape[1], size=4)
 
             src = np.array(
-                [(0,        0,      ),
-                 (0,        shape[0]),
-                 (shape[1], shape[0]),
-                 (shape[1], 0,      )],
+                [(0, 0), (0, shape[0]), (shape[1], shape[0]), (shape[1], 0)],
                 dtype=np.float32,
             )
             dst = np.array(
-                [(w_perturb[0],            h_perturb[0]           ),
-                 (w_perturb[1],            shape[0] - h_perturb[1]),
+                [(w_perturb[0], h_perturb[0]),
+                 (w_perturb[1], shape[0] - h_perturb[1]),
                  (shape[1] - w_perturb[2], shape[0] - h_perturb[2]),
-                 (shape[1] - w_perturb[3], h_perturb[3]           )],
+                 (shape[1] - w_perturb[3], h_perturb[3])],
                 dtype=np.float32,
             )
             transform = cv2.getPerspectiveTransform(src, dst)
