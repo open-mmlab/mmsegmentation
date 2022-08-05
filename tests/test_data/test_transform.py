@@ -688,3 +688,13 @@ def test_mosaic():
     mosaic_module = build_from_cfg(transform, PIPELINES)
     results = mosaic_module(results)
     assert results['img'].shape[:2] == (20, 24)
+
+
+def test_blur():
+    # TODO: Figure out how to run tests
+    pass
+
+
+def test_perspective():
+    # TODO: Figure out how to run tests
+    pass
