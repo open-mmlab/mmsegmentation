@@ -2,7 +2,7 @@
 import os.path as osp
 
 from mmseg.registry import DATASETS
-from .custom import BaseSegDataset
+from .basesegdataset import BaseSegDataset
 
 
 @DATASETS.register_module()

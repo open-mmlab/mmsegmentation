@@ -5,8 +5,8 @@ from mmcv.cnn import (ConvModule, DepthwiseSeparableConvModule,
                       build_activation_layer, build_norm_layer)
 from mmengine.model import BaseModule
 
-from mmseg.ops import resize
 from mmseg.registry import MODELS
+from ..utils import resize
 
 
 class DetailBranch(BaseModule):
