@@ -1333,3 +1333,58 @@ class RandomMosaic(object):
         repr_str += f'pad_val={self.pad_val}, '
         repr_str += f'seg_pad_val={self.pad_val})'
         return repr_str
+
+
+@PIPELINES.register_module()
+class Blur(object):
+    """Blur the image to a randomized degree.
+
+    The maximum kernel size sets a cap on the amount of blur, but the kernel
+    used could be smaller.
+
+    Args:
+        prob (float, optional): The chance of any blurring. Default: None.
+        max_kernel_size(int, optional): TODO. Default: 5.
+    """
+
+    def __init__(self, prob=None, max_kernel_size=5):
+        self.prob = prob
+        self.max_kernel_size = max_kernel_size
+        if prob is not None:
+            assert isinstance(prob, int) or isinstance(prob, float)
+            assert prob >= 0 and prob <= 1
+        assert isinstance(max_kernel_size, int)
+        assert max_kernel_size > 0
+
+    def __call__(self, results):
+        """Call function to blur image.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Flipped results, 'blur' and 'blur_kernel_size' keys are added
+                  into result dict.
+        """
+
+        if 'blur' not in results:
+            blur = True if np.random.rand() < self.prob else False
+            results['blur'] = blur
+            # Choose random kernel size up to given max (inclusive)
+            results['blur_kernel_size'] = np.random.randint(0, self.max_kernel_size + 1)
+        if results['blur']:
+            # blur image
+            k = results['blur_kernel_size']
+            results['img'] = mmcv.image.photometric.adjust_sharpness(
+                img=results['img'],
+                # An enhancement factor of 0.0 gives a blurred image. A factor
+                # of 1.0 gives the original image. And a factor of 2.0 gives a
+                # sharpened image.
+                factor=0.0,
+                kernel=np.ones((k, k))/k**2
+            )
+
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__ + f'(prob={self.prob}, max_kernel_size={self.max_kernel_size})'
