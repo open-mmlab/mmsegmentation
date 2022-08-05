@@ -688,7 +688,7 @@ class RandomRotate(object):
             self.degree = degree
         assert len(self.degree) == 2, f'degree {self.degree} should be a ' \
                                       f'tuple of (min, max)'
-        self.pal_val = pad_val
+        self.pad_val = pad_val
         self.seg_pad_val = seg_pad_val
         self.center = center
         self.auto_bound = auto_bound
@@ -710,7 +710,7 @@ class RandomRotate(object):
             results['img'] = mmcv.imrotate(
                 results['img'],
                 angle=degree,
-                border_value=self.pal_val,
+                border_value=self.pad_val,
                 center=self.center,
                 auto_bound=self.auto_bound)
 
@@ -729,7 +729,7 @@ class RandomRotate(object):
         repr_str = self.__class__.__name__
         repr_str += f'(prob={self.prob}, ' \
                     f'degree={self.degree}, ' \
-                    f'pad_val={self.pal_val}, ' \
+                    f'pad_val={self.pad_val}, ' \
                     f'seg_pad_val={self.seg_pad_val}, ' \
                     f'center={self.center}, ' \
                     f'auto_bound={self.auto_bound})'
@@ -1344,7 +1344,9 @@ class Blur(object):
 
     Args:
         prob (float, optional): The chance of any blurring. Default: None.
-        max_kernel_size(int, optional): TODO. Default: 5.
+        max_kernel_size(int, optional): The maximum size of the blur kernel
+            (inclusive). A random size this or smaller will be sampled.
+            Default: 5.
     """
 
     def __init__(self, prob=None, max_kernel_size=5):
@@ -1387,4 +1389,126 @@ class Blur(object):
         return results
 
     def __repr__(self):
-        return self.__class__.__name__ + f'(prob={self.prob}, max_kernel_size={self.max_kernel_size})'
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
+        repr_str += f'max_kernel_size={self.max_kernel_size})'
+        return repr_str
+
+
+@PIPELINES.register_module()
+class Perspective(object):
+    """Perturb the corners of the image (and the segmentation image) to warp
+    things.
+
+           This would be w_ratio of 0.2, in this case
+           6 steps out of 30
+     -x----*-----------------*-----
+    |      |                 |    x|
+    *------|                 |-----*  This would be h_ratio of 0.25,
+    |                              |  in this case 2 steps out of 8
+    |                              |
+    |                              |
+    |                              |
+    *-----|                  x-----*
+    |   x |                  |     |
+     ------------------------*-----*
+
+    The perturbed corners (noted as x here) will be placed randomly within the
+    bounds determined by the height and width ratios.
+
+    Args:
+        prob: (float, optional): The chance of any warping. Default: None.
+        h_ratio (float, optional): The max percentage of the image along the
+            vertical axis (axis 0) that the corner might be perturbed to.
+            Needs to be between 0 and 0.5, since it is applied to both sides
+            of the image. Default: 0.1.
+        w_ratio (float, optional): Same as h_ratio but along the horizontal
+            axis (axis 1). Default 0.1.
+        pad_val (int): Pad value that will be filled into the blank space when
+            the image is warped. Should be an RGB value. Default: (0,0,0).
+        seg_pad_val (int): Pad value of segmentation map. Default: 255.
+    """
+
+    def __init__(self, prob=None, h_ratio=0.1, w_ratio=0.1, pad_val=(0,0,0),
+                 seg_pad_val=255):
+        self.prob = prob
+        self.h_ratio = h_ratio
+        self.w_ratio = w_ratio
+        self.pad_val = tuple(pad_val)
+        self.seg_pad_val = seg_pad_val
+        if prob is not None:
+            assert isinstance(prob, int) or isinstance(prob, float)
+            assert prob >= 0 and prob <= 1
+        for ratio in (h_ratio, w_ratio):
+            assert isinstance(ratio, float)
+            assert ratio > 0 and ratio <= 0.5
+        assert len(pad_val) == 3
+        for pad in self.pad_val + (self.seg_pad_val,):
+            assert isinstance(pad, int)
+            assert pad >= 0 and pad <= 255
+
+    def __call__(self, results):
+        """Call function to perturb image corners.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Flipped results, 'perspective' key is added into result dict.
+        """
+
+        if 'perspective' not in results:
+            perspective = True if np.random.rand() < self.prob else False
+            results['perspective'] = perspective
+
+        if results['perspective']:
+            # Decide on the perturbation
+            shape = results['img'].shape
+            h_perturb = np.random.randint(0, h_ratio * shape[0], size=4)
+            w_perturb = np.random.randint(0, w_ratio * shape[1], size=4)
+
+            src = np.array(
+                [(0,        0,      ),
+                 (0,        shape[0]),
+                 (shape[1], shape[0]),
+                 (shape[1], 0,      )],
+                dtype=np.float32,
+            )
+            dst = np.array(
+                [(w_perturb[0],            h_perturb[0]           ),
+                 (w_perturb[1],            shape[0] - h_perturb[1]),
+                 (shape[1] - w_perturb[2], shape[0] - h_perturb[2]),
+                 (shape[1] - w_perturb[3], h_perturb[3]           )],
+                dtype=np.float32,
+            )
+            transform = cv2.getPerspectiveTransform(src, dst)
+
+            # Warp the image
+            results['img'] = cv2.warpPerspective(
+                src=results['img'],
+                M=transform,
+                dsize=shape[:2][::-1],
+                flags=cv2.INTER_LINEAR,
+                borderValue=self.pad_val,
+            )
+
+            # Warp the segmentation
+            for key in results.get('seg_fields', []):
+                results[key] = cv2.warpPerspective(
+                    src=results[key],
+                    M=transform,
+                    dsize=shape[:2][::-1],
+                    flags=cv2.INTER_NEAREST,
+                    borderValue=self.seg_pad_val,
+                )
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
+        repr_str += f'h_ratio={self.h_ratio}, '
+        repr_str += f'w_ratio={self.w_ratio}, '
+        repr_str += f'pad_val={self.pad_val}, '
+        repr_str += f'seg_pad_val={self.seg_pad_val})'
+        return repr_str
