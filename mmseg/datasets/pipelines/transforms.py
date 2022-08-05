@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 
+import cv2
 import mmcv
 import numpy as np
 from mmcv.utils import deprecated_api_warning, is_tuple_of
@@ -1439,10 +1440,10 @@ class Perspective(object):
         if prob is not None:
             assert isinstance(prob, int) or isinstance(prob, float)
             assert prob >= 0 and prob <= 1
-        for ratio in (h_ratio, w_ratio):
+        for ratio in (self.h_ratio, self.w_ratio):
             assert isinstance(ratio, float)
             assert ratio > 0 and ratio <= 0.5
-        assert len(pad_val) == 3
+        assert len(self.pad_val) == 3
         for pad in self.pad_val + (self.seg_pad_val,):
             assert isinstance(pad, int)
             assert pad >= 0 and pad <= 255
@@ -1464,8 +1465,8 @@ class Perspective(object):
         if results['perspective']:
             # Decide on the perturbation
             shape = results['img'].shape
-            h_perturb = np.random.randint(0, h_ratio * shape[0], size=4)
-            w_perturb = np.random.randint(0, w_ratio * shape[1], size=4)
+            h_perturb = np.random.randint(0, self.h_ratio * shape[0], size=4)
+            w_perturb = np.random.randint(0, self.w_ratio * shape[1], size=4)
 
             src = np.array(
                 [(0,        0,      ),
