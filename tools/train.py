@@ -16,6 +16,14 @@ def parse_args():
     parser.add_argument('config', help='train config file path')
     parser.add_argument('--work-dir', help='the dir to save logs and models')
     parser.add_argument(
+        '--resume',
+        nargs='?',
+        type=str,
+        const='auto',
+        help='If specify checkpint path, resume from it, while if not '
+        'specify, try to auto resume from the latest checkpoint '
+        'in the work directory.')
+    parser.add_argument(
         '--amp',
         action='store_true',
         default=False,
@@ -79,6 +87,14 @@ def main():
                 f'`OptimWrapper` but got {optim_wrapper}.')
             cfg.optim_wrapper.type = 'AmpOptimWrapper'
             cfg.optim_wrapper.loss_scale = 'dynamic'
+
+    # resume training
+    if args.resume == 'auto':
+        cfg.resume = True
+        cfg.load_from = None
+    elif args.resume is not None:
+        cfg.resume = True
+        cfg.load_from = args.resume
 
     # build the runner from config
     runner = Runner.from_cfg(cfg)

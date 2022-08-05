@@ -7,10 +7,10 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule, build_norm_layer
 from torch import Tensor
 
-from mmseg.ops import Encoding, resize
 from mmseg.registry import MODELS
 from mmseg.utils import ConfigType, SampleList
 from ..builder import build_loss
+from ..utils import Encoding, resize
 from .decode_head import BaseDecodeHead
 
 

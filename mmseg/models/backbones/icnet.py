@@ -4,9 +4,9 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule
 from mmengine.model import BaseModule
 
-from mmseg.ops import resize
 from mmseg.registry import MODELS
 from ..decode_heads.psp_head import PPM
+from ..utils import resize
 
 
 @MODELS.register_module()

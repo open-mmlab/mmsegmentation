@@ -3,8 +3,8 @@ import numpy as np
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import Upsample, resize
 from mmseg.registry import MODELS
+from ..utils import Upsample, resize
 from .decode_head import BaseDecodeHead
 
 

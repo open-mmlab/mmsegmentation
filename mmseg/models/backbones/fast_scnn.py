@@ -5,9 +5,8 @@ from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
 from mmengine.model import BaseModule
 
 from mmseg.models.decode_heads.psp_head import PPM
-from mmseg.ops import resize
 from mmseg.registry import MODELS
-from ..utils import InvertedResidual
+from ..utils import InvertedResidual, resize
 
 
 class LearningToDownsample(nn.Module):
