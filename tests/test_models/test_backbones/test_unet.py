@@ -5,7 +5,7 @@ from mmcv.cnn import ConvModule
 
 from mmseg.models.backbones.unet import (BasicConvBlock, DeconvModule,
                                          InterpConv, UNet, UpConvBlock)
-from mmseg.ops import Upsample
+from mmseg.models.utils import Upsample
 from .utils import check_norm_state
 
 

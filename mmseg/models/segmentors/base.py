@@ -6,10 +6,10 @@ from mmengine.data import PixelData
 from mmengine.model import BaseModel
 from torch import Tensor
 
-from mmseg.ops import resize
 from mmseg.structures import SegDataSample
 from mmseg.utils import (ForwardResults, OptConfigType, OptMultiConfig,
                          OptSampleList, SampleList)
+from ..utils import resize
 
 
 class BaseSegmentor(BaseModel, metaclass=ABCMeta):

@@ -3,8 +3,8 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 from mmengine.model import BaseModule
 
-from mmseg.ops import resize
 from mmseg.registry import MODELS
+from ..utils import resize
 
 
 class CascadeFeatureFusion(BaseModule):
