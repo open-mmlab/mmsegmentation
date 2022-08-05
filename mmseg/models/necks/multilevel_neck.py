@@ -2,8 +2,8 @@
 import torch.nn as nn
 from mmcv.cnn import ConvModule, xavier_init
 
-from mmseg.ops import resize
 from mmseg.registry import MODELS
+from ..utils import resize
 
 
 @MODELS.register_module()

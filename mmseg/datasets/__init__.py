@@ -1,9 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from .ade import ADE20KDataset
+from .basesegdataset import BaseSegDataset
 from .chase_db1 import ChaseDB1Dataset
 from .cityscapes import CityscapesDataset
 from .coco_stuff import COCOStuffDataset
-from .custom import BaseSegDataset
 from .dark_zurich import DarkZurichDataset
 from .dataset_wrappers import MultiImageMixDataset
 from .drive import DRIVEDataset
