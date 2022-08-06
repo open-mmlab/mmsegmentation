@@ -1375,7 +1375,7 @@ class Blur(object):
             results['blur'] = blur
             # Choose random kernel size up to given max (inclusive)
             results['blur_kernel_size'] = np.random.randint(
-                0,
+                1,
                 self.max_kernel_size + 1,
             )
         if results['blur']:
