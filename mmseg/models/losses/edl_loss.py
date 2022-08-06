@@ -34,7 +34,7 @@ def mse_edl_loss(one_hot_gt, alpha, num_classes):
     # L_err
     A = torch.sum((one_hot_gt - prob)**2, dim=1, keepdim=True)
     # L_var
-    B = torch.sum(alpha * (strength - alpha) / (strength * (strength + 1)), dim=1, keepdim=True)
+    B = torch.sum(alpha * (strength - alpha) / (strength * strength * (strength + 1)), dim=1, keepdim=True)
     # L_KL
     alpha_kl = (alpha - 1) * (1 - one_hot_gt) + 1
     C = KL(alpha_kl, num_classes)
