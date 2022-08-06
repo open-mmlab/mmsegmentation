@@ -105,17 +105,18 @@ jobs:
           name: Clone Repos
           command: |
             git clone -b main --depth 1 ssh://git@github.com/open-mmlab/mmengine.git /home/circleci/mmengine
+            git clone -b dev-1.x --depth 1 ssh://git@github.com/open-mmlab/mmclassification.git /home/circleci/mmclassification
       - run:
           name: Build Docker image
           command: |
             docker build .circleci/docker -t mmseg:gpu --build-arg PYTORCH=<< parameters.torch >> --build-arg CUDA=<< parameters.cuda >> --build-arg CUDNN=<< parameters.cudnn >>
-            docker run --gpus all -t -d -v /home/circleci/project:/mmseg -v /home/circleci/mmengine:/mmengine -w /mmseg --name mmseg mmseg:gpu
+            docker run --gpus all -t -d -v /home/circleci/project:/mmseg -v /home/circleci/mmengine:/mmengine -v  /home/circleci/mmclassification:/mmclassification -w /mmseg --name mmseg mmseg:gpu
       - run:
           name: Install mmseg dependencies
           command: |
             docker exec mmseg pip install -e /mmengine
             docker exec mmseg pip install << parameters.mmcv >>
-            python -m pip install git+ssh://git@github.com/open-mmlab/mmclassification@dev-1.x
+            docker exec mmseg pip install -e /mmclassification
             docker exec mmseg python -m pip install -r requirements.txt
       - run:
           name: Build and install
