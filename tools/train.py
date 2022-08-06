@@ -243,12 +243,14 @@ def main():
     logger.info(model)
     if args.use_bags:
         setattr(model.decode_head, "use_bags", True)
-        setattr(model.decode_head, "num_bags", datasets[0].num_bags)
-        setattr(model.decode_head, "label2bag", datasets[0].label2bag)
-        setattr(model.decode_head, "bag_label_maps", datasets[0].bag_label_maps)
-        setattr(model.decode_head, "bag_masks", datasets[0].bag_masks)
-        setattr(model.decode_head, "bags_classes", datasets[0].bags_classes)
-        setattr(model.decode_head, "bag_class_counts", datasets[0].bag_class_counts)
+        setattr(model.decode_head, "bags_kwargs", dict(
+                num_bags=datasets[0].num_bags,
+                label2bag=datasets[0].label2bag,
+                bag_label_maps=datasets[0].bag_label_maps,
+                bag_masks=datasets[0].bag_masks,
+                bags_classes=datasets[0].bags_classes,
+                bag_class_counts=datasets[0].bag_class_counts
+                ))
     else:
         setattr(model.decode_head, "use_bags", False)
     # add an attribute for visualization convenience

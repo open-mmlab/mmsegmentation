@@ -16,7 +16,8 @@ def cross_entropy(pred,
                   reduction='mean',
                   avg_factor=None,
                   ignore_index=-100,
-                  avg_non_ignore=False):
+                  avg_non_ignore=False,
+                  label_smoothing=0.0):
     """cross_entropy. The wrapper function for :func:`F.cross_entropy`
 
     Args:
@@ -47,7 +48,8 @@ def cross_entropy(pred,
         label,
         weight=class_weight,
         reduction='none',
-        ignore_index=ignore_index)
+        ignore_index=ignore_index,
+        label_smoothing=label_smoothing)
 
     # apply weights and do the reduction
     # average loss over non-ignored elements
@@ -127,7 +129,7 @@ def binary_cross_entropy(pred,
         pred = pred.squeeze(1)
     if pred.dim() != label.dim():
         assert (pred.dim() == 2 and label.dim() == 1) or (
-                pred.dim() == 4 and label.dim() == 3), \
+            pred.dim() == 4 and label.dim() == 3), \
             'Only pred shape [N, C], label shape [N] or pred shape [N, C, ' \
             'H, W], label shape [N, H, W] are supported'
         # `weight` returned from `_expand_onehot_labels`
@@ -222,13 +224,15 @@ class CrossEntropyLoss(nn.Module):
                  class_weight=None,
                  loss_weight=1.0,
                  loss_name='loss_ce',
-                 avg_non_ignore=False):
+                 avg_non_ignore=False,
+                 label_smoothing=0.0):
         super(CrossEntropyLoss, self).__init__()
         assert (use_sigmoid is False) or (use_mask is False)
         self.use_sigmoid = use_sigmoid
         self.use_mask = use_mask
         self.reduction = reduction
         self.loss_weight = loss_weight
+        self.label_smoothing = label_smoothing
         self.class_weight = get_class_weight(class_weight)
         self.avg_non_ignore = avg_non_ignore
         if not self.avg_non_ignore and self.reduction == 'mean':
@@ -277,7 +281,8 @@ class CrossEntropyLoss(nn.Module):
             avg_factor=avg_factor,
             avg_non_ignore=self.avg_non_ignore,
             ignore_index=ignore_index,
-            **kwargs)
+            label_smoothing=self.label_smoothing,
+            ** kwargs)
         return loss_cls
 
     @property

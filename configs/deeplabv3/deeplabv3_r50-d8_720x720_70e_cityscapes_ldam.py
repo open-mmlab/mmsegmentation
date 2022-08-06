@@ -1,6 +1,7 @@
 _base_ = [
     '../_base_/models/deeplabv3_r50-d8.py',
     '../_base_/datasets/cityscapes_720x720.py', '../_base_/epoch_runtime.py',
+    # '../_base_/schedules/schedule_70e.py'
     '../_base_/schedules/schedule_70e.py'
 ]
 model = dict(

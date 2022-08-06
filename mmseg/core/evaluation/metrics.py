@@ -314,18 +314,52 @@ def pre_eval_to_metrics(pre_eval_results,
     # convert list of tuples to tuple of lists, e.g.
     # [(A_1, B_1, C_1, D_1), ...,  (A_n, B_n, C_n, D_n)] to
     # ([A_1, ..., A_n], ..., [D_1, ..., D_n])
-    pre_eval_results = tuple(zip(*pre_eval_results))
-    assert len(pre_eval_results) == 4
 
-    total_area_intersect = sum(pre_eval_results[0])
-    total_area_union = sum(pre_eval_results[1])
-    total_area_pred_label = sum(pre_eval_results[2])
-    total_area_label = sum(pre_eval_results[3])
+    main_pre_eval_results, oth_pre_eval_results = tuple(zip(*pre_eval_results))
+
+    main_pre_eval_results = tuple(zip(*main_pre_eval_results))
+    oth_pre_eval_results = tuple(zip(*oth_pre_eval_results))
+    pre_ood_metrics, pre_ood_valid = tuple(zip(*oth_pre_eval_results[0]))
+    pre_ood_valid = np.array(pre_ood_valid)
+    pre_ood_metrics = np.vstack(pre_ood_metrics)
+    pre_calib_metrics = np.vstack(oth_pre_eval_results[1])
+    pre_cls_conf, pre_cls_u, pre_cls_strength = tuple(zip(*oth_pre_eval_results[2]))
+    pre_cls_conf = np.vstack(pre_cls_conf)
+    pre_cls_u = np.vstack(pre_cls_u)
+    pre_cls_strength = np.vstack(pre_cls_strength)
+    assert len(main_pre_eval_results) == 4
+
+    total_area_intersect = sum(main_pre_eval_results[0])
+    total_area_union = sum(main_pre_eval_results[1])
+    total_area_pred_label = sum(main_pre_eval_results[2])
+    total_area_label = sum(main_pre_eval_results[3])
 
     ret_metrics = total_area_to_metrics(total_area_intersect, total_area_union,
                                         total_area_pred_label,
                                         total_area_label, metrics, nan_to_num,
                                         beta)
+
+    ret_metrics["Prob"] = (pre_cls_conf.sum(0) / total_area_label).numpy()
+    ret_metrics["U"] = (pre_cls_u.sum(0) / total_area_label).numpy()
+    ret_metrics["S"] = (pre_cls_strength.sum(0) / total_area_label).numpy()
+    calib_metrics = pre_calib_metrics.mean(0)
+    ret_metrics["aNll"] = np.asarray(calib_metrics[0], dtype=np.float32)
+    ret_metrics["aEce1"] = np.asarray(calib_metrics[1], dtype=np.float32)
+    ret_metrics["aEce2"] = np.asarray(calib_metrics[2], dtype=np.float32)
+    ret_metrics["aBrierScore"] = np.asarray(calib_metrics[2])
+    if pre_ood_valid.any():
+        ood_metrics = pre_ood_metrics.sum(0) / pre_ood_valid.sum()
+        ret_metrics["max_prob.auroc"] = np.asarray(ood_metrics[0], dtype=np.float32)
+        ret_metrics["max_prob.aupr"] = np.asarray(ood_metrics[1], dtype=np.float32)
+        ret_metrics["max_prob.fpr95"] = np.asarray(ood_metrics[2], dtype=np.float32)
+
+        ret_metrics["max_logit.auroc"] = np.asarray(ood_metrics[3], dtype=np.float32)
+        ret_metrics["max_logit.aupr"] = np.asarray(ood_metrics[4], dtype=np.float32)
+        ret_metrics["max_logit.fpr95"] = np.asarray(ood_metrics[5], dtype=np.float32)
+
+        ret_metrics["entropy.auroc"] = np.asarray(ood_metrics[6], dtype=np.float32)
+        ret_metrics["entropy.aupr"] = np.asarray(ood_metrics[7], dtype=np.float32)
+        ret_metrics["entropy.fpr95"] = np.asarray(ood_metrics[8], dtype=np.float32)
 
     return ret_metrics
 
@@ -334,7 +368,7 @@ def total_area_to_metrics(total_area_intersect,
                           total_area_union,
                           total_area_pred_label,
                           total_area_label,
-                          metrics=['mIoU'],
+                          metrics=['mIoU', 'mFscore'],
                           nan_to_num=None,
                           beta=1):
     """Calculate evaluation metrics
@@ -369,16 +403,14 @@ def total_area_to_metrics(total_area_intersect,
             ret_metrics['IoU'] = iou
             ret_metrics['Acc'] = acc
         elif metric == 'mDice':
-            dice = 2 * total_area_intersect / (
-                total_area_pred_label + total_area_label)
+            dice = 2 * total_area_intersect / (total_area_pred_label + total_area_label)
             acc = total_area_intersect / total_area_label
             ret_metrics['Dice'] = dice
             ret_metrics['Acc'] = acc
         elif metric == 'mFscore':
             precision = total_area_intersect / total_area_pred_label
             recall = total_area_intersect / total_area_label
-            f_value = torch.tensor(
-                [f_score(x[0], x[1], beta) for x in zip(precision, recall)])
+            f_value = torch.tensor([f_score(x[0], x[1], beta) for x in zip(precision, recall)])
             ret_metrics['Fscore'] = f_value
             ret_metrics['Precision'] = precision
             ret_metrics['Recall'] = recall

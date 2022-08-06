@@ -252,14 +252,15 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         else:
             losses_decode = self.loss_decode
         if self.use_bags:
-            smp = torch.zeros_like(seg_logit[:, :-self.num_bags, :, :])
-            for bag_idx in range(self.num_bags):
+            # For computing accuracy
+            smp = torch.zeros_like(seg_logit[:, :-self.bags_kwargs["num_bags"], :, :])
+            for bag_idx in range(self.bags_kwargs["num_bags"]):
                 cp_seg_logit = seg_logit.detach().clone()
-                bag_seg_logit = cp_seg_logit[:, self.bag_masks[bag_idx], :, :]
+                bag_seg_logit = cp_seg_logit[:, self.bags_kwargs["bag_masks"][bag_idx], :, :]
                 # ignores other after softmax
                 bag_smp = F.softmax(bag_seg_logit, dim=1)[:, :-1, :, :]
                 # orig_indices = self.bags_classes[bag_idx][:-1]
-                mask = self.bag_masks[bag_idx][:-self.num_bags]
+                mask = self.bags_kwargs["bag_masks"][bag_idx][:-self.bags_kwargs["num_bags"]]
                 smp[:, mask, :, :] = bag_smp
             loss['acc_seg'] = accuracy(smp, seg_label, ignore_index=self.ignore_index)
         else:
@@ -268,20 +269,30 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         for loss_decode in losses_decode:
             if loss_decode.loss_name not in loss:
                 if self.use_bags:
-                    # Compute loss using bags
+                    # Compute loss using bags only implemented for CE and LDAM
                     loss_bags = []
-                    for bag_idx in range(self.num_bags):
-                        bag_seg_logit = seg_logit[:, self.bag_masks[bag_idx], :, :]
+                    for bag_idx in range(self.bags_kwargs["num_bags"]):
+                        bag_seg_logit = seg_logit[:, self.bags_kwargs["bag_masks"][bag_idx], :, :]
                         bag_seg_label = seg_label
-                        for c in range(self.num_classes - self.num_bags):
-                            remapped_index = self.bags_classes[bag_idx].index(self.bag_label_maps[bag_idx][c])
+                        for c in range(self.num_classes - self.bags_kwargs["num_bags"]):
+                            remapped_index = self.bags_kwargs["bags_classes"][bag_idx].index(self.bags_kwargs["bag_label_maps"][bag_idx][c])
                             # bag_seg_label[bag_seg_label == c] = remapped_index # throws a cuda error
                             bag_seg_label = torch.where(bag_seg_label != c, bag_seg_label, remapped_index)
-                        loss_bag = loss_decode(
-                            bag_seg_logit,
-                            bag_seg_label,
-                            weight=seg_weight,
-                            ignore_index=self.ignore_index)
+                        if loss_decode.loss_name.endswith("ldam"):
+                            loss_bag = loss_decode(
+                                bag_seg_logit,
+                                bag_seg_label,
+                                weight=seg_weight,
+                                ignore_index=self.ignore_index,
+                                bag_idx=bag_idx)
+                        elif loss_decode.loss_name.startswith("loss_edl"):
+                            raise NotImplementedError
+                        else:
+                            loss_bag = loss_decode(
+                                bag_seg_logit,
+                                bag_seg_label,
+                                weight=seg_weight,
+                                ignore_index=self.ignore_index)
                         loss[loss_decode.loss_name.replace("loss", "L") + f"_bag_{bag_idx}"] = loss_bag.detach()
                         loss_bags.append(loss_bag)
 

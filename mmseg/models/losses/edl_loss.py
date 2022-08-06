@@ -12,7 +12,7 @@ def relu_evidence(logits):
 def exp_evidence(logits):
     # This one usually works better and used for the second and third examples
     # For general settings and different datasets, you may try this one first
-    return torch.exp(torch.clamp(logits / 10, -10, 10))
+    return torch.exp(torch.clamp(logits, -10, 10))
 
 
 def softplus_evidence(logits):
@@ -34,7 +34,7 @@ def mse_edl_loss(one_hot_gt, alpha, num_classes):
     # L_err
     A = torch.sum((one_hot_gt - prob)**2, dim=1, keepdim=True)
     # L_var
-    B = torch.sum(alpha * (strength - alpha) / (strength * strength * (strength + 1)), dim=1, keepdim=True)
+    B = torch.sum(alpha * (strength - alpha) / (strength * (strength + 1)), dim=1, keepdim=True)
     # L_KL
     alpha_kl = (alpha - 1) * (1 - one_hot_gt) + 1
     C = KL(alpha_kl, num_classes)
@@ -70,7 +70,7 @@ def KL(alpha, num_classes):
 @ LOSSES.register_module
 class EDLLoss(nn.Module):
 
-    def __init__(self, num_classes, loss_type="mse", annealing_step=10, annealing_method="step", logit2evidence="exp", reduction="mean",
+    def __init__(self, num_classes, loss_variant="mse", annealing_step=10, annealing_method="step", logit2evidence="exp", reduction="mean",
                  loss_weight=1.0, avg_non_ignore=True, loss_name='loss_edl'):
         super(EDLLoss, self).__init__()
         self.reduction = reduction
@@ -90,7 +90,7 @@ class EDLLoss(nn.Module):
             raise KeyError(logit2evidence)
         self.epoch_num = 0
         self.total_epochs = 70
-        self.loss_name = "_".join([loss_name, loss_type])
+        self.loss_name = "_".join([loss_name, loss_variant])
         self.last_A = 0
         self.last_B = 0
         self.last_C = 0
@@ -118,7 +118,7 @@ class EDLLoss(nn.Module):
         elif self.loss_name.endswith("ce"):  # Eq. 4 CrossEntropy
             A, C = ce_edl_loss(one_hot_gt, alpha, self.num_classes, func=torch.digamma)
             loss = A + self.lam * C
-        elif self.loss_name.endswith("mleII"):  # Eq. 3 Maximum Likelihood Type II
+        elif self.loss_name.endswith("mll"):  # Eq. 3 Maximum Likelihood Type II
             A, C = ce_edl_loss(one_hot_gt, alpha, self.num_classes, func=torch.log)
             loss = A + self.lam * C
         else:

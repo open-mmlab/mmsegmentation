@@ -16,22 +16,37 @@ class LDAMLoss(nn.Module):
 
     def __init__(
             self, class_count, max_margin=0.5, class_weight=None, scale=30, reduction="mean", warm=50, loss_weight=1.0, avg_non_ignore=False,
-            loss_name='loss_ldam'):
+            use_bags=True, loss_name='loss_ce_ldam'):
 
         super(LDAMLoss, self).__init__()
+        if self.warm > 0:
+            self.loss_name = "loss_ce"
+        else:
+            self.loss_name = "loss_ldam"
         self.loss_name = loss_name
         self.scale = scale
         self.reduction = reduction
         self.class_weight = class_weight
-        self.class_count = get_class_count(class_count)[:-1]  # last item is for 255
-        delta = 1.0 / (self.class_count**0.25)
-        delta = max_margin * (delta / np.max(delta))
-
-        self.delta = torch.cuda.FloatTensor(delta)
         self.loss_weight = loss_weight
         self.avg_non_ignore = avg_non_ignore
         self.warm = warm
         self.epoch_num = 0
+        self.use_bags = False
+        if not use_bags:
+            self.class_count = get_class_count(class_count)[:-1]  # last item is for 255 (bg)
+            delta = 1.0 / (self.class_count**0.25)
+            delta = max_margin * (delta / np.max(delta))
+            self.delta = torch.cuda.FloatTensor(delta)
+        else:
+            # compute deltas for every bag
+            self.class_count = class_count
+            assert isinstance(class_count, list) and isinstance(class_count[0], np.ndarray)
+            self.delta = []
+            for bg_cls_cnt in class_count:
+                delta_ = 1.0 / (bg_cls_cnt**0.25)
+                delta_ = max_margin * (delta_ / np.max(delta_))
+                delta_ = torch.cuda.FloatTensor(delta_)
+                self.delta.append(delta_)
 
     def forward(self,
                 pred,  # logits
@@ -39,11 +54,20 @@ class LDAMLoss(nn.Module):
                 weight=None,
                 avg_factor=None,
                 reduction_override=None,
-                ignore_index=255):
+                ignore_index=255,
+                bag_idx=None):
         assert reduction_override in (None, 'none', 'mean', 'sum')
+
         reduction = (reduction_override if reduction_override else self.reduction)
 
         if self.epoch_num > self.warm:
+            self.loss_name = 'loss_ldam'
+            if self.use_bags:
+                assert bag_idx is not None and bag_idx < len(self.delta)
+                delta = self.delta[bag_idx]
+            else:
+                delta = self.delta
+
             batch_target_ = target.data.unsqueeze(1).clone()
             # Label 255 is causing this error in gather and scatter_
             batch_target_[batch_target_ == 255] = 0
@@ -52,7 +76,7 @@ class LDAMLoss(nn.Module):
             mask_ignore = (target_expanded == 255)
             batch_target_[mask_ignore] = 0
 
-            delta_ = self.delta[None, :].reshape(1, -1, 1, 1).repeat(batch_target_.shape)
+            delta_ = delta[None, :].reshape(1, -1, 1, 1).repeat(batch_target_.shape)
             batch_delta = torch.gather(input=delta_, dim=1, index=batch_target_)
             diff = pred - batch_delta
             one_hot_gt = torch.zeros_like(pred, dtype=torch.uint8).scatter_(1, batch_target_, 1)

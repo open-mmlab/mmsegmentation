@@ -2,7 +2,7 @@
 import os.path as osp
 import tempfile
 import warnings
-
+import torch.nn.functional as F
 import mmcv
 import numpy as np
 import torch
@@ -32,6 +32,20 @@ def np2tmp(array, temp_file_name=None, tmpdir=None):
             suffix='.npy', delete=False, dir=tmpdir).name
     np.save(temp_file_name, array)
     return temp_file_name
+
+
+def plot_mask(mask, file):
+    plt.figure()
+    sns.heatmap(mask.squeeze(), xticklabels=False, yticklabels=False).get_figure().savefig(file)
+    plt.cla(); plt.clf(); plt.close('all')
+
+
+def plot_conf(conf, file):
+    plt.figure()
+    sns.heatmap(
+        1 - conf.squeeze(),
+        xticklabels=False, yticklabels=False).get_figure().savefig(file)
+    plt.cla(); plt.clf(); plt.close('all')
 
 
 def single_gpu_test(model,
@@ -79,10 +93,8 @@ def single_gpu_test(model,
         'exclusive, only one of them could be true .'
 
     model.eval()
+    assert data_loader.batch_size == 1, "TEST SCRIPT ONLY WORKS WITH BATCH SIZE=1"
     results = []
-    results_others_cms = []  # list of np arrays[tn, fp, fn, tp]
-    results_in_scores = {"max_softmax": [], "max_logit": [], "entropy": []}
-    results_out_scores = {"max_softmax": [], "max_logit": [], "entropy": []}
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
     # The pipeline about how the data_loader retrieval samples from dataset:
@@ -93,29 +105,12 @@ def single_gpu_test(model,
     loader_indices = data_loader.batch_sampler
     for batch_indices, data in zip(loader_indices, data_loader):
         with torch.no_grad():
-            result, pred_confs = model(return_loss=False, **data)
+            result, seg_logit = model(return_loss=False, **data)  # returns labels and logits
 
-        has_ood = False
-        if hasattr(dataset, "ood_indices"):
-            assert len(batch_indices) == 1
-            seg_gt = dataset.get_gt_seg_map_by_idx_(batch_indices[0])
+        seg_logit = seg_logit.detach()
+        seg_gt = dataset.get_gt_seg_map_by_idx_and_reduce_zero_label(batch_indices[0])
 
-            ood_mask = (seg_gt == dataset.ood_indices[0]).astype(np.uint8)
-
-            if model.module.decode_head.use_bags:
-                other_is_selected = pred_confs.pop("pred_all_other").astype(np.uint8)
-                cm = confusion_matrix(ood_mask.ravel(), other_is_selected.ravel()).ravel()
-                results_others_cms.append(cm)
-            else:
-                pred_confs.pop("pred_all_other")
-
-            out_scores, in_scores = dataset.get_in_out_conf(pred_confs, seg_gt)
-            if (len(next(iter(out_scores.values()))) != 0) and (len(next(iter(in_scores.values()))) != 0):
-                has_ood = True
-                for k in ("max_softmax", "max_logit", "entropy"):
-                    results_in_scores[k].append(in_scores[k])
-                    results_out_scores[k].append(out_scores[k])
-
+        # import ipdb; ipdb.set_trace()
         if (show or out_dir):
             # produce 3 images
             # gt_seg_map, pred_seg_map, confidence_map
@@ -143,39 +138,26 @@ def single_gpu_test(model,
                     show=show,
                     out_file=out_file,
                     opacity=opacity)
-                if has_ood:
 
-                    if dataset.reduce_zero_label:
-                        seg_gt[seg_gt == 0] = 255
-                        seg_gt = seg_gt - 1
-                        seg_gt[seg_gt == 254] = 255
-                    model.module.show_result(
-                        img_show,
-                        [seg_gt, ],
-                        palette=dataset.PALETTE,
-                        show=show,
-                        out_file=out_file[:-4] + "_gt" + out_file[-4:],
-                        opacity=opacity)
+                model.module.show_result(
+                    img_show,
+                    [seg_gt, ],
+                    palette=dataset.PALETTE,
+                    show=show,
+                    out_file=out_file[:-4] + "_gt" + out_file[-4:],
+                    opacity=opacity)
 
-                    # 1-MSP confidence map
-                    plt.figure()
-                    sns.heatmap(
-                        1 - pred_confs["max_softmax"].squeeze(),
-                        xticklabels=False, yticklabels=False).get_figure().savefig(
-                        out_file[: -4] + "_conf" + out_file[-4:])
-                    plt.cla(); plt.clf(); plt.close('all')
-                    # Mask of ood samples
-                    plt.figure()
-                    sns.heatmap(ood_mask, xticklabels=False, yticklabels=False).get_figure().savefig(out_file[:-4] + "_ood_mask" + out_file[-4:])
-                    plt.cla(); plt.clf(); plt.close('all')
-                    # Mask for edges between separate labels
-                    edge_mask = dataset.edge_detector(seg_gt)
-                    plt.figure()
-                    sns.heatmap(
-                        edge_mask.cpu().numpy(),
-                        xticklabels=False, yticklabels=False).get_figure().savefig(
-                        out_file[: -4] + "_edge_mask" + out_file[-4:])
-                    plt.cla(); plt.clf(); plt.close('all')
+                # 1-MSP confidence map
+                if not model.module.decode_head.use_bags:
+                    if model.module.decode_head.loss_decode.loss_name.startswith("loss_edl"):
+                        pass
+                    else:
+                        plot_conf(F.softmax(seg_logit, dim=1), out_file[: -4] + "_conf" + out_file[-4:])
+                # Mask for edges between separate labels
+                plot_mask(dataset.edge_detector(seg_gt).cpu().numpy(), out_file[: -4] + "_edge_mask" + out_file[-4:])
+                # Mask of ood samples
+                if hasattr(dataset, "ood_indices"):
+                    plot_mask((seg_gt == dataset.ood_indices[0]).astype(np.uint8), out_file[:-4] + "_ood_mask" + out_file[-4:])
 
         if efficient_test:
             result = [np2tmp(_, tmpdir='.efficient_test') for _ in result]
@@ -186,7 +168,22 @@ def single_gpu_test(model,
         if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            result = dataset.pre_eval(result, indices=batch_indices)
+            # For originally included metrics mIOU
+            result_seg = dataset.pre_eval(result, indices=batch_indices)[0]
+            # For added metrics OOD, calibration
+            if not model.module.decode_head.use_bags:
+                if model.module.decode_head.loss_decode.loss_name.startswith("loss_edl"):
+                    # For EDL probs
+                    seg_evidence = model.module.decode_head.loss_decode.logit2evidence(seg_logit)
+                    result_oth = dataset.pre_eval_custom(seg_evidence, seg_gt, "edl")
+                else:
+                    # For softmax probs
+                    result_oth = dataset.pre_eval_custom(seg_logit, seg_gt, "softmax")
+            else:
+                result_oth = dataset.pre_eval_custom(seg_evidence, seg_gt, "softmax",
+                                                     model.module.decode_head.use_bags,
+                                                     model.module.decode_head.bags_kwargs)
+            result = [(result_seg, result_oth)]
             results.extend(result)
         else:
             results.extend(result)
@@ -194,15 +191,7 @@ def single_gpu_test(model,
         batch_size = len(result)
         for _ in range(batch_size):
             prog_bar.update()
-    # all result shall be changed into a dict to make it simpler
-    results_ = {
-        "seg_pre_results": results,
-        "ood_pre_resuts": {
-            "in_dist_conf": results_in_scores,
-            "oo_dist_conf": results_out_scores
-        },
-        "bags_others_cms": results_others_cms}
-    return results_
+    return results
 
 
 def multi_gpu_test(model,

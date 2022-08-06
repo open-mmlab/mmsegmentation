@@ -73,14 +73,6 @@ class StreetHazardsDataset(CustomDataset):
         else:
             return None, None, None, None
 
-    def get_gt_seg_map_by_idx_(self, index):
-        seg_gt = self.get_gt_seg_map_by_idx(index)
-        if self.reduce_zero_label:
-            seg_gt[seg_gt == 0] = 255
-            seg_gt = seg_gt - 1
-            seg_gt[seg_gt == 254] = 255
-        return seg_gt
-
     def get_in_out_conf(self, pred_confs, seg_gt):
         in_scores = {}
         out_scores = {}
@@ -203,11 +195,10 @@ class StreetHazardsDataset(CustomDataset):
     def get_bags(self, mul=10):
         if not hasattr(self, "class_count_pixel"):
             try:
-                with open("class_count_street_cityscapes.npy", "rb") as f:
+                with open("class_count_street_hazards_pixel.npy", "rb") as f:
                     self.class_count_pixel = np.load(f)
             except FileNotFoundError as e:
                 self.get_class_count()
-
         class_count = self.class_count_pixel[:-1]
         low = float(1 / mul)
         hi = float(mul)

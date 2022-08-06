@@ -264,14 +264,17 @@ def main():
             model.PALETTE = dataset.PALETTE
         if args.use_bags:
             setattr(model.decode_head, "use_bags", True)
-            setattr(model.decode_head, "num_bags", dataset.num_bags)
-            setattr(model.decode_head, "label2bag", dataset.label2bag)
-            setattr(model.decode_head, "bag_label_maps", dataset.bag_label_maps)
-            setattr(model.decode_head, "bag_masks", dataset.bag_masks)
-            setattr(model.decode_head, "bags_classes", dataset.bags_classes)
-            setattr(model.decode_head, "bag_class_counts", dataset.bag_class_counts)
+            setattr(model.decode_head, "bags_kwargs", dict(
+                num_bags=dataset.num_bags,
+                label2bag=dataset.label2bag,
+                bag_label_maps=dataset.bag_label_maps,
+                bag_masks=dataset.bag_masks,
+                bags_classes=dataset.bags_classes,
+                bag_class_counts=dataset.bag_class_counts
+            ))
         else:
             setattr(model.decode_head, "use_bags", False)
+
         if not args.all:
             conv_layer_weight_mag = torch.norm(model.decode_head.conv_seg.weight.squeeze(), dim=1)
             if args.use_bags:
