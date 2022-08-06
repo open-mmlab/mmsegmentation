@@ -63,6 +63,7 @@ jobs:
           command: |
             python -m pip install git+ssh://git@github.com/open-mmlab/mmengine.git@main
             python -m pip install << parameters.mmcv >>
+            python -m pip install git+ssh://git@github.com/open-mmlab/mmclassification@dev-1.x
             python -m pip install -r requirements.txt
       - run:
           name: Build and install
@@ -114,6 +115,7 @@ jobs:
           command: |
             docker exec mmseg pip install -e /mmengine
             docker exec mmseg pip install << parameters.mmcv >>
+            python -m pip install git+ssh://git@github.com/open-mmlab/mmclassification@dev-1.x
             docker exec mmseg python -m pip install -r requirements.txt
       - run:
           name: Build and install
