@@ -121,6 +121,16 @@ def isaid_classes():
     ]
 
 
+def lip_classes():
+    """LIP class names for external use."""
+    return [
+        'background', 'hat', 'hair', 'glove', 'sunglasses', 'upperclothes',
+        'dress', 'coat', 'socks', 'pants', 'jumpsuits', 'scarf', 'skirt',
+        'face', 'leftArm', 'rightArm', 'leftLeg', 'rightLeg', 'leftShoe',
+        'rightShoe'
+    ]
+
+
 def stare_classes():
     """stare class names for external use."""
     return ['background', 'vessel']
@@ -260,6 +270,15 @@ def isaid_palette():
             [0, 127, 255], [0, 100, 155]]
 
 
+def lip_palette():
+    """LIP palette for external use."""
+    return [[0, 0, 0], [128, 0, 0], [255, 0, 0], [0, 85, 0], [170, 0, 51],
+            [255, 85, 0], [0, 0, 85], [0, 119, 221], [85, 85, 0], [0, 85, 85],
+            [85, 51, 0], [52, 86, 128], [0, 128, 0], [0, 0, 255],
+            [51, 170, 221], [0, 255, 255], [85, 255, 170], [170, 255, 85],
+            [255, 255, 0], [255, 170, 0]]
+
+
 def stare_palette():
     """STARE palette for external use."""
     return [[120, 120, 120], [6, 230, 230]]
@@ -278,7 +297,8 @@ dataset_aliases = {
         'coco_stuff164k'
     ],
     'isaid': ['isaid', 'iSAID'],
-    'stare': ['stare', 'STARE']
+    'stare': ['stare', 'STARE'],
+    'lip': ['lip']
 }
 
 
