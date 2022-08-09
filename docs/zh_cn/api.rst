@@ -67,12 +67,12 @@ losses
 
 utils
 ^^^^^^^^^^
-.. automodule:: mmseg.models.losses
+.. automodule:: mmseg.models.utils
     :members:
 
 necks
 ^^^^^^^^^^
-.. automodule:: mmseg.models.losses
+.. automodule:: mmseg.models.necks
     :members:
 
 mmseg.ops
@@ -82,7 +82,7 @@ mmseg.ops
 
 mmseg.registry
 --------------
-.. automodule:: mmseg.apis
+.. automodule:: mmseg.registry
     :members:
 
 mmseg.structures
