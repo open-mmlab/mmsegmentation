@@ -23,7 +23,11 @@ train_cfg = dict(
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 default_hooks = dict(
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=4000))
+    timer=dict(type='IterTimerHook'),
+    logger=dict(type='LoggerHook', interval=50),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=4000),
+    sampler_seed=dict(type='DistSamplerSeedHook'))
 
 crop_size = (512, 1024)
 data_preprocessor = dict(size=crop_size)
