@@ -5,14 +5,15 @@ import os.path as osp
 import shutil
 import time
 import warnings
-
+import numpy as np
+import pandas as pd
 import mmcv
 import torch
 from mmcv.cnn.utils import revert_sync_batchnorm
 from mmcv.runner import (get_dist_info, init_dist, load_checkpoint,
                          wrap_fp16_model)
 from mmcv.utils import DictAction
-
+import matplotlib.pyplot as plt
 from mmseg import digit_version
 from mmseg.apis import multi_gpu_test, single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
@@ -123,6 +124,7 @@ def parse_args():
 
 
 def main():
+    import warnings; warnings.filterwarnings("ignore")
     args = parse_args()
     assert args.out or args.eval or args.format_only or args.show \
         or args.show_dir, \
@@ -223,10 +225,13 @@ def main():
     }
     # build the dataloader
     data_loader = build_dataloader(dataset, **test_loader_cfg)
-    all_checkpoints = [os.path.join(args.work_dir, file) for file in os.listdir(args.work_dir)
-                       if file.endswith(".pth") and file != "latest.pth"]
-    all_checkpoints_iter = [int(file.split(".")[0].split("_")[1]) for file in os.listdir(args.work_dir)
-                            if file.endswith(".pth") and file != "latest.pth"]
+    all_checkpoints = [os.path.join(args.work_dir, file) for file in os.listdir(args.work_dir) if file.endswith(".pth") and file != "latest.pth"]
+    all_checkpoints.sort(key=lambda file: int(re.search(r"(?:epoch)_([0-9]+).(?:pth)$", file).groups()[0]))
+    import ipdb; ipdb.set_trace()
+    all_checkpoints_iter = [int(re.search(r"(?:epoch)_([0-9]+).(?:pth)$", file).groups()[0]) for file in all_checkpoints]
+    ood_summary = pd.DataFrame(columns=["epoch", 'max_prob.auroc', 'max_prob.aupr', 'max_prob.fpr95', 'max_logit.auroc',
+                               'max_logit.aupr', 'max_logit.fpr95', 'entropy.auroc', 'entropy.aupr', 'entropy.fpr95'])
+
     if not args.all:
         index_last = max(range(len(all_checkpoints_iter)), key=all_checkpoints_iter.__getitem__)
         all_checkpoints = [all_checkpoints[index_last]]
@@ -374,15 +379,38 @@ def main():
                 if tmpdir is not None and eval_on_format_results:
                     # remove tmp dir when cityscapes evaluation
                     shutil.rmtree(tmpdir)
+                curr_iter_ood_df = pd.DataFrame(
+                    data=[[all_checkpoints_iter[i],
+                          round(float(metric_dict["metric"]['max_prob.auroc']), 2),
+                          round(float(metric_dict["metric"]['max_prob.aupr']), 2),
+                          round(float(metric_dict["metric"]['max_prob.fpr95']), 2),
+                          round(float(metric_dict["metric"]['max_logit.auroc']), 2),
+                          round(float(metric_dict["metric"]['max_logit.aupr']), 2),
+                          round(float(metric_dict["metric"]['max_logit.fpr95']), 2),
+                          round(float(metric_dict["metric"]['entropy.auroc']), 2),
+                          round(float(metric_dict["metric"]['entropy.aupr']), 2),
+                          round(float(metric_dict["metric"]['entropy.fpr95']), 2)]],
+                    columns=["epoch",
+                             'max_prob.auroc',
+                             'max_prob.aupr',
+                             'max_prob.fpr95',
+                             'max_logit.auroc',
+                             'max_logit.aupr',
+                             'max_logit.fpr95',
+                             'entropy.auroc',
+                             'entropy.aupr',
+                             'entropy.fpr95'
+                             ])
+                ood_summary = ood_summary.append(curr_iter_ood_df, ignore_index=True)
                 metric_dict["iter"] = all_checkpoints_iter[i]
+
                 curr_res = {}
-                for a in ("max_softmax", "max_logit", "entropy"):
-                    for b in ("auroc", "aupr", "fpr(fpr@95tpr)"):
-                        curr_res[f"{a}.{b}"] = metric_dict['metric'][f"{a}.{b}"]
-                curr_res["max_softmax.ece"] = metric_dict['metric']["max_softmax.ece"]
-                curr_res["mIoU"] = metric_dict['metric']["mIoU"]
-                curr_res["mAcc"] = metric_dict['metric']["mAcc"]
-                curr_res["aAcc"] = metric_dict['metric']["aAcc"]
+                for a in ("max_prob", "max_logit", "entropy"):
+                    for b in ("auroc", "aupr", "fpr95"):
+                        curr_res[f"{a}.{b}"] = float(metric_dict['metric'][f"{a}.{b}"])
+                curr_res["mIoU"] = float(metric_dict['metric']["mIoU"])
+                curr_res["mAcc"] = float(metric_dict['metric']["mAcc"])
+                curr_res["aAcc"] = float(metric_dict['metric']["aAcc"])
                 if args.all:
                     for k, v in curr_res.items():
                         writer.add_scalar(f"test/{k}", v, all_checkpoints_iter[i])
@@ -393,6 +421,15 @@ def main():
     suffixe = re.search(r"(?:[0-9]{14})_(.*)$", args.work_dir).groups()[0]
     with open(os.path.join(args.work_dir, f"test_results_all_{suffixe}.json" if args.all else f"test_results_{suffixe}.json"), "w") as f:
         json.dump(ans, f)
+    ood_summary.to_csv(os.path.join(args.work_dir, f'ood_metrics_{suffixe}.csv'))
+    # import ipdb; ipdb.set_trace()
+    # title = "Test OOD metrics (" + os.path.basename(args.work_dir) + ")"
+
+    # ax = ood_summary.plot(x="epoch", y=[c for c in ood_summary.columns if c != "epoch"], ylim=(0, 100), y_ticks=tick_vals, title=title, legend=True)
+    # import ipdb; ipdb.set_trace()
+    # fig = plt.figure()
+    # ax = ood_summary.plot(x="epoch", y=[c for c in ood_summary.columns if c != "epoch"],
+    #                       ylim=(0, 1), yticks=tick_vals, title=title, legend=True, subplots=True)
 
 
 if __name__ == '__main__':

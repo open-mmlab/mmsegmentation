@@ -303,9 +303,14 @@ class CustomDataset(Dataset):
                 strength = alpha.sum(dim=1, keepdim=True)
                 u = num_cls / strength
                 probs = alpha / strength
-                seg_max_prob = probs.max(dim=1)[0]
+                seg_max_prob = 1 - u
+                # seg_max_prob = probs.max(dim=1)[0]
                 seg_max_logit = seg_logit_flat.max(dim=1)[0]
                 seg_entropy = - (probs * probs.log()).sum(1)
+                seg_entropy = (torch.lgamma(alpha).sum(1, keepdim=True) - torch.lgamma(strength) -
+                               (num_cls - strength) * torch.digamma(strength) -
+                               ((alpha - 1.0) * torch.digamma(alpha)).sum(1, keepdim=True))
+
             else:
                 probs = F.softmax(seg_logit_flat, dim=1)
                 seg_max_prob = probs.max(dim=1)[0]
@@ -340,15 +345,15 @@ class CustomDataset(Dataset):
             ood_mask = (seg_gt_tensor_flat == self.ood_indices[0])
             ood_valid = ood_mask.any() and (~ood_mask).any()
             if ood_valid:
-                out_scores_probs, in_scores_probs = self.get_in_out_conf(seg_max_prob, seg_gt, "max_prob")
+                out_scores_probs, in_scores_probs = self.get_in_out_conf(seg_max_prob.cpu().numpy(), seg_gt_tensor_flat.cpu().numpy(), "max_prob")
                 auroc_prob, aupr_prob, fpr_prob = self.evaluate_ood(out_scores_probs, in_scores_probs)
                 probs_ood = np.array([auroc_prob, aupr_prob, fpr_prob])
 
-                out_scores_logit, in_scores_logit = self.get_in_out_conf(seg_max_logit, seg_gt, "max_logit")
+                out_scores_logit, in_scores_logit = self.get_in_out_conf(seg_max_logit.cpu().numpy(), seg_gt_tensor_flat.cpu().numpy(), "max_logit")
                 auroc_logit, aupr_logit, fpr_logit = self.evaluate_ood(out_scores_logit, in_scores_logit)
                 logit_ood = np.array([auroc_logit, aupr_logit, fpr_logit])
 
-                out_scores_entropy, in_scores_entropy = self.get_in_out_conf(seg_entropy, seg_gt, "entropy")
+                out_scores_entropy, in_scores_entropy = self.get_in_out_conf(seg_entropy.cpu().numpy(), seg_gt_tensor_flat.cpu().numpy(), "entropy")
                 auroc_entropy, aupr_entropy, fpr_entropy = self.evaluate_ood(out_scores_entropy, in_scores_entropy)
                 entropy_ood = np.array([auroc_entropy, aupr_entropy, fpr_entropy])
                 ood_metrics = (np.hstack((probs_ood, logit_ood, entropy_ood)), True)
@@ -360,8 +365,9 @@ class CustomDataset(Dataset):
 
         # Calibration/Confidence metrics for closed set
         if not hasattr(self, "ood_indices"):
-            seg_gt_tensor_flat_no_bg = seg_gt_tensor_flat[~ignore_bg_mask]
-            probs_no_bg = probs[~ignore_bg_mask, :]
+            if self.ignore_index:
+                seg_gt_tensor_flat_no_bg = seg_gt_tensor_flat[~ignore_bg_mask]
+                probs_no_bg = probs[~ignore_bg_mask, :]
 
             nll = F.nll_loss(probs_no_bg.log(), seg_gt_tensor_flat_no_bg, reduction='mean').item()
             ece_l1 = calibration_error(probs_no_bg, seg_gt_tensor_flat_no_bg, norm='l1', ).item()
@@ -385,6 +391,13 @@ class CustomDataset(Dataset):
             per_cls_u = np.array(per_cls_u)
             per_cls_strength = np.array(per_cls_strength)
             per_cls_conf_metrics = (per_cls_prob, per_cls_u, per_cls_strength)
+        else:
+            calib_metrics = np.array([0 for _ in range(4)])
+            per_cls_prob = np.array([0. for _ in range(num_cls)])
+            per_cls_u = np.array([0. for _ in range(num_cls)])
+            per_cls_strength = np.array([0. for _ in range(num_cls)])
+            per_cls_conf_metrics = (per_cls_prob, per_cls_u, per_cls_strength)
+
         return (ood_metrics, calib_metrics, per_cls_conf_metrics)
 
     def pre_eval(self, preds, indices):
@@ -561,7 +574,6 @@ class CustomDataset(Dataset):
             else np.round(np.nanmean(ret_metric_value), 2)  # other metrics
             for ret_metric, ret_metric_value in ret_metrics.items()
         })
-
         # each class table
         ret_metrics.pop('aAcc', None)
         ret_metrics.pop('aNll', None)
@@ -570,9 +582,13 @@ class CustomDataset(Dataset):
         ret_metrics.pop('aBrierScore', None)
 
         ood_metrics = tuple(f"{a}.{b}" for a in ("max_prob", "max_logit", "entropy") for b in ("auroc", "aupr", "fpr95"))
-        ood_metrics_summary = OrderedDict({ret_metric: np.round(np.nanmean(ret_metric_value), 2)  # other metrics
-                                           for ret_metric, ret_metric_value in ret_metrics.items()
-                                           if ret_metrics in ood_metrics})
+        # remove ood metrics ret_metrics_summary
+        for k in ood_metrics:
+            ret_metrics_summary.pop(k, None)
+
+        ood_metrics_summary = OrderedDict({ret_metric: np.round(np.nanmean(ret_metric_value), 2)
+                                          for ret_metric, ret_metric_value in ret_metrics.items() if ret_metric in ood_metrics})
+
         for ret_metric in ood_metrics:
             ret_metrics.pop(ret_metric, None)
 
@@ -597,10 +613,11 @@ class CustomDataset(Dataset):
         ood_table_data = PrettyTable()
         for key, val in ood_metrics_summary.items():
             ood_table_data.add_column(key, [val])
-        print_log('per class results:', logger)
-        print_log('\n' + class_table_data.get_string(), logger=logger)
-        print_log('Summary:', logger)
-        print_log('\n' + summary_table_data.get_string(), logger=logger)
+        if not('roadanomaly' in str(type(self)).lower()):
+            print_log('per class results:', logger)
+            print_log('\n' + class_table_data.get_string(), logger=logger)
+            print_log('Summary:', logger)
+            print_log('\n' + summary_table_data.get_string(), logger=logger)
         print_log('OOD:', logger)
         if len(ood_metrics_summary):
             print_log('\n' + ood_table_data.get_string(), logger=logger)
@@ -618,6 +635,6 @@ class CustomDataset(Dataset):
                 key + '.' + str(name): value[idx]
                 for idx, name in enumerate(class_names)
             })
-        for key, value in ood_metrics_summary:
+        for key, value in ood_metrics_summary.items():
             eval_results[key] = value
         return eval_results

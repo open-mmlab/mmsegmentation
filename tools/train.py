@@ -97,6 +97,15 @@ def parse_args():
         '--auto-resume',
         action='store_true',
         help='resume from the latest checkpoint automatically.')
+    parser.add_argument(
+        '--freeze-features',
+        action='store_true',
+        help='freeze features till last layer')
+    parser.add_argument(
+        '--freeze-encoder',
+        action='store_true',
+        help='freeze latent representation')
+
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)
@@ -257,6 +266,8 @@ def main():
     model.CLASSES = datasets[0].CLASSES
     # passing checkpoint meta for saving best checkpoint
     meta.update(cfg.checkpoint_config.meta)
+    meta["freeze_features"] = args.freeze_features
+    meta["freeze_encoder"] = args.freeze_encoder
     train_segmentor(
         model,
         datasets,

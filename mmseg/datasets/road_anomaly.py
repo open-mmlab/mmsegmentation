@@ -45,27 +45,31 @@ class RoadAnomalyDataset(CustomDataset):
         self.num_classes = 19  # cityscapes
 
     def evaluate_ood(self, out_scores, in_scores) -> Tuple[np.float64, np.float64, np.float64]:
-        if (len(out_scores) != 0) and (len(in_scores) != 0):
-            auroc, apr, fpr, ece = get_ood_measures(out_scores, in_scores)
-            return auroc, apr, fpr, ece
-        else:
-            return None, None, None, None
+        auroc, apr, fpr = get_ood_measures(out_scores, in_scores)
+        return auroc, apr, fpr
 
     def get_in_out_conf(self, pred_confs, seg_gt, conf_type):
         assert conf_type in ("max_prob", "max_logit", "entropy")
         confs = deepcopy(pred_confs)
         # Mask ignored index
+
         mask = (seg_gt != self.ignore_index)
+
         seg_gt = seg_gt[mask]
+        confs = confs.squeeze()[mask]
+
         # Find out which pixels are OOD and which are not
         out_index = (seg_gt == self.ood_indices[0])
         for label in self.ood_indices:
             out_index = np.logical_or(out_index, (seg_gt == label))
-        confs = confs.squeeze()[mask]
-        if conf_type in ("max_prob", "max_logit"):
+
+        if conf_type == "max_logit":
             # gather their respective conf values
             in_scores = - confs[np.logical_not(out_index)]
             out_scores = - confs[out_index]
+        elif conf_type == "max_prob":
+            in_scores = 1 - confs[np.logical_not(out_index)]
+            out_scores = 1 - confs[out_index]
         else:
             in_scores = confs[np.logical_not(out_index)]
             out_scores = confs[out_index]

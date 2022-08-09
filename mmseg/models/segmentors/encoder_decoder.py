@@ -298,3 +298,27 @@ class EncoderDecoder(BaseSegmentor):
         # unravel batch dim
         seg_pred = list(seg_pred)
         return seg_pred
+
+    def freeze_encoder(self):
+        self.backbone.frozen_stages = self.backbone.num_stages
+        self.backbone._freeze_stages()
+
+    def freeze_feature_extractor(self):
+
+        to_eval(self, 'EncoderDecoder')
+        filtered = []
+        for name, param in self.named_parameters():
+            if 'conv_seg' not in name and 'loss_decode' not in name:
+                param.requires_grad = False
+                print(name, "has gradient disabled")
+            else:
+                filtered.append(name)
+        self.decode_head.frozen_features = True
+
+
+def to_eval(module, module_key):
+    if 'conv_seg' not in module_key and 'loss_decode' not in module_key:
+        module.training = False
+        print(module_key, "is set to eval mode")
+    for child_key, child in module.named_children():
+        to_eval(child, module_key + "." + child_key)

@@ -118,5 +118,7 @@ class ASPPHead(BaseDecodeHead):
     def forward(self, inputs):
         """Forward function."""
         output = self._forward_feature(inputs)
+        if self.frozen_features:
+            assert output.is_leaf
         output = self.cls_seg(output)
         return output
