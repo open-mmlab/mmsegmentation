@@ -41,6 +41,7 @@ mmseg.models
 --------------
 
 models
+^^^^^^^^^^
 .. automodule:: mmseg.models
     :members:
 
