@@ -3,24 +3,6 @@ mmseg.apis
 .. automodule:: mmseg.apis
     :members:
 
-mmseg.core
---------------
-
-seg
-^^^^^^^^^^
-.. automodule:: mmseg.core.seg
-    :members:
-
-evaluation
-^^^^^^^^^^
-.. automodule:: mmseg.core.evaluation
-    :members:
-
-utils
-^^^^^^^^^^
-.. automodule:: mmseg.core.utils
-    :members:
-
 mmseg.datasets
 --------------
 
@@ -29,13 +11,39 @@ datasets
 .. automodule:: mmseg.datasets
     :members:
 
-pipelines
+transforms
 ^^^^^^^^^^
-.. automodule:: mmseg.datasets.pipelines
+.. automodule:: mmseg.datasets.transforms
+    :members:
+
+mmseg.engine
+--------------
+
+hooks
+^^^^^^^^^^
+.. automodule:: mmseg.engine.hooks
+    :members:
+
+optimizers
+^^^^^^^^^^
+.. automodule:: mmseg.engine.optimizers
+    :members:
+
+mmseg.evaluation
+--------------
+
+metrics
+^^^^^^^^^^
+.. automodule:: mmseg.evaluation.metrics
     :members:
 
 mmseg.models
 --------------
+
+models
+^^^^^^^^^^
+.. automodule:: mmseg.models
+    :members:
 
 segmentors
 ^^^^^^^^^^
@@ -55,4 +63,47 @@ decode_heads
 losses
 ^^^^^^^^^^
 .. automodule:: mmseg.models.losses
+    :members:
+
+utils
+^^^^^^^^^^
+.. automodule:: mmseg.models.utils
+    :members:
+
+necks
+^^^^^^^^^^
+.. automodule:: mmseg.models.necks
+    :members:
+
+mmseg.ops
+--------------
+.. automodule:: mmseg.ops
+    :members:
+
+mmseg.registry
+--------------
+.. automodule:: mmseg.registry
+    :members:
+
+mmseg.structures
+--------------
+
+structures
+^^^^^^^^^^
+.. automodule:: mmseg.structures
+    :members:
+
+sampler
+^^^^^^^^^^
+.. automodule:: mmseg.structures.sampler
+    :members:
+
+mmseg.utils
+--------------
+.. automodule:: mmseg.utils
+    :members:
+
+mmseg.visualization
+--------------
+.. automodule:: mmseg.visualization
     :members:
