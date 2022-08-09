@@ -110,7 +110,6 @@ def single_gpu_test(model,
         seg_logit = seg_logit.detach()
         seg_gt = dataset.get_gt_seg_map_by_idx_and_reduce_zero_label(batch_indices[0])
 
-        # import ipdb; ipdb.set_trace()
         if (show or out_dir):
             # produce 3 images
             # gt_seg_map, pred_seg_map, confidence_map

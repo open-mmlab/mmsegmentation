@@ -227,7 +227,6 @@ def main():
     data_loader = build_dataloader(dataset, **test_loader_cfg)
     all_checkpoints = [os.path.join(args.work_dir, file) for file in os.listdir(args.work_dir) if file.endswith(".pth") and file != "latest.pth"]
     all_checkpoints.sort(key=lambda file: int(re.search(r"(?:epoch)_([0-9]+).(?:pth)$", file).groups()[0]))
-    import ipdb; ipdb.set_trace()
     all_checkpoints_iter = [int(re.search(r"(?:epoch)_([0-9]+).(?:pth)$", file).groups()[0]) for file in all_checkpoints]
     ood_summary = pd.DataFrame(columns=["epoch", 'max_prob.auroc', 'max_prob.aupr', 'max_prob.fpr95', 'max_logit.auroc',
                                'max_logit.aupr', 'max_logit.fpr95', 'entropy.auroc', 'entropy.aupr', 'entropy.fpr95'])
@@ -422,11 +421,9 @@ def main():
     with open(os.path.join(args.work_dir, f"test_results_all_{suffixe}.json" if args.all else f"test_results_{suffixe}.json"), "w") as f:
         json.dump(ans, f)
     ood_summary.to_csv(os.path.join(args.work_dir, f'ood_metrics_{suffixe}.csv'))
-    # import ipdb; ipdb.set_trace()
     # title = "Test OOD metrics (" + os.path.basename(args.work_dir) + ")"
 
     # ax = ood_summary.plot(x="epoch", y=[c for c in ood_summary.columns if c != "epoch"], ylim=(0, 100), y_ticks=tick_vals, title=title, legend=True)
-    # import ipdb; ipdb.set_trace()
     # fig = plt.figure()
     # ax = ood_summary.plot(x="epoch", y=[c for c in ood_summary.columns if c != "epoch"],
     #                       ylim=(0, 1), yticks=tick_vals, title=title, legend=True, subplots=True)
