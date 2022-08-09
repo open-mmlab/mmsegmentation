@@ -110,7 +110,7 @@ def load_json_logs(json_logs):
                     prev_step = step
                 else:
                     step = prev_step
-                if step not in log:
+                if step not in log_dict:
                     log_dict[step] = defaultdict(list)
                 for k, v in log.items():
                     log_dict[step][k].append(v)
