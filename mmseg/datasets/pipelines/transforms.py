@@ -1446,8 +1446,7 @@ class Perspective(object):
         if prob is not None:
             assert isinstance(prob, (int, float)) and 0 <= prob <= 1
         for ratio in (self.h_ratio, self.w_ratio):
-            assert isinstance(ratio, float)
-            assert ratio > 0 and ratio <= 0.5
+            assert isinstance(ratio, float) and 0 < ratio <= 0.5
         assert len(self.pad_val) == 3
         for pad in self.pad_val + (self.seg_pad_val, ):
             assert isinstance(pad, int)
