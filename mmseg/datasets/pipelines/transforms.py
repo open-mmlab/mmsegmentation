@@ -1444,8 +1444,7 @@ class Perspective(object):
         self.pad_val = tuple(pad_val)
         self.seg_pad_val = seg_pad_val
         if prob is not None:
-            assert isinstance(prob, int) or isinstance(prob, float)
-            assert prob >= 0 and prob <= 1
+            assert isinstance(prob, (int, float)) and 0 <= prob <= 1
         for ratio in (self.h_ratio, self.w_ratio):
             assert isinstance(ratio, float)
             assert ratio > 0 and ratio <= 0.5
