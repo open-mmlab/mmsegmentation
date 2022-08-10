@@ -1449,8 +1449,7 @@ class Perspective(object):
             assert isinstance(ratio, float) and 0 < ratio <= 0.5
         assert len(self.pad_val) == 3
         for pad in self.pad_val + (self.seg_pad_val, ):
-            assert isinstance(pad, int)
-            assert pad >= 0 and pad <= 255
+            assert isinstance(pad, int) and 0 <= pad <= 255
 
     def __call__(self, results):
         """Call function to perturb image corners.
