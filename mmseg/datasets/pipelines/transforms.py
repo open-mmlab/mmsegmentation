@@ -1354,8 +1354,7 @@ class Blur(object):
         self.prob = prob
         self.max_kernel_size = max_kernel_size
         if prob is not None:
-            assert isinstance(prob, int) or isinstance(prob, float)
-            assert prob >= 0 and prob <= 1
+            assert isinstance(prob, (int, float)) and 0 <= prob <= 1
         assert isinstance(max_kernel_size, int)
         assert max_kernel_size > 0
 
