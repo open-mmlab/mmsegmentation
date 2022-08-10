@@ -62,12 +62,12 @@ class SegVisualizationHook(Hook):
                           'effect. The results will NOT be '
                           'visualized or stored.')
 
-    def after_iter(self,
-                   runner: Runner,
-                   batch_idx: int,
-                   data_batch: Sequence[dict],
-                   outputs: Sequence[SegDataSample],
-                   mode: str = 'val') -> None:
+    def _after_iter(self,
+                    runner: Runner,
+                    batch_idx: int,
+                    data_batch: Sequence[dict],
+                    outputs: Sequence[SegDataSample],
+                    mode: str = 'val') -> None:
         """Run after every ``self.interval`` validation iterations.
 
         Args:
