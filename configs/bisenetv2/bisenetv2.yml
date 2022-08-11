@@ -45,10 +45,10 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 73.57
-      mIoU(ms+flip): 75.8
+      mIoU: 75.3
+      mIoU(ms+flip): 77.06
   Config: configs/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947-5f8103b4.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20220808_172324-8bf0aaba.pth
 - Name: bisenetv2_fcn_4x8_1024x1024_160k_cityscapes
   In Collection: BiSeNetV2
   Metadata:

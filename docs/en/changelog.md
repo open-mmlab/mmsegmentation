@@ -1,5 +1,25 @@
 ## Changelog
 
+### V0.27.0 (7/28/2022)
+
+**Enhancement**
+
+- Add Swin-L Transformer models ([#1471](https://github.com/open-mmlab/mmsegmentation/pull/1471))
+- Update ERFNet results ([#1744](https://github.com/open-mmlab/mmsegmentation/pull/1744))
+
+**Bug Fixes**
+
+- Revise documentation ([#1761](https://github.com/open-mmlab/mmsegmentation/pull/1761), [#1755](https://github.com/open-mmlab/mmsegmentation/pull/1755), [#1802](https://github.com/open-mmlab/mmsegmentation/pull/1802))
+- Fix colab tutorial ([#1779](https://github.com/open-mmlab/mmsegmentation/pull/1779))
+- Fix segformer checkpoint url ([#1785](https://github.com/open-mmlab/mmsegmentation/pull/1785))
+
+**Contributors**
+
+- @DataSttructure made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1802
+- @AkideLiu made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1785
+- @mawanda-jun made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1761
+- @Yan-Daojiang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1755
+
 ### V0.26.0 (7/1/2022)
 
 **Highlights**

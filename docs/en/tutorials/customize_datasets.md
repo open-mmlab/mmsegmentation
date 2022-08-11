@@ -33,7 +33,7 @@ data = dict(
 - `train`, `val` and `test`: The [`config`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/config.md)s to build dataset instances for model training, validation and testing by
   using [`build and registry`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/registry.md) mechanism.
 
-- `samples_per_gpu`: How many samples per batch and per gpu to load during model training, and the `batch_size` of training is equal to `samples_per_gpu` times gpu number, e.g. when using 8 gpus for distributed data parallel trainig and `samples_per_gpu=4`, the `batch_size` is `8*4=16`.
+- `samples_per_gpu`: How many samples per batch and per gpu to load during model training, and the `batch_size` of training is equal to `samples_per_gpu` times gpu number, e.g. when using 8 gpus for distributed data parallel trainig and `samples_per_gpu=4`, the `batch_size` is `8*4=32`.
   If you would like to define `batch_size` for testing and validation, please use `test_dataloaser` and
   `val_dataloader` with mmseg >=0.24.1.
 
@@ -262,6 +262,8 @@ An example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
 
 ```python
 train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations'),
     dict(type='RandomMosaic', prob=1),
     dict(type='Resize', img_scale=(1024, 512), keep_ratio=True),
     dict(type='RandomFlip', prob=0.5),

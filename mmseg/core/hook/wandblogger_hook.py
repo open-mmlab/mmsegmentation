@@ -203,8 +203,7 @@ class MMSegWandbHook(WandbLoggerHook):
             # Currently the results of eval_hook is not reused by wandb, so
             # wandb will run evaluation again internally. We will consider
             # refactoring this function afterwards
-            results = self.test_fn(
-                runner.model, self.eval_hook.dataloader, show=False)
+            results = self.test_fn(runner.model, self.eval_hook.dataloader)
             # Initialize evaluation table
             self._init_pred_table()
             # Log predictions
