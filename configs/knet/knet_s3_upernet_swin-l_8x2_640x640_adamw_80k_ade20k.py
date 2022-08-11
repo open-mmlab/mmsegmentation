@@ -46,9 +46,10 @@ test_pipeline = [
             dict(type='Collect', keys=['img']),
         ])
 ]
+# In K-Net implementation we use batch size 2 per GPU as default
 data = dict(
+    samples_per_gpu=2,
+    workers_per_gpu=2,
     train=dict(pipeline=train_pipeline),
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
-# In K-Net implementation we use batch size 2 per GPU as default
-data = dict(samples_per_gpu=2, workers_per_gpu=2)
