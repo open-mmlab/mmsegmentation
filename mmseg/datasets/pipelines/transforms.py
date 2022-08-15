@@ -354,23 +354,35 @@ class RandomFlip(object):
             dict: Flipped results, 'flip', 'flip_direction' keys are added into
                 result dict.
         """
-
+        flip = True if np.random.rand() < self.prob else False
         if 'flip' not in results:
-            flip = True if np.random.rand() < self.prob else False
             results['flip'] = flip
+        else:
+            results['flip'] = self._ensure_list(results['flip'])
+            results['flip'].append(flip)
         if 'flip_direction' not in results:
             results['flip_direction'] = self.direction
-        if results['flip']:
+        else:
+            results['flip_direction'] = self._ensure_list(
+                results['flip_direction'])
+            results['flip_direction'].append(self.direction)
+        if flip:
             # flip image
             results['img'] = mmcv.imflip(
-                results['img'], direction=results['flip_direction'])
+                results['img'], direction=self.direction)
 
             # flip segs
             for key in results.get('seg_fields', []):
                 # use copy() to make numpy stride positive
                 results[key] = mmcv.imflip(
-                    results[key], direction=results['flip_direction']).copy()
+                    results[key], direction=self.direction).copy()
         return results
+
+    @staticmethod
+    def _ensure_list(entity):
+        if not isinstance(entity, list):
+            entity = [entity]
+        return entity
 
     def __repr__(self):
         return self.__class__.__name__ + f'(prob={self.prob})'
