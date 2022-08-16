@@ -2,7 +2,7 @@ Welcome to MMSegmentation's documentation!
 ===========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Get Started
 
    get_started.md
@@ -38,7 +38,7 @@ Welcome to MMSegmentation's documentation!
    modelzoo_statistics.md
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Notes
 
    changelog.md
