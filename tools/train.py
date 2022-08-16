@@ -89,15 +89,6 @@ def main():
             cfg.optim_wrapper.type = 'AmpOptimWrapper'
             cfg.optim_wrapper.loss_scale = 'dynamic'
 
-    # build the runner from config
-    if 'runner_type' not in cfg:
-        # build the default runner
-        runner = Runner.from_cfg(cfg)
-    else:
-        # build customized runner from the registry
-        # if 'runner_type' is set in the cfg
-        runner = RUNNERS.build(cfg)
-
     # resume training
     if args.resume == 'auto':
         cfg.resume = True
@@ -107,7 +98,13 @@ def main():
         cfg.load_from = args.resume
 
     # build the runner from config
-    runner = Runner.from_cfg(cfg)
+    if 'runner_type' not in cfg:
+        # build the default runner
+        runner = Runner.from_cfg(cfg)
+    else:
+        # build customized runner from the registry
+        # if 'runner_type' is set in the cfg
+        runner = RUNNERS.build(cfg)
 
     # start training
     runner.train()
