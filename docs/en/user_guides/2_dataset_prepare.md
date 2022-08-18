@@ -145,12 +145,12 @@ mmsegmentation
 The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
 
 By convention, `**labelTrainIds.png` are used for cityscapes training.
-We provided a [scripts](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/convert_datasets/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
+We provided a [scripts](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/dataset_converters/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
 to generate `**labelTrainIds.png`.
 
 ```shell
 # --nproc means 8 process for conversion, which could be omitted as well.
-python tools/convert_datasets/cityscapes.py data/cityscapes --nproc 8
+python tools/dataset_converters/cityscapes.py data/cityscapes --nproc 8
 ```
 
 ### Pascal VOC
@@ -162,10 +162,10 @@ If you would like to use augmented VOC dataset, please run following command to 
 
 ```shell
 # --nproc means 8 process for conversion, which could be omitted as well.
-python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
+python tools/dataset_converters/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/tutorials/customize_datasets.md#concatenate-dataset) for details about how to concatenate them and train them together.
+Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/datasets.md) for details about how to concatenate them and train them together.
 
 ### ADE20K
 
@@ -181,7 +181,7 @@ To split the training and validation set from original dataset, you may download
 If you would like to use Pascal Context dataset, please install [Detail](https://github.com/zhanghang1989/detail-api) and then run the following command to convert annotations into proper format.
 
 ```shell
-python tools/convert_datasets/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
+python tools/dataset_converters/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
 ```
 
 ### COCO Stuff 10k
@@ -199,7 +199,7 @@ wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostu
 unzip cocostuff-10k-v1.1.zip
 
 # --nproc means 8 process for conversion, which could be omitted as well.
-python tools/convert_datasets/coco_stuff10k.py /path/to/coco_stuff10k --nproc 8
+python tools/dataset_converters/coco_stuff10k.py /path/to/coco_stuff10k --nproc 8
 ```
 
 By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2014/*_labelTrainIds.png` are used for COCO Stuff 10k training and testing.
@@ -221,7 +221,7 @@ unzip val2017.zip -d images/
 unzip stuffthingmaps_trainval2017.zip -d annotations/
 
 # --nproc means 8 process for conversion, which could be omitted as well.
-python tools/convert_datasets/coco_stuff164k.py /path/to/coco_stuff164k --nproc 8
+python tools/dataset_converters/coco_stuff164k.py /path/to/coco_stuff164k --nproc 8
 ```
 
 By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2017/*_labelTrainIds.png` are used for COCO Stuff 164k training and testing.
@@ -235,7 +235,7 @@ The training and validation set of CHASE DB1 could be download from [here](https
 To convert CHASE DB1 dataset to MMSegmentation format, you should run the following command:
 
 ```shell
-python tools/convert_datasets/chase_db1.py /path/to/CHASEDB1.zip
+python tools/dataset_converters/chase_db1.py /path/to/CHASEDB1.zip
 ```
 
 The script will make directory structure automatically.
@@ -247,7 +247,7 @@ The training and validation set of DRIVE could be download from [here](https://d
 To convert DRIVE dataset to MMSegmentation format, you should run the following command:
 
 ```shell
-python tools/convert_datasets/drive.py /path/to/training.zip /path/to/test.zip
+python tools/dataset_converters/drive.py /path/to/training.zip /path/to/test.zip
 ```
 
 The script will make directory structure automatically.
@@ -259,7 +259,7 @@ First, download [healthy.zip](https://www5.cs.fau.de/fileadmin/research/datasets
 To convert HRF dataset to MMSegmentation format, you should run the following command:
 
 ```shell
-python tools/convert_datasets/hrf.py /path/to/healthy.zip /path/to/healthy_manualsegm.zip /path/to/glaucoma.zip /path/to/glaucoma_manualsegm.zip /path/to/diabetic_retinopathy.zip /path/to/diabetic_retinopathy_manualsegm.zip
+python tools/dataset_converters/hrf.py /path/to/healthy.zip /path/to/healthy_manualsegm.zip /path/to/glaucoma.zip /path/to/glaucoma_manualsegm.zip /path/to/diabetic_retinopathy.zip /path/to/diabetic_retinopathy_manualsegm.zip
 ```
 
 The script will make directory structure automatically.
@@ -271,7 +271,7 @@ First, download [stare-images.tar](http://cecas.clemson.edu/~ahoover/stare/probi
 To convert STARE dataset to MMSegmentation format, you should run the following command:
 
 ```shell
-python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels-ah.tar /path/to/labels-vk.tar
+python tools/dataset_converters/stare.py /path/to/stare-images.tar /path/to/labels-ah.tar /path/to/labels-vk.tar
 ```
 
 The script will make directory structure automatically.
@@ -302,10 +302,10 @@ wget https://zenodo.org/record/5706578/files/Test.zip
 For LoveDA dataset, please run the following command to download and re-organize the dataset.
 
 ```shell
-python tools/convert_datasets/loveda.py /path/to/loveDA
+python tools/dataset_converters/loveda.py /path/to/loveDA
 ```
 
-Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/inference.md).
+Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/3_inference.md).
 
 More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
 
@@ -320,7 +320,7 @@ The '2_Ortho_RGB.zip' and '5_Labels_all_noBoundary.zip' are required.
 For Potsdam dataset, please run the following command to download and re-organize the dataset.
 
 ```shell
-python tools/convert_datasets/potsdam.py /path/to/potsdam
+python tools/dataset_converters/potsdam.py /path/to/potsdam
 ```
 
 In our default setting, it will generate 3456 images for training and 2016 images for validation.
@@ -336,7 +336,7 @@ The 'ISPRS_semantic_labeling_Vaihingen.zip' and 'ISPRS_semantic_labeling_Vaihing
 For Vaihingen dataset, please run the following command to download and re-organize the dataset.
 
 ```shell
-python tools/convert_datasets/vaihingen.py /path/to/vaihingen
+python tools/dataset_converters/vaihingen.py /path/to/vaihingen
 ```
 
 In our default setting (`clip_size` =512, `stride_size`=256), it will generate 344 images for training and 398 images for validation.
@@ -372,7 +372,7 @@ You may need to follow the following structure for dataset preparation after dow
 ```
 
 ```shell
-python tools/convert_datasets/isaid.py /path/to/iSAID
+python tools/dataset_converters/isaid.py /path/to/iSAID
 ```
 
 In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
