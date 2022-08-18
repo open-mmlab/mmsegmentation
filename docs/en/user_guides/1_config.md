@@ -24,7 +24,7 @@ Please refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/con
 We follow the below style to name config files. Contributors are advised to follow the same style.
 
 ```
-{model}_{backbone}_[misc]_[gpu x batch_per_gpu]_{schedule}_{training datasets}_[input_size].py
+{model}_{backbone}_[misc]_[gpu x batch_per_gpu]_{resolution}_{iterations}_{dataset}
 ```
 
 `{xxx}` is required field and `[yyy]` is optional.
@@ -33,9 +33,9 @@ We follow the below style to name config files. Contributors are advised to foll
 - `{backbone}`: backbone type like `r50` (ResNet-50), `x101` (ResNeXt-101).
 - `[misc]`: miscellaneous setting/plugins of model, e.g. `dconv`, `gcb`, `attention`, `mstrain`.
 - `[gpu x batch_per_gpu]`: GPUs and samples per GPU, `8x2` is used by default.
-- `{schedule}`: number of training iterations like `160k`.
+- `{resolution}`: the size of training images.
+- `{iterations}`: number of training iterations like `160k`.
 - `{training datasets}`: dataset like `cityscapes`, `voc12aug`, `ade`.
-- `[input_size]`: the size of training images.
 
 ## An Example of PSPNet
 
