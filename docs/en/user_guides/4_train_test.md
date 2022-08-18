@@ -1,4 +1,10 @@
-## Train a model
+# Tutorial 4: Train and test with existing models
+
+This tutorial provides instruction for users to use the models provided in the [Model Zoo](../model_zoo.md) for other datasets to obtain better performance.
+MMSegmentation also provides out-of-the-box tools for training models.
+This section will show how to train and test models on standard datasets.
+
+## Train models on standard datasets
 
 MMSegmentation implements distributed training and non-distributed training,
 which uses `MMDistributedDataParallel` and `MMDataParallel` respectively.
@@ -167,3 +173,53 @@ You can set the port in the command using the environment variable 'MASTER_PORT'
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 MASTER_PORT=29500 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py tmp_work_dir_1
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py tmp_work_dir_2
 ```
+
+## Test a dataset
+
+- single GPU
+- CPU
+- single node multiple GPU
+- multiple node
+
+You can use the following commands to test a dataset.
+
+```shell
+# single-gpu testing
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--show] [--show-dir]
+
+# CPU: If GPU unavailable, directly running single-gpu testing command above
+# CPU: If GPU available, disable GPUs and run single-gpu testing script
+export CUDA_VISIBLE_DEVICES=-1
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--show] [--show-dir]
+
+# multi-gpu testing
+./tools/dist_test.sh ${CONFIG_FILE} ${CHECKPOINT_FILE} ${GPU_NUM}
+```
+
+Optional arguments:
+
+- `--show`: If specified, segmentation results will be plotted on the images and shown in a new window. It is only applicable to single GPU testing and used for debugging and visualization. Please make sure that GUI is available in your environment, otherwise you may encounter the error like `cannot connect to X server`.
+- `--show-dir`: If specified, segmentation results will be plotted on the images and saved to the specified directory. It is only applicable to single GPU testing and used for debugging and visualization. You do NOT need a GUI available in your environment for using this option.
+
+Examples:
+
+Assume that you have already downloaded the checkpoints to the directory `checkpoints/`.
+
+1. Test PSPNet on PASCAL VOC (without saving the test results) and evaluate the mIoU.
+
+```shell
+ python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
+     checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth
+```
+
+2. Test PSPNet with 4 GPUs, and evaluate the standard mIoU and cityscapes metric.
+
+   ```shell
+   ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+       checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth 4
+   ```
+
+:::{note}
+There is some gap (~0.1%) between cityscapes mIoU and our mIoU. The reason is that cityscapes average each class with class size by default.
+We use the simple version without average for all datasets.
+:::
