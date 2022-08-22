@@ -28,7 +28,7 @@ def add_prefix(inputs, prefix):
 
 
 def stack_batch(inputs: List[torch.Tensor],
-                batch_data_samples: Optional[SampleList] = None,
+                data_samples: Optional[SampleList] = None,
                 size: Optional[tuple] = None,
                 size_divisor: Optional[int] = None,
                 pad_val: Union[int, float] = 0,
@@ -39,8 +39,8 @@ def stack_batch(inputs: List[torch.Tensor],
     Args:
         inputs (List[Tensor]): The input multiple tensors. each is a
             CHW 3D-tensor.
-        batch_data_samples (list[:obj:`SegDataSample`]): The Data
-            Samples. It usually includes information such as `gt_sem_seg`.
+        data_samples (list[:obj:`SegDataSample`]): The list of data samples.
+            It usually includes information such as `gt_sem_seg`.
         size (tuple, optional): Fixed padding size.
         size_divisor (int, optional): The divisor of padded size.
         pad_val (int, float): The padding value. Defaults to 0
@@ -48,8 +48,7 @@ def stack_batch(inputs: List[torch.Tensor],
 
     Returns:
        Tensor: The 4D-tensor.
-       batch_data_samples (list[:obj:`SegDataSample`]): After the padding of
-            the gt_seg_map.
+       List[:obj:`SegDataSample`]: After the padding of the gt_seg_map.
     """
     assert isinstance(inputs, list), \
         f'Expected input type to be list, but got {type(inputs)}'
@@ -93,8 +92,8 @@ def stack_batch(inputs: List[torch.Tensor],
         pad_img = F.pad(tensor, padding_size, value=pad_val)
         padded_inputs.append(pad_img)
         # pad gt_sem_seg
-        if batch_data_samples is not None:
-            data_sample = batch_data_samples[i]
+        if data_samples is not None:
+            data_sample = data_samples[i]
             gt_sem_seg = data_sample.gt_sem_seg.data
             del data_sample.gt_sem_seg.data
             data_sample.gt_sem_seg.data = F.pad(

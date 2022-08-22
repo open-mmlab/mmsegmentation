@@ -50,24 +50,24 @@ class CitysMetric(BaseMetric):
         self.suffix = suffix
 
     def process(self, data_batch: Sequence[dict],
-                predictions: Sequence[dict]) -> None:
-        """Process one batch of data and predictions.
+                data_samples: Sequence[dict]) -> None:
+        """Process one batch of data and data_samples.
 
         The processed results should be stored in ``self.results``, which will
         be used to computed the metrics when all batches have been processed.
 
         Args:
             data_batch (Sequence[dict]): A batch of data from the dataloader.
-            predictions (Sequence[dict]): A batch of outputs from the model.
+            data_samples (Sequence[dict]): A batch of outputs from the model.
         """
         mkdir_or_exist(self.suffix)
 
-        for pred in predictions:
-            pred_label = pred['pred_sem_seg']['data'][0].cpu().numpy()
+        for data_sample in data_samples:
+            pred_label = data_sample['pred_sem_seg']['data'][0].cpu().numpy()
             # results2img
             if self.to_label_id:
                 pred_label = self._convert_to_label_id(pred_label)
-            basename = osp.splitext(osp.basename(pred['img_path']))[0]
+            basename = osp.splitext(osp.basename(data_sample['img_path']))[0]
             png_filename = osp.join(self.suffix, f'{basename}.png')
             output = Image.fromarray(pred_label.astype(np.uint8)).convert('P')
             import cityscapesscripts.helpers.labels as CSLabels

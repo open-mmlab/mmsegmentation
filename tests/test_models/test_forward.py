@@ -34,14 +34,14 @@ def _demo_mm_inputs(batch_size=2, image_shapes=(3, 32, 32), num_classes=5):
     else:
         image_shapes = [image_shapes] * batch_size
 
-    packed_inputs = []
+    inputs = []
+    data_samples = []
     for idx in range(batch_size):
         image_shape = image_shapes[idx]
         c, h, w = image_shape
         image = np.random.randint(0, 255, size=image_shape, dtype=np.uint8)
 
-        mm_inputs = dict()
-        mm_inputs['inputs'] = torch.from_numpy(image)
+        mm_input = torch.from_numpy(image)
 
         img_meta = {
             'img_id': idx,
@@ -62,10 +62,9 @@ def _demo_mm_inputs(batch_size=2, image_shapes=(3, 32, 32), num_classes=5):
         gt_semantic_seg = torch.LongTensor(gt_semantic_seg)
         gt_sem_seg_data = dict(data=gt_semantic_seg)
         data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
-        mm_inputs['data_sample'] = data_sample
-        packed_inputs.append(mm_inputs)
-
-    return packed_inputs
+        inputs.append(mm_input)
+        data_samples.append(data_sample)
+    return dict(inputs=inputs, data_samples=data_samples)
 
 
 def _get_config_directory():
@@ -226,27 +225,23 @@ def _test_encoder_decoder_forward(cfg_file):
         segmentor = revert_sync_batchnorm(segmentor)
 
     # Test forward train
-    batch_inputs, data_samples = segmentor.data_preprocessor(
-        packed_inputs, True)
-    losses = segmentor.forward(batch_inputs, data_samples, mode='loss')
+    data = segmentor.data_preprocessor(packed_inputs, True)
+    losses = segmentor.forward(**data, mode='loss')
     assert isinstance(losses, dict)
 
     packed_inputs = _demo_mm_inputs(
         batch_size=1, image_shapes=(3, 32, 32), num_classes=num_classes)
-    batch_inputs, data_samples = segmentor.data_preprocessor(
-        packed_inputs, False)
+    data = segmentor.data_preprocessor(packed_inputs, False)
     with torch.no_grad():
         segmentor.eval()
         # Test forward predict
-        batch_results = segmentor.forward(
-            batch_inputs, data_samples, mode='predict')
+        batch_results = segmentor.forward(**data, mode='predict')
         assert len(batch_results) == 1
         assert is_list_of(batch_results, SegDataSample)
         assert batch_results[0].pred_sem_seg.shape == (32, 32)
         assert batch_results[0].seg_logits.data.shape == (num_classes, 32, 32)
 
         # Test forward tensor
-        batch_results = segmentor.forward(
-            batch_inputs, data_samples, mode='tensor')
+        batch_results = segmentor.forward(**data, mode='tensor')
         assert isinstance(batch_results, Tensor) or is_tuple_of(
             batch_results, Tensor)

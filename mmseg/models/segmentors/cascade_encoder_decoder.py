@@ -69,11 +69,11 @@ class CascadeEncoderDecoder(EncoderDecoder):
         self.align_corners = self.decode_head[-1].align_corners
         self.num_classes = self.decode_head[-1].num_classes
 
-    def encode_decode(self, batch_inputs: Tensor,
+    def encode_decode(self, inputs: Tensor,
                       batch_img_metas: List[dict]) -> List[Tensor]:
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
-        x = self.extract_feat(batch_inputs)
+        x = self.extract_feat(inputs)
         out = self.decode_head[0].forward(x)
         for i in range(1, self.num_stages - 1):
             out = self.decode_head[i].forward(x, out)
@@ -82,53 +82,52 @@ class CascadeEncoderDecoder(EncoderDecoder):
 
         return seg_logits_list
 
-    def _decode_head_forward_train(self, batch_inputs: Tensor,
-                                   batch_data_samples: SampleList) -> dict:
+    def _decode_head_forward_train(self, inputs: Tensor,
+                                   data_samples: SampleList) -> dict:
         """Run forward function and calculate loss for decode head in
         training."""
         losses = dict()
 
-        loss_decode = self.decode_head[0].loss(batch_inputs,
-                                               batch_data_samples,
+        loss_decode = self.decode_head[0].loss(inputs, data_samples,
                                                self.train_cfg)
 
         losses.update(add_prefix(loss_decode, 'decode_0'))
         # get batch_img_metas
-        batch_size = len(batch_data_samples)
+        batch_size = len(data_samples)
         batch_img_metas = []
         for batch_index in range(batch_size):
-            metainfo = batch_data_samples[batch_index].metainfo
+            metainfo = data_samples[batch_index].metainfo
             batch_img_metas.append(metainfo)
 
         for i in range(1, self.num_stages):
             # forward test again, maybe unnecessary for most methods.
             if i == 1:
-                prev_outputs = self.decode_head[0].forward(batch_inputs)
+                prev_outputs = self.decode_head[0].forward(inputs)
             else:
                 prev_outputs = self.decode_head[i - 1].forward(
-                    batch_inputs, prev_outputs)
-            loss_decode = self.decode_head[i].loss(batch_inputs, prev_outputs,
-                                                   batch_data_samples,
+                    inputs, prev_outputs)
+            loss_decode = self.decode_head[i].loss(inputs, prev_outputs,
+                                                   data_samples,
                                                    self.train_cfg)
             losses.update(add_prefix(loss_decode, f'decode_{i}'))
 
         return losses
 
     def _forward(self,
-                 batch_inputs: Tensor,
+                 inputs: Tensor,
                  data_samples: OptSampleList = None) -> Tensor:
         """Network forward process.
 
         Args:
-            batch_inputs (Tensor): Inputs with shape (N, C, H, W).
-            batch_data_samples (List[:obj:`SegDataSample`]): The seg
+            inputs (Tensor): Inputs with shape (N, C, H, W).
+            data_samples (List[:obj:`SegDataSample`]): The seg
                 data samples. It usually includes information such
                 as `img_metas` and `gt_semantic_seg`.
 
         Returns:
             Tensor: Forward output of model without any post-processes.
         """
-        x = self.extract_feat(batch_inputs)
+        x = self.extract_feat(inputs)
 
         out = self.decode_head[0].forward(x)
         for i in range(1, self.num_stages):

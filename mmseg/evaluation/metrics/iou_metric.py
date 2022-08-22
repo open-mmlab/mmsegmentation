@@ -48,21 +48,20 @@ class IoUMetric(BaseMetric):
         self.beta = beta
 
     def process(self, data_batch: Sequence[dict],
-                predictions: Sequence[dict]) -> None:
-        """Process one batch of data and predictions.
+                data_samples: Sequence[dict]) -> None:
+        """Process one batch of data and data_samples.
 
         The processed results should be stored in ``self.results``, which will
         be used to computed the metrics when all batches have been processed.
 
         Args:
             data_batch (Sequence[dict]): A batch of data from the dataloader.
-            predictions (Sequence[dict]): A batch of outputs from the model.
+            data_samples (Sequence[dict]): A batch of outputs from the model.
         """
         num_classes = len(self.dataset_meta['classes'])
-        for data, pred in zip(data_batch, predictions):
-            pred_label = pred['pred_sem_seg']['data'].squeeze()
-            label = data['data_sample']['gt_sem_seg']['data'].squeeze().to(
-                pred_label)
+        for data, data_sample in zip(data_batch, data_samples):
+            pred_label = data_sample['pred_sem_seg']['data'].squeeze()
+            label = data_sample['gt_sem_seg']['data'].squeeze().to(pred_label)
             self.results.append(
                 self.intersect_and_union(pred_label, label, num_classes,
                                          self.ignore_index))

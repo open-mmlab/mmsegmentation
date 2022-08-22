@@ -86,17 +86,15 @@ class SegVisualizationHook(Hook):
 
         if self.every_n_inner_iters(batch_idx, self.interval):
             for input_data, output in zip(data_batch, outputs):
-                img_path = input_data['data_sample'].img_path
+                img_path = output.img_path
                 img_bytes = self.file_client.get(img_path)
                 img = mmcv.imfrombytes(img_bytes, channel_order='rgb')
                 window_name = f'{mode}_{osp.basename(img_path)}'
 
-                gt_sample = input_data['data_sample']
                 self._visualizer.add_datasample(
                     window_name,
                     img,
-                    gt_sample=gt_sample,
-                    pred_sample=output,
+                    data_sample=output,
                     show=self.show,
                     wait_time=self.wait_time,
                     step=runner.iter)

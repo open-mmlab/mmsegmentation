@@ -11,7 +11,7 @@ from mmengine.dataset import Compose
 from mmengine.runner import load_checkpoint
 from mmengine.utils import mkdir_or_exist
 
-from mmseg.data import SegDataSample
+from mmseg.structures import SegDataSample
 from mmseg.models import BaseSegmentor
 from mmseg.registry import MODELS
 from mmseg.utils import SampleList, dataset_aliases, get_classes, get_palette

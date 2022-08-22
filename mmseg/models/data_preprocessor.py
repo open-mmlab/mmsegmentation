@@ -1,13 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from numbers import Number
-from typing import List, Optional, Sequence, Tuple
+from typing import Any, List, Optional, Sequence, Dict
 
 import torch
 from mmengine.model import BaseDataPreprocessor
-from torch import Tensor
 
 from mmseg.registry import MODELS
-from mmseg.utils import OptSampleList, stack_batch
+from mmseg.utils import stack_batch
 
 
 @MODELS.register_module()
@@ -87,22 +86,21 @@ class SegDataPreProcessor(BaseDataPreprocessor):
         # TODO: support batch augmentations.
         self.batch_augments = batch_augments
 
-    def forward(self,
-                data: Sequence[dict],
-                training: bool = False) -> Tuple[Tensor, OptSampleList]:
+    def forward(self, data: dict, training: bool = False) -> Dict[str, Any]:
         """Perform normalization、padding and bgr2rgb conversion based on
         ``BaseDataPreprocessor``.
 
         Args:
-            data (Sequence[dict]): data sampled from dataloader.
+            data (dict): data sampled from dataloader.
             training (bool): Whether to enable training time augmentation.
 
         Returns:
-            Tuple[torch.Tensor, Optional[list]]: Data in the same format as the
+            Dict: Data in the same format as the
             model input.
         """
-        inputs, batch_data_samples = self.collate_data(data)
-
+        data = self.cast_data(data)  # type: ignore
+        inputs = data['inputs']
+        data_samples = data['data_samples']
         # TODO: whether normalize should be after stack_batch
         if self.channel_conversion and inputs[0].size(0) == 3:
             inputs = [_input[[2, 1, 0], ...] for _input in inputs]
@@ -113,20 +111,21 @@ class SegDataPreProcessor(BaseDataPreprocessor):
             inputs = [_input.float() for _input in inputs]
 
         if training:
-            batch_inputs, batch_data_samples = stack_batch(
+            inputs, data_samples = stack_batch(
                 inputs=inputs,
-                batch_data_samples=batch_data_samples,
+                data_samples=data_samples,
                 size=self.size,
                 size_divisor=self.size_divisor,
                 pad_val=self.pad_val,
                 seg_pad_val=self.seg_pad_val)
 
             if self.batch_augments is not None:
-                inputs, batch_data_samples = self.batch_augments(
-                    inputs, batch_data_samples)
-            return batch_inputs, batch_data_samples
+                inputs, data_samples = self.batch_augments(
+                    inputs, data_samples)
+            return dict(inputs=inputs, data_samples=data_samples)
         else:
             assert len(inputs) == 1, (
                 'Batch inference is not support currently, '
                 'as the image size might be different in a batch')
-            return torch.stack(inputs, dim=0), batch_data_samples
+            return dict(
+                inputs=torch.stack(inputs, dim=0), data_samples=data_samples)
