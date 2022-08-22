@@ -3,7 +3,7 @@ import copy
 import os.path as osp
 from typing import Callable, Dict, List, Optional, Sequence, Union
 
-import mmcv
+import mmengine
 import numpy as np
 from mmengine.dataset import BaseDataset, Compose
 
@@ -103,7 +103,8 @@ class BaseSegDataset(BaseDataset):
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
         self.file_client_args = file_client_args
-        self.file_client = mmcv.FileClient.infer_client(self.file_client_args)
+        self.file_client = mmengine.FileClient.infer_client(
+            self.file_client_args)
 
         self.data_root = data_root
         self.data_prefix = copy.copy(data_prefix)
@@ -236,7 +237,7 @@ class BaseSegDataset(BaseDataset):
         img_dir = self.data_prefix.get('img_path', None)
         ann_dir = self.data_prefix.get('seg_map_path', None)
         if osp.isfile(self.ann_file):
-            lines = mmcv.list_from_file(
+            lines = mmengine.list_from_file(
                 self.ann_file, file_client_args=self.file_client_args)
             for line in lines:
                 img_name = line.strip()

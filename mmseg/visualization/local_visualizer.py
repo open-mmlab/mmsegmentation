@@ -81,7 +81,7 @@ class SegLocalVisualizer(Visualizer):
         """
         num_classes = len(classes)
 
-        sem_seg = sem_seg.data
+        sem_seg = sem_seg.cpu().data
         ids = np.unique(sem_seg)[::-1]
         legal_indices = ids < num_classes
         ids = ids[legal_indices]

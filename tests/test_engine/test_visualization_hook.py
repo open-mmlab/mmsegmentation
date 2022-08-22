@@ -59,4 +59,4 @@ class TestVisualizationHook(TestCase):
         runner = Mock()
         runner.iter = 3
         hook = SegVisualizationHook(draw=True, interval=1)
-        hook.after_iter(runner, 1, self.data_batch, self.outputs)
+        hook.after_test_iter(runner, 1, self.data_batch, self.outputs)
