@@ -23,9 +23,11 @@ Please refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/con
 
 We follow the below style to name config files. Contributors are advised to follow the same style.
 
+````
 ```
 {model}_{backbone}_[misc]_[gpu x batch_per_gpu]_{resolution}_{iterations}_{dataset}
 ```
+````
 
 `{xxx}` is required field and `[yyy]` is optional.
 
@@ -33,8 +35,9 @@ We follow the below style to name config files. Contributors are advised to foll
 - `{backbone}`: backbone type like `r50` (ResNet-50), `x101` (ResNeXt-101).
 - `[misc]`: miscellaneous setting/plugins of model, e.g. `dconv`, `gcb`, `attention`, `mstrain`.
 - `[gpu x batch_per_gpu]`: GPUs and samples per GPU, `8x2` is used by default.
+- `{resolution}`: the size of training images.
 - `{iterations}`: number of training iterations like `160k`.
-- `{dataset}`: dataset like `cityscapes`, `voc12aug`, `ade`.
+- `{training datasets}`: dataset like `cityscapes`, `voc12aug`, `ade`.
 
 ## An Example of PSPNet
 
@@ -42,10 +45,34 @@ To help the users have a basic idea of a complete config and the modules in a mo
 we make brief comments on the config of PSPNet using ResNet50V1c as the following.
 For more detailed usage and the corresponding alternative for each module, please refer to the API documentation.
 
+````
 ```python
+_base_ = [
+    '../_base_/models/pspnet_r50-d8.py', '../_base_/datasets/cityscapes.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
+] # base config file which we build new config file on.
+crop_size = (512, 1024)
+data_preprocessor = dict(size=crop_size)
+model = dict(data_preprocessor=data_preprocessor)
+```
+````
+
+`_base_/models/pspnet_r50-d8.py` is a basic model cfg file for PSPNet using ResNet50V1c
+
+````
+```python
+# model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)  # Segmentation usually uses SyncBN
+data_preprocessor = dict(  # The config of data preprocessor, usually includes image normalization and augmentation.
+    type='SegDataPreProcessor',  # The type of data preprocessor.
+    mean=[123.675, 116.28, 103.53],  # Mean values used for normalizing the input images.
+    std=[58.395, 57.12, 57.375],  # Standard variance used for normalizing the input images.
+    bgr_to_rgb=True,  # Whether to convert image from BGR to RGB.
+    pad_val=0,  # Padding value of image.
+    seg_pad_val=255)  # Padding value of segmentation map.
 model = dict(
     type='EncoderDecoder',  # Name of segmentor
+    data_preprocessor=data_preprocessor,
     pretrained='open-mmlab://resnet50_v1c',  # The ImageNet pretrained backbone to be loaded
     backbone=dict(
         type='ResNetV1c',  # The type of backbone. Please refer to mmseg/models/backbones/resnet.py for details.
@@ -54,9 +81,7 @@ model = dict(
         out_indices=(0, 1, 2, 3),  # The index of output feature maps produced in each stages.
         dilations=(1, 1, 2, 4),  # The dilation rate of each layer.
         strides=(1, 2, 1, 1),  # The stride of each layer.
-        norm_cfg=dict(  # The configuration of norm layer.
-            type='SyncBN',  # Type of norm layer. Usually it is SyncBN.
-            requires_grad=True),   # Whether to train the gamma and beta in norm
+        norm_cfg=norm_cfg,  # The configuration of norm layer.
         norm_eval=False,  # Whether to freeze the statistics in BN
         style='pytorch',  # The style of backbone, 'pytorch' means that stride 2 layers are in 3x3 conv, 'caffe' means stride 2 layers are in 1x1 convs.
         contract_dilation=True),  # When dilation > 1, whether contract first layer of dilation.
@@ -68,12 +93,12 @@ model = dict(
         pool_scales=(1, 2, 3, 6),  # The avg pooling scales of PSPHead. Please refer to paper for details.
         dropout_ratio=0.1,  # The dropout ratio before final classification layer.
         num_classes=19,  # Number of segmentation class. Usually 19 for cityscapes, 21 for VOC, 150 for ADE20k.
-        norm_cfg=dict(type='SyncBN', requires_grad=True),  # The configuration of norm layer.
+        norm_cfg=norm_cfg,  # The configuration of norm layer.
         align_corners=False,  # The align_corners argument for resize in decoding.
         loss_decode=dict(  # Config of loss function for the decode_head.
             type='CrossEntropyLoss',  # Type of loss used for segmentation.
             use_sigmoid=False,  # Whether use sigmoid activation for segmentation.
-            loss_weight=1.0)),  # Loss weight of decode head.
+            loss_weight=1.0)),  # Loss weight of decode_head.
     auxiliary_head=dict(
         type='FCNHead',  # Type of auxiliary head. Please refer to mmseg/models/decode_heads for available options.
         in_channels=1024,  # Input channel of auxiliary head.
@@ -83,174 +108,133 @@ model = dict(
         concat_input=False,  # Whether concat output of convs with input before classification layer.
         dropout_ratio=0.1,  # The dropout ratio before final classification layer.
         num_classes=19,  # Number of segmentation class. Usually 19 for cityscapes, 21 for VOC, 150 for ADE20k.
-        norm_cfg=dict(type='SyncBN', requires_grad=True),  # The configuration of norm layer.
+        norm_cfg=norm_cfg,  # The configuration of norm layer.
         align_corners=False,  # The align_corners argument for resize in decoding.
-        loss_decode=dict(  # Config of loss function for the decode_head.
+        loss_decode=dict(  # Config of loss function for the auxiliary_head.
             type='CrossEntropyLoss',  # Type of loss used for segmentation.
             use_sigmoid=False,  # Whether use sigmoid activation for segmentation.
-            loss_weight=0.4)))  # Loss weight of auxiliary head, which is usually 0.4 of decode head.
-train_cfg = dict()  # train_cfg is just a place holder for now.
-test_cfg = dict(mode='whole')  # The test mode, options are 'whole' and 'sliding'. 'whole': whole image fully-convolutional test. 'sliding': sliding crop window on the image.
+            loss_weight=0.4)),  # Loss weight of auxiliary_head.
+    # model training and testing settings
+    train_cfg=dict(),  # train_cfg is just a place holder for now.
+    test_cfg=dict(mode='whole'))  # The test mode, options are 'whole' and 'sliding'. 'whole': whole image fully-convolutional test. 'sliding': sliding crop window on the image.
+```
+````
+
+`_base_/datasets/cityscapes.py` is the configuration file of the dataset
+
+````
+```python
+# dataset settings
 dataset_type = 'CityscapesDataset'  # Dataset type, this will be used to define the dataset.
 data_root = 'data/cityscapes/'  # Root path of data.
-img_norm_cfg = dict(  # Image normalization config to normalize the input images.
-    mean=[123.675, 116.28, 103.53],  # Mean values used to pre-training the pre-trained backbone models.
-    std=[58.395, 57.12, 57.375],  # Standard variance used to pre-training the pre-trained backbone models.
-    to_rgb=True)  # The channel orders of image used to pre-training the pre-trained backbone models.
 crop_size = (512, 1024)  # The crop size during training.
 train_pipeline = [  # Training pipeline.
     dict(type='LoadImageFromFile'),  # First pipeline to load images from file path.
     dict(type='LoadAnnotations'),  # Second pipeline to load annotations for current image.
-    dict(type='Resize',  # Augmentation pipeline that resize the images and their annotations.
-        img_scale=(2048, 1024),  # The largest scale of image.
-        ratio_range=(0.5, 2.0)), # The augmented scale range as ratio.
+    dict(type='RandomResize',  # Augmentation pipeline that resize the images and their annotations.
+        scale=(2048, 1024),  # The scale of image.
+        ratio_range=(0.5, 2.0),  # The augmented scale range as ratio.
+        keep_ratio=True),  # Whether to keep the aspect ratio when resizing the image.
     dict(type='RandomCrop',  # Augmentation pipeline that randomly crop a patch from current image.
-        crop_size=(512, 1024),  # The crop size of patch.
+        crop_size=crop_size,  # The crop size of patch.
         cat_max_ratio=0.75),  # The max area ratio that could be occupied by single category.
-    dict(
-        type='RandomFlip',  # Augmentation pipeline that flip the images and their annotations
-        flip_ratio=0.5),  # The ratio or probability to flip
+    dict(type='RandomFlip',  # Augmentation pipeline that flip the images and their annotations
+        prob=0.5),  # The ratio or probability to flip
     dict(type='PhotoMetricDistortion'),  # Augmentation pipeline that distort current image with several photo metric methods.
-    dict(
-        type='Normalize',  # Augmentation pipeline that normalize the input images
-        mean=[123.675, 116.28, 103.53],  # These keys are the same of img_norm_cfg since the
-        std=[58.395, 57.12, 57.375],  # keys of img_norm_cfg are used here as arguments
-        to_rgb=True),
-    dict(type='Pad',  # Augmentation pipeline that pad the image to specified size.
-        size=(512, 1024),  # The output size of padding.
-        pad_val=0,  # The padding value for image.
-        seg_pad_val=255),  # The padding value of 'gt_semantic_seg'.
-    dict(type='DefaultFormatBundle'),  # Default format bundle to gather data in the pipeline
-    dict(type='Collect',  # Pipeline that decides which keys in the data should be passed to the segmentor
-        keys=['img', 'gt_semantic_seg'])
+    dict(type='PackSegInputs')  # Pack the inputs data for the semantic segmentation.
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),  # First pipeline to load images from file path
-    dict(
-        type='MultiScaleFlipAug',  # An encapsulation that encapsulates the test time augmentations
-        img_scale=(2048, 1024),  # Decides the largest scale for testing, used for the Resize pipeline
-        flip=False,  # Whether to flip images during testing
-        transforms=[
-            dict(type='Resize',  # Use resize augmentation
-                 keep_ratio=True),  # Whether to keep the ratio between height and width, the img_scale set here will be suppressed by the img_scale set above.
-            dict(type='RandomFlip'),  # Thought RandomFlip is added in pipeline, it is not used when flip=False
-            dict(
-                type='Normalize',  # Normalization config, the values are from img_norm_cfg
-                mean=[123.675, 116.28, 103.53],
-                std=[58.395, 57.12, 57.375],
-                to_rgb=True),
-            dict(type='ImageToTensor', # Convert image to tensor
-                keys=['img']),
-            dict(type='Collect', # Collect pipeline that collect necessary keys for testing.
-                keys=['img'])
-        ])
+    dict(type='Resize',  # Use resize augmentation
+        scale=(2048, 1024),  # Images scales for resizing.
+        keep_ratio=True),  # Whether to keep the aspect ratio when resizing the image.
+    # add loading annotation after ``Resize`` because ground truth
+    # does not need to do resize data transform
+    dict(type='LoadAnnotations'),  # Load annotations for semantic segmentation provided by dataset.
+    dict(type='PackSegInputs')  # Pack the inputs data for the semantic segmentation.
 ]
-data = dict(
-    samples_per_gpu=2,  # Batch size of a single GPU
-    workers_per_gpu=2,  # Worker to pre-fetch data for each single GPU
-    train=dict(  # Train dataset config
-        type='CityscapesDataset',  # Type of dataset, refer to mmseg/datasets/ for details.
-        data_root='data/cityscapes/',  # The root of dataset.
-        img_dir='leftImg8bit/train',  # The image directory of dataset.
-        ann_dir='gtFine/train',  # The annotation directory of dataset.
-        pipeline=[  # pipeline, this is passed by the train_pipeline created before.
-            dict(type='LoadImageFromFile'),
-            dict(type='LoadAnnotations'),
-            dict(
-                type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
-            dict(type='RandomCrop', crop_size=(512, 1024), cat_max_ratio=0.75),
-            dict(type='RandomFlip', flip_ratio=0.5),
-            dict(type='PhotoMetricDistortion'),
-            dict(
-                type='Normalize',
-                mean=[123.675, 116.28, 103.53],
-                std=[58.395, 57.12, 57.375],
-                to_rgb=True),
-            dict(type='Pad', size=(512, 1024), pad_val=0, seg_pad_val=255),
-            dict(type='DefaultFormatBundle'),
-            dict(type='Collect', keys=['img', 'gt_semantic_seg'])
-        ]),
-    val=dict(  # Validation dataset config
-        type='CityscapesDataset',
-        data_root='data/cityscapes/',
-        img_dir='leftImg8bit/val',
-        ann_dir='gtFine/val',
-        pipeline=[  # Pipeline is passed by test_pipeline created before
-            dict(type='LoadImageFromFile'),
-            dict(
-                type='MultiScaleFlipAug',
-                img_scale=(2048, 1024),
-                flip=False,
-                transforms=[
-                    dict(type='Resize', keep_ratio=True),
-                    dict(type='RandomFlip'),
-                    dict(
-                        type='Normalize',
-                        mean=[123.675, 116.28, 103.53],
-                        std=[58.395, 57.12, 57.375],
-                        to_rgb=True),
-                    dict(type='ImageToTensor', keys=['img']),
-                    dict(type='Collect', keys=['img'])
-                ])
-        ]),
-    test=dict(
-        type='CityscapesDataset',
-        data_root='data/cityscapes/',
-        img_dir='leftImg8bit/val',
-        ann_dir='gtFine/val',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(
-                type='MultiScaleFlipAug',
-                img_scale=(2048, 1024),
-                flip=False,
-                transforms=[
-                    dict(type='Resize', keep_ratio=True),
-                    dict(type='RandomFlip'),
-                    dict(
-                        type='Normalize',
-                        mean=[123.675, 116.28, 103.53],
-                        std=[58.395, 57.12, 57.375],
-                        to_rgb=True),
-                    dict(type='ImageToTensor', keys=['img']),
-                    dict(type='Collect', keys=['img'])
-                ])
-        ]))
-log_config = dict(  # config to register logger hook
-    interval=50,  # Interval to print the log
-    hooks=[
-        # dict(type='TensorboardLoggerHook')  # The Tensorboard logger is also supported
-        dict(type='TextLoggerHook', by_epoch=False)
-    ])
-dist_params = dict(backend='nccl')  # Parameters to setup distributed training, the port can also be set.
-log_level = 'INFO'  # The level of logging.
-load_from = None  # load models as a pre-trained model from a given path. This will not resume training.
-resume_from = None  # Resume checkpoints from a given path, the training will be resumed from the iteration when the checkpoint's is saved.
-workflow = [('train', 1)]  # Workflow for runner. [('train', 1)] means there is only one workflow and the workflow named 'train' is executed once. The workflow trains the model by 40000 iterations according to the `runner.max_iters`.
-cudnn_benchmark = True  # Whether use cudnn_benchmark to speed up, which is fast for fixed input size.
-optimizer = dict(  # Config used to build optimizer, support all the optimizers in PyTorch whose arguments are also the same as those in PyTorch
-    type='SGD',  # Type of optimizers, refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/optimizer/default_constructor.py#L13 for more details
-    lr=0.01,  # Learning rate of optimizers, see detail usages of the parameters in the documentation of PyTorch
-    momentum=0.9,  # Momentum
-    weight_decay=0.0005)  # Weight decay of SGD
-optimizer_config = dict()  # Config used to build the optimizer hook, refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/optimizer.py#L8 for implementation details.
-lr_config = dict(
-    policy='poly',  # The policy of scheduler, also support Step, CosineAnnealing, Cyclic, etc. Refer to details of supported LrUpdater from https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/lr_updater.py#L9.
-    power=0.9,  # The power of polynomial decay.
-    min_lr=0.0001,  # The minimum learning rate to stable the training.
-    by_epoch=False)  # Whether count by epoch or not.
-runner = dict(
-    type='IterBasedRunner', # Type of runner to use (i.e. IterBasedRunner or EpochBasedRunner)
-    max_iters=40000) # Total number of iterations. For EpochBasedRunner use `max_epochs`
-checkpoint_config = dict(  # Config to set the checkpoint hook, Refer to https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/checkpoint.py for implementation.
-    by_epoch=False,  # Whether count by epoch or not.
-    interval=4000)  # The save interval.
-evaluation = dict(  # The config to build the evaluation hook. Please refer to mmseg/core/evaluation/eval_hook.py for details.
-    interval=4000,  # The interval of evaluation.
-    metric='mIoU')  # The evaluation metric.
-
-
+train_dataloader = dict(  # Train dataloader config
+    batch_size=2,  # Batch size of a single GPU
+    num_workers=2,  # Worker to pre-fetch data for each single GPU
+    persistent_workers=True,  # Shut down the worker processes after an epoch end, which can accelerate training speed.
+    sampler=dict(type='InfiniteSampler', shuffle=True),  # Randomly shuffle during training.
+    dataset=dict(  # Train dataset config
+        type=dataset_type,  # Type of dataset, refer to mmseg/datasets/ for details.
+        data_root=data_root,  # The root of dataset.
+        data_prefix=dict(
+            img_path='leftImg8bit/train', seg_map_path='gtFine/train'),  # Prefix for training data.
+        pipeline=train_pipeline)) # Processing pipeline. This is passed by the train_pipeline created before.
+val_dataloader = dict(
+    batch_size=1,  # Batch size of a single GPU
+    num_workers=4,  # Worker to pre-fetch data for each single GPU
+    persistent_workers=True,  # Shut down the worker processes after an epoch end, which can accelerate testing speed.
+    sampler=dict(type='DefaultSampler', shuffle=False),  # Not shuffle during validation and testing.
+    dataset=dict(  # Test dataset config
+        type=dataset_type,  # Type of dataset, refer to mmseg/datasets/ for details.
+        data_root=data_root,  # The root of dataset.
+        data_prefix=dict(
+            img_path='leftImg8bit/val', seg_map_path='gtFine/val'),  # Prefix for testing data.
+        pipeline=test_pipeline))  # Processing pipeline. This is passed by the test_pipeline created before.
+test_dataloader = val_dataloader
+# The metric to measure the accuracy. Here, we use IoUMetric.
+val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
+test_evaluator = val_evaluator
 ```
+````
+
+`_base_/schedules/schedule_40k.py`
+
+````
+```python
+# optimizer
+optimizer = dict(type='SGD', # Type of optimizers, refer to https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py for more details
+                lr=0.01,  # Learning rate of optimizers, see detail usages of the parameters in the documentation of PyTorch
+                momentum=0.9,  # Momentum
+                weight_decay=0.0005)  # Weight decay of SGD
+optim_wrapper = dict(type='OptimWrapper',  # Optimizer wrapper provides a common interface for updating parameters.
+                    optimizer=optimizer,  # Optimizer used to update model parameters.
+                    clip_grad=None)  # If ``clip_grad`` is not None, it will be the arguments of ``torch.nn.utils.clip_grad``.
+# learning policy
+param_scheduler = [
+    dict(
+        type='PolyLR',  # The policy of scheduler, also support Step, CosineAnnealing, Cyclic, etc. Refer to details of supported LrUpdater from https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/scheduler/lr_scheduler.py
+        eta_min=1e-4,  # Minimum learning rate at the end of scheduling.
+        power=0.9,  # The power of polynomial decay.
+        begin=0,  # Step at which to start updating the parameters.
+        end=40000,  # Step at which to stop updating the parameters.
+        by_epoch=False)  # Whether count by epoch or not.
+]
+# training schedule for 40k iteration
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=40000, val_interval=4000)
+val_cfg = dict(type='ValLoop')
+test_cfg = dict(type='TestLoop')
+# default hooks
+default_hooks = dict(
+    timer=dict(type='IterTimerHook'),  # Log the time spent during iteration.
+    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),  # Collect and write logs from different components of ``Runner``.
+    param_scheduler=dict(type='ParamSchedulerHook'),  # update some hyper-parameters in optimizer, e.g., learning rate.
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=4000),  # Save checkpoints periodically.
+    sampler_seed=dict(type='DistSamplerSeedHook'))  # Data-loading sampler for distributed training.
+```
+````
+
+in `_base_/default_runtime.py`
+
+````
+```python
+# Set the default scope of the registry to mmseg.
+default_scope = 'mmseg'
+# environment
+env_cfg = dict(
+    cudnn_benchmark=True,
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0),
+    dist_cfg=dict(backend='nccl'),
+)
+log_level = 'INFO'
+load_from = None  # Load checkpoint from file.
+resume = False  # Whether to resume from existed model.
+```
+````
 
 ## FAQ
 
@@ -261,10 +245,11 @@ You may refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/co
 
 In MMSegmentation, for example, to change the backbone of PSPNet with the following config.
 
+````
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
-    type='MaskRCNN',
+    type='EncoderDecoder',
     pretrained='torchvision://resnet50',
     backbone=dict(
         type='ResNetV1c',
@@ -280,11 +265,13 @@ model = dict(
     decode_head=dict(...),
     auxiliary_head=dict(...))
 ```
+````
 
 `ResNet` and `HRNet` use different keywords to construct.
 
+````
 ```python
-_base_ = '../pspnet/psp_r50_512x1024_40ki_cityscpaes.py'
+_base_ = '../pspnet/psp_r50_512x1024_40k_cityscpaes.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     pretrained='open-mmlab://msra/hrnetv2_w32',
@@ -320,6 +307,7 @@ model = dict(
     decode_head=dict(...),
     auxiliary_head=dict(...))
 ```
+````
 
 The `_delete_=True` would replace all old keys in `backbone` field with new keys.
 
@@ -329,6 +317,7 @@ Some intermediate variables are used in the configs files, like `train_pipeline`
 It's worth noting that when modifying intermediate variables in the children configs, user need to pass the intermediate variables into corresponding fields again.
 For example, we would like to change multi scale strategy to train/test a PSPNet. `train_pipeline`/`test_pipeline` are intermediate variable we would like to modify.
 
+````
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscapes.py'
 crop_size = (512, 1024)
@@ -337,40 +326,43 @@ img_norm_cfg = dict(
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='Resize', img_scale=(2048, 1024), ratio_range=(1.0, 2.0)),  # change to [1., 2.]
+    dict(type='RandomResize', img_scale=(2048, 1024), ratio_range=(1.0, 2.0)),  # change to [1., 2.]
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='PhotoMetricDistortion'),
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
-    dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+    dict(type='PackSegInputs']),
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(
-        type='MultiScaleFlipAug',
-        img_scale=(2048, 1024),
-        img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],  # change to multi scale testing
-        flip=False,
-        transforms=[
-            dict(type='Resize', keep_ratio=True),
-            dict(type='RandomFlip'),
-            dict(type='Normalize', **img_norm_cfg),
-            dict(type='ImageToTensor', keys=['img']),
-            dict(type='Collect', keys=['img']),
-        ])
+    dict(type='Resize',
+        scale=(2048, 1024),
+        keep_ratio=True),
+    dict(type='LoadAnnotations'),
+    dict(type='PackSegInputs')
 ]
-data = dict(
-    train=dict(pipeline=train_pipeline),
-    val=dict(pipeline=test_pipeline),
-    test=dict(pipeline=test_pipeline))
+train_dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='leftImg8bit/train', seg_map_path='gtFine/train'),
+        pipeline=train_pipeline)
+test_dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='leftImg8bit/val', seg_map_path='gtFine/val'),
+        pipeline=test_pipeline)
+train_dataloader = dict(dataset=train_dataset)
+val_dataloader = dict(dataset=test_dataset)
+test_dataloader = val_dataloader
 ```
+````
 
-We first define the new `train_pipeline`/`test_pipeline` and pass them into `data`.
+We first define the new `train_pipeline`/`test_pipeline` and pass them into `dataset`.
 
 Similarly, if we would like to switch from `SyncBN` to `BN` or `MMSyncBN`, we need to substitute every `norm_cfg` in the config.
 
+````
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscpaes.py'
 norm_cfg = dict(type='BN', requires_grad=True)
@@ -378,4 +370,21 @@ model = dict(
     backbone=dict(norm_cfg=norm_cfg),
     decode_head=dict(norm_cfg=norm_cfg),
     auxiliary_head=dict(norm_cfg=norm_cfg))
+```
+````
+
+## Modify config through script arguments
+
+- Update values of list/tuples.
+
+  If the value to be updated is a list or a tuple. For example, the config file normally sets `sigma_range=(0, 0.04)` in `data_preprocessor` of `model`.
+  If you want to change this key, you may specify in two ways:
+
+  1. `--cfg-options model.data_preprocessor.sigma_range="(0, 0.05)"`. Note that the quotation mark " is necessary to support list/tuple data types.
+  2. `--cfg-options model.data_preprocessor.sigma_range=0,0.05`. Note that **NO** white space is allowed in the specified value.
+     In addition, if the original type is tuple, it will be automatically converted to list after this way.
+
+```{note}
+    This modification of only supports modifying configuration items of string, int, float, boolean, None, list and tuple types.
+    More specifically, for list and tuple types, the elements inside them must also be one of the above seven types.
 ```
