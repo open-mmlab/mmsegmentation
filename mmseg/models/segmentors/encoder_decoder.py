@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from typing import List, Optional
 
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
@@ -127,7 +126,7 @@ class EncoderDecoder(BaseSegmentor):
         seg_logits = self.decode_head.predict(x, batch_img_metas,
                                               self.test_cfg)
 
-        return list(seg_logits)
+        return seg_logits
 
     def _decode_head_forward_train(self, inputs: List[Tensor],
                                    data_samples: SampleList) -> dict:
@@ -204,9 +203,9 @@ class EncoderDecoder(BaseSegmentor):
         for data_sample in data_samples:
             batch_img_metas.append(data_sample.metainfo)
 
-        seg_logit_list = self.inference(inputs, batch_img_metas)
+        seg_logit = self.inference(inputs, batch_img_metas)
 
-        return self.postprocess_result(seg_logit_list, batch_img_metas)
+        return self.postprocess_result(seg_logit, data_sample)
 
     def _forward(self,
                  inputs: Tensor,
@@ -226,7 +225,7 @@ class EncoderDecoder(BaseSegmentor):
         return self.decode_head.forward(x)
 
     def slide_inference(self, inputs: Tensor,
-                        batch_img_metas: List[dict]) -> List[Tensor]:
+                        batch_img_metas: List[dict]) -> Tensor:
         """Inference by sliding-window with overlap.
 
         If h_crop > h_img or w_crop > w_img, the small patch will be used to
@@ -242,8 +241,8 @@ class EncoderDecoder(BaseSegmentor):
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
         Returns:
-            List[:obj:`Tensor`]: List of segmentation results, seg_logits from
-                model of each input image.
+            Tensor: The segmentation results, seg_logits from model of each
+                input image.
         """
 
         h_stride, w_stride = self.test_cfg.stride
@@ -265,22 +264,21 @@ class EncoderDecoder(BaseSegmentor):
                 crop_img = inputs[:, :, y1:y2, x1:x2]
                 # change the img shape to patch shape
                 batch_img_metas[0]['img_shape'] = crop_img.shape[2:]
-                # the output of encode_decode is list of seg logits map
-                # with shape [C, H, W]
-                crop_seg_logit = torch.stack(
-                    self.encode_decode(crop_img, batch_img_metas), dim=0)
+                # the output of encode_decode is seg logits tensor map
+                # with shape [N, C, H, W]
+                crop_seg_logit = self.encode_decode(crop_img, batch_img_metas)
                 preds += F.pad(crop_seg_logit,
                                (int(x1), int(preds.shape[3] - x2), int(y1),
                                 int(preds.shape[2] - y2)))
 
                 count_mat[:, :, y1:y2, x1:x2] += 1
         assert (count_mat == 0).sum() == 0
-        seg_logits_list = list(preds / count_mat)
+        seg_logits = preds / count_mat
 
-        return seg_logits_list
+        return seg_logits
 
     def whole_inference(self, inputs: Tensor,
-                        batch_img_metas: List[dict]) -> List[Tensor]:
+                        batch_img_metas: List[dict]) -> Tensor:
         """Inference with full image.
 
         Args:
@@ -293,16 +291,15 @@ class EncoderDecoder(BaseSegmentor):
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
         Returns:
-            List[:obj:`Tensor`]: List of segmentation results, seg_logits from
-                model of each input image.
+            Tensor: The segmentation results, seg_logits from model of each
+                input image.
         """
 
-        seg_logits_list = self.encode_decode(inputs, batch_img_metas)
+        seg_logits = self.encode_decode(inputs, batch_img_metas)
 
-        return seg_logits_list
+        return seg_logits
 
-    def inference(self, inputs: Tensor,
-                  batch_img_metas: List[dict]) -> List[Tensor]:
+    def inference(self, inputs: Tensor, batch_img_metas: List[dict]) -> Tensor:
         """Inference with slide/whole style.
 
         Args:
@@ -314,8 +311,8 @@ class EncoderDecoder(BaseSegmentor):
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
         Returns:
-            List[:obj:`Tensor`]: List of segmentation results, seg_logits from
-                model of each input image.
+            Tensor: The segmentation results, seg_logits from model of each
+                input image.
         """
 
         assert self.test_cfg.mode in ['slide', 'whole']

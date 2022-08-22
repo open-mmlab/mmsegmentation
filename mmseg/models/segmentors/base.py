@@ -126,11 +126,12 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         """Placeholder for augmentation test."""
         pass
 
-    def postprocess_result(self, seg_logits_list: List[dict],
-                           batch_img_metas: List[dict]) -> list:
+    def postprocess_result(self,
+                           seg_logits: Tensor,
+                           data_samples: List[dict] = None) -> list:
         """ Convert results list to `SegDataSample`.
         Args:
-            seg_logits_list (List[dict]): List of segmentation results,
+            seg_logits (Tensor): List of segmentation results,
                 seg_logits from model of each input image.
 
         Returns:
@@ -141,22 +142,33 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             - ``seg_logits``(PixelData): Predicted logits of semantic
                 segmentation before normalization.
         """
-        predictions = []
-
+        seg_logits_list = list(seg_logits)
+        if data_samples is None:
+            data_samples = []
         for i in range(len(seg_logits_list)):
-            img_meta = batch_img_metas[i]
-            seg_logits = resize(
-                seg_logits_list[i][None],
-                size=img_meta['ori_shape'],
-                mode='bilinear',
-                align_corners=self.align_corners,
-                warning=False).squeeze(0)
-            # seg_logits shape is CHW
-            seg_pred = seg_logits.argmax(dim=0, keepdim=True)
-            prediction = SegDataSample(**{'metainfo': img_meta})
-            prediction.set_data({
-                'seg_logits': PixelData(**{'data': seg_logits}),
-                'pred_sem_seg': PixelData(**{'data': seg_pred})
-            })
-            predictions.append(prediction)
-        return predictions
+            if len(data_samples) < len(seg_logits_list):
+                img_meta = data_samples[i].metainfo
+                seg_logits = resize(
+                    seg_logits_list[i][None],
+                    size=img_meta['ori_shape'],
+                    mode='bilinear',
+                    align_corners=self.align_corners,
+                    warning=False).squeeze(0)
+                # seg_logits shape is CHW
+                seg_pred = seg_logits.argmax(dim=0, keepdim=True)
+                data_samples[i].set_data({
+                    'seg_logits':
+                    PixelData(**{'data': seg_logits}),
+                    'pred_sem_seg':
+                    PixelData(**{'data': seg_pred})
+                })
+            else:
+                prediction = SegDataSample()
+                prediction.set_data({
+                    'seg_logits':
+                    PixelData(**{'data': seg_logits}),
+                    'pred_sem_seg':
+                    PixelData(**{'data': seg_pred})
+                })
+                data_samples.append(prediction)
+        return data_samples

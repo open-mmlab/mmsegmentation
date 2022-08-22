@@ -29,8 +29,8 @@ class TestSegLocalVisualizer(TestCase):
         gt_sem_seg = PixelData(**gt_sem_seg_data)
 
         def test_add_datasample_forward(gt_sem_seg):
-            gt_seg_data_sample = SegDataSample()
-            gt_seg_data_sample.gt_sem_seg = gt_sem_seg
+            data_sample = SegDataSample()
+            data_sample.gt_sem_seg = gt_sem_seg
 
             with tempfile.TemporaryDirectory() as tmp_dir:
                 seg_local_visualizer = SegLocalVisualizer(
@@ -42,7 +42,7 @@ class TestSegLocalVisualizer(TestCase):
 
                 # test out_file
                 seg_local_visualizer.add_datasample(out_file, image,
-                                                    gt_seg_data_sample)
+                                                    data_sample)
 
                 assert os.path.exists(
                     osp.join(tmp_dir, 'vis_data', 'vis_image',
@@ -57,22 +57,16 @@ class TestSegLocalVisualizer(TestCase):
                     data=torch.randint(0, num_class, (1, h, w)))
                 pred_sem_seg = PixelData(**pred_sem_seg_data)
 
-                pred_seg_data_sample = SegDataSample()
-                pred_seg_data_sample.pred_sem_seg = pred_sem_seg
+                data_sample.pred_sem_seg = pred_sem_seg
 
                 seg_local_visualizer.add_datasample(out_file, image,
-                                                    gt_seg_data_sample,
-                                                    pred_seg_data_sample)
+                                                    data_sample)
                 self._assert_image_and_shape(
                     osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w * 2, 3))
 
                 seg_local_visualizer.add_datasample(
-                    out_file,
-                    image,
-                    gt_seg_data_sample,
-                    pred_seg_data_sample,
-                    draw_gt=False)
+                    out_file, image, data_sample, draw_gt=False)
                 self._assert_image_and_shape(
                     osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w, 3))
@@ -104,8 +98,8 @@ class TestSegLocalVisualizer(TestCase):
         gt_sem_seg = PixelData(**gt_sem_seg_data)
 
         def test_cityscapes_add_datasample_forward(gt_sem_seg):
-            gt_seg_data_sample = SegDataSample()
-            gt_seg_data_sample.gt_sem_seg = gt_sem_seg
+            data_sample = SegDataSample()
+            data_sample.gt_sem_seg = gt_sem_seg
 
             with tempfile.TemporaryDirectory() as tmp_dir:
                 seg_local_visualizer = SegLocalVisualizer(
@@ -125,11 +119,11 @@ class TestSegLocalVisualizer(TestCase):
                              [0, 60, 100], [0, 80, 100], [0, 0, 230],
                              [119, 11, 32]])
                 seg_local_visualizer.add_datasample(out_file, image,
-                                                    gt_seg_data_sample)
+                                                    data_sample)
 
                 # test out_file
                 seg_local_visualizer.add_datasample(out_file, image,
-                                                    gt_seg_data_sample)
+                                                    data_sample)
                 assert os.path.exists(
                     osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'))
@@ -143,22 +137,16 @@ class TestSegLocalVisualizer(TestCase):
                     data=torch.randint(0, num_class, (1, h, w)))
                 pred_sem_seg = PixelData(**pred_sem_seg_data)
 
-                pred_seg_data_sample = SegDataSample()
-                pred_seg_data_sample.pred_sem_seg = pred_sem_seg
+                data_sample.pred_sem_seg = pred_sem_seg
 
                 seg_local_visualizer.add_datasample(out_file, image,
-                                                    gt_seg_data_sample,
-                                                    pred_seg_data_sample)
+                                                    data_sample)
                 self._assert_image_and_shape(
                     osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w * 2, 3))
 
                 seg_local_visualizer.add_datasample(
-                    out_file,
-                    image,
-                    gt_seg_data_sample,
-                    pred_seg_data_sample,
-                    draw_gt=False)
+                    out_file, image, data_sample, draw_gt=False)
                 self._assert_image_and_shape(
                     osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w, 3))
