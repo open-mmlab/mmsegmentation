@@ -203,9 +203,9 @@ class EncoderDecoder(BaseSegmentor):
         for data_sample in data_samples:
             batch_img_metas.append(data_sample.metainfo)
 
-        seg_logit = self.inference(inputs, batch_img_metas)
+        seg_logits = self.inference(inputs, batch_img_metas)
 
-        return self.postprocess_result(seg_logit, data_sample)
+        return self.postprocess_result(seg_logits, data_samples)
 
     def _forward(self,
                  inputs: Tensor,

@@ -146,7 +146,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         if data_samples is None:
             data_samples = []
         for i in range(len(seg_logits_list)):
-            if len(data_samples) < len(seg_logits_list):
+            if len(data_samples) == len(seg_logits_list):
                 img_meta = data_samples[i].metainfo
                 seg_logits = resize(
                     seg_logits_list[i][None],
@@ -163,6 +163,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                     PixelData(**{'data': seg_pred})
                 })
             else:
+                seg_pred = seg_logits.argmax(dim=0, keepdim=True)
                 prediction = SegDataSample()
                 prediction.set_data({
                     'seg_logits':
