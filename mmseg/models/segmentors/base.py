@@ -133,9 +133,8 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                            data_samples: List[dict] = None) -> list:
         """ Convert results list to `SegDataSample`.
         Args:
-            seg_logits (Tensor): List of segmentation results,
-                seg_logits from model of each input image.
-
+            seg_logits (Tensor): The segmentation results, seg_logits from
+                model of each input image.
         Returns:
             list[:obj:`SegDataSample`]: Segmentation results of the
             input images. Each SegDataSample usually contain:
@@ -147,9 +146,12 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         batch_size, _, H, W = seg_logits.shape
         if data_samples is None:
             data_samples = []
+            only_prediction = True
+        else:
+            only_prediction = False
 
         for i in range(batch_size):
-            if len(data_samples) == batch_size:
+            if not only_prediction:
                 img_meta = data_samples[i].metainfo
                 # remove padding area
                 padding_left, padding_right, padding_top, padding_bottom = \
