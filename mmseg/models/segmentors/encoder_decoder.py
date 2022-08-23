@@ -181,13 +181,15 @@ class EncoderDecoder(BaseSegmentor):
 
         return losses
 
-    def predict(self, inputs: Tensor, data_samples: SampleList) -> SampleList:
+    def predict(self,
+                inputs: Tensor,
+                data_samples: OptSampleList = None) -> SampleList:
         """Predict results from a batch of inputs and data samples with post-
         processing.
 
         Args:
             inputs (Tensor): Inputs with shape (N, C, H, W).
-            data_samples (List[:obj:`SegDataSample`]): The seg
+            data_samples (List[:obj:`SegDataSample`], optional): The seg
                 data samples. It usually includes information such
                 as `metainfo` and `gt_sem_seg`.
 
@@ -199,9 +201,18 @@ class EncoderDecoder(BaseSegmentor):
             - ``seg_logits``(PixelData): Predicted logits of semantic
                 segmentation before normalization.
         """
-        batch_img_metas = []
-        for data_sample in data_samples:
-            batch_img_metas.append(data_sample.metainfo)
+        if data_samples is not None:
+            batch_img_metas = [
+                data_sample.metainfo for data_sample in data_samples
+            ]
+        else:
+            batch_img_metas = [
+                dict(
+                    ori_shape=inputs.shape[2:],
+                    img_shape=inputs.shape[2:],
+                    pad_shape=inputs.shape[2:],
+                    padding_size=[0, 0, 0, 0])
+            ] * inputs.shape[0]
 
         seg_logits = self.inference(inputs, batch_img_metas)
 
@@ -262,8 +273,8 @@ class EncoderDecoder(BaseSegmentor):
                 y1 = max(y2 - h_crop, 0)
                 x1 = max(x2 - w_crop, 0)
                 crop_img = inputs[:, :, y1:y2, x1:x2]
-                # change the img shape to patch shape
-                batch_img_metas[0]['img_shape'] = crop_img.shape[2:]
+                # change the pad shape to patch shape
+                batch_img_metas[0]['pad_shape'] = crop_img.shape[2:]
                 # the output of encode_decode is seg logits tensor map
                 # with shape [N, C, H, W]
                 crop_seg_logit = self.encode_decode(crop_img, batch_img_metas)
@@ -306,7 +317,7 @@ class EncoderDecoder(BaseSegmentor):
             inputs (Tensor): The input image of shape (N, 3, H, W).
             batch_img_metas (List[dict]): List of image metainfo where each may
                 also contain: 'img_shape', 'scale_factor', 'flip', 'img_path',
-                'ori_shape', and 'pad_shape'.
+                'ori_shape', 'pad_shape', and 'padding_size'.
                 For details on the values of these keys see
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
@@ -319,11 +330,11 @@ class EncoderDecoder(BaseSegmentor):
         ori_shape = batch_img_metas[0]['ori_shape']
         assert all(_['ori_shape'] == ori_shape for _ in batch_img_metas)
         if self.test_cfg.mode == 'slide':
-            seg_logit_list = self.slide_inference(inputs, batch_img_metas)
+            seg_logit = self.slide_inference(inputs, batch_img_metas)
         else:
-            seg_logit_list = self.whole_inference(inputs, batch_img_metas)
+            seg_logit = self.whole_inference(inputs, batch_img_metas)
 
-        return seg_logit_list
+        return seg_logit
 
     def aug_test(self, inputs, batch_img_metas, rescale=True):
         """Test with augmentations.

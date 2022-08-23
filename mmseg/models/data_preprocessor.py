@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from numbers import Number
-from typing import Any, List, Optional, Sequence, Dict
+from typing import Any, Dict, List, Optional, Sequence
 
 import torch
 from mmengine.model import BaseDataPreprocessor
@@ -100,7 +100,7 @@ class SegDataPreProcessor(BaseDataPreprocessor):
         """
         data = self.cast_data(data)  # type: ignore
         inputs = data['inputs']
-        data_samples = data['data_samples']
+        data_samples = data.get('data_samples', None)
         # TODO: whether normalize should be after stack_batch
         if self.channel_conversion and inputs[0].size(0) == 3:
             inputs = [_input[[2, 1, 0], ...] for _input in inputs]
@@ -111,6 +111,8 @@ class SegDataPreProcessor(BaseDataPreprocessor):
             inputs = [_input.float() for _input in inputs]
 
         if training:
+            assert data_samples is not None, ('During training, ',
+                                              '`data_samples` must be define.')
             inputs, data_samples = stack_batch(
                 inputs=inputs,
                 data_samples=data_samples,

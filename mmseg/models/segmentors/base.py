@@ -105,7 +105,9 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def predict(self, inputs: Tensor, data_samples: SampleList) -> SampleList:
+    def predict(self,
+                inputs: Tensor,
+                data_samples: OptSampleList = None) -> SampleList:
         """Predict results from a batch of inputs and data samples with post-
         processing."""
         pass
@@ -142,34 +144,44 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             - ``seg_logits``(PixelData): Predicted logits of semantic
                 segmentation before normalization.
         """
-        seg_logits_list = list(seg_logits)
+        batch_size, _, H, W = seg_logits.shape
         if data_samples is None:
             data_samples = []
-        for i in range(len(seg_logits_list)):
-            if len(data_samples) == len(seg_logits_list):
+
+        for i in range(batch_size):
+            if len(data_samples) == batch_size:
                 img_meta = data_samples[i].metainfo
-                seg_logits = resize(
-                    seg_logits_list[i][None],
+                # remove padding area
+                padding_left, padding_right, padding_top, padding_bottom = \
+                    img_meta.get('padding_size', [0]*4)
+                # i_seg_logits shape is 1, C, H, W after remove padding
+                i_seg_logits = seg_logits[i:i + 1, :,
+                                          padding_top:H - padding_bottom,
+                                          padding_left:W - padding_right]
+                # resize as original shape
+                i_seg_logits = resize(
+                    i_seg_logits,
                     size=img_meta['ori_shape'],
                     mode='bilinear',
                     align_corners=self.align_corners,
                     warning=False).squeeze(0)
-                # seg_logits shape is CHW
-                seg_pred = seg_logits.argmax(dim=0, keepdim=True)
+                # i_seg_logits shape is C, H, W with original shape
+                i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
                 data_samples[i].set_data({
                     'seg_logits':
-                    PixelData(**{'data': seg_logits}),
+                    PixelData(**{'data': i_seg_logits}),
                     'pred_sem_seg':
-                    PixelData(**{'data': seg_pred})
+                    PixelData(**{'data': i_seg_pred})
                 })
             else:
-                seg_pred = seg_logits.argmax(dim=0, keepdim=True)
+                i_seg_logits = seg_logits[i]
+                i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
                 prediction = SegDataSample()
                 prediction.set_data({
                     'seg_logits':
-                    PixelData(**{'data': seg_logits}),
+                    PixelData(**{'data': i_seg_logits}),
                     'pred_sem_seg':
-                    PixelData(**{'data': seg_pred})
+                    PixelData(**{'data': i_seg_pred})
                 })
                 data_samples.append(prediction)
         return data_samples

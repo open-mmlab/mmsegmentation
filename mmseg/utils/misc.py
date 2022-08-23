@@ -98,8 +98,11 @@ def stack_batch(inputs: List[torch.Tensor],
             del data_sample.gt_sem_seg.data
             data_sample.gt_sem_seg.data = F.pad(
                 gt_sem_seg, padding_size, value=seg_pad_val)
-            data_sample.set_metainfo(
-                {'pad_shape': data_sample.gt_sem_seg.shape})
+            data_sample.set_metainfo({
+                'img_shape': tensor.shape[-2:],
+                'pad_shape': data_sample.gt_sem_seg.shape,
+                'padding_size': padding_size
+            })
             padded_samples.append(data_sample)
         else:
             padded_samples = None

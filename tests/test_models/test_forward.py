@@ -248,13 +248,13 @@ def _test_encoder_decoder_forward(cfg_file):
             batch_results, Tensor)
 
         # Test forward predict without ground truth
-        # data.pop('data_samples')
-        # batch_results = segmentor.forward(**data, mode='predict')
-        # assert len(batch_results) == 1
-        # assert is_list_of(batch_results, SegDataSample)
-        # assert batch_results[0].pred_sem_seg.shape == (32, 32)
+        data.pop('data_samples')
+        batch_results = segmentor.forward(**data, mode='predict')
+        assert len(batch_results) == 1
+        assert is_list_of(batch_results, SegDataSample)
+        assert batch_results[0].pred_sem_seg.shape == (32, 32)
 
-        # # Test forward tensor without ground truth
-        # batch_results = segmentor.forward(**data, mode='tensor')
-        # assert isinstance(batch_results, Tensor) or is_tuple_of(
-        #     batch_results, Tensor)
+        # Test forward tensor without ground truth
+        batch_results = segmentor.forward(**data, mode='tensor')
+        assert isinstance(batch_results, Tensor) or is_tuple_of(
+            batch_results, Tensor)
