@@ -1,4 +1,4 @@
-# Tutorial 3: Customize Data Pipelines
+# Data Transforms
 
 ## Design of Data pipelines
 
@@ -19,39 +19,32 @@ The operations are categorized into data loading, pre-processing, formatting and
 Here is an pipeline example for PSPNet.
 
 ```python
-img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 crop_size = (512, 1024)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
+    dict(
+        type='RandomResize',
+        scale=(2048, 1024),
+        ratio_range=(0.5, 2.0),
+        keep_ratio=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
-    dict(type='RandomFlip', flip_ratio=0.5),
+    dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
-    dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+    dict(type='PackSegInputs')
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(
-        type='MultiScaleFlipAug',
-        img_scale=(2048, 1024),
-        # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
-        flip=False,
-        transforms=[
-            dict(type='Resize', keep_ratio=True),
-            dict(type='RandomFlip'),
-            dict(type='Normalize', **img_norm_cfg),
-            dict(type='ImageToTensor', keys=['img']),
-            dict(type='Collect', keys=['img']),
-        ])
+    dict(type='Resize', scale=(2048, 1024), keep_ratio=True),
+    # add loading annotation after ``Resize`` because ground truth
+    # does not need to do resize data transform
+    dict(type='LoadAnnotations'),
+    dict(type='PackSegInputs')
 ]
 ```
 
 For each operation, we list the related dict fields that are added/updated/removed.
+Before pipelines, the information we can directly obtain from the datasets are img_path, seg_map_path.
 
 ### Data loading
 
@@ -61,37 +54,28 @@ For each operation, we list the related dict fields that are added/updated/remov
 
 `LoadAnnotations`
 
-- add: gt_semantic_seg, seg_fields
+- add: seg_fields, gt_seg_map
 
 ### Pre-processing
 
+`RandomResize`
+
+- add: scale, scale_factor, keep_ratio
+- update: img, img_shape, gt_seg_map
+
 `Resize`
 
-- add: scale, scale_idx, pad_shape, scale_factor, keep_ratio
-- update: img, img_shape, \*seg_fields
-
-`RandomFlip`
-
-- add: flip
-- update: img, \*seg_fields
-
-`Pad`
-
-- add: pad_fixed_size, pad_size_divisor
-- update: img, pad_shape, \*seg_fields
+- add: scale, scale_factor, keep_ratio
+- update: img, gt_seg_map, img_shape
 
 `RandomCrop`
 
-- update: img, pad_shape, \*seg_fields
+- update: img, pad_shape, gt_seg_map
 
-`Normalize`
+`RandomFlip`
 
-- add: img_norm_cfg
-- update: img
-
-`SegRescale`
-
-- update: gt_semantic_seg
+- add: flip, flip_direction
+- update: img, gt_seg_map
 
 `PhotoMetricDistortion`
 
@@ -99,34 +83,10 @@ For each operation, we list the related dict fields that are added/updated/remov
 
 ### Formatting
 
-`ToTensor`
+`PackSegInputs`
 
-- update: specified by `keys`.
-
-`ImageToTensor`
-
-- update: specified by `keys`.
-
-`Transpose`
-
-- update: specified by `keys`.
-
-`ToDataContainer`
-
-- update: specified by `fields`.
-
-`DefaultFormatBundle`
-
-- update: img, gt_semantic_seg
-
-`Collect`
-
-- add: img_meta (the keys of img_meta is specified by `meta_keys`)
-- remove: all other keys except for those specified by `keys`
-
-### Test time augmentation
-
-`MultiScaleFlipAug`
+- add: inputs, data_sample
+- remove: keys specified by `meta_keys` (merged into the metainfo of data_sample), all other keys
 
 ## Extend and use custom pipelines
 
@@ -134,10 +94,8 @@ For each operation, we list the related dict fields that are added/updated/remov
 
    ```python
    from mmseg.datasets import PIPELINES
-
    @PIPELINES.register_module()
    class MyTransform:
-
        def __call__(self, results):
            results['dummy'] = True
            return results
@@ -152,20 +110,18 @@ For each operation, we list the related dict fields that are added/updated/remov
 3. Use it in config files.
 
    ```python
-   img_norm_cfg = dict(
-       mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
    crop_size = (512, 1024)
    train_pipeline = [
        dict(type='LoadImageFromFile'),
        dict(type='LoadAnnotations'),
-       dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
+       dict(type='RandomResize',
+            scale=(2048, 1024),
+            ratio_range=(0.5, 2.0),
+            keep_ratio=True),
        dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
        dict(type='RandomFlip', flip_ratio=0.5),
        dict(type='PhotoMetricDistortion'),
-       dict(type='Normalize', **img_norm_cfg),
-       dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
        dict(type='MyTransform'),
-       dict(type='DefaultFormatBundle'),
-       dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+       dict(type='PackSegInputs'),
    ]
    ```
