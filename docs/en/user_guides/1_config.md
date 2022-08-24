@@ -34,7 +34,7 @@ The file name is divided to five parts. All parts and components are connected w
 - `{training settings}`: Information of training settings such as batch size, augmentations, loss trick, scheduler, and epochs/iterations. For example: `4xb4-ce-linearlr-40K` means using 4-gpus x 4-images-per-gpu, CrossEntropy loss, Linear learning rate, and train 20K iterations.
   Some abbreviations:
   - `{gpu x batch_per_gpu}`: GPUs and samples per GPU. `bN` indicates N batch size per GPU. E.g. `8xb2` is the short term of 8-gpus x 2-images-per-gpu. And `4xb4` is used by default if not mentioned.
-  - `{schedule}`: training schedule, options are `20K`, `40K`, etc. `20K` and `40K` means 20000 iterations and 40000 iterations respectively.
+  - `{schedule}`: training schedule, options are `20k`, `40k`, etc. `20k` and `40k` means 20000 iterations and 40000 iterations respectively.
 - `{training dataset information}`: Training dataset names like `cityscapes`, `PascalVOC`, `ADE20K`, etc, and input resolutions. For example: `cityscapes-768x768` means training on `cityscapes` dataset and the input shape is `768x768`.
 - `{testing dataset information}` (optional): Testing dataset name for models trained on one dataset but tested on another. If not mentioned, it means the model was trained and tested on the same dataset type.
 
