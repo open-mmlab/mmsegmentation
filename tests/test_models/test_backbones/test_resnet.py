@@ -2,7 +2,7 @@
 import pytest
 import torch
 from mmcv.ops import DeformConv2dPack
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmengine.utils.parrots_wrapper import _BatchNorm
 from torch.nn.modules import AvgPool2d, GroupNorm
 
 from mmseg.models.backbones import ResNet, ResNetV1d

@@ -2,8 +2,9 @@
 import argparse
 import os.path as osp
 
-import mmcv
 from cityscapesscripts.preparation.json2labelImg import json2labelImg
+from mmengine.utils import (mkdir_or_exist, scandir, track_parallel_progress,
+                            track_progress)
 
 
 def convert_json_to_label(json_file):
@@ -27,25 +28,24 @@ def main():
     args = parse_args()
     cityscapes_path = args.cityscapes_path
     out_dir = args.out_dir if args.out_dir else cityscapes_path
-    mmcv.mkdir_or_exist(out_dir)
+    mkdir_or_exist(out_dir)
 
     gt_dir = osp.join(cityscapes_path, args.gt_dir)
 
     poly_files = []
-    for poly in mmcv.scandir(gt_dir, '_polygons.json', recursive=True):
+    for poly in scandir(gt_dir, '_polygons.json', recursive=True):
         poly_file = osp.join(gt_dir, poly)
         poly_files.append(poly_file)
     if args.nproc > 1:
-        mmcv.track_parallel_progress(convert_json_to_label, poly_files,
-                                     args.nproc)
+        track_parallel_progress(convert_json_to_label, poly_files, args.nproc)
     else:
-        mmcv.track_progress(convert_json_to_label, poly_files)
+        track_progress(convert_json_to_label, poly_files)
 
     split_names = ['train', 'val', 'test']
 
     for split in split_names:
         filenames = []
-        for poly in mmcv.scandir(
+        for poly in scandir(
                 osp.join(gt_dir, split), '_polygons.json', recursive=True):
             filenames.append(poly.replace('_gtFine_polygons.json', ''))
         with open(osp.join(out_dir, f'{split}.txt'), 'w') as f:

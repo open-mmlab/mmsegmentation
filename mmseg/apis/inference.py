@@ -9,6 +9,7 @@ import torch
 from mmengine import Config
 from mmengine.dataset import Compose
 from mmengine.runner import load_checkpoint
+from mmengine.utils import mkdir_or_exist
 
 from mmseg.data import SegDataSample
 from mmseg.models import BaseSegmentor
@@ -179,7 +180,7 @@ def show_result_pyplot(model: BaseSegmentor,
     else:
         image = img
     if save_dir is not None:
-        mmcv.mkdir_or_exist(save_dir)
+        mkdir_or_exist(save_dir)
     # init visualizer
     visualizer = SegLocalVisualizer(
         vis_backends=[dict(type='LocalVisBackend')],

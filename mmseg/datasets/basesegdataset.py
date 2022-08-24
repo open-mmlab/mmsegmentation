@@ -73,7 +73,7 @@ class BaseSegDataset(BaseDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
         file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:`mmcv.fileio.FileClient` for details.
+            See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
     """
     METAINFO: dict = dict()

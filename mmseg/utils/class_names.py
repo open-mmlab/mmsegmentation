@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import mmcv
+from mmengine.utils import is_str
 
 
 def cityscapes_classes():
@@ -289,7 +289,7 @@ def get_classes(dataset):
         for alias in aliases:
             alias2name[alias] = name
 
-    if mmcv.is_str(dataset):
+    if is_str(dataset):
         if dataset in alias2name:
             labels = eval(alias2name[dataset] + '_classes()')
         else:
@@ -306,7 +306,7 @@ def get_palette(dataset):
         for alias in aliases:
             alias2name[alias] = name
 
-    if mmcv.is_str(dataset):
+    if is_str(dataset):
         if dataset in alias2name:
             labels = eval(alias2name[dataset] + '_palette()')
         else:

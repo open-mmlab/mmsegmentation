@@ -5,8 +5,8 @@ from typing import Sequence
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer, build_norm_layer
-from mmcv.utils import to_2tuple
 from mmengine.model import BaseModule
+from mmengine.utils import to_2tuple
 
 
 class AdaptivePadding(nn.Module):
@@ -104,8 +104,8 @@ class PatchEmbed(BaseModule):
         input_size (int | tuple | None): The size of input, which will be
             used to calculate the out size. Only work when `dynamic_size`
             is False. Default: None.
-        init_cfg (`mmcv.ConfigDict`, optional): The Config for initialization.
-            Default: None.
+        init_cfg (`mmengine.ConfigDict`, optional): The Config for
+            initialization. Default: None.
     """
 
     def __init__(self,

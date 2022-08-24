@@ -2,7 +2,7 @@
 import mmcv
 import pytest
 import torch
-from mmcv.utils import TORCH_VERSION, digit_version
+from mmengine.utils import TORCH_VERSION, digit_version
 
 from mmseg.models.utils import (InvertedResidual, InvertedResidualV3, SELayer,
                                 make_divisible)

@@ -9,6 +9,7 @@ import zipfile
 
 import mmcv
 import numpy as np
+from mmengine.utils import ProgressBar, mkdir_or_exist
 from PIL import Image
 
 iSAID_palette = \
@@ -178,13 +179,13 @@ def main():
         out_dir = args.out_dir
 
     print('Making directories...')
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'test'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'test'))
 
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'test'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'test'))
 
     assert os.path.exists(os.path.join(dataset_path, 'train')), \
         'train is not in {}'.format(dataset_path)
@@ -207,7 +208,7 @@ def main():
             src_path_list = glob.glob(
                 os.path.join(tmp_dir, dataset_mode, 'img', 'images', '*.png'))
 
-            src_prog_bar = mmcv.ProgressBar(len(src_path_list))
+            src_prog_bar = ProgressBar(len(src_path_list))
             for i, img_path in enumerate(src_path_list):
                 if dataset_mode != 'test':
                     slide_crop_image(img_path, out_dir, dataset_mode, patch_H,
@@ -230,7 +231,7 @@ def main():
                 lab_path_list = glob.glob(
                     os.path.join(tmp_dir, dataset_mode, 'lab', 'images',
                                  '*.png'))
-                lab_prog_bar = mmcv.ProgressBar(len(lab_path_list))
+                lab_prog_bar = ProgressBar(len(lab_path_list))
                 for i, lab_path in enumerate(lab_path_list):
                     slide_crop_label(lab_path, out_dir, dataset_mode, patch_H,
                                      patch_W, overlap)

@@ -8,9 +8,9 @@ import numpy as np
 import pytest
 import torch
 import torch.nn as nn
-from mmcv import is_list_of, is_tuple_of
 from mmcv.cnn.utils import revert_sync_batchnorm
 from mmengine.data import PixelData
+from mmengine.utils import is_list_of, is_tuple_of
 from torch import Tensor
 
 from mmseg.structures import SegDataSample
@@ -85,7 +85,7 @@ def _get_config_directory():
 
 def _get_config_module(fname):
     """Load a configuration as a python module."""
-    from mmcv import Config
+    from mmengine import Config
     config_dpath = _get_config_directory()
     config_fpath = join(config_dpath, fname)
     config_mod = Config.fromfile(config_fpath)

@@ -5,8 +5,8 @@ import torch.nn as nn
 import torch.utils.checkpoint as cp
 from mmcv.cnn import (UPSAMPLE_LAYERS, ConvModule, build_activation_layer,
                       build_norm_layer)
-from mmcv.utils.parrots_wrapper import _BatchNorm
 from mmengine.model import BaseModule
+from mmengine.utils.parrots_wrapper import _BatchNorm
 
 from mmseg.registry import MODELS
 from ..utils import UpConvBlock, Upsample

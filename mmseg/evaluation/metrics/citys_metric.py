@@ -2,10 +2,10 @@
 import os.path as osp
 from typing import Dict, List, Optional, Sequence
 
-import mmcv
 import numpy as np
 from mmengine.evaluator import BaseMetric
 from mmengine.logging import MMLogger, print_log
+from mmengine.utils import mkdir_or_exist, scandir
 from PIL import Image
 
 from mmseg.registry import METRICS
@@ -60,7 +60,7 @@ class CitysMetric(BaseMetric):
             data_batch (Sequence[dict]): A batch of data from the dataloader.
             predictions (Sequence[dict]): A batch of outputs from the model.
         """
-        mmcv.mkdir_or_exist(self.suffix)
+        mkdir_or_exist(self.suffix)
 
         for pred in predictions:
             pred_label = pred['pred_sem_seg']['data'][0].cpu().numpy()
@@ -121,8 +121,7 @@ class CitysMetric(BaseMetric):
         ann_dir = results[0]
         # when evaluating with official cityscapesscripts,
         # **_gtFine_labelIds.png is used
-        for seg_map in mmcv.scandir(
-                ann_dir, 'gtFine_labelIds.png', recursive=True):
+        for seg_map in scandir(ann_dir, 'gtFine_labelIds.png', recursive=True):
             seg_map_list.append(osp.join(ann_dir, seg_map))
             pred_list.append(CSEval.getPrediction(CSEval.args, seg_map))
         metric = dict()

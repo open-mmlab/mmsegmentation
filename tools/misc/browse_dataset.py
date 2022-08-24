@@ -2,8 +2,8 @@
 import argparse
 import os.path as osp
 
-import mmcv
-from mmcv import Config, DictAction
+from mmengine import Config, DictAction
+from mmengine.utils import ProgressBar
 
 from mmseg.datasets import DATASETS
 from mmseg.registry import VISUALIZERS
@@ -52,7 +52,7 @@ def main():
     visualizer = VISUALIZERS.build(cfg.visualizer)
     visualizer.dataset_meta = dataset.METAINFO
 
-    progress_bar = mmcv.ProgressBar(len(dataset))
+    progress_bar = ProgressBar(len(dataset))
     for item in dataset:
         img = item['inputs'].permute(1, 2, 0).numpy()
         data_sample = item['data_sample'].numpy()

@@ -13,7 +13,7 @@ import re
 import sys
 
 from lxml import etree
-from mmcv.fileio import dump
+from mmengine.fileio import dump
 
 MMSEG_ROOT = osp.dirname(osp.dirname((osp.dirname(__file__))))
 

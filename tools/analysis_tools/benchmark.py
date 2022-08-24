@@ -3,13 +3,11 @@ import argparse
 import os.path as osp
 import time
 
-import mmcv
 import numpy as np
 import torch
-from mmcv import Config
-from mmcv.runner import load_checkpoint, wrap_fp16_model
-from mmengine.runner import Runner
-from mmengine.utils import revert_sync_batchnorm
+from mmengine import Config
+from mmengine.runner import Runner, load_checkpoint, wrap_fp16_model
+from mmengine.utils import dump, mkdir_or_exist, revert_sync_batchnorm
 
 from mmseg.registry import MODELS
 from mmseg.utils import register_all_modules
@@ -36,13 +34,13 @@ def main():
     cfg = Config.fromfile(args.config)
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
     if args.work_dir is not None:
-        mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
+        mkdir_or_exist(osp.abspath(args.work_dir))
         json_file = osp.join(args.work_dir, f'fps_{timestamp}.json')
     else:
         # use config filename as default work_dir if cfg.work_dir is None
         work_dir = osp.join('./work_dirs',
                             osp.splitext(osp.basename(args.config))[0])
-        mmcv.mkdir_or_exist(osp.abspath(work_dir))
+        mkdir_or_exist(osp.abspath(work_dir))
         json_file = osp.join(work_dir, f'fps_{timestamp}.json')
 
     repeat_times = args.repeat_times
@@ -112,7 +110,7 @@ def main():
           f'{benchmark_dict["average_fps"]}')
     print(f'The variance of {repeat_times} evaluations: '
           f'{benchmark_dict["fps_variance"]}')
-    mmcv.dump(benchmark_dict, json_file, indent=4)
+    dump(benchmark_dict, json_file, indent=4)
 
 
 if __name__ == '__main__':

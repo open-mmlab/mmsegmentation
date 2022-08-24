@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import functools
 
-import mmcv
 import numpy as np
 import torch
 import torch.nn.functional as F
+from mmengine.utils import load
 
 
 def get_class_weight(class_weight):
@@ -20,7 +20,7 @@ def get_class_weight(class_weight):
             class_weight = np.load(class_weight)
         else:
             # pkl, json or yaml
-            class_weight = mmcv.load(class_weight)
+            class_weight = load(class_weight)
 
     return class_weight
 

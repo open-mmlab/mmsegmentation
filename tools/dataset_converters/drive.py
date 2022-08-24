@@ -7,6 +7,7 @@ import zipfile
 
 import cv2
 import mmcv
+from mmengine.utils import mkdir_or_exist
 
 
 def parse_args():
@@ -32,13 +33,13 @@ def main():
         out_dir = args.out_dir
 
     print('Making directories...')
-    mmcv.mkdir_or_exist(out_dir)
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'images'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'images', 'training'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'images', 'validation'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'annotations'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'annotations', 'training'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'annotations', 'validation'))
+    mkdir_or_exist(out_dir)
+    mkdir_or_exist(osp.join(out_dir, 'images'))
+    mkdir_or_exist(osp.join(out_dir, 'images', 'training'))
+    mkdir_or_exist(osp.join(out_dir, 'images', 'validation'))
+    mkdir_or_exist(osp.join(out_dir, 'annotations'))
+    mkdir_or_exist(osp.join(out_dir, 'annotations', 'training'))
+    mkdir_or_exist(osp.join(out_dir, 'annotations', 'validation'))
 
     with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
         print('Extracting training.zip...')

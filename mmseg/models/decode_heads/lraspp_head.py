@@ -1,8 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
-from mmcv import is_tuple_of
 from mmcv.cnn import ConvModule
+from mmengine.utils import is_tuple_of
 
 from mmseg.registry import MODELS
 from ..utils import resize

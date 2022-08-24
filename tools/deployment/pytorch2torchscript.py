@@ -1,12 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 
-import mmcv
 import numpy as np
 import torch
 import torch._C
 import torch.serialization
-from mmcv.runner import load_checkpoint
+from mmengine import Config
+from mmengine.runner import load_checkpoint
 from torch import nn
 
 from mmseg.models import build_segmentor
@@ -163,7 +163,7 @@ if __name__ == '__main__':
     else:
         raise ValueError('invalid input shape')
 
-    cfg = mmcv.Config.fromfile(args.config)
+    cfg = Config.fromfile(args.config)
     cfg.model.pretrained = None
 
     # build the model and load checkpoint

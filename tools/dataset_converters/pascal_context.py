@@ -3,9 +3,9 @@ import argparse
 import os.path as osp
 from functools import partial
 
-import mmcv
 import numpy as np
 from detail import Detail
+from mmengine.utils import mkdir_or_exist, track_progress
 from PIL import Image
 
 _mapping = np.sort(
@@ -53,7 +53,7 @@ def main():
     else:
         out_dir = args.out_dir
     json_path = args.json_path
-    mmcv.mkdir_or_exist(out_dir)
+    mkdir_or_exist(out_dir)
     img_dir = osp.join(devkit_path, 'VOC2010', 'JPEGImages')
 
     train_detail = Detail(json_path, img_dir, 'train')
@@ -62,10 +62,10 @@ def main():
     val_detail = Detail(json_path, img_dir, 'val')
     val_ids = val_detail.getImgs()
 
-    mmcv.mkdir_or_exist(
+    mkdir_or_exist(
         osp.join(devkit_path, 'VOC2010/ImageSets/SegmentationContext'))
 
-    train_list = mmcv.track_progress(
+    train_list = track_progress(
         partial(generate_labels, detail=train_detail, out_dir=out_dir),
         train_ids)
     with open(
@@ -73,7 +73,7 @@ def main():
                      'train.txt'), 'w') as f:
         f.writelines(line + '\n' for line in sorted(train_list))
 
-    val_list = mmcv.track_progress(
+    val_list = track_progress(
         partial(generate_labels, detail=val_detail, out_dir=out_dir), val_ids)
     with open(
             osp.join(devkit_path, 'VOC2010/ImageSets/SegmentationContext',
