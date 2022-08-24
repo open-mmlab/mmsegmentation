@@ -8,9 +8,8 @@ import torch.utils.checkpoint as cp
 from mmcv.cnn import Conv2d, build_activation_layer, build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import MultiheadAttention
-from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
-                                        trunc_normal_init)
 from mmengine.model import BaseModule, ModuleList, Sequential
+from mmengine.model.utils import constant_init, normal_init, trunc_normal_init
 
 from mmseg.registry import MODELS
 from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw

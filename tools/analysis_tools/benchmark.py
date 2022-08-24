@@ -6,8 +6,9 @@ import time
 import numpy as np
 import torch
 from mmengine import Config
+from mmengine.fileio import dump, mkdir_or_exist
 from mmengine.runner import Runner, load_checkpoint, wrap_fp16_model
-from mmengine.utils import dump, mkdir_or_exist, revert_sync_batchnorm
+from mmengine.utils import revert_sync_batchnorm
 
 from mmseg.registry import MODELS
 from mmseg.utils import register_all_modules

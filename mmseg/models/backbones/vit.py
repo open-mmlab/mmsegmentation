@@ -7,10 +7,9 @@ import torch.nn as nn
 import torch.utils.checkpoint as cp
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import FFN, MultiheadAttention
-from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
-                                        trunc_normal_)
 from mmengine.logging import print_log
 from mmengine.model import BaseModule, ModuleList
+from mmengine.model.utils import constant_init, kaiming_init, trunc_normal_
 from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple

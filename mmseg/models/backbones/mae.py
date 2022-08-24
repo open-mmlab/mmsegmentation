@@ -3,9 +3,9 @@ import math
 
 import torch
 import torch.nn as nn
-from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
-                                        trunc_normal_)
-from mmcv.runner import ModuleList, _load_checkpoint
+from mmengine.model import ModuleList
+from mmengine.model.utils import constant_init, kaiming_init, trunc_normal_
+from mmengine.runner import CheckpointLoader
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.registry import MODELS
@@ -179,7 +179,7 @@ class MAE(BEiT):
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg.get('type') == 'Pretrained'):
-            checkpoint = _load_checkpoint(
+            checkpoint = CheckpointLoader.load_checkpoint(
                 self.init_cfg['checkpoint'], logger=None, map_location='cpu')
             state_dict = self.resize_rel_pos_embed(checkpoint)
             state_dict = self.resize_abs_pos_embed(state_dict)

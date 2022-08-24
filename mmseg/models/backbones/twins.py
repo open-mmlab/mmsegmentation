@@ -8,9 +8,8 @@ import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN
-from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
-                                        trunc_normal_init)
 from mmengine.model import BaseModule, ModuleList
+from mmengine.model.utils import constant_init, normal_init, trunc_normal_init
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.models.backbones.mit import EfficientMultiheadAttention

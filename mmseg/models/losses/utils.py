@@ -4,7 +4,7 @@ import functools
 import numpy as np
 import torch
 import torch.nn.functional as F
-from mmengine.utils import load
+from mmengine.fileio import load
 
 
 def get_class_weight(class_weight):

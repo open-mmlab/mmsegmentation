@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
-from mmcv.cnn import ConvModule, constant_init
+from mmcv.cnn import ConvModule
+from mmengine.model.utils import constant_init
 from torch import nn as nn
 from torch.nn import functional as F
 
