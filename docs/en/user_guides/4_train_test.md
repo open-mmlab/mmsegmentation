@@ -152,10 +152,10 @@ The basic usage is as follows.
 [GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} ${WORK_DIR}
 ```
 
-Below is an example of using 8 GPUs to train PSPNet on a Slurm partition named _dev_, and set the work-dir to some shared file systems.
+Below is an example of using 4 GPUs to train PSPNet on a Slurm partition named _dev_, and set the work-dir to some shared file systems.
 
 ```shell
-GPUS=8 sh tools/slurm_train.sh dev pspnet configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py work_dir/pspnet
+GPUS=4 sh tools/slurm_train.sh dev pspnet configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py --work-dir work_dir/pspnet
 ```
 
 You can check [the source code](../../../tools/dist_train.sh) to review full arguments and environment variables.
