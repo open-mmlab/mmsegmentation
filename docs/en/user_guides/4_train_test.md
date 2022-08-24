@@ -149,7 +149,7 @@ On a cluster managed by Slurm, you can use `slurm_train.sh` to spawn training jo
 The basic usage is as follows.
 
 ```shell
-[GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} ${WORK_DIR}
+[GPUS=${GPUS}] sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} ${CONFIG_FILE} --work-dir ${WORK_DIR}
 ```
 
 Below is an example of using 4 GPUs to train PSPNet on a Slurm partition named _dev_, and set the work-dir to some shared file systems.
