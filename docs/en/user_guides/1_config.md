@@ -13,7 +13,7 @@ The configs that are composed by components from `_base_` are called _primitive_
 For all configs under the same folder, it is recommended to have only **one** _primitive_ config. All other configs should inherit from the _primitive_ config. In this way, the maximum of inheritance level is 3.
 
 For easy understanding, we recommend contributors to inherit from existing methods.
-For example, if some modification is made base on DeepLabV3, user may first inherit the basic DeepLabV3 structure by specifying `_base_ = ../deeplabv3/deeplabv3_r50-d8_4x4b-ce-linearlr-40k_cityscapes-512x1024.py`, then modify the necessary fields in the config files.
+For example, if some modification is made base on DeepLabV3, user may first inherit the basic DeepLabV3 structure by specifying `_base_ = ../deeplabv3/deeplabv3_r50-d8_4xb4-40k_cityscapes-512x1024.py`, then modify the necessary fields in the config files.
 
 If you are building an entirely new method that does not share the structure with any of the existing methods, you may create a folder `xxxnet` under `configs`,
 
@@ -257,7 +257,7 @@ model = dict(
 `ResNet` and `HRNet` use different keywords to construct.
 
 ```python
-_base_ = '../pspnet/psp_r50_512x1024_40k_cityscpaes.py'
+_base_ = '../pspnet/pspnet_r50-d8_4xb4-40k_cityscpaes-512x1024.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     pretrained='open-mmlab://msra/hrnetv2_w32',
@@ -303,7 +303,7 @@ It's worth noting that when modifying intermediate variables in the children con
 For example, we would like to change multi scale strategy to train/test a PSPNet. `train_pipeline`/`test_pipeline` are intermediate variable we would like to modify.
 
 ```python
-_base_ = '../pspnet/psp_r50_512x1024_40k_cityscapes.py'
+_base_ = '../pspnet/pspnet_r50-d8_4xb4-40k_cityscpaes-512x1024.py'
 crop_size = (512, 1024)
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
