@@ -59,7 +59,7 @@ class IoUMetric(BaseMetric):
             data_samples (Sequence[dict]): A batch of outputs from the model.
         """
         num_classes = len(self.dataset_meta['classes'])
-        for data, data_sample in zip(data_batch, data_samples):
+        for data_sample in data_samples:
             pred_label = data_sample['pred_sem_seg']['data'].squeeze()
             label = data_sample['gt_sem_seg']['data'].squeeze().to(pred_label)
             self.results.append(
