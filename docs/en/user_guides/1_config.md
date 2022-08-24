@@ -13,7 +13,7 @@ The configs that are composed by components from `_base_` are called _primitive_
 For all configs under the same folder, it is recommended to have only **one** _primitive_ config. All other configs should inherit from the _primitive_ config. In this way, the maximum of inheritance level is 3.
 
 For easy understanding, we recommend contributors to inherit from existing methods.
-For example, if some modification is made base on DeepLabV3, user may first inherit the basic DeepLabV3 structure by specifying `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py`, then modify the necessary fields in the config files.
+For example, if some modification is made base on DeepLabV3, user may first inherit the basic DeepLabV3 structure by specifying `_base_ = ../deeplabv3/deeplabv3_r50-d8_4x4b-ce-linearlr-40k_cityscapes-512x1024.py`, then modify the necessary fields in the config files.
 
 If you are building an entirely new method that does not share the structure with any of the existing methods, you may create a folder `xxxnet` under `configs`,
 
@@ -23,21 +23,20 @@ Please refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/con
 
 We follow the below style to name config files. Contributors are advised to follow the same style.
 
-````
+```text
+{algorithm name}_{model component names [component1]_[component2]_[...]}_{training settings}_{training dataset information}_{testing dataset information}
 ```
-{model}_{backbone}_[misc]_[gpu x batch_per_gpu]_{resolution}_{iterations}_{dataset}
-```
-````
 
-`{xxx}` is required field and `[yyy]` is optional.
+The file name is divided to five parts. All parts and components are connected with `_` and words of each part or component should be connected with `-`.
 
-- `{model}`: model type like `psp`, `deeplabv3`, etc.
-- `{backbone}`: backbone type like `r50` (ResNet-50), `x101` (ResNeXt-101).
-- `[misc]`: miscellaneous setting/plugins of model, e.g. `dconv`, `gcb`, `attention`, `mstrain`.
-- `[gpu x batch_per_gpu]`: GPUs and samples per GPU, `8x2` is used by default.
-- `{resolution}`: the size of training images.
-- `{iterations}`: number of training iterations like `160k`.
-- `{training datasets}`: dataset like `cityscapes`, `voc12aug`, `ade`.
+- `{algorithm name}`: The name of the algorithm, such as `DeepLabV3`, `PSPNet`, etc.
+- `{model component names}`: Names of the components used in the algorithm such as backbone, head, etc. For example, `r50-d8_deeplabv3` means using ResNet50 backbone, DeepLabV3 decode head in the algorithm.
+- `{training settings}`: Information of training settings such as batch size, augmentations, loss trick, scheduler, and epochs/iterations. For example: `4xb4-ce-linearlr-40K` means using 4-gpus x 4-images-per-gpu, CrossEntropy loss, Linear learning rate, and train 20K iterations.
+  Some abbreviations:
+  - `{gpu x batch_per_gpu}`: GPUs and samples per GPU. `bN` indicates N batch size per GPU. E.g. `8xb2` is the short term of 8-gpus x 2-images-per-gpu. And `4xb4` is used by default if not mentioned.
+  - `{schedule}`: training schedule, options are `20K`, `40K`, etc. `20K` and `40K` means 20000 iterations and 40000 iterations respectively.
+- `{training dataset information}`: Training dataset names like `cityscapes`, `PascalVOC`, `ADE20K`, etc, and input resolutions. For example: `cityscapes-768x768` means training on `cityscapes` dataset and the input shape is `768x768`.
+- `{testing dataset information}` (optional): Testing dataset name for models trained on one dataset but tested on another. If not mentioned, it means the model was trained and tested on the same dataset type.
 
 ## An Example of PSPNet
 
@@ -45,7 +44,6 @@ To help the users have a basic idea of a complete config and the modules in a mo
 we make brief comments on the config of PSPNet using ResNet50V1c as the following.
 For more detailed usage and the corresponding alternative for each module, please refer to the API documentation.
 
-````
 ```python
 _base_ = [
     '../_base_/models/pspnet_r50-d8.py', '../_base_/datasets/cityscapes.py',
@@ -55,11 +53,9 @@ crop_size = (512, 1024)
 data_preprocessor = dict(size=crop_size)
 model = dict(data_preprocessor=data_preprocessor)
 ```
-````
 
 `_base_/models/pspnet_r50-d8.py` is a basic model cfg file for PSPNet using ResNet50V1c
 
-````
 ```python
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)  # Segmentation usually uses SyncBN
@@ -118,11 +114,9 @@ model = dict(
     train_cfg=dict(),  # train_cfg is just a place holder for now.
     test_cfg=dict(mode='whole'))  # The test mode, options are 'whole' and 'sliding'. 'whole': whole image fully-convolutional test. 'sliding': sliding crop window on the image.
 ```
-````
 
 `_base_/datasets/cityscapes.py` is the configuration file of the dataset
 
-````
 ```python
 # dataset settings
 dataset_type = 'CityscapesDataset'  # Dataset type, this will be used to define the dataset.
@@ -180,11 +174,9 @@ test_dataloader = val_dataloader
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
 test_evaluator = val_evaluator
 ```
-````
 
 `_base_/schedules/schedule_40k.py`
 
-````
 ```python
 # optimizer
 optimizer = dict(type='SGD', # Type of optimizers, refer to https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py for more details
@@ -216,11 +208,9 @@ default_hooks = dict(
     checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=4000),  # Save checkpoints periodically.
     sampler_seed=dict(type='DistSamplerSeedHook'))  # Data-loading sampler for distributed training.
 ```
-````
 
 in `_base_/default_runtime.py`
 
-````
 ```python
 # Set the default scope of the registry to mmseg.
 default_scope = 'mmseg'
@@ -234,7 +224,6 @@ log_level = 'INFO'
 load_from = None  # Load checkpoint from file.
 resume = False  # Whether to resume from existed model.
 ```
-````
 
 ## FAQ
 
@@ -245,7 +234,6 @@ You may refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/co
 
 In MMSegmentation, for example, to change the backbone of PSPNet with the following config.
 
-````
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
@@ -265,11 +253,9 @@ model = dict(
     decode_head=dict(...),
     auxiliary_head=dict(...))
 ```
-````
 
 `ResNet` and `HRNet` use different keywords to construct.
 
-````
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40k_cityscpaes.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -307,7 +293,6 @@ model = dict(
     decode_head=dict(...),
     auxiliary_head=dict(...))
 ```
-````
 
 The `_delete_=True` would replace all old keys in `backbone` field with new keys.
 
@@ -317,16 +302,18 @@ Some intermediate variables are used in the configs files, like `train_pipeline`
 It's worth noting that when modifying intermediate variables in the children configs, user need to pass the intermediate variables into corresponding fields again.
 For example, we would like to change multi scale strategy to train/test a PSPNet. `train_pipeline`/`test_pipeline` are intermediate variable we would like to modify.
 
-````
 ```python
-_base_ = '../pspnet/psp_r50_512x1024_40ki_cityscapes.py'
+_base_ = '../pspnet/psp_r50_512x1024_40k_cityscapes.py'
 crop_size = (512, 1024)
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='RandomResize', img_scale=(2048, 1024), ratio_range=(1.0, 2.0)),  # change to [1., 2.]
+    dict(type='RandomResize',
+         img_scale=(2048, 1024),
+         ratio_range=(1., 2.),
+         keep_ration=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='PhotoMetricDistortion'),
@@ -356,13 +343,11 @@ train_dataloader = dict(dataset=train_dataset)
 val_dataloader = dict(dataset=test_dataset)
 test_dataloader = val_dataloader
 ```
-````
 
 We first define the new `train_pipeline`/`test_pipeline` and pass them into `dataset`.
 
 Similarly, if we would like to switch from `SyncBN` to `BN` or `MMSyncBN`, we need to substitute every `norm_cfg` in the config.
 
-````
 ```python
 _base_ = '../pspnet/psp_r50_512x1024_40ki_cityscpaes.py'
 norm_cfg = dict(type='BN', requires_grad=True)
@@ -371,7 +356,6 @@ model = dict(
     decode_head=dict(norm_cfg=norm_cfg),
     auxiliary_head=dict(norm_cfg=norm_cfg))
 ```
-````
 
 ## Modify config through script arguments
 
