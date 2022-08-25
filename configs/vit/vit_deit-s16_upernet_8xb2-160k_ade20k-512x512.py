@@ -1,4 +1,4 @@
-_base_ = './upernet_vit-b16_mln_512x512_80k_ade20k.py'
+_base_ = './vit_vit-b16_mln_upernet_8xb2-80k_ade20k-512x512.py'
 
 model = dict(
     pretrained='pretrain/deit_small_patch16_224-cd65a155.pth',

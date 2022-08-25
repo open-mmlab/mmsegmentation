@@ -1,4 +1,4 @@
-_base_ = './deeplabv3_unet_s5-d16_128x128_40k_stare.py'
+_base_ = './unet-s5-d16_deeplabv3_4xb4-40k_hrf-256x256.py'
 model = dict(
     decode_head=dict(loss_decode=[
         dict(type='CrossEntropyLoss', loss_name='loss_ce', loss_weight=1.0),

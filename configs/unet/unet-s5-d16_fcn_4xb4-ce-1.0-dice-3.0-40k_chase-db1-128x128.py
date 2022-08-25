@@ -1,4 +1,4 @@
-_base_ = './deeplabv3_unet_s5-d16_64x64_40k_drive.py'
+_base_ = './unet-s5-d16_fcn_4xb4-40k_chase-db1-128x128.py'
 model = dict(
     decode_head=dict(loss_decode=[
         dict(type='CrossEntropyLoss', loss_name='loss_ce', loss_weight=1.0),
