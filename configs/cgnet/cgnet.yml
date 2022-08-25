@@ -13,7 +13,7 @@ Collections:
   Converted From:
     Code: https://github.com/wutianyiRosun/CGNet
 Models:
-- Name: cgnet_680x680_60k_cityscapes
+- Name: cgnet_fcn_4xb4-60k_cityscapes-680x680
   In Collection: CGNet
   Metadata:
     backbone: M3N21
@@ -33,9 +33,9 @@ Models:
     Metrics:
       mIoU: 65.63
       mIoU(ms+flip): 68.04
-  Config: configs/cgnet/cgnet_680x680_60k_cityscapes.py
+  Config: configs/cgnet/cgnet_fcn_4xb4-60k_cityscapes-680x680.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth
-- Name: cgnet_512x1024_60k_cityscapes
+- Name: cgnet_fcn_4xb8-60k_cityscapes-512x1024
   In Collection: CGNet
   Metadata:
     backbone: M3N21
@@ -55,5 +55,5 @@ Models:
     Metrics:
       mIoU: 68.27
       mIoU(ms+flip): 70.33
-  Config: configs/cgnet/cgnet_512x1024_60k_cityscapes.py
+  Config: configs/cgnet/cgnet_fcn_4xb8-60k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes_20201101_110254-124ea03b.pth
