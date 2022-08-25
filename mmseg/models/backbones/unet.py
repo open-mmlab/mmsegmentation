@@ -3,10 +3,9 @@ import warnings
 
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-from mmcv.cnn import (UPSAMPLE_LAYERS, ConvModule, build_activation_layer,
-                      build_norm_layer)
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmcv.cnn import ConvModule, build_activation_layer, build_norm_layer
 from mmengine.model import BaseModule
+from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
 from mmseg.registry import MODELS
 from ..utils import UpConvBlock, Upsample
@@ -85,7 +84,7 @@ class BasicConvBlock(nn.Module):
         return out
 
 
-@UPSAMPLE_LAYERS.register_module()
+@MODELS.register_module()
 class DeconvModule(nn.Module):
     """Deconvolution upsample module in decoder for UNet (2X upsample).
 
@@ -146,7 +145,7 @@ class DeconvModule(nn.Module):
         return out
 
 
-@UPSAMPLE_LAYERS.register_module()
+@MODELS.register_module()
 class InterpConv(nn.Module):
     """Interpolation upsample module in decoder for UNet.
 

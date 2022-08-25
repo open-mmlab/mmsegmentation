@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn.functional as F
-from mmengine.data import PixelData
+from mmengine.structures import PixelData
 from torch import Tensor
 
 from mmseg.registry import MODELS

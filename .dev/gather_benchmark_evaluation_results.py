@@ -3,8 +3,8 @@ import argparse
 import glob
 import os.path as osp
 
-import mmcv
-from mmcv import Config
+from mmengine import Config
+from mmengine.fileio import dump, load
 
 
 def parse_args():
@@ -56,7 +56,7 @@ if __name__ == '__main__':
                 continue
 
             log_json_path = list(sorted(json_list))[-1]
-            metric = mmcv.load(log_json_path)
+            metric = load(log_json_path)
             if config not in metric.get('config', {}):
                 print(f'{config} not included in {log_json_path}')
                 continue
@@ -84,7 +84,7 @@ if __name__ == '__main__':
                 new=new_metrics)
 
     if metrics_out:
-        mmcv.dump(result_dict, metrics_out, indent=4)
+        dump(result_dict, metrics_out, indent=4)
     print('===================================')
     for config_name, metrics in result_dict.items():
         print(config_name, metrics)

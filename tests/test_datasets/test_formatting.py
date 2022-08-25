@@ -4,7 +4,7 @@ import os.path as osp
 import unittest
 
 import numpy as np
-from mmengine.data import BaseDataElement
+from mmengine.structures import BaseDataElement
 
 from mmseg.datasets.transforms import PackSegInputs
 from mmseg.structures import SegDataSample

@@ -4,6 +4,7 @@ import warnings
 from typing import Sequence
 
 import mmcv
+from mmengine.fileio import FileClient
 from mmengine.hooks import Hook
 from mmengine.runner import Runner
 
@@ -30,7 +31,7 @@ class SegVisualizationHook(Hook):
         show (bool): Whether to display the drawn image. Default to False.
         wait_time (float): The interval of show (s). Defaults to 0.
         file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:`mmcv.fileio.FileClient` for details.
+            See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
     """
 
@@ -81,7 +82,7 @@ class SegVisualizationHook(Hook):
             return
 
         if self.file_client is None:
-            self.file_client = mmcv.FileClient(**self.file_client_args)
+            self.file_client = FileClient(**self.file_client_args)
 
         if self.every_n_inner_iters(batch_idx, self.interval):
             for input_data, output in zip(data_batch, outputs):

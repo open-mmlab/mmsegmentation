@@ -6,7 +6,7 @@ import shutil
 import tempfile
 import zipfile
 
-import mmcv
+from mmengine.utils import mkdir_or_exist
 
 
 def parse_args():
@@ -28,14 +28,14 @@ def main():
         out_dir = args.out_dir
 
     print('Making directories...')
-    mmcv.mkdir_or_exist(out_dir)
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'test'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
+    mkdir_or_exist(out_dir)
+    mkdir_or_exist(osp.join(out_dir, 'img_dir'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'test'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
 
     assert 'Train.zip' in os.listdir(dataset_path), \
         'Train.zip is not in {}'.format(dataset_path)

@@ -9,6 +9,7 @@ import zipfile
 
 import mmcv
 import numpy as np
+from mmengine.utils import ProgressBar, mkdir_or_exist
 
 
 def parse_args():
@@ -111,10 +112,10 @@ def main():
         out_dir = args.out_dir
 
     print('Making directories...')
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
 
     zipp_list = glob.glob(os.path.join(dataset_path, '*.zip'))
     print('Find the data', zipp_list)
@@ -133,7 +134,7 @@ def main():
                 for area_ann in src_path_list:
                     if 'area9' in area_ann:
                         src_path_list.remove(area_ann)
-            prog_bar = mmcv.ProgressBar(len(src_path_list))
+            prog_bar = ProgressBar(len(src_path_list))
             for i, src_path in enumerate(src_path_list):
                 area_idx = osp.basename(src_path).split('_')[3].strip('.tif')
                 data_type = 'train' if area_idx in splits['train'] else 'val'

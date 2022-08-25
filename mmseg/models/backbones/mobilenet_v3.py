@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
 
-import mmcv
 from mmcv.cnn import ConvModule
 from mmcv.cnn.bricks import Conv2dAdaptivePadding
 from mmengine.model import BaseModule
+from mmengine.utils import is_tuple_of
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmseg.registry import MODELS
@@ -104,7 +104,7 @@ class MobileNetV3(BaseModule):
 
         assert arch in self.arch_settings
         assert isinstance(reduction_factor, int) and reduction_factor > 0
-        assert mmcv.is_tuple_of(out_indices, int)
+        assert is_tuple_of(out_indices, int)
         for index in out_indices:
             if index not in range(0, len(self.arch_settings[arch]) + 2):
                 raise ValueError(

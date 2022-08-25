@@ -3,8 +3,8 @@ import argparse
 import os.path as osp
 from functools import partial
 
-import mmcv
 import numpy as np
+from mmengine.utils import mkdir_or_exist, scandir, track_parallel_progress
 from PIL import Image
 from scipy.io import loadmat
 
@@ -43,12 +43,12 @@ def main():
         out_dir = osp.join(devkit_path, 'VOC2012', 'SegmentationClassAug')
     else:
         out_dir = args.out_dir
-    mmcv.mkdir_or_exist(out_dir)
+    mkdir_or_exist(out_dir)
     in_dir = osp.join(aug_path, 'dataset', 'cls')
 
-    mmcv.track_parallel_progress(
+    track_parallel_progress(
         partial(convert_mat, in_dir=in_dir, out_dir=out_dir),
-        list(mmcv.scandir(in_dir, suffix='.mat')),
+        list(scandir(in_dir, suffix='.mat')),
         nproc=nproc)
 
     full_aug_list = []

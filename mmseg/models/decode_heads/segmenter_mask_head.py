@@ -3,9 +3,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
-from mmcv.cnn.utils.weight_init import (constant_init, trunc_normal_,
+from mmengine.model import ModuleList
+from mmengine.model.weight_init import (constant_init, trunc_normal_,
                                         trunc_normal_init)
-from mmcv.runner import ModuleList
 
 from mmseg.models.backbones.vit import TransformerEncoderLayer
 from mmseg.registry import MODELS
@@ -17,7 +17,7 @@ class SegmenterMaskTransformerHead(BaseDecodeHead):
     """Segmenter: Transformer for Semantic Segmentation.
 
     This head is the implementation of
-    `Segmenter:　<https://arxiv.org/abs/2105.05633>`_.
+    `Segmenter: <https://arxiv.org/abs/2105.05633>`_.
 
     Args:
         backbone_cfg:(dict): Config of backbone of

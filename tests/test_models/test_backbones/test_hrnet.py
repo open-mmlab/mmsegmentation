@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import pytest
 import torch
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
 from mmseg.models.backbones.hrnet import HRModule, HRNet
 from mmseg.models.backbones.resnet import BasicBlock, Bottleneck

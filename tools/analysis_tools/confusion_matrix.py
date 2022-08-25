@@ -3,10 +3,10 @@ import argparse
 import os
 
 import matplotlib.pyplot as plt
-import mmcv
 import numpy as np
 from matplotlib.ticker import MultipleLocator
-from mmcv import Config, DictAction
+from mmengine import Config, DictAction
+from mmengine.utils import ProgressBar, load
 
 from mmseg.datasets import build_dataset
 
@@ -53,7 +53,7 @@ def calculate_confusion_matrix(dataset, results):
     n = len(dataset.CLASSES)
     confusion_matrix = np.zeros(shape=[n, n])
     assert len(dataset) == len(results)
-    prog_bar = mmcv.ProgressBar(len(results))
+    prog_bar = ProgressBar(len(results))
     for idx, per_img_res in enumerate(results):
         res_segm = per_img_res
         gt_segm = dataset.get_gt_seg_map_by_idx(idx)
@@ -155,7 +155,7 @@ def main():
     if args.cfg_options is not None:
         cfg.merge_from_dict(args.cfg_options)
 
-    results = mmcv.load(args.prediction_path)
+    results = load(args.prediction_path)
 
     assert isinstance(results, list)
     if isinstance(results[0], np.ndarray):

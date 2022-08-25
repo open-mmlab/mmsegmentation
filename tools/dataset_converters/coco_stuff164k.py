@@ -5,8 +5,9 @@ import shutil
 from functools import partial
 from glob import glob
 
-import mmcv
 import numpy as np
+from mmengine.utils import (mkdir_or_exist, track_parallel_progress,
+                            track_progress)
 from PIL import Image
 
 COCO_LEN = 123287
@@ -222,8 +223,8 @@ def main():
     out_img_dir = osp.join(out_dir, 'images')
     out_mask_dir = osp.join(out_dir, 'annotations')
 
-    mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'train2017'))
-    mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'val2017'))
+    mkdir_or_exist(osp.join(out_mask_dir, 'train2017'))
+    mkdir_or_exist(osp.join(out_mask_dir, 'val2017'))
 
     if out_dir != coco_path:
         shutil.copytree(osp.join(coco_path, 'images'), out_img_dir)
@@ -237,22 +238,22 @@ def main():
                 len(train_list), len(test_list))
 
     if args.nproc > 1:
-        mmcv.track_parallel_progress(
+        track_parallel_progress(
             partial(
                 convert_to_trainID, out_mask_dir=out_mask_dir, is_train=True),
             train_list,
             nproc=nproc)
-        mmcv.track_parallel_progress(
+        track_parallel_progress(
             partial(
                 convert_to_trainID, out_mask_dir=out_mask_dir, is_train=False),
             test_list,
             nproc=nproc)
     else:
-        mmcv.track_progress(
+        track_progress(
             partial(
                 convert_to_trainID, out_mask_dir=out_mask_dir, is_train=True),
             train_list)
-        mmcv.track_progress(
+        track_progress(
             partial(
                 convert_to_trainID, out_mask_dir=out_mask_dir, is_train=False),
             test_list)

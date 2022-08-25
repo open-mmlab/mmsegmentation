@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from argparse import ArgumentParser
 
-from mmengine.utils import revert_sync_batchnorm
+from mmengine.model import revert_sync_batchnorm
 
 from mmseg.apis import inference_model, init_model, show_result_pyplot
 from mmseg.utils import register_all_modules

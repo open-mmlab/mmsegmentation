@@ -2,7 +2,7 @@
 import pytest
 import torch
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
-from mmcv.utils.parrots_wrapper import SyncBatchNorm
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import DepthwiseSeparableFCNHead, FCNHead
 from .utils import to_cuda
