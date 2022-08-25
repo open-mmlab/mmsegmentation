@@ -130,11 +130,13 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
 
     def postprocess_result(self,
                            seg_logits: Tensor,
-                           data_samples: List[dict] = None) -> list:
+                           data_samples: OptSampleList = None) -> list:
         """ Convert results list to `SegDataSample`.
         Args:
             seg_logits (Tensor): The segmentation results, seg_logits from
                 model of each input image.
+            data_samples (list[:obj:`SegDataSample`], optional): The
+                annotation data of every samples. Defaults to None.
         Returns:
             list[:obj:`SegDataSample`]: Segmentation results of the
             input images. Each SegDataSample usually contain:
