@@ -1,4 +1,4 @@
-_base_ = './bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k.py'
+_base_ = './bisenetv1_r18-d32_4xb4-160k_coco-stuff164k-512x512.py'
 crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
 model = dict(

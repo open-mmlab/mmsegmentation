@@ -1,4 +1,4 @@
-_base_ = './upernet_beit-large_fp16_8x1_640x640_160k_ade20k.py'
+_base_ = './beit-large_upernet_8xb1-160k_ade20k-640x640.py'
 
 test_pipeline = [
     dict(type='LoadImageFromFile'),

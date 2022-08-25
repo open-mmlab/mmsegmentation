@@ -1,4 +1,4 @@
-_base_ = './bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes.py'
+_base_ = './bisenetv1_r50-d32_4xb4-160k_cityscapes-1024x1024.py'
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
