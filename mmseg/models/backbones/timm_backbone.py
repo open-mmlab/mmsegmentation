@@ -4,8 +4,8 @@ try:
 except ImportError:
     timm = None
 
-from mmcv.cnn.bricks.registry import NORM_LAYERS
 from mmengine.model import BaseModule
+from mmengine.registry import MODELS as MMENGINE_MODELS
 
 from mmseg.registry import MODELS
 
@@ -39,7 +39,7 @@ class TIMMBackbone(BaseModule):
             raise RuntimeError('timm is not installed')
         super(TIMMBackbone, self).__init__(init_cfg)
         if 'norm_layer' in kwargs:
-            kwargs['norm_layer'] = NORM_LAYERS.get(kwargs['norm_layer'])
+            kwargs['norm_layer'] = MMENGINE_MODELS.get(kwargs['norm_layer'])
         self.timm_model = timm.create_model(
             model_name=model_name,
             features_only=features_only,

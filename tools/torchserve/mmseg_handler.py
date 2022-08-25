@@ -5,7 +5,7 @@ import os
 import cv2
 import mmcv
 import torch
-from mmcv.cnn.utils.sync_bn import revert_sync_batchnorm
+from mmengine.model.utils import revert_sync_batchnorm
 from ts.torch_handler.base_handler import BaseHandler
 
 from mmseg.apis import inference_model, init_model

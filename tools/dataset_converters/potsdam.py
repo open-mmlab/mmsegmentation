@@ -9,6 +9,7 @@ import zipfile
 
 import mmcv
 import numpy as np
+from mmengine.utils import ProgressBar, mkdir_or_exist
 
 
 def parse_args():
@@ -118,10 +119,10 @@ def main():
         out_dir = args.out_dir
 
     print('Making directories...')
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
-    mmcv.mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'train'))
+    mkdir_or_exist(osp.join(out_dir, 'img_dir', 'val'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'train'))
+    mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
 
     zipp_list = glob.glob(os.path.join(dataset_path, '*.zip'))
     print('Find the data', zipp_list)
@@ -135,7 +136,7 @@ def main():
                 sub_tmp_dir = os.path.join(tmp_dir, os.listdir(tmp_dir)[0])
                 src_path_list = glob.glob(os.path.join(sub_tmp_dir, '*.tif'))
 
-            prog_bar = mmcv.ProgressBar(len(src_path_list))
+            prog_bar = ProgressBar(len(src_path_list))
             for i, src_path in enumerate(src_path_list):
                 idx_i, idx_j = osp.basename(src_path).split('_')[2:4]
                 data_type = 'train' if f'{idx_i}_{idx_j}' in splits[

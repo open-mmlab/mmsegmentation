@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from mmengine.data import BaseDataElement, PixelData
+from mmengine.structures import BaseDataElement, PixelData
 
 
 class SegDataSample(BaseDataElement):
@@ -15,7 +15,7 @@ class SegDataSample(BaseDataElement):
     Examples:
          >>> import torch
          >>> import numpy as np
-         >>> from mmengine.data import PixelData
+         >>> from mmengine.structures import PixelData
          >>> from mmseg.core import SegDataSample
 
          >>> data_sample = SegDataSample()

@@ -6,7 +6,7 @@ import mmcv
 import numpy as np
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
-from mmcv.utils import is_tuple_of
+from mmengine.utils import is_tuple_of
 from numpy import random
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset

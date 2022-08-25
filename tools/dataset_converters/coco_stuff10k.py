@@ -4,8 +4,9 @@ import os.path as osp
 import shutil
 from functools import partial
 
-import mmcv
 import numpy as np
+from mmengine.utils import (mkdir_or_exist, track_parallel_progress,
+                            track_progress)
 from PIL import Image
 from scipy.io import loadmat
 
@@ -251,10 +252,10 @@ def main():
     out_img_dir = osp.join(out_dir, 'images')
     out_mask_dir = osp.join(out_dir, 'annotations')
 
-    mmcv.mkdir_or_exist(osp.join(out_img_dir, 'train2014'))
-    mmcv.mkdir_or_exist(osp.join(out_img_dir, 'test2014'))
-    mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'train2014'))
-    mmcv.mkdir_or_exist(osp.join(out_mask_dir, 'test2014'))
+    mkdir_or_exist(osp.join(out_img_dir, 'train2014'))
+    mkdir_or_exist(osp.join(out_img_dir, 'test2014'))
+    mkdir_or_exist(osp.join(out_mask_dir, 'train2014'))
+    mkdir_or_exist(osp.join(out_mask_dir, 'test2014'))
 
     train_list, test_list = generate_coco_list(coco_path)
     assert (len(train_list) +
@@ -262,7 +263,7 @@ def main():
                 len(train_list), len(test_list))
 
     if args.nproc > 1:
-        mmcv.track_parallel_progress(
+        track_parallel_progress(
             partial(
                 convert_to_trainID,
                 in_img_dir=osp.join(coco_path, 'images'),
@@ -272,7 +273,7 @@ def main():
                 is_train=True),
             train_list,
             nproc=nproc)
-        mmcv.track_parallel_progress(
+        track_parallel_progress(
             partial(
                 convert_to_trainID,
                 in_img_dir=osp.join(coco_path, 'images'),
@@ -283,7 +284,7 @@ def main():
             test_list,
             nproc=nproc)
     else:
-        mmcv.track_progress(
+        track_progress(
             partial(
                 convert_to_trainID,
                 in_img_dir=osp.join(coco_path, 'images'),
@@ -291,7 +292,7 @@ def main():
                 out_img_dir=out_img_dir,
                 out_mask_dir=out_mask_dir,
                 is_train=True), train_list)
-        mmcv.track_progress(
+        track_progress(
             partial(
                 convert_to_trainID,
                 in_img_dir=osp.join(coco_path, 'images'),
