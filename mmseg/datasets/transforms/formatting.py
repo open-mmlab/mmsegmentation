@@ -2,7 +2,7 @@
 import numpy as np
 from mmcv.transforms import to_tensor
 from mmcv.transforms.base import BaseTransform
-from mmengine.data import PixelData
+from mmengine.structures import PixelData
 
 from mmseg.registry import TRANSFORMS
 from mmseg.structures import SegDataSample

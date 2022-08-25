@@ -2,9 +2,9 @@
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
-from mmengine import Visualizer
-from mmengine.data import PixelData
 from mmengine.dist import master_only
+from mmengine.structures import PixelData
+from mmengine.visualization import Visualizer
 
 from mmseg.registry import VISUALIZERS
 from mmseg.structures import SegDataSample
@@ -28,7 +28,7 @@ class SegLocalVisualizer(Visualizer):
     Examples:
         >>> import numpy as np
         >>> import torch
-        >>> from mmengine.data import PixelData
+        >>> from mmengine.structures import PixelData
         >>> from mmseg.data import SegDataSample
         >>> from mmseg.engine.visualization import SegLocalVisualizer
 
