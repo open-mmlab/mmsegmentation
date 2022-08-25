@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import Mock
 
 import torch
-from mmengine.data import PixelData
+from mmengine.structures import PixelData
 
 from mmseg.engine.hooks import SegVisualizationHook
 from mmseg.structures import SegDataSample

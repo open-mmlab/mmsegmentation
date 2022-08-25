@@ -8,8 +8,8 @@ import numpy as np
 import pytest
 import torch
 import torch.nn as nn
-from mmcv.cnn.utils import revert_sync_batchnorm
-from mmengine.data import PixelData
+from mmengine.model.utils import revert_sync_batchnorm
+from mmengine.structures import PixelData
 from mmengine.utils import is_list_of, is_tuple_of
 from torch import Tensor
 

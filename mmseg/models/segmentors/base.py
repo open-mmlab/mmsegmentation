@@ -2,8 +2,8 @@
 from abc import ABCMeta, abstractmethod
 from typing import List, Tuple
 
-from mmengine.data import PixelData
 from mmengine.model import BaseModel
+from mmengine.structures import PixelData
 from torch import Tensor
 
 from mmseg.structures import SegDataSample

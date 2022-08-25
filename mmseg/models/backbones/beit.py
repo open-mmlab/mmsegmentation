@@ -8,7 +8,8 @@ import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
 from mmengine.model import BaseModule, ModuleList
-from mmengine.model.utils import constant_init, kaiming_init, trunc_normal_
+from mmengine.model.weight_init import (constant_init, kaiming_init,
+                                        trunc_normal_)
 from mmengine.runner.checkpoint import _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple

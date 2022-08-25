@@ -4,7 +4,7 @@ import warnings
 import torch.nn as nn
 from mmcv.cnn import build_conv_layer, build_norm_layer
 from mmengine.model import BaseModule, ModuleList, Sequential
-from mmengine.utils.parrots_wrapper import _BatchNorm
+from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
 from mmseg.registry import MODELS
 from ..utils import Upsample, resize

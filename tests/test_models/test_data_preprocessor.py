@@ -2,7 +2,7 @@
 from unittest import TestCase
 
 import torch
-from mmengine.data import PixelData
+from mmengine.structures import PixelData
 
 from mmseg.models import SegDataPreProcessor
 from mmseg.structures import SegDataSample

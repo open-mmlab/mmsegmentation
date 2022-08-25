@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 from mmcv.cnn import ConvModule
-from mmengine.model.utils import xavier_init
+from mmengine.model.weight_init import xavier_init
 
 from mmseg.registry import MODELS
 from ..utils import resize
