@@ -166,7 +166,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (512,1024)
     Training Memory (GB): 5.37
   Results:
@@ -797,7 +797,7 @@ Models:
       mIoU(ms+flip): 45.26
   Config: configs/fcn/fcn_r101-d8_4xb4-80k_pascal-context-480x480.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context_20210421_163310-4711813f.pth
-- Name: fcn_r101-d8_4xb4-40k_pascal-context-59-480x480x
+- Name: fcn_r101-d8_4xb4-40k_pascal-context-59-480x480
   In Collection: FCN
   Metadata:
     backbone: R-101-D8
@@ -809,9 +809,9 @@ Models:
     Metrics:
       mIoU: 48.42
       mIoU(ms+flip): 50.4
-  Config: configs/fcn/fcn_r101-d8_4xb4-40k_pascal-context-59-480x480x.py
+  Config: configs/fcn/fcn_r101-d8_4xb4-40k_pascal-context-59-480x480.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context_59/fcn_r101-d8_480x480_40k_pascal_context_59_20210415_230724-8cf83682.pth
-- Name: ''
+- Name: fcn_r101-d8_4xb4-80k_pascal-context-59-480x480
   In Collection: FCN
   Metadata:
     backbone: R-101-D8
@@ -823,5 +823,5 @@ Models:
     Metrics:
       mIoU: 49.35
       mIoU(ms+flip): 51.38
-  Config: ''
-  Weights: ''
+  Config: configs/fcn/fcn_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context_59/fcn_r101-d8_480x480_80k_pascal_context_59_20210416_110804-9a6f2c94.pth

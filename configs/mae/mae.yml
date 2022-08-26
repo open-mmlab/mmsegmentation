@@ -10,7 +10,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (512,512)
     Training Memory (GB): 9.96
   Results:

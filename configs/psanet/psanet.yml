@@ -117,7 +117,7 @@ Models:
       mIoU(ms+flip): 78.69
   Config: configs/psanet/psanet_r50-d8_4xb2-80k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r50-d8_512x1024_80k_cityscapes/psanet_r50-d8_512x1024_80k_cityscapes_20200606_161842-ab60a24f.pth
-- Name: ''
+- Name: psanet_r101-d8_4xb2-80k_cityscapes-512x1024
   In Collection: PSANet
   Metadata:
     backbone: R-101-D8
@@ -129,8 +129,8 @@ Models:
     Metrics:
       mIoU: 79.31
       mIoU(ms+flip): 80.53
-  Config: ''
-  Weights: ''
+  Config: configs/psanet/psanet_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/psanet/psanet_r101-d8_512x1024_80k_cityscapes/psanet_r101-d8_512x1024_80k_cityscapes_20200606_161823-0f73a169.pth
 - Name: psanet_r50-d8_4xb2-80k_cityscapes-769x769
   In Collection: PSANet
   Metadata:

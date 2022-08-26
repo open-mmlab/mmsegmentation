@@ -10,7 +10,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (512,512)
     Training Memory (GB): 4.23
   Results:
@@ -32,7 +32,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (512,512)
     Training Memory (GB): 5.16
   Results:
@@ -54,7 +54,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (512,512)
     Training Memory (GB): 6.33
   Results:
@@ -76,7 +76,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (640,640)
     Training Memory (GB): 8.53
   Results:
@@ -98,7 +98,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (640,640)
     Training Memory (GB): 12.08
   Results:
@@ -120,7 +120,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (640,640)
     Training Memory (GB): 26.16
   Results:
