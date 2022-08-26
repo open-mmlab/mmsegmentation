@@ -21,7 +21,7 @@ Models:
       mIoU(ms+flip): 53.84
   Config: configs/beit/beit-base_upernet_8xb2-160k_ade20k-640x640.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k-eead221d.pth
-- Name: beit-large_upernet_8xb1-160k_ade20k-640x640
+- Name: beit-large_upernet_8xb1-amp-160k_ade20k-640x640
   In Collection: UPerNet
   Metadata:
     backbone: BEiT-L
@@ -32,7 +32,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP32
+      mode: AMP
       resolution: (640,640)
     Training Memory (GB): 22.64
   Results:
@@ -41,5 +41,5 @@ Models:
     Metrics:
       mIoU: 56.33
       mIoU(ms+flip): 56.84
-  Config: configs/beit/beit-large_upernet_8xb1-160k_ade20k-640x640.py
+  Config: configs/beit/beit-large_upernet_8xb1-amp-160k_ade20k-640x640.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth
