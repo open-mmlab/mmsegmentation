@@ -74,7 +74,7 @@ class SegVisualizationHook(Hook):
         Args:
             runner (:obj:`Runner`): The runner of the validation process.
             batch_idx (int): The index of the current batch in the val loop.
-            data_batch dict: Data from dataloader.
+            data_batch (dict): Data from dataloader.
             outputs (Sequence[:obj:`SegDataSample`]): Outputs from model.
             mode (str): mode (str): Current mode of runner. Defaults to 'val'.
         """
