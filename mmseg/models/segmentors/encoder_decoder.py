@@ -273,8 +273,8 @@ class EncoderDecoder(BaseSegmentor):
                 y1 = max(y2 - h_crop, 0)
                 x1 = max(x2 - w_crop, 0)
                 crop_img = inputs[:, :, y1:y2, x1:x2]
-                # change the pad shape to patch shape
-                batch_img_metas[0]['pad_shape'] = crop_img.shape[2:]
+                # change the image shape to patch shape
+                batch_img_metas[0]['img_shape'] = crop_img.shape[2:]
                 # the output of encode_decode is seg logits tensor map
                 # with shape [N, C, H, W]
                 crop_seg_logit = self.encode_decode(crop_img, batch_img_metas)
