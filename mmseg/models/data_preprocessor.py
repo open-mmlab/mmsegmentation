@@ -104,10 +104,9 @@ class SegDataPreProcessor(BaseDataPreprocessor):
         if self.channel_conversion and inputs[0].size(0) == 3:
             inputs = [_input[[2, 1, 0], ...] for _input in inputs]
 
+        inputs = [_input.float() for _input in inputs]
         if self._enable_normalize:
             inputs = [(_input - self.mean) / self.std for _input in inputs]
-        else:
-            inputs = [_input.float() for _input in inputs]
 
         if training:
             assert data_samples is not None, ('During training, ',
