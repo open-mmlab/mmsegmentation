@@ -147,7 +147,10 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             - ``seg_logits``(PixelData): Predicted logits of semantic
                 segmentation before normalization.
         """
-        batch_size, _, H, W = seg_logits.shape
+        batch_size, C, H, W = seg_logits.shape
+        assert C > 1, ('This post processes does not binary segmentation, and '
+                       f'channels `seg_logtis` must be > 1 but got {C}')
+
         if data_samples is None:
             data_samples = []
             only_prediction = True
