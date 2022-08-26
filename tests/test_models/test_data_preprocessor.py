@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from unittest import TestCase
 
-from mmseg.models import SegDataPreProcessor
-
 import torch
 from mmengine.structures import PixelData
 
+from mmseg.models import SegDataPreProcessor
 from mmseg.structures import SegDataSample
 
 
