@@ -1,7 +1,7 @@
-_base_ = './deeplabv3plus_r50-d8_512x1024_80k_cityscapes.py'
+_base_ = './deeplabv3plus_r50-d8_4xb2-40k_cityscapes-769x769.py'
 model = dict(
-    pretrained='open-mmlab://resnet18_v1c',
-    backbone=dict(depth=18),
+    pretrained='torchvision://resnet18',
+    backbone=dict(type='ResNet', depth=18),
     decode_head=dict(
         c1_in_channels=64,
         c1_channels=12,

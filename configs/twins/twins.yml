@@ -1,5 +1,5 @@
 Models:
-- Name: twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k
+- Name: twins_pcpvt-s_fpn_fpnhead_8xb4-80k_ade20k-512x512
   In Collection: FPN
   Metadata:
     backbone: PCPVT-S
@@ -19,9 +19,9 @@ Models:
     Metrics:
       mIoU: 43.26
       mIoU(ms+flip): 44.11
-  Config: configs/twins/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k.py
+  Config: configs/twins/twins_pcpvt-s_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_204132-41acd132.pth
-- Name: twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k
+- Name: twins_pcpvt-s_uperhead_8xb4-160k_ade20k-512x512
   In Collection: UPerNet
   Metadata:
     backbone: PCPVT-S
@@ -41,9 +41,9 @@ Models:
     Metrics:
       mIoU: 46.04
       mIoU(ms+flip): 46.92
-  Config: configs/twins/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k.py
+  Config: configs/twins/twins_pcpvt-s_uperhead_8xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k_20211201_233537-8e99c07a.pth
-- Name: twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k
+- Name: twins_pcpvt-b_fpn_fpnhead_8xb4-80k_ade20k-512x512
   In Collection: FPN
   Metadata:
     backbone: PCPVT-B
@@ -63,9 +63,9 @@ Models:
     Metrics:
       mIoU: 45.66
       mIoU(ms+flip): 46.48
-  Config: configs/twins/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k.py
+  Config: configs/twins/twins_pcpvt-b_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141019-d396db72.pth
-- Name: twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k
+- Name: twins_pcpvt-b_uperhead_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Metadata:
     backbone: PCPVT-B
@@ -85,9 +85,9 @@ Models:
     Metrics:
       mIoU: 47.91
       mIoU(ms+flip): 48.64
-  Config: configs/twins/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k.py
+  Config: configs/twins/twins_pcpvt-b_uperhead_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k_20211130_141020-02094ea5.pth
-- Name: twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k
+- Name: twins_pcpvt-l_fpn_fpnhead_8xb4-80k_ade20k-512x512
   In Collection: FPN
   Metadata:
     backbone: PCPVT-L
@@ -107,9 +107,9 @@ Models:
     Metrics:
       mIoU: 45.94
       mIoU(ms+flip): 46.7
-  Config: configs/twins/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k.py
+  Config: configs/twins/twins_pcpvt-l_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_105226-bc6d61dc.pth
-- Name: twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k
+- Name: twins_pcpvt-l_uperhead_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Metadata:
     backbone: PCPVT-L
@@ -129,9 +129,9 @@ Models:
     Metrics:
       mIoU: 49.35
       mIoU(ms+flip): 50.08
-  Config: configs/twins/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k.py
+  Config: configs/twins/twins_pcpvt-l_uperhead_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k_20211201_075053-c6095c07.pth
-- Name: twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k
+- Name: twins_svt-s_fpn_fpnhead_8xb4-80k_ade20k-512x512
   In Collection: FPN
   Metadata:
     backbone: SVT-S
@@ -151,9 +151,9 @@ Models:
     Metrics:
       mIoU: 44.47
       mIoU(ms+flip): 45.42
-  Config: configs/twins/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k.py
+  Config: configs/twins/twins_svt-s_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141006-0a0d3317.pth
-- Name: twins_svt-s_uperhead_8x2_512x512_160k_ade20k
+- Name: twins_svt-s_uperhead_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Metadata:
     backbone: SVT-S
@@ -173,9 +173,9 @@ Models:
     Metrics:
       mIoU: 46.08
       mIoU(ms+flip): 46.96
-  Config: configs/twins/twins_svt-s_uperhead_8x2_512x512_160k_ade20k.py
+  Config: configs/twins/twins_svt-s_uperhead_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-s_uperhead_8x2_512x512_160k_ade20k/twins_svt-s_uperhead_8x2_512x512_160k_ade20k_20211130_141005-e48a2d94.pth
-- Name: twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k
+- Name: twins_svt-b_fpn_fpnhead_8xb4-80k_ade20k-512x512
   In Collection: FPN
   Metadata:
     backbone: SVT-B
@@ -195,9 +195,9 @@ Models:
     Metrics:
       mIoU: 46.77
       mIoU(ms+flip): 47.47
-  Config: configs/twins/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k.py
+  Config: configs/twins/twins_svt-b_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_113849-88b2907c.pth
-- Name: twins_svt-b_uperhead_8x2_512x512_160k_ade20k
+- Name: twins_svt-b_uperhead_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Metadata:
     backbone: SVT-B
@@ -217,9 +217,9 @@ Models:
     Metrics:
       mIoU: 48.04
       mIoU(ms+flip): 48.87
-  Config: configs/twins/twins_svt-b_uperhead_8x2_512x512_160k_ade20k.py
+  Config: configs/twins/twins_svt-b_uperhead_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-b_uperhead_8x2_512x512_160k_ade20k/twins_svt-b_uperhead_8x2_512x512_160k_ade20k_20211202_040826-0943a1f1.pth
-- Name: twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k
+- Name: twins_svt-l_fpn_fpnhead_8xb4-80k_ade20k-512x512
   In Collection: FPN
   Metadata:
     backbone: SVT-L
@@ -239,9 +239,9 @@ Models:
     Metrics:
       mIoU: 46.55
       mIoU(ms+flip): 47.74
-  Config: configs/twins/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k.py
+  Config: configs/twins/twins_svt-l_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141005-1d59bee2.pth
-- Name: twins_svt-l_uperhead_8x2_512x512_160k_ade20k
+- Name: twins_pcpvt-l_uperhead_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Metadata:
     backbone: SVT-L
@@ -261,5 +261,5 @@ Models:
     Metrics:
       mIoU: 49.65
       mIoU(ms+flip): 50.63
-  Config: configs/twins/twins_svt-l_uperhead_8x2_512x512_160k_ade20k.py
+  Config: configs/twins/twins_pcpvt-l_uperhead_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-l_uperhead_8x2_512x512_160k_ade20k/twins_svt-l_uperhead_8x2_512x512_160k_ade20k_20211130_141005-3e2cae61.pth

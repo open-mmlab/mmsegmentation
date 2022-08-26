@@ -11,7 +11,7 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/fast_scnn.py#L272
     Version: v0.17.0
 Models:
-- Name: fast_scnn_lr0.12_8x4_160k_cityscapes
+- Name: fast_scnn_8xb4-160k_cityscapes-512x1024
   In Collection: FastSCNN
   Metadata:
     backbone: FastSCNN
@@ -31,5 +31,5 @@ Models:
     Metrics:
       mIoU: 70.96
       mIoU(ms+flip): 72.65
-  Config: configs/fastscnn/fast_scnn_lr0.12_8x4_160k_cityscapes.py
+  Config: configs/fastscnn/fast_scnn_8xb4-160k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853-0cec9937.pth

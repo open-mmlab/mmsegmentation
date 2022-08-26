@@ -1,4 +1,4 @@
-_base_ = './segmenter_vit-s_mask_8x1_512x512_160k_ade20k.py'
+_base_ = './segmenter_vit-t_mask_8xb1-160k_ade20k-512x512.py'
 
 model = dict(
     decode_head=dict(

@@ -1,4 +1,4 @@
-_base_ = ['./setr_mla_512x512_160k_b8_ade20k.py']
+_base_ = ['./setr_vit-l-mla_8xb1-160k_ade20k-512x512.py']
 
 # num_gpus: 8 -> batch_size: 16
 train_dataloader = dict(batch_size=2)

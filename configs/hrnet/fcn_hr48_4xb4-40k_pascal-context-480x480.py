@@ -1,4 +1,4 @@
-_base_ = './fcn_hr18_480x480_40k_pascal_context.py'
+_base_ = './fcn_hr18_4xb4-40k_pascal-context-480x480.py'
 model = dict(
     pretrained='open-mmlab://msra/hrnetv2_w48',
     backbone=dict(

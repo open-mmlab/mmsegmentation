@@ -1,4 +1,4 @@
-_base_ = './fcn_r101-d8_512x1024_80k_cityscapes.py'
+_base_ = './fcn_r101-d8_4xb2-80k_cityscapes-512x1024.py'
 optim_wrapper = dict(
     _delete_=True,
     type='AmpOptimWrapper',

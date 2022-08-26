@@ -1,5 +1,5 @@
 # model settings
-_base_ = './fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes.py'
+_base_ = './fastfcn_r50-d32_jpu_psp_4xb2-80k_cityscapes-512x1024.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     decode_head=dict(

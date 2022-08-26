@@ -1,4 +1,4 @@
-_base_ = '../pspnet/pspnet_r101-d8_512x512_160k_ade20k.py'
+_base_ = '../pspnet/pspnet_r101-d8_4xb4-160k_ade20k-512x512.py'
 model = dict(
     pretrained='mmcls://mobilenet_v2',
     backbone=dict(
