@@ -13,7 +13,7 @@ Collections:
   Converted From:
     Code: https://github.com/isl-org/DPT
 Models:
-- Name: dpt_vit-b16_512x512_160k_ade20k
+- Name: dpt_vit-b16_8xb2-160k_ade20k-512x512
   In Collection: DPT
   Metadata:
     backbone: ViT-B
@@ -33,5 +33,5 @@ Models:
     Metrics:
       mIoU: 46.97
       mIoU(ms+flip): 48.34
-  Config: configs/dpt/dpt_vit-b16_512x512_160k_ade20k.py
+  Config: configs/dpt/dpt_vit-b16_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dpt/dpt_vit-b16_512x512_160k_ade20k/dpt_vit-b16_512x512_160k_ade20k-db31cf52.pth
