@@ -95,8 +95,7 @@ class SegDataPreProcessor(BaseDataPreprocessor):
             training (bool): Whether to enable training time augmentation.
 
         Returns:
-            Dict: Data in the same format as the
-            model input.
+            Dict: Data in the same format as the model input.
         """
         data = self.cast_data(data)  # type: ignore
         inputs = data['inputs']
