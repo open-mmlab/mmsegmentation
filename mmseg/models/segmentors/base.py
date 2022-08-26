@@ -76,10 +76,11 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         optimizer updating, which are done in the :meth:`train_step`.
 
         Args:
-            inputs (torch.Tensor): The input tensor with shape
-                (N, C, ...) in general.
-            data_samples (list[:obj:`SegDataSample`], optional): The
-                annotation data of every samples. Defaults to None.
+            inputs (torch.Tensor): The input tensor with shape (N, C, ...) in
+                general.
+            data_samples (list[:obj:`SegDataSample`]): The seg
+                data samples. It usually includes information such as
+                `metainfo` and `gt_sem_seg`. Default to None.
             mode (str): Return what kind of value. Defaults to 'tensor'.
 
         Returns:
@@ -135,8 +136,9 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         Args:
             seg_logits (Tensor): The segmentation results, seg_logits from
                 model of each input image.
-            data_samples (list[:obj:`SegDataSample`], optional): The
-                annotation data of every samples. Defaults to None.
+            data_samples (list[:obj:`SegDataSample`]): The seg
+                data samples. It usually includes information such as
+                `metainfo` and `gt_sem_seg`. Default to None.
         Returns:
             list[:obj:`SegDataSample`]: Segmentation results of the
             input images. Each SegDataSample usually contain:

@@ -160,9 +160,9 @@ class EncoderDecoder(BaseSegmentor):
 
         Args:
             inputs (Tensor): Input images.
-            data_samples (list[:obj:`SegDataSample`]): The seg
-                data samples. It usually includes information such
-                as `metainfo` and `gt_sem_seg`.
+            data_samples (list[:obj:`SegDataSample`]): The seg data samples.
+                It usually includes information such as `metainfo` and
+                `gt_sem_seg`.
 
         Returns:
             dict[str, Tensor]: a dictionary of loss components
@@ -189,9 +189,9 @@ class EncoderDecoder(BaseSegmentor):
 
         Args:
             inputs (Tensor): Inputs with shape (N, C, H, W).
-            data_samples (List[:obj:`SegDataSample`], optional): The seg
-                data samples. It usually includes information such
-                as `metainfo` and `gt_sem_seg`.
+            data_samples (List[:obj:`SegDataSample`], optional): The seg data
+                samples. It usually includes information such as `metainfo`
+                and `gt_sem_seg`.
 
         Returns:
             list[:obj:`SegDataSample`]: Segmentation results of the

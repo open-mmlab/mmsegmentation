@@ -120,9 +120,9 @@ class CascadeEncoderDecoder(EncoderDecoder):
 
         Args:
             inputs (Tensor): Inputs with shape (N, C, H, W).
-            data_samples (List[:obj:`SegDataSample`]): The seg
-                data samples. It usually includes information such
-                as `img_metas` and `gt_semantic_seg`.
+            data_samples (List[:obj:`SegDataSample`]): The seg data samples.
+                It usually includes information such as `metainfo` and
+                `gt_semantic_seg`.
 
         Returns:
             Tensor: Forward output of model without any post-processes.
