@@ -39,12 +39,12 @@ class TestPackSegInputs(unittest.TestCase):
     def test_transform(self):
         transform = PackSegInputs(meta_keys=self.meta_keys)
         results = transform(copy.deepcopy(self.results))
-        self.assertIn('data_sample', results)
-        self.assertIsInstance(results['data_sample'], SegDataSample)
-        self.assertIsInstance(results['data_sample'].gt_sem_seg,
+        self.assertIn('data_samples', results)
+        self.assertIsInstance(results['data_samples'], SegDataSample)
+        self.assertIsInstance(results['data_samples'].gt_sem_seg,
                               BaseDataElement)
-        self.assertEqual(results['data_sample'].ori_shape,
-                         results['data_sample'].gt_sem_seg.shape)
+        self.assertEqual(results['data_samples'].ori_shape,
+                         results['data_samples'].gt_sem_seg.shape)
 
     def test_repr(self):
         transform = PackSegInputs(meta_keys=self.meta_keys)

@@ -30,6 +30,7 @@ class TestVisualizationHook(TestCase):
         pred_sem_seg_data = dict(data=torch.randint(0, num_class, (1, h, w)))
         pred_sem_seg = PixelData(**pred_sem_seg_data)
         pred_seg_data_sample = SegDataSample()
+        pred_seg_data_sample.set_metainfo({'img_path': 'tests/data/color.jpg'})
         pred_seg_data_sample.pred_sem_seg = pred_sem_seg
         self.outputs = [pred_seg_data_sample] * 2
 

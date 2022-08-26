@@ -47,20 +47,19 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         return hasattr(self, 'decode_head') and self.decode_head is not None
 
     @abstractmethod
-    def extract_feat(self, batch_inputs: Tensor) -> bool:
+    def extract_feat(self, inputs: Tensor) -> bool:
         """Placeholder for extract features from images."""
         pass
 
     @abstractmethod
-    def encode_decode(self, batch_inputs: Tensor,
-                      batch_data_samples: SampleList):
+    def encode_decode(self, inputs: Tensor, batch_data_samples: SampleList):
         """Placeholder for encode images with backbone and decode into a
         semantic segmentation map of the same size as input."""
         pass
 
     def forward(self,
-                batch_inputs: Tensor,
-                batch_data_samples: OptSampleList = None,
+                inputs: Tensor,
+                data_samples: OptSampleList = None,
                 mode: str = 'tensor') -> ForwardResults:
         """The unified entry for a forward process in both training and test.
 
@@ -77,10 +76,11 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         optimizer updating, which are done in the :meth:`train_step`.
 
         Args:
-            batch_inputs (torch.Tensor): The input tensor with shape
-                (N, C, ...) in general.
-            batch_data_samples (list[:obj:`SegDataSample`], optional): The
-                annotation data of every samples. Defaults to None.
+            inputs (torch.Tensor): The input tensor with shape (N, C, ...) in
+                general.
+            data_samples (list[:obj:`SegDataSample`]): The seg data samples.
+                It usually includes information such as `metainfo` and
+                `gt_sem_seg`. Default to None.
             mode (str): Return what kind of value. Defaults to 'tensor'.
 
         Returns:
@@ -91,33 +91,32 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             - If ``mode="loss"``, return a dict of tensor.
         """
         if mode == 'loss':
-            return self.loss(batch_inputs, batch_data_samples)
+            return self.loss(inputs, data_samples)
         elif mode == 'predict':
-            return self.predict(batch_inputs, batch_data_samples)
+            return self.predict(inputs, data_samples)
         elif mode == 'tensor':
-            return self._forward(batch_inputs, batch_data_samples)
+            return self._forward(inputs, data_samples)
         else:
             raise RuntimeError(f'Invalid mode "{mode}". '
                                'Only supports loss, predict and tensor mode')
 
     @abstractmethod
-    def loss(self, batch_inputs: Tensor,
-             batch_data_samples: SampleList) -> dict:
+    def loss(self, inputs: Tensor, data_samples: SampleList) -> dict:
         """Calculate losses from a batch of inputs and data samples."""
         pass
 
     @abstractmethod
-    def predict(self, batch_inputs: Tensor,
-                batch_data_samples: SampleList) -> SampleList:
+    def predict(self,
+                inputs: Tensor,
+                data_samples: OptSampleList = None) -> SampleList:
         """Predict results from a batch of inputs and data samples with post-
         processing."""
         pass
 
     @abstractmethod
-    def _forward(
-            self,
-            batch_inputs: Tensor,
-            batch_data_samples: OptSampleList = None) -> Tuple[List[Tensor]]:
+    def _forward(self,
+                 inputs: Tensor,
+                 data_samples: OptSampleList = None) -> Tuple[List[Tensor]]:
         """Network forward process.
 
         Usually includes backbone, neck and head forward without any post-
@@ -130,13 +129,16 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         """Placeholder for augmentation test."""
         pass
 
-    def postprocess_result(self, seg_logits_list: List[dict],
-                           batch_img_metas: List[dict]) -> list:
+    def postprocess_result(self,
+                           seg_logits: Tensor,
+                           data_samples: OptSampleList = None) -> list:
         """ Convert results list to `SegDataSample`.
         Args:
-            seg_logits_list (List[dict]): List of segmentation results,
-                seg_logits from model of each input image.
-
+            seg_logits (Tensor): The segmentation results, seg_logits from
+                model of each input image.
+            data_samples (list[:obj:`SegDataSample`]): The seg data samples.
+                It usually includes information such as `metainfo` and
+                `gt_sem_seg`. Default to None.
         Returns:
             list[:obj:`SegDataSample`]: Segmentation results of the
             input images. Each SegDataSample usually contain:
@@ -145,22 +147,50 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             - ``seg_logits``(PixelData): Predicted logits of semantic
                 segmentation before normalization.
         """
-        predictions = []
+        batch_size, C, H, W = seg_logits.shape
+        assert C > 1, ('This post processes does not binary segmentation, and '
+                       f'channels `seg_logtis` must be > 1 but got {C}')
 
-        for i in range(len(seg_logits_list)):
-            img_meta = batch_img_metas[i]
-            seg_logits = resize(
-                seg_logits_list[i][None],
-                size=img_meta['ori_shape'],
-                mode='bilinear',
-                align_corners=self.align_corners,
-                warning=False).squeeze(0)
-            # seg_logits shape is CHW
-            seg_pred = seg_logits.argmax(dim=0, keepdim=True)
-            prediction = SegDataSample(**{'metainfo': img_meta})
-            prediction.set_data({
-                'seg_logits': PixelData(**{'data': seg_logits}),
-                'pred_sem_seg': PixelData(**{'data': seg_pred})
-            })
-            predictions.append(prediction)
-        return predictions
+        if data_samples is None:
+            data_samples = []
+            only_prediction = True
+        else:
+            only_prediction = False
+
+        for i in range(batch_size):
+            if not only_prediction:
+                img_meta = data_samples[i].metainfo
+                # remove padding area
+                padding_left, padding_right, padding_top, padding_bottom = \
+                    img_meta.get('padding_size', [0]*4)
+                # i_seg_logits shape is 1, C, H, W after remove padding
+                i_seg_logits = seg_logits[i:i + 1, :,
+                                          padding_top:H - padding_bottom,
+                                          padding_left:W - padding_right]
+                # resize as original shape
+                i_seg_logits = resize(
+                    i_seg_logits,
+                    size=img_meta['ori_shape'],
+                    mode='bilinear',
+                    align_corners=self.align_corners,
+                    warning=False).squeeze(0)
+                # i_seg_logits shape is C, H, W with original shape
+                i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
+                data_samples[i].set_data({
+                    'seg_logits':
+                    PixelData(**{'data': i_seg_logits}),
+                    'pred_sem_seg':
+                    PixelData(**{'data': i_seg_pred})
+                })
+            else:
+                i_seg_logits = seg_logits[i]
+                i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
+                prediction = SegDataSample()
+                prediction.set_data({
+                    'seg_logits':
+                    PixelData(**{'data': i_seg_logits}),
+                    'pred_sem_seg':
+                    PixelData(**{'data': i_seg_pred})
+                })
+                data_samples.append(prediction)
+        return data_samples

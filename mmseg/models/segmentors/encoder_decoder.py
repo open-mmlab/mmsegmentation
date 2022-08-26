@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from typing import List, Optional
 
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
@@ -112,93 +111,87 @@ class EncoderDecoder(BaseSegmentor):
             else:
                 self.auxiliary_head = MODELS.build(auxiliary_head)
 
-    def extract_feat(self, batch_inputs: Tensor) -> List[Tensor]:
+    def extract_feat(self, inputs: Tensor) -> List[Tensor]:
         """Extract features from images."""
-        x = self.backbone(batch_inputs)
+        x = self.backbone(inputs)
         if self.with_neck:
             x = self.neck(x)
         return x
 
-    def encode_decode(self, batch_inputs: Tensor,
+    def encode_decode(self, inputs: Tensor,
                       batch_img_metas: List[dict]) -> List[Tensor]:
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
-        x = self.extract_feat(batch_inputs)
+        x = self.extract_feat(inputs)
         seg_logits = self.decode_head.predict(x, batch_img_metas,
                                               self.test_cfg)
 
-        return list(seg_logits)
+        return seg_logits
 
-    def _decode_head_forward_train(self, batch_inputs: List[Tensor],
-                                   batch_data_samples: SampleList) -> dict:
+    def _decode_head_forward_train(self, inputs: List[Tensor],
+                                   data_samples: SampleList) -> dict:
         """Run forward function and calculate loss for decode head in
         training."""
         losses = dict()
-        loss_decode = self.decode_head.loss(batch_inputs, batch_data_samples,
+        loss_decode = self.decode_head.loss(inputs, data_samples,
                                             self.train_cfg)
 
         losses.update(add_prefix(loss_decode, 'decode'))
         return losses
 
-    def _auxiliary_head_forward_train(
-        self,
-        batch_inputs: List[Tensor],
-        batch_data_samples: SampleList,
-    ) -> dict:
+    def _auxiliary_head_forward_train(self, inputs: List[Tensor],
+                                      data_samples: SampleList) -> dict:
         """Run forward function and calculate loss for auxiliary head in
         training."""
         losses = dict()
         if isinstance(self.auxiliary_head, nn.ModuleList):
             for idx, aux_head in enumerate(self.auxiliary_head):
-                loss_aux = aux_head.loss(batch_inputs, batch_data_samples,
-                                         self.train_cfg)
+                loss_aux = aux_head.loss(inputs, data_samples, self.train_cfg)
                 losses.update(add_prefix(loss_aux, f'aux_{idx}'))
         else:
-            loss_aux = self.auxiliary_head.loss(batch_inputs,
-                                                batch_data_samples,
+            loss_aux = self.auxiliary_head.loss(inputs, data_samples,
                                                 self.train_cfg)
             losses.update(add_prefix(loss_aux, 'aux'))
 
         return losses
 
-    def loss(self, batch_inputs: Tensor,
-             batch_data_samples: SampleList) -> dict:
+    def loss(self, inputs: Tensor, data_samples: SampleList) -> dict:
         """Calculate losses from a batch of inputs and data samples.
 
         Args:
-            img (Tensor): Input images.
-            batch_data_samples (list[:obj:`SegDataSample`]): The seg
-                data samples. It usually includes information such
-                as `metainfo` and `gt_sem_seg`.
+            inputs (Tensor): Input images.
+            data_samples (list[:obj:`SegDataSample`]): The seg data samples.
+                It usually includes information such as `metainfo` and
+                `gt_sem_seg`.
 
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
 
-        x = self.extract_feat(batch_inputs)
+        x = self.extract_feat(inputs)
 
         losses = dict()
 
-        loss_decode = self._decode_head_forward_train(x, batch_data_samples)
+        loss_decode = self._decode_head_forward_train(x, data_samples)
         losses.update(loss_decode)
 
         if self.with_auxiliary_head:
-            loss_aux = self._auxiliary_head_forward_train(
-                x, batch_data_samples)
+            loss_aux = self._auxiliary_head_forward_train(x, data_samples)
             losses.update(loss_aux)
 
         return losses
 
-    def predict(self, batch_inputs: Tensor,
-                batch_data_samples: SampleList) -> SampleList:
+    def predict(self,
+                inputs: Tensor,
+                data_samples: OptSampleList = None) -> SampleList:
         """Predict results from a batch of inputs and data samples with post-
         processing.
 
         Args:
-            batch_inputs (Tensor): Inputs with shape (N, C, H, W).
-            batch_data_samples (List[:obj:`SegDataSample`]): The seg
-                data samples. It usually includes information such
-                as `metainfo` and `gt_sem_seg`.
+            inputs (Tensor): Inputs with shape (N, C, H, W).
+            data_samples (List[:obj:`SegDataSample`], optional): The seg data
+                samples. It usually includes information such as `metainfo`
+                and `gt_sem_seg`.
 
         Returns:
             list[:obj:`SegDataSample`]: Segmentation results of the
@@ -208,40 +201,49 @@ class EncoderDecoder(BaseSegmentor):
             - ``seg_logits``(PixelData): Predicted logits of semantic
                 segmentation before normalization.
         """
-        batch_img_metas = []
-        for data_sample in batch_data_samples:
-            batch_img_metas.append(data_sample.metainfo)
+        if data_samples is not None:
+            batch_img_metas = [
+                data_sample.metainfo for data_sample in data_samples
+            ]
+        else:
+            batch_img_metas = [
+                dict(
+                    ori_shape=inputs.shape[2:],
+                    img_shape=inputs.shape[2:],
+                    pad_shape=inputs.shape[2:],
+                    padding_size=[0, 0, 0, 0])
+            ] * inputs.shape[0]
 
-        seg_logit_list = self.inference(batch_inputs, batch_img_metas)
+        seg_logits = self.inference(inputs, batch_img_metas)
 
-        return self.postprocess_result(seg_logit_list, batch_img_metas)
+        return self.postprocess_result(seg_logits, data_samples)
 
     def _forward(self,
-                 batch_inputs: Tensor,
+                 inputs: Tensor,
                  data_samples: OptSampleList = None) -> Tensor:
         """Network forward process.
 
         Args:
-            batch_inputs (Tensor): Inputs with shape (N, C, H, W).
-            batch_data_samples (List[:obj:`SegDataSample`]): The seg
+            inputs (Tensor): Inputs with shape (N, C, H, W).
+            data_samples (List[:obj:`SegDataSample`]): The seg
                 data samples. It usually includes information such
                 as `metainfo` and `gt_sem_seg`.
 
         Returns:
             Tensor: Forward output of model without any post-processes.
         """
-        x = self.extract_feat(batch_inputs)
+        x = self.extract_feat(inputs)
         return self.decode_head.forward(x)
 
-    def slide_inference(self, batch_inputs: Tensor,
-                        batch_img_metas: List[dict]) -> List[Tensor]:
+    def slide_inference(self, inputs: Tensor,
+                        batch_img_metas: List[dict]) -> Tensor:
         """Inference by sliding-window with overlap.
 
         If h_crop > h_img or w_crop > w_img, the small patch will be used to
         decode without padding.
 
         Args:
-            batch_inputs (tensor): the tensor should have a shape NxCxHxW,
+            inputs (tensor): the tensor should have a shape NxCxHxW,
                 which contains all images in the batch.
             batch_img_metas (List[dict]): List of image metainfo where each may
                 also contain: 'img_shape', 'scale_factor', 'flip', 'img_path',
@@ -250,18 +252,18 @@ class EncoderDecoder(BaseSegmentor):
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
         Returns:
-            List[:obj:`Tensor`]: List of segmentation results, seg_logits from
-                model of each input image.
+            Tensor: The segmentation results, seg_logits from model of each
+                input image.
         """
 
         h_stride, w_stride = self.test_cfg.stride
         h_crop, w_crop = self.test_cfg.crop_size
-        batch_size, _, h_img, w_img = batch_inputs.size()
+        batch_size, _, h_img, w_img = inputs.size()
         num_classes = self.num_classes
         h_grids = max(h_img - h_crop + h_stride - 1, 0) // h_stride + 1
         w_grids = max(w_img - w_crop + w_stride - 1, 0) // w_stride + 1
-        preds = batch_inputs.new_zeros((batch_size, num_classes, h_img, w_img))
-        count_mat = batch_inputs.new_zeros((batch_size, 1, h_img, w_img))
+        preds = inputs.new_zeros((batch_size, num_classes, h_img, w_img))
+        count_mat = inputs.new_zeros((batch_size, 1, h_img, w_img))
         for h_idx in range(h_grids):
             for w_idx in range(w_grids):
                 y1 = h_idx * h_stride
@@ -270,30 +272,29 @@ class EncoderDecoder(BaseSegmentor):
                 x2 = min(x1 + w_crop, w_img)
                 y1 = max(y2 - h_crop, 0)
                 x1 = max(x2 - w_crop, 0)
-                crop_img = batch_inputs[:, :, y1:y2, x1:x2]
-                # change the img shape to patch shape
+                crop_img = inputs[:, :, y1:y2, x1:x2]
+                # change the image shape to patch shape
                 batch_img_metas[0]['img_shape'] = crop_img.shape[2:]
-                # the output of encode_decode is list of seg logits map
-                # with shape [C, H, W]
-                crop_seg_logit = torch.stack(
-                    self.encode_decode(crop_img, batch_img_metas), dim=0)
+                # the output of encode_decode is seg logits tensor map
+                # with shape [N, C, H, W]
+                crop_seg_logit = self.encode_decode(crop_img, batch_img_metas)
                 preds += F.pad(crop_seg_logit,
                                (int(x1), int(preds.shape[3] - x2), int(y1),
                                 int(preds.shape[2] - y2)))
 
                 count_mat[:, :, y1:y2, x1:x2] += 1
         assert (count_mat == 0).sum() == 0
-        seg_logits_list = list(preds / count_mat)
+        seg_logits = preds / count_mat
 
-        return seg_logits_list
+        return seg_logits
 
-    def whole_inference(self, batch_inputs: Tensor,
-                        batch_img_metas: List[dict]) -> List[Tensor]:
+    def whole_inference(self, inputs: Tensor,
+                        batch_img_metas: List[dict]) -> Tensor:
         """Inference with full image.
 
         Args:
-            batch_inputs (Tensor): The tensor should have a shape NxCxHxW,
-                which contains all images in the batch.
+            inputs (Tensor): The tensor should have a shape NxCxHxW, which
+                contains all images in the batch.
             batch_img_metas (List[dict]): List of image metainfo where each may
                 also contain: 'img_shape', 'scale_factor', 'flip', 'img_path',
                 'ori_shape', and 'pad_shape'.
@@ -301,44 +302,41 @@ class EncoderDecoder(BaseSegmentor):
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
         Returns:
-            List[:obj:`Tensor`]: List of segmentation results, seg_logits from
-                model of each input image.
+            Tensor: The segmentation results, seg_logits from model of each
+                input image.
         """
 
-        seg_logits_list = self.encode_decode(batch_inputs, batch_img_metas)
+        seg_logits = self.encode_decode(inputs, batch_img_metas)
 
-        return seg_logits_list
+        return seg_logits
 
-    def inference(self, batch_inputs: Tensor,
-                  batch_img_metas: List[dict]) -> List[Tensor]:
+    def inference(self, inputs: Tensor, batch_img_metas: List[dict]) -> Tensor:
         """Inference with slide/whole style.
 
         Args:
-            batch_inputs (Tensor): The input image of shape (N, 3, H, W).
+            inputs (Tensor): The input image of shape (N, 3, H, W).
             batch_img_metas (List[dict]): List of image metainfo where each may
                 also contain: 'img_shape', 'scale_factor', 'flip', 'img_path',
-                'ori_shape', and 'pad_shape'.
+                'ori_shape', 'pad_shape', and 'padding_size'.
                 For details on the values of these keys see
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
         Returns:
-            List[:obj:`Tensor`]: List of segmentation results, seg_logits from
-                model of each input image.
+            Tensor: The segmentation results, seg_logits from model of each
+                input image.
         """
 
         assert self.test_cfg.mode in ['slide', 'whole']
         ori_shape = batch_img_metas[0]['ori_shape']
         assert all(_['ori_shape'] == ori_shape for _ in batch_img_metas)
         if self.test_cfg.mode == 'slide':
-            seg_logit_list = self.slide_inference(batch_inputs,
-                                                  batch_img_metas)
+            seg_logit = self.slide_inference(inputs, batch_img_metas)
         else:
-            seg_logit_list = self.whole_inference(batch_inputs,
-                                                  batch_img_metas)
+            seg_logit = self.whole_inference(inputs, batch_img_metas)
 
-        return seg_logit_list
+        return seg_logit
 
-    def aug_test(self, batch_inputs, batch_img_metas, rescale=True):
+    def aug_test(self, inputs, batch_img_metas, rescale=True):
         """Test with augmentations.
 
         Only rescale=True is supported.
@@ -346,13 +344,12 @@ class EncoderDecoder(BaseSegmentor):
         # aug_test rescale all imgs back to ori_shape for now
         assert rescale
         # to save memory, we get augmented seg logit inplace
-        seg_logit = self.inference(batch_inputs[0], batch_img_metas[0],
-                                   rescale)
-        for i in range(1, len(batch_inputs)):
-            cur_seg_logit = self.inference(batch_inputs[i], batch_img_metas[i],
+        seg_logit = self.inference(inputs[0], batch_img_metas[0], rescale)
+        for i in range(1, len(inputs)):
+            cur_seg_logit = self.inference(inputs[i], batch_img_metas[i],
                                            rescale)
             seg_logit += cur_seg_logit
-        seg_logit /= len(batch_inputs)
+        seg_logit /= len(inputs)
         seg_pred = seg_logit.argmax(dim=1)
         # unravel batch dim
         seg_pred = list(seg_pred)
