@@ -104,90 +104,94 @@ def _get_segmentor_cfg(fname):
 
 def test_pspnet_forward():
     _test_encoder_decoder_forward(
-        'pspnet/pspnet_r18-d8_512x1024_80k_cityscapes.py')
+        'pspnet/pspnet_r18-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_fcn_forward():
-    _test_encoder_decoder_forward('fcn/fcn_r18-d8_512x1024_80k_cityscapes.py')
+    _test_encoder_decoder_forward(
+        'fcn/fcn_r18-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_deeplabv3_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes.py')
+        'deeplabv3/deeplabv3_r18-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_deeplabv3plus_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py')
+        'deeplabv3plus/deeplabv3plus_r18-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_gcnet_forward():
     _test_encoder_decoder_forward(
-        'gcnet/gcnet_r50-d8_512x1024_40k_cityscapes.py')
+        'gcnet/gcnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_ann_forward():
-    _test_encoder_decoder_forward('ann/ann_r50-d8_512x1024_40k_cityscapes.py')
+    _test_encoder_decoder_forward(
+        'ann/ann_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_ccnet_forward():
     if not torch.cuda.is_available():
         pytest.skip('CCNet requires CUDA')
     _test_encoder_decoder_forward(
-        'ccnet/ccnet_r50-d8_512x1024_40k_cityscapes.py')
+        'ccnet/ccnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_danet_forward():
     _test_encoder_decoder_forward(
-        'danet/danet_r50-d8_512x1024_40k_cityscapes.py')
+        'danet/danet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_nonlocal_net_forward():
     _test_encoder_decoder_forward(
-        'nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes.py')
+        'nonlocal_net/nonlocal_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_upernet_forward():
     _test_encoder_decoder_forward(
-        'upernet/upernet_r50_512x1024_40k_cityscapes.py')
+        'upernet/upernet_r50_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_hrnet_forward():
-    _test_encoder_decoder_forward('hrnet/fcn_hr18s_512x1024_40k_cityscapes.py')
+    _test_encoder_decoder_forward(
+        'hrnet/fcn_hr18s_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_ocrnet_forward():
     _test_encoder_decoder_forward(
-        'ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes.py')
+        'ocrnet/ocrnet_hr18s_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_psanet_forward():
     _test_encoder_decoder_forward(
-        'psanet/psanet_r50-d8_512x1024_40k_cityscapes.py')
+        'psanet/psanet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_sem_fpn_forward():
-    _test_encoder_decoder_forward('sem_fpn/fpn_r50_512x1024_80k_cityscapes.py')
+    _test_encoder_decoder_forward(
+        'sem_fpn/fpn_r50_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_mobilenet_v2_forward():
     _test_encoder_decoder_forward(
-        'mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes.py')
+        'mobilenet_v2/mobilenet-v2-d8_pspnet_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_dnlnet_forward():
     _test_encoder_decoder_forward(
-        'dnlnet/dnl_r50-d8_512x1024_40k_cityscapes.py')
+        'dnlnet/dnl_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_emanet_forward():
     _test_encoder_decoder_forward(
-        'emanet/emanet_r50-d8_512x1024_80k_cityscapes.py')
+        'emanet/emanet_r50-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_isanet_forward():
     _test_encoder_decoder_forward(
-        'isanet/isanet_r50-d8_512x1024_40k_cityscapes.py')
+        'isanet/isanet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def get_world_size(process_group):
