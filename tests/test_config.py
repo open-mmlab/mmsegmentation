@@ -3,14 +3,13 @@ import glob
 import os
 from os.path import dirname, exists, isdir, join, relpath
 
-# import numpy as np
+import numpy as np
 from mmengine import Config
-# from mmengine.dataset import Compose
+from mmengine.dataset import Compose
 from torch import nn
 
 from mmseg.models import build_segmentor
-
-# from mmseg.utils import register_all_modules
+from mmseg.utils import register_all_modules
 
 
 def _get_config_directory():
@@ -64,70 +63,69 @@ def test_config_build_segmentor():
         _check_decode_head(head_config, segmentor.decode_head)
 
 
-# def test_config_data_pipeline():
-#     """Test whether the data pipeline is valid and can process corner cases.
+def test_config_data_pipeline():
+    """Test whether the data pipeline is valid and can process corner cases.
 
-#     CommandLine:
-#         xdoctest -m tests/test_config.py test_config_build_data_pipeline
-#     """
+    CommandLine:
+        xdoctest -m tests/test_config.py test_config_build_data_pipeline
+    """
 
-#     register_all_modules()
-#     config_dpath = _get_config_directory()
-#     print('Found config_dpath = {!r}'.format(config_dpath))
+    register_all_modules()
+    config_dpath = _get_config_directory()
+    print('Found config_dpath = {!r}'.format(config_dpath))
 
-#     import glob
-#     config_fpaths = list(glob.glob(join(config_dpath, '**', '*.py')))
-#     config_fpaths = [p for p in config_fpaths if p.find('_base_') == -1]
-#     config_names = [relpath(p, config_dpath) for p in config_fpaths]
+    import glob
+    config_fpaths = list(glob.glob(join(config_dpath, '**', '*.py')))
+    config_fpaths = [p for p in config_fpaths if p.find('_base_') == -1]
+    config_names = [relpath(p, config_dpath) for p in config_fpaths]
 
-#     print('Using {} config files'.format(len(config_names)))
+    print('Using {} config files'.format(len(config_names)))
 
-#     for config_fname in config_names:
-#         config_fpath = join(config_dpath, config_fname)
-#         print(
-#             'Building data pipeline, config_fpath = {!r}'.
-# format(config_fpath))
-#         config_mod = Config.fromfile(config_fpath)
+    for config_fname in config_names:
+        config_fpath = join(config_dpath, config_fname)
+        print(
+            'Building data pipeline, config_fpath = {!r}'.format(config_fpath))
+        config_mod = Config.fromfile(config_fpath)
 
-#         # remove loading pipeline
-#         load_img_pipeline = config_mod.train_pipeline.pop(0)
-#         to_float32 = load_img_pipeline.get('to_float32', False)
-#         config_mod.train_pipeline.pop(0)
-#         config_mod.test_pipeline.pop(0)
-#         # remove loading annotation in test pipeline
-#         config_mod.test_pipeline.pop(1)
+        # remove loading pipeline
+        load_img_pipeline = config_mod.train_pipeline.pop(0)
+        to_float32 = load_img_pipeline.get('to_float32', False)
+        config_mod.train_pipeline.pop(0)
+        config_mod.test_pipeline.pop(0)
+        # remove loading annotation in test pipeline
+        config_mod.test_pipeline.pop(1)
 
-#         train_pipeline = Compose(config_mod.train_pipeline)
-#         test_pipeline = Compose(config_mod.test_pipeline)
+        train_pipeline = Compose(config_mod.train_pipeline)
+        test_pipeline = Compose(config_mod.test_pipeline)
 
-#         img = np.random.randint(0, 255, size=(1024, 2048, 3), dtype=np.uint8)
-#         if to_float32:
-#             img = img.astype(np.float32)
-#         seg = np.random.randint(0, 255, size=(1024, 2048, 1), dtype=np.uint8)
+        img = np.random.randint(0, 255, size=(1024, 2048, 3), dtype=np.uint8)
+        if to_float32:
+            img = img.astype(np.float32)
+        seg = np.random.randint(0, 255, size=(1024, 2048, 1), dtype=np.uint8)
 
-#         results = dict(
-#             filename='test_img.png',
-#             ori_filename='test_img.png',
-#             img=img,
-#             img_shape=img.shape,
-#             ori_shape=img.shape,
-#             gt_seg_map=seg)
-#         results['seg_fields'] = ['gt_seg_map']
+        results = dict(
+            filename='test_img.png',
+            ori_filename='test_img.png',
+            img=img,
+            img_shape=img.shape,
+            ori_shape=img.shape,
+            gt_seg_map=seg)
+        results['seg_fields'] = ['gt_seg_map']
 
-#         print('Test training data pipeline: \n{!r}'.format(train_pipeline))
-#         output_results = train_pipeline(results)
-#         assert output_results is not None
+        print('Test training data pipeline: \n{!r}'.format(train_pipeline))
+        output_results = train_pipeline(results)
+        assert output_results is not None
 
-#         results = dict(
-#             filename='test_img.png',
-#             ori_filename='test_img.png',
-#             img=img,
-#             img_shape=img.shape,
-#             ori_shape=img.shape,
-#         )
-#         print('Test testing data pipeline: \n{!r}'.format(test_pipeline))
-#         output_results = test_pipeline(results)
-#         assert output_results is not None
+        results = dict(
+            filename='test_img.png',
+            ori_filename='test_img.png',
+            img=img,
+            img_shape=img.shape,
+            ori_shape=img.shape,
+        )
+        print('Test testing data pipeline: \n{!r}'.format(test_pipeline))
+        output_results = test_pipeline(results)
+        assert output_results is not None
 
 
 def _check_decode_head(decode_head_cfg, decode_head):

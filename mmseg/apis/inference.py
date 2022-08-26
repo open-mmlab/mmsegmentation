@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
+from collections import defaultdict
 from pathlib import Path
 from typing import Optional, Sequence, Union
 
@@ -11,9 +12,9 @@ from mmengine.dataset import Compose
 from mmengine.runner import load_checkpoint
 from mmengine.utils import mkdir_or_exist
 
-from mmseg.data import SegDataSample
 from mmseg.models import BaseSegmentor
 from mmseg.registry import MODELS
+from mmseg.structures import SegDataSample
 from mmseg.utils import SampleList, dataset_aliases, get_classes, get_palette
 from mmseg.visualization import SegLocalVisualizer
 
@@ -50,7 +51,6 @@ def init_model(config: Union[str, Path, Config],
     model = MODELS.build(config.model)
     if checkpoint is not None:
         checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
-
         dataset_meta = checkpoint['meta'].get('dataset_meta', None)
         # save the dataset_meta in the model for convenience
         if 'dataset_meta' in checkpoint.get('meta', {}):
@@ -108,14 +108,15 @@ def _preprare_data(imgs: ImageType, model: BaseSegmentor):
     # a pipeline for each inference
     pipeline = Compose(cfg.test_pipeline)
 
-    data = []
+    data = defaultdict(list)
     for img in imgs:
         if isinstance(img, np.ndarray):
             data_ = dict(img=img)
         else:
             data_ = dict(img_path=img)
         data_ = pipeline(data_)
-        data.append(data_)
+        data['inputs'].append(data_['inputs'])
+        data['data_samples'].append(data_['data_samples'])
 
     return data, is_batch
 
@@ -187,11 +188,12 @@ def show_result_pyplot(model: BaseSegmentor,
         save_dir=save_dir,
         alpha=opacity)
     visualizer.dataset_meta = dict(
-        classes=model.CLASSES, palette=model.PALETTE)
+        classes=model.dataset_meta['classes'],
+        palette=model.dataset_meta['palette'])
     visualizer.add_datasample(
         name=title,
         image=image,
-        pred_sample=result[0],
+        data_sample=result[0],
         draw_gt=draw_gt,
         draw_pred=draw_pred,
         wait_time=wait_time,

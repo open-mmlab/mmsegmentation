@@ -102,8 +102,7 @@ class SegLocalVisualizer(Visualizer):
     def add_datasample(self,
                        name: str,
                        image: np.ndarray,
-                       gt_sample: Optional[SegDataSample] = None,
-                       pred_sample: Optional[SegDataSample] = None,
+                       data_sample: Optional[SegDataSample] = None,
                        draw_gt: bool = True,
                        draw_pred: bool = True,
                        show: bool = False,
@@ -137,27 +136,26 @@ class SegLocalVisualizer(Visualizer):
         gt_img_data = None
         pred_img_data = None
 
-        if draw_gt and gt_sample is not None:
+        if draw_gt and data_sample is not None and 'gt_sem_seg' in data_sample:
             gt_img_data = image
-            if 'gt_sem_seg' in gt_sample:
-                assert classes is not None, 'class information is ' \
-                                            'not provided when ' \
-                                            'visualizing semantic ' \
-                                            'segmentation results.'
-                gt_img_data = self._draw_sem_seg(gt_img_data,
-                                                 gt_sample.gt_sem_seg, classes,
-                                                 palette)
+            assert classes is not None, 'class information is ' \
+                                        'not provided when ' \
+                                        'visualizing semantic ' \
+                                        'segmentation results.'
+            gt_img_data = self._draw_sem_seg(gt_img_data,
+                                             data_sample.gt_sem_seg, classes,
+                                             palette)
 
-        if draw_pred and pred_sample is not None:
+        if (draw_pred and data_sample is not None
+                and 'pred_sem_seg' in data_sample):
             pred_img_data = image
-            if 'pred_sem_seg' in pred_sample:
-                assert classes is not None, 'class information is ' \
-                                            'not provided when ' \
-                                            'visualizing semantic ' \
-                                            'segmentation results.'
-                pred_img_data = self._draw_sem_seg(pred_img_data,
-                                                   pred_sample.pred_sem_seg,
-                                                   classes, palette)
+            assert classes is not None, 'class information is ' \
+                                        'not provided when ' \
+                                        'visualizing semantic ' \
+                                        'segmentation results.'
+            pred_img_data = self._draw_sem_seg(pred_img_data,
+                                               data_sample.pred_sem_seg,
+                                               classes, palette)
 
         if gt_img_data is not None and pred_img_data is not None:
             drawn_img = np.concatenate((gt_img_data, pred_img_data), axis=1)

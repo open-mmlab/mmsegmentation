@@ -6,7 +6,10 @@ from mmcv.cnn import ConvModule
 from mmseg.models.backbones.unet import (BasicConvBlock, DeconvModule,
                                          InterpConv, UNet, UpConvBlock)
 from mmseg.models.utils import Upsample
+from mmseg.utils import register_all_modules
 from .utils import check_norm_state
+
+register_all_modules()
 
 
 def test_unet_basic_conv_block():

@@ -79,14 +79,15 @@ def main():
 
         # benchmark with 200 batches and take the average
         for i, data in enumerate(data_loader):
-            batch_inputs, data_samples = model.data_preprocessor(data, True)
-
+            data = model.data_preprocessor(data, True)
+            inputs = data['inputs']
+            data_samples = data['data_samples']
             if torch.cuda.is_available():
                 torch.cuda.synchronize()
             start_time = time.perf_counter()
 
             with torch.no_grad():
-                model(batch_inputs, data_samples, mode='predict')
+                model(inputs, data_samples, mode='predict')
 
             if torch.cuda.is_available():
                 torch.cuda.synchronize()

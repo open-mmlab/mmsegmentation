@@ -66,7 +66,7 @@ class SegVisualizationHook(Hook):
     def _after_iter(self,
                     runner: Runner,
                     batch_idx: int,
-                    data_batch: Sequence[dict],
+                    data_batch: dict,
                     outputs: Sequence[SegDataSample],
                     mode: str = 'val') -> None:
         """Run after every ``self.interval`` validation iterations.
@@ -74,7 +74,7 @@ class SegVisualizationHook(Hook):
         Args:
             runner (:obj:`Runner`): The runner of the validation process.
             batch_idx (int): The index of the current batch in the val loop.
-            data_batch (Sequence[dict]): Data from dataloader.
+            data_batch (dict): Data from dataloader.
             outputs (Sequence[:obj:`SegDataSample`]): Outputs from model.
             mode (str): mode (str): Current mode of runner. Defaults to 'val'.
         """
@@ -85,18 +85,16 @@ class SegVisualizationHook(Hook):
             self.file_client = FileClient(**self.file_client_args)
 
         if self.every_n_inner_iters(batch_idx, self.interval):
-            for input_data, output in zip(data_batch, outputs):
-                img_path = input_data['data_sample'].img_path
+            for output in outputs:
+                img_path = output.img_path
                 img_bytes = self.file_client.get(img_path)
                 img = mmcv.imfrombytes(img_bytes, channel_order='rgb')
                 window_name = f'{mode}_{osp.basename(img_path)}'
 
-                gt_sample = input_data['data_sample']
                 self._visualizer.add_datasample(
                     window_name,
                     img,
-                    gt_sample=gt_sample,
-                    pred_sample=output,
+                    data_sample=output,
                     show=self.show,
                     wait_time=self.wait_time,
                     step=runner.iter)
