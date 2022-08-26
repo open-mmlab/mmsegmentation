@@ -78,9 +78,9 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         Args:
             inputs (torch.Tensor): The input tensor with shape (N, C, ...) in
                 general.
-            data_samples (list[:obj:`SegDataSample`]): The seg
-                data samples. It usually includes information such as
-                `metainfo` and `gt_sem_seg`. Default to None.
+            data_samples (list[:obj:`SegDataSample`]): The seg data samples.
+                It usually includes information such as `metainfo` and
+                `gt_sem_seg`. Default to None.
             mode (str): Return what kind of value. Defaults to 'tensor'.
 
         Returns:
@@ -136,9 +136,9 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         Args:
             seg_logits (Tensor): The segmentation results, seg_logits from
                 model of each input image.
-            data_samples (list[:obj:`SegDataSample`]): The seg
-                data samples. It usually includes information such as
-                `metainfo` and `gt_sem_seg`. Default to None.
+            data_samples (list[:obj:`SegDataSample`]): The seg data samples.
+                It usually includes information such as `metainfo` and
+                `gt_sem_seg`. Default to None.
         Returns:
             list[:obj:`SegDataSample`]: Segmentation results of the
             input images. Each SegDataSample usually contain:
