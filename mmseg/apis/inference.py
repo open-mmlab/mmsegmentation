@@ -51,7 +51,6 @@ def init_model(config: Union[str, Path, Config],
     model = MODELS.build(config.model)
     if checkpoint is not None:
         checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
-
         dataset_meta = checkpoint['meta'].get('dataset_meta', None)
         # save the dataset_meta in the model for convenience
         if 'dataset_meta' in checkpoint.get('meta', {}):
@@ -189,11 +188,12 @@ def show_result_pyplot(model: BaseSegmentor,
         save_dir=save_dir,
         alpha=opacity)
     visualizer.dataset_meta = dict(
-        classes=model.CLASSES, palette=model.PALETTE)
+        classes=model.dataset_meta['classes'],
+        palette=model.dataset_meta['palette'])
     visualizer.add_datasample(
         name=title,
         image=image,
-        pred_sample=result[0],
+        data_sample=result[0],
         draw_gt=draw_gt,
         draw_pred=draw_pred,
         wait_time=wait_time,
