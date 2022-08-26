@@ -15,7 +15,7 @@ Collections:
   Converted From:
     Code: https://github.com/NVlabs/SegFormer
 Models:
-- Name: segformer_mit-b0_512x512_160k_ade20k
+- Name: segformer_mit-b0_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Metadata:
     backbone: MIT-B0
@@ -35,9 +35,9 @@ Models:
     Metrics:
       mIoU: 37.41
       mIoU(ms+flip): 38.34
-  Config: configs/segformer/segformer_mit-b0_512x512_160k_ade20k.py
+  Config: configs/segformer/segformer_mit-b0_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530-8ffa8fda.pth
-- Name: segformer_mit-b1_512x512_160k_ade20k
+- Name: segformer_mit-b1_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Metadata:
     backbone: MIT-B1
@@ -57,9 +57,9 @@ Models:
     Metrics:
       mIoU: 40.97
       mIoU(ms+flip): 42.54
-  Config: configs/segformer/segformer_mit-b1_512x512_160k_ade20k.py
+  Config: configs/segformer/segformer_mit-b1_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20210726_112106-d70e859d.pth
-- Name: segformer_mit-b2_512x512_160k_ade20k
+- Name: segformer_mit-b2_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Metadata:
     backbone: MIT-B2
@@ -79,9 +79,9 @@ Models:
     Metrics:
       mIoU: 45.58
       mIoU(ms+flip): 47.03
-  Config: configs/segformer/segformer_mit-b2_512x512_160k_ade20k.py
+  Config: configs/segformer/segformer_mit-b2_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20210726_112103-cbd414ac.pth
-- Name: segformer_mit-b3_512x512_160k_ade20k
+- Name: segformer_mit-b3_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Metadata:
     backbone: MIT-B3
@@ -101,9 +101,9 @@ Models:
     Metrics:
       mIoU: 47.82
       mIoU(ms+flip): 48.81
-  Config: configs/segformer/segformer_mit-b3_512x512_160k_ade20k.py
+  Config: configs/segformer/segformer_mit-b3_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20210726_081410-962b98d2.pth
-- Name: segformer_mit-b4_512x512_160k_ade20k
+- Name: segformer_mit-b4_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Metadata:
     backbone: MIT-B4
@@ -123,9 +123,9 @@ Models:
     Metrics:
       mIoU: 48.46
       mIoU(ms+flip): 49.76
-  Config: configs/segformer/segformer_mit-b4_512x512_160k_ade20k.py
+  Config: configs/segformer/segformer_mit-b4_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20210728_183055-7f509d7d.pth
-- Name: segformer_mit-b5_512x512_160k_ade20k
+- Name: segformer_mit-b5_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Metadata:
     backbone: MIT-B5
@@ -145,9 +145,9 @@ Models:
     Metrics:
       mIoU: 49.13
       mIoU(ms+flip): 50.22
-  Config: configs/segformer/segformer_mit-b5_512x512_160k_ade20k.py
+  Config: configs/segformer/segformer_mit-b5_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235-94cedf59.pth
-- Name: segformer_mit-b5_640x640_160k_ade20k
+- Name: segformer_mit-b5_8xb2-160k_ade20k-640x640
   In Collection: Segformer
   Metadata:
     backbone: MIT-B5
@@ -167,9 +167,9 @@ Models:
     Metrics:
       mIoU: 49.62
       mIoU(ms+flip): 50.36
-  Config: configs/segformer/segformer_mit-b5_640x640_160k_ade20k.py
+  Config: configs/segformer/segformer_mit-b5_8xb2-160k_ade20k-640x640.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20210801_121243-41d2845b.pth
-- Name: segformer_mit-b0_8x1_1024x1024_160k_cityscapes
+- Name: segformer_mit-b0_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Metadata:
     backbone: MIT-B0
@@ -189,9 +189,9 @@ Models:
     Metrics:
       mIoU: 76.54
       mIoU(ms+flip): 78.22
-  Config: configs/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes.py
+  Config: configs/segformer/segformer_mit-b0_8xb1-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes/segformer_mit-b0_8x1_1024x1024_160k_cityscapes_20211208_101857-e7f88502.pth
-- Name: segformer_mit-b1_8x1_1024x1024_160k_cityscapes
+- Name: segformer_mit-b1_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Metadata:
     backbone: MIT-B1
@@ -211,9 +211,9 @@ Models:
     Metrics:
       mIoU: 78.56
       mIoU(ms+flip): 79.73
-  Config: configs/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes.py
+  Config: configs/segformer/segformer_mit-b1_8xb1-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes/segformer_mit-b1_8x1_1024x1024_160k_cityscapes_20211208_064213-655c7b3f.pth
-- Name: segformer_mit-b2_8x1_1024x1024_160k_cityscapes
+- Name: segformer_mit-b2_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Metadata:
     backbone: MIT-B2
@@ -233,9 +233,9 @@ Models:
     Metrics:
       mIoU: 81.08
       mIoU(ms+flip): 82.18
-  Config: configs/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes.py
+  Config: configs/segformer/segformer_mit-b2_8xb1-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes/segformer_mit-b2_8x1_1024x1024_160k_cityscapes_20211207_134205-6096669a.pth
-- Name: segformer_mit-b3_8x1_1024x1024_160k_cityscapes
+- Name: segformer_mit-b3_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Metadata:
     backbone: MIT-B3
@@ -255,9 +255,9 @@ Models:
     Metrics:
       mIoU: 81.94
       mIoU(ms+flip): 83.14
-  Config: configs/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes.py
+  Config: configs/segformer/segformer_mit-b3_8xb1-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes/segformer_mit-b3_8x1_1024x1024_160k_cityscapes_20211206_224823-a8f8a177.pth
-- Name: segformer_mit-b4_8x1_1024x1024_160k_cityscapes
+- Name: segformer_mit-b4_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Metadata:
     backbone: MIT-B4
@@ -277,9 +277,9 @@ Models:
     Metrics:
       mIoU: 81.89
       mIoU(ms+flip): 83.38
-  Config: configs/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes.py
+  Config: configs/segformer/segformer_mit-b4_8xb1-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes/segformer_mit-b4_8x1_1024x1024_160k_cityscapes_20211207_080709-07f6c333.pth
-- Name: segformer_mit-b5_8x1_1024x1024_160k_cityscapes
+- Name: segformer_mit-b5_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Metadata:
     backbone: MIT-B5
@@ -299,5 +299,5 @@ Models:
     Metrics:
       mIoU: 82.25
       mIoU(ms+flip): 83.48
-  Config: configs/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes.py
+  Config: configs/segformer/segformer_mit-b5_8xb1-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes/segformer_mit-b5_8x1_1024x1024_160k_cityscapes_20211206_072934-87a052ec.pth

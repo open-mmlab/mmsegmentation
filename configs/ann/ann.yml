@@ -15,7 +15,7 @@ Collections:
   Converted From:
     Code: https://github.com/MendelXu/ANN
 Models:
-- Name: ann_r50-d8_512x1024_40k_cityscapes
+- Name: ann_r50-d8_4xb2-40k_cityscapes-512x1024
   In Collection: ANN
   Metadata:
     backbone: R-50-D8
@@ -35,9 +35,9 @@ Models:
     Metrics:
       mIoU: 77.4
       mIoU(ms+flip): 78.57
-  Config: configs/ann/ann_r50-d8_512x1024_40k_cityscapes.py
+  Config: configs/ann/ann_r50-d8_4xb2-40k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth
-- Name: ann_r101-d8_512x1024_40k_cityscapes
+- Name: ann_r101-d8_4xb2-40k_cityscapes-512x1024
   In Collection: ANN
   Metadata:
     backbone: R-101-D8
@@ -57,9 +57,9 @@ Models:
     Metrics:
       mIoU: 76.55
       mIoU(ms+flip): 78.85
-  Config: configs/ann/ann_r101-d8_512x1024_40k_cityscapes.py
+  Config: configs/ann/ann_r101-d8_4xb2-40k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243-adf6eece.pth
-- Name: ann_r50-d8_769x769_40k_cityscapes
+- Name: ann_r50-d8_4xb2-40k_cityscapes-769x769
   In Collection: ANN
   Metadata:
     backbone: R-50-D8
@@ -79,9 +79,9 @@ Models:
     Metrics:
       mIoU: 78.89
       mIoU(ms+flip): 80.46
-  Config: configs/ann/ann_r50-d8_769x769_40k_cityscapes.py
+  Config: configs/ann/ann_r50-d8_4xb2-40k_cityscapes-769x769.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712-2b46b04d.pth
-- Name: ann_r101-d8_769x769_40k_cityscapes
+- Name: ann_r101-d8_4xb2-40k_cityscapes-769x769
   In Collection: ANN
   Metadata:
     backbone: R-101-D8
@@ -101,9 +101,9 @@ Models:
     Metrics:
       mIoU: 79.32
       mIoU(ms+flip): 80.94
-  Config: configs/ann/ann_r101-d8_769x769_40k_cityscapes.py
+  Config: configs/ann/ann_r101-d8_4xb2-40k_cityscapes-769x769.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720-059bff28.pth
-- Name: ann_r50-d8_512x1024_80k_cityscapes
+- Name: ann_r50-d8_4xb2-80k_cityscapes-512x1024
   In Collection: ANN
   Metadata:
     backbone: R-50-D8
@@ -115,9 +115,9 @@ Models:
     Metrics:
       mIoU: 77.34
       mIoU(ms+flip): 78.65
-  Config: configs/ann/ann_r50-d8_512x1024_80k_cityscapes.py
+  Config: configs/ann/ann_r50-d8_4xb2-80k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911-5a9ad545.pth
-- Name: ann_r101-d8_512x1024_80k_cityscapes
+- Name: ann_r101-d8_4xb2-80k_cityscapes-512x1024
   In Collection: ANN
   Metadata:
     backbone: R-101-D8
@@ -129,9 +129,9 @@ Models:
     Metrics:
       mIoU: 77.14
       mIoU(ms+flip): 78.81
-  Config: configs/ann/ann_r101-d8_512x1024_80k_cityscapes.py
+  Config: configs/ann/ann_r101-d8_4xb2-80k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728-aceccc6e.pth
-- Name: ann_r50-d8_769x769_80k_cityscapes
+- Name: ann_r50-d8_4xb2-80k_cityscapes-769x769
   In Collection: ANN
   Metadata:
     backbone: R-50-D8
@@ -143,9 +143,9 @@ Models:
     Metrics:
       mIoU: 78.88
       mIoU(ms+flip): 80.57
-  Config: configs/ann/ann_r50-d8_769x769_80k_cityscapes.py
+  Config: configs/ann/ann_r50-d8_4xb2-80k_cityscapes-769x769.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426-cc7ff323.pth
-- Name: ann_r101-d8_769x769_80k_cityscapes
+- Name: ann_r101-d8_4xb2-80k_cityscapes-769x769
   In Collection: ANN
   Metadata:
     backbone: R-101-D8
@@ -157,9 +157,9 @@ Models:
     Metrics:
       mIoU: 78.8
       mIoU(ms+flip): 80.34
-  Config: configs/ann/ann_r101-d8_769x769_80k_cityscapes.py
+  Config: configs/ann/ann_r101-d8_4xb2-80k_cityscapes-769x769.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713-a9d4be8d.pth
-- Name: ann_r50-d8_512x512_80k_ade20k
+- Name: ann_r50-d8_4xb4-80k_ade20k-512x512
   In Collection: ANN
   Metadata:
     backbone: R-50-D8
@@ -179,9 +179,9 @@ Models:
     Metrics:
       mIoU: 41.01
       mIoU(ms+flip): 42.3
-  Config: configs/ann/ann_r50-d8_512x512_80k_ade20k.py
+  Config: configs/ann/ann_r50-d8_4xb4-80k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818-26f75e11.pth
-- Name: ann_r101-d8_512x512_80k_ade20k
+- Name: ann_r101-d8_4xb4-80k_ade20k-512x512
   In Collection: ANN
   Metadata:
     backbone: R-101-D8
@@ -201,9 +201,9 @@ Models:
     Metrics:
       mIoU: 42.94
       mIoU(ms+flip): 44.18
-  Config: configs/ann/ann_r101-d8_512x512_80k_ade20k.py
+  Config: configs/ann/ann_r101-d8_4xb4-80k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818-c0153543.pth
-- Name: ann_r50-d8_512x512_160k_ade20k
+- Name: ann_r50-d8_4xb4-160k_ade20k-512x512
   In Collection: ANN
   Metadata:
     backbone: R-50-D8
@@ -215,9 +215,9 @@ Models:
     Metrics:
       mIoU: 41.74
       mIoU(ms+flip): 42.62
-  Config: configs/ann/ann_r50-d8_512x512_160k_ade20k.py
+  Config: configs/ann/ann_r50-d8_4xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733-892247bc.pth
-- Name: ann_r101-d8_512x512_160k_ade20k
+- Name: ann_r101-d8_4xb4-160k_ade20k-512x512
   In Collection: ANN
   Metadata:
     backbone: R-101-D8
@@ -229,9 +229,9 @@ Models:
     Metrics:
       mIoU: 42.94
       mIoU(ms+flip): 44.06
-  Config: configs/ann/ann_r101-d8_512x512_160k_ade20k.py
+  Config: configs/ann/ann_r101-d8_4xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733-955eb1ec.pth
-- Name: ann_r50-d8_512x512_20k_voc12aug
+- Name: ann_r50-d8_4xb4-20k_voc12aug-512x512
   In Collection: ANN
   Metadata:
     backbone: R-50-D8
@@ -251,9 +251,9 @@ Models:
     Metrics:
       mIoU: 74.86
       mIoU(ms+flip): 76.13
-  Config: configs/ann/ann_r50-d8_512x512_20k_voc12aug.py
+  Config: configs/ann/ann_r50-d8_4xb4-20k_voc12aug-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246-dfcb1c62.pth
-- Name: ann_r101-d8_512x512_20k_voc12aug
+- Name: ann_r101-d8_4xb4-20k_voc12aug-512x512
   In Collection: ANN
   Metadata:
     backbone: R-101-D8
@@ -273,9 +273,9 @@ Models:
     Metrics:
       mIoU: 77.47
       mIoU(ms+flip): 78.7
-  Config: configs/ann/ann_r101-d8_512x512_20k_voc12aug.py
+  Config: configs/ann/ann_r101-d8_4xb4-20k_voc12aug-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246-2fad0042.pth
-- Name: ann_r50-d8_512x512_40k_voc12aug
+- Name: ann_r50-d8_4xb4-40k_voc12aug-512x512
   In Collection: ANN
   Metadata:
     backbone: R-50-D8
@@ -287,9 +287,9 @@ Models:
     Metrics:
       mIoU: 76.56
       mIoU(ms+flip): 77.51
-  Config: configs/ann/ann_r50-d8_512x512_40k_voc12aug.py
+  Config: configs/ann/ann_r50-d8_4xb4-40k_voc12aug-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314-b5dac322.pth
-- Name: ann_r101-d8_512x512_40k_voc12aug
+- Name: ann_r101-d8_4xb4-40k_voc12aug-512x512
   In Collection: ANN
   Metadata:
     backbone: R-101-D8
@@ -301,5 +301,5 @@ Models:
     Metrics:
       mIoU: 76.7
       mIoU(ms+flip): 78.06
-  Config: configs/ann/ann_r101-d8_512x512_40k_voc12aug.py
+  Config: configs/ann/ann_r101-d8_4xb4-40k_voc12aug-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314-bd205bbe.pth

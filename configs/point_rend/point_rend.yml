@@ -14,7 +14,7 @@ Collections:
   Converted From:
     Code: https://github.com/facebookresearch/detectron2/tree/master/projects/PointRend
 Models:
-- Name: pointrend_r50_512x1024_80k_cityscapes
+- Name: pointrend_r50_4xb2-80k_cityscapes-512x1024
   In Collection: PointRend
   Metadata:
     backbone: R-50
@@ -34,9 +34,9 @@ Models:
     Metrics:
       mIoU: 76.47
       mIoU(ms+flip): 78.13
-  Config: configs/point_rend/pointrend_r50_512x1024_80k_cityscapes.py
+  Config: configs/point_rend/pointrend_r50_4xb2-80k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r50_512x1024_80k_cityscapes/pointrend_r50_512x1024_80k_cityscapes_20200711_015821-bb1ff523.pth
-- Name: pointrend_r101_512x1024_80k_cityscapes
+- Name: pointrend_r101_4xb2-80k_cityscapes-512x1024
   In Collection: PointRend
   Metadata:
     backbone: R-101
@@ -56,9 +56,9 @@ Models:
     Metrics:
       mIoU: 78.3
       mIoU(ms+flip): 79.97
-  Config: configs/point_rend/pointrend_r101_512x1024_80k_cityscapes.py
+  Config: configs/point_rend/pointrend_r101_4xb2-80k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r101_512x1024_80k_cityscapes/pointrend_r101_512x1024_80k_cityscapes_20200711_170850-d0ca84be.pth
-- Name: pointrend_r50_512x512_160k_ade20k
+- Name: pointrend_r50_4xb4-160k_ade20k-512x512
   In Collection: PointRend
   Metadata:
     backbone: R-50
@@ -78,9 +78,9 @@ Models:
     Metrics:
       mIoU: 37.64
       mIoU(ms+flip): 39.17
-  Config: configs/point_rend/pointrend_r50_512x512_160k_ade20k.py
+  Config: configs/point_rend/pointrend_r50_4xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r50_512x512_160k_ade20k/pointrend_r50_512x512_160k_ade20k_20200807_232644-ac3febf2.pth
-- Name: pointrend_r101_512x512_160k_ade20k
+- Name: pointrend_r101_4xb4-160k_ade20k-512x512
   In Collection: PointRend
   Metadata:
     backbone: R-101
@@ -100,5 +100,5 @@ Models:
     Metrics:
       mIoU: 40.02
       mIoU(ms+flip): 41.6
-  Config: configs/point_rend/pointrend_r101_512x512_160k_ade20k.py
+  Config: configs/point_rend/pointrend_r101_4xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r101_512x512_160k_ade20k/pointrend_r101_512x512_160k_ade20k_20200808_030852-8834902a.pth
