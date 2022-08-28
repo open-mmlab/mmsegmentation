@@ -88,7 +88,7 @@ Note:
 
 Original SegFormer paper uses different `test_pipeline` and image ratios in `ms+flip`. If you want to cite SegFormer original results as benchmark you may modify settings as below:
 
-- We replace `AlignedResize` in original implementatiuon to `Resize + ResizeToMultiple`. If you want to test by
+- We replace `AlignedResize` in original implementation to `Resize + ResizeToMultiple`. If you want to test by
   using `AlignedResize`, you can change the dataset pipeline like this:
 
 ```python
