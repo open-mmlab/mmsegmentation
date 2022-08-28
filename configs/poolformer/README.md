@@ -55,4 +55,6 @@ pip install mmcls>=0.23.0
 
 Note:
 
-- `mIoU` with \* is collected when `AlignResize` is adopted in `test_pipeline`, so do `mIoU` in logs.
+- We replace `AlignedResize` in original PoolFormer implementation to `Resize + ResizeToMultiple`.
+
+- `mIoU` with \* is collected when `Resize + ResizeToMultiple` is adopted in `test_pipeline`, so do `mIoU` in logs.
