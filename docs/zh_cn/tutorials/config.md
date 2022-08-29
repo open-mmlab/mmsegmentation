@@ -214,10 +214,13 @@ data = dict(
         ]))
 log_config = dict(  # 注册日志钩 (register logger hook) 的配置文件。
     interval=50,  # 打印日志的间隔
-    hooks=[
+      hooks=[ # 训练期间执行的钩子
         dict(type='TextLoggerHook', by_epoch=False),
         dict(type='TensorboardLoggerHook', by_epoch=False),
-        dict(type='MMSegWandbHook', by_epoch=False, init_kwargs={'entity': entity, 'project': project, 'config': cfg_dict}), # 同样支持 Wandb 日志
+        dict(type='MMSegWandbHook', by_epoch=False, # 还支持 Wandb 记录器，它需要安装 `wandb`。
+             init_kwargs={'entity': "OpenMMLab", # 用于登录wandb的实体
+                          'project': "mmseg", # WandB中的项目名称
+                          'config': cfg_dict}), # 检查 https://docs.wandb.ai/ref/python/init 以获取更多初始化参数
     ])
 
 dist_params = dict(backend='nccl')  # 用于设置分布式训练的参数，端口也同样可被设置。
