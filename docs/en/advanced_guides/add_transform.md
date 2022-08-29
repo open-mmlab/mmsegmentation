@@ -3,8 +3,8 @@
 1. Write a new pipeline in any file, e.g., `my_pipeline.py`. It takes a dict as input and return a dict.
 
    ```python
-   from mmseg.datasets import PIPELINES
-   @PIPELINES.register_module()
+   from mmseg.datasets import TRANSFORMS
+   @TRANSFORMS.register_module()
    class MyTransform:
        def __call__(self, results):
            results['dummy'] = True
