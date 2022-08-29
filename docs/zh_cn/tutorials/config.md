@@ -215,9 +215,11 @@ data = dict(
 log_config = dict(  # 注册日志钩 (register logger hook) 的配置文件。
     interval=50,  # 打印日志的间隔
     hooks=[
-        # dict(type='TensorboardLoggerHook')  # 同样支持 Tensorboard 日志
-        dict(type='TextLoggerHook', by_epoch=False)
+        dict(type='TextLoggerHook', by_epoch=False),
+        dict(type='TensorboardLoggerHook', by_epoch=False),
+        dict(type='MMSegWandbHook', by_epoch=False, init_kwargs={'entity': entity, 'project': project, 'config': cfg_dict}), # 同样支持 Wandb 日志
     ])
+
 dist_params = dict(backend='nccl')  # 用于设置分布式训练的参数，端口也同样可被设置。
 log_level = 'INFO'  # 日志的级别。
 load_from = None  # 从一个给定路径里加载模型作为预训练模型，它并不会消耗训练时间。
