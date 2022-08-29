@@ -6,9 +6,10 @@ import time
 import numpy as np
 import torch
 from mmengine import Config
-from mmengine.fileio import dump, mkdir_or_exist
+from mmengine.fileio import dump
 from mmengine.model.utils import revert_sync_batchnorm
-from mmengine.runner import Runner, load_checkpoint, wrap_fp16_model
+from mmengine.runner import Runner, load_checkpoint
+from mmengine.utils import mkdir_or_exist
 
 from mmseg.registry import MODELS
 from mmseg.utils import register_all_modules
@@ -51,6 +52,7 @@ def main():
 
     benchmark_dict = dict(config=args.config, unit='img / s')
     overall_fps_list = []
+    cfg.test_dataloader.batch_size = 1
     for time_index in range(repeat_times):
         print(f'Run {time_index + 1}:')
         # build the dataloader
@@ -59,16 +61,14 @@ def main():
         # build the model and load checkpoint
         cfg.model.train_cfg = None
         model = MODELS.build(cfg.model)
-        fp16_cfg = cfg.get('fp16', None)
-        if fp16_cfg is not None:
-            wrap_fp16_model(model)
+
         if 'checkpoint' in args and osp.exists(args.checkpoint):
             load_checkpoint(model, args.checkpoint, map_location='cpu')
 
         if torch.cuda.is_available():
             model = model.cuda()
-        else:
-            model = revert_sync_batchnorm(model)
+
+        model = revert_sync_batchnorm(model)
 
         model.eval()
 
