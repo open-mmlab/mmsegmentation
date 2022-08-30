@@ -1,9 +1,7 @@
-_base_ = './deeplabv3plus_r50-d8_4xb4-80k_loveda-512x512.py'
+_base_ = './deeplabv3plus_r50-d8_512x512_80k_loveda.py'
 model = dict(
-    backbone=dict(
-        depth=18,
-        init_cfg=dict(
-            type='Pretrained', checkpoint='open-mmlab://resnet18_v1c')),
+    pretrained='open-mmlab://resnet18_v1c',
+    backbone=dict(depth=18),
     decode_head=dict(
         c1_in_channels=64,
         c1_channels=12,
