@@ -1,6 +1,6 @@
 _base_ = [
-    'upernet_swin_large_patch4_window7_512x512_'
-    'pretrain_224x224_22K_160k_ade20k.py'
+    'swin-large-patch4-window7-in22k-pre_upernet_'
+    '8xb2-160k_ade20k-512x512.py'
 ]
 checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_large_patch4_window12_384_22k_20220412-6580f57d.pth'  # noqa
 model = dict(

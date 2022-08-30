@@ -1,4 +1,4 @@
-_base_ = './upernet_r50_512x1024_80k_cityscapes.py'
+_base_ = './upernet_r50_4xb2-80k_cityscapes-512x1024.py'
 model = dict(
     pretrained='open-mmlab://resnet18_v1c',
     backbone=dict(depth=18),
