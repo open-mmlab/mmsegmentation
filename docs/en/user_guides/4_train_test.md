@@ -34,6 +34,7 @@ default_hooks = dict(
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=4000),
     sampler_seed=dict(type='DistSamplerSeedHook'))
+]
 ```
 
 ### Use pre-trained model
@@ -54,16 +55,17 @@ This tool accepts several optional arguments, including:
 
 - `--work-dir ${WORK_DIR}`: Override the working directory.
 - `--amp`: Use auto mixed precision training.
-- `--resume ${CHECKPOINT_FILE}`: Resume from a previous checkpoint file.
+- `--resume ${CHECKPOINT_FILE}`: Resume from a previous checkpoint file. If not specify, try to auto resume from the latest checkpoint in the work directory.
 - `--cfg-options ${OVERRIDE_CONFIGS}`: Override some settings in the used config, the key-value pair in xxx=yyy format will be merged into config file.
   For example, '--cfg-option model.encoder.in_channels=6'. Please see this [guide](./1_config.md#Modify-config-through-script-arguments) for more details.
   Below is the optional arguments for multi-gpu test:
 - `--launcher`: Items for distributed job initialization launcher. Allowed choices are `none`, `pytorch`, `slurm`, `mpi`. Especially, if set to none, it will test in a non-distributed mode.
 - `--local_rank`: ID for local rank. If not specified, it will be set to 0.
-  **Note**:
-  Difference between `--resume` and `load-from`:
-  `--resume` loads both the model weights and optimizer status, and the iteration is also inherited from the specified checkpoint.
-  It is usually used for resuming the training process that is interrupted accidentally.
+
+**Note**:
+Difference between `--resume` and `load-from`:
+`--resume` loads both the model weights and optimizer status, and the iteration is also inherited from the specified checkpoint.
+It is usually used for resuming the training process that is interrupted accidentally.
 
 `load-from` only loads the model weights and the training iteration starts from 0. It is usually used for fine-tuning.
 
@@ -75,7 +77,7 @@ The process of training on the CPU is consistent with single GPU training if mac
 export CUDA_VISIBLE_DEVICES=-1
 ```
 
-And then run the script [above](#training-on-a-single-GPU).
+And then run the script [above](#training-on-a-single-gpu).
 
 ```{warning}
 The process of training on the CPU is consistent with single GPU training. We just need to disable GPUs before the training process.
@@ -83,7 +85,7 @@ The process of training on the CPU is consistent with single GPU training. We ju
 
 ### Training on multiple GPUs
 
-MMSegmentation implements **distributed** training with `MMDistributedDataParallel`.
+OpenMMLab2.0 implements **distributed** training with `MMDistributedDataParallel`.
 We provide `tools/dist_train.sh` to launch training on multiple GPUs.
 The basic usage is as follows.
 
@@ -99,9 +101,9 @@ and has additional arguments to specify the number of GPUs.
 An example:
 
 ```shell
-# checkpoints and logs saved in WORK_DIR=work_dirs/pspnet_r50-d8_512x512_80k_ade20k/
+# checkpoints and logs saved in WORK_DIR=work_dirs/pspnet_r50-d8_4xb4-80k_ade20k-512x512/
 # If work_dir is not set, it will be generated automatically.
-sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_512x512_80k_ade20k.py 8 --work-dir work_dirs/pspnet_r50-d8_512x512_80k_ade20k
+sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_4xb4-80k_ade20k-512x512.py 8 --work-dir work_dirs/pspnet_r50-d8_4xb4-80k_ade20k-512x512
 ```
 
 **Note**: During training, checkpoints and logs are saved in the same folder structure as the config file under `work_dirs/`. Custom work directory is not recommended since evaluation scripts infer work directories from the config file name. If you want to save your weights somewhere else, please use symlink, for example:
@@ -264,16 +266,16 @@ Optional arguments:
 1. Test PSPNet on PASCAL VOC (without saving the test results) and evaluate the mIoU.
 
    ```shell
-   python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
-       checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth
+   python tools/test.py configs/pspnet/pspnet_r50-d8_4xb4-20k_voc12aug-512x512.py \
+       checkpoints/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958-ed5dfbd9.pth
    ```
 
-   Since `--work-dir` is not specified, the folder `work_dirs/pspnet_r50-d8_512x1024_20k_voc12aug` will be created automatically to save the evaluation results.
+   Since `--work-dir` is not specified, the folder `work_dirs/pspnet_r50-d8_4xb4-20k_voc12aug-512x512` will be created automatically to save the evaluation results.
 
 2. Test PSPNet with 4 GPUs, and evaluate the standard mIoU and cityscapes metric.
 
    ```shell
-   ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py \
+   ./tools/dist_test.sh configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py \
        checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth 4
    ```
 
