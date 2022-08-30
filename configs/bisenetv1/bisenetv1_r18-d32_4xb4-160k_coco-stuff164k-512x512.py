@@ -5,12 +5,35 @@ _base_ = [
 ]
 crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
+norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     data_preprocessor=data_preprocessor,
     decode_head=dict(num_classes=171),
     auxiliary_head=[
-        dict(num_classes=171),
-        dict(num_classes=171),
+        dict(
+            type='FCNHead',
+            in_channels=128,
+            channels=64,
+            num_convs=1,
+            num_classes=171,
+            in_index=1,
+            norm_cfg=norm_cfg,
+            concat_input=False,
+            align_corners=False,
+            loss_decode=dict(
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+        dict(
+            type='FCNHead',
+            in_channels=128,
+            channels=64,
+            num_convs=1,
+            num_classes=171,
+            in_index=2,
+            norm_cfg=norm_cfg,
+            concat_input=False,
+            align_corners=False,
+            loss_decode=dict(
+                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     ])
 param_scheduler = [
     dict(type='LinearLR', by_epoch=False, start_factor=0.1, begin=0, end=1000),
