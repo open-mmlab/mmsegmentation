@@ -1,9 +1,7 @@
 _base_ = './fcn_hr18_4xb4-80k_loveda-512x512.py'
 model = dict(
+    pretrained='open-mmlab://msra/hrnetv2_w18_small',
     backbone=dict(
-        init_cfg=dict(
-            type='Pretrained',
-            checkpoint='open-mmlab://msra/hrnetv2_w18_small'),
         extra=dict(
             stage1=dict(num_blocks=(2, )),
             stage2=dict(num_blocks=(2, 2)),
