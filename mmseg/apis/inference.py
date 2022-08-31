@@ -147,20 +147,21 @@ def inference_model(model: BaseSegmentor,
 
 def show_result_pyplot(model: BaseSegmentor,
                        img: Union[str, np.ndarray],
-                       result: SampleList,
+                       result: SegDataSample,
                        opacity: float = 0.5,
                        title: str = '',
                        draw_gt: bool = True,
                        draw_pred: bool = True,
                        wait_time: float = 0,
                        show: bool = True,
-                       save_dir=None):
+                       save_dir=None,
+                       out_file=None):
     """Visualize the segmentation results on the image.
 
     Args:
         model (nn.Module): The loaded segmentor.
         img (str or np.ndarray): Image filename or loaded image.
-        result (list): The prediction SegDataSample result.
+        result (SegDataSample): The prediction SegDataSample result.
         opacity(float): Opacity of painted segmentation map.
             Default 0.5. Must be in (0, 1] range.
         title (str): The title of pyplot figure.
@@ -173,6 +174,7 @@ def show_result_pyplot(model: BaseSegmentor,
             Default to True.
         save_dir (str, optional): Save file dir for all storage backends.
             If it is None, the backend storage will not save any data.
+        out_file (str, optional): Path to output file. Default to None.
     """
     if hasattr(model, 'module'):
         model = model.module
@@ -193,9 +195,13 @@ def show_result_pyplot(model: BaseSegmentor,
     visualizer.add_datasample(
         name=title,
         image=image,
-        data_sample=result[0],
+        data_sample=result,
         draw_gt=draw_gt,
         draw_pred=draw_pred,
         wait_time=wait_time,
         show=show)
-    return visualizer.get_image()
+    vis_img = visualizer.get_image()
+    if out_file is not None:
+        mmcv.imwrite(vis_img, out_file)
+
+    return vis_img
