@@ -1,4 +1,4 @@
-# 教程 1: 学习配置文件
+# 学习配置文件（待更新）
 
 我们整合了模块和继承设计到我们的配置里，这便于做很多实验。如果您想查看配置文件，您可以运行 `python tools/print_config.py /PATH/TO/CONFIG` 去查看完整的配置文件。您还可以传递参数
 `--cfg-options xxx.yyy=zzz` 去查看更新的配置。
