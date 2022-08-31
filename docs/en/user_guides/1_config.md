@@ -1,12 +1,12 @@
 # Tutorial 1: Learn about Configs
 
 We incorporate modular and inheritance design into our config system, which is convenient to conduct various experiments.
-If you wish to inspect the config file, you may run `python tools/print_config.py /PATH/TO/CONFIG` to see the complete config.
+If you wish to inspect the config file, you may run `python tools/misc/print_config.py /PATH/TO/CONFIG` to see the complete config.
 You may also pass `--cfg-options xxx.yyy=zzz` to see updated config.
 
 ## Config File Structure
 
-There are 4 basic component types under `config/_base_`, dataset, model, schedule, default_runtime.
+There are 4 basic component types under `config/_base_`, datasets, models, schedules, default_runtime.
 Many methods could be easily constructed with one of each like DeepLabV3, PSPNet.
 The configs that are composed by components from `_base_` are called _primitive_.
 
@@ -17,7 +17,7 @@ For example, if some modification is made base on DeepLabV3, user may first inhe
 
 If you are building an entirely new method that does not share the structure with any of the existing methods, you may create a folder `xxxnet` under `configs`,
 
-Please refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html) for detailed documentation.
+Please refer to [mmengine](TODO) for detailed documentation.
 
 ## Config Name Style
 
@@ -29,13 +29,13 @@ We follow the below style to name config files. Contributors are advised to foll
 
 The file name is divided to five parts. All parts and components are connected with `_` and words of each part or component should be connected with `-`.
 
-- `{algorithm name}`: The name of the algorithm, such as `DeepLabV3`, `PSPNet`, etc.
-- `{model component names}`: Names of the components used in the algorithm such as backbone, head, etc. For example, `r50-d8_deeplabv3` means using ResNet50 backbone, DeepLabV3 decode head in the algorithm.
-- `{training settings}`: Information of training settings such as batch size, augmentations, loss trick, scheduler, and epochs/iterations. For example: `4xb4-ce-linearlr-40K` means using 4-gpus x 4-images-per-gpu, CrossEntropy loss, Linear learning rate, and train 20K iterations.
+- `{algorithm name}`: The name of the algorithm, such as `deeplabv3`, `pspnet`, etc.
+- `{model component names}`: Names of the components used in the algorithm such as backbone, head, etc. For example, `r50-d8` means using ResNet50 backbone and use output of backbone is 8 times downsampling as input.
+- `{training settings}`: Information of training settings such as batch size, augmentations, loss, learning rate scheduler, and epochs/iterations. For example: `4xb4-ce-linearlr-40K` means using 4-gpus x 4-images-per-gpu, CrossEntropy loss, Linear learning rate scheduler, and train 40K iterations.
   Some abbreviations:
   - `{gpu x batch_per_gpu}`: GPUs and samples per GPU. `bN` indicates N batch size per GPU. E.g. `8xb2` is the short term of 8-gpus x 2-images-per-gpu. And `4xb4` is used by default if not mentioned.
   - `{schedule}`: training schedule, options are `20k`, `40k`, etc. `20k` and `40k` means 20000 iterations and 40000 iterations respectively.
-- `{training dataset information}`: Training dataset names like `cityscapes`, `PascalVOC`, `ADE20K`, etc, and input resolutions. For example: `cityscapes-768x768` means training on `cityscapes` dataset and the input shape is `768x768`.
+- `{training dataset information}`: Training dataset names like `cityscapes`, `ade20k`, etc, and input resolutions. For example: `cityscapes-768x768` means training on `cityscapes` dataset and the input shape is `768x768`.
 - `{testing dataset information}` (optional): Testing dataset name for models trained on one dataset but tested on another. If not mentioned, it means the model was trained and tested on the same dataset type.
 
 ## An Example of PSPNet
@@ -221,6 +221,7 @@ env_cfg = dict(
     dist_cfg=dict(backend='nccl'),
 )
 log_level = 'INFO'
+log_processor = dict(by_epoch=False)
 load_from = None  # Load checkpoint from file.
 resume = False  # Whether to resume from existed model.
 ```
@@ -230,7 +231,7 @@ resume = False  # Whether to resume from existed model.
 ### Ignore some fields in the base configs
 
 Sometimes, you may set `_delete_=True` to ignore some of the fields in base configs.
-You may refer to [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html#inherit-from-base-config-with-ignored-fields) for simple illustration.
+You may refer to [mmengine](TODO) for simple illustration.
 
 In MMSegmentation, for example, to change the backbone of PSPNet with the following config.
 
@@ -317,7 +318,7 @@ train_pipeline = [
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='PhotoMetricDistortion'),
-    dict(type='PackSegInputs']),
+    dict(type='PackSegInputs'),
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -349,7 +350,7 @@ We first define the new `train_pipeline`/`test_pipeline` and pass them into `dat
 Similarly, if we would like to switch from `SyncBN` to `BN` or `MMSyncBN`, we need to substitute every `norm_cfg` in the config.
 
 ```python
-_base_ = '../pspnet/psp_r50_512x1024_40ki_cityscpaes.py'
+_base_ = '../pspnet/pspnet_r50-d8_4xb4-40k_cityscpaes-512x1024.py'
 norm_cfg = dict(type='BN', requires_grad=True)
 model = dict(
     backbone=dict(norm_cfg=norm_cfg),

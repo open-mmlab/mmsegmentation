@@ -1,4 +1,4 @@
-Train & Test
+训练 & 测试
 **************
 
 .. toctree::
@@ -9,7 +9,7 @@ Train & Test
    3_inference.md
    4_train_test.md
 
-Useful Tools
+实用工具
 *************
 
 .. toctree::

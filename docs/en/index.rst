@@ -41,8 +41,9 @@ Welcome to MMSegmentation's documentation!
    :maxdepth: 1
    :caption: Notes
 
-   changelog.md
-   faq.md
+   notes/changelog.md
+   notes/faq.md
+   notes/CONTRIBUTING.md
 
 .. toctree::
    :caption: Switch Language
