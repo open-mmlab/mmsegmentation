@@ -61,7 +61,9 @@ default_hooks = dict(
 
 ```
 
-Visualization results will be stored in the local folder. The stored results of the local visualization are kept in `vis_image` under `$WORK_DIRS/vis_data`, e.g.:
+After launch training experiment, visualization results will be stored in the local folder in validation loop,
+or when launch evaluation a model on one dataset, the prediction results will be store in the local.
+The stored results of the local visualization are kept in `vis_image` under `$WORK_DIRS/vis_data`, e.g.:
 
 ```shell
 work_dirs/test_visual/20220810_115248/vis_data/vis_image
