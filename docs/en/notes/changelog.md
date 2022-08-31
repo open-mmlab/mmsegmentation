@@ -3,17 +3,17 @@
 ## v1.0.0rc0 (31/8/2022)
 
 We are excited to announce the release of MMSegmentation 1.0.0rc0.
-MMSeg 1.0.0rc0 is the first version of MMSegmentation 1.x, a part of the OpenMMLab 2.x projects.
+MMSeg 1.0.0rc0 is the first version of MMSegmentation 1.x, a part of the OpenMMLab 2.0 projects.
 Built upon the new [training engine](https://github.com/open-mmlab/mmengine),
 MMSeg 1.x unifies the interfaces of dataset, models, evaluation, and visualization with faster training and testing speed.
 
 ### Highlights
 
-1. **New engines**. MMSeg 1.x is based on [MMEngine](https://github.com/open-mmlab/mmengine), which provides a general and powerful runner that allows more flexible customizations and significantly simplifies the entrypoints of high-level interfaces.
+1. **New engines** MMSeg 1.x is based on [MMEngine](https://github.com/open-mmlab/mmengine), which provides a general and powerful runner that allows more flexible customizations and significantly simplifies the entrypoints of high-level interfaces.
 
-2. **Unified interfaces**. As a part of the OpenMMLab 2.x projects, MMSeg 1.x unifies and refactors the interfaces and internal logics of train, testing, datasets, models, evaluation, and visualization. All the OpenMMLab 2.x projects share the same design in those interfaces and logics to allow the emergence of multi-task/modality algorithms.
+2. **Unified interfaces** As a part of the OpenMMLab 2.0 projects, MMSeg 1.x unifies and refactors the interfaces and internal logics of train, testing, datasets, models, evaluation, and visualization. All the OpenMMLab 2.0 projects share the same design in those interfaces and logics to allow the emergence of multi-task/modality algorithms.
 
-3. **Faster speed**. We optimize the training and inference speed for common models.
+3. **Faster speed** We optimize the training and inference speed for common models.
 
 4. **New features**:
 
@@ -61,7 +61,7 @@ We will update the [migration guide](../migration.md) to provide complete detail
 
 ### New Features
 
-1. Support data structures and encapsulating `seg_logits` in data samples, which will support more common evaluation metrics.
+1. Support data structures and encapsulating `seg_logits` in data samples, which can be return from models to support more common evaluation metrics.
 
 ### Ongoing changes
 
