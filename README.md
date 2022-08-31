@@ -60,14 +60,29 @@ The 1.x branch works with **PyTorch 1.6+**.
 
   The training speed is faster than or comparable to other codebases.
 
-## License
-
-This project is released under the [Apache 2.0 license](LICENSE).
-
-## Changelog
+## What's New
 
 v1.0.0rc0 was released in 31/8/2022.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
+
+- Unifies interfaces of all components based on MMEngine.
+- Faster training and testing speed with complete support of mixed precision training.
+- Refactored and more flexible architecture.
+
+## Installation
+
+Please refer to [get_started.md](docs/en/get_started.md#installation) for installation and [dataset_prepare.md](docs/en/user_guides/dataset_prepare.md#prepare-datasets) for dataset preparation.
+
+## Get Started
+
+Please see [Overview](docs/en/overview.md) for the general introduction of MMSegmentation.
+
+Please see [user guides](https://mmsegmentation.readthedocs.io/en/1.x/user_guides/index.html#) for the basic usage of MMSegmentation.
+There are also [advanced tutorials](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/index.html) for in-depth understanding of mmseg design and implementation .
+
+A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/1.x/demo/MMSegmentation_Tutorial.ipynb) on Colab.
+
+To migrate from MMSegmentation 1.x, please refer to [migration](docs/en/migration.md).
 
 ## Benchmark and model zoo
 
@@ -144,18 +159,18 @@ Supported datasets:
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/dataset_prepare.md#isaid)
 
-## Installation
-
-Please refer to [get_started.md](docs/en/get_started.md#installation) for installation and [dataset_prepare.md](docs/en/user_guides/dataset_prepare.md#prepare-datasets) for dataset preparation.
-
-## Get Started
-
-Please see [user guides](https://mmsegmentation.readthedocs.io/en/1.x/user_guides/index.html#) for the basic usage of MMSegmentation.
-There are also [advanced tutorials](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/index.html) for in-depth understanding of mmseg design and implementation .
-
-A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/1.x/demo/MMSegmentation_Tutorial.ipynb) on Colab.
-
 Please refer to [FAQ](docs/en/notes/faq.md) for frequently asked questions.
+
+## Contributing
+
+We appreciate all contributions to improve MMSegmentation. Please refer to [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the contributing guideline.
+
+## Acknowledgement
+
+MMSegmentation is an open source project that welcome any contribution and feedback.
+We wish that the toolbox and benchmark could serve the growing research
+community by providing a flexible as well as standardized toolkit to reimplement existing methods
+and develop their own new semantic segmentation methods.
 
 ## Citation
 
@@ -170,16 +185,9 @@ If you find this project useful in your research, please consider cite:
 }
 ```
 
-## Contributing
+## License
 
-We appreciate all contributions to improve MMSegmentation. Please refer to [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the contributing guideline.
-
-## Acknowledgement
-
-MMSegmentation is an open source project that welcome any contribution and feedback.
-We wish that the toolbox and benchmark could serve the growing research
-community by providing a flexible as well as standardized toolkit to reimplement existing methods
-and develop their own new semantic segmentation methods.
+This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Projects in OpenMMLab
 

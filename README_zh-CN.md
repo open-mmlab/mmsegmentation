@@ -59,14 +59,24 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
   训练速度比其他语义分割代码库更快或者相当。
 
-## 开源许可证
-
-该项目采用 [Apache 2.0 开源许可证](LICENSE)。
-
 ## 更新日志
 
 最新版本 v1.0.0rc0 在 2022.8.31 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/notes/changelog.md)。
+
+## 安装
+
+请参考[快速入门文档](docs/zh_cn/get_started.md#installation)进行安装，参考[数据集准备](docs/zh_cn/user_guides/2_dataset_prepare.md)处理数据。
+
+## 快速入门
+
+请参考[概述](docs/zh_cn/overview.md)对 MMSegmetation 进行初步了解
+
+请参考[用户指南](https://mmsegmentation.readthedocs.io/zh_CN/1.x/user_guides/index.html)了解 mmseg 的基本使用，以及[进阶指南](https://mmsegmentation.readthedocs.io/zh_CN/1.x/advanced_guides/index.html)深入了解 mmseg 设计和代码实现。
+
+同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/1.x/demo/MMSegmentation_Tutorial.ipynb)。
+
+若需要将0.x版本的代码迁移至新版，请参考[迁移文档](docs/zh_cn/migration.md)。
 
 ## 基准测试和模型库
 
@@ -143,17 +153,15 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/zh_cn/dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/zh_cn/dataset_prepare.md#isaid)
 
-## 安装
-
-请参考[快速入门文档](docs/zh_cn/get_started.md#installation)进行安装，参考[数据集准备](docs/zh_cn/user_guides/2_dataset_prepare.md)处理数据。
-
-## 快速入门
-
-请参考[用户文档](https://mmsegmentation.readthedocs.io/zh_CN/1.x/user_guides/index.html)了解 mmseg 的基本使用，以及[进阶文档](https://mmsegmentation.readthedocs.io/zh_CN/1.x/advanced_guides/index.html)深入了解 mmseg 设计和代码实现。
-
-同时，我们提供了 Colab 教程。你可以在[这里](demo/MMSegmentation_Tutorial.ipynb)浏览教程，或者直接在 Colab 上[运行](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/1.x/demo/MMSegmentation_Tutorial.ipynb)。
-
 如果遇到问题，请参考 [常见问题解答](docs/zh_cn/notes/faq.md)。
+
+## 贡献指南
+
+我们感谢所有的贡献者为改进和提升 MMSegmentation 所作出的努力。请参考[贡献指南](.github/CONTRIBUTING.md)来了解参与项目贡献的相关指引。
+
+## 致谢
+
+MMSegmentation 是一个由来自不同高校和企业的研发人员共同参与贡献的开源项目。我们感谢所有为项目提供算法复现和新功能支持的贡献者，以及提供宝贵反馈的用户。 我们希望这个工具箱和基准测试可以为社区提供灵活的代码工具，供用户复现已有算法并开发自己的新模型，从而不断为开源社区提供贡献。
 
 ## 引用
 
@@ -168,13 +176,9 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 }
 ```
 
-## 贡献指南
+## 开源许可证
 
-我们感谢所有的贡献者为改进和提升 MMSegmentation 所作出的努力。请参考[贡献指南](.github/CONTRIBUTING.md)来了解参与项目贡献的相关指引。
-
-## 致谢
-
-MMSegmentation 是一个由来自不同高校和企业的研发人员共同参与贡献的开源项目。我们感谢所有为项目提供算法复现和新功能支持的贡献者，以及提供宝贵反馈的用户。 我们希望这个工具箱和基准测试可以为社区提供灵活的代码工具，供用户复现已有算法并开发自己的新模型，从而不断为开源社区提供贡献。
+该项目采用 [Apache 2.0 开源许可证](LICENSE)。
 
 ## OpenMMLab 的其他项目
 
