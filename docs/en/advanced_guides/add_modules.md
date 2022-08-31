@@ -3,7 +3,7 @@
 ## Customize optimizer
 
 Assume you want to add a optimizer named as `MyOptimizer`, which has arguments `a`, `b`, and `c`.
-You need to first implement the new optimizer in a file, e.g., in `mmseg/core/optimizer/my_optimizer.py`:
+You need to first implement the new optimizer in a file, e.g., in `mmseg/engine/optimizers/my_optimizer.py`:
 
 ```python
 from mmcv.runner import OPTIMIZERS
@@ -17,7 +17,7 @@ class MyOptimizer(Optimizer):
 
 ```
 
-Then add this module in `mmseg/core/optimizer/__init__.py` thus the registry will
+Then add this module in `mmseg/engine/optimizers/__init__.py` thus the registry will
 find the new module and add it:
 
 ```python
@@ -51,14 +51,12 @@ The users can directly set arguments following the [API doc](https://pytorch.org
 Some models may have some parameter-specific settings for optimization, e.g. weight decay for BatchNoarm layers.
 The users can do those fine-grained parameter tuning through customizing optimizer constructor.
 
-```
-from mmcv.utils import build_from_cfg
-
-from mmcv.runner import OPTIMIZER_BUILDERS
+```python
+from mmseg.registry import OPTIM_WRAPPER_CONSTRUCTORS
 from .cocktail_optimizer import CocktailOptimizer
 
 
-@OPTIMIZER_BUILDERS.register_module
+@OPTIM_WRAPPER_CONSTRUCTORS.register_module
 class CocktailOptimizerConstructor(object):
 
     def __init__(self, optim_wrapper_cfg, paramwise_cfg=None):
@@ -85,10 +83,10 @@ Here we show how to develop new components with an example of MobileNet.
 ```python
 import torch.nn as nn
 
-from ..registry import BACKBONES
+from mmseg.registry import MODELS
 
 
-@BACKBONES.register_module
+@MODELS.register_module
 class MobileNet(nn.Module):
 
     def __init__(self, arg1, arg2):
@@ -121,7 +119,7 @@ model = dict(
 
 ### Add new heads
 
-In MMSegmentation, we provide a base [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py) for all segmentation head.
+In MMSegmentation, we provide a base [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py) for all segmentation head.
 All newly implemented decode heads should be derived from it.
 Here we show how to develop a new head with the example of [PSPNet](https://arxiv.org/abs/1612.01105) as the following.
 
@@ -130,7 +128,9 @@ PSPNet implements a decode head for segmentation decode.
 To implement a decode head, basically we need to implement three functions of the new module as the following.
 
 ```python
-@HEADS.register_module()
+from mmseg.registry import MODELS
+
+@MODELS.register_module()
 class PSPHead(BaseDecodeHead):
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
@@ -187,7 +187,7 @@ The decorator `weighted_loss` enable the loss to be weighted for each element.
 import torch
 import torch.nn as nn
 
-from ..builder import LOSSES
+from mmseg.registry import MODELS
 from .utils import weighted_loss
 
 @weighted_loss
