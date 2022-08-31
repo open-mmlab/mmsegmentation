@@ -6,7 +6,7 @@
    from mmseg.datasets import TRANSFORMS
    @TRANSFORMS.register_module()
    class MyTransform:
-       def __call__(self, results):
+       def transform(self, results):
            results['dummy'] = True
            return results
    ```
