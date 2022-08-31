@@ -38,7 +38,7 @@ Find the `vis_data` path of `work_dir` after starting training, for example, the
 work_dirs/test_visual/20220810_115248/vis_data
 ```
 
-The scalar file in vis_data path includes learning rate, losses and data_time etc, also record metrics results and you can refer [logging tutorial](TODO) in mmengine to log custom data. The tensorboard visualization results are executed with the following command:
+The scalar file in vis_data path includes learning rate, losses and data_time etc, also record metrics results and you can refer [logging tutorial](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/logging.html) in mmengine to log custom data. The tensorboard visualization results are executed with the following command:
 
 ```shell
 tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
@@ -76,4 +76,4 @@ we can also run the following command to view them in TensorBoard:
 tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 ```
 
-If you would like to know more visualization usage, you can refer to [visualization tutorial](todo) in mmengie.
+If you would like to know more visualization usage, you can refer to [visualization tutorial](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/visualization.html) in mmengie.

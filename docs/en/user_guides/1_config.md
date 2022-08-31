@@ -17,7 +17,7 @@ For example, if some modification is made base on DeepLabV3, user may first inhe
 
 If you are building an entirely new method that does not share the structure with any of the existing methods, you may create a folder `xxxnet` under `configs`,
 
-Please refer to [mmengine](TODO) for detailed documentation.
+Please refer to [mmengine](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) for detailed documentation.
 
 ## Config Name Style
 
@@ -231,7 +231,7 @@ resume = False  # Whether to resume from existed model.
 ### Ignore some fields in the base configs
 
 Sometimes, you may set `_delete_=True` to ignore some of the fields in base configs.
-You may refer to [mmengine](TODO) for simple illustration.
+You may refer to [mmengine](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) for simple illustration.
 
 In MMSegmentation, for example, to change the backbone of PSPNet with the following config.
 
