@@ -5,6 +5,7 @@ Welcome to MMSegmentation's documentation!
    :maxdepth: 1
    :caption: Get Started
 
+   overview.md
    get_started.md
 
 .. toctree::
@@ -43,7 +44,6 @@ Welcome to MMSegmentation's documentation!
 
    notes/changelog.md
    notes/faq.md
-   notes/CONTRIBUTING.md
 
 .. toctree::
    :caption: Switch Language

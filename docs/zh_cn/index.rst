@@ -9,13 +9,13 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: 用户文档
+   :caption: 用户指南
 
    user_guides/index.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: 进阶文档
+   :caption: 进阶指南
 
    advanced_guides/index.rst
 
