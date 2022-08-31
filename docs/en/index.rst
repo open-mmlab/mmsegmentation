@@ -41,7 +41,7 @@ Welcome to MMSegmentation's documentation!
    :maxdepth: 1
    :caption: Notes
 
-   notes/changelog_v1.x.md
+   notes/changelog.md
    notes/faq.md
    notes/CONTRIBUTING.md
 
