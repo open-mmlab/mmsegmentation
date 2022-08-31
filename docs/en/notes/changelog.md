@@ -41,7 +41,7 @@ We will update the [migration guide](../migration.md) to provide complete detail
 #### Configs
 
 - The [Runner in MMEngine](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py) uses a different config structures to ease the understanding of the components in runner. Users can read the [config example of mmseg](../user_guides/config.md) or refer to the [migration guide in MMEngine](https://mmengine.readthedocs.io/en/latest/migration/runner.html) for migration details.
-- The file names of configs and models are also refactored to follow the new rules unified across OpenMMLab 2.x projects. Please refer to the [user guides of config](../user_guides/1_config.md) for more details.
+- The file names of configs and models are also refactored to follow the new rules unified across OpenMMLab 2.0 projects. Please refer to the [user guides of config](../user_guides/1_config.md) for more details.
 
 #### Components
 
