@@ -51,6 +51,13 @@ load_from = 'https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r5
 
 We provide `tools/train.py` to launch training jobs on a single GPU.
 The basic usage is as follows.
+
+```shell
+python tools/train.py \
+    ${CONFIG_FILE} \
+    [optional arguments]
+```
+
 This tool accepts several optional arguments, including:
 
 - `--work-dir ${WORK_DIR}`: Override the working directory.

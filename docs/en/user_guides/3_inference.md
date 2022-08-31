@@ -11,7 +11,7 @@ Please download the [pre-trained model](https://download.openmmlab.com/mmsegment
 
 ```python
 from mmseg.apis import init_model, inference_model
-from mmsegseg.utils import register_all_modules
+from mmseg.utils import register_all_modules
 # Specify the path to model config and checkpoint file
 config_file = 'configs/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes.py'
 checkpoint_file = 'checkpoints/pspnet_r50-d8_512x1024_80k_cityscapes_20200606_112131-2376f12b.pth'

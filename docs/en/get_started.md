@@ -43,6 +43,7 @@ We recommend that users follow our best practices to install MMSegmentation. How
 ```shell
 pip install -U openmim
 mim install 'mmcv>=2.0.0rc1'
+mim install mmmenigne
 ```
 
 **Step 1.** Install MMSegmentation.
@@ -159,6 +160,7 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 ```shell
 !pip3 install openmim
 !mim install 'mmcv>=2.0.0rc0'
+!mim install mmengine
 ```
 
 **Step 2.** Install MMSegmentation from the source.

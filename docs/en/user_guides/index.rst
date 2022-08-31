@@ -15,5 +15,6 @@ Useful Tools
 .. toctree::
    :maxdepth: 2
 
-   useful_tools.md
    visualization.md
+   useful_tools.md
+   deployment.md
