@@ -1,3 +1,3 @@
 mmcls>=1.0.0rc0
 mmcv>=2.0.0rc1,<2.1.0
-mmengine>=0.5
+mmengine>=0.1
