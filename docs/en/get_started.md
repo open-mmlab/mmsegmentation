@@ -159,7 +159,7 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 
 ```shell
 !pip3 install openmim
-!mim install 'mmcv>=2.0.0rc0'
+!mim install 'mmcv>=2.0.0rc1'
 !mim install mmengine
 ```
 
