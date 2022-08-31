@@ -1,4 +1,4 @@
-# Tutorial 6: Customize Runtime Settings
+# Customize Runtime Settings
 
 ## Customize optimization settings
 

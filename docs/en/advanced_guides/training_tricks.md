@@ -1,4 +1,4 @@
-# Tutorial 5: Training Tricks
+# Training Tricks
 
 MMSegmentation support following training tricks out of box.
 
