@@ -5,8 +5,7 @@ import os.path as osp
 from mmengine import Config, DictAction
 from mmengine.utils import ProgressBar
 
-from mmseg.datasets import DATASETS
-from mmseg.registry import VISUALIZERS
+from mmseg.registry import DATASETS, VISUALIZERS
 from mmseg.utils import register_all_modules
 
 
@@ -48,15 +47,15 @@ def main():
     register_all_modules()
 
     dataset = DATASETS.build(cfg.train_dataloader.dataset)
-
+    cfg.visualizer['save_dir'] = args.output_dir
     visualizer = VISUALIZERS.build(cfg.visualizer)
     visualizer.dataset_meta = dataset.METAINFO
 
     progress_bar = ProgressBar(len(dataset))
     for item in dataset:
         img = item['inputs'].permute(1, 2, 0).numpy()
-        data_sample = item['data_sample'].numpy()
-        img_path = osp.basename(item['data_sample'].img_path)
+        data_sample = item['data_samples'].numpy()
+        img_path = osp.basename(item['data_samples'].img_path)
 
         img = img[..., [2, 1, 0]]  # bgr to rgb
 
