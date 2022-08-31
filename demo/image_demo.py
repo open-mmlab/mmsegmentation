@@ -12,12 +12,9 @@ def main():
     parser.add_argument('img', help='Image file')
     parser.add_argument('config', help='Config file')
     parser.add_argument('checkpoint', help='Checkpoint file')
+    parser.add_argument('--out-file', default=None, help='Path to output file')
     parser.add_argument(
         '--device', default='cuda:0', help='Device used for inference')
-    parser.add_argument(
-        '--save-dir',
-        default=None,
-        help='Save file dir for all storage backends.')
     parser.add_argument(
         '--opacity',
         type=float,
@@ -38,12 +35,13 @@ def main():
     # show the results
     show_result_pyplot(
         model,
-        args.img, [result],
+        args.img,
+        result,
         title=args.title,
         opacity=args.opacity,
         draw_gt=False,
-        show=False if args.save_dir is not None else True,
-        save_dir=args.save_dir)
+        show=False if args.out_file is not None else True,
+        out_file=args.out_file)
 
 
 if __name__ == '__main__':
