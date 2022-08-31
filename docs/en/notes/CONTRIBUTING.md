@@ -1,4 +1,4 @@
-## Contributing to MMSegmentation 1.x
+# Contributing to MMSegmentation 1.x
 
 All kinds of contributions are welcome, including but not limited to the following.
 
@@ -6,7 +6,7 @@ All kinds of contributions are welcome, including but not limited to the followi
 - Add documentation or translate the documentation into other languages
 - Add new features and components
 
-### Workflow
+## Workflow
 
 1. fork and pull the latest MMSegmentation repository
 2. checkout a new branch from 'dev-1.x' (do not use master branch for PRs)
@@ -17,9 +17,9 @@ All kinds of contributions are welcome, including but not limited to the followi
 If you plan to add some new features that involve large changes, it is encouraged to open an issue for discussion first.
 ```
 
-### Code style
+## Code style
 
-#### Python
+### Python
 
 We adopt [PEP8](https://www.python.org/dev/peps/pep-0008/) as the preferred code style.
 
@@ -54,6 +54,6 @@ After this on every commit check code linters and formatter will be enforced.
 
 > Before you create a PR, make sure that your code lints and is formatted by yapf.
 
-#### C++ and CUDA
+### C++ and CUDA
 
 We follow the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
