@@ -94,7 +94,7 @@ def main():
             result = inference_model(model, frame)
 
             # blend raw image and prediction
-            draw_img = show_result_pyplot(model, frame, [result])
+            draw_img = show_result_pyplot(model, frame, result)
 
             if args.show:
                 cv2.imshow('video_demo', draw_img)
