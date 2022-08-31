@@ -1,5 +1,5 @@
 matplotlib
-mmcls>=0.20.1
+mmcls>=1.0.0rc0
 numpy
 packaging
 prettytable
