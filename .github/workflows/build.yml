@@ -139,8 +139,8 @@ jobs:
           python -V
           pip install git+https://github.com/open-mmlab/mmengine.git
           pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
           python -c 'import mmcv; print(mmcv.__version__)'
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
