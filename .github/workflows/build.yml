@@ -58,14 +58,14 @@ jobs:
         if: ${{matrix.torchvision == '0.4.2'}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install MMCV
-        run: |
-          pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cpu/${{matrix.torch_version}}/index.html
-          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install MMEgine
         run: |
           pip install git+https://github.com/open-mmlab/mmengine.git
           python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
+      - name: Install MMCV
+        run: |
+          pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cpu/${{matrix.torch_version}}/index.html
+          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: |
           pip install -r requirements.txt
@@ -138,8 +138,8 @@ jobs:
         run: |
           python -V
           pip install git+https://github.com/open-mmlab/mmengine.git
-          python -m pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
-          python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
@@ -207,9 +207,9 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install git+https://github.com/open-mmlab/mmengine.git
-          python -m pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
-          python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
