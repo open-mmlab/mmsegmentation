@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
-      - name: Install pre-commit hook
+      - name: Install MMEngine
         run: |
           pip install git+https://github.com/open-mmlab/mmengine.git
       - name: Install pre-commit hook
