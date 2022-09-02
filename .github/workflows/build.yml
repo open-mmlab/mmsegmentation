@@ -223,7 +223,7 @@ jobs:
       matrix:
         os: [windows-2022]
         python: [3.8]
-        platform: [cpu, cu102]
+        platform: [cpu, cu111]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
@@ -254,7 +254,7 @@ jobs:
       - name: Run unittests
         run: |
           python -m pip install timm
-          coverage run --branch --source mmseg -m pytest tests/
+          coverage run --branch --source mmseg -m pytest tests/ --ignore tests\test_models\test_forward.py tests\test_models\test_backbones\test_beit.py
       - name: Generate coverage report
         run: |
           coverage xml
