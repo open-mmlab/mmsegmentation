@@ -18,6 +18,8 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         in_channels (int|Sequence[int]): Input channels.
         channels (int): Channels after modules, before conv_seg.
         num_classes (int): Number of classes.
+        threshold (float): Threshold for binary segmentation in the case of
+            `num_classes==1`. Default: 0.3.
         dropout_ratio (float): Ratio of dropout layer. Default: 0.1.
         conv_cfg (dict|None): Config of conv layers. Default: None.
         norm_cfg (dict|None): Config of norm layers. Default: None.
@@ -56,6 +58,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                  channels,
                  *,
                  num_classes,
+                 threshold=0.3,
                  dropout_ratio=0.1,
                  conv_cfg=None,
                  norm_cfg=None,
@@ -75,6 +78,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
         self.num_classes = num_classes
+        self.threshold = threshold
         self.dropout_ratio = dropout_ratio
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg

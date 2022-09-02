@@ -25,3 +25,13 @@ class ChaseDB1Dataset(CustomDataset):
             reduce_zero_label=False,
             **kwargs)
         assert self.file_client.exists(self.img_dir)
+
+
+@DATASETS.register_module()
+class ChaseDB1BinaryDataset(ChaseDB1Dataset):
+    """Chase_db1 dataset for single class segmentation."""
+
+    def __init__(self, **kwargs):
+        super(ChaseDB1BinaryDataset, self).__init__(**kwargs)
+        self.CLASSES = ['vessel']
+        self.PALETTE = [[6, 230, 230]]
