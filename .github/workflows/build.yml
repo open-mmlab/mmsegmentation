@@ -223,7 +223,7 @@ jobs:
       matrix:
         os: [windows-2022]
         python: [3.8]
-        platform: [cpu, cu111]
+        platform: [cpu, cu102]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}

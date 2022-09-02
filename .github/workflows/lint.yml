@@ -17,10 +17,10 @@ jobs:
           python-version: 3.7
       - name: Install MMEngine
         run: |
-          pip install git+https://github.com/open-mmlab/mmengine.git
+          python -m pip install git+https://github.com/open-mmlab/mmengine.git
       - name: Install pre-commit hook
         run: |
-          pip install pre-commit
+          python -m pip install pre-commit
           pre-commit install
       - name: Linting
         run: |
@@ -30,5 +30,5 @@ jobs:
           pre-commit run --all-files
       - name: Check docstring coverage
         run: |
-          pip install interrogate
+          python -m pip install interrogate
           interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --exclude mmseg/ops --ignore-regex "__repr__" --fail-under 80 mmseg
