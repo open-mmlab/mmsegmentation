@@ -59,8 +59,11 @@ def parse_args():
 def inference_model(config_name, checkpoint, args, logger=None):
     cfg = Config.fromfile(config_name)
     if args.aug:
-        if 'flip' in cfg.data.test.pipeline[1] and 'img_scale' in cfg.data.test.pipeline[1]:
-            cfg.data.test.pipeline[1].img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
+        if 'flip' in cfg.data.test.pipeline[
+                1] and 'img_scale' in cfg.data.test.pipeline[1]:
+            cfg.data.test.pipeline[1].img_ratios = [
+                0.5, 0.75, 1.0, 1.25, 1.5, 1.75
+            ]
             cfg.data.test.pipeline[1].flip = True
         elif logger is None:
             print(f'{config_name}: unable to start aug test', flush=True)

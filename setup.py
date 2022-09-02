@@ -41,6 +41,7 @@ def parse_requirements(fname='requirements.txt', with_version=True):
     import sys
     from os.path import exists
     require_fpath = fname
+
     def parse_line(line):
         """Parse information from a line in a requirements text file."""
         if line.startswith('-r '):
@@ -58,7 +59,8 @@ def parse_requirements(fname='requirements.txt', with_version=True):
                 if len(parts) > 1:
                     op, rest = parts[1:]
                     if ';' in rest:
-                        version, platform_deps = map(str.strip, rest.split(';'))
+                        version, platform_deps = map(str.strip,
+                                                     rest.split(';'))
                         info['platform_deps'] = platform_deps
                     else:
                         version = rest
@@ -99,7 +101,8 @@ def add_mim_extension():
     """
     if 'develop' in sys.argv:
         mode = 'copy' if platform.system() == 'Windows' else 'symlink'
-    elif 'sdist' in sys.argv or 'bdist_wheel' in sys.argv or platform.system() == 'Windows':
+    elif 'sdist' in sys.argv or 'bdist_wheel' in sys.argv or platform.system(
+    ) == 'Windows':
         mode = 'copy'
     else:
         return
@@ -121,7 +124,9 @@ def add_mim_extension():
                     os.symlink(src_relpath, tar_path)
                 except OSError:
                     mode = 'copy'
-                    warnings.warn(f'Failed to create a symbolic link for {src_relpath}, and it will be copied to {tar_path}')
+                    warnings.warn(
+                        f'Failed to create a symbolic link for {src_relpath},'
+                        f' and it will be copied to {tar_path}')
 
                 else:
                     continue
