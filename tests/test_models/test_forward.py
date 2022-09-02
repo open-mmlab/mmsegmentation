@@ -27,9 +27,7 @@ def _demo_mm_inputs(input_shape=(2, 3, 8, 16), num_classes=10):
 
     imgs = rng.rand(*input_shape)
     segs = rng.randint(
-        low=0,
-        high=(num_classes - 1 if num_classes > 1 else num_classes),
-        size=(N, 1, H, W)).astype(np.uint8)
+        low=0, high=num_classes - 1, size=(N, 1, H, W)).astype(np.uint8)
 
     img_metas = [{
         'img_shape': (H, W, C),
@@ -207,14 +205,6 @@ def _test_encoder_decoder_forward(cfg_file):
         num_classes = segmentor.decode_head[-1].num_classes
     else:
         num_classes = segmentor.decode_head.num_classes
-
-    # Randomly set num_classes = 1
-    if np.random.rand() < 0.3:
-        if isinstance(segmentor.decode_head, nn.ModuleList):
-            segmentor.decode_head[-1].num_classes = 1
-        else:
-            segmentor.decode_head.num_classes = 1
-        num_classes = 1
 
     # batch_size=2 for BatchNorm
     input_shape = (2, 3, 32, 32)

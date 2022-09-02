@@ -24,7 +24,9 @@ def _demo_mm_inputs(input_shape=(1, 3, 8, 16), num_classes=10):
 
     imgs = rng.rand(*input_shape)
     segs = rng.randint(
-        low=0, high=num_classes - 1, size=(N, 1, H, W)).astype(np.uint8)
+        low=0,
+        high=num_classes - 1 if num_classes > 1 else 1,
+        size=(N, 1, H, W)).astype(np.uint8)
 
     img_metas = [{
         'img_shape': (H, W, C),
