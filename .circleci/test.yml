@@ -61,9 +61,10 @@ jobs:
       - run:
           name: Install mmseg dependencies
           command: |
-            python -m pip install git+ssh://git@github.com/open-mmlab/mmengine.git@main
-            python -m pip install << parameters.mmcv >>
-            python -m pip install git+ssh://git@github.com/open-mmlab/mmclassification@dev-1.x
+            python -m pip install git+https://github.com/open-mmlab/mmengine.git@main
+            python -m pip install -U openmim
+            mim install 'mmcv>=2.0.0rc1'
+            python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
             python -m pip install -r requirements.txt
       - run:
           name: Build and install
@@ -115,7 +116,8 @@ jobs:
           name: Install mmseg dependencies
           command: |
             docker exec mmseg pip install -e /mmengine
-            docker exec mmseg pip install << parameters.mmcv >>
+            docker exec mmseg pip install -U openmim
+            docker exec mmseg mim install 'mmcv>=2.0.0rc1'
             docker exec mmseg pip install -e /mmclassification
             docker exec mmseg python -m pip install -r requirements.txt
       - run:
@@ -137,7 +139,8 @@ workflows:
             branches:
               ignore:
                 - dev-1.x
-                - test-1.x
+                - 1.x
+                - master
   pr_stage_test:
     when:
       not:
@@ -149,13 +152,13 @@ workflows:
             branches:
               ignore:
                 - dev-1.x
-                - test-1.x
+                - 1.x
+                - master
       - build_cpu:
           name: minimum_version_cpu
           torch: 1.6.0
           torchvision: 0.7.0
           python: 3.6.9  # The lowest python 3.6.x version available on CircleCI images
-          mmcv: https://download.openmmlab.com/mmcv/dev-2.x/cpu/torch1.6.0/mmcv_full-2.0.0rc0-cp36-cp36m-manylinux1_x86_64.whl
           requires:
             - lint
       - build_cpu:
@@ -163,7 +166,6 @@ workflows:
           torch: 1.9.0
           torchvision: 0.10.0
           python: 3.9.0
-          mmcv: https://download.openmmlab.com/mmcv/dev-2.x/cpu/torch1.9.0/mmcv_full-2.0.0rc0-cp39-cp39-manylinux1_x86_64.whl
           requires:
             - minimum_version_cpu
       - hold:
@@ -176,7 +178,6 @@ workflows:
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
           cuda: "10.2"
-          mmcv: https://download.openmmlab.com/mmcv/dev-2.x/cu102/torch1.8.0/mmcv_full-2.0.0rc0-cp37-cp37m-manylinux1_x86_64.whl
           requires:
             - hold
   merge_stage_test:
@@ -189,10 +190,10 @@ workflows:
           torch: 1.6.0
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
-          mmcv: https://download.openmmlab.com/mmcv/dev-2.x/cu101/torch1.6.0/mmcv_full-2.0.0rc0-cp37-cp37m-manylinux1_x86_64.whl
           cuda: "10.1"
           filters:
             branches:
               only:
                 - dev-1.x
-                - test-1.x
+                - 1.x
+                - master

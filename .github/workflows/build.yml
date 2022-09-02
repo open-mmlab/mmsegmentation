@@ -28,11 +28,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
-        torch: [1.5.1, 1.6.0, 1.7.0, 1.8.0, 1.9.0]
+        torch: [1.6.0, 1.7.0, 1.8.0, 1.9.0]
         include:
-          - torch: 1.5.1
-            torch_version: torch1.5
-            torchvision: 0.6.1
           - torch: 1.6.0
             torch_version: torch1.6
             torchvision: 0.7.0
@@ -58,9 +55,14 @@ jobs:
         if: ${{matrix.torchvision == '0.4.2'}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
+      - name: Install MMEngine
+        run: |
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
       - name: Install MMCV
         run: |
-          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/${{matrix.torch_version}}/index.html
+          pip install -U openmim
+          mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: |
@@ -73,13 +75,11 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-        if: ${{matrix.torch >= '1.5.0'}}
       - name: Skip timm unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-        if: ${{matrix.torch < '1.5.0'}}
 
   build_cuda101:
     runs-on: ubuntu-18.04
@@ -91,15 +91,11 @@ jobs:
         python-version: [3.7]
         torch:
           [
-            1.5.1+cu101,
             1.6.0+cu101,
             1.7.0+cu101,
             1.8.0+cu101
           ]
         include:
-          - torch: 1.5.1+cu101
-            torch_version: torch1.5
-            torchvision: 0.6.1+cu101
           - torch: 1.6.0+cu101
             torch_version: torch1.6
             torchvision: 0.7.0+cu101
@@ -133,35 +129,29 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
-          python -m pip install -r requirements.txt
+          python -m pip install -U openmim
+          python -m pip install git+https://github.com/open-mmlab/mmengine.git
+          mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
+          python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+      - name: Install unittest dependencies
+        run: python -m pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: |
           rm -rf .eggs
           python setup.py check -m -s
-          TORCH_CUDA_ARCH_LIST=7.0 pip install .
+          TORCH_CUDA_ARCH_LIST=7.0 python -m pip install .
       - name: Run unittests and generate coverage report
         run: |
           python -m pip install timm
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-        if: ${{matrix.torch >= '1.5.0'}}
       - name: Skip timm unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-        if: ${{matrix.torch < '1.5.0'}}
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.0.10
-        with:
-          file: ./coverage.xml
-          flags: unittests
-          env_vars: OS,PYTHON
-          name: codecov-umbrella
-          fail_ci_if_error: false
 
   build_cuda102:
     runs-on: ubuntu-18.04
@@ -200,14 +190,18 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
-          python -m pip install -r requirements.txt
+          python -m pip install -U openmim
+          python -m pip install git+https://github.com/open-mmlab/mmengine.git
+          LC_ALL=C.UTF-8 LC_ALL=C.UTF-8 mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
+          python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+      - name: Install unittest dependencies
+        run: python -m pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: |
           rm -rf .eggs
           python setup.py check -m -s
-          TORCH_CUDA_ARCH_LIST=7.0 pip install .
+          TORCH_CUDA_ARCH_LIST=7.0 python -m pip install .
       - name: Run unittests and generate coverage report
         run: |
           python -m pip install timm
@@ -243,9 +237,16 @@ jobs:
       - name: Install PyTorch
         # As a complement to Linux CI, we test on PyTorch LTS version
         run: pip install torch==1.8.2+${{ matrix.platform }} torchvision==0.9.2+${{ matrix.platform }} -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+      - name: Install MMEngine
+        run: |
+          pip install git+https://github.com/open-mmlab/mmengine.git
       - name: Install MMCV
         run: |
-          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.8/index.html --only-binary mmcv-full
+          pip install -U openmim
+          mim install 'mmcv>=2.0.0rc1'
+      - name: Install MMClassification
+        run: |
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
@@ -253,7 +254,7 @@ jobs:
       - name: Run unittests
         run: |
           python -m pip install timm
-          coverage run --branch --source mmseg -m pytest tests/
+          coverage run --branch --source mmseg -m pytest tests/ --ignore tests\test_models\test_forward.py tests\test_models\test_backbones\test_beit.py
       - name: Generate coverage report
         run: |
           coverage xml
