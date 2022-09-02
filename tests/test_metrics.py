@@ -215,6 +215,18 @@ def test_metrics():
         'IoU']
     assert not np.any(np.isnan(iou))
 
+    # Test binary segmentation while num_classes==1
+    pred_size = (10, 30, 30)
+    num_classes = 1
+    ignore_index = 255
+    results = np.random.randint(0, num_classes + 1, size=pred_size)
+    label = np.random.randint(0, num_classes + 1, size=pred_size)
+    ret_metrics = eval_metrics(
+        results, label, num_classes, ignore_index=255, metrics='mIoU')
+    all_acc, acc, iou = ret_metrics['aAcc'], ret_metrics['Acc'], ret_metrics[
+        'IoU']
+    assert all_acc == acc
+
 
 def test_mean_iou():
     pred_size = (10, 30, 30)
