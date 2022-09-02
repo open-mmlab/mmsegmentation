@@ -144,12 +144,12 @@ jobs:
           python -c 'import mmcv; print(mmcv.__version__)'
           python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
+        run: python -m pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: |
           rm -rf .eggs
           python setup.py check -m -s
-          TORCH_CUDA_ARCH_LIST=7.0 pip install .
+          TORCH_CUDA_ARCH_LIST=7.0 python -m pip install .
       - name: Run unittests and generate coverage report
         run: |
           python -m pip install timm
@@ -215,12 +215,12 @@ jobs:
           python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
+        run: python -m pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: |
           rm -rf .eggs
           python setup.py check -m -s
-          TORCH_CUDA_ARCH_LIST=7.0 pip install .
+          TORCH_CUDA_ARCH_LIST=7.0 python -m pip install .
       - name: Run unittests and generate coverage report
         run: |
           python -m pip install timm

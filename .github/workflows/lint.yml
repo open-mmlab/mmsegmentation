@@ -17,7 +17,7 @@ jobs:
           python-version: 3.7
       - name: Install MMEngine
         run: |
-          python -m pip install git+https://github.com/open-mmlab/mmengine.git
+          pip install git+https://github.com/open-mmlab/mmengine.git
       - name: Install pre-commit hook
         run: |
           pip install pre-commit
