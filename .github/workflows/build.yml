@@ -64,7 +64,8 @@ jobs:
           python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
       - name: Install MMCV
         run: |
-          pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cpu/${{matrix.torch_version}}/index.html
+          pip install -U openmim
+          mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: |
@@ -137,8 +138,9 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
+          pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
-          pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
+          mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
@@ -207,8 +209,9 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
+          pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
-          pip install 'mmcv>=2.0.0rc1' -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
+          mim install 'mmcv>=2.0.0rc1'
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
@@ -258,7 +261,8 @@ jobs:
           pip install git+https://github.com/open-mmlab/mmengine.git
       - name: Install MMCV
         run: |
-          pip install mmcv>=2.0.0rc1 -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.8/index.html --only-binary mmcv-full
+          pip install -U openmim
+          mim install 'mmcv>=2.0.0rc1'
       - name: Install MMClassification
         run: |
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
