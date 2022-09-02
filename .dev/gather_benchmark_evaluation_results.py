@@ -62,8 +62,8 @@ if __name__ == '__main__':
                 continue
 
             # Compare between new benchmark results and previous metrics
-            differential_results = dict()
-            new_metrics = dict()
+            differential_results = {}
+            new_metrics = {}
             for record_metric_key in previous_metrics:
                 if record_metric_key not in metric['metric']:
                     raise KeyError('record_metric_key not exist, please '
