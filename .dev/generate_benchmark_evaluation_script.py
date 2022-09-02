@@ -20,8 +20,7 @@ def parse_args():
         default='.dev/benchmark_evaluation.sh',
         help='path to save model benchmark script')
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def process_model_info(model_info, work_dir):
@@ -30,17 +29,10 @@ def process_model_info(model_info, work_dir):
     job_name = fname
     checkpoint = model_info['checkpoint'].strip()
     work_dir = osp.join(work_dir, fname)
-    if not isinstance(model_info['eval'], list):
-        evals = [model_info['eval']]
-    else:
-        evals = model_info['eval']
+    evals = model_info['eval'] if isinstance(model_info['eval'], list) else [model_info['eval']]
+
     eval = ' '.join(evals)
-    return dict(
-        config=config,
-        job_name=job_name,
-        checkpoint=checkpoint,
-        work_dir=work_dir,
-        eval=eval)
+    return dict(config=config, job_name=job_name, checkpoint=checkpoint, work_dir=work_dir, eval=eval)
 
 
 def create_test_bash_info(commands, model_test_dict, port, script_name,
