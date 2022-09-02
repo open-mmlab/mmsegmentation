@@ -59,11 +59,11 @@ jobs:
       - run:
           name: Install mmseg dependencies
           command: |
-            pip install git+https://github.com/open-mmlab/mmengine.git@main
-            pip install -U openmim
-            mim install 'mmcv >= 2.0.0rc1'
-            pip install git+https://github.com/open-mmlab/mmclassification@dev-1.x
-            pip install -r requirements/tests.txt -r requirements/optional.txt
+            python -m pip install git+https://github.com/open-mmlab/mmengine.git@main
+            python -m pip install -U openmim
+            mim install 'mmcv>=2.0.0rc1'
+            python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+            python -m pip install -r requirements.txt
       - run:
           name: Build and install
           command: |
@@ -106,7 +106,11 @@ jobs:
           command: |
             docker exec mmseg pip install -e /mmengine
             docker exec mmseg pip install -U openmim
+<<<<<<< HEAD
             docker exec mmseg mim install 'mmcv >= 2.0.0rc1'
+=======
+            docker exec mmseg mim install 'mmcv>=2.0.0rc1'
+>>>>>>> a57855b ([Enhancement] Fix ci for 1.x (#2011))
             docker exec mmseg pip install -e /mmclassification
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
@@ -128,6 +132,10 @@ workflows:
               ignore:
                 - dev-1.x
                 - 1.x
+<<<<<<< HEAD
+=======
+                - master
+>>>>>>> a57855b ([Enhancement] Fix ci for 1.x (#2011))
   pr_stage_test:
     when:
       not:
@@ -140,6 +148,10 @@ workflows:
               ignore:
                 - dev-1.x
                 - 1.x
+<<<<<<< HEAD
+=======
+                - master
+>>>>>>> a57855b ([Enhancement] Fix ci for 1.x (#2011))
       - build_cpu:
           name: minimum_version_cpu
           torch: 1.6.0
@@ -181,3 +193,8 @@ workflows:
             branches:
               only:
                 - dev-1.x
+<<<<<<< HEAD
+=======
+                - 1.x
+                - master
+>>>>>>> a57855b ([Enhancement] Fix ci for 1.x (#2011))
