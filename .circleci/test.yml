@@ -61,7 +61,7 @@ jobs:
           command: |
             python -m pip install git+https://github.com/open-mmlab/mmengine.git@main
             python -m pip install -U openmim 'importlib-metadata<2'
-            mim install 'mmcv>=2.0.0rc1'
+            python -m mim install 'mmcv>=2.0.0rc1'
             python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
             python -m pip install -r requirements.txt
       - run:
