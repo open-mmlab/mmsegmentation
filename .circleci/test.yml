@@ -71,9 +71,9 @@ jobs:
       - run:
           name: Skip timm unittests and generate coverage report
           command: |
-            coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
-            coverage xml
-            coverage report -m
+            python -m coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+            python -m coverage xml
+            python -m coverage report -m
   build_cuda:
     parameters:
       torch:
