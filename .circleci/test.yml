@@ -36,8 +36,6 @@ jobs:
         type: string
       torchvision:
         type: string
-      mmcv:
-        type: string
     docker:
       - image: cimg/python:<< parameters.python >>
     resource_class: large
@@ -62,10 +60,10 @@ jobs:
           name: Install mmseg dependencies
           command: |
             python -m pip install git+https://github.com/open-mmlab/mmengine.git@main
-            python -m pip install -U openmim
-            mim install 'mmcv>=2.0.0rc1'
+            python -m pip install -U openmim 'importlib-metadata<2'
+            python -m mim install 'mmcv>=2.0.0rc1'
             python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-            python -m pip install -r requirements.txt
+            python -m pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
           command: |
@@ -80,9 +78,9 @@ jobs:
       - run:
           name: Skip timm unittests and generate coverage report
           command: |
-            coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
-            coverage xml
-            coverage report -m
+            python -m coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+            python -m coverage xml
+            python -m coverage report -m
   build_cuda:
     parameters:
       torch:
@@ -93,8 +91,6 @@ jobs:
       cudnn:
         type: integer
         default: 7
-      mmcv:
-        type: string
     machine:
       image: ubuntu-2004-cuda-11.4:202110-01
       # docker_layer_caching: true
@@ -116,7 +112,7 @@ jobs:
           name: Install mmseg dependencies
           command: |
             docker exec mmseg pip install -e /mmengine
-            docker exec mmseg pip install -U openmim
+            docker exec mmseg pip install -U openmim 'importlib-metadata<2'
             docker exec mmseg mim install 'mmcv>=2.0.0rc1'
             docker exec mmseg pip install -e /mmclassification
             docker exec mmseg python -m pip install -r requirements.txt
