@@ -63,7 +63,7 @@ jobs:
             python -m pip install -U openmim 'importlib-metadata<2'
             python -m mim install 'mmcv>=2.0.0rc1'
             python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-            python -m pip install -r requirements.txt
+            python -m pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
           command: |
@@ -78,9 +78,9 @@ jobs:
       - run:
           name: Skip timm unittests and generate coverage report
           command: |
-            coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
-            coverage xml
-            coverage report -m
+            python -m coverage coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+            python -m coverage coverage xml
+            python -m coverage coverage report -m
   build_cuda:
     parameters:
       torch:
