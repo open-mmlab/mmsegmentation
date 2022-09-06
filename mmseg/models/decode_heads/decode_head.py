@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import warnings
 from abc import ABCMeta, abstractmethod
 
 import torch
@@ -58,6 +59,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                  channels,
                  *,
                  num_classes,
+                 out_channels=None,
                  threshold=0.3,
                  dropout_ratio=0.1,
                  conv_cfg=None,
@@ -78,6 +80,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
         self.num_classes = num_classes
+        self.out_channels = out_channels
         self.threshold = threshold
         self.dropout_ratio = dropout_ratio
         self.conv_cfg = conv_cfg
@@ -87,6 +90,12 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
 
         self.ignore_index = ignore_index
         self.align_corners = align_corners
+
+        if self.num_classes == 2 and self.out_channels is None:
+            warnings.warn('set out_channels to 1 to reduce the number of model\
+                parameters')
+        elif self.num_classes == 2 and self.out_channels == 1:
+            self.num_classes = 1
 
         if isinstance(loss_decode, dict):
             self.loss_decode = build_loss(loss_decode)
