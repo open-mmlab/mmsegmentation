@@ -82,6 +82,16 @@ v0.27.0 was released in 7/28/2022:
 
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 
+### 🌟 Preview of 1.x version
+
+A brand new version of **MMSegmentation v1.0.0rc0** was released in 31/8/2022:
+
+- Unifies interfaces of all components based on [MMEngine](https://github.com/open-mmlab/mmengine).
+- Faster training and testing speed with complete support of mixed precision training.
+- Refactored and more flexible [architecture](https://mmsegmentation.readthedocs.io/en/1.x/overview.html).
+
+Find more new features in [1.x branch](https://github.com/open-mmlab/mmsegmentation/tree/1.x). Issues and PRs are welcome!
+
 ## Installation
 
 Please refer to [get_started.md](docs/en/get_started.md#installation) for installation and [dataset_prepare.md](docs/en/dataset_prepare.md#prepare-datasets) for dataset preparation.
