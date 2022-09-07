@@ -36,15 +36,15 @@ jobs:
         if: ${{matrix.torchvision == '0.4.2'}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
-       - name: Install MMEngine
-         run: |
-           pip install git+https://github.com/open-mmlab/mmengine.git
-           python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
-       - name: Install MMCV
-         run: |
-           pip install -U openmim
-           mim install 'mmcv>=2.0.0rc1'
-           python -c 'import mmcv; print(mmcv.__version__)'
+      - name: Install MMEngine
+        run: |
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
+      - name: Install MMCV
+        run: |
+          pip install -U openmim
+          mim install 'mmcv>=2.0.0rc1'
+          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install other dependencies
         run: |
           pip install -r requirements.txt
