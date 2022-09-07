@@ -31,16 +31,20 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
         run: pip install pip --upgrade
-      - name: Get MMCV_TORCH as the environment variable
-        run: . .github/workflows/scripts/get_mmcv_var.sh ${{matrix.torch}}
-        shell: bash
       - name: Install Pillow
         run: pip install Pillow==6.2.2
         if: ${{matrix.torchvision == '0.4.2'}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install MMCV
-        run: pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch${MMCV_TORCH}/index.html
+       - name: Install MMEngine
+         run: |
+           pip install git+https://github.com/open-mmlab/mmengine.git
+           python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
+       - name: Install MMCV
+         run: |
+           pip install -U openmim
+           mim install 'mmcv>=2.0.0rc1'
+           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install other dependencies
         run: |
           pip install -r requirements.txt
@@ -52,13 +56,13 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-        if: ${{matrix.torch >= '1.5.0'}}
+        if: ${{matrix.torch >= '1.6.0'}}
       - name: Skip timm unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-        if: ${{matrix.torch < '1.5.0'}}
+        if: ${{matrix.torch < '1.6.0'}}
       # Upload coverage report for python3.7 && pytorch1.8.1 cpu
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.14
@@ -88,9 +92,6 @@ jobs:
         run: |
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
-      - name: Get MMCV_TORCH and MMCV_CUDA as environment variables
-        run: . .github/workflows/scripts/get_mmcv_var.sh ${{matrix.torch}} ${{matrix.cuda}}
-        shell: bash
       - name: Install Python-dev
         run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
         if: ${{matrix.python-version != 3.9}}
@@ -98,12 +99,19 @@ jobs:
         run: |
           apt-get update
           apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libxrender-dev
+      - name: Install MMEngine
+        run: |
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
+      - name: Install MMCV
+        run: |
+          pip install -U openmim
+          mim install 'mmcv>=2.0.0rc1'
+          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
           python -m pip install -r requirements.txt
-          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
         run: |
           python setup.py check -m -s
@@ -127,10 +135,18 @@ jobs:
         run: pip install opencv-python>=3
       - name: Install PyTorch
         run: python -m pip install torch==1.8.1+${{matrix.platform}} torchvision==0.9.1+${{matrix.platform}} -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+      - name: Install MMEngine
+        run: |
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
+      - name: Install MMCV
+        run: |
+          pip install -U openmim
+          mim install 'mmcv>=2.0.0rc1'
+          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.8/index.html --only-binary mmcv-full
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
