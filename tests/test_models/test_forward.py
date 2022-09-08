@@ -205,7 +205,6 @@ def _test_encoder_decoder_forward(cfg_file):
         num_classes = segmentor.decode_head[-1].num_classes
     else:
         num_classes = segmentor.decode_head.num_classes
-
     # batch_size=2 for BatchNorm
     input_shape = (2, 3, 32, 32)
     mm_inputs = _demo_mm_inputs(input_shape, num_classes=num_classes)

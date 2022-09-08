@@ -91,21 +91,23 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
 
         if out_channels is None:
             if num_classes == 2:
-                warnings.warn('For binary segmentation, we suggest using\
-                    `out_channels = 1` to define the output channels of\
-                    segmentor, and use `threshold` to  convert seg_logist\
-                    into a prediction applying a threshold')
+                warnings.warn('For binary segmentation, we suggest using'
+                              '`out_channels = 1` to define the output'
+                              'channels of segmentor, and use `threshold`'
+                              'to convert seg_logist into a prediction'
+                              'applying a threshold')
             out_channels = num_classes
 
         if out_channels != num_classes and out_channels != 1:
-            raise ValueError(f'out_channels should be equal to num_classes,\
-                except out_channels == 1 and num_classes == 2, but got\
-                out_channels={out_channels}, num_classes={num_classes}')
+            raise ValueError(
+                f'out_channels should be equal to num_classes,'
+                'except out_channels == 1 and num_classes == 2, but got'
+                f'out_channels={out_channels}, num_classes={num_classes}')
 
         if out_channels == 1 and threshold is None:
             threshold = 0.3
-            warnings.warn('threshold is not defined for binary, and defaults\
-                to 0.3')
+            warnings.warn('threshold is not defined for binary, and defaults'
+                          'to 0.3')
         self.num_classes = num_classes
         self.out_channels = out_channels
         self.threshold = threshold
