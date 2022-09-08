@@ -101,8 +101,9 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         if out_channels != num_classes and out_channels != 1:
             raise ValueError(
                 'out_channels should be equal to num_classes,'
-                'except out_channels == 1 and num_classes == 2, but got'
-                f'out_channels={out_channels}, num_classes={num_classes}')
+                'except binary segmentation set out_channels == 1 and'
+                f'num_classes == 2, but got out_channels={out_channels}'
+                f'and num_classes={num_classes}')
 
         if out_channels == 1 and threshold is None:
             threshold = 0.3
