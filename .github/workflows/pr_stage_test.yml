@@ -36,14 +36,11 @@ jobs:
         if: ${{matrix.torchvision == '0.4.2'}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install MMCV
-        run: |
-          pip install -U openmim
-          mim install 'mmcv>=2.0.0rc1'
-          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install other dependencies
         run: |
           pip install git+https://github.com/open-mmlab/mmengine.git@main
+          pip install -U openmim
+          mim install 'mmcv >= 2.0.0rc1'
           pip install -r requirements.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
@@ -96,15 +93,12 @@ jobs:
         run: |
           apt-get update
           apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libxrender-dev
-      - name: Install MMCV
-        run: |
-          pip install -U openmim
-          mim install 'mmcv>=2.0.0rc1'
-          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install mmseg dependencies
         run: |
           python -V
           pip install git+https://github.com/open-mmlab/mmengine.git@main
+          pip install -U openmim
+          mim install 'mmcv >= 2.0.0rc1'
           pip install -r requirements.txt
       - name: Build and install
         run: |
@@ -129,15 +123,12 @@ jobs:
         run: pip install opencv-python>=3
       - name: Install PyTorch
         run: pip install torch==1.8.1+${{matrix.platform}} torchvision==0.9.1+${{matrix.platform}} -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
-      - name: Install MMCV
-        run: |
-          pip install -U openmim
-          mim install 'mmcv>=2.0.0rc1'
-          python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install mmseg dependencies
         run: |
           python -V
           pip install git+https://github.com/open-mmlab/mmengine.git@main
+          pip install -U openmim
+          mim install 'mmcv >= 2.0.0rc1'
           pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
