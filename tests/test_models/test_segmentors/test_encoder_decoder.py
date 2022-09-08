@@ -18,6 +18,12 @@ def test_encoder_decoder():
     segmentor = build_segmentor(cfg)
     _segmentor_forward_train_test(segmentor)
 
+    # test out_channels == 1
+    segmentor.out_channels = 1
+    segmentor.decode_head.out_channels = 1
+    segmentor.decode_head.threshold = 0.3
+    _segmentor_forward_train_test(segmentor)
+
     # test slide mode
     cfg.test_cfg = ConfigDict(mode='slide', crop_size=(3, 3), stride=(2, 2))
     segmentor = build_segmentor(cfg)
