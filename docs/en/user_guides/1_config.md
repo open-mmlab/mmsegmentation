@@ -232,6 +232,28 @@ These are all the configs for training and testing PSPNet, we use [MMEngine](htt
 from mmengine.config import Config
 
 cfg = Config.fromfile('configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
+print(cfg.train_dataloader)
+```
+
+```shell
+{'batch_size': 2,
+ 'num_workers': 2,
+ 'persistent_workers': True,
+ 'sampler': {'type': 'InfiniteSampler', 'shuffle': True},
+ 'dataset': {'type': 'CityscapesDataset',
+  'data_root': 'data/cityscapes/',
+  'data_prefix': {'img_path': 'leftImg8bit/train',
+   'seg_map_path': 'gtFine/train'},
+  'pipeline': [{'type': 'LoadImageFromFile'},
+   {'type': 'LoadAnnotations'},
+   {'type': 'RandomResize',
+    'scale': (2048, 1024),
+    'ratio_range': (0.5, 2.0),
+    'keep_ratio': True},
+   {'type': 'RandomCrop', 'crop_size': (512, 1024), 'cat_max_ratio': 0.75},
+   {'type': 'RandomFlip', 'prob': 0.5},
+   {'type': 'PhotoMetricDistortion'},
+   {'type': 'PackSegInputs'}]}}
 ```
 
 `cfg` is an instance of `mmengine.config.Config`, its interface is the same as a dict object and also allows access config values as attributes. See [MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/config.md) for more information.
@@ -263,6 +285,26 @@ model = dict(
         contract_dilation=True),
     decode_head=dict(...),
     auxiliary_head=dict(...))
+```
+
+```python
+from mmengine.config import Config
+
+cfg = Config.fromfile('configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
+print(cfg.model.backbone)
+```
+
+```shell
+{'type': 'ResNetV1c',
+ 'depth': 50,
+ 'num_stages': 4,
+ 'out_indices': (0, 1, 2, 3),
+ 'dilations': (1, 1, 2, 4),
+ 'strides': (1, 2, 1, 1),
+ 'norm_cfg': {'type': 'SyncBN', 'requires_grad': True},
+ 'norm_eval': False,
+ 'style': 'pytorch',
+ 'contract_dilation': True}
 ```
 
 `ResNet` and `HRNet` use different keywords to construct.
@@ -306,6 +348,38 @@ model = dict(
 ```
 
 The `_delete_=True` would replace all old keys in `backbone` field with new keys.
+
+```python
+from mmengine.config import Config
+cfg = Config.fromfile('hrnet.py')
+print(cfg.model.backbone)
+```
+
+```shell
+{'_delete_': True,
+ 'type': 'HRNet',
+ 'norm_cfg': {'type': 'SyncBN', 'requires_grad': True},
+ 'extra': {'stage1': {'num_modules': 1,
+   'num_branches': 1,
+   'block': 'BOTTLENECK',
+   'num_blocks': (4,),
+   'num_channels': (64,)},
+  'stage2': {'num_modules': 1,
+   'num_branches': 2,
+   'block': 'BASIC',
+   'num_blocks': (4, 4),
+   'num_channels': (32, 64)},
+  'stage3': {'num_modules': 4,
+   'num_branches': 3,
+   'block': 'BASIC',
+   'num_blocks': (4, 4, 4),
+   'num_channels': (32, 64, 128)},
+  'stage4': {'num_modules': 3,
+   'num_branches': 4,
+   'block': 'BASIC',
+   'num_blocks': (4, 4, 4, 4),
+   'num_channels': (32, 64, 128, 256)}}}
+```
 
 ### Use intermediate variables in configs
 
@@ -384,14 +458,21 @@ We can check the modified config:
 ```python
 from mmengine.config import Config
 
-cfg = config.fromfile('/Path/to/config')
-print(cfg.model.data_preprocessor.sigma_range)
+cfg = config.fromfile('pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
+print(cfg.model.data_preprocessor)
 ```
 
 The printed result is as follows:
 
 ```shell
-(0, 0.05)
+{'type': 'SegDataPreProcessor',
+ 'mean': [123.675, 116.28, 103.53],
+ 'std': [58.395, 57.12, 57.375],
+ 'bgr_to_rgb': True,
+ 'pad_val': 0,
+ 'seg_pad_val': 255,
+ 'size': (512, 1024),
+ 'sigma_range': (0, 0.05)}
 ```
 
 ```{note}
