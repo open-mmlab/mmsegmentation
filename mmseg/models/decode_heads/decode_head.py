@@ -19,6 +19,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         in_channels (int|Sequence[int]): Input channels.
         channels (int): Channels after modules, before conv_seg.
         num_classes (int): Number of classes.
+        out_channels (int): Output channels of conv_seg.
         threshold (float): Threshold for binary segmentation in the case of
             `num_classes==1`. Default: 0.3.
         dropout_ratio (float): Ratio of dropout layer. Default: 0.1.
@@ -91,11 +92,16 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         self.ignore_index = ignore_index
         self.align_corners = align_corners
 
-        if self.num_classes == 2 and self.out_channels is None:
-            warnings.warn('set out_channels to 1 to reduce the number of model\
-                parameters')
-        elif self.num_classes == 2 and self.out_channels == 1:
-            self.num_classes = 1
+        if self.out_channels is None:
+            if self.num_classes == 2:
+                warnings.warn('set out_channels to 1 to reduce the number of\
+                    model parameters')
+            self.out_channels = self.num_classes
+
+        if self.out_channels != self.num_classes and self.out_channels != 1:
+            raise ValueError(f'out_channels should be equal to num_classes,\
+                except out_channels == 1 and num_classes == 2, but got\
+                out_channels={self.out_channels}, num_classes={num_classes}')
 
         if isinstance(loss_decode, dict):
             self.loss_decode = build_loss(loss_decode)
@@ -112,7 +118,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         else:
             self.sampler = None
 
-        self.conv_seg = nn.Conv2d(channels, num_classes, kernel_size=1)
+        self.conv_seg = nn.Conv2d(channels, self.out_channels, kernel_size=1)
         if dropout_ratio > 0:
             self.dropout = nn.Dropout2d(dropout_ratio)
         else:
