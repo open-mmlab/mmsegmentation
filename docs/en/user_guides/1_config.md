@@ -226,12 +226,22 @@ load_from = None  # Load checkpoint from file.
 resume = False  # Whether to resume from existed model.
 ```
 
+These are all the configs for training and testing PSPNet, we use [MMEngine](https://github.com/open-mmlab/mmengine) to load and parse these configs.
+
+```python
+from mmengine.config import Config
+
+cfg = Config.fromfile('configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
+```
+
+`cfg` is an instance of `mmengine.config.Config`, its interface is the same as a dict object and also allows access config values as attributes. See [MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/config.md) for more information.
+
 ## FAQ
 
 ### Ignore some fields in the base configs
 
 Sometimes, you may set `_delete_=True` to ignore some of the fields in base configs.
-You may refer to [mmengine](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) for simple illustration.
+You may refer to [MMEngine](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) for simple illustration.
 
 In MMSegmentation, for example, to change the backbone of PSPNet with the following config.
 
@@ -368,6 +378,21 @@ model = dict(
   1. `--cfg-options model.data_preprocessor.sigma_range="(0, 0.05)"`. Note that the quotation mark " is necessary to support list/tuple data types.
   2. `--cfg-options model.data_preprocessor.sigma_range=0,0.05`. Note that **NO** white space is allowed in the specified value.
      In addition, if the original type is tuple, it will be automatically converted to list after this way.
+
+We can check the modified config:
+
+```python
+from mmengine.config import Config
+
+cfg = config.fromfile('/Path/to/config')
+print(cfg.model.data_preprocessor.sigma_range)
+```
+
+The printed result is as follows:
+
+```shell
+(0, 0.05)
+```
 
 ```{note}
     This modification of only supports modifying configuration items of string, int, float, boolean, None, list and tuple types.
