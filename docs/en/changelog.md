@@ -1,5 +1,24 @@
 ## Changelog
 
+### V0.28.0 (9/8/2022)
+
+**New Features**
+
+- Support Tversky Loss ([#1896](https://github.com/open-mmlab/mmsegmentation/pull/1986))
+
+**Bug Fixes**
+
+- Fix binary segmentation ([#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016))
+- Fix config files ([#1901](https://github.com/open-mmlab/mmsegmentation/pull/1901), [#1893](https://github.com/open-mmlab/mmsegmentation/pull/1893), [#1871](https://github.com/open-mmlab/mmsegmentation/pull/1871))
+- Revise documentation ([#1844](https://github.com/open-mmlab/mmsegmentation/pull/1844), [#1980](https://github.com/open-mmlab/mmsegmentation/pull/1980), [#2025](https://github.com/open-mmlab/mmsegmentation/pull/2025), [#1982](https://github.com/open-mmlab/mmsegmentation/pull/1982))
+- Fix confusion matrix calculation ([#1992](https://github.com/open-mmlab/mmsegmentation/pull/1992))
+- Fix decode head forward_train error ([#1997](https://github.com/open-mmlab/mmsegmentation/pull/1997))
+
+**Contributors**
+
+- @suchot made their first contribution in https://github.com/open-mmlab/mmsegmention/pull/1844
+- @TimoK93 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1992
+
 ### V0.27.0 (7/28/2022)
 
 **Enhancement**

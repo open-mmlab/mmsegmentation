@@ -72,10 +72,12 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 最新进展
 
-最新版本 v0.27.0 在 2022.7.28 发布：
+### 💎 稳定版本
 
-- 添加 Swin-L Transformer 模型
-- 更新了 ERFNet 在 Cityscapes 上的结果
+最新版本 v0.28.0 在 2022.9.8 发布：
+
+- 支持 Tversky Loss
+- 修复二值分割
 
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
 
