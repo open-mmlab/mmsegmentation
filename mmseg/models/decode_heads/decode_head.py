@@ -100,7 +100,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
 
         if out_channels != num_classes and out_channels != 1:
             raise ValueError(
-                f'out_channels should be equal to num_classes,'
+                'out_channels should be equal to num_classes,'
                 'except out_channels == 1 and num_classes == 2, but got'
                 f'out_channels={out_channels}, num_classes={num_classes}')
 
