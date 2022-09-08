@@ -75,9 +75,12 @@ The master branch works with **PyTorch 1.5+**.
 
 ## What's New
 
+### 💎 Stable version
+
 v0.28.0 was released in 9/08/2022:
 
 - Support Tversky Loss
+- Fix binary segmentation
 
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 

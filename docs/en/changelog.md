@@ -8,11 +8,11 @@
 
 **Bug Fixes**
 
+- Fix binary segmentation ([#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016))
 - Fix config files ([#1901](https://github.com/open-mmlab/mmsegmentation/pull/1901), [#1893](https://github.com/open-mmlab/mmsegmentation/pull/1893), [#1871](https://github.com/open-mmlab/mmsegmentation/pull/1871))
 - Revise documentation ([#1844](https://github.com/open-mmlab/mmsegmentation/pull/1844), [#1980](https://github.com/open-mmlab/mmsegmentation/pull/1980), [#2025](https://github.com/open-mmlab/mmsegmentation/pull/2025), [#1982](https://github.com/open-mmlab/mmsegmentation/pull/1982))
 - Fix confusion matrix calculation ([#1992](https://github.com/open-mmlab/mmsegmentation/pull/1992))
 - Fix decode head forward_train error ([#1997](https://github.com/open-mmlab/mmsegmentation/pull/1997))
-- Fix binary segmentation ([#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016))
 
 **Contributors**
 
