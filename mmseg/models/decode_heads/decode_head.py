@@ -21,7 +21,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         num_classes (int): Number of classes.
         out_channels (int): Output channels of conv_seg.
         threshold (float): Threshold for binary segmentation in the case of
-            `num_classes==1`. Default: 0.3.
+            `num_classes==1`. Default: None.
         dropout_ratio (float): Ratio of dropout layer. Default: 0.1.
         conv_cfg (dict|None): Config of conv layers. Default: None.
         norm_cfg (dict|None): Config of norm layers. Default: None.
@@ -61,7 +61,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                  *,
                  num_classes,
                  out_channels=None,
-                 threshold=0.3,
+                 threshold=None,
                  dropout_ratio=0.1,
                  conv_cfg=None,
                  norm_cfg=None,
@@ -80,9 +80,6 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         super(BaseDecodeHead, self).__init__(init_cfg)
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
-        self.num_classes = num_classes
-        self.out_channels = out_channels
-        self.threshold = threshold
         self.dropout_ratio = dropout_ratio
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
@@ -92,16 +89,26 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         self.ignore_index = ignore_index
         self.align_corners = align_corners
 
-        if self.out_channels is None:
-            if self.num_classes == 2:
-                warnings.warn('set out_channels to 1 to reduce the number of\
-                    model parameters')
-            self.out_channels = self.num_classes
+        if out_channels is None:
+            if num_classes == 2:
+                warnings.warn('For binary segmentation, we suggest using\
+                    `out_channels = 1` to define the output channels of\
+                    segmentor, and use `threshold` to  convert seg_logist\
+                    into a prediction applying a threshold')
+            out_channels = num_classes
 
-        if self.out_channels != self.num_classes and self.out_channels != 1:
+        if out_channels != num_classes and out_channels != 1:
             raise ValueError(f'out_channels should be equal to num_classes,\
                 except out_channels == 1 and num_classes == 2, but got\
-                out_channels={self.out_channels}, num_classes={num_classes}')
+                out_channels={out_channels}, num_classes={num_classes}')
+
+        if out_channels == 1 and threshold is None:
+            threshold = 0.3
+            warnings.warn('threshold is not defined for binary, and defaults\
+                to 0.3')
+        self.num_classes = num_classes
+        self.out_channels = out_channels
+        self.threshold = threshold
 
         if isinstance(loss_decode, dict):
             self.loss_decode = build_loss(loss_decode)

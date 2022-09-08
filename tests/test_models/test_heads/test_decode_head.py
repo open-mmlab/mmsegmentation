@@ -43,6 +43,18 @@ def test_decode_head():
                        in_index=[-1],
                        input_transform='resize_concat')
 
+    with pytest.raises(ValueError):
+        # out_channels should be equal to num_classes
+        BaseDecodeHead(32, 16, num_classes=19, out_channels=18)
+
+    # test out_channels
+    head = BaseDecodeHead(32, 16, num_classes=2)
+    assert head.out_channels == 2
+
+    # test out_channels == 1 and num_classes == 2
+    head = BaseDecodeHead(32, 16, num_classes=2, out_channels=1)
+    assert head.out_channels == 1 and head.num_classes == 2
+
     # test default dropout
     head = BaseDecodeHead(32, 16, num_classes=19)
     assert hasattr(head, 'dropout') and head.dropout.p == 0.1

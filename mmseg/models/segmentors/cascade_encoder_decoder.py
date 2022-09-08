@@ -47,6 +47,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
             self.decode_head.append(builder.build_head(decode_head[i]))
         self.align_corners = self.decode_head[-1].align_corners
         self.num_classes = self.decode_head[-1].num_classes
+        self.out_channels = self.decode_head[-1].out_channels
 
     def encode_decode(self, img, img_metas):
         """Encode images with backbone and decode into a semantic segmentation
