@@ -36,10 +36,6 @@ jobs:
         if: ${{matrix.torchvision == '0.4.2'}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install MMEngine
-        run: |
-          pip install git+https://github.com/open-mmlab/mmengine.git
-          python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
       - name: Install MMCV
         run: |
           pip install -U openmim
@@ -47,6 +43,7 @@ jobs:
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install other dependencies
         run: |
+          pip install git+https://github.com/open-mmlab/mmengine.git@main
           pip install -r requirements.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
@@ -87,7 +84,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
-        run: python -m pip install pip --upgrade
+        run: pip install pip --upgrade
       - name: Fetch GPG keys
         run: |
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
@@ -99,10 +96,6 @@ jobs:
         run: |
           apt-get update
           apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libxrender-dev
-      - name: Install MMEngine
-        run: |
-          pip install git+https://github.com/open-mmlab/mmengine.git
-          python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
       - name: Install MMCV
         run: |
           pip install -U openmim
@@ -111,6 +104,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
+          pip install git+https://github.com/open-mmlab/mmengine.git@main
           pip install -r requirements.txt
       - name: Build and install
         run: |
@@ -130,15 +124,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
-        run: python -m pip install pip --upgrade
+        run: pip install pip --upgrade
       - name: Install OpenCV
         run: pip install opencv-python>=3
       - name: Install PyTorch
         run: pip install torch==1.8.1+${{matrix.platform}} torchvision==0.9.1+${{matrix.platform}} -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
-      - name: Install MMEngine
-        run: |
-          pip install git+https://github.com/open-mmlab/mmengine.git
-          python -c 'from mmengine.utils.dl_utils import collect_env;print(collect_env())'
       - name: Install MMCV
         run: |
           pip install -U openmim
@@ -147,6 +137,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
+          pip install git+https://github.com/open-mmlab/mmengine.git@main
           pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
@@ -155,7 +146,7 @@ jobs:
         run: pip install -e .
       - name: Run unittests
         run: |
-          python -m pip install timm
+          pip install timm
           coverage run --branch --source mmseg -m pytest tests/
       - name: Generate coverage report
         run: |
