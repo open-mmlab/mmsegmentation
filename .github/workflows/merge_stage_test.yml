@@ -190,14 +190,12 @@ jobs:
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
-      - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: pip install -e .
       - name: Run unittests
         run: |
           pip install timm
-          coverage run --branch --source mmseg -m pytest tests/
+          coverage run --branch --source mmseg -m pytest tests/ --ignore tests\test_models\test_forward.py tests\test_models\test_backbones\test_beit.py
       - name: Generate coverage report
         run: |
           coverage xml
