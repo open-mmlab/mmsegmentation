@@ -195,7 +195,7 @@ jobs:
       - name: Run unittests
         run: |
           pip install timm
-          coverage run --branch --source mmseg -m pytest tests/ --ignore tests\test_models\test_forward.py tests\test_models\test_backbones\test_beit.py
+          coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
       - name: Generate coverage report
         run: |
           coverage xml
