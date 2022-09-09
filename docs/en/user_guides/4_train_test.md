@@ -1,61 +1,22 @@
 # Tutorial 4: Train and test with existing models
 
+MMSegmentation provides scripts for launching training and testing task, which can easily start your task on a single machine with a single gpu, or launch large-scale training and testing on multiple machines.
+
 This tutorial provides instruction for users to use the models provided in the [Model Zoo](../model_zoo.md) for other datasets to obtain better performance.
 MMSegmentation also provides out-of-the-box tools for training models.
 This section will show how to train and test models on standard datasets.
 
 ## Train models on standard datasets
 
-### Modify training schedule
+### Training and testing on a single GPU
 
-Modify the following configuration to customize the training.
-
-```python
-# training schedule for 40k
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=40000, val_interval=4000)
-val_cfg = dict(type='ValLoop')
-test_cfg = dict(type='TestLoop')
-# optimizer
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
-# learning policy
-param_scheduler = [
-    dict(
-        type='PolyLR',
-        eta_min=1e-4,
-        power=0.9,
-        begin=0,
-        end=40000,
-        by_epoch=False)
-# basic hooks
-default_hooks = dict(
-    timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
-    param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=4000),
-    sampler_seed=dict(type='DistSamplerSeedHook'))
-]
-```
-
-### Use pre-trained model
-
-Users can load a pre-trained model by setting the `load_from` field of the config to the model's path or link.
-The users might need to download the model weights before training to avoid the download time during training.
-
-```python
-# use the pre-trained model for the whole PSPNet
-load_from = 'https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'  # model path can be found in model zoo
-```
-
-### Training on a single GPU
+#### Training on a single GPU
 
 We provide `tools/train.py` to launch training jobs on a single GPU.
 The basic usage is as follows.
 
 ```shell
-python tools/train.py \
-    ${CONFIG_FILE} \
-    [optional arguments]
+python tools/train.py  ${CONFIG_FILE} [optional arguments]
 ```
 
 This tool accepts several optional arguments, including:
@@ -76,9 +37,7 @@ It is usually used for resuming the training process that is interrupted acciden
 
 `load-from` only loads the model weights and the training iteration starts from 0. It is usually used for fine-tuning.
 
-### Training on CPU
-
-The process of training on the CPU is consistent with single GPU training if machine does not have GPU. If it has GPUs but not wanting to use it, we just need to disable GPUs before the training process.
+**Training on CPU**: The process of training on the CPU is consistent with single GPU training if machine does not have GPU. If it has GPUs but not wanting to use it, we just need to disable GPUs before the training process.
 
 ```shell
 export CUDA_VISIBLE_DEVICES=-1
@@ -86,9 +45,22 @@ export CUDA_VISIBLE_DEVICES=-1
 
 And then run the script [above](#training-on-a-single-gpu).
 
-```{warning}
-The process of training on the CPU is consistent with single GPU training. We just need to disable GPUs before the training process.
+#### Testing on a single GPU
+
+We provide `tools/test.py` to launch training jobs on a single GPU.
+The basic usage is as follows.
+
+```shell
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [optional arguments]
 ```
+
+This tool accepts several optional arguments, including:
+
+- `--work-dir`: If specified, results will be saved in this directory. If not specified, the results will be automatically saved to `work_dirs/{CONFIG_NAME}`.
+- `--show`: Show prediction results at runtime, available when `--show-dir` is not specified.
+- `--show-dir`: If specified, the visualized segmentation mask will be saved in the specified directory.
+- `--wait-time`: The interval of show (s), which takes effect when `--show` is activated. Default to 2.
+- `--cfg-options`:  If specified, the key-value pair in xxx=yyy format will be merged into config file.
 
 ### Training on multiple GPUs
 
@@ -116,6 +88,7 @@ sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_4xb4-80k_ade20k-512x512.py 8
 **Note**: During training, checkpoints and logs are saved in the same folder structure as the config file under `work_dirs/`. Custom work directory is not recommended since evaluation scripts infer work directories from the config file name. If you want to save your weights somewhere else, please use symlink, for example:
 
 ```shell
+
 ln -s ${YOUR_WORK_DIRS} ${MMSEG}/work_dirs
 ```
 
