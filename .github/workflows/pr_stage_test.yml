@@ -36,12 +36,16 @@ jobs:
         if: ${{matrix.torchvision == '0.4.2'}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install other dependencies
+      - name: Install mmseg dependencies
         run: |
-          pip install git+https://github.com/open-mmlab/mmengine.git@main
+          python -V
           pip install -U openmim
-          mim install 'mmcv >= 2.0.0rc1'
-          pip install -r requirements.txt
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          mim install 'mmcv>=2.0.0rc1'
+          python -c 'import mmcv; print(mmcv.__version__)'
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+      - name: Install unittest dependencies
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
@@ -96,14 +100,17 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          pip install git+https://github.com/open-mmlab/mmengine.git@main
           pip install -U openmim
-          mim install 'mmcv >= 2.0.0rc1'
-          pip install -r requirements.txt
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          mim install 'mmcv>=2.0.0rc1'
+          python -c 'import mmcv; print(mmcv.__version__)'
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+      - name: Install unittest dependencies
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: |
           python setup.py check -m -s
-          TORCH_CUDA_ARCH_LIST=7.0 python -m pip install -e .
+          TORCH_CUDA_ARCH_LIST=7.0 pip install -e .
   build_windows:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -126,11 +133,13 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          pip install git+https://github.com/open-mmlab/mmengine.git@main
           pip install -U openmim
-          mim install 'mmcv >= 2.0.0rc1'
-          pip install -r requirements.txt
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+      - name: Install unittest dependencies
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
