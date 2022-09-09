@@ -114,7 +114,7 @@ jobs:
       matrix:
         os: [windows-2022]
         python: [3.7]
-        platform: [cpu]
+        platform: [cpu, cu111]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
