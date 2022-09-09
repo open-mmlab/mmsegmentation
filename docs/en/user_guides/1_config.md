@@ -226,7 +226,7 @@ load_from = None  # Load checkpoint from file.
 resume = False  # Whether to resume from existed model.
 ```
 
-These are all the configs for training and testing PSPNet, we use [MMEngine](https://github.com/open-mmlab/mmengine) to load and parse these configs.
+These are all the configs for training and testing PSPNet, to load and parse them, we can use [Config](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) implemented in [MMEngine](https://github.com/open-mmlab/mmengine)
 
 ```python
 from mmengine.config import Config
@@ -256,16 +256,16 @@ print(cfg.train_dataloader)
    {'type': 'PackSegInputs'}]}}
 ```
 
-`cfg` is an instance of `mmengine.config.Config`, its interface is the same as a dict object and also allows access config values as attributes. See [MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/config.md) for more information.
+`cfg` is an instance of `mmengine.config.Config`, its interface is the same as a dict object and also allows access config values as attributes. See config tutorial in [MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/config.md) for more information.
 
 ## FAQ
 
 ### Ignore some fields in the base configs
 
 Sometimes, you may set `_delete_=True` to ignore some of the fields in base configs.
-You may refer to [MMEngine](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) for simple illustration.
+See config tutorial in [MMEngine](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) for simple illustration.
 
-In MMSegmentation, for example, to change the backbone of PSPNet with the following config.
+In MMSegmentation, for example, if you would like to modify the backbone of PSPNet with the following config file `pspnet.py`:
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -283,34 +283,60 @@ model = dict(
         norm_eval=False,
         style='pytorch',
         contract_dilation=True),
-    decode_head=dict(...),
-    auxiliary_head=dict(...))
+    decode_head=dict(
+        type='PSPHead',
+        in_channels=2048,
+        in_index=3,
+        channels=512,
+        pool_scales=(1, 2, 3, 6),
+        dropout_ratio=0.1,
+        num_classes=19,
+        norm_cfg=norm_cfg,
+        align_corners=False,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)))
 ```
+
+Load and parse the config file `pspnet.py` in the code as follows:
 
 ```python
 from mmengine.config import Config
 
-cfg = Config.fromfile('configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
-print(cfg.model.backbone)
+cfg = Config.fromfile('pspnet.py')
+print(cfg.model)
 ```
 
 ```shell
-{'type': 'ResNetV1c',
- 'depth': 50,
- 'num_stages': 4,
- 'out_indices': (0, 1, 2, 3),
- 'dilations': (1, 1, 2, 4),
- 'strides': (1, 2, 1, 1),
- 'norm_cfg': {'type': 'SyncBN', 'requires_grad': True},
- 'norm_eval': False,
- 'style': 'pytorch',
- 'contract_dilation': True}
+{'type': 'EncoderDecoder',
+ 'pretrained': 'torchvision://resnet50',
+ 'backbone': {'type': 'ResNetV1c',
+  'depth': 50,
+  'num_stages': 4,
+  'out_indices': (0, 1, 2, 3),
+  'dilations': (1, 1, 2, 4),
+  'strides': (1, 2, 1, 1),
+  'norm_cfg': {'type': 'SyncBN', 'requires_grad': True},
+  'norm_eval': False,
+  'style': 'pytorch',
+  'contract_dilation': True},
+ 'decode_head': {'type': 'PSPHead',
+  'in_channels': 2048,
+  'in_index': 3,
+  'channels': 512,
+  'pool_scales': (1, 2, 3, 6),
+  'dropout_ratio': 0.1,
+  'num_classes': 19,
+  'norm_cfg': {'type': 'SyncBN', 'requires_grad': True},
+  'align_corners': False,
+  'loss_decode': {'type': 'CrossEntropyLoss',
+   'use_sigmoid': False,
+   'loss_weight': 1.0}}}
 ```
 
-`ResNet` and `HRNet` use different keywords to construct.
+`ResNet` and `HRNet` use different keywords to construct, write a new config file `hrnet.py` as follows:
 
 ```python
-_base_ = '../pspnet/pspnet_r50-d8_4xb4-40k_cityscpaes-512x1024.py'
+_base_ = 'pspnet.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     pretrained='open-mmlab://msra/hrnetv2_w32',
@@ -342,44 +368,57 @@ model = dict(
                 num_branches=4,
                 block='BASIC',
                 num_blocks=(4, 4, 4, 4),
-                num_channels=(32, 64, 128, 256)))),
-    decode_head=dict(...),
-    auxiliary_head=dict(...))
+                num_channels=(32, 64, 128, 256)))))
 ```
 
-The `_delete_=True` would replace all old keys in `backbone` field with new keys.
+Load and parse the config file `hrnet.py` in the code as follows:
 
 ```python
 from mmengine.config import Config
 cfg = Config.fromfile('hrnet.py')
-print(cfg.model.backbone)
+print(cfg.model)
 ```
 
 ```shell
-{'_delete_': True,
- 'type': 'HRNet',
- 'norm_cfg': {'type': 'SyncBN', 'requires_grad': True},
- 'extra': {'stage1': {'num_modules': 1,
-   'num_branches': 1,
-   'block': 'BOTTLENECK',
-   'num_blocks': (4,),
-   'num_channels': (64,)},
-  'stage2': {'num_modules': 1,
-   'num_branches': 2,
-   'block': 'BASIC',
-   'num_blocks': (4, 4),
-   'num_channels': (32, 64)},
-  'stage3': {'num_modules': 4,
-   'num_branches': 3,
-   'block': 'BASIC',
-   'num_blocks': (4, 4, 4),
-   'num_channels': (32, 64, 128)},
-  'stage4': {'num_modules': 3,
-   'num_branches': 4,
-   'block': 'BASIC',
-   'num_blocks': (4, 4, 4, 4),
-   'num_channels': (32, 64, 128, 256)}}}
+{'type': 'EncoderDecoder',
+ 'pretrained': 'open-mmlab://msra/hrnetv2_w32',
+ 'backbone': {'type': 'HRNet',
+  'norm_cfg': {'type': 'SyncBN', 'requires_grad': True},
+  'extra': {'stage1': {'num_modules': 1,
+    'num_branches': 1,
+    'block': 'BOTTLENECK',
+    'num_blocks': (4,),
+    'num_channels': (64,)},
+   'stage2': {'num_modules': 1,
+    'num_branches': 2,
+    'block': 'BASIC',
+    'num_blocks': (4, 4),
+    'num_channels': (32, 64)},
+   'stage3': {'num_modules': 4,
+    'num_branches': 3,
+    'block': 'BASIC',
+    'num_blocks': (4, 4, 4),
+    'num_channels': (32, 64, 128)},
+   'stage4': {'num_modules': 3,
+    'num_branches': 4,
+    'block': 'BASIC',
+    'num_blocks': (4, 4, 4, 4),
+    'num_channels': (32, 64, 128, 256)}}},
+ 'decode_head': {'type': 'PSPHead',
+  'in_channels': 2048,
+  'in_index': 3,
+  'channels': 512,
+  'pool_scales': (1, 2, 3, 6),
+  'dropout_ratio': 0.1,
+  'num_classes': 19,
+  'norm_cfg': {'type': 'SyncBN', 'requires_grad': True},
+  'align_corners': False,
+  'loss_decode': {'type': 'CrossEntropyLoss',
+   'use_sigmoid': False,
+   'loss_weight': 1.0}}}
 ```
+
+The `_delete_=True` would replace all old keys in `backbone` field with new keys.
 
 ### Use intermediate variables in configs
 
@@ -444,36 +483,104 @@ model = dict(
 
 ## Modify config through script arguments
 
-- Update values of list/tuples.
+In the [training script](../../../tools/train.py) and the [testing script](../../../tools/test.py), we support the script argument `--cfg-options`, it may help users override some settings in the used config, the key-value pair in `xxx=yyy` format will be merged into config file.
 
-  If the value to be updated is a list or a tuple. For example, the config file normally sets `sigma_range=(0, 0.04)` in `data_preprocessor` of `model`.
-  If you want to change this key, you may specify in two ways:
-
-  1. `--cfg-options model.data_preprocessor.sigma_range="(0, 0.05)"`. Note that the quotation mark " is necessary to support list/tuple data types.
-  2. `--cfg-options model.data_preprocessor.sigma_range=0,0.05`. Note that **NO** white space is allowed in the specified value.
-     In addition, if the original type is tuple, it will be automatically converted to list after this way.
-
-We can check the modified config:
+For example, this is a simplified script `demo_script.py`:
 
 ```python
-from mmengine.config import Config
+import argparse
 
-cfg = config.fromfile('pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
-print(cfg.model.data_preprocessor)
+from mmengine.config import Config, DictAction
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Script Example')
+    parser.add_argument('config', help='train config file path')
+    parser.add_argument(
+        '--cfg-options',
+        nargs='+',
+        action=DictAction,
+        help='override some settings in the used config, the key-value pair '
+        'in xxx=yyy format will be merged into config file. If the value to '
+        'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
+        'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
+        'Note that the quotation marks are necessary and that no white space '
+        'is allowed.')
+    args = parser.parse_args()
+    return args
+
+def main():
+    args = parse_args()
+
+    cfg = Config.fromfile(args.config)
+    if args.cfg_options is not None:
+        cfg.merge_from_dict(args.cfg_options)
+
+    print(cfg)
+
+if __name__ == '__main__':
+    main()
 ```
 
-The printed result is as follows:
+A example config file `demo_config.py` as follows:
+
+```python
+backbone = dict(
+    type='ResNetV1c',
+    depth=50,
+    num_stages=4,
+    out_indices=(0, 1, 2, 3),
+    dilations=(1, 1, 2, 4),
+    strides=(1, 2, 1, 1),
+    norm_eval=False,
+    style='pytorch',
+    contract_dilation=True)
+```
+
+Run `demo_script.py`:
 
 ```shell
-{'type': 'SegDataPreProcessor',
- 'mean': [123.675, 116.28, 103.53],
- 'std': [58.395, 57.12, 57.375],
- 'bgr_to_rgb': True,
- 'pad_val': 0,
- 'seg_pad_val': 255,
- 'size': (512, 1024),
- 'sigma_range': (0, 0.05)}
+python demo_script.py demo_config.py
 ```
+
+```shell
+Config (path: demo_config.py): {'backbone': {'type': 'ResNetV1c', 'depth': 50, 'num_stages': 4, 'out_indices': (0, 1, 2, 3), 'dilations': (1, 1, 2, 4), 'strides': (1, 2, 1, 1), 'norm_eval': False, 'style': 'pytorch', 'contract_dilation': True}}
+```
+
+Modify config through script arguments:
+
+```shell
+python demo_script.py demo_config.py --cfg-options backbone.depth=101
+```
+
+```shell
+Config (path: demo_config.py): {'backbone': {'type': 'ResNetV1c', 'depth': 101, 'num_stages': 4, 'out_indices': (0, 1, 2, 3), 'dilations': (1, 1, 2, 4), 'strides': (1, 2, 1, 1), 'norm_eval': False, 'style': 'pytorch', 'contract_dilation': True}}
+```
+
+- Update values of list/tuples.
+
+  If the value to be updated is a list or a tuple. For example, the config file `demo_config.py` sets `strides=(1, 2, 1, 1)` in `backbone`.
+  If you want to change this key, you may specify in two ways:
+
+  1. `--cfg-options backbone.strides="(1, 1, 1, 1)"`. Note that the quotation mark " is necessary to support list/tuple data types.
+
+     ```shell
+     python demo_script.py demo_config.py --cfg-options backbone.strides="(1, 1, 1, 1)"
+     ```
+
+     ```shell
+     Config (path: demo_config.py): {'backbone': {'type': 'ResNetV1c', 'depth': 50, 'num_stages': 4, 'out_indices': (0, 1, 2, 3), 'dilations': (1, 1, 2, 4), 'strides': (1, 1, 1, 1), 'norm_eval': False, 'style': 'pytorch', 'contract_dilation': True}}
+     ```
+
+  2. `--cfg-options backbone.strides=1,1,1,1`. Note that **NO** white space is allowed in the specified value.
+     In addition, if the original type is tuple, it will be automatically converted to list after this way.
+
+     ```shell
+     python demo_script.py demo_config.py --cfg-options backbone.strides="(1, 1, 1, 1)"
+     ```
+
+     ```shell
+     Config (path: demo_config.py): {'backbone': {'type': 'ResNetV1c', 'depth': 50, 'num_stages': 4, 'out_indices': (0, 1, 2, 3), 'dilations': (1, 1, 2, 4), 'strides': [1, 1, 1, 1], 'norm_eval': False, 'style': 'pytorch', 'contract_dilation': True}}
+     ```
 
 ```{note}
     This modification of only supports modifying configuration items of string, int, float, boolean, None, list and tuple types.
