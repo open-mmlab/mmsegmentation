@@ -65,6 +65,12 @@ Returns:
 
 **Note:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) is a data structure interface of MMSegmentation, it is used as interfaces between different components. `SegDataSample` implement the abstract data element `mmengine.structures.BaseDataElement`, please refer to [MMEngine](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html) for more information.
 
+The attributes in `SegDataSample` are divided into several parts:
+
+- `gt_sem_seg` (PixelData) - Ground truth of semantic segmentation.
+- `pred_sem_seg` (PixelData) - Prediction of semantic segmentation.
+- `seg_logits` (PixelData) - Predicted logits of semantic segmentation.
+
 Example:
 
 ```python
