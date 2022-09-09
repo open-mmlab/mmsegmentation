@@ -43,10 +43,10 @@ register_all_modules()
 # init model without checkpoint
 model = init_model(config_path)
 
-# init model with checkpoint
+# init model and load checkpoint
 model = init_model(config_path, checkpoint_path)
 
-# init model and load model on CPU
+# init model and load checkpoint on CPU
 model = init_model(config_path, checkpoint_path, 'cpu')
 ```
 
@@ -63,13 +63,15 @@ Returns:
 
 - :obj:`SegDataSample` or list\[:obj:`SegDataSample`\]: If imgs is a list or tuple, the same length list type results will be returned, otherwise return the segmentation results directly.
 
-**Note:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) is a data structure interface of MMSegmentation, it is used as interfaces between different components. `SegDataSample` implement the abstract data element `mmengine.structures.BaseDataElement`, please refer to [MMEngine](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html) for more information.
+**Note:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) is a data structure interface of MMSegmentation, it is used as interfaces between different components. `SegDataSample` implement the abstract data element `mmengine.structures.BaseDataElement`, please refer to data element [documentation](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
 The attributes in `SegDataSample` are divided into several parts:
 
 - `gt_sem_seg` (PixelData) - Ground truth of semantic segmentation.
 - `pred_sem_seg` (PixelData) - Prediction of semantic segmentation.
 - `seg_logits` (PixelData) - Predicted logits of semantic segmentation.
+
+**Note** [PixelData](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/pixel_data.py) is the data structure for pixel-level annnotations or predictions, please refer to PixelData [documentation](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html#pixeldata) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
 Example:
 
@@ -101,10 +103,14 @@ Parameters:
 - title (str) - The title of pyplot figure. Default is ''.
 - draw_gt (bool) - Whether to draw GT SegDataSample. Default to `True`.
 - draw_pred (draws_pred) - Whether to draw Prediction SegDataSample. Default to `True`.
-- wait_time (float) - The interval of show. Default to `0`.
+- wait_time (float) - The interval of show (s), 0 is the special value that means "forever". Default to `0`.
 - show (bool) - Whether to display the drawn image. Default to `True`.
 - save_dir (str, optional) - Save file dir for all storage backends. If it is `None`, the backend storage will not save any data.
 - out_file (str, optional) - Path to output file. Default to `None`.
+
+Returns:
+
+- np.ndarray: the drawn image which channel is RGB.
 
 Example:
 
@@ -120,14 +126,19 @@ img_path = 'demo/demo.png'
 register_all_modules()
 
 # build the model from a config file and a checkpoint file
-model = init_model(config_file, checkpoint_file, device='cuda:0')
+model = init_model(config_path, checkpoint_path, device='cuda:0')
 
 # inference on given image
 result = inference_model(model, img_path)
 
-# visualize the segmentation result
-show_result_pyplot(model, img_path, result)
+# display the segmentation result
+vis_image = show_result_pyplot(model, img_path, result)
 
-# save the visualization result
-show_result_pyplot(model, img_path, result, out_file='work_dirs/result.png')
+# save the visualization result, the output image would be found at the path `work_dirs/result.png`
+vis_iamge = show_result_pyplot(model, img_path, result, out_file='work_dirs/result.png')
+
+# Modify the time of displaying images, note that 0 is the special value that means "forever".
+vis_image = show_result_pyplot(model, img_path, result, wait_time=5)
 ```
+
+**Note:** If your current device doesn't have graphical user interface, it is recommended that setting `show` to `False` and specify the `out_file` or `save_dir` to save the results. If you would like to display the result on a window, no special settings are required.
