@@ -91,9 +91,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
         run: pip install pip --upgrade
-      - name: Get MMCV_TORCH as the environment variable
-        run: . .github/workflows/scripts/get_mmcv_var.sh ${{matrix.torch}}
-        shell: bash
       - name: Install Pillow
         run: python -m pip install Pillow==6.2.2
         if: ${{matrix.torchvision < 0.5}}
@@ -113,7 +110,7 @@ jobs:
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
         run: |
-          python -m pip install timm
+          pip install timm
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
@@ -143,7 +140,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
-        run: python -m pip install pip --upgrade
+        run: pip install pip --upgrade
       - name: Fetch GPG keys
         run: |
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
@@ -160,17 +157,17 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install -U openmim
-          python -m pip install git+https://github.com/open-mmlab/mmengine.git
+          pip install -U openmim
+          pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
-          python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
-        run: python -m pip install -r requirements/tests.txt -r requirements/optional.txt
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: |
           python setup.py check -m -s
-          TORCH_CUDA_ARCH_LIST=7.0 python -m pip install -e .
+          TORCH_CUDA_ARCH_LIST=7.0 pip install -e .
   build_windows:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -185,7 +182,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
-        run: python -m pip install pip --upgrade
+        run: pip install pip --upgrade
       - name: Install OpenCV
         run: pip install opencv-python>=3
       - name: Install PyTorch
@@ -193,20 +190,20 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install -U openmim
-          python -m pip install git+https://github.com/open-mmlab/mmengine.git
+          pip install -U openmim
+          pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
-          python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
-        run: python -m pip install -r requirements/tests.txt -r requirements/optional.txt
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: pip install -e .
       - name: Run unittests
         run: |
-          python -m pip install timm
+          pip install timm
           coverage run --branch --source mmseg -m pytest tests/
       - name: Generate coverage report
         run: |
