@@ -39,9 +39,9 @@ jobs:
       - name: Install other dependencies
         run: |
           pip install -U openmim
-          pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
+          pip install git+https://github.com/open-mmlab/mmengine.git
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
@@ -100,9 +100,9 @@ jobs:
         run: |
           python -V
           pip install -U openmim
-          pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
+          pip install git+https://github.com/open-mmlab/mmengine.git
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
@@ -133,9 +133,9 @@ jobs:
         run: |
           python -V
           pip install -U openmim
-          pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
+          pip install git+https://github.com/open-mmlab/mmengine.git
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
