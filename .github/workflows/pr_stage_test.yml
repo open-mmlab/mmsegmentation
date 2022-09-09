@@ -36,9 +36,8 @@ jobs:
         if: ${{matrix.torchvision == '0.4.2'}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
-      - name: Install mmseg dependencies
+      - name: Install other dependencies
         run: |
-          python -V
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc1'
@@ -138,8 +137,6 @@ jobs:
           mim install 'mmcv>=2.0.0rc1'
           python -c 'import mmcv; print(mmcv.__version__)'
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-      - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
