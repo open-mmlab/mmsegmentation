@@ -45,6 +45,7 @@ def parse_requirements(fname='requirements.txt', with_version=True):
     def parse_line(line):
         """Parse information from a line in a requirements text file."""
         if line.startswith('-r '):
+            # Allow specifying requirements in other files
             target = line.split(' ')[1]
             yield from parse_require_file(target)
         else:
@@ -52,6 +53,7 @@ def parse_requirements(fname='requirements.txt', with_version=True):
             if line.startswith('-e '):
                 info['package'] = line.split('#egg=')[1]
             else:
+                # Remove versioning from the package
                 pat = '(' + '|'.join(['>=', '==', '>']) + ')'
                 parts = re.split(pat, line, maxsplit=1)
                 parts = [p.strip() for p in parts]
@@ -59,6 +61,8 @@ def parse_requirements(fname='requirements.txt', with_version=True):
                 if len(parts) > 1:
                     op, rest = parts[1:]
                     if ';' in rest:
+                        # Handle platform specific dependencies
+                        # http://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies
                         version, platform_deps = map(str.strip,
                                                      rest.split(';'))
                         info['platform_deps'] = platform_deps
@@ -99,10 +103,17 @@ def add_mim_extension():
     package is installed in `editable` mode (e.g. pip install -e .), or by
     copying from the originals otherwise.
     """
+
+    # parse installment mode
     if 'develop' in sys.argv:
+        # installed by `pip install -e .`
+        # set `copy` mode here since symlink fails on Windows.
         mode = 'copy' if platform.system() == 'Windows' else 'symlink'
     elif 'sdist' in sys.argv or 'bdist_wheel' in sys.argv or platform.system(
     ) == 'Windows':
+        # installed by `pip install .`
+        # or create source distribution by `python setup.py sdist`
+        # set `copy` mode here since symlink fails with WinError on Windows.
         mode = 'copy'
     else:
         return
@@ -123,6 +134,9 @@ def add_mim_extension():
                 try:
                     os.symlink(src_relpath, tar_path)
                 except OSError:
+                    # Creating a symbolic link on windows may raise an
+                    # `OSError: [WinError 1314]` due to privilege. If
+                    # the error happens, the src file will be copied
                     mode = 'copy'
                     warnings.warn(
                         f'Failed to create a symbolic link for {src_relpath},'

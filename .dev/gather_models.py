@@ -60,10 +60,10 @@ def get_final_results(log_json_path, iter_num):
             flag1 = 'aAcc' in log_line or log_line['mode'] == 'val'
             flag2 = last_iter in [iter_num - 50, iter_num]
             if flag1 and flag2:
-                result_dict |= {
+                result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
-                }
+                })
                 return result_dict
             last_iter = log_line['iter']
 
