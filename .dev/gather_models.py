@@ -57,6 +57,8 @@ def get_final_results(log_json_path, iter_num):
             log_line = json.loads(line)
             if 'mode' not in log_line.keys():
                 continue
+            # When evaluation, the 'iter' of new log json is the evaluation
+            # steps on single gpu.
             flag1 = 'aAcc' in log_line or log_line['mode'] == 'val'
             flag2 = last_iter in [iter_num - 50, iter_num]
             if flag1 and flag2:
