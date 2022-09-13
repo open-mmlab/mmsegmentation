@@ -76,7 +76,23 @@ we can also run the following command to view them in TensorBoard:
 tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 ```
 
-We could use `SegLocalVisualizer` to visualize results with their corresponding predictions or ground truth. For example, please follow commands below in your MMSegmentation main directory:
+### Visualizer Data Samples during Model Testing or Validataion
+
+Noted that `SegVisualizationHook` is used to visualize validation and testing process prediction results, defined [here](../../../mmseg/engine/hooks/visualization_hook.py).
+
+If you want to visualize a single data sample, a pair of input image and its ground truth in the dataset are necessary.
+You could prepare them on your own or download examples below by following commands:
+
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png" width="70%"/>
+</div>
+
+```shell
+wget https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png --output-document aachen_000000_000019_leftImg8bit.png
+wget https://user-images.githubusercontent.com/24582831/189833143-15f60f8a-4d1e-4cbb-a6e7-5e2233869fac.png --output-document aachen_000000_000019_gtFine_labelTrainIds.png
+```
+
+Then you can find their local path and use the scrips below to visualize:
 
 ```python
 import mmcv
@@ -93,25 +109,36 @@ save_dir = './work_dirs'
 image = mmcv.imread(
     osp.join(
         osp.dirname(__file__),
-        './tests/data/pseudo_cityscapes_dataset/leftImg8bit/val/frankfurt/frankfurt_000000_000294_leftImg8bit.png'  # noqa
+        './aachen_000000_000019_leftImg8bit.png'
     ),
     'color')
 sem_seg = mmcv.imread(
     osp.join(
         osp.dirname(__file__),
-        './tests/data/pseudo_cityscapes_dataset/gtFine/val/frankfurt/frankfurt_000000_000294_gtFine_labelTrainIds.png'  # noqa
+        './aachen_000000_000019_gtFine_labelTrainIds.png'  # noqa
     ),
     'unchanged')
-sem_seg = torch.unsqueeze(torch.from_numpy(sem_seg), 0)
+sem_seg = torch.from_numpy(sem_seg)
 gt_sem_seg_data = dict(data=sem_seg)
+
+# `PixelData` is data structure for pixel-level annotations or predictions defined in MMEngine.
 gt_sem_seg = PixelData(**gt_sem_seg_data)
 
+
+# `SegDataSample` is data structure interface between different components
+# defined in MMSegmentation, it includes ground truth, prediction and
+# predicted logits of semantic segmentation.
 data_sample = SegDataSample()
 data_sample.gt_sem_seg = gt_sem_seg
 
 seg_local_visualizer = SegLocalVisualizer(
     vis_backends=[dict(type='LocalVisBackend')],
     save_dir=save_dir)
+
+# The meta information of dataset usually includes `classes` for class names and
+# `palette` for visualization color of each foreground.
+# It is usually defined in corresponding class of dataset such as './mmseg/datasets/cityscapes.py'
+
 seg_local_visualizer.dataset_meta = dict(
     classes=('road', 'sidewalk', 'building', 'wall', 'fence',
              'pole', 'traffic light', 'traffic sign',
@@ -125,12 +152,16 @@ seg_local_visualizer.dataset_meta = dict(
              [255, 0, 0], [0, 0, 142], [0, 0, 70],
              [0, 60, 100], [0, 80, 100], [0, 0, 230],
              [119, 11, 32]])
+
+# When `show=False`, the results would be saved in local directory folder.
 seg_local_visualizer.add_datasample(out_file, image,
-                                    data_sample)
+                                    data_sample, show=False)
 ```
 
 Then the visualization result of image with its corresponding ground truth could be found in `./work_dirs/vis_data/vis_image/` whose name is `out_file_cityscapes_0.png`:
 
-![1](../../../demo/out_file_cityscapes_0.png)
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/189835713-c0534054-4bfa-4b75-9254-0afbeb5ff02e.png" width="70%"/>
+</div>
 
 If you would like to know more visualization usage, you can refer to [visualization tutorial](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/visualization.html) in MMEngine.
