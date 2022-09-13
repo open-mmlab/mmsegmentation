@@ -92,7 +92,6 @@ jobs:
         run: pip install pip --upgrade
       - name: Install Pillow
         run: pip install Pillow==6.2.2
-        if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
