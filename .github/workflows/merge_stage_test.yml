@@ -62,7 +62,6 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-        if: ${{matrix.torch < '1.6.0'}}
   build_cpu_pt:
     runs-on: ubuntu-18.04
     strategy:
@@ -111,7 +110,9 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
+      # Only upload coverage report for python3.7 && pytorch1.8.1 cpu
       - name: Upload coverage to Codecov
+        if: ${{matrix.torch == '1.8.1' && matrix.python-version == '3.7'}}
         uses: codecov/codecov-action@v2
         with:
           files: ./coverage.xml

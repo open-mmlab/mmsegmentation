@@ -63,7 +63,7 @@ jobs:
             pip install -U openmim
             mim install 'mmcv >= 2.0.0rc1'
             pip install git+https://github.com/open-mmlab/mmclassification@dev-1.x
-            pip install -r requirements/tests.txt
+            pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
           command: |
