@@ -256,14 +256,14 @@ print(cfg.train_dataloader)
    {'type': 'PackSegInputs'}]}}
 ```
 
-`cfg` is an instance of `mmengine.config.Config`, its interface is the same as a dict object and also allows access config values as attributes. See config tutorial in [MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/config.md) for more information.
+`cfg` is an instance of `mmengine.config.Config`, its interface is the same as a dict object and also allows access config values as attributes. See [config tutorial](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
 ## FAQ
 
 ### Ignore some fields in the base configs
 
 Sometimes, you may set `_delete_=True` to ignore some of the fields in base configs.
-See config tutorial in [MMEngine](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) for simple illustration.
+See [config tutorial](https://mmengine.readthedocs.io/en/latest/tutorials/config.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for simple illustration.
 
 In MMSegmentation, for example, if you would like to modify the backbone of PSPNet with the following config file `pspnet.py`:
 
@@ -483,7 +483,7 @@ model = dict(
 
 ## Modify config through script arguments
 
-In the [training script](../../../tools/train.py) and the [testing script](../../../tools/test.py), we support the script argument `--cfg-options`, it may help users override some settings in the used config, the key-value pair in `xxx=yyy` format will be merged into config file.
+In the [training script](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/train.py) and the [testing script](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/test.py), we support the script argument `--cfg-options`, it may help users override some settings in the used config, the key-value pair in `xxx=yyy` format will be merged into config file.
 
 For example, this is a simplified script `demo_script.py`:
 
