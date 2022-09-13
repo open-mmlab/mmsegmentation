@@ -98,8 +98,12 @@ Then you can find their local path and use the scrips below to visualize:
 import mmcv
 import os.path as osp
 import torch
+# `PixelData` is data structure for pixel-level annotations or predictions defined in MMEngine.
 from mmengine.structures import PixelData
 
+# `SegDataSample` is data structure interface between different components
+# defined in MMSegmentation, it includes ground truth, prediction and
+# predicted logits of semantic segmentation.
 from mmseg.structures import SegDataSample
 from mmseg.visualization import SegLocalVisualizer
 
@@ -120,14 +124,7 @@ sem_seg = mmcv.imread(
     'unchanged')
 sem_seg = torch.from_numpy(sem_seg)
 gt_sem_seg_data = dict(data=sem_seg)
-
-# `PixelData` is data structure for pixel-level annotations or predictions defined in MMEngine.
 gt_sem_seg = PixelData(**gt_sem_seg_data)
-
-
-# `SegDataSample` is data structure interface between different components
-# defined in MMSegmentation, it includes ground truth, prediction and
-# predicted logits of semantic segmentation.
 data_sample = SegDataSample()
 data_sample.gt_sem_seg = gt_sem_seg
 
@@ -152,8 +149,8 @@ seg_local_visualizer.dataset_meta = dict(
              [255, 0, 0], [0, 0, 142], [0, 0, 70],
              [0, 60, 100], [0, 80, 100], [0, 0, 230],
              [119, 11, 32]])
-
-# When `show=False`, the results would be saved in local directory folder.
+# When `show=True`, the results would be shown directly,
+# else if `show=False`, the results would be saved in local directory folder.
 seg_local_visualizer.add_datasample(out_file, image,
                                     data_sample, show=False)
 ```
