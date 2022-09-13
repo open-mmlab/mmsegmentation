@@ -129,6 +129,8 @@ seg_local_visualizer.add_datasample(out_file, image,
                                     data_sample)
 ```
 
-Then the visualization result of image with its corresponding ground truth could be found in `./work_dirs/vis_data/vis_image/` whose name is `out_file_cityscapes_0.png`.
+Then the visualization result of image with its corresponding ground truth could be found in `./work_dirs/vis_data/vis_image/` whose name is `out_file_cityscapes_0.png`:
+
+![1](../../../demo/out_file_cityscapes_0.png)
 
 If you would like to know more visualization usage, you can refer to [visualization tutorial](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/visualization.html) in MMEngine.
