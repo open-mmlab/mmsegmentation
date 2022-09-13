@@ -18,14 +18,14 @@ Initialize a segmentor from config file.
 
 Parameters:
 
-- config (str, :obj:`Path`, or :obj:`mmengine.Config`) - Config file path or the config object.
+- config (str, `Path`, or `mmengine.Config`) - Config file path or the config object.
 - checkpoint (str, optional) - Checkpoint path. If left as None, the model will not load any weights.
 - device (str, optional) - CPU/CUDA device option. Default 'cuda:0'.
 - cfg_options (dict, optional) - Options to override some settings in the used config.
 
 Returns:
 
-- Torch.nn.Module: The constructed segmentor.
+- nn.Module: The constructed segmentor.
 
 Example:
 
@@ -40,7 +40,7 @@ checkpoint_path = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_00
 # register all modules in mmseg into the registries
 register_all_modules()
 
-# init model without checkpoint
+# initialize model without checkpoint
 model = init_model(config_path)
 
 # init model and load checkpoint
@@ -61,15 +61,15 @@ Parameters:
 
 Returns:
 
-- :obj:`SegDataSample` or list\[:obj:`SegDataSample`\]: If imgs is a list or tuple, the same length list type results will be returned, otherwise return the segmentation results directly.
+- `SegDataSample` or list\[`SegDataSample`\]: If imgs is a list or tuple, the same length list type results will be returned, otherwise return the segmentation results directly.
 
 **Note:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) is a data structure interface of MMSegmentation, it is used as interfaces between different components. `SegDataSample` implement the abstract data element `mmengine.structures.BaseDataElement`, please refer to data element [documentation](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
 The attributes in `SegDataSample` are divided into several parts:
 
-- `gt_sem_seg` (PixelData) - Ground truth of semantic segmentation.
-- `pred_sem_seg` (PixelData) - Prediction of semantic segmentation.
-- `seg_logits` (PixelData) - Predicted logits of semantic segmentation.
+- `gt_sem_seg` (`PixelData`) - Ground truth of semantic segmentation.
+- `pred_sem_seg` (`PixelData`) - Prediction of semantic segmentation.
+- `seg_logits` (`PixelData`) - Predicted logits of semantic segmentation.
 
 **Note** [PixelData](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/pixel_data.py) is the data structure for pixel-level annnotations or predictions, please refer to PixelData [documentation](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html#pixeldata) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
@@ -98,7 +98,7 @@ Parameters:
 
 - model (nn.Module) - The loaded segmentor.
 - img (str or np.ndarray) - Image filename or loaded image.
-- result (SegDataSample) - The prediction SegDataSample result.
+- result (`SegDataSample`) - The prediction SegDataSample result.
 - opacity (float) - Opacity of painted segmentation map. Default `0.5`, must be in `(0, 1]` range.
 - title (str) - The title of pyplot figure. Default is ''.
 - draw_gt (bool) - Whether to draw GT SegDataSample. Default to `True`.
