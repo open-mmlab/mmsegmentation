@@ -99,11 +99,17 @@ import mmcv
 import os.path as osp
 import torch
 # `PixelData` is data structure for pixel-level annotations or predictions defined in MMEngine.
+# Please refer to below tutorial file of data structures in MMEngine:
+# https://github.com/open-mmlab/mmengine/tree/main/docs/en/advanced_tutorials/data_element.md
+
 from mmengine.structures import PixelData
 
 # `SegDataSample` is data structure interface between different components
 # defined in MMSegmentation, it includes ground truth, prediction and
 # predicted logits of semantic segmentation.
+# Please refer to below tutorial file of `SegDataSample` for more details:
+# https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/advanced_guides/structures.md
+
 from mmseg.structures import SegDataSample
 from mmseg.visualization import SegLocalVisualizer
 
@@ -134,7 +140,8 @@ seg_local_visualizer = SegLocalVisualizer(
 
 # The meta information of dataset usually includes `classes` for class names and
 # `palette` for visualization color of each foreground.
-# It is usually defined in corresponding class of dataset such as './mmseg/datasets/cityscapes.py'
+# All class names and palettes are defined in the file:
+# https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/utils/class_names.py
 
 seg_local_visualizer.dataset_meta = dict(
     classes=('road', 'sidewalk', 'building', 'wall', 'fence',
