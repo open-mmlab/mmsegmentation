@@ -36,8 +36,6 @@ jobs:
         type: string
       torchvision:
         type: string
-      mmcv:
-        type: string
     docker:
       - image: cimg/python:<< parameters.python >>
     resource_class: large
@@ -51,31 +49,32 @@ jobs:
       - run:
           name: Configure Python & pip
           command: |
-            python -m pip install --upgrade pip
-            python -m pip install wheel
+            pip install --upgrade pip
+            pip install wheel
       - run:
           name: Install PyTorch
           command: |
             python -V
-            python -m pip install torch==<< parameters.torch >>+cpu torchvision==<< parameters.torchvision >>+cpu -f https://download.pytorch.org/whl/torch_stable.html
+            pip install torch==<< parameters.torch >>+cpu torchvision==<< parameters.torchvision >>+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - run:
           name: Install mmseg dependencies
           command: |
-            python -m pip install git+ssh://git@github.com/open-mmlab/mmengine.git@main
-            python -m pip install << parameters.mmcv >>
-            python -m pip install git+ssh://git@github.com/open-mmlab/mmclassification@dev-1.x
-            python -m pip install -r requirements.txt
+            pip install git+https://github.com/open-mmlab/mmengine.git@main
+            pip install -U openmim
+            mim install 'mmcv >= 2.0.0rc1'
+            pip install git+https://github.com/open-mmlab/mmclassification@dev-1.x
+            pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
           command: |
-            python -m pip install -e .
+            pip install -e .
       - run:
           name: Run unittests
           command: |
-            python -m pip install timm
-            python -m coverage run --branch --source mmseg -m pytest tests/
-            python -m coverage xml
-            python -m coverage report -m
+            pip install timm
+            coverage run --branch --source mmseg -m pytest tests/
+            coverage xml
+            coverage report -m
       - run:
           name: Skip timm unittests and generate coverage report
           command: |
@@ -92,8 +91,6 @@ jobs:
       cudnn:
         type: integer
         default: 7
-      mmcv:
-        type: string
     machine:
       image: ubuntu-2004-cuda-11.4:202110-01
       # docker_layer_caching: true
@@ -104,8 +101,8 @@ jobs:
           # Cloning repos in VM since Docker doesn't have access to the private key
           name: Clone Repos
           command: |
-            git clone -b main --depth 1 ssh://git@github.com/open-mmlab/mmengine.git /home/circleci/mmengine
-            git clone -b dev-1.x --depth 1 ssh://git@github.com/open-mmlab/mmclassification.git /home/circleci/mmclassification
+            git clone -b main --depth 1 https://github.com/open-mmlab/mmengine.git /home/circleci/mmengine
+            git clone -b dev-1.x --depth 1 https://github.com/open-mmlab/mmclassification.git /home/circleci/mmclassification
       - run:
           name: Build Docker image
           command: |
@@ -115,9 +112,10 @@ jobs:
           name: Install mmseg dependencies
           command: |
             docker exec mmseg pip install -e /mmengine
-            docker exec mmseg pip install << parameters.mmcv >>
+            docker exec mmseg pip install -U openmim
+            docker exec mmseg mim install 'mmcv >= 2.0.0rc1'
             docker exec mmseg pip install -e /mmclassification
-            docker exec mmseg python -m pip install -r requirements.txt
+            docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
           command: |
@@ -125,8 +123,8 @@ jobs:
       - run:
           name: Run unittests
           command: |
-            docker exec mmseg python -m pip install timm
-            docker exec mmseg python -m pytest tests/
+            docker exec mmseg pip install timm
+            docker exec mmseg pytest tests/
 workflows:
   pr_stage_lint:
     when: << pipeline.parameters.lint_only >>
@@ -137,7 +135,7 @@ workflows:
             branches:
               ignore:
                 - dev-1.x
-                - test-1.x
+                - 1.x
   pr_stage_test:
     when:
       not:
@@ -149,21 +147,19 @@ workflows:
             branches:
               ignore:
                 - dev-1.x
-                - test-1.x
+                - 1.x
       - build_cpu:
           name: minimum_version_cpu
           torch: 1.6.0
           torchvision: 0.7.0
           python: 3.6.9  # The lowest python 3.6.x version available on CircleCI images
-          mmcv: https://download.openmmlab.com/mmcv/dev-2.x/cpu/torch1.6.0/mmcv_full-2.0.0rc0-cp36-cp36m-manylinux1_x86_64.whl
           requires:
             - lint
       - build_cpu:
           name: maximum_version_cpu
-          torch: 1.9.0
-          torchvision: 0.10.0
+          torch: 1.12.1
+          torchvision: 0.13.1
           python: 3.9.0
-          mmcv: https://download.openmmlab.com/mmcv/dev-2.x/cpu/torch1.9.0/mmcv_full-2.0.0rc0-cp39-cp39-manylinux1_x86_64.whl
           requires:
             - minimum_version_cpu
       - hold:
@@ -176,7 +172,6 @@ workflows:
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
           cuda: "10.2"
-          mmcv: https://download.openmmlab.com/mmcv/dev-2.x/cu102/torch1.8.0/mmcv_full-2.0.0rc0-cp37-cp37m-manylinux1_x86_64.whl
           requires:
             - hold
   merge_stage_test:
@@ -189,10 +184,8 @@ workflows:
           torch: 1.6.0
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
-          mmcv: https://download.openmmlab.com/mmcv/dev-2.x/cu101/torch1.6.0/mmcv_full-2.0.0rc0-cp37-cp37m-manylinux1_x86_64.whl
           cuda: "10.1"
           filters:
             branches:
               only:
                 - dev-1.x
-                - test-1.x
