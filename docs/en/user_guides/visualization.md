@@ -46,7 +46,9 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 
 ## Data and Results visualization
 
-MMSegmentation provides `SegVisualizationHook` that can render segmentation masks of ground truth and prediction. Users can modify `default_hooks` at each `schedule_x.py` config file.
+### Visualizer Data Samples during Model Testing or Validation
+
+MMSegmentation provides `SegVisualizationHook` that can visualize segmentation masks of ground truth and prediction in validation and testing process. It is defined in [here](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/engine/hooks/visualization_hook.py#L16-L100) and users can modify `default_hooks` at each `schedule_x.py` config file.
 
 For exsample, In `_base_/schedules/schedule_20k.py`, modify the `SegVisualizationHook` configuration, set `draw` to `True` to enable the storage of network inference results, `interval` indicates the sampling interval of the prediction results, and when set to 1, each inference result of the network will be saved. `interval` is set to 50 by default:
 
@@ -76,9 +78,7 @@ we can also run the following command to view them in TensorBoard:
 tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 ```
 
-### Visualizer Data Samples during Model Testing or Validataion
-
-Noted that `SegVisualizationHook` is used to visualize validation and testing process prediction results, defined [here](../../../mmseg/engine/hooks/visualization_hook.py).
+### Visualize a Single Data Sample
 
 If you want to visualize a single data sample, a pair of input image and its ground truth in the dataset are necessary.
 You could prepare them on your own or download examples below by following commands:
