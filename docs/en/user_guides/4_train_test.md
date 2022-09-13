@@ -98,7 +98,7 @@ sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_4xb4-80k_ade20k-512x512.py 8
 ln -s ${YOUR_WORK_DIRS} ${MMSEG}/work_dirs
 ```
 
-### Testing oh multiple GPUs
+### Testing on multiple GPUs
 
 We provide `tools/dist_test.sh` to launch testing on multiple GPUs.
 The basic usage is as follows.
@@ -126,7 +126,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
 CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${CONFIG_FILE} 4
 ```
 
-### Train with multiple machines
+### Training with multiple machines
 
 MMSegmentation relies on `torch.distributed` package for distributed training.
 Thus, as a basic usage, one can launch distributed training via PyTorch's [launch utility](https://pytorch.org/docs/stable/distributed.html#launch-utility).
