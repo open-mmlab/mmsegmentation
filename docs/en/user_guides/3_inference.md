@@ -36,7 +36,6 @@ from mmseg.utils import register_all_modules
 config_path = 'configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py'
 checkpoint_path = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
-
 # register all modules in mmseg into the registries
 register_all_modules()
 
