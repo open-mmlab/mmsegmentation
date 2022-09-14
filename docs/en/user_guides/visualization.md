@@ -38,7 +38,7 @@ Find the `vis_data` path of `work_dir` after starting training, for example, the
 work_dirs/test_visual/20220810_115248/vis_data
 ```
 
-The scalar file in vis_data path includes learning rate, losses and data_time etc, also record metrics results and you can refer [logging tutorial](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/logging.html) in mmengine to log custom data. The tensorboard visualization results are executed with the following command:
+The scalar file in vis_data path includes learning rate, losses and data_time etc, also record metrics results and you can refer [logging tutorial](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/logging.html) in MMEngine to log custom data. The tensorboard visualization results are executed with the following command:
 
 ```shell
 tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
@@ -48,9 +48,9 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 
 ### Visualizer Data Samples during Model Testing or Validation
 
-MMSegmentation provides `SegVisualizationHook` that can visualize segmentation masks of ground truth and prediction in validation and testing process. It is defined in [here](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/engine/hooks/visualization_hook.py#L16-L100) and users can modify `default_hooks` at each `schedule_x.py` config file.
+MMSegmentation provides `SegVisualizationHook` which is a [hook](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md) working to visualize ground truth and prediction of segmentation during model testing and evaluation. Its configuration is in `defualt_hooks`, please see [Runner tutorial](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/runner.md) for more details.
 
-For exsample, In `_base_/schedules/schedule_20k.py`, modify the `SegVisualizationHook` configuration, set `draw` to `True` to enable the storage of network inference results, `interval` indicates the sampling interval of the prediction results, and when set to 1, each inference result of the network will be saved. `interval` is set to 50 by default:
+For example, In `_base_/schedules/schedule_20k.py`, modify the `SegVisualizationHook` configuration, set `draw` to `True` to enable the storage of network inference results, `interval` indicates the sampling interval of the prediction results, and when set to 1, each inference result of the network will be saved. `interval` is set to 50 by default:
 
 ```python
 default_hooks = dict(
@@ -80,8 +80,11 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 
 ### Visualize a Single Data Sample
 
-If you want to visualize a single data sample, a pair of input image and its ground truth in the dataset are necessary.
-You could prepare them on your own or download examples below by following commands:
+If you want to visualize a single data sample, we suggest to use `SegLocalVisualizer`.
+
+`SegLocalVisualizer` is child class inherits from `Visualizer` in MMEngine and works for MMSegmentation visualization, for more details about `Visualizer` please refer to [visualization tutorial](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/visualization.md) in MMEngine.
+
+Here is an example about `SegLocalVisualizer`, first you may download example data below by following commands:
 
 <div align=center>
 <img src="https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png" width="70%"/>
