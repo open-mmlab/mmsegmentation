@@ -2,7 +2,7 @@
 
 MMSegmentation provides pre-trained models for semantic segmentation in [Model Zoo](../model_zoo.md), and supports multiple standard datasets, including Cityscapes, ADE20K, etc.
 This note will show how to use existing models to inference on given images.
-As for how to test existing models on standard datasets, please see this [guide](./4_train_test.md#Test-models-on-standard-datasets)
+As for how to test existing models on standard datasets, please see this [guide](./4_train_test.md)
 
 ## Inference API
 
@@ -63,7 +63,7 @@ Returns:
 
 - `SegDataSample` or list\[`SegDataSample`\]: If imgs is a list or tuple, the same length list type results will be returned, otherwise return the segmentation results directly.
 
-**Note:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) is a data structure interface of MMSegmentation, it is used as interfaces between different components. `SegDataSample` implement the abstract data element `mmengine.structures.BaseDataElement`, please refer to data element [documentation](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
+**Note:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) is a data structure interface of MMSegmentation, it is used as interfaces between different components. `SegDataSample` implement the abstract data element `mmengine.structures.BaseDataElement`, please refer to data element [documentation](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/data_element.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
 The attributes in `SegDataSample` are divided into several parts:
 
@@ -71,7 +71,7 @@ The attributes in `SegDataSample` are divided into several parts:
 - `pred_sem_seg` (`PixelData`) - Prediction of semantic segmentation.
 - `seg_logits` (`PixelData`) - Predicted logits of semantic segmentation.
 
-**Note** [PixelData](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/pixel_data.py) is the data structure for pixel-level annnotations or predictions, please refer to PixelData [documentation](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html#pixeldata) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
+**Note** [PixelData](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/pixel_data.py) is the data structure for pixel-level annotations or predictions, please refer to PixelData [documentation](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/data_element.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
 Example:
 
