@@ -12,7 +12,7 @@ from mmseg.structures import SegDataSample
 
 @VISUALIZERS.register_module()
 class SegLocalVisualizer(Visualizer):
-    """MMSegmentation Local Visualizer.
+    """Local Visualizer.
 
     Args:
         name (str): Name of the instance. Defaults to 'visualizer'.
