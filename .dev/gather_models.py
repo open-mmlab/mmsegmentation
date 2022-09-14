@@ -33,7 +33,7 @@ def process_checkpoint(in_file, out_file):
     # The hash code calculation and rename command differ on different system
     # platform.
     sha = calculate_file_sha256(out_file)
-    final_file = out_file.rstrip('.pth') + '-{}.pth'.format(sha[:8])
+    final_file = out_file.rstrip('.pth') + f'-{sha[:8]}.pth'
     os.rename(out_file, final_file)
 
     # Remove prefix and suffix
@@ -50,25 +50,23 @@ def get_final_iter(config):
 
 
 def get_final_results(log_json_path, iter_num):
-    result_dict = dict()
+    result_dict = {}
     last_iter = 0
     with open(log_json_path, 'r') as f:
-        for line in f.readlines():
+        for line in f:
             log_line = json.loads(line)
             if 'mode' not in log_line.keys():
                 continue
-
             # When evaluation, the 'iter' of new log json is the evaluation
             # steps on single gpu.
-            flag1 = ('aAcc' in log_line) or (log_line['mode'] == 'val')
-            flag2 = (last_iter == iter_num - 50) or (last_iter == iter_num)
+            flag1 = 'aAcc' in log_line or log_line['mode'] == 'val'
+            flag2 = last_iter in [iter_num - 50, iter_num]
             if flag1 and flag2:
                 result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
                 })
                 return result_dict
-
             last_iter = log_line['iter']
 
 
@@ -123,7 +121,7 @@ def main():
         exp_dir = osp.join(work_dir, config_name)
         # check whether the exps is finished
         final_iter = get_final_iter(used_config)
-        final_model = 'iter_{}.pth'.format(final_iter)
+        final_model = f'iter_{final_iter}.pth'
         model_path = osp.join(exp_dir, final_model)
 
         # skip if the model is still training
@@ -135,7 +133,7 @@ def main():
         log_json_paths = glob.glob(osp.join(exp_dir, '*.log.json'))
         log_json_path = log_json_paths[0]
         model_performance = None
-        for idx, _log_json_path in enumerate(log_json_paths):
+        for _log_json_path in log_json_paths:
             model_performance = get_final_results(_log_json_path, final_iter)
             if model_performance is not None:
                 log_json_path = _log_json_path
@@ -161,9 +159,10 @@ def main():
         model_publish_dir = osp.join(collect_dir, config_name)
 
         publish_model_path = osp.join(model_publish_dir,
-                                      config_name + '_' + model['model_time'])
+                                      f'{config_name}_' + model['model_time'])
+
         trained_model_path = osp.join(work_dir, config_name,
-                                      'iter_{}.pth'.format(model['iters']))
+                                      f'iter_{model["iters"]}.pth')
         if osp.exists(model_publish_dir):
             for file in os.listdir(model_publish_dir):
                 if file.endswith('.pth'):
