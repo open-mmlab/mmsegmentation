@@ -18,12 +18,8 @@ def parse_args():
     parser.add_argument('--work-dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume',
-        nargs='?',
-        type=str,
-        const='auto',
-        help='If specify checkpoint path, resume from it, while if not '
-        'specify, try to auto resume from the latest checkpoint '
-        'in the work directory.')
+        action='store_true',
+        help='resume from the latest checkpoint in the work_dir automatically')
     parser.add_argument(
         '--amp',
         action='store_true',
@@ -90,12 +86,7 @@ def main():
             cfg.optim_wrapper.loss_scale = 'dynamic'
 
     # resume training
-    if args.resume == 'auto':
-        cfg.resume = True
-        cfg.load_from = None
-    elif args.resume is not None:
-        cfg.resume = True
-        cfg.load_from = args.resume
+    cfg.resume = args.resume
 
     # build the runner from config
     if 'runner_type' not in cfg:
