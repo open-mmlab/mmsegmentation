@@ -64,8 +64,9 @@ def intersect_and_union(pred_label,
         label = torch.from_numpy(label)
 
     if label_map is not None:
+        label_copy = label.clone()
         for old_id, new_id in label_map.items():
-            label[label == old_id] = new_id
+            label[label_copy == old_id] = new_id
     if reduce_zero_label:
         label[label == 0] = 255
         label = label - 1
