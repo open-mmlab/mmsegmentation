@@ -1,6 +1,6 @@
-# Data Structures and Elements
+# Structures
 
-During the training/testing process of a model, there is often a large amount of data to be passed between modules, and the data required by different tasks or algorithms is usually different. For example, in MMSegmentation, in training it needs image and its meta information but in inference it also needs rescaling information of input images. This makes the interfaces of different tasks or models may be inconsistent:
+In the training/testing process of a model, there is often a large amount of data to be passed between modules, and the data required by different tasks or algorithms is usually different. Take MMSegmentation for example, in training it needs image and its meta information but in inference it needs extra bool parameter `rescale` to determine whether rescaling image shape back to its original shape. This makes the interfaces of different tasks or models may be inconsistent:
 
 ```python
 # Training
@@ -17,7 +17,7 @@ for img, img_metas, rescale in dataloader:
 ```
 
 From the above code examples, we can see that without encapsulation, the different data required by different tasks and algorithms lead to inconsistent interfaces between their modules, which seriously affects the extensibility and reusability of the library.
-Therefore, in order to solve the above problem, we use [DataElement tutorial](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/data_element.md) from MMEngine to encapsulate the data required for each task into `data_sample`.
+Therefore, in order to solve the above problem, we use [DataElement tutorial](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/data_element.md) from MMEngine to encapsulate the data required for each task into `data_sample`.
 The base class has implemented basic functions of `Create`, `Read`, `Update`, `Delete` and tensor-like and dictionary-like operations such as `.cpu()`, `.cuda()`, `.get()` and `.detach()`. Finally, it could be used like below:
 
 ```python
