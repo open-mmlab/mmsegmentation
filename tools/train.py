@@ -19,6 +19,7 @@ def parse_args():
     parser.add_argument(
         '--resume',
         action='store_true',
+        default=False,
         help='resume from the latest checkpoint in the work_dir automatically')
     parser.add_argument(
         '--amp',
