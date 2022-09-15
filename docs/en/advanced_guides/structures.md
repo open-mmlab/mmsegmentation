@@ -25,7 +25,7 @@ for img, data_sample in dataloader:
   seg_logit = model(img, data_sample)
 ```
 
-Thanks to the unified data structures, the data flow between each module in the algorithm libraries, such as [`visualizer`](./visualizers.md), [`evaluator`](./evaluation.md), [`dataset`](./datasets.md), is greatly simplified. In MMSegmentation, we make the following conventions for data interface types.
+Thanks to the unified data structures, the data flow between each module in the algorithm libraries, such as [`visualizer`](./visualizers.md), [`evaluator`](./evaluation.md), [`dataset`](./datasets.md), is greatly simplified. In MMSegmentation, we make the following conventions for different data types.
 
 - **xxxData**: Single granularity data annotation or model output. Currently MMEngine has three built-in granularities of {external+mmengine:doc}`data elements <advanced_tutorials/data_element>`, including instance-level data (`InstanceData`), pixel-level data (`PixelData`) and image-level label data (`LabelData`). MMSegmentation currently only supports semantic segmentation task thus it only uses `PixelData`.
 - **xxxDataSample**: inherited from {external+mmengine:doc}`MMEngine: data base class <advanced_tutorials/data_element>` `BaseDataElement`, used to hold **all** annotation and prediction information that required by a single task. For example, [`SegDataSample`](mmseg.structures.SegDataSample) for the semantic segmentation.
@@ -55,9 +55,8 @@ gt_segmentations.data = torch.randint(0, 2, (1, 4, 4))
 
 The fields of [`PixelData`](#pixeldata) that will be used are:
 
-|       |                |                 |
-| ----- | -------------- | --------------- |
 | Field | Type           | Description     |
+| ----- | -------------- | --------------- |
 | data  | `torch.Tensor` | data of images. |
 
 Since semantic segmentation models usually only output one pixel-level classification result, we only need to make sure that each pixel is assigned certain value.
@@ -70,14 +69,13 @@ By defining a uniform data structure, we can easily encapsulate the annotation d
 
 [SegDataSample](mmseg.structures.SegDataSample) is used to encapsulate the data needed for the semantic segmentation task. It contains three main fields `gt_sem_seg`, `pred_sem_seg` and `seg_logits`, which are used to store the annotation information and prediction results respectively.
 
-|                |                           |                                 |
-| -------------- | ------------------------- | ------------------------------- |
 | Field          | Type                      | Description                     |
+| -------------- | ------------------------- | ------------------------------- |
 | gt_sem_seg     | [`PixelData`](#pixeldata) | Annotation information.         |
 | pred_instances | [`PixelData`](#pixeldata) | The predicted result.           |
 | seg_logits     | [`PixelData`](#pixeldata) | The logits of predicted result. |
 
-The following sample code demonstrates the use of `TextDetDataSample`.
+The following sample code demonstrates the use of `SegDataSample`.
 
 ```python
 import torch
@@ -91,9 +89,40 @@ data_sample = SegDataSample()
 gt_segmentations = PixelData(metainfo=img_meta)
 gt_segmentations.data = torch.randint(0, 2, (1, 4, 4))
 data_sample.gt_sem_seg = gt_segmentations
-```
+assert 'img_shape' in data_sample.gt_sem_seg.metainfo_keys()
+print(data_sample.gt_sem_seg.shape)
+'''
+(4, 4)
+'''
+print(data_sample)
+'''
+<SegDataSample(
 
-### Create SegDataSample
+    META INFORMATION
+
+    DATA FIELDS
+    gt_sem_seg: <PixelData(
+
+            META INFORMATION
+            img_shape: (4, 4, 3)
+            pad_shape: (4, 4, 3)
+
+            DATA FIELDS
+            data: tensor([[[1, 1, 1, 0],
+                         [1, 0, 1, 1],
+                         [1, 1, 1, 1],
+                         [0, 1, 0, 1]]])
+        ) at 0x1c2b4156460>
+) at 0x1c2aae44d60>
+'''
+
+data_sample = SegDataSample()
+gt_sem_seg_data = dict(sem_seg=torch.rand(1, 4, 4))
+gt_sem_seg = PixelData(**gt_sem_seg_data)
+data_sample.gt_sem_seg = gt_sem_seg
+assert 'gt_sem_seg' in data_sample
+assert 'sem_seg' in data_sample.gt_sem_seg
+```
 
 ### Setter and Deleter of Property in SegDataSample
 
