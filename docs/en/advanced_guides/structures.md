@@ -27,8 +27,8 @@ for img, data_sample in dataloader:
 
 Thanks to the unified data structures, the data flow between each module in the algorithm libraries, such as [`visualizer`](./visualizers.md), [`evaluator`](./evaluation.md), [`dataset`](./datasets.md), is greatly simplified. In MMSegmentation, we make the following conventions for different data types.
 
-- **xxxData**: Single granularity data annotation or model output. Currently MMEngine has three built-in granularities of {external+mmengine:doc}`data elements <advanced_tutorials/data_element>`, including instance-level data (`InstanceData`), pixel-level data (`PixelData`) and image-level label data (`LabelData`). MMSegmentation currently only supports semantic segmentation task thus it only uses `PixelData`.
-- **xxxDataSample**: inherited from {external+mmengine:doc}`MMEngine: data base class <advanced_tutorials/data_element>` `BaseDataElement`, used to hold **all** annotation and prediction information that required by a single task. For example, [`SegDataSample`](mmseg.structures.SegDataSample) for the semantic segmentation.
+- **xxxData**: Single granularity data annotation or model output. Currently MMEngine has three built-in granularities of [`xxx_data`](https://github.com/open-mmlab/mmengine/tree/main/mmengine/structures), including instance-level data (`InstanceData`), pixel-level data (`PixelData`) and image-level label data (`LabelData`). MMSegmentation currently only supports semantic segmentation task thus it only uses `PixelData`.
+- **xxxDataSample**: inherited from [`BaseDataElement`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/base_data_element.py), used to hold **all** annotation and prediction information that required by a single task. For example, [`SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) for the semantic segmentation.
 
 In general, `BaseDataElement` has two types of data, one is `data` type which includes various types ground truth such as bounding boxes, instance masks and semantic masks, the other is `metainfo` type which includes meta information of dataset such as `img_shape` and `img_id` to ensure　completeness of data. When creating new `BaseDataElement`, users should make explicit claim and discrimination on these two types of properties.
 
@@ -63,7 +63,7 @@ Since semantic segmentation models usually only output one pixel-level classific
 
 ## DataSample xxxDataSample
 
-By defining a uniform data structure, we can easily encapsulate the annotation data and prediction results in a uniform way, making data transfer between different modules of the code base easier. In MMSegmentation, we have encapsulated the semantic segmentation task data abstractions: [`SegDataSample`](mmseg.structures.SegDataSample). This data abstraction inherits from {external+mmengine:doc}`MMEngine: data base class <advanced_tutorials/data_element>` `BaseDataElement`, which is used to hold all annotation and prediction information required by each task.
+By defining a uniform data structure, we can easily encapsulate the annotation data and prediction results in a uniform way, making data transfer between different modules of the code base easier. In MMSegmentation, we have encapsulated the semantic segmentation task data abstractions: [`SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py). This data abstraction inherits from {external+mmengine:doc}`MMEngine: data base class <advanced_tutorials/data_element>` `BaseDataElement`, which is used to hold all annotation and prediction information required by each task.
 
 ### Semantic Segmentation Data Abstraction SegDataSample
 
@@ -80,7 +80,7 @@ The following sample code demonstrates the use of `SegDataSample`.
 ```python
 import torch
 from mmengine.structures import PixelData
-from mmseg.core import SegDataSample
+from mmseg.structures import SegDataSample
 
 img_meta = dict(img_shape=(4, 4, 3),
                  pad_shape=(4, 4, 3))
@@ -88,7 +88,11 @@ data_sample = SegDataSample()
 # defining gt_segmentations for encapsulate the ground truth data
 gt_segmentations = PixelData(metainfo=img_meta)
 gt_segmentations.data = torch.randint(0, 2, (1, 4, 4))
+
+# add and process property in SegDataSample
 data_sample.gt_sem_seg = gt_segmentations
+assert 'gt_sem_seg' in data_sample
+assert 'sem_seg' in data_sample.gt_sem_seg
 assert 'img_shape' in data_sample.gt_sem_seg.metainfo_keys()
 print(data_sample.gt_sem_seg.shape)
 '''
@@ -116,14 +120,43 @@ print(data_sample)
 ) at 0x1c2aae44d60>
 '''
 
+# delete and change property in SegDataSample
 data_sample = SegDataSample()
-gt_sem_seg_data = dict(sem_seg=torch.rand(1, 4, 4))
-gt_sem_seg = PixelData(**gt_sem_seg_data)
-data_sample.gt_sem_seg = gt_sem_seg
-assert 'gt_sem_seg' in data_sample
-assert 'sem_seg' in data_sample.gt_sem_seg
+gt_segmentations = PixelData(metainfo=img_meta)
+gt_segmentations.data = torch.randint(0, 2, (1, 4, 4))
+data_sample.gt_sem_seg = gt_segmentations
+data_sample.gt_sem_seg.set_metainfo(dict(img_shape=(4,4,9), pad_shape=(4,4,9)))
+del data_sample.gt_sem_seg.img_shape
+
+# Tensor-like operations
+data_sample = SegDataSample()
+gt_segmentations = PixelData(metainfo=img_meta)
+gt_segmentations.data = torch.randint(0, 2, (1, 4, 4))
+cuda_gt_segmentations = gt_segmentations.cuda()
+cuda_gt_segmentations = gt_segmentations.to('cuda:0')
+cpu_gt_segmentations = cuda_gt_segmentations.cpu()
+cpu_gt_segmentations = cuda_gt_segmentations.to('cpu')
 ```
 
-### Setter and Deleter of Property in SegDataSample
-
 ### Customize New Property in SegDataSample
+
+If you want to customize new property in `SegDataSample`, you may follow [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) below:
+
+```python
+class SegDataSample(BaseDataElement):
+    ...
+
+    @property
+    def xxx_property(self) -> xxxData:
+        return self._xxx_property
+
+    @xxx_property.setter
+    def xxx_property(self, value: xxxData) -> None:
+        self.set_field(value, '_xxx_property', dtype=xxxData)
+
+    @xxx_property.deleter
+    def xxx_property(self) -> None:
+        del self._xxx_property
+```
+
+Then a new property would be added in `SegDataSample`.
