@@ -74,6 +74,7 @@ pip install mmsegmentation
 **第一步** 我们需要下载配置文件和模型权重文件。
 
 ```shell
+mim install mmengine
 mim download mmsegmentation --config pspnet_r50-d8_512x1024_40k_cityscapes --dest .
 ```
 

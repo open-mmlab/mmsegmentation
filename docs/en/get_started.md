@@ -70,6 +70,7 @@ To verify whether MMSegmentation is installed correctly, we provide some sample 
 **Step 1.** We need to download config and checkpoint files.
 
 ```shell
+mim install mmengine  # Necessary to use the download command.
 mim download mmsegmentation --config pspnet_r50-d8_512x1024_40k_cityscapes --dest .
 ```
 
