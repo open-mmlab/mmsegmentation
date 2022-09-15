@@ -6,7 +6,7 @@ This tutorial provides instructions for users to use the models provided in the 
 MMSegmentation also provides out-of-the-box tools for training models.
 This section will show how to train and test models on standard datasets.
 
-## Training and testing on a single machine with a single GPU
+## Training and testing on a single GPU
 
 ### Training on a single GPU
 
@@ -21,7 +21,7 @@ This tool accepts several optional arguments, including:
 
 - `--work-dir ${WORK_DIR}`: Override the working directory.
 - `--amp`: Use auto mixed precision training.
-- `--resume ${CHECKPOINT_FILE}`: Resume from a previous checkpoint file. If not specified, try to auto resume from the latest checkpoint in the work directory.
+- `--resume`: Resume from the latest checkpoint in the work_dir automatically.
 - `--cfg-options ${OVERRIDE_CONFIGS}`: Override some settings in the used config, and the key-value pair in xxx=yyy format will be merged into the config file.
   For example, '--cfg-option model.encoder.in_channels=6'. Please see this [guide](./1_config.md#Modify-config-through-script-arguments) for more details.
 
@@ -31,10 +31,10 @@ Below are the optional arguments for the multi-gpu test:
 - `--local_rank`: ID for local rank. If not specified, it will be set to 0.
 
 **Note:** Difference between the argument `--resume` and the field `load-from` in the config file:
-`--resume` loads both the model weights and optimizer status and the iteration is also inherited from the specified checkpoint.
-It is usually used for resuming the training process that is interrupted accidentally.
 
-`load-from` only loads the model weights and the training iteration starts from 0. It is usually used for fine-tuning.
+`--resume` only determines whether to resume from the latest checkpoint in the work_dir. It is usually used for resuming the training process that is interrupted accidentally.
+
+`load-from` will specify the checkpoint to be loaded and the training iteration starts from 0. It is usually used for fine-tuning.
 
 **Training on CPU**: The process of training on the CPU is consistent with single GPU training if a machine does not have GPU. If it has GPUs but not wanting to use them, we just need to disable GPUs before the training process.
 
