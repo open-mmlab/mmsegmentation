@@ -52,12 +52,12 @@ def stack_batch(inputs: List[torch.Tensor],
     """
     assert isinstance(inputs, list), \
         f'Expected input type to be list, but got {type(inputs)}'
-    assert len(set([tensor.ndim for tensor in inputs])) == 1, \
+    assert len({tensor.ndim for tensor in inputs}) == 1, \
         f'Expected the dimensions of all inputs must be the same, ' \
         f'but got {[tensor.ndim for tensor in inputs]}'
     assert inputs[0].ndim == 3, f'Expected tensor dimension to be 3, ' \
         f'but got {inputs[0].ndim}'
-    assert len(set([tensor.shape[0] for tensor in inputs])) == 1, \
+    assert len({tensor.shape[0] for tensor in inputs}) == 1, \
         f'Expected the channels of all inputs must be the same, ' \
         f'but got {[tensor.shape[0] for tensor in inputs]}'
 

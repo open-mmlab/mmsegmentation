@@ -88,7 +88,7 @@ class TverskyLoss(nn.Module):
                  alpha=0.3,
                  beta=0.7,
                  loss_name='loss_tversky'):
-        super(TverskyLoss, self).__init__()
+        super().__init__()
         self.smooth = smooth
         self.class_weight = get_class_weight(class_weight)
         self.loss_weight = loss_weight

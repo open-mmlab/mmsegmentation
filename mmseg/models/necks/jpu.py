@@ -51,7 +51,7 @@ class JPU(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(JPU, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert isinstance(in_channels, tuple)
         assert isinstance(dilations, tuple)
         self.in_channels = in_channels

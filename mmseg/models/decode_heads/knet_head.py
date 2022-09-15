@@ -48,7 +48,7 @@ class KernelUpdator(nn.Module):
             norm_cfg=dict(type='LN'),
             act_cfg=dict(type='ReLU', inplace=True),
     ):
-        super(KernelUpdator, self).__init__()
+        super().__init__()
         self.in_channels = in_channels
         self.feat_channels = feat_channels
         self.out_channels_raw = out_channels
@@ -213,7 +213,7 @@ class KernelUpdateHead(nn.Module):
                      out_channels=256,
                      act_cfg=dict(type='ReLU', inplace=True),
                      norm_cfg=dict(type='LN'))):
-        super(KernelUpdateHead, self).__init__()
+        super().__init__()
         self.num_classes = num_classes
         self.in_channels = in_channels
         self.out_channels = out_channels

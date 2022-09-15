@@ -57,7 +57,7 @@ class UpConvBlock(nn.Module):
                  upsample_cfg=dict(type='InterpConv'),
                  dcn=None,
                  plugins=None):
-        super(UpConvBlock, self).__init__()
+        super().__init__()
         assert dcn is None, 'Not implemented yet.'
         assert plugins is None, 'Not implemented yet.'
 

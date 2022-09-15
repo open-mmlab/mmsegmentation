@@ -30,7 +30,7 @@ class SELayer(nn.Module):
                  conv_cfg=None,
                  act_cfg=(dict(type='ReLU'),
                           dict(type='HSigmoid', bias=3.0, divisor=6.0))):
-        super(SELayer, self).__init__()
+        super().__init__()
         if isinstance(act_cfg, dict):
             act_cfg = (act_cfg, act_cfg)
         assert len(act_cfg) == 2

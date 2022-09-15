@@ -78,7 +78,7 @@ class EncoderDecoder(BaseSegmentor):
                  data_preprocessor: OptConfigType = None,
                  pretrained: Optional[str] = None,
                  init_cfg: OptMultiConfig = None):
-        super(EncoderDecoder, self).__init__(
+        super().__init__(
             data_preprocessor=data_preprocessor, init_cfg=init_cfg)
         if pretrained is not None:
             assert backbone.get('pretrained') is None, \

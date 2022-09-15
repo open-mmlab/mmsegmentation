@@ -16,7 +16,7 @@ class Encoding(nn.Module):
     """
 
     def __init__(self, channels, num_codes):
-        super(Encoding, self).__init__()
+        super().__init__()
         # init codewords and smoothing factor
         self.channels, self.num_codes = channels, num_codes
         std = 1. / ((num_codes * channels)**0.5)

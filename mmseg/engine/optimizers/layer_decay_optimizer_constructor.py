@@ -204,5 +204,4 @@ class LayerDecayOptimizerConstructor(LearningRateDecayOptimizerConstructor):
         warnings.warn('DeprecationWarning: Layer_decay_rate will '
                       'be deleted, please use decay_rate instead.')
         paramwise_cfg['decay_rate'] = paramwise_cfg.pop('layer_decay_rate')
-        super(LayerDecayOptimizerConstructor,
-              self).__init__(optim_wrapper_cfg, paramwise_cfg)
+        super().__init__(optim_wrapper_cfg, paramwise_cfg)

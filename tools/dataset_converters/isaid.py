@@ -188,17 +188,17 @@ def main():
     mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'test'))
 
     assert os.path.exists(os.path.join(dataset_path, 'train')), \
-        'train is not in {}'.format(dataset_path)
+        f'train is not in {dataset_path}'
     assert os.path.exists(os.path.join(dataset_path, 'val')), \
-        'val is not in {}'.format(dataset_path)
+        f'val is not in {dataset_path}'
     assert os.path.exists(os.path.join(dataset_path, 'test')), \
-        'test is not in {}'.format(dataset_path)
+        f'test is not in {dataset_path}'
 
     with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
         for dataset_mode in ['train', 'val', 'test']:
 
             # for dataset_mode in [ 'test']:
-            print('Extracting  {}ing.zip...'.format(dataset_mode))
+            print(f'Extracting  {dataset_mode}ing.zip...')
             img_zipp_list = glob.glob(
                 os.path.join(dataset_path, dataset_mode, 'images', '*.zip'))
             print('Find the data', img_zipp_list)

@@ -15,7 +15,7 @@ import sys
 from lxml import etree
 from mmengine.fileio import dump
 
-MMSEG_ROOT = osp.dirname(osp.dirname((osp.dirname(__file__))))
+MMSEG_ROOT = osp.dirname(osp.dirname(osp.dirname(__file__)))
 
 COLLECTIONS = [
     'ANN', 'APCNet', 'BiSeNetV1', 'BiSeNetV2', 'CCNet', 'CGNet', 'DANet',
@@ -42,7 +42,7 @@ def dump_yaml_and_check_difference(obj, filename, sort_keys=False):
     str_dump = dump(obj, None, file_format='yaml', sort_keys=sort_keys)
     if osp.isfile(filename):
         file_exists = True
-        with open(filename, 'r', encoding='utf-8') as f:
+        with open(filename, encoding='utf-8') as f:
             str_orig = f.read()
     else:
         file_exists = False
@@ -97,7 +97,7 @@ def parse_md(md_file):
     # should be set with head or neck of this config file.
     is_backbone = None
 
-    with open(md_file, 'r', encoding='UTF-8') as md:
+    with open(md_file, encoding='UTF-8') as md:
         lines = md.readlines()
         i = 0
         current_dataset = ''

@@ -12,7 +12,7 @@ class MLAModule(nn.Module):
                  out_channels=256,
                  norm_cfg=None,
                  act_cfg=None):
-        super(MLAModule, self).__init__()
+        super().__init__()
         self.channel_proj = nn.ModuleList()
         for i in range(len(in_channels)):
             self.channel_proj.append(
@@ -83,7 +83,7 @@ class MLANeck(nn.Module):
                  norm_layer=dict(type='LN', eps=1e-6, requires_grad=True),
                  norm_cfg=None,
                  act_cfg=None):
-        super(MLANeck, self).__init__()
+        super().__init__()
         assert isinstance(in_channels, list)
         self.in_channels = in_channels
         self.out_channels = out_channels

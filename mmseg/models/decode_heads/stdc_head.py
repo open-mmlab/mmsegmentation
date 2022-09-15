@@ -21,7 +21,7 @@ class STDCHead(FCNHead):
     """
 
     def __init__(self, boundary_threshold=0.1, **kwargs):
-        super(STDCHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.boundary_threshold = boundary_threshold
         # Using register buffer to make laplacian kernel on the same
         # device of `seg_label`.
@@ -93,6 +93,5 @@ class STDCHead(FCNHead):
             seg_data_sample.gt_sem_seg = PixelData(data=label)
             batch_sample_list.append(seg_data_sample)
 
-        loss = super(STDCHead, self).loss_by_feat(seg_logits,
-                                                  batch_sample_list)
+        loss = super().loss_by_feat(seg_logits, batch_sample_list)
         return loss

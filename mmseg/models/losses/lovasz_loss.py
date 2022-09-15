@@ -257,7 +257,7 @@ class LovaszLoss(nn.Module):
                  class_weight=None,
                  loss_weight=1.0,
                  loss_name='loss_lovasz'):
-        super(LovaszLoss, self).__init__()
+        super().__init__()
         assert loss_type in ('binary', 'multi_class'), "loss_type should be \
                                                     'binary' or 'multi_class'."
 
