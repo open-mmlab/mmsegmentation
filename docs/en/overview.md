@@ -71,8 +71,8 @@ Here is a detailed step-by-step guide to learn more about MMSegmentation:
 4. MMSegmentation also provide tutorials for customization and advanced research,
    please refer to the below guides to build your own segmentation project:
 
-   - [Add a new model](advanced_guides/add_models.md)
-   - [Add a new datasets](advanced_guides/add_dataset.md)
+   - [Add new models](advanced_guides/add_models.md)
+   - [Add new datasets](advanced_guides/add_dataset.md)
    - [Add new transforms](advanced_guides/add_transform.md)
    - [Customize runtime](advanced_guides/customize_runtime.md)
 
