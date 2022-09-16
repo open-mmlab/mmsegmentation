@@ -169,44 +169,50 @@ loss_decode=dict(type='MyLoss', loss_weight=1.0))
 
 ## Develop new segmentors
 
-The segmentor is an algorithmic architecture in which users can customize their own algorithms by adding their own components and defining the logic of algorithm execution. Please refer to [model document](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/advanced_guides/models.md) for more details.
+The segmentor is an algorithmic architecture in which users can customize their algorithms by adding customized components and defining the logic of algorithm execution. Please refer to [the model document](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/advanced_guides/models.md) for more details.
+
+Since the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) in MMSegmentation unifies three modes for a forward process, to develop a new segmentor, users need to overwrite `loss`, `predict` and `_forward` methods corresponding to the `loss`, `predict` and `tensor` modes.
 
 Here we show how to develop a new segmentor.
 
 1. Create a new file `mmseg/models/segmentors/my_segmentor.py`.
 
    ```python
-   from typing import Dict, Optional, Union
+    from typing import Dict, Optional, Union
 
-   import torch
+    import torch
 
-   from mmseg.registry import MODELS
-   from mmseg.models import BaseSegmentor
+    from mmseg.registry import MODELS
+    from mmseg.models import BaseSegmentor
 
-   @MODELS.register_module()
-   class MySegmentor(BaseSegmentor):
+    @MODELS.register_module()
+    class MySegmentor(BaseSegmentor):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            # TODO users should build components of the network here
 
-       def __init__(self, **kwargs):
-           super().__init__(**kwargs)
+        def loss(self, inputs: Tensor, data_samples: SampleList) -> dict:
+            """Calculate losses from a batch of inputs and data samples."""
+            pass
 
-       def train_step(self,
-                   data: Union[dict, tuple, list],
-                   optim_wrapper: OptimWrapper) -> Dict[str, torch.Tensor]:
-           pass
+        def predict(self, inputs: Tensor, data_samples: OptSampleList=None) -> SampleList:
+            """Predict results from a batch of inputs and data samples with post-
+            processing."""
+            pass
 
-       def val_step(self,
-                   data: Union[tuple, dict, list]) -> list:
-           pass
+       def _forward(self,
+                 inputs: Tensor,
+                 data_samples: OptSampleList = None) -> Tuple[List[Tensor]]:
+            """Network forward process.
 
-       def test_step(self,
-                   data: Union[tuple, dict, list]) -> list:
-           pass
+            Usually includes backbone, neck and head forward without any post-
+            processing.
+            """
+            pass
 
-       def forward(self,
-                   inputs: torch.Tensor,
-                   data_samples: Optional[list]=None,
-                   mode: str='tensor') -> Union[Dict[str, torch.Tensor], list]:
-           pass
+        def aug_test(self, batch_inputs, batch_img_metas):
+            """Placeholder for augmentation test."""
+            pass
    ```
 
 2. Import your segmentor in `mmseg/models/segmentors/__init__.py`.
