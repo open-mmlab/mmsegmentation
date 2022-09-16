@@ -1,10 +1,6 @@
 # Tutorial 4: Train and test with existing models
 
-MMSegmentation provides scripts for launching training and testing task, which can easily start your task on a single machine with a single gpu, or launch large-scale training and testing on multiple machines.
-
-This tutorial provides instructions for users to use the models provided in the [Model Zoo](../model_zoo.md) for other datasets to obtain better performance.
-MMSegmentation also provides out-of-the-box tools for training models.
-This section will show how to train and test models on standard datasets.
+MMSegmentation supports training and testing models on a variety of devices, which are described below for single-GPU, distributed, and cluster training and testing, respectively. Through this tutorial, you will learn how to train and test using the scripts provided by MMSegmentation.
 
 ## Training and testing on a single GPU
 
@@ -57,7 +53,7 @@ This tool accepts several optional arguments, including:
 
 - `--work-dir`: If specified, results will be saved in this directory. If not specified, the results will be automatically saved to `work_dirs/{CONFIG_NAME}`.
 - `--show`: Show prediction results at runtime, available when `--show-dir` is not specified.
-- `--show-dir`: If specified, the visualized segmentation mask will be saved in the specified directory.
+- `--show-dir`: Directory where painted images will be saved. If specified, the visualized segmentation mask will be saved to the `work_dir/timestamp/show_dir`.
 - `--wait-time`: The interval of show (s), which takes effect when `--show` is activated. Default to 2.
 - `--cfg-options`:  If specified, the key-value pair in xxx=yyy format will be merged into the config file.
 
@@ -119,7 +115,7 @@ An example:
 ### Launch multiple jobs on a single machine
 
 If you launch multiple jobs on a single machine, e.g., 2 jobs of 4-GPU training on a machine with 8 GPUs, you need to specify different ports (29500 by default) for each job to avoid communication conflict. Otherwise, there will be an error message saying `RuntimeError: Address already in use`.
-If you use `dist_train.sh` to launch training jobs, you can set the port in commands with the environment variable \`PORT\`\`.
+If you use `dist_train.sh` to launch training jobs, you can set the port in commands with the environment variable `PORT`.
 
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 sh tools/dist_train.sh ${CONFIG_FILE} 4
