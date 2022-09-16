@@ -2,9 +2,27 @@
 
 We usually define a neural network in a deep learning task as a model, and this model is the core of an algorithm. [MMEngine](https://github.com/open-mmlab/mmengine) abstracts a unified model [BaseModel](https://github.com/open-mmlab/mmengine/blob/main/mmengine/model/base_model/base_model.py#L16) to standardize the interfaces for training, testing and other processes. All models implemented by MMSegmentation inherit from `BaseModel`, but we have re-implemented some of the interfaces for semantic segmentation tasks.
 
+## Common components
+
+### Segmentor
+
+In MMSegmentation, we abstract the network architecture as a **Segmentor**, it is a model that contains all components of a network. We have already implemented **EncoderDecoder** and **CascadeEncoderDecoder**, which typically consist of **backbone**, **decode_head**, **auxiliary_head**.
+
+### Backbone
+
+**Backbone** is the part that transforms an image to feature maps, such as a **ResNet-50** without the last fully connected layer.
+
+### Neck
+
+**Neck** is the part that connects the backbone and heads. It performs some refinements or reconfigurations on the raw feature maps produced by the backbone. An example is **Feature Pyramid Network (FPN)**.
+
+### Decode Head
+
+**Decode Head** is the part that transforms the feature maps into a segmentation mask, such as **PSPNet**.
+
 ## Basic interfaces
 
-MMSegmentation wraps `BaseModel` and implements the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/6cdc2c4a8a4f3abc71ee8acdd52c0a46326abe4c/mmseg/models/segmentors/base.py#L15) class, which mainly provides the interfaces `forward`, `train_step`, `val_step` and `test_step`. The following will introduce these interfaces in detail.
+MMSegmentation wraps `BaseModel` and implements the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) class, which mainly provides the interfaces `forward`, `train_step`, `val_step` and `test_step`. The following will introduce these interfaces in detail.
 
 ### forward
 
@@ -15,6 +33,8 @@ The method should accept three modes: "tensor", "predict" and "loss":
 - "tensor": Forward the whole network and return the tensor or tuple of tensor without any post-processing, same as a common `nn.Module`.
 - "predict": Forward and return the predictions, which are fully processed to a list of `SegDataSample`.
 - "loss": Forward and return a `dict` of losses according to the given inputs and data samples.
+
+**Note:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) is a data structure interface of MMSegmentation, it is used as an interface between different components. `SegDataSample` implements the abstract data element `mmengine.structures.BaseDataElement`, please refer to [the SegDataSample documentation](https://mmsegmentation.readthedocs.io/en/1.x/advanced_guides/structures.html) and [data element documentation](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/data_element.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
 Note that this method doesn't handle either backpropagation or optimizer updating, which are done in the method `train_step`.
 
