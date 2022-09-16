@@ -33,21 +33,13 @@ val_dataloader = dict(
 test_dataloader = val_dataloader
 ```
 
-- `train_dataloader`, `val_dataloader` and `test_dataloader`: The [`config`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/config.md)s to build dataset instances for model training, validation and testing by
-  using [`build and registry`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/registry.md) mechanism.
+- The setting of `xxx_dataloader` works for model training, validation and testing that are by [`build and registry`](https://github.com/open-mmlab/mmengine/blob/master/docs/en/tutorials/registry.md) mechanism.
 
-- `batch_size`: How many samples per batch and per gpu to load during model training, and the total batch sizes of training is equal to `batch_size` times gpu number, e.g. when using 8 gpus for distributed data parallel trainig and `batch_size=4`, the total batch sizes is `8*4=32`.
-  If you would like to define `batch_size` for testing and validation, please use `test_dataloaser` and
-  `val_dataloader` with mmseg >=0.24.1.
+- `batch_size`: the number of a batch sample of each gpu, and the total batch sizes of training is equal to `batch_size` times gpu number, e.g. when using 8 gpus for distributed data parallel trainig and `batch_size=4`, the total batch sizes is `8*4=32`.
 
 - `num_workers`: How many subprocesses per gpu to use for data loading. `0` means that the data will be loaded in the main process.
 
-**Note:** Default setting of `batch_size` is 1 in MMSegmentation when model testing and validation (DO NOT support batch inference yet).
-
-**Note:** Before v0.24.1, except `train`, `val` `test`, `samples_per_gpu` and `workers_per_gpu`, the other keys in `data` must be the
-input keyword arguments for `dataloader` in pytorch, and the dataloaders used for model training, validation and testing have the same input arguments.
-In v0.24.1, MMSegmentation supports to use `train_dataloader`, `test_dataloaser` and `val_dataloader` to specify different keyword arguments, and still supports the overall arguments definition but the specific dataloader setting has a higher priority.
-After v1.0.0rc0, MMSegmentation would only use `train_dataloader`, `test_dataloaser` and `val_dataloader`.
+**Note:** Default setting of `batch_size` is `1` in MMSegmentation when model testing and validation due to different shapes of samples in a dataset.
 
 ## Customize datasets by reorganizing data
 
@@ -108,6 +100,7 @@ For example, suppose the original dataset is `Dataset_A`, to repeat it, the conf
 
 ```python
 dataset_A_train_dataloader = dict(
+    # There is a configuration for dataset.
     dataset=dict(
         type='RepeatDataset',
         times=N,
@@ -206,7 +199,7 @@ Preparation of your own dataset is divided into following steps:
 - Define your dataset in `./mmseg/datasets/` to register it in `DATASETS`.
 - Setting hyperparameters of training and validation in `./configs/_base_/datasets/`, such as data augmentation strategy, image crop size and image pixel normalization.
 
-Files needed to be modified are listed below:
+The work directory should follow the structure below.
 
 ```none
 mmsegmentation
@@ -215,13 +208,13 @@ mmsegmentation
    |     |- my_dataset                 # your dataset after data conversion
    |- mmseg
    |     |- datasets
-   |     |     |- __init__.py          # add your dataset class here
-   |     |     |- my_dataset.py               ## define your dataset class
+   |     |     |- __init__.py          # import your dataset class here
+   |     |     |- my_dataset.py               ## implement your dataset class
    |     |     |- ...
    |- configs
    |     |- _base_
    |     |     |- datasets
-   |     |     |     |- my_dataset_config.py      # config of your dataset
+   |     |     |     |- my_dataset_config.py      # config file of your dataset
    |     |     |- ...
    |     |- ...
    |- ...
@@ -229,7 +222,7 @@ mmsegmentation
 
 ### Preparation of dataset
 
-First, convert your dataset into following format, where `img_suffix` and `seg_map_suffix` are format of images and annotations, which are usually `.png` and `.jpg`.
+First, convert your dataset into following format, where `img_suffix` and `seg_map_suffix` are usually `.png` and `.jpg`, they are set in each dataset class like [here](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/datasets/ade.py#L85-L86).
 
 ```none
 ├── data
@@ -251,7 +244,7 @@ First, convert your dataset into following format, where `img_suffix` and `seg_m
 
 ### Dataset Registration
 
-After your dataset conversion done above, create a new file `my_dataset.py` in `./mmseg/dataset/`, where defining `MyDataset` class could be registered into `DATASETS` of MMCV and be used by model.
+After your dataset conversion done above, create a new file `my_dataset.py` in `./mmseg/dataset/`, where defining `MyDataset` class could be registered into `DATASETS` of MMEngine and be used by model.
 
 ```python
 from .builder import DATASETS
@@ -259,7 +252,7 @@ from .custom import CustomDataset
 
 # Register MyDataset class into DATASETS
 @DATASETS.register_module()
-class MyDataset(CustomDataset):
+class MyDataset(BaseSegDataset):
     METAINFO = dict(
         # Class names of your dataset annotations, i.e., actual names of corresponding label 0, 1, 2 in annotation segmentation maps
         classes = ('background', 'label_a', 'label_b', 'label_c',
@@ -274,19 +267,18 @@ class MyDataset(CustomDataset):
         super(MyDataset, self).__init__(
             img_suffix='.png',
             seg_map_suffix='.png',
-            reduce_zero_label=False, # reduce_zero_label is False because label 0 is background (first one in CLASSES above)
+            reduce_zero_label=False, # When reduce_zero_label is False label 0 (first one in CLASSES above) would be calculated in loss.
             **kwargs)
 ```
 
 `classes` and `palette` in `METAINFO` are defined in `./mmseg/dataset/my_dataset.py`, which are class names and BGR values of annotations, respectively.
 Besides,`palette` would only be used in prediction visulization, which would not affect process of training and validation.
 
-Specifically, if label 0 in segmentation map is not background, it should be set `reduce_zero_label=True`.
+Specifically, you could set `reduce_zero_label=True` when you want to reset label `0` in annotation files to `255` which would be ignored when calculating loss, and all other label `i` would be `i-1`. More details could be found [here](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/datasets/transforms/loading.py#L110-L114).
 
-After creating `./mmseg/dataset/my_dataset.py`后，it is also necessary to add it in `./mmseg/dataset/__init__.py`:
+After creating `./mmseg/dataset/my_dataset.py`，it is also necessary to add it in `./mmseg/dataset/__init__.py`:
 
 ```python
-# Copyright (c) OpenMMLab. All rights reserved.
 from .my_dataset import MyDataset
 
 __all__ = [
@@ -300,7 +292,7 @@ __all__ = [
 After defining your dataset, it is also necessary to define configs of your dataset `my_dataset_config.py` in `./configs/_base_/datasets/`, which would be used concurrently with other config parameters in training and inference.
 
 ```python
-# Your dataset type defined in ./mmseg/datasets/__init__.py
+# Class name defined in ./mmseg/datasets/my_dataset.py
 dataset_type = 'MyDataset'
 # Correct path of your dataset
 data_root = 'data/my_dataset'
@@ -368,5 +360,3 @@ model = dict(
     decode_head=dict(num_classes=YOUR_DATASET_CLASSES), auxiliary_head=dict(num_classes=YOUR_DATASET_CLASSES))
 
 ```
-
-By now, you can use your own dataset in MMSegmentation.
