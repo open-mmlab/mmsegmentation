@@ -26,11 +26,17 @@ Below are the optional arguments for the multi-gpu test:
 - `--launcher`: Items for distributed job initialization launcher. Allowed choices are `none`, `pytorch`, `slurm`, `mpi`. Especially, if set to none, it will test in a non-distributed mode.
 - `--local_rank`: ID for local rank. If not specified, it will be set to 0.
 
-**Note:** Difference between the argument `--resume` and the field `load-from` in the config file:
+**Note:** Difference between the argument `--resume` and the field `load_from` in the config file:
 
 `--resume` only determines whether to resume from the latest checkpoint in the work_dir. It is usually used for resuming the training process that is interrupted accidentally.
 
-`load-from` will specify the checkpoint to be loaded and the training iteration starts from 0. It is usually used for fine-tuning.
+`load_from` will specify the checkpoint to be loaded and the training iteration starts from 0. It is usually used for fine-tuning.
+
+If you would like to resume training from a specific checkpoint, you can use:
+
+```python
+python tools/train.py ${CONFIG_FILE} --resume --cfg-options load_from=${CHECKPOINT}
+```
 
 **Training on CPU**: The process of training on the CPU is consistent with single GPU training if a machine does not have GPU. If it has GPUs but not wanting to use them, we just need to disable GPUs before the training process.
 
