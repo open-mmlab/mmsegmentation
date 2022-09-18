@@ -33,7 +33,7 @@ val_dataloader = dict(
 test_dataloader = val_dataloader
 ```
 
-- The setting of `xxx_dataloader` works for model training, validation and testing that are by [`build and registry`](https://github.com/open-mmlab/mmengine/blob/master/docs/en/tutorials/registry.md) mechanism.
+- `train_dataloader`, `test_dataloader`, and `val_dataloader` are input variables of `Runner` and work for model training, validation and testing.
 
 - `batch_size`: the number of a batch sample of each gpu, and the total batch sizes of training is equal to `batch_size` times gpu number, e.g. when using 8 gpus for distributed data parallel trainig and `batch_size=4`, the total batch sizes is `8*4=32`.
 
@@ -99,7 +99,6 @@ We use `RepeatDataset` as wrapper to repeat the dataset.
 For example, suppose the original dataset is `Dataset_A`, to repeat it, the config looks like the following
 
 ```python
-dataset_A_train_dataloader = dict(
     # There is a configuration for dataset.
     dataset=dict(
         type='RepeatDataset',
@@ -110,47 +109,44 @@ dataset_A_train_dataloader = dict(
             pipeline=train_pipeline
             )
         )
-    )
 ```
 
 ### Concatenate dataset
 
 If the datasets you want to concatenate are in the same type with different annotation files, you can concatenate the dataset configs like the following.
 
-````
 You may concatenate two `dataset`.
 
-  ```python
-    dataset_train_1 = dict(
-        type=dataset_type,
-        data_root=data_root,
-        data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir_1'),
-        ann_file='ann_file_1.txt',
-        pipeline=train_pipeline)
-    dataset_train_2 = dict(
-        type=dataset_type,
-        data_root=data_root,
-        data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir_2'),
-        ann_file='ann_file_2.txt',
-        pipeline=train_pipeline)
-    train_dataloader = dict(
-        batch_size=4,
-        num_workers=4,
-        persistent_workers=True,
-        sampler=dict(type='InfiniteSampler', shuffle=True),
-        dataset=dict(type='ConcatDataset', datasets=[dataset_train_1, dataset_train_2]))
-  ```
+```python
+dataset_train_1 = dict(
+    type=dataset_type,
+    data_root=data_root,
+    data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir_1'),
+    ann_file='ann_file_1.txt',
+    pipeline=train_pipeline)
+dataset_train_2 = dict(
+    type=dataset_type,
+    data_root=data_root,
+    data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir_2'),
+    ann_file='ann_file_2.txt',
+    pipeline=train_pipeline)
+train_dataloader = dict(
+    batch_size=4,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='InfiniteSampler', shuffle=True),
+    dataset=dict(type='ConcatDataset', datasets=[dataset_train_1, dataset_train_2]))
+```
 
-  In this case, `ann_dir_1` and `ann_dir_2` are corresponding to `ann_file_1.txt` and `ann_file_2.txt`.
-````
+In this case, `ann_dir_1` and `ann_dir_2` are corresponding to `ann_file_1.txt` and `ann_file_2.txt`.
 
 ### Multi-image Mix Dataset
 
 We use `MultiImageMixDataset` as a wrapper to mix images from multiple datasets.
-`MultiImageMixDataset` can be used by multiple images mixed data augmentation
+`MultiImageMixDataset` can be used for images mixed data augmentation
 like mosaic and mixup.
 
-An example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
+There is an example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
 
 ```python
 train_pipeline = [
@@ -182,11 +178,13 @@ train_dataloader = dict(
             reduce_zero_label=False,
             data_prefix=dict(img_path=data_root + "images/train",
                              seg_map_path=data_root + "annotations/train"),
+             # Sequence of transform object to be composed in wrapper class.
             pipeline=[
                 dict(type='LoadImageFromFile'),
                 dict(type='LoadAnnotations'),
             ]
         ),
+        # Sequence of transform object to be composed in wrapped dataset.
         pipeline=train_pipeline)
 )
 ```
