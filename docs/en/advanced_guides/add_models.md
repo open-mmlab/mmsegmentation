@@ -52,7 +52,7 @@ Here we show how to develop a new backbone with an example of MobileNet.
 
 ### Add new heads
 
-In MMSegmentation, we provide a [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/decode_heads/decode_head.py#L17) for all segmentation heads.
+In MMSegmentation, we provide a [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/decode_heads/decode_head.py#L17) for developing all segmentation heads.
 All newly implemented decode heads should be derived from it.
 Here we show how to develop a new head with the example of [PSPNet](https://arxiv.org/abs/1612.01105) as the following.
 
@@ -167,6 +167,42 @@ Then you need to modify the `loss_decode` field in the head.
 loss_decode=dict(type='MyLoss', loss_weight=1.0))
 ```
 
+### Add new data preprocessor
+
+In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/data_preprocessor.py#L13) to copy data to the target device and preprocess the data into the model input format as default. Here we show how to develop a new data preprocessor.
+
+1. Create a new file `mmseg/models/my_datapreprocessor.py`.
+
+   ```python
+   from mmengine.model import BaseDataPreprocessor
+
+   from mmseg.registry import MODELS
+
+   @MODELS.register_module()
+   class MyDataPreProcessor(BaseDataPreprocessor):
+       def __init__(self, **kwargs):
+           super().__init__(**kwargs)
+
+       def forward(self, data: dict, training: bool=False) -> Dict[str, Any]:
+           # TODO Define the logic for data pre-processing in the forward method
+           pass
+   ```
+
+2. Import your data preprocessor in `mmseg/models/__init__.py`
+
+   ```python
+   from .my_datapreprocessor import MyDataPreProcessor
+   ```
+
+3. Use it in your config file.
+
+   ```python
+   model = dict(
+       data_preprocessor=dict(type='MyDataPreProcessor)
+       ...
+   )
+   ```
+
 ## Develop new segmentors
 
 The segmentor is an algorithmic architecture in which users can customize their algorithms by adding customized components and defining the logic of algorithm execution. Please refer to [the model document](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/advanced_guides/models.md) for more details.
@@ -208,10 +244,6 @@ Here we show how to develop a new segmentor.
             Usually includes backbone, neck and head forward without any post-
             processing.
             """
-            pass
-
-        def aug_test(self, batch_inputs, batch_img_metas):
-            """Placeholder for augmentation test."""
             pass
    ```
 
