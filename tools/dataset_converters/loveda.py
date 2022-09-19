@@ -38,11 +38,11 @@ def main():
     mkdir_or_exist(osp.join(out_dir, 'ann_dir', 'val'))
 
     assert 'Train.zip' in os.listdir(dataset_path), \
-        'Train.zip is not in {}'.format(dataset_path)
+        f'Train.zip is not in {dataset_path}'
     assert 'Val.zip' in os.listdir(dataset_path), \
-        'Val.zip is not in {}'.format(dataset_path)
+        f'Val.zip is not in {dataset_path}'
     assert 'Test.zip' in os.listdir(dataset_path), \
-        'Test.zip is not in {}'.format(dataset_path)
+        f'Test.zip is not in {dataset_path}'
 
     with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
         for dataset in ['Train', 'Val', 'Test']:

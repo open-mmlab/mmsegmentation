@@ -15,4 +15,4 @@ def collect_env():
 
 if __name__ == '__main__':
     for name, val in collect_env().items():
-        print('{}: {}'.format(name, val))
+        print(f'{name}: {val}')

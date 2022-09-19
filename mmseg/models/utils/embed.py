@@ -42,7 +42,7 @@ class AdaptivePadding(nn.Module):
 
     def __init__(self, kernel_size=1, stride=1, dilation=1, padding='corner'):
 
-        super(AdaptivePadding, self).__init__()
+        super().__init__()
 
         assert padding in ('same', 'corner')
 
@@ -120,7 +120,7 @@ class PatchEmbed(BaseModule):
                  norm_cfg=None,
                  input_size=None,
                  init_cfg=None):
-        super(PatchEmbed, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
 
         self.embed_dims = embed_dims
         if stride is None:

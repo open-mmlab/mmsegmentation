@@ -42,7 +42,7 @@ class CascadeFeatureFusion(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  align_corners=False,
                  init_cfg=None):
-        super(CascadeFeatureFusion, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.align_corners = align_corners
         self.conv_low = ConvModule(
             low_channels,
@@ -108,7 +108,7 @@ class ICNeck(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  align_corners=False,
                  init_cfg=None):
-        super(ICNeck, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert len(in_channels) == 3, 'Length of input channels \
                                         must be 3!'
 

@@ -23,7 +23,7 @@ class OHEMPixelSampler(BasePixelSampler):
     """
 
     def __init__(self, context, thresh=None, min_kept=100000):
-        super(OHEMPixelSampler, self).__init__()
+        super().__init__()
         self.context = context
         assert min_kept > 1
         self.thresh = thresh

@@ -93,4 +93,4 @@ class ResLayer(Sequential):
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
                     **kwargs))
-        super(ResLayer, self).__init__(*layers)
+        super().__init__(*layers)

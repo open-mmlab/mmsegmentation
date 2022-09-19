@@ -63,7 +63,7 @@ def main():
             zip_file.extractall(tmp_dir)
 
             assert len(os.listdir(tmp_dir)) == HRF_LEN, \
-                'len(os.listdir(tmp_dir)) != {}'.format(HRF_LEN)
+                f'len(os.listdir(tmp_dir)) != {HRF_LEN}'
 
             for filename in sorted(os.listdir(tmp_dir))[:TRAINING_LEN]:
                 img = mmcv.imread(osp.join(tmp_dir, filename))
@@ -85,7 +85,7 @@ def main():
             zip_file.extractall(tmp_dir)
 
             assert len(os.listdir(tmp_dir)) == HRF_LEN, \
-                'len(os.listdir(tmp_dir)) != {}'.format(HRF_LEN)
+                f'len(os.listdir(tmp_dir)) != {HRF_LEN}'
 
             for filename in sorted(os.listdir(tmp_dir))[:TRAINING_LEN]:
                 img = mmcv.imread(osp.join(tmp_dir, filename))
