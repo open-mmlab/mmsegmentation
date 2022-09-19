@@ -10,7 +10,7 @@ from mmcv.transforms import LoadImageFromFile
 from mmseg.datasets.transforms import LoadAnnotations, LoadImageFromNDArray
 
 
-class TestLoading(object):
+class TestLoading:
 
     @classmethod
     def setup_class(cls):

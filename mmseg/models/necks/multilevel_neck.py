@@ -29,7 +29,7 @@ class MultiLevelNeck(nn.Module):
                  scales=[0.5, 1, 2, 4],
                  norm_cfg=None,
                  act_cfg=None):
-        super(MultiLevelNeck, self).__init__()
+        super().__init__()
         assert isinstance(in_channels, list)
         self.in_channels = in_channels
         self.out_channels = out_channels

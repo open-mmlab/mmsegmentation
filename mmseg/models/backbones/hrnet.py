@@ -30,7 +30,7 @@ class HRModule(BaseModule):
                  norm_cfg=dict(type='BN', requires_grad=True),
                  block_init_cfg=None,
                  init_cfg=None):
-        super(HRModule, self).__init__(init_cfg)
+        super().__init__(init_cfg)
         self.block_init_cfg = block_init_cfg
         self._check_branches(num_branches, num_blocks, in_channels,
                              num_channels)
@@ -308,7 +308,7 @@ class HRNet(BaseModule):
                  multiscale_output=True,
                  pretrained=None,
                  init_cfg=None):
-        super(HRNet, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         self.pretrained = pretrained
         self.zero_init_residual = zero_init_residual
@@ -633,7 +633,7 @@ class HRNet(BaseModule):
     def train(self, mode=True):
         """Convert the model into training mode will keeping the normalization
         layer freezed."""
-        super(HRNet, self).train(mode)
+        super().train(mode)
         self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():

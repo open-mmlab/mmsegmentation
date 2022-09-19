@@ -31,7 +31,7 @@ def test_config_build_segmentor():
     """Test that all segmentation models defined in the configs can be
     initialized."""
     config_dpath = _get_config_directory()
-    print('Found config_dpath = {!r}'.format(config_dpath))
+    print(f'Found config_dpath = {config_dpath!r}')
 
     config_fpaths = []
     # one config each sub folder
@@ -42,20 +42,20 @@ def test_config_build_segmentor():
     config_fpaths = [p for p in config_fpaths if p.find('_base_') == -1]
     config_names = [relpath(p, config_dpath) for p in config_fpaths]
 
-    print('Using {} config files'.format(len(config_names)))
+    print(f'Using {len(config_names)} config files')
 
     for config_fname in config_names:
         config_fpath = join(config_dpath, config_fname)
         config_mod = Config.fromfile(config_fpath)
 
         config_mod.model
-        print('Building segmentor, config_fpath = {!r}'.format(config_fpath))
+        print(f'Building segmentor, config_fpath = {config_fpath!r}')
 
         # Remove pretrained keys to allow for testing in an offline environment
         if 'pretrained' in config_mod.model:
             config_mod.model['pretrained'] = None
 
-        print('building {}'.format(config_fname))
+        print(f'building {config_fname}')
         segmentor = build_segmentor(config_mod.model)
         assert segmentor is not None
 
@@ -72,19 +72,18 @@ def test_config_data_pipeline():
 
     register_all_modules()
     config_dpath = _get_config_directory()
-    print('Found config_dpath = {!r}'.format(config_dpath))
+    print(f'Found config_dpath = {config_dpath!r}')
 
     import glob
     config_fpaths = list(glob.glob(join(config_dpath, '**', '*.py')))
     config_fpaths = [p for p in config_fpaths if p.find('_base_') == -1]
     config_names = [relpath(p, config_dpath) for p in config_fpaths]
 
-    print('Using {} config files'.format(len(config_names)))
+    print(f'Using {len(config_names)} config files')
 
     for config_fname in config_names:
         config_fpath = join(config_dpath, config_fname)
-        print(
-            'Building data pipeline, config_fpath = {!r}'.format(config_fpath))
+        print(f'Building data pipeline, config_fpath = {config_fpath!r}')
         config_mod = Config.fromfile(config_fpath)
 
         # remove loading pipeline
@@ -112,7 +111,7 @@ def test_config_data_pipeline():
             gt_seg_map=seg)
         results['seg_fields'] = ['gt_seg_map']
 
-        print('Test training data pipeline: \n{!r}'.format(train_pipeline))
+        print(f'Test training data pipeline: \n{train_pipeline!r}')
         output_results = train_pipeline(results)
         assert output_results is not None
 
@@ -123,7 +122,7 @@ def test_config_data_pipeline():
             img_shape=img.shape,
             ori_shape=img.shape,
         )
-        print('Test testing data pipeline: \n{!r}'.format(test_pipeline))
+        print(f'Test testing data pipeline: \n{test_pipeline!r}')
         output_results = test_pipeline(results)
         assert output_results is not None
 

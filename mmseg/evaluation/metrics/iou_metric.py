@@ -212,7 +212,7 @@ class IoUMetric(BaseMetric):
             metrics = [metrics]
         allowed_metrics = ['mIoU', 'mDice', 'mFscore']
         if not set(metrics).issubset(set(allowed_metrics)):
-            raise KeyError('metrics {} is not supported'.format(metrics))
+            raise KeyError(f'metrics {metrics} is not supported')
 
         all_acc = total_area_intersect.sum() / total_area_label.sum()
         ret_metrics = OrderedDict({'aAcc': all_acc})

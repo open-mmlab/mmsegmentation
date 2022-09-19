@@ -24,7 +24,7 @@ class DCM(nn.Module):
 
     def __init__(self, filter_size, fusion, in_channels, channels, conv_cfg,
                  norm_cfg, act_cfg):
-        super(DCM, self).__init__()
+        super().__init__()
         self.filter_size = filter_size
         self.fusion = fusion
         self.in_channels = in_channels
@@ -105,7 +105,7 @@ class DMHead(BaseDecodeHead):
     """
 
     def __init__(self, filter_sizes=(1, 3, 5, 7), fusion=False, **kwargs):
-        super(DMHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert isinstance(filter_sizes, (list, tuple))
         self.filter_sizes = filter_sizes
         self.fusion = fusion

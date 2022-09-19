@@ -27,7 +27,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
     def __init__(self,
                  data_preprocessor: OptConfigType = None,
                  init_cfg: OptMultiConfig = None):
-        super(BaseSegmentor, self).__init__(
+        super().__init__(
             data_preprocessor=data_preprocessor, init_cfg=init_cfg)
 
     @property

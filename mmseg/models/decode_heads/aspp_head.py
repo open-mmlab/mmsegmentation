@@ -22,7 +22,7 @@ class ASPPModule(nn.ModuleList):
 
     def __init__(self, dilations, in_channels, channels, conv_cfg, norm_cfg,
                  act_cfg):
-        super(ASPPModule, self).__init__()
+        super().__init__()
         self.dilations = dilations
         self.in_channels = in_channels
         self.channels = channels
@@ -63,7 +63,7 @@ class ASPPHead(BaseDecodeHead):
     """
 
     def __init__(self, dilations=(1, 6, 12, 18), **kwargs):
-        super(ASPPHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert isinstance(dilations, (list, tuple))
         self.dilations = dilations
         self.image_pool = nn.Sequential(

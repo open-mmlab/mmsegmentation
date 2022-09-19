@@ -101,7 +101,7 @@ def load_json_logs(json_logs):
     log_dicts = [dict() for _ in json_logs]
     prev_step = 0
     for json_log, log_dict in zip(json_logs, log_dicts):
-        with open(json_log, 'r') as log_file:
+        with open(json_log) as log_file:
             for line in log_file:
                 log = json.loads(line.strip())
                 # the final step in json file is 0.

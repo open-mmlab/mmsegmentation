@@ -64,7 +64,7 @@ class ICNet(BaseModule):
                 dict(type='Constant', val=1, layer='_BatchNorm'),
                 dict(type='Normal', mean=0.01, layer='Linear')
             ]
-        super(ICNet, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.align_corners = align_corners
         self.backbone = MODELS.build(backbone_cfg)
 

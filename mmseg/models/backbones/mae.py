@@ -100,7 +100,7 @@ class MAE(BEiT):
                  pretrained=None,
                  init_values=0.1,
                  init_cfg=None):
-        super(MAE, self).__init__(
+        super().__init__(
             img_size=img_size,
             patch_size=patch_size,
             in_channels=in_channels,
@@ -186,7 +186,7 @@ class MAE(BEiT):
             state_dict = self.resize_abs_pos_embed(state_dict)
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:
-            super(MAE, self).init_weights()
+            super().init_weights()
         else:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501

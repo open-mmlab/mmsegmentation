@@ -53,7 +53,7 @@ class BasicConvBlock(nn.Module):
                  act_cfg=dict(type='ReLU'),
                  dcn=None,
                  plugins=None):
-        super(BasicConvBlock, self).__init__()
+        super().__init__()
         assert dcn is None, 'Not implemented yet.'
         assert plugins is None, 'Not implemented yet.'
 
@@ -112,7 +112,7 @@ class DeconvModule(nn.Module):
                  *,
                  kernel_size=4,
                  scale_factor=2):
-        super(DeconvModule, self).__init__()
+        super().__init__()
 
         assert (kernel_size - scale_factor >= 0) and\
                (kernel_size - scale_factor) % 2 == 0,\
@@ -191,7 +191,7 @@ class InterpConv(nn.Module):
                  padding=0,
                  upsample_cfg=dict(
                      scale_factor=2, mode='bilinear', align_corners=False)):
-        super(InterpConv, self).__init__()
+        super().__init__()
 
         self.with_cp = with_cp
         conv = ConvModule(
@@ -298,7 +298,7 @@ class UNet(BaseModule):
                  plugins=None,
                  pretrained=None,
                  init_cfg=None):
-        super(UNet, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         self.pretrained = pretrained
         assert not (init_cfg and pretrained), \
@@ -396,7 +396,7 @@ class UNet(BaseModule):
                     act_cfg=act_cfg,
                     dcn=None,
                     plugins=None))
-            self.encoder.append((nn.Sequential(*enc_conv_block)))
+            self.encoder.append(nn.Sequential(*enc_conv_block))
             in_channels = base_channels * 2**i
 
     def forward(self, x):
@@ -415,7 +415,7 @@ class UNet(BaseModule):
     def train(self, mode=True):
         """Convert the model into training mode while keep normalization layer
         freezed."""
-        super(UNet, self).train(mode)
+        super().train(mode)
         if mode and self.norm_eval:
             for m in self.modules():
                 # trick: eval have effect on BatchNorm only

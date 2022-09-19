@@ -68,7 +68,7 @@ def main():
         now_dir = osp.join(tmp_dir, 'files')
 
         assert len(os.listdir(now_dir)) == STARE_LEN, \
-            'len(os.listdir(now_dir)) != {}'.format(STARE_LEN)
+            f'len(os.listdir(now_dir)) != {STARE_LEN}'
 
         for filename in sorted(os.listdir(now_dir))[:TRAINING_LEN]:
             img = mmcv.imread(osp.join(now_dir, filename))
@@ -103,7 +103,7 @@ def main():
         now_dir = osp.join(tmp_dir, 'files')
 
         assert len(os.listdir(now_dir)) == STARE_LEN, \
-            'len(os.listdir(now_dir)) != {}'.format(STARE_LEN)
+            f'len(os.listdir(now_dir)) != {STARE_LEN}'
 
         for filename in sorted(os.listdir(now_dir))[:TRAINING_LEN]:
             img = mmcv.imread(osp.join(now_dir, filename))
@@ -142,7 +142,7 @@ def main():
         now_dir = osp.join(tmp_dir, 'files')
 
         assert len(os.listdir(now_dir)) == STARE_LEN, \
-            'len(os.listdir(now_dir)) != {}'.format(STARE_LEN)
+            f'len(os.listdir(now_dir)) != {STARE_LEN}'
 
         for filename in sorted(os.listdir(now_dir))[:TRAINING_LEN]:
             img = mmcv.imread(osp.join(now_dir, filename))

@@ -56,8 +56,7 @@ def main():
 
     for model_name, yml_path in yml_list:
         # Default yaml loader unsafe.
-        model_infos = yml.load(
-            open(yml_path, 'r'), Loader=yml.CLoader)['Models']
+        model_infos = yml.load(open(yml_path), Loader=yml.CLoader)['Models']
         for model_info in model_infos:
             config_name = model_info['Name']
             checkpoint_url = model_info['Weights']
