@@ -118,19 +118,14 @@ class TestSegLocalVisualizer(TestCase):
                              [255, 0, 0], [0, 0, 142], [0, 0, 70],
                              [0, 60, 100], [0, 80, 100], [0, 0, 230],
                              [119, 11, 32]])
-                seg_local_visualizer.add_datasample(out_file, image,
-                                                    data_sample)
-
                 # test out_file
-                seg_local_visualizer.add_datasample(out_file, image,
-                                                    data_sample)
-                assert os.path.exists(
-                    osp.join(tmp_dir, 'vis_data', 'vis_image',
-                             out_file + '_0.png'))
-                drawn_img = cv2.imread(
-                    osp.join(tmp_dir, 'vis_data', 'vis_image',
-                             out_file + '_0.png'))
-                assert drawn_img.shape == (h, w, 3)
+                seg_local_visualizer.add_datasample(
+                    out_file,
+                    image,
+                    data_sample,
+                    out_file=osp.join(tmp_dir, 'test.png'))
+                self._assert_image_and_shape(
+                    osp.join(tmp_dir, 'test.png'), (h, w, 3))
 
                 # test gt_instances and pred_instances
                 pred_sem_seg_data = dict(
@@ -139,12 +134,13 @@ class TestSegLocalVisualizer(TestCase):
 
                 data_sample.pred_sem_seg = pred_sem_seg
 
+                # test draw prediction with gt
                 seg_local_visualizer.add_datasample(out_file, image,
                                                     data_sample)
                 self._assert_image_and_shape(
                     osp.join(tmp_dir, 'vis_data', 'vis_image',
                              out_file + '_0.png'), (h, w * 2, 3))
-
+                # test draw prediction without gt
                 seg_local_visualizer.add_datasample(
                     out_file, image, data_sample, draw_gt=False)
                 self._assert_image_and_shape(
