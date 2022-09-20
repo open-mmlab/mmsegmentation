@@ -6,7 +6,7 @@ from .custom import CustomDataset
 
 
 @DATASETS.register_module()
-class FaceOccludedDataset(CustomDataset):
+class FaceOccluded(CustomDataset):
     """Face Occluded dataset.
 
     Args:
@@ -18,6 +18,6 @@ class FaceOccludedDataset(CustomDataset):
     PALETTE = [[0, 0, 0], [128, 0, 0]]
 
     def __init__(self, split, **kwargs):
-        super(FaceOccludedDataset, self).__init__(
+        super(FaceOccluded, self).__init__(
             img_suffix='.jpg', seg_map_suffix='.png', split=split, **kwargs)
         assert osp.exists(self.img_dir) and self.split is not None
