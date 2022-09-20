@@ -199,9 +199,8 @@ def show_result_pyplot(model: BaseSegmentor,
         draw_gt=draw_gt,
         draw_pred=draw_pred,
         wait_time=wait_time,
+        out_file=out_file,
         show=show)
     vis_img = visualizer.get_image()
-    if out_file is not None:
-        mmcv.imwrite(vis_img, out_file)
 
     return vis_img
