@@ -120,7 +120,7 @@ class SegLocalVisualizer(Visualizer):
         - If ``show`` is True, all storage backends are ignored, and
         the images will be displayed in a local window.
         - If ``out_file`` is specified, the drawn image will be
-        saved to ``out_file``. t is usually used when the display
+        saved to ``out_file``. it is usually used when the display
         is not available.
 
         Args:
