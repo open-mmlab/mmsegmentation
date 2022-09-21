@@ -34,6 +34,16 @@ MMSegmentation wraps `BaseModel` and implements the [BaseSegmentor](https://gith
 
 ### forward
 
+<center>
+  <img src='../../../resources/encoder_decoder_dataflow.png' />
+  <center>EncoderDecoder dataflow</center>
+</center>
+
+<center>
+  <center><img src='../../../resources/cascade_encoder_decoder_dataflow.png' /></center>
+  <center>CascadeEncoderDecoder dataflow</center>
+</center>
+
 The `forward` method returns losses or predictions of training, validation, testing, and a simple inference process.
 
 The method should accept three modes: "tensor", "predict" and "loss":
