@@ -185,6 +185,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                     PixelData(**{'data': i_seg_pred})
                 })
             else:
+                i_seg_logits = seg_logits[i]
                 if C > 1:
                     i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
                 else:
