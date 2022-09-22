@@ -100,6 +100,7 @@ class EncoderDecoder(BaseSegmentor):
         self.decode_head = MODELS.build(decode_head)
         self.align_corners = self.decode_head.align_corners
         self.num_classes = self.decode_head.num_classes
+        self.out_channels = self.decode_head.out_channels
 
     def _init_auxiliary_head(self, auxiliary_head: ConfigType) -> None:
         """Initialize ``auxiliary_head``"""

@@ -148,8 +148,6 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                 segmentation before normalization.
         """
         batch_size, C, H, W = seg_logits.shape
-        assert C > 1, ('This post processes does not binary segmentation, and '
-                       f'channels `seg_logtis` must be > 1 but got {C}')
 
         if data_samples is None:
             data_samples = []
@@ -175,7 +173,11 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                     align_corners=self.align_corners,
                     warning=False).squeeze(0)
                 # i_seg_logits shape is C, H, W with original shape
-                i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
+                if C > 1:
+                    i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
+                else:
+                    i_seg_pred = (i_seg_logits >
+                                  self.decode_head.threshold).to(i_seg_logits)
                 data_samples[i].set_data({
                     'seg_logits':
                     PixelData(**{'data': i_seg_logits}),
@@ -183,8 +185,11 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                     PixelData(**{'data': i_seg_pred})
                 })
             else:
-                i_seg_logits = seg_logits[i]
-                i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
+                if C > 1:
+                    i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
+                else:
+                    i_seg_pred = (i_seg_logits >
+                                  self.decode_head.threshold).to(i_seg_logits)
                 prediction = SegDataSample()
                 prediction.set_data({
                     'seg_logits':
