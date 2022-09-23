@@ -1,23 +1,7 @@
 # Structures
 
-In the training/testing process of a model, there is often a large amount of data to be passed between modules, and the data required by different tasks or algorithms is usually different. Take MMSegmentation for example, in training it needs image and its meta information but in inference it needs extra bool parameter `rescale` to determine whether rescaling image shape back to its original shape. This makes the interfaces of different tasks or models may be inconsistent:
-
-```python
-# Training
-for img, img_metas in dataloader:
-  seg_logit = encode_decode(img, img_meta)
-
-# Inference on whole image
-for img, img_metas, rescale in dataloader:
-  seg_logit = whole_inference(img, img_meta, rescale)
-
-# Inference on sliding window
-for img, img_metas, rescale in dataloader:
-  seg_logit = slide_inference(img, img_meta, rescale)
-```
-
-From the above code examples, we can see that without encapsulation, the different data required by different tasks and algorithms lead to inconsistent interfaces between their modules, which seriously affects the extensibility and reusability of the library.
-Therefore, in order to solve the above problem, we use [DataElement tutorial](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/data_element.md) from MMEngine to encapsulate the data required for each task into `data_sample`.
+In the training/testing process of a model, there is often a large amount of data to be passed between modules, and the data required by different tasks or algorithms is usually different.
+In order to solve the above problem, we use [DataElement tutorial](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/data_element.md) from MMEngine to encapsulate the data required for each task into `data_sample`.
 The base class has implemented basic functions of `Create`, `Read`, `Update`, `Delete` and tensor-like and dictionary-like operations such as `.cpu()`, `.cuda()`, `.get()` and `.detach()`. Finally, it could be used like below:
 
 ```python
@@ -25,20 +9,19 @@ for img, data_sample in dataloader:
   seg_logit = model(img, data_sample)
 ```
 
-Thanks to the unified data structures, the data flow between each module in the algorithm libraries, such as [`visualizer`](./visualizers.md), [`evaluator`](./evaluation.md), [`dataset`](./datasets.md), is greatly simplified. In MMSegmentation, we make the following conventions for different data types.
+Thanks to the unified data structures, the data flow between each module in the algorithm libraries, such as [`visualizer`](./visualizers.md), [`evaluator`](./evaluation.md), [`dataset`](./datasets.md), is greatly simplified.
+In MMSegmentation, we make the following conventions for different data types.
 
-- **xxxData**: Single granularity data annotation or model output. Currently MMEngine has three built-in granularities of [`xxx_data`](https://github.com/open-mmlab/mmengine/tree/main/mmengine/structures), including instance-level data (`InstanceData`), pixel-level data (`PixelData`) and image-level label data (`LabelData`). MMSegmentation currently only supports semantic segmentation task thus it only uses `PixelData`.
-- **xxxDataSample**: inherited from [`BaseDataElement`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/base_data_element.py), used to hold **all** annotation and prediction information that required by a single task. For example, [`SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) for the semantic segmentation.
+- **xxxData**: Single granularity data annotation or model output. Currently MMEngine has three built-in granularities of [`xxx_data`](https://github.com/open-mmlab/mmengine/tree/main/mmengine/structures), including instance-level data (`InstanceData`), pixel-level data (`PixelData`) and image-level label data (`LabelData`).
+  MMSegmentation currently only supports semantic segmentation task thus it only uses `PixelData`.
+- **xxxDataSample**: inherited from [`BaseDataElement`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/base_data_element.py), used to hold **all** annotation and prediction information that required by a single task.
+  In MMSegmentation, we have encapsulated the semantic segmentation task data abstractions: [`SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py).
 
 In general, `BaseDataElement` has two types of data, one is `data` type which includes various types ground truth such as bounding boxes, instance masks and semantic masks, the other is `metainfo` type which includes meta information of dataset such as `img_shape` and `img_id` to ensure　completeness of data. When creating new `BaseDataElement`, users should make explicit claim and discrimination on these two types of properties.
 
-In the following, we will introduce the practical application of data elements **xxxData** and data samples **xxxDataSample** in MMSegmentation, respectively.
+In the following, we will introduce the practical application of data elements **Semantic Segmentation PixelData** and data samples Semantic Segmentation Data Abstraction **SegDataSample** in MMSegmentation, respectively.
 
-## Data elements xxxData
-
-`InstanceData`, `PixelData` and `LabelData` are the base data elements defined in `MMEngine` to encapsulate different granularity of annotation data or model output. In MMSegmentation, we only used `PixelData` for encapsulating the data types actually used in semantic segmentation task.
-
-### Semantic Segmentation PixelData
+## Semantic Segmentation PixelData
 
 In the semantic segmentation task, the model concentrate on pixel-level image samples, so we use `PixelData` to encapsulate the data needed for this task. Typically, its required training annotation and prediction output contains pixel-level labels. The following code example shows how to use the `PixelData` data abstraction interface to encapsulate the data types used in the semantic segmentation task.
 
@@ -61,11 +44,7 @@ The fields of [`PixelData`](#pixeldata) that will be used are:
 
 Since semantic segmentation models usually only output one pixel-level classification result, we only need to make sure that each pixel is assigned certain value.
 
-## DataSample xxxDataSample
-
-By defining a uniform data structure, we can easily encapsulate the annotation data and prediction results in a uniform way, making data transfer between different modules of the code base easier. In MMSegmentation, we have encapsulated the semantic segmentation task data abstractions: [`SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py). This data abstraction inherits from {external+mmengine:doc}`MMEngine: data base class <advanced_tutorials/data_element>` `BaseDataElement`, which is used to hold all annotation and prediction information required by each task.
-
-### Semantic Segmentation Data Abstraction SegDataSample
+## Semantic Segmentation Data Abstraction SegDataSample
 
 [SegDataSample](mmseg.structures.SegDataSample) is used to encapsulate the data needed for the semantic segmentation task. It contains three main fields `gt_sem_seg`, `pred_sem_seg` and `seg_logits`, which are used to store the annotation information and prediction results respectively.
 
@@ -138,7 +117,7 @@ cpu_gt_segmentations = cuda_gt_segmentations.cpu()
 cpu_gt_segmentations = cuda_gt_segmentations.to('cpu')
 ```
 
-### Customize New Property in SegDataSample
+## Customize New Property in SegDataSample
 
 If you want to customize new property in `SegDataSample`, you may follow [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) below:
 
