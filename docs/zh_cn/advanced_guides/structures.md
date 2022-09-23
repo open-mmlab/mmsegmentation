@@ -36,9 +36,9 @@ gt_segmentations.data = torch.randint(0, 2, (1, 4, 4))
 
 MMSegmentation 中对 `PixelData` 字段的约定如下表所示:
 
-| Field | Type           | Description     |
-| ----- | -------------- | --------------- |
-| data  | `torch.Tensor` | 图像标注的数据. |
+| 字段 | 类型           | 描述            |
+| ---- | -------------- | --------------- |
+| data | `torch.Tensor` | 图像标注的数据. |
 
 因为语义分割模型通常只输出每个像素的分类结果，所以我们只需要确保每个像素被分到对应的类别中。
 
@@ -46,7 +46,7 @@ MMSegmentation 中对 `PixelData` 字段的约定如下表所示:
 
 [SegDataSample](mmseg.structures.SegDataSample) 被用来封装语义分割任务所需要的数据。 它包括了三个主要数据字段 `gt_sem_seg`, `pred_sem_seg` 和 `seg_logits`, 分别用来存放标注信息和预测结果和预测 logits 值。
 
-| Field          | Type                      | Description           |
+| 字段           | 类型                      | 描述                  |
 | -------------- | ------------------------- | --------------------- |
 | gt_sem_seg     | [`PixelData`](#pixeldata) | 图像标注信息.         |
 | pred_instances | [`PixelData`](#pixeldata) | 图像预测结果.         |
