@@ -31,7 +31,7 @@ Hooks only work after being registered into the runner. At present, hooks are ma
 
 - default hooks
 
-Those hooks are registered by the runner by default. Generally, they fulfill some basic functions, and have default priority, you don't need to modify the priority.
+By default, those hooks are registered by `Runner`. Generally, they are used to fulfill some basic functions, you don't need to modify the priority because they have default priority.
 
 - custom hooks
 
@@ -66,7 +66,7 @@ The following common hooks are already reigistered by [default](https://github.c
 |        [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)        |                                     ensure distributed Sampler shuffle is active.                                     |    NORMAL (50)    |
 | [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/visualization/local_visualizer.py) |                             visualize validation and testing process prediction results.                              |    NORMAL (50)    |
 
-Noted that `SegVisualizationHook` is hooks implemented in MMSegmentation, which would be introduced later.
+Noted that `SegVisualizationHook` is hook implemented in MMSegmentation, which would be introduced later.
 
 ### Common Hooks implemented in MMEngine
 
@@ -121,19 +121,11 @@ class SegVisualizationHook(Hook):
 
 More details of visualization could be found [here](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/visualization.md).
 
-If the hook is already implemented in MMEngine or MMSegmentation, you can directly modify the config to use the hook as below
+If the hook is already implemented in MMEngine or MMSegmentation, you can directly modify the config to use the hook. For example, using `EMAHook`, whose start_iters is 500:
 
 ```python
 custom_hooks = [
-    dict(type='MMEngineHook', a=a_value, b=b_value, priority='NORMAL')
-]
-```
-
-such as using `EMAHook`, start_iters is 500:
-
-```python
-custom_hooks = [
-    dict(type='EMAHook', start_iters=500)
+    dict(type='EMAHook', start_iters=500, priority='NORMAL')
 ]
 ```
 
@@ -153,7 +145,7 @@ For example, if you want to use SGD, the modification could be as the following.
 optimizer = dict(type='SGD', lr=0.0003, weight_decay=0.0001)
 ```
 
-To modify the learning rate of the model, just modify the `lr` in the config of optimizer. You can also directly set other arguments according to the [API doc](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim) of PyTorch.
+To modify the learning rate of the model, just modify the `lr` in the config of optimizer. More details could be found in [API doc](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim) of PyTorch.
 
 For example, if you want to use `Adam` with the setting like `torch.optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)` in PyTorch, the config should looks like:
 
@@ -190,7 +182,7 @@ Besides the basic function of PyTorch optimizers, we also provide some enhanceme
 
 #### Gradient clipping
 
-Currently we support `clip_grad` option in `optim_wrapper`, and you can refer to [OptimWrapper](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/optimizer_wrapper.py#L17) and [PyTorch Documentation](https://pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html)for more arguments . Here is an example:
+Currently we support `clip_grad` option in `optim_wrapper`, and you can refer to [OptimWrapper](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/optimizer_wrapper.py#L17) and [PyTorch Documentation](https://pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html)　for more details. Here is an example:
 
 ```python
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
@@ -203,7 +195,7 @@ optim_wrapper = dict(
 # norm_type: type of the used p-norm, here norm_type is 2.
 ```
 
-If `clip_grad` is not None, it will be the arguments of `torch.nn.utils.clip_grad.clip_grad_norm_()`.
+If `clip_grad` is not None, its fields in dict will be the arguments of `torch.nn.utils.clip_grad.clip_grad_norm_()`.
 
 #### Gradient accumulation
 
