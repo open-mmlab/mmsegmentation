@@ -1,5 +1,7 @@
 # Customize Runtime Settings
 
+<!-- TOC -->
+
 - [Customize Runtime](#customize-runtime)
   - [Loop](#loop)
   - [Hook](#hook)
@@ -15,22 +17,40 @@
     - [Additional settings](#additional-settings)
   - [Scheduler](#scheduler)
 
+<!-- /TOC -->
+
+It is necessary to design an engine to dispatch various modules related with training and inference processes of OpenMMLab codebases. In MMEngine, `Runner` is basic class utilized for dispatch of OpenMMLab codebases in their training process.
+
 In this tutorial, we will introduce some methods about how to customize runtime settings for the project.
 
 ## Loop
 
-`Loop` means the workflow of training, validation or testing and we use `train_cfg`, `val_cfg` and `test_cfg` to build `Loop`.
+MMEngine defines several [basic loops](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py) such as `EpochBasedTrainLoop`, `IterBasedTrainLoop`, `ValLoop` and `TestLoop`.
+
+`Loop` means the workflow of training, validation or testing. We use `train_cfg`, `val_cfg` and `test_cfg` in config file to build `Loop`.
 
 E.g.:
 
 ```python
-# Use EpochBasedTrainLoop to train 200 epochs.
+# Use IterBasedTrainLoop to train 200 epochs.
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=8000)
 ```
 
 MMEngine defines several [basic loops](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py). Users could implement customized loops if the defined loops are not satisfied.
 
 ## Hook
+
+MMSegmentation would register some hooks which are commonly used by [defualt_hooks](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) in config files.
+
+```python
+default_hooks = dict(
+    timer=dict(type='IterTimerHook'),
+    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=2000),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    visualization=dict(type='SegVisualizationHook'))
+```
 
 Before learning to create your customized hooks, it is recommended to learn the basic concept of hooks in file [engine.md](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md).
 
@@ -118,7 +138,7 @@ Here we reveals how what we can do with `logger` and `checkpoint`.
 
 #### Checkpoint config
 
-The MMCV runner will use `checkpoint_config` to initialize [`CheckpointHook`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19).
+The MMEngine runner will use `checkpoint_config` to initialize [`CheckpointHook`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19).
 
 ```python
 checkpoint = dict(interval=1)
@@ -128,17 +148,14 @@ The users could set `max_keep_ckpts` to only save only small number of checkpoin
 
 #### Log config
 
-The `logger` wraps multiple logger hooks and enables to set intervals. Now MMCV supports `WandbLoggerHook`, `MlflowLoggerHook`, and `TensorboardLoggerHook`.
-The detail usages can be found in the [doc](https://mmcv.readthedocs.io/en/latest/api.html#mmcv.runner.LoggerHook).
+The `LoggerHook` is designed to collect logs from different components of `Runner` and write them to terminal, JSON file, tensorboard and wandb .etc.
 
 ```python
-logger = dict(
-    interval=50,
-    hooks=[
-        dict(type='TextLoggerHook'),
-        dict(type='TensorboardLoggerHook')
-    ])
+logger_hook_cfg = dict(interval=20)
 ```
+
+In latest 1.x MMSegmentation, some `LoggerHook` such as `TextLoggerHook`, `WandbLoggerHook` and `TensorboardLoggerHook` would no longer be kept.
+Instead, MMEngine utilizes `LogProcessor` to format log information collected by `MessageHub` in `runner.message_hub`, and `WandbVisBackend` or `TensorboardVisBackend` in `runner.visualizer`.
 
 ## Optimizer
 
@@ -281,16 +298,11 @@ Some models may have some parameter-specific settings for optimization, e.g. wei
 The users can do those fine-grained parameter tuning through customizing optimizer constructor.
 
 ```python
-from mmcv.utils import build_from_cfg
+from mmengine.optim import DefaultOptimWrapperConstructor
+from mmseg.registry import OPTIM_WRAPPER_CONSTRUCTORS
 
-from mmcv.runner.optimizer import OPTIMIZER_BUILDERS, OPTIMIZERS
-from mmseg.utils import get_root_logger
-from .my_optimizer import MyOptimizer
-
-
-@OPTIMIZER_BUILDERS.register_module()
-class MyOptimizerConstructor(object):
-
+@OPTIM_WRAPPER_CONSTRUCTORS.register_module()
+class LearningRateDecayOptimizerConstructor(DefaultOptimWrapperConstructor):
     def __init__(self, optim_wrapper_cfg, paramwise_cfg=None):
 
     def __call__(self, model):
@@ -299,7 +311,7 @@ class MyOptimizerConstructor(object):
 
 ```
 
-The default optimizer constructor is implemented [here](https://github.com/open-mmlab/mmcv/blob/9ecd6b0d5ff9d2172c49a182eaa669e9f27bb8e7/mmcv/runner/optimizer/default_constructor.py#L11), which could also serve as a template for new optimizer constructor.
+The default optimizer constructor is implemented [here](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19), which could also serve as a template for new optimizer constructor.
 
 ### Additional settings
 
