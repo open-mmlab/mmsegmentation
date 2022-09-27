@@ -148,11 +148,9 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                 segmentation before normalization.
         """
         batch_size, C, H, W = seg_logits.shape
-        assert C > 1, ('This post processes does not binary segmentation, and '
-                       f'channels `seg_logtis` must be > 1 but got {C}')
 
         if data_samples is None:
-            data_samples = []
+            data_samples = [SegDataSample() for _ in range(batch_size)]
             only_prediction = True
         else:
             only_prediction = False
@@ -174,23 +172,19 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                     mode='bilinear',
                     align_corners=self.align_corners,
                     warning=False).squeeze(0)
-                # i_seg_logits shape is C, H, W with original shape
-                i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
-                data_samples[i].set_data({
-                    'seg_logits':
-                    PixelData(**{'data': i_seg_logits}),
-                    'pred_sem_seg':
-                    PixelData(**{'data': i_seg_pred})
-                })
             else:
                 i_seg_logits = seg_logits[i]
+
+            if C > 1:
                 i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
-                prediction = SegDataSample()
-                prediction.set_data({
-                    'seg_logits':
-                    PixelData(**{'data': i_seg_logits}),
-                    'pred_sem_seg':
-                    PixelData(**{'data': i_seg_pred})
-                })
-                data_samples.append(prediction)
+            else:
+                i_seg_pred = (i_seg_logits >
+                              self.decode_head.threshold).to(i_seg_logits)
+            data_samples[i].set_data({
+                'seg_logits':
+                PixelData(**{'data': i_seg_logits}),
+                'pred_sem_seg':
+                PixelData(**{'data': i_seg_pred})
+            })
+
         return data_samples
