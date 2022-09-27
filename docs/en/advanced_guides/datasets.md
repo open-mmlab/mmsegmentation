@@ -1,19 +1,19 @@
 # Dataset
 
-In this document, we will introduce the design of each datasets in MMSegmentation and how users can design their own dataset.
+In this document, we will introduce the design of each dataset in MMSegmentation and how users can design their own dataset.
 
-In 1.x version of MMSegmentation, all datasets are inherited from `BaseDataset`.
-Each dataset load the list of data info (e.g., data path) by `load_data_list`.
-In `__getitem__`, `prepare_data` is called to get the preprocessed data.
+In the 1.x version of MMSegmentation, all datasets are inherited from `BaseDataset`.
+Each dataset loads the list of data info (e.g., datapath) by `load_data_list`.
+In `__getitem__`, `prepare_data` is called to get the processed data.
 In `prepare_data`, data loading pipeline consists of the following steps:
 
-1. fetch the data info by passed index, implemented by `get_data_info`
-2. apply data transforms to the data, implemented by `pipeline`
+1. fetch the data info by index, implemented by `get_data_info`
+2. apply data transforms to data, implemented by `pipeline`
 
 If you want to implement a new dataset class, you only need to implement `load_data_list` function. We also encourage users to use the original data loading logic provided by `BaseDataset`.
 If the default loading logic is difficult to meet your needs, you can overwrite the `__getitem__` interface to implement your data loading logic.
 
-The structure of this guide are as follows:
+The structure of this guide is as follows:
 
 - [Dataset](#dataset)
   - [BaseSegDataset](#BaseSegDataset)
