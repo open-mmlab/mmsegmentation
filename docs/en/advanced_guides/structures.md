@@ -13,17 +13,17 @@ Thanks to the unified data structures, the data flow between each module in the 
 In MMSegmentation, we make the following conventions for different data types.
 
 - **xxxData**: Single granularity data annotation or model output. Currently MMEngine has three built-in granularities of [`xxx_data`](https://github.com/open-mmlab/mmengine/tree/main/mmengine/structures), including instance-level data (`InstanceData`), pixel-level data (`PixelData`) and image-level label data (`LabelData`).
-  MMSegmentation currently only supports semantic segmentation task thus it only uses `PixelData`.
+  MMSegmentation currently only supports semantic segmentation tasks, thus it only uses `PixelData`.
 - **xxxDataSample**: inherited from [`BaseDataElement`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/base_data_element.py), used to hold **all** annotation and prediction information that required by a single task.
   In MMSegmentation, we have encapsulated the semantic segmentation task data abstractions: [`SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py).
 
-In general, `BaseDataElement` has two types of data, one is `data` type which includes various types ground truth such as bounding boxes, instance masks and semantic masks, the other is `metainfo` type which includes meta information of dataset such as `img_shape` and `img_id` to ensure　completeness of data. When creating new `BaseDataElement`, users should make explicit claim and discrimination on these two types of properties.
+In general, `BaseDataElement` has two types of data, one is `data` type which includes various types of ground truth such as bounding boxes, instance masks and semantic masks, the other is `metainfo` type which includes meta information of dataset such as `img_shape` and `img_id` to ensure　completeness of data. When creating the new `BaseDataElement`, users should make explicit claims and discrimination on these two types of properties.
 
 In the following, we will introduce the practical application of data elements **Semantic Segmentation PixelData** and data samples Semantic Segmentation Data Abstraction **SegDataSample** in MMSegmentation, respectively.
 
 ## Semantic Segmentation PixelData
 
-In the semantic segmentation task, the model concentrate on pixel-level image samples, so we use `PixelData` to encapsulate the data needed for this task. Typically, its required training annotation and prediction output contains pixel-level labels. The following code example shows how to use the `PixelData` data abstraction interface to encapsulate the data types used in the semantic segmentation task.
+In the semantic segmentation task, the model concentrates on pixel-level image samples, so we use `PixelData` to encapsulate the data needed for this task. Typically, its required training annotation and prediction output contains pixel-level labels. The following code example shows how to use the `PixelData` data abstraction interface to encapsulate the data types used in the semantic segmentation task.
 
 ```python
 import torch
@@ -42,7 +42,7 @@ The fields of [`PixelData`](#pixeldata) that will be used are:
 | ----- | -------------- | --------------- |
 | data  | `torch.Tensor` | data of images. |
 
-Since semantic segmentation models usually only output one pixel-level classification result, we only need to make sure that each pixel is assigned certain value.
+Since semantic segmentation models usually only output one pixel-level classification result, we only need to make sure that each pixel is assigned a certain value.
 
 ## Semantic Segmentation Data Abstraction SegDataSample
 
@@ -138,4 +138,4 @@ class SegDataSample(BaseDataElement):
         del self._xxx_property
 ```
 
-Then a new property would be added in `SegDataSample`.
+Then a new property would be added to `SegDataSample`.
