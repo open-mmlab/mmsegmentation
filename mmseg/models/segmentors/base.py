@@ -150,7 +150,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         batch_size, C, H, W = seg_logits.shape
 
         if data_samples is None:
-            data_samples = [SegDataSample()] * batch_size
+            data_samples = [SegDataSample() for _ in range(batch_size)]
             only_prediction = True
         else:
             only_prediction = False
