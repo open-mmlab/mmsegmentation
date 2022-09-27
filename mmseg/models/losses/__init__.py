@@ -13,5 +13,5 @@ __all__ = [
     'accuracy', 'Accuracy', 'cross_entropy', 'binary_cross_entropy',
     'mask_cross_entropy', 'CrossEntropyLoss', 'reduce_loss',
     'weight_reduce_loss', 'weighted_loss', 'LovaszLoss', 'DiceLoss',
-    'FocalLoss', 'TverskyLoss', 'PhiLoss', 'phi_loss'
+    'FocalLoss', 'TverskyLoss', 'PhiLoss'
 ]
