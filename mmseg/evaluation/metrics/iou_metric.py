@@ -41,8 +41,8 @@ class IoUMetric(MeanIoU):
                 'DeprecationWarning: The `collect_device` parameter of '
                 '`Accuracy` is deprecated, use `dist_backend` instead.')
 
-        # Changes the default value of `verbose_results` to True.
-        super().__init__(verbose_results=True,
+        # Changes the default value of `classwise_results` to True.
+        super().__init__(classwise_results=True,
                          dist_backend=dist_backend,
                          **kwargs)
 
@@ -72,21 +72,20 @@ class IoUMetric(MeanIoU):
         """
         metric_results = self.compute(*args, **kwargs)
 
-        # We only return the averaged metric results.
-        evaluate_results = dict()
+        classwise_results = metric_results['classwise_results']
+        del metric_results['classwise_results']
+        
         # Pretty table of the metric results per class.
         summary_table = PrettyTable()
-
         summary_table.add_column('Class', self.dataset_meta['classes'])
-        for key, value in metric_results.items():
-            # Multiply value by 100 to convert to percentage and rounding. 
-            if key.startswith('m') or key == 'aAcc':
-                # Add averaged metric results to `evaluate_results`
-                evaluate_results[key] = round(value * 100, 2)
-            else:
-                value = np.round(value.cpu().numpy() * 100, 2)
-                summary_table.add_column(key, value)
+        for key, value in classwise_results.items():
+            value = np.round(value * 100, 2)
+            summary_table.add_column(key, value)
 
         print_log('per class results:', logger='current')
         print_log('\n' + summary_table.get_string(), logger='current')
+
+        # Multiply value by 100 to convert to percentage and rounding. 
+        evaluate_results = {
+            k: round(v * 100, 2) for k, v in metric_results.items()}
         return evaluate_results
