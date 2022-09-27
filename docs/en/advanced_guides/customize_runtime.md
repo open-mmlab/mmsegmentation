@@ -40,7 +40,7 @@ MMEngine defines several [basic loops](https://github.com/open-mmlab/mmengine/bl
 
 ## Hook
 
-MMSegmentation would register some hooks which are commonly used by [defualt_hooks](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) in config files.
+MMSegmentation would register some hooks which are commonly used by [defualt_hooks](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) in config files:
 
 ```python
 default_hooks = dict(
@@ -138,7 +138,7 @@ Here we reveals how what we can do with `logger` and `checkpoint`.
 
 #### Checkpoint config
 
-The MMEngine runner will use `checkpoint_config` to initialize [`CheckpointHook`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19).
+The MMEngine runner will use `checkpoint` to initialize [`CheckpointHook`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19):
 
 ```python
 checkpoint = dict(interval=1)
