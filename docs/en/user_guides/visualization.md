@@ -48,7 +48,7 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 
 ### Visualizer Data Samples during Model Testing or Validation
 
-MMSegmentation provides `SegVisualizationHook` which is a [hook](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md) working to visualize ground truth and prediction of segmentation during model testing and evaluation. Its configuration is in `defualt_hooks`, please see [Runner tutorial](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/runner.md) for more details.
+MMSegmentation provides `SegVisualizationHook` which is a [hook](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md) working to visualize ground truth and prediction of segmentation during model testing and evaluation. Its configuration is in `default_hooks`, please see [Runner tutorial](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/runner.md) for more details.
 
 For example, In `_base_/schedules/schedule_20k.py`, modify the `SegVisualizationHook` configuration, set `draw` to `True` to enable the storage of network inference results, `interval` indicates the sampling interval of the prediction results, and when set to 1, each inference result of the network will be saved. `interval` is set to 50 by default:
 
