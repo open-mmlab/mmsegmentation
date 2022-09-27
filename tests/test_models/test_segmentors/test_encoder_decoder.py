@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+
 from mmengine import ConfigDict
 
 from mmseg.models import build_segmentor
@@ -19,9 +20,14 @@ def test_encoder_decoder():
     _segmentor_forward_train_test(segmentor)
 
     # test out_channels == 1
-    segmentor.out_channels = 1
-    segmentor.decode_head.out_channels = 1
-    segmentor.decode_head.threshold = 0.3
+    cfg = ConfigDict(
+        type='EncoderDecoder',
+        backbone=dict(type='ExampleBackbone'),
+        decode_head=dict(
+            type='ExampleDecodeHead', num_classes=2, out_channels=1),
+        train_cfg=None,
+        test_cfg=dict(mode='whole'))
+    segmentor = build_segmentor(cfg)
     _segmentor_forward_train_test(segmentor)
 
     # test slide mode
