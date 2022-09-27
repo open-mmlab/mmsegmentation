@@ -56,10 +56,14 @@ class IoUMetric(MeanIoU):
             data_batch (dict): A batch of data from the dataloader.
             data_samples (Sequence[dict]): A batch of outputs from the model.
         """
+        predictions, labels = [], []
         for data_sample in data_samples:
             pred_label = data_sample['pred_sem_seg']['data'].squeeze()
             label = data_sample['gt_sem_seg']['data'].squeeze().to(pred_label)
-            self.add(pred_label, label)
+            predictions.append(pred_label)
+            labels.append(label)
+
+        self.add(predictions, labels)
 
     def evaluate(self, *args, **kwargs):
         """Returns metric results and print pretty tabel of metrics per class.
