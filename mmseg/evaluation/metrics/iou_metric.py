@@ -39,7 +39,7 @@ class IoUMetric(MeanIoU):
         if collect_device is not None:
             warnings.warn(
                 'DeprecationWarning: The `collect_device` parameter of '
-                '`Accuracy` is deprecated, use `dist_backend` instead.')
+                '`IoUMetric` is deprecated, use `dist_backend` instead.')
 
         # Changes the default value of `classwise_results` to True.
         super().__init__(classwise_results=True,
