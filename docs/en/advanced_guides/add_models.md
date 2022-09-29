@@ -2,10 +2,7 @@
 
 ## Develop new components
 
-There are mainly 2 types of components in MMSegmentation.
-
-- backbone: usually stacks of the convolutional network to extract feature maps, e.g., ResNet, HRNet.
-- head: the component for semantic segmentation map decoding.
+We can customize all the components introduced at [the model documentation](./models.md), such as **backbone**, **head**, **loss function** and **data preprocessor**.
 
 ### Add new backbones
 
