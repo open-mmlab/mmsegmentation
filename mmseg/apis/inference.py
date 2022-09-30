@@ -19,10 +19,10 @@ from mmseg.utils import SampleList, dataset_aliases, get_classes, get_palette
 from mmseg.visualization import SegLocalVisualizer
 
 
-def init_mfodel(config: Union[str, Path, Config],
-                checkpoint: Optional[str] = None,
-                device: str = 'cuda:0',
-                cfg_options: Optional[dict] = None):
+def init_model(config: Union[str, Path, Config],
+               checkpoint: Optional[str] = None,
+               device: str = 'cuda:0',
+               cfg_options: Optional[dict] = None):
     """Initialize a segmentor from config file.
 
     Args:
