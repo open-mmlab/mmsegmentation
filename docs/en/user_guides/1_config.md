@@ -112,7 +112,7 @@ model = dict(
             loss_weight=0.4)),  # Loss weight of auxiliary_head.
     # model training and testing settings
     train_cfg=dict(),  # train_cfg is just a place holder for now.
-    test_cfg=dict(mode='whole'))  # The test mode, options are 'whole' and 'sliding'. 'whole': whole image fully-convolutional test. 'sliding': sliding crop window on the image.
+    test_cfg=dict(mode='whole'))  # The test mode, options are 'whole' and 'slide'. 'whole': whole image fully-convolutional test. 'slide': sliding crop window on the image.
 ```
 
 `_base_/datasets/cityscapes.py` is the configuration file of the dataset
