@@ -19,10 +19,10 @@ from mmseg.utils import SampleList, dataset_aliases, get_classes, get_palette
 from mmseg.visualization import SegLocalVisualizer
 
 
-def init_model(config: Union[str, Path, Config],
-               checkpoint: Optional[str] = None,
-               device: str = 'cuda:0',
-               cfg_options: Optional[dict] = None):
+def init_mfodel(config: Union[str, Path, Config],
+                checkpoint: Optional[str] = None,
+                device: str = 'cuda:0',
+                cfg_options: Optional[dict] = None):
     """Initialize a segmentor from config file.
 
     Args:
@@ -102,7 +102,7 @@ def _preprare_data(imgs: ImageType, model: BaseSegmentor):
         is_batch = False
 
     if isinstance(imgs[0], np.ndarray):
-        cfg.test_pipeline[0].type = 'LoadImageFromNDArray'
+        cfg.test_pipeline[0]['type'] = 'LoadImageFromNDArray'
 
     # TODO: Consider using the singleton pattern to avoid building
     # a pipeline for each inference
