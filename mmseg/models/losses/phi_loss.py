@@ -31,11 +31,16 @@ def phi_loss(inputs, targets, gamma, smooth, weight=None, reduction='mean'):
 @LOSSES.register_module()
 class PhiLoss(nn.Module):
     """PhiLoss.
+    
+    This loss is proposed in `Novel Focal Phi Loss for Power Line
+    Segmentation with Auxiliary Classifier U-Net <https://doi.org/10.3390/s21082803>`_.
 
     Args:
-        reduction (str, optional): . Defaults to 'mean'.
-            Options are "none", "mean" and "sum".
-        smooth (float, optional): Smoothing factor. Defaults to 1.0.
+        reduction (str, optional): The method used to reduce the loss. Options
+            are "none", "mean" and "sum". This parameter only works when
+            per_image is True. Default: 'mean'.
+        smooth (float, optional):  A float number to smooth loss, and avoid NaN error.
+            Default: 1.0
         loss_weight (float, optional): Weight of the loss. Defaults to 1.0.
     """
 
