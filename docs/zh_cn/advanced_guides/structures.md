@@ -32,7 +32,7 @@ gt_segmentations.data = torch.randint(0, 2, (1, 4, 4))
 # 增加和处理 SegDataSample　中的属性
 data_sample.gt_sem_seg = gt_segmentations
 assert 'gt_sem_seg' in data_sample
-assert 'sem_seg' in data_sample.gt_sem_seg
+assert 'data' in data_sample.gt_sem_seg
 assert 'img_shape' in data_sample.gt_sem_seg.metainfo_keys()
 print(data_sample.gt_sem_seg.shape)
 '''
