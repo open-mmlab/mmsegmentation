@@ -19,3 +19,14 @@ Here is the changes of `mmseg.apis`:
 |   `single_gpu_test`   | Removed, use `runner.test` to test.             |
 |   `set_random_seed`   | Removed, use `mmengine.runner.set_random_seed`. |
 |  `init_random_seed`   | Removed, use `mmengine.dist.sync_random_seed`.  |
+
+## mmseg.datasets
+
+OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, and MMSegmentation 1.x also follow this protocol and defines the `BaseSegDataset` inherted from `BaseDataset`. MMCV 2.x collects general data transforms for multiple tasks e.g. classification, detection, segmenation, so MMSegmentation 1.x uses these data transforms and removes them from mmseg.datasets
+
+```
+   Classes        | Changes                                         |
+```
+
+| :-------------------: | :---------------------------------------------- |
+|   `CustomDataset`    | Renamed to `BaseDataset` and inherted from `BaseDataset` in MMEngine |
