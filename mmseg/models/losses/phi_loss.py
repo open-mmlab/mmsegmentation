@@ -60,9 +60,9 @@ class PhiLoss(nn.Module):
     def forward(self,
                 inputs,
                 targets,
-                weight=None,
+                label_weights=None,
                 reduction_override=None,
-                ignore_index=255):
+                ignore_index=-100):
         """Forward function."""
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
@@ -73,10 +73,12 @@ class PhiLoss(nn.Module):
                 inputs.dim() == 4 and targets.dim() == 3), \
             'Only pred shape [N, C], label shape [N] or pred shape [N, C, ' \
             'H, W], label shape [N, H, W] are supported'
-            label, weight, _ = _expand_onehot_labels(targets, weight, inputs.shape,
+            # `weight` returned from `_expand_onehot_labels`
+            # has been treated for valid (non-ignore) pixels
+            label, label_weights, _ = _expand_onehot_labels(targets, label_weights, inputs.shape,
                                                 ignore_index) 
         phi_loss_val= phi_loss(inputs, label, self.gamma, self.smooth,
-                               weight, reduction= reduction)
+                               weight, reduction= self.reduction)
         loss = self.loss_weight * phi_loss_val
         return loss
 
