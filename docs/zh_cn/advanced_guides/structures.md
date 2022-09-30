@@ -3,7 +3,7 @@
 为了统一模型和各功能模块之间的输入和输出的接口, 在 OpenMMLab 2.0 MMEngine 中定义了一套抽象数据结构, 实现了基础的增/删/查/改功能, 支持不同设备间的数据迁移, 也支持了如
 `.cpu()`, `.cuda()`, `.get()` 和 `.detach()` 的类字典和张量的操作。具体可以参考 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/data_element.md)。
 
-同样的, MMSegmentation 亦遵循了 OpenMMLab 2.0 各模块间的数据协议, 定义了 `SegDataSample` 用来封装语义分割任务所需要的数据。
+同样的, MMSegmentation 亦遵循了 OpenMMLab 2.0 各模块间的接口协议, 定义了 `SegDataSample` 用来封装语义分割任务所需要的数据。
 
 ## 语义分割数据 SegDataSample
 
