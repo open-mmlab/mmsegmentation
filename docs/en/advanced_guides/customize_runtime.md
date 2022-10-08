@@ -349,4 +349,4 @@ param_scheduler = [
 ]
 ```
 
-**Note:** When you change the `max_iters` in `train_cfg`, make sure that the args in `param_scheduler` are modified simultanuously.
+**Note:** When you change the `max_iters` in `train_cfg`, make sure that the args in `param_scheduler` are modified simultaneously.
