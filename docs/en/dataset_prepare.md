@@ -386,7 +386,7 @@ In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=
 
 ### EGOHANDS
 
-The training and validation set of EGOHANDS could be download from [here](https://staffnet.kingston.ac.uk/~ku15565/CHASE_DB1/assets/CHASEDB1.zip).
+The training and validation set of EGOHANDS could be download from [here](http://vision.soic.indiana.edu/egohands_files/egohands_data.zip).
 
 To convert EGOHANDS dataset to MMSegmentation format, you should run the following command:
 
