@@ -18,8 +18,8 @@ we introduce a new `DataContainer` type in MMCV to help collect and distribute
 data of different size.
 See [here](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) for more details.
 
-In 1.x version of MMSegmentation, all data transformations are inherited from `BaseTransform`.
-The input and output types of transformations are both dict. A simple example is as follow:
+In 1.x version of MMSegmentation, all data transformations are inherited from [`BaseTransform`](https://github.com/open-mmlab/mmcv/blob/2.x/mmcv/transforms/base.py#L6).
+The input and output types of transformations are both dict. A simple example is as follows:
 
 ```python
 >>> from mmseg.datasets.transforms import LoadAnnotations
@@ -36,13 +36,13 @@ The input and output types of transformations are both dict. A simple example is
 dict_keys(['img_path', 'seg_map_path', 'reduce_zero_label', 'seg_fields', 'gt_seg_map'])
 ```
 
-The data preparation pipeline and the dataset is decomposed. Usually a dataset
+The data preparation pipeline and the dataset are decomposed. Usually a dataset
 defines how to process the annotations and a data pipeline defines all the steps to prepare a data dict.
-A pipeline consists of a sequence of operations. Each operation takes a dict as input and also output a dict for the next transform.
+A pipeline consists of a sequence of operations. Each operation takes a dict as input and also outputs a dict for the next transform.
 
 The operations are categorized into data loading, pre-processing, formatting and test-time augmentation.
 
-Here is an pipeline example for PSPNet.
+Here is a pipeline example for PSPNet.
 
 ```python
 crop_size = (512, 1024)
@@ -63,7 +63,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='Resize', scale=(2048, 1024), keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
-    # does not need to do resize data transform
+    # does not need to resize data transform
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
 ]
@@ -128,7 +128,7 @@ The position of random contrast is in second or second to last(mode 0 or 1 below
 
 ## Customization data transformation
 
-The customized data transformation must inherinted from `BaseTransform` and implement `transform` function.
+The customized data transformation must inherited from `BaseTransform` and implement `transform` function.
 Here we use a simple flipping transformation as example:
 
 ```python
@@ -169,4 +169,4 @@ pipeline = [
 ]
 ```
 
-Note that if you want to use `MyFlip` in config, you must ensure the file containing `MyFlip` is imported during the program run.
+Note that if you want to use `MyFlip` in config, you must ensure the file containing `MyFlip` is imported during runtime.
