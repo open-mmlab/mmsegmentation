@@ -9,7 +9,7 @@ import torch
 from mmcv.parallel import collate
 from mmcv.runner import get_dist_info
 from mmcv.utils import Registry, build_from_cfg, digit_version
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, IterableDataset
 
 from .samplers import DistributedSampler
 
@@ -129,9 +129,14 @@ def build_dataloader(dataset,
         DataLoader: A PyTorch dataloader.
     """
     rank, world_size = get_dist_info()
-    if dist:
+    if dist and not isinstance(dataset, IterableDataset):
         sampler = DistributedSampler(
             dataset, world_size, rank, shuffle=shuffle, seed=seed)
+        shuffle = False
+        batch_size = samples_per_gpu
+        num_workers = workers_per_gpu
+    elif dist:
+        sampler = None
         shuffle = False
         batch_size = samples_per_gpu
         num_workers = workers_per_gpu
