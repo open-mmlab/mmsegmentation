@@ -57,7 +57,7 @@ jobs:
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install MMCV
         run: |
-          pip install mmcv-full==1.6.0 -f https://download.openmmlab.com/mmcv/dist/cpu/${{matrix.torch_version}}/index.html
+          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/${{matrix.torch_version}}/index.html
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: |
@@ -66,7 +66,7 @@ jobs:
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
         run: |
-          pip install timm
+          pip install 'timm<0.6.11'
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
@@ -130,7 +130,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full==1.6.0 -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
+          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -140,7 +140,7 @@ jobs:
           TORCH_CUDA_ARCH_LIST=7.0 pip install .
       - name: Run unittests and generate coverage report
         run: |
-          python -m pip install timm
+          python -m pip install 'timm<0.6.11'
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
@@ -197,7 +197,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full==1.6.0 -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
+          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -207,7 +207,7 @@ jobs:
           TORCH_CUDA_ARCH_LIST=7.0 pip install .
       - name: Run unittests and generate coverage report
         run: |
-          python -m pip install timm
+          python -m pip install 'timm<0.6.11'
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
@@ -242,14 +242,14 @@ jobs:
         run: pip install torch==1.8.2+${{ matrix.platform }} torchvision==0.9.2+${{ matrix.platform }} -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
       - name: Install MMCV
         run: |
-          pip install mmcv-full==1.6.0 -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.8/index.html --only-binary mmcv-full
+          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.8/index.html --only-binary mmcv-full
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: pip install -e .
       - name: Run unittests
         run: |
-          python -m pip install timm
+          python -m pip install 'timm<0.6.11'
           coverage run --branch --source mmseg -m pytest tests/
       - name: Generate coverage report
         run: |
