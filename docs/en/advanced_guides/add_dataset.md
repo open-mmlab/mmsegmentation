@@ -45,7 +45,7 @@ test_dataloader = val_dataloader
 
 The simplest way is to convert your dataset to organize your data into folders.
 
-An example of file structure is as followed.
+An example of file structure is as follows.
 
 ```none
 ├── data
@@ -65,7 +65,7 @@ An example of file structure is as followed.
 
 ```
 
-A training pair will consist of the files with same suffix in img_dir/ann_dir.
+A training pair will consist of files with the same suffix in img_dir/ann_dir.
 
 If `split` argument is given, only part of the files in img_dir/ann_dir will be loaded.
 We may specify the prefix of files we would like to be included in the split txt.
@@ -90,8 +90,8 @@ You may use `'P'` mode of [pillow](https://pillow.readthedocs.io/en/stable/handb
 
 ## Customize datasets by mixing dataset
 
-MMSegmentation also supports to mix dataset for training.
-Currently it supports to concat, repeat and multi-image mix datasets.
+MMSegmentation also supports mixing dataset for training.
+Currently it supports concatenating, repeating and multi-image mixing datasets.
 
 ### Repeat dataset
 
@@ -138,7 +138,7 @@ train_dataloader = dict(
     dataset=dict(type='ConcatDataset', datasets=[dataset_train_1, dataset_train_2]))
 ```
 
-In this case, `ann_dir_1` and `ann_dir_2` are corresponding to `ann_file_1.txt` and `ann_file_2.txt`.
+In this case, `ann_dir_1` and `ann_dir_2` correspond to `ann_file_1.txt` and `ann_file_2.txt`.
 
 ### Multi-image Mix Dataset
 
@@ -270,7 +270,7 @@ class MyDataset(BaseSegDataset):
 ```
 
 `classes` and `palette` in `METAINFO` are defined in `./mmseg/dataset/my_dataset.py`, which are class names and BGR values of annotations, respectively.
-Besides,`palette` would only be used in prediction visulization, which would not affect process of training and validation.
+Besides,`palette` would only be used in prediction visualization, which would not affect the process of training and validation.
 
 Specifically, you could set `reduce_zero_label=True` when you want to reset label `0` in annotation files to `255` which would be ignored when calculating loss, and all other label `i` would be `i-1`. More details could be found [here](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/datasets/transforms/loading.py#L110-L114).
 
