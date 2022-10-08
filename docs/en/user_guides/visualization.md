@@ -95,7 +95,7 @@ wget https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-
 wget https://user-images.githubusercontent.com/24582831/189833143-15f60f8a-4d1e-4cbb-a6e7-5e2233869fac.png --output-document aachen_000000_000019_gtFine_labelTrainIds.png
 ```
 
-Then you can find their local path and use the scrips below to visualize:
+Then you can find their local path and use the scripts below to visualize:
 
 ```python
 import mmcv
