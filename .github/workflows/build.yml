@@ -57,8 +57,7 @@ jobs:
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install MMCV
         run: |
-          pip install mim
-          mim install mmcv-full
+          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/${{matrix.torch_version}}/index.html
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: |
@@ -131,8 +130,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          pip install mim
-          python -m mim install mmcv-full
+          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -199,8 +197,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mim
-          python -m mim install mmcv-full
+          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -245,8 +242,7 @@ jobs:
         run: pip install torch==1.8.2+${{ matrix.platform }} torchvision==0.9.2+${{ matrix.platform }} -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
       - name: Install MMCV
         run: |
-          pip install mim
-          mim install mmcv-full
+          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.8/index.html --only-binary mmcv-full
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
