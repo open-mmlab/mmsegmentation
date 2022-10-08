@@ -99,12 +99,19 @@ jobs:
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
+        # timm from v0.6.11 requires torch>=1.7
+        if: ${{matrix.torch >= '1.7.0'}}
         run: |
           pip install timm
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-      # Only upload coverage report for python3.7 && pytorch1.8.1 cpu
+      - name: Skip timm unittests and generate coverage report
+        run: |
+          coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+          coverage xml
+          coverage report -m
+      # Only upload coverage report for python3.7 && pytorch1.8.1 without timm
       - name: Upload coverage to Codecov
         if: ${{matrix.torch == '1.8.1' && matrix.python-version == '3.7'}}
         uses: codecov/codecov-action@v2

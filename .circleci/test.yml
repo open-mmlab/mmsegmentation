@@ -69,13 +69,6 @@ jobs:
           command: |
             pip install -e .
       - run:
-          name: Run unittests
-          command: |
-            pip install timm
-            coverage run --branch --source mmseg -m pytest tests/
-            coverage xml
-            coverage report -m
-      - run:
           name: Skip timm unittests and generate coverage report
           command: |
             coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
@@ -121,10 +114,9 @@ jobs:
           command: |
             docker exec mmseg pip install -e .
       - run:
-          name: Run unittests
+          name: Run unittests but skip timm unittests
           command: |
-            docker exec mmseg pip install timm
-            docker exec mmseg pytest tests/
+            docker exec mmseg pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
 workflows:
   pr_stage_lint:
     when: << pipeline.parameters.lint_only >>
