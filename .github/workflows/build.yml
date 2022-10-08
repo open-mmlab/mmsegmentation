@@ -70,7 +70,7 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-        # As from v0.6.11, timm requires torch>=1.7
+        # timm from v0.6.11 requires torch>=1.7
         if: ${{matrix.torch >= '1.7.0'}}
       - name: Skip timm unittests and generate coverage report
         run: |
@@ -145,7 +145,7 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-        # As from v0.6.11, timm requires torch>=1.7
+        # timm from v0.6.11 requires torch>=1.7
         if: ${{matrix.torch >= '1.7.0'}}
       - name: Skip timm unittests and generate coverage report
         run: |
