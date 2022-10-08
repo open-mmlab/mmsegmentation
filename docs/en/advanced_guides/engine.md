@@ -66,11 +66,11 @@ The following common hooks are already reigistered by [default](https://github.c
 |        [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)        |                                     ensure distributed Sampler shuffle is active.                                     |    NORMAL (50)    |
 | [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/visualization/local_visualizer.py) |                             visualize validation and testing process prediction results.                              |    NORMAL (50)    |
 
-Noted that `SegVisualizationHook` is hook implemented in MMSegmentation, which would be introduced later.
+Noted that `SegVisualizationHook` is hook implemented in MMSegmentation, which will be introduced later.
 
 ### Common Hooks implemented in MMEngine
 
-Some hooks have been already implemented in MMEngine, they are:
+Some hooks have already been implemented in MMEngine, they are:
 
 |                                                         Hooks                                                         |                                             Usage                                              |   Priority   |
 | :-------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :----------: |
@@ -139,7 +139,7 @@ We will introduce Optimizer section through 3 different parts: Optimizer, Optimi
 
 We have already supported all the optimizers implemented by PyTorch, see `mmengine/optim/optimizer/builder.py`. To use and modify them, please change the `optimizer` field of config files.
 
-For example, if you want to use SGD, the modification could be as the following.
+For example, if you want to use SGD, the modification could be as follows.
 
 ```python
 optimizer = dict(type='SGD', lr=0.0003, weight_decay=0.0001)
