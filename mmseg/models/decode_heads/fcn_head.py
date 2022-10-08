@@ -48,9 +48,8 @@ class FCNHead(BaseDecodeHead):
                     dilation=dilation,
                     conv_cfg=self.conv_cfg,
                     norm_cfg=self.norm_cfg,
-                    act_cfg=self.act_cfg
-                ))
-            
+                    act_cfg=self.act_cfg))
+
         if len(convs) == 0:
             self.convs = nn.Identity()
         else:
