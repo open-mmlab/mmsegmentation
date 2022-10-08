@@ -76,7 +76,28 @@ Returns:
 We briefly describe the fields of the model's configuration in [the config documentation](../user_guides/1_config.md), here we elaborate on the `model.test_cfg` field. `model.test_cfg` is used to control forward behavior, the `forward` method in `"predict"` mode can run in two modes:
 
 - `whole_inference`: If `cfg.model.test_cfg.mode == 'whole'`, model will inference with full images.
+
+  An `whole_inference` mode example config:
+
+  ```python
+  model = dict(
+    type='EncoderDecoder'
+    ...
+    test_cfg=dict(mode='whole')
+  )
+  ```
+
 - `slide_inference`: If `cfg.model.test_cfg.mode == 'slide'`, model will inference by sliding-window. **Note:** if you select the `slide` mode, `cfg.model.test_cfg.stride` and `cfg.model.test_cfg.crop_size` should also be specified.
+
+  An `slide_inference` mode example config:
+
+  ```python
+  model = dict(
+    type='EncoderDecoder'
+    ...
+    test_cfg=dict(mode='slide', crop_size=256, stride=170)
+  )
+  ```
 
 ### train_step
 
