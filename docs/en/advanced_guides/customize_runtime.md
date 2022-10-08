@@ -36,7 +36,7 @@ E.g.:
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=8000)
 ```
 
-MMEngine defines several [basic loops](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py). Users could implement customized loops if the defined loops are not satisfied.
+MMEngine defines several [basic loops](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py). Users can implement customized loops if the defined loops are not satisfied.
 
 ## Hook
 
@@ -58,7 +58,7 @@ Before learning to create your customized hooks, it is recommended to learn the 
 
 Depending on your intention of this hook, you need to implement corresponding functions according to the hook point of your expectation.
 
-For example, if you want to modify the value of a hyper-parameter according to the training iter and two other hyper-parameters after every train iter, you could implement a hook like:
+For example, if you want to modify the value of a hyper-parameter according to the training iteration and two other hyper-parameters after every train iteration, you could implement a hook like:
 
 ```python
 # Copyright (c) OpenMMLab. All rights reserved.
@@ -134,7 +134,7 @@ default_hooks = dict(
     visualization=dict(type='SegVisualizationHook'))
 ```
 
-Here we reveals how what we can do with `logger` and `checkpoint`.
+Here we reveal what we can do with `logger` and `checkpoint`.
 
 #### Checkpoint config
 
@@ -144,7 +144,7 @@ The MMEngine runner will use `checkpoint` to initialize [`CheckpointHook`](https
 checkpoint = dict(interval=1)
 ```
 
-The users could set `max_keep_ckpts` to only save only small number of checkpoints or decide whether to store state dict of optimizer by `save_optimizer`. More details of the arguments are [here](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.CheckpointHook.html?highlight=CheckpointHook).
+The users could set `max_keep_ckpts` to only save a small number of checkpoints or decide whether to store state dict of optimizer by `save_optimizer`. More details of the arguments are [here](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.CheckpointHook.html?highlight=CheckpointHook).
 
 #### Log config
 
@@ -193,7 +193,7 @@ The constructor aims to build optimizer, optimizer wrapper and customize hyper-p
 
 The example and detailed information can be found in [MMEngine optimizer document](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
 
-Besides, We could use `custom_keys` to set different hyper-parameters of different modules.
+Besides, we could use `custom_keys` to set different hyper-parameters of different modules.
 
 Here is the `optim_wrapper` example of MAE. The config below sets weight decay multiplication to be 0 of `pos_embed`, `mask_token`, `norm` modules. During training, the weight decay of these modules will be `weight_decay * decay_mult`.
 
