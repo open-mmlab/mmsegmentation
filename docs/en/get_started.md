@@ -51,10 +51,8 @@ mim install "mmcv>=2.0.0rc1"
 Case a: If you develop and run mmseg directly, install it from source:
 
 ```shell
-git clone https://github.com/open-mmlab/mmsegmentation.git
+git clone -b dev-1.x https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
-git checkout dev-1.x
-# branch 'dev-1.x' set up to track remote branch 'dev-1.x' from 'origin'.
 pip install -v -e .
 # '-v' means verbose, or more output
 # '-e' means installing a project in editable mode,
