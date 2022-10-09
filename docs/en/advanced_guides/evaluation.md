@@ -1,10 +1,15 @@
 # Evaluation
 
+The evaluation procedure would be executed at [ValLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L300) and [TestLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L373), users can evaluate model performance during training or using the test script with simple settings in the configuration file.
+
+<center>
+  <img src='../../../resources/test_step.png' />
+  <center>test_step/val_step dataflow</center>
+</center>
+
 MMSegmentation implements [IoUMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/iou_metric.py) and [CitysMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/citys_metric.py) for evaluating the performance of models, based on the [BaseMetric](https://github.com/open-mmlab/mmengine/blob/main/mmengine/evaluator/metric.py) provided by [MMEngine](https://github.com/open-mmlab/mmengine). Please refer to [the documentation](https://mmengine.readthedocs.io/en/latest/tutorials/evaluation.html) for more details about the unified evaluation interface.
 
-Users can evaluate model performance during training or using the test script with simple settings in the configuration file.
-
-In MMSegmentation, we write the configuration of metrics in the config files of datasets and the configuration of the evaluation process in the `schedule_x` config files by default.
+In MMSegmentation, we write the settings of metrics in the config files of datasets and the configuration of the evaluation process in the `schedule_x` config files by default.
 
 For example, in the ADE20K config file `configs/_base_/dataset/ade20k.py`, on lines 51 to 52, we select `IoUMetric` as the evaluator and set `mIoU` as the metric:
 
