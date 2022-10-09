@@ -61,17 +61,15 @@ jobs:
           name: Install mmseg dependencies
           command: |
             python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch<< parameters.torch >>/index.html
-            python -m pip install mmdet
             python -m pip install -r requirements.txt
       - run:
           name: Build and install
           command: |
             python -m pip install -e .
       - run:
-          name: Run unittests
+          name: Run unittests but skip timm unittests
           command: |
-            python -m pip install timm
-            python -m coverage run --branch --source mmseg -m pytest tests/
+            python -m coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
             python -m coverage xml
             python -m coverage report -m
 
@@ -102,7 +100,6 @@ jobs:
           # python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch${{matrix.torch_version}}/index.html
           command: |
             python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
-            python -m pip install mmdet
             python -m pip install -r requirements.txt
       - run:
           name: Build and install
@@ -110,10 +107,9 @@ jobs:
             python setup.py check -m -s
             TORCH_CUDA_ARCH_LIST=7.0 python -m pip install -e .
       - run:
-          name: Run unittests
+          name: Run unittests but skip timm unittests
           command: |
-            python -m pip install timm
-            python -m pytest tests/
+            python -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
 
 workflows:
   unit_tests:
