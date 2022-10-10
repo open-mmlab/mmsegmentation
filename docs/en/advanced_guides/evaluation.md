@@ -7,13 +7,25 @@ The evaluation procedure would be executed at [ValLoop](https://github.com/open-
   <center>test_step/val_step dataflow</center>
 </center>
 
-MMSegmentation implements [IoUMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/iou_metric.py) and [CitysMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/citys_metric.py) for evaluating the performance of models, based on the [BaseMetric](https://github.com/open-mmlab/mmengine/blob/main/mmengine/evaluator/metric.py) provided by [MMEngine](https://github.com/open-mmlab/mmengine). Please refer to [the documentation](https://mmengine.readthedocs.io/en/latest/tutorials/evaluation.html) for more details about the unified evaluation interface.
+In MMSegmentation, we write the settings of dataloader and metrics in the config files of datasets and the configuration of the evaluation process in the `schedule_x` config files by default.
 
-In MMSegmentation, we write the settings of metrics in the config files of datasets and the configuration of the evaluation process in the `schedule_x` config files by default.
-
-For example, in the ADE20K config file `configs/_base_/dataset/ade20k.py`, on lines 51 to 52, we select `IoUMetric` as the evaluator and set `mIoU` as the metric:
+For example, in the ADE20K config file `configs/_base_/dataset/ade20k.py`, on lines 37 to 49, we configured the `val_dataloader` and `test_dataloader`, on lines 51 to 52, we select `IoUMetric` as the evaluator and set `mIoU` as the metric:
 
 ```python
+val_dataloader = dict(
+    batch_size=1,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='images/validation',
+            seg_map_path='annotations/validation'),
+        pipeline=test_pipeline))
+test_dataloader = val_dataloader
+
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
 test_evaluator = val_evaluator
 ```
@@ -29,6 +41,8 @@ test_cfg = dict(type='TestLoop')
 With the above two settings, MMSegmentation evaluates the **mIoU** metric of the model once every 4000 iterations during the training of 40K iterations.
 
 ## IoUMetric
+
+MMSegmentation implements [IoUMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/iou_metric.py) and [CitysMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/citys_metric.py) for evaluating the performance of models, based on the [BaseMetric](https://github.com/open-mmlab/mmengine/blob/main/mmengine/evaluator/metric.py) provided by [MMEngine](https://github.com/open-mmlab/mmengine). Please refer to [the documentation](https://mmengine.readthedocs.io/en/latest/tutorials/evaluation.html) for more details about the unified evaluation interface.
 
 Here we briefly describe the arguments and the two main methods of `IoUMetric`.
 
