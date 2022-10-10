@@ -8,7 +8,7 @@
 
 **Enhancement**
 
-- Improve structure and readability for FCNHead ([#2142](https://github.com/open-mmlab/mmsegmentation/pull/2142), [#2159](https://github.com/open-mmlab/mmsegmentation/pull/2159))
+- Improve structure and readability for FCNHead ([#2142](https://github.com/open-mmlab/mmsegmentation/pull/2142))
 - Support IterableDataset in distributed training ([#2151](https://github.com/open-mmlab/mmsegmentation/pull/2151))
 - Upgrade .dev scripts ([#2020](https://github.com/open-mmlab/mmsegmentation/pull/2020))
 - Upgrade pre-commit hooks ([#2155](https://github.com/open-mmlab/mmsegmentation/pull/2155))
