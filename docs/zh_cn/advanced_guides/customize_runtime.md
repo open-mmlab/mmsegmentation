@@ -1,29 +1,198 @@
-# 自定义运行设定（待更新）
+# 自定义运行设定
 
-## 自定义优化设定
+<!-- TOC -->
 
-### 自定义 PyTorch 支持的优化器
+- [自定义优化设定](#自定义优化设定)
+  - [循环控制器](#循环控制器)
+  - [钩子](#钩子)
+    - [Step 1: 创建一个新的钩子](#step-1-创建一个新的钩子)
+    - [Step 2: 导入一个新的钩子](#step-2-导入一个新的钩子)
+    - [Step 3: 修改配置文件](#step-3-修改配置文件)
+    - [修改默认的钩子](#修改默认的钩子)
+  - [优化器](#优化器)
+    - [优化器包 (Optimizer wrapper)](<#优化器包-(Optimizer-wrapper)>)
+    - [构造器](#构造器)
+    - [自定义新的优化器](#自定义新的优化器)
+    - [自定义优化器构造器](#自定义优化器构造器)
+    - [额外的设置](#额外的设置)
+  - [自定义参数调度器](#自定义参数调度器)
 
-我们已经支持 PyTorch 自带的所有优化器，唯一需要修改的地方是在配置文件里的 `optimizer` 域里面。
-例如，如果您想使用 `ADAM` (注意如下操作可能会让模型表现下降)，可以使用如下修改：
+<!-- /TOC -->
+
+OpenMMLab 代码库需要设计一个引擎去调度训练和推理过程的各个模块, 在 MMEngine 里面抽象出了 `Runner` (执行器) 来负责通用的算法模型的训练、测试、推理任务。用户一般可以直接使用 MMEngine 中的默认执行器，也可以对执行器进行修改以满足定制化需求。
+
+## 循环控制器
+
+MMEngine 定义了一些 [基础循环控制器](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py) 例如 `基于轮次的训练循环 (EpochBasedTrainLoop)`, `基于迭代次数的训练循环 (IterBasedTrainLoop)`, `标准的验证循环 (ValLoop)` and `标准的测试循环 (TestLoop)`.
+
+`循环控制器`  指的是训练, 验证和测试时的执行流程. 我们在配置文件里面使用 `train_cfg`, `val_cfg` 和 `test_cfg` 来构建 `Loop`.
+
+例如:
 
 ```python
-optimizer = dict(type='Adam', lr=0.0003, weight_decay=0.0001)
+# 使用基于迭代次数的训练循环 (IterBasedTrainLoop)去训练 80000个迭代次数.
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=8000)
 ```
 
-为了修改模型的学习率，使用者仅需要修改配置文件里 optimizer 的 `lr` 即可。
-使用者可以参照 PyTorch 的 [API 文档](https://pytorch.org/docs/stable/optim.html?highlight=optim#module-torch.optim)
-直接设置参数。
+## 钩子
 
-### 自定义自己实现的优化器
+MMSegmentation 会在 [`defualt_hooks`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) 里面注册一些常用的钩子:
+
+```python
+default_hooks = dict(
+    timer=dict(type='IterTimerHook'),
+    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=2000),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    visualization=dict(type='SegVisualizationHook'))
+```
+
+在学习如何自定义钩子之前, 推荐先学习 [engine.md](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 里面关于钩子的基本概念.
+
+### Step 1: 创建一个新的钩子
+
+你需要根据自己的需求去实现具有对应功能的钩子, 例如, 如果你想修改一个超参数 `model.hyper_paramete` 的值, 让它随着训练迭代次数而变化, 你可以实现如下的钩子:
+
+```python
+# Copyright (c) OpenMMLab. All rights reserved.
+from typing import Optional, Sequence
+
+from mmengine.hooks import Hook
+from mmengine.model import is_model_wrapper
+
+from mmseg.registry import HOOKS
+from mmseg.utils import get_model
+
+
+@HOOKS.register_module()
+class NewHook(Hook):
+    """Docstring for NewHook.
+    """
+
+    def __init__(self, a: int, b: int) -> None:
+        self.a = a
+        self.b = b
+
+    def before_train_iter(self,
+                          runner,
+                          batch_idx: int,
+                          data_batch: Optional[Sequence[dict]] = None) -> None:
+        cur_iter = runner.iter
+        # 当模型被包在 wrapper 里时获取这个模型
+        if is_model_wrapper(runner.model):
+          model = runner.model.module
+        model.hyper_parameter = self.a * cur_iter + self.b
+```
+
+### Step 2: 导入一个新的钩子
+
+随后我们需要确保 `NewHook` 被导入. 假设 `NewHook` 在 `mmseg/engine/hooks/new_hook.py` 里面, 我们需要在 `mmseg/engine/hooks/__init__.py` 修改如下:
+
+```python
+...
+from .new_hook import NewHook
+
+__all__ = [..., NewHook]
+```
+
+### Step 3: 修改配置文件
+
+你可以这样设定配置文件里的钩子， 在注册时．默认的优先级是 `NORMAL`.
+
+```python
+custom_hooks = [
+    dict(type='NewHook', a=a_value, b=b_value, priority='ABOVE_NORMAL')
+]
+```
+
+### 修改默认的钩子
+
+以 `default_hooks` 里面的 `logger` 和 `checkpoint` 为例, 我们来介绍如何修改 `default_hooks`中默认的钩子.
+
+#### 模型保存配置
+
+MMEngine 执行器将使用 `checkpoint` 来初始化 [`模型保存钩子 (CheckpointHook)`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19):
+
+```python
+checkpoint = dict(interval=1)
+```
+
+用户可以设置 `max_keep_ckpts` 来只保存少量的检查点或者用 `save_optimizer` 来决定是否保存 optimizer 的信息. 更多相关参数的细节可以参考[这里](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.CheckpointHook.html?highlight=CheckpointHook).
+
+#### 日志配置
+
+`日志钩子 (LoggerHook)` 被用来收集`执行器 (Runner)`里面不同组件的日志信息然后写入终端, JSON 文件, tensorboard 和 wandb 等地方.
+
+```python
+logger_hook_cfg = dict(interval=20)
+```
+
+在最新的 1.x 版本的 MMSegmentation 里面, 一些日志钩子 (LoggerHook) 例如 `TextLoggerHook`, `WandbLoggerHook` and `TensorboardLoggerHook` 将不再被使用.
+作为替代, MMEngine 使用 `LogProcessor` 来处理上述钩子处理的信息，它们现在在 [`MessageHub`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/logging/message_hub.py#L17), [`WandbVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L324) 和 [`TensorboardVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L472) 里面.
+
+## 优化器
+
+在自定义优化器配置文件之前, 推荐先学习 [engine.md](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 里面关于优化器的基本概念.
+这里是一个 SGD 优化器的例子:
+
+```python
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+```
+
+我们支持 PyTorch 里面所有的优化器, 更多细节可以参考 [MMEngine 优化器文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
+
+### 优化器包 (Optimizer wrapper)
+
+优化器包 (Optimizer wrapper) 提供一个统一的在不同硬件上的接口. 下面是一个 `optim_wrapper` 的例子:
+
+```python
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
+```
+
+除此之外, 如果你想应用混合精度训练, 你可以将上述配置文件修改如下:
+
+```python
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+optim_wrapper = dict(type='AmpOptimWrapper', optimizer=optimizer)
+```
+
+`AmpOptimWrapper` 中 `loss_scale` 的默认设置是 `dynamic`.
+
+### 构造器
+
+构造器可以用来创建优化器, 优化器包, 以及自定义模型网络不同层的超参数. 后者可以由配置文件里 `optim_wrapper` 中的 `paramwise_cfg` 来控制.
+
+相关示例和详细信息可以在 [MMEngine 优化器文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md) 里面查到.
+
+除此以外, 我们可以使用 `custom_keys` 来设置不同模块的超参数.
+
+这里是 MAE `optim_wrapper`　的例子, 下面的配置文件是在将 `pos_embed`, `mask_token`, `norm` 模块的 weight decay multiplication 设置成 0. 在训练时, 这些模块的 weight decay 将被变为 `weight_decay * decay_mult`.
+
+```python
+optimizer = dict(
+        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01)
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=optimizer,
+    paramwise_cfg=dict(
+        custom_keys={
+            'pos_embed': dict(decay_mult=0.),
+            'cls_token': dict(decay_mult=0.),
+            'norm': dict(decay_mult=0.)
+        }))
+```
+
+### 自定义新的优化器
 
 #### 1. 定义一个新的优化器
 
-一个自定义的优化器可以按照如下去定义：
+一个定制化的优化器可以被如下定义:
 
-假如您想增加一个叫做 `MyOptimizer` 的优化器，它的参数分别有 `a`, `b`, 和 `c`。
-您需要创建一个叫 `mmseg/core/optimizer` 的新文件夹。
-然后再在文件，即  `mmseg/core/optimizer/my_optimizer.py` 里面去实现这个新优化器：
+假设你想增加一个叫作 `MyOptimizer` 的优化器, 它有参数 `a`, `b` 和  `c`.
+你需要创建一个叫做　`mmseg/engine/optimizers` 的新的文件夹路径, 然后在 `mmseg/engine/optimizers/my_optimizer.py` 里面创建一个新的优化器.
+然后在文件里面实现这个优化器, 例如:
 
 ```python
 from .registry import OPTIMIZERS
@@ -37,62 +206,55 @@ class MyOptimizer(Optimizer):
 
 ```
 
-#### 2. 增加优化器到注册表 (registry)
+#### 2. 将优化器增加到注册器里
 
-为了让上述定义的模块被框架发现，首先这个模块应该被导入到主命名空间 (main namespace) 里。
-有两种方式可以实现它。
+To find the above module defined above, this module should be imported into the main namespace at first. There are two options to achieve it.
+为了让上面定义的模块可以被执行的程序发现, 这个模块需要先被导入主命名空间 (main namespace) 里面, 有两种方式去实现它:
 
-- 修改 `mmseg/core/optimizer/__init__.py` 来导入它
+- 修改 `mmseg/engine/optimizers/__init__.py` 来导入它.
 
-  新的被定义的模块应该被导入到 `mmseg/core/optimizer/__init__.py` 这样注册表将会发现新的模块并添加它
+  新定义的模块应该在 `mmseg/engine/optimizers/__init__.py` 里面导入, 这样注册器可以发现并添加这个新的模块:
 
 ```python
 from .my_optimizer import MyOptimizer
 ```
 
-- 在配置文件里使用 `custom_imports` 去手动导入它
+- 在配置文件里使用 `custom_imports` 来手动导入它.
 
 ```python
-custom_imports = dict(imports=['mmseg.core.optimizer.my_optimizer'], allow_failed_imports=False)
+custom_imports = dict(imports=['mmseg.engine.optimizers.my_optimizer'], allow_failed_imports=False)
 ```
 
-`mmseg.core.optimizer.my_optimizer` 模块将会在程序运行的开始被导入，并且 `MyOptimizer` 类将会自动注册。
-需要注意只有包含 `MyOptimizer`  类的包 (package) 应当被导入。
-而 `mmseg.core.optimizer.my_optimizer.MyOptimizer` **不能** 被直接导入。
+`mmseg.engine.optimizers.my_optimizer` 模块将在程序开始前被导入然后 `MyOptimizer` 类将会被自动注册.
+需要注意只有包括 `MyOptimizer` 类的包才应该被导入.
+`mmseg.engine.optimizers.my_optimizer.MyOptimizer` **不能** 被直接导入.
 
-事实上，使用者完全可以用另一个按这样导入方法的文件夹结构，只要模块的根路径已经被添加到 `PYTHONPATH` 里面。
+实际上使用这种导入方法, 使用者也可以用一个完全不同的文件路径结构, 只要模块路径可以在 `PYTHONPATH` 里面被定位.
 
-#### 3. 在配置文件里定义优化器
+#### 3. 在配置文件中修改优化器
 
-之后您可以在配置文件的 `optimizer` 域里面使用 `MyOptimizer`
-在配置文件里，优化器被定义在 `optimizer` 域里，如下所示：
+随后你可以在配置文件中的 `optimizer` 里使用 `MyOptimizer`. 如下所示, 在配置文件里, 优化器将会被字段 `optimizer` 来定义:
 
 ```python
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 ```
 
-为了使用您自己的优化器，这个域可以被改成：
+如果要使用你自己的优化器, 字段可以被修改成:
 
 ```python
 optimizer = dict(type='MyOptimizer', a=a_value, b=b_value, c=c_value)
 ```
 
-### 自定义优化器的构造器 (constructor)
+### 自定义优化器构造器
 
-有些模型可能需要在优化器里有一些特别参数的设置，例如 批归一化层 (BatchNorm layers) 的 权重衰减 (weight decay)。
-使用者可以通过自定义优化器的构造器去微调这些细粒度参数。
+一些模型的优化器可能会根据特定的参数而调整, 例如 BatchNorm 层的 weight decay. 使用者可以通过自定义优化器构造器来精细化设定不同参数的优化策略.
 
 ```python
-from mmcv.utils import build_from_cfg
+from mmengine.optim import DefaultOptimWrapperConstructor
+from mmseg.registry import OPTIM_WRAPPER_CONSTRUCTORS
 
-from mmcv.runner.optimizer import OPTIMIZER_BUILDERS, OPTIMIZERS
-from mmseg.utils import get_root_logger
-from .my_optimizer import MyOptimizer
-
-
-@OPTIMIZER_BUILDERS.register_module()
-class MyOptimizerConstructor(object):
-
+@OPTIM_WRAPPER_CONSTRUCTORS.register_module()
+class LearningRateDecayOptimizerConstructor(DefaultOptimWrapperConstructor):
     def __init__(self, optim_wrapper_cfg, paramwise_cfg=None):
 
     def __call__(self, model):
@@ -101,148 +263,42 @@ class MyOptimizerConstructor(object):
 
 ```
 
-默认的优化器构造器的实现可以参照 [这里](https://github.com/open-mmlab/mmcv/blob/9ecd6b0d5ff9d2172c49a182eaa669e9f27bb8e7/mmcv/runner/optimizer/default_constructor.py#L11) ，它也可以被用作新的优化器构造器的模板。
+默认的优化器构造器在[这里](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) 被实现, 它也可以用来作为新的优化器构造器的模板.
 
 ### 额外的设置
 
-优化器没有实现的一些技巧应该通过优化器构造器 (optimizer constructor) 或者钩子 (hook) 去实现，如设置基于参数的学习率 (parameter-wise learning rates)。我们列出一些常见的设置，它们可以稳定或加速模型的训练。
-如果您有更多的设置，欢迎在 PR 和 issue 里面提交。
+没有在优化器里被设置的训练技巧可以在优化器构造器 (例如逐个模型参数去设置学习率) 和钩子里实现. 我们列出了一些用来稳定或加速训练的常用设置, 如果想增加更多设置, 欢迎提交 issue 和 PR.
 
-- __使用梯度截断 (gradient clip) 去稳定训练__:
-
-  一些模型需要梯度截断去稳定训练过程，如下所示
+- __使用梯度裁剪 (gradient clip) 来稳定训练__:
+  一些模型需要使用梯度裁剪来让训练过程更加稳定. 示例如下:
 
   ```python
-  optimizer_config = dict(
-      _delete_=True, grad_clip=dict(max_norm=35, norm_type=2))
+  optim_wrapper = dict(
+      _delete_=True,
+      type='OptimWrapper',
+      grad_clip=dict(max_norm=1, norm_type=2))
   ```
 
-  如果您的配置继承自已经设置了  `optimizer_config` 的基础配置 (base config)，您可能需要 `_delete_=True` 来重写那些不需要的设置。更多细节请参照 [配置文件文档](https://mmsegmentation.readthedocs.io/en/latest/config.html) 。
+  如果你的配置文件继承自基配置文件, 后者已经设置了 `optim_wrapper`, 你需要使用 `_delete_=True` 来重写不必须的设置, 更多细节可以参考 [配置文件文档](https://mmsegmentation.readthedocs.io/en/latest/config.html).
 
-- __使用动量计划表 (momentum schedule) 去加速模型收敛__:
+## 自定义参数调度器
 
-  我们支持动量计划表去让模型基于学习率修改动量，这样可能让模型收敛地更快。
-  动量计划表经常和学习率计划表 (LR scheduler) 一起使用，例如如下配置文件就在 3D 检测里经常使用以加速收敛。
-  更多细节请参考 [CyclicLrUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/lr_updater.py#L327) 和 [CyclicMomentumUpdater](https://github.com/open-mmlab/mmcv/blob/f48241a65aebfe07db122e9db320c31b685dc674/mmcv/runner/hooks/momentum_updater.py#L130) 的实现。
+在自定义调度配置文件前, 推荐先了解 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/param_scheduler.md) 里面关于参数调度器的基本概念.
 
-  ```python
-  lr_config = dict(
-      policy='cyclic',
-      target_ratio=(10, 1e-4),
-      cyclic_times=1,
-      step_ratio_up=0.4,
-  )
-  momentum_config = dict(
-      policy='cyclic',
-      target_ratio=(0.85 / 0.95, 1),
-      cyclic_times=1,
-      step_ratio_up=0.4,
-  )
-  ```
-
-## 自定义训练计划表
-
-我们根据默认的训练迭代步数 40k/80k 来设置学习率，这在 MMCV 里叫做 [`PolyLrUpdaterHook`](https://github.com/open-mmlab/mmcv/blob/826d3a7b68596c824fa1e2cb89b6ac274f52179c/mmcv/runner/hooks/lr_updater.py#L196) 。
-我们也支持许多其他的学习率计划表：[这里](https://github.com/open-mmlab/mmcv/blob/master/mmcv/runner/hooks/lr_updater.py) ，例如 `CosineAnnealing` 和 `Poly` 计划表。下面是一些例子：
-
-- 步计划表 Step schedule:
-
-  ```python
-  lr_config = dict(policy='step', step=[9, 10])
-  ```
-
-- 余弦退火计划表 ConsineAnnealing schedule:
-
-  ```python
-  lr_config = dict(
-      policy='CosineAnnealing',
-      warmup='linear',
-      warmup_iters=1000,
-      warmup_ratio=1.0 / 10,
-      min_lr_ratio=1e-5)
-  ```
-
-## 自定义工作流 (workflow)
-
-工作流是一个专门定义运行顺序和轮数 (running order and epochs) 的列表 (phase, epochs)。
-默认情况下它设置成：
+这里是一个参数调度器的例子:
 
 ```python
-workflow = [('train', 1)]
-```
-
-意思是训练是跑 1 个 epoch。有时候使用者可能想检查模型在验证集上的一些指标（如 损失 loss，精确性 accuracy），我们可以这样设置工作流：
-
-```python
-[('train', 1), ('val', 1)]
-```
-
-于是 1 个 epoch 训练，1 个 epoch 验证将交替运行。
-
-**注意**:
-
-1. 模型的参数在验证的阶段不会被自动更新
-2. 配置文件里的关键词 `total_epochs` 仅控制训练的 epochs 数目，而不会影响验证时的工作流
-3. 工作流 `[('train', 1), ('val', 1)]` 和 `[('train', 1)]` 将不会改变 `EvalHook` 的行为，因为 `EvalHook` 被 `after_train_epoch`
-   调用而且验证的工作流仅仅影响通过调用 `after_val_epoch` 的钩子 (hooks)。因此， `[('train', 1), ('val', 1)]` 和 `[('train', 1)]`
-   的区别仅在于 runner 将在每次训练 epoch 结束后计算在验证集上的损失
-
-## 自定义钩 (hooks)
-
-### 使用 MMCV 实现的钩子 (hooks)
-
-如果钩子已经在 MMCV 里被实现，如下所示，您可以直接修改配置文件来使用钩子：
-
-```python
-custom_hooks = [
-    dict(type='MyHook', a=a_value, b=b_value, priority='NORMAL')
+param_scheduler = [
+    dict(type='LinearLR', by_epoch=False, start_factor=0.1, begin=0, end=1000),
+    dict(
+        type='PolyLR',
+        eta_min=1e-4,
+        power=0.9,
+        begin=1000,
+        end=160000,
+        by_epoch=False,
+    )
 ]
 ```
 
-### 修改默认的运行时间钩子 (runtime hooks)
-
-以下的常用的钩子没有被 `custom_hooks` 注册：
-
-- log_config
-- checkpoint_config
-- evaluation
-- lr_config
-- optimizer_config
-- momentum_config
-
-在这些钩子里，只有 logger hook 有 `VERY_LOW` 优先级，其他的优先级都是 `NORMAL`。
-上述提及的教程已经包括了如何修改 `optimizer_config`，`momentum_config` 和 `lr_config`。
-这里我们展示我们如何处理 `log_config`， `checkpoint_config` 和 `evaluation`。
-
-#### 检查点配置文件 (Checkpoint config)
-
-MMCV runner 将使用 `checkpoint_config` 去初始化 [`CheckpointHook`](https://github.com/open-mmlab/mmcv/blob/9ecd6b0d5ff9d2172c49a182eaa669e9f27bb8e7/mmcv/runner/hooks/checkpoint.py#L9).
-
-```python
-checkpoint_config = dict(interval=1)
-```
-
-使用者可以设置 `max_keep_ckpts` 来仅保存一小部分检查点或者通过 `save_optimizer` 来决定是否保存优化器的状态字典 (state dict of optimizer)。 更多使用参数的细节请参考 [这里](https://mmcv.readthedocs.io/en/latest/api.html#mmcv.runner.CheckpointHook) 。
-
-#### 日志配置文件 (Log config)
-
-`log_config` 包裹了许多日志钩 (logger hooks) 而且能去设置间隔 (intervals)。现在 MMCV 支持 `WandbLoggerHook`， `MlflowLoggerHook` 和 `TensorboardLoggerHook`。
-详细的使用请参照 [文档](https://mmcv.readthedocs.io/en/latest/api.html#mmcv.runner.LoggerHook) 。
-
-```python
-log_config = dict(
-    interval=50,
-    hooks=[
-        dict(type='TextLoggerHook'),
-        dict(type='TensorboardLoggerHook')
-    ])
-```
-
-#### 评估配置文件 (Evaluation config)
-
-`evaluation` 的配置文件将被用来初始化 [`EvalHook`](https://github.com/open-mmlab/mmsegmentation/blob/e3f6f655d69b777341aec2fe8829871cc0beadcb/mmseg/core/evaluation/eval_hooks.py#L7) 。
-除了 `interval` 键，其他的像 `metric` 这样的参数将被传递给 `dataset.evaluate()` 。
-
-```python
-evaluation = dict(interval=1, metric='mIoU')
-```
+**注意:** 当你修改 `train_cfg` 里面 `max_iters` 的时候, 请确保参数调度器 `param_scheduler` 里面的参数也被同时修改.
