@@ -337,7 +337,7 @@ class VisionTransformer(BaseModule):
                     constant_init(m, val=1.0, bias=0.)
 
     def _pos_embeding(self, patched_img, hw_shape, pos_embed):
-        """Positiong embeding method.
+        """Positioning embeding method.
 
         Resize the pos_embed, if the input image size doesn't match
             the training size.

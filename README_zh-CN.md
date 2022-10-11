@@ -74,10 +74,9 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ### 💎 稳定版本
 
-最新版本 v0.28.0 在 2022.9.8 发布：
+最新版本 v0.29.0 在 2022.10.10 发布：
 
-- 支持 Tversky Loss
-- 修复二值分割
+- 支持 PoolFormer (CVPR'2022)
 
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
 
@@ -127,6 +126,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [BEiT (ICLR'2022)](configs/beit)
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [MAE (CVPR'2022)](configs/mae)
+- [x] [PoolFormer (CVPR'2022)](configs/poolformer)
 
 已支持的算法：
 

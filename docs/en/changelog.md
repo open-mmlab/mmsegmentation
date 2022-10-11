@@ -1,5 +1,32 @@
 ## Changelog
 
+### V0.29.0 (10/10/2022)
+
+**New Features**
+
+- Support PoolFormer (CVPR'2022) ([#1537](https://github.com/open-mmlab/mmsegmentation/pull/1537))
+
+**Enhancement**
+
+- Improve structure and readability for FCNHead ([#2142](https://github.com/open-mmlab/mmsegmentation/pull/2142))
+- Support IterableDataset in distributed training ([#2151](https://github.com/open-mmlab/mmsegmentation/pull/2151))
+- Upgrade .dev scripts ([#2020](https://github.com/open-mmlab/mmsegmentation/pull/2020))
+- Upgrade pre-commit hooks ([#2155](https://github.com/open-mmlab/mmsegmentation/pull/2155))
+
+**Bug Fixes**
+
+- Fix mmseg.api.inference inference_segmentor ([#1849](https://github.com/open-mmlab/mmsegmentation/pull/1849))
+- fix bug about label_map in evaluation part ([#2075](https://github.com/open-mmlab/mmsegmentation/pull/2075))
+- Add missing dependencies to torchserve docker file ([#2133](https://github.com/open-mmlab/mmsegmentation/pull/2133))
+- Fix ddp unittest ([#2060](https://github.com/open-mmlab/mmsegmentation/pull/2060))
+
+**Contributors**
+
+- @jinwonkim93 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1849
+- @rlatjcj made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2075
+- @ShirleyWangCVR made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2151
+- @mangelroman made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2133
+
 ### V0.28.0 (9/8/2022)
 
 **New Features**

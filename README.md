@@ -77,10 +77,9 @@ The master branch works with **PyTorch 1.5+**.
 
 ### 💎 Stable version
 
-v0.28.0 was released in 9/08/2022:
+v0.29.0 was released on 10/10/2022:
 
-- Support Tversky Loss
-- Fix binary segmentation
+- Support PoolFormer (CVPR'2022)
 
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 
@@ -130,6 +129,7 @@ Supported backbones:
 - [x] [BEiT (ICLR'2022)](configs/beit)
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [MAE (CVPR'2022)](configs/mae)
+- [x] [PoolFormer (CVPR'2022)](configs/poolformer)
 
 Supported methods:
 
