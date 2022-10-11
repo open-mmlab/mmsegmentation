@@ -28,7 +28,7 @@ val_dataloader = dict(
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
 ```
 
-To be able to evaluate the model during training, for example, we add the evaluation configuration to the file `configs/schedules/schedule_40k.py` on lines 15 to 17:
+To be able to evaluate the model during training, for example, we add the evaluation configuration to the file `configs/schedules/schedule_40k.py` on lines 15 to 16:
 
 ```python
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=40000, val_interval=4000)
