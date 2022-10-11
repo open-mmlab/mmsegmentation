@@ -14,8 +14,9 @@ from PIL import Image
 from mmseg.core.evaluation import get_classes, get_palette
 from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
                             COCOStuffDataset, ConcatDataset, CustomDataset,
-                            ISPRSDataset, LoveDADataset, MultiImageMixDataset,
-                            PascalVOCDataset, PotsdamDataset, RepeatDataset,
+                            EgoHandsDataset, ISPRSDataset, LoveDADataset,
+                            MultiImageMixDataset, PascalVOCDataset,
+                            PotsdamDataset, RepeatDataset,
                             build_dataset, iSAIDDataset)
 
 
@@ -30,6 +31,7 @@ def test_classes():
     assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
     assert list(ISPRSDataset.CLASSES) == get_classes('vaihingen')
     assert list(iSAIDDataset.CLASSES) == get_classes('isaid')
+    assert list(EgoHandsDataset.CLASSES) == get_classes('egohands')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -75,6 +77,7 @@ def test_palette():
     assert PotsdamDataset.PALETTE == get_palette('potsdam')
     assert COCOStuffDataset.PALETTE == get_palette('cocostuff')
     assert iSAIDDataset.PALETTE == get_palette('isaid')
+    assert EgoHandsDataset.PALETTE == get_palette('egohands')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
