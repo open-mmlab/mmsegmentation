@@ -1,15 +1,15 @@
 # Evaluation
 
-The evaluation procedure would be executed at [ValLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L300) and [TestLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L373), users can evaluate model performance during training or using the test script with simple settings in the configuration file. The `ValLook` and `TestLook` are properties of [Runner](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L59), they will be built the first time they are called. To build the `ValLook` successfully, the `val_dataloader` and `val_evaluator` must be set when building `Runner` since `dataloder` and `evaluator` are required parameters, and the same goes for `TestLoop`. For more information about the Runner's design, please refer to the [documentoation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/design/runner.md) of [MMEngine](https://github.com/open-mmlab/mmengine).
+The evaluation procedure would be executed at [ValLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L300) and [TestLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L373), users can evaluate model performance during training or using the test script with simple settings in the configuration file. The `ValLoop` and `TestLoop` are properties of [Runner](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L59), they will be built the first time they are called. To build the `ValLoop` successfully, the `val_dataloader` and `val_evaluator` must be set when building `Runner` since `dataloder` and `evaluator` are required parameters, and the same goes for `TestLoop`. For more information about the Runner's design, please refer to the [documentoation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/design/runner.md) of [MMEngine](https://github.com/open-mmlab/mmengine).
 
 <center>
   <img src='../../../resources/test_step.png' />
   <center>test_step/val_step dataflow</center>
 </center>
 
-In MMSegmentation, we write the settings of dataloader and metrics in the config files of datasets and the configuration of the evaluation process in the `schedule_x` config files by default.
+In MMSegmentation, we write the settings of dataloader and metrics in the config files of datasets and the configuration of the evaluation loop in the `schedule_x` config files by default.
 
-For example, in the ADE20K config file `configs/_base_/dataset/ade20k.py`, on lines 37 to 49, we configured the `val_dataloader` and `test_dataloader`, on lines 51 to 52, we select `IoUMetric` as the evaluator and set `mIoU` as the metric:
+For example, in the ADE20K config file `configs/_base_/dataset/ade20k.py`, on lines 37 to 48, we configured the `val_dataloader`, on line 51, we select `IoUMetric` as the evaluator and set `mIoU` as the metric:
 
 ```python
 val_dataloader = dict(
@@ -24,10 +24,8 @@ val_dataloader = dict(
             img_path='images/validation',
             seg_map_path='annotations/validation'),
         pipeline=test_pipeline))
-test_dataloader = val_dataloader
 
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
-test_evaluator = val_evaluator
 ```
 
 To be able to evaluate the model during training, for example, we add the evaluation configuration to the file `configs/schedules/schedule_40k.py` on lines 15 to 17:
@@ -35,10 +33,31 @@ To be able to evaluate the model during training, for example, we add the evalua
 ```python
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=40000, val_interval=4000)
 val_cfg = dict(type='ValLoop')
-test_cfg = dict(type='TestLoop')
 ```
 
 With the above two settings, MMSegmentation evaluates the **mIoU** metric of the model once every 4000 iterations during the training of 40K iterations.
+
+If we would like to test the model after training, we need to add the `test_dataloader`, `test_evaluator` and `test_cfg` configs to the config file.
+
+```python
+test_dataloader = dict(
+    batch_size=1,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='images/validation',
+            seg_map_path='annotations/validation'),
+        pipeline=test_pipeline))
+
+test_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
+test_cfg = dict(type='TestLoop')
+```
+
+In MMSegmentation, the settings of `test_dataloader` and `test_evaluator` are the same as the `ValLoop`'s dataloader and evaluator by default, we can modify these settings to meet our needs.
 
 ## IoUMetric
 
