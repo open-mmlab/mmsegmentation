@@ -64,7 +64,7 @@ pip install -v -e .
 Case b: If you use mmsegmentation as a dependency or third-party package, install it with pip:
 
 ```shell
-pip install 'mmsegmentation>=1.0.0rc0'
+pip install "mmsegmentation>=1.0.0rc0"
 ```
 
 ### Verify the installation
@@ -159,8 +159,8 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 
 ```shell
 !pip3 install openmim
-!mim install 'mmcv>=2.0.0rc1'
 !mim install mmengine
+!mim install "mmcv>=2.0.0rc1"
 ```
 
 **Step 2.** Install MMSegmentation from the source.
