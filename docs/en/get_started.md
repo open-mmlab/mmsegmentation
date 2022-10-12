@@ -42,8 +42,8 @@ We recommend that users follow our best practices to install MMSegmentation. How
 
 ```shell
 pip install -U openmim
-mim install 'mmcv>=2.0.0rc1'
 mim install mmenigne
+mim install "mmcv>=2.0.0rc1"
 ```
 
 **Step 1.** Install MMSegmentation.
