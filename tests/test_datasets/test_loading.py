@@ -7,7 +7,9 @@ import mmcv
 import numpy as np
 from mmcv.transforms import LoadImageFromFile
 
-from mmseg.datasets.transforms import LoadAnnotations, LoadImageFromNDArray
+from mmseg.datasets.transforms import (LoadAnnotations, LoadBiomedicalData,
+                                       LoadBiomedicalImageFromFile,
+                                       LoadImageFromNDArray)
 
 
 class TestLoading:
@@ -184,4 +186,52 @@ class TestLoading:
                                    'to_float32=False, '
                                    "color_type='color', "
                                    "imdecode_backend='cv2', "
+                                   "file_client_args={'backend': 'disk'})")
+
+    def test_load_biomedical_img(self):
+        results = dict(
+            img_path=osp.join(self.data_prefix, 'biomedical.nii.gz'))
+        transform = LoadBiomedicalImageFromFile()
+        results = transform(copy.deepcopy(results))
+        assert results['img_path'] == osp.join(self.data_prefix,
+                                               'biomedical.nii.gz')
+        assert len(results['img'].shape) == 3
+        # TODO nifti load dtype is float64
+        assert results['img'].dtype == np.float64
+        assert results['ori_shape'] == results['img'].shape[:2]
+        assert repr(transform) == ('LoadBiomedicalImageFromFile('
+                                   'ignore_empty=False, '
+                                   "decode_backend='nifti', "
+                                   'first2last=False, '
+                                   'last2first=False, '
+                                   "file_client_args={'backend': 'disk'})")
+
+    def test_load_biomedical_annotation(self):
+        pass
+
+    def test_load_biomedical_data(self):
+        results = dict(img_path=osp.join(self.data_prefix, 'biomedical.npy'))
+        transform = LoadBiomedicalData(with_seg=True)
+        results = transform(copy.deepcopy(results))
+        assert results['img_path'] == osp.join(self.data_prefix,
+                                               'biomedical.npy')
+        assert results['img'][0].shape == results['gt_seg_map'].shape
+        assert results['img'].dtype == np.float32
+        assert results['ori_shape'] == results['img'].shape[:2]
+        assert repr(transform) == ('LoadBiomedicalData('
+                                   'with_seg=True, '
+                                   "decode_backend='numpy', "
+                                   'first2last=False, '
+                                   'last2first=False, '
+                                   "file_client_args={'backend': 'disk'})")
+
+        transform = LoadBiomedicalData(with_seg=False)
+        results = transform(copy.deepcopy(results))
+        assert len(results['img'].shape) == 4
+        assert results.get('gt_seg_map') is None
+        assert repr(transform) == ('LoadBiomedicalData('
+                                   'with_seg=False, '
+                                   "decode_backend='numpy', "
+                                   'first2last=False, '
+                                   'last2first=False, '
                                    "file_client_args={'backend': 'disk'})")

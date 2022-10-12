@@ -1,12 +1,16 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
+from typing import Dict
 
 import mmcv
+import mmengine
 import numpy as np
+from mmcv.transforms import BaseTransform
 from mmcv.transforms import LoadAnnotations as MMCV_LoadAnnotations
 from mmcv.transforms import LoadImageFromFile
 
 from mmseg.registry import TRANSFORMS
+from mmseg.utils import datafrombytes
 
 
 @TRANSFORMS.register_module()
@@ -168,3 +172,253 @@ class LoadImageFromNDArray(LoadImageFromFile):
         results['img_shape'] = img.shape[:2]
         results['ori_shape'] = img.shape[:2]
         return results
+
+
+@TRANSFORMS.register_module()
+class LoadBiomedicalImageFromFile(BaseTransform):
+    """Load an biomedical mage from file.
+
+    Required Keys:
+
+    - img_path
+
+    Modified Keys:
+
+    - img (np.ndarray, float64)
+    - img_shape
+    - ori_shape
+
+    Args:
+        decode_backend (str): The data decoding backend type.  Options are
+            'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
+        first2last (bool): Whether transpose data from channel first to channel
+            last. Defaults to False.
+        last2first (bool): Whether transpose data from channel last to channel
+            first. Defaults to False.
+        file_client_args (dict): Arguments to instantiate a FileClient.
+            See :class:`mmengine.fileio.FileClient` for details.
+            Defaults to ``dict(backend='disk')``.
+        ignore_empty (bool): Whether to allow loading empty image or file path
+            not existent. Defaults to False.
+    """
+
+    def __init__(self,
+                 decode_backend: str = 'nifti',
+                 first2last: bool = False,
+                 last2first: bool = False,
+                 file_client_args: dict = dict(backend='disk'),
+                 ignore_empty: bool = False) -> None:
+        self.decode_backend = decode_backend
+        self.first2last = first2last
+        self.last2first = last2first
+        self.file_client_args = file_client_args.copy()
+        self.file_client = mmengine.FileClient(**self.file_client_args)
+        self.ignore_empty = ignore_empty
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+        # TODO multiple protocol
+        filename = results['img_path']
+        try:
+            data_bytes = self.file_client.get(filename)
+            img = datafrombytes(data_bytes, backend=self.decode_backend)
+        except Exception as e:
+            if self.ignore_empty:
+                return None
+            else:
+                raise e
+
+        if self.first2last or self.last2first:
+            img = img.transpose(2, 1, 0)
+
+        results['img'] = img
+        results['img_shape'] = img.shape[:2]
+        results['ori_shape'] = img.shape[:2]
+        return results
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f'ignore_empty={self.ignore_empty}, '
+                    f"decode_backend='{self.decode_backend}', "
+                    f'first2last={self.first2last}, '
+                    f'last2first={self.last2first}, '
+                    f'file_client_args={self.file_client_args})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class LoadBiomedicalAnnotation(BaseTransform):
+    """Load ``seg_map`` annotation provided by biomedical dataset.
+
+    The annotation format is as the following:
+
+    .. code-block:: python
+
+        {
+            'gt_seg_map': np.ndarray (X, Y, Z)
+        }
+
+    Required Keys:
+
+    - seg_map_path (optional)
+
+    Added Keys:
+
+    - gt_seg_map (np.uint8)
+
+    Args:
+        with_seg (bool): Whether to parse and load the semantic segmentation
+            annotation. Defaults to False.
+        decode_backend (str): The data decoding backend type.  Options are
+            'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
+        first2last (bool): Whether transpose data from channel first to channel
+            last. Defaults to False.
+        last2first (bool): Whether transpose data from channel last to channel
+            first. Defaults to False.
+        file_client_args (dict): Arguments to instantiate a FileClient.
+            See :class:`mmengine.fileio.FileClient` for details.
+            Defaults to ``dict(backend='disk')``.
+    """
+
+    def __init__(
+        self,
+        with_seg: bool = False,
+        decode_backend: str = 'nifti',
+        first2last: bool = False,
+        last2first: bool = False,
+        file_client_args: dict = dict(backend='disk')
+    ) -> None:
+        super().__init__()
+        self.with_seg = with_seg
+        self.decode_backend = decode_backend
+        self.first2last = first2last
+        self.last2first = last2first
+        self.file_client_args = file_client_args.copy()
+        self.file_client = mmengine.FileClient(**self.file_client_args)
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+        data_bytes = self.file_client.get(results['seg_map_path'])
+        gt_seg_map = datafrombytes(data_bytes, backend=self.decode_backend)
+
+        if self.first2last or self.last2first:
+            gt_seg_map = gt_seg_map.transpose(2, 1, 0)
+
+        results['gt_seg_map'] = gt_seg_map
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f'with_seg={self.with_seg}, '
+                    f"decode_backend='{self.decode_backend}', "
+                    f'first2last={self.first2last}, '
+                    f'last2first={self.last2first}, '
+                    f'file_client_args={self.file_client_args})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class LoadBiomedicalData(BaseTransform):
+    """Load an biomedical image and annotation from file.
+
+    The loading data format is as the following:
+
+    .. code-block:: python
+
+        {
+            'img': np.ndarray data[:-1, X, Y, Z]
+            'seg_map': np.ndarray data[-1, X, Y, Z]
+        }
+
+
+    Required Keys:
+
+    - img_path
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+    - img_shape
+    - ori_shape
+
+    Args:
+        with_seg (bool): Whether to parse and load the semantic segmentation
+            annotation. Defaults to False.
+        decode_backend (str): The data decoding backend type.  Options are
+            'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
+        first2last (bool): Whether transpose data from channel first to channel
+            last. Defaults to False.
+        last2first (bool): Whether transpose data from channel last to channel
+            first. Defaults to False.
+        file_client_args (dict): Arguments to instantiate a FileClient.
+            See :class:`mmengine.fileio.FileClient` for details.
+            Defaults to ``dict(backend='disk')``.
+        ignore_empty (bool): Whether to allow loading empty image or file path
+            not existent. Defaults to False.
+    """
+
+    def __init__(self,
+                 with_seg=False,
+                 decode_backend: str = 'numpy',
+                 first2last: bool = False,
+                 last2first: bool = False,
+                 file_client_args: dict = dict(backend='disk'),
+                 ignore_empty: bool = False) -> None:
+        self.with_seg = with_seg
+        self.decode_backend = decode_backend
+        self.first2last = first2last
+        self.last2first = last2first
+        self.file_client_args = file_client_args.copy()
+        self.file_client = mmengine.FileClient(**self.file_client_args)
+        self.ignore_empty = ignore_empty
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+        data_bytes = self.file_client.get(results['img_path'])
+        data = datafrombytes(data_bytes, backend=self.decode_backend)
+        # img is 4D data (N, X, Y, Z), N is the number of protocol
+        img = data[:-1, :]
+
+        if self.first2last or self.last2first:
+            img = img.transpose(0, 3, 2, 1)
+
+        results['img'] = img
+        results['img_shape'] = img.shape[:2]
+        results['ori_shape'] = img.shape[:2]
+
+        if self.with_seg:
+            gt_seg_map = data[-1:, :]
+            if self.first2last or self.last2first:
+                gt_seg_map = gt_seg_map.transpose(2, 1, 0)
+            results['gt_seg_map'] = gt_seg_map
+        return results
+
+    def __repr__(self) -> str:
+        repr_str = (f'{self.__class__.__name__}('
+                    f'with_seg={self.with_seg}, '
+                    f"decode_backend='{self.decode_backend}', "
+                    f'first2last={self.first2last}, '
+                    f'last2first={self.last2first}, '
+                    f'file_client_args={self.file_client_args})')
+        return repr_str
