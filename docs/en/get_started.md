@@ -64,7 +64,7 @@ pip install -v -e .
 Case b: If you use mmsegmentation as a dependency or third-party package, install it with pip:
 
 ```shell
-pip install 'mmsegmentation>=1.0.0rc0'
+pip install "mmsegmentation>=1.0.0rc0"
 ```
 
 ### Verify the installation
