@@ -408,7 +408,7 @@ class LoadBiomedicalData(BaseTransform):
         results['ori_shape'] = img.shape[:2]
 
         if self.with_seg:
-            gt_seg_map = data[-1:, :]
+            gt_seg_map = data[-1, :]
             if self.first2last or self.last2first:
                 gt_seg_map = gt_seg_map.transpose(2, 1, 0)
             results['gt_seg_map'] = gt_seg_map
