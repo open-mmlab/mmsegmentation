@@ -51,7 +51,7 @@ class IoUMetric(BaseMetric):
         """Process one batch of data and data_samples.
 
         The processed results should be stored in ``self.results``, which will
-        be used to computed the metrics when all batches have been processed.
+        be used to compute the metrics when all batches have been processed.
 
         Args:
             data_batch (dict): A batch of data from the dataloader.
