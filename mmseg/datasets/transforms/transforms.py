@@ -59,8 +59,8 @@ class ResizeToMultiple(BaseTransform):
             if self.interpolation else 'bilinear')
 
         results['img'] = img
-        results['img_shape'] = img.shape
-        results['pad_shape'] = img.shape
+        results['img_shape'] = img.shape[:2]
+        results['pad_shape'] = img.shape[:2]
 
         # Align segmentation map to multiple of size divisor.
         for key in results.get('seg_fields', []):
