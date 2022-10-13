@@ -210,9 +210,10 @@ class TestLoading:
         pass
 
     def test_load_biomedical_data(self):
-        results = dict(img_path=osp.join(self.data_prefix, 'biomedical.npy'))
+        input_results = dict(
+            img_path=osp.join(self.data_prefix, 'biomedical.npy'))
         transform = LoadBiomedicalData(with_seg=True)
-        results = transform(copy.deepcopy(results))
+        results = transform(copy.deepcopy(input_results))
         assert results['img_path'] == osp.join(self.data_prefix,
                                                'biomedical.npy')
         assert results['img'][0].shape == results['gt_seg_map'].shape
@@ -226,7 +227,7 @@ class TestLoading:
                                    "file_client_args={'backend': 'disk'})")
 
         transform = LoadBiomedicalData(with_seg=False)
-        results = transform(copy.deepcopy(results))
+        results = transform(copy.deepcopy(input_results))
         assert len(results['img'].shape) == 4
         assert results.get('gt_seg_map') is None
         assert repr(transform) == ('LoadBiomedicalData('

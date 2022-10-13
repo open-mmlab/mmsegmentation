@@ -351,7 +351,7 @@ class LoadBiomedicalData(BaseTransform):
     Modified Keys:
 
     - img
-    - gt_seg_map
+    - gt_seg_map (optional)
     - img_shape
     - ori_shape
 
