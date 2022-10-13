@@ -4,7 +4,6 @@ import io
 import pickle
 
 import numpy as np
-from nibabel import FileHolder, Nifti1Image
 
 
 def datafrombytes(content: bytes, backend: str = 'numpy') -> np.ndarray:
@@ -26,6 +25,11 @@ def datafrombytes(content: bytes, backend: str = 'numpy') -> np.ndarray:
         with io.BytesIO(content) as f:
             if backend == 'nifti':
                 f = gzip.open(f)
+                try:
+                    from nibabel import FileHolder, Nifti1Image
+                except ImportError:
+                    print('nifti files io depends on nibabel, please run'
+                          '`pip install nibabel` to install it')
                 fh = FileHolder(fileobj=f)
                 data = Nifti1Image.from_file_map({'header': fh, 'image': fh})
                 data = Nifti1Image.from_bytes(data.to_bytes()).get_fdata()
