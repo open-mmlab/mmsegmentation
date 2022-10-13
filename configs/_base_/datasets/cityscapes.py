@@ -23,6 +23,20 @@ test_pipeline = [
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
 ]
+tta_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations'),
+    dict(
+        type='TestTimeAug',
+        scales=(2048, 1024),
+        scale_factor=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
+        allow_flip=True,
+        flip_direction='horizontal',
+        resize_cfg=dict(type='Resize', keep_ratio=True),
+        flip_cfg=dict(type='RandomFlip'),
+        transforms=[dict(type='PackSegInputs')]),
+    # dict(type='PackSegInputs')
+]
 train_dataloader = dict(
     batch_size=2,
     num_workers=2,
