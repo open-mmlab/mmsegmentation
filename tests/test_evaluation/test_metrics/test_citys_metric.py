@@ -46,6 +46,8 @@ class TestCitysMetric(TestCase):
                 'tests/data/pseudo_cityscapes_dataset/gtFine/val/\
                     frankfurt/frankfurt_000000_000294_gtFine_labelTrainIds.png'
 
+            mm_inputs['seg_map_path'] = mm_inputs['data_sample'][
+                'seg_map_path']
             packed_inputs.append(mm_inputs)
 
         return packed_inputs
@@ -96,16 +98,20 @@ class TestCitysMetric(TestCase):
     def test_evaluate(self):
         """Test using the metric in the same way as Evalutor."""
 
-        data_batch = self._demo_mm_inputs()
-        predictions = self._demo_mm_model_output()
+        data_batch = self._demo_mm_inputs(2)
+        predictions = self._demo_mm_model_output(2)
+        data_samples = [
+            dict(**data, **result)
+            for data, result in zip(data_batch, predictions)
+        ]
         iou_metric = CitysMetric(citys_metrics=['cityscapes'])
-        iou_metric.process(data_batch, predictions)
+        iou_metric.process(data_batch, data_samples)
         res = iou_metric.evaluate(6)
         self.assertIsInstance(res, dict)
         # test to_label_id = True
         iou_metric = CitysMetric(
             citys_metrics=['cityscapes'], to_label_id=True)
-        iou_metric.process(data_batch, predictions)
+        iou_metric.process(data_batch, data_samples)
         res = iou_metric.evaluate(6)
         self.assertIsInstance(res, dict)
         import shutil
