@@ -17,8 +17,8 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 36.0
-      mIoU(ms+flip): 36.42
+      mIoU: 36.68
+      mIoU(ms+flip): 38.22
   Config: configs/poolformer/fpn_poolformer_s12_8x4_512x512_40k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s12_8x4_512x512_40k_ade20k/fpn_poolformer_s12_8x4_512x512_40k_ade20k_20220501_115154-b5aa2f49.pth
 - Name: fpn_poolformer_s24_8x4_512x512_40k_ade20k
@@ -39,8 +39,8 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 39.35
-      mIoU(ms+flip): 39.73
+      mIoU: 40.12
+      mIoU(ms+flip): 40.97
   Config: configs/poolformer/fpn_poolformer_s24_8x4_512x512_40k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s24_8x4_512x512_40k_ade20k/fpn_poolformer_s24_8x4_512x512_40k_ade20k_20220503_222049-394a7cf7.pth
 - Name: fpn_poolformer_s36_8x4_512x512_40k_ade20k
@@ -61,8 +61,8 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 40.64
-      mIoU(ms+flip): 40.99
+      mIoU: 41.61
+      mIoU(ms+flip): 42.61
   Config: configs/poolformer/fpn_poolformer_s36_8x4_512x512_40k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s36_8x4_512x512_40k_ade20k/fpn_poolformer_s36_8x4_512x512_40k_ade20k_20220501_151122-b47e607d.pth
 - Name: fpn_poolformer_m36_8x4_512x512_40k_ade20k
@@ -83,8 +83,8 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 40.91
-      mIoU(ms+flip): 41.28
+      mIoU: 41.95
+      mIoU(ms+flip): 43.24
   Config: configs/poolformer/fpn_poolformer_m36_8x4_512x512_40k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_m36_8x4_512x512_40k_ade20k/fpn_poolformer_m36_8x4_512x512_40k_ade20k_20220501_164230-3dc83921.pth
 - Name: fpn_poolformer_m48_8x4_512x512_40k_ade20k
@@ -105,7 +105,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 41.82
-      mIoU(ms+flip): 42.2
+      mIoU: 42.43
+      mIoU(ms+flip): 43.6
   Config: configs/poolformer/fpn_poolformer_m48_8x4_512x512_40k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_m48_8x4_512x512_40k_ade20k/fpn_poolformer_m48_8x4_512x512_40k_ade20k_20220504_003923-64168d3b.pth
