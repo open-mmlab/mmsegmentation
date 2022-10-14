@@ -39,7 +39,7 @@ Transformers have shown great potential in computer vision tasks. A common belie
 - PoolFormer backbone needs to install [MMClassification](https://github.com/open-mmlab/mmclassification) first, which has abundant backbones for downstream tasks.
 
 ```shell
-pip install mmcls>=0.23.0
+pip install "mmcls>=1.0.0rc0"
 ```
 
 - The pretrained models could also be downloaded from [PoolFormer config of MMClassification](https://github.com/open-mmlab/mmclassification/tree/master/configs/poolformer).
