@@ -678,4 +678,4 @@ def test_resize_to_multiple():
     results = transform(results)
     assert results['img'].shape == (224, 256, 3)
     assert results['gt_semantic_seg'].shape == (224, 256)
-    assert results['img_shape'] == (224, 256, 3)
+    assert results['img_shape'] == (224, 256)
