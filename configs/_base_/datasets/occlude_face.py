@@ -1,0 +1,82 @@
+dataset_type = 'FaceOccluded'
+data_root = 'data/occlusion-aware-dataset'
+crop_size = (512, 512)
+img_norm_cfg = dict(
+    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations'),
+    dict(type='Resize', img_scale=(512, 512)),
+    dict(type='RandomFlip', prob=0.5),
+    dict(type='RandomRotate', degree=(-30, 30), prob=0.5),
+    dict(type='PhotoMetricDistortion'),
+    dict(
+        type='Normalize',
+        mean=[123.675, 116.28, 103.53],
+        std=[58.395, 57.12, 57.375],
+        to_rgb=True),
+    dict(type='DefaultFormatBundle'),
+    dict(type='Collect', keys=['img', 'gt_semantic_seg'])
+]
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=(512, 512),
+        img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
+        flip=True,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='ResizeToMultiple', size_divisor=32),
+            dict(type='RandomFlip'),
+            dict(
+                type='Normalize',
+                mean=[123.675, 116.28, 103.53],
+                std=[58.395, 57.12, 57.375],
+                to_rgb=True),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img'])
+        ])
+]
+
+dataset_train_A = dict(
+    type='FaceOccluded',
+    data_root=data_root,
+    img_dir='CelebAMask-HQ-original/image',
+    ann_dir='CelebAMask-HQ-original/mask_edited',
+    split='CelebAMask-HQ-original/split/train_ori.txt',
+    pipeline=train_pipeline)
+
+dataset_train_B = dict(
+    type='FaceOccluded',
+    data_root=data_root,
+    img_dir='NatOcc-SOT/image',
+    ann_dir='NatOcc-SOT/mask',
+    split='NatOcc-SOT/split/train.txt',
+    pipeline=train_pipeline)
+
+
+dataset_valid = dict(
+        type='FaceOccluded',
+        data_root=data_root,
+        img_dir='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/image',
+        ann_dir='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/mask',
+        split='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/split/val.txt',
+        pipeline=test_pipeline)
+
+dataset_test = dict(
+        type='FaceOccluded',
+        data_root=data_root,
+        img_dir='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/image',
+        ann_dir='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/mask',
+        split='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/test.txt',
+        pipeline=test_pipeline)
+
+data = dict(
+    samples_per_gpu=2,
+    workers_per_gpu=2,
+    train=[
+            dataset_train_A,dataset_train_B,
+    ],
+    val= dataset_valid,
+    test=dataset_test)
