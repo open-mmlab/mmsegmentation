@@ -1,5 +1,5 @@
-dataset_type = 'FaceOccludedDataset'
-data_root = 'data/occlusion-aware-face-dataset'
+dataset_type = 'FaceOccluded'
+data_root = 'data/occlusion-aware-dataset'
 crop_size = (512, 512)
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
@@ -40,39 +40,43 @@ test_pipeline = [
 ]
 
 dataset_train_A = dict(
-    type=dataset_type,
+    type='FaceOccluded',
     data_root=data_root,
-    img_dir='NatOcc_hand_sot/img',
-    ann_dir='NatOcc_hand_sot/mask',
-    split='train.txt',
+    img_dir='CelebAMask-HQ-original/image',
+    ann_dir='CelebAMask-HQ-original/mask_edited',
+    split='CelebAMask-HQ-original/split/train_ori.txt',
     pipeline=train_pipeline)
 
 dataset_train_B = dict(
-    type=dataset_type,
+    type='FaceOccluded',
     data_root=data_root,
-    img_dir='NatOcc_object/img',
-    ann_dir='NatOcc_object/mask',
-    split='train.txt',
+    img_dir='NatOcc-SOT/image',
+    ann_dir='NatOcc-SOT/mask',
+    split='NatOcc-SOT/split/train.txt',
     pipeline=train_pipeline)
 
-dataset_train_C = dict(
-    type=dataset_type,
-    data_root=data_root,
-    img_dir='RandOcc/img',
-    ann_dir='RandOcc/mask',
-    split='train.txt',
-    pipeline=train_pipeline)
 
 dataset_valid = dict(
-    type=dataset_type,
-    data_root=data_root,
-    img_dir='RealOcc/image',
-    ann_dir='RealOcc/mask',
-    split='RealOcc/split/val.txt',
-    pipeline=test_pipeline)
+        type='FaceOccluded',
+        data_root=data_root,
+        img_dir='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/image',
+        ann_dir='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/mask',
+        split='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/split/val.txt',
+        pipeline=test_pipeline)
+
+dataset_test = dict(
+        type='FaceOccluded',
+        data_root=data_root,
+        img_dir='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/image',
+        ann_dir='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/mask',
+        split='occlusion-aware-dataset/HQ-FO-dataset/RealOcc/test.txt',
+        pipeline=test_pipeline)
 
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=2,
-    train=[dataset_train_A, dataset_train_B, dataset_train_C],
-    val=dataset_valid)
+    train=[
+            dataset_train_A,dataset_train_B,
+    ],
+    val= dataset_valid,
+    test=dataset_test)

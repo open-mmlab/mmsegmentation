@@ -1,5 +1,5 @@
 # +
-_base_ = '../_base_/datasets/occlude_face.py'
+_base_ = '../_base_/dataset/occlude_face.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
@@ -60,4 +60,7 @@ runner = dict(type='IterBasedRunner', max_iters=30000)
 checkpoint_config = dict(by_epoch=False, interval=400)
 evaluation = dict(
     interval=400, metric=['mIoU', 'mDice', 'mFscore'], pre_eval=True)
+
+work_dir = './work_dirs/deeplabv3plus_r101_512x512_C-CM+C-WO-NatOcc-SOT'
+gpu_ids = range(0, 2)
 auto_resume = False
