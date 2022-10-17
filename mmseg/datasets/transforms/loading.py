@@ -279,9 +279,8 @@ class LoadBiomedicalAnnotation(BaseTransform):
     Added Keys:
 
     - gt_seg_map (np.ndarray): Biomedical seg map with shape (X, Y, Z) or
-        (Z, Y, X), N is the number of modalities, and data type is float32
-        if set to_float32 = True, or float64 if decode_backend is 'nifti' and
-        to_float32 is False.
+        (Z, Y, X), and data type is float32 if set to_float32 = True, or
+        float64 if decode_backend is 'nifti' and to_float32 is False.
 
     Args:
         decode_backend (str): The data decoding backend type.  Options are
