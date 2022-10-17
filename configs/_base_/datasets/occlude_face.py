@@ -55,7 +55,6 @@ dataset_train_B = dict(
     split='train.txt',
     pipeline=train_pipeline)
 
-
 dataset_train_C = dict(
     type=dataset_type,
     data_root=data_root,
@@ -65,17 +64,15 @@ dataset_train_C = dict(
     pipeline=train_pipeline)
 
 dataset_valid = dict(
-        type=dataset_type,
-        data_root=data_root,
-        img_dir='RealOcc/image',
-        ann_dir='RealOcc/mask',
-        split='RealOcc/split/val.txt',
-        pipeline=test_pipeline)
+    type=dataset_type,
+    data_root=data_root,
+    img_dir='RealOcc/image',
+    ann_dir='RealOcc/mask',
+    split='RealOcc/split/val.txt',
+    pipeline=test_pipeline)
 
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=2,
-    train=[
-            dataset_train_A, dataset_train_B, dataset_train_C
-    ],
-    val= dataset_valid)
+    train=[dataset_train_A, dataset_train_B, dataset_train_C],
+    val=dataset_valid)
