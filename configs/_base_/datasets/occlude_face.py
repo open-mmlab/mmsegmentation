@@ -42,19 +42,27 @@ test_pipeline = [
 dataset_train_A = dict(
     type=dataset_type,
     data_root=data_root,
-    img_dir='CelebAMask-HQ-original/image',
-    ann_dir='CelebAMask-HQ-original/mask_edited',
-    split='CelebAMask-HQ-original/split/train.txt',
+    img_dir='NatOcc_hand_sot/img',
+    ann_dir='NatOcc_hand_sot/mask',
+    split='train.txt',
     pipeline=train_pipeline)
 
 dataset_train_B = dict(
     type=dataset_type,
     data_root=data_root,
-    img_dir='NatOcc-SOT/image',
-    ann_dir='NatOcc-SOT/mask',
-    split='NatOcc-SOT/split/train.txt',
+    img_dir='NatOcc_object/img',
+    ann_dir='NatOcc_object/mask',
+    split='train.txt',
     pipeline=train_pipeline)
 
+
+dataset_train_C = dict(
+    type=dataset_type,
+    data_root=data_root,
+    img_dir='RandOcc/img',
+    ann_dir='RandOcc/mask',
+    split='train.txt',
+    pipeline=train_pipeline)
 
 dataset_valid = dict(
         type=dataset_type,
@@ -64,19 +72,10 @@ dataset_valid = dict(
         split='RealOcc/split/val.txt',
         pipeline=test_pipeline)
 
-dataset_test = dict(
-        type=dataset_type,
-        data_root=data_root,
-        img_dir='RealOcc/image',
-        ann_dir='RealOcc/mask',
-        split='RealOcc/test.txt',
-        pipeline=test_pipeline)
-
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=2,
     train=[
-            dataset_train_A,dataset_train_B
+            dataset_train_A, dataset_train_B, dataset_train_C
     ],
-    val= dataset_valid,
-    test=dataset_test)
+    val= dataset_valid)
