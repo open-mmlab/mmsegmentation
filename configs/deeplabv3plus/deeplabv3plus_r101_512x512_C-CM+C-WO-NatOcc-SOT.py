@@ -1,5 +1,5 @@
 # +
-_base_ = '../_base_/dataset/occlude_face.py'
+_base_ = '../_base_/datasets/occlude_face.py'
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
