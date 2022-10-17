@@ -225,14 +225,10 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         """
 
         filename = results['img_path']
-        try:
-            data_bytes = self.file_client.get(filename)
-            img = datafrombytes(data_bytes, backend=self.decode_backend)
-        except Exception as e:
-            if self.ignore_empty:
-                return None
-            else:
-                raise e
+
+        data_bytes = self.file_client.get(filename)
+        img = datafrombytes(data_bytes, backend=self.decode_backend)
+
         if len(img.shape) == 3:
             img = img[None, ...]
 
