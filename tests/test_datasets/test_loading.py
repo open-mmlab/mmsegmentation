@@ -202,7 +202,6 @@ class TestLoading:
         assert results['img'].dtype == np.float64
         assert results['ori_shape'] == results['img'].shape[1:]
         assert repr(transform) == ('LoadBiomedicalImageFromFile('
-                                   'ignore_empty=False, '
                                    "decode_backend='nifti', "
                                    'xyz2zyx=False, '
                                    'zyx2xyz=False, '

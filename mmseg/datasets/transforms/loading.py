@@ -199,22 +199,20 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
-        ignore_empty (bool): Whether to allow loading empty image or file path
-            not existent. Defaults to False.
     """
 
-    def __init__(self,
-                 decode_backend: str = 'nifti',
-                 xyz2zyx: bool = False,
-                 zyx2xyz: bool = False,
-                 file_client_args: dict = dict(backend='disk'),
-                 ignore_empty: bool = False) -> None:
+    def __init__(
+        self,
+        decode_backend: str = 'nifti',
+        xyz2zyx: bool = False,
+        zyx2xyz: bool = False,
+        file_client_args: dict = dict(backend='disk')
+    ) -> None:
         self.decode_backend = decode_backend
         self.xyz2zyx = xyz2zyx
         self.zyx2xyz = zyx2xyz
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
-        self.ignore_empty = ignore_empty
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
@@ -248,7 +246,6 @@ class LoadBiomedicalImageFromFile(BaseTransform):
 
     def __repr__(self):
         repr_str = (f'{self.__class__.__name__}('
-                    f'ignore_empty={self.ignore_empty}, '
                     f"decode_backend='{self.decode_backend}', "
                     f'xyz2zyx={self.xyz2zyx}, '
                     f'zyx2xyz={self.zyx2xyz}, '
@@ -371,24 +368,22 @@ class LoadBiomedicalData(BaseTransform):
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
-        ignore_empty (bool): Whether to allow loading empty image or file path
-            not existent. Defaults to False.
     """
 
-    def __init__(self,
-                 with_seg=False,
-                 decode_backend: str = 'numpy',
-                 xyz2zyx: bool = False,
-                 zyx2xyz: bool = False,
-                 file_client_args: dict = dict(backend='disk'),
-                 ignore_empty: bool = False) -> None:
+    def __init__(
+        self,
+        with_seg=False,
+        decode_backend: str = 'numpy',
+        xyz2zyx: bool = False,
+        zyx2xyz: bool = False,
+        file_client_args: dict = dict(backend='disk')
+    ) -> None:
         self.with_seg = with_seg
         self.decode_backend = decode_backend
         self.xyz2zyx = xyz2zyx
         self.zyx2xyz = zyx2xyz
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
-        self.ignore_empty = ignore_empty
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
