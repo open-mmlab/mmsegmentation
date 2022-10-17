@@ -184,7 +184,8 @@ class LoadBiomedicalImageFromFile(BaseTransform):
 
     Modified Keys:
 
-    - img (np.ndarray, float64)
+    - img (np.ndarray, float64): Biomedical image with shape (N, X, Y, Z) or
+        (N, Z, Y, X), N is the number of modalities.
     - img_shape
     - ori_shape
 
@@ -224,7 +225,7 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         Returns:
             dict: The dict contains loaded image and meta information.
         """
-        # TODO multiple protocol
+
         filename = results['img_path']
         try:
             data_bytes = self.file_client.get(filename)
@@ -234,13 +235,15 @@ class LoadBiomedicalImageFromFile(BaseTransform):
                 return None
             else:
                 raise e
+        if len(img.shape) == 3:
+            img = img[None, ...]
 
         if self.first2last or self.last2first:
-            img = img.transpose(2, 1, 0)
+            img = img.transpose(0, 3, 2, 1)
 
         results['img'] = img
-        results['img_shape'] = img.shape[:2]
-        results['ori_shape'] = img.shape[:2]
+        results['img_shape'] = img.shape[1:]
+        results['ori_shape'] = img.shape[1:]
         return results
 
     def __repr__(self):
@@ -262,7 +265,7 @@ class LoadBiomedicalAnnotation(BaseTransform):
     .. code-block:: python
 
         {
-            'gt_seg_map': np.ndarray (X, Y, Z)
+            'gt_seg_map': np.ndarray (X, Y, Z) or (Z, Y, X)
         }
 
     Required Keys:
@@ -319,6 +322,7 @@ class LoadBiomedicalAnnotation(BaseTransform):
             gt_seg_map = gt_seg_map.transpose(2, 1, 0)
 
         results['gt_seg_map'] = gt_seg_map
+        return results
 
     def __repr__(self):
         repr_str = (f'{self.__class__.__name__}('
@@ -404,8 +408,8 @@ class LoadBiomedicalData(BaseTransform):
             img = img.transpose(0, 3, 2, 1)
 
         results['img'] = img
-        results['img_shape'] = img.shape[:2]
-        results['ori_shape'] = img.shape[:2]
+        results['img_shape'] = img.shape[1:]
+        results['ori_shape'] = img.shape[1:]
 
         if self.with_seg:
             gt_seg_map = data[-1, :]

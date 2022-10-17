@@ -7,7 +7,9 @@ import mmcv
 import numpy as np
 from mmcv.transforms import LoadImageFromFile
 
-from mmseg.datasets.transforms import (LoadAnnotations, LoadBiomedicalData,
+from mmseg.datasets.transforms import (LoadAnnotations,
+                                       LoadBiomedicalAnnotation,
+                                       LoadBiomedicalData,
                                        LoadBiomedicalImageFromFile,
                                        LoadImageFromNDArray)
 
@@ -195,10 +197,10 @@ class TestLoading:
         results = transform(copy.deepcopy(results))
         assert results['img_path'] == osp.join(self.data_prefix,
                                                'biomedical.nii.gz')
-        assert len(results['img'].shape) == 3
+        assert len(results['img'].shape) == 4
         # TODO nifti load dtype is float64
         assert results['img'].dtype == np.float64
-        assert results['ori_shape'] == results['img'].shape[:2]
+        assert results['ori_shape'] == results['img'].shape[1:]
         assert repr(transform) == ('LoadBiomedicalImageFromFile('
                                    'ignore_empty=False, '
                                    "decode_backend='nifti', "
@@ -207,7 +209,12 @@ class TestLoading:
                                    "file_client_args={'backend': 'disk'})")
 
     def test_load_biomedical_annotation(self):
-        pass
+        results = dict(
+            seg_map_path=osp.join(self.data_prefix, 'biomedical_ann.nii.gz'))
+        transform = LoadBiomedicalAnnotation()
+        results = transform(copy.deepcopy(results))
+        assert len(results['gt_seg_map'].shape) == 3
+        assert results['gt_seg_map'].dtype == np.float64
 
     def test_load_biomedical_data(self):
         input_results = dict(
@@ -218,7 +225,7 @@ class TestLoading:
                                                'biomedical.npy')
         assert results['img'][0].shape == results['gt_seg_map'].shape
         assert results['img'].dtype == np.float32
-        assert results['ori_shape'] == results['img'].shape[:2]
+        assert results['ori_shape'] == results['img'].shape[1:]
         assert repr(transform) == ('LoadBiomedicalData('
                                    'with_seg=True, '
                                    "decode_backend='numpy', "
