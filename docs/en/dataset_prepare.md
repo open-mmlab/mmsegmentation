@@ -392,11 +392,58 @@ The extracted and upsampled COCO objects images and masks can be found in this [
 
 Please extract CelebAMask-HQ and 11k Hands images based on the splits found in [drive](https://drive.google.com/drive/folders/15nZETWlGMdcKY6aHbchRsWkUI42KTNs5?usp=sharing). 
 
+download file to ./data_materials
+```none
+CelebAMask-HQ.zip
+CelebAMask-HQ-masks_corrected.7z
+RealOcc.7z
+RealOcc-Wild.7z
+11k-hands_mask.7z
+11k-hands_image.7z
+coco_object.7z
+dtd-r1.0.1.tar.gz
+```
+---
+
+```bash
+apt-get install p7zip-full
+
+cd data_materials
+
+#extract celebAMask-HQ and split by train-set
+unzip CelebAMask-HQ.zip
+7za x CelebAMask-HQ-masks_corrected.7z -o./CelebAMask-HQ
+#suggest better code if you have
+rsync -a ./CelebAMask-HQ/CelebA-HQ-img/ --files-from=./CelebAMask-HQ-WO-train.txt ./CelebAMask-HQ-WO-Train_img
+basename -s .jpg ./CelebAMask-HQ-train/* > train.txt
+xargs -n 1 -i echo {}.png < train.txt > mask_train.txt
+rsync -a ./CelebAMask-HQ/CelebAMask-HQ-masks_corrected/ --files-from=./mask_train.txt ./CelebAMask-HQ-WO-Train_mask
+mv train.txt ../data/occlusion-aware-face-dataset
+
+#extact DTD
+tar -zxvf dtd-r1.0.1.tar.gz
+mv dtd DTD
+
+#extract hands dataset and split by 200 samples
+7za x 11k-hands_masks.7z -o.
+unzip Hands.zip
+rsync -a ./Hands/ --files-from=./11k_hands_sample.txt ./11k-hands_img
+
+#extract upscaled coco object
+7za x coco_object.7z -o.
+mv coco_object/* .
+
+#extract validation set
+7za x RealOcc.7z -o../data/occlusion-aware-face-dataset
+
+```
+
+
 **Dataset Organization:**
 
 ```none
 
-├── dataset
+├── data_materials
 │   ├── CelebAMask-HQ-WO-Train_img
 │   │   ├── {image}.jpg
 │   ├── CelebAMask-HQ-WO-Train_mask
@@ -413,20 +460,75 @@ Please extract CelebAMask-HQ and 11k Hands images based on the splits found in [
 │   │   ├── {mask}.png
 │   ├── object_image_sr
 │   │   ├── {image}.jpg
-│   ├── object_image_x4
+│   ├── object_mask_x4
 │   │   ├── {mask}.png
 
+├── data
+│   ├── occlusion-aware-face-dataset
+│   │   ├── train.txt
+│   │   ├── NatOcc_hand_sot
+│   │   │   ├── img
+│   │   │   │   ├── {image}.jpg
+│   │   │   ├── mask
+│   │   │   │   ├── {mask}.png
+│   │   ├── NatOcc_object
+│   │   │   ├── img
+│   │   │   │   ├── {image}.jpg
+│   │   │   ├── mask
+│   │   │   │   ├── {mask}.png
+│   │   ├── RandOcc
+│   │   │   ├── img
+│   │   │   │   ├── {image}.jpg
+│   │   │   ├── mask
+│   │   │   │   ├── {mask}.png
+│   │   ├── RandOcc
+│   │   │   ├── img
+│   │   │   │   ├── {image}.jpg
+│   │   │   ├── mask
+│   │   │   │   ├── {mask}.png
+│   │   │   ├── split
+│   │   │   │   ├── val.txt
 ```
 
 ## Data Generation
 
-Example script to generate NatOcc dataset 
+```bash
+git clone https://github.com/jinwonkim93/face-occlusion-generation.git
+cd face_occlusion-generation
+```
+Example script to generate NatOcc hand dataset 
 
-bash NatOcc.sh
+```bash
+CUDA_VISIBLE_DEVICES=0 NUM_WORKERS=4 python main.py \
+--config ./configs/natocc_hand.yaml \
+--opts OUTPUT_PATH "path/to/mmsegmentation/data/occlusion-aware-face-dataset/NatOcc_hand_sot"\
+AUGMENTATION.SOT True \
+SOURCE_DATASET.IMG_DIR "path/to/data_materials/CelebAMask-HQ-WO-Train_img" \
+SOURCE_DATASET.MASK_DIR "path/to/mmsegmentation/data_materials/CelebAMask-HQ-WO-Train_mask" \
+OCCLUDER_DATASET.IMG_DIR "path/to/mmsegmentation/data_materials/11k-hands_img" \
+OCCLUDER_DATASET.MASK_DIR "path/to/mmsegmentation/data_materials/11k-hands_masks"
+```
+Example script to generate NatOcc object dataset 
 
+```bash
+CUDA_VISIBLE_DEVICES=0 NUM_WORKERS=4 python main.py \
+--config ./configs/natocc_objects.yaml \
+--opts OUTPUT_PATH "path/to/mmsegmentation/data/occlusion-aware-face-dataset/NatOcc_object" \
+SOURCE_DATASET.IMG_DIR "path/to/mmsegmentation/data_materials/CelebAMask-HQ-WO-Train_img" \
+SOURCE_DATASET.MASK_DIR "path/to/mmsegmentation/data_materials/CelebAMask-HQ-WO-Train_mask" \
+OCCLUDER_DATASET.IMG_DIR "path/to/mmsegmentation/data_materials/object_image_sr" \
+OCCLUDER_DATASET.MASK_DIR "path/to/mmsegmentation/data_materials/object_mask_x4"
+```
 Example script to generate RandOcc dataset
 
-bash RandOcc.sh
+```bash
+CUDA_VISIBLE_DEVICES=0 NUM_WORKERS=4  python main.py \
+--config ./configs/randocc.yaml \
+--opts OUTPUT_PATH "path/to/mmsegmentation/data/occlusion-aware-face-dataset/RandOcc" \
+SOURCE_DATASET.IMG_DIR "path/to/mmsegmentation/data_materials/CelebAMask-HQ-WO-Train_img/" \
+SOURCE_DATASET.MASK_DIR "path/to/mmsegmentation/data_materials/CelebAMask-HQ-WO-Train_mask" \
+OCCLUDER_DATASET.IMG_DIR "path/to/jw93/mmsegmentation/data_materials/DTD/images"
+```
 <!-- #endregion -->
 
 ```python

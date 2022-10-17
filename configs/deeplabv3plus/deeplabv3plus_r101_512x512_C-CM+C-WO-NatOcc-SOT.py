@@ -61,6 +61,4 @@ checkpoint_config = dict(by_epoch=False, interval=400)
 evaluation = dict(
     interval=400, metric=['mIoU', 'mDice', 'mFscore'], pre_eval=True)
 
-work_dir = './work_dirs/deeplabv3plus_r101_512x512_C-CM+C-WO-NatOcc-SOT'
-gpu_ids = range(0, 2)
 auto_resume = False
