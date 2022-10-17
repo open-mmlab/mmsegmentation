@@ -198,13 +198,13 @@ class TestLoading:
         assert results['img_path'] == osp.join(self.data_prefix,
                                                'biomedical.nii.gz')
         assert len(results['img'].shape) == 4
-        # TODO nifti load dtype is float64
-        assert results['img'].dtype == np.float64
+        assert results['img'].dtype == np.float32
         assert results['ori_shape'] == results['img'].shape[1:]
         assert repr(transform) == ('LoadBiomedicalImageFromFile('
                                    "decode_backend='nifti', "
                                    'xyz2zyx=False, '
                                    'zyx2xyz=False, '
+                                   'to_float32=True, '
                                    "file_client_args={'backend': 'disk'})")
 
     def test_load_biomedical_annotation(self):
@@ -213,7 +213,7 @@ class TestLoading:
         transform = LoadBiomedicalAnnotation()
         results = transform(copy.deepcopy(results))
         assert len(results['gt_seg_map'].shape) == 3
-        assert results['gt_seg_map'].dtype == np.float64
+        assert results['gt_seg_map'].dtype == np.float32
 
     def test_load_biomedical_data(self):
         input_results = dict(

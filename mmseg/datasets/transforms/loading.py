@@ -182,10 +182,12 @@ class LoadBiomedicalImageFromFile(BaseTransform):
 
     - img_path
 
-    Modified Keys:
+    Added Keys:
 
-    - img (np.ndarray, float64): Biomedical image with shape (N, X, Y, Z) or
-        (N, Z, Y, X), N is the number of modalities.
+    - img (np.ndarray): Biomedical image with shape (N, X, Y, Z) or
+        (N, Z, Y, X), N is the number of modalities, and data type is float32
+        if set to_float32 = True, or float64 if decode_backend is 'nifti' and
+        to_float32 is False.
     - img_shape
     - ori_shape
 
@@ -196,6 +198,9 @@ class LoadBiomedicalImageFromFile(BaseTransform):
             Defaults to False.
         zyx2xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
             Defaults to False.
+        to_float32 (bool): Whether to convert the loaded image to a float32
+            numpy array. If set to False, the loaded image is an float64 array.
+            Defaults to True.
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
@@ -206,11 +211,13 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         decode_backend: str = 'nifti',
         xyz2zyx: bool = False,
         zyx2xyz: bool = False,
+        to_float32: bool = True,
         file_client_args: dict = dict(backend='disk')
     ) -> None:
         self.decode_backend = decode_backend
         self.xyz2zyx = xyz2zyx
         self.zyx2xyz = zyx2xyz
+        self.to_float32 = to_float32
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
 
@@ -229,6 +236,9 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         data_bytes = self.file_client.get(filename)
         img = datafrombytes(data_bytes, backend=self.decode_backend)
 
+        if self.to_float32:
+            img = img.astype(np.float32)
+
         if len(img.shape) == 3:
             img = img[None, ...]
 
@@ -245,6 +255,7 @@ class LoadBiomedicalImageFromFile(BaseTransform):
                     f"decode_backend='{self.decode_backend}', "
                     f'xyz2zyx={self.xyz2zyx}, '
                     f'zyx2xyz={self.zyx2xyz}, '
+                    f'to_float32={self.to_float32}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str
 
@@ -263,11 +274,14 @@ class LoadBiomedicalAnnotation(BaseTransform):
 
     Required Keys:
 
-    - seg_map_path (optional)
+    - seg_map_path
 
     Added Keys:
 
-    - gt_seg_map (np.uint8)
+    - gt_seg_map (np.ndarray): Biomedical seg map with shape (X, Y, Z) or
+        (Z, Y, X), N is the number of modalities, and data type is float32
+        if set to_float32 = True, or float64 if decode_backend is 'nifti' and
+        to_float32 is False.
 
     Args:
         decode_backend (str): The data decoding backend type.  Options are
@@ -276,6 +290,9 @@ class LoadBiomedicalAnnotation(BaseTransform):
             Defaults to False.
         zyx2xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
             Defaults to False.
+        to_float32 (bool): Whether to convert the loaded seg map to a float32
+            numpy array. If set to False, the loaded image is an float64 array.
+            Defaults to True.
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
@@ -286,12 +303,14 @@ class LoadBiomedicalAnnotation(BaseTransform):
         decode_backend: str = 'nifti',
         xyz2zyx: bool = False,
         zyx2xyz: bool = False,
+        to_float32: bool = True,
         file_client_args: dict = dict(backend='disk')
     ) -> None:
         super().__init__()
         self.decode_backend = decode_backend
         self.xyz2zyx = xyz2zyx
         self.zyx2xyz = zyx2xyz
+        self.to_float32 = to_float32
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
 
@@ -307,6 +326,9 @@ class LoadBiomedicalAnnotation(BaseTransform):
         data_bytes = self.file_client.get(results['seg_map_path'])
         gt_seg_map = datafrombytes(data_bytes, backend=self.decode_backend)
 
+        if self.to_float32:
+            gt_seg_map = gt_seg_map.astype(np.float32)
+
         if self.xyz2zyx or self.zyx2xyz:
             gt_seg_map = gt_seg_map.transpose(2, 1, 0)
 
@@ -318,6 +340,7 @@ class LoadBiomedicalAnnotation(BaseTransform):
                     f"decode_backend='{self.decode_backend}', "
                     f'xyz2zyx={self.xyz2zyx}, '
                     f'zyx2xyz={self.zyx2xyz}, '
+                    f'to_float32={self.to_float32}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str
 
@@ -340,10 +363,12 @@ class LoadBiomedicalData(BaseTransform):
 
     - img_path
 
-    Modified Keys:
+    Added Keys:
 
-    - img
-    - gt_seg_map (optional)
+    - img (np.ndarray): Biomedical image with shape (N, X, Y, Z) or
+        (N, Z, Y, X), N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (X, Y, Z) or (Z, Y, X).
     - img_shape
     - ori_shape
 
