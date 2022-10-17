@@ -60,5 +60,4 @@ runner = dict(type='IterBasedRunner', max_iters=30000)
 checkpoint_config = dict(by_epoch=False, interval=400)
 evaluation = dict(
     interval=400, metric=['mIoU', 'mDice', 'mFscore'], pre_eval=True)
-
 auto_resume = False
