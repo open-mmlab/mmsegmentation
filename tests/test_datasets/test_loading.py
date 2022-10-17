@@ -204,8 +204,8 @@ class TestLoading:
         assert repr(transform) == ('LoadBiomedicalImageFromFile('
                                    'ignore_empty=False, '
                                    "decode_backend='nifti', "
-                                   'first2last=False, '
-                                   'last2first=False, '
+                                   'xyz2zyx=False, '
+                                   'zyx2xyz=False, '
                                    "file_client_args={'backend': 'disk'})")
 
     def test_load_biomedical_annotation(self):
@@ -229,8 +229,8 @@ class TestLoading:
         assert repr(transform) == ('LoadBiomedicalData('
                                    'with_seg=True, '
                                    "decode_backend='numpy', "
-                                   'first2last=False, '
-                                   'last2first=False, '
+                                   'xyz2zyx=False, '
+                                   'zyx2xyz=False, '
                                    "file_client_args={'backend': 'disk'})")
 
         transform = LoadBiomedicalData(with_seg=False)
@@ -240,6 +240,6 @@ class TestLoading:
         assert repr(transform) == ('LoadBiomedicalData('
                                    'with_seg=False, '
                                    "decode_backend='numpy', "
-                                   'first2last=False, '
-                                   'last2first=False, '
+                                   'xyz2zyx=False, '
+                                   'zyx2xyz=False, '
                                    "file_client_args={'backend': 'disk'})")

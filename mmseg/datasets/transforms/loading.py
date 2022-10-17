@@ -192,10 +192,10 @@ class LoadBiomedicalImageFromFile(BaseTransform):
     Args:
         decode_backend (str): The data decoding backend type.  Options are
             'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
-        first2last (bool): Whether transpose data from channel first to channel
-            last. Defaults to False.
-        last2first (bool): Whether transpose data from channel last to channel
-            first. Defaults to False.
+        xyz2zyx (bool): Whether transpose data from X, Y, Z to Z, Y, X.
+            Defaults to False.
+        zyx2xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
+            Defaults to False.
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
@@ -205,13 +205,13 @@ class LoadBiomedicalImageFromFile(BaseTransform):
 
     def __init__(self,
                  decode_backend: str = 'nifti',
-                 first2last: bool = False,
-                 last2first: bool = False,
+                 xyz2zyx: bool = False,
+                 zyx2xyz: bool = False,
                  file_client_args: dict = dict(backend='disk'),
                  ignore_empty: bool = False) -> None:
         self.decode_backend = decode_backend
-        self.first2last = first2last
-        self.last2first = last2first
+        self.xyz2zyx = xyz2zyx
+        self.zyx2xyz = zyx2xyz
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
         self.ignore_empty = ignore_empty
@@ -238,7 +238,7 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         if len(img.shape) == 3:
             img = img[None, ...]
 
-        if self.first2last or self.last2first:
+        if self.xyz2zyx or self.zyx2xyz:
             img = img.transpose(0, 3, 2, 1)
 
         results['img'] = img
@@ -250,8 +250,8 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         repr_str = (f'{self.__class__.__name__}('
                     f'ignore_empty={self.ignore_empty}, '
                     f"decode_backend='{self.decode_backend}', "
-                    f'first2last={self.first2last}, '
-                    f'last2first={self.last2first}, '
+                    f'xyz2zyx={self.xyz2zyx}, '
+                    f'zyx2xyz={self.zyx2xyz}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str
 
@@ -281,10 +281,10 @@ class LoadBiomedicalAnnotation(BaseTransform):
             annotation. Defaults to False.
         decode_backend (str): The data decoding backend type.  Options are
             'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
-        first2last (bool): Whether transpose data from channel first to channel
-            last. Defaults to False.
-        last2first (bool): Whether transpose data from channel last to channel
-            first. Defaults to False.
+        xyz2zyx (bool): Whether transpose data from X, Y, Z to Z, Y, X.
+            Defaults to False.
+        zyx2xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
+            Defaults to False.
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
@@ -294,15 +294,15 @@ class LoadBiomedicalAnnotation(BaseTransform):
         self,
         with_seg: bool = False,
         decode_backend: str = 'nifti',
-        first2last: bool = False,
-        last2first: bool = False,
+        xyz2zyx: bool = False,
+        zyx2xyz: bool = False,
         file_client_args: dict = dict(backend='disk')
     ) -> None:
         super().__init__()
         self.with_seg = with_seg
         self.decode_backend = decode_backend
-        self.first2last = first2last
-        self.last2first = last2first
+        self.xyz2zyx = xyz2zyx
+        self.zyx2xyz = zyx2xyz
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
 
@@ -318,7 +318,7 @@ class LoadBiomedicalAnnotation(BaseTransform):
         data_bytes = self.file_client.get(results['seg_map_path'])
         gt_seg_map = datafrombytes(data_bytes, backend=self.decode_backend)
 
-        if self.first2last or self.last2first:
+        if self.xyz2zyx or self.zyx2xyz:
             gt_seg_map = gt_seg_map.transpose(2, 1, 0)
 
         results['gt_seg_map'] = gt_seg_map
@@ -328,8 +328,8 @@ class LoadBiomedicalAnnotation(BaseTransform):
         repr_str = (f'{self.__class__.__name__}('
                     f'with_seg={self.with_seg}, '
                     f"decode_backend='{self.decode_backend}', "
-                    f'first2last={self.first2last}, '
-                    f'last2first={self.last2first}, '
+                    f'xyz2zyx={self.xyz2zyx}, '
+                    f'zyx2xyz={self.zyx2xyz}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str
 
@@ -364,10 +364,10 @@ class LoadBiomedicalData(BaseTransform):
             annotation. Defaults to False.
         decode_backend (str): The data decoding backend type.  Options are
             'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
-        first2last (bool): Whether transpose data from channel first to channel
-            last. Defaults to False.
-        last2first (bool): Whether transpose data from channel last to channel
-            first. Defaults to False.
+        xyz2zyx (bool): Whether transpose data from X, Y, Z to Z, Y, X.
+            Defaults to False.
+        zyx2xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
+            Defaults to False.
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmengine.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
@@ -378,14 +378,14 @@ class LoadBiomedicalData(BaseTransform):
     def __init__(self,
                  with_seg=False,
                  decode_backend: str = 'numpy',
-                 first2last: bool = False,
-                 last2first: bool = False,
+                 xyz2zyx: bool = False,
+                 zyx2xyz: bool = False,
                  file_client_args: dict = dict(backend='disk'),
                  ignore_empty: bool = False) -> None:
         self.with_seg = with_seg
         self.decode_backend = decode_backend
-        self.first2last = first2last
-        self.last2first = last2first
+        self.xyz2zyx = xyz2zyx
+        self.zyx2xyz = zyx2xyz
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
         self.ignore_empty = ignore_empty
@@ -404,7 +404,7 @@ class LoadBiomedicalData(BaseTransform):
         # img is 4D data (N, X, Y, Z), N is the number of protocol
         img = data[:-1, :]
 
-        if self.first2last or self.last2first:
+        if self.xyz2zyx or self.zyx2xyz:
             img = img.transpose(0, 3, 2, 1)
 
         results['img'] = img
@@ -413,7 +413,7 @@ class LoadBiomedicalData(BaseTransform):
 
         if self.with_seg:
             gt_seg_map = data[-1, :]
-            if self.first2last or self.last2first:
+            if self.xyz2zyx or self.zyx2xyz:
                 gt_seg_map = gt_seg_map.transpose(2, 1, 0)
             results['gt_seg_map'] = gt_seg_map
         return results
@@ -422,7 +422,7 @@ class LoadBiomedicalData(BaseTransform):
         repr_str = (f'{self.__class__.__name__}('
                     f'with_seg={self.with_seg}, '
                     f"decode_backend='{self.decode_backend}', "
-                    f'first2last={self.first2last}, '
-                    f'last2first={self.last2first}, '
+                    f'xyz2zyx={self.xyz2zyx}, '
+                    f'zyx2xyz={self.zyx2xyz}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str
