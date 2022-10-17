@@ -270,8 +270,6 @@ class LoadBiomedicalAnnotation(BaseTransform):
     - gt_seg_map (np.uint8)
 
     Args:
-        with_seg (bool): Whether to parse and load the semantic segmentation
-            annotation. Defaults to False.
         decode_backend (str): The data decoding backend type.  Options are
             'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
         xyz2zyx (bool): Whether transpose data from X, Y, Z to Z, Y, X.
@@ -285,14 +283,12 @@ class LoadBiomedicalAnnotation(BaseTransform):
 
     def __init__(
         self,
-        with_seg: bool = False,
         decode_backend: str = 'nifti',
         xyz2zyx: bool = False,
         zyx2xyz: bool = False,
         file_client_args: dict = dict(backend='disk')
     ) -> None:
         super().__init__()
-        self.with_seg = with_seg
         self.decode_backend = decode_backend
         self.xyz2zyx = xyz2zyx
         self.zyx2xyz = zyx2xyz
@@ -319,7 +315,6 @@ class LoadBiomedicalAnnotation(BaseTransform):
 
     def __repr__(self):
         repr_str = (f'{self.__class__.__name__}('
-                    f'with_seg={self.with_seg}, '
                     f"decode_backend='{self.decode_backend}', "
                     f'xyz2zyx={self.xyz2zyx}, '
                     f'zyx2xyz={self.zyx2xyz}, '
