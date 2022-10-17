@@ -11,15 +11,13 @@ def datafrombytes(content: bytes, backend: str = 'numpy') -> np.ndarray:
 
     Args:
         content (bytes): The data bytes got from files or other streams.
-        backend (str): The data decoding backend type.  Options are 'numpy',
+        backend (str): The data decoding backend type. Options are 'numpy',
             'nifti' and 'pickle'. Defaults to 'numpy'.
-
 
     Returns:
         numpy.ndarray: Loaded data array.
     """
     if backend == 'pickle':
-
         data = pickle.loads(content)
     else:
         with io.BytesIO(content) as f:
