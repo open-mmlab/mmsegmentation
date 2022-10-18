@@ -279,7 +279,7 @@ class LoadBiomedicalAnnotation(BaseTransform):
 
     Added Keys:
 
-    - gt_seg_map (np.ndarray): Biomedical seg map with shape (N, Z, Y, X) by
+    - gt_seg_map (np.ndarray): Biomedical seg map with shape (Z, Y, X) by
         default, and data type is float32 if set to_float32 = True, or
         float64 if decode_backend is 'nifti' and to_float32 is False.
 
@@ -369,7 +369,7 @@ class LoadBiomedicalData(BaseTransform):
     - img (np.ndarray): Biomedical image with shape (N, Z, Y, X) by default,
         N is the number of modalities.
     - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
-        shape (N, Z, Y, X) by default.
+        (Z, Y, X) by default.
     - img_shape
     - ori_shape
 
