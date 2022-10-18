@@ -66,3 +66,83 @@ In the test script, we provide `show-dir` argument to control whether output the
 ```shell
 python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --opacity 1
 ```
+
+## Why is the IoU always 0, NaN or very low in binary segmentation task
+
+Sometimes when training customized dataset, the IoU of certain class is 0, NaN or very low like below:
+
+```
++--------------+-------+-------+
+|    Class     |  IoU  |  Acc  |
++--------------+-------+-------+
+| label_a | 80.19 | 100.0 |
+| label_b  |  nan  |  nan  |
++--------------+-------+-------+
+2022-10-18 10:56:56,032 - mmseg - INFO - Summary:
+2022-10-18 10:56:56,032 - mmseg - INFO -
++-------+-------+-------+
+|  aAcc |  mIoU |  mAcc |
++-------+-------+-------+
+| 100.0 | 80.19 | 100.0 |
++-------+-------+-------+
+```
+
+or
+
+```
++------------+------+-------+
+|   Class    | IoU  |  Acc  |
++------------+------+-------+
+| label_a | 0.0  |  0.0  |
+|   label_b   | 1.77 | 100.0 |
++------------+------+-------+
+2022-10-18 00:57:12,082 - mmseg - INFO - Summary:
+2022-10-18 00:57:12,083 - mmseg - INFO -
++------+------+------+
+| aAcc | mIoU | mAcc |
++------+------+------+
+| 1.77 | 0.88 | 50.0 |
++------+------+------+
+```
+
+- Solution One: You can follow our config file of dataset [`DRIVE`](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#drive) for reference, whose [dataset class](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/drive.py) is like below:
+
+```python
+class DRIVEDataset(CustomDataset):
+    CLASSES = ('background', 'vessel')
+
+    PALETTE = [[120, 120, 120], [6, 230, 230]]
+
+    def __init__(self, **kwargs):
+        super(DRIVEDataset, self).__init__(
+            img_suffix='.png',
+            seg_map_suffix='_manual1.png',
+            reduce_zero_label=False,
+            **kwargs)
+        assert self.file_client.exists(self.img_dir)
+```
+
+And in corresponding config files of [dataset](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/datasets/drive.py) and [model](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/fcn_unet_s5-d16.py#L23-L48):
+
+```python
+xxx_head=dict(
+    num_classes=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
+```
+
+- Solution Two: In [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016), we fix the binary segmentation task when `num_classes=1`. You can follow this [#2201](https://github.com/open-mmlab/mmsegmentation/issues/2201) by setting `num_classes=1` and `use_sigmoid=True` in `CrossEntropyLoss`.
+
+## What does `reduce_zero_label` work for?
+
+When [loading annotation](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/pipelines/loading.py#L91) in MMSegmentation, `reduce_zero_label (bool)` is provided to determine whether reduce all label value by 1:
+
+```python
+if self.reduce_zero_label:
+    # avoid using underflow conversion
+    gt_semantic_seg[gt_semantic_seg == 0] = 255
+    gt_semantic_seg = gt_semantic_seg - 1
+    gt_semantic_seg[gt_semantic_seg == 254] = 255
+```
+
+`reduce_zero_label` is usually used for datasets where 0 is background label, if `reduce_zero_label=True`, the pixels whose corresponding label is 0 would not be involved in loss calculation.

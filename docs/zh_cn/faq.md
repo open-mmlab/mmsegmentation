@@ -66,3 +66,83 @@
 ```shell
 python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --opacity 1
 ```
+
+## 为什么在二值分割任务里 IoU 总是 0, NaN 或者非常低?
+
+有时候在训练自定义的数据集时, 如下所示, 某个类别的 IoU 总是 0, NaN 或者很低:
+
+```
++--------------+-------+-------+
+|    Class     |  IoU  |  Acc  |
++--------------+-------+-------+
+| label_a | 80.19 | 100.0 |
+| label_b  |  nan  |  nan  |
++--------------+-------+-------+
+2022-10-18 10:56:56,032 - mmseg - INFO - Summary:
+2022-10-18 10:56:56,032 - mmseg - INFO -
++-------+-------+-------+
+|  aAcc |  mIoU |  mAcc |
++-------+-------+-------+
+| 100.0 | 80.19 | 100.0 |
++-------+-------+-------+
+```
+
+或者
+
+```
++------------+------+-------+
+|   Class    | IoU  |  Acc  |
++------------+------+-------+
+| label_a | 0.0  |  0.0  |
+|   label_b   | 1.77 | 100.0 |
++------------+------+-------+
+2022-10-18 00:57:12,082 - mmseg - INFO - Summary:
+2022-10-18 00:57:12,083 - mmseg - INFO -
++------+------+------+
+| aAcc | mIoU | mAcc |
++------+------+------+
+| 1.77 | 0.88 | 50.0 |
++------+------+------+
+```
+
+- 解决方案 (一): 您可以参考数据集 [`DRIVE`](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#drive) 的配置文件, 它的 [数据集类](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/drive.py) 如下所示:
+
+```python
+class DRIVEDataset(CustomDataset):
+    CLASSES = ('background', 'vessel')
+
+    PALETTE = [[120, 120, 120], [6, 230, 230]]
+
+    def __init__(self, **kwargs):
+        super(DRIVEDataset, self).__init__(
+            img_suffix='.png',
+            seg_map_suffix='_manual1.png',
+            reduce_zero_label=False,
+            **kwargs)
+        assert self.file_client.exists(self.img_dir)
+```
+
+并且在 [数据集](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/datasets/drive.py) 和 [模型](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/fcn_unet_s5-d16.py#L23-L48) 对应的配置文件里设置:
+
+```python
+xxx_head=dict(
+    num_classes=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
+```
+
+- 解决方案 (二): 在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016), 我们修复了当 `num_classes=1` 时的二值分割的问题. 您可以参考这个 issue [#2201](https://github.com/open-mmlab/mmsegmentation/issues/2201), 设置 `num_classes=1` 和 `CrossEntropyLoss` 里的 `use_sigmoid=True`.
+
+## `reduce_zero_label` 的作用
+
+在 MMSegmentation 里面, 当 [加载注释](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/pipelines/loading.py#L91) 时, `reduce_zero_label (bool)` 被用来决定是否将所有 label 减去 1:
+
+```python
+if self.reduce_zero_label:
+    # avoid using underflow conversion
+    gt_semantic_seg[gt_semantic_seg == 0] = 255
+    gt_semantic_seg = gt_semantic_seg - 1
+    gt_semantic_seg[gt_semantic_seg == 254] = 255
+```
+
+`reduce_zero_label` 常常被用来处理 label 0 是背景的数据集, 如果 `reduce_zero_label=True`, label 0 对应的像素将不会参与损失函数的计算.
