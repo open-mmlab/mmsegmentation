@@ -184,19 +184,20 @@ class LoadBiomedicalImageFromFile(BaseTransform):
 
     Added Keys:
 
-    - img (np.ndarray): Biomedical image with shape (N, X, Y, Z) or
-        (N, Z, Y, X), N is the number of modalities, and data type is float32
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities, and data type is float32
         if set to_float32 = True, or float64 if decode_backend is 'nifti' and
         to_float32 is False.
     - img_shape
     - ori_shape
 
     Args:
-        decode_backend (str): The data decoding backend type.  Options are
-            'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
-        xyz2zyx (bool): Whether transpose data from X, Y, Z to Z, Y, X.
-            Defaults to False.
-        zyx2xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
+        decode_backend (str): The data decoding backend type. Options are
+            'numpy'and 'nifti', and there is a convention that when backend is
+            'nifti' the axis of data loaded is XYZ, and when backend is
+            'numpy', the the axis is ZYX. The data will be transposed if the
+            backend is 'nifti'. Defaults to 'nifti'.
+        to_xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
             Defaults to False.
         to_float32 (bool): Whether to convert the loaded image to a float32
             numpy array. If set to False, the loaded image is an float64 array.
@@ -209,14 +210,12 @@ class LoadBiomedicalImageFromFile(BaseTransform):
     def __init__(
         self,
         decode_backend: str = 'nifti',
-        xyz2zyx: bool = False,
-        zyx2xyz: bool = False,
+        to_xyz: bool = False,
         to_float32: bool = True,
         file_client_args: dict = dict(backend='disk')
     ) -> None:
         self.decode_backend = decode_backend
-        self.xyz2zyx = xyz2zyx
-        self.zyx2xyz = zyx2xyz
+        self.to_xyz = to_xyz
         self.to_float32 = to_float32
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
@@ -242,7 +241,10 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         if len(img.shape) == 3:
             img = img[None, ...]
 
-        if self.xyz2zyx or self.zyx2xyz:
+        if self.decode_backend == 'nifti':
+            img = img.transpose(0, 3, 2, 1)
+
+        if self.to_xyz:
             img = img.transpose(0, 3, 2, 1)
 
         results['img'] = img
@@ -253,8 +255,7 @@ class LoadBiomedicalImageFromFile(BaseTransform):
     def __repr__(self):
         repr_str = (f'{self.__class__.__name__}('
                     f"decode_backend='{self.decode_backend}', "
-                    f'xyz2zyx={self.xyz2zyx}, '
-                    f'zyx2xyz={self.zyx2xyz}, '
+                    f'to_xyz={self.to_xyz}, '
                     f'to_float32={self.to_float32}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str
@@ -278,16 +279,17 @@ class LoadBiomedicalAnnotation(BaseTransform):
 
     Added Keys:
 
-    - gt_seg_map (np.ndarray): Biomedical seg map with shape (X, Y, Z) or
-        (Z, Y, X), and data type is float32 if set to_float32 = True, or
+    - gt_seg_map (np.ndarray): Biomedical seg map with shape (N, Z, Y, X) by
+        default, and data type is float32 if set to_float32 = True, or
         float64 if decode_backend is 'nifti' and to_float32 is False.
 
     Args:
-        decode_backend (str): The data decoding backend type.  Options are
-            'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
-        xyz2zyx (bool): Whether transpose data from X, Y, Z to Z, Y, X.
-            Defaults to False.
-        zyx2xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
+        decode_backend (str): The data decoding backend type. Options are
+            'numpy'and 'nifti', and there is a convention that when backend is
+            'nifti' the axis of data loaded is XYZ, and when backend is
+            'numpy', the the axis is ZYX. The data will be transposed if the
+            backend is 'nifti'. Defaults to 'nifti'.
+        to_xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
             Defaults to False.
         to_float32 (bool): Whether to convert the loaded seg map to a float32
             numpy array. If set to False, the loaded image is an float64 array.
@@ -300,15 +302,13 @@ class LoadBiomedicalAnnotation(BaseTransform):
     def __init__(
         self,
         decode_backend: str = 'nifti',
-        xyz2zyx: bool = False,
-        zyx2xyz: bool = False,
+        to_xyz: bool = False,
         to_float32: bool = True,
         file_client_args: dict = dict(backend='disk')
     ) -> None:
         super().__init__()
         self.decode_backend = decode_backend
-        self.xyz2zyx = xyz2zyx
-        self.zyx2xyz = zyx2xyz
+        self.to_xyz = to_xyz
         self.to_float32 = to_float32
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
@@ -328,7 +328,10 @@ class LoadBiomedicalAnnotation(BaseTransform):
         if self.to_float32:
             gt_seg_map = gt_seg_map.astype(np.float32)
 
-        if self.xyz2zyx or self.zyx2xyz:
+        if self.decode_backend == 'nifti':
+            gt_seg_map = gt_seg_map.transpose(2, 1, 0)
+
+        if self.to_xyz:
             gt_seg_map = gt_seg_map.transpose(2, 1, 0)
 
         results['gt_seg_map'] = gt_seg_map
@@ -337,8 +340,7 @@ class LoadBiomedicalAnnotation(BaseTransform):
     def __repr__(self):
         repr_str = (f'{self.__class__.__name__}('
                     f"decode_backend='{self.decode_backend}', "
-                    f'xyz2zyx={self.xyz2zyx}, '
-                    f'zyx2xyz={self.zyx2xyz}, '
+                    f'to_xyz={self.to_xyz}, '
                     f'to_float32={self.to_float32}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str
@@ -364,21 +366,22 @@ class LoadBiomedicalData(BaseTransform):
 
     Added Keys:
 
-    - img (np.ndarray): Biomedical image with shape (N, X, Y, Z) or
-        (N, Z, Y, X), N is the number of modalities.
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
     - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
-        (X, Y, Z) or (Z, Y, X).
+        shape (N, Z, Y, X) by default.
     - img_shape
     - ori_shape
 
     Args:
         with_seg (bool): Whether to parse and load the semantic segmentation
             annotation. Defaults to False.
-        decode_backend (str): The data decoding backend type.  Options are
-            'numpy', 'nifti' and 'pickle'. Defaults to 'nifti'.
-        xyz2zyx (bool): Whether transpose data from X, Y, Z to Z, Y, X.
-            Defaults to False.
-        zyx2xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
+        decode_backend (str): The data decoding backend type. Options are
+            'numpy'and 'nifti', and there is a convention that when backend is
+            'nifti' the axis of data loaded is XYZ, and when backend is
+            'numpy', the the axis is ZYX. The data will be transposed if the
+            backend is 'nifti'. Defaults to 'nifti'.
+        to_xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
             Defaults to False.
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmengine.fileio.FileClient` for details.
@@ -389,14 +392,12 @@ class LoadBiomedicalData(BaseTransform):
         self,
         with_seg=False,
         decode_backend: str = 'numpy',
-        xyz2zyx: bool = False,
-        zyx2xyz: bool = False,
+        to_xyz: bool = False,
         file_client_args: dict = dict(backend='disk')
     ) -> None:
         self.with_seg = with_seg
         self.decode_backend = decode_backend
-        self.xyz2zyx = xyz2zyx
-        self.zyx2xyz = zyx2xyz
+        self.to_xyz = to_xyz
         self.file_client_args = file_client_args.copy()
         self.file_client = mmengine.FileClient(**self.file_client_args)
 
@@ -414,7 +415,10 @@ class LoadBiomedicalData(BaseTransform):
         # img is 4D data (N, X, Y, Z), N is the number of protocol
         img = data[:-1, :]
 
-        if self.xyz2zyx or self.zyx2xyz:
+        if self.decode_backend == 'nifti':
+            img = img.transpose(0, 3, 2, 1)
+
+        if self.to_xyz:
             img = img.transpose(0, 3, 2, 1)
 
         results['img'] = img
@@ -423,7 +427,10 @@ class LoadBiomedicalData(BaseTransform):
 
         if self.with_seg:
             gt_seg_map = data[-1, :]
-            if self.xyz2zyx or self.zyx2xyz:
+            if self.decode_backend == 'nifti':
+                gt_seg_map = gt_seg_map.transpose(2, 1, 0)
+
+            if self.to_xyz:
                 gt_seg_map = gt_seg_map.transpose(2, 1, 0)
             results['gt_seg_map'] = gt_seg_map
         return results
@@ -432,7 +439,6 @@ class LoadBiomedicalData(BaseTransform):
         repr_str = (f'{self.__class__.__name__}('
                     f'with_seg={self.with_seg}, '
                     f"decode_backend='{self.decode_backend}', "
-                    f'xyz2zyx={self.xyz2zyx}, '
-                    f'zyx2xyz={self.zyx2xyz}, '
+                    f'to_xyz={self.to_xyz}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str

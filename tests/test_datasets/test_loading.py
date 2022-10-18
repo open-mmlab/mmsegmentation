@@ -202,8 +202,7 @@ class TestLoading:
         assert results['ori_shape'] == results['img'].shape[1:]
         assert repr(transform) == ('LoadBiomedicalImageFromFile('
                                    "decode_backend='nifti', "
-                                   'xyz2zyx=False, '
-                                   'zyx2xyz=False, '
+                                   'to_xyz=False, '
                                    'to_float32=True, '
                                    "file_client_args={'backend': 'disk'})")
 
@@ -228,8 +227,7 @@ class TestLoading:
         assert repr(transform) == ('LoadBiomedicalData('
                                    'with_seg=True, '
                                    "decode_backend='numpy', "
-                                   'xyz2zyx=False, '
-                                   'zyx2xyz=False, '
+                                   'to_xyz=False, '
                                    "file_client_args={'backend': 'disk'})")
 
         transform = LoadBiomedicalData(with_seg=False)
@@ -239,6 +237,5 @@ class TestLoading:
         assert repr(transform) == ('LoadBiomedicalData('
                                    'with_seg=False, '
                                    "decode_backend='numpy', "
-                                   'xyz2zyx=False, '
-                                   'zyx2xyz=False, '
+                                   'to_xyz=False, '
                                    "file_client_args={'backend': 'disk'})")
