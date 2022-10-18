@@ -10,6 +10,7 @@ from .class_names import (ade_classes, ade_palette, cityscapes_classes,
                           voc_palette)
 # yapf: enable
 from .collect_env import collect_env
+from .io import datafrombytes
 from .misc import add_prefix, stack_batch
 from .set_env import register_all_modules
 from .typing import (ConfigType, ForwardResults, MultiConfig, OptConfigType,
@@ -25,5 +26,6 @@ __all__ = [
     'vaihingen_classes', 'isaid_classes', 'stare_classes',
     'cityscapes_palette', 'ade_palette', 'voc_palette', 'cocostuff_palette',
     'loveda_palette', 'potsdam_palette', 'vaihingen_palette', 'isaid_palette',
-    'stare_palette', 'dataset_aliases', 'get_classes', 'get_palette'
+    'stare_palette', 'dataset_aliases', 'get_classes', 'get_palette',
+    'datafrombytes'
 ]

@@ -16,10 +16,11 @@ from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
 from .transforms import (CLAHE, AdjustGamma, LoadAnnotations,
-                         LoadImageFromNDArray, PackSegInputs,
-                         PhotoMetricDistortion, RandomCrop, RandomCutOut,
-                         RandomMosaic, RandomRotate, Rerange, ResizeToMultiple,
-                         RGB2Gray, SegRescale)
+                         LoadBiomedicalAnnotation, LoadBiomedicalData,
+                         LoadBiomedicalImageFromFile, LoadImageFromNDArray,
+                         PackSegInputs, PhotoMetricDistortion, RandomCrop,
+                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
+                         ResizeToMultiple, RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
 
 __all__ = [
@@ -31,5 +32,6 @@ __all__ = [
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
     'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
-    'LoadImageFromNDArray'
+    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
+    'LoadBiomedicalAnnotation', 'LoadBiomedicalData'
 ]
