@@ -115,13 +115,20 @@ def test_config_data_pipeline():
         output_results = train_pipeline(results)
         assert output_results is not None
 
+        # In v2.0, test_pipeline has added `LoadAnnotations`
+        # which needs to add `seg_map_path`.
+        img = np.random.randint(0, 255, size=(288, 512, 3), dtype=np.uint8)
+        data_prefix = join(dirname(__file__), './data')
+        seg_path = join(data_prefix, 'seg.png')
         results = dict(
             filename='test_img.png',
             ori_filename='test_img.png',
             img=img,
             img_shape=img.shape,
             ori_shape=img.shape,
-        )
+            seg_map_path=seg_path)
+        results['reduce_zero_label'] = True
+        results['seg_fields'] = ['gt_seg_map']
         print(f'Test testing data pipeline: \n{test_pipeline!r}')
         output_results = test_pipeline(results)
         assert output_results is not None
