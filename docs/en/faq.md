@@ -67,73 +67,65 @@ In the test script, we provide `show-dir` argument to control whether output the
 python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --opacity 1
 ```
 
-## Why is the IoU always 0, NaN or very low in binary segmentation task
+## How to handle binary segmentation task
 
-Sometimes when training customized dataset, the IoU of certain class is 0, NaN or very low like below:
-
-```
-+--------------+-------+-------+
-|    Class     |  IoU  |  Acc  |
-+--------------+-------+-------+
-| label_a | 80.19 | 100.0 |
-| label_b  |  nan  |  nan  |
-+--------------+-------+-------+
-2022-10-18 10:56:56,032 - mmseg - INFO - Summary:
-2022-10-18 10:56:56,032 - mmseg - INFO -
-+-------+-------+-------+
-|  aAcc |  mIoU |  mAcc |
-+-------+-------+-------+
-| 100.0 | 80.19 | 100.0 |
-+-------+-------+-------+
-```
-
-or
-
-```
-+------------+------+-------+
-|   Class    | IoU  |  Acc  |
-+------------+------+-------+
-| label_a | 0.0  |  0.0  |
-|   label_b   | 1.77 | 100.0 |
-+------------+------+-------+
-2022-10-18 00:57:12,082 - mmseg - INFO - Summary:
-2022-10-18 00:57:12,083 - mmseg - INFO -
-+------+------+------+
-| aAcc | mIoU | mAcc |
-+------+------+------+
-| 1.77 | 0.88 | 50.0 |
-+------+------+------+
-```
-
-- Solution One: You can follow our config file of dataset [`DRIVE`](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#drive) for reference, whose [dataset class](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/drive.py) is like below:
+MMSegmentation uses `num_classes` and `out_channels` to control output of last layer `self.conv_seg` (More details could be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py).):
 
 ```python
-class DRIVEDataset(CustomDataset):
-    CLASSES = ('background', 'vessel')
+def __init__(self,
+             ...,
+             ):
+  ...
+  if out_channels is None:
+      if num_classes == 2:
+          warnings.warn('For binary segmentation, we suggest using'
+                        '`out_channels = 1` to define the output'
+                        'channels of segmentor, and use `threshold`'
+                        'to convert seg_logist into a prediction'
+                        'applying a threshold')
+      out_channels = num_classes
 
-    PALETTE = [[120, 120, 120], [6, 230, 230]]
+  if out_channels != num_classes and out_channels != 1:
+      raise ValueError(
+          'out_channels should be equal to num_classes,'
+          'except binary segmentation set out_channels == 1 and'
+          f'num_classes == 2, but got out_channels={out_channels}'
+          f'and num_classes={num_classes}')
 
-    def __init__(self, **kwargs):
-        super(DRIVEDataset, self).__init__(
-            img_suffix='.png',
-            seg_map_suffix='_manual1.png',
-            reduce_zero_label=False,
-            **kwargs)
-        assert self.file_client.exists(self.img_dir)
+  if out_channels == 1 and threshold is None:
+      threshold = 0.3
+      warnings.warn('threshold is not defined for binary, and defaults'
+                    'to 0.3')
+  self.num_classes = num_classes
+  self.out_channels = out_channels
+  self.threshold = threshold
+  ...
+  self.conv_seg = nn.Conv2d(channels, self.out_channels, kernel_size=1)
 ```
 
-And in corresponding config files of [dataset](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/datasets/drive.py) and [model](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/fcn_unet_s5-d16.py#L23-L48):
+There are two types of calculating binary segmentation methods. First, when `out_channels=2`, using `F.softmax()` and `argmax()` to get prediction and then calculating by Cross Entropy Loss. Second, in the case of `out_channels=1`, in [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) we provide a parameter `threshold(default to 0.3)` for binary segmentation. Using `F.sigmoid()` and `threshold` to get prediction and then calculating by Binacry Cross Entropy Loss:
 
 ```python
-xxx_head=dict(
-    num_classes=2,
-    loss_decode=dict(
-        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
+...
+if self.out_channels == 1:
+    seg_logit = F.sigmoid(seg_logit)
+else:
+    seg_logit = F.softmax(seg_logit, dim=1)
+
+...
+
+if self.out_channels == 1:
+    seg_pred = (seg_logit >
+                self.decode_head.threshold).to(seg_logit).squeeze(1)
+else:
+    seg_pred = seg_logit.argmax(dim=1)
 ```
 
-- Solution Two: In [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016), we fix the binary segmentation task when `num_classes=1`. You can follow this [#2201](https://github.com/open-mmlab/mmsegmentation/issues/2201) by setting `num_classes=1` and `use_sigmoid=True` in `CrossEntropyLoss`.
+More details about calculating segmentation prediction could be found in [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
 
-In summary, we encourage beginners to use `num_classes=2`, `out_channels=1` and `use_sigmoid=True` in `CrossEntropyLoss`, below is a modification example of [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py):
+In summary, we encourage beginners to take solution (1) `num_classes=2`, `out_channels=2` and `use_sigmoid=False` in `CrossEntropyLoss` or (2) `num_classes=2`, `out_channels=1` and `use_sigmoid=True` in `CrossEntropyLoss`.
+
+When taking solution (2), below is a modification example of [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py):
 
 ```python
 decode_head=dict(
@@ -154,18 +146,6 @@ auxiliary_head=dict(
         type='CrossEntropyLoss', use_sigmoid=True, loss_weight=0.4)),
 ```
 
-In [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) we also provide a parameter `threshold` for binary segmentation in the case of `out_channels=1`. It would be used to calculate segmentation prediction in [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
-
-```python
-if self.out_channels == 1:
-    seg_pred = (seg_logit >
-                self.decode_head.threshold).to(seg_logit).squeeze(1)
-else:
-    seg_pred = seg_logit.argmax(dim=1)
-```
-
-By setting different value of `threshold`, users can calculate ROC(Receiver Operating Characteristic) Curve and AUC(Area Under Curve).
-
 ## What does `reduce_zero_label` work for?
 
 When [loading annotation](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/pipelines/loading.py#L91) in MMSegmentation, `reduce_zero_label (bool)` is provided to determine whether reduce all label value by 1:
@@ -179,3 +159,4 @@ if self.reduce_zero_label:
 ```
 
 `reduce_zero_label` is usually used for datasets where 0 is background label, if `reduce_zero_label=True`, the pixels whose corresponding label is 0 would not be involved in loss calculation.
+Noted that in binary segmentation task it is unnecessary to use `reduce_zero_label=True`, take solutions we mentioned above please.

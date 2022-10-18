@@ -67,73 +67,65 @@
 python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --opacity 1
 ```
 
-## 为什么在二值分割任务里 IoU 总是 0, NaN 或者非常低?
+## 如何处理二值分割任务?
 
-有时候在训练自定义的数据集时, 如下所示, 某个类别的 IoU 总是 0, NaN 或者很低:
-
-```
-+--------------+-------+-------+
-|    Class     |  IoU  |  Acc  |
-+--------------+-------+-------+
-| label_a | 80.19 | 100.0 |
-| label_b  |  nan  |  nan  |
-+--------------+-------+-------+
-2022-10-18 10:56:56,032 - mmseg - INFO - Summary:
-2022-10-18 10:56:56,032 - mmseg - INFO -
-+-------+-------+-------+
-|  aAcc |  mIoU |  mAcc |
-+-------+-------+-------+
-| 100.0 | 80.19 | 100.0 |
-+-------+-------+-------+
-```
-
-或者
-
-```
-+------------+------+-------+
-|   Class    | IoU  |  Acc  |
-+------------+------+-------+
-| label_a | 0.0  |  0.0  |
-|   label_b   | 1.77 | 100.0 |
-+------------+------+-------+
-2022-10-18 00:57:12,082 - mmseg - INFO - Summary:
-2022-10-18 00:57:12,083 - mmseg - INFO -
-+------+------+------+
-| aAcc | mIoU | mAcc |
-+------+------+------+
-| 1.77 | 0.88 | 50.0 |
-+------+------+------+
-```
-
-- 解决方案 (一): 您可以参考数据集 [`DRIVE`](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#drive) 的配置文件, 它的 [数据集类](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/drive.py) 如下所示:
+MMSegmentation 使用 `num_classes` 和 `out_channels` 来控制模型最后一层 `self.conv_seg` 的输出. (更多细节可以参考 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py).):
 
 ```python
-class DRIVEDataset(CustomDataset):
-    CLASSES = ('background', 'vessel')
+def __init__(self,
+             ...,
+             ):
+  ...
+  if out_channels is None:
+      if num_classes == 2:
+          warnings.warn('For binary segmentation, we suggest using'
+                        '`out_channels = 1` to define the output'
+                        'channels of segmentor, and use `threshold`'
+                        'to convert seg_logist into a prediction'
+                        'applying a threshold')
+      out_channels = num_classes
 
-    PALETTE = [[120, 120, 120], [6, 230, 230]]
+  if out_channels != num_classes and out_channels != 1:
+      raise ValueError(
+          'out_channels should be equal to num_classes,'
+          'except binary segmentation set out_channels == 1 and'
+          f'num_classes == 2, but got out_channels={out_channels}'
+          f'and num_classes={num_classes}')
 
-    def __init__(self, **kwargs):
-        super(DRIVEDataset, self).__init__(
-            img_suffix='.png',
-            seg_map_suffix='_manual1.png',
-            reduce_zero_label=False,
-            **kwargs)
-        assert self.file_client.exists(self.img_dir)
+  if out_channels == 1 and threshold is None:
+      threshold = 0.3
+      warnings.warn('threshold is not defined for binary, and defaults'
+                    'to 0.3')
+  self.num_classes = num_classes
+  self.out_channels = out_channels
+  self.threshold = threshold
+  ...
+  self.conv_seg = nn.Conv2d(channels, self.out_channels, kernel_size=1)
 ```
 
-并且在 [数据集](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/datasets/drive.py) 和 [模型](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/fcn_unet_s5-d16.py#L23-L48) 对应的配置文件里设置:
+有两种计算二值分割任务的方法. 第一种是当 `out_channels=2` 时, 使用 `F.softmax()` 然后通过 `argmax()` 得到预测结果, 再以 Cross Entropy Loss 作为损失函数. 第二种是当 `out_channels=1` 时, 使用在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) 提供的参数 `threshold (默认为 0.3)`. 通过 `F.sigmoid()` 和 `threshold` 得到预测结果, 再~~~~以 Binary Cross Entropy Loss 作为损失函数.
 
 ```python
-xxx_head=dict(
-    num_classes=2,
-    loss_decode=dict(
-        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
+...
+if self.out_channels == 1:
+    seg_logit = F.sigmoid(seg_logit)
+else:
+    seg_logit = F.softmax(seg_logit, dim=1)
+
+...
+
+if self.out_channels == 1:
+    seg_pred = (seg_logit >
+                self.decode_head.threshold).to(seg_logit).squeeze(1)
+else:
+    seg_pred = seg_logit.argmax(dim=1)
 ```
 
-- 解决方案 (二): 在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016), 我们修复了当 `num_classes=1` 时的二值分割的问题. 您可以参考这个 issue [#2201](https://github.com/open-mmlab/mmsegmentation/issues/2201), 设置 `num_classes=1` 和 `CrossEntropyLoss` 里的 `use_sigmoid=True`.
+更多关于计算语义分割预测的细节可以参考 [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
 
-综上所述, 我们鼓励初学者设置 `num_classes=2`, `out_channels=1` 和 `CrossEntropyLoss` 里的 `use_sigmoid=True`, 下面是 [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py) 的一个修改样例:
+综上所述, 我们建议使用者采取两种解决方案 (1) `num_classes=2`, `out_channels=2` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=False` 或者 (2) `num_classes=2`, `out_channels=1` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=True`.
+
+当采用解决方案 (2) 时, 下面是对样例 [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py) 的对应的修改:
 
 ```python
 decode_head=dict(
@@ -154,18 +146,6 @@ auxiliary_head=dict(
         type='CrossEntropyLoss', use_sigmoid=True, loss_weight=0.4)),
 ```
 
-对于二值分割任务, 在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) 里面我们还提供了一个 `threshold` 参数来处理 `out_channels=1` 的情况. 它会在 [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py) 里面用来得到预测的结果:
-
-```python
-if self.out_channels == 1:
-    seg_pred = (seg_logit >
-                self.decode_head.threshold).to(seg_logit).squeeze(1)
-else:
-    seg_pred = seg_logit.argmax(dim=1)
-```
-
-通过设置 `threshold` 不同的值, 用户可以由此计算出 ROC 曲线和 AUC 的值.
-
 ## `reduce_zero_label` 的作用
 
 在 MMSegmentation 里面, 当 [加载注释](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/pipelines/loading.py#L91) 时, `reduce_zero_label (bool)` 被用来决定是否将所有 label 减去 1:
@@ -178,4 +158,4 @@ if self.reduce_zero_label:
     gt_semantic_seg[gt_semantic_seg == 254] = 255
 ```
 
-`reduce_zero_label` 常常被用来处理 label 0 是背景的数据集, 如果 `reduce_zero_label=True`, label 0 对应的像素将不会参与损失函数的计算.
+`reduce_zero_label` 常常被用来处理 label 0 是背景的数据集, 如果 `reduce_zero_label=True`, label 0 对应的像素将不会参与损失函数的计算. 需要说明的是在二值分割任务中没有必要设置 `reduce_zero_label=True`, 请采用上面我们提到的解决方案.
