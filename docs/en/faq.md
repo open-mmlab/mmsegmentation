@@ -133,6 +133,39 @@ xxx_head=dict(
 
 - Solution Two: In [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016), we fix the binary segmentation task when `num_classes=1`. You can follow this [#2201](https://github.com/open-mmlab/mmsegmentation/issues/2201) by setting `num_classes=1` and `use_sigmoid=True` in `CrossEntropyLoss`.
 
+In summary, we encourage beginners to use `num_classes=2`, `out_channels=1` and `use_sigmoid=True` in `CrossEntropyLoss`, below is a modification example of [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py):
+
+```python
+decode_head=dict(
+    type='PSPHead',
+    in_channels=64,
+    in_index=4,
+    num_classes=2,
+    out_channels=1,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
+auxiliary_head=dict(
+    type='FCNHead',
+    in_channels=128,
+    in_index=3,
+    num_classes=2,
+    out_channels=1,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=True, loss_weight=0.4)),
+```
+
+In [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) we also provide a parameter `threshold` for binary segmentation in the case of `out_channels=1`. It would be used to calculate segmentation prediction in [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
+
+```python
+if self.out_channels == 1:
+    seg_pred = (seg_logit >
+                self.decode_head.threshold).to(seg_logit).squeeze(1)
+else:
+    seg_pred = seg_logit.argmax(dim=1)
+```
+
+By setting different value of `threshold`, users can calculate ROC(Receiver Operating Characteristic) Curve and AUC(Area Under Curve).
+
 ## What does `reduce_zero_label` work for?
 
 When [loading annotation](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/pipelines/loading.py#L91) in MMSegmentation, `reduce_zero_label (bool)` is provided to determine whether reduce all label value by 1:

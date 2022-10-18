@@ -133,6 +133,39 @@ xxx_head=dict(
 
 - 解决方案 (二): 在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016), 我们修复了当 `num_classes=1` 时的二值分割的问题. 您可以参考这个 issue [#2201](https://github.com/open-mmlab/mmsegmentation/issues/2201), 设置 `num_classes=1` 和 `CrossEntropyLoss` 里的 `use_sigmoid=True`.
 
+综上所述, 我们鼓励初学者设置 `num_classes=2`, `out_channels=1` 和 `CrossEntropyLoss` 里的 `use_sigmoid=True`, 下面是 [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py) 的一个修改样例:
+
+```python
+decode_head=dict(
+    type='PSPHead',
+    in_channels=64,
+    in_index=4,
+    num_classes=2,
+    out_channels=1,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
+auxiliary_head=dict(
+    type='FCNHead',
+    in_channels=128,
+    in_index=3,
+    num_classes=2,
+    out_channels=1,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=True, loss_weight=0.4)),
+```
+
+对于二值分割任务, 在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) 里面我们还提供了一个 `threshold` 参数来处理 `out_channels=1` 的情况. 它会在 [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py) 里面用来得到预测的结果:
+
+```python
+if self.out_channels == 1:
+    seg_pred = (seg_logit >
+                self.decode_head.threshold).to(seg_logit).squeeze(1)
+else:
+    seg_pred = seg_logit.argmax(dim=1)
+```
+
+通过设置 `threshold` 不同的值, 用户可以由此计算出 ROC 曲线和 AUC 的值.
+
 ## `reduce_zero_label` 的作用
 
 在 MMSegmentation 里面, 当 [加载注释](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/pipelines/loading.py#L91) 时, `reduce_zero_label (bool)` 被用来决定是否将所有 label 减去 1:
