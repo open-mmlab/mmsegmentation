@@ -102,6 +102,7 @@ Supported backbones:
 - [x] [BEiT (ICLR'2022)](configs/beit)
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [MAE (CVPR'2022)](configs/mae)
+- [x] [PoolFormer (CVPR'2022)](configs/poolformer)
 
 Supported methods:
 
