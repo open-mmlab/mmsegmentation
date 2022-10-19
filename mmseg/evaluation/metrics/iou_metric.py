@@ -71,6 +71,7 @@ class IoUMetric(MeanIoU):
         This method would be invoked by ``mmengine.Evaluator``.
         """
         metric_results = self.compute(*args, **kwargs)
+        self.reset()
 
         classwise_results = metric_results['classwise_results']
         del metric_results['classwise_results']
