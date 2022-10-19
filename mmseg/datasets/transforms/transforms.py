@@ -1,7 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Sequence, Tuple, Union
+from typing import Dict, Sequence, Tuple, Union
 
+import cv2
 import mmcv
 import numpy as np
 from mmcv.transforms.base import BaseTransform
@@ -1147,3 +1148,65 @@ class RandomMosaic(BaseTransform):
         repr_str += f'pad_val={self.pad_val}, '
         repr_str += f'seg_pad_val={self.pad_val})'
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class GenerateEdge(BaseTransform):
+    """Generate Edge for CE2P approach.
+
+    Edge will be used to calculate loss of
+    `CE2P <https://arxiv.org/abs/1809.05996>`_.
+
+    Modified from https://github.com/liutinglt/CE2P/blob/master/dataset/target_generation.py # noqa:E501
+
+    Required Keys:
+
+        - gt_seg_map
+
+    Added Keys:
+        - edge (np.ndarray, uint8): The edge annotation generated from the
+            seg map by extracting border between different semantics.
+
+    Args:
+        edge_width (int): The width of edge. Default to 3.
+        ignore_index (int): Index that will be ignored. Default to 255.
+    """
+
+    def __init__(self, edge_width: int = 3, ignore_index: int = 255) -> None:
+        super().__init__()
+        self.edge_width = edge_width
+        self.ignore_index = ignore_index
+
+    def transform(self, results: Dict) -> Dict:
+        h, w = results['img_shape']
+        edge = np.zero((h, w))
+        seg_map = results['gt_seg_map']
+        # right
+        edge_right = edge[1:h, :]
+        edge_right[(seg_map[1:h, :] != seg_map[:h - 1, :])
+                   & (seg_map[1:h, :] != self.ignore_index) &
+                   (seg_map[:h - 1, :] != self.ignore_index)] = 1
+        # up
+        edge_up = edge[:, :w - 1]
+        edge_up[(seg_map[:, :w - 1] != seg_map[:, 1:w])
+                & (seg_map[:, :w - 1] != self.ignore_index) &
+                (seg_map[:, 1:w] != self.ignore_index)] = 1
+        # upright
+        edge_upright = edge[:h - 1, :w - 1]
+        edge_upright[(seg_map[:h - 1, :w - 1] != seg_map[1:h, 1:w])
+                     & (seg_map[:h - 1, :w - 1] != self.ignore_index) &
+                     (seg_map[1:h, 1:w] != self.ignore_index)] = 1
+        # bottomright
+        edge_bottomright = edge[:h - 1, 1:w]
+        edge_bottomright[(seg_map[:h - 1, 1:w] != seg_map[1:h, :w - 1])
+                         & (seg_map[:h - 1, 1:w] != self.ignore_index) &
+                         (seg_map[1:h, :w - 1] != self.ignore_index)] = 1
+        # return
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT,
+                                           (self.edge_width, self.edge_width))
+        edge = cv2.dilate(edge, kernel)
+
+        results['edge'] = edge.astype(np.uint8)
+        results['edge_width'] = self.edge_width
+
+        return results
