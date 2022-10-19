@@ -87,12 +87,27 @@ def test_config_data_pipeline():
         config_mod = Config.fromfile(config_fpath)
 
         # remove loading pipeline
-        load_img_pipeline = config_mod.train_pipeline.pop(0)
+        load_img_pipeline = {'type': 'LoadImageFromFile'}
+        config_mod.train_pipeline.remove({'type': 'LoadImageFromFile'})
+        config_mod.test_pipeline.remove({'type': 'LoadImageFromFile'})
         to_float32 = load_img_pipeline.get('to_float32', False)
-        config_mod.train_pipeline.pop(0)
-        config_mod.test_pipeline.pop(0)
+        if {'type': 'LoadAnnotations'} in config_mod.train_pipeline:
+            config_mod.train_pipeline.remove({'type': 'LoadAnnotations'})
+        if {'type': 'LoadAnnotations', 'reduce_zero_label': True}\
+                in config_mod.train_pipeline:
+            config_mod.train_pipeline.remove({
+                'type': 'LoadAnnotations',
+                'reduce_zero_label': True
+            })
         # remove loading annotation in test pipeline
-        config_mod.test_pipeline.pop(1)
+        if {'type': 'LoadAnnotations'} in config_mod.test_pipeline:
+            config_mod.test_pipeline.remove({'type': 'LoadAnnotations'})
+        if {'type': 'LoadAnnotations', 'reduce_zero_label': True}\
+                in config_mod.test_pipeline:
+            config_mod.test_pipeline.remove({
+                'type': 'LoadAnnotations',
+                'reduce_zero_label': True
+            })
 
         train_pipeline = Compose(config_mod.train_pipeline)
         test_pipeline = Compose(config_mod.test_pipeline)
@@ -115,20 +130,12 @@ def test_config_data_pipeline():
         output_results = train_pipeline(results)
         assert output_results is not None
 
-        # In v2.0, test_pipeline has added `LoadAnnotations`
-        # which needs to add `seg_map_path`.
-        img = np.random.randint(0, 255, size=(288, 512, 3), dtype=np.uint8)
-        data_prefix = join(dirname(__file__), './data')
-        seg_path = join(data_prefix, 'seg.png')
         results = dict(
             filename='test_img.png',
             ori_filename='test_img.png',
             img=img,
             img_shape=img.shape,
-            ori_shape=img.shape,
-            seg_map_path=seg_path)
-        results['reduce_zero_label'] = True
-        results['seg_fields'] = ['gt_seg_map']
+            ori_shape=img.shape)
         print(f'Test testing data pipeline: \n{test_pipeline!r}')
         output_results = test_pipeline(results)
         assert output_results is not None
