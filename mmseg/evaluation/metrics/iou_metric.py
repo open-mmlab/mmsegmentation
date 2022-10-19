@@ -5,7 +5,7 @@ import numpy as np
 from typing import Sequence
 from mmengine.logging import print_log
 from prettytable import PrettyTable
-from mmeval.segmentation import MeanIoU
+from mmeval.metrics import MeanIoU
 
 from mmseg.registry import METRICS
 
