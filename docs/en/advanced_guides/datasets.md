@@ -1,9 +1,9 @@
 # Dataset
 
-In this document, we will introduce the design of each dataset in MMSegmentation and how users can design their own dataset.
+In this document, we will introduce the design of dataset in MMSegmentation and how users can design their own dataset.
 
-In the 1.x version of MMSegmentation, all datasets are inherited from `BaseDataset`.
-Each dataset loads the list of data info (e.g., datapath) by `load_data_list`.
+In the 1.x version of MMSegmentation, all datasets are inherited from `BaseSegDataset`.
+The function of dataset is loading the `data_list` (please refer [basesegdataset.py](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/datasets/basesegdataset.py) for more information about `data_list`).
 In `__getitem__`, `prepare_data` is called to get the processed data.
 In `prepare_data`, data loading pipeline consists of the following steps:
 
@@ -97,7 +97,7 @@ In MMSegmentation \< 1.x, it uses [`CustomDataset`](https://github.com/open-mmla
 
 `BaseSegDataset` is inherited from `BaseDataset` in MMEngine while `CustomDataset` is inherited from `Dataset` in official PyTorch. The differences between `CustomDataset` and `BaseSegDataset` are lied below:
 
-- `BaseSegDataset` removes all methods about evaluations in `CustomDataset`, such as `format_results`, `pre_eval`, `get_gt_seg_map_by_idx`, `get_gt_seg_maps` and `evaluate`. Related evaluation methods would be supported in [MMEval](https://github.com/open-mmlab/mmeval/).
+- `BaseSegDataset` removes all methods about evaluations in `CustomDataset`, such as `format_results`, `pre_eval`, `get_gt_seg_map_by_idx`, `get_gt_seg_maps` and `evaluate`.
 - `BaseSegDataset` replaces method `load_annotations` to `load_data_list`.
 - `BaseSegDataset` replaces member variable `img_infos` and `split` to `data_list` and `ann_file`, respectively.
 - `BaseSegDataset` integrates `CLASSES` and `PALETTE` into two fields of `METAINFO` dict.
