@@ -87,27 +87,12 @@ def test_config_data_pipeline():
         config_mod = Config.fromfile(config_fpath)
 
         # remove loading pipeline
-        load_img_pipeline = {'type': 'LoadImageFromFile'}
-        config_mod.train_pipeline.remove({'type': 'LoadImageFromFile'})
-        config_mod.test_pipeline.remove({'type': 'LoadImageFromFile'})
+        load_img_pipeline = config_mod.train_pipeline.pop(0)
         to_float32 = load_img_pipeline.get('to_float32', False)
-        if {'type': 'LoadAnnotations'} in config_mod.train_pipeline:
-            config_mod.train_pipeline.remove({'type': 'LoadAnnotations'})
-        if {'type': 'LoadAnnotations', 'reduce_zero_label': True}\
-                in config_mod.train_pipeline:
-            config_mod.train_pipeline.remove({
-                'type': 'LoadAnnotations',
-                'reduce_zero_label': True
-            })
+        del config_mod.train_pipeline[0]
+        del config_mod.test_pipeline[0]
         # remove loading annotation in test pipeline
-        if {'type': 'LoadAnnotations'} in config_mod.test_pipeline:
-            config_mod.test_pipeline.remove({'type': 'LoadAnnotations'})
-        if {'type': 'LoadAnnotations', 'reduce_zero_label': True}\
-                in config_mod.test_pipeline:
-            config_mod.test_pipeline.remove({
-                'type': 'LoadAnnotations',
-                'reduce_zero_label': True
-            })
+        del config_mod.test_pipeline[-2]
 
         train_pipeline = Compose(config_mod.train_pipeline)
         test_pipeline = Compose(config_mod.test_pipeline)
