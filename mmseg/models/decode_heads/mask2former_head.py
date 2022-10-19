@@ -2,8 +2,10 @@
 from typing import Tuple
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from mmdet.models import Mask2FormerHead as Mask2FormerHead_
+from mmengine.structures import InstanceData
 from torch import Tensor
 
 from mmseg.registry import MODELS
@@ -17,21 +19,33 @@ class Mask2FormerHead(Mask2FormerHead_):
         super().__init__(**kwargs)
 
         self.num_classes = num_classes
+        # self.num_things_classes = num_classes
+        # self.num_stuff_classes = 0
         self.align_corners = align_corners
         self.out_channels = num_classes
+
+        feat_channels = kwargs['feat_channels']
+        self.cls_embed = nn.Linear(feat_channels, self.num_classes)
 
     def loss(self, x: Tuple[Tensor], batch_data_samples: SampleList,
              train_cfg: ConfigType) -> dict:
         batch_img_metas = []
         batch_gt_instances = []
-        batch_gt_semantic_segs = []
+        # batch_gt_semantic_segs = []
         for data_sample in batch_data_samples:
             batch_img_metas.append(data_sample.metainfo)
-            batch_gt_instances.append(data_sample.gt_instances)
-            if 'gt_sem_seg' in data_sample:
-                batch_gt_semantic_segs.append(data_sample.gt_sem_seg)
-            else:
-                batch_gt_semantic_segs.append(None)
+            gt_semantic_seg = data_sample.gt_sem_seg.data
+            gt_labels = torch.unique(
+                gt_semantic_seg,
+                sorted=False,
+                return_inverse=False,
+                return_counts=False)
+            gt_masks = torch.stack(
+                [gt_semantic_seg == label for label in gt_labels]).squeeze(1)
+
+            instance_data = InstanceData(labels=gt_labels, masks=gt_masks)
+            batch_gt_instances.append(instance_data)
+            # batch_gt_semantic_segs.append(data_sample.gt_sem_seg)
 
         # forward
         all_cls_scores, all_mask_preds = self(x, batch_data_samples)
