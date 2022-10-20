@@ -15,7 +15,7 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
-from .transforms import (CLAHE, AdjustGamma, LoadAnnotations,
+from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
@@ -33,5 +33,5 @@ __all__ = [
     'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
-    'LoadBiomedicalAnnotation', 'LoadBiomedicalData'
+    'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge'
 ]
