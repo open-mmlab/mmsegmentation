@@ -1161,10 +1161,11 @@ class GenerateEdge(BaseTransform):
 
     Required Keys:
 
+        - img_shape
         - gt_seg_map
 
     Added Keys:
-        - edge (np.ndarray, uint8): The edge annotation generated from the
+        - gt_edge (np.ndarray, uint8): The edge annotation generated from the
             seg map by extracting border between different semantics.
 
     Args:
@@ -1179,34 +1180,35 @@ class GenerateEdge(BaseTransform):
 
     def transform(self, results: Dict) -> Dict:
         h, w = results['img_shape']
-        edge = np.zero((h, w))
+        edge = np.zeros((h, w), dtype=np.uint8)
         seg_map = results['gt_seg_map']
-        # right
-        edge_right = edge[1:h, :]
-        edge_right[(seg_map[1:h, :] != seg_map[:h - 1, :])
-                   & (seg_map[1:h, :] != self.ignore_index) &
-                   (seg_map[:h - 1, :] != self.ignore_index)] = 1
-        # up
-        edge_up = edge[:, :w - 1]
-        edge_up[(seg_map[:, :w - 1] != seg_map[:, 1:w])
-                & (seg_map[:, :w - 1] != self.ignore_index) &
-                (seg_map[:, 1:w] != self.ignore_index)] = 1
-        # upright
-        edge_upright = edge[:h - 1, :w - 1]
-        edge_upright[(seg_map[:h - 1, :w - 1] != seg_map[1:h, 1:w])
-                     & (seg_map[:h - 1, :w - 1] != self.ignore_index) &
-                     (seg_map[1:h, 1:w] != self.ignore_index)] = 1
-        # bottomright
-        edge_bottomright = edge[:h - 1, 1:w]
-        edge_bottomright[(seg_map[:h - 1, 1:w] != seg_map[1:h, :w - 1])
-                         & (seg_map[:h - 1, 1:w] != self.ignore_index) &
-                         (seg_map[1:h, :w - 1] != self.ignore_index)] = 1
-        # return
+
+        # down
+        edge_down = edge[1:h, :]
+        edge_down[(seg_map[1:h, :] != seg_map[:h - 1, :])
+                  & (seg_map[1:h, :] != self.ignore_index) &
+                  (seg_map[:h - 1, :] != self.ignore_index)] = 1
+        # left
+        edge_left = edge[:, :w - 1]
+        edge_left[(seg_map[:, :w - 1] != seg_map[:, 1:w])
+                  & (seg_map[:, :w - 1] != self.ignore_index) &
+                  (seg_map[:, 1:w] != self.ignore_index)] = 1
+        # up_left
+        edge_upleft = edge[:h - 1, :w - 1]
+        edge_upleft[(seg_map[:h - 1, :w - 1] != seg_map[1:h, 1:w])
+                    & (seg_map[:h - 1, :w - 1] != self.ignore_index) &
+                    (seg_map[1:h, 1:w] != self.ignore_index)] = 1
+        # up_right
+        edge_upright = edge[:h - 1, 1:w]
+        edge_upright[(seg_map[:h - 1, 1:w] != seg_map[1:h, :w - 1])
+                     & (seg_map[:h - 1, 1:w] != self.ignore_index) &
+                     (seg_map[1:h, :w - 1] != self.ignore_index)] = 1
+
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT,
                                            (self.edge_width, self.edge_width))
         edge = cv2.dilate(edge, kernel)
 
-        results['edge'] = edge.astype(np.uint8)
+        results['gt_edge'] = edge
         results['edge_width'] = self.edge_width
 
         return results
