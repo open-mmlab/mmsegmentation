@@ -1179,6 +1179,14 @@ class GenerateEdge(BaseTransform):
         self.ignore_index = ignore_index
 
     def transform(self, results: Dict) -> Dict:
+        """Call function to generate edge from segmentation map.
+
+        Args:
+            results (dict): Result dict.
+
+        Returns:
+            dict: Result dict with edge mask.
+        """
         h, w = results['img_shape']
         edge = np.zeros((h, w), dtype=np.uint8)
         seg_map = results['gt_seg_map']
@@ -1212,3 +1220,9 @@ class GenerateEdge(BaseTransform):
         results['edge_width'] = self.edge_width
 
         return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'edge_width={self.edge_width}, '
+        repr_str += f'ignore_index={self.ignore_index})'
+        return repr_str
