@@ -35,7 +35,7 @@ class Mask2FormerHead(Mask2FormerHead_):
              train_cfg: ConfigType) -> dict:
         batch_img_metas = []
         batch_gt_instances = []
-        # batch_gt_semantic_segs = []
+
         for data_sample in batch_data_samples:
             batch_img_metas.append(data_sample.metainfo)
             gt_semantic_seg = data_sample.gt_sem_seg.data
@@ -55,9 +55,9 @@ class Mask2FormerHead(Mask2FormerHead_):
             if len(masks) == 0:
                 gt_masks = torch.zeros(
                     (0, gt_semantic_seg.shape[-2],
-                     gt_semantic_seg.shape[-1])).to(gt_semantic_seg)
+                     gt_semantic_seg.shape[-1])).to(gt_semantic_seg).long()
             else:
-                gt_masks = torch.stack(masks).squeeze(1)
+                gt_masks = torch.stack(masks).squeeze(1).long()
 
             instance_data = InstanceData(labels=gt_labels, masks=gt_masks)
             batch_gt_instances.append(instance_data)
@@ -76,11 +76,12 @@ class Mask2FormerHead(Mask2FormerHead_):
         batch_data_samples = [
             SegDataSample(metainfo=metainfo) for metainfo in batch_img_metas
         ]
+
         all_cls_scores, all_mask_preds = self(x, batch_data_samples)
         mask_cls_results = all_cls_scores[-1]
         mask_pred_results = all_mask_preds[-1]
 
-        cls_score = F.softmax(mask_cls_results, dim=-1)
+        cls_score = F.softmax(mask_cls_results, dim=-1)[..., :-1]
         mask_pred = mask_pred_results.sigmoid()
         sem_seg_mask = torch.einsum('bqc, bqhw->bchw', cls_score, mask_pred)
         return sem_seg_mask
