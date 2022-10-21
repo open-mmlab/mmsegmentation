@@ -1,3 +1,11 @@
+# Semantic Segmentation for Off-Road Navigation
+
+This is a fork of the popular [mmsegmentation](https://github.com/open-mmlab/mmsegmentation) repository, borrowing some code from Vasileios Vasilopoulos' [fork](https://github.com/vvasilo/mmsegmentation) of the same.
+
+
+---
+<br>
+
 <div align="center">
   <img src="resources/mmseg-logo.png" width="600"/>
   <div>&nbsp;</div>
