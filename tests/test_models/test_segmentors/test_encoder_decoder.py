@@ -1,11 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import pytest
 from mmcv import ConfigDict
 
 from mmseg.models import build_segmentor
 from .utils import _segmentor_forward_train_test
 
 
-def test_encoder_decoder():
+@pytest.mark.parametrize('return_all', [True, False])
+def test_encoder_decoder(return_all):
 
     # test 1 decode head, w.o. aux head
 
@@ -16,7 +18,7 @@ def test_encoder_decoder():
         train_cfg=None,
         test_cfg=dict(mode='whole'))
     segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
+    _segmentor_forward_train_test(segmentor, return_all)
 
     # test out_channels == 1
     segmentor.out_channels = 1
@@ -27,7 +29,7 @@ def test_encoder_decoder():
     # test slide mode
     cfg.test_cfg = ConfigDict(mode='slide', crop_size=(3, 3), stride=(2, 2))
     segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
+    _segmentor_forward_train_test(segmentor, return_all)
 
     # test 1 decode head, 1 aux head
     cfg = ConfigDict(
@@ -37,7 +39,7 @@ def test_encoder_decoder():
         auxiliary_head=dict(type='ExampleDecodeHead'))
     cfg.test_cfg = ConfigDict(mode='whole')
     segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
+    _segmentor_forward_train_test(segmentor, return_all)
 
     # test 1 decode head, 2 aux head
     cfg = ConfigDict(
@@ -50,4 +52,4 @@ def test_encoder_decoder():
         ])
     cfg.test_cfg = ConfigDict(mode='whole')
     segmentor = build_segmentor(cfg)
-    _segmentor_forward_train_test(segmentor)
+    _segmentor_forward_train_test(segmentor, return_all)
