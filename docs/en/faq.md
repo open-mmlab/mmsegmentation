@@ -127,7 +127,7 @@ else:
 
 More details about calculating segmentation prediction could be found in [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
 
-In summary, to implement binary segmentation methods users should modify below parameters in config files:
+In summary, to implement binary segmentation methods users should modify below parameters in the `decode_head` and `auxiliary_head` configs:
 
 - (1) `num_classes=2`, `out_channels=2`  and `use_sigmoid=False` in `CrossEntropyLoss`.
 

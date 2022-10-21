@@ -107,7 +107,7 @@ def __init__(self,
 
 - 当 `out_channels=2` 时, 在训练时以 Cross Entropy Loss 作为损失函数, 在推理时使用 `F.softmax()` 归一化 logits 值, 然后通过 `argmax()` 得到每个像素的预测结果.
 
-- 当 `out_channels=1` 时, 我们在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) 里提供了阈值参数 `threshold (默认为 0.3)`, 在训练时以 Binary Cross Entropy Loss 作为损失函数, 在推理时使用 `F.sigmoid()` 和在 `threshold` 得到预测结果.
+- 当 `out_channels=1` 时, 我们在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) 里提供了阈值参数 `threshold (默认为 0.3)`, 在训练时以 Binary Cross Entropy Loss 作为损失函数, 在推理时使用 `F.sigmoid()` 和 `threshold` 得到预测结果.
 
 ```python
 ...
@@ -127,7 +127,7 @@ else:
 
 更多关于计算语义分割预测的细节可以参考 [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
 
-对于实现上述两种计算二值分割的方法, 需要分别在配置文件里修改:
+对于实现上述两种计算二值分割的方法, 需要在 `decode_head` 和 `auxiliary_head` 的配置里修改:
 
 - (1) `num_classes=2`, `out_channels=2` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=False`
 
