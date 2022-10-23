@@ -4,7 +4,12 @@ from typing import List, Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmdet.models.dense_heads import MaskFormerHead as MMDET_MaskFormerHead
+
+try:
+    from mmdet.models.dense_heads import MaskFormerHead as MMDET_MaskFormerHead
+except ModuleNotFoundError:
+    MMDET_MaskFormerHead = None
+
 from mmengine.structures import InstanceData
 from torch import Tensor
 
