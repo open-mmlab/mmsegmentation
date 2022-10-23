@@ -5,8 +5,7 @@ it has implemented basic functions of `Create`, `Read`, `Update`, `Delete`, supp
 and tensor-like or dictionary-like operations such as `.cpu()`, `.cuda()`, `.get()` and `.detach()`.
 More details can be found [here](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/data_element.md).
 
-Similarly, MMSegmentation also follows this data structure requirement. SegDataSample is used to encapsulate the data needed
-for the semantic segmentation task.
+MMSegmentation also follows this interface protocol and defines `SegDataSample` which is used to encapsulate the data of semantic segmentation task.
 
 ## Semantic Segmentation Data SegDataSample
 
