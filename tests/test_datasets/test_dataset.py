@@ -247,13 +247,13 @@ def test_decathlon():
     data_root = osp.join(osp.dirname(__file__), '../data')
     test_dataset = DecathlonDataset(
         pipeline=[], data_root=data_root, ann_file='dataset.json')
-    assert len(test_dataset) == 484
+    assert len(test_dataset) == 1
     test_dataset = DecathlonDataset(
         pipeline=[],
         data_root=data_root,
         ann_file='dataset.json',
         test_mode=True)
-    assert len(test_dataset) == 266
+    assert len(test_dataset) == 3
 
 
 @pytest.mark.parametrize('dataset, classes', [
