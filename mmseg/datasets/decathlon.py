@@ -51,10 +51,6 @@ class DecathlonDataset(BaseSegDataset):
         }
     """
 
-    def __init__(self, data_prefix: dict = dict(img_path=''),
-                 **kwargs) -> None:
-        super().__init__(data_prefix=data_prefix, **kwargs)
-
     def load_data_list(self) -> List[dict]:
         """Load annotation from directory or annotation file.
 

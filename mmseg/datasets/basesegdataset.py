@@ -85,7 +85,7 @@ class BaseSegDataset(BaseDataset):
         seg_map_suffix='.png',
         metainfo: Optional[dict] = None,
         data_root: Optional[str] = None,
-        data_prefix: dict = dict(img_path=None, seg_map_path=None),
+        data_prefix: dict = dict(img_path='', seg_map_path=''),
         filter_cfg: Optional[dict] = None,
         indices: Optional[Union[int, Sequence[int]]] = None,
         serialize_data: bool = True,
