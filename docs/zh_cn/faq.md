@@ -71,17 +71,15 @@ python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --op
 
 MMSegmentation 使用 `num_classes` 和 `out_channels` 来控制模型最后一层 `self.conv_seg` 的输出. 更多细节可以参考 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py).
 
-`num_classes` 应该和数据集本身类别个数一致，当是二值分割时，数据集只有前景和背景两类，所以 `num_classes` 为 2。`out_channels` 控制模型最后一层的输出的通道数，通常和 `num_classes` 相等，但当二值分割时候，可以有两种处理方法，分别是：
+`num_classes` 应该和数据集本身类别个数一致，当是二值分割时，数据集只有前景和背景两类, 所以 `num_classes` 为 2. `out_channels` 控制模型最后一层的输出的通道数，通常和 `num_classes` 相等, 但当二值分割时候, 可以有两种处理方法, 分别是：
 
 - 设置 `out_channels=2`, 在训练时以 Cross Entropy Loss 作为损失函数, 在推理时使用 `F.softmax()` 归一化 logits 值, 然后通过 `argmax()` 得到每个像素的预测结果.
 
 - 设置 `out_channels=1`, 在训练时以 Binary Cross Entropy Loss 作为损失函数, 在推理时使用 `F.sigmoid()` 和 `threshold` 得到预测结果, `threshold` 默认为 0.3.
 
-更多关于实现细节可以参考 [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
-
 对于实现上述两种计算二值分割的方法, 需要在 `decode_head` 和 `auxiliary_head` 的配置里修改. 下面是对样例 [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py) 做出的对应修改.
 
-- (1) `num_classes=2`, `out_channels=2` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=False`
+- (1) `num_classes=2`, `out_channels=2` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=False`.
 
 ```python
 decode_head=dict(
