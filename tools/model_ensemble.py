@@ -55,8 +55,7 @@ def main(args):
             wrap_fp16_model(model)
         load_checkpoint(model, ckpt, map_location='cpu')
         torch.cuda.empty_cache()
-        eval_kwargs = {'imgfile_prefix': args.out}  # result save dir
-        tmpdir = eval_kwargs['imgfile_prefix']
+        tmpdir = args.out
         mmcv.mkdir_or_exist(tmpdir)
         model = MMDataParallel(model, device_ids=[gpu_ids[idx % len(gpu_ids)]])
         model.eval()
@@ -83,8 +82,8 @@ def main(args):
 
         pred = result_logits.argmax(axis=1).squeeze()
         img_info = dataset.img_infos[batch_indices[0]]
-        file_name = os.path.join(tmpdir,
-                                 img_info['ann']['seg_map'].split('/')[-1])
+        file_name = os.path.join(
+            tmpdir, img_info['ann']['seg_map'].split(os.path.sep)[-1])
         Image.fromarray(pred.astype(np.uint8)).save(file_name)
         prog_bar.update()
 
@@ -104,7 +103,7 @@ def parse_args():
         action='store_true',
         help='control ensemble aug-result or single-result (default)')
     parser.add_argument(
-        '--out', type=str, default='results/', help='the dir to save result')
+        '--out', type=str, default='results', help='the dir to save result')
     parser.add_argument(
         '--gpus', type=int, nargs='+', default=[0], help='id of gpu to use')
 
