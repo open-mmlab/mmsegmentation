@@ -2,7 +2,7 @@
 import numpy as np
 from mmcv.transforms import to_tensor
 from mmcv.transforms.base import BaseTransform
-from mmengine.structures import InstanceData, PixelData
+from mmengine.structures import PixelData
 
 from mmseg.registry import TRANSFORMS
 from mmseg.structures import SegDataSample
@@ -67,18 +67,11 @@ class PackSegInputs(BaseTransform):
             packed_results['inputs'] = to_tensor(img)
 
         data_sample = SegDataSample()
-
         if 'gt_seg_map' in results:
             gt_sem_seg_data = dict(
                 data=to_tensor(results['gt_seg_map'][None,
                                                      ...].astype(np.int64)))
             data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
-
-        if 'gt_labels' in results and 'gt_masks' in results:
-            instance_data = InstanceData()
-            instance_data['det_labels'] = to_tensor(results['gt_labels'])
-            instance_data['masks'] = to_tensor(results['gt_masks'])
-            data_sample.gt_instances = instance_data
 
         img_meta = {}
         for key in self.meta_keys:
