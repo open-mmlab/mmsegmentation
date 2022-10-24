@@ -447,3 +447,9 @@ python tools/model_ensemble.py \
 - `--aug-test`: Whether to use flip and multi-scale test
 - `--out`: Save folder for model ensemble results
 - `--gpus`: Gpu-id used for model ensemble
+
+### Result of model ensemble
+
+- The model ensemble will generate an unrendered segmentation mask for each input, the input shape is `[H, W]`, the segmentation mask shape is `[H, W]`, and each pixel-value in the segmentation mask represents the pixel category after segmentation at that position.
+
+- The filename of the model ensemble result will be named in the same filename as `Ground Truth`. If the filename of `Ground Truth` is called `1.png`, the model ensemble result file will also be named `1.png` and placed in the folder specified by `--out`.

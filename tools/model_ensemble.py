@@ -103,7 +103,8 @@ def parse_args():
         '--aug-test',
         action='store_true',
         help='control ensemble aug-result or single-result (default)')
-    parser.add_argument('--out', help='the dir to save result')
+    parser.add_argument(
+        '--out', default='results/', help='the dir to save result')
     parser.add_argument(
         '--gpus', type=int, nargs='+', default=[0], help='id of gpu to use')
 
