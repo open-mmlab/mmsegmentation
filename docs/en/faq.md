@@ -71,69 +71,39 @@ python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --op
 
 MMSegmentation uses `num_classes` and `out_channels` to control output of last layer `self.conv_seg` (More details could be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py).):
 
-```python
-def __init__(self,
-             ...,
-             ):
-  ...
-  if out_channels is None:
-      if num_classes == 2:
-          warnings.warn('For binary segmentation, we suggest using'
-                        '`out_channels = 1` to define the output'
-                        'channels of segmentor, and use `threshold`'
-                        'to convert seg_logist into a prediction'
-                        'applying a threshold')
-      out_channels = num_classes
+- Set `out_channels=2`, using Cross Entropy Loss in training, using `F.softmax()` and `argmax()` to get prediction of each pixel in inference.
 
-  if out_channels != num_classes and out_channels != 1:
-      raise ValueError(
-          'out_channels should be equal to num_classes,'
-          'except binary segmentation set out_channels == 1 and'
-          f'num_classes == 2, but got out_channels={out_channels}'
-          f'and num_classes={num_classes}')
+- Set `out_channels=1`, using Binary Cross Entropy Loss in training, using `F.sigmoid()` and `threshold` to get prediction of each pixel in inference. `threshold` is set 0.3 as default.
 
-  if out_channels == 1 and threshold is None:
-      threshold = 0.3
-      warnings.warn('threshold is not defined for binary, and defaults'
-                    'to 0.3')
-  self.num_classes = num_classes
-  self.out_channels = out_channels
-  self.threshold = threshold
-  ...
-  self.conv_seg = nn.Conv2d(channels, self.out_channels, kernel_size=1)
-```
+More details about implementation could be found in [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
 
-There are two types of calculating binary segmentation methods:
+In summary, to implement binary segmentation methods users should modify below parameters in the `decode_head` and `auxiliary_head` configs. Here is a modification example of [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py):
 
-```python
-...
-if self.out_channels == 1:
-    seg_logit = F.sigmoid(seg_logit)
-else:
-    seg_logit = F.softmax(seg_logit, dim=1)
-
-...
-
-if self.out_channels == 1:
-    seg_pred = (seg_logit >
-                self.decode_head.threshold).to(seg_logit).squeeze(1)
-else:
-    seg_pred = seg_logit.argmax(dim=1)
-```
-
-- When `out_channels=2`, using Cross Entropy Loss in training, using `F.softmax()` and `argmax()` to get prediction of each pixel in inference.
-
-- When `out_channels=1`, we provide a parameter `threshold(default to 0.3)` in [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016), using Binary Cross Entropy Loss in training, using `F.sigmoid()` and `threshold` to get prediction of each pixel in inference.
-
-More details about calculating segmentation prediction could be found in [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
-
-In summary, to implement binary segmentation methods users should modify below parameters in the `decode_head` and `auxiliary_head` configs:
+`num_classes` should be the same as number of types of labels, in binary segmentation task, dataset only has two types of labels: foreground and background, so `num_classes=2`. `out_channels` controls the output channel of last layer of model, it usually equals to `num_classes`.
+But in binary segmentation task, there are two solutions:
 
 - (1) `num_classes=2`, `out_channels=2`  and `use_sigmoid=False` in `CrossEntropyLoss`.
 
-- (2) `num_classes=2`, `out_channels=1` and `use_sigmoid=True` in `CrossEntropyLoss`.
+```python
+decode_head=dict(
+    type='PSPHead',
+    in_channels=64,
+    in_index=4,
+    num_classes=2,
+    out_channels=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+auxiliary_head=dict(
+    type='FCNHead',
+    in_channels=128,
+    in_index=3,
+    num_classes=2,
+    out_channels=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+```
 
-When taking solution (2), below is a modification example of [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py):
+- (2) `num_classes=2`, `out_channels=1` and `use_sigmoid=True` in `CrossEntropyLoss`.
 
 ```python
 decode_head=dict(
@@ -166,5 +136,4 @@ if self.reduce_zero_label:
     gt_semantic_seg[gt_semantic_seg == 254] = 255
 ```
 
-`reduce_zero_label` is usually used for datasets where 0 is background label, if `reduce_zero_label=True`, the pixels whose corresponding label is 0 would not be involved in loss calculation.
-Noted that in binary segmentation task it is unnecessary to use `reduce_zero_label=True`, please take solutions we mentioned above.
+Noted that in please check out label numbers of dataset when using `reduce_zero_label`. If dataset only has two types of labels (i.e., label 0 and 1), it needs to close `reduce_zero_label`, i.e., set `reduce_zero_label=True`.

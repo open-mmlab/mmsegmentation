@@ -69,71 +69,40 @@ python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --op
 
 ## 如何处理二值分割任务?
 
-MMSegmentation 使用 `num_classes` 和 `out_channels` 来控制模型最后一层 `self.conv_seg` 的输出. (更多细节可以参考 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py).):
+MMSegmentation 使用 `num_classes` 和 `out_channels` 来控制模型最后一层 `self.conv_seg` 的输出. 更多细节可以参考 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py).
 
-```python
-def __init__(self,
-             ...,
-             ):
-  ...
-  if out_channels is None:
-      if num_classes == 2:
-          warnings.warn('For binary segmentation, we suggest using'
-                        '`out_channels = 1` to define the output'
-                        'channels of segmentor, and use `threshold`'
-                        'to convert seg_logist into a prediction'
-                        'applying a threshold')
-      out_channels = num_classes
+`num_classes` 应该和数据集本身类别个数一致，当是二值分割时，数据集只有前景和背景两类，所以 `num_classes` 为 2。`out_channels` 控制模型最后一层的输出的通道数，通常和 `num_classes` 相等，但当二值分割时候，可以有两种处理方法，分别是：
 
-  if out_channels != num_classes and out_channels != 1:
-      raise ValueError(
-          'out_channels should be equal to num_classes,'
-          'except binary segmentation set out_channels == 1 and'
-          f'num_classes == 2, but got out_channels={out_channels}'
-          f'and num_classes={num_classes}')
+- 设置 `out_channels=2`, 在训练时以 Cross Entropy Loss 作为损失函数, 在推理时使用 `F.softmax()` 归一化 logits 值, 然后通过 `argmax()` 得到每个像素的预测结果.
 
-  if out_channels == 1 and threshold is None:
-      threshold = 0.3
-      warnings.warn('threshold is not defined for binary, and defaults'
-                    'to 0.3')
-  self.num_classes = num_classes
-  self.out_channels = out_channels
-  self.threshold = threshold
-  ...
-  self.conv_seg = nn.Conv2d(channels, self.out_channels, kernel_size=1)
-```
+- 设置 `out_channels=1`, 在训练时以 Binary Cross Entropy Loss 作为损失函数, 在推理时使用 `F.sigmoid()` 和 `threshold` 得到预测结果, `threshold` 默认为 0.3.
 
-有两种计算二值分割任务的方法:
+更多关于实现细节可以参考 [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
 
-- 当 `out_channels=2` 时, 在训练时以 Cross Entropy Loss 作为损失函数, 在推理时使用 `F.softmax()` 归一化 logits 值, 然后通过 `argmax()` 得到每个像素的预测结果.
-
-- 当 `out_channels=1` 时, 我们在 [#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016) 里提供了阈值参数 `threshold (默认为 0.3)`, 在训练时以 Binary Cross Entropy Loss 作为损失函数, 在推理时使用 `F.sigmoid()` 和 `threshold` 得到预测结果.
-
-```python
-...
-if self.out_channels == 1:
-    seg_logit = F.sigmoid(seg_logit)
-else:
-    seg_logit = F.softmax(seg_logit, dim=1)
-
-...
-
-if self.out_channels == 1:
-    seg_pred = (seg_logit >
-                self.decode_head.threshold).to(seg_logit).squeeze(1)
-else:
-    seg_pred = seg_logit.argmax(dim=1)
-```
-
-更多关于计算语义分割预测的细节可以参考 [encoder_decoder.py](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/segmentors/encoder_decoder.py):
-
-对于实现上述两种计算二值分割的方法, 需要在 `decode_head` 和 `auxiliary_head` 的配置里修改:
+对于实现上述两种计算二值分割的方法, 需要在 `decode_head` 和 `auxiliary_head` 的配置里修改. 下面是对样例 [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py) 做出的对应修改.
 
 - (1) `num_classes=2`, `out_channels=2` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=False`
 
-- (2) `num_classes=2`, `out_channels=1` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=True`.
+```python
+decode_head=dict(
+    type='PSPHead',
+    in_channels=64,
+    in_index=4,
+    num_classes=2,
+    out_channels=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+auxiliary_head=dict(
+    type='FCNHead',
+    in_channels=128,
+    in_index=3,
+    num_classes=2,
+    out_channels=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+```
 
-如果采用解决方案 (2), 下面是对样例 [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py) 做出的对应修改:
+- (2) `num_classes=2`, `out_channels=1` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=True`.
 
 ```python
 decode_head=dict(
@@ -156,7 +125,8 @@ auxiliary_head=dict(
 
 ## `reduce_zero_label` 的作用
 
-在 MMSegmentation 里面, 当 [加载注释](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/pipelines/loading.py#L91) 时, `reduce_zero_label (bool)` 被用来决定是否将所有 label 减去 1:
+数据集中 `reduce_zero_label`参数类型为布尔类型, 默认为 False, 它的功能是为了忽略数据集 label 0. 具体做法是将 label 0 改为 255, 其余 label 相应编号减1, 同时 decode head 里将 255 设为 ignore index, 即不参与 loss 计算.
+以下是 `reduce_zero_label` 具体实现逻辑:
 
 ```python
 if self.reduce_zero_label:
@@ -166,4 +136,4 @@ if self.reduce_zero_label:
     gt_semantic_seg[gt_semantic_seg == 254] = 255
 ```
 
-`reduce_zero_label` 常常被用来处理 label 0 是背景的数据集, 如果 `reduce_zero_label=True`, label 0 对应的像素将不会参与损失函数的计算. 需要说明的是在二值分割任务中没有必要设置 `reduce_zero_label=True`, 请采用上面我们提到的解决方案.
+需要注意的是, 使用 `reduce_zero_label` 请确认数据集原始类别个数, 如果只有两类, 需要关闭 `reduce_zero_label` 即设置 `reduce_zero_label=False`.
