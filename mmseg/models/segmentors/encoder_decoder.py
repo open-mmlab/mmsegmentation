@@ -278,6 +278,15 @@ class EncoderDecoder(BaseSegmentor):
         seg_pred = list(seg_pred)
         return seg_pred
 
+    def simple_test_logits(self, img, img_metas, rescale=True):
+        """Test without augmentations.
+
+        Return numpy seg_map logits.
+        """
+        seg_logit = self.inference(img[0], img_metas[0], rescale)
+        seg_logit = seg_logit.cpu().numpy()
+        return seg_logit
+
     def aug_test(self, imgs, img_metas, rescale=True):
         """Test with augmentations.
 
@@ -300,3 +309,21 @@ class EncoderDecoder(BaseSegmentor):
         # unravel batch dim
         seg_pred = list(seg_pred)
         return seg_pred
+
+    def aug_test_logits(self, img, img_metas, rescale=True):
+        """Test with augmentations.
+
+        Return seg_map logits. Only rescale=True is supported.
+        """
+        # aug_test rescale all imgs back to ori_shape for now
+        assert rescale
+
+        imgs = img
+        seg_logit = self.inference(imgs[0], img_metas[0], rescale)
+        for i in range(1, len(imgs)):
+            cur_seg_logit = self.inference(imgs[i], img_metas[i], rescale)
+            seg_logit += cur_seg_logit
+
+        seg_logit /= len(imgs)
+        seg_logit = seg_logit.cpu().numpy()
+        return seg_logit
