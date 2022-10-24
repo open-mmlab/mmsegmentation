@@ -85,7 +85,6 @@ class DecathlonDataset(BaseSegDataset):
             data_list.append(data_info)
         annotations.pop('training')
         annotations.pop('test')
-        data_list = sorted(data_list, key=lambda x: x['img_path'])
 
         metainfo = copy.deepcopy(annotations)
         metainfo = dict(classes=[*metainfo['labels'].values()])
