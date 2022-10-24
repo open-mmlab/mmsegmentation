@@ -132,9 +132,6 @@ class BaseSegDataset(BaseDataset):
         # if it is not defined
         updated_palette = self._update_palette()
         self._metainfo.update(dict(palette=updated_palette))
-        if test_mode:
-            assert self._metainfo.get('classes') is not None, \
-                'dataset metainfo `classes` should be specified when testing'
 
         # Join paths.
         if self.data_root is not None:
@@ -145,6 +142,10 @@ class BaseSegDataset(BaseDataset):
         # Full initialize the dataset.
         if not lazy_init:
             self.full_init()
+
+        if test_mode:
+            assert self._metainfo.get('classes') is not None, \
+                'dataset metainfo `classes` should be specified when testing'
 
     @classmethod
     def get_label_map(cls,

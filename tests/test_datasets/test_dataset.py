@@ -7,8 +7,9 @@ from unittest.mock import MagicMock
 import pytest
 
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
-                            COCOStuffDataset, ISPRSDataset, LoveDADataset,
-                            PascalVOCDataset, PotsdamDataset, iSAIDDataset)
+                            COCOStuffDataset, DecathlonDataset, ISPRSDataset,
+                            LoveDADataset, PascalVOCDataset, PotsdamDataset,
+                            iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
@@ -240,6 +241,19 @@ def test_isaid():
             osp.dirname(__file__),
             '../data/pseudo_isaid_dataset/splits/train.txt'))
     assert len(test_dataset) == 1
+
+
+def test_decathlon():
+    data_root = osp.join(osp.dirname(__file__), '../data')
+    test_dataset = DecathlonDataset(
+        pipeline=[], data_root=data_root, ann_file='dataset.json')
+    assert len(test_dataset) == 484
+    test_dataset = DecathlonDataset(
+        pipeline=[],
+        data_root=data_root,
+        ann_file='dataset.json',
+        test_mode=True)
+    assert len(test_dataset) == 266
 
 
 @pytest.mark.parametrize('dataset, classes', [
