@@ -1,4 +1,7 @@
-_base_ = ['../_base_/default_runtime.py', '../_base_/datasets/cityscapes.py']
+_base_ = [
+    '../_base_/default_runtime.py', '../_base_/datasets/ade20k.py',
+    '../_base_/schedules/schedule_160k.py'
+]
 
 custom_imports = dict(imports='mmdet.models', allow_failed_imports=False)
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -11,7 +14,7 @@ data_preprocessor = dict(
     pad_val=0,
     seg_pad_val=255,
     size=crop_size)
-num_classes = 19
+num_classes = 150
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
@@ -157,18 +160,9 @@ param_scheduler = [
         eta_min=0,
         power=0.9,
         begin=0,
-        end=90000,
+        end=160000,
         by_epoch=False)
 ]
 
-# training schedule for 90k
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=90000, val_interval=9000)
-val_cfg = dict(type='ValLoop')
-test_cfg = dict(type='TestLoop')
-default_hooks = dict(
-    timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
-    param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=9000),
-    sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegVisualizationHook'))
+# set batch size
+train_dataloader = dict(batch_size=2)
