@@ -123,7 +123,7 @@ auxiliary_head=dict(
 
 ## `reduce_zero_label` 的作用
 
-数据集中 `reduce_zero_label`参数类型为布尔类型, 默认为 False, 它的功能是为了忽略数据集 label 0. 具体做法是将 label 0 改为 255, 其余 label 相应编号减1, 同时 decode head 里将 255 设为 ignore index, 即不参与 loss 计算.
+数据集中 `reduce_zero_label` 参数类型为布尔类型, 默认为 False, 它的功能是为了忽略数据集 label 0. 具体做法是将 label 0 改为 255, 其余 label 相应编号减 1, 同时 decode head 里将 255 设为 ignore index, 即不参与 loss 计算.
 以下是 `reduce_zero_label` 具体实现逻辑:
 
 ```python
