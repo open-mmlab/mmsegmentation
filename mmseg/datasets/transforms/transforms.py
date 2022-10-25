@@ -1,15 +1,17 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Dict, Sequence, Tuple, Union
+from typing import Dict, Optional, Sequence, Tuple, Union
 
 import cv2
 import mmcv
 import numpy as np
+import torch
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
 from numpy import random
 
+from mmseg import digit_version
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
 
@@ -1225,4 +1227,295 @@ class GenerateEdge(BaseTransform):
         repr_str = self.__class__.__name__
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class Spacing(BaseTransform):
+    """Load an biomedical mage from file.
+
+    Modified from https://github.com/Project-MONAI/MONAI/blob/main/monai/transforms/spatial/dictionary.py#L307 # noqa
+
+    Required Keys:
+
+    - img
+    - gt_seg_map (optional)
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+
+    Args:
+        pixdim (float or tuple): Output voxel spacing. If the components of the
+                `pixdim` are non-positive values, the transform will use
+                corresponding components of the original `pixdim`, which is
+                computed for `affine` matrix of input image or ground truth.
+                If providing single number, it will be used in each dimension.
+        diagonal (bool): Whether to resample the input to have a diagonal
+                affine matrix. If True, the input data is resampled to the
+                following affine::
+
+                np.diag((pixdim_0, pixdim_1, pixdim_2, 1))
+
+                This effectively resets the volume to the world coordinate
+                system (RAS+ in nibabel). The original orientation, rotation,
+                shearing are not preserved.
+                If False, the axes orientation, orthogonal rotation and
+                translations components from the original affine will be
+                preserved in the target affine. This option will not flip/swap
+                axes against the original ones.
+        mode (str or int): Interpolation mode to calculate output values.
+                It could be ``"bilinear"``, ``"nearest"`` or spline
+                interpolation order 0-5 (integers). Defaults to ``"bilinear"``.
+        padding_mode (str): Padding mode for outside grid values. It could be
+                ``"zeros"``, ``"border"``, ``"reflection"``.
+                Defaults to ``"border"``.
+    """
+
+    def __init__(
+        self,
+        pixdim: Optional[Union[float, Tuple[float, float],
+                               Tuple[float, float, float]]] = None,
+        diagonal: bool = False,
+        mode: Union[str, int] = 'bilinear',
+        padding_mode: str = 'border',
+    ) -> None:
+        if isinstance(pixdim, tuple):
+            for pixdim_element in pixdim:
+                assert isinstance(pixdim_element, float), \
+                    'The element in pixdim tuple should ' \
+                    'be float. '
+        else:
+            assert isinstance(pixdim, float), \
+                'The type of pixdim should be float or tuple.'
+        assert mode in ('bilinear', 'nearest', 0, 1, 2, 3, 4, 5), \
+            'The mode should be "bilinear", "nearest" or spline ' \
+            'interpolation order 0-5 (integers)'
+        assert padding_mode in ('zeros', 'border', 'reflection'), \
+            'The padding_mode should be "zeros", "border" ' \
+            'or "reflection".'
+
+        self.pixdim = pixdim
+        self.diagonal = diagonal
+        self.mode = mode
+        self.padding_mode = padding_mode
+
+    def _spatial_resample(
+        self,
+        img: torch.Tensor,
+        src_affine: Optional[Union[np.ndarray]] = None,
+        dst_affine: Optional[torch.Tensor] = None,
+        spatial_size: Optional[Union[Sequence[int], int]] = None,
+        mode: Union[str, int, None] = None,
+        padding_mode: Optional[str] = None,
+    ):
+        """Resample input image from the orientation/spacing defined by
+        ``src_affine`` affine matrix into the ones specified by ``dst_affine``
+        affine matrix.
+
+        Internally this transform computes the affine transform matrix
+        from ``src_affine`` to ``dst_affine``, by
+        ``xform = linalg.solve(src_affine, dst_affine)``,
+        and call ``xxx.Affine`` with ``xform``.
+        """
+        original_spatial_shape = img.shape[1:]
+        src_affine_ = torch.eye(len(original_spatial_shape) + 1).to(
+            torch.float64)
+
+        torch_minimum_version = '1.8.0'
+        torch_version = digit_version(torch.__version__)
+        if torch_version >= digit_version(torch_minimum_version):
+            xform = torch.linalg.solve(src_affine_, dst_affine)
+        else:
+            xform = torch.solve(dst_affine, src_affine_).solution
+        '''
+        # TODO: Add Affine Transform
+        if isinstance(mode, int):
+            affine_xform = Affine(
+                affine=xform, spatial_size=spatial_size,
+                normalized=True, image_only=True, dtype=_dtype
+            )
+            with affine_xform.trace_transform(False):
+                img = affine_xform(img, mode=mode, padding_mode=padding_mode)
+        else:
+            affine_xform = AffineTransform()
+        img = affine_xform(
+            img.unsqueeze(0), theta=xform, spatial_size=spatial_size
+            ).squeeze(0)
+        '''
+        img = img
+
+        return img, xform
+
+    def _compute_shape_offset(
+        self,
+        spatial_shape: Union[np.ndarray, Sequence[int]],
+        in_affine: Union[np.ndarray, torch.Tensor],
+        out_affine: Union[np.ndarray, torch.Tensor],
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        """Given input and output affine, compute appropriate shapes in the
+        output space based on the input array's shape. This function also
+        returns the offset to put the shape in a good position with respect to
+        the world coordinate system.
+
+        Args:
+            spatial_shape: input array's shape
+            in_affine (matrix): 2D affine matrix
+            out_affine (matrix): 2D affine matrix
+        """
+        shape = np.array(spatial_shape, copy=True, dtype=float)
+        in_coords = [(0.0, dim - 1.0) for dim in shape]
+        corners: np.ndarray = np.asarray(
+            np.meshgrid(*in_coords, indexing='ij')).reshape((len(shape), -1))
+        corners = np.concatenate((corners, np.ones_like(corners[:1])))
+        corners = in_affine @ corners
+        try:
+            inv_mat = np.linalg.inv(out_affine)
+        except np.linalg.LinAlgError as e:
+            raise ValueError(f'Affine {out_affine} is not invertible') from e
+        corners_out = inv_mat @ corners
+        corners_out = corners_out[:-1] / corners_out[-1]
+        out_shape = np.round(corners_out.ptp(axis=1) + 1.0)
+        all_dist = inv_mat[:-1, :-1] @ corners[:-1, :]
+        offset = None
+        for i in range(corners.shape[1]):
+            min_corner = np.min(all_dist - all_dist[:, i:i + 1], 1)
+            if np.allclose(min_corner, 0.0, rtol=1e-3):
+                # corner is the smallest, shift the corner to origin
+                offset = corners[:-1, i]
+                break
+        # otherwise make output image center aligned with
+        # the input image center
+        if offset is None:
+            offset = in_affine[:-1, :-1] @ (
+                shape / 2.0) + in_affine[:-1, -1] - out_affine[:-1, :-1] @ (
+                    out_shape / 2.0)
+        return out_shape.astype(int, copy=False), offset  # type: ignore
+
+    def _affine_to_spacing(self,
+                           affine: np.ndarray,
+                           r: int = 3,
+                           suppress_zeros: bool = True) -> np.ndarray:
+        """Computing the current spacing from the affine matrix.
+
+        Args:
+            affine: a d x d affine matrix.
+            r: indexing based on the spatial rank,
+                spacing is computed from `affine[:r, :r]`.
+            suppress_zeros: whether to suppress the zeros with ones.
+
+        Returns:
+            an `r` dimensional vector of spacing.
+        """
+        if len(affine.shape) != 2 or affine.shape[0] != affine.shape[1]:
+            raise ValueError(
+                f'affine must be a square matrix, got {affine.shape}.')
+        spacing = np.sqrt(np.sum(affine[:r, :r] * affine[:r, :r], axis=0))
+        if suppress_zeros:
+            spacing[spacing == 0] = 1.0
+        return spacing
+
+    def _zoom_affine(self,
+                     affine: np.ndarray,
+                     scale: Union[np.ndarray, Sequence[float]],
+                     diagonal: bool = True):
+        """To make column norm of `affine` the same as `scale`.  If diagonal is
+        False, returns an affine that combines orthogonal rotation and the new
+        scale. This is done by first decomposing `affine`, then setting the
+        zoom factors to `scale`, and composing a new affine; the shearing
+        factors are removed.  If diagonal is True, returns a diagonal matrix,
+        the scaling factors are set to the diagonal elements.  This function
+        always return an affine with zero translations.
+
+        Args:
+            affine: A square `n x n` matrix.
+            scale: new scaling factor along each dimension. If the components
+                of the `scale` are non-positive values, will use the
+                corresponding components of the original pixdim,
+                which is computed from the `affine`.
+            diagonal: whether to return a diagonal scaling matrix.
+                Defaults to True.
+
+        Returns:
+            the updated `n x n` affine.
+        """
+
+        affine = np.array(affine, dtype=float, copy=True)
+        if len(affine) != len(affine[0]):
+            raise ValueError(
+                f'affine must be n x n, got {len(affine)} x {len(affine[0])}.')
+        scale_np = np.array(scale, dtype=float, copy=True)
+
+        d = len(affine) - 1
+        # compute original pixdim
+        norm = self._affine_to_spacing(affine, r=d)
+        if len(scale_np) < d:  # defaults based on affine
+            scale_np = np.append(scale_np, norm[len(scale_np):])
+        scale_np = scale_np[:d]
+        scale_np[scale_np == 0] = 1.0
+        if diagonal:
+            return np.diag(np.append(scale_np, [1.0]))
+        rzs = affine[:-1, :-1]  # rotation zoom scale
+        zs = np.linalg.cholesky(rzs.T @ rzs).T
+        rotation = rzs @ np.linalg.inv(zs)
+        s = np.sign(np.diag(zs)) * np.abs(scale_np)
+        # construct new affine with rotation and zoom
+        new_affine = np.eye(len(affine))
+        new_affine[:-1, :-1] = rotation @ np.diag(s)
+        return new_affine
+
+    def _spacing(self, data_array: np.ndarray) -> None:
+        """Resample input image or semantic maps into the specified
+        `pixdim`."""
+
+        original_spatial_shape = data_array.shape[1:]
+        # number of spatial dimension
+        num_dim = len(original_spatial_shape)
+        if num_dim <= 0:
+            raise ValueError(
+                'data_array must have at least one spatial dimension.')
+        # default to identity
+        affine_matrix = np.eye(num_dim + 1, dtype=np.float64)
+        out_d = self.pixdim[:num_dim]
+        # compute output affine, shape and offset
+        new_affine = self._zoom_affine(
+            affine_matrix, out_d, diagonal=self.diagonal)
+        output_shape, offset = self._compute_shape_offset(
+            data_array.shape[1:], affine_matrix, new_affine)
+        new_affine[:num_dim, -1] = offset[:num_dim]
+        actual_shape = list(output_shape)
+        data_array, _ = self._spatial_resample(
+            data_array,
+            dst_affine=torch.as_tensor(new_affine),
+            spatial_size=actual_shape,
+            mode=self.mode,
+            padding_mode=self.padding_mode,
+        )
+        return data_array
+
+    def transform(self, results: Dict) -> Dict:
+        """Call function to resample original images, semantic segmentation
+        maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Updated result dict.
+        """
+
+        img = self._spacing(results['img'])
+        gt_seg_map = self._spacing(results['gt_seg_map'])
+
+        results['img'] = img
+        results['gt_seg_map'] = gt_seg_map
+        return results
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f"pixdim='{self.pixdim}', "
+                    f'diagonal={self.diagonal}, '
+                    f'mode={self.mode}, '
+                    f'padding_mode={self.padding_mode})')
         return repr_str

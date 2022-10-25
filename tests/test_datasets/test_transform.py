@@ -706,3 +706,52 @@ def test_generate_edge():
         [1, 1, 0, 0, 0],
         [1, 0, 0, 0, 0],
     ]))
+
+
+def test_Spacing():
+    # test assertion for invalid pixdim
+    with pytest.raises(AssertionError):
+        transform = dict(type='Spacing', pixdim=1)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='Spacing', pixdim=(1, 1.0, 1.0))
+        TRANSFORMS.build(transform)
+
+    # test assertion for invalid mode
+    with pytest.raises(AssertionError):
+        transform = dict(type='Spacing', pixdim=(1.0, 2.0, 3.0), mode='1')
+        TRANSFORMS.build(transform)
+
+    # test assertion for invalid padding_mode
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='Spacing', pixdim=(1.0, 2.0, 3.0), padding_mode='1')
+        TRANSFORMS.build(transform)
+
+    from mmseg.datasets.transforms import (LoadBiomedicalAnnotation,
+                                           LoadBiomedicalImageFromFile)
+
+    results = dict(
+        img_path=osp.join('tests/data', 'biomedical.nii.gz'),
+        seg_map_path=osp.join('tests/data', 'biomedical_ann.nii.gz'))
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    transform = LoadBiomedicalAnnotation()
+    results = transform(copy.deepcopy(results))
+
+    # Only test identical transformation due to
+    # Affine Transform is WIP.
+    transform = dict(type='Spacing', pixdim=(1.0, 1.0, 1.0))
+    spacing_module = TRANSFORMS.build(transform)
+
+    img = results['img']
+    original_img = copy.deepcopy(img)
+    seg = results['gt_seg_map']
+    original_seg = copy.deepcopy(seg)
+    results = spacing_module(results)
+
+    spacing_module = TRANSFORMS.build(transform)
+    results = spacing_module(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
