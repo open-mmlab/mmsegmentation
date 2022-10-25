@@ -19,9 +19,10 @@ from .stare import STAREDataset
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
-                         PackSegInputs, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
-                         ResizeToMultiple, RGB2Gray, SegRescale, MedicalRandomFlip)
+                         MedicalRandomFlip, PackSegInputs,
+                         PhotoMetricDistortion, RandomCrop, RandomCutOut,
+                         RandomMosaic, RandomRotate, Rerange, ResizeToMultiple,
+                         RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
 
 __all__ = [
@@ -36,5 +37,4 @@ __all__ = [
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'DecathlonDataset', 'MedicalRandomFlip'
-
 ]

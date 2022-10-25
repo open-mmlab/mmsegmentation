@@ -1,13 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Dict, Sequence, Tuple, Union, Optional, Iterable, List
+from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
 
 import cv2
 import mmcv
 import numpy as np
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
-from mmengine.utils import is_tuple_of, is_list_of
+from mmengine.utils import is_list_of, is_tuple_of
 from numpy import random
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
@@ -1230,7 +1230,8 @@ class GenerateEdge(BaseTransform):
 
 @TRANSFORMS.register_module()
 class MedicalRandomFlip(BaseTransform):
-    """Reverse the orders of elements in an 3D Medical image & gt_seg_map along a given axe.
+    """Reverse the orders of elements in an 3D Medical image & gt_seg_map along
+    a given axe.
 
     Required Keys:
 
@@ -1250,29 +1251,33 @@ class MedicalRandomFlip(BaseTransform):
 
     Args:
         prob (float | list[float]): The flipping probability. Defaults to None.
-        direction (int, list[int]): The flipping direction (Spatial axes along which
-        to flip over).
-        swap_seg_labels (list, optional): The label pair need to be swapped for ground
-        truth, like 'left arm' and 'right arm' need to be swapped after horizontal f
-        lipping. For example, ``[(1, 5)]``, where 1/5 is the label of the left/right
-        arm. Defaults to None.
+        direction (int, list[int]): The flipping direction (Spatial axes along
+            which to flip over).
+        swap_seg_labels (list, optional): The label pair need to be swapped
+            for ground truth, like 'left arm' and 'right arm' need to be
+            swapped after horizontal flipping. For example, ``[(1, 5)]``,
+            where 1/5 is the label of the left/right arm. Defaults to None.
 
-        Options: If the input is a list, the length must equal len(prob), each element in
-        'prob' indicates the flip probability of corresponding direction. Defaults to None.
+        If the input is a list, the length must equal len(prob), each element
+            in 'prob' indicates the flip probability of corresponding
+            direction. Defaults to None.
         If direction is default None, flipping is not performed.
-        If direction is a tuple of int, flipping is performed on the specified axes.
+        If direction is a tuple of int, flipping is performed on the specified
+             axes.
     """
+
     def __init__(self,
-                prob: Optional[Union[float, Iterable[float]]] = None,
-                direction: Optional[Union[Sequence[int], int]] = None,
-                swap_seg_labels: Optional[Sequence] = None) -> None:
+                 prob: Optional[Union[float, Iterable[float]]] = None,
+                 direction: Optional[Union[Sequence[int], int]] = None,
+                 swap_seg_labels: Optional[Sequence] = None) -> None:
         if isinstance(prob, list):
             assert is_list_of(prob, float)
             assert 0 <= sum(prob) <= 1
         elif isinstance(prob, float):
             assert 0 <= prob <= 1
         else:
-            raise ValueError(f'probs must be float or list of float, but got `{type(prob)}`.')
+            raise ValueError(
+                f'probs must be float or list, but got `{type(prob)}`.')
         self.prob = prob
         self.swap_seg_labels = swap_seg_labels
 
@@ -1287,7 +1292,8 @@ class MedicalRandomFlip(BaseTransform):
 
     def _choose_direction(self) -> int:
         """Choose the flip direction according to `prob` and `direction`"""
-        if isinstance(self.direction, Sequence) and not isinstance(self.direction, int):
+        if isinstance(self.direction,
+                      Sequence) and not isinstance(self.direction, int):
             # None means non-flip
             direction_list: list = list(self.direction) + [None]
         elif isinstance(self.direction, int):
@@ -1311,7 +1317,7 @@ class MedicalRandomFlip(BaseTransform):
         """
 
         Args:
-            seg_map (ndarray): segmentaion map, shape (Z, Y, X)
+            seg_map (ndarray): segmentation map, shape (Z, Y, X)
             direction (int): Flip direction. Options are '0' , '1', '2'
 
         Returns:
@@ -1334,14 +1340,12 @@ class MedicalRandomFlip(BaseTransform):
 
         return seg_map
 
-
-
     def _flip(self, results: dict) -> None:
         """Flip images and segmentation map."""
         # flip image
         results['img'] = np.flip(results['img'], results['flip_direction'] + 1)
         results['gt_seg_map'] = self._flip_seg_map(
-                results['gt_seg_map'], direction=results['flip_direction'])
+            results['gt_seg_map'], direction=results['flip_direction'])
         results['swap_seg_labels'] = self.swap_seg_labels
 
     def _flip_on_direction(self, results: dict) -> None:
@@ -1358,6 +1362,7 @@ class MedicalRandomFlip(BaseTransform):
     def transform(self, results: dict) -> dict:
         """Transform function to flip images, bounding boxes, semantic
         segmentation map and keypoints.
+
         Args:
             results (dict): Result dict from loading pipeline.
         Returns:

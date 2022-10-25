@@ -719,11 +719,8 @@ def test_MedicalRandomFlip():
         transform = dict(type='MedicalRandomFlip', prob=1.0, direction='1')
         TRANSFORMS.build(transform)
 
-    from mmseg.datasets.transforms import (LoadAnnotations,
-                                           LoadBiomedicalAnnotation,
-                                           LoadBiomedicalData,
-                                           LoadBiomedicalImageFromFile,
-                                           LoadImageFromNDArray)
+    from mmseg.datasets.transforms import (LoadBiomedicalAnnotation,
+                                           LoadBiomedicalImageFromFile)
 
     results = dict(
         img_path=osp.join('tests/data', 'biomedical.nii.gz'),

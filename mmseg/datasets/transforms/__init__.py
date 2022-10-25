@@ -3,10 +3,10 @@ from .formatting import PackSegInputs
 from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadBiomedicalData, LoadBiomedicalImageFromFile,
                       LoadImageFromNDArray)
-from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
+from .transforms import (CLAHE, AdjustGamma, GenerateEdge, MedicalRandomFlip,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, Rerange, ResizeToMultiple,
-                         RGB2Gray, SegRescale, MedicalRandomFlip)
+                         RGB2Gray, SegRescale)
 
 __all__ = [
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
