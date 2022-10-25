@@ -1317,7 +1317,7 @@ class MedicalRandomFlip(BaseTransform):
         Returns:
             numpy.ndarray: Flipped segmentation map.
         """
-        seg_map = np.flip(seg_map, direction + 1)
+        seg_map = np.flip(seg_map, direction)
         if self.swap_seg_labels is not None:
             # to handle datasets with left/right annotations
             # like 'Left-arm' and 'Right-arm' in LIP dataset
