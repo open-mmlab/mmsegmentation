@@ -245,9 +245,12 @@ def test_isaid():
 
 def test_decathlon():
     data_root = osp.join(osp.dirname(__file__), '../data')
+    # test load training dataset
     test_dataset = DecathlonDataset(
         pipeline=[], data_root=data_root, ann_file='dataset.json')
     assert len(test_dataset) == 1
+
+    # test load test dataset
     test_dataset = DecathlonDataset(
         pipeline=[],
         data_root=data_root,
