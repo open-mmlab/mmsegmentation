@@ -89,4 +89,5 @@ class DecathlonDataset(BaseSegDataset):
         # `metainfo` arguments defined in constructor.
         for k, v in metainfo.items():
             self._metainfo.setdefault(k, v)
+
         return data_list
