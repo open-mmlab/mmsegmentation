@@ -1,13 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Dict, Sequence, Tuple, Union
+from typing import Dict, Sequence, Tuple, Union, Optional, Iterable, List
 
 import cv2
 import mmcv
 import numpy as np
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
-from mmengine.utils import is_tuple_of
+from mmengine.utils import is_tuple_of, is_list_of
 from numpy import random
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
@@ -1225,4 +1225,152 @@ class GenerateEdge(BaseTransform):
         repr_str = self.__class__.__name__
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class MedicalRandomFlip(BaseTransform):
+    """Reverse the orders of elements in an 3D Medical image & gt_seg_map along a given axe.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+
+    Added Keys:
+
+    - flip
+    - flip_direction
+    - swap_seg_labels (optional)
+
+    Args:
+        prob (float | list[float]): The flipping probability. Defaults to None.
+        direction (int, list[int]): The flipping direction (Spatial axes along which
+        to flip over).
+        swap_seg_labels (list, optional): The label pair need to be swapped for ground
+        truth, like 'left arm' and 'right arm' need to be swapped after horizontal f
+        lipping. For example, ``[(1, 5)]``, where 1/5 is the label of the left/right
+        arm. Defaults to None.
+
+        Options: If the input is a list, the length must equal len(prob), each element in
+        'prob' indicates the flip probability of corresponding direction. Defaults to None.
+        If direction is default None, flipping is not performed.
+        If direction is a tuple of int, flipping is performed on the specified axes.
+    """
+    def __init__(self,
+                prob: Optional[Union[float, Iterable[float]]] = None,
+                direction: Optional[Union[Sequence[int], int]] = None,
+                swap_seg_labels: Optional[Sequence] = None) -> None:
+        if isinstance(prob, list):
+            assert is_list_of(prob, float)
+            assert 0 <= sum(prob) <= 1
+        elif isinstance(prob, float):
+            assert 0 <= prob <= 1
+        else:
+            raise ValueError(f'probs must be float or list of float, but got `{type(prob)}`.')
+        self.prob = prob
+        self.swap_seg_labels = swap_seg_labels
+
+        if isinstance(direction, int):
+            pass
+        elif isinstance(direction, list):
+            assert is_list_of(direction, int)
+        else:
+            raise ValueError(f'direction must be either int or list of int, \
+                               but got `{type(direction)}`.')
+        self.direction = direction
+
+    def _choose_direction(self) -> int:
+        """Choose the flip direction according to `prob` and `direction`"""
+        if isinstance(self.direction, Sequence) and not isinstance(self.direction, int):
+            # None means non-flip
+            direction_list: list = list(self.direction) + [None]
+        elif isinstance(self.direction, int):
+            # None means non-flip
+            direction_list = [self.direction, None]
+
+        if isinstance(self.prob, list):
+            non_prob: float = 1 - sum(self.prob)
+            prob_list = self.prob + [non_prob]
+        elif isinstance(self.prob, float):
+            non_prob = 1. - self.prob
+            # exclude non-flip
+            single_ratio = self.prob / (len(direction_list) - 1)
+            prob_list = [single_ratio] * (len(direction_list) - 1) + [non_prob]
+
+        cur_dir = np.random.choice(direction_list, p=prob_list)
+
+        return cur_dir
+
+    def _flip_seg_map(self, seg_map: dict, direction: int) -> np.ndarray:
+        """
+
+        Args:
+            seg_map (ndarray): segmentaion map, shape (Z, Y, X)
+            direction (int): Flip direction. Options are '0' , '1', '2'
+
+        Returns:
+            numpy.ndarray: Flipped segmentation map.
+        """
+        seg_map = np.flip(seg_map, direction + 1)
+        if self.swap_seg_labels is not None:
+            # to handle datasets with left/right annotations
+            # like 'Left-arm' and 'Right-arm' in LIP dataset
+            # Modified from https://github.com/openseg-group/openseg.pytorch/blob/master/lib/datasets/tools/cv2_aug_transforms.py # noqa:E501
+            # Licensed under MIT license
+            temp = seg_map.copy()
+            assert isinstance(self.swap_seg_labels, (tuple, list))
+            for pair in self.swap_seg_labels:
+                assert isinstance(pair, (tuple, list)) and len(pair) == 2, \
+                    'swap_seg_labels must be a sequence with pair, but got ' \
+                    f'{self.swap_seg_labels}.'
+                seg_map[temp == pair[0]] = pair[1]
+                seg_map[temp == pair[1]] = pair[0]
+
+        return seg_map
+
+
+
+    def _flip(self, results: dict) -> None:
+        """Flip images and segmentation map."""
+        # flip image
+        results['img'] = np.flip(results['img'], results['flip_direction'] + 1)
+        results['gt_seg_map'] = self._flip_seg_map(
+                results['gt_seg_map'], direction=results['flip_direction'])
+        results['swap_seg_labels'] = self.swap_seg_labels
+
+    def _flip_on_direction(self, results: dict) -> None:
+        """Function to flip images and segmentation map."""
+        cur_dir = self._choose_direction()
+        if cur_dir is None:
+            results['flip'] = False
+            results['flip_direction'] = None
+        else:
+            results['flip'] = True
+            results['flip_direction'] = cur_dir
+            self._flip(results)
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to flip images, bounding boxes, semantic
+        segmentation map and keypoints.
+        Args:
+            results (dict): Result dict from loading pipeline.
+        Returns:
+            dict: Flipped results, 'img', 'gt_seg_map', 'flip',
+            and 'flip_direction' keys are updated in result dict.
+        """
+        self._flip_on_direction(results)
+
+        return results
+
+    def __repr__(self) -> str:
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
+        repr_str += f'direction={self.direction})'
+
         return repr_str

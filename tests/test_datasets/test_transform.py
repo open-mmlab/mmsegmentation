@@ -706,3 +706,43 @@ def test_generate_edge():
         [1, 1, 0, 0, 0],
         [1, 0, 0, 0, 0],
     ]))
+
+
+def test_MedicalRandomFlip():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='MedicalRandomFlip', prob=1.5)
+        TRANSFORMS.build(transform)
+
+    # test assertion for invalid direction
+    with pytest.raises(ValueError):
+        transform = dict(type='MedicalRandomFlip', prob=1.0, direction='1')
+        TRANSFORMS.build(transform)
+
+    from mmseg.datasets.transforms import (LoadAnnotations,
+                                           LoadBiomedicalAnnotation,
+                                           LoadBiomedicalData,
+                                           LoadBiomedicalImageFromFile,
+                                           LoadImageFromNDArray)
+
+    results = dict(
+        img_path=osp.join('tests/data', 'biomedical.nii.gz'),
+        seg_map_path=osp.join('tests/data', 'biomedical_ann.nii.gz'))
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    transform = LoadBiomedicalAnnotation()
+    results = transform(copy.deepcopy(results))
+
+    transform = dict(type='MedicalRandomFlip', prob=1.0, direction=1)
+    flip_module = TRANSFORMS.build(transform)
+
+    img = results['img']
+    original_img = copy.deepcopy(img)
+    seg = results['gt_seg_map']
+    original_seg = copy.deepcopy(seg)
+    results = flip_module(results)
+
+    flip_module = TRANSFORMS.build(transform)
+    results = flip_module(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
