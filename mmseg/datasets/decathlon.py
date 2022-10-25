@@ -67,14 +67,17 @@ class DecathlonDataset(BaseSegDataset):
             'training'] if not self.test_mode else annotations['test']
         data_list = []
         for raw_data_info in raw_data_list:
+            # `2:` works for removing './' in file path, which will break
+            # loading from cloud storage.
             if isinstance(raw_data_info, dict):
                 data_info = dict(
-                    img_path=osp.join(self.data_root, raw_data_info['image']))
-                data_info['seg_map_path'] = osp.join(self.data_root,
-                                                     raw_data_info['label'])
+                    img_path=osp.join(self.data_root, raw_data_info['image']
+                                      [2:]))
+                data_info['seg_map_path'] = osp.join(
+                    self.data_root, raw_data_info['label'][2:])
             else:
                 data_info = dict(
-                    img_path=osp.join(self.data_root, raw_data_info))
+                    img_path=osp.join(self.data_root, raw_data_info)[2:])
             data_info['label_map'] = self.label_map
             data_info['reduce_zero_label'] = self.reduce_zero_label
             data_info['seg_fields'] = []
@@ -83,7 +86,7 @@ class DecathlonDataset(BaseSegDataset):
         annotations.pop('test')
 
         metainfo = copy.deepcopy(annotations)
-        metainfo = dict(classes=[*metainfo['labels'].values()])
+        metainfo['classes'] = [*metainfo['labels'].values()]
         # Meta information load from annotation file will not influence the
         # existed meta information load from `BaseDataset.METAINFO` and
         # `metainfo` arguments defined in constructor.
