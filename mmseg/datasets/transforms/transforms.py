@@ -1255,7 +1255,8 @@ class RandomGamma(BaseTransform):
                  gamma_range: tuple[float] = (0.5, 4.5)) -> None:
         super().__init__()
         assert 0 <= prob and prob <= 1
-        assert isinstance(gamma_range, tuple)
+        assert isinstance(gamma_range, tuple) and len(gamma_range) == 2
+        assert min(gamma_range) > 0.5
         self.prob = prob
         self.gamma_range = gamma_range
 

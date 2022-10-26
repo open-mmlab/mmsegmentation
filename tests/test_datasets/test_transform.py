@@ -729,8 +729,22 @@ def test_RandomGamma():
     with pytest.raises(TypeError):
         transform = dict(type='RandomGamma', prob='asd', gamma_range=[0])
         TRANSFORMS.build(transform)
-    transform = dict(type='RandomGamma', prob=0.5, gamma_range=(0, 1))
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomGamma', prob=0.5, gamma_range=(0, 1))
+        Random_Gamma_module = TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomGamma', prob=0.5, gamma_range=(0.5, 1))
+        Random_Gamma_module = TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomGamma', prob=0.5, gamma_range=(0.5, 0.4))
+        Random_Gamma_module = TRANSFORMS.build(transform)
+
+    transform = dict(type='RandomGamma', prob=0.7, gamma_range=(0.8, 0.6))
     Random_Gamma_module = TRANSFORMS.build(transform)
+
     results = dict()
     # test nature image
     img = mmcv.imread(
@@ -742,4 +756,10 @@ def test_RandomGamma():
     results['gt_semantic_seg'] = seg
     results['img_shape'] = img.shape
     results = Random_Gamma_module(results)
-    print(results)
+    print(results['img'].shape)
+
+    img2 = np.random.rand(5, 32, 16, 8)
+    results2 = dict()
+    results2['img'] = img2
+    results2 = Random_Gamma_module(results)
+    print(results['img'].shape)
