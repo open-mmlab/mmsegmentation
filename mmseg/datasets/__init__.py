@@ -6,6 +6,7 @@ from .cityscapes import CityscapesDataset
 from .coco_stuff import COCOStuffDataset
 from .dark_zurich import DarkZurichDataset
 from .dataset_wrappers import MultiImageMixDataset
+from .decathlon import DecathlonDataset
 from .drive import DRIVEDataset
 from .hrf import HRFDataset
 from .isaid import iSAIDDataset
@@ -33,5 +34,6 @@ __all__ = [
     'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
-    'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge'
+    'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
+    'DecathlonDataset'
 ]
