@@ -1277,15 +1277,15 @@ class RandomGamma(BaseTransform):
         """
         do_gamma = self._do_gamma
         if do_gamma:
-            gamma=self._generate_gamma()
+            gamma= self._generate_gamma()
             results['img'] = self._adjust_contrast(results['img'], gamma)
         return results
 
     def _adjust_contrast(self, img: np.ndarray, gamma: float):
         """Adjust contrast according to the gamma:
-
-        x = ((x - min) / intensity_range) ^ gamma * intensity_range + min
-
+        .. math::
+            x = ((x - min) / (max-min)) ^ \gamma * (max-min) + min
+            
         Args:
             img (np.ndarray): The input image.
             gamma (float): gamma value to adjust the contrast as function.
