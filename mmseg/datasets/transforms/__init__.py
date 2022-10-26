@@ -5,7 +5,7 @@ from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadImageFromNDArray)
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
-                         RandomMosaic, RandomRotate, Rerange, ResizeToMultiple,
+                         RandomMosaic, RandomGamma,RandomRotate, Rerange, ResizeToMultiple,
                          RGB2Gray, SegRescale)
 
 __all__ = [

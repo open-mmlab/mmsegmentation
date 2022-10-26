@@ -706,3 +706,39 @@ def test_generate_edge():
         [1, 1, 0, 0, 0],
         [1, 0, 0, 0, 0],
     ]))
+
+
+def test_RandGamma():
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomGamma', prob=1.2, gamma_range=(0, 1))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomGamma', prob=-1, gamma_range=(0, 5))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomGamma', prob=0, gamma_range=(0))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomGamma', prob=0.5, gamma_range=[0])
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(TypeError):
+        transform = dict(type='RandomGamma', prob='asd', gamma_range=[0])
+        TRANSFORMS.build(transform)
+    transform = dict(type='RandomGamma', prob=0.5, gamma_range=(0, 1))
+    Random_Gamma_module = TRANSFORMS.build(transform)
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/seg.png')))
+    print(img.shape)
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['img_shape'] = img.shape
+    results = Random_Gamma_module(results)
+    print(results)

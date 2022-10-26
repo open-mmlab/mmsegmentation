@@ -1226,3 +1226,75 @@ class GenerateEdge(BaseTransform):
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class RandomGamma(BaseTransform):
+    """Using random gamma correction to process the image.
+
+    Modified from https://docs.monai.io/en/0.3.0/_modules/monai/transforms/intensity/array.html#RandAdjustContrast
+
+    Required Keys:
+    - img
+    - prob
+    - gamma_range
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        prob (float): RandomGamma probability.
+        gamma_range: Range of gamma values.
+    """
+
+    def __init__(self, prob: float,
+                 gamma_range: tuple[float] = (0.5, 4.5)) -> None:
+        super().__init__()
+        assert 0 <= prob and prob <= 1
+        assert isinstance(gamma_range, tuple)
+        self.prob = prob
+        self.gamma_range = gamma_range
+
+    @cache_randomness
+    def generate_gamma(self):
+        return np.random.rand() < self.prob, np.random.uniform(
+            min(*self.gamma_range), max(*self.gamma_range))
+
+    def transform(self, results: dict) -> dict:
+        """Call function to randomly adjust the contrast of image.
+
+        Args:
+            results (dict): Result dict.
+
+        Returns:
+            dict: Result dict with random gamma transformed.
+        """
+        do_gamma, gamma = self.generate_gamma()
+        if do_gamma:
+            results['img'] = self._adjust_contrast(results['img'], gamma)
+        return results
+
+    def _adjust_contrast(self, img: np.ndarray, gamma: float):
+        """Adjust contrast according to the gamma:
+
+        x =  ((x - min) / intensity_range) ^ gamma * intensity_range + min
+
+        Args:
+            img (np.ndarray): The input image.
+            gamma (float): gamma value to adjust the contrast as function.
+
+        Returns:
+            np.ndarray: Image after contrast change.
+        """
+        epsilon = 1e-7
+        img_min = img.min()
+        img_range = img.max() - img_min
+        return np.power(((img - img_min) / float(img_range + epsilon)),
+                        gamma) * img_range + img_min
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
+        repr_str += f'gamma_range={self.gamma_range})'
+        return repr_str
