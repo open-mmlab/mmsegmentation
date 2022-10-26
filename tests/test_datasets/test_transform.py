@@ -708,7 +708,7 @@ def test_generate_edge():
     ]))
 
 
-def test_RandGamma():
+def test_RandomGamma():
 
     with pytest.raises(AssertionError):
         transform = dict(type='RandomGamma', prob=1.2, gamma_range=(0, 1))
@@ -732,6 +732,7 @@ def test_RandGamma():
     transform = dict(type='RandomGamma', prob=0.5, gamma_range=(0, 1))
     Random_Gamma_module = TRANSFORMS.build(transform)
     results = dict()
+    # test nature image
     img = mmcv.imread(
         osp.join(osp.dirname(__file__), '../data/color.jpg'), 'color')
     seg = np.array(

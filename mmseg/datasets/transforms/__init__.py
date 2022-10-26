@@ -5,13 +5,13 @@ from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadImageFromNDArray)
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
-                         RandomMosaic, RandomGamma,RandomRotate, Rerange, ResizeToMultiple,
-                         RGB2Gray, SegRescale)
+                         RandomGamma, RandomMosaic, RandomRotate, Rerange,
+                         ResizeToMultiple, RGB2Gray, SegRescale)
 
 __all__ = [
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
-    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
-    'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
-    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
+    'RandomRotate', 'AdjustGamma', 'RandomGamma', 'CLAHE', 'Rerange',
+    'RGB2Gray', 'RandomCutOut', 'RandomMosaic', 'PackSegInputs',
+    'ResizeToMultiple', 'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge'
 ]
