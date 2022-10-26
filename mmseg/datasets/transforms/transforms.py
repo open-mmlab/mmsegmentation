@@ -1230,13 +1230,15 @@ class GenerateEdge(BaseTransform):
 
 @TRANSFORMS.register_module()
 class RandomGamma(BaseTransform):
-    """Using random gamma correction to process the image.
+    """Using random gamma correction to process the biomedical image.
 
     Modified from https://docs.monai.io/en/0.3.0/_modules/monai/transforms/intensity/array.html#RandAdjustContrast
+    lisence:  Apache 2.0
+    Copyright (c) MONAI Consortium
 
     Required Keys:
     
-    - img
+    - img (np.ndarray, float)
 
     Modified Keys:
 
@@ -1244,7 +1246,7 @@ class RandomGamma(BaseTransform):
 
     Args:
         prob (float): RandomGamma probability.
-        gamma_range: Range of gamma values.
+        gamma_range (tuple[float]): Range of gamma values.
     """
 
     def __init__(self, prob: float,
@@ -1256,8 +1258,12 @@ class RandomGamma(BaseTransform):
         self.gamma_range = gamma_range
 
     @cache_randomness
-    def generate_gamma(self):
-        return np.random.rand() < self.prob, np.random.uniform(
+    def _do_gamma(self):
+        return np.random.rand() < self.prob
+    
+    @cache_randomness
+    def _generate_gamma(self):
+        return np.random.uniform(
             min(*self.gamma_range), max(*self.gamma_range))
 
     def transform(self, results: dict) -> dict:
@@ -1269,15 +1275,16 @@ class RandomGamma(BaseTransform):
         Returns:
             dict: Result dict with random gamma transformed.
         """
-        do_gamma, gamma = self.generate_gamma()
+        do_gamma = self._do_gamma
         if do_gamma:
+            gamma=self._generate_gamma()
             results['img'] = self._adjust_contrast(results['img'], gamma)
         return results
 
     def _adjust_contrast(self, img: np.ndarray, gamma: float):
         """Adjust contrast according to the gamma:
 
-        x =  ((x - min) / intensity_range) ^ gamma * intensity_range + min
+        x = ((x - min) / intensity_range) ^ gamma * intensity_range + min
 
         Args:
             img (np.ndarray): The input image.
