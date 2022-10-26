@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Dict, Sequence, Tuple, Union
+import math
+from typing import Dict, List, Optional, Sequence, Tuple, Union
 
 import cv2
 import mmcv
@@ -9,6 +10,11 @@ from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
 from numpy import random
+
+try:
+    import scipy.ndimage as NdImage
+except ImportError:
+    NdImage = None
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
@@ -1226,3 +1232,215 @@ class GenerateEdge(BaseTransform):
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
         return repr_str
+
+
+OptTransParam3D = Optional[Union[Sequence[Union[Tuple[float, float], float]],
+                                 float]]
+UPSAMPLE_MAPPER = {'nearest': 0, 'bilinear': 1, 'bicubic': 3}
+PADDING_MODE = [
+    'reflect', 'grid-mirror', 'constant', 'grid-constant', 'nearest', 'mirror',
+    'grid-wrap', 'wrap'
+]
+
+
+@TRANSFORMS.register_module()
+class RandomAffined3D(BaseTransform):
+    """Random affine transform data augmentation.
+
+    This operation randomly generates affine transform matrix which including
+    rotation, translation, shear and scaling transforms.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - gt_seg_map
+
+    Args:
+        max_rotate_degree (float): Maximum degrees of rotation transform.
+            Defaults to 10.
+        max_translate_ratio (float): Maximum ratio of translation.
+            Defaults to 0.1.
+        scaling_ratio_range (tuple[float]): Min and max ratio of
+            scaling transform. Defaults to (0.5, 1.5).
+        max_shear_range (float): Maximum degrees of shear
+            transform. Defaults to 2.
+        mode: Interpolation mode to calculate output values.
+            See also:
+            https://docs.scipy.org/doc/scipy/reference/generated/\
+                scipy.ndimage.map_coordinates.html
+        padding_mode: Padding mode for outside grid values.
+            This argument accepts {'reflect', 'grid-mirror', 'constant',
+            'grid-constant', 'nearest', 'mirror', 'grid-wrap', 'wrap'}.
+            See also:
+            https://docs.scipy.org/doc/scipy/reference/generated/\
+                scipy.ndimage.map_coordinates.html
+    """
+
+    def __init__(self,
+                 prob: float = 0.5,
+                 max_rotate_degree: OptTransParam3D = None,
+                 max_translate_ratio: OptTransParam3D = None,
+                 scaling_ratio_range: OptTransParam3D = None,
+                 max_shear_range: Optional[Tuple[float]] = None,
+                 upsample_mode: str = 'bilinear',
+                 padding_mode: str = 'reflect') -> None:
+        super().__init__()
+
+        self.prob = prob
+        self.rotate_degrees = self._get_param_tuple_list(max_rotate_degree)
+        self.translate_ratios = self._get_param_tuple_list(max_translate_ratio)
+        self.scaling_ratio_ranges = self._get_param_tuple_list(
+            scaling_ratio_range)
+        self.shear_ranges = max_shear_range
+
+        if upsample_mode not in UPSAMPLE_MAPPER.keys():
+            raise ValueError()
+        self.upsample_mode = UPSAMPLE_MAPPER[upsample_mode]
+        if padding_mode not in PADDING_MODE:
+            raise ValueError()
+        self.padding_mode = padding_mode
+
+    @staticmethod
+    def _get_param_tuple_list(
+            params: OptTransParam3D) -> Sequence[Tuple[float, float]]:
+        if isinstance(params, float):
+            return [(params, params) for _ in range(3)]
+        elif isinstance(params, Sequence):
+            if len(params) != 3:
+                # TODO
+                raise 'Please xxx'
+            results = []
+            for param_ in params:
+                if isinstance(param_, float):
+                    results.append((param_, param_))
+                elif isinstance(param_, Tuple):
+                    results.append(param_)
+            return results
+        return None
+
+    @cache_randomness
+    def _get_random_homography_matrix(self, x: int, y: int,
+                                      z: int) -> np.ndarray:
+        affine = np.eye(4)
+
+        # Rotation
+        if self.rotate_degrees is not None:
+            ratation_degree = self._get_random_uniform_results_list(
+                self.rotate_degrees)
+            rotate_matrix = self._get_rotation_matrix(ratation_degree)
+            affine = affine @ rotate_matrix
+
+        # Scaling
+        if self.scaling_ratio_ranges is not None:
+            scaling_ratios = self._get_random_uniform_results_list(
+                self.scaling_ratio_ranges)
+            scale_matrix = self._get_scaling_matrix(scaling_ratios)
+            affine = affine @ scale_matrix
+
+        # Shear
+        if self.shear_ranges is not None:
+            shearing_coefs = [(np.random.uniform(-r), np.random.uniform(r))
+                              for r in self.shear_ranges]
+            shear_matrix = self._get_shear_matrix(shearing_coefs)
+            affine = affine @ shear_matrix
+
+        # Translation
+        if self.translate_ratios is not None:
+            translate_ratios = self._get_translate_matrix(
+                self.translate_ratios)
+            translate_shifts = [
+                w * r for w, r in zip([x, y, z], translate_ratios)
+            ]
+            translate_matrix = self._get_translate_matrix(translate_shifts)
+            affine = affine @ translate_matrix
+
+        return affine
+
+    @staticmethod
+    def _get_random_uniform_results_list(
+            tuple_list: Sequence[Tuple[float, float]]) -> List[float]:
+        return [np.random.uniform(-x1, x2) for x1, x2 in tuple_list]
+
+    @staticmethod
+    def _get_rotation_matrix(rotate_degrees: Sequence[float]) -> np.ndarray:
+        radians = [math.radians(d) for d in rotate_degrees]
+        radians = [(np.sin(r), np.cos(r)) for r in radians]
+        # roll
+        sin_, cos_ = radians[0]
+        matrix_x = np.eye(4)
+        matrix_x[1, 1], matrix_x[1, 2] = cos_, -sin_
+        matrix_x[2, 1], matrix_x[2, 2] = sin_, cos_
+        # pitch
+        sin_, cos_ = radians[1]
+        matrix_y = np.eye(4)
+        matrix_y[0, 0], matrix_y[0, 2] = cos_, sin_
+        matrix_y[2, 0], matrix_y[2, 2] = -sin_, cos_
+        # yaw
+        sin_, cos_ = radians[2]
+        matrix_z = np.eye(4)
+        matrix_z[0, 0], matrix_z[0, 1] = cos_, -sin_
+        matrix_z[1, 0], matrix_z[1, 1] = sin_, cos_
+        rotate_matrix = matrix_x @ matrix_y @ matrix_z
+        return rotate_matrix
+
+    @staticmethod
+    def _get_scaling_matrix(scale_ratios: Sequence[float]) -> np.ndarray:
+        matrix = np.eye(4)
+        for i in range(3):
+            matrix[i, i] = scale_ratios[i]
+        return matrix
+
+    @staticmethod
+    def _get_shear_matrix(coefs: Sequence[float]) -> np.ndarray:
+        matrix = np.eye(4)
+        matrix[0, 1], matrix[0, 2] = coefs[0], coefs[1]
+        matrix[1, 0], matrix[1, 2] = coefs[2], coefs[3]
+        matrix[2, 0], matrix[2, 1] = coefs[4], coefs[5]
+        return matrix
+
+    @staticmethod
+    def _get_translate_matrix(shifts: Sequence[float]) -> np.ndarray:
+        matrix = np.eye(4)
+        for i in range(len(shifts)):
+            matrix[i, -1] = shifts[i]
+        return matrix
+
+    @staticmethod
+    def _create_grid(spatial_size: Sequence[int]):
+        spacing = tuple(1.0 for _ in spatial_size)
+        ranges = [
+            np.linspace(-(d - 1.0) / 2.0 * s, (d - 1.0) / 2.0 * s, int(d))
+            for d, s in zip(spatial_size, spacing)
+        ]
+        coords = np.asarray(np.meshgrid(*ranges, indexing='ij'))
+        return np.concatenate([coords, np.ones_like(coords[:1])])
+
+    def transform(self, results: dict) -> dict:
+        # C, X, Y, Z
+        img: np.ndarray = results['img']
+        gt_sem_seg = results['gt_sem_seg']
+        x, y, z = img.shape[1:]
+        affine = self._get_random_homography_matrix(x, y, z)
+        grid = self._create_grid(img.shape[1:])
+        grid_ = (affine @ grid.reshape(
+            (grid.shape[0], -1))).reshape([-1] + list(grid.shape[1:]))
+        img = NdImage.map_coordinates(
+            img, grid_, order=self.upsample_mode, mode=self.padding_mode)
+        gt_sem_seg = NdImage.map_coordinates(
+            gt_sem_seg[np.newaxis, :],
+            grid,
+            order=self.upsample_mode,
+            mode=self.padding_mode)
+
+        results['img'] = img
+        results['img_shape'] = img.shape
+        results['gt_sem_seg'] = gt_sem_seg.squeeze()
+        results['affine'] = affine
+
+        return results

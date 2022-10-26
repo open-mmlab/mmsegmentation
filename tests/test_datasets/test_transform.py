@@ -706,3 +706,19 @@ def test_generate_edge():
         [1, 1, 0, 0, 0],
         [1, 0, 0, 0, 0],
     ]))
+
+
+def test_random_affine_3d():
+    transform = dict(type='RandomAffined3D', padding_mode='constant')
+    transform = TRANSFORMS.build(transform)
+
+    img = np.random.rand(5, 32, 16, 8)
+    gt_sem_seg = np.random.rand(32, 16, 8)
+
+    results = dict()
+    results['img'] = img
+    results['gt_sem_seg'] = gt_sem_seg
+
+    # Test no changes
+    results = transform(results)
+    assert np.allclose(results['affine'], np.eye(4))
