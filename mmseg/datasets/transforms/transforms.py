@@ -1232,6 +1232,8 @@ class GenerateEdge(BaseTransform):
 class RandomGamma(BaseTransform):
     """Using random gamma correction to process the biomedical image.
 
+    Modified from https://docs.monai.io/en/0.3.0/_modules/monai/trans
+    forms/intensity/array.html#RandAdjustContrast
     With:
     licence:  Apache 2.0
     Copyright (c) MONAI Consortium
