@@ -1257,13 +1257,6 @@ class MedicalRandomFlip(BaseTransform):
             for ground truth, like 'left arm' and 'right arm' need to be
             swapped after horizontal flipping. For example, ``[(1, 5)]``,
             where 1/5 is the label of the left/right arm. Defaults to None.
-
-        If the input is a list, the length must equal len(prob), each element
-            in 'prob' indicates the flip probability of corresponding
-            direction. Defaults to None.
-        If direction is default None, flipping is not performed.
-        If direction is a tuple of int, flipping is performed on the specified
-             axes.
     """
 
     def __init__(self,
