@@ -719,6 +719,11 @@ def test_MedicalRandomFlip():
         transform = dict(type='MedicalRandomFlip', prob=1.0, direction='1')
         TRANSFORMS.build(transform)
 
+    # test assertion for invalid input
+    with pytest.raises(ValueError):
+        transform = dict(type='MedicalRandomFlip', prob='1')
+        TRANSFORMS.build(transform)
+
     from mmseg.datasets.transforms import (LoadBiomedicalAnnotation,
                                            LoadBiomedicalImageFromFile)
 
@@ -733,6 +738,10 @@ def test_MedicalRandomFlip():
     transform = dict(type='MedicalRandomFlip', prob=1.0, direction=1)
     flip_module = TRANSFORMS.build(transform)
 
+    assert str(
+        transform
+    ) == "{'type': 'MedicalRandomFlip', 'prob': 1.0, 'direction': 1}"
+
     img = results['img']
     original_img = copy.deepcopy(img)
     seg = results['gt_seg_map']
@@ -743,3 +752,23 @@ def test_MedicalRandomFlip():
     results = flip_module(results)
     assert np.equal(original_img, results['img']).all()
     assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # test multi-direction input
+    transform = dict(
+        type='MedicalRandomFlip', prob=[0.5, 0.3, 0.2], direction=[0, 1, 2])
+    flip_module = TRANSFORMS.build(transform)
+    results = flip_module(results)
+
+    # test swap label
+    transform = dict(
+        type='MedicalRandomFlip',
+        prob=[0.5, 0.3, 0.2],
+        direction=[0, 1, 2],
+        swap_seg_labels=[[1, 2]])
+    flip_module = TRANSFORMS.build(transform)
+    results = flip_module(results)
+
+    # test assertion for invalid input
+    with pytest.raises(ValueError):
+        transform = dict(type='MedicalRandomFlip', prob='1')
+        TRANSFORMS.build(transform)
