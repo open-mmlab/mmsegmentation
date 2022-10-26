@@ -1235,9 +1235,8 @@ class RandomGamma(BaseTransform):
     Modified from https://docs.monai.io/en/0.3.0/_modules/monai/transforms/intensity/array.html#RandAdjustContrast
 
     Required Keys:
+    
     - img
-    - prob
-    - gamma_range
 
     Modified Keys:
 
