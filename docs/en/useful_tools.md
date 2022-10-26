@@ -424,3 +424,32 @@ result/pred_result.pkl \
 result/confusion_matrix \
 --show
 ```
+
+## Model ensemble
+
+To complete the integration of prediction probabilities for multiple models, we provide 'tools/model_ensemble.py'
+
+### Usage
+
+```bash
+python tools/model_ensemble.py \
+  --config ${CONFIG_FILE1} ${CONFIG_FILE2} ... \
+  --checkpoint ${CHECKPOINT_FILE1} ${CHECKPOINT_FILE2} ...\
+  --aug-test \
+  --out ${OUTPUT_DIR}\
+  --gpus ${GPU_USED}\
+```
+
+### Description of all arguments
+
+- `--config`: Path to the config file for the ensemble model
+- `--checkpoint`: Path to the checkpoint file for the ensemble model
+- `--aug-test`: Whether to use flip and multi-scale test
+- `--out`: Save folder for model ensemble results
+- `--gpus`: Gpu-id used for model ensemble
+
+### Result of model ensemble
+
+- The model ensemble will generate an unrendered segmentation mask for each input, the input shape is `[H, W]`, the segmentation mask shape is `[H, W]`, and each pixel-value in the segmentation mask represents the pixel category after segmentation at that position.
+
+- The filename of the model ensemble result will be named in the same filename as `Ground Truth`. If the filename of `Ground Truth` is called `1.png`, the model ensemble result file will also be named `1.png` and placed in the folder specified by `--out`.
