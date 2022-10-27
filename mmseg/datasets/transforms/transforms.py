@@ -1281,8 +1281,10 @@ from typing import Sequence
         """
         do_gamma = self._do_gamma
         if do_gamma:
-            gamma = self._generate_gamma()
-            results['img'] = self._adjust_contrast(results['img'], gamma)
+            self.gamma = self._generate_gamma()
+            results['img'] = self._adjust_contrast(results['img'], self.gamma)
+        else:
+            self.gamma = None
         return results
 
     def _adjust_contrast(self, img: np.ndarray, gamma: float):
