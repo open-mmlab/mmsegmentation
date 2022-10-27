@@ -1289,7 +1289,7 @@ class RandomAffined3D(BaseTransform):
                  scaling_ratio_range: OptTransParam3D = None,
                  max_shear_range: Optional[Tuple[float]] = None,
                  upsample_mode: str = 'bilinear',
-                 padding_mode: str = 'reflect') -> None:
+                 padding_mode: str = 'constant') -> None:
         super().__init__()
 
         self.prob = prob
@@ -1419,7 +1419,8 @@ class RandomAffined3D(BaseTransform):
             for d, s in zip(spatial_size, spacing)
         ]
         coords = np.asarray(np.meshgrid(*ranges, indexing='ij'))
-        return np.concatenate([coords, np.ones_like(coords[:1])])
+        coords = np.concatenate([coords, np.ones_like(coords[:1])])
+        return coords
 
     def transform(self, results: dict) -> dict:
         # C, X, Y, Z
@@ -1428,15 +1429,20 @@ class RandomAffined3D(BaseTransform):
         x, y, z = img.shape[1:]
         affine = self._get_random_homography_matrix(x, y, z)
         grid = self._create_grid(img.shape[1:])
-        grid_ = (affine @ grid.reshape(
+        sr = min(len(img.shape[1:]), 3)
+        # norm grid
+        for i, dim in enumerate(img.shape[1:1 + sr]):
+            grid[i] = (max(dim, 2) / 2.0 - 0.5 + grid[i]) / grid[-1:]
+        grid = (affine @ grid.reshape(
             (grid.shape[0], -1))).reshape([-1] + list(grid.shape[1:]))
-        img = NdImage.map_coordinates(
-            img, grid_, order=self.upsample_mode, mode=self.padding_mode)
+        grid = grid[:sr]
+        img = np.stack([
+            NdImage.map_coordinates(
+                c, grid, order=self.upsample_mode, mode=self.padding_mode)
+            for c in img
+        ])
         gt_sem_seg = NdImage.map_coordinates(
-            gt_sem_seg[np.newaxis, :],
-            grid,
-            order=self.upsample_mode,
-            mode=self.padding_mode)
+            gt_sem_seg, grid, order=self.upsample_mode, mode=self.padding_mode)
 
         results['img'] = img
         results['img_shape'] = img.shape

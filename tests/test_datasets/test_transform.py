@@ -712,8 +712,8 @@ def test_random_affine_3d():
     transform = dict(type='RandomAffined3D', padding_mode='constant')
     transform = TRANSFORMS.build(transform)
 
-    img = np.random.rand(5, 32, 16, 8)
-    gt_sem_seg = np.random.rand(32, 16, 8)
+    img = np.random.rand(5, 3, 3, 3)
+    gt_sem_seg = np.random.rand(3, 3, 3)
 
     results = dict()
     results['img'] = img
@@ -722,3 +722,5 @@ def test_random_affine_3d():
     # Test no changes
     results = transform(results)
     assert np.allclose(results['affine'], np.eye(4))
+    assert np.allclose(results['img'], img)
+    assert np.allclose(results['gt_sem_seg'], gt_sem_seg)
