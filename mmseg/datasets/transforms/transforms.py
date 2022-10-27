@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Dict, Sequence, Tuple, Union
+from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
 
 import cv2
 import mmcv
@@ -1225,4 +1225,200 @@ class GenerateEdge(BaseTransform):
         repr_str = self.__class__.__name__
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class RescaleIntensity(BaseTransform):
+    """Rescale intensity.
+
+    # This class is modified from `MONAI.
+
+    # https://github.com/Project-MONAI/MONAI/blob/dev/monai/transforms/intensity/array.py#L739
+    # Copyright (c) MONAI Consortium
+    # Licensed under the Apache License, Version 2.0 (the "License")
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        in_min (float, optional): minimum intensity of source image.
+                Defaults to None.
+        in_max (float, optional): maximum intensity of source image.
+                Defaults to None.
+        out_min (float, optional): minimum intensity of target image.
+                Defaults to None.
+        out_max (float, optional): maximum intensity of target image.
+                Defaults to None.
+    """
+
+    def __init__(self,
+                 in_min: Optional[float] = None,
+                 in_max: Optional[float] = None,
+                 out_min: Optional[float] = None,
+                 out_max: Optional[float] = None):
+        self.in_min = in_min
+        self.in_max = in_max
+        self.out_min = out_min
+        self.out_max = out_max
+
+    def rescale_intensity(self, img):
+        if self.in_min is None:
+            self.in_min = np.min(img)
+        if self.in_max is None:
+            self.in_max = np.max(img)
+
+        if self.in_max - self.in_min == 0.0:
+            if self.out_min is None:
+                return img - self.in_min
+            return img - self.in_min + self.out_min
+
+        img = (img - self.in_min) / (self.in_max - self.in_min)
+        if (self.out_min is not None) and (self.out_max is not None):
+            img = img * (self.out_max - self.out_min) + self.out_min
+
+        return img
+
+    def transform(self, results: dict) -> dict:
+        img = results['img']
+        img = self.rescale_intensity(img)
+        results['img'] = img
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(in_min={self.in_min}, '
+        repr_str += f'in_max={self.in_max}, '
+        repr_str += f'out_min={self.out_min}, '
+        repr_str += f'out_max={self.out_max})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class ZNormalization(BaseTransform):
+    """z_normalization.
+
+    # This class is modified from `MONAI.
+    # https://github.com/Project-MONAI/MONAI/blob/dev/monai/transforms/intensity/array.py#L605
+    # Copyright (c) MONAI Consortium
+    # Licensed under the Apache License, Version 2.0 (the "License")
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        mean (float, optional): the mean to subtract by
+            Defaults to None.
+        std (float, optional): the standard deviation to divide by
+            Defaults to None.
+    """
+
+    def __init__(self,
+                 mean: Optional[Union[float, Iterable[float]]] = None,
+                 std: Optional[Union[float, Iterable[float]]] = None,
+                 channel_wise: bool = False) -> None:
+        self.mean = mean
+        self.std = std
+        self.channel_wise = channel_wise
+
+    def _normalize(self, img: np.ndarray, mean=None, std=None):
+        slices = np.ones_like(img, dtype=bool)
+        if not slices.any():
+            return img
+
+        _mean = mean if mean is not None else np.mean(img[slices])
+        _std = std if std is not None else np.std(img[slices])
+
+        if np.isscalar(_std):
+            if _std == 0.0:
+                _std = 1.0
+        else:
+            _std = _std[slices]
+            _std[_std == 0.0] = 1.0
+
+        img[slices] = (img[slices] - _mean) / _std
+        return img
+
+    def znorm(self, img):
+        if self.channel_wise:
+            if self.mean is not None and len(self.mean) != len(img):
+                err_str = (f'img has {len(img)} channels, '
+                           f'but mean has {len(self.mean)}.')
+                raise ValueError(err_str)
+            if self.std is not None and len(self.std) != len(img):
+                err_str = (f'img has {len(img)} channels, '
+                           f'but std has {len(self.std)}.')
+                raise ValueError(err_str)
+
+            for i, d in enumerate(img):
+                img[i] = self._normalize(
+                    d,
+                    mean=self.mean[i] if self.mean is not None else None,
+                    std=self.std[i] if self.std is not None else None,
+                )
+        else:
+            img = self._normalize(img, self.mean, self.std)
+
+        return img
+
+    def transform(self, results: dict) -> dict:
+        img = results['img']
+        img = self.znorm(img)
+        results['img'] = img
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(mean={self.mean}, '
+        repr_str += f'std={self.std}, '
+        repr_str += f'channel_wise={self.channel_wise})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class ClampIntensity(BaseTransform):
+    """clamp intensity.
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        min (float, optional): Minimum target intensity
+        max (float, optional): Maximum target intensity
+    """
+
+    def __init__(self,
+                 t_min: Optional[float] = None,
+                 t_max: Optional[float] = None) -> None:
+        self.t_min = t_min
+        self.t_max = t_max
+
+    def clamp(self, img):
+        return np.clip(img, self.t_min, self.t_max)
+
+    def transform(self, results: dict) -> dict:
+        img = results['img']
+        img = self.clamp(img)
+        results['img'] = img
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(t_min={self.t_min}, '
+        repr_str += f't_max={self.t_max})'
         return repr_str

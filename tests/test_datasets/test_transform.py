@@ -8,7 +8,8 @@ import pytest
 from PIL import Image
 
 from mmseg.datasets.transforms import *  # noqa
-from mmseg.datasets.transforms import PhotoMetricDistortion, RandomCrop
+from mmseg.datasets.transforms import (LoadBiomedicalImageFromFile,
+                                       PhotoMetricDistortion, RandomCrop)
 from mmseg.registry import TRANSFORMS
 
 
@@ -706,3 +707,99 @@ def test_generate_edge():
         [1, 1, 0, 0, 0],
         [1, 0, 0, 0, 0],
     ]))
+
+
+def test_rescale_intensity():
+    results = dict(
+        img_path=osp.join(
+            osp.join(osp.dirname(__file__), '../data'), 'biomedical.nii.gz'))
+    data_transform = LoadBiomedicalImageFromFile()
+    results = data_transform(copy.deepcopy(results))
+
+    transform = dict(
+        type='RescaleIntensity', in_min=20, in_max=108, out_min=50, out_max=80)
+    transform = TRANSFORMS.build(transform)
+    rescale_results = transform(copy.deepcopy(results))
+    assert np.allclose(rescale_results['img'],
+                       (((results['img'] - 20) / 88) * 30 + 50))
+
+    transform = dict(
+        type='RescaleIntensity',
+        in_min=None,
+        in_max=None,
+        out_min=50,
+        out_max=80)
+    transform = TRANSFORMS.build(transform)
+    rescale_results = transform(copy.deepcopy(results))
+    in_min = np.min(results['img'])
+    in_max = np.max(results['img'])
+    assert np.allclose(rescale_results['img'], (((results['img'] - in_min) /
+                                                 (in_max - in_min)) * 30 + 50))
+
+    transform = dict(
+        type='RescaleIntensity',
+        in_min=108,
+        in_max=108,
+        out_min=None,
+        out_max=80)
+    transform = TRANSFORMS.build(transform)
+    rescale_results = transform(copy.deepcopy(results))
+    assert np.allclose(rescale_results['img'], (results['img'] - 108))
+
+    transform = dict(
+        type='RescaleIntensity',
+        in_min=108,
+        in_max=108,
+        out_min=50,
+        out_max=80)
+    transform = TRANSFORMS.build(transform)
+    rescale_results = transform(copy.deepcopy(results))
+    assert np.allclose(rescale_results['img'], (results['img'] - 58))
+
+
+def test_z_normalization():
+    results = dict(
+        img_path=osp.join(
+            osp.join(osp.dirname(__file__), '../data'), 'biomedical.nii.gz'))
+    data_transform = LoadBiomedicalImageFromFile()
+    results = data_transform(copy.deepcopy(results))
+
+    transform = dict(type='ZNormalization')
+    transform = TRANSFORMS.build(transform)
+    norm_results = transform(copy.deepcopy(results))
+    assert np.allclose(norm_results['img'],
+                       (results['img'] - np.mean(results['img'])) /
+                       np.std(results['img']))
+
+    results['img'] = np.random.randint(-1000, 1000,
+                                       (2, 96, 96, 96)).astype(np.float32)
+    transform = dict(type='ZNormalization', channel_wise=True)
+    transform = TRANSFORMS.build(transform)
+    norm_results = transform(copy.deepcopy(results))
+    img_ = copy.deepcopy(results['img'])
+    img_[0] = (img_[0] - np.mean(img_[0])) / np.std(img_[0])
+    img_[1] = (img_[1] - np.mean(img_[1])) / np.std(img_[1])
+    assert np.allclose(norm_results['img'], img_)
+
+    transform = dict(type='ZNormalization', channel_wise=True, mean=[1])
+    transform = TRANSFORMS.build(transform)
+    with pytest.raises(ValueError):
+        transform(copy.deepcopy(results))
+
+    transform = dict(
+        type='ZNormalization', channel_wise=True, mean=[1, 2], std=[1])
+    transform = TRANSFORMS.build(transform)
+    with pytest.raises(ValueError):
+        transform(copy.deepcopy(results))
+
+
+def test_clamp_intensity():
+    results = dict(
+        img_path=osp.join(
+            osp.join(osp.dirname(__file__), '../data'), 'biomedical.nii.gz'))
+    data_transform = LoadBiomedicalImageFromFile()
+    results = data_transform(copy.deepcopy(results))
+    transform = dict(type='ClampIntensity', t_min=50, t_max=80)
+    transform = TRANSFORMS.build(transform)
+    clamp_results = transform(copy.deepcopy(results))
+    assert np.allclose(clamp_results['img'], np.clip(results['img'], 50, 80))
