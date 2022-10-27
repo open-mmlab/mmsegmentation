@@ -6,12 +6,12 @@ import cv2
 import mmcv
 import numpy as np
 import torch
+import torch.nn as nn
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
 from numpy import random
 
-from mmseg import digit_version
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
 
@@ -1301,14 +1301,63 @@ class Spacing(BaseTransform):
         self.mode = mode
         self.padding_mode = padding_mode
 
+    def _normalize_affine(self, shape: np.ndarray):
+        """Given ``affine`` defined for coordinates in the pixel space, compute
+        the corresponding affine for the normalized coordinates.
+
+        Args:
+            shape: input spatial shape, a sequence of integers.
+        """
+        shape_copy = torch.Tensor(shape)
+        norm = torch.Tensor(np.array(shape).astype(np.float64).copy())
+        norm[norm <= 0.0] = 2.0
+        norm = 2.0 / norm
+        norm = torch.diag(
+            torch.cat((norm, torch.ones((1, ), dtype=torch.float64))))
+        norm[:-1, -1] = 1.0 / shape_copy - 1.0
+
+        norm = norm.unsqueeze(0)
+        norm.requires_grad = False
+        return norm
+
+    def _affine_transform(self,
+                          img: np.ndarray,
+                          theta: torch.Tensor,
+                          spatial_size: np.ndarray,
+                          normalized: bool = False,
+                          reverse_indexing: bool = True):
+        """Apply affine transformations with a batch of affine matrices."""
+        img = np.expand_dims(img, 0)
+        # set output shape
+        src_size = tuple(img.shape)
+        # default to the src shape
+        dst_size = src_size[:2] + tuple(spatial_size)
+
+        if not normalized:
+            src_xform = self._normalize_affine(shape=src_size[2:])
+            dst_xform = self._normalize_affine(shape=spatial_size)
+            theta = src_xform @ theta @ torch.inverse(dst_xform)
+
+        if reverse_indexing:
+            sr = img.ndim - 2
+            rev_idx = torch.as_tensor(range(sr - 1, -1, -1))
+            theta[:, :sr] = theta[:, rev_idx]
+            theta[:, :, :sr] = theta[:, :, rev_idx]
+        grid = nn.functional.affine_grid(
+            theta=theta[:, :sr], size=list(dst_size))
+        dst = nn.functional.grid_sample(
+            input=torch.DoubleTensor(img).contiguous(),
+            grid=grid,
+            mode=self.mode,
+            padding_mode=self.padding_mode,
+        )
+        return dst
+
     def _spatial_resample(
         self,
-        img: torch.Tensor,
-        src_affine: Optional[Union[np.ndarray]] = None,
-        dst_affine: Optional[torch.Tensor] = None,
+        img: np.ndarray,
+        dst_affine: Optional[np.ndarray] = None,
         spatial_size: Optional[Union[Sequence[int], int]] = None,
-        mode: Union[str, int, None] = None,
-        padding_mode: Optional[str] = None,
     ):
         """Resample input image from the orientation/spacing defined by
         ``src_affine`` affine matrix into the ones specified by ``dst_affine``
@@ -1320,39 +1369,36 @@ class Spacing(BaseTransform):
         and call ``xxx.Affine`` with ``xform``.
         """
         original_spatial_shape = img.shape[1:]
-        src_affine_ = torch.eye(len(original_spatial_shape) + 1).to(
-            torch.float64)
+        src_affine = np.eye(len(original_spatial_shape) + 1, dtype=np.float64)
+        xform = np.linalg.solve(src_affine, dst_affine)
+        # # TODO: Add Affine Transform
+        # if isinstance(mode, int):
+        #     affine_xform = Affine(
+        #         affine=xform, spatial_size=spatial_size,
+        #         normalized=True, image_only=True, dtype=_dtype
+        #     )
+        #     with affine_xform.trace_transform(False):
+        #         img = affine_xform(img, mode=mode, padding_mode=padding_mode)
+        # else:
+        #     affine_xform = AffineTransform(
+        #         normalized=False,
+        #         mode=mode,
+        #         padding_mode=padding_mode,
+        #     )
+        # img = affine_xform(
+        #     img.unsqueeze(0), theta=xform, spatial_size=spatial_size
+        #     ).squeeze(0)
+        if not isinstance(self.mode, int):
+            img = self._affine_transform(
+                img, theta=xform, spatial_size=spatial_size).squeeze(0)
 
-        torch_minimum_version = '1.8.0'
-        torch_version = digit_version(torch.__version__)
-        if torch_version >= digit_version(torch_minimum_version):
-            xform = torch.linalg.solve(src_affine_, dst_affine)
-        else:
-            xform = torch.solve(dst_affine, src_affine_).solution
-        '''
-        # TODO: Add Affine Transform
-        if isinstance(mode, int):
-            affine_xform = Affine(
-                affine=xform, spatial_size=spatial_size,
-                normalized=True, image_only=True, dtype=_dtype
-            )
-            with affine_xform.trace_transform(False):
-                img = affine_xform(img, mode=mode, padding_mode=padding_mode)
-        else:
-            affine_xform = AffineTransform()
-        img = affine_xform(
-            img.unsqueeze(0), theta=xform, spatial_size=spatial_size
-            ).squeeze(0)
-        '''
-        img = img
-
-        return img, xform
+        return img
 
     def _compute_shape_offset(
         self,
         spatial_shape: Union[np.ndarray, Sequence[int]],
-        in_affine: Union[np.ndarray, torch.Tensor],
-        out_affine: Union[np.ndarray, torch.Tensor],
+        in_affine: np.ndarray,
+        out_affine: np.ndarray,
     ) -> Tuple[np.ndarray, np.ndarray]:
         """Given input and output affine, compute appropriate shapes in the
         output space based on the input array's shape. This function also
@@ -1470,6 +1516,10 @@ class Spacing(BaseTransform):
         `pixdim`."""
 
         original_spatial_shape = data_array.shape[1:]
+        # generate voxel spacing value tuple
+        self.pixdim = (
+            self.pixdim if isinstance(self.pixdim, tuple) else
+            ((self.pixdim, ) * original_spatial_shape))
         # number of spatial dimension
         num_dim = len(original_spatial_shape)
         if num_dim <= 0:
@@ -1481,16 +1531,15 @@ class Spacing(BaseTransform):
         # compute output affine, shape and offset
         new_affine = self._zoom_affine(
             affine_matrix, out_d, diagonal=self.diagonal)
+        # compute appropriate output shapes
         output_shape, offset = self._compute_shape_offset(
             data_array.shape[1:], affine_matrix, new_affine)
         new_affine[:num_dim, -1] = offset[:num_dim]
         actual_shape = list(output_shape)
-        data_array, _ = self._spatial_resample(
+        data_array = self._spatial_resample(
             data_array,
-            dst_affine=torch.as_tensor(new_affine),
+            dst_affine=new_affine,
             spatial_size=actual_shape,
-            mode=self.mode,
-            padding_mode=self.padding_mode,
         )
         return data_array
 
@@ -1505,8 +1554,8 @@ class Spacing(BaseTransform):
             dict: Updated result dict.
         """
 
-        img = self._spacing(results['img'])
-        gt_seg_map = self._spacing(results['gt_seg_map'])
+        img = self._spacing(results['img']).numpy().astype(int)
+        gt_seg_map = self._spacing(results['gt_seg_map']).numpy().astype(int)
 
         results['img'] = img
         results['gt_seg_map'] = gt_seg_map

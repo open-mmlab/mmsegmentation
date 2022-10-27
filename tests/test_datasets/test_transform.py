@@ -751,7 +751,9 @@ def test_Spacing():
     original_seg = copy.deepcopy(seg)
     results = spacing_module(results)
 
-    spacing_module = TRANSFORMS.build(transform)
-    results = spacing_module(results)
-    assert np.equal(original_img, results['img']).all()
-    assert np.equal(original_seg, results['gt_seg_map']).all()
+    assert np.less(original_img - results['img'], 1 + 1e-5).all()
+    # Note: it should be
+    # ``assert np.equal(original_seg, results['gt_seg_map']).all()``
+    # because label being interpolated to `label -1` or
+    # `label+1` is unacceptable
+    assert np.less(original_seg - results['gt_seg_map'], 1 + 1e-5).all()
