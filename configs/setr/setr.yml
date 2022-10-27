@@ -92,7 +92,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 47.54
+      mIoU: 47.39
       mIoU(ms+flip): 49.37
   Config: configs/setr/setr_mla_512x512_160k_b16_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/setr/setr_mla_512x512_160k_b16_ade20k/setr_mla_512x512_160k_b16_ade20k_20210619_191057-f9741de7.pth
