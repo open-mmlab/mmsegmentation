@@ -11,9 +11,9 @@ Or install the below packages manually.
 
 1. [MMEngine](https://github.com/open-mmlab/mmengine): MMEngine is the core the OpenMMLab 2.0 architecture, and we splited many compentents unrelated to computer vision from MMCV to MMEngine.
 
-2. [MMCV](https://github.com/open-mmlab/mmcv): The computer vision package of OpenMMLab. This is not a new dependency, but you need to upgrade it to above 2.0.0rc1 version.
+2. [MMCV](https://github.com/open-mmlab/mmcv): The computer vision package of OpenMMLab. This is not a new dependency, but you need to upgrade it to above **2.0.0rc1** version.
 
-3. [MMClassification](https://github.com/open-mmlab/mmclassification)(Optional): The  image classification toolbox and benchmark of OpenMMLab. This is not a new dependency, but you need to upgrade it to above 1.0.0rc0 version.
+3. [MMClassification](https://github.com/open-mmlab/mmclassification)(Optional): The  image classification toolbox and benchmark of OpenMMLab. This is not a new dependency, but you need to upgrade it to above **1.0.0rc0** version.
 
 ## Train launch
 
