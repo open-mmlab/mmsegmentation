@@ -89,7 +89,7 @@ Here is the changes of `mmseg.apis`:
 
 ### `mmseg.datasets`
 
-OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, and MMSegmentation 1.x also follow this protocol and defines the `BaseSegDataset` inherted from `BaseDataset`. MMCV 2.x collects general data transforms for multiple tasks e.g. classification, detection, segmenation, so MMSegmentation 1.x uses these data transforms and removes them from mmseg.datasets
+OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, and MMSegmentation 1.x also follow this protocol and defines the `BaseSegDataset` inherited from `BaseDataset`. MMCV 2.x collects general data transforms for multiple tasks e.g. classification, detection, segmenation, so MMSegmentation 1.x uses these data transforms and removes them from mmseg.datasets
 
 |   Packages/Modules    | Changes                                                                                     |
 | :-------------------: | :------------------------------------------------------------------------------------------ |

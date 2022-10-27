@@ -88,6 +88,9 @@ Add `model.data_preprocessor` field to configure the `DataPreProcessor`, includi
 
 - `rgb_to_bgr` (bool): whether to convert image from RGB to RGB. Defaults to False.
 
+**Note:**
+Please refer [models documentation](../advanced_guides/models.md) for more details.
+
 ### Dataset settings
 
 Changes in **data**:
@@ -145,7 +148,7 @@ Changes in **pipeline**
 - The original **`Resize`** in MMSeg 1.x has been changed to **`RandomResize`** and the input arguments `img_scale` is renamed to `scale`, and the default value of `keep_ratio` is modified to False.
 
 **Note:**
-We move some work of data transforms to the data preprocessor, like normalization, see [the documentation](TODO) for more details.
+We move some work of data transforms to the data preprocessor, like normalization, see [the documentation](package.md) for more details.
 
 <table class="docutils">
 <tr>
@@ -194,7 +197,7 @@ train_pipeline = [
 
 Changes in **`evaluation`**:
 
-- The **`evaluation`** field is split to `val_evaluator` and `test_evaluator`. And it won't supports `interval` and `save_best` arguments.
+- The **`evaluation`** field is split to `val_evaluator` and `test_evaluator`. And it won't support `interval` and `save_best` arguments.
   The `interval` is moved to `train_cfg.val_interval`, and the `save_best`
   is moved to `default_hooks.checkpoint.save_best`. `pre_eval` has been removed.
 - `'mIoU'` has been changed to `'IoUMetric'`.
@@ -408,10 +411,10 @@ visualizer = dict(
 Changes in **`load_from`** and **`resume_from`**:
 
 - The `resume_from` is removed. And we use `resume` and `load_from` to replace it.
-  - If `resume=True` and `load_from` is not None, resume training from the checkpoint in `load_from`.
-  - If `resume=True` and `load_from` is None, try to resume from the latest checkpoint in the work directory.
-  - If `resume=False` and `load_from` is not None, only load the checkpoint, not resume training.
-  - If `resume=False` and `load_from` is None, do not load nor resume.
+  - If `resume=True` and `load_from` is **not None**, resume training from the checkpoint in `load_from`.
+  - If `resume=True` and `load_from` is **None**, try to resume from the latest checkpoint in the work directory.
+  - If `resume=False` and `load_from` is **not None**, only load the checkpoint, not resume training.
+  - If `resume=False` and `load_from` is **None**, do not load nor resume.
 
 Changes in **`dist_params`**: The `dist_params` field is a sub field of `env_cfg` now. And there are some new
 configurations in the `env_cfg`.
