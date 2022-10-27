@@ -1308,5 +1308,6 @@ from typing import Sequence
     def __repr__(self):
         repr_str = self.__class__.__name__
         repr_str += f'(prob={self.prob}, '
-        repr_str += f'gamma_range={self.gamma_range})'
+        repr_str += f'gamma_range={self.gamma_range}, '
+        repr_str += f'gamma={self.gamma})'
         return repr_str
