@@ -43,16 +43,19 @@ This section is included if you are curious about what has changed between MMSeg
 
 ## Removed packages
 
-- `mmseg.core` :
-  In OpenMMLab 2.0, `core` package has been removed. `hooks` and `optimizers` of `core` are moved in `mmseg.engine`,
-  and `evaluation` in `core` is mmseg.evaluation currently.
-- `mmseg.ops`: `ops` package had `encoding` and `wrappers`, which are moved in `mmseg.models.utils`.
+### `mmseg.core`
+
+In OpenMMLab 2.0, `core` package has been removed. `hooks` and `optimizers` of `core` are moved in `mmseg.engine`, and `evaluation` in `core` is mmseg.evaluation currently.
+
+## `mmseg.ops`
+
+`ops` package included `encoding` and `wrappers`, which are moved in `mmseg.models.utils`.
 
 ## Added packages
 
 ### `mmseg.engine`
 
-OpenMMLab 2.0 add a new foundational library for training deep learning, MMEngine. It servers as the training engine of all OpenMMLab codebases.
+OpenMMLab 2.0 adds a new foundational library for training deep learning, MMEngine. It servers as the training engine of all OpenMMLab codebases.
 `engine` package of mmseg is some customized modules for semantic segmentation task, like `SegVisualizationHook` which works for visualizing segmentation mask.
 
 ### `mmseg.structure`
@@ -89,7 +92,7 @@ Here is the changes of `mmseg.apis`:
 
 ### `mmseg.datasets`
 
-OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, and MMSegmentation 1.x also follow this protocol and defines the `BaseSegDataset` inherited from `BaseDataset`. MMCV 2.x collects general data transforms for multiple tasks e.g. classification, detection, segmenation, so MMSegmentation 1.x uses these data transforms and removes them from mmseg.datasets
+OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, and MMSegmentation 1.x also follow this protocol and defines the `BaseSegDataset` inherited from `BaseDataset`. MMCV 2.x collects general data transforms for multiple tasks e.g. classification, detection, segmentation, so MMSegmentation 1.x uses these data transforms and removes them from mmseg.datasets
 
 |   Packages/Modules    | Changes                                                                                     |
 | :-------------------: | :------------------------------------------------------------------------------------------ |
