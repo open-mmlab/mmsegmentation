@@ -1,6 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Dict, Sequence, Tuple, Union
+# add
+import warnings
+from typing import Dict, List, Optional, Sequence, Tuple, Union
 
 import cv2
 import mmcv
@@ -12,6 +14,8 @@ from numpy import random
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
+
+Number = Union[int, float]
 
 
 @TRANSFORMS.register_module()
@@ -1225,4 +1229,204 @@ class GenerateEdge(BaseTransform):
         repr_str = self.__class__.__name__
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class MedPad(BaseTransform):
+    """Pad the image & segmentation map. There are three padding modes: (1) pad
+    to a fixed size and (2) pad to the minimum size that is divisible by some
+    number. Required Keys:
+
+    Required Keys:
+
+    - img
+    - gt_seg_map (optional)
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+    - img_shape
+
+    Added Keys:
+
+    - pad_shape
+    - pad_fixed_size
+    - pad_size_divisor
+
+    Args:
+        size (tuple, optional): Fixed padding size.
+            Expected padding shape (w, h). Defaults to None.
+        size_divisor (int, optional): The divisor of padded size. Defaults to
+            None.
+        pad_val (Number | dict[str, Number], optional): Padding value for if
+            the pad_mode is "constant". If it is a single number, the value
+            to pad the image is the number and to pad the semantic
+            segmentation map is 0. If it is a dict, it should have the
+            following keys:
+            - img: The value to pad the image.
+            - seg: The value to pad the semantic segmentation map.
+            Defaults to dict(img=0, seg=0).
+        padding_mode (str): Type of padding. Should be: constant, edge,
+            reflect or symmetric. Defaults to 'constant'.
+            - constant: pads with a constant value, this value is specified
+              with pad_val.
+            - edge: pads with the last value at the edge of the image.
+            - reflect: pads with reflection of image without repeating the last
+              value on the edge. For example, padding [1, 2, 3, 4] with 2
+              elements on both sides in reflect mode will result in
+              [3, 2, 1, 2, 3, 4, 3, 2].
+            - symmetric: pads with reflection of image repeating the last value
+              on the edge. For example, padding [1, 2, 3, 4] with 2 elements on
+              both sides in symmetric mode will result in
+              [2, 1, 1, 2, 3, 4, 4, 3]
+    """
+
+    def __init__(self,
+                 size: Optional[Tuple[int, int, int]] = None,
+                 size_divisor: Optional[int] = None,
+                 pad_val: Union[Number, dict] = dict(img=0, seg=0),
+                 padding_mode: str = 'constant') -> None:
+
+        self.size = size
+        self.size_divisor = size_divisor
+        if isinstance(pad_val, int):
+            pad_val = dict(img=pad_val, seg=0)
+        assert isinstance(pad_val, dict), 'pad_val '
+        self.pad_val = pad_val
+
+        assert size is not None or size_divisor is not None, \
+            'only one of size and size_divisor should be valid'
+        assert size is None or size_divisor is None
+
+        assert padding_mode in ['constant', 'edge', 'reflect', 'symmetric']
+
+        self.padding_mode = padding_mode
+
+    def _pad_img(self, results: dict) -> None:
+        """Pad images according to ``self.size``."""
+
+        pad_val = self.pad_val.get('img', 0)
+
+        size = None
+        if self.size_divisor is not None:
+            if size is None:
+                size = (results['img'].shape[1], results['img'].shape[2],
+                        results['img'].shape[3])
+            pad_z = int(np.ceil(
+                size[0] / self.size_divisor)) * self.size_divisor
+            pad_x = int(np.ceil(
+                size[1] / self.size_divisor)) * self.size_divisor
+            pad_y = int(np.ceil(
+                size[2] / self.size_divisor)) * self.size_divisor
+            size = (pad_z, pad_x, pad_y)
+        elif self.size is not None:
+            size = self.size
+
+        padded_img = self._to_pad(
+            results['img'],
+            shape=size,
+            pad_val=pad_val,
+            padding_mode=self.padding_mode)
+
+        results['img'] = padded_img
+        results['pad_shape'] = padded_img.shape
+        results['pad_fix_size'] = self.size
+        results['pad_size_divisor'] = self.size_divisor
+        results['medimg__shape'] = padded_img.shape[1:]
+
+    def _pad_seg(self, results: dict) -> None:
+        """Pad semantic segmentation map according to
+        ``results['pad_shape']``."""
+        if results.get('gt_seg_map', None) is not None:
+            pad_val = self.pad_val.get('seg', 0)
+
+            results['gt_seg_map'] = self._to_pad(
+                results['gt_seg_map'],
+                shape=results['pad_shape'][1:],
+                pad_val=pad_val,
+                padding_mode=self.padding_mode)
+
+    @staticmethod
+    def _to_pad(
+        img: np.ndarray,
+        *,
+        shape: Optional[Tuple[int, int, int]] = None,
+        pad_val: Union[float, List] = 0,
+        padding_mode: str = 'constant',
+    ) -> np.ndarray:
+        """Pad the given 3d image to a certain shape with specified padding
+        mode and padding value.
+
+        Args:
+            img (ndarray): Image to be padded.
+            shape (tuple[int]): Expected padding shape (z, x, y).
+                Default: None.
+            pad_val (Number | Sequence[Number]): Values to be filled
+                in padding areas when padding_mode is 'constant'. Default: 0.
+            padding_mode (str): Type of padding. Should be: constant, edge,
+                reflect or symmetric. Default: constant.
+                - constant: pads with a constant value, this value
+                is specified with pad_val.
+                - edge: pads with the last value at the edge of the image.
+                - reflect: pads with reflection of image without repeating
+                the last value on the edge. For example, padding [1, 2, 3, 4]
+                with 2 elements on both sides in reflect mode will result in
+                [3, 2, 1, 2, 3, 4, 3, 2].
+                - symmetric: pads with reflection of image repeating the last
+                value on the edge. For example, padding [1, 2, 3, 4] with 2
+                elements on both sides in symmetric mode will result in
+                [2, 1, 1, 2, 3, 4, 4, 3]
+
+        Returns:
+            ndarray: The padded image.
+        """
+        # check padding mode
+        assert padding_mode in ['constant', 'edge', 'reflect', 'symmetric']
+
+        if padding_mode != 'constant' and pad_val != 0:
+            warnings.warn('``pad_val`` is only support in mode=``constant``,'
+                          'the pad_val will be ignore in other padding_mode')
+
+        if shape is not None:
+            if not (is_tuple_of(shape, int) and len(shape) == 3):
+                raise ValueError('Expected padding shape must be a tuple of 3'
+                                 f'int element, But receive: {shape}')
+            pad_width = []
+            for i, sp_i in enumerate(shape):
+                width = max(sp_i - img.shape[1:][i], 0)
+                pad_width.append((width // 2, width - (width // 2)))
+            pad_width = [(0, 0)] + pad_width
+
+        if padding_mode == 'constant':
+            img = np.pad(
+                img,
+                pad_width=pad_width,
+                mode='constant',
+                constant_values=pad_val)
+        else:
+            img = np.pad(img, pad_width=pad_width, mode=padding_mode)
+
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Call function to pad images, masks, semantic segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+        Returns:
+            dict: Updated result dict.
+        """
+        self._pad_img(results)
+        self._pad_seg(results)
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'size={self.size}, '
+        repr_str += f'size_divisor={self.size_divisor}, '
+        repr_str += f'pad_to_square={self.pad_to_square}, '
+        repr_str += f'pad_val={self.pad_val}), '
+        repr_str += f'padding_mode={self.padding_mode})'
         return repr_str

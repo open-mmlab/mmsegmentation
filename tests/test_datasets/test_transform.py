@@ -706,3 +706,41 @@ def test_generate_edge():
         [1, 1, 0, 0, 0],
         [1, 0, 0, 0, 0],
     ]))
+
+
+def test_medpad():
+    # test assertion if both size_divisor and size is None
+    with pytest.raises(AssertionError):
+        transform = dict(type='MedPad')
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='MedPad', size=[256, 256, 256], padding_mode='XXXX')
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='MedPad', size=[256, 256, 256], size_divisor=32)
+        TRANSFORMS.build(transform)
+
+    data_info = dict(
+        img=np.random.random((8, 216, 224, 224)),
+        gt_seg_map=np.random.randint(0, 2, (8, 216, 224, 224)))
+
+    transform = dict(type='MedPad', size=(256, 256, 256))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info))
+    assert results['img'].shape[1:] == (256, 256, 256)
+    assert results['gt_seg_map'].shape[1:] == (256, 256, 256)
+
+    transform = dict(type='MedPad', size_divisor=32)
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info))
+    assert results['img'].shape[1:] == (224, 224, 224)
+    assert results['gt_seg_map'].shape[1:] == (224, 224, 224)
+
+    data_info = dict(img=np.random.random((8, 216, 224, 224)), gt_seg_map=None)
+    transform = dict(type='MedPad', size=(256, 256, 256))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info))
+    assert results['img'].shape[1:] == (256, 256, 256)

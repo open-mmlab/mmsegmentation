@@ -19,16 +19,16 @@ from .stare import STAREDataset
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
-                         PackSegInputs, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
-                         ResizeToMultiple, RGB2Gray, SegRescale)
+                         MedPad, PackSegInputs, PhotoMetricDistortion,
+                         RandomCrop, RandomCutOut, RandomMosaic, RandomRotate,
+                         Rerange, ResizeToMultiple, RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
 
 __all__ = [
     'BaseSegDataset', 'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
     'PascalContextDataset', 'PascalContextDataset59', 'ChaseDB1Dataset',
     'DRIVEDataset', 'HRFDataset', 'STAREDataset', 'DarkZurichDataset',
-    'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',
+    'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset', 'MedPad',
     'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset',
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
     'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
