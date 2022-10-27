@@ -1252,7 +1252,8 @@ class RandomGamma(BaseTransform):
     """
 
     def __init__(self, prob: float,
-                 gamma_range: tuple[float] = (0.5, 4.5)) -> None:
+from typing import Sequence
+                 gamma_range: Sequence[float] = (0.5, 4.5)) -> None:
         super().__init__()
         assert 0 <= prob and prob <= 1
         assert isinstance(gamma_range, tuple) and len(gamma_range) == 2
