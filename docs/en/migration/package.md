@@ -75,7 +75,7 @@ We moved registry implementations for all kinds of modules in MMSegmentation in 
 ### `mmseg.apis`
 
 OpenMMLab 2.0 tries to support unified interface for multitasking of Computer Vision,
-and release more power and [`Runner`](https://github.com/open-mmlab/mmengine/blob/main/docs/en/design/runner.md),
+and releases much stronger [`Runner`](https://github.com/open-mmlab/mmengine/blob/main/docs/en/design/runner.md),
 so MMSeg 1.x removed modules in `train.py` and `test.py` renamed `init_segmentor` to `init_model` and `inference_segmentor` to `inference_model`
 Here is the changes of `mmseg.apis`:
 
@@ -111,4 +111,4 @@ OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, an
 
 ### `mmseg.models`
 
-`models` has not changed a lot, just added the `encoding` and `wrappers` from old `mmseg.ops`
+`models` has not changed a lot, just added the `encoding` and `wrappers` from previous `mmseg.ops`
