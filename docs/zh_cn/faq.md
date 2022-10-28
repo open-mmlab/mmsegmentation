@@ -134,4 +134,4 @@ if self.reduce_zero_label:
     gt_semantic_seg[gt_semantic_seg == 254] = 255
 ```
 
-需要注意的是, 使用 `reduce_zero_label` 请确认数据集原始类别个数, 如果只有两类, 需要关闭 `reduce_zero_label` 即设置 `reduce_zero_label=False`.
+**注意:** 使用 `reduce_zero_label` 请确认数据集原始类别个数, 如果只有两类, 需要关闭 `reduce_zero_label` 即设置 `reduce_zero_label=False`.
