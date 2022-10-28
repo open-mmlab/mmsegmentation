@@ -11,10 +11,10 @@ MMSegmentation also follows this interface protocol and defines `SegDataSample` 
 
 [SegDataSample](mmseg.structures.SegDataSample) includes three main fields `gt_sem_seg`, `pred_sem_seg` and `seg_logits`, which are used to store the annotation information and prediction results respectively.
 
-| Field          | Type                      | Description                     |
-| -------------- | ------------------------- | ------------------------------- |
-| gt_sem_seg     | [`PixelData`](#pixeldata) | Annotation information.         |
-| pred_instances | [`PixelData`](#pixeldata) | The predicted result.           |
+| Field          | Type                      | Description                                |
+| -------------- | ------------------------- | ------------------------------------------ |
+| gt_sem_seg     | [`PixelData`](#pixeldata) | Annotation information.                    |
+| pred_instances | [`PixelData`](#pixeldata) | The predicted result.                      |
 | seg_logits     | [`PixelData`](#pixeldata) | The raw (non-normalized) predicted result. |
 
 The following sample code demonstrates the use of `SegDataSample`.
