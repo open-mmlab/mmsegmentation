@@ -134,4 +134,4 @@ if self.reduce_zero_label:
     gt_semantic_seg[gt_semantic_seg == 254] = 255
 ```
 
-Noted that in please check out label numbers of dataset when using `reduce_zero_label`. If dataset only has two types of labels (i.e., label 0 and 1), it needs to close `reduce_zero_label`, i.e., set `reduce_zero_label=True`.
+**Noted:** Please pay attention to label numbers of dataset when using `reduce_zero_label`. If dataset only has two types of labels (i.e., label 0 and 1), it needs to close `reduce_zero_label`, i.e., set `reduce_zero_label=False`.
