@@ -80,7 +80,7 @@ Add `model.data_preprocessor` field to configure the `DataPreProcessor`, includi
 
 - `seg_pad_val` (float, optional): Padding value of segmentation map. Default: 255.
 
-- `padding_mode` (str): Type of padding. Default: constant.
+- `padding_mode` (str): Type of padding. Default: 'constant'.
 
   - constant: pads with a constant value, this value is specified with pad_val.
 
