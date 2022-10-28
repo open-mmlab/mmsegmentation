@@ -709,18 +709,32 @@ def test_generate_edge():
 
 
 def test_random_affine_3d():
-    transform = dict(type='RandomAffined3D', padding_mode='constant')
-    transform = TRANSFORMS.build(transform)
-
     img = np.random.rand(5, 3, 3, 3)
     gt_sem_seg = np.random.rand(3, 3, 3)
-
     results = dict()
     results['img'] = img
     results['gt_sem_seg'] = gt_sem_seg
 
     # Test no changes
+    transform = dict(type='RandomAffined3D', padding_mode='constant')
+    transform = TRANSFORMS.build(transform)
     results = transform(results)
     assert np.allclose(results['affine'], np.eye(4))
     assert np.allclose(results['img'], img)
     assert np.allclose(results['gt_sem_seg'], gt_sem_seg)
+
+    # Test basic functions
+    transform = dict(
+        type='RandomAffined3D',
+        max_rotate_degree=[(5, 10), (15, 20), (25, 30)],
+        max_translate_ratio=0.1,
+        scaling_ratio_range=[1.5, 1.5, 1.5],
+        max_shear_range=[0.1, 0.2, 0.3],
+        upsample_mode='bilinear',
+        padding_mode='reflect')
+    transform = TRANSFORMS.build(transform)
+    results['img'] = img
+    results['gt_sem_seg'] = gt_sem_seg
+
+    assert results['img'].shape == img.shape
+    assert results['gt_sem_seg'].shape == gt_sem_seg.shape
