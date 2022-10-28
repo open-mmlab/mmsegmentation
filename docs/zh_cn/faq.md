@@ -66,3 +66,72 @@
 ```shell
 python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --opacity 1
 ```
+
+## 如何处理二值分割任务?
+
+MMSegmentation 使用 `num_classes` 和 `out_channels` 来控制模型最后一层 `self.conv_seg` 的输出. 更多细节可以参考 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py).
+
+`num_classes` 应该和数据集本身类别个数一致，当是二值分割时，数据集只有前景和背景两类, 所以 `num_classes` 为 2. `out_channels` 控制模型最后一层的输出的通道数，通常和 `num_classes` 相等, 但当二值分割时候, 可以有两种处理方法, 分别是：
+
+- 设置 `out_channels=2`, 在训练时以 Cross Entropy Loss 作为损失函数, 在推理时使用 `F.softmax()` 归一化 logits 值, 然后通过 `argmax()` 得到每个像素的预测结果.
+
+- 设置 `out_channels=1`, 在训练时以 Binary Cross Entropy Loss 作为损失函数, 在推理时使用 `F.sigmoid()` 和 `threshold` 得到预测结果, `threshold` 默认为 0.3.
+
+对于实现上述两种计算二值分割的方法, 需要在 `decode_head` 和 `auxiliary_head` 的配置里修改. 下面是对样例 [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py) 做出的对应修改.
+
+- (1) `num_classes=2`, `out_channels=2` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=False`.
+
+```python
+decode_head=dict(
+    type='PSPHead',
+    in_channels=64,
+    in_index=4,
+    num_classes=2,
+    out_channels=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+auxiliary_head=dict(
+    type='FCNHead',
+    in_channels=128,
+    in_index=3,
+    num_classes=2,
+    out_channels=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+```
+
+- (2) `num_classes=2`, `out_channels=1` 并在 `CrossEntropyLoss` 里面设置 `use_sigmoid=True`.
+
+```python
+decode_head=dict(
+    type='PSPHead',
+    in_channels=64,
+    in_index=4,
+    num_classes=2,
+    out_channels=1,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
+auxiliary_head=dict(
+    type='FCNHead',
+    in_channels=128,
+    in_index=3,
+    num_classes=2,
+    out_channels=1,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=True, loss_weight=0.4)),
+```
+
+## `reduce_zero_label` 的作用
+
+数据集中 `reduce_zero_label` 参数类型为布尔类型, 默认为 False, 它的功能是为了忽略数据集 label 0. 具体做法是将 label 0 改为 255, 其余 label 相应编号减 1, 同时 decode head 里将 255 设为 ignore index, 即不参与 loss 计算.
+以下是 `reduce_zero_label` 具体实现逻辑:
+
+```python
+if self.reduce_zero_label:
+    # avoid using underflow conversion
+    gt_semantic_seg[gt_semantic_seg == 0] = 255
+    gt_semantic_seg = gt_semantic_seg - 1
+    gt_semantic_seg[gt_semantic_seg == 254] = 255
+```
+
+**注意:** 使用 `reduce_zero_label` 请确认数据集原始类别个数, 如果只有两类, 需要关闭 `reduce_zero_label` 即设置 `reduce_zero_label=False`.
