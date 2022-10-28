@@ -15,7 +15,7 @@ MMSegmentation also follows this interface protocol and defines `SegDataSample` 
 | -------------- | ------------------------- | ------------------------------- |
 | gt_sem_seg     | [`PixelData`](#pixeldata) | Annotation information.         |
 | pred_instances | [`PixelData`](#pixeldata) | The predicted result.           |
-| seg_logits     | [`PixelData`](#pixeldata) | The logits of predicted result. |
+| seg_logits     | [`PixelData`](#pixeldata) | The raw (non-normalized) predicted result. |
 
 The following sample code demonstrates the use of `SegDataSample`.
 
