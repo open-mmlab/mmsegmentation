@@ -1254,7 +1254,6 @@ class RandomGamma(BaseTransform):
 
     def __init__(self, prob,
                  gamma_range: Sequence[float] = (0.5, 4.5)) -> None:
-
         super().__init__()
         assert 0 <= prob and prob <= 1
         assert isinstance(gamma_range,
