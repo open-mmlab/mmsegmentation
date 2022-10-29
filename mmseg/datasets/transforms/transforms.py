@@ -1250,13 +1250,15 @@ class RandomGamma(BaseTransform):
         prob (float): RandomGamma probability.
         gamma_range (tuple[float]): Range of gamma values.
     """
+    from typing import Sequence
 
-    def __init__(self, prob: float,
-from typing import Sequence
+    def __init__(self, prob,
                  gamma_range: Sequence[float] = (0.5, 4.5)) -> None:
+
         super().__init__()
         assert 0 <= prob and prob <= 1
-        assert isinstance(gamma_range, tuple) and len(gamma_range) == 2
+        assert isinstance(gamma_range,
+                          Sequence[float]) and len(gamma_range) == 2
         assert min(gamma_range) > 0.5
         self.prob = prob
         self.gamma_range = gamma_range
