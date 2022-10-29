@@ -108,7 +108,7 @@ class NMF2D(_MatrixDecomposition2DBase):
 
     def _build_bases(self, B, S, D, R, cuda=False):
         if cuda:
-            bases = torch.rand((B * S, D, R))
+            bases = torch.rand((B * S, D, R)).cuda()
         else:
             bases = torch.rand((B * S, D, R))
 
