@@ -11,6 +11,8 @@ from mmcv.cnn.bricks import DropPath
 from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
                                         trunc_normal_init)
 
+from ..builder import BACKBONES
+
 
 class Mlp(BaseModule):
     def __init__(self, in_features, hidden_features=None, out_features=None, act_layer=nn.GELU, drop=0.):
@@ -167,7 +169,7 @@ class OverlapPatchEmbed(BaseModule):
         return x, H, W
 
 
-@ BACKBONES.register_module()
+@BACKBONES.register_module()
 class MSCAN(BaseModule):
     def __init__(self,
                  in_chans=3,

@@ -11,7 +11,7 @@ find_unused_parameters = True
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
-        init_cfg=dict(type='Pretrained', checkpoint='/home/schuetze/Downloads/mscan_t.pth')),
+        init_cfg=dict(type='Pretrained', checkpoint='/notebooks/mscan_t.pth')),
     decode_head=dict(
         type='LightHamHead',
         in_channels=[64, 160, 256],
