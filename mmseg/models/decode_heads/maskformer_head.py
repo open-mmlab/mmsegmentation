@@ -49,9 +49,9 @@ class MaskFormerHead(MMDET_MaskFormerHead):
         batch_gt_instances = []
         for data_sample in batch_data_samples:
             # TODO: Add `batch_input_shape` in metainfo of data_sample
-            # metainfo = data_sample.metainfo
-            # metainfo['batch_input_shape'] = metainfo['img_shape']
-            # data_sample=SegDataSample(metainfo=metainfo)
+            metainfo = data_sample.metainfo
+            metainfo['batch_input_shape'] = metainfo['img_shape']
+            data_sample.set_metainfo(metainfo)
             batch_img_metas.append(data_sample.metainfo)
             gt_semantic_seg = data_sample.gt_sem_seg.data
             classes = torch.unique(
