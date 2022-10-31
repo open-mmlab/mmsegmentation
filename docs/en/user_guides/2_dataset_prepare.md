@@ -351,7 +351,8 @@ The dataset is a Large-scale Dataset for Instance Segmentation (also have segman
 
 You may need to follow the following structure for dataset preparation after downloading iSAID dataset.
 
-```
+```none
+├── data
 │   ├── iSAID
 │   │   ├── train
 │   │   │   ├── images
@@ -376,3 +377,40 @@ python tools/dataset_converters/isaid.py /path/to/iSAID
 ```
 
 In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+
+## LIP(Look Into Person) dataset
+
+This dataset could be download from [this page](https://lip.sysuhcp.com/overview.php).
+
+Please run the following commands to unzip dataset.
+
+```shell
+unzip LIP.zip
+cd LIP
+unzip TrainVal_images.zip
+unzip TrainVal_parsing_annotations.zip
+cd TrainVal_parsing_annotations
+unzip TrainVal_parsing_annotations.zip
+mv train_segmentations ../
+mv val_segmentations ../
+cd ..
+```
+
+The contents of  LIP datasets include:
+
+```none
+├── data
+│   ├── LIP
+│   │   ├── train_images
+│   │   │   ├── 1000_1234574.jpg
+│   │   │   ├── ...
+│   │   ├── train_segmentations
+│   │   │   ├── 1000_1234574.png
+│   │   │   ├── ...
+│   │   ├── val_images
+│   │   │   ├── 100034_483681.jpg
+│   │   │   ├── ...
+│   │   ├── val_segmentations
+│   │   │   ├── 100034_483681.png
+│   │   │   ├── ...
+```
