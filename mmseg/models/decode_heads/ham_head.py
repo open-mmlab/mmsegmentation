@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -9,6 +10,7 @@ from .decode_head import BaseDecodeHead
 
 
 class _MatrixDecomposition2DBase(nn.Module):
+
     def __init__(self, args=dict()):
         super().__init__()
 
@@ -101,6 +103,7 @@ class _MatrixDecomposition2DBase(nn.Module):
 
 
 class NMF2D(_MatrixDecomposition2DBase):
+
     def __init__(self, args=dict()):
         super().__init__(args)
 
@@ -146,6 +149,7 @@ class NMF2D(_MatrixDecomposition2DBase):
 
 
 class Hamburger(nn.Module):
+
     def __init__(self,
                  ham_channels=512,
                  ham_kwargs=dict(),
@@ -154,21 +158,12 @@ class Hamburger(nn.Module):
         super().__init__()
 
         self.ham_in = ConvModule(
-            ham_channels,
-            ham_channels,
-            1,
-            norm_cfg=None,
-            act_cfg=None
-        )
+            ham_channels, ham_channels, 1, norm_cfg=None, act_cfg=None)
 
         self.ham = NMF2D(ham_kwargs)
 
         self.ham_out = ConvModule(
-            ham_channels,
-            ham_channels,
-            1,
-            norm_cfg=norm_cfg,
-            act_cfg=None)
+            ham_channels, ham_channels, 1, norm_cfg=norm_cfg, act_cfg=None)
 
     def forward(self, x):
         enjoy = self.ham_in(x)
@@ -182,21 +177,19 @@ class Hamburger(nn.Module):
 
 @HEADS.register_module()
 class LightHamHead(BaseDecodeHead):
-    """Is Attention Better Than Matrix Decomposition?
-    This head is the implementation of `HamNet
+    """Is Attention Better Than Matrix Decomposition? This head is the
+    implementation of `HamNet.
+
     <https://arxiv.org/abs/2109.04553>`_.
     Args:
         ham_channels (int): input channels for Hamburger.
         ham_kwargs (int): kwagrs for Ham.
 
-    TODO: 
-        Add other MD models (Ham). 
+    TODO:
+        Add other MD models (Ham).
     """
 
-    def __init__(self,
-                 ham_channels=512,
-                 ham_kwargs=dict(),
-                 **kwargs):
+    def __init__(self, ham_channels=512, ham_kwargs=dict(), **kwargs):
         super(LightHamHead, self).__init__(
             input_transform='multiple_select', **kwargs)
         self.ham_channels = ham_channels
@@ -223,12 +216,13 @@ class LightHamHead(BaseDecodeHead):
         """Forward function."""
         inputs = self._transform_inputs(inputs)
 
-        inputs = [resize(
-            level,
-            size=inputs[0].shape[2:],
-            mode='bilinear',
-            align_corners=self.align_corners
-        ) for level in inputs]
+        inputs = [
+            resize(
+                level,
+                size=inputs[0].shape[2:],
+                mode='bilinear',
+                align_corners=self.align_corners) for level in inputs
+        ]
 
         inputs = torch.cat(inputs, dim=1)
         x = self.squeeze(inputs)

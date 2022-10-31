@@ -1,21 +1,27 @@
-import torch
-import torch.nn as nn
+# Copyright (c) OpenMMLab. All rights reserved.
 import math
 import warnings
-from torch.nn.modules.utils import _pair as to_2tuple
-from mmseg.models.builder import BACKBONES
 
+import torch
+import torch.nn as nn
 from mmcv.cnn import build_norm_layer
-from mmcv.runner import BaseModule
 from mmcv.cnn.bricks import DropPath
 from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
                                         trunc_normal_init)
+from mmcv.runner import BaseModule
+from torch.nn.modules.utils import _pair as to_2tuple
 
-from ..builder import BACKBONES
+from mmseg.models.builder import BACKBONES
 
 
 class Mlp(BaseModule):
-    def __init__(self, in_features, hidden_features=None, out_features=None, act_layer=nn.GELU, drop=0.):
+
+    def __init__(self,
+                 in_features,
+                 hidden_features=None,
+                 out_features=None,
+                 act_layer=nn.GELU,
+                 drop=0.):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
@@ -38,16 +44,28 @@ class Mlp(BaseModule):
 
 
 class StemConv(BaseModule):
-    def __init__(self, in_channels, out_channels, norm_cfg=dict(type='SyncBN', requires_grad=True)):
+
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super(StemConv, self).__init__()
 
         self.proj = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels // 2,
-                      kernel_size=(3, 3), stride=(2, 2), padding=(1, 1)),
+            nn.Conv2d(
+                in_channels,
+                out_channels // 2,
+                kernel_size=(3, 3),
+                stride=(2, 2),
+                padding=(1, 1)),
             build_norm_layer(norm_cfg, out_channels // 2)[1],
             nn.GELU(),
-            nn.Conv2d(out_channels // 2, out_channels,
-                      kernel_size=(3, 3), stride=(2, 2), padding=(1, 1)),
+            nn.Conv2d(
+                out_channels // 2,
+                out_channels,
+                kernel_size=(3, 3),
+                stride=(2, 2),
+                padding=(1, 1)),
             build_norm_layer(norm_cfg, out_channels)[1],
         )
 
@@ -59,6 +77,7 @@ class StemConv(BaseModule):
 
 
 class AttentionModule(BaseModule):
+
     def __init__(self, dim):
         super().__init__()
         self.conv0 = nn.Conv2d(dim, dim, 5, padding=2, groups=dim)
@@ -94,6 +113,7 @@ class AttentionModule(BaseModule):
 
 
 class SpatialAttention(BaseModule):
+
     def __init__(self, d_model):
         super().__init__()
         self.d_model = d_model
@@ -128,8 +148,11 @@ class Block(BaseModule):
             drop_path) if drop_path > 0. else nn.Identity()
         self.norm2 = build_norm_layer(norm_cfg, dim)[1]
         mlp_hidden_dim = int(dim * mlp_ratio)
-        self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim,
-                       act_layer=act_layer, drop=drop)
+        self.mlp = Mlp(
+            in_features=dim,
+            hidden_features=mlp_hidden_dim,
+            act_layer=act_layer,
+            drop=drop)
         layer_scale_init_value = 1e-2
         self.layer_scale_1 = nn.Parameter(
             layer_scale_init_value * torch.ones((dim)), requires_grad=True)
@@ -139,24 +162,34 @@ class Block(BaseModule):
     def forward(self, x, H, W):
         B, N, C = x.shape
         x = x.permute(0, 2, 1).view(B, C, H, W)
-        x = x + self.drop_path(self.layer_scale_1.unsqueeze(-1).unsqueeze(-1)
-                               * self.attn(self.norm1(x)))
-        x = x + self.drop_path(self.layer_scale_2.unsqueeze(-1).unsqueeze(-1)
-                               * self.mlp(self.norm2(x)))
+        x = x + self.drop_path(
+            self.layer_scale_1.unsqueeze(-1).unsqueeze(-1) *
+            self.attn(self.norm1(x)))
+        x = x + self.drop_path(
+            self.layer_scale_2.unsqueeze(-1).unsqueeze(-1) *
+            self.mlp(self.norm2(x)))
         x = x.view(B, C, N).permute(0, 2, 1)
         return x
 
 
 class OverlapPatchEmbed(BaseModule):
-    """ Image to Patch Embedding
-    """
+    """Image to Patch Embedding."""
 
-    def __init__(self, patch_size=7, stride=4, in_chans=3, embed_dim=768, norm_cfg=dict(type='SyncBN', requires_grad=True)):
+    def __init__(self,
+                 patch_size=7,
+                 stride=4,
+                 in_chans=3,
+                 embed_dim=768,
+                 norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super().__init__()
         patch_size = to_2tuple(patch_size)
 
-        self.proj = nn.Conv2d(in_chans, embed_dim, kernel_size=patch_size, stride=stride,
-                              padding=(patch_size[0] // 2, patch_size[1] // 2))
+        self.proj = nn.Conv2d(
+            in_chans,
+            embed_dim,
+            kernel_size=patch_size,
+            stride=stride,
+            padding=(patch_size[0] // 2, patch_size[1] // 2))
         self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
 
     def forward(self, x):
@@ -171,6 +204,7 @@ class OverlapPatchEmbed(BaseModule):
 
 @BACKBONES.register_module()
 class MSCAN(BaseModule):
+
     def __init__(self,
                  in_chans=3,
                  embed_dims=[64, 128, 256, 512],
@@ -196,30 +230,36 @@ class MSCAN(BaseModule):
         self.depths = depths
         self.num_stages = num_stages
 
-        dpr = [x.item() for x in torch.linspace(0, drop_path_rate,
-                                                sum(depths))]  # stochastic depth decay rule
+        dpr = [
+            x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))
+        ]  # stochastic depth decay rule
         cur = 0
 
         for i in range(num_stages):
             if i == 0:
                 patch_embed = StemConv(3, embed_dims[0], norm_cfg=norm_cfg)
             else:
-                patch_embed = OverlapPatchEmbed(patch_size=7 if i == 0 else 3,
-                                                stride=4 if i == 0 else 2,
-                                                in_chans=in_chans if i == 0 else embed_dims[i - 1],
-                                                embed_dim=embed_dims[i],
-                                                norm_cfg=norm_cfg)
+                patch_embed = OverlapPatchEmbed(
+                    patch_size=7 if i == 0 else 3,
+                    stride=4 if i == 0 else 2,
+                    in_chans=in_chans if i == 0 else embed_dims[i - 1],
+                    embed_dim=embed_dims[i],
+                    norm_cfg=norm_cfg)
 
-            block = nn.ModuleList([Block(dim=embed_dims[i], mlp_ratio=mlp_ratios[i],
-                                         drop=drop_rate, drop_path=dpr[cur + j],
-                                         norm_cfg=norm_cfg)
-                                   for j in range(depths[i])])
+            block = nn.ModuleList([
+                Block(
+                    dim=embed_dims[i],
+                    mlp_ratio=mlp_ratios[i],
+                    drop=drop_rate,
+                    drop_path=dpr[cur + j],
+                    norm_cfg=norm_cfg) for j in range(depths[i])
+            ])
             norm = nn.LayerNorm(embed_dims[i])
             cur += depths[i]
 
-            setattr(self, f"patch_embed{i + 1}", patch_embed)
-            setattr(self, f"block{i + 1}", block)
-            setattr(self, f"norm{i + 1}", norm)
+            setattr(self, f'patch_embed{i + 1}', patch_embed)
+            setattr(self, f'block{i + 1}', block)
+            setattr(self, f'norm{i + 1}', norm)
 
     def init_weights(self):
         print('init cfg', self.init_cfg)
@@ -244,9 +284,9 @@ class MSCAN(BaseModule):
         outs = []
 
         for i in range(self.num_stages):
-            patch_embed = getattr(self, f"patch_embed{i + 1}")
-            block = getattr(self, f"block{i + 1}")
-            norm = getattr(self, f"norm{i + 1}")
+            patch_embed = getattr(self, f'patch_embed{i + 1}')
+            block = getattr(self, f'block{i + 1}')
+            norm = getattr(self, f'norm{i + 1}')
             x, H, W = patch_embed(x)
             for blk in block:
                 x = blk(x, H, W)
@@ -258,6 +298,7 @@ class MSCAN(BaseModule):
 
 
 class DWConv(nn.Module):
+
     def __init__(self, dim=768):
         super(DWConv, self).__init__()
         self.dwconv = nn.Conv2d(dim, dim, 3, 1, 1, bias=True, groups=dim)
