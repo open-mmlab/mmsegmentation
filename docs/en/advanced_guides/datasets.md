@@ -1,6 +1,6 @@
 # Dataset
 
-In this document, we will introduce the design of dataset in MMSegmentation and how users can design their own dataset.
+In this document, we will introduce the design of dataset in MMSegmentation.
 
 In the 1.x version of MMSegmentation, all datasets are inherited from `BaseSegDataset`.
 The function of dataset is loading the `data_list` (please refer [basesegdataset.py](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/datasets/basesegdataset.py) for more information about `data_list`).
