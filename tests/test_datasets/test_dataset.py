@@ -8,8 +8,8 @@ import pytest
 
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
                             COCOStuffDataset, DecathlonDataset, ISPRSDataset,
-                            LoveDADataset, PascalVOCDataset, PotsdamDataset,
-                            iSAIDDataset)
+                            LIPDataset, LoveDADataset, PascalVOCDataset,
+                            PotsdamDataset, iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
@@ -257,6 +257,25 @@ def test_decathlon():
         ann_file='dataset.json',
         test_mode=True)
     assert len(test_dataset) == 3
+
+
+def test_lip():
+    data_root = osp.join(osp.dirname(__file__), '../data/pseudo_lip_dataset')
+    # train load training dataset
+    train_dataset = LIPDataset(
+        pipeline=[],
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='train_images', seg_map_path='train_segmentations'))
+    assert len(train_dataset) == 1
+
+    # test load training dataset
+    test_dataset = LIPDataset(
+        pipeline=[],
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='val_images', seg_map_path='val_segmentations'))
+    assert len(test_dataset) == 1
 
 
 @pytest.mark.parametrize('dataset, classes', [
