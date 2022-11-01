@@ -110,16 +110,16 @@ class SegVisualizationHook(Hook):
 
 ```
 
-关于可视化更多的细节可以在查看[这里](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/visualization.md).
+关于可视化更多的细节可以查看[这里](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/visualization.md).
 
 ## 优化器
+
+### 优化器封装
 
 OpenMMLab 2.0 设计了优化器封装, 它支持不同的训练策略, 包括混合精度训练、梯度累加和梯度截断等, 用户可以根据需求选择合适的训练策略.
 优化器封装还定义了一套标准的参数更新流程, 用户可以基于这一套流程, 在同一套代码里, 实现不同训练策略的切换. 如果想了解更多, 可以参考 [MMEngine 优化器封装文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
 
 MMSegmenetation 训练模型也是使用优化器封装来优化参数, 以下是 MMSegmentation 中常用的使用方法:
-
-### 优化器封装
 
 #### 配置 PyTorch 支持的优化器
 
