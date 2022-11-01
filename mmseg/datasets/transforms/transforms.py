@@ -1321,18 +1321,28 @@ class ZNormalization(BaseTransform):
             Defaults to None.
         std (float, optional): the standard deviation to divide by
             Defaults to None.
+        nonzero: whether only normalize non-zero values
+            Defaults to False.
+        channel_wise (bool): whether perform channel-wise znormalization
+            Defaults to False.
     """
 
     def __init__(self,
                  mean: Optional[Union[float, Iterable[float]]] = None,
                  std: Optional[Union[float, Iterable[float]]] = None,
+                 nonzero: bool = False,
                  channel_wise: bool = False) -> None:
         self.mean = mean
         self.std = std
+        self.nonzero = nonzero
         self.channel_wise = channel_wise
 
     def _normalize(self, img: np.ndarray, mean=None, std=None):
-        slices = np.ones_like(img, dtype=bool)
+        if self.nonzero:
+            slices = img != 0
+        else:
+            slices = np.ones_like(img, dtype=bool)
+
         if not slices.any():
             return img
 
@@ -1408,12 +1418,9 @@ class ClampIntensity(BaseTransform):
         self.t_min = t_min
         self.t_max = t_max
 
-    def clamp(self, img):
-        return np.clip(img, self.t_min, self.t_max)
-
     def transform(self, results: dict) -> dict:
         img = results['img']
-        img = self.clamp(img)
+        img = np.clip(img, self.t_min, self.t_max)
         results['img'] = img
         return results
 
