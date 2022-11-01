@@ -406,6 +406,7 @@ The extracted and upsampled COCO objects images and masks can be found in this [
 
 Please extract CelebAMask-HQ and 11k Hands images based on the splits found in [drive](https://drive.google.com/drive/folders/15nZETWlGMdcKY6aHbchRsWkUI42KTNs5?usp=sharing).
 
+mkdir data_materials
 download file to ./data_materials
 
 ```none
@@ -426,13 +427,19 @@ apt-get install p7zip-full
 
 cd data_materials
 
+#make occlusion-aware-face-dataset folder
+mkdir path-to-mmsegmentaion/data/occlusion-aware-face-dataset
+
 #extract celebAMask-HQ and split by train-set
 unzip CelebAMask-HQ.zip
 7za x CelebAMask-HQ-masks_corrected.7z -o./CelebAMask-HQ
-#suggest better code if you have
+#copy training data to train-image-folder
 rsync -a ./CelebAMask-HQ/CelebA-HQ-img/ --files-from=./CelebAMask-HQ-WO-train.txt ./CelebAMask-HQ-WO-Train_img
-basename -s .jpg ./CelebAMask-HQ-train/* > train.txt
+#create a file-name txt file for copying mask
+basename -s .jpg ./CelebAMask-HQ-WO-Train_img/* > train.txt
+#add .png to file-name txt file
 xargs -n 1 -i echo {}.png < train.txt > mask_train.txt
+#copy training data to train-mask-folder
 rsync -a ./CelebAMask-HQ/CelebAMask-HQ-masks_corrected/ --files-from=./mask_train.txt ./CelebAMask-HQ-WO-Train_mask
 mv train.txt ../data/occlusion-aware-face-dataset
 
@@ -454,7 +461,7 @@ mv coco_object/* .
 
 ```
 
-**Dataset Organization:**
+**Dataset material Organization:**
 
 ```none
 
@@ -478,31 +485,6 @@ mv coco_object/* .
 │   ├── object_mask_x4
 │   │   ├── {mask}.png
 
-├── data
-│   ├── occlusion-aware-face-dataset
-│   │   ├── train.txt
-│   │   ├── NatOcc_hand_sot
-│   │   │   ├── img
-│   │   │   │   ├── {image}.jpg
-│   │   │   ├── mask
-│   │   │   │   ├── {mask}.png
-│   │   ├── NatOcc_object
-│   │   │   ├── img
-│   │   │   │   ├── {image}.jpg
-│   │   │   ├── mask
-│   │   │   │   ├── {mask}.png
-│   │   ├── RandOcc
-│   │   │   ├── img
-│   │   │   │   ├── {image}.jpg
-│   │   │   ├── mask
-│   │   │   │   ├── {mask}.png
-│   │   ├── RealOcc
-│   │   │   ├── img
-│   │   │   │   ├── {image}.jpg
-│   │   │   ├── mask
-│   │   │   │   ├── {mask}.png
-│   │   │   ├── split
-│   │   │   │   ├── val.txt
 ```
 
 ## Data Generation
@@ -548,4 +530,38 @@ SOURCE_DATASET.MASK_DIR "path/to/mmsegmentation/data_materials/CelebAMask-HQ-WO-
 OCCLUDER_DATASET.IMG_DIR "path/to/jw93/mmsegmentation/data_materials/DTD/images"
 ```
 
+**Dataset Organization:**
+
+```none
+├── data
+│   ├── occlusion-aware-face-dataset
+│   │   ├── train.txt
+│   │   ├── NatOcc_hand_sot
+│   │   │   ├── img
+│   │   │   │   ├── {image}.jpg
+│   │   │   ├── mask
+│   │   │   │   ├── {mask}.png
+│   │   ├── NatOcc_object
+│   │   │   ├── img
+│   │   │   │   ├── {image}.jpg
+│   │   │   ├── mask
+│   │   │   │   ├── {mask}.png
+│   │   ├── RandOcc
+│   │   │   ├── img
+│   │   │   │   ├── {image}.jpg
+│   │   │   ├── mask
+│   │   │   │   ├── {mask}.png
+│   │   ├── RealOcc
+│   │   │   ├── img
+│   │   │   │   ├── {image}.jpg
+│   │   │   ├── mask
+│   │   │   │   ├── {mask}.png
+│   │   │   ├── split
+│   │   │   │   ├── val.txt
+```
+
 <!-- #endregion -->
+
+```python
+
+```
