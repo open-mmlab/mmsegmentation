@@ -34,7 +34,7 @@ data = dict(
   using [`build and registry`](https://github.com/open-mmlab/mmcv/blob/master/docs/en/understand_mmcv/registry.md) mechanism.
 
 - `samples_per_gpu`: How many samples per batch and per gpu to load during model training, and the `batch_size` of training is equal to `samples_per_gpu` times gpu number, e.g. when using 8 gpus for distributed data parallel training and `samples_per_gpu=4`, the `batch_size` is `8*4=32`.
-  If you would like to define `batch_size` for testing and validation, please use `test_dataloaser` and
+  If you would like to define `batch_size` for testing and validation, please use `test_dataloader` and
   `val_dataloader` with mmseg >=0.24.1.
 
 - `workers_per_gpu`: How many subprocesses per gpu to use for data loading. `0` means that the data will be loaded in the main process.
@@ -43,7 +43,7 @@ data = dict(
 
 **Note:** before v0.24.1, except `train`, `val` `test`, `samples_per_gpu` and `workers_per_gpu`, the other keys in `data` must be the
 input keyword arguments for `dataloader` in pytorch, and the dataloaders used for model training, validation and testing have the same input arguments.
-In v0.24.1, mmseg supports to use `train_dataloader`, `test_dataloaser` and `val_dataloader` to specify different keyword arguments, and still supports the overall arguments definition but the specific dataloader setting has a higher priority.
+In v0.24.1, mmseg supports to use `train_dataloader`, `test_dataloader` and `val_dataloader` to specify different keyword arguments, and still supports the overall arguments definition but the specific dataloader setting has a higher priority.
 
 Here is an example for specific dataloader:
 

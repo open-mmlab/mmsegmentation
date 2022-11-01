@@ -66,3 +66,72 @@ In the test script, we provide `show-dir` argument to control whether output the
 ```shell
 python tools/test.py {config} {checkpoint} --show-dir {/path/to/save/image} --opacity 1
 ```
+
+## How to handle binary segmentation task
+
+MMSegmentation uses `num_classes` and `out_channels` to control output of last layer `self.conv_seg`. More details could be found [here](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/decode_heads/decode_head.py).
+
+`num_classes` should be the same as number of types of labels, in binary segmentation task, dataset only has two types of labels: foreground and background, so `num_classes=2`. `out_channels` controls the output channel of last layer of model, it usually equals to `num_classes`.
+But in binary segmentation task, there are two solutions:
+
+- Set `out_channels=2`, using Cross Entropy Loss in training, using `F.softmax()` and `argmax()` to get prediction of each pixel in inference.
+
+- Set `out_channels=1`, using Binary Cross Entropy Loss in training, using `F.sigmoid()` and `threshold` to get prediction of each pixel in inference. `threshold` is set 0.3 as default.
+
+In summary, to implement binary segmentation methods users should modify below parameters in the `decode_head` and `auxiliary_head` configs. Here is a modification example of [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py):
+
+- (1) `num_classes=2`, `out_channels=2`  and `use_sigmoid=False` in `CrossEntropyLoss`.
+
+```python
+decode_head=dict(
+    type='PSPHead',
+    in_channels=64,
+    in_index=4,
+    num_classes=2,
+    out_channels=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+auxiliary_head=dict(
+    type='FCNHead',
+    in_channels=128,
+    in_index=3,
+    num_classes=2,
+    out_channels=2,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+```
+
+- (2) `num_classes=2`, `out_channels=1` and `use_sigmoid=True` in `CrossEntropyLoss`.
+
+```python
+decode_head=dict(
+    type='PSPHead',
+    in_channels=64,
+    in_index=4,
+    num_classes=2,
+    out_channels=1,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
+auxiliary_head=dict(
+    type='FCNHead',
+    in_channels=128,
+    in_index=3,
+    num_classes=2,
+    out_channels=1,
+    loss_decode=dict(
+        type='CrossEntropyLoss', use_sigmoid=True, loss_weight=0.4)),
+```
+
+## What does `reduce_zero_label` work for?
+
+When [loading annotation](https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/datasets/pipelines/loading.py#L91) in MMSegmentation, `reduce_zero_label (bool)` is provided to determine whether reduce all label value by 1:
+
+```python
+if self.reduce_zero_label:
+    # avoid using underflow conversion
+    gt_semantic_seg[gt_semantic_seg == 0] = 255
+    gt_semantic_seg = gt_semantic_seg - 1
+    gt_semantic_seg[gt_semantic_seg == 254] = 255
+```
+
+**Noted:** Please pay attention to label numbers of dataset when using `reduce_zero_label`. If dataset only has two types of labels (i.e., label 0 and 1), it needs to close `reduce_zero_label`, i.e., set `reduce_zero_label=False`.
