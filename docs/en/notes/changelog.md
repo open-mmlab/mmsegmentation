@@ -41,11 +41,11 @@
 - Add `Evaluation` documentation ([#2077](https://github.com/open-mmlab/mmsegmentation/pull/2077))
 - Add `Migration` documentation ([#2066](https://github.com/open-mmlab/mmsegmentation/pull/2066))
 - Add `Structures` documentation ([#2070](https://github.com/open-mmlab/mmsegmentation/pull/2070))
+- Add `Structures` ZN documentation ([#2129](https://github.com/open-mmlab/mmsegmentation/pull/2129))
 - Add `Engine` ZN documentation ([#2157](https://github.com/open-mmlab/mmsegmentation/pull/2157))
 - Update `Prepare datasets` and `Visualization` doc ([#2054](https://github.com/open-mmlab/mmsegmentation/pull/2054))
 - Update `Models` documentation ([#2160](https://github.com/open-mmlab/mmsegmentation/pull/2160))
 - Update `Add New Modules` documentation ([#2067](https://github.com/open-mmlab/mmsegmentation/pull/2067))
-- Add Data Structure chinese documentation ([#2129](https://github.com/open-mmlab/mmsegmentation/pull/2129))
 - Fix the installation commands in get_started.md ([#2174](https://github.com/open-mmlab/mmsegmentation/pull/2174))
 - Add MMYOLO to README.md ([#2220](https://github.com/open-mmlab/mmsegmentation/pull/2220))
 
