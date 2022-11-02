@@ -61,7 +61,7 @@ jobs:
           command: |
             pip install git+https://github.com/open-mmlab/mmengine.git@main
             pip install -U openmim
-            mim install 'mmcv >= 2.0.0rc1'
+            mim install 'mmcv>=2.0.0rc1'
             pip install git+https://github.com/open-mmlab/mmclassification@dev-1.x
             pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
@@ -71,9 +71,9 @@ jobs:
       - run:
           name: Skip timm unittests and generate coverage report
           command: |
-            coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
-            coverage xml
-            coverage report -m
+            python -m coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+            python -m coverage xml
+            python -m coverage report -m
   build_cuda:
     parameters:
       torch:
@@ -106,7 +106,7 @@ jobs:
           command: |
             docker exec mmseg pip install -e /mmengine
             docker exec mmseg pip install -U openmim
-            docker exec mmseg mim install 'mmcv >= 2.0.0rc1'
+            docker exec mmseg mim install 'mmcv>=2.0.0rc1'
             docker exec mmseg pip install -e /mmclassification
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
@@ -128,6 +128,7 @@ workflows:
               ignore:
                 - dev-1.x
                 - 1.x
+                - master
   pr_stage_test:
     when:
       not:
@@ -140,6 +141,7 @@ workflows:
               ignore:
                 - dev-1.x
                 - 1.x
+                - master
       - build_cpu:
           name: minimum_version_cpu
           torch: 1.6.0
@@ -181,3 +183,5 @@ workflows:
             branches:
               only:
                 - dev-1.x
+                - 1.x
+                - master
