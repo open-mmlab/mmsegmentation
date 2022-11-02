@@ -31,7 +31,7 @@
 - Add pyupgrade pre-commit hook ([#2078](https://github.com/open-mmlab/mmsegmentation/pull/2078))
 - Add `out_file` in `add_datasample` of `SegLocalVisualizer` to directly save image ([#2090](https://github.com/open-mmlab/mmsegmentation/pull/2090))
 - Upgrade pre commit hooks ([#2154](https://github.com/open-mmlab/mmsegmentation/pull/2154))
-- Ignore test timm in CI when torch<1.7 ([#2158](https://github.com/open-mmlab/mmsegmentation/pull/2158))
+- Ignore test timm in CI when torch\<1.7 ([#2158](https://github.com/open-mmlab/mmsegmentation/pull/2158))
 - Update requirements ([#2186](https://github.com/open-mmlab/mmsegmentation/pull/2186))
 - Fix Windows platform CI ([#2202](https://github.com/open-mmlab/mmsegmentation/pull/2202))
 
