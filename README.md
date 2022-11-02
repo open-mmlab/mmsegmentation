@@ -62,12 +62,11 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc0 was released in 31/8/2022.
+v1.0.0rc1 was released in 2/11/2022.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Unifies interfaces of all components based on MMEngine.
-- Faster training and testing speed with complete support of mixed precision training.
-- Refactored and more flexible architecture.
+- Support PoolFormer ([#2191](https://github.com/open-mmlab/mmsegmentation/pull/2191))
+- Add Decathlon dataset ([#2227](https://github.com/open-mmlab/mmsegmentation/pull/2227))
 
 ## Installation
 
