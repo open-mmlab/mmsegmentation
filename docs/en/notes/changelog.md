@@ -11,7 +11,7 @@
 
 - Add BioMedical data loading ([#2176](https://github.com/open-mmlab/mmsegmentation/pull/2176))
 - Add LIP dataset ([#2251](https://github.com/open-mmlab/mmsegmentation/pull/2251))
-- Generate Edge for dataset ([#2210](https://github.com/open-mmlab/mmsegmentation/pull/2210))
+- Add `GenerateEdge` data transform ([#2210](https://github.com/open-mmlab/mmsegmentation/pull/2210))
 
 ### Bug fix
 
