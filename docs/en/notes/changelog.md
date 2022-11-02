@@ -1,5 +1,54 @@
 # Changelog of v1.x
 
+## v1.0.0rc1 (2/11/2022)
+
+### Highlights
+
+- Support PoolFormer ([#2191](https://github.com/open-mmlab/mmsegmentation/pull/2191))
+- Add Decathlon dataset ([#2227](https://github.com/open-mmlab/mmsegmentation/pull/2227))
+
+### Features
+
+- Add BioMedical data loading ([#2176](https://github.com/open-mmlab/mmsegmentation/pull/2176))
+- Add LIP dataset ([#2251](https://github.com/open-mmlab/mmsegmentation/pull/2251))
+- Add `GenerateEdge` data transform ([#2210](https://github.com/open-mmlab/mmsegmentation/pull/2210))
+
+### Bug fix
+
+- Fix segmenter-vit-s_fcn config ([#2037](https://github.com/open-mmlab/mmsegmentation/pull/2037))
+- Fix binary segmentation ([#2101](https://github.com/open-mmlab/mmsegmentation/pull/2101))
+- Fix MMSegmentation colab demo ([#2089](https://github.com/open-mmlab/mmsegmentation/pull/2089))
+- Fix ResizeToMultiple transform ([#2185](https://github.com/open-mmlab/mmsegmentation/pull/2185))
+- Use SyncBN in mobilenet_v2 ([#2198](https://github.com/open-mmlab/mmsegmentation/pull/2198))
+- Fix typo in installation ([#2175](https://github.com/open-mmlab/mmsegmentation/pull/2175))
+- Fix typo in visualization.md ([#2116](https://github.com/open-mmlab/mmsegmentation/pull/2116))
+
+### Enhancement
+
+- Add mim extras_requires in setup.py ([#2012](https://github.com/open-mmlab/mmsegmentation/pull/2012))
+- Fix CI ([#2029](https://github.com/open-mmlab/mmsegmentation/pull/2029))
+- Remove ops module ([#2063](https://github.com/open-mmlab/mmsegmentation/pull/2063))
+- Add pyupgrade pre-commit hook ([#2078](https://github.com/open-mmlab/mmsegmentation/pull/2078))
+- Add `out_file` in `add_datasample` of `SegLocalVisualizer` to directly save image ([#2090](https://github.com/open-mmlab/mmsegmentation/pull/2090))
+- Upgrade pre commit hooks ([#2154](https://github.com/open-mmlab/mmsegmentation/pull/2154))
+- Ignore test timm in CI when torch\<1.7 ([#2158](https://github.com/open-mmlab/mmsegmentation/pull/2158))
+- Update requirements ([#2186](https://github.com/open-mmlab/mmsegmentation/pull/2186))
+- Fix Windows platform CI ([#2202](https://github.com/open-mmlab/mmsegmentation/pull/2202))
+
+### Documentation
+
+- Add `Overview` documentation ([#2042](https://github.com/open-mmlab/mmsegmentation/pull/2042))
+- Add `Evaluation` documentation ([#2077](https://github.com/open-mmlab/mmsegmentation/pull/2077))
+- Add `Migration` documentation ([#2066](https://github.com/open-mmlab/mmsegmentation/pull/2066))
+- Add `Structures` documentation ([#2070](https://github.com/open-mmlab/mmsegmentation/pull/2070))
+- Add `Structures` ZN documentation ([#2129](https://github.com/open-mmlab/mmsegmentation/pull/2129))
+- Add `Engine` ZN documentation ([#2157](https://github.com/open-mmlab/mmsegmentation/pull/2157))
+- Update `Prepare datasets` and `Visualization` doc ([#2054](https://github.com/open-mmlab/mmsegmentation/pull/2054))
+- Update `Models` documentation ([#2160](https://github.com/open-mmlab/mmsegmentation/pull/2160))
+- Update `Add New Modules` documentation ([#2067](https://github.com/open-mmlab/mmsegmentation/pull/2067))
+- Fix the installation commands in get_started.md ([#2174](https://github.com/open-mmlab/mmsegmentation/pull/2174))
+- Add MMYOLO to README.md ([#2220](https://github.com/open-mmlab/mmsegmentation/pull/2220))
+
 ## v1.0.0rc0 (31/8/2022)
 
 We are excited to announce the release of MMSegmentation 1.0.0rc0.
