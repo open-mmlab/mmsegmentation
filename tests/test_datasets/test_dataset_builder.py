@@ -11,7 +11,7 @@ register_all_modules()
 
 
 @DATASETS.register_module()
-class ToyDataset(object):
+class ToyDataset:
 
     def __init__(self, cnt=0):
         self.cnt = cnt

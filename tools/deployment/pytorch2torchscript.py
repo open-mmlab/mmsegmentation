@@ -126,7 +126,7 @@ def pytorch2libtorch(model,
         print(traced_model.graph)
 
     traced_model.save(output_file)
-    print('Successfully exported TorchScript model: {}'.format(output_file))
+    print(f'Successfully exported TorchScript model: {output_file}')
 
 
 def parse_args():

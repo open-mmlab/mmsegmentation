@@ -44,7 +44,7 @@ class MixFFN(BaseModule):
                  ffn_drop=0.,
                  dropout_layer=None,
                  init_cfg=None):
-        super(MixFFN, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         self.embed_dims = embed_dims
         self.feedforward_channels = feedforward_channels
@@ -253,7 +253,7 @@ class TransformerEncoderLayer(BaseModule):
                  batch_first=True,
                  sr_ratio=1,
                  with_cp=False):
-        super(TransformerEncoderLayer, self).__init__()
+        super().__init__()
 
         # The ret[0] of build_norm_layer is norm name.
         self.norm1 = build_norm_layer(norm_cfg, embed_dims)[1]
@@ -357,7 +357,7 @@ class MixVisionTransformer(BaseModule):
                  pretrained=None,
                  init_cfg=None,
                  with_cp=False):
-        super(MixVisionTransformer, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
 
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be set at the same time'
@@ -433,7 +433,7 @@ class MixVisionTransformer(BaseModule):
                     normal_init(
                         m, mean=0, std=math.sqrt(2.0 / fan_out), bias=0)
         else:
-            super(MixVisionTransformer, self).init_weights()
+            super().init_weights()
 
     def forward(self, x):
         outs = []

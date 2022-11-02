@@ -26,7 +26,7 @@ class NLHead(FCNHead):
                  use_scale=True,
                  mode='embedded_gaussian',
                  **kwargs):
-        super(NLHead, self).__init__(num_convs=2, **kwargs)
+        super().__init__(num_convs=2, **kwargs)
         self.reduction = reduction
         self.use_scale = use_scale
         self.mode = mode

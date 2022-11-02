@@ -48,7 +48,7 @@ class CascadeEncoderDecoder(EncoderDecoder):
                  pretrained: Optional[str] = None,
                  init_cfg: OptMultiConfig = None):
         self.num_stages = num_stages
-        super(CascadeEncoderDecoder, self).__init__(
+        super().__init__(
             backbone=backbone,
             decode_head=decode_head,
             neck=neck,

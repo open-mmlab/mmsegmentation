@@ -32,7 +32,7 @@ class DepthwiseSeparableFCNHead(FCNHead):
     """
 
     def __init__(self, dw_act_cfg=None, **kwargs):
-        super(DepthwiseSeparableFCNHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.convs[0] = DepthwiseSeparableConvModule(
             self.in_channels,
             self.channels,

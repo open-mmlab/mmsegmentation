@@ -111,7 +111,7 @@ class DNLHead(FCNHead):
                  mode='embedded_gaussian',
                  temperature=0.05,
                  **kwargs):
-        super(DNLHead, self).__init__(num_convs=2, **kwargs)
+        super().__init__(num_convs=2, **kwargs)
         self.reduction = reduction
         self.use_scale = use_scale
         self.mode = mode

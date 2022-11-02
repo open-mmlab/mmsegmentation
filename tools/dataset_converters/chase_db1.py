@@ -47,7 +47,7 @@ def main():
         print('Generating training dataset...')
 
         assert len(os.listdir(tmp_dir)) == CHASE_DB1_LEN, \
-            'len(os.listdir(tmp_dir)) != {}'.format(CHASE_DB1_LEN)
+            f'len(os.listdir(tmp_dir)) != {CHASE_DB1_LEN}'
 
         for img_name in sorted(os.listdir(tmp_dir))[:TRAINING_LEN]:
             img = mmcv.imread(osp.join(tmp_dir, img_name))

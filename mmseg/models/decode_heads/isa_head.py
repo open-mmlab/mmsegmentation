@@ -22,7 +22,7 @@ class SelfAttentionBlock(_SelfAttentionBlock):
     """
 
     def __init__(self, in_channels, channels, conv_cfg, norm_cfg, act_cfg):
-        super(SelfAttentionBlock, self).__init__(
+        super().__init__(
             key_in_channels=in_channels,
             query_in_channels=in_channels,
             channels=channels,
@@ -51,7 +51,7 @@ class SelfAttentionBlock(_SelfAttentionBlock):
 
     def forward(self, x):
         """Forward function."""
-        context = super(SelfAttentionBlock, self).forward(x, x)
+        context = super().forward(x, x)
         return self.output_project(context)
 
 
@@ -68,7 +68,7 @@ class ISAHead(BaseDecodeHead):
     """
 
     def __init__(self, isa_channels, down_factor=(8, 8), **kwargs):
-        super(ISAHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.down_factor = down_factor
 
         self.in_conv = ConvModule(

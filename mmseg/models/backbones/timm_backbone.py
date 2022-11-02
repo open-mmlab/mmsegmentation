@@ -37,7 +37,7 @@ class TIMMBackbone(BaseModule):
     ):
         if timm is None:
             raise RuntimeError('timm is not installed')
-        super(TIMMBackbone, self).__init__(init_cfg)
+        super().__init__(init_cfg)
         if 'norm_layer' in kwargs:
             kwargs['norm_layer'] = MMENGINE_MODELS.get(kwargs['norm_layer'])
         self.timm_model = timm.create_model(

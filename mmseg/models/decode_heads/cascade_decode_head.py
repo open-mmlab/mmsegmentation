@@ -13,7 +13,7 @@ class BaseCascadeDecodeHead(BaseDecodeHead, metaclass=ABCMeta):
     :class:`CascadeEncoderDecoder."""
 
     def __init__(self, *args, **kwargs):
-        super(BaseCascadeDecodeHead, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     @abstractmethod
     def forward(self, inputs, prev_output):

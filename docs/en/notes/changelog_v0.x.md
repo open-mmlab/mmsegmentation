@@ -15,9 +15,9 @@
 
 **New Features**
 
-- Support MAE: Masked Autoencoders Are Scalable Vision Learners ([1307](https://github.com/open-mmlab/mmsegmentation/pull/1307), [1523](https://github.com/open-mmlab/mmsegmentation/pull/1523))
-- Support Resnet strikes back ([1390](https://github.com/open-mmlab/mmsegmentation/pull/1390))
-- Support extra dataloader settings in configs ([1435](https://github.com/open-mmlab/mmsegmentation/pull/1435))
+- Support MAE: Masked Autoencoders Are Scalable Vision Learners ([#1307](https://github.com/open-mmlab/mmsegmentation/pull/1307), [#1523](https://github.com/open-mmlab/mmsegmentation/pull/1523))
+- Support Resnet strikes back ([#1390](https://github.com/open-mmlab/mmsegmentation/pull/1390))
+- Support extra dataloader settings in configs ([#1435](https://github.com/open-mmlab/mmsegmentation/pull/1435))
 
 **Bug Fixes**
 

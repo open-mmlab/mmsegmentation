@@ -76,9 +76,8 @@ class CitysMetric(BaseMetric):
             output.putpalette(palette)
             output.save(png_filename)
 
-        ann_dir = osp.join(
-            data_batch[0]['data_sample']['seg_map_path'].split('val')[0],
-            'val')
+        ann_dir = osp.join(data_samples[0]['seg_map_path'].split('val')[0],
+                           'val')
         self.results.append(ann_dir)
 
     def compute_metrics(self, results: list) -> Dict[str, float]:
@@ -86,9 +85,6 @@ class CitysMetric(BaseMetric):
 
         Args:
             results (list): Testing results of the dataset.
-            logger (logging.Logger | str | None): Logger used for printing
-                related information during evaluation. Default: None.
-            imgfile_prefix (str | None): The prefix of output image file
 
         Returns:
             dict[str: float]: Cityscapes evaluation results.

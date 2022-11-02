@@ -678,4 +678,31 @@ def test_resize_to_multiple():
     results = transform(results)
     assert results['img'].shape == (224, 256, 3)
     assert results['gt_semantic_seg'].shape == (224, 256)
-    assert results['img_shape'] == (224, 256, 3)
+    assert results['img_shape'] == (224, 256)
+
+
+def test_generate_edge():
+    transform = dict(type='GenerateEdge', edge_width=1)
+    transform = TRANSFORMS.build(transform)
+
+    seg_map = np.array([
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 2],
+        [1, 1, 1, 2, 2],
+        [1, 1, 2, 2, 2],
+        [1, 2, 2, 2, 2],
+        [2, 2, 2, 2, 2],
+    ])
+    results = dict()
+    results['gt_seg_map'] = seg_map
+    results['img_shape'] = seg_map.shape
+
+    results = transform(results)
+    assert np.all(results['gt_edge'] == np.array([
+        [0, 0, 0, 1, 0],
+        [0, 0, 1, 1, 1],
+        [0, 1, 1, 1, 0],
+        [1, 1, 1, 0, 0],
+        [1, 1, 0, 0, 0],
+        [1, 0, 0, 0, 0],
+    ]))

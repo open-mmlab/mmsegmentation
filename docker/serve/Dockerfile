@@ -3,8 +3,8 @@ ARG CUDA="11.3"
 ARG CUDNN="8"
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
-ARG MMCV="1.4.8"
-ARG MMSEG="0.24.1"
+ARG MMCV="2.0.0rc1"
+ARG MMSEG="1.0.0rc1"
 
 ENV PYTHONUNBUFFERED TRUE
 
@@ -26,7 +26,9 @@ RUN pip install torchserve torch-model-archiver
 # MMLAB
 ARG PYTORCH
 ARG CUDA
-RUN ["/bin/bash", "-c", "pip install mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html"]
+RUN ["/bin/bash", "-c", "pip install openmim"]
+RUN ["/bin/bash", "-c", "mim install mmengine"]
+RUN ["/bin/bash", "-c", "mim install mmcv==${MMCV}"]
 RUN pip install mmsegmentation==${MMSEG}
 
 RUN useradd -m model-server \

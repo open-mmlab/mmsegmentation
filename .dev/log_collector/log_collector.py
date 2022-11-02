@@ -86,7 +86,7 @@ def main():
         val_list = []
         last_iter = 0
         for log_name in log_list:
-            with open(os.path.join(preceding_path, log_name), 'r') as f:
+            with open(os.path.join(preceding_path, log_name)) as f:
                 # ignore the info line
                 f.readline()
                 all_lines = f.readlines()

@@ -21,7 +21,7 @@ class PAM(_SelfAttentionBlock):
     """
 
     def __init__(self, in_channels, channels):
-        super(PAM, self).__init__(
+        super().__init__(
             key_in_channels=in_channels,
             query_in_channels=in_channels,
             channels=channels,
@@ -43,7 +43,7 @@ class PAM(_SelfAttentionBlock):
 
     def forward(self, x):
         """Forward function."""
-        out = super(PAM, self).forward(x, x)
+        out = super().forward(x, x)
 
         out = self.gamma(out) + x
         return out
@@ -53,7 +53,7 @@ class CAM(nn.Module):
     """Channel Attention Module (CAM)"""
 
     def __init__(self):
-        super(CAM, self).__init__()
+        super().__init__()
         self.gamma = Scale(0)
 
     def forward(self, x):
@@ -86,7 +86,7 @@ class DAHead(BaseDecodeHead):
     """
 
     def __init__(self, pam_channels, **kwargs):
-        super(DAHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.pam_channels = pam_channels
         self.pam_in_conv = ConvModule(
             self.in_channels,
@@ -173,15 +173,12 @@ class DAHead(BaseDecodeHead):
         loss = dict()
         loss.update(
             add_prefix(
-                super(DAHead, self).loss_by_feat(pam_cam_seg_logit,
-                                                 batch_data_samples),
+                super().loss_by_feat(pam_cam_seg_logit, batch_data_samples),
                 'pam_cam'))
         loss.update(
-            add_prefix(
-                super(DAHead, self).loss_by_feat(pam_seg_logit,
-                                                 batch_data_samples), 'pam'))
+            add_prefix(super().loss_by_feat(pam_seg_logit, batch_data_samples),
+                       'pam'))
         loss.update(
-            add_prefix(
-                super(DAHead, self).loss_by_feat(cam_seg_logit,
-                                                 batch_data_samples), 'cam'))
+            add_prefix(super().loss_by_feat(cam_seg_logit, batch_data_samples),
+                       'cam'))
         return loss

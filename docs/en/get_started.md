@@ -42,8 +42,8 @@ We recommend that users follow our best practices to install MMSegmentation. How
 
 ```shell
 pip install -U openmim
-mim install 'mmcv>=2.0.0rc1'
 mim install mmengine
+mim install "mmcv>=2.0.0rc1"
 ```
 
 **Step 1.** Install MMSegmentation.
@@ -51,10 +51,8 @@ mim install mmengine
 Case a: If you develop and run mmseg directly, install it from source:
 
 ```shell
-git clone https://github.com/open-mmlab/mmsegmentation.git
+git clone -b dev-1.x https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
-git checkout dev-1.x
-# branch 'dev-1.x' set up to track remote branch 'dev-1.x' from 'origin'.
 pip install -v -e .
 # '-v' means verbose, or more output
 # '-e' means installing a project in editable mode,
@@ -64,7 +62,7 @@ pip install -v -e .
 Case b: If you use mmsegmentation as a dependency or third-party package, install it with pip:
 
 ```shell
-pip install 'mmsegmentation>=1.0.0rc0'
+pip install "mmsegmentation>=1.0.0rc0"
 ```
 
 ### Verify the installation
@@ -159,8 +157,8 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 
 ```shell
 !pip3 install openmim
-!mim install 'mmcv>=2.0.0rc1'
 !mim install mmengine
+!mim install "mmcv>=2.0.0rc1"
 ```
 
 **Step 2.** Install MMSegmentation from the source.

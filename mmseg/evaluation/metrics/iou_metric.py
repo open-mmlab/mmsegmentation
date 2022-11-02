@@ -51,7 +51,7 @@ class IoUMetric(BaseMetric):
         """Process one batch of data and data_samples.
 
         The processed results should be stored in ``self.results``, which will
-        be used to computed the metrics when all batches have been processed.
+        be used to compute the metrics when all batches have been processed.
 
         Args:
             data_batch (dict): A batch of data from the dataloader.
@@ -212,7 +212,7 @@ class IoUMetric(BaseMetric):
             metrics = [metrics]
         allowed_metrics = ['mIoU', 'mDice', 'mFscore']
         if not set(metrics).issubset(set(allowed_metrics)):
-            raise KeyError('metrics {} is not supported'.format(metrics))
+            raise KeyError(f'metrics {metrics} is not supported')
 
         all_acc = total_area_intersect.sum() / total_area_label.sum()
         ret_metrics = OrderedDict({'aAcc': all_acc})

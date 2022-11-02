@@ -43,7 +43,7 @@ class PSAHead(BaseDecodeHead):
                  **kwargs):
         if PSAMask is None:
             raise RuntimeError('Please install mmcv-full for PSAMask ops')
-        super(PSAHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert psa_type in ['collect', 'distribute', 'bi-direction']
         self.psa_type = psa_type
         self.compact = compact
