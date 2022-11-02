@@ -35,7 +35,7 @@ def process_checkpoint(in_file, out_file):
     # The hash code calculation and rename command differ on different system
     # platform.
     sha = calculate_file_sha256(out_file)
-    final_file = out_file.rstrip('.pth') + '-{}.pth'.format(sha[:8])
+    final_file = out_file.rstrip('.pth') + f'-{sha[:8]}.pth'
     os.rename(out_file, final_file)
 
     # Remove prefix and suffix
@@ -54,7 +54,7 @@ def get_final_iter(config):
 def get_final_results(log_json_path, iter_num):
     result_dict = dict()
     last_iter = 0
-    with open(log_json_path, 'r') as f:
+    with open(log_json_path) as f:
         for line in f.readlines():
             log_line = json.loads(line)
             if 'mode' not in log_line.keys():
@@ -125,7 +125,7 @@ def main():
         exp_dir = osp.join(work_dir, config_name)
         # check whether the exps is finished
         final_iter = get_final_iter(used_config)
-        final_model = 'iter_{}.pth'.format(final_iter)
+        final_model = f'iter_{final_iter}.pth'
         model_path = osp.join(exp_dir, final_model)
 
         # skip if the model is still training

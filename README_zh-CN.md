@@ -61,7 +61,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新版本 v1.0.0rc0 在 2022.8.31 发布。
+最新版本 v1.0.0rc1 在 2022.11.2 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/notes/changelog.md)。
 
 ## 安装
@@ -96,6 +96,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [BEiT (ICLR'2022)](configs/beit)
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [MAE (CVPR'2022)](configs/mae)
+- [x] [PoolFormer (CVPR'2022)](configs/poolformer)
 
 已支持的算法：
 
@@ -189,6 +190,7 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - [MMDetection](https://github.com/open-mmlab/mmdetection): OpenMMLab 目标检测工具箱
 - [MMDetection3D](https://github.com/open-mmlab/mmdetection3d): OpenMMLab 新一代通用 3D 目标检测平台
 - [MMRotate](https://github.com/open-mmlab/mmrotate): OpenMMLab 旋转框检测工具箱与测试基准
+- [MMYOLO](https://github.com/open-mmlab/mmyolo): OpenMMLab YOLO 系列工具箱与测试基准
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation): OpenMMLab 语义分割工具箱
 - [MMOCR](https://github.com/open-mmlab/mmocr): OpenMMLab 全流程文字检测识别理解工具包
 - [MMPose](https://github.com/open-mmlab/mmpose): OpenMMLab 姿态估计工具箱

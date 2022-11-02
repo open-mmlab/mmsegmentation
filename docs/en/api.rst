@@ -30,7 +30,7 @@ optimizers
     :members:
 
 mmseg.evaluation
---------------
+-----------------
 
 metrics
 ^^^^^^^^^^
@@ -75,18 +75,13 @@ necks
 .. automodule:: mmseg.models.necks
     :members:
 
-mmseg.ops
---------------
-.. automodule:: mmseg.ops
-    :members:
-
 mmseg.registry
 --------------
 .. automodule:: mmseg.registry
     :members:
 
 mmseg.structures
---------------
+-----------------
 
 structures
 ^^^^^^^^^^
@@ -104,6 +99,6 @@ mmseg.utils
     :members:
 
 mmseg.visualization
---------------
+----------------------
 .. automodule:: mmseg.visualization
     :members:

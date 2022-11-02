@@ -49,32 +49,25 @@ jobs:
       - run:
           name: Configure Python & pip
           command: |
-            python -m pip install --upgrade pip
-            python -m pip install wheel
+            pip install --upgrade pip
+            pip install wheel
       - run:
           name: Install PyTorch
           command: |
             python -V
-            python -m pip install torch==<< parameters.torch >>+cpu torchvision==<< parameters.torchvision >>+cpu -f https://download.pytorch.org/whl/torch_stable.html
+            pip install torch==<< parameters.torch >>+cpu torchvision==<< parameters.torchvision >>+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - run:
           name: Install mmseg dependencies
           command: |
-            python -m pip install git+https://github.com/open-mmlab/mmengine.git@main
-            python -m pip install -U openmim 'importlib-metadata<2'
-            python -m mim install 'mmcv>=2.0.0rc1'
-            python -m pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-            python -m pip install -r requirements/tests.txt -r requirements/optional.txt
+            pip install git+https://github.com/open-mmlab/mmengine.git@main
+            pip install -U openmim
+            mim install 'mmcv>=2.0.0rc1'
+            pip install git+https://github.com/open-mmlab/mmclassification@dev-1.x
+            pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
           command: |
-            python -m pip install -e .
-      - run:
-          name: Run unittests
-          command: |
-            python -m pip install timm
-            python -m coverage run --branch --source mmseg -m pytest tests/
-            python -m coverage xml
-            python -m coverage report -m
+            pip install -e .
       - run:
           name: Skip timm unittests and generate coverage report
           command: |
@@ -101,8 +94,8 @@ jobs:
           # Cloning repos in VM since Docker doesn't have access to the private key
           name: Clone Repos
           command: |
-            git clone -b main --depth 1 ssh://git@github.com/open-mmlab/mmengine.git /home/circleci/mmengine
-            git clone -b dev-1.x --depth 1 ssh://git@github.com/open-mmlab/mmclassification.git /home/circleci/mmclassification
+            git clone -b main --depth 1 https://github.com/open-mmlab/mmengine.git /home/circleci/mmengine
+            git clone -b dev-1.x --depth 1 https://github.com/open-mmlab/mmclassification.git /home/circleci/mmclassification
       - run:
           name: Build Docker image
           command: |
@@ -112,19 +105,18 @@ jobs:
           name: Install mmseg dependencies
           command: |
             docker exec mmseg pip install -e /mmengine
-            docker exec mmseg pip install -U openmim 'importlib-metadata<2'
+            docker exec mmseg pip install -U openmim
             docker exec mmseg mim install 'mmcv>=2.0.0rc1'
             docker exec mmseg pip install -e /mmclassification
-            docker exec mmseg python -m pip install -r requirements.txt
+            docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
           command: |
             docker exec mmseg pip install -e .
       - run:
-          name: Run unittests
+          name: Run unittests but skip timm unittests
           command: |
-            docker exec mmseg python -m pip install timm
-            docker exec mmseg python -m pytest tests/
+            docker exec mmseg pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
 workflows:
   pr_stage_lint:
     when: << pipeline.parameters.lint_only >>
@@ -159,8 +151,8 @@ workflows:
             - lint
       - build_cpu:
           name: maximum_version_cpu
-          torch: 1.9.0
-          torchvision: 0.10.0
+          torch: 1.12.1
+          torchvision: 0.13.1
           python: 3.9.0
           requires:
             - minimum_version_cpu

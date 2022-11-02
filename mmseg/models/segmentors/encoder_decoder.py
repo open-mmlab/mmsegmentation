@@ -78,7 +78,7 @@ class EncoderDecoder(BaseSegmentor):
                  data_preprocessor: OptConfigType = None,
                  pretrained: Optional[str] = None,
                  init_cfg: OptMultiConfig = None):
-        super(EncoderDecoder, self).__init__(
+        super().__init__(
             data_preprocessor=data_preprocessor, init_cfg=init_cfg)
         if pretrained is not None:
             assert backbone.get('pretrained') is None, \
@@ -100,6 +100,7 @@ class EncoderDecoder(BaseSegmentor):
         self.decode_head = MODELS.build(decode_head)
         self.align_corners = self.decode_head.align_corners
         self.num_classes = self.decode_head.num_classes
+        self.out_channels = self.decode_head.out_channels
 
     def _init_auxiliary_head(self, auxiliary_head: ConfigType) -> None:
         """Initialize ``auxiliary_head``"""

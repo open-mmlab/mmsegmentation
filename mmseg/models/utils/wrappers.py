@@ -34,7 +34,7 @@ class Upsample(nn.Module):
                  scale_factor=None,
                  mode='nearest',
                  align_corners=None):
-        super(Upsample, self).__init__()
+        super().__init__()
         self.size = size
         if isinstance(scale_factor, tuple):
             self.scale_factor = tuple(float(factor) for factor in scale_factor)

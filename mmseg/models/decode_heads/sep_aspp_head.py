@@ -13,7 +13,7 @@ class DepthwiseSeparableASPPModule(ASPPModule):
     conv."""
 
     def __init__(self, **kwargs):
-        super(DepthwiseSeparableASPPModule, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         for i, dilation in enumerate(self.dilations):
             if dilation > 1:
                 self[i] = DepthwiseSeparableConvModule(
@@ -41,7 +41,7 @@ class DepthwiseSeparableASPPHead(ASPPHead):
     """
 
     def __init__(self, c1_in_channels, c1_channels, **kwargs):
-        super(DepthwiseSeparableASPPHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert c1_in_channels >= 0
         self.aspp_modules = DepthwiseSeparableASPPModule(
             dilations=self.dilations,

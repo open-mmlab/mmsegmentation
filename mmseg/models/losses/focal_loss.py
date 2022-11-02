@@ -78,7 +78,7 @@ def sigmoid_focal_loss(pred,
                        valid_mask=None,
                        reduction='mean',
                        avg_factor=None):
-    r"""A warpper of cuda version `Focal Loss
+    r"""A wrapper of cuda version `Focal Loss
     <https://arxiv.org/abs/1708.02002>`_.
     Args:
         pred (torch.Tensor): The prediction with shape (N, C), C is the number
@@ -172,7 +172,7 @@ class FocalLoss(nn.Module):
                 loss item to be included into the backward graph, `loss_` must
                 be the prefix of the name. Defaults to 'loss_focal'.
         """
-        super(FocalLoss, self).__init__()
+        super().__init__()
         assert use_sigmoid is True, \
             'AssertionError: Only sigmoid focal loss supported now.'
         assert reduction in ('none', 'mean', 'sum'), \

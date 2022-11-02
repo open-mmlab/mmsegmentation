@@ -26,7 +26,7 @@ class EncModule(nn.Module):
     """
 
     def __init__(self, in_channels, num_codes, conv_cfg, norm_cfg, act_cfg):
-        super(EncModule, self).__init__()
+        super().__init__()
         self.encoding_project = ConvModule(
             in_channels,
             in_channels,
@@ -90,8 +90,7 @@ class EncHead(BaseDecodeHead):
                      use_sigmoid=True,
                      loss_weight=0.2),
                  **kwargs):
-        super(EncHead, self).__init__(
-            input_transform='multiple_select', **kwargs)
+        super().__init__(input_transform='multiple_select', **kwargs)
         self.use_se_loss = use_se_loss
         self.add_lateral = add_lateral
         self.num_codes = num_codes
@@ -188,8 +187,7 @@ class EncHead(BaseDecodeHead):
         """Compute segmentation and semantic encoding loss."""
         seg_logit, se_seg_logit = seg_logit
         loss = dict()
-        loss.update(
-            super(EncHead, self).loss_by_feat(seg_logit, batch_data_samples))
+        loss.update(super().loss_by_feat(seg_logit, batch_data_samples))
 
         seg_label = self._stack_batch_gt(batch_data_samples)
         se_loss = self.loss_se_decode(

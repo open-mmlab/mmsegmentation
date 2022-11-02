@@ -80,7 +80,7 @@ class DiceLoss(nn.Module):
                  ignore_index=255,
                  loss_name='loss_dice',
                  **kwards):
-        super(DiceLoss, self).__init__()
+        super().__init__()
         self.smooth = smooth
         self.exponent = exponent
         self.reduction = reduction

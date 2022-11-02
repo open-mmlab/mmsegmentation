@@ -102,7 +102,7 @@ def _preprare_data(imgs: ImageType, model: BaseSegmentor):
         is_batch = False
 
     if isinstance(imgs[0], np.ndarray):
-        cfg.test_pipeline[0].type = 'LoadImageFromNDArray'
+        cfg.test_pipeline[0]['type'] = 'LoadImageFromNDArray'
 
     # TODO: Consider using the singleton pattern to avoid building
     # a pipeline for each inference
@@ -203,9 +203,8 @@ def show_result_pyplot(model: BaseSegmentor,
         draw_gt=draw_gt,
         draw_pred=draw_pred,
         wait_time=wait_time,
+        out_file=out_file,
         show=show)
     vis_img = visualizer.get_image()
-    if out_file is not None:
-        mmcv.imwrite(vis_img, out_file)
 
     return vis_img

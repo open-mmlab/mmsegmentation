@@ -41,7 +41,7 @@ class SETRUPHead(BaseDecodeHead):
 
         assert kernel_size in [1, 3], 'kernel_size must be 1 or 3.'
 
-        super(SETRUPHead, self).__init__(init_cfg=init_cfg, **kwargs)
+        super().__init__(init_cfg=init_cfg, **kwargs)
 
         assert isinstance(self.in_channels, int)
 

@@ -7,8 +7,9 @@ from unittest.mock import MagicMock
 import pytest
 
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
-                            COCOStuffDataset, ISPRSDataset, LoveDADataset,
-                            PascalVOCDataset, PotsdamDataset, iSAIDDataset)
+                            COCOStuffDataset, DecathlonDataset, ISPRSDataset,
+                            LIPDataset, LoveDADataset, PascalVOCDataset,
+                            PotsdamDataset, iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
@@ -239,6 +240,41 @@ def test_isaid():
         ann_file=osp.join(
             osp.dirname(__file__),
             '../data/pseudo_isaid_dataset/splits/train.txt'))
+    assert len(test_dataset) == 1
+
+
+def test_decathlon():
+    data_root = osp.join(osp.dirname(__file__), '../data')
+    # test load training dataset
+    test_dataset = DecathlonDataset(
+        pipeline=[], data_root=data_root, ann_file='dataset.json')
+    assert len(test_dataset) == 1
+
+    # test load test dataset
+    test_dataset = DecathlonDataset(
+        pipeline=[],
+        data_root=data_root,
+        ann_file='dataset.json',
+        test_mode=True)
+    assert len(test_dataset) == 3
+
+
+def test_lip():
+    data_root = osp.join(osp.dirname(__file__), '../data/pseudo_lip_dataset')
+    # train load training dataset
+    train_dataset = LIPDataset(
+        pipeline=[],
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='train_images', seg_map_path='train_segmentations'))
+    assert len(train_dataset) == 1
+
+    # test load training dataset
+    test_dataset = LIPDataset(
+        pipeline=[],
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='val_images', seg_map_path='val_segmentations'))
     assert len(test_dataset) == 1
 
 

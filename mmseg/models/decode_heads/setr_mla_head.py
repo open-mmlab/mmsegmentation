@@ -21,8 +21,7 @@ class SETRMLAHead(BaseDecodeHead):
     """
 
     def __init__(self, mla_channels=128, up_scale=4, **kwargs):
-        super(SETRMLAHead, self).__init__(
-            input_transform='multiple_select', **kwargs)
+        super().__init__(input_transform='multiple_select', **kwargs)
         self.mla_channels = mla_channels
 
         num_inputs = len(self.in_channels)

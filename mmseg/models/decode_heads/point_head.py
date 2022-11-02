@@ -74,7 +74,7 @@ class PointHead(BaseCascadeDecodeHead):
                  norm_cfg=None,
                  act_cfg=dict(type='ReLU', inplace=False),
                  **kwargs):
-        super(PointHead, self).__init__(
+        super().__init__(
             input_transform='multiple_select',
             conv_cfg=conv_cfg,
             norm_cfg=norm_cfg,

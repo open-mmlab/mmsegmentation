@@ -40,7 +40,7 @@ class InvertedResidual(nn.Module):
                  act_cfg=dict(type='ReLU6'),
                  with_cp=False,
                  **kwargs):
-        super(InvertedResidual, self).__init__()
+        super().__init__()
         self.stride = stride
         assert stride in [1, 2], f'stride must in [1, 2]. ' \
             f'But received {stride}.'
@@ -138,7 +138,7 @@ class InvertedResidualV3(nn.Module):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  with_cp=False):
-        super(InvertedResidualV3, self).__init__()
+        super().__init__()
         self.with_res_shortcut = (stride == 1 and in_channels == out_channels)
         assert stride in [1, 2]
         self.with_cp = with_cp

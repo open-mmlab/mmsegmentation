@@ -265,6 +265,26 @@ def stare_palette():
     return [[120, 120, 120], [6, 230, 230]]
 
 
+def lip_classes():
+    """LIP class names for external use."""
+    return [
+        'background', 'hat', 'hair', 'glove', 'sunglasses', 'upperclothes',
+        'dress', 'coat', 'socks', 'pants', 'jumpsuits', 'scarf', 'skirt',
+        'face', 'leftArm', 'rightArm', 'leftLeg', 'rightLeg', 'leftShoe',
+        'rightShoe'
+    ]
+
+
+def lip_palette():
+    """LIP palette for external use."""
+    return [
+        'Background', 'Hat', 'Hair', 'Glove', 'Sunglasses', 'UpperClothes',
+        'Dress', 'Coat', 'Socks', 'Pants', 'Jumpsuits', 'Scarf', 'Skirt',
+        'Face', 'Left-arm', 'Right-arm', 'Left-leg', 'Right-leg', 'Left-shoe',
+        'Right-shoe'
+    ]
+
+
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
@@ -278,7 +298,8 @@ dataset_aliases = {
         'coco_stuff164k'
     ],
     'isaid': ['isaid', 'iSAID'],
-    'stare': ['stare', 'STARE']
+    'stare': ['stare', 'STARE'],
+    'lip': ['LIP', 'lip']
 }
 
 

@@ -22,7 +22,7 @@ class LRASPPHead(BaseDecodeHead):
     """
 
     def __init__(self, branch_channels=(32, 64), **kwargs):
-        super(LRASPPHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         if self.input_transform != 'multiple_select':
             raise ValueError('in Lite R-ASPP (LRASPP) head, input_transform '
                              f'must be \'multiple_select\'. But received '

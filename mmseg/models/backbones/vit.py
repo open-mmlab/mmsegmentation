@@ -60,7 +60,7 @@ class TransformerEncoderLayer(BaseModule):
                  attn_cfg=dict(),
                  ffn_cfg=dict(),
                  with_cp=False):
-        super(TransformerEncoderLayer, self).__init__()
+        super().__init__()
 
         self.norm1_name, norm1 = build_norm_layer(
             norm_cfg, embed_dims, postfix=1)
@@ -197,7 +197,7 @@ class VisionTransformer(BaseModule):
                  with_cp=False,
                  pretrained=None,
                  init_cfg=None):
-        super(VisionTransformer, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
 
         if isinstance(img_size, int):
             img_size = to_2tuple(img_size)
@@ -315,7 +315,7 @@ class VisionTransformer(BaseModule):
 
             load_state_dict(self, state_dict, strict=False, logger=None)
         elif self.init_cfg is not None:
-            super(VisionTransformer, self).init_weights()
+            super().init_weights()
         else:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
@@ -335,7 +335,7 @@ class VisionTransformer(BaseModule):
                     constant_init(m, val=1.0, bias=0.)
 
     def _pos_embeding(self, patched_img, hw_shape, pos_embed):
-        """Positiong embeding method.
+        """Positioning embeding method.
 
         Resize the pos_embed, if the input image size doesn't match
             the training size.
@@ -431,7 +431,7 @@ class VisionTransformer(BaseModule):
         return tuple(outs)
 
     def train(self, mode=True):
-        super(VisionTransformer, self).train(mode)
+        super().train(mode)
         if mode and self.norm_eval:
             for m in self.modules():
                 if isinstance(m, nn.LayerNorm):
