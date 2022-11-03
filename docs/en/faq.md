@@ -8,7 +8,8 @@ The compatible MMSegmentation and MMCV versions are as below. Please install the
 
 | MMSegmentation version |        MMCV version         | MMClassification version |
 | :--------------------: | :-------------------------: | :----------------------: |
-|         master         |  mmcv-full>=1.5.0, \<1.7.0  | mmcls>=0.20.1, \<=1.0.0  |
+|         master         |  mmcv-full>=1.5.0, \<1.8.0  | mmcls>=0.20.1, \<=1.0.0  |
+|         0.29.1         |  mmcv-full>=1.5.0, \<1.8.0  | mmcls>=0.20.1, \<=1.0.0  |
 |         0.29.0         |  mmcv-full>=1.5.0, \<1.7.0  | mmcls>=0.20.1, \<=1.0.0  |
 |         0.28.0         |  mmcv-full>=1.5.0, \<1.7.0  | mmcls>=0.20.1, \<=1.0.0  |
 |         0.27.0         |  mmcv-full>=1.5.0, \<1.7.0  | mmcls>=0.20.1, \<=1.0.0  |

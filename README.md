@@ -77,15 +77,16 @@ The master branch works with **PyTorch 1.5+**.
 
 ### 💎 Stable version
 
-v0.29.0 was released on 10/10/2022:
+v0.29.1 was released on 11/3/2022:
 
-- Support PoolFormer (CVPR'2022)
+- Add model ensemble tools
+- Update documents
 
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
 
 ### 🌟 Preview of 1.x version
 
-A brand new version of **MMSegmentation v1.0.0rc0** was released in 31/8/2022:
+A brand new version of **MMSegmentation v1.0.0rc1** was released in 02/11/2022:
 
 - Unifies interfaces of all components based on [MMEngine](https://github.com/open-mmlab/mmengine).
 - Faster training and testing speed with complete support of mixed precision training.
