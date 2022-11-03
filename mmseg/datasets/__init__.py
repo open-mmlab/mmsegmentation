@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from .a2d2_18cls import A2D2Dataset18Classes
+from .a2d2_34cls import A2D2Dataset34Classes
 from .ade import ADE20KDataset
 from .builder import DATASETS, PIPELINES, build_dataloader, build_dataset
 from .chase_db1 import ChaseDB1Dataset
@@ -26,5 +28,6 @@ __all__ = [
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
     'COCOStuffDataset', 'LoveDADataset', 'MultiImageMixDataset',
-    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset'
+    'iSAIDDataset', 'ISPRSDataset', 'ISPRSDataset', 'PotsdamDataset',
+    'A2D2Dataset18Classes', 'A2D2Dataset34Classes'
 ]

@@ -11,6 +11,7 @@ Collections:
     - Potsdam
     - Vaihingen
     - iSAID
+    - A2D2
   Paper:
     URL: https://arxiv.org/abs/1802.02611
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
@@ -848,3 +849,191 @@ Models:
       mIoU(ms+flip): 68.02
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid_20220110_180526-598be439.pth
+- Name: deeplabv3plus_r18-d8_480x1208_80k_a2d2-18cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-18-D8
+    crop size: (480,1208)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 105.82
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,1208)
+    Training Memory (GB): 2.42
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 71.95
+      mIoU(ms+flip): 72.94
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_480x1208_80k_a2d2-18cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_480x1208_80k_a2d2-18cls/deeplabv3plus_r18-d8_480x1208_80k_a2d2-18cls_20220309_200243-1d22bf3f.pth
+- Name: deeplabv3plus_r50-d8_480x1208_40k_a2d2-18cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-50-D8
+    crop size: (480,1208)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 366.3
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,1208)
+    Training Memory (GB): 8.25
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 73.79
+      mIoU(ms+flip): 74.44
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_480x1208_40k_a2d2-18cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_480x1208_40k_a2d2-18cls/deeplabv3plus_r50-d8_480x1208_40k_a2d2-18cls_20220312_170516-bc0e79bc.pth
+- Name: deeplabv3plus_r50-d8_480x1208_80k_a2d2-18cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-50-D8
+    crop size: (480,1208)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 75.76
+      mIoU(ms+flip): 76.12
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_480x1208_80k_a2d2-18cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_480x1208_80k_a2d2-18cls/deeplabv3plus_r50-d8_480x1208_80k_a2d2-18cls_20220309_200243-ea35a2e2.pth
+- Name: deeplabv3plus_r101-d8_480x1208_40k_a2d2-18cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,1208)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 531.91
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,1208)
+    Training Memory (GB): 12.07
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 75.86
+      mIoU(ms+flip): 76.37
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x1208_40k_a2d2-18cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x1208_40k_a2d2-18cls/deeplabv3plus_r101-d8_480x1208_40k_a2d2-18cls_20220312_170515-d7929ec7.pth
+- Name: deeplabv3plus_r101-d8_480x1208_80k_a2d2-18cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,1208)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 76.55
+      mIoU(ms+flip): 77.06
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x1208_80k_a2d2-18cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x1208_80k_a2d2-18cls/deeplabv3plus_r101-d8_480x1208_80k_a2d2-18cls_20220309_200242-0942b648.pth
+- Name: deeplabv3plus_r18-d8_480x1208_80k_a2d2-34cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-18-D8
+    crop size: (480,1208)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 109.41
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,1208)
+    Training Memory (GB): 2.83
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 52.22
+      mIoU(ms+flip): 52.98
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_480x1208_80k_a2d2-34cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_480x1208_80k_a2d2-34cls/deeplabv3plus_r18-d8_480x1208_80k_a2d2-34cls_20220310_142530-abbd83e1.pth
+- Name: deeplabv3plus_r50-d8_480x1208_40k_a2d2-34cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-50-D8
+    crop size: (480,1208)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 367.65
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,1208)
+    Training Memory (GB): 8.66
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 57.01
+      mIoU(ms+flip): 57.64
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_480x1208_40k_a2d2-34cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_480x1208_40k_a2d2-34cls/deeplabv3plus_r50-d8_480x1208_40k_a2d2-34cls_20220312_170642-32cbcbb8.pth
+- Name: deeplabv3plus_r50-d8_480x1208_80k_a2d2-34cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-50-D8
+    crop size: (480,1208)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 58.82
+      mIoU(ms+flip): 59.41
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_480x1208_80k_a2d2-34cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_480x1208_80k_a2d2-34cls/deeplabv3plus_r50-d8_480x1208_80k_a2d2-34cls_20220310_142530-c18b543d.pth
+- Name: deeplabv3plus_r101-d8_480x1208_40k_a2d2-34cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,1208)
+    lr schd: 40000
+    inference time (ms/im):
+    - value: 529.1
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (480,1208)
+    Training Memory (GB): 12.49
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 58.14
+      mIoU(ms+flip): 58.56
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x1208_40k_a2d2-34cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x1208_40k_a2d2-34cls/deeplabv3plus_r101-d8_480x1208_40k_a2d2-34cls_20220312_170617-fb269265.pth
+- Name: deeplabv3plus_r101-d8_480x1208_80k_a2d2-34cls
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-101-D8
+    crop size: (480,1208)
+    lr schd: 80000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: A2D2
+    Metrics:
+      mIoU: 59.89
+      mIoU(ms+flip): 60.3
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_480x1208_80k_a2d2-34cls.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x1208_80k_a2d2-34cls/deeplabv3plus_r101-d8_480x1208_80k_a2d2-34cls_20220310_142530-7e3e4dec.pth
