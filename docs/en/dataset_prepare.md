@@ -138,6 +138,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── egohands
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -376,3 +383,16 @@ python tools/convert_datasets/isaid.py /path/to/iSAID
 ```
 
 In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+
+### EGOHANDS
+
+The training and validation set of EGOHANDS could be download from [here](http://vision.soic.indiana.edu/egohands_files/egohands_data.zip).
+
+To convert EGOHANDS dataset to MMSegmentation format, you should run the following command:
+
+```shell
+python tools/convert_datasets/egohands.py /path/to/egohands_data.zip
+```
+
+The script will make directory structure automatically.
+
