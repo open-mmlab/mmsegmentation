@@ -12,11 +12,12 @@ import torch
 from PIL import Image
 
 from mmseg.core.evaluation import get_classes, get_palette
-from mmseg.datasets import (DATASETS, ADE20KDataset, CityscapesDataset,
-                            COCOStuffDataset, ConcatDataset, CustomDataset,
-                            ISPRSDataset, LoveDADataset, MultiImageMixDataset,
-                            PascalVOCDataset, PotsdamDataset, RepeatDataset,
-                            build_dataset, iSAIDDataset)
+from mmseg.datasets import (DATASETS, ADE20KDataset, CIHPDataset,
+                            CityscapesDataset, COCOStuffDataset, ConcatDataset,
+                            CustomDataset, ISPRSDataset, LoveDADataset,
+                            MultiImageMixDataset, PascalVOCDataset,
+                            PotsdamDataset, RepeatDataset, build_dataset,
+                            iSAIDDataset)
 
 
 def test_classes():
@@ -30,6 +31,7 @@ def test_classes():
     assert list(PotsdamDataset.CLASSES) == get_classes('potsdam')
     assert list(ISPRSDataset.CLASSES) == get_classes('vaihingen')
     assert list(iSAIDDataset.CLASSES) == get_classes('isaid')
+    assert list(CIHPDataset.CLASSES) == get_classes('cihp')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -75,6 +77,7 @@ def test_palette():
     assert PotsdamDataset.PALETTE == get_palette('potsdam')
     assert COCOStuffDataset.PALETTE == get_palette('cocostuff')
     assert iSAIDDataset.PALETTE == get_palette('isaid')
+    assert CIHPDataset.PALETTE == get_palette('cihp')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -751,6 +754,25 @@ def test_isaid():
             osp.dirname(__file__),
             '../data/pseudo_isaid_dataset/splits/train.txt'))
     assert len(isaid_info) == 1
+
+
+def test_lip():
+    test_dataset = CIHPDataset(
+        pipeline=[],
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_cihp_dataset/images'),
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_cihp_dataset/annotations'))
+    assert len(test_dataset) == 1
+    cihp_info = test_dataset.load_annotations(
+        img_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_cihp_dataset/images'),
+        img_suffix='.jpg',
+        ann_dir=osp.join(
+            osp.dirname(__file__), '../data/pseudo_cihp_dataset/annotations'),
+        seg_map_suffix='.png',
+        split=None)
+    assert len(cihp_info) == 1
 
 
 @patch('mmseg.datasets.CustomDataset.load_annotations', MagicMock)

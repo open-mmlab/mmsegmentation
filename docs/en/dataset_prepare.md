@@ -138,6 +138,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── CIHP
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
 ```
 
 ### Cityscapes
@@ -376,3 +383,21 @@ python tools/convert_datasets/isaid.py /path/to/iSAID
 ```
 
 In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+
+### CIHP
+
+The data images and annotations could be download from [CIHP](https://lip.sysuhcp.com/overview.php) (train/val/test)
+
+CIHP is tasked for Multiple human parsing. There are 19 semantic classes and 1 background class. The dataset is divided into 28K/5K/5K images for training, validation and testing.
+
+You may need to rename the training set and validation set (images and annotations) and follow the following structure for dataset preparation after downloading CIHP dataset.
+
+```
+│   ├── CIHP
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+```
