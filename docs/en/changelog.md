@@ -1,5 +1,27 @@
 ## Changelog
 
+### V0.29.1 (11/3/2022)
+
+**New Features**
+
+- Add model ensemble tools ([#2218](https://github.com/open-mmlab/mmsegmentation/pull/2218))
+
+**Bug Fixes**
+
+- Use SyncBN in MobileNetV2 ([#2207](https://github.com/open-mmlab/mmsegmentation/pull/2207))
+
+**Documentation**
+
+- Update FAQ doc about binary segmentation and ReduceZeroLabel ([#2206](https://github.com/open-mmlab/mmsegmentation/pull/2206))
+- Fix typos ([#2249](https://github.com/open-mmlab/mmsegmentation/pull/2249))
+- Fix model results ([#2190](https://github.com/open-mmlab/mmsegmentation/pull/2190), [#2114](https://github.com/open-mmlab/mmsegmentation/pull/2114))
+
+**Contributors**
+
+- @isLinXu made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2219
+- @zhijiejia made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2218
+- @lee-jinhee made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2249
+
 ### V0.29.0 (10/10/2022)
 
 **New Features**
