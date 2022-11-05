@@ -79,34 +79,68 @@ class StemConv(BaseModule):
 
 class AttentionModule(BaseModule):
 
-    def __init__(self, dim):
+    def __init__(self,
+                 dim,
+                 kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
+                 kernel_paddings=[2, (0, 3), (0, 5), (0, 10)]):
         super().__init__()
-        self.conv0 = nn.Conv2d(dim, dim, 5, padding=2, groups=dim)
-        self.conv0_1 = nn.Conv2d(dim, dim, (1, 7), padding=(0, 3), groups=dim)
-        self.conv0_2 = nn.Conv2d(dim, dim, (7, 1), padding=(3, 0), groups=dim)
+        self.scale0 = nn.Conv2d(
+            dim,
+            dim,
+            kernel_sizes[0][0],
+            padding=kernel_paddings[0],
+            groups=dim)
 
-        self.conv1_1 = nn.Conv2d(dim, dim, (1, 11), padding=(0, 5), groups=dim)
-        self.conv1_2 = nn.Conv2d(dim, dim, (11, 1), padding=(5, 0), groups=dim)
+        self.scale1_0 = nn.Conv2d(
+            dim,
+            dim, (kernel_sizes[1][0], kernel_sizes[1][1]),
+            padding=kernel_paddings[1],
+            groups=dim)
+        self.scale1_1 = nn.Conv2d(
+            dim,
+            dim, (kernel_sizes[1][1], kernel_sizes[1][0]),
+            padding=kernel_paddings[1],
+            groups=dim)
 
-        self.conv2_1 = nn.Conv2d(
-            dim, dim, (1, 21), padding=(0, 10), groups=dim)
-        self.conv2_2 = nn.Conv2d(
-            dim, dim, (21, 1), padding=(10, 0), groups=dim)
+        self.scale2_0 = nn.Conv2d(
+            dim,
+            dim, (kernel_sizes[2][0], kernel_sizes[2][1]),
+            padding=kernel_paddings[2],
+            groups=dim)
+        self.scale2_1 = nn.Conv2d(
+            dim,
+            dim, (kernel_sizes[2][1], kernel_sizes[2][0]),
+            padding=kernel_paddings[2],
+            groups=dim)
+
+        self.scale3_0 = nn.Conv2d(
+            dim,
+            dim, (kernel_sizes[3][0], kernel_sizes[3][1]),
+            padding=kernel_paddings[3],
+            groups=dim)
+        self.scale3_1 = nn.Conv2d(
+            dim,
+            dim, (kernel_sizes[3][1], kernel_sizes[3][0]),
+            padding=kernel_paddings[3],
+            groups=dim)
+
         self.conv3 = nn.Conv2d(dim, dim, 1)
 
     def forward(self, x):
         u = x.clone()
-        attn = self.conv0(x)
 
-        attn_0 = self.conv0_1(attn)
-        attn_0 = self.conv0_2(attn_0)
+        attn_0 = self.scale0(x)
 
-        attn_1 = self.conv1_1(attn)
-        attn_1 = self.conv1_2(attn_1)
+        attn_1 = self.scale1_0(attn_0)
+        attn_1 = self.scale1_1(attn_1)
 
-        attn_2 = self.conv2_1(attn)
-        attn_2 = self.conv2_2(attn_2)
-        attn = attn + attn_0 + attn_1 + attn_2
+        attn_2 = self.scale2_0(attn_0)
+        attn_2 = self.scale2_1(attn_2)
+
+        attn_3 = self.scale3_0(attn_0)
+        attn_3 = self.scale3_1(attn_3)
+
+        attn = attn_0 + attn_1 + attn_2 + attn_3
 
         attn = self.conv3(attn)
 
@@ -115,12 +149,16 @@ class AttentionModule(BaseModule):
 
 class SpatialAttention(BaseModule):
 
-    def __init__(self, d_model):
+    def __init__(self,
+                 d_model,
+                 attention_kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
+                 attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)]):
         super().__init__()
-        self.d_model = d_model
         self.proj_1 = nn.Conv2d(d_model, d_model, 1)
         self.activation = nn.GELU()
-        self.spatial_gating_unit = AttentionModule(d_model)
+        self.spatial_gating_unit = AttentionModule(d_model,
+                                                   attention_kernel_sizes,
+                                                   attention_kernel_paddings)
         self.proj_2 = nn.Conv2d(d_model, d_model, 1)
 
     def forward(self, x):
@@ -137,6 +175,8 @@ class Block(BaseModule):
 
     def __init__(self,
                  dim,
+                 attention_kernel_sizes=[5, (1, 7), (1, 11), (1, 21)],
+                 attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
                  mlp_ratio=4.,
                  drop=0.,
                  drop_path=0.,
@@ -144,7 +184,8 @@ class Block(BaseModule):
                  norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super().__init__()
         self.norm1 = build_norm_layer(norm_cfg, dim)[1]
-        self.attn = SpatialAttention(dim)
+        self.attn = SpatialAttention(dim, attention_kernel_sizes,
+                                     attention_kernel_paddings)
         self.drop_path = DropPath(
             drop_path) if drop_path > 0. else nn.Identity()
         self.norm2 = build_norm_layer(norm_cfg, dim)[1]
@@ -214,6 +255,8 @@ class MSCAN(BaseModule):
                  drop_path_rate=0.,
                  depths=[3, 4, 6, 3],
                  num_stages=4,
+                 attention_kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
+                 attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
                  norm_cfg=dict(type='SyncBN', requires_grad=True),
                  pretrained=None,
                  init_cfg=None):
@@ -249,6 +292,8 @@ class MSCAN(BaseModule):
 
             block = nn.ModuleList([
                 Block(
+                    attention_kernel_sizes=attention_kernel_sizes,
+                    attention_kernel_paddings=attention_kernel_paddings,
                     dim=embed_dims[i],
                     mlp_ratio=mlp_ratios[i],
                     drop=drop_rate,
