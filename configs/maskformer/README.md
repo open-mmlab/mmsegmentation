@@ -33,6 +33,32 @@ Modern approaches typically formulate semantic segmentation as a per-pixel class
 }
 ```
 
+### Usage
+
+- MaskFormer model needs to install [MMDetection](https://github.com/open-mmlab/mmdetection) first.
+
+```shell
+pip install "mmdet>=3.0.0rc4"
+```
+
+If related MMDetection version unfounded, you can modify [related code](https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L106) like [MMDetection PR](https://github.com/open-mmlab/mmdetection/pull/9176) on your own to fix its bug:
+
+From
+
+```python
+if pixel_decoder_type == 'PixelDecoder' and (
+        self.decoder_embed_dims != in_channels[-1]
+        or enforce_decoder_input_project):
+```
+
+to
+
+```python
+if type(self.pixel_decoder) == PixelDecoder and (
+        self.decoder_embed_dims != in_channels[-1]
+        or enforce_decoder_input_project):
+```
+
 ## Results and models
 
 ### ADE20K

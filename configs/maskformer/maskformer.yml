@@ -2,6 +2,7 @@ Collections:
 - Name: MaskFormer
   Metadata:
     Training Data:
+    - Usage
     - ADE20K
   Paper:
     URL: https://arxiv.org/abs/2107.06278
