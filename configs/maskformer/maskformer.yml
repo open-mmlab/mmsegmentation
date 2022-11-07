@@ -34,7 +34,7 @@ Models:
     Metrics:
       mIoU: 44.29
   Config: configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_fcn_r50-d8_8x2_512x512_adamw_80k_ade20k/knet_s3_fcn_r50-d8_8x2_512x512_adamw_80k_ade20k_20220228_043751-abcab920.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512/maskformer_r50-d32_8xb2-160k_ade20k-512x512_20221030_182724-cbd39cc1.pth
 - Name: maskformer_r101-d32_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Metadata:
@@ -55,7 +55,7 @@ Models:
     Metrics:
       mIoU: 45.11
   Config: configs/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_pspnet_r50-d8_8x2_512x512_adamw_80k_ade20k/knet_s3_pspnet_r50-d8_8x2_512x512_adamw_80k_ade20k_20220228_054634-d2c72240.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512/maskformer_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053-c8e0931d.pth
 - Name: maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Metadata:
@@ -74,9 +74,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 46.72
+      mIoU: 46.99
   Config: configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_deeplabv3_r50-d8_8x2_512x512_adamw_80k_ade20k/knet_s3_deeplabv3_r50-d8_8x2_512x512_adamw_80k_ade20k_20220228_041642-00c8fbeb.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512_20221102_111617-4f158299.pth
 - Name: maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Metadata:
@@ -84,17 +84,17 @@ Models:
     crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
-    - value: 1.0
+    - value: 37.06
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    Training Memory (GB): 999.0
+    Training Memory (GB): 5.33
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 999.0
+      mIoU: 49.75
   Config: configs/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_upernet_r50-d8_8x2_512x512_adamw_80k_ade20k/knet_s3_upernet_r50-d8_8x2_512x512_adamw_80k_ade20k_20220304_125657-215753b0.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512_20221103_013242-3bec1052.pth
