@@ -1100,40 +1100,40 @@ class RandomMosaic(BaseTransform):
         if loc == 'top_left':
             # index0 to top left part of image
             x1, y1, x2, y2 = max(center_position_xy[0] - img_shape_wh[0], 0), \
-                             max(center_position_xy[1] - img_shape_wh[1], 0), \
-                             center_position_xy[0], \
-                             center_position_xy[1]
+                max(center_position_xy[1] - img_shape_wh[1], 0), \
+                center_position_xy[0], \
+                center_position_xy[1]
             crop_coord = img_shape_wh[0] - (x2 - x1), img_shape_wh[1] - (
                 y2 - y1), img_shape_wh[0], img_shape_wh[1]
 
         elif loc == 'top_right':
             # index1 to top right part of image
             x1, y1, x2, y2 = center_position_xy[0], \
-                             max(center_position_xy[1] - img_shape_wh[1], 0), \
-                             min(center_position_xy[0] + img_shape_wh[0],
-                                 self.img_scale[1] * 2), \
-                             center_position_xy[1]
+                max(center_position_xy[1] - img_shape_wh[1], 0), \
+                min(center_position_xy[0] + img_shape_wh[0],
+                    self.img_scale[1] * 2), \
+                center_position_xy[1]
             crop_coord = 0, img_shape_wh[1] - (y2 - y1), min(
                 img_shape_wh[0], x2 - x1), img_shape_wh[1]
 
         elif loc == 'bottom_left':
             # index2 to bottom left part of image
             x1, y1, x2, y2 = max(center_position_xy[0] - img_shape_wh[0], 0), \
-                             center_position_xy[1], \
-                             center_position_xy[0], \
-                             min(self.img_scale[0] * 2, center_position_xy[1] +
-                                 img_shape_wh[1])
+                center_position_xy[1], \
+                center_position_xy[0], \
+                min(self.img_scale[0] * 2, center_position_xy[1] +
+                    img_shape_wh[1])
             crop_coord = img_shape_wh[0] - (x2 - x1), 0, img_shape_wh[0], min(
                 y2 - y1, img_shape_wh[1])
 
         else:
             # index3 to bottom right part of image
             x1, y1, x2, y2 = center_position_xy[0], \
-                             center_position_xy[1], \
-                             min(center_position_xy[0] + img_shape_wh[0],
-                                 self.img_scale[1] * 2), \
-                             min(self.img_scale[0] * 2, center_position_xy[1] +
-                                 img_shape_wh[1])
+                center_position_xy[1], \
+                min(center_position_xy[0] + img_shape_wh[0],
+                    self.img_scale[1] * 2), \
+                min(self.img_scale[0] * 2, center_position_xy[1] +
+                    img_shape_wh[1])
             crop_coord = 0, 0, min(img_shape_wh[0],
                                    x2 - x1), min(y2 - y1, img_shape_wh[1])
 
@@ -1226,3 +1226,165 @@ class GenerateEdge(BaseTransform):
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class MixUp(BaseTransform):
+    """MixUp data augmentation.
+
+    .. code:: text
+
+                         mixup transform
+                +------------------------------+
+                | mixup image   |              |
+                |      +--------|--------+     |
+                |      |        |        |     |
+                |---------------+        |     |
+                |      |                 |     |
+                |      |      image      |     |
+                |      |                 |     |
+                |      |                 |     |
+                |      |-----------------+     |
+                |             pad              |
+                +------------------------------+
+
+     The mixup transform steps are as follows:
+
+        1. Another random image is picked by dataset and embedded in
+           the top left patch(after padding and resizing)
+        2. The target of mixup transform is the weighted average of mixup
+           image and origin image.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+    - mix_results (List[dict])
+
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - gt_seg_map
+
+    Args:
+        img_scale (Sequence[int]): Image output size after mixup pipeline.
+            The shape order should be (height, width). Defaults to (640, 640).
+        ratio_range (Sequence[float]): Scale ratio of mixup image.
+            Defaults to (0.5, 1.5).
+        flip_ratio (float): Horizontal flip ratio of mixup image.
+            Defaults to 0.5.
+        pad_val (int): Pad value. Defaults to 114.
+        max_iters (int): The maximum number of iterations. If the number of
+            iterations is greater than `max_iters`, but gt_bbox is still
+            empty, then the iteration is terminated. Defaults to 15.
+        bbox_clip_border (bool, optional): Whether to clip the objects outside
+            the border of the image. In some dataset like MOT17, the gt bboxes
+            are allowed to cross the border of images. Therefore, we don't
+            need to clip the gt bboxes in these cases. Defaults to True.
+    """
+
+    def __init__(self,
+                 alpha: float = 0.8,
+                 img_scale: Tuple[int, int] = (512, 1024),
+                 ratio_range: Tuple[float, float] = (0.5, 1.5),
+                 flip_ratio: float = 0.5,
+                 pad_val: int = 255,
+                 ignore_index: int = 255) -> None:
+        assert 0 <= alpha <= 1
+        assert isinstance(img_scale, tuple)
+        self.alpha = alpha
+        self.dynamic_scale = img_scale
+        self.ratio_range = ratio_range
+        self.flip_ratio = flip_ratio
+        self.pad_val = pad_val
+        self.ignore_index = ignore_index
+
+    def transform(self, results: Dict) -> dict:
+        """MixUp transform function.
+
+        Args:
+            results (dict): Result dict
+
+        Returns:
+            dict: Updated result dict
+        """
+
+        assert 'mix_results' in results
+        assert len(
+            results['mix_results']) == 1, 'MixUp only support 2 images now !'
+
+        retrieve_results = results['mix_results'][0]
+        retrieve_img = retrieve_results['img']
+
+        jit_factor = random.uniform(*self.ratio_range)
+        is_flip = random.uniform(0, 1) > self.flip_ratio
+
+        if len(retrieve_img.shape) == 3:
+            out_img = np.ones(
+                (self.dynamic_scale[0], self.dynamic_scale[1], 3),
+                dtype=retrieve_img.dtype) * self.pad_val
+        else:
+            out_img = np.ones(
+                self.dynamic_scale, dtype=retrieve_img.dtype) * self.pad_val
+
+        # 1. keep_ratio resize
+        scale_ratio = min(self.dynamic_scale[0] / retrieve_img.shape[0],
+                          self.dynamic_scale[1] / retrieve_img.shape[1])
+        scaled_shape = (int(retrieve_img.shape[1] * scale_ratio),
+                        int(retrieve_img.shape[0] * scale_ratio))
+        retrieve_img = mmcv.imresize(retrieve_img, scaled_shape)
+
+        # 2. paste
+        out_img[:retrieve_img.shape[0], :retrieve_img.shape[1]] = retrieve_img
+
+        # 3. scale jit
+        scale_ratio *= jit_factor
+        out_img = mmcv.imresize(out_img, (int(out_img.shape[1] * jit_factor),
+                                          int(out_img.shape[0] * jit_factor)))
+
+        # 4. flip
+        if is_flip:
+            out_img = out_img[:, ::-1, :]
+
+        # 5. random crop
+        ori_img = results['img']
+        origin_h, origin_w = out_img.shape[:2]
+        target_h, target_w = ori_img.shape[:2]
+        padded_img = np.zeros(
+            (max(origin_h, target_h), max(origin_w,
+                                          target_w), 3)).astype(np.uint8)
+        padded_img[:origin_h, :origin_w] = out_img
+
+        x_offset, y_offset = 0, 0
+        if padded_img.shape[0] > target_h:
+            y_offset = random.randint(0, padded_img.shape[0] - target_h)
+        if padded_img.shape[1] > target_w:
+            x_offset = random.randint(0, padded_img.shape[1] - target_w)
+        padded_cropped_img = padded_img[y_offset:y_offset + target_h,
+                                        x_offset:x_offset + target_w]
+
+        # 6. adjust gt mask
+        retrieve_gt_seg_map = retrieve_results['gt_seg_map']
+        retrieve_gt_seg_map = mmcv.imresize(retrieve_gt_seg_map, scaled_shape)
+
+        if is_flip:
+            retrieve_gt_seg_map = retrieve_gt_seg_map[:, ::-1]
+
+        # 7. gt_seg_map
+        ori_gt_seg_map = results['gt_seg_map']
+        padded_seg_map = np.ones(padded_img.shape[:2]) * self.ignore_index
+        padded_seg_map[:origin_h, :origin_w] = ori_gt_seg_map
+
+        padded_cropped_seg_map = padded_seg_map[y_offset:y_offset + target_h,
+                                                x_offset:x_offset + target_w]
+
+        # 8. mix up
+        ori_img = ori_img.astype(np.float32)
+        mixup_img = self.alpha * ori_img + (
+            1 - self.alpha) * padded_cropped_img.astype(np.float32)
+
+        results['img'] = mixup_img.astype(np.uint8)
+        results['gt_seg_map'] = padded_cropped_seg_map
+        return results
