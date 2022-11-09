@@ -59,6 +59,8 @@ if type(self.pixel_decoder) == PixelDecoder and (
         or enforce_decoder_input_project):
 ```
 
+Which would treat `mmdet.PixelDecoder` the same with `PixelDecoder` in this MMDetection `if` conditional statement.
+
 ## Results and models
 
 ### ADE20K

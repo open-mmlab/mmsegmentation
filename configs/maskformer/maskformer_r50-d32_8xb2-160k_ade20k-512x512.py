@@ -109,20 +109,7 @@ model = dict(
                         pred_act=True,
                         eps=1.0)
                 ]),
-            sampler=dict(type='mmdet.MaskPseudoSampler')),
-        test_cfg=dict(
-            panoptic_on=False,
-            # For now, the dataset does not support
-            # evaluating semantic segmentation metric.
-            semantic_on=True,
-            instance_on=False,
-            # max_per_image is for instance segmentation.
-            max_per_image=100,
-            object_mask_thr=0.8,
-            iou_thr=0.8,
-            # In MaskFormer's panoptic postprocessing,
-            # it will not filter masks whose score is smaller than 0.5 .
-            filter_low_score=False)),
+            sampler=dict(type='mmdet.MaskPseudoSampler'))),
     # training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'),
