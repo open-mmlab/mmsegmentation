@@ -5,7 +5,7 @@ _base_ = [
 
 custom_imports = dict(imports='mmdet.models', allow_failed_imports=False)
 
-crop_size = (512, 1024)
+crop_size = (512, 512)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
     mean=[123.675, 116.28, 103.53],
