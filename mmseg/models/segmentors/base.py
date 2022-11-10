@@ -165,6 +165,11 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                 i_seg_logits = seg_logits[i:i + 1, :,
                                           padding_top:H - padding_bottom,
                                           padding_left:W - padding_right]
+                i_gt_sem_seg = data_samples[i].gt_sem_seg[:, padding_top:H -
+                                                          padding_bottom,
+                                                          padding_left:W -
+                                                          padding_right]
+
                 # resize as original shape
                 i_seg_logits = resize(
                     i_seg_logits,
@@ -184,7 +189,9 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                 'seg_logits':
                 PixelData(**{'data': i_seg_logits}),
                 'pred_sem_seg':
-                PixelData(**{'data': i_seg_pred})
+                PixelData(**{'data': i_seg_pred}),
+                'gt_sem_seg':
+                PixelData(**{'data': i_gt_sem_seg})
             })
 
         return data_samples
