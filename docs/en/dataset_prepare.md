@@ -505,7 +505,7 @@ mv coco_object/* .
 ## Data Generation
 
 ```bash
-git clone https://github.com/jinwonkim93/face-occlusion-generation.git
+git clone https://github.com/kennyvoo/face-occlusion-generation.git
 cd face_occlusion-generation
 ```
 
