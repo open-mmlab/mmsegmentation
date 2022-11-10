@@ -192,7 +192,8 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                 'pred_sem_seg':
                 PixelData(**{'data': i_seg_pred}),
                 'gt_sem_seg':
-                PixelData(**{'data': i_gt_sem_seg})
+                PixelData() if only_prediction else PixelData(
+                    **{'data': i_gt_sem_seg})
             })
 
         return data_samples
