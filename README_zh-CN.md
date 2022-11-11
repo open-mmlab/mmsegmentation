@@ -134,6 +134,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
+- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 
 已支持的数据集：
 

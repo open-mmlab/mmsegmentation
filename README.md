@@ -139,6 +139,7 @@ Supported methods:
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
+- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 
 Supported datasets:
 
