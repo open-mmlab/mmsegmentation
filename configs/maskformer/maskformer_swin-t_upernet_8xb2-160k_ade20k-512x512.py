@@ -41,9 +41,11 @@ optim_wrapper = dict(
     paramwise_cfg=dict(
         custom_keys={
             'backbone': dict(lr_mult=1.0),
-            'pos_embed': dict(decay_mult=0.),
+            'relative_position_bias_table': dict(decay_mult=0.),
+            'query_embed': dict(decay_mult=0.),
             'norm': dict(decay_mult=0.)
-        }))
+        },
+        norm_decay_mult=0.0))
 
 # learning policy
 param_scheduler = [
