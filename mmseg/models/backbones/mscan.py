@@ -84,44 +84,44 @@ class AttentionModule(BaseModule):
                  kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
                  kernel_paddings=[2, (0, 3), (0, 5), (0, 10)]):
         super().__init__()
-        self.scale0 = nn.Conv2d(
+        self.conv0 = nn.Conv2d(
             dim,
             dim,
             kernel_sizes[0][0],
             padding=kernel_paddings[0],
             groups=dim)
 
-        self.scale1_0 = nn.Conv2d(
+        self.conv0_1 = nn.Conv2d(
             dim,
             dim, (kernel_sizes[1][0], kernel_sizes[1][1]),
             padding=kernel_paddings[1],
             groups=dim)
-        self.scale1_1 = nn.Conv2d(
+        self.conv0_2 = nn.Conv2d(
             dim,
             dim, (kernel_sizes[1][1], kernel_sizes[1][0]),
-            padding=kernel_paddings[1],
+            padding=kernel_paddings[1][::-1],
             groups=dim)
 
-        self.scale2_0 = nn.Conv2d(
+        self.conv1_1 = nn.Conv2d(
             dim,
             dim, (kernel_sizes[2][0], kernel_sizes[2][1]),
             padding=kernel_paddings[2],
             groups=dim)
-        self.scale2_1 = nn.Conv2d(
+        self.conv1_2 = nn.Conv2d(
             dim,
             dim, (kernel_sizes[2][1], kernel_sizes[2][0]),
-            padding=kernel_paddings[2],
+            padding=kernel_paddings[2][::-1],
             groups=dim)
 
-        self.scale3_0 = nn.Conv2d(
+        self.conv2_1 = nn.Conv2d(
             dim,
             dim, (kernel_sizes[3][0], kernel_sizes[3][1]),
             padding=kernel_paddings[3],
             groups=dim)
-        self.scale3_1 = nn.Conv2d(
+        self.conv2_2 = nn.Conv2d(
             dim,
             dim, (kernel_sizes[3][1], kernel_sizes[3][0]),
-            padding=kernel_paddings[3],
+            padding=kernel_paddings[3][::-1],
             groups=dim)
 
         self.conv3 = nn.Conv2d(dim, dim, 1)
@@ -129,18 +129,18 @@ class AttentionModule(BaseModule):
     def forward(self, x):
         u = x.clone()
 
-        attn_0 = self.scale0(x)
+        attn = self.conv0(x)
 
-        attn_1 = self.scale1_0(attn_0)
-        attn_1 = self.scale1_1(attn_1)
+        attn_0 = self.conv0_1(attn)
+        attn_0 = self.conv0_2(attn_0)
 
-        attn_2 = self.scale2_0(attn_0)
-        attn_2 = self.scale2_1(attn_2)
+        attn_1 = self.conv1_1(attn)
+        attn_1 = self.conv1_2(attn_1)
 
-        attn_3 = self.scale3_0(attn_0)
-        attn_3 = self.scale3_1(attn_3)
+        attn_2 = self.conv2_1(attn)
+        attn_2 = self.conv2_2(attn_2)
 
-        attn = attn_0 + attn_1 + attn_2 + attn_3
+        attn = attn + attn_0 + attn_1 + attn_2
 
         attn = self.conv3(attn)
 

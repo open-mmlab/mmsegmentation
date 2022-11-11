@@ -82,13 +82,14 @@ class _MatrixDecomposition2DBase(nn.Module):
             N = C // self.S
             x = x.view(B * self.S, N, D).transpose(1, 2)
 
+        cuda = x.device == torch.device('cuda')
         if not self.rand_init and not hasattr(self, 'bases'):
-            bases = self._build_bases(1, self.S, D, self.R, cuda=True)
+            bases = self._build_bases(1, self.S, D, self.R, cuda=cuda)
             self.register_buffer('bases', bases)
 
         # (S, D, R) -> (B * S, D, R)
         if self.rand_init:
-            bases = self._build_bases(B, self.S, D, self.R, cuda=True)
+            bases = self._build_bases(B, self.S, D, self.R, cuda=cuda)
         else:
             bases = self.bases.repeat(B, 1, 1)
 
