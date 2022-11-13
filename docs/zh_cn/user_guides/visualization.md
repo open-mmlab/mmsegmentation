@@ -69,7 +69,7 @@ default_hooks = dict(
 work_dirs/test_visual/20220810_115248/vis_data/vis_image
 ```
 
-另外，如果在 `vis_backends` 中添加 `TensorboardVisBackend` ，像 [above](#tensorboard-configuration)  ，我们还可以运行下面的命令在 TensorBoard 中查看它们：
+另外，如果在 `vis_backends` 中添加 `TensorboardVisBackend` ，像 [above](#tensorboard-configuration)，我们还可以运行下面的命令在 TensorBoard 中查看它们：
 
 ```shell
 tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
@@ -79,7 +79,7 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 
 如果你想可视化单个样本数据，我们建议来使用 `SegLocalVisualizer` 。
 
-`SegLocalVisualizer`是继承自MMEngine中`Visualizer`的子类，适用于MMSegmentation可视化，有关`Visualizer`的详细信息请参考在 MMEngine 中的 [可视化教程](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/visualization.html) 。
+`SegLocalVisualizer`是继承自MMEngine中`Visualizer`的子类，适用于MMSegmentation可视化，有关`Visualizer`的详细信息请参考在 MMEngine 中的[可视化教程](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/visualization.html) 。
 
 以下是一个关于 `SegLocalVisualizer` 的一个例子，首先你可以下载这个案例中的数据根据下面的命令执行：
 
@@ -171,4 +171,4 @@ seg_local_visualizer.add_datasample(out_file, image,
 <img src="https://user-images.githubusercontent.com/24582831/189835713-c0534054-4bfa-4b75-9254-0afbeb5ff02e.png" width="70%"/>
 </div>
 
-如果你想知道更多的关于可视化的使用指引，你可以参考 MMEngine 中的 [可视化教程]([https://mmengine.readthedocs.io/en/latest/advanced_tutorials/visualization.html](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md))
+如果你想知道更多的关于可视化的使用指引，你可以参考 MMEngine 中的[可视化教程]([https://mmengine.readthedocs.io/en/latest/advanced_tutorials/visualization.html](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md))
