@@ -1,5 +1,5 @@
 repos:
-  - repo: https://gitlab.com/pycqa/flake8.git
+  - repo: https://github.com/PYCQA/flake8.git
     rev: 5.0.4
     hooks:
       - id: flake8
