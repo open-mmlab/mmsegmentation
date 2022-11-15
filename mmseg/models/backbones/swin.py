@@ -13,7 +13,7 @@ from mmengine.logging import print_log
 from mmengine.model import BaseModule, ModuleList
 from mmengine.model.weight_init import (constant_init, trunc_normal_,
                                         trunc_normal_init)
-from mmengine.runner import CheckpointLoader, load_state_dict
+from mmengine.runner import CheckpointLoader
 from mmengine.utils import to_2tuple
 
 from mmseg.registry import MODELS
@@ -732,7 +732,7 @@ class SwinTransformer(BaseModule):
                         nH2, L2).permute(1, 0).contiguous()
 
             # load state_dict
-            load_state_dict(self, state_dict, strict=False, logger=None)
+            self.load_state_dict(state_dict, strict=False)
 
     def forward(self, x):
         x, hw_shape = self.patch_embed(x)
