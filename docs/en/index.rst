@@ -24,7 +24,7 @@ Welcome to MMSegmentation's documentation!
    :maxdepth: 1
    :caption: Migration
 
-   migration.md
+   migration/index.rst
 
 .. toctree::
    :caption: API Reference

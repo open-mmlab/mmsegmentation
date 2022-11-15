@@ -169,12 +169,16 @@ def show_result_pyplot(model: BaseSegmentor,
         draw_gt (bool): Whether to draw GT SegDataSample. Default to True.
         draw_pred (bool): Whether to draw Prediction SegDataSample.
             Defaults to True.
-        wait_time (float): The interval of show (s). Defaults to 0.
+        wait_time (float): The interval of show (s). 0 is the special value
+            that means "forever". Defaults to 0.
         show (bool): Whether to display the drawn image.
             Default to True.
         save_dir (str, optional): Save file dir for all storage backends.
             If it is None, the backend storage will not save any data.
         out_file (str, optional): Path to output file. Default to None.
+
+    Returns:
+        np.ndarray: the drawn image which channel is RGB.
     """
     if hasattr(model, 'module'):
         model = model.module

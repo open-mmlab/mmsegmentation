@@ -16,7 +16,7 @@ class SegDataSample(BaseDataElement):
          >>> import torch
          >>> import numpy as np
          >>> from mmengine.structures import PixelData
-         >>> from mmseg.core import SegDataSample
+         >>> from mmseg.structures import SegDataSample
 
          >>> data_sample = SegDataSample()
          >>> img_meta = dict(img_shape=(4, 4, 3),

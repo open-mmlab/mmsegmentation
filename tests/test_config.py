@@ -89,10 +89,10 @@ def test_config_data_pipeline():
         # remove loading pipeline
         load_img_pipeline = config_mod.train_pipeline.pop(0)
         to_float32 = load_img_pipeline.get('to_float32', False)
-        config_mod.train_pipeline.pop(0)
-        config_mod.test_pipeline.pop(0)
+        del config_mod.train_pipeline[0]
+        del config_mod.test_pipeline[0]
         # remove loading annotation in test pipeline
-        config_mod.test_pipeline.pop(1)
+        del config_mod.test_pipeline[-2]
 
         train_pipeline = Compose(config_mod.train_pipeline)
         test_pipeline = Compose(config_mod.test_pipeline)
@@ -120,8 +120,7 @@ def test_config_data_pipeline():
             ori_filename='test_img.png',
             img=img,
             img_shape=img.shape,
-            ori_shape=img.shape,
-        )
+            ori_shape=img.shape)
         print(f'Test testing data pipeline: \n{test_pipeline!r}')
         output_results = test_pipeline(results)
         assert output_results is not None
