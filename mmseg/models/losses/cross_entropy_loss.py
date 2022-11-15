@@ -193,6 +193,41 @@ def mask_cross_entropy(pred,
         pred_slice, target, weight=class_weight, reduction='mean')[None]
 
 
+def soft_cross_entropy(pred,
+                       label,
+                       weight=None,
+                       reduction='mean',
+                       class_weight=None,
+                       avg_factor=None,
+                       **kwargs):
+    """Calculate the Soft CrossEntropy loss.
+
+    The label can be float.
+    Args:
+        pred (torch.Tensor): The prediction with shape (N, C), C is the number
+            of classes.
+        label (torch.Tensor): The gt label of the prediction with shape (N, C).
+            When using "mixup", the label can be float.
+        weight (torch.Tensor, optional): Sample-wise loss weight.
+        reduction (str): The method used to reduce the loss.
+        avg_factor (int, optional): Average factor that is used to average
+            the loss. Defaults to None.
+        class_weight (torch.Tensor, optional): The weight for each class with
+            shape (C), C is the number of classes. Default None.
+    Returns:
+        torch.Tensor: The calculated loss
+    """
+    # element-wise losses
+    loss = F.cross_entropy(
+        pred, label.float(), weight=class_weight, reduction='none')
+    if weight is not None:
+        weight = weight.float()
+    loss = weight_reduce_loss(
+        loss, weight=weight, reduction=reduction, avg_factor=avg_factor)
+
+    return loss
+
+
 @MODELS.register_module()
 class CrossEntropyLoss(nn.Module):
     """CrossEntropyLoss.
@@ -218,6 +253,7 @@ class CrossEntropyLoss(nn.Module):
     def __init__(self,
                  use_sigmoid=False,
                  use_mask=False,
+                 use_soft=False,
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0,
@@ -227,6 +263,7 @@ class CrossEntropyLoss(nn.Module):
         assert (use_sigmoid is False) or (use_mask is False)
         self.use_sigmoid = use_sigmoid
         self.use_mask = use_mask
+        self.use_soft = use_soft
         self.reduction = reduction
         self.loss_weight = loss_weight
         self.class_weight = get_class_weight(class_weight)
@@ -242,6 +279,8 @@ class CrossEntropyLoss(nn.Module):
             self.cls_criterion = binary_cross_entropy
         elif self.use_mask:
             self.cls_criterion = mask_cross_entropy
+        elif self.use_soft:
+            self.cls_criterion = soft_cross_entropy
         else:
             self.cls_criterion = cross_entropy
         self._loss_name = loss_name

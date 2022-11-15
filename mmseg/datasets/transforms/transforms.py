@@ -1275,7 +1275,7 @@ class MixUp(BaseTransform):
             Defaults to (0.5, 1.5).
         flip_ratio (float): Horizontal flip ratio of mixup image.
             Defaults to 0.5.
-        pad_val (int): Pad value. Defaults to 114.
+        pad_val (int): Pad value. Defaults to 0.
         max_iters (int): The maximum number of iterations. If the number of
             iterations is greater than `max_iters`, but gt_bbox is still
             empty, then the iteration is terminated. Defaults to 15.
@@ -1290,7 +1290,8 @@ class MixUp(BaseTransform):
                  img_scale: Tuple[int, int] = (512, 1024),
                  ratio_range: Tuple[float, float] = (0.5, 1.5),
                  flip_ratio: float = 0.5,
-                 pad_val: int = 255,
+                 pad_val: int = 0,
+                 num_classes=19,
                  ignore_index: int = 255) -> None:
         assert 0 <= alpha <= 1
         assert isinstance(img_scale, tuple)
@@ -1300,6 +1301,20 @@ class MixUp(BaseTransform):
         self.flip_ratio = flip_ratio
         self.pad_val = pad_val
         self.ignore_index = ignore_index
+        self.num_classes = num_classes
+
+    def get_indices(self, dataset: MultiImageMixDataset) -> list:
+        """Call function to collect indexes.
+
+        Args:
+            dataset (:obj:`MultiImageMixDataset`): The dataset.
+
+        Returns:
+            list: indexes.
+        """
+
+        indexes = [random.randint(0, len(dataset)) for _ in range(1)]
+        return indexes
 
     def transform(self, results: Dict) -> dict:
         """MixUp transform function.
@@ -1319,7 +1334,7 @@ class MixUp(BaseTransform):
         retrieve_img = retrieve_results['img']
 
         jit_factor = random.uniform(*self.ratio_range)
-        is_flip = random.uniform(0, 1) > self.flip_ratio
+        is_filp = random.uniform(0, 1) > self.flip_ratio
 
         if len(retrieve_img.shape) == 3:
             out_img = np.ones(
@@ -1332,9 +1347,9 @@ class MixUp(BaseTransform):
         # 1. keep_ratio resize
         scale_ratio = min(self.dynamic_scale[0] / retrieve_img.shape[0],
                           self.dynamic_scale[1] / retrieve_img.shape[1])
-        scaled_shape = (int(retrieve_img.shape[1] * scale_ratio),
-                        int(retrieve_img.shape[0] * scale_ratio))
-        retrieve_img = mmcv.imresize(retrieve_img, scaled_shape)
+        retrieve_img = mmcv.imresize(
+            retrieve_img, (int(retrieve_img.shape[1] * scale_ratio),
+                           int(retrieve_img.shape[0] * scale_ratio)))
 
         # 2. paste
         out_img[:retrieve_img.shape[0], :retrieve_img.shape[1]] = retrieve_img
@@ -1345,7 +1360,7 @@ class MixUp(BaseTransform):
                                           int(out_img.shape[0] * jit_factor)))
 
         # 4. flip
-        if is_flip:
+        if is_filp:
             out_img = out_img[:, ::-1, :]
 
         # 5. random crop
@@ -1364,27 +1379,58 @@ class MixUp(BaseTransform):
             x_offset = random.randint(0, padded_img.shape[1] - target_w)
         padded_cropped_img = padded_img[y_offset:y_offset + target_h,
                                         x_offset:x_offset + target_w]
+        mix_h = target_h - (padded_img.shape[0] - origin_h)
+        mix_w = target_w - (padded_img.shape[1] - origin_w)
 
-        # 6. adjust gt mask
-        retrieve_gt_seg_map = retrieve_results['gt_seg_map']
-        retrieve_gt_seg_map = mmcv.imresize(retrieve_gt_seg_map, scaled_shape)
+        # 6. mask
+        retrieve_mask = retrieve_results['gt_seg_map']
+        scale_ratio = min(self.dynamic_scale[0] / retrieve_mask.shape[0],
+                          self.dynamic_scale[1] / retrieve_mask.shape[1])
+        out_mask = np.ones(
+            self.dynamic_scale, dtype=retrieve_mask.dtype) * self.num_classes
 
-        if is_flip:
-            retrieve_gt_seg_map = retrieve_gt_seg_map[:, ::-1]
+        retrieve_mask = mmcv.imresize(
+            retrieve_mask, (int(retrieve_mask.shape[1] * scale_ratio),
+                            int(retrieve_mask.shape[0] * scale_ratio)))
+        out_mask[:retrieve_mask.shape[0], :retrieve_mask.
+                 shape[1]] = retrieve_mask
+        scale_ratio *= jit_factor
+        out_mask = mmcv.imresize(out_mask,
+                                 (int(out_mask.shape[1] * jit_factor),
+                                  int(out_mask.shape[0] * jit_factor)))
 
-        # 7. gt_seg_map
-        ori_gt_seg_map = results['gt_seg_map']
-        padded_seg_map = np.ones(padded_img.shape[:2]) * self.ignore_index
-        padded_seg_map[:origin_h, :origin_w] = ori_gt_seg_map
+        if is_filp:
+            out_mask = out_mask[:, ::-1]
 
-        padded_cropped_seg_map = padded_seg_map[y_offset:y_offset + target_h,
-                                                x_offset:x_offset + target_w]
+        ori_mask: np.ndarray = results['gt_seg_map']
+        padded_mask = np.zeros((max(origin_h, target_h), max(
+            origin_w, target_w))).astype(ori_mask.dtype) * self.num_classes
+        padded_mask[:origin_h, :origin_w] = out_mask
 
-        # 8. mix up
+        padded_cropped_mask = padded_mask[y_offset:y_offset + target_h,
+                                          x_offset:x_offset + target_w]
+
+        # 7. mix up
         ori_img = ori_img.astype(np.float32)
-        mixup_img = self.alpha * ori_img + (
-            1 - self.alpha) * padded_cropped_img.astype(np.float32)
+        lam = np.random.beta(self.alpha, self.alpha)
+
+        ori_img[:mix_h, :mix_w] = ori_img[:mix_h, :mix_w] * lam
+        mixup_img = padded_cropped_img * (1 - lam) + ori_img
+
+        # one hot mask
+        ori_mask[ori_mask >= self.num_classes] = self.num_classes
+        padded_cropped_mask[
+            padded_cropped_mask >= self.num_classes] = self.num_classes
+
+        ori_mask = np.eye(self.num_classes + 1)[ori_mask].astype(np.float32)
+        padded_cropped_mask = np.eye(self.num_classes +
+                                     1)[padded_cropped_mask].astype(np.float32)
+        ori_mask[:mix_h, :mix_w] = ori_mask[:mix_h, :mix_w] * lam
+        mixup_mask = padded_cropped_mask * (1 - lam) + ori_mask
 
         results['img'] = mixup_img.astype(np.uint8)
-        results['gt_seg_map'] = padded_cropped_seg_map
+        results['img_shape'] = mixup_img.shape
+        results['gt_seg_map'] = mixup_mask[:, :, :-1].transpose(
+            2, 0, 1).astype(np.float32)
+        results['mixup_lam'] = lam
         return results
