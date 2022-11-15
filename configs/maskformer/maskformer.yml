@@ -75,9 +75,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 46.99
+      mIoU: 46.69
   Config: configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512_20221102_111617-4f158299.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512_20221114_232813-03550716.pth
 - Name: maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Metadata:
@@ -96,6 +96,6 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 49.75
+      mIoU: 49.36
   Config: configs/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512_20221103_013242-3bec1052.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512_20221115_114710-5ab67e58.pth
