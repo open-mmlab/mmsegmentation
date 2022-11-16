@@ -474,6 +474,9 @@ mv coco_object/* .
 #extract validation set
 7za x RealOcc.7z -o../data/occlusion-aware-face-dataset
 
+#convert CelebA-Mask to mmsegmentation format
+ python tools/convert_datasets/face.py --dataset_dir ./data_materials/CelebAMask-HQ --out_dir ./data/occlusion-aware-face-dataset/CelebAMask-HQ
+
 ```
 
 **Dataset material Organization:**
