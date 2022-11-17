@@ -28,3 +28,4 @@ __all__ = [
     'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'ERFNet', 'PCPVT',
     'SVT', 'STDCNet', 'STDCContextPathNet', 'BEiT', 'MAE'
 ]
+from .simplified_attention_mmseg import SimplifiedTransformer

@@ -38,3 +38,4 @@ __all__ = [
     'SegformerHead', 'ISAHead', 'STDCHead', 'IterativeDecodeHead',
     'KernelUpdateHead', 'KernelUpdator'
 ]
+from .dest_head import DestHead
