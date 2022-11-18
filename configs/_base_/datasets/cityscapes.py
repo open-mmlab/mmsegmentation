@@ -23,18 +23,23 @@ test_pipeline = [
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
 ]
+img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
     dict(type='LoadImageFromFile', file_client_args=dict(backend='disk')),
     dict(
         type='TestTimeAug',
-        transforms=[[
-            dict(
-                type='RandomResize',
-                scale=(2048, 1024),
-                ratio_range=(0.5, 2.0))
-        ], [dict(type='RandomFlip', prob=0.5, direction='horizontal')],
-                    [dict(type='LoadAnnotations')],
-                    [dict(type='PackSegInputs')]])
+        transforms=[
+            [
+                dict(
+                    type='Resize',
+                    scale=(int(2048 * r), int(1024 * r)),
+                    keep_ratio=True) for r in img_ratios
+            ],
+            [
+                dict(type='RandomFlip', prob=0., direction='horizontal'),
+                dict(type='RandomFlip', prob=1., direction='horizontal')
+            ], [dict(type='LoadAnnotations')], [dict(type='PackSegInputs')]
+        ])
 ]
 train_dataloader = dict(
     batch_size=2,
