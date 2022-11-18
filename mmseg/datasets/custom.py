@@ -164,13 +164,14 @@ class CustomDataset(Dataset):
                 img_infos.append(img_info)
         else:
             for img in self.file_client.list_dir_or_file(
-                    dir_path=img_dir,
+                    dir_path=ann_dir,
                     list_dir=False,
-                    suffix=img_suffix,
+                    suffix=seg_map_suffix,
                     recursive=True):
-                img_info = dict(filename=img)
+                img_info = dict(
+                    filename=img.replace(seg_map_suffix, img_suffix))
                 if ann_dir is not None:
-                    seg_map = img.replace(img_suffix, seg_map_suffix)
+                    seg_map = img
                     img_info['ann'] = dict(seg_map=seg_map)
                 img_infos.append(img_info)
             img_infos = sorted(img_infos, key=lambda x: x['filename'])
