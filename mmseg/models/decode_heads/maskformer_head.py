@@ -24,6 +24,12 @@ class MaskFormerHead(MMDET_MaskFormerHead):
 
     See `Per-Pixel Classification is Not All You Need for Semantic Segmentation
     <https://arxiv.org/pdf/2107.06278>`_ for details.
+
+    Args:
+        num_classes (int): Number of classes. Default: 150.
+        align_corners (bool): align_corners argument of F.interpolate.
+            Default: False.
+        ignore_index (int): The label index to be ignored. Default: 255.
     """
 
     def __init__(self,
@@ -44,6 +50,25 @@ class MaskFormerHead(MMDET_MaskFormerHead):
         self.cls_embed = nn.Linear(feat_channels, self.num_classes + 1)
 
     def _seg_data_to_instance_data(self, batch_data_samples: SampleList):
+        """Perform forward propagation to convert paradigm from MMSegmentation
+        to MMDetection to ensure ``MMDET_MaskFormerHead`` could be called
+        normally. Specifically, ``batch_gt_instances`` would be added.
+
+        Args:
+            batch_data_samples (List[:obj:`SegDataSample`]): The Data
+                Samples. It usually includes information such as
+                `gt_sem_seg`.
+
+        Returns:
+            tuple[Tensor]: A tuple contains two lists.
+
+                - batch_gt_instances (list[:obj:`InstanceData`]): Batch of
+                    gt_instance. It usually includes ``labels``, each is
+                    unique ground truth label id of images, with
+                    shape (num_gt, ) and ``masks``, each is ground truth
+                    masks of each instances of a image, shape (num_gt, h, w).
+                - batch_img_metas (list[dict]): List of image meta information.
+        """
         batch_img_metas = []
         batch_gt_instances = []
         for data_sample in batch_data_samples:
@@ -79,6 +104,20 @@ class MaskFormerHead(MMDET_MaskFormerHead):
 
     def loss(self, x: Tuple[Tensor], batch_data_samples: SampleList,
              train_cfg: ConfigType) -> dict:
+        """Perform forward propagation and loss calculation of the decoder head
+        on the features of the upstream network.
+
+        Args:
+            x (tuple[Tensor]): Multi-level features from the upstream
+                network, each is a 4D-tensor.
+            batch_data_samples (List[:obj:`SegDataSample`]): The Data
+                Samples. It usually includes information such as
+                `gt_sem_seg`.
+            train_cfg (ConfigType): Training config.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components.
+        """
         # batch SegDataSample to InstanceDataSample
         batch_gt_instances, batch_img_metas = self._seg_data_to_instance_data(
             batch_data_samples)
@@ -99,12 +138,13 @@ class MaskFormerHead(MMDET_MaskFormerHead):
         Args:
             x (tuple[Tensor]): Multi-level features from the
                 upstream network, each is a 4D-tensor.
-            batch_img_metas (List[:obj:`SegDataSample`]): The metainfo
-                from SegDataSamples.
+            batch_img_metas (List[:obj:`SegDataSample`]): The Data
+                Samples. It usually includes information such as
+                `gt_sem_seg`.
+            test_cfg (ConfigType): Test config.
 
         Returns:
-            Tensor: Semantic Mask logits,\
-                    shape (batch_size, num_classes, H, W).
+            Tensor: A tensor of segmentation mask.
         """
 
         batch_data_samples = []
