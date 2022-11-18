@@ -65,7 +65,7 @@ class BaseSegDataset(BaseDataset):
             instantiation. In some cases, such as visualization, only the meta
             information of the dataset is needed, which is not necessary to
             load annotation file. ``Basedataset`` can skip load annotations to
-            save time by set ``lazy_init=False``. Defaults to False.
+            save time by set ``lazy_init=True``. Defaults to False.
         max_refetch (int, optional): If ``Basedataset.prepare_data`` get a
             None img. The maximum extra number of cycles to get a valid
             image. Defaults to 1000.
