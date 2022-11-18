@@ -15,7 +15,7 @@ pip install tensorboardX
 pip install future tensorboard
 ```
 
-在 `default_runtime.py` 的配置文件中的 `visualizer` 模块中的 `vis_backend` 部分里面添加 `TensorboardVisBackend` 。
+在配置文件 `default_runtime.py` 的 `vis_backend` 中添加 `TensorboardVisBackend`。
 
 ```python
 vis_backends = [dict(type='LocalVisBackend'),
@@ -32,7 +32,7 @@ visualizer = dict(
 python tools/train.py configs/pspnet/pspnet_r50-d8_4xb4-80k_ade20k-512x512.py --work-dir work_dir/test_visual
 ```
 
-开始训练后找到 `work_dir` 中的 `vis_data` 路径。一个例子：本次的特定测试 vis_data 的路径就如下所示：
+开始训练后找到 `work_dir` 中的 `vis_data` 路径，例如：本次特定测试的 vis_data 路径如下所示：
 
 ```shell
 work_dirs/test_visual/20220810_115248/vis_data
@@ -48,7 +48,7 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 
 ### 模型测试或验证期间的可视化数据样本
 
-MMSegmentation 提供了 `SegVisualizationHook` ，它是一个 [钩子](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/hook.html) 可以用于可视化 ground truth 和在模型测试和验证期间的预测分割结果 。 它的配置在 `default_hooks` 中，更多详细信息请参见 [执行器教程](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/runner.html)。
+MMSegmentation 提供了 `SegVisualizationHook` ，它是一个 可以用于可视化 ground truth 和在模型测试和验证期间的预测分割结果的[钩子](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/hook.html) 。 它的配置在 `default_hooks` 中，更多详细信息请参见 [执行器教程](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/runner.html)。
 
 例如，在 `_base_/schedules/schedule_20k.py` 中，修改 `SegVisualizationHook` 配置，将 `draw` 设置为 `True` 以启用网络推理结果的存储，`interval` 表示预测结果的采样间隔， 设置为 1 时，将保存网络的每个推理结果。 `interval` 默认设置为 50：
 
@@ -63,13 +63,13 @@ default_hooks = dict(
 
 ```
 
-启动训练实验后，可视化结果将存储在 validation loop 的本地文件夹中，或者在一个数据集上启动评估模型时，预测结果将存储在本地。本地的可视化的存储结果保存在 `$WORK_DIRS/vis_data` 下的 `vis_image` 中，例如：
+启动训练实验后，可视化结果将在 validation loop 存储到本地文件夹中，或者在一个数据集上启动评估模型时，预测结果将存储在本地。本地的可视化的存储结果保存在 `$WORK_DIRS/vis_data` 下的 `vis_image` 中，例如：
 
 ```shell
 work_dirs/test_visual/20220810_115248/vis_data/vis_image
 ```
 
-另外，如果在 `vis_backends` 中添加 `TensorboardVisBackend` ，像 [above](#tensorboard-configuration)，我们还可以运行下面的命令在 TensorBoard 中查看它们：
+另外，如果在 `vis_backends` 中添加 `TensorboardVisBackend` ，如 [TensorBoard 的配置](#tensorboard-configuration)，我们还可以运行下面的命令在 TensorBoard 中查看它们：
 
 ```shell
 tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
@@ -106,8 +106,8 @@ import torch
 
 from mmengine.structures import PixelData
 
-# `SegDataSample`是不同组件之间的数据结构接口
-# 在 MMSegmentation 中定义，它包括ground truth、预测和语义分割的预测逻辑。
+# `SegDataSample` 是在 MMSegmentation 中定义的不同组件之间的数据结构接口，
+# 它包括 ground truth、语义分割的预测结果和预测逻辑。
 # 详情请参考下面的 `SegDataSample` 教程文件：
 # https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/advanced_guides/structures.md
 
@@ -139,9 +139,9 @@ seg_local_visualizer = SegLocalVisualizer(
     vis_backends=[dict(type='LocalVisBackend')],
     save_dir=save_dir)
 
-# 数据集的元信息通常包括类名的`classes`和
-# `palette` 用于可视化每个前景的颜色。
-# 所有类名和调色板都可以在文件中定义：
+# 数据集的元信息通常包括类名的 `classes` 和
+# 用于可视化每个前景颜色的 `palette` 。
+# 所有类名和调色板都在此文件中定义：
 # https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/utils/class_names.py
 
 seg_local_visualizer.dataset_meta = dict(
@@ -159,13 +159,13 @@ seg_local_visualizer.dataset_meta = dict(
              [119, 11, 32]])
 
 # 当`show=True`时，直接显示结果，
-# 当 `show=False`时，结果将保存在本地目录文件夹中。
+# # 当 `show=False`时，结果将保存在本地文件夹中。
 
 seg_local_visualizer.add_datasample(out_file, image,
                                     data_sample, show=False)
 ```
 
-可视化后的图像结果和它的对应的 ground truth 图像放在了 `./work_dirs/vis_data/vis_image/` 的路径当中，它的名字是：`out_file_cityscapes_0.png` ：
+可视化后的图像结果和它的对应的 ground truth 图像可以在 `./work_dirs/vis_data/vis_image/` 路径找到，文件名字是：`out_file_cityscapes_0.png` ：
 
 <div align=center>
 <img src="https://user-images.githubusercontent.com/24582831/189835713-c0534054-4bfa-4b75-9254-0afbeb5ff02e.png" width="70%"/>
