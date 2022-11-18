@@ -24,16 +24,17 @@ test_pipeline = [
     dict(type='PackSegInputs')
 ]
 tta_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', file_client_args=dict(backend='disk')),
     dict(
-        type='MultiScaleFlipAug',
-        scale_factor=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
-        allow_flip=True,
-        flip_direction='horizontal',
-        resize_cfg=dict(type='Resize', keep_ratio=False),
-        flip_cfg=dict(type='RandomFlip'),
-        transforms=[dict(type='LoadAnnotations'),
-                    dict(type='PackSegInputs')]),
+        type='TestTimeAug',
+        transforms=[[
+            dict(
+                type='RandomResize',
+                scale=(2048, 1024),
+                ratio_range=(0.5, 2.0))
+        ], [dict(type='RandomFlip', prob=0.5, direction='horizontal')],
+                    [dict(type='LoadAnnotations')],
+                    [dict(type='PackSegInputs')]])
 ]
 train_dataloader = dict(
     batch_size=2,

@@ -105,7 +105,6 @@ def main():
         cfg.test_dataloader.dataset.pipeline = cfg.tta_pipeline
         cfg.tta_model.module = cfg.model
         cfg.model = cfg.tta_model
-        cfg.data_preprocessor = None
 
     # build the runner from config
     runner = Runner.from_cfg(cfg)
