@@ -137,7 +137,7 @@ class SegDataPreProcessor(BaseDataPreprocessor):
                 'as the image size might be different in a batch')
             # pad images when testing
             if self.test_cfg:
-                inputs, data_samples = stack_batch(
+                inputs, _ = stack_batch(
                     inputs=inputs,
                     size=self.test_cfg.get('size', None),
                     size_divisor=self.test_cfg.get('size_divisor', None),
