@@ -52,6 +52,10 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             Default: None.
         align_corners (bool): align_corners argument of F.interpolate.
             Default: False.
+        downsample_label_ratio (int): The ratio to downsample seg_label
+            in losses. downsample_label_ratio > 1 will reduce memory usage.
+            Disabled if downsample_label_ratio = 0.
+            Default: 0.
         init_cfg (dict or list[dict], optional): Initialization config dict.
     """
 
@@ -75,6 +79,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                  ignore_index=255,
                  sampler=None,
                  align_corners=False,
+                 downsample_label_ratio=0,
                  init_cfg=dict(
                      type='Normal', std=0.01, override=dict(name='conv_seg'))):
         super(BaseDecodeHead, self).__init__(init_cfg)
@@ -88,6 +93,11 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
 
         self.ignore_index = ignore_index
         self.align_corners = align_corners
+        self.downsample_label_ratio = downsample_label_ratio
+        if not isinstance(self.downsample_label_ratio, int) or \
+           self.downsample_label_ratio < 0:
+            warnings.warn('downsample_label_ratio should '
+                          'be set as an integer equal or larger than 0.')
 
         if out_channels is None:
             if num_classes == 2:
@@ -261,6 +271,13 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
     def losses(self, seg_logit, seg_label):
         """Compute segmentation loss."""
         loss = dict()
+        if self.downsample_label_ratio > 0:
+            seg_label = seg_label.float()
+            target_size = (seg_label.shape[2] // self.downsample_label_ratio,
+                           seg_label.shape[3] // self.downsample_label_ratio)
+            seg_label = resize(
+                input=seg_label, size=target_size, mode='nearest')
+            seg_label = seg_label.long()
         seg_logit = resize(
             input=seg_logit,
             size=seg_label.shape[2:],

@@ -21,3 +21,29 @@ Models:
       mIoU(ms+flip): 48.7
   Config: configs/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752-f92a2975.pth
+- Name: ''
+  In Collection: FCN
+  Metadata:
+    backbone: ViT-B/16
+    crop size: (256,256)
+    lr schd: 3600
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S
+    Metrics:
+      mIoU: 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: FCN
+  Metadata:
+    backbone: ViT-B/16
+    crop size: (256,256)
+    lr schd: 3600
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S
+    Metrics:
+      mIoU: 0.0
+  Config: ''
+  Weights: ''
