@@ -139,7 +139,6 @@ class SegDataPreProcessor(BaseDataPreprocessor):
             if self.test_cfg:
                 inputs, data_samples = stack_batch(
                     inputs=inputs,
-                    data_samples=data_samples,
                     size=self.test_cfg.get('size', None),
                     size_divisor=self.test_cfg.get('size_divisor', None),
                     pad_val=self.pad_val,
