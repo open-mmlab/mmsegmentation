@@ -179,7 +179,7 @@ class BaseSegDataset(BaseDataset):
                     f'subset of classes {old_classes} in METAINFO.')
             for i, c in enumerate(old_classes):
                 if c not in new_classes:
-                    label_map[i] = -1
+                    label_map[i] = 255
                 else:
                     label_map[i] = new_classes.index(c)
             return label_map
