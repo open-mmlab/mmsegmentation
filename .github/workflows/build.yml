@@ -222,6 +222,63 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
 
+  build_cuda116:
+    runs-on: ubuntu-18.04
+    container:
+      image: pytorch/pytorch:1.13.0-cuda11.6-cudnn8-devel
+    env:
+      FORCE_CUDA: 1
+      MMCV_CUDA_ARGS: -gencode=arch=compute_61,code=sm_61
+    strategy:
+      matrix:
+        python-version: ['3.10']
+        torch: [1.13.0+cu116]
+        include:
+          - torch: 1.13.0+cu116
+            torchvision: 0.14.0+cu116
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Fetch GPG keys
+        run: |
+          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
+          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
+      - name: Add PPA
+        run: |
+          apt-get update && apt-get install -y software-properties-common
+          add-apt-repository -y ppa:deadsnakes/ppa
+      - name: Install python-dev
+        run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y python${{matrix.python-version}}-dev
+      - name: python -m Install PyTorch
+        run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
+      - name: Install system dependencies
+        run: apt-get update && apt-get install -y ffmpeg libturbojpeg ninja-build
+      - name: Install Pillow
+        run: python -m pip install Pillow==6.2.2
+        if: ${{matrix.torchvision < 0.5}}
+      - name: Install PyTorch
+        run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
+      - name: Install mmseg dependencies
+        run: |
+          python -V
+          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu116/${{matrix.torch_version}}/index.html
+          python -m pip install -r requirements.txt
+          python -c 'import mmcv; print(mmcv.__version__)'
+      - name: Build and install
+        run: |
+          rm -rf .eggs
+          python setup.py check -m -s
+          TORCH_CUDA_ARCH_LIST=7.0 pip install .
+      - name: Run unittests and generate coverage report
+        run: |
+          python -m pip install timm
+          coverage run --branch --source mmseg -m pytest tests/
+          coverage xml
+          coverage report -m
+
   test_windows:
     runs-on: ${{ matrix.os }}
     strategy:
