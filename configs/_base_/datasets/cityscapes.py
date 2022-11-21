@@ -30,10 +30,8 @@ tta_pipeline = [
         type='TestTimeAug',
         transforms=[
             [
-                dict(
-                    type='Resize',
-                    scale=(int(2048 * r), int(1024 * r)),
-                    keep_ratio=True) for r in img_ratios
+                dict(type='Resize', scale_factor=r, keep_ratio=True)
+                for r in img_ratios
             ],
             [
                 dict(type='RandomFlip', prob=0., direction='horizontal'),

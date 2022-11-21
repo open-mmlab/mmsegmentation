@@ -25,8 +25,8 @@ class EncoderDecoderTTA(BaseTTAModel):
         """
         predictions = []
         for data_samples in data_samples_list:
-            seg_logits = torch.zeros(
-                data_samples[0].seg_logits.data.shape).cuda()
+            seg_logits = data_samples[0].seg_logits.data
+            seg_logits = torch.zeros(seg_logits.shape).to(seg_logits)
             for data_sample in data_samples:
                 # check flip
                 flip = data_sample.metainfo.get('flip', None)
