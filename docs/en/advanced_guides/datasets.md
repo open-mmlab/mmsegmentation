@@ -4,11 +4,11 @@ In this document, we will introduce functions of `BaseSegDataset` class in MMSeg
 
 ## BaseSegDataset
 
-`BaseSegDataset` is a custom dataset class for semantic segmentation task, which is inherited from `BaseDataset` in MMEngine.
-More details of `BaseDataset` could be found in [MMEngine BaseDataset Documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/basedataset.md).
+`BaseSegDataset` is a base dataset class for semantic segmentation task, which is inherited from `BaseDataset` in MMEngine.
+More details of `BaseDataset` could be found in [MMEngine BaseDataset Documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md).
 
 All datasets are inherited from `BaseSegDataset` in the 1.x version of MMSegmentation. Some frequently used methods are defined in `BaseSegDataset`,
-such as getting meta and raw data information of dataset, updating label mapping and palette information when reducing label `0` (which is usually background) and so on.
+such as getting meta and raw data information of dataset, updating label mapping and palette information and so on.
 
 `BaseSegDataset` is designed for supervised semantic segmentation task thus both images and annotations are necessary.
 The directory structure of corresponding dataset is as below.
@@ -105,6 +105,26 @@ which changes pixel labels in `load_data_list`.
 `label_map` is a dictionary, whose keys are the old label ids and values are the new label ids.
 `label_map` is not `None` if and only if (1) old classes in `cls.METAINFO` is not equal to new classes in `self._metainfo`
 and (2) both of `cls.METAINFO` and `self._metainfo` are not `None`.
+
+For example, `Cityscapes` dataset usually has 19 classes, users could define new class list by label mapping if they only want to use three classes `road`, `sidewalk` and `building`:
+
+```python
+from mmseg.datasets import CityscapesDataset
+classes_path = 'new_categories.txt'
+# classes.txt with sub categories
+categories = ['road', 'sidewalk', 'building']
+with open(classes_path, 'w') as f:
+    f.write('\n'.join(categories))
+
+train_pipeline = []
+kwargs = dict(
+    pipeline=train_pipeline,
+    data_prefix=dict(img_path='./', seg_map_path='./'),
+    metainfo=dict(classes=classes_path))
+dataset = CityscapesDataset(**kwargs)
+assert list(dataset.metainfo['classes']) == categories
+assert dataset.label_map is not None
+```
 
 The `reduce_zero_label`(Default to `False`) controls whether to mark label zero as ignored.
 Because in semantic segmentation dataset such as [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#ade20k),
