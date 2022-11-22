@@ -411,6 +411,9 @@ class IterativeDecodeHead(BaseDecodeHead):
 
     def __init__(self, num_stages, kernel_generate_head, kernel_update_head,
                  **kwargs):
+        # ``IterativeDecodeHead`` would skip initialization of
+        # ``BaseDecodeHead`` which would be called when building
+        # ``self.kernel_generate_head``.
         super(BaseDecodeHead, self).__init__(**kwargs)
         assert num_stages == len(kernel_update_head)
         self.num_stages = num_stages
