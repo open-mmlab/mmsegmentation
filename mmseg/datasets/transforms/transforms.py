@@ -1,13 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Dict, Sequence, Tuple, Union
+from typing import Dict, List, Sequence, Tuple, Union
 
 import cv2
 import mmcv
 import numpy as np
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
-from mmengine.utils import is_tuple_of
+from mmengine.utils import is_list_of, is_tuple_of
 from numpy import random
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
@@ -1226,3 +1226,111 @@ class GenerateEdge(BaseTransform):
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class ResizeShortestEdge(BaseTransform):
+    """Resize images & mask from a list of multiple scales.
+
+    This transform resizes the input image to some scale. Bboxes and masks are
+    then resized with the same scale factor. Resize scale will be randomly
+    selected from ``scales``.
+
+    How to choose the target scale to resize the image will follow the rules
+    below:
+
+    - if `scale` is a list of tuple, the target scale is sampled from the list
+      uniformally.
+    - if `scale` is a tuple, the target scale will be set to the tuple.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map (optional)
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - gt_seg_map (optional))
+
+    Added Keys:
+
+    - scale
+    - scale_factor
+    - keep_ratio
+
+
+    Args:
+        short_edge_length (Union[List[int], int],): Images scales for resizing.
+        max_size:
+        sample_style:
+        resize_type (str): The type of resize class to use. Defaults to
+            "Resize".
+        **resize_kwargs: Other keyword arguments for the ``resize_type``.
+
+    Note:
+        By defaults, the ``resize_type`` is "Resize", if it's not overwritten
+        by your registry, it indicates the :class:`mmcv.Resize`. And therefore,
+        ``resize_kwargs`` accepts any keyword arguments of it, like
+        ``keep_ratio``, ``interpolation`` and so on.
+
+        If you want to use your custom resize class, the class should accept
+        ``scale`` argument and have ``scale`` attribution which determines the
+        resize shape.
+    """
+
+    def __init__(self,
+                 short_edge_length: Union[List[int], int],
+                 max_size: int,
+                 sample_style: str = 'range',
+                 resize_type: str = 'Resize',
+                 **resize_kwargs) -> None:
+        super().__init__()
+        assert sample_style in ['range', 'choice'], sample_style
+
+        self.is_range = sample_style == 'range'
+        if isinstance(short_edge_length, int):
+            short_edge_length = (short_edge_length, short_edge_length)
+        if self.is_range:
+            assert len(short_edge_length) == 2
+        else:
+            assert is_list_of(short_edge_length, int)
+
+        self.short_edge_length = short_edge_length
+        self.max_size = max_size
+
+        self.resize_cfg = dict(type=resize_type, **resize_kwargs)
+        # create a empty Resize object
+        self.resize = TRANSFORMS.build({'scale': 0, **self.resize_cfg})
+
+    def _get_output_shape(self, img, short_edge_length,
+                          max_size) -> Tuple[int, int]:
+        h, w = img.shape[:2]
+        size = short_edge_length * 1.0
+        scale = size / min(h, w)
+        if h < w:
+            new_h, new_w = size, scale * w
+        else:
+            new_h, new_w = scale * h, size
+
+        if max(new_h, new_w) > max_size:
+            scale = max_size * 1.0 / max(new_h, new_w)
+            new_h *= scale
+            new_w *= scale
+
+        new_h = int(new_h + 0.5)
+        new_w = int(new_w + 0.5)
+        return (new_h, new_w)
+
+    def transform(self, results: Dict) -> Dict:
+        if self.is_range:
+            length = random.randint(self.short_edge_length[0],
+                                    self.short_edge_length[1])
+        else:
+            length = random.choice(self.short_edge_length)
+
+        self.resize.scale = self._get_output_shape(results['img'], length,
+                                                   self.max_size)
+        results = self.resize(results)
+        return results
