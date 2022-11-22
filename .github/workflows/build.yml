@@ -221,7 +221,7 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
 
-  build_cu116:
+  build_cuda116:
     runs-on: ubuntu-18.04
     container:
       image: pytorch/pytorch:1.13.0-cuda11.6-cudnn8-devel
@@ -263,7 +263,7 @@ jobs:
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
+          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu116/${{matrix.torch_version}}/index.html
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -277,14 +277,6 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          files: ./coverage.xml
-          flags: unittests
-          env_vars: OS,PYTHON
-          name: codecov-umbrella
-          fail_ci_if_error: false
 
   test_windows:
     runs-on: ${{ matrix.os }}
