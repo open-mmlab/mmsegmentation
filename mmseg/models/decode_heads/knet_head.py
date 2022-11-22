@@ -422,6 +422,7 @@ class IterativeDecodeHead(BaseDecodeHead):
         self.num_classes = self.kernel_generate_head.num_classes
         self.input_transform = self.kernel_generate_head.input_transform
         self.ignore_index = self.kernel_generate_head.ignore_index
+        self.out_channels = self.num_classes
 
         for head_cfg in kernel_update_head:
             self.kernel_update_head.append(MODELS.build(head_cfg))
