@@ -85,7 +85,7 @@ Here we show how to develop new components with an example of MobileNet.
 ```python
 import torch.nn as nn
 
-from ..registry import BACKBONES
+from ..builder import BACKBONES
 
 
 @BACKBONES.register_module

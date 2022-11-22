@@ -72,12 +72,24 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 最新进展
 
-最新版本 v0.26.0 在 2022.7.1 发布：
+### 💎 稳定版本
 
-- 更新了 SegFormer 在 ADE20K 数据集上的模型结果
-- 在 MMSegmentation 增加 MMSegWandbHook 以使用 wandb 可视化工具
+最新版本 v0.29.1 在 2022.11.03 发布：
+
+- 添加模型集成工具
+- 更新文档
 
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
+
+### 🌟 1.x 预览版本
+
+全新的 **MMSegmentation v1.0.0rc1** 版本已经在 2022.11.02 发布：
+
+- 基于 [MMEngine](https://github.com/open-mmlab/mmengine) 统一了各组件接口。
+- 全面支持混合精度，训练测试速度更快。
+- 重构之后更加灵活的[架构](https://mmsegmentation.readthedocs.io/en/1.x/overview.html)。
+
+欢迎在 [1.x branch](https://github.com/open-mmlab/mmsegmentation/tree/1.x) 发现更多的新特性。欢迎 issue 和 PR。
 
 ## 安装
 
@@ -115,6 +127,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [BEiT (ICLR'2022)](configs/beit)
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [MAE (CVPR'2022)](configs/mae)
+- [x] [PoolFormer (CVPR'2022)](configs/poolformer)
 
 已支持的算法：
 
@@ -208,6 +221,7 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - [MMClassification](https://github.com/open-mmlab/mmclassification): OpenMMLab 图像分类工具箱
 - [MMDetection](https://github.com/open-mmlab/mmdetection): OpenMMLab 目标检测工具箱
 - [MMDetection3D](https://github.com/open-mmlab/mmdetection3d): OpenMMLab 新一代通用 3D 目标检测平台
+- [MMYOLO](https://github.com/open-mmlab/mmyolo): OpenMMLab YOLO 系列工具箱和基准测试
 - [MMRotate](https://github.com/open-mmlab/mmrotate): OpenMMLab 旋转框检测工具箱与测试基准
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation): OpenMMLab 语义分割工具箱
 - [MMOCR](https://github.com/open-mmlab/mmocr): OpenMMLab 全流程文字检测识别理解工具包

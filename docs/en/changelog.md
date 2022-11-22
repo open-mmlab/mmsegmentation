@@ -1,5 +1,93 @@
 ## Changelog
 
+### V0.29.1 (11/3/2022)
+
+**New Features**
+
+- Add model ensemble tools ([#2218](https://github.com/open-mmlab/mmsegmentation/pull/2218))
+
+**Bug Fixes**
+
+- Use SyncBN in MobileNetV2 ([#2207](https://github.com/open-mmlab/mmsegmentation/pull/2207))
+
+**Documentation**
+
+- Update FAQ doc about binary segmentation and ReduceZeroLabel ([#2206](https://github.com/open-mmlab/mmsegmentation/pull/2206))
+- Fix typos ([#2249](https://github.com/open-mmlab/mmsegmentation/pull/2249))
+- Fix model results ([#2190](https://github.com/open-mmlab/mmsegmentation/pull/2190), [#2114](https://github.com/open-mmlab/mmsegmentation/pull/2114))
+
+**Contributors**
+
+- @isLinXu made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2219
+- @zhijiejia made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2218
+- @lee-jinhee made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2249
+
+### V0.29.0 (10/10/2022)
+
+**New Features**
+
+- Support PoolFormer (CVPR'2022) ([#1537](https://github.com/open-mmlab/mmsegmentation/pull/1537))
+
+**Enhancement**
+
+- Improve structure and readability for FCNHead ([#2142](https://github.com/open-mmlab/mmsegmentation/pull/2142))
+- Support IterableDataset in distributed training ([#2151](https://github.com/open-mmlab/mmsegmentation/pull/2151))
+- Upgrade .dev scripts ([#2020](https://github.com/open-mmlab/mmsegmentation/pull/2020))
+- Upgrade pre-commit hooks ([#2155](https://github.com/open-mmlab/mmsegmentation/pull/2155))
+
+**Bug Fixes**
+
+- Fix mmseg.api.inference inference_segmentor ([#1849](https://github.com/open-mmlab/mmsegmentation/pull/1849))
+- fix bug about label_map in evaluation part ([#2075](https://github.com/open-mmlab/mmsegmentation/pull/2075))
+- Add missing dependencies to torchserve docker file ([#2133](https://github.com/open-mmlab/mmsegmentation/pull/2133))
+- Fix ddp unittest ([#2060](https://github.com/open-mmlab/mmsegmentation/pull/2060))
+
+**Contributors**
+
+- @jinwonkim93 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1849
+- @rlatjcj made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2075
+- @ShirleyWangCVR made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2151
+- @mangelroman made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2133
+
+### V0.28.0 (9/8/2022)
+
+**New Features**
+
+- Support Tversky Loss ([#1896](https://github.com/open-mmlab/mmsegmentation/pull/1986))
+
+**Bug Fixes**
+
+- Fix binary segmentation ([#2016](https://github.com/open-mmlab/mmsegmentation/pull/2016))
+- Fix config files ([#1901](https://github.com/open-mmlab/mmsegmentation/pull/1901), [#1893](https://github.com/open-mmlab/mmsegmentation/pull/1893), [#1871](https://github.com/open-mmlab/mmsegmentation/pull/1871))
+- Revise documentation ([#1844](https://github.com/open-mmlab/mmsegmentation/pull/1844), [#1980](https://github.com/open-mmlab/mmsegmentation/pull/1980), [#2025](https://github.com/open-mmlab/mmsegmentation/pull/2025), [#1982](https://github.com/open-mmlab/mmsegmentation/pull/1982))
+- Fix confusion matrix calculation ([#1992](https://github.com/open-mmlab/mmsegmentation/pull/1992))
+- Fix decode head forward_train error ([#1997](https://github.com/open-mmlab/mmsegmentation/pull/1997))
+
+**Contributors**
+
+- @suchot made their first contribution in https://github.com/open-mmlab/mmsegmention/pull/1844
+- @TimoK93 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1992
+
+### V0.27.0 (7/28/2022)
+
+**Enhancement**
+
+- Add Swin-L Transformer models ([#1471](https://github.com/open-mmlab/mmsegmentation/pull/1471))
+- Update ERFNet results ([#1744](https://github.com/open-mmlab/mmsegmentation/pull/1744))
+
+**Bug Fixes**
+
+- Revise documentation ([#1761](https://github.com/open-mmlab/mmsegmentation/pull/1761), [#1755](https://github.com/open-mmlab/mmsegmentation/pull/1755), [#1802](https://github.com/open-mmlab/mmsegmentation/pull/1802))
+- Fix colab tutorial ([#1779](https://github.com/open-mmlab/mmsegmentation/pull/1779))
+- Fix segformer checkpoint url ([#1785](https://github.com/open-mmlab/mmsegmentation/pull/1785))
+
+**Contributors**
+
+- @DataSttructure made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1802
+- @AkideLiu made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1785
+- @mawanda-jun made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1761
+- @Yan-Daojiang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/1755
+
 ### V0.26.0 (7/1/2022)
 
 **Highlights**

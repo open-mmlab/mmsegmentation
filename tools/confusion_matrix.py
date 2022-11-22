@@ -53,12 +53,15 @@ def calculate_confusion_matrix(dataset, results):
     n = len(dataset.CLASSES)
     confusion_matrix = np.zeros(shape=[n, n])
     assert len(dataset) == len(results)
+    ignore_index = dataset.ignore_index
     prog_bar = mmcv.ProgressBar(len(results))
     for idx, per_img_res in enumerate(results):
         res_segm = per_img_res
-        gt_segm = dataset.get_gt_seg_map_by_idx(idx)
+        gt_segm = dataset.get_gt_seg_map_by_idx(idx).astype(int)
+        gt_segm, res_segm = gt_segm.flatten(), res_segm.flatten()
+        to_ignore = gt_segm == ignore_index
+        gt_segm, res_segm = gt_segm[~to_ignore], res_segm[~to_ignore]
         inds = n * gt_segm + res_segm
-        inds = inds.flatten()
         mat = np.bincount(inds, minlength=n**2).reshape(n, n)
         confusion_matrix += mat
         prog_bar.update()

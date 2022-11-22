@@ -37,7 +37,7 @@ data = dict(
     test=dict(pipeline=test_pipeline))
 
 # model settings
-checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segformer/mit_b5_20220624-658746d9.pthh'  # noqa
+checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segformer/mit_b5_20220624-658746d9.pth'  # noqa
 model = dict(
     pretrained=checkpoint,
     backbone=dict(

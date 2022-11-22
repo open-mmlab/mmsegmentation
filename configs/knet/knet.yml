@@ -152,18 +152,18 @@ Models:
     crop size: (640,640)
     lr schd: 80000
     inference time (ms/im):
-    - value: 120.63
+    - value: 180.18
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (640,640)
-    Training Memory (GB): 13.54
+    Training Memory (GB): 18.31
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 52.21
-      mIoU(ms+flip): 53.34
+      mIoU: 52.46
+      mIoU(ms+flip): 53.78
   Config: configs/knet/knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k/knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k_20220301_220747-8787fc71.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/knet/knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k/knet_s3_upernet_swin-l_8x2_640x640_adamw_80k_ade20k_20220720_165636-cbcaed32.pth

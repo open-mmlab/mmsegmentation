@@ -56,7 +56,7 @@ def test_build_ddp():
 
     if torch.cuda.is_available():
         mmddp = build_ddp(
-            model, 'cuda', device_id=[0], process_group=MagicMock())
+            model, 'cuda', device_ids=[0], process_group=MagicMock())
         assert isinstance(mmddp, MMDistributedDataParallel)
 
     if digit_version(mmcv.__version__) >= digit_version('1.5.0'):

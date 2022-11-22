@@ -75,7 +75,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 50.31
+      mIoU: 50.13
       mIoU(ms+flip): 51.9
   Config: configs/swin/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_22K.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/swin/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_22K/upernet_swin_base_patch4_window7_512x512_160k_ade20k_pretrain_224x224_22K_20210526_211650-762e2178.pth

@@ -30,6 +30,7 @@ Import:
 - configs/nonlocal_net/nonlocal_net.yml
 - configs/ocrnet/ocrnet.yml
 - configs/point_rend/point_rend.yml
+- configs/poolformer/poolformer.yml
 - configs/psanet/psanet.yml
 - configs/pspnet/pspnet.yml
 - configs/resnest/resnest.yml

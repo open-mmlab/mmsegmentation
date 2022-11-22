@@ -219,9 +219,15 @@ data = dict(
 log_config = dict(  # config to register logger hook
     interval=50,  # Interval to print the log
     hooks=[
-        # dict(type='TensorboardLoggerHook')  # The Tensorboard logger is also supported
-        dict(type='TextLoggerHook', by_epoch=False)
+        dict(type='TextLoggerHook', by_epoch=False),
+        dict(type='TensorboardLoggerHook', by_epoch=False),
+        dict(type='MMSegWandbHook', by_epoch=False, # The Wandb logger is also supported, It requires `wandb` to be installed.
+             init_kwargs={'entity': "OpenMMLab", # The entity used to log on Wandb
+                          'project': "MMSeg", # Project name in WandB
+                          'config': cfg_dict}), # Check https://docs.wandb.ai/ref/python/init for more init arguments.
+        # MMSegWandbHook is mmseg implementation of WandbLoggerHook. ClearMLLoggerHook, DvcliveLoggerHook, MlflowLoggerHook, NeptuneLoggerHook, PaviLoggerHook, SegmindLoggerHook are also supported based on MMCV implementation.
     ])
+
 dist_params = dict(backend='nccl')  # Parameters to setup distributed training, the port can also be set.
 log_level = 'INFO'  # The level of logging.
 load_from = None  # load models as a pre-trained model from a given path. This will not resume training.
