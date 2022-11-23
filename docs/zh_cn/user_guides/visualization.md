@@ -87,7 +87,6 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 <img src="https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png" width="70%"/>
 </div>
 
-
 ```shell
 wget https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png --output-document aachen_000000_000019_leftImg8bit.png
 wget https://user-images.githubusercontent.com/24582831/189833143-15f60f8a-4d1e-4cbb-a6e7-5e2233869fac.png --output-document aachen_000000_000019_gtFine_labelTrainIds.png
@@ -171,4 +170,4 @@ seg_local_visualizer.add_datasample(out_file, image,
 <img src="https://user-images.githubusercontent.com/24582831/189835713-c0534054-4bfa-4b75-9254-0afbeb5ff02e.png" width="70%"/>
 </div>
 
-如果你想知道更多的关于可视化的使用指引，你可以参考 MMEngine 中的[可视化教程]([https://mmengine.readthedocs.io/en/latest/advanced_tutorials/visualization.html](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md))
+如果你想知道更多的关于可视化的使用指引，你可以参考 MMEngine 中的[可视化教程](<[https://mmengine.readthedocs.io/en/latest/advanced_tutorials/visualization.html](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md)>)
