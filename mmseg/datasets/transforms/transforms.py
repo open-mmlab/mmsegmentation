@@ -1230,18 +1230,14 @@ class GenerateEdge(BaseTransform):
 
 @TRANSFORMS.register_module()
 class ResizeShortestEdge(BaseTransform):
-    """Resize images & mask from a list of multiple scales.
+    """Resize the image and mask while keeping the aspect ratio unchanged.
 
-    This transform resizes the input image to some scale. Bboxes and masks are
-    then resized with the same scale factor. Resize scale will be randomly
-    selected from ``scales``.
+    Modified from https://github.com/facebookresearch/detectron2/blob/main/detectron2/data/transforms/augmentation_impl.py#L130  # noqa:E501
 
-    How to choose the target scale to resize the image will follow the rules
-    below:
-
-    - if `scale` is a list of tuple, the target scale is sampled from the list
-      uniformally.
-    - if `scale` is a tuple, the target scale will be set to the tuple.
+    This transform attempts to scale the shorter edge to the given
+    `short_edge_length` , as long as the longer edge does not exceed
+    `max_size`. If `max_size` is reached, then downscale so that the longer
+    edge does not exceed `max_size`.
 
     Required Keys:
 
@@ -1262,36 +1258,21 @@ class ResizeShortestEdge(BaseTransform):
 
 
     Args:
-        short_edge_length (Union[List[int], int],): Images scales for resizing.
-        max_size:
-        sample_style:
-        resize_type (str): The type of resize class to use. Defaults to
-            "Resize".
-        **resize_kwargs: Other keyword arguments for the ``resize_type``.
-
-    Note:
-        By defaults, the ``resize_type`` is "Resize", if it's not overwritten
-        by your registry, it indicates the :class:`mmcv.Resize`. And therefore,
-        ``resize_kwargs`` accepts any keyword arguments of it, like
-        ``keep_ratio``, ``interpolation`` and so on.
-
-        If you want to use your custom resize class, the class should accept
-        ``scale`` argument and have ``scale`` attribution which determines the
-        resize shape.
+        short_edge_length (Union[List[int], Tuple[int, int]]): Images scales for
+            resizing.
+        max_size (int): The maximum allowed longest edge length.
+        sample_type (str): Short-edge sampling method. Defaults to 'choice'.
     """
 
     def __init__(self,
-                 short_edge_length: Union[List[int], int],
+                 short_edge_length: Union[List[int], Tuple[int, int]],
                  max_size: int,
-                 sample_style: str = 'range',
-                 resize_type: str = 'Resize',
-                 **resize_kwargs) -> None:
+                 sample_style: str = 'choice') -> None:
         super().__init__()
         assert sample_style in ['range', 'choice'], sample_style
 
         self.is_range = sample_style == 'range'
-        if isinstance(short_edge_length, int):
-            short_edge_length = (short_edge_length, short_edge_length)
+
         if self.is_range:
             assert len(short_edge_length) == 2
         else:
@@ -1300,9 +1281,12 @@ class ResizeShortestEdge(BaseTransform):
         self.short_edge_length = short_edge_length
         self.max_size = max_size
 
-        self.resize_cfg = dict(type=resize_type, **resize_kwargs)
-        # create a empty Resize object
-        self.resize = TRANSFORMS.build({'scale': 0, **self.resize_cfg})
+        # Create a empty Resize object
+        self.resize = TRANSFORMS.build({
+            'type': 'Resize',
+            'scale': 0,
+            'keep_ratio': True
+        })
 
     def _get_output_shape(self, img, short_edge_length,
                           max_size) -> Tuple[int, int]:
@@ -1326,11 +1310,10 @@ class ResizeShortestEdge(BaseTransform):
     def transform(self, results: Dict) -> Dict:
         if self.is_range:
             length = random.randint(self.short_edge_length[0],
-                                    self.short_edge_length[1])
+                                    self.short_edge_length[1] + 1)
         else:
             length = random.choice(self.short_edge_length)
 
         self.resize.scale = self._get_output_shape(results['img'], length,
                                                    self.max_size)
-        results = self.resize(results)
-        return results
+        return self.resize(results)

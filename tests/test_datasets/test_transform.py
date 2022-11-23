@@ -706,3 +706,77 @@ def test_generate_edge():
         [1, 1, 0, 0, 0],
         [1, 0, 0, 0, 0],
     ]))
+
+
+def test_resize_shortest_edge():
+    # test sampel_style
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='ResizeShortestEdge',
+            short_edge_length=[128, 256, 512],
+            max_size=1024,
+            sample_style='choose')
+        transform = TRANSFORMS.build(transform)
+
+    # test short_edge_length is List[int] when sample_style == 'choice'
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='ResizeShortestEdge',
+            short_edge_length=[0.1, 0.2, 0.3],
+            max_size=512,
+            sample_style='choice')
+        transform = TRANSFORMS.build(transform)
+
+    # test short_edge_length when sample_style == 'range'
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='ResizeShortestEdge',
+            short_edge_length=(100, 200, 300),
+            max_size=512,
+            sample_style='range')
+        transform = TRANSFORMS.build(transform)
+
+    # test sample_style='choice'
+    transform = dict(
+        type='ResizeShortestEdge',
+        short_edge_length=[128, 256, 512],
+        max_size=1024,
+        sample_style='choice')
+    transform = TRANSFORMS.build(transform)
+
+    results = dict()
+    results['img'] = np.random.randn(233, 332, 3)
+    results['gt_seg_map'] = np.random.randint(0, 19, (288, 288))
+
+    results = transform(results)
+    assert results['img_shape'][0] in [128, 256, 512]
+    assert results['gt_seg_map'].shape[0] in [128, 256, 512]
+
+    # test sample_style='range'
+    transform = dict(
+        type='ResizeShortestEdge',
+        short_edge_length=(256, 512),
+        max_size=1024,
+        sample_style='range')
+    transform = TRANSFORMS.build(transform)
+
+    results['img'] = np.random.randn(233, 332, 3)
+    results['gt_seg_map'] = np.random.randint(0, 19, (233, 332))
+    results = transform(results)
+    assert 256 <= results['img_shape'][0] <= 512
+    assert 256 <= results['gt_seg_map'].shape[0] <= 512
+
+    # test max_size
+    transform = dict(
+        type='ResizeShortestEdge',
+        short_edge_length=(256, 256),
+        max_size=300,
+        sample_style='range')
+    transform = TRANSFORMS.build(transform)
+
+    results['img'] = np.random.randn(233, 332, 3)
+    results['gt_seg_map'] = np.random.randint(0, 19, (233, 332))
+
+    results = transform(results)
+    assert results['img_shape'][1] == 300
+    assert results['gt_seg_map'].shape[1] == 300
