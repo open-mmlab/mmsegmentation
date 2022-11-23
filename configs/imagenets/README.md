@@ -29,15 +29,7 @@ The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 te
 | ImageNet-S300 | 300      | 384862  | 3000       | 4097  | 9088  |
 | ImageNet-S    | 919      | 1183322 | 9190       | 12419 | 27423 |
 
-## Semi-supervised semantic segmentation
-
-To finetune with different pre-trained models, please convert keys following [vit](../vit/README.md).
-
-```shell
-python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth pretrain/mae_pretrain_vit_base_mmcls.pth
-```
-
-### Results and models
+## Semi-supervised Semantic Segmentation Results
 
 | Method | Backbone | pre-training epochs | pre-training mode | Crop Size | Lr schd (Epoch) | Mem (GB) | Inf time (fps) | mIoU | pre-trained                                                                                                         | config                                                                                                                                                 | download                 |
 | ------ | -------- | ------------------- | ----------------- | --------- | --------------: | -------- | -------------- | ---: | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
@@ -46,6 +38,11 @@ python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pr
 | SERE   | ViT-S/16 | 100                 | SSL               | 224x224   |             100 |          |                | 41.0 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_pretrained_vit_small_ep100.pth) | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_pretrained_fp16_8x32_224x224_100ep_imagenets919.py) | [model](<>) \| [log](<>) |
 | SERE   | ViT-S/16 | 100                 | SSL+Sup           | 224x224   |             100 |          |                | 59.4 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_finetuned_vit_small_ep100.pth)  | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)  | [model](<>) \| [log](<>) |
 
+- To finetune with different pre-trained models, please convert keys following [vit](../vit/README.md).
+
+```shell
+python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth pretrain/mae_pretrain_vit_base_mmcls.pth
+```
 
 
 ## Online benchmark
