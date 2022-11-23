@@ -7,7 +7,6 @@ Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://
 ![image](https://user-images.githubusercontent.com/20515144/149651945-94501ffc-78c0-41be-a1d9-b3bfb3253370.png)
 
 
-
 ## About ImageNet-S
 
 <!-- [ABSTRACT] -->
@@ -39,27 +38,23 @@ The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 te
 | SERE   | ViT-S/16 | 100                 | SSL+Sup           | 224x224   |             100 |          |                | 59.4 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_finetuned_vit_small_ep100.pth)  | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)  | [model](<>) \| [log](<>) |
 
 
-- To finetune with different pre-trained models, please convert keys following [vit](../vit/README.md).
-
+### Training
+We provide the training configs using ViT models. The pretraining weights of ViT backbone should be converted following [vit](../vit/README.md):
 ```shell
 python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth pretrain/mae_pretrain_vit_base_mmcls.pth
 ```
 
-
-- Evaluate the test set performance on online benchmarks.
-
-
-
+### Evaluation
+- The mmsegentation supports the evaluation on the val set.
+- To evaluate the test set, please submit the prediction to the online benchmarks: ([Fully unsupervised](https://codalab.lisn.upsaclay.fr/competitions/1317)| [Distance matching](https://codalab.lisn.upsaclay.fr/competitions/1315)
+|[Semi-supervised](https://codalab.lisn.upsaclay.fr/competitions/1318)|[Free](https://codalab.lisn.upsaclay.fr/competitions/1316))
 More details about online benchmark is on the [project page](https://LUSSeg.github.io/).
 
-- Fully unsupervised protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1317)
-- Distance matching protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1315)
-- Semi-supervised protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1318)
-- Free protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1316)
+
 
 **How to submit results to online benchmark?**
 
-First set the data config in `configs/_base_/datasets/imagenets.py`:
+1. Set the data config in `configs/_base_/datasets/imagenets.py`:
 
 ```python
 test=dict(
