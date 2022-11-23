@@ -105,7 +105,7 @@ are the description of your method and are set as none by default.
 
 ## Semi-supervised semantic segmentation
 
-To finetune with different pre-trained models, please convert keys following [`vit`](../vit/README.md).
+To finetune with different pre-trained models, please convert keys following [vit](../vit/README.md).
 
 ```shell
 python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth pretrain/mae_pretrain_vit_base_mmcls.pth
