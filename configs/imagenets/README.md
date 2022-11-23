@@ -56,25 +56,26 @@ First set the data config in `configs/_base_/datasets/imagenets.py`:
 
 ```python
 test=dict(
-        type=dataset_type,
-        subset=subset,
-        data_root=data_root,
-        img_dir='test',
-        ann_dir='test-segmentation',
-        pipeline=test_pipeline)
+  type=dataset_type,
+  subset=subset,
+  data_root=data_root,
+  img_dir='test',
+  ann_dir='test-segmentation',
+  pipeline=test_pipeline)
 ```
 
 Then please generate the png files.
-Finally, please generate the required `method.txt` and zip the files.
-The generated zip file cold be submit to the evaluation server.
-Note that the `method`, `arch`, `train_data`, `train_scheme`, `link` and `description`
-are the description of your method and are set as none by default.
 
 ```shell
 python ./tools/test.py [CONFIG] \
     [CHECKPOINT] \
     --format-only --eval-options "imgfile_prefix=./imagenets"
+```
 
+Finally, please generate the required `method.txt` and zip the files.
+The generated zip file cold be submit to the evaluation server.
+
+```shell
 cd configs/imagenets
 
 # generate the required `method.txt` and zip the files.
@@ -87,6 +88,9 @@ python imagenets_submit.py --imgfile_prefix ./imagenets \
 --link [Paper/project link in method description file(.txt).] \
 --description [Method description in method description file(.txt).]
 ```
+
+Note that the `method`, `arch`, `train_data`, `train_scheme`, `link` and `description`
+are the description of your method and are set as none by default.
 
 ## Citation
 
@@ -111,7 +115,7 @@ python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pr
 
 | Method | Backbone | pre-training epochs | pre-training mode | Crop Size | Lr schd (Epoch) | Mem (GB) | Inf time (fps) | mIoU | pre-trained                                                                                                         | config                                                                                                                                                 | download                 |
 | ------ | -------- | ------------------- | ----------------- | --------- | --------------: | -------- | -------------- | ---: | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
-| MAE    | ViT-B/16 | 1600                | SSL               | 224x224   |             100 |          |                |      | [pre-trained](https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth)                                | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_pretrained_fp16_8x32_224x224_100ep_imagenets919.py)   | [model](<>) \| [log](<>) |
-| MAE    | ViT-B/16 | 1600                | SSL+Sup           | 224x224   |             100 |          |                |      | [pre-trained](https://dl.fbaipublicfiles.com/mae/finetune/mae_finetuned_vit_base.pth)                               | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)    | [model](<>) \| [log](<>) |
+| MAE    | ViT-B/16 | 1600                | SSL               | 224x224   |             100 |          |                | 40.0 | [pre-trained](https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth)                                | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_pretrained_fp16_8x32_224x224_100ep_imagenets919.py)   | [model](<>) \| [log](<>) |
+| MAE    | ViT-B/16 | 1600                | SSL+Sup           | 224x224   |             100 |          |                | 61.6 | [pre-trained](https://dl.fbaipublicfiles.com/mae/finetune/mae_finetuned_vit_base.pth)                               | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)    | [model](<>) \| [log](<>) |
 | SERE   | ViT-S/16 | 100                 | SSL               | 224x224   |             100 |          |                | 41.0 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_pretrained_vit_small_ep100.pth) | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_pretrained_fp16_8x32_224x224_100ep_imagenets919.py) | [model](<>) \| [log](<>) |
 | SERE   | ViT-S/16 | 100                 | SSL+Sup           | 224x224   |             100 |          |                | 59.4 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_finetuned_vit_small_ep100.pth)  | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)  | [model](<>) \| [log](<>) |
