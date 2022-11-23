@@ -45,7 +45,7 @@ python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pr
 ```
 
 ### Evaluation
-- The mmsegentation supports the evaluation on the val set.
+- The mmsegmentation supports the evaluation on the val set.
 - To evaluate the test set, please submit the prediction to the online benchmarks: ([Fully unsupervised](https://codalab.lisn.upsaclay.fr/competitions/1317)| [Distance matching](https://codalab.lisn.upsaclay.fr/competitions/1315)
 |[Semi-supervised](https://codalab.lisn.upsaclay.fr/competitions/1318)|[Free](https://codalab.lisn.upsaclay.fr/competitions/1316))
 More details about online benchmark is on the [project page](https://LUSSeg.github.io/).
@@ -64,7 +64,7 @@ test=dict(
   pipeline=test_pipeline)
 ```
 
-2. Generate the prediction files of the test set.
+2. Generate the prediction results of the test set.
 
 ```shell
 python ./tools/test.py [CONFIG] \
@@ -72,28 +72,23 @@ python ./tools/test.py [CONFIG] \
     --format-only --eval-options "imgfile_prefix=./imagenets"
 ```
 
-3. Generate the `method.txt` and zip the files required by the online benchmark.
+3. Generate the method description file `method.txt` and zip the prediction results.
 The generated zip file can be submit to the online evaluation server.
 
 ```shell
 cd configs/imagenets
 
-# generate the required `method.txt` and zip the files.
-
 python imagenets_submit.py --imgfile_prefix ./imagenets \
---method [Method name in method description file(.txt).] \
---arch [The model architecture in method description file(.txt).] \
---train_data [Training data in method description file(.txt).] \
---train_scheme [Training scheme in method description file(.txt), e.g., SSL, Sup, SSL+Sup.] \
---link [Paper/project link in method description file(.txt).] \
---description [Method description in method description file(.txt).]
+--method [Method name.] \
+--arch [The model architecture.] \
+--train_data [Training data.] \
+--train_scheme [Training scheme description, e.g., SSL, Sup, SSL+Sup.] \
+--link [Paper/project link.] \
+--description [Method description.]
 ```
 
 Note that the `method`, `arch`, `train_data`, `train_scheme`, `link` and `description`
 are the description of your method and are set as none by default.
-
-
-
 
 
 ## Other Apps and Sourcecode using ImageNet-S
