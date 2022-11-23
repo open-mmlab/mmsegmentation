@@ -1,25 +1,27 @@
 import argparse
-import json
 import os
 import shutil
 
 
-
 def parse_args():
     parser = argparse.ArgumentParser(description='Inference')
-    parser.add_argument('--imgfile_prefix', 
-                        type=str, 
-                        required=True,
-                        help='The prefix of output image file')
-    parser.add_argument('--method',
-                        default='example submission',
-                        help='Method name in method description file(.txt).')
-    parser.add_argument('--arch',
-                        metavar='ARCH',
-                        help='The model architecture in method description file(.txt).')
-    parser.add_argument('--train_data',
-                        default='null',
-                        help='Training data in method description file(.txt).')
+    parser.add_argument(
+        '--imgfile_prefix',
+        type=str,
+        required=True,
+        help='The prefix of output image file')
+    parser.add_argument(
+        '--method',
+        default='example submission',
+        help='Method name in method description file(.txt).')
+    parser.add_argument(
+        '--arch',
+        metavar='ARCH',
+        help='The model architecture in method description file(.txt).')
+    parser.add_argument(
+        '--train_data',
+        default='null',
+        help='Training data in method description file(.txt).')
     parser.add_argument(
         '--train_scheme',
         default='null',
@@ -51,4 +53,5 @@ if __name__ == '__main__':
         f.write(method)
 
     # zip for submission
-    shutil.make_archive(args.imgfile_prefix, 'zip', root_dir=args.imgfile_prefix)
+    shutil.make_archive(
+        args.imgfile_prefix, 'zip', root_dir=args.imgfile_prefix)

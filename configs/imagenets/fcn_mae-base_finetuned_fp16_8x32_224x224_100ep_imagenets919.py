@@ -1,8 +1,6 @@
 _base_ = [
-    '../_base_/models/fcn_r50-d8.py',
-    '../_base_/datasets/imagenets.py', 
-    '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_20k.py'
+    '../_base_/models/fcn_r50-d8.py', '../_base_/datasets/imagenets.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
 ]
 
 model = dict(
@@ -37,7 +35,7 @@ model = dict(
         ignore_index=1000,
         downsample_label_ratio=8,
         init_cfg=dict(
-            type='TruncNormal', std=2e-5, override=dict(name='conv_seg'))), 
+            type='TruncNormal', std=2e-5, override=dict(name='conv_seg'))),
     auxiliary_head=None)
 
 optimizer = dict(

@@ -41,8 +41,9 @@ class LoadImageNetSImageFromFile(LoadImageFromFile):
         if not self.downsample_large_image:
             return results
 
-        # Images that are too large 
-        # (H * W > 1000 * 100, these images are inclued in ImageNetSDataset.LARGES) 
+        # Images that are too large
+        # (H * W > 1000 * 100,
+        # these images are included in ImageNetSDataset.LARGES)
         # will be downsampled to 1000 along the longer side.
         H, W = results['img_shape'][:2]
         if H * W > pow(1000, 2):
@@ -68,7 +69,7 @@ class LoadImageNetSAnnotations(LoadAnnotations):
     """Load annotations for the ImageNetS dataset. The annotations in
     ImageNet-S are saved as RGB images.
 
-    The annotations with format of RGB should be 
+    The annotations with format of RGB should be
     converted to the format of Gray as R + G * 256.
     """
 
@@ -83,11 +84,11 @@ class LoadImageNetSAnnotations(LoadAnnotations):
         """
         results = super().__call__(results)
 
-        # The annotations in ImageNet-S are saved as RGB images, 
-        # due to 919 > 255 (uppper bound of gray images).
+        # The annotations in ImageNet-S are saved as RGB images,
+        # due to 919 > 255 (upper bound of gray images).
 
-        # For training, 
-        # the annotations with format of RGB should be 
+        # For training,
+        # the annotations with format of RGB should be
         # converted to the format of Gray as R + G * 256.
         results['gt_semantic_seg'] = \
             results['gt_semantic_seg'][:, :, 1] * 256 + \
