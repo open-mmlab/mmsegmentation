@@ -15,7 +15,7 @@ OpenMMLab 将模型训练和测试过程抽象为 `Runner`, 插入钩子可以�
 不建议用户修改默认钩子的优先级，可以参考 [mmengine hooks 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/hook.md) 了解钩子优先级的定义.
 下面是 MMSegmentation 中所用到的默认钩子：
 
-|                                                           钩子                                                            |                                               用法                                               |      优先级       |
+|                                                           钩子                                                            |                                               功能                                               |      优先级       |
 | :-----------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :---------------: |
 |            [IterTimerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/iter_timer_hook.py)            |                                    记录 iteration 花费的时间.                                    |    NORMAL (50)    |
 |               [LoggerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/logger_hook.py)                | 从 `Runner` 里不同的组件中收集日志记录，并将其输出到终端， JSON 文件，tensorboard，wandb 等下游. | BELOW_NORMAL (60) |
@@ -37,6 +37,31 @@ default_hooks = dict(
 ```
 
 以上默认钩子除 `SegVisualizationHook` 外都是在 MMEngine 中所实现, `SegVisualizationHook` 是在 MMSegmentation 里被实现的钩子, 之后会专门介绍.
+
+- 修改默认的钩子
+
+以 `default_hooks` 里面的 `logger` 和 `checkpoint` 为例, 我们来介绍如何修改 `default_hooks` 中默认的钩子.
+
+(1) 模型保存配置
+MMEngine 执行器将使用 `checkpoint` 来初始化[模型保存钩子 (CheckpointHook)](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19).
+
+```python
+checkpoint = dict(interval=1)
+```
+
+用户可以设置 `max_keep_ckpts` 来只保存少量的检查点或者用 `save_optimizer` 来决定是否保存 optimizer 的信息.
+更多相关参数的细节可以参考[这里](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.CheckpointHook.html?highlight=CheckpointHook).
+
+(2) 日志配置
+`日志钩子 (LoggerHook)` 被用来收集 `执行器 (Runner)` 里面不同组件的日志信息然后写入终端, JSON 文件, tensorboard 和 wandb 等地方.
+
+```python
+logger_hook_cfg = dict(interval=20)
+```
+
+在最新的 1.x 版本的 MMSegmentation 里面, 一些日志钩子 (LoggerHook) 例如 `TextLoggerHook`, `WandbLoggerHook` 和 `TensorboardLoggerHook` 将不再被使用.
+作为替代, MMEngine 使用 `LogProcessor` 来处理上述钩子处理的信息，它们现在在 [`MessageHub`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/logging/message_hub.py#L17),
+[`WandbVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L324) 和 [`TensorboardVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L472) 里面.
 
 - 自定义钩子 (custom hooks)
 
