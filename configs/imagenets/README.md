@@ -50,11 +50,9 @@ python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pr
 |[Semi-supervised](https://codalab.lisn.upsaclay.fr/competitions/1318)|[Free](https://codalab.lisn.upsaclay.fr/competitions/1316))
 More details about online benchmark is on the [project page](https://LUSSeg.github.io/).
 
+#### Submit test set results to online benchmarks:
 
-
-**How to submit results to online benchmark?**
-
-1. Set the data config in `configs/_base_/datasets/imagenets.py`:
+1. Change the evaluation dataset from 'val set' to 'test set' in the data config file `configs/_base_/datasets/imagenets.py`:
 
 ```python
 test=dict(
@@ -66,7 +64,7 @@ test=dict(
   pipeline=test_pipeline)
 ```
 
-Then please generate the png files.
+2. Generate the prediction files of the test set.
 
 ```shell
 python ./tools/test.py [CONFIG] \
@@ -74,8 +72,8 @@ python ./tools/test.py [CONFIG] \
     --format-only --eval-options "imgfile_prefix=./imagenets"
 ```
 
-Finally, please generate the required `method.txt` and zip the files.
-The generated zip file cold be submit to the evaluation server.
+3. Generate the `method.txt` and zip the files required by the online benchmark.
+The generated zip file can be submit to the online evaluation server.
 
 ```shell
 cd configs/imagenets
