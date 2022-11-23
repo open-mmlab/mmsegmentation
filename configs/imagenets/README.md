@@ -14,12 +14,6 @@ Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://
 
 Powered by the ImageNet dataset, unsupervised learning on large-scale data has made significant advances for classification tasks. There are two major challenges to allowing such an attractive learning modality for segmentation tasks: i) a large-scale benchmark for assessing algorithms is missing; ii) unsupervised shape representation learning is difficult. We propose a new problem of large-scale unsupervised semantic segmentation (LUSS) with a newly created benchmark dataset to track the research progress. Based on the ImageNet dataset, we propose the ImageNet-S dataset has 1.2 million training images and 50k high-quality semantic segmentation annotations to support unsupervised/semi-supervised semantic segmentation on the ImageNet dataset. 
 
-<!-- [ALGORITHM] -->
-
-<a href="blob/main/mmseg/datasets/imagenets.py#L92">Code Snippet</a>
-
-
-## Image Numbers
 
 The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 testing images from 919 categories. We annotate 39842 val/test images and 9190 training images with precise pixel-level masks.
 
@@ -28,6 +22,10 @@ The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 te
 | ImageNet-S50  | 50       | 64431   | 500        | 752   | 1682  |
 | ImageNet-S300 | 300      | 384862  | 3000       | 4097  | 9088  |
 | ImageNet-S    | 919      | 1183322 | 9190       | 12419 | 27423 |
+
+<!-- [ALGORITHM] -->
+
+<a href="blob/main/mmseg/datasets/imagenets.py#L92">Code Snippet</a>
 
 ## Semi-supervised Semantic Segmentation Results
 
