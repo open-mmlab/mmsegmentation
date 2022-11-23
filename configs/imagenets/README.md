@@ -69,7 +69,7 @@ test=dict(
 ```shell
 python ./tools/test.py [CONFIG] \
     [CHECKPOINT] \
-    --format-only --eval-options "imgfile_prefix=./imagenets"
+    --format-only --eval-options "imgfile_prefix=[path/to/the/saved/test/prediction/results.]"
 ```
 
 3. Generate the method description file `method.txt` and zip the prediction results.
@@ -78,7 +78,7 @@ The generated zip file can be submit to the online evaluation server.
 ```shell
 cd configs/imagenets
 
-python imagenets_submit.py --imgfile_prefix ./imagenets \
+python imagenets_submit.py --imgfile_prefix [path/to/the/saved/test/prediction/results.] \
 --method [Method name.] \
 --arch [The model architecture.] \
 --train_data [Training data.] \
