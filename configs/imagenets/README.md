@@ -1,12 +1,8 @@
 # ImageNet-S Dataset for Large-scale Unsupervised/Semi-supervised Semantic Segmentation
 
-Large-scale Unsupervised Semantic Segmentation (TPAMI 2022)
+Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://lusseg.github.io/">Project page</a>, <a href="https://arxiv.org/abs/2106.03149">Paper link</a>  <a href="https://github.com/LUSSeg/ImageNet-S">Dataset Download</a> )
 
-<a href="https://lusseg.github.io/">Project page</a>
-
-<a href="https://arxiv.org/abs/2106.03149">Paper link</a>
-
-<a href="https://paperswithcode.com/dataset/imagenet-s">PaperWithCode</a>
+<a href="https://paperswithcode.com/dataset/imagenet-s">PaperWithCode Leaderboard</a>
 
 ## Introduction
 
