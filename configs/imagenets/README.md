@@ -1,8 +1,8 @@
 # ImageNet-S Dataset for Large-scale Unsupervised/Semi-supervised Semantic Segmentation
 
-Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://lusseg.github.io/">Project page</a>, <a href="https://arxiv.org/abs/2106.03149">Paper link</a>  <a href="https://github.com/LUSSeg/ImageNet-S">Dataset Download</a> )
+Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://lusseg.github.io/">Project page</a> | <a href="https://arxiv.org/abs/2106.03149">Paper link</a> | <a href="https://github.com/LUSSeg/ImageNet-S">Dataset Download</a> )
 
-<a href="https://paperswithcode.com/dataset/imagenet-s">PaperWithCode Leaderboard</a>
+
 
 ## Introduction
 
@@ -10,22 +10,19 @@ Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://
 
 <!-- [ALGORITHM] -->
 
-<a href="https://github.com/LUSSeg/ImageNetSegModel">Official Repo</a>
-
 <a href="blob/main/mmseg/datasets/imagenets.py#L92">Code Snippet</a>
 
 ## Abstract
 
 <!-- [ABSTRACT] -->
 
-Powered by the ImageNet dataset, unsupervised learning on large-scale data has made significant advances for classification tasks. There are two major challenges to allowing such an attractive learning modality for segmentation tasks: i) a large-scale benchmark for assessing algorithms is missing; ii) unsupervised shape representation learning is difficult. We propose a new problem of large-scale unsupervised semantic segmentation (LUSS) with a newly created benchmark dataset to track the research progress. Based on the ImageNet dataset, we propose the ImageNet-S dataset with 1.2 million training images and 50k high-quality semantic segmentation annotations for evaluation. Our benchmark has a high data diversity and a clear task objective. We also present a simple yet effective baseline method that works surprisingly well for LUSS. In addition, we benchmark related un/weakly/fully supervised methods accordingly, identifying the challenges and possible directions of LUSS.
+Powered by the ImageNet dataset, unsupervised learning on large-scale data has made significant advances for classification tasks. There are two major challenges to allowing such an attractive learning modality for segmentation tasks: i) a large-scale benchmark for assessing algorithms is missing; ii) unsupervised shape representation learning is difficult. We propose a new problem of large-scale unsupervised semantic segmentation (LUSS) with a newly created benchmark dataset to track the research progress. Based on the ImageNet dataset,  we propose the ImageNet-S dataset has 1.2 million training images and 50k high-quality semantic segmentation annotations to support unsupervised/semi-supervised semantic segmentation on the ImageNet dataset. 
 
-## Apps and Sourcecode
+## Apps and Sourcecode using ImageNet-S
 
 - Unsupervised semantic segmentation: [PASS](https://github.com/LUSSeg/PASS)
 - Semi-supervised semantic segmentation: [ImageNetSegModel](https://github.com/LUSSeg/ImageNetSegModel)
 
-**Here we also provide the sourecode for semi-supervised semantic segmentation.**
 
 ## Image Numbers
 
@@ -38,6 +35,8 @@ The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 te
 | ImageNet-S    | 919      | 1183322 | 9190       | 12419 | 27423 |
 
 ## Online benchmark
+
+<a href="https://paperswithcode.com/dataset/imagenet-s">**PaperWithCode Leaderboard**</a>
 
 More details about online benchmark is on the [project page](https://LUSSeg.github.io/).
 
