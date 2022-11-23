@@ -13,28 +13,28 @@ def parse_args():
     parser.add_argument(
         '--method',
         default='example submission',
-        help='Method name in method description file(.txt).')
+        help='Method name in method description file(method.txt).')
     parser.add_argument(
         '--arch',
         metavar='ARCH',
-        help='The model architecture in method description file(.txt).')
+        help='The model architecture in method description file(method.txt).')
     parser.add_argument(
         '--train_data',
         default='null',
-        help='Training data in method description file(.txt).')
+        help='Training data in method description file(method.txt).')
     parser.add_argument(
         '--train_scheme',
         default='null',
-        help='Training scheme in method description file(.txt), '
+        help='Training scheme in method description file(method.txt), '
         'e.g., SSL, Sup, SSL+Sup.')
     parser.add_argument(
         '--link',
         default='null',
-        help='Paper/project link in method description file(.txt).')
+        help='Paper/project link in method description file(method.txt).')
     parser.add_argument(
         '--description',
         default='null',
-        help='Method description in method description file(.txt).')
+        help='Method description in method description file(method.txt).')
     args = parser.parse_args()
 
     return args
