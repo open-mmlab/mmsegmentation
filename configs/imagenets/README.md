@@ -1,4 +1,4 @@
-# ImageNet-S Dataset for Large-scale Unsupervised/Semi-supervised Semantic Segmentation
+# ImageNet-S Dataset for Large-scale Semantic Segmentation
 
 Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://lusseg.github.io/">Project page</a> | <a href="https://arxiv.org/abs/2106.03149">Paper link</a> | <a href="https://github.com/LUSSeg/ImageNet-S">Dataset Download</a> )
 
@@ -18,10 +18,7 @@ Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://
 
 Powered by the ImageNet dataset, unsupervised learning on large-scale data has made significant advances for classification tasks. There are two major challenges to allowing such an attractive learning modality for segmentation tasks: i) a large-scale benchmark for assessing algorithms is missing; ii) unsupervised shape representation learning is difficult. We propose a new problem of large-scale unsupervised semantic segmentation (LUSS) with a newly created benchmark dataset to track the research progress. Based on the ImageNet dataset,  we propose the ImageNet-S dataset has 1.2 million training images and 50k high-quality semantic segmentation annotations to support unsupervised/semi-supervised semantic segmentation on the ImageNet dataset. 
 
-## Apps and Sourcecode using ImageNet-S
 
-- Unsupervised semantic segmentation: [PASS](https://github.com/LUSSeg/PASS)
-- Semi-supervised semantic segmentation: [ImageNetSegModel](https://github.com/LUSSeg/ImageNetSegModel)
 
 
 ## Image Numbers
@@ -87,16 +84,7 @@ python imagenets_submit.py --imgfile_prefix ./imagenets \
 Note that the `method`, `arch`, `train_data`, `train_scheme`, `link` and `description`
 are the description of your method and are set as none by default.
 
-## Citation
 
-```bibtex
-@article{gao2022luss,
-  title={Large-scale Unsupervised Semantic Segmentation},
-  author={Gao, Shanghua and Li, Zhong-Yu and Yang, Ming-Hsuan and Cheng, Ming-Ming and Han, Junwei and Torr, Philip},
-  journal=TPAMI,
-  year={2022}
-}
-```
 
 ## Semi-supervised semantic segmentation
 
@@ -114,3 +102,21 @@ python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pr
 | MAE    | ViT-B/16 | 1600                | SSL+Sup           | 224x224   |             100 |          |                | 61.6 | [pre-trained](https://dl.fbaipublicfiles.com/mae/finetune/mae_finetuned_vit_base.pth)                               | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)    | [model](<>) \| [log](<>) |
 | SERE   | ViT-S/16 | 100                 | SSL               | 224x224   |             100 |          |                | 41.0 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_pretrained_vit_small_ep100.pth) | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_pretrained_fp16_8x32_224x224_100ep_imagenets919.py) | [model](<>) \| [log](<>) |
 | SERE   | ViT-S/16 | 100                 | SSL+Sup           | 224x224   |             100 |          |                | 59.4 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_finetuned_vit_small_ep100.pth)  | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)  | [model](<>) \| [log](<>) |
+
+
+
+## Other Apps and Sourcecode using ImageNet-S
+
+- Unsupervised semantic segmentation: [PASS](https://github.com/LUSSeg/PASS)
+- Semi-supervised semantic segmentation: [ImageNetSegModel](https://github.com/LUSSeg/ImageNetSegModel)
+
+## Citation
+
+```bibtex
+@article{gao2022luss,
+  title={Large-scale Unsupervised Semantic Segmentation},
+  author={Gao, Shanghua and Li, Zhong-Yu and Yang, Ming-Hsuan and Cheng, Ming-Ming and Han, Junwei and Torr, Philip},
+  journal=TPAMI,
+  year={2022}
+}
+```
