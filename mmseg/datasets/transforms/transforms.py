@@ -1232,7 +1232,7 @@ class GenerateEdge(BaseTransform):
 class ResizeShortestEdge(BaseTransform):
     """Resize the image and mask while keeping the aspect ratio unchanged.
 
-    Modified from https://github.com/facebookresearch/detectron2/blob/main/detectron2/data/transforms/augmentation_impl.py#L130  # noqa:E501
+    Modified from https://github.com/facebookresearch/detectron2/blob/main/detectron2/data/transforms/augmentation_impl.py#L130 (Apache-2.0 License) # noqa:E501
 
     This transform attempts to scale the shorter edge to the given
     `scale`, as long as the longer edge does not exceed `max_size`.
@@ -1258,12 +1258,15 @@ class ResizeShortestEdge(BaseTransform):
 
 
     Args:
-        scale (int): The target short edge length.
+        scale (Union[int, Tuple[int, int]]): The target short edge length.
+            If it's tuple, will select the min value as the short edge length.
         max_size (int): The maximum allowed longest edge length.
     """
 
-    def __init__(self, scale: int, max_size: int) -> None:
+    def __init__(self, scale: Union[int, Tuple[int, int]],
+                 max_size: int) -> None:
         super().__init__()
+        self.scale = scale
         self.max_size = max_size
 
         # Create a empty Resize object
@@ -1272,9 +1275,16 @@ class ResizeShortestEdge(BaseTransform):
             'scale': 0,
             'keep_ratio': True
         })
-        self.scale = scale
 
     def _get_output_shape(self, img, short_edge_length) -> Tuple[int, int]:
+        """Compute the target image shape with the given `short_edge_length`.
+
+        Args:
+            img (np.ndarray): The input image.
+            short_edge_length (Union[int, Tuple[int, int]]): The target short
+                edge length. If it's tuple, will select the min value as the
+                short edge length.
+        """
         h, w = img.shape[:2]
         if isinstance(short_edge_length, int):
             size = short_edge_length * 1.0
