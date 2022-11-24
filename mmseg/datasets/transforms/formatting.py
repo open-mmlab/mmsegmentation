@@ -68,9 +68,11 @@ class PackSegInputs(BaseTransform):
 
         data_sample = SegDataSample()
         if 'gt_seg_map' in results:
+            # gt_sem_seg_data = dict(
+            #     data=to_tensor(results['gt_seg_map'][None,
+            #                                          ...].astype(np.int64)))
             gt_sem_seg_data = dict(
-                data=to_tensor(results['gt_seg_map'][None,
-                                                     ...].astype(np.int64)))
+                data=to_tensor(results['gt_seg_map'].astype(np.int64)))
             data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
 
         img_meta = {}

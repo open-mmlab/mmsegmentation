@@ -11,7 +11,7 @@ from torch import Tensor
 from mmseg.structures import build_pixel_sampler
 from mmseg.utils import ConfigType, SampleList
 from ..builder import build_loss
-# from ..losses import accuracy
+from ..losses import accuracy
 from ..utils import resize
 
 
@@ -334,8 +334,8 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
 
-        # loss['acc_seg'] = accuracy(
-        #     seg_logits, seg_label, ignore_index=self.ignore_index)
+        loss['acc_seg'] = accuracy(
+            seg_logits, seg_label, ignore_index=self.ignore_index)
         return loss
 
     def predict_by_feat(self, seg_logits: Tensor,
