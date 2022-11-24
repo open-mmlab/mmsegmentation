@@ -44,8 +44,7 @@ python tools/model_converters/vit2mmseg.py https://dl.fbaipublicfiles.com/mae/pr
 ### Evaluation
 
 - The mmsegmentation supports the evaluation on the val set.
-- To evaluate the test set, please submit the prediction to the online benchmarks: ([Fully unsupervised](https://codalab.lisn.upsaclay.fr/competitions/1317)| [Distance matching](https://codalab.lisn.upsaclay.fr/competitions/1315)
-  |[Semi-supervised](https://codalab.lisn.upsaclay.fr/competitions/1318)|[Free](https://codalab.lisn.upsaclay.fr/competitions/1316)).
+- To evaluate the test set, please submit the prediction to the online benchmarks: ([Fully unsupervised](https://codalab.lisn.upsaclay.fr/competitions/1317)|[Distance matching](https://codalab.lisn.upsaclay.fr/competitions/1315)|[Semi-supervised](https://codalab.lisn.upsaclay.fr/competitions/1318)|[Free](https://codalab.lisn.upsaclay.fr/competitions/1316)).
   More details about online benchmark is on the [project page](https://LUSSeg.github.io/).
 
 #### Submit test set results to online benchmarks:
