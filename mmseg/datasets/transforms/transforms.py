@@ -1235,8 +1235,8 @@ class ResizeShortestEdge(BaseTransform):
     Modified from https://github.com/facebookresearch/detectron2/blob/main/detectron2/data/transforms/augmentation_impl.py#L130  # noqa:E501
 
     This transform attempts to scale the shorter edge to the given
-    `short_edge_length` , as long as the longer edge does not exceed
-    `max_size`. If `max_size` is reached, then downscale so that the longer
+    `scale`, as long as the longer edge does not exceed `max_size`.
+    If `max_size` is reached, then downscale so that the longer
     edge does not exceed `max_size`.
 
     Required Keys:
