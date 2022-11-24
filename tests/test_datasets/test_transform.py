@@ -10,6 +10,9 @@ from PIL import Image
 from mmseg.datasets.transforms import *  # noqa
 from mmseg.datasets.transforms import PhotoMetricDistortion, RandomCrop
 from mmseg.registry import TRANSFORMS
+from mmseg.utils import register_all_modules
+
+register_all_modules()
 
 
 def test_resize():
@@ -73,7 +76,6 @@ def test_resize():
 
     # test RandomChoiceResize, which `resize_type` is `ResizeShortestEdge`
     transform = dict(
-        _scope_='mmseg',
         type='RandomChoiceResize',
         scales=[128, 256, 512],
         resize_type='ResizeShortestEdge',
@@ -83,7 +85,6 @@ def test_resize():
     assert resized_results['img_shape'][0] in [128, 256, 512]
 
     transform = dict(
-        _scope_='mmseg',
         type='RandomChoiceResize',
         scales=[512],
         resize_type='ResizeShortestEdge',
@@ -93,7 +94,6 @@ def test_resize():
     assert resized_results['img_shape'][1] == 512
 
     transform = dict(
-        _scope_='mmseg',
         type='RandomChoiceResize',
         scales=[(128, 256), (256, 512), (512, 1024)],
         resize_type='ResizeShortestEdge',
