@@ -1,13 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from typing import Dict, List, Sequence, Tuple, Union
+from typing import Dict, Sequence, Tuple, Union
 
 import cv2
 import mmcv
 import numpy as np
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
-from mmengine.utils import is_list_of, is_tuple_of
+from mmengine.utils import is_tuple_of
 from numpy import random
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
@@ -1258,27 +1258,12 @@ class ResizeShortestEdge(BaseTransform):
 
 
     Args:
-        short_edge_length (Union[List[int], Tuple[int, int]]): Images scales for
-            resizing.
+        scale (int): The target short edge length.
         max_size (int): The maximum allowed longest edge length.
-        sample_type (str): Short-edge sampling method. Defaults to 'choice'.
     """
 
-    def __init__(self,
-                 short_edge_length: Union[List[int], Tuple[int, int]],
-                 max_size: int,
-                 sample_style: str = 'choice') -> None:
+    def __init__(self, scale: int, max_size: int) -> None:
         super().__init__()
-        assert sample_style in ['range', 'choice'], sample_style
-
-        self.is_range = sample_style == 'range'
-
-        if self.is_range:
-            assert len(short_edge_length) == 2
-        else:
-            assert is_list_of(short_edge_length, int)
-
-        self.short_edge_length = short_edge_length
         self.max_size = max_size
 
         # Create a empty Resize object
@@ -1287,19 +1272,22 @@ class ResizeShortestEdge(BaseTransform):
             'scale': 0,
             'keep_ratio': True
         })
+        self.scale = scale
 
-    def _get_output_shape(self, img, short_edge_length,
-                          max_size) -> Tuple[int, int]:
+    def _get_output_shape(self, img, short_edge_length) -> Tuple[int, int]:
         h, w = img.shape[:2]
-        size = short_edge_length * 1.0
+        if isinstance(short_edge_length, int):
+            size = short_edge_length * 1.0
+        elif isinstance(short_edge_length, tuple):
+            size = min(short_edge_length) * 1.0
         scale = size / min(h, w)
         if h < w:
             new_h, new_w = size, scale * w
         else:
             new_h, new_w = scale * h, size
 
-        if max(new_h, new_w) > max_size:
-            scale = max_size * 1.0 / max(new_h, new_w)
+        if max(new_h, new_w) > self.max_size:
+            scale = self.max_size * 1.0 / max(new_h, new_w)
             new_h *= scale
             new_w *= scale
 
@@ -1308,12 +1296,5 @@ class ResizeShortestEdge(BaseTransform):
         return (new_h, new_w)
 
     def transform(self, results: Dict) -> Dict:
-        if self.is_range:
-            length = random.randint(self.short_edge_length[0],
-                                    self.short_edge_length[1] + 1)
-        else:
-            length = random.choice(self.short_edge_length)
-
-        self.resize.scale = self._get_output_shape(results['img'], length,
-                                                   self.max_size)
+        self.resize.scale = self._get_output_shape(results['img'], self.scale)
         return self.resize(results)
