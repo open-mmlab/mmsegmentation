@@ -72,7 +72,8 @@ class MaskFormerHead(MMDET_MaskFormerHead):
         batch_img_metas = []
         batch_gt_instances = []
         for data_sample in batch_data_samples:
-            # TODO: Add `batch_input_shape` in metainfo of data_sample
+            # Add `batch_input_shape` in metainfo of data_sample, which would
+            # be used in MaskFormerHead of MMDetection.
             metainfo = data_sample.metainfo
             metainfo['batch_input_shape'] = metainfo['img_shape']
             data_sample.set_metainfo(metainfo)
@@ -151,6 +152,8 @@ class MaskFormerHead(MMDET_MaskFormerHead):
         for metainfo in batch_img_metas:
             metainfo['batch_input_shape'] = metainfo['img_shape']
             batch_data_samples.append(SegDataSample(metainfo=metainfo))
+        # Forward function of MaskFormerHead from MMDetection needs
+        # 'batch_data_samples' as inputs, which is image shape　actually.
         all_cls_scores, all_mask_preds = self(x, batch_data_samples)
         mask_cls_results = all_cls_scores[-1]
         mask_pred_results = all_mask_preds[-1]
@@ -159,12 +162,12 @@ class MaskFormerHead(MMDET_MaskFormerHead):
         img_shape = batch_img_metas[0]['batch_input_shape']
         mask_pred_results = F.interpolate(
             mask_pred_results,
-            size=(img_shape[0], img_shape[1]),
+            size=img_shape,
             mode='bilinear',
             align_corners=False)
 
         # semantic inference
         cls_score = F.softmax(mask_cls_results, dim=-1)[..., :-1]
         mask_pred = mask_pred_results.sigmoid()
-        seg_mask = torch.einsum('bqc,bqhw->bchw', cls_score, mask_pred)
-        return seg_mask
+        seg_logits = torch.einsum('bqc,bqhw->bchw', cls_score, mask_pred)
+        return seg_logits
