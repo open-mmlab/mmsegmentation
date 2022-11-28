@@ -48,4 +48,4 @@ model = dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
     # model training and testing settings
     train_cfg=dict(),
-    test_cfg=dict(mode='slide', crop_size=256, stride=170))
+    test_cfg=dict(mode='slide', crop_size=(256, 256), stride=(170, 170)))
