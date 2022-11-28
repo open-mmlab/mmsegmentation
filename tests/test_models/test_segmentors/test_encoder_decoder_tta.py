@@ -7,6 +7,7 @@ from mmengine.structures import PixelData
 from mmseg.registry import MODELS
 from mmseg.structures import SegDataSample
 from mmseg.utils import register_all_modules
+from .utils import *  # noqa: F401,F403
 
 register_all_modules()
 
