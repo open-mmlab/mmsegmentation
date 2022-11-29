@@ -48,7 +48,7 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 
 ### 模型测试或验证期间的可视化数据样本
 
-MMSegmentation 提供了 `SegVisualizationHook` ，它是一个 可以用于可视化 ground truth 和在模型测试和验证期间的预测分割结果的[钩子](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/hook.html) 。 它的配置在 `default_hooks` 中，更多详细信息请参见 [执行器教程](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/runner.html)。
+MMSegmentation 提供了 `SegVisualizationHook` ，它是一个可以用于可视化 ground truth 和在模型测试和验证期间的预测分割结果的[钩子](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/hook.html) 。 它的配置在 `default_hooks` 中，更多详细信息请参见 [执行器教程](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/runner.html)。
 
 例如，在 `_base_/schedules/schedule_20k.py` 中，修改 `SegVisualizationHook` 配置，将 `draw` 设置为 `True` 以启用网络推理结果的存储，`interval` 表示预测结果的采样间隔， 设置为 1 时，将保存网络的每个推理结果。 `interval` 默认设置为 50：
 
@@ -64,7 +64,6 @@ default_hooks = dict(
 ```
 
 启动训练实验后，可视化结果将在 validation loop 存储到本地文件夹中，或者在一个数据集上启动评估模型时，预测结果将存储在本地。本地的可视化的存储结果保存在 `$WORK_DIRS/vis_data` 下的 `vis_image` 中，例如：
-
 ```shell
 work_dirs/test_visual/20220810_115248/vis_data/vis_image
 ```
@@ -158,7 +157,7 @@ seg_local_visualizer.dataset_meta = dict(
              [119, 11, 32]])
 
 # 当`show=True`时，直接显示结果，
-# # 当 `show=False`时，结果将保存在本地文件夹中。
+# 当 `show=False`时，结果将保存在本地文件夹中。
 
 seg_local_visualizer.add_datasample(out_file, image,
                                     data_sample, show=False)
