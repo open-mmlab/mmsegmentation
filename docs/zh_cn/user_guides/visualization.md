@@ -64,6 +64,7 @@ default_hooks = dict(
 ```
 
 启动训练实验后，可视化结果将在 validation loop 存储到本地文件夹中，或者在一个数据集上启动评估模型时，预测结果将存储在本地。本地的可视化的存储结果保存在 `$WORK_DIRS/vis_data` 下的 `vis_image` 中，例如：
+
 ```shell
 work_dirs/test_visual/20220810_115248/vis_data/vis_image
 ```
