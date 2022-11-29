@@ -60,17 +60,26 @@ test_pipeline = [
     dict(type='LoadAnnotations', reduce_zero_label=True),
     dict(type='PackSegInputs')
 ]
-train_dataloader = dict(
-    batch_size=2,
-    num_workers=4,
-    persistent_workers=True,
-    sampler=dict(type='InfiniteSampler', shuffle=True),
+
+train_dataset = dict(
+    type='MultiImageMixDataset',
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
         data_prefix=dict(
             img_path='images/training', seg_map_path='annotations/training'),
-        pipeline=train_pipeline))
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='LoadAnnotations')
+        ]),
+    pipeline=train_pipeline)
+
+train_dataloader = dict(
+    batch_size=2,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='InfiniteSampler', shuffle=True),
+    dataset=train_dataset)
 val_dataloader = dict(
     batch_size=1,
     num_workers=4,
