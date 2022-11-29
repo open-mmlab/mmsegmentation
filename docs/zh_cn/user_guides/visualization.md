@@ -77,11 +77,11 @@ tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
 
 ### 可视化单个数据样本
 
-如果你想可视化单个样本数据，我们建议来使用 `SegLocalVisualizer` 。
+如果你想可视化单个样本数据，我们建议使用 `SegLocalVisualizer` 。
 
-`SegLocalVisualizer`是继承自MMEngine中`Visualizer`的子类，适用于MMSegmentation可视化，有关`Visualizer`的详细信息请参考在 MMEngine 中的[可视化教程](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/visualization.html) 。
+`SegLocalVisualizer`是继承自 MMEngine 中`Visualizer` 类的子类，适用于 MMSegmentation 可视化，有关`Visualizer`的详细信息请参考在 MMEngine 中的[可视化教程](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/visualization.html) 。
 
-以下是一个关于 `SegLocalVisualizer` 的一个例子，首先你可以下载这个案例中的数据根据下面的命令执行：
+以下是一个关于 `SegLocalVisualizer` 的示例，首先你可以使用下面的命令下载这个案例中的数据：
 
 <div align=center>
 <img src="https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png" width="70%"/>
@@ -99,9 +99,9 @@ import mmcv
 import os.path as osp
 import torch
 
-# `PixelData` 是 MMEngine 中用于定义的像素级注释或预测的数据结构的模块。
+# `PixelData` 是 MMEngine 中用于定义像素级标注或预测的数据结构。
 # 请参考下面的MMEngine数据结构教程文件：
-# https://github.com/open-mmlab/mmengine/tree/main/docs/en/advanced_tutorials/data_element.md
+# https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html#pixeldata
 
 from mmengine.structures import PixelData
 
