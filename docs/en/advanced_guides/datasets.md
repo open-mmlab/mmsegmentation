@@ -1,6 +1,6 @@
 # Dataset
 
-In OpenMMLab 2.0, MMEngine implements `BaseDataset` to provides some basic interfaces for downstream OpenMMLab codebase, which would inherit this base dataset class and add customization methods.
+In OpenMMLab 2.0, MMEngine implements `BaseDataset` to provide some basic interfaces for downstream OpenMMLab codebase, which would inherit this base dataset class and add customization methods.
 
 The basic function of the MMEngine `BaseDataset` is loading the dataset information which has two categories.
 One is meta information, which represents the information related to the dataset itself and sometimes needs to be obtained by the model or other external components.
@@ -11,14 +11,13 @@ More details of `BaseDataset` could be found in [MMEngine BaseDataset Documentat
 `BaseSegDataset` is a base dataset class for semantic segmentation task in MMSegmentation v1.x, which is inherited from `BaseDataset` in MMEngine.
 
 In this document, we will introduce `BaseSegDataset` class in MMSegmentation.
-First, we would introduce standard dataset format in MMSegmentation, while creating a corresponding dataset class is also necessary.
-Then, we would introduce some important methods of `BaseSegDataset`:
+First, we would introduce standard dataset format in MMSegmentation. Then, we would introduce some important methods of `BaseSegDataset`:
 
 - (1) initialization of `BaseSegDataset`, including detailed methods which would be called during this process.
 
-- (2) loading meta information and raw data information, the loading function of these two data information categories are basic function of `BaseSegDataset` for training and test process.
+- (2) loading meta information and raw data information, the loading function of these two data information categories is basic function of `BaseSegDataset` in training and test process.
 
-- (3) `__getitem__` method used to give index of data information in `BaseSegDataset` initialization, which is similar to `torch.utils.data.Dataset`.
+- (3) `__getitem__` method used to give index of data information in `BaseSegDataset` initialization, which is similar to `__getitem__` in `torch.utils.data.Dataset`.
 
 More information about `BaseSegDataset` could be found in [basesegdataset.py](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/datasets/basesegdataset.py).
 
@@ -85,16 +84,16 @@ CityscapesDataset[0]
 # }
 ```
 
-From above we can find A valid image and ground truth annotation filename pair should be like `xxx{img_suffix}`
-and `xxx{seg_map_suffix}` (extension is also included in the suffix), `img_suffix='_leftImg8bit.png'` and `seg_map_suffix='_gtFine_labelTrainIds.png'` in `CityscapesDataset`.
-`get_data_info` and `metainfo` are also introduced in `BaseSegDataset`(so do `CityscapesDataset`) to save raw data (such as image path)
-and meta data (such as class names of ground truth) information, respectively.
+From above we can find a valid image and ground truth annotation filename pair should be like `xxx{img_suffix}`
+and `xxx{seg_map_suffix}` (extension like `.png` is also included in the suffix), in `CityscapesDataset` it is `img_suffix='_leftImg8bit.png'` and `seg_map_suffix='_gtFine_labelTrainIds.png'`.
+`get_data_info` and `metainfo` are also introduced in `BaseSegDataset` to save raw data (such as image path)
+and meta data (such as class names of ground truth) information.
 
 Next, we would introduce some important contents of `BaseSegDataset`.
 
 ### Initialization of `BaseSegDataset`
 
-Because of `BaseSegDataset` is inherited from [`BaseDataset`](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/basedataset.md)
+Because `BaseSegDataset` is inherited from [`BaseDataset`](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/basedataset.md)
 in MMEngine, it also follows similar parts of initialization process of `BaseDataset`.
 
 Below is a table of some important methods in `BaseSegDataset` initialization method, which would be executed in order from top to bottom.
@@ -116,11 +115,11 @@ If not using lazy initialization, the `self.full_init()` would be called to exec
 |   `self._get_unserialized_subset()`    |           Get subset data according to indices.            |
 |        `self._serialize_data()`        |   Serialize `data_list` of corresponding dataset class.    |
 
-In some cases such as visualization, only the meta information of the dataset is necessary, while loading annotation file
-is unnecessary. `BaseSegDataset` can skip loading annotations to save time by set `lazy_init=True`, in this case `self.full_init()` would not be executed.
+In some cases such as visualization of prediction, only the meta information of the dataset is necessary, while loading annotation file
+may be unnecessary. `BaseSegDataset` can skip loading and parsing annotations to save time by set `lazy_init=True`, in this case `self.full_init()` would not be executed.
 
-Moreover, in initialization of `BaseSegDataset`, `self.label_map` and `self.reduce_zero_label` and would be attributes of `BaseSegDataset`,
-whose values `label_map` and `reduce_zero_label` would be added in meta information dict:
+Moreover, in initialization of `BaseSegDataset`, `self.label_map` and `self.reduce_zero_label` would be attributes of `BaseSegDataset`,
+whose values `label_map` and `reduce_zero_label` would be added in meta information dict.
 
 The `label_map` is used to require label mapping from old classes in `cls.METAINFO` to new classes in `self._metainfo`,
 which changes pixel labels in `load_data_list`.
@@ -152,7 +151,7 @@ The `reduce_zero_label`(Default to `False`) controls whether to mark label zero 
 Because in semantic segmentation dataset such as [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#ade20k),
 label `0` usually stands for background, which is not included in classes list in meta information.
 If `reduce_zero_label=True`, [`LoadAnnotations`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/transforms/loading.py#L107-L118)
-data transform would ignore label 0 and reduce all other label value by 1.
+data transform would ignore label 0 and reduce all other label value by 1 except default ignore index label (Default to `255`).
 
 ### Loading meta information
 
@@ -165,19 +164,19 @@ If `metainfo` contains existed filename path, it will be parsed by `list_from_fi
 | `metainfo=dict(classes=('a', 'b'))`                                             | Load class information from `metainfo` dict, palette value would be randomly generated. |
 | `metainfo=dict(classes=('a', 'b'), palette=[[100, 100, 100], [200, 200, 200]])` |                Load class and palette information from `metainfo` dict.                 |
 
-Given different `metainfo` dict, `self._metainfo` would call `_load_metainfo`  and returns parsed meta information for train/test process.
+Given `metainfo` dict, `self._metainfo` would call `_load_metainfo`  and returns parsed meta information for train/test process.
 
 ### Loading data information
 
 By default, `self.load_data_list()` would be called in `self.full_init()`. In `BaseSegDataset`,
-`self.load_data_list()` function is overwritten where annotation path `seg_map_path` would be added from annotation file directory or its meta file.
+`self.load_data_list()` function is overwritten where annotation path `seg_map_path` would be added in returned value `data_list` from annotation file directory or its meta file.
 
 | Content of `ann_file` dict | Where does `self.load_data_list` load  filename? |
 | :------------------------- | :----------------------------------------------: |
 | `ann_file=''`              |           Load filename from metafile.           |
 | `ann_file=xxx.txt`         |       Load filename from `ann_file` file.        |
 
-If images and annotations folders both have training and validation set, we could define `ann_file` of train and validation set in corresponding dataset class to
+If images and annotations folders **both have training and validation set**, we could define `ann_file` of train and validation set in corresponding dataset class to
 overwrite `seg_map_path` in `self.load_data_list` method.
 
 ```none
@@ -216,16 +215,16 @@ Then the `seg_map_path` would be parsed by the content of those two `.txt` file.
 
 By default, `BaseSegDataset` inherits `__getitem__` method in `BaseDataset`.
 
-In `__getitem__` method, `prepare_data` is called to get the processed data, where data loading pipeline consists of the following steps:
+In `__getitem__` method, `prepare_data` is utilized to get the processed data, where data loading pipeline consists of the following steps:
 
 1. Fetch data information by index, implemented by `get_data_info`.
 2. Apply data transforms to data, implemented by `pipeline`.
 
 Finally, it returns a dict `data` which includes the idx-th image and data information of dataset after `self.pipeline`.
 
-If you want to implement a new dataset class, you only need to implement `load_data_list` function.
+If you want to implement a new dataset class, you may only need to define new `load_data_list` method.
 We also encourage users to use the original data loading logic provided by `BaseDataset`.
-If the default loading logic is difficult to meet your needs, you can overwrite the `__getitem__` interface to implement your data loading logic.
+If the default loading logic is difficult to meet your needs, you can overwrite the `__getitem__` to implement your data loading logic.
 
 # Differences between CustomDataset(v0.x)
 
@@ -234,15 +233,15 @@ In MMSegmentation \< 1.x, it uses [`CustomDataset`](https://github.com/open-mmla
 `BaseSegDataset` is inherited from `BaseDataset` in MMEngine while `CustomDataset` is inherited from `Dataset` in official PyTorch. The differences between `CustomDataset` and `BaseSegDataset` are lied below:
 
 - `BaseSegDataset` removes all methods about evaluations in `CustomDataset`, such as `format_results`, `pre_eval`, `get_gt_seg_map_by_idx`, `get_gt_seg_maps` and `evaluate`.
-- `BaseSegDataset` replaces method `load_annotations` to `load_data_list`.
-- `BaseSegDataset` replaces member variable `img_infos` and `split` to `data_list` and `ann_file`, respectively.
-- `BaseSegDataset` integrates `CLASSES` and `PALETTE` into two fields of `METAINFO` dict.
+- `BaseSegDataset` replaces `CustomDataset` method `load_annotations` to `load_data_list`.
+- `BaseSegDataset` replaces `CustomDataset` member variable `img_infos` and `split` to `data_list` and `ann_file`, respectively.
+- `BaseSegDataset` integrates `CLASSES` and `PALETTE` of `CustomDataset` into two fields of `METAINFO` dict.
 
 # Design your own dataset
 
 All provided datasets class such as `CityscapesDataset` and `ADE20KDataset` are inherited from `BaseSegDataset` in the 1.x version of MMSegmentation.
-Some common methods are defined in `BaseSegDataset`, such as loading data information including meta information like categories and palette of dataset,
-and data information like path of image and ground truth, and modifying labels of dataset.
+Some common methods are defined in `BaseSegDataset`, such as loading data information including meta information like categories and palette of dataset annotation,
+and data information like path of image and ground truth.
 
 If you want to design your own dataset class, you can follow our provided dataset class and add your customization methods.
 More information about dataset class may refer to [tutorial in MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/basedataset.md).
