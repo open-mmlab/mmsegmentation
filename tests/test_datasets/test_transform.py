@@ -791,7 +791,7 @@ def test_BioMedicalRandomGamma():
             retain_stats=1)
         TRANSFORMS.build(transform)
 
-    test_img = 'tests/data/biomedical.nii.gz'
+    test_img = '../data/biomedical.nii.gz'
     results = dict(img_path=test_img)
     transform = LoadBiomedicalImageFromFile()
     results = transform(copy.deepcopy(results))
