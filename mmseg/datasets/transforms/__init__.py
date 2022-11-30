@@ -11,9 +11,9 @@ from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
 
 __all__ = [
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
-    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
-    'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
-    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
+    'RandomRotate', 'AdjustGamma', 'BioMedicalRandomGamma', 'CLAHE', 'Rerange',
+    'RGB2Gray', 'RandomCutOut', 'RandomMosaic', 'PackSegInputs',
+    'ResizeToMultiple', 'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'ResizeShortestEdge'
 ]
