@@ -774,7 +774,3 @@ def test_BioMedicalRandomGamma():
     results = transform2(results)
     transformed_img = results['img']
     assert origin_img.shape == transformed_img.shape
-
-
-if __name__ == '__main__':
-    test_BioMedicalRandomGamma()
