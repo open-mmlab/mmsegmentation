@@ -1226,3 +1226,129 @@ class GenerateEdge(BaseTransform):
         repr_str += f'edge_width={self.edge_width}, '
         repr_str += f'ignore_index={self.ignore_index})'
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class BioMedicalRandomGamma(BaseTransform):
+    """Using random gamma correction to process the biomedical image.
+
+    Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/master/batchgenerators/transforms/color_transforms.py#L132 # noqa:E501
+    With licence:  Apache 2.0
+
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        prob (float): The probability to perform this transform. Default: 0.5.
+        gamma_range (tuple[float]): Range of gamma values. Default: (0.5, 2).
+        invert_image (bool): whether to invert the image before applying gamma augmentation. Default: False
+        per_channel (bool): whether to perform the transform each channel individually. Default: False
+        retain_stats (bool): Gamma transformation will alter the mean and std of the data in the patch. If retain_stats=True,
+            the data will be transformed to match the mean and standard deviation before gamma augmentation. Default: False.
+    """
+
+    def __init__(self,
+                 prob: float = 0.5,
+                 gamma_range: tuple[float] = (0.5, 2),
+                 invert_image: bool = False,
+                 per_channel: bool = False,
+                 retain_stats: bool = False):
+        assert 0 <= prob and prob <= 1
+        assert type(gamma_range) == tuple and len(gamma_range) == 2
+        assert isinstance(invert_image, bool)
+        assert isinstance(per_channel, bool)
+        assert isinstance(retain_stats, bool)
+        self.prob = prob
+        self.gamma_range = gamma_range
+        self.invert_image = invert_image
+        self.per_channel = per_channel
+        self.retain_stats = retain_stats
+
+    @cache_randomness
+    def _do_gamma(self):
+        return np.random.rand() < self.prob
+
+    def _adjust_gamma(self,
+                      img: np.array,
+                      gamma_range: float,
+                      invert_image: bool,
+                      per_channel: float,
+                      retain_stats: bool,
+                      epsilon=1e-7):
+        if invert_image:
+            img = -img
+        if not per_channel:
+            retain_stats_here = retain_stats
+            if retain_stats_here:
+                mn = img.mean()
+                sd = img.std()
+            if np.random.random() < 0.5 and gamma_range[0] < 1:
+                gamma = np.random.uniform(gamma_range[0], 1)
+            else:
+                gamma = np.random.uniform(
+                    max(gamma_range[0], 1), gamma_range[1])
+            minm = img.min()
+            rnge = img.max() - minm  # range
+            img = np.power(
+                ((img - minm) / float(rnge + epsilon)), gamma) * rnge + minm
+            if retain_stats_here:
+                img = img - img.mean()
+                img = img / (img.std() + 1e-8) * sd
+                img = img + mn
+        else:
+            for c in range(img.shape[0]):
+                retain_stats_here = retain_stats
+                if retain_stats_here:
+                    mn = img[c].mean()
+                    sd = img[c].std()
+                if np.random.random() < 0.5 and gamma_range[0] < 1:
+                    gamma = np.random.uniform(gamma_range[0], 1)
+                else:
+                    gamma = np.random.uniform(
+                        max(gamma_range[0], 1), gamma_range[1])
+                minm = img[c].min()
+                rnge = img[c].max() - minm
+                img[c] = np.power(((img[c] - minm) / float(rnge + epsilon)),
+                                  gamma) * float(rnge + epsilon) + minm
+                if retain_stats_here:
+                    img[c] = img[c] - img[c].mean()
+                    img[c] = img[c] / (img[c].std() + 1e-8) * sd
+                    img[c] = img[c] + mn
+        if invert_image:
+            img = -img
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Call function to perform random gamma correction
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with random gamma correction performed.
+        """
+        do_gamma = self._do_gamma()
+
+        if do_gamma:
+            results['img'] = self._adjust_gamma(results['img'],
+                                                self.gamma_range,
+                                                self.invert_image,
+                                                self.per_channel,
+                                                self.retain_stats)
+        else:
+            pass
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
+        repr_str += f'gamma_range={self.gamma_range},'
+        repr_str += f'invert_image={self.invert_image},'
+        repr_str += f'per_channel={self.per_channel},'
+        repr_str += f'retain_stats={self.retain_stats}'
+        return repr_str
