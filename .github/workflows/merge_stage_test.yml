@@ -44,8 +44,9 @@ jobs:
           python -V
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
-          mim install 'mmcv>=2.0.0rc1'
+          mim install 'mmcv>=2.0.0rc3'
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
@@ -92,8 +93,9 @@ jobs:
           python -V
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
-          mim install 'mmcv>=2.0.0rc1'
+          mim install 'mmcv>=2.0.0rc3'
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
@@ -155,8 +157,9 @@ jobs:
           python -V
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
-          mim install 'mmcv>=2.0.0rc1'
+          mim install 'mmcv>=2.0.0rc3'
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
@@ -187,8 +190,9 @@ jobs:
           python -V
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
-          mim install 'mmcv>=2.0.0rc1'
+          mim install 'mmcv>=2.0.0rc3'
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
