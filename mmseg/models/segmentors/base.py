@@ -159,8 +159,12 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             if not only_prediction:
                 img_meta = data_samples[i].metainfo
                 # remove padding area
-                padding_left, padding_right, padding_top, padding_bottom = \
-                    img_meta.get('padding_size', [0]*4)
+                if 'img_padding_size' not in img_meta:
+                    padding_size = img_meta.get('padding_size', [0] * 4)
+                else:
+                    padding_size = img_meta['img_padding_size']
+                padding_left, padding_right, padding_top, padding_bottom =\
+                    padding_size
                 # i_seg_logits shape is 1, C, H, W after remove padding
                 i_seg_logits = seg_logits[i:i + 1, :,
                                           padding_top:H - padding_bottom,
