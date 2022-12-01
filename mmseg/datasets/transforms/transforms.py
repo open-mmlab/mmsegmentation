@@ -1303,7 +1303,7 @@ class ResizeShortestEdge(BaseTransform):
 
         new_h = int(new_h + 0.5)
         new_w = int(new_w + 0.5)
-        return (new_h, new_w)
+        return (new_w, new_h)
 
     def transform(self, results: Dict) -> Dict:
         self.resize.scale = self._get_output_shape(results['img'], self.scale)
