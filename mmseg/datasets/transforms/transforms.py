@@ -1232,7 +1232,9 @@ class GenerateEdge(BaseTransform):
 class ResizeShortestEdge(BaseTransform):
     """Resize the image and mask while keeping the aspect ratio unchanged.
 
-    Modified from https://github.com/facebookresearch/detectron2/blob/main/detectron2/data/transforms/augmentation_impl.py#L130 (Apache-2.0 License) # noqa:E501
+    Modified from https://github.com/facebookresearch/detectron2/blob/main/detectron2/data/transforms/augmentation_impl.py#L130 # noqa:E501
+    Copyright (c) Facebook, Inc. and its affiliates.
+    Licensed under the Apache-2.0 License
 
     This transform attempts to scale the shorter edge to the given
     `scale`, as long as the longer edge does not exceed `max_size`.
