@@ -6,7 +6,7 @@ import torch
 from mmengine.model import BaseDataPreprocessor
 
 from mmseg.registry import MODELS
-from mmseg.utils import SampleList, stack_batch
+from mmseg.utils import stack_batch
 
 
 @MODELS.register_module()
@@ -108,7 +108,7 @@ class SegDataPreProcessor(BaseDataPreprocessor):
         """
         data = self.cast_data(data)  # type: ignore
         inputs = data['inputs']
-        data_samples: SampleList = data.get('data_samples', None)
+        data_samples = data.get('data_samples', None)
         # TODO: whether normalize should be after stack_batch
         if self.channel_conversion and inputs[0].size(0) == 3:
             inputs = [_input[[2, 1, 0], ...] for _input in inputs]
