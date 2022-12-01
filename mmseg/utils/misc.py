@@ -105,6 +105,6 @@ def stack_batch(inputs: List[torch.Tensor],
             })
             padded_samples.append(data_sample)
         else:
-            padded_samples = None
+            padded_samples.append(dict(img_padding_size=padding_size))
 
     return torch.stack(padded_inputs, dim=0), padded_samples

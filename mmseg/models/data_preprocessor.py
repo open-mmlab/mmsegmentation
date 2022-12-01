@@ -6,7 +6,7 @@ import torch
 from mmengine.model import BaseDataPreprocessor
 
 from mmseg.registry import MODELS
-from mmseg.utils import stack_batch
+from mmseg.utils import SampleList, stack_batch
 
 
 @MODELS.register_module()
@@ -108,7 +108,7 @@ class SegDataPreProcessor(BaseDataPreprocessor):
         """
         data = self.cast_data(data)  # type: ignore
         inputs = data['inputs']
-        data_samples = data.get('data_samples', None)
+        data_samples: SampleList = data.get('data_samples', None)
         # TODO: whether normalize should be after stack_batch
         if self.channel_conversion and inputs[0].size(0) == 3:
             inputs = [_input[[2, 1, 0], ...] for _input in inputs]
@@ -137,12 +137,14 @@ class SegDataPreProcessor(BaseDataPreprocessor):
                 'as the image size might be different in a batch')
             # pad images when testing
             if self.test_cfg:
-                inputs, _ = stack_batch(
+                inputs, padded_samples = stack_batch(
                     inputs=inputs,
                     size=self.test_cfg.get('size', None),
                     size_divisor=self.test_cfg.get('size_divisor', None),
                     pad_val=self.pad_val,
                     seg_pad_val=self.seg_pad_val)
+                for data_sample, pad_info in zip(data_samples, padded_samples):
+                    data_sample.set_metainfo({**pad_info})
             else:
                 inputs = torch.stack(inputs, dim=0)
 
