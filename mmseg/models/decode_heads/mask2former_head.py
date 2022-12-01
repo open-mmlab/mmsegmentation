@@ -87,12 +87,13 @@ class Mask2FormerHead(Mask2FormerHead_):
         all_cls_scores, all_mask_preds = self(x, batch_data_samples)
         mask_cls_results = all_cls_scores[-1]
         mask_pred_results = all_mask_preds[-1]
+        if 'pad_shape' in batch_img_metas[0]:
+            size = batch_img_metas[0]['pad_shape']
+        else:
+            size = batch_img_metas[0]['img_shape']
         # upsample mask
         mask_pred_results = F.interpolate(
-            mask_pred_results,
-            size=batch_img_metas[0]['img_shape'],
-            mode='bilinear',
-            align_corners=False)
+            mask_pred_results, size=size, mode='bilinear', align_corners=False)
         cls_score = F.softmax(mask_cls_results, dim=-1)[..., :-1]
         mask_pred = mask_pred_results.sigmoid()
         sem_seg_mask = torch.einsum('bqc, bqhw->bchw', cls_score, mask_pred)

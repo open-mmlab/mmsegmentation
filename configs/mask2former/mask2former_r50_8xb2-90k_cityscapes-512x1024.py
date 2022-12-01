@@ -10,7 +10,8 @@ data_preprocessor = dict(
     bgr_to_rgb=True,
     pad_val=0,
     seg_pad_val=255,
-    size=crop_size)
+    size=crop_size,
+    test_cfg=dict(size_divisor=32))
 num_classes = 19
 model = dict(
     type='EncoderDecoder',
@@ -141,6 +142,22 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 
+# dataset config
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations'),
+    dict(
+        type='RandomChoiceResize',
+        scales=[int(1024 * x * 0.1) for x in range(5, 21)],
+        resize_type='ResizeShortestEdge',
+        max_size=4096),
+    dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
+    dict(type='RandomFlip', prob=0.5),
+    dict(type='PhotoMetricDistortion'),
+    dict(type='PackSegInputs')
+]
+train_dataloader = dict(dataset=dict(pipeline=train_pipeline))
+
 # optimizer
 embed_multi = dict(lr_mult=1.0, decay_mult=0.0)
 optimizer = dict(
@@ -169,14 +186,16 @@ param_scheduler = [
 ]
 
 # training schedule for 90k
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=90000, val_interval=9000)
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=90000, val_interval=5000)
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
     param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=9000),
+    checkpoint=dict(
+        type='CheckpointHook', by_epoch=False, interval=5000,
+        save_best='mIoU'),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
 

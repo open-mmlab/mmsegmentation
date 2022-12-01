@@ -1,7 +1,4 @@
-_base_ = [
-    '../_base_/default_runtime.py', '../_base_/datasets/ade20k.py',
-    '../_base_/schedules/schedule_160k.py'
-]
+_base_ = ['../_base_/default_runtime.py', '../_base_/datasets/ade20k.py']
 
 custom_imports = dict(imports='mmdet.models', allow_failed_imports=False)
 
@@ -13,7 +10,8 @@ data_preprocessor = dict(
     bgr_to_rgb=True,
     pad_val=0,
     seg_pad_val=255,
-    size=crop_size)
+    size=crop_size,
+    test_cfg=dict(size_divisor=32))
 num_classes = 150
 model = dict(
     type='EncoderDecoder',
@@ -144,19 +142,30 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 
+# dataset config
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', reduce_zero_label=True),
+    dict(
+        type='RandomChoiceResize',
+        scales=[int(512 * x * 0.1) for x in range(5, 21)],
+        resize_type='ResizeShortestEdge',
+        max_size=2048),
+    dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
+    dict(type='RandomFlip', prob=0.5),
+    dict(type='PhotoMetricDistortion'),
+    dict(type='PackSegInputs')
+]
+train_dataloader = dict(batch_size=2, dataset=dict(pipeline=train_pipeline))
+
 # optimizer
 embed_multi = dict(lr_mult=1.0, decay_mult=0.0)
 optimizer = dict(
-    _delete_=True,
-    type='AdamW',
-    lr=0.0001,
-    weight_decay=0.05,
-    eps=1e-8,
-    betas=(0.9, 0.999))
+    type='AdamW', lr=0.0001, weight_decay=0.05, eps=1e-8, betas=(0.9, 0.999))
 optim_wrapper = dict(
     type='OptimWrapper',
     optimizer=optimizer,
-    clip_grad=dict(_delete_=True, max_norm=0.01, norm_type=2),
+    clip_grad=dict(max_norm=0.01, norm_type=2),
     paramwise_cfg=dict(
         custom_keys={
             'backbone': dict(lr_mult=0.1, decay_mult=1.0),
@@ -176,11 +185,23 @@ param_scheduler = [
         by_epoch=False)
 ]
 
+# training schedule for 160k
+train_cfg = dict(
+    type='IterBasedTrainLoop', max_iters=160000, val_interval=5000)
+val_cfg = dict(type='ValLoop')
+test_cfg = dict(type='TestLoop')
+default_hooks = dict(
+    timer=dict(type='IterTimerHook'),
+    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    checkpoint=dict(
+        type='CheckpointHook', by_epoch=False, interval=5000,
+        save_best='mIoU'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    visualization=dict(type='SegVisualizationHook'))
+
 # Default setting for scaling LR automatically
 #   - `enable` means enable scaling LR automatically
 #       or not by default.
 #   - `base_batch_size` = (8 GPUs) x (2 samples per GPU).
 auto_scale_lr = dict(enable=False, base_batch_size=16)
-
-# set batch size
-train_dataloader = dict(batch_size=2)
