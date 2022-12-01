@@ -31,7 +31,8 @@ model = dict(
         init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50')),
     decode_head=dict(
         type='MaskFormerHead',
-        in_channels=[256, 512, 1024, 2048],  # pass to pixel_decoder inside
+        in_channels=[256, 512, 1024,
+                     2048],  # input channels of pixel_decoder modules
         feat_channels=256,
         in_index=[0, 1, 2, 3],
         num_classes=150,

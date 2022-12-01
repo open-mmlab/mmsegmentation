@@ -55,6 +55,6 @@ pip install "mmdet>=3.0.0rc4"
 Note:
 
 - All experiments of MaskFormer are implemented with 8 V100 (32G) GPUs with 2 samplers per GPU.
-- The results of MaskFormer are relatively not stable, variance of `R-101-D32` is 44.7 to 46.0, variance of `Swin-S` is 49.0 to 49.8.
+- The results of MaskFormer are relatively not stable.  The accuracy (mIoU) of model with `R-101-D32` is from 44.7 to 46.0, and with `Swin-S` is from 49.0 to 49.8.
 - The ResNet backbones utilized in MaskFormer models are standard `ResNet` rather than `ResNetV1c`.
-- `MultiScaleFlipAug` is not supported in MMSegmentation 1.x version yet, we would add "ms+flip" results as soon as possible.
+- Test time augmentation is not supported in MMSegmentation 1.x version yet, we would add "ms+flip" results as soon as possible.

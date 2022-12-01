@@ -28,7 +28,8 @@ model = dict(
         init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file)),
     decode_head=dict(
         type='MaskFormerHead',
-        in_channels=[96, 192, 384, 768],  # pass to pixel_decoder inside
+        in_channels=[96, 192, 384,
+                     768],  # input channels of pixel_decoder modules
     ))
 
 # optimizer
