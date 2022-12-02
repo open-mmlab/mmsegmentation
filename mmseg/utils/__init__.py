@@ -7,7 +7,7 @@ from .class_names import (ade_classes, ade_palette, cityscapes_classes,
                           loveda_classes, loveda_palette, potsdam_classes,
                           potsdam_palette, stare_classes, stare_palette,
                           vaihingen_classes, vaihingen_palette, voc_classes,
-                          voc_palette)
+                          voc_palette, synapse_classes, synapse_palette)
 # yapf: enable
 from .collect_env import collect_env
 from .io import datafrombytes
@@ -23,9 +23,9 @@ __all__ = [
     'SampleList', 'OptSampleList', 'TensorDict', 'TensorList',
     'ForwardResults', 'cityscapes_classes', 'ade_classes', 'voc_classes',
     'cocostuff_classes', 'loveda_classes', 'potsdam_classes',
-    'vaihingen_classes', 'isaid_classes', 'stare_classes',
+    'vaihingen_classes', 'isaid_classes', 'stare_classes', 'synapse_classes',
     'cityscapes_palette', 'ade_palette', 'voc_palette', 'cocostuff_palette',
     'loveda_palette', 'potsdam_palette', 'vaihingen_palette', 'isaid_palette',
-    'stare_palette', 'dataset_aliases', 'get_classes', 'get_palette',
-    'datafrombytes'
+    'stare_palette', 'synapse_palette', 'dataset_aliases', 'get_classes',
+    'get_palette', 'datafrombytes'
 ]
