@@ -1,6 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-from abc import ABC
 from typing import Dict, Sequence, Tuple, Union
 
 import cv2
