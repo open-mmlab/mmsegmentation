@@ -583,5 +583,6 @@ Config (path: demo_config.py): {'backbone': {'type': 'ResNetV1c', 'depth': 101, 
      ```
 
 ```{note}
-    This modification method only supports modifying configuration items of string, int, float, boolean, None, list and tuple types. More specifically, for list and tuple types, the elements inside them must also be one of the above seven types.
+    This modification method only supports modifying configuration items of string, int, float, boolean, None, list and tuple types.
+    More specifically, for list and tuple types, the elements inside them must also be one of the above seven types.
 ```

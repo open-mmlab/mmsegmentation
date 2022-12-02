@@ -572,5 +572,6 @@ Config (path: demo_config.py): {'backbone': {'type': 'ResNetV1c', 'depth': 101, 
      ```
 
 ```{note}
-  这种修改方法仅支持修改string、int、float、boolean、None、list和tuple类型的配置项。具体来说，对于list和tuple类型的配置项，它们内部的元素也必须是上述七种类型之一。
+  这种修改方法仅支持修改string、int、float、boolean、None、list和tuple类型的配置项。
+  具体来说，对于list和tuple类型的配置项，它们内部的元素也必须是上述七种类型之一。
 ```
