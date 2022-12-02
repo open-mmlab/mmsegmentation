@@ -24,6 +24,7 @@ from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          RandomCutOut, RandomMosaic, RandomRotate, Rerange,
                          ResizeToMultiple, RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
+from .synapse import SynapseDataset
 
 __all__ = [
     'BaseSegDataset', 'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
@@ -36,5 +37,5 @@ __all__ = [
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'DecathlonDataset', 'LIPDataset'
+    'DecathlonDataset', 'LIPDataset', 'SynapseDataset'
 ]

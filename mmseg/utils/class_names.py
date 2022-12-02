@@ -126,6 +126,16 @@ def stare_classes():
     return ['background', 'vessel']
 
 
+def synapse_classes():
+    """synapse class names for external use."""
+    return [
+        'background', 'spleen', 'right_kidney', 'left_kidney', 'gallbladder',
+        'esophagus', 'liver', 'stomach', 'aorta', 'inferior_vena_cava',
+        'portal_vein_and_splenic_vein', 'pancreas', 'right_adrenal_gland',
+        'left_adrenal_gland'
+    ]
+
+
 def cityscapes_palette():
     """Cityscapes palette for external use."""
     return [[128, 64, 128], [244, 35, 232], [70, 70, 70], [102, 102, 156],
@@ -285,6 +295,14 @@ def lip_palette():
     ]
 
 
+def synapse_palette():
+    """synapse palette for external use."""
+    return [[0, 0, 0], [255, 127, 127], [224, 231, 161], [138, 204, 132],
+            [64, 172, 136], [126, 152, 187], [140, 110, 160], [247, 88, 240],
+            [202, 172, 161], [237, 213, 149], [139, 182, 139], [111, 192, 185],
+            [82, 107, 163], [89, 54, 156]]
+
+
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
@@ -299,7 +317,8 @@ dataset_aliases = {
     ],
     'isaid': ['isaid', 'iSAID'],
     'stare': ['stare', 'STARE'],
-    'lip': ['LIP', 'lip']
+    'lip': ['LIP', 'lip'],
+    'synapse': ['synapse']
 }
 
 

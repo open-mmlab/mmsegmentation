@@ -9,7 +9,7 @@ import pytest
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
                             COCOStuffDataset, DecathlonDataset, ISPRSDataset,
                             LIPDataset, LoveDADataset, PascalVOCDataset,
-                            PotsdamDataset, iSAIDDataset)
+                            PotsdamDataset, iSAIDDataset, SynapseDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
@@ -27,6 +27,7 @@ def test_classes():
     assert list(PotsdamDataset.METAINFO['classes']) == get_classes('potsdam')
     assert list(ISPRSDataset.METAINFO['classes']) == get_classes('vaihingen')
     assert list(iSAIDDataset.METAINFO['classes']) == get_classes('isaid')
+    assert list(SynapseDataset.METAINFO['classes']) == get_classes('synapse')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -80,6 +81,7 @@ def test_palette():
     assert PotsdamDataset.METAINFO['palette'] == get_palette('potsdam')
     assert COCOStuffDataset.METAINFO['palette'] == get_palette('cocostuff')
     assert iSAIDDataset.METAINFO['palette'] == get_palette('isaid')
+    assert SynapseDataset.METAINFO['palette'] == get_palette('synapse')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -218,6 +220,19 @@ def test_vaihingen():
                 osp.dirname(__file__),
                 '../data/pseudo_vaihingen_dataset/ann_dir')))
     assert len(test_dataset) == 1
+
+
+def test_synapse():
+    test_dataset = SynapseDataset(
+        pipeline=[],
+        data_prefix=dict(
+            img_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_synapse_dataset/img_dir'),
+            seg_map_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_synapse_dataset/ann_dir')))
+    assert len(test_dataset) == 5
 
 
 def test_isaid():
