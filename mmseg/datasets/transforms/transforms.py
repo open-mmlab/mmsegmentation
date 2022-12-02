@@ -438,6 +438,8 @@ class RandomRotFlip(BaseTransform):
             degree (float, tuple[float]): Range of degrees to select from. If
                 degree is a number instead of tuple like (min, max),
                 the range of degree will be (``-degree``, ``+degree``)
+
+        This code is inspired from https://github.com/Beckschen/TransUNet/blob/main/datasets/dataset_synapse.py
     """
     def __init__(self,
                  prob=0.5,
