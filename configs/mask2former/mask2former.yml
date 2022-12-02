@@ -158,7 +158,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 47.22
+      mIoU: 47.24
   Config: configs/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512/mask2former_r50_8xb2-160k_ade20k-512x512_20221116_192723-7b365f38.pth
 - Name: mask2former_r101_8xb2-160k_ade20k-512x512
@@ -221,7 +221,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 51.09
+      mIoU: 51.83
   Config: configs/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512/mask2former_swin-s_8xb2-160k_ade20k-512x512_20221117_104921-e4bab9b8.pth
 - Name: mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640
