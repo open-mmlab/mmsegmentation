@@ -6,12 +6,13 @@ from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, Rerange, ResizeToMultiple,
-                         RGB2Gray, SegRescale)
+                         RGB2Gray, SegRescale, RandomRotFlip)
 
 __all__ = [
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
     'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
-    'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge'
+    'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
+    'RandomRotFlip'
 ]

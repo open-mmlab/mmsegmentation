@@ -152,6 +152,43 @@ def test_flip():
     assert np.equal(original_seg, results['gt_semantic_seg']).all()
 
 
+def test_random_rotate_flip():
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', prob=1.5)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', degree=[20, 20, 20])
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', degree=-20)
+        TRANSFORMS.build(transform)
+
+    transform = dict(type='RandomRotFlip', prob=1.0, degree=20)
+    rot_flip_module = TRANSFORMS.build(transform)
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(osp.dirname(__file__), '../data/pseudo_synapse_dataset/img_dir/0001_0.jpg'), 'color')
+    original_img = copy.deepcopy(img)
+    seg = np.array(
+        Image.open(osp.join(osp.dirname(__file__), '../data/pseudo_synapse_dataset/ann_dir/0001_0.png')))
+    original_seg = copy.deepcopy(seg)
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    results = rot_flip_module(results)
+    assert original_img.shape == results['img'].shape
+    assert original_seg.shape == results['gt_semantic_seg'].shape
+
+
 def test_pad():
     # test assertion if both size_divisor and size is None
     with pytest.raises(AssertionError):

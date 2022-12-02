@@ -5,20 +5,7 @@ train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
     dict(type='Resize', scale=img_scale, keep_ratio=True),
-    dict(type='RandomChoice',
-         transforms=[
-            [dict(type='RandomRotate', prob=1, degree=[-20, 20])],
-            [
-                dict(type='RandomChoice',
-                     transforms=[
-                         [dict(type='RandomRotate', prob=1., degree=[0, 0])],
-                         [dict(type='RandomRotate', prob=1., degree=[90, 90])],
-                         [dict(type='RandomRotate', prob=1., degree=[180, 180])],
-                         [dict(type='RandomRotate', prob=1., degree=[-90, -90])]
-                     ]),
-                dict(type='RandomFlip', prob=1.)
-            ]
-         ]),
+    dict(type='RandomRotFlip', prob=0.5, degree=20),
     dict(type='PackSegInputs')
 ]
 test_pipeline = [
