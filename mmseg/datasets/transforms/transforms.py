@@ -464,7 +464,7 @@ class RandomRotFlip(BaseTransform):
         return results
 
     def random_rotate(self, results: dict) -> dict:
-        angle = np.random.randint(self.degree[0], self.degree[1])
+        angle = np.random.randint(int(self.degree[0]), int(self.degree[1]))
         results['img'] = mmcv.imrotate(results['img'], angle=angle)
         for key in results.get('seg_fields', []):
             results[key] = mmcv.imrotate(results[key], angle=angle)
