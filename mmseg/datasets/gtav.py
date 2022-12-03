@@ -6,7 +6,7 @@ from mmseg.datasets.custom import CustomDataset
 
 @DATASETS.register_module()
 class GTAVDataset(CustomDataset):
-    
+
     CLASSES = ('road', 'sidewalk', 'building', 'wall', 'fence', 'pole',
                'traffic light', 'traffic sign', 'vegetation', 'terrain', 'sky',
                'person', 'rider', 'car', 'truck', 'bus', 'train', 'motorcycle',
@@ -19,6 +19,6 @@ class GTAVDataset(CustomDataset):
                [0, 80, 100], [0, 0, 230], [119, 11, 32]]
     
     def __init__(self, split, **kwargs):
-        super().__init__(img_suffix='.png', seg_map_suffix='.png', 
+        super().__init__(img_suffix='.png', seg_map_suffix='_labelTrainIds.png', 
                      split=split, **kwargs)
         assert osp.exists(self.img_dir) and self.split is not None
