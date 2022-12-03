@@ -18,7 +18,6 @@ class GTAVDataset(CustomDataset):
                [255, 0, 0], [0, 0, 142], [0, 0, 70], [0, 60, 100],
                [0, 80, 100], [0, 0, 230], [119, 11, 32]]
     
-    def __init__(self, split, **kwargs):
-        super().__init__(img_suffix='.png', seg_map_suffix='_labelTrainIds.png', 
-                     split=split, **kwargs)
-        assert osp.exists(self.img_dir) and self.split is not None
+    def __init__(self, **kwargs):
+        super().__init__(img_suffix='.png', seg_map_suffix='_labelTrainIds.png', **kwargs)
+        assert osp.exists(self.img_dir)
