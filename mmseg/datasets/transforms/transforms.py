@@ -437,8 +437,6 @@ class RandomRotFlip(BaseTransform):
         degree (float, tuple[float]): Range of degrees to select from. If
             degree is a number instead of tuple like (min, max),
             the range of degree will be (``-degree``, ``+degree``)
-
-    This code is inspired from https://github.com/Beckschen/TransUNet/blob/main/datasets/dataset_synapse.py
     """
 
     def __init__(self, prob=0.5, degree=(-20, 20)):
@@ -464,11 +462,15 @@ class RandomRotFlip(BaseTransform):
         return results
 
     def random_rotate(self, results: dict) -> dict:
-        angle = np.random.randint(int(self.degree[0]), int(self.degree[1]))
+        angle = np.random.uniform(min(*self.degree), max(*self.degree))
         results['img'] = mmcv.imrotate(results['img'], angle=angle)
         for key in results.get('seg_fields', []):
             results[key] = mmcv.imrotate(results[key], angle=angle)
         return results
+
+    @cache_randomness
+    def generate_branch(self) -> int:
+        return np.random.randint(0, 3)
 
     def transform(self, results: dict) -> dict:
         """Call function to rotate or rotate & flip image, semantic
@@ -480,9 +482,11 @@ class RandomRotFlip(BaseTransform):
         Returns:
             dict: Rotated or rotated & flipped results.
         """
-        if random.random() < self.prob:
+        branch = self.generate_branch()
+
+        if branch == 0:
             results = self.random_rot_flip(results)
-        elif random.random() < self.prob:
+        elif branch == 1:
             results = self.random_rotate(results)
         return results
 
