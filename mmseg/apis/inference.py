@@ -102,7 +102,7 @@ def inference_segmentor(model, imgs):
         result = model(return_loss=False, rescale=True, **data)
     return result
 
-def inference_segmentor_remap(model, imgs, trainid_to_id):
+def inference_segmentor_remap(model, imgs):
     """Inference image(s) with the segmentor.
 
     Args:
@@ -114,6 +114,27 @@ def inference_segmentor_remap(model, imgs, trainid_to_id):
     Returns:
         (list[Tensor]): The segmentation result.
     """
+    trainid_to_id = {
+        0: 7,
+        1: 8,
+        2: 11,
+        3: 12,
+        4: 13,
+        5: 17,
+        6: 19,
+        7: 20,
+        8: 21,
+        9: 22,
+        10: 23,
+        11: 24,
+        12: 25,
+        13: 26,
+        14: 27,
+        15: 28,
+        16: 31,
+        17: 32,
+        18: 33
+    }
     cfg = model.cfg
     device = next(model.parameters()).device  # model device
     # build the data pipeline
