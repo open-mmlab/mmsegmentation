@@ -3,6 +3,11 @@ import copy
 import warnings
 from typing import Dict, Sequence, Tuple, Union
 
+try:
+    from scipy.ndimage import gaussian_filter
+except ModuleNotFoundError:
+    gaussian_filter = None
+
 import cv2
 import mmcv
 import numpy as np
@@ -1507,3 +1512,199 @@ class BioMedical3DRandomCrop(BaseTransform):
 
     def __repr__(self):
         return self.__class__.__name__ + f'(crop_shape={self.crop_shape})'
+class BioMedicalGaussianNoise(BaseTransform):
+    """Add random Gaussian noise to image.
+
+    Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/7651ece69faf55263dd582a9f5cbd149ed9c3ad0/batchgenerators/transforms/noise_transforms.py#L53  # noqa:E501
+
+    Copyright (c) German Cancer Research Center (DKFZ)
+    Licensed under the Apache License, Version 2.0
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        prob_per_modality (float): Probability to add Gaussian noise for
+            each modality. Default to 0.1.
+        mean (float): Mean or “centre” of the distribution. Default to 0.0.
+        std (float): Standard deviation of distribution. Default to 0.1.
+    """
+
+    def __init__(self,
+                 prob_per_modality: float = 0.1,
+                 mean: float = 0.0,
+                 std: float = 0.1) -> None:
+        super().__init__()
+        assert 0.0 <= prob_per_modality <= 1.0 and std >= 0.0
+        self.prob_per_modality = prob_per_modality
+        self.mean = mean
+        self.std = std
+
+    def transform(self, results: Dict) -> Dict:
+        """Call function to add random Gaussian noise to image.
+
+        Args:
+            results (dict): Result dict.
+
+        Returns:
+            dict: Result dict with random Gaussian noise.
+        """
+        for b in range(len(results['img'])):
+            if np.random.rand() < self.prob_per_modality:
+                rand_std = np.random.uniform(0, self.std)
+                noise = np.random.normal(
+                    self.mean, rand_std, size=results['img'][b].shape)
+                # noise is float64 array, convert to the results['img'].dtype
+                noise = noise.astype(results['img'].dtype)
+                results['img'][b] = results['img'][b] + noise
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob_per_modality={self.prob_per_modality}, '
+        repr_str += f'mean={self.mean}, '
+        repr_str += f'std={self.std})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class BioMedicalGaussianBlur(BaseTransform):
+    """Add Gaussian blur with random sigma to image.
+
+    Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/7651ece69faf55263dd582a9f5cbd149ed9c3ad0/batchgenerators/transforms/noise_transforms.py#L81 # noqa:E501
+
+    Copyright (c) German Cancer Research Center (DKFZ)
+    Licensed under the Apache License, Version 2.0
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        sigma_range (Tuple[float, float]|float): range to randomly
+            select sigma value. Default to (0.5, 1.0).
+        prob_per_modality (float): Probability to apply Gaussian blur
+            for each modality. Default to 0.2.
+        prob_per_channel  (float): Probability to apply Gaussian blur
+            for each channel (axis Z of the image). Default to 0.5.
+        different_sigma_per_channel (bool): whether to use different
+            sigma for each channel (axis Z of the image). Default to True.
+        different_sigma_per_axis (bool): whether to use different
+            sigma for axis X and Y of the image. Default to True.
+    """
+
+    def __init__(self,
+                 sigma_range: Tuple[float, float] = (0.5, 1.0),
+                 prob_per_modality: float = 0.2,
+                 prob_per_channel: float = 0.5,
+                 different_sigma_per_channel: bool = True,
+                 different_sigma_per_axis: bool = True) -> None:
+        super().__init__()
+        assert 0.0 <= prob_per_modality <= 1.0
+        assert 0.0 <= prob_per_channel <= 1.0
+        assert isinstance(sigma_range, Sequence) and len(sigma_range) == 2
+        self.sigma_range = sigma_range
+        self.prob_per_modality = prob_per_modality
+        self.prob_per_channel = prob_per_channel
+        self.different_sigma_per_channel = different_sigma_per_channel
+        self.different_sigma_per_axis = different_sigma_per_axis
+
+    def _get_valid_sigma(self,
+                         value_range,
+                         rand_type: str = 'uniform') -> Tuple[float, ...]:
+        """Ensure the `value_range` to be either a single value or a sequence
+        of two values. If the `value_range` is a sequence, generate a random
+        value with `[value_range[0], value_range[1]]` based on the `rand_type`.
+
+        Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/7651ece69faf55263dd582a9f5cbd149ed9c3ad0/batchgenerators/augmentations/utils.py#L625 # noqa:E501
+
+        Args:
+            value_range (tuple|list|float|int): the input value range
+            rand_type (str): random value generation type, available options
+                are "uniform", "normal".
+        """
+        if (isinstance(value_range, (list, tuple))):
+            if (len(value_range) == 1):
+                value = value_range[0]
+            elif (len(value_range) == 2):
+                if (value_range[0] == value_range[1]):
+                    value = value_range[0]
+                else:
+                    orig_type = type(value_range[0])
+                    if rand_type == 'uniform':
+                        value = np.random.uniform(value_range[0],
+                                                  value_range[1])
+                    elif rand_type == 'normal':
+                        value = np.random.normal(value_range[0],
+                                                 value_range[1])
+                    value = orig_type(value)
+            else:
+                raise ValueError(
+                    'sigma value must be a single value or a sequence of range'
+                )
+        elif (isinstance(value_range, (float, int))):
+            value = value_range
+        else:
+            raise ValueError(
+                'sigma value must be a single value or a sequence of range')
+        return value
+
+    def _gaussian_blur(self, data_sample: np.ndarray) -> np.ndarray:
+        """Random generate sigma and apply Gaussian Blur to the data
+        Args:
+            data_sample (np.ndarray): data with single modality,
+                the data shape is (Z, Y, X)
+        """
+        sigma = None
+        for c in range(data_sample.shape[0]):
+            if np.random.rand() < self.prob_per_channel:
+                # if no `sigma` is generated, generate one
+                # if `self.different_sigma_per_channel` is True,
+                # re-generate random sigma for each channel
+                if (sigma is None or self.self.different_sigma_per_channel):
+                    if (not self.different_sigma_per_axis):
+                        sigma = self._get_valid_sigma(self.sigma_range)
+                    else:
+                        sigma = [
+                            self._get_valid_sigma(self.sigma_range)
+                            for _ in data_sample[1:]
+                        ]
+                # apply gaussian filter with `sigma`
+                data_sample[c] = gaussian_filter(
+                    data_sample[c], sigma, order=0)
+        return data_sample
+
+    def transform(self, results: Dict) -> Dict:
+        """Call function to add random Gaussian blur to image.
+
+        Args:
+            results (dict): Result dict.
+
+        Returns:
+            dict: Result dict with random Gaussian noise.
+        """
+        # each modality is handled separately
+        for b in range(len(results['img'])):
+            if np.random.rand() < self.prob_per_modality:
+                results['img'][b] = self._gaussian_blur(results['img'][b])
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob_per_modality={self.prob_per_modality}, '
+        repr_str += f'prob_per_channel={self.prob_per_channel}, '
+        repr_str += f'sigma_range={self.sigma_range}, '
+        repr_str += 'different_sigma_per_channel='\
+                    f'{self.different_sigma_per_channel}, '
+        repr_str += 'different_sigma_per_axis='\
+                    f'{self.different_sigma_per_axis})'
+        return repr_str

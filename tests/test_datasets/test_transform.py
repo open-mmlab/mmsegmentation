@@ -778,3 +778,64 @@ def test_biomedical3d_random_crop():
     assert crop_results['img'].shape[1:] == (d - 20, h - 20, w - 20)
     assert crop_results['img_shape'] == (d - 20, h - 20, w - 20)
     assert crop_results['gt_seg_map'].shape == (d - 20, h - 20, w - 20)
+def test_biomedical_gaussian_noise():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedicalGaussianNoise', prob_per_modality=1.5)
+        TRANSFORMS.build(transform)
+
+    # test assertion for invalid std
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianNoise',
+            prob_per_modality=0.2,
+            mean=0.5,
+            std=-0.5)
+        TRANSFORMS.build(transform)
+
+    transform = dict(type='BioMedicalGaussianNoise', prob_per_modality=1.0)
+    noise_module = TRANSFORMS.build(transform)
+    assert str(noise_module) == 'BioMedicalGaussianNoise'\
+                                '(prob_per_modality=1.0, ' \
+                                'mean=0.0, ' \
+                                'std=0.1)'
+
+    transform = dict(type='BioMedicalGaussianNoise', prob_per_modality=1.0)
+    noise_module = TRANSFORMS.build(transform)
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = noise_module(results)
+    assert original_img.shape == results['img'].shape
+
+
+def test_biomedical_gaussian_blur():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedicalGaussianBlur', prob_per_modality=-1.5)
+        TRANSFORMS.build(transform)
+
+    transform = dict(type='BioMedicalGaussianBlur', prob_per_modality=1.0)
+    smooth_module = TRANSFORMS.build(transform)
+    assert str(
+        smooth_module
+    ) == 'RandomGaussianSmooth(prob_per_modality=1.0, ' \
+         'prob_per_channel=0.5, '\
+         'sigma_range=(0.5, 1.0), ' \
+         'different_sigma_per_channel=True, '\
+         'different_sigma_per_axis=True)'
+
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = smooth_module(results)
+    assert original_img.shape == results['img'].shape
+    # the max value in the smoothed image should be less than the original one
+    assert original_img.max() >= results['img'].max()
+    assert original_img.min() <= results['img'].min()
