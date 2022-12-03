@@ -136,10 +136,11 @@ def inference_segmentor_remap(model, imgs, trainid_to_id):
     # forward the model
     with torch.no_grad():
         result = model(return_loss=False, rescale=True, **data)
-    for i in range(result.shape[0]):
-        for j in range(result.shape[1]):
-            result[i][j] = trainid_to_id[result[i][j]]
-    return result
+    seg = result[0]
+    for i in range(seg.shape[0]):
+        for j in range(seg.shape[1]):
+            seg[i][j] = trainid_to_id[seg[i][j]]
+    return seg
 
 
 def show_result_pyplot(model,
