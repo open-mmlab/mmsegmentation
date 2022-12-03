@@ -1670,13 +1670,13 @@ class BioMedicalGaussianBlur(BaseTransform):
                 # if no `sigma` is generated, generate one
                 # if `self.different_sigma_per_channel` is True,
                 # re-generate random sigma for each channel
-                if (sigma is None or self.self.different_sigma_per_channel):
+                if (sigma is None or self.different_sigma_per_channel):
                     if (not self.different_sigma_per_axis):
                         sigma = self._get_valid_sigma(self.sigma_range)
                     else:
                         sigma = [
                             self._get_valid_sigma(self.sigma_range)
-                            for _ in data_sample[1:]
+                            for _ in data_sample.shape[1:]
                         ]
                 # apply gaussian filter with `sigma`
                 data_sample[c] = gaussian_filter(

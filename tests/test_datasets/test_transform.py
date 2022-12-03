@@ -822,7 +822,7 @@ def test_biomedical_gaussian_blur():
     smooth_module = TRANSFORMS.build(transform)
     assert str(
         smooth_module
-    ) == 'RandomGaussianSmooth(prob_per_modality=1.0, ' \
+    ) == 'BioMedicalGaussianBlur(prob_per_modality=1.0, ' \
          'prob_per_channel=0.5, '\
          'sigma_range=(0.5, 1.0), ' \
          'different_sigma_per_channel=True, '\
