@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import os
 import os.path as osp
@@ -18,7 +19,8 @@ def split_image(image, label, direction, p=1, drop_background=True):
     imgs = []
     labels = []
 
-    assert image.shape == label.shape, "image shape and label shape should be same"
+    assert image.shape == label.shape, \
+        "image shape and label shape should be same"
 
     if direction == 0:
         for i in range(image.shape[0]):
@@ -87,13 +89,16 @@ def main():
     if not osp.exists(dataset_path):
         raise ValueError("The dataset path does not exist. Please enter a correct dataset path.")
 
-    if not osp.exists(osp.join(dataset_path, "img")) or not osp.exists(osp.join(dataset_path, "label")):
+    if not osp.exists(osp.join(dataset_path, "img")) \
+            or not osp.exists(osp.join(dataset_path, "label")):
         raise FileNotFoundError("The dataset structure is incorrect. Please check your dataset.")
 
     mkdir_or_exist(osp.join(save_path, "img_dir"))
     mkdir_or_exist(osp.join(save_path, "ann_dir"))
 
-    if osp.exists(osp.join(dataset_path, "train.txt")) and osp.exists(osp.join(dataset_path, "val.txt")):
+    if osp.exists(osp.join(dataset_path, "train.txt")) \
+            and osp.exists(osp.join(dataset_path, "val.txt")):
+
         train_imgs_id = read_files_from_txt(osp.join(dataset_path, "train.txt"))
         val_imgs_id = read_files_from_txt(osp.join(dataset_path, "val.txt"))
 
@@ -106,12 +111,17 @@ def main():
         mkdir_or_exist(osp.join(save_path, "ann_dir/val"))
 
         for i, img_id in enumerate(train_imgs_id):
-            if osp.exists(osp.join(dataset_path, "img", "img" + img_id + ".nii.gz")) and osp.exists(
-                    osp.join(dataset_path, "label", "label" + img_id + ".nii.gz")):
+            if osp.exists(osp.join(dataset_path, "img", "img" + img_id + ".nii.gz")) \
+                    and osp.exists(osp.join(dataset_path, "label", "label" + img_id + ".nii.gz")):
+
                 img_nii = open_nii_file(osp.join(dataset_path, "img", "img" + img_id + ".nii.gz"))
                 label_nii = open_nii_file(osp.join(dataset_path, "label", "label" + img_id + ".nii.gz"))
 
-                imgs, masks = split_image(img_nii, label_nii, args.direction, args.p, args.drop_background)
+                imgs, masks = split_image(img_nii,
+                                          label_nii,
+                                          args.direction,
+                                          args.p,
+                                          args.drop_background)
 
                 for j, (img, mask) in enumerate(zip(imgs, masks)):
                     save_name = img_id + "_slice" + str(j)

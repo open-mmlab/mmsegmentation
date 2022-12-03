@@ -420,29 +420,28 @@ class RandomRotate(BaseTransform):
 
 @TRANSFORMS.register_module()
 class RandomRotFlip(BaseTransform):
-    """Rotate and flip the image & seg or just rotate the image & seg
+    """Rotate and flip the image & seg or just rotate the image & seg.
 
-        Required Keys:
+    Required Keys:
 
-        - img
-        - gt_seg_map
+    - img
+    - gt_seg_map
 
-        Modified Keys:
+    Modified Keys:
 
-        - img
-        - gt_seg_map
+    - img
+    - gt_seg_map
 
-        Args:
-            prob (float): The probability of augmentation.
-            degree (float, tuple[float]): Range of degrees to select from. If
-                degree is a number instead of tuple like (min, max),
-                the range of degree will be (``-degree``, ``+degree``)
+    Args:
+        prob (float): The probability of augmentation.
+        degree (float, tuple[float]): Range of degrees to select from. If
+            degree is a number instead of tuple like (min, max),
+            the range of degree will be (``-degree``, ``+degree``)
 
-        This code is inspired from https://github.com/Beckschen/TransUNet/blob/main/datasets/dataset_synapse.py
+    This code is inspired from https://github.com/Beckschen/TransUNet/blob/main/datasets/dataset_synapse.py
     """
-    def __init__(self,
-                 prob=0.5,
-                 degree=(-20, 20)):
+
+    def __init__(self, prob=0.5, degree=(-20, 20)):
         self.prob = prob
         assert prob >= 0 and prob <= 1
         if isinstance(degree, (float, int)):
@@ -472,7 +471,8 @@ class RandomRotFlip(BaseTransform):
         return results
 
     def transform(self, results: dict) -> dict:
-        """Call function to rotate or rotate & flip image, semantic segmentation maps.
+        """Call function to rotate or rotate & flip image, semantic
+        segmentation maps.
 
         Args:
             results (dict): Result dict from loading pipeline.
