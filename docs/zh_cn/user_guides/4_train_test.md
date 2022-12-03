@@ -1,6 +1,6 @@
 # 教程4：使用现有模型进行训练和测试
 
-MMsegmentation 支持在多种设备上训练和测试模型。如下文，具体方式分别为单GPU、分布式、族群式的训练和测试。通过本教程，你将知晓如何用MMsegmentation提供的脚本进行训练和测试。
+MMsegmentation 支持在多种设备上训练和测试模型。如下文，具体方式分别为单GPU、分布式以及计算集群的训练和测试。通过本教程，你将知晓如何用 MMsegmentation 提供的脚本进行训练和测试。
 
 ## 在单GPU上训练和测试
 
@@ -16,16 +16,16 @@ python tools/train.py  ${配置文件} [可选参数]
 
 - `--work-dir ${工作路径}`: 重新指定工作路径
 - `--amp`: 使用自动混合精度计算
-- `--resume`: 从工作路径中调用保存的最新的模型权重文件（checkpoint）
-- `--cfg-options ${需更新的具体配置}`: 覆盖已载入的配置中的部分设置，并且 以 xxx=yyy 格式的键值对 将被合并到config配置文件中。
+- `--resume`: 从工作路径中保存的最新检查点文件（checkpoint）恢复训练
+- `--cfg-options ${需更覆盖的配置}`: 覆盖已载入的配置中的部分设置，并且 以 xxx=yyy 格式的键值对 将被合并到 config 配置文件中。
   比如： '--cfg-option model.encoder.in_channels=6'， 更多细节请看[指导](./1_config.md#Modify-config-through-script-arguments)。
 
 下面是对于多GPU测试的可选参数:
 
-- `--launcher`: 用来分布式任务初始化运载器。允许选择的参数值有 `none`, `pytorch`, `slurm`, `mpi`。特别的，如果设置为none，测试将非分布式模式下进行。
+- `--launcher`: 执行器的启动方式。允许选择的参数值有 `none`, `pytorch`, `slurm`, `mpi`。特别的，如果设置为none，测试将非分布式模式下进行。
 - `--local_rank`: 分布式中进程的序号。如果没有指定，默认设置为0。
 
-**注意：** 在config配置文件中 `--resume` 和 field `load_from` 的不同之处：
+**注意：** 命令行参数 `--resume` 和在配置文件中的参数 `load_from` 的不同之处：
 
 `--resume` 只决定是否继续使用工作路径中最新的checkpoint检查点，它常常用于恢复被意外打断的训练。
 
@@ -181,10 +181,10 @@ GPUS=4 sh tools/slurm_train.sh dev pspnet configs/pspnet/pspnet_r50-d8_512x1024_
 基础用法如下：
 
 ```shell
-[GPUS=${GPUS}] sh tools/slurm_test.sh ${划分} ${进程名} ${配置文件} ${检查点文件} [可选参数]
+[GPUS=${GPUS}] sh tools/slurm_test.sh ${分区} ${进程名} ${配置文件} ${检查点文件} [可选参数]
 ```
 
-你可以检查 [the source code](../../../tools/slurm_test.sh) 来查看全部的参数和环境变量。
+你可以通过 [源码](../../../tools/slurm_test.sh) 来查看全部的参数和环境变量。
 
 **注意：** 使用 Slurm 时，需要设置端口，可从以下方式中选取一种。
 
@@ -208,14 +208,14 @@ GPUS=4 sh tools/slurm_train.sh dev pspnet configs/pspnet/pspnet_r50-d8_512x1024_
    enf_cfg = dict(dist_cfg=dict(backend='nccl', port=29501))
    ```
 
-   然后你可以通过 config1.py 和 config2.py 同时进行两个任务：
+   然后你可以通过 config1.py 和 config2.py 同时启动两个任务：
 
    ```shell
    CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 sh tools/slurm_train.sh ${划分} ${进程名} config1.py ${工作路径}
    CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 sh tools/slurm_train.sh ${划分} ${进程名} config2.py ${工作路径}
    ```
 
-3. 使用环境变量设置命令中的端口 'MASTER_PORT'：
+3. 在命令行中通过环境变量 `MASTER_PORT` 设置端口 ：
 
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 MASTER_PORT=29500 sh tools/slurm_train.sh ${划分} ${进程名} config1.py ${工作路径}
