@@ -201,10 +201,14 @@ def test_random_rotate_flip():
 
     results = dict()
     img = mmcv.imread(
-        osp.join(osp.dirname(__file__), '../data/pseudo_synapse_dataset/img_dir/0001_0.jpg'), 'color')
+        osp.join(osp.dirname(__file__),
+                 '../data/pseudo_synapse_dataset/img_dir/0001_0.jpg'),
+        'color')
     original_img = copy.deepcopy(img)
     seg = np.array(
-        Image.open(osp.join(osp.dirname(__file__), '../data/pseudo_synapse_dataset/ann_dir/0001_0.png')))
+        Image.open(osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_synapse_dataset/ann_dir/0001_0.png')))
     original_seg = copy.deepcopy(seg)
     results['img'] = img
     results['gt_semantic_seg'] = seg
@@ -366,7 +370,6 @@ def test_rgb2gray():
 
 
 def test_photo_metric_distortion():
-
     results = dict()
     img = mmcv.imread(osp.join('tests/data/color.jpg'), 'color')
     seg = np.array(Image.open(osp.join('tests/data/seg.png')))
@@ -497,7 +500,7 @@ def test_adjust_gamma():
     results = transform(results)
 
     inv_gamma = 1.0 / 1.2
-    table = np.array([((i / 255.0)**inv_gamma) * 255
+    table = np.array([((i / 255.0) ** inv_gamma) * 255
                       for i in np.arange(0, 256)]).astype('uint8')
     converted_img = mmcv.lut_transform(
         np.array(original_img, dtype=np.uint8), table)
