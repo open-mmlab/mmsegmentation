@@ -10,6 +10,9 @@ from PIL import Image
 from mmseg.datasets.transforms import *  # noqa
 from mmseg.datasets.transforms import PhotoMetricDistortion, RandomCrop
 from mmseg.registry import TRANSFORMS
+from mmseg.utils import register_all_modules
+
+register_all_modules()
 
 
 def test_resize():
@@ -70,6 +73,34 @@ def test_resize():
     resize_module = TRANSFORMS.build(transform)
     resized_results = resize_module(results.copy())
     assert max(resized_results['img_shape'][:2]) <= 1333 * 1.1
+
+    # test RandomChoiceResize, which `resize_type` is `ResizeShortestEdge`
+    transform = dict(
+        type='RandomChoiceResize',
+        scales=[128, 256, 512],
+        resize_type='ResizeShortestEdge',
+        max_size=1333)
+    resize_module = TRANSFORMS.build(transform)
+    resized_results = resize_module(results.copy())
+    assert resized_results['img_shape'][0] in [128, 256, 512]
+
+    transform = dict(
+        type='RandomChoiceResize',
+        scales=[512],
+        resize_type='ResizeShortestEdge',
+        max_size=512)
+    resize_module = TRANSFORMS.build(transform)
+    resized_results = resize_module(results.copy())
+    assert resized_results['img_shape'][1] == 512
+
+    transform = dict(
+        type='RandomChoiceResize',
+        scales=[(128, 256), (256, 512), (512, 1024)],
+        resize_type='ResizeShortestEdge',
+        max_size=1333)
+    resize_module = TRANSFORMS.build(transform)
+    resized_results = resize_module(results.copy())
+    assert resized_results['img_shape'][0] in [128, 256, 512]
 
     # test scale=None and scale_factor is tuple.
     # img shape: (288, 512, 3)
