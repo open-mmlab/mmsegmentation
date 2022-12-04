@@ -160,7 +160,7 @@ def inference_segmentor_remap(model, imgs):
     seg = result[0]
     for i in range(seg.shape[0]):
         for j in range(seg.shape[1]):
-            seg[i][j] = trainid_to_id[seg[i][j]]
+            seg[i][j] = trainid_to_id[seg[i][j].item()]
     return seg
 
 

@@ -273,7 +273,7 @@ class EncoderDecoder(BaseSegmentor):
             # our inference backend only support 4D output
             seg_pred = seg_pred.unsqueeze(0)
             return seg_pred
-        seg_pred = seg_pred.cpu().numpy()
+        # seg_pred = seg_pred.cpu().numpy()
         # unravel batch dim
         seg_pred = list(seg_pred)
         return seg_pred
