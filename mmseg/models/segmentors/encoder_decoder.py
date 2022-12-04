@@ -264,19 +264,19 @@ class EncoderDecoder(BaseSegmentor):
     def simple_test(self, img, img_meta, rescale=True):
         """Simple test with single image."""
         seg_logit = self.inference(img, img_meta, rescale)
-        if self.out_channels == 1:
-            seg_pred = (seg_logit >
-                        self.decode_head.threshold).to(seg_logit).squeeze(1)
-        else:
-            seg_pred = seg_logit.argmax(dim=1)
-        if torch.onnx.is_in_onnx_export():
-            # our inference backend only support 4D output
-            seg_pred = seg_pred.unsqueeze(0)
-            return seg_pred
-        # seg_pred = seg_pred.cpu().numpy()
-        # unravel batch dim
-        seg_pred = list(seg_pred)
-        return seg_pred
+        # if self.out_channels == 1:
+        #     seg_pred = (seg_logit >
+        #                 self.decode_head.threshold).to(seg_logit).squeeze(1)
+        # else:
+        #     seg_pred = seg_logit.argmax(dim=1)
+        # if torch.onnx.is_in_onnx_export():
+        #     # our inference backend only support 4D output
+        #     seg_pred = seg_pred.unsqueeze(0)
+        #     return seg_pred
+        # # seg_pred = seg_pred.cpu().numpy()
+        # # unravel batch dim
+        # seg_pred = list(seg_pred)
+        return seg_logit
 
     def simple_test_logits(self, img, img_metas, rescale=True):
         """Test without augmentations.
