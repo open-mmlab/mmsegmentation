@@ -67,6 +67,6 @@ pip install "mmdet>=3.0.0rc4"
 Note:
 
 - All experiments of Mask2Former are implemented with 8 A100 GPUs with 2 samplers per GPU.
-- As mentioned at [the official repo](https://github.com/facebookresearch/Mask2Former/issues/5), the results of Mask2Former are relatively not stable, the result of mask2former(swin-s) in the table is the medium result obtained by training 5 times following the suggestion of the author.
+- As mentioned at [the official repo](https://github.com/facebookresearch/Mask2Former/issues/5), the results of Mask2Former are relatively not stable, the result of Mask2Former(swin-s) on ADE20K dataset in the table is the medium result obtained by training 5 times following the suggestion of the author.
 - The ResNet backbones utilized in MaskFormer models are standard `ResNet` rather than `ResNetV1c`.
 - Test time augmentation is not supported in MMSegmentation 1.x version yet, we would add "ms+flip" results as soon as possible.
