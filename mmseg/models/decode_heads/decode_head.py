@@ -94,7 +94,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                 warnings.warn('For binary segmentation, we suggest using'
                               '`out_channels = 1` to define the output'
                               'channels of segmentor, and use `threshold`'
-                              'to convert seg_logist into a prediction'
+                              'to convert `seg_logits` into a prediction'
                               'applying a threshold')
             out_channels = num_classes
 
