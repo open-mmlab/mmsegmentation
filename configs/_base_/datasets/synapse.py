@@ -5,7 +5,7 @@ train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
     dict(type='Resize', scale=img_scale, keep_ratio=True),
-    dict(type='RandomRotFlip', prob=0.5, degree=20),
+    dict(type='RandomRotFlip', rotate_prob=0.5, flip_prob=0.5, degree=20),
     dict(type='PackSegInputs')
 ]
 test_pipeline = [

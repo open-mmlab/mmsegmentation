@@ -185,7 +185,11 @@ def test_flip():
 
 def test_random_rotate_flip():
     with pytest.raises(AssertionError):
-        transform = dict(type='RandomRotFlip', prob=1.5)
+        transform = dict(type='RandomRotFlip', flip_prob=1.5)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', rotate_prob=1.5)
         TRANSFORMS.build(transform)
 
     with pytest.raises(AssertionError):
@@ -196,19 +200,21 @@ def test_random_rotate_flip():
         transform = dict(type='RandomRotFlip', degree=-20)
         TRANSFORMS.build(transform)
 
-    transform = dict(type='RandomRotFlip', prob=1.0, degree=20)
+    transform = dict(
+        type='RandomRotFlip', flip_prob=1.0, rotate_prob=0, degree=20)
     rot_flip_module = TRANSFORMS.build(transform)
 
     results = dict()
     img = mmcv.imread(
-        osp.join(osp.dirname(__file__),
-                 '../data/pseudo_synapse_dataset/img_dir/0001_0.jpg'),
-        'color')
+        osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_synapse_dataset/img_dir/0001_0.jpg'), 'color')
     original_img = copy.deepcopy(img)
     seg = np.array(
-        Image.open(osp.join(
-            osp.dirname(__file__),
-            '../data/pseudo_synapse_dataset/ann_dir/0001_0.png')))
+        Image.open(
+            osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_synapse_dataset/ann_dir/0001_0.png')))
     original_seg = copy.deepcopy(seg)
     results['img'] = img
     results['gt_semantic_seg'] = seg
@@ -219,9 +225,22 @@ def test_random_rotate_flip():
     results['pad_shape'] = img.shape
     results['scale_factor'] = 1.0
 
-    results = rot_flip_module(results)
-    assert original_img.shape == results['img'].shape
-    assert original_seg.shape == results['gt_semantic_seg'].shape
+    result_flip = rot_flip_module(results)
+    assert original_img.shape == result_flip['img'].shape
+    assert original_seg.shape == result_flip['gt_semantic_seg'].shape
+
+    transform = dict(
+        type='RandomRotFlip', flip_prob=0, rotate_prob=1.0, degree=20)
+    rot_flip_module = TRANSFORMS.build(transform)
+
+    result_rotate = rot_flip_module(results)
+    assert original_img.shape == result_rotate['img'].shape
+    assert original_seg.shape == result_rotate['gt_semantic_seg'].shape
+
+    assert str(transform) == "{'type': 'RandomRotFlip'," \
+                             " 'flip_prob': 0," \
+                             " 'rotate_prob': 1.0," \
+                             " 'degree': 20}"
 
 
 def test_pad():
@@ -500,7 +519,7 @@ def test_adjust_gamma():
     results = transform(results)
 
     inv_gamma = 1.0 / 1.2
-    table = np.array([((i / 255.0) ** inv_gamma) * 255
+    table = np.array([((i / 255.0)**inv_gamma) * 255
                       for i in np.arange(0, 256)]).astype('uint8')
     converted_img = mmcv.lut_transform(
         np.array(original_img, dtype=np.uint8), table)
