@@ -32,9 +32,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 80.16
+      mIoU: 80.44
   Config: configs/mask2former/mask2former_r50_8xb2-90k_cityscapes-512x1024.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-90k_cityscapes-512x1024/mask2former_r50_8xb2-90k_cityscapes-512x1024_20221113_021441-c9da5c95.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-90k_cityscapes-512x1024/mask2former_r50_8xb2-90k_cityscapes-512x1024_20221202_140802-2ff5ffa0.pth
 - Name: mask2former_r101_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Metadata:
@@ -53,7 +53,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 80.81
+      mIoU: 80.8
   Config: configs/mask2former/mask2former_r101_8xb2-90k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r101_8xb2-90k_cityscapes-512x1024/mask2former_r101_8xb2-90k_cityscapes-512x1024_20221130_031628-8ad528ea.pth
 - Name: mask2former_swin-t_8xb2-90k_cityscapes-512x1024
@@ -74,9 +74,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 81.71
+      mIoU: 81.6
   Config: configs/mask2former/mask2former_swin-t_8xb2-90k_cityscapes-512x1024.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-90k_cityscapes-512x1024/mask2former_swin-t_8xb2-90k_cityscapes-512x1024_20221127_144501-290b34af.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-90k_cityscapes-512x1024/mask2former_swin-t_8xb2-90k_cityscapes-512x1024_20221203_061102-48b7ad64.pth
 - Name: mask2former_swin-s_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Metadata:
@@ -118,7 +118,7 @@ Models:
     Metrics:
       mIoU: 83.52
   Config: configs/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024_20221127_150026-efd13f24.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024_20221203_045030-59a4379a.pth
 - Name: mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Metadata:
@@ -137,9 +137,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 83.38
+      mIoU: 83.65
   Config: configs/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024_20221101_105159-f285471d.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024_20221202_141901-dc2c2ddd.pth
 - Name: mask2former_r50_8xb2-160k_ade20k-512x512
   In Collection: Mask2Former
   Metadata:
@@ -158,9 +158,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 47.24
+      mIoU: 47.87
   Config: configs/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512/mask2former_r50_8xb2-160k_ade20k-512x512_20221116_192723-7b365f38.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512/mask2former_r50_8xb2-160k_ade20k-512x512_20221204_000055-4c62652d.pth
 - Name: mask2former_r101_8xb2-160k_ade20k-512x512
   In Collection: Mask2Former
   Metadata:
@@ -179,9 +179,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 47.8
+      mIoU: 48.6
   Config: configs/mask2former/mask2former_r101_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r101_8xb2-160k_ade20k-512x512/mask2former_r101_8xb2-160k_ade20k-512x512_20221030_022305-9be49fd1.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r101_8xb2-160k_ade20k-512x512/mask2former_r101_8xb2-160k_ade20k-512x512_20221203_233905-b1169bc0.pth
 - Name: mask2former_swin-t_8xb2-160k_ade20k-512x512
   In Collection: Mask2Former
   Metadata:
@@ -200,9 +200,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 48.15
+      mIoU: 48.66
   Config: configs/mask2former/mask2former_swin-t_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-160k_ade20k-512x512/mask2former_swin-t_8xb2-160k_ade20k-512x512_20221113_151352-12213349.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-160k_ade20k-512x512/mask2former_swin-t_8xb2-160k_ade20k-512x512_20221203_234230-4341520b.pth
 - Name: mask2former_swin-s_8xb2-160k_ade20k-512x512
   In Collection: Mask2Former
   Metadata:
@@ -221,9 +221,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 51.83
+      mIoU: 51.24
   Config: configs/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512/mask2former_swin-s_8xb2-160k_ade20k-512x512_20221117_104921-e4bab9b8.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512/mask2former_swin-s_8xb2-160k_ade20k-512x512_20221204_143905-ab263c11.pth
 - Name: mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640
   In Collection: Mask2Former
   Metadata:
@@ -263,9 +263,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 53.95
+      mIoU: 53.9
   Config: configs/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221031_002811-028d15bd.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235230-622e093b.pth
 - Name: mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640
   In Collection: Mask2Former
   Metadata:
@@ -284,6 +284,6 @@ Models:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 56.11
+      mIoU: 56.01
   Config: configs/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221030_022757-92b3a2f0.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-5cc76a78.pth
