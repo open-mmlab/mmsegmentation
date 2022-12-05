@@ -140,6 +140,7 @@ Supported methods:
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
 - [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
+- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 
 Supported datasets:
 
