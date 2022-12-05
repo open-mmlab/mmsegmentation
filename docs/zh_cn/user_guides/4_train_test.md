@@ -43,7 +43,7 @@ python tools/train.py ${配置文件} --resume --cfg-options load_from=${检查�
 export CUDA_VISIBLE_DEVICES=-1
 ```
 
-然后运行[上方](#training-on-a-single-gpu)脚本。
+然后运行[上方](#在单GPU上训练)脚本。
 
 ### 在单GPU上测试
 
@@ -63,13 +63,13 @@ python tools/test.py ${配置文件} ${checkpoint模型参数文件} [可选参�
 - `--wait-time`: 多次可视化结果的时间间隔。当 `--show` 为激活状态时发挥作用。默认为2。
 - `--cfg-options`:  如果被具体指定，以 xxx=yyy 形式的键值对将被合并入配置文件中。
 
-**在CPU上测试**: 如果机器没有GPU，则在CPU上训练的过程是与单GPU训练一致的。如果机器有GPUs但是不希望使用它们，我们只需要在训练前通过以下方式关闭GPUs训练功能。
+**在CPU上测试**: 如果机器没有GPU，则在CPU上训练的过程是与单GPU训练一致的。如果机器有GPU，但是不希望使用它们，我们只需要在训练前通过以下方式关闭GPUs训练功能。
 
 ```shell
 export CUDA_VISIBLE_DEVICES=-1
 ```
 
-然后运行[上方](#testing-on-a-single-gpu)脚本。
+然后运行[上方](#在单GPU上测试)脚本。
 
 ## 多GPU、多机器上训练和测试
 
@@ -91,11 +91,12 @@ sh tools/dist_train.sh ${配置文件} ${GPU数量} [可选参数]
 
 ```shell
 # 训练检查点和日志保存在 WORK_DIR=work_dirs/pspnet_r50-d8_4xb4-80k_ade20k-512x512/
-# If work_dir is not set, it will be generated automatically.
+# 如果工作路径不是一个集合，它会被自动生成。
 sh tools/dist_train.sh configs/pspnet/pspnet_r50-d8_4xb4-80k_ade20k-512x512.py 8 --work-dir work_dirs/pspnet_r50-d8_4xb4-80k_ade20k-512x512
 ```
 
-**注意**: 在训练过程中，检查点和日志保存在同一个文件夹结构下，配置文件在`work_dirs/`下。 as the config file under `work_dirs/`。不推荐自定义的工作路径，因为评估脚本依赖于源自配置文件名的路径。如果你希望将权重保存在其他地方，请用symlink符号链接，例如：
+**注意**: 在训练过程中，检查点和日志保存在同一个文件夹结构下，配置文件在`work_dirs/`下。
+不推荐自定义的工作路径，因为评估脚本依赖于源自配置文件名的路径。如果你希望将权重保存在其他地方，请用symlink符号链接，例如：
 
 ```shell
 ln -s ${你的工作路径} ${MMSEG}/work_dirs
@@ -122,7 +123,7 @@ sh tools/dist_test.sh ${配置文件} ${检查点文件} ${GPU数量} [可选参
 
 ### 在单个机器上执行多进程任务
 
-如果你在单个机器上运行多进程任务，比如：需要4个GPU的2进程任务在有8个GPU的单个机器上，你需要为每个任务进程具体指定不同端口（默认29500），从而避免通讯冲突。否则，会有报错信息——`RuntimeError: Address already in use`。
+如果你在单个机器上运行多进程任务，比如：需要4个GPU的2进程任务在有8个GPU的单个机器上，你需要为每个任务进程具体指定不同端口（默认29500），从而避免通讯冲突。否则，会有报错信息——`RuntimeError: Address already in use`（运行错误：地址已在使用中）。
 
 如果你使用 `dist_train.sh` 来进行训练任务，你可以通过调整环境变量 `PORT` 设置端口。
 
@@ -134,7 +135,7 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 sh tools/dist_train.sh ${配置文件} 4
 ### Training with multiple machines
 
 MMSegmentation 依赖 `torch.distributed` 包来分布式训练。
-因此， 可以通过 PyTorch 的 [launch utility](https://pytorch.org/docs/stable/distributed.html#launch-utility) 来进行分布式训练。
+因此， 可以通过 PyTorch 的 [运行工具 launch utility](https://pytorch.org/docs/stable/distributed.html#launch-utility) 来进行分布式训练。
 
 如果你启动多机器进行训练只用简单地通过以太网连接，你可以直接运行下方命令：
 
@@ -150,15 +151,15 @@ NNODES=2 NODE_RANK=0 PORT=${主节点端口} MASTER_ADDR=${主节点地址} sh t
 NNODES=2 NODE_RANK=1 PORT=${主节点端口} MASTER_ADDR=${主节点地址} sh tools/dist_train.sh ${配置文件} ${GPUS}
 ```
 
-通常，如果你没有使用像InfiniBand一类的高速网络，这个会过程比较慢。
+通常，如果你没有使用像无限带宽一类的高速网络，这个会过程比较慢。
 
 ## 通过 Slurm 管理进程
 
-[Slurm](https://slurm.schedmd.com/) 是一个很好的为计算族群提供进程规划的系统。
+[Slurm](https://slurm.schedmd.com/) 是一个很好的为计算集群提供进程规划的系统。
 
-### 通过 Slurm 在族群上训练
+### 通过 Slurm 在集群上训练
 
-在一个由Slurm管理的族群上，你可以使用来启动训练进程。它支持单节点和多节点的训练。
+在一个由Slurm管理的集群上，你可以使用来启动训练进程。它支持单节点和多节点的训练。
 
 基础用法如下：
 
@@ -172,9 +173,9 @@ NNODES=2 NODE_RANK=1 PORT=${主节点端口} MASTER_ADDR=${主节点地址} sh t
 GPUS=4 sh tools/slurm_train.sh dev pspnet configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py --work-dir work_dir/pspnet
 ```
 
-你可以检查 [the source code](../../../tools/slurm_train.sh) 来查看全部的参数和环境变量。
+你可以检查 [源码](../../../tools/slurm_train.sh) 来查看全部的参数和环境变量。
 
-### 通过 Slurm 在族群上测试
+### 通过 Slurm 在集群上测试
 
 与训练任务相同， MMSegmentation 提供 `slurm_test.sh` 文件来启动测试进程。
 
@@ -192,7 +193,7 @@ GPUS=4 sh tools/slurm_train.sh dev pspnet configs/pspnet/pspnet_r50-d8_512x1024_
 
    ```shell
    GPUS=4 GPUS_PER_NODE=4 sh tools/slurm_train.sh ${划分} ${进程名} config1.py ${工作路径} --cfg-options env_cfg.dist_cfg.port=29500
-   GPUS=4 GPUS_PER_NODE=4 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py ${工作路径} --cfg-options env_cfg.dist_cfg.port=29501
+   GPUS=4 GPUS_PER_NODE=4 sh tools/slurm_train.sh ${进程名} ${工作路径} config2.py ${工作路径} --cfg-options env_cfg.dist_cfg.port=29501
    ```
 
 2. 通过修改config配置文件，设置不同的通讯端口：
