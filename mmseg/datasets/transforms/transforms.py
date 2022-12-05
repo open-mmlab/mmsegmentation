@@ -1,11 +1,15 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 <<<<<<< HEAD
+<<<<<<< HEAD
 import warnings
 from typing import Dict, Sequence, Tuple, Union
 =======
 from typing import Dict, Sequence, Tuple, Union, Optional
 >>>>>>> 8e3c64e (add biomedical3dpad)
+=======
+from typing import Dict, Optional, Sequence, Tuple, Union
+>>>>>>> 6c81eac (Add BioMedical3DPad)
 
 import cv2
 import mmcv
@@ -1921,9 +1925,7 @@ class BioMedical3DPad(BaseTransform):
 
         return results
 
-
         repr_str += f'pad_shape={self.pad_shape}, '
         repr_str += f'pad_val={self.pad_val}), '
         repr_str += f'seg_pad_val={self.seg_pad_val})'
         return repr_str
-
