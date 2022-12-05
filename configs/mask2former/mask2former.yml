@@ -2,6 +2,7 @@ Collections:
 - Name: Mask2Former
   Metadata:
     Training Data:
+    - Usage
     - Cityscapes
     - ADE20K
   Paper:

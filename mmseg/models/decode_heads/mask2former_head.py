@@ -4,7 +4,13 @@ from typing import List, Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmdet.models import Mask2FormerHead as Mask2FormerHead_
+
+try:
+    from mmdet.models.dense_heads import \
+        Mask2FormerHead as MMDET_Mask2FormerHead
+except ModuleNotFoundError:
+    MMDET_Mask2FormerHead = None
+
 from mmengine.structures import InstanceData
 from torch import Tensor
 
@@ -14,7 +20,7 @@ from mmseg.utils import ConfigType, SampleList
 
 
 @MODELS.register_module()
-class Mask2FormerHead(Mask2FormerHead_):
+class Mask2FormerHead(MMDET_Mask2FormerHead):
 
     def __init__(self,
                  num_classes,
@@ -96,5 +102,5 @@ class Mask2FormerHead(Mask2FormerHead_):
             mask_pred_results, size=size, mode='bilinear', align_corners=False)
         cls_score = F.softmax(mask_cls_results, dim=-1)[..., :-1]
         mask_pred = mask_pred_results.sigmoid()
-        sem_seg_mask = torch.einsum('bqc, bqhw->bchw', cls_score, mask_pred)
-        return sem_seg_mask
+        seg_logits = torch.einsum('bqc, bqhw->bchw', cls_score, mask_pred)
+        return seg_logits

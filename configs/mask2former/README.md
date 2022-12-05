@@ -31,6 +31,14 @@ Image segmentation is about grouping pixels with different semantics, e.g., cate
 }
 ```
 
+### Usage
+
+- Mask2Former model needs to install [MMDetection](https://github.com/open-mmlab/mmdetection) first.
+
+```shell
+pip install "mmdet>=3.0.0rc4"
+```
+
 ## Results and models
 
 ### Cityscapes
@@ -55,3 +63,10 @@ Image segmentation is about grouping pixels with different semantics, e.g., cate
 | Mask2Former | Swin-B         | 640x640   | 160000  |     5795 | 12.48          | 52.44 |             - |  [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/mask2former/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640_20221129_125118-35e3a2c7.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640_20221129_125118.json))     |
 | Mask2Former | Swin-B (in22k) | 640x640   | 160000  |     5795 | 12.43          | 53.90 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235230-622e093b.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235230.json)) |
 | Mask2Former | Swin-L (in22k) | 640x640   | 160000  |     9077 | 8.81           | 56.01 |             - | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-5cc76a78.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json)) |
+
+Note:
+
+- All experiments of Mask2Former are implemented with 8 A100 GPUs with 2 samplers per GPU.
+- As mentioned at [the official repo](https://github.com/facebookresearch/Mask2Former/issues/5), the results of Mask2Former are relatively not stable, the result of mask2former(swin-s) in the table is the medium result obtained by training 5 times following the suggestion of the author.
+- The ResNet backbones utilized in MaskFormer models are standard `ResNet` rather than `ResNetV1c`.
+- Test time augmentation is not supported in MMSegmentation 1.x version yet, we would add "ms+flip" results as soon as possible.
