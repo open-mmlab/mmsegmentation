@@ -1310,3 +1310,179 @@ class ResizeShortestEdge(BaseTransform):
     def transform(self, results: Dict) -> Dict:
         self.resize.scale = self._get_output_shape(results['img'], self.scale)
         return self.resize(results)
+
+
+@TRANSFORMS.register_module()
+class BioMedical3DRandomCrop(BaseTransform):
+    """Crop the input patch for medical image & seg. Required Keys:
+
+        - img
+        - gt_seg_map
+    Modified Keys:
+        - img
+        - img_shape
+        - gt_seg_map
+    Args:
+        crop_shape (Union[int, Tuple[int, int, int]]):  Expected size after
+            cropping with the format of (z, y, x). If set to an integer,
+            then cropping width and height are equal to this integer.
+        keep_foreground (bool): Cropped patch must contain foreground.
+    """
+
+    def __init__(self,
+                 crop_shape: Union[int, Tuple[int, int, int]],
+                 keep_foreground: bool = True):
+        super().__init__()
+        assert isinstance(crop_shape, int) or (
+            isinstance(crop_shape, tuple) and len(crop_shape) == 3
+        ), 'The expected crop_shape is an integer, or a tuple containing '
+        'three intergers'
+
+        if isinstance(crop_shape, int):
+            crop_shape = (crop_shape, crop_shape, crop_shape)
+        assert crop_shape[0] > 0 and crop_shape[1] > 0 and crop_shape[2] > 0
+        self.crop_shape = crop_shape
+        self.keep_foreground = keep_foreground
+
+    def sample_locations(self, seg_map: np.ndarray) -> dict:
+        """sample foreground locations when keep_foreground is True.
+
+        Args:
+            seg_map (np.ndarray): gt seg map
+        Returns:
+            dict: Coordinates of selected foreground locations
+        """
+        num_samples = 10000
+        # at least 1% of the class voxels need to be selected,
+        # otherwise it may be too sparse
+        min_percent_coverage = 0.01
+        rndst = np.random.RandomState(1234)
+        class_locs = {}
+        all_classes = np.unique(seg_map)
+        for c in all_classes:
+            if c == 0:
+                continue
+            all_locs = np.argwhere(seg_map == c)
+            if len(all_locs) == 0:
+                class_locs[c] = []
+                continue
+            target_num_samples = min(num_samples, len(all_locs))
+            target_num_samples = max(
+                target_num_samples,
+                int(np.ceil(len(all_locs) * min_percent_coverage)))
+
+            selected = all_locs[rndst.choice(
+                len(all_locs), target_num_samples, replace=False)]
+            class_locs[c] = selected
+        return class_locs
+
+    def generate_crop_bbox(self, results: dict) -> tuple:
+        """Randomly get a crop bounding box with specific crop mode.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+        Returns:
+            tuple: Coordinates of the cropped image.
+        """
+
+        def random_generate_crop_bbox(seg_map: np.ndarray) -> tuple:
+            """Randomly get a crop bounding box.
+
+            Args:
+                seg_map (np.ndarray): Ground truth segmentation map.
+            Returns:
+                tuple: Coordinates of the cropped image.
+            """
+            margin_d = max(seg_map.shape[0] - self.crop_shape[0], 0)
+            margin_h = max(seg_map.shape[1] - self.crop_shape[1], 0)
+            margin_w = max(seg_map.shape[2] - self.crop_shape[2], 0)
+            offset_d = np.random.randint(0, margin_d + 1)
+            offset_h = np.random.randint(0, margin_h + 1)
+            offset_w = np.random.randint(0, margin_w + 1)
+            crop_z1, crop_z2 = offset_d, offset_d + self.crop_shape[0]
+            crop_y1, crop_y2 = offset_h, offset_h + self.crop_shape[1]
+            crop_x1, crop_x2 = offset_w, offset_w + self.crop_shape[2]
+
+            return crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2
+
+        seg_map = results['gt_seg_map']
+        if self.keep_foreground:
+            class_locs = self.sample_locations(seg_map)
+            foreground_classes = np.array(
+                [i for i in class_locs.keys() if len(class_locs[i]) != 0])
+            foreground_classes = foreground_classes[foreground_classes > 0]
+            if len(foreground_classes) == 0:
+                # this only happens if some image does not contain
+                # foreground voxels at all
+                print('case does not contain any foreground classes: ',
+                      results['img_path'])
+                crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2 \
+                    = random_generate_crop_bbox(seg_map)
+            else:
+                selected_class = np.random.choice(foreground_classes)
+                voxels_of_that_class = class_locs[selected_class]
+                selected_voxel = voxels_of_that_class[np.random.choice(
+                    len(voxels_of_that_class))]
+
+                margin_d = max(0, selected_voxel[0] - self.crop_shape[0] // 2)
+                margin_h = max(0, selected_voxel[1] - self.crop_shape[1] // 2)
+                margin_w = max(0, selected_voxel[2] - self.crop_shape[2] // 2)
+                margin_d = max(
+                    0, min(seg_map.shape[0] - self.crop_shape[0], margin_d))
+                margin_h = max(
+                    0, min(seg_map.shape[1] - self.crop_shape[1], margin_h))
+                margin_w = max(
+                    0, min(seg_map.shape[2] - self.crop_shape[2], margin_w))
+                offset_d = np.random.randint(0, margin_d + 1)
+                offset_h = np.random.randint(0, margin_h + 1)
+                offset_w = np.random.randint(0, margin_w + 1)
+                crop_z1, crop_z2 = offset_d, offset_d + self.crop_shape[0]
+                crop_y1, crop_y2 = offset_h, offset_h + self.crop_shape[1]
+                crop_x1, crop_x2 = offset_w, offset_w + self.crop_shape[2]
+        else:
+            crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2 \
+                = random_generate_crop_bbox(seg_map)
+
+        return crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2
+
+    def crop(self, img: np.ndarray, crop_bbox: tuple) -> np.ndarray:
+        """Crop from ``img``
+        Args:
+            img (np.ndarray): Original input image.
+            crop_bbox (tuple): Coordinates of the cropped image.
+        Returns:
+            np.ndarray: The cropped image.
+        """
+        crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2 = crop_bbox
+        if len(img.shape) == 3:
+            img = img[crop_z1:crop_z2, crop_y1:crop_y2, crop_x1:crop_x2]
+        else:
+            assert len(img.shape) == 4
+            img = img[:, crop_z1:crop_z2, crop_y1:crop_y2, crop_x1:crop_x2]
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to randomly crop images, semantic segmentation
+        maps with specifical crop mode.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+        Returns:
+            dict: Randomly cropped results, 'img_shape' key in result dict is
+                updated according to crop size.
+        """
+        crop_bbox = self.generate_crop_bbox(results)
+
+        # crop the image
+        img = results['img']
+        results['img'] = self.crop(img, crop_bbox)
+        results['img_shape'] = results['img'].shape[1:]
+
+        # crop semantic seg
+        seg_map = results['gt_seg_map']
+        results['gt_seg_map'] = self.crop(seg_map, crop_bbox)
+
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__ + f'(crop_shape={self.crop_shape})'

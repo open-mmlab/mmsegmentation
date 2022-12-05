@@ -737,3 +737,44 @@ def test_generate_edge():
         [1, 1, 0, 0, 0],
         [1, 0, 0, 0, 0],
     ]))
+
+
+def test_biomedical3d_random_crop():
+    # test assertion for invalid random crop
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DRandomCrop', crop_shape=(-2, -1, 0))
+        transform = TRANSFORMS.build(transform)
+
+    from mmseg.datasets.transforms import (LoadBiomedicalAnnotation,
+                                           LoadBiomedicalImageFromFile)
+    results = dict()
+    results['img_path'] = osp.join(
+        osp.dirname(__file__), '../data', 'biomedical.nii.gz')
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+
+    results['seg_map_path'] = osp.join(
+        osp.dirname(__file__), '../data', 'biomedical_ann.nii.gz')
+    transform = LoadBiomedicalAnnotation()
+    results = transform(copy.deepcopy(results))
+
+    d, h, w = results['img_shape']
+    transform = dict(
+        type='BioMedical3DRandomCrop',
+        crop_shape=(d - 20, h - 20, w - 20),
+        keep_foreground=True)
+    transform = TRANSFORMS.build(transform)
+    crop_results = transform(results)
+    assert crop_results['img'].shape[1:] == (d - 20, h - 20, w - 20)
+    assert crop_results['img_shape'] == (d - 20, h - 20, w - 20)
+    assert crop_results['gt_seg_map'].shape == (d - 20, h - 20, w - 20)
+
+    transform = dict(
+        type='BioMedical3DRandomCrop',
+        crop_shape=(d - 20, h - 20, w - 20),
+        keep_foreground=False)
+    transform = TRANSFORMS.build(transform)
+    crop_results = transform(results)
+    assert crop_results['img'].shape[1:] == (d - 20, h - 20, w - 20)
+    assert crop_results['img_shape'] == (d - 20, h - 20, w - 20)
+    assert crop_results['gt_seg_map'].shape == (d - 20, h - 20, w - 20)
