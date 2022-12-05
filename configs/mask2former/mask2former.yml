@@ -74,9 +74,9 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 81.6
+      mIoU: 81.71
   Config: configs/mask2former/mask2former_swin-t_8xb2-90k_cityscapes-512x1024.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-90k_cityscapes-512x1024/mask2former_swin-t_8xb2-90k_cityscapes-512x1024_20221203_061102-48b7ad64.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-90k_cityscapes-512x1024/mask2former_swin-t_8xb2-90k_cityscapes-512x1024_20221127_144501-290b34af.pth
 - Name: mask2former_swin-s_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Metadata:
