@@ -54,9 +54,9 @@ data_preprocessor = dict(  # 数据预处理的配置项，通常包括图像的
     type='SegDataPreProcessor',  # 数据预处理的类型
     mean=[123.675, 116.28, 103.53],  # 用于归一化输入图像的平均值
     std=[58.395, 57.12, 57.375],  # 用于归一化输入图像的标准差
-    bgr_to_rgb=True,  # 是否将图像从 BGR 转为 RGB.
+    bgr_to_rgb=True,  # 是否将图像从 BGR 转为 RGB
     pad_val=0,  # 图像的填充值
-    seg_pad_val=255)  # 'gt_semantic_seg'的填充值
+    seg_pad_val=255)  # 'gt_seg_map'的填充值
 model = dict(
     type='EncoderDecoder',  # 分割器(segmentor)的名字
     data_preprocessor=data_preprocessor,
@@ -103,7 +103,7 @@ model = dict(
             loss_weight=0.4)),  # 辅助头损失的权重，默认设置为0.4
     # 模型训练和测试设置项
     train_cfg=dict(),  # train_cfg 当前仅是一个占位符
-    test_cfg=dict(mode='whole'))  # 测试模式，可选参数为 'whole' 和 'sliding'. 'whole': 在整张图像上全卷积(fully-convolutional)测试。 'sliding': 在输入图像上做滑窗预测
+    test_cfg=dict(mode='whole'))  # 测试模式，可选参数为 'whole' 和 'slide'. 'whole': 在整张图像上全卷积(fully-convolutional)测试。 'slide': 在输入图像上做滑窗预测
 ```
 
 `_base_/datasets/cityscapes.py`是数据集的基本配置文件。
@@ -161,7 +161,7 @@ val_dataloader = dict(
             img_path='leftImg8bit/val', seg_map_path='gtFine/val'),  # 测试数据的前缀
         pipeline=test_pipeline))  # 数据处理流程，它通过之前创建的test_pipeline传递。
 test_dataloader = val_dataloader
-# 精度评估，我们在这里使用IoUMetric进行评估
+# 精度评估方法，我们在这里使用 IoUMetric 进行评估
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
 test_evaluator = val_evaluator
 ```
@@ -564,7 +564,7 @@ Config (path: demo_config.py): {'backbone': {'type': 'ResNetV1c', 'depth': 101, 
      另外，如果原来的类型是tuple，通过这种方式修改后会自动转换为list。
 
      ```shell
-     python demo_script.py demo_config.py --cfg-options backbone.strides="(1, 1, 1, 1)"
+     python demo_script.py demo_config.py --cfg-options backbone.strides=1,1,1,1
      ```
 
      ```shell

@@ -575,7 +575,7 @@ Config (path: demo_config.py): {'backbone': {'type': 'ResNetV1c', 'depth': 101, 
      In addition, if the original type is tuple, it will be automatically converted to list after this way.
 
      ```shell
-     python demo_script.py demo_config.py --cfg-options backbone.strides="(1, 1, 1, 1)"
+     python demo_script.py demo_config.py --cfg-options backbone.strides=1,1,1,1
      ```
 
      ```shell
