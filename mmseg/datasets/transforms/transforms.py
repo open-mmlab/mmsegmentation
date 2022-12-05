@@ -1,7 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
+<<<<<<< HEAD
 import warnings
 from typing import Dict, Sequence, Tuple, Union
+=======
+from typing import Dict, Sequence, Tuple, Union, Optional
+>>>>>>> 8e3c64e (add biomedical3dpad)
 
 import cv2
 import mmcv
@@ -1315,6 +1319,7 @@ class ResizeShortestEdge(BaseTransform):
 
 
 @TRANSFORMS.register_module()
+<<<<<<< HEAD
 class BioMedical3DRandomCrop(BaseTransform):
     """Crop the input patch for medical image & segmentation mask.
 
@@ -1795,13 +1800,130 @@ class BioMedicalRandomGamma(BaseTransform):
             results['img'] = self._adjust_gamma(results['img'])
         else:
             pass
-        return results
 
     def __repr__(self):
         repr_str = self.__class__.__name__
+
         repr_str += f'(prob={self.prob}, '
         repr_str += f'gamma_range={self.gamma_range},'
         repr_str += f'invert_image={self.invert_image},'
         repr_str += f'per_channel={self.per_channel},'
         repr_str += f'retain_stats={self.retain_stats}'
         return repr_str
+
+
+class BioMedical3DPad(BaseTransform):
+    """Pad the biomedical 3d image & biomedical 3d semantic segmentation maps.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map (optional)
+    - gt_seg_map (optional)
+
+    Added Keys:
+
+    - pad_shape
+
+    Args:
+        pad_shape (Optional[Tuple[int, int, int]]): Fixed padding size.
+            Expected padding shape (z, x, y). Defaults: None.
+        pad_val (float): Padding value for biomedical 3d image.
+            The padding mode is set to "constant". The value
+            to be filled in padding area. Default: 0.
+        seg_pad_val (int|None): Padding value for biomedical 3d semantic
+            segmentation maps. The padding mode is set to "constant".
+            The value to be filled in padding area. Default: 0.
+    """
+
+    def __init__(self,
+                 pad_shape: Optional[Tuple[int, int, int]] = None,
+                 pad_val: float = 0.,
+                 seg_pad_val: int = 0) -> None:
+
+        # check pad_shape
+        assert pad_shape is not None
+        if not isinstance(pad_shape, tuple):
+            assert len(pad_shape) == 3
+
+        # check pad_val
+        if not isinstance(pad_val, float):
+            raise TypeError('pad_val must be a float. '
+                            f'But receive {type(pad_val)}')
+
+        # check seg_pad_val
+        if seg_pad_val is not None:
+            if not isinstance(seg_pad_val, int):
+                raise TypeError('seg_pad_val must be a int. '
+                                f'But receive {type(seg_pad_val)}')
+
+        self.pad_shape = pad_shape
+        self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
+
+    def _pad_img(self, results: dict) -> None:
+        """Pad images according to ``self.pad_shape``."""
+
+        padded_img = self._to_pad(
+            results['img'], pad_shape=self.pad_shape, pad_val=self.pad_val)
+
+        results['img'] = padded_img
+        results['pad_shape'] = padded_img.shape[1:]
+
+    def _pad_seg(self, results: dict) -> None:
+        """Pad semantic segmentation map according to
+        ``results['pad_shape']``."""
+        if results.get('gt_seg_map', None) is not None:
+            results['gt_seg_map'] = self._to_pad(
+                results['gt_seg_map'],
+                pad_shape=results['pad_shape'],
+                pad_val=self.seg_pad_val)
+
+    @staticmethod
+    def _to_pad(
+        img: np.ndarray,
+        pad_shape: Optional[Tuple[int, int, int]] = None,
+        pad_val: Union[int, float] = 0,
+    ) -> np.ndarray:
+        """Pad the given 3d image to a certain shape with specified padding
+        value.
+
+        Args:
+            img (ndarray): Image to be padded.
+            shape (tuple[int,int,int]): Expected padding shape (z, x, y).
+                Default: None.
+            pad_val (float): Values to be filled
+                in padding areas when padding_mode is 'constant'. Default: 0.
+        Returns:
+            ndarray: The padded image.
+        """
+        # compute pad width
+        pad_width = []
+        for i, sp_i in enumerate(pad_shape):
+            width = max(sp_i - img.shape[1:][i], 0)
+            pad_width.append((width // 2, width - (width // 2)))
+        pad_width = [(0, 0)] + pad_width
+
+        img = np.pad(
+            img, pad_width=pad_width, mode='constant', constant_values=pad_val)
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Call function to pad images, semantic segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+        Returns:
+            dict: Updated result dict.
+        """
+        self._pad_img(results)
+        self._pad_seg(results)
+
+        return results
+
+
+        repr_str += f'pad_shape={self.pad_shape}, '
+        repr_str += f'pad_val={self.pad_val}), '
+        repr_str += f'seg_pad_val={self.seg_pad_val})'
+        return repr_str
+

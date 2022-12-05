@@ -6,7 +6,7 @@ from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
 # yapf: disable
 from .transforms import (CLAHE, AdjustGamma, BioMedical3DRandomCrop,
                          BioMedicalGaussianBlur, BioMedicalGaussianNoise,
-                         BioMedicalRandomGamma, GenerateEdge,
+                         BioMedicalRandomGamma, GenerateEdge,BioMedical3DPad,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
@@ -20,5 +20,5 @@ __all__ = [
     'ResizeToMultiple', 'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'ResizeShortestEdge', 'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
-    'BioMedicalRandomGamma'
+    'BioMedicalRandomGamma', 'BioMedical3DPad'
 ]
