@@ -6,8 +6,8 @@ from .class_names import (ade_classes, ade_palette, cityscapes_classes,
                           get_palette, isaid_classes, isaid_palette,
                           loveda_classes, loveda_palette, potsdam_classes,
                           potsdam_palette, stare_classes, stare_palette,
-                          vaihingen_classes, vaihingen_palette, voc_classes,
-                          voc_palette, synapse_classes, synapse_palette)
+                          synapse_classes, synapse_palette, vaihingen_classes,
+                          vaihingen_palette, voc_classes, voc_palette)
 # yapf: enable
 from .collect_env import collect_env
 from .io import datafrombytes

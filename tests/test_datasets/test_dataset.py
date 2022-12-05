@@ -9,7 +9,7 @@ import pytest
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
                             COCOStuffDataset, DecathlonDataset, ISPRSDataset,
                             LIPDataset, LoveDADataset, PascalVOCDataset,
-                            PotsdamDataset, iSAIDDataset, SynapseDataset)
+                            PotsdamDataset, SynapseDataset, iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 

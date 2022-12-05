@@ -17,16 +17,15 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
+from .synapse import SynapseDataset
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
-                         ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale, RandomRotFlip)
-
+                         RandomCutOut, RandomMosaic, RandomRotate,
+                         RandomRotFlip, Rerange, ResizeShortestEdge,
+                         ResizeToMultiple, RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
-from .synapse import SynapseDataset
 
 __all__ = [
     'BaseSegDataset', 'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
@@ -39,5 +38,6 @@ __all__ = [
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge', 'RandomRotFlip'
+    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge', 'RandomRotFlip',
+    'SynapseDataset'
 ]
