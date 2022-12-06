@@ -4,7 +4,7 @@
 
 ## 配置文件的结构
 
-在  `config/_base_ ` 文件夹下面有4种基本组件类型： 数据集(dataset)，模型(model)，训练策略(schedule)和运行时的默认设置(default runtime)。许多模型都可以很容易地通过组合这些组件进行实现，比如 DeepLabV3，PSPNet。使用 `_base_` 下的组件构建的配置信息叫做 原始配置 (primitive)。
+在  `config/_base_ ` 文件夹下面有4种基本组件类型： 数据集(dataset)，模型(model)，训练策略(schedule)和运行时的默认设置(default runtime)。许多模型都可以很容易地通过组合这些组件进行实现，比如 DeepLabV3，PSPNet。使用 `_base_` 下的组件构建的配置信息叫做原始配置 (primitive)。
 
 对于同一个文件夹下的所有配置文件，建议**只有一个**对应的**原始配置文件**。所有其他的配置文件都应该继承自这个原始配置文件，从而保证每个配置文件的最大继承深度为 3。
 
