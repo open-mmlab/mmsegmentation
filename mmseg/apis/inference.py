@@ -101,7 +101,8 @@ def inference_segmentor(model, imgs):
     # forward the model
     with torch.no_grad():
         result = model(return_loss=False, rescale=True, **data)
-    return result
+        seg_pred = result.argmax(dim=1)
+    return seg_pred.cpu().numpy()
 
 def inference_segmentor_remap(model, imgs):
     """Inference image(s) with the segmentor.

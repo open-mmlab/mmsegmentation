@@ -51,18 +51,16 @@ def intersect_and_union(pred_label,
          torch.Tensor: The prediction histogram on all classes.
          torch.Tensor: The ground truth histogram on all classes.
     """
-
     if isinstance(pred_label, str):
         pred_label = torch.from_numpy(np.load(pred_label))
     else:
         pred_label = torch.from_numpy((pred_label))
 
     if isinstance(label, str):
-        label = torch.from_numpy(
-            mmcv.imread(label, flag='unchanged', backend='pillow'))
+        label = torch.from_numpy(mmcv.imread(label, flag='unchanged', backend='pillow'))
     else:
         label = torch.from_numpy(label)
-
+    
     if label_map is not None:
         label_copy = label.clone()
         for old_id, new_id in label_map.items():
@@ -71,11 +69,11 @@ def intersect_and_union(pred_label,
         label[label == 0] = 255
         label = label - 1
         label[label == 254] = 255
-
+    
     mask = (label != ignore_index)
     pred_label = pred_label[mask]
     label = label[mask]
-
+    
     intersect = pred_label[pred_label == label]
     area_intersect = torch.histc(
         intersect.float(), bins=(num_classes), min=0, max=num_classes - 1)
