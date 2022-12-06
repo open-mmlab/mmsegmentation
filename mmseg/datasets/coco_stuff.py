@@ -91,6 +91,9 @@ class COCOStuffDataset(BaseSegDataset):
                  [192, 192, 0], [128, 64, 96], [192, 32, 64], [192, 64, 128],
                  [64, 192, 96], [64, 160, 64], [64, 64, 0]])
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self,
+                 img_suffix='.jpg',
+                 seg_map_suffix='_labelTrainIds.png',
+                 **kwargs) -> None:
         super().__init__(
-            img_suffix='.jpg', seg_map_suffix='_labelTrainIds.png', **kwargs)
+            img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, **kwargs)
