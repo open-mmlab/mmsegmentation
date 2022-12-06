@@ -12,49 +12,56 @@ from ..builder import LOSSES
 from .utils import get_class_weight, weighted_loss
 
 
-def compute_dtm(mask_arr, output_shape, normalized=False):
+def compute_dtm(mask_arr, normalized=False):
     """compute the distance transform map of foreground in binary mask.
 
     Args:
-        mask_arr (array): segmentation mask, shape=(batch_size, channel, x, y)
-        output_shape (tuple): predict mask shape after F.Softmax(dim=1),
-                              shape=(batch_size, 2, channel, x, y)
-        normalized (bool): whether compute the dtm by normalized
+        mask_arr (array): segmentation mask, shape=(batch_size, x, y).
+                          or shape=(batch_size, x, y, z)
+        normalized (bool): whether compute the dtm by normalized.
+                           Default to False.
 
     Returns:
-        fg_dtm (array)：the foreground Distance Map (SDM), shape=out_shape
-            dtm(x) = 0;     x out of segmentation or x in segmentation boundary
-                   = inf|x - y|;    x in segmentation
-                                    if normalized is True, dtm(x) to [0, 1]
+        dtm (array): the foreground Distance Map (SDM), shape=out_shape.
+            dtm(x) = 0;    x out of segmentation or x in segmentation boundary.
+                   = inf|x - y|;    x in segmentation.
+                                    if normalized is True, dtm(x) to [0, 1].
     """
-    fg_dtm = np.zeros(output_shape)
+    dtm = np.zeros_like(mask_arr)
 
-    for b in range(output_shape[0]):
-        for c in range(1, output_shape[1]):
-            positive_mask = mask_arr[b].astype(bool)
-            if positive_mask.any():
-                positive_distance = distance_transform_edt(positive_mask)
-                fg_dtm[b][c] = positive_distance/np.max(positive_distance) \
-                    if normalized else positive_mask
-    return fg_dtm
+    for batch in range(len(mask_arr)):
+        fg_mask = mask_arr[batch] > 0.5
+        if fg_mask.any():
+            bg_mask = ~fg_mask
+            fg_distance = distance_transform_edt(fg_mask)
+            bg_distance = distance_transform_edt(bg_mask)
+            if normalized:
+                fg_distance = fg_distance / np.max(fg_distance)
+                bg_distance = bg_distance / np.max(bg_distance)
+            dtm[batch] = fg_distance + bg_distance
+    return dtm
 
 
 @weighted_loss
 def binary_hausdorff_distance_loss(pred, target, valid_mask):
     assert pred.shape[0] == target.shape[0]
 
-    with torch.no_grad:
-        gt_dtm_npy = compute_dtm((target * valid_mask).cpu.numpy(), pred.shape)
+    with torch.no_grad():
+        gt_dtm_npy = compute_dtm((target * valid_mask).numpy())
         gt_dtm = torch.from_numpy(gt_dtm_npy).float().cuda(pred.device.index)
-        pred_dtm_npy = compute_dtm(
-            (pred * valid_mask)[:, 1, ...].cpu.numpy() > 0.5, pred.shape)
+        pred_dtm_npy = compute_dtm((pred * valid_mask).numpy())
         pred_dtm = torch.from_numpy(pred_dtm_npy).float().cuda(
             pred.device.index)
 
     # compute hausdorff distance loss for binary segmentation
-    delta_s = (pred[:, 1, ...] - target.float())**2
-    dtm = pred_dtm[:, 1, ...]**2 + gt_dtm[:, 1, ...]**2
-    hd_loss = torch.einsum('bcxy,bcxy->bcxy', delta_s, dtm).mean()
+    error = (pred.cuda(pred.device.index) - target.cuda(pred.device.index))**2
+    distance = pred_dtm**2 + gt_dtm**2  # alpha=2
+
+    assert len(distance.shape) in [3, 4]
+    if len(distance.shape) == 3:
+        hd_loss = torch.einsum('bxy,bxy->bxy', error, distance).mean()
+    else:
+        hd_loss = torch.einsum('bxyz,bxyz->bxyz', error, distance).mean()
 
     return hd_loss
 
