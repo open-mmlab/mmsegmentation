@@ -61,7 +61,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新版本 v1.0.0rc1 在 2022.11.2 发布。
+最新版本 v1.0.0rc2 在 2022.12.6 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/notes/changelog.md)。
 
 ## 安装
@@ -134,6 +134,8 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
+- [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
+- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 
 已支持的数据集：
 
@@ -186,6 +188,7 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - [MMEngine](https://github.com/open-mmlab/mmengine): OpenMMLab 深度学习模型训练库
 - [MMCV](https://github.com/open-mmlab/mmcv): OpenMMLab 计算机视觉基础库
 - [MIM](https://github.com/open-mmlab/mim): MIM 是 OpenMMlab 项目、算法、模型的统一入口
+- [MMEval](https://github.com/open-mmlab/mmeval): 统一开放的跨框架算法评测库
 - [MMClassification](https://github.com/open-mmlab/mmclassification): OpenMMLab 图像分类工具箱
 - [MMDetection](https://github.com/open-mmlab/mmdetection): OpenMMLab 目标检测工具箱
 - [MMDetection3D](https://github.com/open-mmlab/mmdetection3d): OpenMMLab 新一代通用 3D 目标检测平台

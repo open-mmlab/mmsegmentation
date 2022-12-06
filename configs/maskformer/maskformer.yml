@@ -1,0 +1,101 @@
+Collections:
+- Name: MaskFormer
+  Metadata:
+    Training Data:
+    - Usage
+    - ADE20K
+  Paper:
+    URL: https://arxiv.org/abs/2107.06278
+    Title: 'MaskFormer: Per-Pixel Classification is Not All You Need for Semantic
+      Segmentation'
+  README: configs/maskformer/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+    Version: dev-3.x
+  Converted From:
+    Code: https://github.com/facebookresearch/MaskFormer/
+Models:
+- Name: maskformer_r50-d32_8xb2-160k_ade20k-512x512
+  In Collection: MaskFormer
+  Metadata:
+    backbone: R-50-D32
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 23.7
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 3.29
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.29
+  Config: configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512/maskformer_r50-d32_8xb2-160k_ade20k-512x512_20221030_182724-cbd39cc1.pth
+- Name: maskformer_r101-d32_8xb2-160k_ade20k-512x512
+  In Collection: MaskFormer
+  Metadata:
+    backbone: R-101-D32
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 28.65
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 4.12
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.11
+  Config: configs/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512/maskformer_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053-c8e0931d.pth
+- Name: maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512
+  In Collection: MaskFormer
+  Metadata:
+    backbone: Swin-T
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 24.67
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 3.73
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.69
+  Config: configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512_20221114_232813-03550716.pth
+- Name: maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512
+  In Collection: MaskFormer
+  Metadata:
+    backbone: Swin-S
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 37.06
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 5.33
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.36
+  Config: configs/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512_20221115_114710-5ab67e58.pth

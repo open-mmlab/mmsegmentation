@@ -48,18 +48,24 @@ class SegDataPreProcessor(BaseDataPreprocessor):
         rgb_to_bgr (bool): whether to convert image from RGB to RGB.
             Defaults to False.
         batch_augments (list[dict], optional): Batch-level augmentations
+        test_cfg (dict, optional): The padding size config in testing, if not
+            specify, will use `size` and `size_divisor` params as default.
+            Defaults to None, only supports keys `size` or `size_divisor`.
     """
 
-    def __init__(self,
-                 mean: Sequence[Number] = None,
-                 std: Sequence[Number] = None,
-                 size: Optional[tuple] = None,
-                 size_divisor: Optional[int] = None,
-                 pad_val: Number = 0,
-                 seg_pad_val: Number = 255,
-                 bgr_to_rgb: bool = False,
-                 rgb_to_bgr: bool = False,
-                 batch_augments: Optional[List[dict]] = None):
+    def __init__(
+        self,
+        mean: Sequence[Number] = None,
+        std: Sequence[Number] = None,
+        size: Optional[tuple] = None,
+        size_divisor: Optional[int] = None,
+        pad_val: Number = 0,
+        seg_pad_val: Number = 255,
+        bgr_to_rgb: bool = False,
+        rgb_to_bgr: bool = False,
+        batch_augments: Optional[List[dict]] = None,
+        test_cfg: dict = None,
+    ):
         super().__init__()
         self.size = size
         self.size_divisor = size_divisor
@@ -85,6 +91,9 @@ class SegDataPreProcessor(BaseDataPreprocessor):
 
         # TODO: support batch augmentations.
         self.batch_augments = batch_augments
+
+        # Support different padding methods in testing
+        self.test_cfg = test_cfg
 
     def forward(self, data: dict, training: bool = False) -> Dict[str, Any]:
         """Perform normalization、padding and bgr2rgb conversion based on
@@ -122,10 +131,21 @@ class SegDataPreProcessor(BaseDataPreprocessor):
             if self.batch_augments is not None:
                 inputs, data_samples = self.batch_augments(
                     inputs, data_samples)
-            return dict(inputs=inputs, data_samples=data_samples)
         else:
             assert len(inputs) == 1, (
                 'Batch inference is not support currently, '
                 'as the image size might be different in a batch')
-            return dict(
-                inputs=torch.stack(inputs, dim=0), data_samples=data_samples)
+            # pad images when testing
+            if self.test_cfg:
+                inputs, padded_samples = stack_batch(
+                    inputs=inputs,
+                    size=self.test_cfg.get('size', None),
+                    size_divisor=self.test_cfg.get('size_divisor', None),
+                    pad_val=self.pad_val,
+                    seg_pad_val=self.seg_pad_val)
+                for data_sample, pad_info in zip(data_samples, padded_samples):
+                    data_sample.set_metainfo({**pad_info})
+            else:
+                inputs = torch.stack(inputs, dim=0)
+
+        return dict(inputs=inputs, data_samples=data_samples)
