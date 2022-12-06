@@ -27,7 +27,7 @@
 ### Enhancement
 
 - Fix ci for 1.x ([#2011](https://github.com/open-mmlab/mmsegmentation/pull/2011), [#2019](https://github.com/open-mmlab/mmsegmentation/pull/2019))
-- Fix lint and pre-commit ([#2308](https://github.com/open-mmlab/mmsegmentation/pull/2308))
+- Fix lint and pre-commit hook ([#2308](https://github.com/open-mmlab/mmsegmentation/pull/2308))
 - Add `data` string in .gitignore file in dev-1.x branch ([#2336](https://github.com/open-mmlab/mmsegmentation/pull/2336))
 - Make scipy as a default dependency in runtime ([#2362](https://github.com/open-mmlab/mmsegmentation/pull/2362))
 - Delete mmcls in runtime.txt ([#2368](https://github.com/open-mmlab/mmsegmentation/pull/2368))
