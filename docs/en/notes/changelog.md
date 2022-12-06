@@ -1,5 +1,47 @@
 # Changelog of v1.x
 
+## v1.0.0rc2(6/12/2022)
+
+### Highlights
+
+- Support MaskFormer ([#2215](https://github.com/open-mmlab/mmsegmentation/pull/2215))
+- Support Mask2Former ([#2255](https://github.com/open-mmlab/mmsegmentation/pull/2255))
+
+### Features
+
+- Add ResizeShortestEdge transform ([#2339](https://github.com/open-mmlab/mmsegmentation/pull/2339))
+- Support padding in data pre-processor for model testing([#2290](https://github.com/open-mmlab/mmsegmentation/pull/2290))
+- Fix the problem of post-processing not removing padding ([#2367](https://github.com/open-mmlab/mmsegmentation/pull/2367))
+
+### Bug fix
+
+- Fix links in README ([#2024](https://github.com/open-mmlab/mmsegmentation/pull/2024))
+- Fix swin load state_dict ([#2304](https://github.com/open-mmlab/mmsegmentation/pull/2304))
+- Fix typo of BaseSegDataset docstring ([#2322](https://github.com/open-mmlab/mmsegmentation/pull/2322))
+- Fix the bug in the visualization step ([#2326](https://github.com/open-mmlab/mmsegmentation/pull/2326))
+- Fix ignore class id from -1 to 255 in BaseSegDataset ([#2332](https://github.com/open-mmlab/mmsegmentation/pull/2332))
+- Fix KNet IterativeDecodeHead bug ([#2334](https://github.com/open-mmlab/mmsegmentation/pull/2334))
+- Add input argument for datasets ([#2379](https://github.com/open-mmlab/mmsegmentation/pull/2379))
+- Fix typo in warning on binary classification ([#2382](https://github.com/open-mmlab/mmsegmentation/pull/2382))
+
+### Enhancement
+
+- Fix ci for 1.x ([#2011](https://github.com/open-mmlab/mmsegmentation/pull/2011), [#2019](https://github.com/open-mmlab/mmsegmentation/pull/2019))
+- Fix lint and pre-commit ([#2308](https://github.com/open-mmlab/mmsegmentation/pull/2308))
+- Add `data` string in .gitignore file in dev-1.x branch ([#2336](https://github.com/open-mmlab/mmsegmentation/pull/2336))
+- Make scipy as a default dependency in runtime ([#2362](https://github.com/open-mmlab/mmsegmentation/pull/2362))
+- Delete mmcls in runtime.txt ([#2368](https://github.com/open-mmlab/mmsegmentation/pull/2368))
+
+### Documentation
+
+- Update configuration documentation ([#2048](https://github.com/open-mmlab/mmsegmentation/pull/2048))
+- Update inference documentation ([#2052](https://github.com/open-mmlab/mmsegmentation/pull/2052))
+- Update train test documentation ([#2061](https://github.com/open-mmlab/mmsegmentation/pull/2061))
+- Update get started documentatin ([#2148](https://github.com/open-mmlab/mmsegmentation/pull/2148))
+- Update transforms documentation ([#2088](https://github.com/open-mmlab/mmsegmentation/pull/2088))
+- Add MMEval projects like in README ([#2259](https://github.com/open-mmlab/mmsegmentation/pull/2259))
+- Translate the visualization.md ([#2298](https://github.com/open-mmlab/mmsegmentation/pull/2298))
+
 ## v1.0.0rc1 (2/11/2022)
 
 ### Highlights
