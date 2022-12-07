@@ -4,7 +4,7 @@
 
 ## 常用接口
 
-以 Cityscape 为例, 介绍数据集常用接口. 如需运行以下示例, 请在当前工作目录下的 `data` 目录下载并[预处理](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes) Cityscapes 数据集.
+以 Cityscapes 为例, 介绍数据集常用接口. 如需运行以下示例, 请在当前工作目录下的 `data` 目录下载并[预处理](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes) Cityscapes 数据集.
 
 实例化 Cityscapes 训练数据集:
 
