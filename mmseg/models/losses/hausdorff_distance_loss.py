@@ -47,9 +47,9 @@ def binary_hausdorff_distance_loss(pred, target, valid_mask):
     assert pred.shape[0] == target.shape[0]
 
     with torch.no_grad():
-        gt_dtm_npy = compute_dtm((target * valid_mask).numpy())
+        gt_dtm_npy = compute_dtm((target * valid_mask).cpu().numpy())
         gt_dtm = torch.from_numpy(gt_dtm_npy).float().cuda(pred.device.index)
-        pred_dtm_npy = compute_dtm((pred * valid_mask).numpy())
+        pred_dtm_npy = compute_dtm((pred * valid_mask).cpu().numpy())
         pred_dtm = torch.from_numpy(pred_dtm_npy).float().cuda(
             pred.device.index)
 
