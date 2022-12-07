@@ -36,5 +36,5 @@ __all__ = [
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'DecathlonDataset', 'LIPDataset'
+    'DecathlonDataset', 'LIPDataset','REFUGEDataset'
 ]
