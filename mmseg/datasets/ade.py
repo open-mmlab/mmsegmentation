@@ -80,9 +80,13 @@ class ADE20KDataset(BaseSegDataset):
                  [184, 255, 0], [0, 133, 255], [255, 214, 0], [25, 194, 194],
                  [102, 255, 0], [92, 0, 255]])
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self,
+                 img_suffix='.jpg',
+                 seg_map_suffix='.png',
+                 reduce_zero_label=True,
+                 **kwargs) -> None:
         super().__init__(
-            img_suffix='.jpg',
-            seg_map_suffix='.png',
-            reduce_zero_label=True,
+            img_suffix=img_suffix,
+            seg_map_suffix=seg_map_suffix,
+            reduce_zero_label=reduce_zero_label,
             **kwargs)

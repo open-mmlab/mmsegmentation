@@ -61,7 +61,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 更新日志
 
-最新版本 v1.0.0rc1 在 2022.11.2 发布。
+最新版本 v1.0.0rc2 在 2022.12.6 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/notes/changelog.md)。
 
 ## 安装
@@ -135,6 +135,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
 - [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
+- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 
 已支持的数据集：
 

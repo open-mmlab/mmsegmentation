@@ -39,5 +39,9 @@ class LIPDataset(BaseSegDataset):
             [255, 170, 0],
         ))
 
-    def __init__(self, **kwargs) -> None:
-        super().__init__(img_suffix='.jpg', seg_map_suffix='.png', **kwargs)
+    def __init__(self,
+                 img_suffix='.jpg',
+                 seg_map_suffix='.png',
+                 **kwargs) -> None:
+        super().__init__(
+            img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, **kwargs)
