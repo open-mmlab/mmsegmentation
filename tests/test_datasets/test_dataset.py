@@ -232,7 +232,7 @@ def test_synapse():
             seg_map_path=osp.join(
                 osp.dirname(__file__),
                 '../data/pseudo_synapse_dataset/ann_dir')))
-    assert len(test_dataset) == 5
+    assert len(test_dataset) == 2
 
 
 def test_isaid():
