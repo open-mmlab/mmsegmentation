@@ -22,5 +22,9 @@ class SynapseDataset(BaseSegDataset):
                  [139, 182, 139], [111, 192, 185], [82, 107, 163],
                  [89, 54, 156]])
 
-    def __init__(self, **kwargs) -> None:
-        super().__init__(img_suffix='.jpg', seg_map_suffix='.png', **kwargs)
+    def __init__(self,
+                 img_suffix='.jpg',
+                 seg_map_suffix='.png',
+                 **kwargs) -> None:
+        super().__init__(
+            img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, **kwargs)
