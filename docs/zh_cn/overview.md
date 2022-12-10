@@ -10,7 +10,7 @@
 
 MMSegmentation 是一个工具箱，它为语义分割任务的统一实现和模型评估提供了一个框架，并且高质量实现了常用的语义分割方法和数据集。
 
-MMSeg 主要包含了 apis, structures, datasets, models, engine, evaluation and visualization 这七个主要部分。
+MMSeg 主要包含了 apis, structures, datasets, models, engine, evaluation 和 visualization 这七个主要部分。
 
 - **apis** 提供了模型推理的高级api
 
