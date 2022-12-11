@@ -17,10 +17,15 @@ train_pipeline = [
     dict(type='RandomFliplr', prob=0.2),#查看common_aug_func之后再加img_aug_func
     dict(type='RandomFlipPud', prob=0.2),
     dict(type='RandomApply', 
-        transforms=[dict(type='Rot90', degree_range=(1,3)),]
+        transforms=[dict(type='Rot90', degree_range=(1,3))]
     prob=0.3),
     #RandomApply相当于iaa.sometimes
-    dict(type='RGB2Gray', prob=0.3,degree=(90,270)),
+    dict(type='RGB2Gray', weights=(0.299, 0.587, 0.114)),
+    dict(type='RandomChoice', 
+        transforms=[dict(type='ColorJitter', brightness=0.2),
+        dict(type='ColorJitter', contrast=0.2),
+        dict(type='ColorJitter', saturation=0.2),
+        dict(type='ColorJitter', brightness=0.1, contrast=0.1, saturation=0.1, hue=0)])
     
 ]
 val_pipeline = [
@@ -66,7 +71,18 @@ val_dataloader = dict(
             img_path='images/validation',
             seg_map_path='annotations/validation'),
         pipeline=val_pipeline))
-test_dataloader = val_dataloader
+test_dataloader = dict(
+    batch_size=1,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='images/test',
+            seg_map_path='annotations/test'),
+        pipeline=val_pipeline))
 
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mDice'])
 test_evaluator = val_evaluator

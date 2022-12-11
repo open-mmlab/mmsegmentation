@@ -9,6 +9,9 @@ from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
 from numpy import random
+from torchvision import transforms
+import imgaug.augmenters as iaa
+import imgaug as ia
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
@@ -80,6 +83,165 @@ class ResizeToMultiple(BaseTransform):
         repr_str += (f'(size_divisor={self.size_divisor}, '
                      f'interpolation={self.interpolation})')
         return repr_str
+
+@TRANSFORMS.register_module()
+class ResizeToMultiple(BaseTransform):
+    """Resize images & seg to multiple of divisor.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - pad_shape
+
+    Args:
+        size_divisor (int): images and gt seg maps need to resize to multiple
+            of size_divisor. Default: 32.
+        interpolation (str, optional): The interpolation mode of image resize.
+            Default: None
+    """
+
+    def __init__(self, size_divisor=32, interpolation=None):
+        self.size_divisor = size_divisor
+        self.interpolation = interpolation
+
+    def transform(self, results: dict) -> dict:
+        """Call function to resize images, semantic segmentation map to
+        multiple of size divisor.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Resized results, 'img_shape', 'pad_shape' keys are updated.
+        """
+        # Align image to multiple of size divisor.
+        img = results['img']
+        crop_bbox = self.crop_bbox(results)
+
+        # crop the image
+        img = self.crop(img, crop_bbox)
+
+        # crop semantic seg
+        for key in results.get('seg_fields', []):
+            results[key] = self.crop(results[key], crop_bbox)
+        img_shape = img.shape
+        results['img'] = img
+        results['img_shape'] = img_shape
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(size_divisor={self.size_divisor}, '
+                     f'interpolation={self.interpolation})')
+        return repr_str
+
+@TRANSFORMS.register_module()
+class Rot90(BaseTransform):
+    """rotate img and gt with 90,180 or 270 degree.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+    - img
+    - seg_fields
+
+    Args:
+        degree_range (tuple): degree range for rotate.
+        
+    """
+
+    def __init__(self, degree_range: tuple):
+        self.degree_range = degree_range
+        # self.interpolation = interpolation
+        self.rot90 = iaa.Rot90(degree_range)
+
+    def transform(self, results: dict) -> dict:
+        """rotate img and gt with 90,180 or 270 degree.
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Rotated results.
+        """
+        # Align image to multiple of size divisor.
+        img = results['img']
+        
+        gt_segs = []
+        # Align segmentation map to multiple of size divisor.
+        for key in results.get('seg_fields', []):
+            gt_segs.apend(results[key])
+        imgs = [img]+gt_segs
+        roted_imgs = self.rot90(imgs)  
+        results['img'] = roted_imgs[0] 
+        for i,key in enumerate(results.get('seg_fields', [])):
+            results[key] = roted_imgs[i+1]
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(degree_range={self.degree_range})')
+        return repr_str
+
+@TRANSFORMS.register_module()
+class ColorJitter(BaseTransform):
+    """transform img's brightness,contrast,saturation and hue.
+
+    Required Keys:
+    - img
+
+    Modified Keys:
+    - img
+    Args:
+        brightness (float): brightness.
+        contrast (float): contrast.
+        saturation (float): saturation.
+        hue (float): hue.
+        
+    """
+
+    def __init__(self, brightness: float=None,contrast: float=None,saturation: float=None,hue: float=None):
+        self.brightness = brightness
+        self.contrast = contrast
+        self.saturation = saturation
+        self.hue = hue
+        color_params = ['brightness','contrast','saturation','hue']
+        self.color_params = {param:eval(param) for param in color_params if eval(param) is not None}
+
+        self.color_jitter = transforms.ColorJitter(**color_params)
+
+    def transform(self, results: dict) -> dict:
+        """transform img's brightness,contrast,saturation and hue .
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: color transformed results.
+        """
+        
+        img = results['img']
+        aug_img = self.color_jitter(img)
+        results['img'] = aug_img
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(brightness={self.brightness},'
+                     f'contrast={self.contrast},'
+                     f'saturation={self.saturation},'
+                     f'hue={self.hue})')
+        return repr_str
+
 
 
 @TRANSFORMS.register_module()
