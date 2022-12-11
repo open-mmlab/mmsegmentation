@@ -5,8 +5,7 @@ train_img_scale = (2056, 2124)
 val_img_scale = (1634, 1634)
 test_img_scale = (1634, 1634)
 crop_size = (256, 256)
-train_pipeline = [
-    dict(type='LoadImageFromFile'),
+train_pipeline = [dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
     dict(
         type='RandomResize',
@@ -14,20 +13,19 @@ train_pipeline = [
         ratio_range=(0.5, 2.0),
         keep_ratio=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
-    dict(type='RandomFliplr', prob=0.2),#查看common_aug_func之后再加img_aug_func
+    dict(type='RandomFliplr', prob=0.2),
+    
     dict(type='RandomFlipPud', prob=0.2),
     dict(type='RandomApply', 
-        transforms=[dict(type='Rot90', degree_range=(1,3))]
+        transforms=[dict(type='Rot90', degree_range=(1,3))],
     prob=0.3),
-    #RandomApply相当于iaa.sometimes
     dict(type='RGB2Gray', weights=(0.299, 0.587, 0.114)),
     dict(type='RandomChoice', 
         transforms=[dict(type='ColorJitter', brightness=0.2),
         dict(type='ColorJitter', contrast=0.2),
         dict(type='ColorJitter', saturation=0.2),
-        dict(type='ColorJitter', brightness=0.1, contrast=0.1, saturation=0.1, hue=0)])
+        dict(type='ColorJitter', brightness=0.1, contrast=0.1, saturation=0.1, hue=0)])]
     
-]
 val_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='Resize', scale=val_img_scale, keep_ratio=True),

@@ -192,6 +192,7 @@ class Rot90(BaseTransform):
         repr_str += (f'(degree_range={self.degree_range})')
         return repr_str
 
+iaa.PadToFixedSize
 @TRANSFORMS.register_module()
 class ColorJitter(BaseTransform):
     """transform img's brightness,contrast,saturation and hue.
