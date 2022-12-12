@@ -31,7 +31,7 @@ dict(
 
 Though drawn separately in the diagram [above](#overview-of-dataflow), data_preprocessor is a part of the model and thus can be found in [Model tutorial](./models.md) at Seg DataPreprocessor chapter.
 
-The return value is the same as `PackSegInputs` except the `inputs` would be transferred to GPU and some additional metainfo like 'pad_shape' and 'padding_size' would be added to the `data_samples`.
+The return value is the same as `PackSegInputs` except the `inputs` would be transferred to GPU and some additional metainfo like `pad_shape` and `padding_size` would be added to the `data_samples`.
 
 ### Model to Evaluator
 
@@ -43,6 +43,15 @@ After inference, the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentatio
 
 ### Model to Loss function
 
-The same as Data Preprocessor, loss function is also a part of the model, it's a property of [decode head](<>).
+The same as Data Preprocessor, loss function is also a part of the model, it's a property of [decode head](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L142).
 
-### Loss function to Optimizer
+In MMSegmentation, the method [loss_by_feat](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L291) of `decode_head` is a unify interface used to compute loss.
+
+Parameters:
+
+- seg_logits (Tensor): The output from decode head forward function.
+- batch_data_samples (List\[:obj:`SegDataSample`\]): The seg data samples. It usually includes information such as `metainfo` and `gt_sem_seg`.
+
+Returns:
+
+- dict\[str, Tensor\]: a dictionary of loss components
