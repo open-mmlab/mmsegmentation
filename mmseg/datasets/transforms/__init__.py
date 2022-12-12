@@ -6,7 +6,7 @@ from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, Rerange, ResizeToMultiple,
-                         RGB2Gray, SegRescale,Rot90,ColorJitter)
+                         RGB2Gray, SegRescale,Rot90,ColorJitter,RandomFlipud,RandomFliplr)
 
 __all__ = [
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
@@ -14,5 +14,5 @@ __all__ = [
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge','Rot90',
-    'ColorJitter',
+    'ColorJitter','RandomFliplr','RandomFlipud'
 ]

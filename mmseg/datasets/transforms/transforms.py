@@ -188,6 +188,105 @@ class Rot90(BaseTransform):
         return repr_str
 
 @TRANSFORMS.register_module()
+class RandomFliplr(BaseTransform):
+    """flip img and gt Horizontally.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+    - img
+    - seg_fields
+
+    Args:
+        prob (float): probability for flip Horizontally.
+
+    """
+
+    def __init__(self, prob: float):
+        self.prob = prob
+        self.fliplr = iaa.Fliplr(prob)
+
+    def transform(self, results: dict) -> dict:
+        """flip img and gt Horizontally.
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Flipped results.
+        """
+        img = results['img']
+
+        gt_segs = []
+
+        for key in results.get('seg_fields', []):
+            gt_segs.append(results[key])
+        imgs = [img] + gt_segs
+        flipped_imgs = self.fliplr(imgs)
+        results['img'] = flipped_imgs[0]
+        for i, key in enumerate(results.get('seg_fields', [])):
+            results[key] = flipped_imgs[i + 1]
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(prob={self.prob})')
+        return repr_str
+
+@TRANSFORMS.register_module()
+class RandomFlipud(BaseTransform):
+    """flip img and gt vertivally.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+    - img
+    - seg_fields
+
+    Args:
+        prob (float): probability for flip vertivally.
+
+    """
+
+    def __init__(self, prob: float):
+        self.prob = prob
+        self.flipud = iaa.Flipud(prob)
+
+    def transform(self, results: dict) -> dict:
+        """flip img and gt Horizontally.
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Flipped results.
+        """
+        img = results['img']
+
+        gt_segs = []
+
+        for key in results.get('seg_fields', []):
+            gt_segs.append(results[key])
+        imgs = [img] + gt_segs
+        flipped_imgs = self.flipud(imgs)
+        results['img'] = flipped_imgs[0]
+        for i, key in enumerate(results.get('seg_fields', [])):
+            results[key] = flipped_imgs[i + 1]
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(prob={self.prob})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
 class ColorJitter(BaseTransform):
     """transform img's brightness,contrast,saturation and hue.
 

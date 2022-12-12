@@ -22,8 +22,8 @@ from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
-                         ResizeToMultiple, RGB2Gray, SegRescale)
+                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,Rot90,
+                         ResizeToMultiple, RGB2Gray, SegRescale,ColorJitter,RandomFlipud,RandomFliplr)
 from .voc import PascalVOCDataset
 
 __all__ = [
@@ -33,9 +33,9 @@ __all__ = [
     'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',
     'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset',
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
-    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
+    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray','ColorJitter',
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
-    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
+    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile','Rot90','RandomFlipud','RandomFliplr'
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'DecathlonDataset', 'LIPDataset','REFUGEDataset'
 ]
