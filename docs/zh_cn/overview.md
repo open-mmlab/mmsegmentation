@@ -4,7 +4,7 @@
 
 ## 什么是语义分割？
 
-语义分割是将图像中属于同一目标类别的部分聚类在一起的任务。它也是一种像素级预测任务，因为图像中的每一个像素都将给根据类别进行分类。该任务的一些示例基准有 [Cityscapes](https://www.cityscapes-dataset.com/benchmarks/), [PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/) 和 [ADE20K](https://groups.csail.mit.edu/vision/datasets/ADE20K/) 。通常用平均交并比 (Mean IoU) 和像素准确率 (Pixel Accuracy) 这两个指标来评估模型。
+语义分割是将图像中属于同一目标类别的部分聚类在一起的任务。它也是一种像素级预测任务，因为图像中的每一个像素都将根据类别进行分类。该任务的一些示例基准有 [Cityscapes](https://www.cityscapes-dataset.com/benchmarks/), [PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/) 和 [ADE20K](https://groups.csail.mit.edu/vision/datasets/ADE20K/) 。通常用平均交并比 (Mean IoU) 和像素准确率 (Pixel Accuracy) 这两个指标来评估模型。
 
 ## 什么是 MMSegmentation?
 
