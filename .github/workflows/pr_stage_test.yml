@@ -50,8 +50,7 @@ jobs:
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         with:
-          sudo: false
-          install-dependencies: false
+          sudo: true
       - name: Run unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
