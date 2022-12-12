@@ -1530,6 +1530,7 @@ class BioMedicalGaussianNoise(BaseTransform):
 
     Required Keys:
 
+<<<<<<< HEAD
     - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
             N is the number of modalities, and data type is float32.
 
@@ -1821,18 +1822,19 @@ class BioMedical3DPad(BaseTransform):
 
     Required Keys:
 
-    - img
-    - gt_seg_map (optional)
-    - gt_seg_map (optional)
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
 
     Added Keys:
 
-    - pad_shape
+    - pad_shape (Tuple[int, int, int]): The padded shape.
 
     Args:
         pad_shape (Optional[Tuple[int, int, int]]): Fixed padding size.
-            Expected padding shape (z, x, y). Defaults: None.
-        pad_val (float): Padding value for biomedical 3d image.
+            Expected padding shape (Z, Y, X). Defaults: None.
+        pad_val (float): Padding value for biomedical image.
             The padding mode is set to "constant". The value
             to be filled in padding area. Default: 0.
         seg_pad_val (int|None): Padding value for biomedical 3d semantic
@@ -1850,24 +1852,20 @@ class BioMedical3DPad(BaseTransform):
         if not isinstance(pad_shape, tuple):
             assert len(pad_shape) == 3
 
-        # check pad_val
-        if not isinstance(pad_val, float):
-            raise TypeError('pad_val must be a float. '
-                            f'But receive {type(pad_val)}')
-
-        # check seg_pad_val
-        if seg_pad_val is not None:
-            if not isinstance(seg_pad_val, int):
-                raise TypeError('seg_pad_val must be a int. '
-                                f'But receive {type(seg_pad_val)}')
-
         self.pad_shape = pad_shape
         self.pad_val = pad_val
         self.seg_pad_val = seg_pad_val
 
     def _pad_img(self, results: dict) -> None:
-        """Pad images according to ``self.pad_shape``."""
+        """Pad images according to ``self.pad_shape``
 
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: The dict contains the padded image and shape
+                information.
+        """
         padded_img = self._to_pad(
             results['img'], pad_shape=self.pad_shape, pad_val=self.pad_val)
 
@@ -1875,8 +1873,15 @@ class BioMedical3DPad(BaseTransform):
         results['pad_shape'] = padded_img.shape[1:]
 
     def _pad_seg(self, results: dict) -> None:
-        """Pad semantic segmentation map according to
-        ``results['pad_shape']``."""
+        """Pad semantic segmentation map according to ``self.pad_shape`` if
+        ``gt_seg_map`` is not None in results dict.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Update the padded gt seg map in dict.
+        """
         if results.get('gt_seg_map', None) is not None:
             results['gt_seg_map'] = self._to_pad(
                 results['gt_seg_map'],
@@ -1893,23 +1898,26 @@ class BioMedical3DPad(BaseTransform):
         value.
 
         Args:
-            img (ndarray): Image to be padded.
-            shape (tuple[int,int,int]): Expected padding shape (z, x, y).
+            img (ndarray): Biomedical image with shape (N, Z, Y, X)
+                to be padded. N is the number of modalities.
+            shape (tuple[int,int,int]): Expected padding shape (Z, Y, X).
                 Default: None.
-            pad_val (float): Values to be filled
-                in padding areas when padding_mode is 'constant'. Default: 0.
+            pad_val (float): Values to be filled in padding areas
+                and the padding_mode is set to 'constant'. Default: 0.
         Returns:
             ndarray: The padded image.
         """
         # compute pad width
-        pad_width = []
-        for i, sp_i in enumerate(pad_shape):
-            width = max(sp_i - img.shape[1:][i], 0)
-            pad_width.append((width // 2, width - (width // 2)))
-        pad_width = [(0, 0)] + pad_width
+        d = max(pad_shape[0] - img.shape[1], 0)
+        pad_d = (d // 2, d - d // 2)
+        h = max(pad_shape[1] - img.shape[2], 0)
+        pad_h = (h // 2, h - h // 2)
+        w = max(pad_shape[2] - img.shape[2], 0)
+        pad_w = (w // 2, w - w // 2)
 
-        img = np.pad(
-            img, pad_width=pad_width, mode='constant', constant_values=pad_val)
+        pad_list = [(0, 0), pad_d, pad_h, pad_w]
+
+        img = np.pad(img, pad_list, mode='constant', constant_values=pad_val)
         return img
 
     def transform(self, results: dict) -> dict:
@@ -1917,6 +1925,7 @@ class BioMedical3DPad(BaseTransform):
 
         Args:
             results (dict): Result dict from loading pipeline.
+
         Returns:
             dict: Updated result dict.
         """
@@ -1924,7 +1933,9 @@ class BioMedical3DPad(BaseTransform):
         self._pad_seg(results)
 
         return results
-
+    
+    def __repr__(self):
+        repr_str = self.__class__.__name__
         repr_str += f'pad_shape={self.pad_shape}, '
         repr_str += f'pad_val={self.pad_val}), '
         repr_str += f'seg_pad_val={self.seg_pad_val})'
