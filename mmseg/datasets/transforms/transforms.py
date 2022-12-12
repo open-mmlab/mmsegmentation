@@ -3,11 +3,6 @@ import copy
 import warnings
 from typing import Dict, Sequence, Tuple, Union
 
-try:
-    from scipy.ndimage import gaussian_filter
-except ModuleNotFoundError:
-    gaussian_filter = None
-
 import cv2
 import mmcv
 import numpy as np
@@ -15,6 +10,7 @@ from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
 from numpy import random
+from scipy.ndimage import gaussian_filter
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
@@ -1522,26 +1518,26 @@ class BioMedicalGaussianNoise(BaseTransform):
 
     Required Keys:
 
-    - img
+    - img (N, Z, Y, X)
 
     Modified Keys:
 
     - img
 
     Args:
-        prob_per_modality (float): Probability to add Gaussian noise for
-            each modality. Default to 0.1.
+        prob (float): Probability to add Gaussian noise for
+            each sample. Default to 0.1.
         mean (float): Mean or “centre” of the distribution. Default to 0.0.
         std (float): Standard deviation of distribution. Default to 0.1.
     """
 
     def __init__(self,
-                 prob_per_modality: float = 0.1,
+                 prob: float = 0.1,
                  mean: float = 0.0,
                  std: float = 0.1) -> None:
         super().__init__()
-        assert 0.0 <= prob_per_modality <= 1.0 and std >= 0.0
-        self.prob_per_modality = prob_per_modality
+        assert 0.0 <= prob <= 1.0 and std >= 0.0
+        self.prob = prob
         self.mean = mean
         self.std = std
 
@@ -1554,19 +1550,18 @@ class BioMedicalGaussianNoise(BaseTransform):
         Returns:
             dict: Result dict with random Gaussian noise.
         """
-        for b in range(len(results['img'])):
-            if np.random.rand() < self.prob_per_modality:
-                rand_std = np.random.uniform(0, self.std)
-                noise = np.random.normal(
-                    self.mean, rand_std, size=results['img'][b].shape)
-                # noise is float64 array, convert to the results['img'].dtype
-                noise = noise.astype(results['img'].dtype)
-                results['img'][b] = results['img'][b] + noise
+        if np.random.rand() < self.prob:
+            rand_std = np.random.uniform(0, self.std)
+            noise = np.random.normal(
+                self.mean, rand_std, size=results['img'].shape)
+            # noise is float64 array, convert to the results['img'].dtype
+            noise = noise.astype(results['img'].dtype)
+            results['img'] = results['img'] + noise
         return results
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += f'(prob_per_modality={self.prob_per_modality}, '
+        repr_str += f'(prob={self.prob}, '
         repr_str += f'mean={self.mean}, '
         repr_str += f'std={self.std})'
         return repr_str
@@ -1583,7 +1578,7 @@ class BioMedicalGaussianBlur(BaseTransform):
 
     Required Keys:
 
-    - img
+    - img (N, Z, Y, X)
 
     Modified Keys:
 
@@ -1592,8 +1587,8 @@ class BioMedicalGaussianBlur(BaseTransform):
     Args:
         sigma_range (Tuple[float, float]|float): range to randomly
             select sigma value. Default to (0.5, 1.0).
-        prob_per_modality (float): Probability to apply Gaussian blur
-            for each modality. Default to 0.2.
+        prob (float): Probability to apply Gaussian blur
+            for each sample. Default to 0.2.
         prob_per_channel  (float): Probability to apply Gaussian blur
             for each channel (axis Z of the image). Default to 0.5.
         different_sigma_per_channel (bool): whether to use different
@@ -1604,16 +1599,16 @@ class BioMedicalGaussianBlur(BaseTransform):
 
     def __init__(self,
                  sigma_range: Tuple[float, float] = (0.5, 1.0),
-                 prob_per_modality: float = 0.2,
+                 prob: float = 0.2,
                  prob_per_channel: float = 0.5,
                  different_sigma_per_channel: bool = True,
                  different_sigma_per_axis: bool = True) -> None:
         super().__init__()
-        assert 0.0 <= prob_per_modality <= 1.0
+        assert 0.0 <= prob <= 1.0
         assert 0.0 <= prob_per_channel <= 1.0
         assert isinstance(sigma_range, Sequence) and len(sigma_range) == 2
         self.sigma_range = sigma_range
-        self.prob_per_modality = prob_per_modality
+        self.prob = prob
         self.prob_per_channel = prob_per_channel
         self.different_sigma_per_channel = different_sigma_per_channel
         self.different_sigma_per_axis = different_sigma_per_axis
@@ -1633,36 +1628,20 @@ class BioMedicalGaussianBlur(BaseTransform):
                 are "uniform", "normal".
         """
         if (isinstance(value_range, (list, tuple))):
-            if (len(value_range) == 1):
+            if (value_range[0] == value_range[1]):
                 value = value_range[0]
-            elif (len(value_range) == 2):
-                if (value_range[0] == value_range[1]):
-                    value = value_range[0]
-                else:
-                    orig_type = type(value_range[0])
-                    if rand_type == 'uniform':
-                        value = np.random.uniform(value_range[0],
-                                                  value_range[1])
-                    elif rand_type == 'normal':
-                        value = np.random.normal(value_range[0],
-                                                 value_range[1])
-                    value = orig_type(value)
             else:
-                raise ValueError(
-                    'sigma value must be a single value or a sequence of range'
-                )
-        elif (isinstance(value_range, (float, int))):
-            value = value_range
-        else:
-            raise ValueError(
-                'sigma value must be a single value or a sequence of range')
+                orig_type = type(value_range[0])
+                if rand_type == 'uniform':
+                    value = np.random.uniform(value_range[0], value_range[1])
+                value = orig_type(value)
         return value
 
     def _gaussian_blur(self, data_sample: np.ndarray) -> np.ndarray:
         """Random generate sigma and apply Gaussian Blur to the data
         Args:
-            data_sample (np.ndarray): data with single modality,
-                the data shape is (Z, Y, X)
+            data_sample (np.ndarray): data sample with multiple modalities,
+                the data shape is (N, Z, Y, X)
         """
         sigma = None
         for c in range(data_sample.shape[0]):
@@ -1692,15 +1671,13 @@ class BioMedicalGaussianBlur(BaseTransform):
         Returns:
             dict: Result dict with random Gaussian noise.
         """
-        # each modality is handled separately
-        for b in range(len(results['img'])):
-            if np.random.rand() < self.prob_per_modality:
-                results['img'][b] = self._gaussian_blur(results['img'][b])
+        if np.random.rand() < self.prob:
+            results['img'] = self._gaussian_blur(results['img'])
         return results
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += f'(prob_per_modality={self.prob_per_modality}, '
+        repr_str += f'(prob={self.prob}, '
         repr_str += f'prob_per_channel={self.prob_per_channel}, '
         repr_str += f'sigma_range={self.sigma_range}, '
         repr_str += 'different_sigma_per_channel='\

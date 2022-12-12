@@ -781,26 +781,23 @@ def test_biomedical3d_random_crop():
 def test_biomedical_gaussian_noise():
     # test assertion for invalid prob
     with pytest.raises(AssertionError):
-        transform = dict(type='BioMedicalGaussianNoise', prob_per_modality=1.5)
+        transform = dict(type='BioMedicalGaussianNoise', prob=1.5)
         TRANSFORMS.build(transform)
 
     # test assertion for invalid std
     with pytest.raises(AssertionError):
         transform = dict(
-            type='BioMedicalGaussianNoise',
-            prob_per_modality=0.2,
-            mean=0.5,
-            std=-0.5)
+            type='BioMedicalGaussianNoise', prob=0.2, mean=0.5, std=-0.5)
         TRANSFORMS.build(transform)
 
-    transform = dict(type='BioMedicalGaussianNoise', prob_per_modality=1.0)
+    transform = dict(type='BioMedicalGaussianNoise', prob=1.0)
     noise_module = TRANSFORMS.build(transform)
     assert str(noise_module) == 'BioMedicalGaussianNoise'\
-                                '(prob_per_modality=1.0, ' \
+                                '(prob=1.0, ' \
                                 'mean=0.0, ' \
                                 'std=0.1)'
 
-    transform = dict(type='BioMedicalGaussianNoise', prob_per_modality=1.0)
+    transform = dict(type='BioMedicalGaussianNoise', prob=1.0)
     noise_module = TRANSFORMS.build(transform)
     results = dict(
         img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
@@ -815,18 +812,66 @@ def test_biomedical_gaussian_noise():
 def test_biomedical_gaussian_blur():
     # test assertion for invalid prob
     with pytest.raises(AssertionError):
-        transform = dict(type='BioMedicalGaussianBlur', prob_per_modality=-1.5)
+        transform = dict(type='BioMedicalGaussianBlur', prob=-1.5)
+        TRANSFORMS.build(transform)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=0.6)
+        smooth_module = TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(0.6))
+        smooth_module = TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(15, 8, 9))
         TRANSFORMS.build(transform)
 
-    transform = dict(type='BioMedicalGaussianBlur', prob_per_modality=1.0)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range='0.16')
+        TRANSFORMS.build(transform)
+
+    transform = dict(
+        type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(0.7, 0.8))
     smooth_module = TRANSFORMS.build(transform)
     assert str(
         smooth_module
-    ) == 'BioMedicalGaussianBlur(prob_per_modality=1.0, ' \
+    ) == 'BioMedicalGaussianBlur(prob=1.0, ' \
+         'prob_per_channel=0.5, '\
+         'sigma_range=(0.7, 0.8), ' \
+         'different_sigma_per_channel=True, '\
+         'different_sigma_per_axis=True)'
+
+    transform = dict(type='BioMedicalGaussianBlur', prob=1.0)
+    smooth_module = TRANSFORMS.build(transform)
+    assert str(
+        smooth_module
+    ) == 'BioMedicalGaussianBlur(prob=1.0, ' \
          'prob_per_channel=0.5, '\
          'sigma_range=(0.5, 1.0), ' \
          'different_sigma_per_channel=True, '\
          'different_sigma_per_axis=True)'
+
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = smooth_module(results)
+    assert original_img.shape == results['img'].shape
+    # the max value in the smoothed image should be less than the original one
+    assert original_img.max() >= results['img'].max()
+    assert original_img.min() <= results['img'].min()
+
+    transform = dict(
+        type='BioMedicalGaussianBlur',
+        prob=1.0,
+        different_sigma_per_axis=False)
+    smooth_module = TRANSFORMS.build(transform)
 
     results = dict(
         img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
