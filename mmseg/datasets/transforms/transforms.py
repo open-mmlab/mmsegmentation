@@ -84,9 +84,10 @@ class ResizeToMultiple(BaseTransform):
                      f'interpolation={self.interpolation})')
         return repr_str
 
+
 @TRANSFORMS.register_module()
-class ResizeToMultiple(BaseTransform):
-    """Resize images & seg to multiple of divisor.
+class Rot90(BaseTransform):
+    """rotate img and gt with 90,180 or 270 degree.
 
     Required Keys:
 
@@ -94,51 +95,45 @@ class ResizeToMultiple(BaseTransform):
     - gt_seg_map
 
     Modified Keys:
-
     - img
-    - img_shape
-    - pad_shape
+    - seg_fields
 
     Args:
-        size_divisor (int): images and gt seg maps need to resize to multiple
-            of size_divisor. Default: 32.
-        interpolation (str, optional): The interpolation mode of image resize.
-            Default: None
+        degree_range (tuple): degree range for rotate.
+        
     """
 
-    def __init__(self, size_divisor=32, interpolation=None):
-        self.size_divisor = size_divisor
-        self.interpolation = interpolation
+    def __init__(self, degree_range: tuple):
+        self.degree_range = degree_range
+        # self.interpolation = interpolation
+        self.rot90 = iaa.Rot90(degree_range)
 
     def transform(self, results: dict) -> dict:
-        """Call function to resize images, semantic segmentation map to
-        multiple of size divisor.
-
+        """rotate img and gt with 90,180 or 270 degree.
         Args:
             results (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Resized results, 'img_shape', 'pad_shape' keys are updated.
+            dict: Rotated results.
         """
         # Align image to multiple of size divisor.
         img = results['img']
-        crop_bbox = self.crop_bbox(results)
-
-        # crop the image
-        img = self.crop(img, crop_bbox)
-
-        # crop semantic seg
+        
+        gt_segs = []
+        # Align segmentation map to multiple of size divisor.
         for key in results.get('seg_fields', []):
-            results[key] = self.crop(results[key], crop_bbox)
-        img_shape = img.shape
-        results['img'] = img
-        results['img_shape'] = img_shape
+            gt_segs.apend(results[key])
+        imgs = [img]+gt_segs
+        roted_imgs = self.rot90(imgs)  
+        results['img'] = roted_imgs[0] 
+        for i,key in enumerate(results.get('seg_fields', [])):
+            results[key] = roted_imgs[i+1]
+
         return results
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += (f'(size_divisor={self.size_divisor}, '
-                     f'interpolation={self.interpolation})')
+        repr_str += (f'(degree_range={self.degree_range})')
         return repr_str
 
 @TRANSFORMS.register_module()
@@ -192,7 +187,6 @@ class Rot90(BaseTransform):
         repr_str += (f'(degree_range={self.degree_range})')
         return repr_str
 
-iaa.PadToFixedSize
 @TRANSFORMS.register_module()
 class ColorJitter(BaseTransform):
     """transform img's brightness,contrast,saturation and hue.

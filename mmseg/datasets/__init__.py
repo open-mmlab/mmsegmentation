@@ -9,6 +9,7 @@ from .dataset_wrappers import MultiImageMixDataset
 from .decathlon import DecathlonDataset
 from .drive import DRIVEDataset
 from .hrf import HRFDataset
+from .refuge import REFUGEDataset
 from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
 from .lip import LIPDataset
