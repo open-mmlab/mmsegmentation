@@ -50,10 +50,10 @@ jobs:
         run: pip install -r requirements.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          sudo: true
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     sudo: true
       - name: Run unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
