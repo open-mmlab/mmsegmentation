@@ -3,9 +3,9 @@ from .formatting import PackSegInputs
 from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadBiomedicalData, LoadBiomedicalImageFromFile,
                       LoadImageFromNDArray)
-from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
-                         PhotoMetricDistortion, RandomCrop, RandomCutOut,
-                         RandomMosaic, RandomRotate, Rerange,
+from .transforms import (CLAHE, AdjustGamma, BioMedicalRandomGamma,
+                         GenerateEdge, PhotoMetricDistortion, RandomCrop,
+                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
                          SegRescale)
 
