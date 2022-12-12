@@ -59,7 +59,7 @@ jobs:
       - run:
           name: Install mmseg dependencies
           command: |
-            mim install git+https://github.com/open-mmlab/mmengine.git@main
+            pip install git+https://github.com/open-mmlab/mmengine.git@main
             pip install -U openmim
             mim install 'mmcv>=2.0.0rc3'
             mim install git+https://github.com/open-mmlab/mmclassification@dev-1.x
