@@ -4,7 +4,7 @@ from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadBiomedicalData, LoadBiomedicalImageFromFile,
                       LoadImageFromNDArray)
 # yapf: disable
-from .transforms import (CLAHE, AdjustGamma, BioMedical3DRandomCrop,
+from .transforms import (CLAHE, AdjustGamma, BioMedicalRandomGamma, BioMedical3DRandomCrop,
                          BioMedicalGaussianBlur, BioMedicalGaussianNoise,
                          GenerateEdge, PhotoMetricDistortion, RandomCrop,
                          RandomCutOut, RandomMosaic, RandomRotate, Rerange,
@@ -18,5 +18,6 @@ __all__ = [
     'RGB2Gray', 'RandomCutOut', 'RandomMosaic', 'PackSegInputs',
     'ResizeToMultiple', 'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'ResizeShortestEdge', 'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur'
+    'ResizeShortestEdge', 'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
+    'BioMedicalRandomGamma'
 ]
