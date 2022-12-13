@@ -1,6 +1,6 @@
 #　数据集
 
-在 MMSegmentation 算法库中, 所有 Dataset 类的功能有两个: 加载[预处理](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2) 之后的数据集的信息, 和将数据送入[数据集变换流水](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L141) 中, 进行数据增强操作. 加载的数据集信息包括两类: 元信息 (meta information), 数据集本身的信息, 例如数据集总共的类别, 和它们对应调色盘信息: 数据信息 (data information) 是指每组数据中图片和对应标签的路径. 下文中介绍了 MMSegmentation 1.x 中数据集的常用接口, 和 mmseg 数据集基类中数据信息加载与修改数据集类别的逻辑, 以及数据集与数据变换流水线的关系.
+在 MMSegmentation 算法库中, 所有 Dataset 类的功能有两个: 加载[预处理](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md) 之后的数据集的信息, 和将数据送入[数据集变换流水线 (dataset transform pipeline)](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L141) 中, 进行[数据增强操作](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/transforms.md). 加载的数据集信息包括两类: 元信息 (meta information), 数据集本身的信息, 例如数据集总共的类别, 和它们对应调色盘信息: 数据信息 (data information) 是指每组数据中图片和对应标签的路径. 下文中介绍了 MMSegmentation 1.x 中数据集的常用接口, 和 mmseg 数据集基类中数据信息加载与修改数据集类别的逻辑, 以及数据集与数据变换流水线的关系.
 
 ## 常用接口
 
@@ -165,7 +165,7 @@ print(dataset[0])
 
 ## BaseSegDataset
 
-由于 MMSegmentation 中的所有数据集的基本功能均包括加载[预处理](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2) 之后的数据集的信息, 和将数据送入数据集变换流水线中, 因此在 MMSegmentation 中将其中的共同接口抽象成 [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset)，它继承自 [MMEngine 的 `BaseDataset`](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md), 并遵循 OpenMMLab 数据集初始化统一流程, 并且支持高效的内部数据存储格式, 支持数据集拼接、数据集重复采样等功能.
+由于 MMSegmentation 中的所有数据集的基本功能均包括加载[预处理](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2) 之后的数据集的信息, 和将数据送入数据集变换流水线中, 因此在 MMSegmentation 中将其中的共同接口抽象成 [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset)，它继承自 [MMEngine 的 `BaseDataset`](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md), 遵循 OpenMMLab 数据集初始化统一流程, 支持高效的内部数据存储格式, 支持数据集拼接、数据集重复采样等功能.
 在 MMSegmentation BaseSegDataset 中重新定义了**数据信息加载方法**（`load_data_list`）和并新增了 `get_label_map` 方法用来**修改数据集的类别信息**.
 
 ### 数据信息加载
@@ -223,7 +223,7 @@ ADE20KDataset(data_root = 'data/ade/ADEChallengeData2016',
     reduce_zero_label=True）
 ```
 
-如果数据集有标注文件, 实例化数据集时会根据输入的数据集标注文件加载数据信息. 例如, PascalContext 数据集实例, 输入标注文件:
+如果数据集有标注文件, 实例化数据集时会根据输入的数据集标注文件加载数据信息. 例如, PascalContext 数据集实例, 输入标注文件的内容为:
 
 ```python
 2008_000008
@@ -321,7 +321,7 @@ print(dataset.metainfo)
  'reduce_zero_label': False}
 ```
 
-并且, 定义在数据集元信息中定义了标签重映射的字段 `label_map`, 分割标签类别会根据 `label_map`, 将类别重映射, [具体实现](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L151):
+可以看到, 数据集元信息的类别和默认 Cityscapes 不同. 并且, 定义了标签重映射的字段 `label_map` 用来修改每个分割掩膜上的像素的类别索引, 分割标签类别会根据 `label_map`, 将类别重映射, [具体实现](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L151):
 
 ```python
 gt_semantic_seg_copy = gt_semantic_seg.copy()
