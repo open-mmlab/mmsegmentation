@@ -32,6 +32,7 @@ jobs:
       - name: Upgrade pip
         run: |
           pip install pip --upgrade
+          # Install wheel for source distribution build. https://github.com/pypa/pip/blob/main/src/pip/_internal/wheel_builder.py#L94
           pip install wheel
       - name: Install Pillow
         run: pip install Pillow==6.2.2
