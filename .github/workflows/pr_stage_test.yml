@@ -43,12 +43,12 @@ jobs:
       - name: Install other dependencies
         run: |
           pip install -U openmim
-          mim install git+https://github.com/open-mmlab/mmengine.git
+          pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc3'
-          mim install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-          mim install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
@@ -104,7 +104,7 @@ jobs:
           pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
           pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: |
           python setup.py check -m -s
@@ -134,12 +134,12 @@ jobs:
         run: |
           python -V
           pip install -U openmim
-          mim install git+https://github.com/open-mmlab/mmengine.git
+          pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc3'
-          mim install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-          mim install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: pip install -e .
       - name: Run unittests
