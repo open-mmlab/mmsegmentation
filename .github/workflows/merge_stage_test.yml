@@ -33,7 +33,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
-        run: pip install pip --upgrade
+        run: |
+          pip install pip --upgrade
+          pip install wheel
       - name: Install Pillow
         run: pip install Pillow==6.2.2
         if: ${{matrix.torchvision == '0.4.2'}}
@@ -62,7 +64,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
-        torch: [1.6.0, 1.7.1, 1.8.1, 1.9.1, 1.10.1, 1.11.0]
+        torch: [1.6.0, 1.7.1, 1.8.1, 1.9.1, 1.10.1, 1.11.0, 1.12.1, 1.13.0]
         include:
           - torch: 1.6.0
             torchvision: 0.7.0
@@ -76,6 +78,10 @@ jobs:
             torchvision: 0.11.2
           - torch: 1.11.0
             torchvision: 0.12.0
+          - torch: 1.12.1
+            torchvision: 0.13.0
+          - torch: 1.13.0
+            torchvision:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -83,7 +89,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
-        run: pip install pip --upgrade
+        run: |
+          pip install pip --upgrade
+          pip install wheel
       - name: Install Pillow
         run: pip install Pillow==6.2.2
       - name: Install PyTorch
@@ -141,7 +149,53 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
-        run: pip install pip --upgrade
+        run: |
+          pip install pip --upgrade
+          pip install wheel
+      - name: Fetch GPG keys
+        run: |
+          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
+          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
+      - name: Install Python-dev
+        run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
+        if: ${{matrix.python-version != 3.9}}
+      - name: Install system dependencies
+        run: |
+          apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
+      - name: Install mmseg dependencies
+        run: |
+          python -V
+          pip install -U openmim
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          mim install 'mmcv>=2.0.0rc3'
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+      - name: Install unittest dependencies
+        run: pip install -r requirements/tests.txt -r requirements/optional.txt
+      - name: Build and install
+        run: |
+          python setup.py check -m -s
+          TORCH_CUDA_ARCH_LIST=7.0 pip install -e .
+  build_cu116:
+    runs-on: ubuntu-18.04
+    container:
+      image: pytorch/pytorch:1.13.0-cuda11.6-cudnn8-devel
+    strategy:
+      matrix:
+        python-version: [3.7]
+        include:
+          - torch: 1.13.0
+            cuda: 11.6
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Upgrade pip
+        run: |
+          pip install pip --upgrade
+          pip install wheel
       - name: Fetch GPG keys
         run: |
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
@@ -180,7 +234,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
-        run: python -m pip install pip --upgrade
+        run: |
+          python -m pip install pip --upgrade
+          pip install wheel
       - name: Install OpenCV
         run: pip install opencv-python>=3
       - name: Install PyTorch
