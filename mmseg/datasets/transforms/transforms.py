@@ -1883,10 +1883,11 @@ class BioMedical3DPad(BaseTransform):
             dict: Update the padded gt seg map in dict.
         """
         if results.get('gt_seg_map', None) is not None:
-            results['gt_seg_map'] = self._to_pad(
-                results['gt_seg_map'],
+            pad_gt_seg = self._to_pad(
+                results['gt_seg_map'][None, ...],
                 pad_shape=results['pad_shape'],
                 pad_val=self.seg_pad_val)
+            results['gt_seg_map'] = pad_gt_seg[1:]
 
     @staticmethod
     def _to_pad(

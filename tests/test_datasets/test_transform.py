@@ -979,7 +979,7 @@ def test_BioMedical3DPad():
 
     data_info2 = dict(
         img=np.random.random((8, 216, 224, 224)),
-        gt_seg_map=np.random.randint(0, 2, (8, 216, 224, 224)))
+        gt_seg_map=np.random.randint(0, 2, (216, 224, 224)))
 
     transform = dict(type='BioMedical3DPad', pad_shape=(256, 256, 256))
     transform = TRANSFORMS.build(transform)
