@@ -1518,7 +1518,8 @@ class BioMedicalGaussianNoise(BaseTransform):
 
     Required Keys:
 
-    - img (N, Z, Y, X)
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
+            N is the number of modalities, and data type is float32.
 
     Modified Keys:
 
@@ -1578,7 +1579,8 @@ class BioMedicalGaussianBlur(BaseTransform):
 
     Required Keys:
 
-    - img (N, Z, Y, X)
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
+            N is the number of modalities, and data type is float32.
 
     Modified Keys:
 
@@ -1613,27 +1615,23 @@ class BioMedicalGaussianBlur(BaseTransform):
         self.different_sigma_per_channel = different_sigma_per_channel
         self.different_sigma_per_axis = different_sigma_per_axis
 
-    def _get_valid_sigma(self,
-                         value_range,
-                         rand_type: str = 'uniform') -> Tuple[float, ...]:
+    def _get_valid_sigma(self, value_range) -> Tuple[float, ...]:
         """Ensure the `value_range` to be either a single value or a sequence
         of two values. If the `value_range` is a sequence, generate a random
-        value with `[value_range[0], value_range[1]]` based on the `rand_type`.
+        value with `[value_range[0], value_range[1]]` based on uniform
+        sampling.
 
         Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/7651ece69faf55263dd582a9f5cbd149ed9c3ad0/batchgenerators/augmentations/utils.py#L625 # noqa:E501
 
         Args:
             value_range (tuple|list|float|int): the input value range
-            rand_type (str): random value generation type, available options
-                are "uniform", "normal".
         """
         if (isinstance(value_range, (list, tuple))):
             if (value_range[0] == value_range[1]):
                 value = value_range[0]
             else:
                 orig_type = type(value_range[0])
-                if rand_type == 'uniform':
-                    value = np.random.uniform(value_range[0], value_range[1])
+                value = np.random.uniform(value_range[0], value_range[1])
                 value = orig_type(value)
         return value
 
