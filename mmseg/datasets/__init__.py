@@ -35,7 +35,7 @@ __all__ = [
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
     'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray','ColorJitter',
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
-    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile','Rot90','RandomFlipud','RandomFliplr'
+    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile','Rot90','RandomFlipud','RandomFliplr',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'DecathlonDataset', 'LIPDataset','REFUGEDataset'
 ]

@@ -23,4 +23,6 @@ class REFUGEDataset(BaseSegDataset):
             seg_map_suffix='.png',
             reduce_zero_label=False,
             **kwargs)
-        # assert self.file_client.exists(self.data_prefix['img_path'])
+        print(self.data_prefix)
+        assert self.file_client.exists(self.data_prefix['img_path'])
+

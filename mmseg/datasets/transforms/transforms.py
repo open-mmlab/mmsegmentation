@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 from typing import Dict, Sequence, Tuple, Union
-
+from PIL import Image
 import cv2
 import mmcv
 import numpy as np
@@ -275,8 +275,9 @@ class ColorJitter(BaseTransform):
         """
         
         img = results['img']
+        img = Image.fromarray(np.uint8(img))
         aug_img = self.color_jitter(img)
-        results['img'] = aug_img
+        results['img'] = np.array(aug_img)
 
         return results
 
