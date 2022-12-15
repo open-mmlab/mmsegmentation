@@ -20,8 +20,8 @@ This project implements a dummy ResNet wrapper, which literally does nothing new
 
 - Python 3.7
 - PyTorch 1.6 or higher
-- [MIM](https://github.com/open-mmlab/mim) v0.33 or higher
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc2 or higher
+- [MIM](https://github.com/open-mmlab/mim)
+- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation)
 
 All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `example_project/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
