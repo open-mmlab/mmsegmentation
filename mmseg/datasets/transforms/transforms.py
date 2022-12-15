@@ -122,9 +122,9 @@ class Rot90(BaseTransform):
         gt_segs = []
         # Align segmentation map to multiple of size divisor.
         for key in results.get('seg_fields', []):
-            gt_segs.apend(results[key])
+            gt_segs.append(results[key])
         imgs = [img]+gt_segs
-        roted_imgs = self.rot90(imgs)  
+        roted_imgs = self.rot90.augment_images(imgs)
         results['img'] = roted_imgs[0] 
         for i,key in enumerate(results.get('seg_fields', [])):
             results[key] = roted_imgs[i+1]
@@ -136,56 +136,6 @@ class Rot90(BaseTransform):
         repr_str += (f'(degree_range={self.degree_range})')
         return repr_str
 
-@TRANSFORMS.register_module()
-class Rot90(BaseTransform):
-    """rotate img and gt with 90,180 or 270 degree.
-
-    Required Keys:
-
-    - img
-    - gt_seg_map
-
-    Modified Keys:
-    - img
-    - seg_fields
-
-    Args:
-        degree_range (tuple): degree range for rotate.
-        
-    """
-
-    def __init__(self, degree_range: tuple):
-        self.degree_range = degree_range
-        # self.interpolation = interpolation
-        self.rot90 = iaa.Rot90(degree_range)
-
-    def transform(self, results: dict) -> dict:
-        """rotate img and gt with 90,180 or 270 degree.
-        Args:
-            results (dict): Result dict from loading pipeline.
-
-        Returns:
-            dict: Rotated results.
-        """
-        # Align image to multiple of size divisor.
-        img = results['img']
-        
-        gt_segs = []
-        # Align segmentation map to multiple of size divisor.
-        for key in results.get('seg_fields', []):
-            gt_segs.apend(results[key])
-        imgs = [img]+gt_segs
-        roted_imgs = self.rot90(imgs)  
-        results['img'] = roted_imgs[0] 
-        for i,key in enumerate(results.get('seg_fields', [])):
-            results[key] = roted_imgs[i+1]
-
-        return results
-
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += (f'(degree_range={self.degree_range})')
-        return repr_str
 
 @TRANSFORMS.register_module()
 class RandomFliplr(BaseTransform):
@@ -224,7 +174,7 @@ class RandomFliplr(BaseTransform):
         for key in results.get('seg_fields', []):
             gt_segs.append(results[key])
         imgs = [img] + gt_segs
-        flipped_imgs = self.fliplr(imgs)
+        flipped_imgs = self.fliplr.augment_images(imgs)
         results['img'] = flipped_imgs[0]
         for i, key in enumerate(results.get('seg_fields', [])):
             results[key] = flipped_imgs[i + 1]
@@ -273,7 +223,7 @@ class RandomFlipud(BaseTransform):
         for key in results.get('seg_fields', []):
             gt_segs.append(results[key])
         imgs = [img] + gt_segs
-        flipped_imgs = self.flipud(imgs)
+        flipped_imgs = self.flipud.augment_images(imgs)
         results['img'] = flipped_imgs[0]
         for i, key in enumerate(results.get('seg_fields', [])):
             results[key] = flipped_imgs[i + 1]
@@ -309,9 +259,11 @@ class ColorJitter(BaseTransform):
         self.saturation = saturation
         self.hue = hue
         color_params = ['brightness','contrast','saturation','hue']
-        self.color_params = {param:eval(param) for param in color_params if eval(param) is not None}
-
-        self.color_jitter = transforms.ColorJitter(**color_params)
+        self.color_params = {}
+        for param in color_params:
+            if eval(param) is not None:
+                self.color_params.update({param:eval(param)})
+        self.color_jitter = transforms.ColorJitter(**self.color_params)
 
     def transform(self, results: dict) -> dict:
         """transform img's brightness,contrast,saturation and hue .
