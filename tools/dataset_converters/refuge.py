@@ -14,7 +14,7 @@ from mmengine.utils import mkdir_or_exist
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Convert HRF dataset to mmsegmentation format')
+        description='Convert REFUGE dataset to mmsegmentation format')
     parser.add_argument('--raw_data_root', help='the root path of raw data')
     
     parser.add_argument('--tmp_dir', help='path of the temporary directory')

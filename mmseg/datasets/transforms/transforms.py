@@ -125,9 +125,9 @@ class Rot90(BaseTransform):
             gt_segs.append(results[key])
         imgs = [img]+gt_segs
         roted_imgs = self.rot90.augment_images(imgs)
-        results['img'] = roted_imgs[0] 
+        results['img'] = roted_imgs[0].astype(np.float32)
         for i,key in enumerate(results.get('seg_fields', [])):
-            results[key] = roted_imgs[i+1]
+            results[key] = roted_imgs[i+1].astype(np.float32)
 
         return results
 
@@ -175,9 +175,9 @@ class RandomFliplr(BaseTransform):
             gt_segs.append(results[key])
         imgs = [img] + gt_segs
         flipped_imgs = self.fliplr.augment_images(imgs)
-        results['img'] = flipped_imgs[0]
+        results['img'] = flipped_imgs[0].astype(np.float32)
         for i, key in enumerate(results.get('seg_fields', [])):
-            results[key] = flipped_imgs[i + 1]
+            results[key] = flipped_imgs[i + 1].astype(np.float32)
 
         return results
 
@@ -224,9 +224,9 @@ class RandomFlipud(BaseTransform):
             gt_segs.append(results[key])
         imgs = [img] + gt_segs
         flipped_imgs = self.flipud.augment_images(imgs)
-        results['img'] = flipped_imgs[0]
+        results['img'] = flipped_imgs[0].astype(np.float32)
         for i, key in enumerate(results.get('seg_fields', [])):
-            results[key] = flipped_imgs[i + 1]
+            results[key] = flipped_imgs[i + 1].astype(np.float32)
 
         return results
 
@@ -277,7 +277,8 @@ class ColorJitter(BaseTransform):
         img = results['img']
         img = Image.fromarray(np.uint8(img))
         aug_img = self.color_jitter(img)
-        results['img'] = np.array(aug_img)
+        results['img'] = np.array(aug_img,dtype=np.float32)
+        # results['img'] = aug_img.astype(np.float32)
 
         return results
 
