@@ -15,7 +15,16 @@ from .decode_head import BaseDecodeHead
 
 
 class ImageLevelContext(nn.Module):
-
+    """ Image-Level Context Module
+    Args:
+        feats_channels (int): Input channels of query/key feature.
+        transform_channels (int): Output channels of key/query transform.
+        concat_input (bool): whether to concat input feature.
+        align_corners (bool): align_corners argument of F.interpolate.
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+    """
     def __init__(self,
                  feats_channels,
                  transform_channels,
@@ -73,7 +82,15 @@ class ImageLevelContext(nn.Module):
 
 
 class SemanticLevelContext(nn.Module):
-
+    """ Semantic-Level Context Module
+    Args:
+        feats_channels (int): Input channels of query/key feature.
+        transform_channels (int): Output channels of key/query transform.
+        concat_input (bool): whether to concat input feature.
+        conv_cfg (dict|None): Config of conv layers.
+        norm_cfg (dict|None): Config of norm layers.
+        act_cfg (dict): Config of activation layers.
+    """
     def __init__(self,
                  feats_channels,
                  transform_channels,
@@ -150,27 +167,22 @@ class SemanticLevelContext(nn.Module):
 
 @MODELS.register_module()
 class ISNetHead(BaseDecodeHead):
+    """ISNet: Integrate Image-Level and Semantic-Level Context for Semantic Segmentation
+    
+    This head is the implementation of `ISNet`
+    <https://arxiv.org/pdf/2108.12382.pdf>`_.
 
-    def __init__(self, transform_channels, concat_input, shortcut,
+    Args:
+        transform_channels (int): Output channels of key/query transform.
+        concat_input (bool): whether to concat input feature.
+        with_shortcut (bool): whether to use shortcut connection.
+        shortcut_in_channels (int): Input channels of shortcut.
+        shortcut_feat_channels (int): Output channels of shortcut.
+        dropout_ratio (float): Ratio of dropout.
+    """
+    def __init__(self, transform_channels, concat_input, with_shortcut, shortcut_in_channels, shortcut_feat_channels,
                  dropout_ratio, **kwargs):
         super().__init__(**kwargs)
-
-        ilc_cfg = {
-            'feats_channels': self.channels,
-            'transform_channels': transform_channels,
-            'concat_input': concat_input,
-            'norm_cfg': self.norm_cfg,
-            'act_cfg': self.act_cfg,
-            'align_corners': self.align_corners
-        }
-
-        slc_cfg = {
-            'feats_channels': self.channels,
-            'transform_channels': transform_channels,
-            'concat_input': concat_input,
-            'norm_cfg': self.norm_cfg,
-            'act_cfg': self.act_cfg,
-        }
 
         self.in_channels = self.in_channels[-1]
 
@@ -185,8 +197,11 @@ class ISNetHead(BaseDecodeHead):
             act_cfg=self.act_cfg
         )
 
-        self.ilc_net = ImageLevelContext(**ilc_cfg)
-        self.slc_net = SemanticLevelContext(**slc_cfg)
+        self.ilc_net = ImageLevelContext(feats_channels=self.channels, transform_channels=transform_channels,
+                                         concat_input=concat_input, norm_cfg=self.norm_cfg, act_cfg=self.act_cfg,
+                                         align_corners=self.align_corners)
+        self.slc_net = SemanticLevelContext(feats_channels=self.channels, transform_channels=transform_channels,
+                                            concat_input=concat_input, norm_cfg=self.norm_cfg, act_cfg=self.act_cfg)
 
 
         self.decoder_stage1 = nn.Sequential(
@@ -209,20 +224,19 @@ class ISNetHead(BaseDecodeHead):
                 bias=True),
         )
 
-        if shortcut['is_on']:
+        if with_shortcut:
             self.shortcut = ConvModule(
-                shortcut['in_channels'],
-                shortcut['feats_channels'],
+                shortcut_in_channels,
+                shortcut_feat_channels,
                 kernel_size=1,
                 stride=1,
                 padding=0,
                 conv_cfg=self.conv_cfg,
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg)
-
             self.decoder_stage2 = nn.Sequential(
                 ConvModule(
-                    self.channels + shortcut['feats_channels'],
+                    self.channels + shortcut_feat_channels,
                     self.channels,
                     kernel_size=3,
                     stride=1,
@@ -254,9 +268,8 @@ class ISNetHead(BaseDecodeHead):
         self.conv_seg = None
         self.dropout = None
 
-    def _forward_feature(self, inputs):
+    def forward(self, inputs):
         x = self._transform_inputs(inputs)
-        x = inputs
         feats = self.bottleneck(x[-1])
 
         feats_il = self.ilc_net(feats)
@@ -271,7 +284,7 @@ class ISNetHead(BaseDecodeHead):
         feats_sl = self.slc_net(feats, preds_stage1, feats_il)
 
         if hasattr(self, 'shortcut'):
-            shortcut_out = self.shortcut(inputs[0])
+            shortcut_out = self.shortcut(x[0])
             feats_sl = resize(
                 feats_sl,
                 size=shortcut_out.shape[2:],
@@ -282,68 +295,34 @@ class ISNetHead(BaseDecodeHead):
 
         return preds_stage1, preds_stage2
 
-    def forward(self, inputs):
-        preds_stage1, preds_stage2 = self._forward_feature(inputs)
-        return preds_stage1, preds_stage2
-
     def loss_by_feat(self, seg_logits: Tensor,
                      batch_data_samples: SampleList) -> dict:
-
-        seg_logits_stage1, seg_logits_stage2 = seg_logits
-
         seg_label = self._stack_batch_gt(batch_data_samples)
         loss = dict()
-        seg_logits_stage1 = resize(
-            input=seg_logits_stage1,
-            size=seg_label.shape[2:],
-            mode='bilinear',
-            align_corners=self.align_corners)
-        seg_logits_stage2 = resize(
-            input=seg_logits_stage2,
-            size=seg_label.shape[2:],
-            mode='bilinear',
-            align_corners=self.align_corners)
 
         if self.sampler is not None:
-            seg_weight = self.sampler.sample(seg_logits_stage2, seg_label)
+            seg_weight = self.sampler.sample(seg_logits[-1], seg_label)
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
 
-        loss_decode_D = self.loss_decode[0]
-        loss_decode_O = self.loss_decode[1]
-
-        loss[loss_decode_D.loss_name] = loss_decode_D(
-            seg_logits_stage1,
-            seg_label,
-            seg_weight,
-            ignore_index=self.ignore_index)
-        loss[loss_decode_O.loss_name] = loss_decode_O(
-            seg_logits_stage2,
-            seg_label,
-            seg_weight,
-            ignore_index=self.ignore_index)
+        for seg_logit, loss_decode in zip(seg_logits, self.loss_decode):
+            seg_logit = resize(
+                input=seg_logit,
+                size=seg_label.shape[2:],
+                mode='bilinear',
+                align_corners=self.align_corners)
+            loss[loss_decode.name] = loss_decode(
+                seg_logit,
+                seg_label,
+                seg_weight,
+                ignore_index = self.ignore_index)
 
         loss['acc_seg'] = accuracy(
-            seg_logits_stage2, seg_label, ignore_index=self.ignore_index)
+            seg_logits[-1], seg_label, ignore_index=self.ignore_index)
         return loss
 
     def predict_by_feat(self, seg_logits: Tensor,
                         batch_img_metas: List[dict]) -> Tensor:
-        """Transform a batch of output seg_logits to the input shape.
-
-        Args:
-            seg_logits (Tensor): The output from decode head forward function.
-            batch_img_metas (list[dict]): Meta information of each image, e.g.,
-                image size, scaling factor, etc.
-
-        Returns:
-            Tensor: Outputs segmentation logits map.
-        """
         _, seg_logits_stage2 = seg_logits
-        seg_logits_stage2 = resize(
-            input=seg_logits_stage2,
-            size=batch_img_metas[0]['img_shape'],
-            mode='bilinear',
-            align_corners=self.align_corners)
-        return seg_logits_stage2
+        return super().predict_by_feat(seg_logits_stage2, batch_img_metas)
