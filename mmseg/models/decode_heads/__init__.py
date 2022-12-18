@@ -13,6 +13,7 @@ from .fcn_head import FCNHead
 from .fpn_head import FPNHead
 from .gc_head import GCHead
 from .isa_head import ISAHead
+from .isnet_head import ISNetHead
 from .knet_head import IterativeDecodeHead, KernelUpdateHead, KernelUpdator
 from .lraspp_head import LRASPPHead
 from .mask2former_head import Mask2FormerHead
@@ -30,7 +31,6 @@ from .setr_mla_head import SETRMLAHead
 from .setr_up_head import SETRUPHead
 from .stdc_head import STDCHead
 from .uper_head import UPerHead
-from .isnet_head import ISNetHead
 
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',

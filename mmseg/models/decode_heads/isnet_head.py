@@ -25,6 +25,7 @@ class ImageLevelContext(nn.Module):
         norm_cfg (dict|None): Config of norm layers.
         act_cfg (dict): Config of activation layers.
     """
+
     def __init__(self,
                  feats_channels,
                  transform_channels,
@@ -91,6 +92,7 @@ class SemanticLevelContext(nn.Module):
         norm_cfg (dict|None): Config of norm layers.
         act_cfg (dict): Config of activation layers.
     """
+
     def __init__(self,
                  feats_channels,
                  transform_channels,
@@ -167,8 +169,9 @@ class SemanticLevelContext(nn.Module):
 
 @MODELS.register_module()
 class ISNetHead(BaseDecodeHead):
-    """ISNet: Integrate Image-Level and Semantic-Level Context for Semantic Segmentation
-    
+    """ISNet: Integrate Image-Level and Semantic-Level
+    Context for Semantic Segmentation
+
     This head is the implementation of `ISNet`
     <https://arxiv.org/pdf/2108.12382.pdf>`_.
 
@@ -180,8 +183,10 @@ class ISNetHead(BaseDecodeHead):
         shortcut_feat_channels (int): Output channels of shortcut.
         dropout_ratio (float): Ratio of dropout.
     """
-    def __init__(self, transform_channels, concat_input, with_shortcut, shortcut_in_channels, shortcut_feat_channels,
-                 dropout_ratio, **kwargs):
+
+    def __init__(self, transform_channels, concat_input, with_shortcut,
+                 shortcut_in_channels, shortcut_feat_channels, dropout_ratio,
+                 **kwargs):
         super().__init__(**kwargs)
 
         self.in_channels = self.in_channels[-1]
@@ -194,15 +199,21 @@ class ISNetHead(BaseDecodeHead):
             padding=1,
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg
-        )
+            act_cfg=self.act_cfg)
 
-        self.ilc_net = ImageLevelContext(feats_channels=self.channels, transform_channels=transform_channels,
-                                         concat_input=concat_input, norm_cfg=self.norm_cfg, act_cfg=self.act_cfg,
-                                         align_corners=self.align_corners)
-        self.slc_net = SemanticLevelContext(feats_channels=self.channels, transform_channels=transform_channels,
-                                            concat_input=concat_input, norm_cfg=self.norm_cfg, act_cfg=self.act_cfg)
-
+        self.ilc_net = ImageLevelContext(
+            feats_channels=self.channels,
+            transform_channels=transform_channels,
+            concat_input=concat_input,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg,
+            align_corners=self.align_corners)
+        self.slc_net = SemanticLevelContext(
+            feats_channels=self.channels,
+            transform_channels=transform_channels,
+            concat_input=concat_input,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg)
 
         self.decoder_stage1 = nn.Sequential(
             ConvModule(
@@ -316,7 +327,7 @@ class ISNetHead(BaseDecodeHead):
                 seg_logit,
                 seg_label,
                 seg_weight,
-                ignore_index = self.ignore_index)
+                ignore_index=self.ignore_index)
 
         loss['acc_seg'] = accuracy(
             seg_logits[-1], seg_label, ignore_index=self.ignore_index)
