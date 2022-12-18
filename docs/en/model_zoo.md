@@ -152,6 +152,10 @@ Please refer to [Swin](https://github.com/open-mmlab/mmsegmentation/blob/master/
 
 Please refer to [SETR](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/setr/README.md) for details.
 
+### RF-Next
+
+Please refer to [RF-Next](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/rfnext/README.md) for details.
+
 ## Speed benchmark
 
 ### Hardware

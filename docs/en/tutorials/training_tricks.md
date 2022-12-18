@@ -88,3 +88,39 @@ model = dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, avg_non_ignore=True)),
     ))
 ```
+
+## Efficient Receptive Field Search (RF-Next)
+
+In semantic segmentation, existing methods construct models with hand-designed receptive fields in layers, 
+which may be suboptimal.
+The RF-Next could effectively search for new receptive field combinations, which could achieve better performance than hand-designed patterns.
+
+In MMSegmentation, you could add a `RFSearchHook` to enable receptive field searching:
+
+```python
+custom_hooks = [
+    dict(
+        type='RFSearchHook',
+        mode='search',
+        rfstructure_file=None,
+        verbose=True,
+        by_epoch=False,
+        config=dict(
+            search=dict(
+                step=0,
+                max_step=64001,
+                search_interval=8000,
+                exp_rate=0.5,
+                init_alphas=0.01,
+                mmin=1,
+                mmax=64,
+                num_branches=3,
+                skip_layer=[])) 
+                # For the models with auxiliary heads, 
+                # we recommend skipping the layers used by auxiliary heads. 
+                # You can add these layers to `skip_layer`.
+        ),
+]
+```
+
+For detailed usage, please see [readme](../../../configs/rfnext/README.md).

@@ -18,7 +18,7 @@ from mmseg.apis import init_random_seed, set_random_seed, train_segmentor
 from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
 from mmseg.utils import (collect_env, get_device, get_root_logger,
-                         setup_multi_processes)
+                         setup_multi_processes, rfnext_init_model)
 
 
 def parse_args():
@@ -201,6 +201,9 @@ def main():
         test_cfg=cfg.get('test_cfg'))
     model.init_weights()
 
+    # init rfnext if 'RFSearchHook' is defined in cfg
+    rfnext_init_model(model, cfg=cfg)
+    
     # SyncBN is not support for DP
     if not distributed:
         warnings.warn(
