@@ -1,6 +1,6 @@
 dataset_type = 'SynapseDataset'
 data_root = 'data/synapse/'
-img_scale = (512, 512)
+img_scale = (224, 224)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
@@ -15,7 +15,7 @@ test_pipeline = [
     dict(type='PackSegInputs')
 ]
 train_dataloader = dict(
-    batch_size=2,
+    batch_size=6,
     num_workers=2,
     persistent_workers=True,
     sampler=dict(type='InfiniteSampler', shuffle=True),
@@ -33,7 +33,7 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='img_dir/val', seg_map_path='ann_dir/val'),
+        data_prefix=dict(img_path='img_dir/test', seg_map_path='ann_dir/test'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
