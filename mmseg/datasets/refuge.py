@@ -6,10 +6,10 @@ from .basesegdataset import BaseSegDataset
 
 @DATASETS.register_module()
 class REFUGEDataset(BaseSegDataset):
-    """HRF dataset.
+    """REFUGE dataset.
 
-    In segmentation map annotation for HRF, 0 stands for background, which is
-    included in 2 categories. ``reduce_zero_label`` is fixed to False. The
+    In segmentation map annotation for HRF, 0 stands for background, which is not
+    included in 2 categories. ``reduce_zero_label`` is fixed to True. The
     ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is fixed to
     '.png'.
     """
@@ -21,8 +21,7 @@ class REFUGEDataset(BaseSegDataset):
         super().__init__(
             img_suffix='.png',
             seg_map_suffix='.png',
-            reduce_zero_label=False,
+            reduce_zero_label=True,
             **kwargs)
-        print(self.data_prefix)
         assert self.file_client.exists(self.data_prefix['img_path'])
 
