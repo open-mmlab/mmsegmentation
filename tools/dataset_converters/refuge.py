@@ -33,10 +33,9 @@ def extract_img(root: str,cur_dir: str,out_dir: str,mode: str='train',file_type:
         cur_dir (cur_dir): dir where the zip_file exists
         out_dir (str): root dir where the data is saved
         
-        mode (str, optional): _description_. Defaults to 'train'.
-        file_type (str, optional): _description_. Defaults to 'img',else to 'mask'.
+        mode (str, optional): Defaults to 'train'.
+        file_type (str, optional): Defaults to 'img',else to 'mask'.
     """
-    print('mode',mode)
     zip_file = zipfile.ZipFile(cur_dir)
     zip_file.extractall(root)
     for cur_dir,dirs,files in os.walk(root):
@@ -88,8 +87,6 @@ def main():
     files = list(filter(lambda x: x.endswith('.zip'),files))
     files.remove('Disc_Cup_Masks.zip')
     
-
-    
     with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
         for file in files:
             #search data folders for training,validation,test 
@@ -100,7 +97,6 @@ def main():
     
     
     print('Done!')
-
 
 
 

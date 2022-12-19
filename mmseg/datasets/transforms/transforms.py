@@ -271,14 +271,13 @@ class ColorJitter(BaseTransform):
             results (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: color transformed results.
+            dict: transformed results.
         """
         
         img = results['img']
         img = Image.fromarray(np.uint8(img))
         aug_img = self.color_jitter(img)
         results['img'] = np.array(aug_img,dtype=np.float32)
-        # results['img'] = aug_img.astype(np.float32)
 
         return results
 
