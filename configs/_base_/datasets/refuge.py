@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'REFUGEDataset'
-data_root = 'C:/OpenMMlab/mmsegmentation/data/REFUGE'
+data_root = 'data/REFUGE'
 train_img_scale = (2056, 2124)
 val_img_scale = (1634, 1634)
 test_img_scale = (1634, 1634)
@@ -14,18 +14,16 @@ train_pipeline = [dict(type='LoadImageFromFile'),
         keep_ratio=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFliplr', prob=0.2),
-
     dict(type='RandomFlipud', prob=0.2),
     dict(type='RandomApply',
         transforms=[dict(type='Rot90', degree_range=(1,3))],
     prob=0.3),
-    # dict(type='PhotoMetricDistortion'),
+
     dict(type='RandomChoice',
         transforms=[dict(type='ColorJitter', brightness=0.2),
         dict(type='ColorJitter', contrast=0.2),
         dict(type='ColorJitter', saturation=0.2),
         dict(type='ColorJitter', brightness=0.1, contrast=0.1, saturation=0.1, hue=0)]),
-    # dict(type='ToTensor'),
     dict(type='PackSegInputs')]
 
     
