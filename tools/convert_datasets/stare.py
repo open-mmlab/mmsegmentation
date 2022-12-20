@@ -56,7 +56,26 @@ def main():
 
         print('Extracting stare-images.tar...')
         with tarfile.open(image_path) as f:
-            f.extractall(osp.join(tmp_dir, 'gz'))
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(f, osp.join(tmp_dir,"gz"))
 
         for filename in os.listdir(osp.join(tmp_dir, 'gz')):
             un_gz(
@@ -91,7 +110,26 @@ def main():
 
         print('Extracting labels-ah.tar...')
         with tarfile.open(labels_ah) as f:
-            f.extractall(osp.join(tmp_dir, 'gz'))
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(f, osp.join(tmp_dir,"gz"))
 
         for filename in os.listdir(osp.join(tmp_dir, 'gz')):
             un_gz(
@@ -130,7 +168,26 @@ def main():
 
         print('Extracting labels-vk.tar...')
         with tarfile.open(labels_vk) as f:
-            f.extractall(osp.join(tmp_dir, 'gz'))
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(f, osp.join(tmp_dir,"gz"))
 
         for filename in os.listdir(osp.join(tmp_dir, 'gz')):
             un_gz(
