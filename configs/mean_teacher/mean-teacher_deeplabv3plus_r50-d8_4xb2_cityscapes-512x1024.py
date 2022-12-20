@@ -12,7 +12,7 @@ data_preprocessor = dict(
     size=(512, 1024))
 deeplabv3plus = dict(
     type='EncoderDecoder',
-    data_preprocessor=data_preprocessor,
+    data_preprocessor=None,
     pretrained='open-mmlab://resnet50_v1c',
     backbone=dict(
         type='ResNetV1c',
@@ -58,6 +58,9 @@ deeplabv3plus = dict(
 
 model = dict(
     type='MeanTeacher',
+    data_preprocessor=dict(
+        type='MultiBranchDataPreprocessor',
+        data_preprocessor=data_preprocessor),
     student=deeplabv3plus,
     teacher=deeplabv3plus,
     semi_train_cfg=dict(freeze_teacher=True, sup_weight=1.0, unsup_weight=4.0),

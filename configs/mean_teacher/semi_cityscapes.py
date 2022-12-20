@@ -18,6 +18,7 @@ sup_pipeline = [
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
+    # dict(type='PackSegInputs')
     dict(
         type='MultiBranch',
         branch_field=branch_field,
@@ -28,6 +29,7 @@ sup_pipeline = [
 # which will be sent to teacher model for predicting pseudo masks.
 unsup_pipeline = [
     dict(type='LoadImageFromFile'),
+    dict(type='LoadEmptyAnnotations'),
     dict(
         type='RandomResize',
         scale=(2048, 1024),
@@ -36,28 +38,12 @@ unsup_pipeline = [
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
-    dict(type='PackSegInputs')
+    # dict(type='PackSegInputs')
+    dict(
+        type='MultiBranch',
+        branch_field=branch_field,
+        unsup=dict(type='PackSegInputs'))
 ]
-
-# pipeline used to augment unlabeled data strongly,
-# which will be sent to student model for unsupervised training.
-# strong_pipeline = [
-
-# ]
-
-# train_pipeline = [
-#     dict(type='LoadImageFromFile'),
-#     dict(type='LoadAnnotations'),
-#     dict(
-#         type='RandomResize',
-#         scale=(2048, 1024),
-#         ratio_range=(0.5, 2.0),
-#         keep_ratio=True),
-#     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
-#     dict(type='RandomFlip', prob=0.5),
-#     dict(type='PhotoMetricDistortion'),
-#     dict(type='PackSegInputs')
-# ]
 
 test_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -71,7 +57,7 @@ test_pipeline = [
 labeled_dataset = dict(
     type=dataset_type,
     data_root=data_root,
-    ann_file='semi_anns/cityscapes.1@10.json',
+    ann_file='semi_anns/cityscapes.1@10',
     data_prefix=dict(
         img_path='leftImg8bit/train', seg_map_path='gtFine/train'),
     pipeline=sup_pipeline)
@@ -79,15 +65,15 @@ labeled_dataset = dict(
 unlabeled_dataset = dict(
     type=dataset_type,
     data_root=data_root,
-    ann_file='semi_anns/cityscapes.1@10-unlabeled.json',
+    ann_file='semi_anns/cityscapes.1@10-unlabeled',
     data_prefix=dict(
         img_path='leftImg8bit/train', seg_map_path='gtFine/train'),
     pipeline=unsup_pipeline)
 
 train_dataloader = dict(
     batch_size=4,
-    num_workers=5,
-    sampler=dict(type='MultiSourceSampler', batch_size=4, source_ratio=[2, 2]),
+    num_workers=1,
+    sampler=dict(type='MultiSourceSampler', batch_size=4, source_ratio=[1, 1]),
     dataset=dict(
         type='ConcatDataset', datasets=[labeled_dataset, unlabeled_dataset]))
 

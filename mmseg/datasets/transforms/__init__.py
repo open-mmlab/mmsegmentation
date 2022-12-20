@@ -2,7 +2,7 @@
 from .formatting import PackSegInputs
 from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadBiomedicalData, LoadBiomedicalImageFromFile,
-                      LoadImageFromNDArray)
+                      LoadEmptyAnnotations, LoadImageFromNDArray)
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, Rerange,
@@ -16,5 +16,5 @@ __all__ = [
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'ResizeShortestEdge', 'MultiBranch'
+    'ResizeShortestEdge', 'MultiBranch', 'LoadEmptyAnnotations'
 ]

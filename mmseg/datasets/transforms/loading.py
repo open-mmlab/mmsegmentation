@@ -442,3 +442,39 @@ class LoadBiomedicalData(BaseTransform):
                     f'to_xyz={self.to_xyz}, '
                     f'file_client_args={self.file_client_args})')
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class LoadEmptyAnnotations(BaseTransform):
+    """Load Empty Annotations for unlabeled images.
+
+    Added Keys:
+    - gt_seg_map (np.uint8)
+
+    Args:
+        seg_ignore_label (int): The fill value used for segmentation map.
+            Note this value must equals ``ignore_label`` in ``semantic_head``
+            of the corresponding config. Defaults to 255.
+    """
+
+    def __init__(self, seg_ignore_label: int = 255) -> None:
+
+        self.seg_ignore_label = seg_ignore_label
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to load empty annotations.
+
+        Args:
+            results (dict): Result dict.
+        Returns:
+            dict: Updated result dict.
+        """
+        h, w = results['img_shape']
+        results['gt_seg_map'] = self.seg_ignore_label * np.ones(
+            (h, w), dtype=np.uint8)
+        return results
+
+    def __repr__(self) -> str:
+        repr_str = self.__class__.__name__
+        repr_str += f'seg_ignore_label={self.seg_ignore_label})'
+        return repr_str
