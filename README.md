@@ -62,11 +62,10 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc1 was released in 2/11/2022.
+v1.0.0rc2 was released in 6/12/2022.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Support PoolFormer ([#2191](https://github.com/open-mmlab/mmsegmentation/pull/2191))
-- Add Decathlon dataset ([#2227](https://github.com/open-mmlab/mmsegmentation/pull/2227))
+- Support MaskFormer and Mask2Former ([#2215](https://github.com/open-mmlab/mmsegmentation/pull/2215), [2255](https://github.com/open-mmlab/mmsegmentation/pull/2255))
 
 ## Installation
 
@@ -139,6 +138,8 @@ Supported methods:
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
+- [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
+- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 
 Supported datasets:
 

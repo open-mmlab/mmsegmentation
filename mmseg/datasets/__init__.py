@@ -22,8 +22,9 @@ from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,Rot90,
-                         ResizeToMultiple, RGB2Gray, SegRescale,ColorJitter,RandomFlipud,RandomFliplr)
+                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
+                         ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
+                         SegRescale,Rot90,ColorJitter,RandomFlipud,RandomFliplr)
 from .voc import PascalVOCDataset
 
 __all__ = [
@@ -37,5 +38,5 @@ __all__ = [
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile','Rot90','RandomFlipud','RandomFliplr',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'DecathlonDataset', 'LIPDataset','REFUGEDataset'
+    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge','REFUGEDataset'
 ]

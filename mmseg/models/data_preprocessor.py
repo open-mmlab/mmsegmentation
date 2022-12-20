@@ -137,12 +137,14 @@ class SegDataPreProcessor(BaseDataPreprocessor):
                 'as the image size might be different in a batch')
             # pad images when testing
             if self.test_cfg:
-                inputs, _ = stack_batch(
+                inputs, padded_samples = stack_batch(
                     inputs=inputs,
                     size=self.test_cfg.get('size', None),
                     size_divisor=self.test_cfg.get('size_divisor', None),
                     pad_val=self.pad_val,
                     seg_pad_val=self.seg_pad_val)
+                for data_sample, pad_info in zip(data_samples, padded_samples):
+                    data_sample.set_metainfo({**pad_info})
             else:
                 inputs = torch.stack(inputs, dim=0)
 
