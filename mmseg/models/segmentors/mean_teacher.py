@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import copy
+
 import torch
 from torch import Tensor
 
@@ -29,8 +31,9 @@ class MeanTeacher(SemiBaseSegmentor):
         return self.teacher.predict(inputs, data_samples)
 
     def loss_by_pseudo(self, inputs: Tensor, data_samples: SampleList) -> dict:
+        input_data_samples = copy.deepcopy(data_samples)
         data_samples_pred: SampleList = self.student.predict(
-            inputs, data_samples)
+            inputs, input_data_samples)
         stu_preds = []
         teacher_preds = []
         for data_sample_stu, data_sample_teacher in zip(
