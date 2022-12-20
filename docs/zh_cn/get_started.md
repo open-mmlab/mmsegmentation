@@ -131,7 +131,7 @@ for frame in video:
 请确保 GPU 驱动满足最小的版本需求。详情请参考这个[表格](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions__table-cuda-toolkit-driver-versions)
 
 **注意:**
-如果您按照我们的最佳实践，安装 CUDA 运行库就足够了，因为不需要 CUDA 代码在本地编译。 但是如果您希望从源码编译 MMCV 或者需要开发其他的 CUDA 算子，您需要从 NVIDIA 的[官网](https://developer.nvidia.com/cuda-downloads)安装完整的 CUDA 工具，同时它的版本需要与 PyTorch 的 CUDA 版本匹配。即 `conda install` 命令中置顶的 cudatoolkit 版本。
+如果您按照我们的最佳实践，安装 CUDA 运行库就足够了，因为不需要 CUDA 代码在本地编译。 但是如果您希望从源码编译 MMCV 或者需要开发其他的 CUDA 算子，您需要从 NVIDIA 的[官网](https://developer.nvidia.com/cuda-downloads)安装完整的 CUDA 工具，同时它的版本需要与 PyTorch 的 CUDA 版本匹配。即 `conda install` 命令中指定的 cudatoolkit 版本。
 
 #### 不使用 MIM 安装 MMCV
 
