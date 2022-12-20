@@ -129,8 +129,8 @@ def stare_classes():
 def synapse_classes():
     """synapse class names for external use."""
     return [
-        'background', 'aorta', 'gallbladder', 'left_kidney',
-        'right_kidney', 'liver', 'pancreas', 'spleen', 'stomach'
+        'background', 'aorta', 'gallbladder', 'left_kidney', 'right_kidney',
+        'liver', 'pancreas', 'spleen', 'stomach'
     ]
 
 
@@ -295,9 +295,8 @@ def lip_palette():
 
 def synapse_palette():
     """synapse palette for external use."""
-    return [[0, 0, 0], [0, 0, 255], [0, 255, 0], [255, 0, 0],
-            [0, 255, 255], [255, 0, 255], [255, 255, 0], [70, 200, 255],
-            [240, 240, 240]]
+    return [[0, 0, 0], [0, 0, 255], [0, 255, 0], [255, 0, 0], [0, 255, 255],
+            [255, 0, 255], [255, 255, 0], [70, 200, 255], [240, 240, 240]]
 
 
 dataset_aliases = {

@@ -208,13 +208,13 @@ def test_random_rotate_flip():
     img = mmcv.imread(
         osp.join(
             osp.dirname(__file__),
-            '../data/pseudo_synapse_dataset/img_dir/0001_0.jpg'), 'color')
+            '../data/pseudo_synapse_dataset/img_dir/case0005_slice000.jpg'), 'color')
     original_img = copy.deepcopy(img)
     seg = np.array(
         Image.open(
             osp.join(
                 osp.dirname(__file__),
-                '../data/pseudo_synapse_dataset/ann_dir/0001_0.png')))
+                '../data/pseudo_synapse_dataset/ann_dir/case0005_slice000.png')))
     original_seg = copy.deepcopy(seg)
     results['img'] = img
     results['gt_semantic_seg'] = seg
