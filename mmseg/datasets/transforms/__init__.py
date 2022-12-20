@@ -7,7 +7,7 @@ from .transforms import (CLAHE, AdjustGamma, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale)
+                         SegRescale,Rot90,ColorJitter,RandomFlipud,RandomFliplr)
 
 __all__ = [
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
@@ -15,5 +15,5 @@ __all__ = [
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'ResizeShortestEdge'
+    'ResizeShortestEdge','Rot90','ColorJitter','RandomFliplr','RandomFlipud'
 ]

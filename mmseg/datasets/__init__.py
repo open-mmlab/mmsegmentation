@@ -9,6 +9,7 @@ from .dataset_wrappers import MultiImageMixDataset
 from .decathlon import DecathlonDataset
 from .drive import DRIVEDataset
 from .hrf import HRFDataset
+from .refuge import REFUGEDataset
 from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
 from .lip import LIPDataset
@@ -23,7 +24,7 @@ from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
                          RandomCutOut, RandomMosaic, RandomRotate, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale)
+                         SegRescale,Rot90,ColorJitter,RandomFlipud,RandomFliplr)
 from .voc import PascalVOCDataset
 
 __all__ = [
@@ -33,9 +34,9 @@ __all__ = [
     'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',
     'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset',
     'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
-    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
+    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray','ColorJitter',
     'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
-    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
+    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile','Rot90','RandomFlipud','RandomFliplr',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge'
+    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge','REFUGEDataset'
 ]

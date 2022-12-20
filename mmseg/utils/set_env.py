@@ -38,3 +38,5 @@ def register_all_modules(init_default_scope: bool = True) -> None:
             # avoid name conflict
             new_instance_name = f'mmseg-{datetime.datetime.now()}'
             DefaultScope.get_instance(new_instance_name, scope_name='mmseg')
+
+

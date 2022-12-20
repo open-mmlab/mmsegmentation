@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 from typing import Dict, Sequence, Tuple, Union
-
+from PIL import Image
 import cv2
 import mmcv
 import numpy as np
@@ -9,6 +9,9 @@ from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
 from numpy import random
+from torchvision import transforms
+import imgaug.augmenters as iaa
+import imgaug as ia
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
@@ -80,6 +83,212 @@ class ResizeToMultiple(BaseTransform):
         repr_str += (f'(size_divisor={self.size_divisor}, '
                      f'interpolation={self.interpolation})')
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class Rot90(BaseTransform):
+    """rotate img and gt with 90,180 or 270 degree.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+    - img
+    - seg_fields
+
+    Args:
+        degree_range (tuple): degree range for rotate.
+        
+    """
+
+    def __init__(self, degree_range: tuple):
+        self.degree_range = degree_range
+        # self.interpolation = interpolation
+        self.rot90 = iaa.Rot90(degree_range)
+
+    def transform(self, results: dict) -> dict:
+        """rotate img and gt with 90,180 or 270 degree.
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Rotated results.
+        """
+        # Align image to multiple of size divisor.
+        img = results['img']
+        
+        gt_segs = []
+        # Align segmentation map to multiple of size divisor.
+        for key in results.get('seg_fields', []):
+            gt_segs.append(results[key])
+        imgs = [img]+gt_segs
+        roted_imgs = self.rot90.augment_images(imgs)
+        results['img'] = roted_imgs[0].astype(np.float32)
+        for i,key in enumerate(results.get('seg_fields', [])):
+            results[key] = roted_imgs[i+1].astype(np.float32)
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(degree_range={self.degree_range})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class RandomFliplr(BaseTransform):
+    """flip img and gt Horizontally.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+    - img
+    - seg_fields
+
+    Args:
+        prob (float): probability for flip Horizontally.
+
+    """
+
+    def __init__(self, prob: float):
+        self.prob = prob
+        self.fliplr = iaa.Fliplr(prob)
+
+    def transform(self, results: dict) -> dict:
+        """flip img and gt Horizontally.
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Flipped results.
+        """
+        img = results['img']
+
+        gt_segs = []
+
+        for key in results.get('seg_fields', []):
+            gt_segs.append(results[key])
+        imgs = [img] + gt_segs
+        flipped_imgs = self.fliplr.augment_images(imgs)
+        results['img'] = flipped_imgs[0].astype(np.float32)
+        for i, key in enumerate(results.get('seg_fields', [])):
+            results[key] = flipped_imgs[i + 1].astype(np.float32)
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(prob={self.prob})')
+        return repr_str
+
+@TRANSFORMS.register_module()
+class RandomFlipud(BaseTransform):
+    """flip img and gt vertivally.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+    - img
+    - seg_fields
+
+    Args:
+        prob (float): probability for flip vertivally.
+
+    """
+
+    def __init__(self, prob: float):
+        self.prob = prob
+        self.flipud = iaa.Flipud(prob)
+
+    def transform(self, results: dict) -> dict:
+        """flip img and gt Horizontally.
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Flipped results.
+        """
+        img = results['img']
+
+        gt_segs = []
+
+        for key in results.get('seg_fields', []):
+            gt_segs.append(results[key])
+        imgs = [img] + gt_segs
+        flipped_imgs = self.flipud.augment_images(imgs)
+        results['img'] = flipped_imgs[0].astype(np.float32)
+        for i, key in enumerate(results.get('seg_fields', [])):
+            results[key] = flipped_imgs[i + 1].astype(np.float32)
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(prob={self.prob})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class ColorJitter(BaseTransform):
+    """transform img's brightness,contrast,saturation and hue.
+
+    Required Keys:
+    - img
+
+    Modified Keys:
+    - img
+    Args:
+        brightness (float): brightness.
+        contrast (float): contrast.
+        saturation (float): saturation.
+        hue (float): hue.
+        
+    """
+
+    def __init__(self, brightness: float=None,contrast: float=None,saturation: float=None,hue: float=None):
+        self.brightness = brightness
+        self.contrast = contrast
+        self.saturation = saturation
+        self.hue = hue
+        color_params = ['brightness','contrast','saturation','hue']
+        self.color_params = {}
+        for param in color_params:
+            if eval(param) is not None:
+                self.color_params.update({param:eval(param)})
+        self.color_jitter = transforms.ColorJitter(**self.color_params)
+
+    def transform(self, results: dict) -> dict:
+        """transform img's brightness,contrast,saturation and hue .
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: transformed results.
+        """
+        
+        img = results['img']
+        img = Image.fromarray(np.uint8(img))
+        aug_img = self.color_jitter(img)
+        results['img'] = np.array(aug_img,dtype=np.float32)
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(brightness={self.brightness},'
+                     f'contrast={self.contrast},'
+                     f'saturation={self.saturation},'
+                     f'hue={self.hue})')
+        return repr_str
+
 
 
 @TRANSFORMS.register_module()
