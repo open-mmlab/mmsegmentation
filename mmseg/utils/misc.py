@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from typing import List, Optional, Union
+from typing import List, Optional, Sequence, Union
 
 import numpy as np
 import torch
@@ -111,3 +111,35 @@ def stack_batch(inputs: List[torch.Tensor],
                     pad_shape=pad_img.shape[-2:]))
 
     return torch.stack(padded_inputs, dim=0), padded_samples
+
+
+def rename_loss_dict(prefix: str, losses: dict) -> dict:
+    """Rename the key names in loss dict by adding a prefix.
+
+    Args:
+        prefix (str): The prefix for loss components.
+        losses (dict):  A dictionary of loss components.
+
+    Returns:
+            dict: A dictionary of loss components with prefix.
+    """
+    return {prefix + k: v for k, v in losses.items()}
+
+
+def reweight_loss_dict(losses: dict, weight: float) -> dict:
+    """Reweight losses in the dict by weight.
+
+    Args:
+        losses (dict):  A dictionary of loss components.
+        weight (float): Weight for loss components.
+
+    Returns:
+            dict: A dictionary of weighted loss components.
+    """
+    for name, loss in losses.items():
+        if 'loss' in name:
+            if isinstance(loss, Sequence):
+                losses[name] = [item * weight for item in loss]
+            else:
+                losses[name] = loss * weight
+    return losses
