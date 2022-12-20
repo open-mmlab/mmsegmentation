@@ -3,7 +3,7 @@ import torch
 from torch import Tensor
 
 from mmseg.registry import MODELS
-from mmseg.utils import ConfigType, SampleList, stack_batch
+from mmseg.utils import ConfigType, SampleList
 from .semi_base import SemiBaseSegmentor
 
 
@@ -26,12 +26,7 @@ class MeanTeacher(SemiBaseSegmentor):
             torch.randn_like(inputs) * self.noise_factor, -self.noise_range,
             self.noise_range)
         inputs = inputs + noise
-        data_samples_pred: SampleList = self.teacher.predict(
-            inputs, data_samples)
-        for data_sample, data_sample_pred in zip(data_samples,
-                                                 data_samples_pred):
-            data_sample.gt_sem_seg = data_sample_pred.pred_sem_seg
-        return data_samples
+        return self.teacher.predict(inputs, data_samples)
 
     def loss_by_pseudo(self, inputs: Tensor, data_samples: SampleList) -> dict:
         data_samples_pred: SampleList = self.student.predict(
@@ -40,10 +35,10 @@ class MeanTeacher(SemiBaseSegmentor):
         teacher_preds = []
         for data_sample_stu, data_sample_teacher in zip(
                 data_samples_pred, data_samples):
-            stu_preds.append(data_sample_stu.pred_sem_seg.data)
-            teacher_preds.append(data_sample_teacher.gt_sem_seg.data)
-        stu_preds = stack_batch(stu_preds)
-        teacher_preds = stack_batch(teacher_preds)
+            stu_preds.append(data_sample_stu.seg_logits.data)
+            teacher_preds.append(data_sample_teacher.seg_logits.data)
+        stu_preds = torch.stack(stu_preds, dim=0).softmax(dim=1)
+        teacher_preds = torch.stack(teacher_preds, dim=0).softmax(dim=1)
         # TODO: current_consistency_weight
         # Consistency ramp-up from https://arxiv.org/abs/1610.02242
         losses_weight = self.semi_train_cfg.get('unsup_weight', 1.)

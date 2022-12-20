@@ -74,7 +74,7 @@ class SemiBaseSegmentor(BaseModel):
     def loss_by_gt(self, inputs: Tensor, data_samples: SampleList) -> dict:
         losses = self.student(inputs, data_samples, mode='loss')
         losses_weight = self.semi_train_cfg.get('sup_weight', 1.)
-        return rename_loss_dict('sup',
+        return rename_loss_dict('sup.',
                                 reweight_loss_dict(losses, losses_weight))
 
     def get_pseudo_labels(self, inputs: Tensor,
