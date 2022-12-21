@@ -9,9 +9,9 @@ from torch import Tensor
 
 from mmseg.registry import MODELS
 from mmseg.utils import SampleList
-from ..losses import accuracy
-from ..utils import SelfAttentionBlock, resize
-from .decode_head import BaseDecodeHead
+from mmseg.models.losses import accuracy
+from mmseg.models.utils import SelfAttentionBlock, resize
+from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 
 
 class ImageLevelContext(nn.Module):
