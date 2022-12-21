@@ -138,6 +138,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── synapse
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -413,4 +420,80 @@ The contents of  LIP datasets include:
 │   │   ├── val_segmentations
 │   │   │   ├── 100034_483681.png
 │   │   │   ├── ...
+```
+
+## Synapse dataset
+
+ This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/)
+
+Please run the following command to prepare the dataset.
+
+```shell
+unzip RawData.zip
+```
+
+Then create train.txt and val.txt to split dataset.
+
+According to TransUnet, the following is the data set division.
+
+train.txt
+
+```none
+img0005.nii.gz
+img0006.nii.gz
+img0007.nii.gz
+img0009.nii.gz
+img0010.nii.gz
+img0021.nii.gz
+img0023.nii.gz
+img0024.nii.gz
+img0026.nii.gz
+img0027.nii.gz
+img0028.nii.gz
+img0030.nii.gz
+img0031.nii.gz
+img0033.nii.gz
+img0034.nii.gz
+img0037.nii.gz
+img0039.nii.gz
+img0040.nii.gz
+```
+
+val.txt
+
+```none
+img0008.nii.gz
+img0022.nii.gz
+img0038.nii.gz
+img0036.nii.gz
+img0032.nii.gz
+img0002.nii.gz
+img0029.nii.gz
+img0003.nii.gz
+img0001.nii.gz
+img0004.nii.gz
+img0025.nii.gz
+img0035.nii.gz
+```
+
+The contents of synapse datasets include:
+
+```none
+├── RawData
+│   ├── img
+│   │   ├── img0001.nii.gz
+│   │   ├── img0002.nii.gz
+│   │   ├── ...
+│   ├── label
+│   │   ├── label0001.nii.gz
+│   │   ├── label0002.nii.gz
+│   │   ├── ...
+│   ├── train.txt
+│   ├── val.txt
+```
+
+Then, use this command to convert synapse dataset.
+
+```shell
+python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 ```

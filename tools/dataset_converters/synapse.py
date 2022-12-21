@@ -2,20 +2,10 @@
 import argparse
 import os.path as osp
 
-import h5py
+import nibabel as nib
 import numpy as np
 from mmengine.utils import mkdir_or_exist
 from PIL import Image
-
-
-def open_npz_file(file_path):
-    file = np.load(file_path)
-    return file['image'] * 255, file['label']
-
-
-def open_h5_file(file_path):
-    file = h5py.File(file_path)
-    return np.array(file['image']) * 255, np.array(file['label'])
 
 
 def read_files_from_txt(txt_path):
@@ -23,6 +13,11 @@ def read_files_from_txt(txt_path):
         files = f.readlines()
     files = [file.strip() for file in files]
     return files
+
+
+def read_nii_file(nii_path):
+    img = nib.load(nii_path).get_fdata()
+    return img
 
 
 def split_3d_image(img):
@@ -55,57 +50,81 @@ def main():
     if not osp.exists(dataset_path):
         raise ValueError('The dataset path does not exist. '
                          'Please enter a correct dataset path.')
-    if not osp.exists(osp.join(dataset_path, 'train_npz')) \
-            or not osp.exists(osp.join(dataset_path, 'test_vol_h5')):
+    if not osp.exists(osp.join(dataset_path, 'img')) \
+            or not osp.exists(osp.join(dataset_path, 'label')):
         raise FileNotFoundError('The dataset structure is incorrect. '
                                 'Please check your dataset.')
 
-    train_list = read_files_from_txt(
-        osp.join(dataset_path, 'lists_lists_Synapse_train.txt'))
+    train_id = read_files_from_txt(osp.join(dataset_path, 'train.txt'))
+    train_id = [idx[3:7] for idx in train_id]
 
-    test_list = read_files_from_txt(
-        osp.join(dataset_path, 'lists_lists_Synapse_test_vol.txt'))
-
-    train_files = [
-        osp.join(dataset_path, 'train_npz', file) for file in train_list
-    ]
-
-    test_files = [
-        osp.join(dataset_path, 'test_vol_h5', file) for file in test_list
-    ]
+    test_id = read_files_from_txt(osp.join(dataset_path, 'val.txt'))
+    test_id = [idx[3:7] for idx in test_id]
 
     mkdir_or_exist(osp.join(save_path, 'img_dir/train'))
-    mkdir_or_exist(osp.join(save_path, 'img_dir/test'))
+    mkdir_or_exist(osp.join(save_path, 'img_dir/val'))
     mkdir_or_exist(osp.join(save_path, 'ann_dir/train'))
-    mkdir_or_exist(osp.join(save_path, 'ann_dir/test'))
+    mkdir_or_exist(osp.join(save_path, 'ann_dir/val'))
 
-    for i, file in enumerate(train_files):
-        img, label = open_npz_file(file + '.npz')
-        img = Image.fromarray(img).convert('RGB')
-        label = Image.fromarray(label).convert('L')
-        img.save(osp.join(save_path, 'img_dir/train', train_list[i] + '.jpg'))
-        label.save(
-            osp.join(save_path, 'ann_dir/train', train_list[i] + '.png'))
+    for i, idx in enumerate(train_id):
+        img_3d = read_nii_file(
+            osp.join(dataset_path, 'img', 'img' + idx + '.nii.gz'))
+        label_3d = read_nii_file(
+            osp.join(dataset_path, 'label', 'label' + idx + '.nii.gz'))
 
-    for i, file in enumerate(test_files):
-        img_3d, label_3d = open_h5_file(file + '.npy.h5')
-        imgs = split_3d_image(img_3d)
-        labels = split_3d_image(label_3d)
+        img_3d = np.clip(img_3d, -125, 275)
+        img_3d = (img_3d + 125) / 400
+        img_3d *= 255
+        img_3d = np.transpose(img_3d, [2, 0, 1])
+        img_3d = np.flip(img_3d, 2)
 
-        assert len(imgs) == len(labels),\
-            'The length of images should be same as labels'
+        label_3d = np.transpose(label_3d, [2, 0, 1])
+        label_3d = np.flip(label_3d, 2)
 
-        for j, (image, label) in enumerate(zip(imgs, labels)):
-            image = Image.fromarray(image).convert('RGB')
+        for c in range(img_3d.shape[0]):
+            img = img_3d[c]
+            label = label_3d[c]
+
+            img = Image.fromarray(img).convert('RGB')
             label = Image.fromarray(label).convert('L')
-            image.save(
+            img.save(
                 osp.join(
-                    save_path, 'img_dir/test', test_list[i] +
-                    '_slice{}'.format(str(j).rjust(4, '0')) + '.jpg'))
+                    save_path, 'img_dir/train', 'case' + idx.zfill(4) +
+                    '_slice' + str(c).zfill(3) + '.jpg'))
             label.save(
                 osp.join(
-                    save_path, 'ann_dir/test', test_list[i] +
-                    '_slice{}'.format(str(j).rjust(4, '0')) + '.png'))
+                    save_path, 'ann_dir/train', 'case' + idx.zfill(4) +
+                    '_slice' + str(c).zfill(3) + '.png'))
+
+    for i, idx in enumerate(test_id):
+        img_3d = read_nii_file(
+            osp.join(dataset_path, 'img', 'img' + idx + '.nii.gz'))
+        label_3d = read_nii_file(
+            osp.join(dataset_path, 'label', 'label' + idx + '.nii.gz'))
+
+        img_3d = np.clip(img_3d, -125, 275)
+        img_3d = (img_3d + 125) / 400
+        img_3d *= 255
+        img_3d = np.transpose(img_3d, [2, 0, 1])
+        img_3d = np.flip(img_3d, 2)
+
+        label_3d = np.transpose(label_3d, [2, 0, 1])
+        label_3d = np.flip(label_3d, 2)
+
+        for c in range(img_3d.shape[0]):
+            img = img_3d[c]
+            label = label_3d[c]
+
+            img = Image.fromarray(img).convert('RGB')
+            label = Image.fromarray(label).convert('L')
+            img.save(
+                osp.join(
+                    save_path, 'img_dir/val', 'case' + idx.zfill(4) +
+                    '_slice' + str(c).zfill(3) + '.jpg'))
+            label.save(
+                osp.join(
+                    save_path, 'ann_dir/val', 'case' + idx.zfill(4) +
+                    '_slice' + str(c).zfill(3) + '.png'))
 
 
 if __name__ == '__main__':

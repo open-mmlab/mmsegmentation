@@ -33,9 +33,9 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='img_dir/test', seg_map_path='ann_dir/test'),
+        data_prefix=dict(img_path='img_dir/val', seg_map_path='ann_dir/val'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
-val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
+val_evaluator = dict(type='IoUMetric', iou_metrics=['mDice'])
 test_evaluator = val_evaluator
