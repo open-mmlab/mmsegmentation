@@ -82,10 +82,8 @@ def main():
     #process data from the child dir on the first rank
     cur_dir,dirs,files = list(os.walk(raw_data_root))[0]
     print("====================")
-    
-    
+
     files = list(filter(lambda x: x.endswith('.zip'),files))
-    files.remove('Disc_Cup_Masks.zip')
     
     with tempfile.TemporaryDirectory(dir=args.tmp_dir) as tmp_dir:
         for file in files:

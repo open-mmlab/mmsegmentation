@@ -206,6 +206,19 @@ python tools/convert_datasets/hrf.py /path/to/healthy.zip /path/to/healthy_manua
 
 这个脚本将自动生成正确的文件夹结构。
 
+### REFUGE
+
+首先，去[REFUGE2020挑战赛官网](https://refuge.grand-challenge.org)注册后到指定[链接](https://refuge.grand-challenge.org/REFUGE2Download)
+下载数据
+数据包含2018年的训练集、验证集和测试集。
+为了将 REFUGE 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/refuge.py --raw_data_root=.. --tmp_dir=.. 
+```
+
+这个脚本将自动生成正确的文件夹结构。
+
 ### STARE
 
 首先，下载 [stare-images.tar](http://cecas.clemson.edu/~ahoover/stare/probing/stare-images.tar), [labels-ah.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-ah.tar) 和 [labels-vk.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-vk.tar) 。
