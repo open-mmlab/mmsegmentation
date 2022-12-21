@@ -71,7 +71,10 @@ def main():
             osp.join(dataset_path, 'img', 'img' + idx + '.nii.gz'))
         label_3d = read_nii_file(
             osp.join(dataset_path, 'label', 'label' + idx + '.nii.gz'))
-
+        # To eliminate interference,
+        # clip the image pixel value to [- 128, 275]
+        # This 0peration can refer to:
+        # https://github.com/Beckschen/TransUNet/tree/main/datasets
         img_3d = np.clip(img_3d, -125, 275)
         img_3d = (img_3d + 125) / 400
         img_3d *= 255
