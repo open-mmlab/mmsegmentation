@@ -1,7 +1,6 @@
 # ISNet
 
 [ISNet: Integrate Image-Level and Semantic-Level Context for Semantic Segmentation](https://arxiv.org/pdf/2108.12382.pdf)
-[Official Repo](https://github.com/SegmentationBLWX/sssegmentation)
 
 ## Description
 
@@ -12,6 +11,7 @@ Author: @xxx.
 This is an implementation of \[XXX\]. -->
 
 This is an implementation of [ISNet](https://arxiv.org/pdf/2108.12382.pdf).
+[Official Repo](https://github.com/SegmentationBLWX/sssegmentation)
 ## Usage
 
 <!-- For a typical model, this section should contain the commands for training and testing. You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`. -->
