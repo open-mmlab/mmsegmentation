@@ -424,7 +424,7 @@ The contents of  LIP datasets include:
 
 ## Synapse dataset
 
- This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/)
+This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/)
 
 Please run the following command to prepare the dataset.
 
