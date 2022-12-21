@@ -53,7 +53,9 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                             | download                                                                                                                                                                                                                                                                                                                           |
 | ------ | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ISNet   | R-50-D8  | 512x1024  | - | - | - | 79.32 | 80.88 | [config](configs/isnet_res50_8xb2-160k_cityscapes-512x1024.py) | [model](---) \| [log](---) |
+| ISNet   | R-50-D8  | 512x1024  | - | - | - | 79.32 | 80.88 | [config](configs/isnet_res50_8xb2-160k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/isnet/isne_xxx.pth
+) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/isnet/isne_xxx.pth
+) |
 
 ## Citation
 
