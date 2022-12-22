@@ -1,4 +1,4 @@
-_base_ = '../convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k.py'
+_base_ = '../deeplabv3/deeplabv3_r101-d8_512x512_20k_voc12aug.py'
 
 custom_hooks = [
     dict(
@@ -10,12 +10,14 @@ custom_hooks = [
         config=dict(
             search=dict(
                 step=0,
-                max_step=64001,
-                search_interval=8000,
-                exp_rate=0.5,
+                max_step=16001,
+                search_interval=2000,
+                exp_rate=0.15,
                 init_alphas=0.01,
                 mmin=1,
-                mmax=24,
+                mmax=64,
                 num_branches=3,
-                skip_layer=['stages.0', 'stages.1', 'stages.2', 'auxiliary_head'])))
+                skip_layer=['stem', 'conv1', 'layer1', 'layer2', 'layer3', 'auxiliary_head'])))
 ]
+
+find_unused_parameters=True

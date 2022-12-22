@@ -4,7 +4,7 @@ custom_hooks = [
     dict(
         type='RFSearchHook',
         mode='fixed_multi_branch',
-        rfstructure_file='./config/rfnext/deeplabv3_r101-d8_512x512_80k_ade20k/local_search_config_step64000.json',
+        rfstructure_file='./configs/rfnext/search_log/deeplabv3_r101-d8_512x512_80k_ade20k/local_search_config_step64000.json',
         verbose=True,
         by_epoch=False,
         config=dict(

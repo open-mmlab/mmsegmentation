@@ -1,17 +1,17 @@
-_base_ = '../deeplabv3/deeplabv3_r101-d8_512x512_80k_ade20k.py'
+_base_ = '../deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug.py'
 
 custom_hooks = [
     dict(
         type='RFSearchHook',
         mode='fixed_single_branch',
-        rfstructure_file='./configs/rfnext/search_log/deeplabv3_r101-d8_512x512_80k_ade20k/local_search_config_step64000.json',
+        rfstructure_file='./configs/rfnext/search_log/deeplabv3_r50-d8_512x512_20k_voc12aug/local_search_config_step16000.json',
         verbose=True,
         by_epoch=False,
         config=dict(
             search=dict(
                 step=0,
-                max_step=64001,
-                search_interval=8000,
+                max_step=16001,
+                search_interval=2000,
                 exp_rate=0.15,
                 init_alphas=0.01,
                 mmin=1,

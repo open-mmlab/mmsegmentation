@@ -19,3 +19,4 @@ custom_hooks = [
                 num_branches=3,
                 skip_layer=['stages.0', 'stages.1', 'stages.2', 'auxiliary_head'])))
 ]
+cudnn_benchmark=False
