@@ -91,7 +91,7 @@ model = dict(
 
 ## Efficient Receptive Field Search (RF-Next)
 
-In semantic segmentation, existing methods construct models with hand-designed receptive fields in layers, 
+In semantic segmentation, existing methods construct models with hand-designed receptive fields in layers,
 which may be suboptimal.
 The RF-Next could effectively search for new receptive field combinations, which could achieve better performance than hand-designed patterns.
 
@@ -115,9 +115,9 @@ custom_hooks = [
                 mmin=1,
                 mmax=64,
                 num_branches=3,
-                skip_layer=[])) 
-                # For the models with auxiliary heads, 
-                # we recommend skipping the layers used by auxiliary heads. 
+                skip_layer=[]))
+                # For the models with auxiliary heads,
+                # we recommend skipping the layers used by auxiliary heads.
                 # You can add these layers to `skip_layer`.
         ),
 ]

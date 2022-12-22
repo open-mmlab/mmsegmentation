@@ -4,7 +4,8 @@ custom_hooks = [
     dict(
         type='RFSearchHook',
         mode='fixed_single_branch',
-        rfstructure_file='./configs/rfnext/search_log/upernet_convnext_base_fp16_640x640_160k_ade20k/local_search_config_step64000.json',
+        rfstructure_file=  # noqa
+        './configs/rfnext/search_log/upernet_convnext_base_fp16_640x640_160k_ade20k/local_search_config_step64000.json',  # noqa
         verbose=True,
         by_epoch=False,
         config=dict(
@@ -17,6 +18,7 @@ custom_hooks = [
                 mmin=1,
                 mmax=24,
                 num_branches=3,
-                skip_layer=['stages.0', 'stages.1', 'stages.2', 'auxiliary_head'])))
+                skip_layer=[
+                    'stages.0', 'stages.1', 'stages.2', 'auxiliary_head'
+                ])))
 ]
-cudnn_benchmark=False

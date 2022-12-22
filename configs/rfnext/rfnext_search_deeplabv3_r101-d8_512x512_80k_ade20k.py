@@ -17,7 +17,10 @@ custom_hooks = [
                 mmin=1,
                 mmax=64,
                 num_branches=3,
-                skip_layer=['stem', 'conv1', 'layer1', 'layer2', 'layer3', 'auxiliary_head'])))
+                skip_layer=[
+                    'stem', 'conv1', 'layer1', 'layer2', 'layer3',
+                    'auxiliary_head'
+                ])))
 ]
 
-find_unused_parameters=True
+find_unused_parameters = True

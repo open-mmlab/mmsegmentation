@@ -4,7 +4,8 @@ custom_hooks = [
     dict(
         type='RFSearchHook',
         mode='fixed_single_branch',
-        rfstructure_file='./configs/rfnext/search_log/deeplabv3_r101-d8_512x512_20k_voc12aug/local_search_config_step16000.json',
+        rfstructure_file=  # noqa
+        './configs/rfnext/search_log/deeplabv3_r101-d8_512x512_20k_voc12aug/local_search_config_step16000.json',  # noqa
         verbose=True,
         by_epoch=False,
         config=dict(
@@ -17,5 +18,8 @@ custom_hooks = [
                 mmin=1,
                 mmax=64,
                 num_branches=3,
-                skip_layer=['stem', 'conv1', 'layer1', 'layer2', 'layer3', 'auxiliary_head'])))
+                skip_layer=[
+                    'stem', 'conv1', 'layer1', 'layer2', 'layer3',
+                    'auxiliary_head'
+                ])))
 ]
