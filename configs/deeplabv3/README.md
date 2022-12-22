@@ -23,7 +23,7 @@ In this work, we revisit atrous convolution, a powerful tool to explicitly adjus
 </div>
 
 <div align=center >
-<img alt="DEEPLABv3_R50-D8" src="https://user-images.githubusercontent.com/61172629/209033683-e8c84c5c-b218-4bb8-a4b6-18643ea7e739.jpg"/>
+<img alt="DEEPLABv3_R50-D8" src="https://user-images.githubusercontent.com/61172629/209034078-1ad7830c-92be-4ec7-80a9-6e212f5ce33b.jpg"/>
 DEEPLABv3_R50-D8 model structure
 </div>
 
