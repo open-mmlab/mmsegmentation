@@ -7,11 +7,11 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule
 from torch import Tensor
 
-from mmseg.registry import MODELS
-from mmseg.utils import SampleList
+from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.models.losses import accuracy
 from mmseg.models.utils import SelfAttentionBlock, resize
-from mmseg.models.decode_heads.decode_head import BaseDecodeHead
+from mmseg.registry import MODELS
+from mmseg.utils import SampleList
 
 
 class ImageLevelContext(nn.Module):

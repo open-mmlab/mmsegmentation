@@ -1,5 +1,6 @@
 _base_ = [
-    '../../../configs/_base_/datasets/cityscapes.py', '../../../configs/_base_/default_runtime.py',
+    '../../../configs/_base_/datasets/cityscapes.py',
+    '../../../configs/_base_/default_runtime.py',
     '../../../configs/_base_/schedules/schedule_80k.py'
 ]
 
@@ -7,7 +8,6 @@ data_root = '../../data/cityscapes/'
 train_dataloader = dict(dataset=dict(data_root=data_root))
 val_dataloader = dict(dataset=dict(data_root=data_root))
 test_dataloader = dict(dataset=dict(data_root=data_root))
-
 
 custom_imports = dict(imports=['projects.isnet.decode_heads'])
 
@@ -77,5 +77,4 @@ model = dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
     train_cfg=dict(),
     # test_cfg=dict(mode='slide', crop_size=(769, 769), stride=(513, 513))
-    test_cfg=dict(mode='whole')
-)
+    test_cfg=dict(mode='whole'))

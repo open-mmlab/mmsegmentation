@@ -12,6 +12,7 @@ This is an implementation of \[XXX\]. -->
 
 This is an implementation of [ISNet](https://arxiv.org/pdf/2108.12382.pdf).
 [Official Repo](https://github.com/SegmentationBLWX/sssegmentation)
+
 ## Usage
 
 <!-- For a typical model, this section should contain the commands for training and testing. You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`. -->
@@ -51,11 +52,11 @@ mim test mmsegmentation configs/isnet_res50_8xb2-160k_cityscapes-512x1024.py --w
 
 You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project. -->
 
-| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                             | download                                                                                                                                                                                                                                                                                                                           |
-| ------ | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ISNet   | R-50-D8  | 512x1024  | - | - | - | 79.32 | 80.88 | [config](configs/isnet_res50_8xb2-160k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/isnet/isne_xxx.pth
-) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/isnet/isne_xxx.pth
-) |
+| Method                                                                             | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                         | download                                                                        |
+| ---------------------------------------------------------------------------------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| ISNet                                                                              | R-50-D8  | 512x1024  |       - | -        | -              | 79.32 |         80.88 | [config](configs/isnet_res50_8xb2-160k_cityscapes-512x1024.py) | \[model\](https://download.openmmlab.com/mmsegmentation/v0.5/isnet/isne_xxx.pth |
+| ) \| \[log\](https://download.openmmlab.com/mmsegmentation/v0.5/isnet/isne_xxx.pth |          |           |         |          |                |       |               |                                                                |                                                                                 |
+| )                                                                                  |          |           |         |          |                |       |               |                                                                |                                                                                 |
 
 ## Citation
 
