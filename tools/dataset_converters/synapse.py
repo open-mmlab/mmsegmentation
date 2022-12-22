@@ -28,6 +28,19 @@ def split_3d_image(img):
     return res
 
 
+def label_mapping(label):
+    maped_label = np.zeros_like(label)
+    maped_label[label == 8] = 1
+    maped_label[label == 4] = 2
+    maped_label[label == 3] = 3
+    maped_label[label == 2] = 4
+    maped_label[label == 6] = 5
+    maped_label[label == 11] = 6
+    maped_label[label == 1] = 7
+    maped_label[label == 7] = 8
+    return maped_label
+
+
 def pares_args():
     parser = argparse.ArgumentParser(
         description='Convert synapse dataset to mmsegmentation format')
@@ -71,10 +84,7 @@ def main():
             osp.join(dataset_path, 'img', 'img' + idx + '.nii.gz'))
         label_3d = read_nii_file(
             osp.join(dataset_path, 'label', 'label' + idx + '.nii.gz'))
-        # To eliminate interference,
-        # clip the image pixel value to [- 128, 275]
-        # This 0peration can refer to:
-        # https://github.com/Beckschen/TransUNet/tree/main/datasets
+
         img_3d = np.clip(img_3d, -125, 275)
         img_3d = (img_3d + 125) / 400
         img_3d *= 255
@@ -83,6 +93,7 @@ def main():
 
         label_3d = np.transpose(label_3d, [2, 0, 1])
         label_3d = np.flip(label_3d, 2)
+        label_3d = label_mapping(label_3d)
 
         for c in range(img_3d.shape[0]):
             img = img_3d[c]
@@ -113,6 +124,7 @@ def main():
 
         label_3d = np.transpose(label_3d, [2, 0, 1])
         label_3d = np.flip(label_3d, 2)
+        label_3d = label_mapping(label_3d)
 
         for c in range(img_3d.shape[0]):
             img = img_3d[c]

@@ -430,6 +430,7 @@ Please run the following command to prepare the dataset.
 
 ```shell
 unzip RawData.zip
+cd ./RawData/Training
 ```
 
 Then create train.txt and val.txt to split dataset.
@@ -479,7 +480,7 @@ img0035.nii.gz
 The contents of synapse datasets include:
 
 ```none
-├── RawData
+├── Training
 │   ├── img
 │   │   ├── img0001.nii.gz
 │   │   ├── img0002.nii.gz
