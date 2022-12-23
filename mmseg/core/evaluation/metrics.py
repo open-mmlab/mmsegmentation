@@ -1,9 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from collections import OrderedDict
+import typing
+import warnings
+from collections import OrderedDict, defaultdict
 
 import mmcv
 import numpy as np
 import torch
+from torch import Tensor
 
 
 def f_score(precision, recall, beta=1):
@@ -281,15 +284,30 @@ def eval_metrics(results,
         ndarray: Per category accuracy, shape (num_classes, ).
         ndarray: Per category evaluation metrics, shape (num_classes, ).
     """
+    area_based_metrics = [m for m in metrics if "hd" not in m.lower()]
+    hd_based_metrics = [m for m in metrics if "hd" in m.lower()]
 
-    total_area_intersect, total_area_union, total_area_pred_label, \
-        total_area_label = total_intersect_and_union(
-            results, gt_seg_maps, num_classes, ignore_index, label_map,
-            reduce_zero_label)
-    ret_metrics = total_area_to_metrics(total_area_intersect, total_area_union,
-                                        total_area_pred_label,
-                                        total_area_label, metrics, nan_to_num,
-                                        beta)
+    ret_metrics = dict()
+    if isinstance(gt_seg_maps, (list, tuple)):
+        gt_seg_maps1 = gt_seg_maps2 = gt_seg_maps
+    elif isinstance(gt_seg_maps, typing.Generator):
+        from itertools import tee
+        gt_seg_maps1, gt_seg_maps2 = tee(gt_seg_maps)
+    else:
+        raise RuntimeError()
+
+    if area_based_metrics:
+        total_area_intersect, total_area_union, total_area_pred_label, \
+            total_area_label = total_intersect_and_union(
+            results, gt_seg_maps1, num_classes, ignore_index, label_map, reduce_zero_label)
+
+        area_result = total_area_to_metrics(total_area_intersect, total_area_union, total_area_pred_label,
+                                            total_area_label,
+                                            metrics, nan_to_num, beta)
+        ret_metrics.update(area_result)
+    if hd_based_metrics:
+        hd_result = hd_to_metrics(prediction=results, target=gt_seg_maps2)
+        ret_metrics["hd"] = hd_result
 
     return ret_metrics
 
@@ -337,7 +355,7 @@ def total_area_to_metrics(total_area_intersect,
                           total_area_label,
                           metrics=['mIoU'],
                           nan_to_num=None,
-                          beta=1):
+                          beta=1) -> OrderedDict:
     """Calculate evaluation metrics
     Args:
         total_area_intersect (ndarray): The intersection of prediction and
@@ -357,7 +375,7 @@ def total_area_to_metrics(total_area_intersect,
     """
     if isinstance(metrics, str):
         metrics = [metrics]
-    allowed_metrics = ['mIoU', 'mDice', 'mFscore']
+    allowed_metrics = ['mIoU', 'mDice', 'mFscore', 'hdDistance']
     if not set(metrics).issubset(set(allowed_metrics)):
         raise KeyError('metrics {} is not supported'.format(metrics))
 
@@ -371,7 +389,7 @@ def total_area_to_metrics(total_area_intersect,
             ret_metrics['Acc'] = acc
         elif metric == 'mDice':
             dice = 2 * total_area_intersect / (
-                total_area_pred_label + total_area_label)
+                    total_area_pred_label + total_area_label)
             acc = total_area_intersect / total_area_label
             ret_metrics['Dice'] = dice
             ret_metrics['Acc'] = acc
@@ -394,3 +412,34 @@ def total_area_to_metrics(total_area_intersect,
             for metric, metric_value in ret_metrics.items()
         })
     return ret_metrics
+
+
+def hd_to_metrics(prediction: typing.List[np.ndarray], target: typing.Sequence[Tensor]) -> OrderedDict:
+    try:
+        from medpy.metric.binary import hd95
+    except ImportError:
+        warnings.warn("medpy not installed, cannot compute hd_distance")
+        return OrderedDict()
+    result_list = []
+    for cur_pre, cur_tar in zip(prediction, target):
+        unique_classes = sorted(np.unique(cur_tar))
+        class_hd = {}
+        for c in [x for x in unique_classes if int(x) != 0]:
+            cur_class_pred = (cur_pre == c).astype(float)
+            cur_class_tar = (cur_tar == c).astype(float)
+            try:
+                cur_class_hd = hd95(cur_class_pred, cur_class_tar)
+            except RuntimeError as e:
+                warnings.warn(str(e))
+                continue
+            class_hd[c] = cur_class_hd
+        result_list.append(class_hd)
+
+    result_dict = defaultdict(lambda: [])
+    for one_img_hd in result_list:
+        for c, v in one_img_hd.items():
+            result_dict[c].append(v)
+    for cur_class, cur_class_result in result_dict.copy().items():
+        result_dict[cur_class] = np.array(cur_class_result)
+    result_dict = OrderedDict(sorted(result_dict.items()))
+    return result_dict

@@ -409,7 +409,7 @@ class CustomDataset(Dataset):
         """
         if isinstance(metric, str):
             metric = [metric]
-        allowed_metrics = ['mIoU', 'mDice', 'mFscore']
+        allowed_metrics = ['mIoU', 'mDice', 'mFscore', "hdDistance"]  # added hd distance.
         if not set(metric).issubset(set(allowed_metrics)):
             raise KeyError('metric {} is not supported'.format(metric))
 
@@ -437,11 +437,18 @@ class CustomDataset(Dataset):
             class_names = tuple(range(num_classes))
         else:
             class_names = self.CLASSES
-
+        try:
+            hd_metrics = ret_metrics.pop("hd")
+        except:
+            hd_metrics = {}
         # summary table
         ret_metrics_summary = OrderedDict({
             ret_metric: np.round(np.nanmean(ret_metric_value) * 100, 2)
             for ret_metric, ret_metric_value in ret_metrics.items()
+        })
+        hd_metrics_summary = OrderedDict({
+            ret_metric: np.round(np.nanmean(ret_metric_value) * 100, 2)
+            for ret_metric, ret_metric_value in hd_metrics.items()
         })
 
         # each class table
@@ -465,10 +472,19 @@ class CustomDataset(Dataset):
             else:
                 summary_table_data.add_column('m' + key, [val])
 
+        if hd_metrics_summary:
+            hd_table_data = PrettyTable()
+            for key, val in hd_metrics_summary.items():
+                hd_table_data.add_column('class_' + str(int(key)), [val])
+
         print_log('per class results:', logger)
         print_log('\n' + class_table_data.get_string(), logger=logger)
         print_log('Summary:', logger)
         print_log('\n' + summary_table_data.get_string(), logger=logger)
+
+        if hd_metrics_summary:
+            print_log("\n" + hd_table_data.get_string(), logger=logger)
+            # print_log("\n" + "hd results: " + str(hd_metrics_summary))
 
         # each metric dict
         for key, value in ret_metrics_summary.items():
