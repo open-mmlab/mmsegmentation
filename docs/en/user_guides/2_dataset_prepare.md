@@ -264,6 +264,18 @@ python tools/dataset_converters/hrf.py /path/to/healthy.zip /path/to/healthy_man
 
 The script will make directory structure automatically.
 
+### REFUGE
+
+First, registrate in [REFUGE2020Challenge](https://refuge.grand-challenge.org)and download data from [this link](https://refuge.grand-challenge.org/REFUGE2Download)
+
+To convert REFUGE dataset to MMSegmentation format, you should run the following command:
+
+```shell
+python tools/convert_datasets/refuge.py --raw_data_root=.. --tmp_dir=.. 
+```
+
+The script will make directory structure automatically.
+
 ### STARE
 
 First, download [stare-images.tar](http://cecas.clemson.edu/~ahoover/stare/probing/stare-images.tar), [labels-ah.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-ah.tar) and [labels-vk.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-vk.tar).
