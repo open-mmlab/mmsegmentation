@@ -17,13 +17,14 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
+from .synapse import SynapseDataset
 from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
-                         ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale)
+                         RandomCutOut, RandomMosaic, RandomRotate,
+                         RandomRotFlip, Rerange, ResizeShortestEdge,
+                         ResizeToMultiple, RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
 
 __all__ = [
@@ -32,10 +33,10 @@ __all__ = [
     'DRIVEDataset', 'HRFDataset', 'STAREDataset', 'DarkZurichDataset',
     'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',
     'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset',
-    'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
-    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
-    'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
-    'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
+    'SynapseDataset', 'LoadAnnotations', 'RandomCrop', 'SegRescale',
+    'PhotoMetricDistortion', 'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange',
+    'RGB2Gray', 'RandomCutOut', 'RandomMosaic', 'PackSegInputs',
+    'ResizeToMultiple', 'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge'
+    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge', 'RandomRotFlip'
 ]
