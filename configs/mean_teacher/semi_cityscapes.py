@@ -57,7 +57,7 @@ test_pipeline = [
 labeled_dataset = dict(
     type=dataset_type,
     data_root=data_root,
-    ann_file='semi_anns/cityscapes.1@10',
+    ann_file='semi_anns/cityscapes.1@6.25',
     data_prefix=dict(
         img_path='leftImg8bit/train', seg_map_path='gtFine/train'),
     pipeline=sup_pipeline)
@@ -65,7 +65,7 @@ labeled_dataset = dict(
 unlabeled_dataset = dict(
     type=dataset_type,
     data_root=data_root,
-    ann_file='semi_anns/cityscapes.1@10-unlabeled',
+    ann_file='semi_anns/cityscapes.1@6.25-unlabeled',
     data_prefix=dict(
         img_path='leftImg8bit/train', seg_map_path='gtFine/train'),
     pipeline=unsup_pipeline)
