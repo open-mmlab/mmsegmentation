@@ -4,11 +4,19 @@ In this chapter, we will introduce the dataflow and data format convention betwe
 
 ## Overview of dataflow
 
-As illustrated in the [Runner document of MMEngine](https://mmengine.readthedocs.io/en/latest/tutorials/runner.html), the following diagram shows the basic dataflow.
+The `Runner` is an "integrator" in MMEngine. It covers all aspects of the framework and shoulders the responsibility of organizing and scheduling nearly all modules, that means the dataflow between all modules also controlled by the `Runner`. As illustrated in the [Runner document of MMEngine](https://mmengine.readthedocs.io/en/latest/tutorials/runner.html), the following diagram shows the basic dataflow.
 
 ![Basic dataflow](https://user-images.githubusercontent.com/112053249/199228350-5f80699e-7fd2-4b4c-ac32-0b16b1922c2e.png)
 
-The dashed border, gray filled shapes represent different data formats, while solid boxes represent modules/methods. Due to the great flexibility and extensibility of MMEngine, some critical base classes can be inherited and their methods can be overridden. The diagram above only holds when users are not customizing `TrainLoop`, `ValLoop`, and `TestLoop` in `Runner`, and are not overriding `train_step`, `val_step` and `test_step` method in their custom model.
+The dashed border, gray filled shapes represent different data formats, while solid boxes represent modules/methods. Due to the great flexibility and extensibility of MMEngine, some critical base classes can be inherited and their methods can be overridden. The diagram above only holds when users are not customizing `TrainLoop`, `ValLoop`, and `TestLoop` in `Runner`, and are not overriding `train_step`, `val_step` and `test_step` method in their custom model. The default setting of loops in MMSegmentation is as follows:
+
+```python
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=20000, val_interval=2000)
+val_cfg = dict(type='ValLoop')
+test_cfg = dict(type='TestLoop')
+```
+
+In the above diagram, the red line indicates the `train_step`.
 
 ## Dataflow convention in MMSegmentation
 
@@ -20,11 +28,11 @@ DataLoader is an essential component in training and testing pipelines of MMEngi
 
 MMSegmentation defines the default data format at [PackSegInputs](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/transforms/formatting.py#L12), it's the last component of `train_pipeline` and `test_pipeline`. Please refer to [data transform documentation](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/transforms.html) for more information about data transform `pipeline`.
 
-Without any modifications, the return value of PackSegInputs is usually a `dict` and has only two keys, `inputs` and `data_samples`. The following pseudo-code shows the data types of the values corresponding to the data loader output, `inputs` is the input tenor to the model and `data_samples` contains a list of input images' meta information.
+Without any modifications, the return value of PackSegInputs is usually a `dict` and has only two keys, `inputs` and `data_samples`. The following pseudo-code shows the data types of the data loader output, `inputs` is the list of input tensors to the model and `data_samples` contains a list of input images' meta information and corresponding ground truth.
 
 ```python
 dict(
-    inputs=torch.Tensor,
+    inputs=List[torch.Tensor],
     data_samples=List[SegDataSample]
 )
 ```
