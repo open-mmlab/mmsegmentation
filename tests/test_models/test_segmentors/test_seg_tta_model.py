@@ -21,7 +21,7 @@ def test_encoder_decoder_tta():
         train_cfg=None,
         test_cfg=dict(mode='whole'))
 
-    cfg = ConfigDict(type='EncoderDecoderTTA', module=segmentor_cfg)
+    cfg = ConfigDict(type='SegTTAModel', module=segmentor_cfg)
 
     model: BaseTTAModel = MODELS.build(cfg)
 
