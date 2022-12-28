@@ -4,7 +4,7 @@ In this chapter, we will introduce the dataflow and data format convention betwe
 
 ## Overview of dataflow
 
-The `Runner` is an "integrator" in MMEngine. It covers all aspects of the framework and shoulders the responsibility of organizing and scheduling nearly all modules, that means the dataflow between all modules also controlled by the `Runner`. As illustrated in the [Runner document of MMEngine](https://mmengine.readthedocs.io/en/latest/tutorials/runner.html), the following diagram shows the basic dataflow.
+The [Runner](https://github.com/open-mmlab/mmengine/blob/main/docs/en/design/runner.md) is an "integrator" in MMEngine. It covers all aspects of the framework and shoulders the responsibility of organizing and scheduling nearly all modules, that means the dataflow between all modules also controlled by the `Runner`. As illustrated in the [Runner document of MMEngine](https://mmengine.readthedocs.io/en/latest/tutorials/runner.html), the following diagram shows the basic dataflow.
 
 ![Basic dataflow](https://user-images.githubusercontent.com/112053249/199228350-5f80699e-7fd2-4b4c-ac32-0b16b1922c2e.png)
 
@@ -16,7 +16,7 @@ val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 ```
 
-In the above diagram, the red line indicates the `train_step`.
+In the above diagram, the red line indicates the [train_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#train_step). At each training iteration, dataloader loads images from storage and transfer to data preprocessor, data preprocessor would put images to GPU device and stack data to batch, then model accept the batch data as inputs, finally the outputs of the model would be sent to optimizer. The blue line indicates [val_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#val_step) and [test_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#test_step). The dataflow of these two process is similar to the `train_step` except the outputs of model, since model parameters are freezed when doing evaluation, the model output would be transferred to [Evaluator](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/evaluation.md#ioumetric) to compute metrics.
 
 ## Dataflow convention in MMSegmentation
 
