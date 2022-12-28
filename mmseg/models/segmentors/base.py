@@ -124,11 +124,6 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         """
         pass
 
-    @abstractmethod
-    def aug_test(self, batch_inputs, batch_img_metas):
-        """Placeholder for augmentation test."""
-        pass
-
     def postprocess_result(self,
                            seg_logits: Tensor,
                            data_samples: OptSampleList = None) -> list:
