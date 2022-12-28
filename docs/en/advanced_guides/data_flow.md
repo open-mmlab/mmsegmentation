@@ -8,20 +8,24 @@ As illustrated in the [Runner document of MMEngine](https://mmengine.readthedocs
 
 ![Basic dataflow](https://user-images.githubusercontent.com/112053249/199228350-5f80699e-7fd2-4b4c-ac32-0b16b1922c2e.png)
 
-The dashed border, gray filled shapes represent different data formats, while solid boxes represent modules/methods. Due to the great flexibility and extensibility of MMEngine, you can always inherit some key base classes and override their methods, so the above diagram doesn’t always hold. It only holds when you are not customizing your own `Runner` or `TrainLoop`, and you are not overriding `train_step`, `val_step` or `test_step` method in your custom model.
+The dashed border, gray filled shapes represent different data formats, while solid boxes represent modules/methods. Due to the great flexibility and extensibility of MMEngine, some critical base classes can be inherited and their methods can be overridden. The diagram above only holds when users are not customizing `TrainLoop`, `ValLoop`, and `TestLoop` in `Runner`, and are not overriding `train_step`, `val_step` and `test_step` method in their custom model.
 
-## Format convention
+## Dataflow convention in MMSegmentation
 
-### DataLoader to DataPreprocessor
+From the diagram above, we could see the basic dataflow. In this section, we would introduce format convention of data involved in this dataflow, respectively.
 
-DataLoader is a necessary component in MMEngine's training and testing pipelines. It's conceptually derived from and consistent with PyTorch. DataLoader loads data from filesystem and the original data pass through data prepare pipeline then would be sent to the DataPreprocessor. MMSegmentation defines the default data format at [PackSegInputs](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/transforms/formatting.py#L12), it's the last component of `train_pipeline` and `test_pipeline`.
+### DataLoader to Data Preprocessor
 
-Without any modifications, the return value of PackSegInputs is usually a `dict` and has only two keys, `inputs` and `data_samples`. The following pseudo-code shows the data types of the values corresponding to the two keys, `inputs` is the input tenor to the model and `data_samples` contains the meta information of input images.
+DataLoader is an essential component in training and testing pipelines of MMEngine. Conceptually, it is derived from and consistent with [PyTorch](https://pytorch.org/). DataLoader loads data from filesystem and the original data passes through data preparation pipeline, then it would be sent to Data Preprocessor.
+
+MMSegmentation defines the default data format at [PackSegInputs](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/transforms/formatting.py#L12), it's the last component of `train_pipeline` and `test_pipeline`. Please refer to [data transform documentation](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/transforms.html) for more information about data transform `pipeline`.
+
+Without any modifications, the return value of PackSegInputs is usually a `dict` and has only two keys, `inputs` and `data_samples`. The following pseudo-code shows the data types of the values corresponding to the data loader output, `inputs` is the input tenor to the model and `data_samples` contains a list of input images' meta information.
 
 ```python
 dict(
     inputs=torch.Tensor,
-    data_samples=SegDataSample
+    data_samples=List[SegDataSample]
 )
 ```
 
@@ -29,23 +33,39 @@ dict(
 
 ### Data Preprocessor to Model
 
-Though drawn separately in the diagram [above](#overview-of-dataflow), data_preprocessor is a part of the model and thus can be found in [Model tutorial](./models.md) at Seg DataPreprocessor chapter.
+Though drawn separately in the diagram [above](#overview-of-dataflow), data_preprocessor is a part of the model and thus can be found in [Model tutorial](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html) at Seg DataPreprocessor chapter.
 
-The return value is the same as `PackSegInputs` except the `inputs` would be transferred to GPU and some additional metainfo like `pad_shape` and `padding_size` would be added to the `data_samples`.
+The return value of Data Preprocessor is a dict, contains `inputs` and `data_samples`, `inputs` would be transferred to GPU and some additional metainfo like `pad_shape` and `padding_size` would be added to the `data_samples`. When transfer to the network, the dict would be unpacked to two values. The following pseudo-codes show the return value of data preprocessor and the input values of model.
 
-### Model to Evaluator
+```python
+dict(
+    inputs=torch.Tensor,
+    data_samples=Optional[List[SegDataSample], None]
+)
+```
 
-At the evaluation procedure, the inference results would be transferred to `Evaluator`. You might read the [evaluation document](./evaluation.md) for more information about `Evaluator`.
+```python
+class Network(BaseSegmentor):
 
-After inference, the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/segmentors/base.py#L15) in MMSegmentation would do a simple post process to pack inference resutls, the segmentation logits produced by the neural network, segmentation mask after the `argmax` operation and ground truth(if exists) would be pack into a same SegDataSample instance. The return value of [postprocess_result](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/segmentors/base.py#L132) is a **`List` of `SegDataSample`**. Following diagram shows the key properties of these SegDataSample instances.
+    def forward(self, inputs: torch.Tensor, data_samples: List[SegDataSample], mode: str):
+        pass
+```
+
+### Model output
+
+#### To Evaluator
+
+At the evaluation procedure, the inference results would be transferred to `Evaluator`. You might read the [evaluation document](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/evaluation.html) for more information about `Evaluator`.
+
+After inference, the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/segmentors/base.py#L15) in MMSegmentation would do a simple post process to pack inference results, the segmentation logits produced by the neural network, segmentation mask after the `argmax` operation and ground truth(if exists) would be packed into a similar `SegDataSample` instance. The return value of [postprocess_result](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/segmentors/base.py#L132) is a **`List` of `SegDataSample`**. Following diagram shows the key properties of these `SegDataSample` instances.
 
 ![SegDataSample](../../../resources/SegDataSample.png)
 
-### Model to Loss function
+#### Optim Wrapper
 
 The same as Data Preprocessor, loss function is also a part of the model, it's a property of [decode head](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L142).
 
-In MMSegmentation, the method [loss_by_feat](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L291) of `decode_head` is a unify interface used to compute loss.
+In MMSegmentation, the method [loss_by_feat](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L291) of `decode_head` is an unified interface used to compute loss.
 
 Parameters:
 
