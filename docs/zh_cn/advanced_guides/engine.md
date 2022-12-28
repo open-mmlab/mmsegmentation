@@ -43,25 +43,38 @@ default_hooks = dict(
 以 `default_hooks` 里面的 `logger` 和 `checkpoint` 为例, 我们来介绍如何修改 `default_hooks` 中默认的钩子.
 
 (1) 模型保存配置
-MMEngine 执行器将使用 `checkpoint` 来初始化[模型保存钩子 (CheckpointHook)](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19).
+`default_hooks` 使用 `checkpoint` 字段来初始化[模型保存钩子 (CheckpointHook)](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19).
 
 ```python
-checkpoint = dict(interval=1)
+checkpoint = dict(type='CheckpointHook', interval=1)
 ```
 
 用户可以设置 `max_keep_ckpts` 来只保存少量的检查点或者用 `save_optimizer` 来决定是否保存 optimizer 的信息.
-更多相关参数的细节可以参考[这里](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.CheckpointHook.html?highlight=CheckpointHook).
+更多相关参数的细节可以参考[这里](https://mmengine.readthedocs.io/zh_CN/latest/api/generated/mmengine.hooks.CheckpointHook.html#checkpointhook).
 
 (2) 日志配置
 `日志钩子 (LoggerHook)` 被用来收集 `执行器 (Runner)` 里面不同组件的日志信息然后写入终端, JSON 文件, tensorboard 和 wandb 等地方.
 
 ```python
-logger_hook_cfg = dict(interval=20)
+logger=dict(type='LoggerHook', interval=10)
 ```
 
 在最新的 1.x 版本的 MMSegmentation 里面, 一些日志钩子 (LoggerHook) 例如 `TextLoggerHook`, `WandbLoggerHook` 和 `TensorboardLoggerHook` 将不再被使用.
 作为替代, MMEngine 使用 `LogProcessor` 来处理上述钩子处理的信息，它们现在在 [`MessageHub`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/logging/message_hub.py#L17),
 [`WandbVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L324) 和 [`TensorboardVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L472) 里面.
+
+如果想使用这些后端, 只需要修改配置文件即可:
+
+```python
+# TensorboardVisBackend
+visualizer = dict(
+    type='SegLocalVisualizer', vis_backends=[dict(type='TensorboardVisBackend')], name='visualizer')
+# 或者 WandbVisBackend
+visualizer = dict(
+    type='SegLocalVisualizer', vis_backends=[dict(type='WandbVisBackend')], name='visualizer')
+```
+
+关于更多相关用法，可以参考 [MMEngine 存储后端用户教程](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md).
 
 - 自定义钩子 (custom hooks)
 
