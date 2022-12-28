@@ -11,7 +11,7 @@ from mmseg.utils import SampleList
 
 
 @MODELS.register_module()
-class EncoderDecoderTTA(BaseTTAModel):
+class SegTTAModel(BaseTTAModel):
 
     def merge_preds(self, data_samples_list: List[SampleList]) -> SampleList:
         """Merge predictions of enhanced data to one prediction.
