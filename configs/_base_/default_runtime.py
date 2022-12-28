@@ -12,4 +12,4 @@ log_level = 'INFO'
 load_from = None
 resume = False
 
-tta_model = dict(type='EncoderDecoderTTA')
+tta_model = dict(type='SegTTAModel')
