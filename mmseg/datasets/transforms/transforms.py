@@ -1429,7 +1429,7 @@ class BioMedical3DRandomCrop(BaseTransform):
             results (dict): Result dict from loading pipeline.
 
         Returns:
-            tuple: The margin for 3 dimentions of crop bounding-box and image.
+            tuple: The margin for 3 dimensions of crop bounding-box and image.
         """
 
         seg_map = results['gt_seg_map']
