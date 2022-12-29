@@ -10,5 +10,5 @@ model = dict(
                                       num_classes=19, 
                                       loss_weight=1.0)),
     auxiliary_head=dict(num_classes=19),
-    test_cfg=dict(mode='whole', is_hiera=True, hiera_num_classes=7)
+    test_cfg=dict(mode='whole',is_hiera=True, hiera_num_classes=7)
 )
