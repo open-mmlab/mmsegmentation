@@ -1334,7 +1334,9 @@ class BioMedical3DRandomCrop(BaseTransform):
         crop_shape (Union[int, Tuple[int, int, int]]):  Expected size after
             cropping with the format of (z, y, x). If set to an integer,
             then cropping width and height are equal to this integer.
-        keep_foreground (bool): Cropped patch must contain foreground.
+        keep_foreground (bool): If keep_foreground is True, it will sample a
+            voxel of foreground classes randomly, and will take it as the
+            center of the crop bounding-box. Default to True.
     """
 
     def __init__(self,
@@ -1352,8 +1354,8 @@ class BioMedical3DRandomCrop(BaseTransform):
         self.crop_shape = crop_shape
         self.keep_foreground = keep_foreground
 
-    def sample_locations(self, seg_map: np.ndarray) -> dict:
-        """sample foreground locations when keep_foreground is True.
+    def random_sample_location(self, seg_map: np.ndarray) -> dict:
+        """sample foreground voxel when keep_foreground is True.
 
         Args:
             seg_map (np.ndarray): gt seg map
@@ -1395,7 +1397,8 @@ class BioMedical3DRandomCrop(BaseTransform):
 
         return selected_voxel
 
-    def random_generate_crop_bbox(self, seg_map: np.ndarray) -> tuple:
+    def random_generate_crop_bbox(self, margin_z: int, margin_y: int,
+                                  margin_x: int) -> tuple:
         """Randomly get a crop bounding box.
 
         Args:
@@ -1404,20 +1407,23 @@ class BioMedical3DRandomCrop(BaseTransform):
         Returns:
             tuple: Coordinates of the cropped image.
         """
-        margin_d = max(seg_map.shape[0] - self.crop_shape[0], 0)
-        margin_h = max(seg_map.shape[1] - self.crop_shape[1], 0)
-        margin_w = max(seg_map.shape[2] - self.crop_shape[2], 0)
-        offset_d = np.random.randint(0, margin_d + 1)
-        offset_h = np.random.randint(0, margin_h + 1)
-        offset_w = np.random.randint(0, margin_w + 1)
+        offset_d = np.random.randint(0, margin_z + 1)
+        offset_h = np.random.randint(0, margin_y + 1)
+        offset_w = np.random.randint(0, margin_x + 1)
         crop_z1, crop_z2 = offset_d, offset_d + self.crop_shape[0]
         crop_y1, crop_y2 = offset_h, offset_h + self.crop_shape[1]
         crop_x1, crop_x2 = offset_w, offset_w + self.crop_shape[2]
 
         return crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2
 
-    def generate_crop_bbox(self, results: dict) -> tuple:
-        """Randomly get a crop bounding box with specific crop mode.
+    def generate_margin(self, results: dict) -> tuple:
+        """Generate margin of crop bounding-box.
+
+        If keep_foreground is True, it will sample a voxel of foreground
+        classes randomly, and will take it as the center of the bounding-box,
+        and return the margin between of the bounding-box and image.
+        If keep_foreground is False, it will return the difference from crop
+        shape and image shape.
 
         Args:
             results (dict): Result dict from loading pipeline.
@@ -1428,35 +1434,31 @@ class BioMedical3DRandomCrop(BaseTransform):
 
         seg_map = results['gt_seg_map']
         if self.keep_foreground:
-            selected_voxel = self.sample_locations(seg_map)
+            selected_voxel = self.random_sample_location(seg_map)
             if selected_voxel is None:
                 # this only happens if some image does not contain
                 # foreground voxels at all
                 warnings.warn(f'case does not contain any foreground classes'
                               f': {results["img_path"]}')
-                crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2 \
-                    = self.random_generate_crop_bbox(seg_map)
+                margin_z = max(seg_map.shape[0] - self.crop_shape[0], 0)
+                margin_y = max(seg_map.shape[1] - self.crop_shape[1], 0)
+                margin_x = max(seg_map.shape[2] - self.crop_shape[2], 0)
             else:
-                margin_d = max(0, selected_voxel[0] - self.crop_shape[0] // 2)
-                margin_h = max(0, selected_voxel[1] - self.crop_shape[1] // 2)
-                margin_w = max(0, selected_voxel[2] - self.crop_shape[2] // 2)
-                margin_d = max(
-                    0, min(seg_map.shape[0] - self.crop_shape[0], margin_d))
-                margin_h = max(
-                    0, min(seg_map.shape[1] - self.crop_shape[1], margin_h))
-                margin_w = max(
-                    0, min(seg_map.shape[2] - self.crop_shape[2], margin_w))
-                offset_d = np.random.randint(0, margin_d + 1)
-                offset_h = np.random.randint(0, margin_h + 1)
-                offset_w = np.random.randint(0, margin_w + 1)
-                crop_z1, crop_z2 = offset_d, offset_d + self.crop_shape[0]
-                crop_y1, crop_y2 = offset_h, offset_h + self.crop_shape[1]
-                crop_x1, crop_x2 = offset_w, offset_w + self.crop_shape[2]
+                margin_z = max(0, selected_voxel[0] - self.crop_shape[0] // 2)
+                margin_y = max(0, selected_voxel[1] - self.crop_shape[1] // 2)
+                margin_x = max(0, selected_voxel[2] - self.crop_shape[2] // 2)
+                margin_z = max(
+                    0, min(seg_map.shape[0] - self.crop_shape[0], margin_z))
+                margin_y = max(
+                    0, min(seg_map.shape[1] - self.crop_shape[1], margin_y))
+                margin_x = max(
+                    0, min(seg_map.shape[2] - self.crop_shape[2], margin_x))
         else:
-            crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2 \
-                = self.random_generate_crop_bbox(seg_map)
+            margin_z = max(seg_map.shape[0] - self.crop_shape[0], 0)
+            margin_y = max(seg_map.shape[1] - self.crop_shape[1], 0)
+            margin_x = max(seg_map.shape[2] - self.crop_shape[2], 0)
 
-        return crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2
+        return margin_z, margin_y, margin_x
 
     def crop(self, img: np.ndarray, crop_bbox: tuple) -> np.ndarray:
         """Crop from ``img``
@@ -1489,7 +1491,8 @@ class BioMedical3DRandomCrop(BaseTransform):
             dict: Randomly cropped results, 'img_shape' key in result dict is
                 updated according to crop size.
         """
-        crop_bbox = self.generate_crop_bbox(results)
+        margin = self.generate_margin(results)
+        crop_bbox = self.random_generate_crop_bbox(*margin)
 
         # crop the image
         img = results['img']
