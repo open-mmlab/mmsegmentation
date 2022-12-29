@@ -166,9 +166,9 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                     flip_direction = img_meta.get('flip_direction', None)
                     assert flip_direction in ['horizontal', 'vertical']
                     if flip_direction == 'horizontal':
-                        i_seg_logits = i_seg_logits.flip(dims=(2, ))
+                        i_seg_logits = i_seg_logits.flip(dims=(3, ))
                     else:
-                        i_seg_logits = i_seg_logits.flip(dims=(1, ))
+                        i_seg_logits = i_seg_logits.flip(dims=(2, ))
 
                 # resize as original shape
                 i_seg_logits = resize(
