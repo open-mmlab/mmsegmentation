@@ -1,5 +1,95 @@
 # 训练引擎
 
+MMEngine 定义了一些[基础循环控制器](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py) 例如`基于轮次的训练循环 (EpochBasedTrainLoop)`, `基于迭代次数的训练循环 (IterBasedTrainLoop)`, `标准的验证循环 (ValLoop)` 和`标准的测试循环 (TestLoop)`.
+OpenMMLab 的算法库如 MMSegmentation 将模型训练, 测试和推理抽象为 `Runner (执行器)` 来处理。用户可以直接使用 MMEngine 中的默认执行器，也可以对执行器进行修改以满足定制化需求. 这个文档主要介绍用户如何配置已有的运行设定, 钩子和优化器的基本概念与使用方法.
+
+## 配置运行设定
+
+### 配置训练长度
+
+循环控制器  指的是训练, 验证和测试时的执行流程. 我们在配置文件里面使用 `train_cfg`, `val_cfg` 和 `test_cfg` 来构建 `Loop`. 通过在 `configs/_base_/schedules` 文件夹里面的 `train_cfg` 设置训练长度.
+例如, 使用基于迭代次数的训练循环 (`IterBasedTrainLoop`) 去训练 80,000 个迭代次数, 并且每 8,000 iteration 做一次验证, 可以如下设置:
+
+```python
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=8000)
+```
+
+### 配置训练优化器
+
+在修改优化器配置文件之前, 推荐参考 MMEngine 的 [engine 文档](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 了解 mmsegmentation 1.x 中优化器的定义.
+
+这里是一个 SGD 优化器的例子:
+
+```python
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+```
+
+我们支持 PyTorch 里面所有的优化器, 更多细节可以参考 MMEngine [优化器文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
+
+需要强调的是, `optim_wrapper` 是 `runner` 的变量, 而 `optimizer` 是一个中间变量. **训练中换优化器，需要更新优化器封装**.
+
+[优化器封装 (Optimizer wrapper)](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/engine.md#%E4%BC%98%E5%8C%96%E5%99%A8%E5%B0%81%E8%A3%85)
+提供一个统一的在不同硬件 (如 CPU, GPU, MLU, IPU 等) 上的接口. 下面是一个 optim_wrapper 的例子:
+
+```python
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
+```
+
+更多关于优化器的使用方法, 可以看下面优化器部分.
+
+### 配置训练参数调度器
+
+在配置训练参数调度器前, 推荐先了解 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/param_scheduler.md) 里面关于参数调度器的基本概念.
+
+这里是一个参数调度器的例子, 例如我们想在前 1000 个 iteration 对学习率做 warm up:
+
+```python
+param_scheduler = [
+    dict(type='LinearLR', by_epoch=False, start_factor=0.1, begin=0, end=1000),
+    dict(
+        type='PolyLR',
+        eta_min=1e-4,
+        power=0.9,
+        begin=1000,
+        end=160000,
+        by_epoch=False,
+    )
+]
+```
+
+这样在训练时前 1,000 个 iteration 时采用线性变化的学习率策略做 warm up, 从 1,000 iteration 之后直到最后 16,000 个 iteration 时则采用默认的多项式学习率衰减.
+
+注意: 当你修改 `train_cfg` 里面 `max_iters` 的时候, 请确保参数调度器 `param_scheduler` 里面的参数也被同时修改.
+
+### 配置 Default hooks
+
+在了解如何修改这些钩子的配置之前, 推荐参考 [engine.md](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 文档了解 mmsegmentation 1.x 中钩子的定义.
+MMSegmentation 会在 [`defualt_hooks`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) 里面注册一些训练所必需功能的钩子:
+
+```python
+default_hooks = dict(
+    timer=dict(type='IterTimerHook'),
+    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=2000),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    visualization=dict(type='SegVisualizationHook'))
+```
+
+下表列出了这些默认钩子可能涉及到的配置修改, 用户也可以参考链接里的 readthedocs API 文档, 通过修改配置文件里对应的内容满足自己特定的需求.
+
+|                                                                         默认钩子                                                                         |                        一些相关的配置修改                        |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------: |
+|           [IterTimerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.IterTimerHook.html?highlight=iter_timer_hook)           |                                -                                 |
+|                [LoggerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.LoggerHook.html?highlight=LoggerHook)                 |                      日志里的迭代次数间隔.                       |
+|    [ParamSchedulerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.ParamSchedulerHook.html?highlight=ParamSchedulerHook)     |                                -                                 |
+|        [CheckpointHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.CheckpointHook.html#mmengine.hooks.CheckpointHook)        | 是否只保存最好结果的 checkpoint, 保存 checkpoint 在特定的路径等. |
+| [DistSamplerSeedHook](https://mmengine.readthedocs.io/zh_CN/latest/api/generated/mmengine.hooks.DistSamplerSeedHook.html?highlight=DistSamplerSeedHook)  |                                -                                 |
+| [SegVisualizationHook](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=SegVisualizationHook#mmseg.engine.hooks.SegVisualizationHook) |                                -                                 |
+
+没有在优化器里被设置的训练技巧可以在优化器构造器 (例如逐个模型参数去设置学习率) 和钩子里实现. 我们在上面列出了一些训练的常用设置, 如果想增加更多设置, 欢迎提交 issue 和 PR.
+
 ## 钩子 (Hook)
 
 ### 介绍
@@ -137,6 +227,8 @@ class SegVisualizationHook(Hook):
 
 ## 优化器
 
+在上面配置运行设定里, 我们简单的介绍了优化器的使用方法. 本节将进一步详细介绍在 MMSegmentation 里如何配置优化器.
+
 ### 优化器封装
 
 OpenMMLab 2.0 设计了优化器封装, 它支持不同的训练策略, 包括混合精度训练、梯度累加和梯度截断等, 用户可以根据需求选择合适的训练策略.
@@ -154,83 +246,6 @@ optim_wrapper = dict(
     type='OptimWrapper',
     optimizer=dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005),
     clip_grad=None)
-```
-
-#### `paramwise_cfg` 参数
-
-在模型训练中, 如果想在优化器里为不同参数设置优化策略, 例如设置不同的学习率、权重衰减, 可以通过设置 `paramwise_cfg` 来实现.
-
-例如, 在使用 ViT 作为模型骨干网络进行训练时, 优化器中设置了权重衰减 (weight decay), 但对 position embedding, layer normalization 和 class token 参数需要关掉 weight decay, `optim_wrapper` 的配置[如下](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27):
-
-```python
-optimizer = dict(
-        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),
-optim_wrapper = dict(
-    _delete_=True,
-    type='OptimWrapper',
-    optimizer=optimizer,
-    paramwise_cfg=dict(
-        custom_keys={
-            'pos_embed': dict(decay_mult=0.),
-            'cls_token': dict(decay_mult=0.),
-            'norm': dict(decay_mult=0.)
-        }))
-```
-
-其中 `decay_mult` 指的是对应参数的权重衰减的系数. 关于更多 `paramwise_cfg` 的使用可以参考 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
-
-### 优化器封装构造器
-
-默认的优化器封装构造器 [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/376251961da47ea8254ab808ae5c51e1430f18dc/mmengine/optim/optimizer/default_constructor.py#L19) 根据输入的 `optim_wrapper` 和 `optim_wrapper` 中定义的 `paramwise_cfg` 来构建训练中使用的优化器. 当 [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/376251961da47ea8254ab808ae5c51e1430f18dc/mmengine/optim/optimizer/default_constructor.py#L19) 功能不能满足需求时, 可以自定义优化器封装构造器来实现超参数的配置.
-
-MMSegmentation 中的实现了 [`LearningRateDecayOptimizerConstructor`](https://github.com/open-mmlab/mmsegmentation/blob/b21df463d47447f33c28d9a4f46136ad64d34a40/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py#L104), 可以对以 ConvNeXt, BEiT 和 MAE 为骨干网络的模型训练时, 骨干网络的模型参数的学习率按照定义的衰减比例（`decay_rate`）逐层递减, 在配置文件中的配置如下:
-
-```python
-optim_wrapper = dict(
-    _delete_=True,
-    type='AmpOptimWrapper',
-    optimizer=dict(
-        type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.05),
-    paramwise_cfg={
-        'decay_rate': 0.9,
-        'decay_type': 'stage_wise',
-        'num_layers': 12
-    },
-    constructor='LearningRateDecayOptimizerConstructor',
-    loss_scale='dynamic')
-```
-
-## 配置运行设定
-
-### 配置训练长度
-
-循环控制器  指的是训练, 验证和测试时的执行流程. 我们在配置文件里面使用 `train_cfg`, `val_cfg` 和 `test_cfg` 来构建 `Loop`. 通过在 `configs/_base_/schedules` 文件夹里面的 `train_cfg` 设置训练长度.
-例如, 使用基于迭代次数的训练循环 (`IterBasedTrainLoop`) 去训练 80,000 个迭代次数, 并且每 8,000 iteration 做一次验证, 可以如下设置:
-
-```python
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=8000)
-```
-
-### 配置训练优化器
-
-在自定义优化器配置文件之前, 推荐参考 MMEngine 的 [engine 文档](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 了解 mmsegmentation 1.x 中优化器的定义.
-
-这里是一个 SGD 优化器的例子:
-
-```python
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
-```
-
-我们支持 PyTorch 里面所有的优化器, 更多细节可以参考 MMEngine [优化器文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
-
-需要强调的是, `optim_wrapper` 是 `runner` 的变量, 而 `optimizer` 是一个中间变量. **训练中换优化器，需要更新优化器封装**.
-
-[优化器封装 (Optimizer wrapper)](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/engine.md#%E4%BC%98%E5%8C%96%E5%99%A8%E5%B0%81%E8%A3%85)
-提供一个统一的在不同硬件 (如 CPU, GPU, MLU, IPU 等) 上的接口. 下面是一个 optim_wrapper 的例子:
-
-```python
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
 ```
 
 #### 梯度裁剪
@@ -278,54 +293,46 @@ optim_wrapper = dict(
 
 更多相关示例和详细信息可以在 [MMEngine 优化器封装文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md) 里面查到.
 
-### 配置训练参数调度器
+#### `paramwise_cfg` 参数
 
-在配置训练参数调度器前, 推荐先了解 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/param_scheduler.md) 里面关于参数调度器的基本概念.
+在模型训练中, 如果想在优化器里为不同参数设置优化策略, 例如设置不同的学习率、权重衰减, 可以通过设置 `paramwise_cfg` 来实现.
 
-这里是一个参数调度器的例子, 例如我们想在前 1000 个 iteration 对学习率做 warm up:
-
-```python
-param_scheduler = [
-    dict(type='LinearLR', by_epoch=False, start_factor=0.1, begin=0, end=1000),
-    dict(
-        type='PolyLR',
-        eta_min=1e-4,
-        power=0.9,
-        begin=1000,
-        end=160000,
-        by_epoch=False,
-    )
-]
-```
-
-这样在训练时前 1,000 个 iteration 时采用线性变化的学习率策略做 warm up, 从 1,000 iteration 之后直到最后 16,000 个 iteration 时则采用默认的多项式学习率衰减.
-
-注意: 当你修改 `train_cfg` 里面 `max_iters` 的时候, 请确保参数调度器 `param_scheduler` 里面的参数也被同时修改.
-
-### 配置 Default hooks
-
-在了解如何修改这些钩子的配置之前, 推荐参考 [engine.md](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 文档了解 mmsegmentation 1.x 中钩子的定义.
-MMSegmentation 会在 [`defualt_hooks`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) 里面注册一些训练所必需功能的钩子:
+例如, 在使用 ViT 作为模型骨干网络进行训练时, 优化器中设置了权重衰减 (weight decay), 但对 position embedding, layer normalization 和 class token 参数需要关掉 weight decay, `optim_wrapper` 的配置[如下](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27):
 
 ```python
-default_hooks = dict(
-    timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
-    param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=2000),
-    sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegVisualizationHook'))
+optimizer = dict(
+        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),
+optim_wrapper = dict(
+    _delete_=True,
+    type='OptimWrapper',
+    optimizer=optimizer,
+    paramwise_cfg=dict(
+        custom_keys={
+            'pos_embed': dict(decay_mult=0.),
+            'cls_token': dict(decay_mult=0.),
+            'norm': dict(decay_mult=0.)
+        }))
 ```
 
-下表列出了这些默认钩子可能涉及到的配置修改, 用户也可以参考链接里的 readthedocs API 文档, 通过修改配置文件里对应的内容满足自己特定的需求.
+其中 `decay_mult` 指的是对应参数的权重衰减的系数. 关于更多 `paramwise_cfg` 的使用可以参考 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
 
-|                                                                         默认钩子                                                                         |                        一些相关的配置修改                        |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------: |
-|           [IterTimerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.IterTimerHook.html?highlight=iter_timer_hook)           |                                -                                 |
-|                [LoggerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.LoggerHook.html?highlight=LoggerHook)                 |                      日志里的迭代次数间隔.                       |
-|    [ParamSchedulerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.ParamSchedulerHook.html?highlight=ParamSchedulerHook)     |                                -                                 |
-|        [CheckpointHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.CheckpointHook.html#mmengine.hooks.CheckpointHook)        | 是否只保存最好结果的 checkpoint, 保存 checkpoint 在特定的路径等. |
-| [DistSamplerSeedHook](https://mmengine.readthedocs.io/zh_CN/latest/api/generated/mmengine.hooks.DistSamplerSeedHook.html?highlight=DistSamplerSeedHook)  |                                -                                 |
-| [SegVisualizationHook](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=SegVisualizationHook#mmseg.engine.hooks.SegVisualizationHook) |                                -                                 |
+### 优化器封装构造器
 
-没有在优化器里被设置的训练技巧可以在优化器构造器 (例如逐个模型参数去设置学习率) 和钩子里实现. 我们在上面列出了一些训练的常用设置, 如果想增加更多设置, 欢迎提交 issue 和 PR.
+默认的优化器封装构造器 [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/376251961da47ea8254ab808ae5c51e1430f18dc/mmengine/optim/optimizer/default_constructor.py#L19) 根据输入的 `optim_wrapper` 和 `optim_wrapper` 中定义的 `paramwise_cfg` 来构建训练中使用的优化器. 当 [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/376251961da47ea8254ab808ae5c51e1430f18dc/mmengine/optim/optimizer/default_constructor.py#L19) 功能不能满足需求时, 可以自定义优化器封装构造器来实现超参数的配置.
+
+MMSegmentation 中的实现了 [`LearningRateDecayOptimizerConstructor`](https://github.com/open-mmlab/mmsegmentation/blob/b21df463d47447f33c28d9a4f46136ad64d34a40/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py#L104), 可以对以 ConvNeXt, BEiT 和 MAE 为骨干网络的模型训练时, 骨干网络的模型参数的学习率按照定义的衰减比例（`decay_rate`）逐层递减, 在配置文件中的配置如下:
+
+```python
+optim_wrapper = dict(
+    _delete_=True,
+    type='AmpOptimWrapper',
+    optimizer=dict(
+        type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.05),
+    paramwise_cfg={
+        'decay_rate': 0.9,
+        'decay_type': 'stage_wise',
+        'num_layers': 12
+    },
+    constructor='LearningRateDecayOptimizerConstructor',
+    loss_scale='dynamic')
+```
