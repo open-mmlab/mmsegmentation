@@ -25,6 +25,8 @@ Import:
 - configs/isanet/isanet.yml
 - configs/knet/knet.yml
 - configs/mae/mae.yml
+- configs/mask2former/mask2former.yml
+- configs/maskformer/maskformer.yml
 - configs/mobilenet_v2/mobilenet_v2.yml
 - configs/mobilenet_v3/mobilenet_v3.yml
 - configs/nonlocal_net/nonlocal_net.yml
