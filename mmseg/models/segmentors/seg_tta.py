@@ -26,28 +26,19 @@ class SegTTAModel(BaseTTAModel):
         predictions = []
         for data_samples in data_samples_list:
             seg_logits = data_samples[0].seg_logits.data
-            seg_scores = torch.zeros(seg_logits.shape).to(seg_logits)
+            logits = torch.zeros(seg_logits.shape).to(seg_logits)
             for data_sample in data_samples:
-                # check flip
-                flip = data_sample.metainfo.get('flip', None)
                 seg_logit = data_sample.seg_logits.data
-                if flip:
-                    flip_direction = data_sample.metainfo['flip_direction']
-                    assert flip_direction in ['horizontal', 'vertical']
-                    if flip_direction == 'horizontal':
-                        seg_logit = seg_logit.flip(dims=(2, ))
-                    else:
-                        seg_logit = seg_logit.flip(dims=(1, ))
                 if self.module.out_channels > 1:
-                    seg_scores += seg_logit.softmax(dim=0)
+                    logits += seg_logit.softmax(dim=0)
                 else:
-                    seg_scores += seg_logit.sigmoid()
-            seg_scores /= len(data_samples)
+                    logits += seg_logit.sigmoid()
+            logits /= len(data_samples)
             if self.module.out_channels == 1:
-                seg_pred = (seg_scores > self.module.decode_head.threshold
-                            ).to(seg_scores).squeeze(1)
+                seg_pred = (logits > self.module.decode_head.threshold
+                            ).to(logits).squeeze(1)
             else:
-                seg_pred = seg_scores.argmax(dim=0)
+                seg_pred = logits.argmax(dim=0)
             data_sample = SegDataSample(
                 **{
                     'pred_sem_seg': PixelData(data=seg_pred),
