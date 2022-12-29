@@ -26,17 +26,7 @@ optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
 
 我们支持 PyTorch 里面所有的优化器, 更多细节可以参考 MMEngine [优化器文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
 
-需要强调的是, `optim_wrapper` 是 `runner` 的变量, 而 `optimizer` 是一个中间变量. **训练中换优化器，需要更新优化器封装**.
-
-[优化器封装 (Optimizer wrapper)](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/engine.md#%E4%BC%98%E5%8C%96%E5%99%A8%E5%B0%81%E8%A3%85)
-提供一个统一的在不同硬件 (如 CPU, GPU, MLU, IPU 等) 上的接口. 下面是一个 optim_wrapper 的例子:
-
-```python
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
-```
-
-更多关于优化器的使用方法, 可以看下面优化器部分.
+更多关于优化器的使用方法, 可以看下面优化器的章节.
 
 ### 配置训练参数调度器
 
@@ -227,19 +217,22 @@ class SegVisualizationHook(Hook):
 
 ## 优化器
 
-在上面配置运行设定里, 我们简单的介绍了优化器的使用方法. 本节将进一步详细介绍在 MMSegmentation 里如何配置优化器.
+在上面配置运行设定里, 我们给出了配置训练优化器的简单示例. 本章节将进一步详细介绍在 MMSegmentation 里如何配置优化器.
 
 ### 优化器封装
 
 OpenMMLab 2.0 设计了优化器封装, 它支持不同的训练策略, 包括混合精度训练、梯度累加和梯度截断等, 用户可以根据需求选择合适的训练策略.
 优化器封装还定义了一套标准的参数更新流程, 用户可以基于这一套流程, 在同一套代码里, 实现不同训练策略的切换. 如果想了解更多, 可以参考 [MMEngine 优化器封装文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
 
-MMSegmenetation 训练模型也是使用优化器封装来优化参数, 以下是 MMSegmentation 中常用的使用方法:
+需要强调的是, `optim_wrapper` 是 `runner` 的变量, 而 `optimizer` 是一个中间变量. **训练中换优化器，需要更新优化器封装**.
+MMSegmentation 训练模型也是使用优化器封装来优化参数, 以下是 MMSegmentation 中常用的使用方法:
 
 #### 配置 PyTorch 支持的优化器
 
 OpenMMLab 2.0 支持 PyTorch 原生所有优化器, 参考[这里](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md#%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE).
-在配置文件中设置训练时 `Runner` 所使用的优化器, 需要定义 `optim_wrapper`, 例如配置使用 SGD 优化器:
+
+[优化器封装 (Optimizer wrapper)](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/engine.md#%E4%BC%98%E5%8C%96%E5%99%A8%E5%B0%81%E8%A3%85)
+提供一个统一的在不同硬件 (如 CPU, GPU, MLU, IPU 等) 上的接口. 在配置文件中设置训练时 `Runner` 所使用的优化器, 需要定义 `optim_wrapper`, 下面是一个 `optim_wrapper` 的例子:
 
 ```python
 optim_wrapper = dict(
@@ -273,9 +266,11 @@ optim_wrapper = dict(type='AmpOptimWrapper', optimizer=optimizer)
 
 #### 自定义模型网络不同层的超参数
 
-可以由配置文件里 `optim_wrapper` 中的 `paramwise_cfg` 来控制不同参数的超参数.
+在模型训练中, 如果想在优化器里为不同参数分别设置优化策略, 例如设置不同的学习率、权重衰减等超参数, 可以通过设置配置文件里 `optim_wrapper` 中的 `paramwise_cfg` 来实现.
 
-下面的配置文件以 MAE `optim_wrapper` 为例, 将 `pos_embed`, `mask_token`, `norm` 模块的 weight decay multiplication 设置成 0. 即: 在训练时, 这些模块的 weight decay 将被变为 `weight_decay * decay_mult`=0.
+下面的配置文件以 [ViT `optim_wrapper`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27) 为例,
+优化器中设置了权重衰减 (weight decay) 系数, 但是将 `pos_embed`, `mask_token`, `norm` 模块的 weight decay multiplication 设置成 0.
+即: 在训练时, 这些模块的 weight decay 将被变为 `weight_decay * decay_mult`=0.
 
 ```python
 optimizer = dict(
@@ -291,30 +286,8 @@ optim_wrapper = dict(
         }))
 ```
 
-更多相关示例和详细信息可以在 [MMEngine 优化器封装文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md) 里面查到.
-
-#### `paramwise_cfg` 参数
-
-在模型训练中, 如果想在优化器里为不同参数设置优化策略, 例如设置不同的学习率、权重衰减, 可以通过设置 `paramwise_cfg` 来实现.
-
-例如, 在使用 ViT 作为模型骨干网络进行训练时, 优化器中设置了权重衰减 (weight decay), 但对 position embedding, layer normalization 和 class token 参数需要关掉 weight decay, `optim_wrapper` 的配置[如下](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27):
-
-```python
-optimizer = dict(
-        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),
-optim_wrapper = dict(
-    _delete_=True,
-    type='OptimWrapper',
-    optimizer=optimizer,
-    paramwise_cfg=dict(
-        custom_keys={
-            'pos_embed': dict(decay_mult=0.),
-            'cls_token': dict(decay_mult=0.),
-            'norm': dict(decay_mult=0.)
-        }))
-```
-
-其中 `decay_mult` 指的是对应参数的权重衰减的系数. 关于更多 `paramwise_cfg` 的使用可以参考 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
+其中 `decay_mult` 指的是对应参数的权重衰减的系数.
+关于更多 `paramwise_cfg` 的使用可以在 [MMEngine 优化器封装文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md) 里面查到.
 
 ### 优化器封装构造器
 
@@ -336,3 +309,5 @@ optim_wrapper = dict(
     constructor='LearningRateDecayOptimizerConstructor',
     loss_scale='dynamic')
 ```
+
+注意: 如果你的配置文件继承自基配置文件, 后者已经设置了 `optim_wrapper`, 你需要使用 `_delete_=True` 来重写不必须的设置.
