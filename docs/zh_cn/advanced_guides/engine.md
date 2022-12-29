@@ -7,7 +7,7 @@ OpenMMLab 的算法库如 MMSegmentation 将模型训练, 测试和推理抽象�
 
 ### 配置训练长度
 
-循环控制器  指的是训练, 验证和测试时的执行流程. 我们在配置文件里面使用 `train_cfg`, `val_cfg` 和 `test_cfg` 来构建 `Loop`. 通过在 `configs/_base_/schedules` 文件夹里面的 `train_cfg` 设置训练长度.
+循环控制器指的是训练, 验证和测试时的执行流程，在配置文件里面使用 `train_cfg`, `val_cfg` 和 `test_cfg` 来构建这些流程. MMSegmentation 在 `configs/_base_/schedules` 文件夹里面的 `train_cfg` 设置常用的训练长度.
 例如, 使用基于迭代次数的训练循环 (`IterBasedTrainLoop`) 去训练 80,000 个迭代次数, 并且每 8,000 iteration 做一次验证, 可以如下设置:
 
 ```python
@@ -26,7 +26,7 @@ optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
 
 我们支持 PyTorch 里面所有的优化器, 更多细节可以参考 MMEngine [优化器文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
 
-更多关于优化器的使用方法, 可以看下面优化器的章节.
+需要强调的是, `optim_wrapper` 是 `runner` 的变量, 而 `optimizer` 是一个中间变量. **训练中换优化器，需要更新优化器封装**. 更多关于优化器的使用方法, 可以看下面优化器的章节.
 
 ### 配置训练参数调度器
 
@@ -48,7 +48,7 @@ param_scheduler = [
 ]
 ```
 
-这样在训练时前 1,000 个 iteration 时采用线性变化的学习率策略做 warm up, 从 1,000 iteration 之后直到最后 16,000 个 iteration 时则采用默认的多项式学习率衰减.
+这样在训练时前 1,000 个 iteration 时采用线性变化的学习率策略作为训练预热, 从 1,000 iteration 之后直到最后 16,000 个 iteration 时则采用默认的多项式学习率衰减.
 
 注意: 当你修改 `train_cfg` 里面 `max_iters` 的时候, 请确保参数调度器 `param_scheduler` 里面的参数也被同时修改.
 
@@ -123,12 +123,9 @@ logger=dict(type='LoggerHook', interval=10)
 # TensorboardVisBackend
 visualizer = dict(
     type='SegLocalVisualizer', vis_backends=[dict(type='TensorboardVisBackend')], name='visualizer')
-# 或者 WandbVisBackend
-visualizer = dict(
-    type='SegLocalVisualizer', vis_backends=[dict(type='WandbVisBackend')], name='visualizer')
 ```
 
-关于更多相关用法，可以参考 [MMEngine 存储后端用户教程](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md).
+关于更多相关用法，可以参考 [MMEngine 可视化后端用户教程](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md).
 
 - 自定义钩子 (custom hooks)
 
@@ -198,15 +195,13 @@ class SegVisualizationHook(Hook):
 OpenMMLab 2.0 设计了优化器封装, 它支持不同的训练策略, 包括混合精度训练、梯度累加和梯度截断等, 用户可以根据需求选择合适的训练策略.
 优化器封装还定义了一套标准的参数更新流程, 用户可以基于这一套流程, 在同一套代码里, 实现不同训练策略的切换. 如果想了解更多, 可以参考 [MMEngine 优化器封装文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
 
-需要强调的是, `optim_wrapper` 是 `runner` 的变量, 而 `optimizer` 是一个中间变量. **训练中换优化器，需要更新优化器封装**.
-MMSegmentation 训练模型也是使用优化器封装来优化参数, 以下是 MMSegmentation 中常用的使用方法:
+以下是 MMSegmentation 中常用的使用方法:
 
 #### 配置 PyTorch 支持的优化器
 
 OpenMMLab 2.0 支持 PyTorch 原生所有优化器, 参考[这里](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md#%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE).
 
-[优化器封装 (Optimizer wrapper)](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/engine.md#%E4%BC%98%E5%8C%96%E5%99%A8%E5%B0%81%E8%A3%85)
-提供一个统一的在不同硬件 (如 CPU, GPU, MLU, IPU 等) 上的接口. 在配置文件中设置训练时 `Runner` 所使用的优化器, 需要定义 `optim_wrapper`, 下面是一个 `optim_wrapper` 的例子:
+在配置文件中设置训练时 `Runner` 所使用的优化器, 需要定义 `optim_wrapper`, 而不是 `optimizer`，下面是一个 `optim_wrapper` 的例子:
 
 ```python
 optim_wrapper = dict(
@@ -215,7 +210,7 @@ optim_wrapper = dict(
     clip_grad=None)
 ```
 
-#### 梯度裁剪
+#### 配置梯度裁剪
 
 一些模型需要使用梯度裁剪来让训练过程更加稳定. 示例如下:
 
@@ -227,7 +222,7 @@ optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer,
 
 这里 max_norm 指的是裁剪后梯度的最大值,  norm_type 指的是裁剪梯度时使用的范数. 相关方法可参考 [torch.nn.utils.clip_grad_norm\_](https://pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html).
 
-#### 混合精度训练
+#### 配置混合精度训练
 
 除此之外, 如果你想应用混合精度训练, 可以将 OptimWrapper 换成 AmpOptimWrapper，例如:
 
@@ -238,7 +233,7 @@ optim_wrapper = dict(type='AmpOptimWrapper', optimizer=optimizer)
 
 [`AmpOptimWrapper`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/amp_optimizer_wrapper.py#L20) 中 `loss_scale` 的默认设置是 `dynamic`.
 
-#### 自定义模型网络不同层的超参数
+#### 配置模型网络不同层的超参数
 
 在模型训练中, 如果想在优化器里为不同参数分别设置优化策略, 例如设置不同的学习率、权重衰减等超参数, 可以通过设置配置文件里 `optim_wrapper` 中的 `paramwise_cfg` 来实现.
 
