@@ -1358,10 +1358,10 @@ class BioMedical3DRandomCrop(BaseTransform):
         """sample foreground voxel when keep_foreground is True.
 
         Args:
-            seg_map (np.ndarray): gt seg map
+            seg_map (np.ndarray): gt seg map.
 
         Returns:
-            dict: Coordinates of selected foreground locations
+            dict: Coordinates of selected foreground voxel.
         """
         num_samples = 10000
         # at least 1% of the class voxels need to be selected,
@@ -1429,7 +1429,7 @@ class BioMedical3DRandomCrop(BaseTransform):
             results (dict): Result dict from loading pipeline.
 
         Returns:
-            tuple: Coordinates of the cropped image.
+            tuple: The margin for 3 dimentions of crop bounding-box and image.
         """
 
         seg_map = results['gt_seg_map']
@@ -1482,7 +1482,7 @@ class BioMedical3DRandomCrop(BaseTransform):
 
     def transform(self, results: dict) -> dict:
         """Transform function to randomly crop images, semantic segmentation
-        maps with specific crop mode.
+        maps.
 
         Args:
             results (dict): Result dict from loading pipeline.
