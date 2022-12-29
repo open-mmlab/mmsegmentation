@@ -3,7 +3,7 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
 model = dict(
-    # pretrained='https://assets-1257038460.cos.ap-beijing.myqcloud.com/resnet101_v1d.pth', 
+    pretrained='https://assets-1257038460.cos.ap-beijing.myqcloud.com/resnet101_v1d.pth', 
     backbone=dict(depth=101),
     decode_head=dict(num_classes=26,
                      loss_decode=dict(type='HieraTripletLossCityscape',

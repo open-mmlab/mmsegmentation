@@ -1,13 +1,13 @@
 import torch
 import torch.nn as nn
+from torch import Tensor
+from typing import List, Optional
+
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule, build_norm_layer
 
-from mmseg.ops import resize
-from ..builder import HEADS
+from ..utils import resize
+from mmseg.registry import MODELS
 from .aspp_head import ASPPHead, ASPPModule
-from mmcv.runner import force_fp32
-
-from mmseg.ops import resize
 from ..losses import accuracy
 
 class ProjectionHead(nn.Module):
@@ -45,7 +45,7 @@ class DepthwiseSeparableASPPModule(ASPPModule):
                     act_cfg=self.act_cfg)
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class DepthwiseSeparableASPPContrastHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
     Segmentation.
@@ -120,10 +120,39 @@ class DepthwiseSeparableASPPContrastHead(ASPPHead):
             output = torch.cat([output, c1_output], dim=1)
         output = self.sep_bottleneck(output)
         output = self.cls_seg(output)
-        
         return output, embedding
-    
-    @force_fp32(apply_to=('results', ))
+
+    def predict_by_feat(self, seg_logits: Tensor,
+                        batch_img_metas: List[dict]) -> Tensor:
+        """Transform a batch of output seg_logits to the input shape.
+
+        Args:
+            seg_logits (Tensor): The output from decode head forward function.
+            batch_img_metas (list[dict]): Meta information of each image, e.g.,
+                image size, scaling factor, etc.
+
+        Returns:
+            Tensor: Outputs segmentation logits map.
+        """
+
+        # HieraSeg decode_head output is: (out, embedding) :tuple, 
+        # only need 'out' here.
+        if isinstance(seg_logits,tuple):
+            seg_logits = seg_logits[0]
+        # seg_logits = resize(
+        #     input=out,
+        #     size=inputs.shape[2:],
+        #     mode='bilinear',
+        #     align_corners=self.align_corners)
+        # print('===========调用encode_decode结束=====')
+
+        seg_logits = resize(
+            input=seg_logits,
+            size=batch_img_metas[0]['img_shape'],
+            mode='bilinear',
+            align_corners=self.align_corners)
+        return seg_logits
+
     def losses(self, results, seg_label):
         """Compute segmentation loss."""
         seg_logit_before = results[0]

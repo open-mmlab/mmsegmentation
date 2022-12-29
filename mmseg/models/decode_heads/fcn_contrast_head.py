@@ -4,9 +4,8 @@ import torch.nn as nn
 from ..builder import HEADS
 from .decode_head import BaseDecodeHead
 from mmcv.cnn import ConvModule, build_norm_layer
-from mmengine.runner import force_fp32
 
-from mmseg.ops import resize
+from ..utils import resize
 from ..losses import accuracy
 
 class ProjectionHead(nn.Module):
@@ -98,13 +97,12 @@ class FCNContrastHead(BaseDecodeHead):
         output = self.cls_seg(output)
         return (output, embedding)
     
-    @force_fp32(apply_to=('results', ))
     def losses(self, results, seg_label):
         """Compute segmentation loss."""
         seg_logit_before = results[0]
         embedding = results[1]
         loss = dict()
-        seg_logit = resize(
+        seg_logit = Resize(
             input=seg_logit_before,
             size=seg_label.shape[2:],
             mode='bilinear',
