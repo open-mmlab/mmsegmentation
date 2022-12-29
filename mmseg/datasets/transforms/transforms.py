@@ -1407,12 +1407,12 @@ class BioMedical3DRandomCrop(BaseTransform):
         Returns:
             tuple: Coordinates of the cropped image.
         """
-        offset_d = np.random.randint(0, margin_z + 1)
-        offset_h = np.random.randint(0, margin_y + 1)
-        offset_w = np.random.randint(0, margin_x + 1)
-        crop_z1, crop_z2 = offset_d, offset_d + self.crop_shape[0]
-        crop_y1, crop_y2 = offset_h, offset_h + self.crop_shape[1]
-        crop_x1, crop_x2 = offset_w, offset_w + self.crop_shape[2]
+        offset_z = np.random.randint(0, margin_z + 1)
+        offset_y = np.random.randint(0, margin_y + 1)
+        offset_x = np.random.randint(0, margin_x + 1)
+        crop_z1, crop_z2 = offset_z, offset_z + self.crop_shape[0]
+        crop_y1, crop_y2 = offset_y, offset_y + self.crop_shape[1]
+        crop_x1, crop_x2 = offset_x, offset_x + self.crop_shape[2]
 
         return crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2
 
