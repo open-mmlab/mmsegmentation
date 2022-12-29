@@ -52,35 +52,9 @@ param_scheduler = [
 
 注意: 当你修改 `train_cfg` 里面 `max_iters` 的时候, 请确保参数调度器 `param_scheduler` 里面的参数也被同时修改.
 
-### 配置 Default hooks
+## 钩子 (Hook)
 
 在了解如何修改这些钩子的配置之前, 推荐参考 [engine.md](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 文档了解 mmsegmentation 1.x 中钩子的定义.
-MMSegmentation 会在 [`defualt_hooks`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) 里面注册一些训练所必需功能的钩子:
-
-```python
-default_hooks = dict(
-    timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
-    param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=2000),
-    sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegVisualizationHook'))
-```
-
-下表列出了这些默认钩子可能涉及到的配置修改, 用户也可以参考链接里的 readthedocs API 文档, 通过修改配置文件里对应的内容满足自己特定的需求.
-
-|                                                                         默认钩子                                                                         |                        一些相关的配置修改                        |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------: |
-|           [IterTimerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.IterTimerHook.html?highlight=iter_timer_hook)           |                                -                                 |
-|                [LoggerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.LoggerHook.html?highlight=LoggerHook)                 |                      日志里的迭代次数间隔.                       |
-|    [ParamSchedulerHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.ParamSchedulerHook.html?highlight=ParamSchedulerHook)     |                                -                                 |
-|        [CheckpointHook](https://mmengine.readthedocs.io/en/latest/api/generated/mmengine.hooks.CheckpointHook.html#mmengine.hooks.CheckpointHook)        | 是否只保存最好结果的 checkpoint, 保存 checkpoint 在特定的路径等. |
-| [DistSamplerSeedHook](https://mmengine.readthedocs.io/zh_CN/latest/api/generated/mmengine.hooks.DistSamplerSeedHook.html?highlight=DistSamplerSeedHook)  |                                -                                 |
-| [SegVisualizationHook](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=SegVisualizationHook#mmseg.engine.hooks.SegVisualizationHook) |                                -                                 |
-
-没有在优化器里被设置的训练技巧可以在优化器构造器 (例如逐个模型参数去设置学习率) 和钩子里实现. 我们在上面列出了一些训练的常用设置, 如果想增加更多设置, 欢迎提交 issue 和 PR.
-
-## 钩子 (Hook)
 
 ### 介绍
 
@@ -104,7 +78,7 @@ OpenMMLab 将模型训练和测试过程抽象为 `Runner`, 插入钩子可以�
 |        [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)        |                                确保分布式采样器 shuffle 是打开的.                                |    NORMAL (50)    |
 | [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/visualization/local_visualizer.py) |                                可视化验证和测试过程里的预测结果.                                 |    NORMAL (50)    |
 
-它们在配置文件中的配置为:
+MMSegmentation 会在 [`defualt_hooks`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) 里面注册一些训练所必需功能的钩子::
 
 ```python
 default_hooks = dict(
