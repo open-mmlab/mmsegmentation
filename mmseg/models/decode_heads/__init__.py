@@ -24,14 +24,13 @@ from .psa_head import PSAHead
 from .psp_head import PSPHead
 from .segformer_head import SegformerHead
 from .segmenter_mask_head import SegmenterMaskTransformerHead
+from .sep_aspp_contrast_head import DepthwiseSeparableASPPContrastHead
 from .sep_aspp_head import DepthwiseSeparableASPPHead
 from .sep_fcn_head import DepthwiseSeparableFCNHead
 from .setr_mla_head import SETRMLAHead
 from .setr_up_head import SETRUPHead
 from .stdc_head import STDCHead
 from .uper_head import UPerHead
-from .fcn_contrast_head import FCNContrastHead
-from .sep_aspp_contrast_head import DepthwiseSeparableASPPContrastHead
 
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',

@@ -1,38 +1,40 @@
+# Copyright (c) OpenMMLab. All rights reserved.
+from typing import List
+
 import torch
 import torch.nn as nn
-from torch import Tensor
-from typing import List, Optional
-
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule, build_norm_layer
+from torch import Tensor
 
-from ..utils import resize
 from mmseg.registry import MODELS
-from .aspp_head import ASPPHead, ASPPModule
 from ..losses import accuracy
+from ..utils import resize
+from .aspp_head import ASPPHead, ASPPModule
+
 
 class ProjectionHead(nn.Module):
+
     def __init__(self, dim_in, norm_cfg, proj_dim=256, proj='convmlp'):
-        super(ProjectionHead, self).__init__()
-        
+        super().__init__()
+
         if proj == 'linear':
             self.proj = nn.Conv2d(dim_in, proj_dim, kernel_size=1)
         elif proj == 'convmlp':
             self.proj = nn.Sequential(
                 nn.Conv2d(dim_in, dim_in, kernel_size=1),
-                build_norm_layer(norm_cfg, dim_in)[1],
-                nn.ReLU(inplace=True),
-                nn.Conv2d(dim_in, proj_dim, kernel_size=1)
-            )
-            
+                build_norm_layer(norm_cfg, dim_in)[1], nn.ReLU(inplace=True),
+                nn.Conv2d(dim_in, proj_dim, kernel_size=1))
+
     def forward(self, x):
         return torch.nn.functional.normalize(self.proj(x), p=2, dim=1)
-    
+
+
 class DepthwiseSeparableASPPModule(ASPPModule):
     """Atrous Spatial Pyramid Pooling (ASPP) Module with depthwise separable
     conv."""
 
     def __init__(self, **kwargs):
-        super(DepthwiseSeparableASPPModule, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         for i, dilation in enumerate(self.dilations):
             if dilation > 1:
                 self[i] = DepthwiseSeparableConvModule(
@@ -48,8 +50,8 @@ class DepthwiseSeparableASPPModule(ASPPModule):
 @MODELS.register_module()
 class DepthwiseSeparableASPPContrastHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
-    Segmentation.
-    This head is the implementation of `DeepLabV3+
+    Segmentation. This head is the implementation of `DeepLabV3+
+
     <https://arxiv.org/abs/1802.02611>`_.
     Args:
         c1_in_channels (int): The input channels of c1 decoder. If is 0,
@@ -58,7 +60,7 @@ class DepthwiseSeparableASPPContrastHead(ASPPHead):
     """
 
     def __init__(self, c1_in_channels, c1_channels, **kwargs):
-        super(DepthwiseSeparableASPPContrastHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert c1_in_channels >= 0
         self.aspp_modules = DepthwiseSeparableASPPModule(
             dilations=self.dilations,
@@ -93,11 +95,11 @@ class DepthwiseSeparableASPPContrastHead(ASPPHead):
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg))
         self.proj_head = ProjectionHead(dim_in=2048, norm_cfg=self.norm_cfg)
-        self.register_buffer("step", torch.zeros(1))
+        self.register_buffer('step', torch.zeros(1))
 
     def forward(self, inputs):
         """Forward function."""
-        self.step+=1
+        self.step += 1
         embedding = self.proj_head(inputs[-1])
         x = self._transform_inputs(inputs)
         aspp_outs = [
@@ -134,34 +136,69 @@ class DepthwiseSeparableASPPContrastHead(ASPPHead):
         Returns:
             Tensor: Outputs segmentation logits map.
         """
-        # HieraSeg decode_head output is: (out, embedding) :tuple, 
+        # HieraSeg decode_head output is: (out, embedding) :tuple,
         # only need 'out' here.
-        if isinstance(seg_logits,tuple):
+        if isinstance(seg_logits, tuple):
             seg_logit = seg_logits[0]
 
-        if seg_logit.size(1)==26:
-            seg_logit[:,0:2]+=seg_logit[:,-7]
-            seg_logit[:,2:5]+=seg_logit[:,-6]
-            seg_logit[:,5:8]+=seg_logit[:,-5]
-            seg_logit[:,8:10]+=seg_logit[:,-4]
-            seg_logit[:,10:11]+=seg_logit[:,-3]
-            seg_logit[:,11:13]+=seg_logit[:,-2]
-            seg_logit[:,13:19]+=seg_logit[:,-1]
-        elif seg_logit.size(1)==12:
-            seg_logit[:,0:1]=seg_logit[:,0:1]+seg_logit[:,7]+seg_logit[:,10]
-            seg_logit[:,1:5]=seg_logit[:,1:5]+seg_logit[:,8]+seg_logit[:,11]
-            seg_logit[:,5:7]=seg_logit[:,5:7]+seg_logit[:,9]+seg_logit[:,11]
-        elif seg_logit.size(1)==25:
-            seg_logit[:,0:1]=seg_logit[:,0:1]+seg_logit[:,20]+seg_logit[:,23]
-            seg_logit[:,1:8]=seg_logit[:,1:8]+seg_logit[:,21]+seg_logit[:,24]
-            seg_logit[:,10:12]=seg_logit[:,10:12]+seg_logit[:,21]+seg_logit[:,24]
-            seg_logit[:,13:16]=seg_logit[:,13:16]+seg_logit[:,21]+seg_logit[:,24]
-            seg_logit[:,8:10]=seg_logit[:,8:10]+seg_logit[:,22]+seg_logit[:,24]
-            seg_logit[:,12:13]=seg_logit[:,12:13]+seg_logit[:,22]+seg_logit[:,24]
-            seg_logit[:,16:20]=seg_logit[:,16:20]+seg_logit[:,22]+seg_logit[:,24]
-        
-        # seg_logit = seg_logit[:,:-self.test_cfg['hiera_num_classes']]  
-        seg_logit = seg_logit[:,:-7] 
+        if seg_logit.size(1) == 26:
+            seg_logit[:, 0:2] += seg_logit[:, -7]
+            seg_logit[:, 2:5] += seg_logit[:, -6]
+            seg_logit[:, 5:8] += seg_logit[:, -5]
+            seg_logit[:, 8:10] += seg_logit[:, -4]
+            seg_logit[:, 10:11] += seg_logit[:, -3]
+            seg_logit[:, 11:13] += seg_logit[:, -2]
+            seg_logit[:, 13:19] += seg_logit[:, -1]
+        elif seg_logit.size(1) == 12:
+            seg_logit[:,
+                      0:1] = seg_logit[:, 0:1] + seg_logit[:,
+                                                           7] + seg_logit[:,
+                                                                          10]
+            seg_logit[:,
+                      1:5] = seg_logit[:, 1:5] + seg_logit[:,
+                                                           8] + seg_logit[:,
+                                                                          11]
+            seg_logit[:,
+                      5:7] = seg_logit[:, 5:7] + seg_logit[:,
+                                                           9] + seg_logit[:,
+                                                                          11]
+        elif seg_logit.size(1) == 25:
+            seg_logit[:,
+                      0:1] = seg_logit[:, 0:1] + seg_logit[:,
+                                                           20] + seg_logit[:,
+                                                                           23]
+            seg_logit[:,
+                      1:8] = seg_logit[:, 1:8] + seg_logit[:,
+                                                           21] + seg_logit[:,
+                                                                           24]
+            seg_logit[:,
+                      10:12] = seg_logit[:,
+                                         10:12] + seg_logit[:,
+                                                            21] + seg_logit[:,
+                                                                            24]
+            seg_logit[:,
+                      13:16] = seg_logit[:,
+                                         13:16] + seg_logit[:,
+                                                            21] + seg_logit[:,
+                                                                            24]
+            seg_logit[:,
+                      8:10] = seg_logit[:,
+                                        8:10] + seg_logit[:,
+                                                          22] + seg_logit[:,
+                                                                          24]
+            seg_logit[:,
+                      12:13] = seg_logit[:,
+                                         12:13] + seg_logit[:,
+                                                            22] + seg_logit[:,
+                                                                            24]
+            seg_logit[:,
+                      16:20] = seg_logit[:,
+                                         16:20] + seg_logit[:,
+                                                            22] + seg_logit[:,
+                                                                            24]
+
+        # seg_logit = seg_logit[:,:-self.test_cfg['hiera_num_classes']]
+        seg_logit = seg_logit[:, :-7]
         seg_logit = resize(
             input=seg_logit,
             size=batch_img_metas[0]['img_shape'],
