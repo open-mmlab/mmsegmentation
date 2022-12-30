@@ -1,13 +1,13 @@
 # 训练引擎
 
-MMEngine 定义了一些[基础循环控制器](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py) 例如`基于轮次的训练循环 (EpochBasedTrainLoop)`, `基于迭代次数的训练循环 (IterBasedTrainLoop)`, `标准的验证循环 (ValLoop)` 和`标准的测试循环 (TestLoop)`.
-OpenMMLab 的算法库如 MMSegmentation 将模型训练, 测试和推理抽象为 `Runner (执行器)` 来处理。用户可以直接使用 MMEngine 中的默认执行器，也可以对执行器进行修改以满足定制化需求. 这个文档主要介绍用户如何配置已有的运行设定, 钩子和优化器的基本概念与使用方法.
+MMEngine 定义了一些[基础循环控制器](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py) 例如基于轮次的训练循环 (`EpochBasedTrainLoop`), 基于迭代次数的训练循环 (`IterBasedTrainLoop`), 标准的验证循环 (`ValLoop`) 和标准的测试循环 (`TestLoop`).
+OpenMMLab 的算法库如 MMSegmentation 将模型训练, 测试和推理抽象为执行器(`Runner`) 来处理. 用户可以直接使用 MMEngine 中的默认执行器, 也可以对执行器进行修改以满足定制化需求. 这个文档主要介绍用户如何配置已有的运行设定, 钩子和优化器的基本概念与使用方法.
 
 ## 配置运行设定
 
 ### 配置训练长度
 
-循环控制器指的是训练, 验证和测试时的执行流程，在配置文件里面使用 `train_cfg`, `val_cfg` 和 `test_cfg` 来构建这些流程. MMSegmentation 在 `configs/_base_/schedules` 文件夹里面的 `train_cfg` 设置常用的训练长度.
+循环控制器指的是训练, 验证和测试时的执行流程, 在配置文件里面使用 `train_cfg`, `val_cfg` 和 `test_cfg` 来构建这些流程. MMSegmentation 在 `configs/_base_/schedules` 文件夹里面的 `train_cfg` 设置常用的训练长度.
 例如, 使用基于迭代次数的训练循环 (`IterBasedTrainLoop`) 去训练 80,000 个迭代次数, 并且每 8,000 iteration 做一次验证, 可以如下设置:
 
 ```python
@@ -16,23 +16,24 @@ train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=8000)
 
 ### 配置训练优化器
 
-在修改优化器配置文件之前, 推荐参考 MMEngine 的 [engine 文档](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 了解 mmsegmentation 1.x 中优化器的定义.
-
 这里是一个 SGD 优化器的例子:
 
 ```python
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005),
+    clip_grad=None)
 ```
 
-我们支持 PyTorch 里面所有的优化器, 更多细节可以参考 MMEngine [优化器文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
+OpenMMLab 支持 PyTorch 里面所有的优化器, 更多细节可以参考 MMEngine [优化器文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md).
 
-需要强调的是, `optim_wrapper` 是 `runner` 的变量, 而 `optimizer` 是一个中间变量. **训练中换优化器，需要更新优化器封装**. 更多关于优化器的使用方法, 可以看下面优化器的章节.
+需要强调的是, `optim_wrapper` 是 `runner` 的变量, 所以需要配置优化器时配置的字段是 `optim_wrapper` 字段. 更多关于优化器的使用方法, 可以看下面优化器的章节.
 
 ### 配置训练参数调度器
 
 在配置训练参数调度器前, 推荐先了解 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/param_scheduler.md) 里面关于参数调度器的基本概念.
 
-这里是一个参数调度器的例子, 例如我们想在前 1000 个 iteration 对学习率做 warm up:
+以下是一个参数调度器的例子, 训练时前 1,000 个 iteration 时采用线性变化的学习率策略作为训练预热, 从 1,000 iteration 之后直到最后 16,000 个 iteration 时则采用默认的多项式学习率衰减:
 
 ```python
 param_scheduler = [
@@ -48,13 +49,9 @@ param_scheduler = [
 ]
 ```
 
-这样在训练时前 1,000 个 iteration 时采用线性变化的学习率策略作为训练预热, 从 1,000 iteration 之后直到最后 16,000 个 iteration 时则采用默认的多项式学习率衰减.
-
-注意: 当你修改 `train_cfg` 里面 `max_iters` 的时候, 请确保参数调度器 `param_scheduler` 里面的参数也被同时修改.
+注意: 当修改 `train_cfg` 里面 `max_iters` 的时候, 请确保参数调度器 `param_scheduler` 里面的参数也被同时修改.
 
 ## 钩子 (Hook)
-
-在了解如何修改这些钩子的配置之前, 推荐参考 [engine.md](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/engine.md) 文档了解 mmsegmentation 1.x 中钩子的定义.
 
 ### 介绍
 
@@ -64,19 +61,19 @@ OpenMMLab 将模型训练和测试过程抽象为 `Runner`, 插入钩子可以�
 
 - 默认钩子 (default hooks)
 
-它们实现了训练时所必需的功能，在配置文件中用 `default_hooks` 定义传给 `Runner`, `Runner` 通过 [`register_default_hooks`](https://github.com/open-mmlab/mmengine/blob/090104df21acd05a8aadae5a0d743a7da3314f6f/mmengine/runner/runner.py#L1780) 方法注册.
+它们实现了训练时所必需的功能, 在配置文件中用 `default_hooks` 定义传给 `Runner`, `Runner` 通过 [`register_default_hooks`](https://github.com/open-mmlab/mmengine/blob/090104df21acd05a8aadae5a0d743a7da3314f6f/mmengine/runner/runner.py#L1780) 方法注册.
 钩子有对应的优先级, 优先级越高, 越早被执行器调用. 如果优先级一样, 被调用的顺序和钩子注册的顺序一致.
-不建议用户修改默认钩子的优先级，可以参考 [mmengine hooks 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/hook.md) 了解钩子优先级的定义.
+不建议用户修改默认钩子的优先级, 可以参考 [mmengine hooks 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/hook.md) 了解钩子优先级的定义.
 下面是 MMSegmentation 中所用到的默认钩子：
 
-|                                                           钩子                                                            |                                               功能                                               |      优先级       |
-| :-----------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :---------------: |
-|            [IterTimerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/iter_timer_hook.py)            |                                    记录 iteration 花费的时间.                                    |    NORMAL (50)    |
-|               [LoggerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/logger_hook.py)                | 从 `Runner` 里不同的组件中收集日志记录，并将其输出到终端， JSON 文件，tensorboard，wandb 等下游. | BELOW_NORMAL (60) |
-|       [ParamSchedulerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/param_scheduler_hook.py)       |                          更新优化器里面的一些超参数，例如学习率的动量.                           |     LOW (70)      |
-|           [CheckpointHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py)            |                                  规律性地保存 checkpoint 文件.                                   |   VERY_LOW (90)   |
-|        [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)        |                                确保分布式采样器 shuffle 是打开的.                                |    NORMAL (50)    |
-| [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/visualization/local_visualizer.py) |                                可视化验证和测试过程里的预测结果.                                 |    NORMAL (50)    |
+|                                                           钩子                                                            |                                              功能                                               |      优先级       |
+| :-----------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------: |
+|            [IterTimerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/iter_timer_hook.py)            |                                   记录 iteration 花费的时间.                                    |    NORMAL (50)    |
+|               [LoggerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/logger_hook.py)                | 从 `Runner` 里不同的组件中收集日志记录, 并将其输出到终端, JSON 文件, tensorboard, wandb 等下游. | BELOW_NORMAL (60) |
+|       [ParamSchedulerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/param_scheduler_hook.py)       |                          更新优化器里面的一些超参数, 例如学习率的动量.                          |     LOW (70)      |
+|           [CheckpointHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py)            |                                  规律性地保存 checkpoint 文件.                                  |   VERY_LOW (90)   |
+|        [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)        |                               确保分布式采样器 shuffle 是打开的.                                |    NORMAL (50)    |
+| [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/visualization/local_visualizer.py) |                                可视化验证和测试过程里的预测结果.                                |    NORMAL (50)    |
 
 MMSegmentation 会在 [`defualt_hooks`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) 里面注册一些训练所必需功能的钩子::
 
@@ -114,10 +111,10 @@ logger=dict(type='LoggerHook', interval=10)
 ```
 
 在最新的 1.x 版本的 MMSegmentation 里面, 一些日志钩子 (LoggerHook) 例如 `TextLoggerHook`, `WandbLoggerHook` 和 `TensorboardLoggerHook` 将不再被使用.
-作为替代, MMEngine 使用 `LogProcessor` 来处理上述钩子处理的信息，它们现在在 [`MessageHub`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/logging/message_hub.py#L17),
+作为替代, MMEngine 使用 `LogProcessor` 来处理上述钩子处理的信息, 它们现在在 [`MessageHub`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/logging/message_hub.py#L17),
 [`WandbVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L324) 和 [`TensorboardVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L472) 里面.
 
-如果想使用这些后端, 只需要修改配置文件即可:
+具体使用方法如下, 配置可视化器和同时指定可视化后端, 这里使用 Tensorboard 作为可视化器的后端:
 
 ```python
 # TensorboardVisBackend
@@ -125,7 +122,7 @@ visualizer = dict(
     type='SegLocalVisualizer', vis_backends=[dict(type='TensorboardVisBackend')], name='visualizer')
 ```
 
-关于更多相关用法，可以参考 [MMEngine 可视化后端用户教程](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md).
+关于更多相关用法, 可以参考 [MMEngine 可视化后端用户教程](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/visualization.md).
 
 - 自定义钩子 (custom hooks)
 
@@ -149,7 +146,7 @@ custom_hooks = [
 ### SegVisualizationHook
 
 MMSegmentation 实现了 [`SegVisualizationHook`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/engine/hooks/visualization_hook.py#L17), 用来在验证和测试时可视化预测结果.
-`SegVisualizationHook` 重写了基类 `Hook` 中的 `_after_iter` 方法, 在验证或测试时, 根据指定的迭代次数间隔调用 `visualizer` 的 `add_datasample` 方法绘制语义分割结果，具体实现如下:
+`SegVisualizationHook` 重写了基类 `Hook` 中的 `_after_iter` 方法, 在验证或测试时, 根据指定的迭代次数间隔调用 `visualizer` 的 `add_datasample` 方法绘制语义分割结果, 具体实现如下:
 
 ```python
 ...
@@ -201,7 +198,7 @@ OpenMMLab 2.0 设计了优化器封装, 它支持不同的训练策略, 包括�
 
 OpenMMLab 2.0 支持 PyTorch 原生所有优化器, 参考[这里](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/optim_wrapper.md#%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE).
 
-在配置文件中设置训练时 `Runner` 所使用的优化器, 需要定义 `optim_wrapper`, 而不是 `optimizer`，下面是一个 `optim_wrapper` 的例子:
+在配置文件中设置训练时 `Runner` 所使用的优化器, 需要定义 `optim_wrapper`, 而不是 `optimizer`, 下面是一个配置训练中优化器的例子:
 
 ```python
 optim_wrapper = dict(
@@ -212,7 +209,7 @@ optim_wrapper = dict(
 
 #### 配置梯度裁剪
 
-一些模型需要使用梯度裁剪来让训练过程更加稳定. 示例如下:
+当模型训练需要使用梯度裁剪的训练技巧式, 可以按照如下示例进行配置:
 
 ```python
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
@@ -220,11 +217,11 @@ optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer,
                         clip_grad=dict(max_norm=0.01, norm_type=2))
 ```
 
-这里 max_norm 指的是裁剪后梯度的最大值,  norm_type 指的是裁剪梯度时使用的范数. 相关方法可参考 [torch.nn.utils.clip_grad_norm\_](https://pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html).
+这里 `max_norm` 指的是裁剪后梯度的最大值,  `norm_type` 指的是裁剪梯度时使用的范数. 相关方法可参考 [torch.nn.utils.clip_grad_norm\_](https://pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html).
 
 #### 配置混合精度训练
 
-除此之外, 如果你想应用混合精度训练, 可以将 OptimWrapper 换成 AmpOptimWrapper，例如:
+当需要使用混合精度训练降低内存时, 可以使用 `AmpOptimWrapper`, 具体配置如下:
 
 ```python
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
@@ -237,8 +234,8 @@ optim_wrapper = dict(type='AmpOptimWrapper', optimizer=optimizer)
 
 在模型训练中, 如果想在优化器里为不同参数分别设置优化策略, 例如设置不同的学习率、权重衰减等超参数, 可以通过设置配置文件里 `optim_wrapper` 中的 `paramwise_cfg` 来实现.
 
-下面的配置文件以 [ViT `optim_wrapper`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27) 为例,
-优化器中设置了权重衰减 (weight decay) 系数, 但是将 `pos_embed`, `mask_token`, `norm` 模块的 weight decay multiplication 设置成 0.
+下面的配置文件以 [ViT `optim_wrapper`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27) 为例介绍 `paramwise_cfg` 参数使用.
+训练时将 `pos_embed`, `mask_token`, `norm` 模块的 weight decay 参数的系数设置成 0.
 即: 在训练时, 这些模块的 weight decay 将被变为 `weight_decay * decay_mult`=0.
 
 ```python
@@ -279,4 +276,4 @@ optim_wrapper = dict(
     loss_scale='dynamic')
 ```
 
-注意: 如果你的配置文件继承自基配置文件, 后者已经设置了 `optim_wrapper`, 你需要使用 `_delete_=True` 来重写不必须的设置.
+`_delete_=True` 的作用是 OpenMMLab Config 中的忽略继承的配置, 在该代码片段中忽略继承的 `optim_wrapper` 配置, 更多 `_delete_` 字段的内容可以参考 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/config.md#%E5%88%A0%E9%99%A4%E5%AD%97%E5%85%B8%E4%B8%AD%E7%9A%84-key).
