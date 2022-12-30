@@ -62,10 +62,11 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc2 was released in 6/12/2022.
+v1.0.0rc3 was released in 30/12/2022.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Support MaskFormer and Mask2Former ([#2215](https://github.com/open-mmlab/mmsegmentation/pull/2215), [2255](https://github.com/open-mmlab/mmsegmentation/pull/2255))
+- Support test time augmentation ([#2184](https://github.com/open-mmlab/mmsegmentation/pull/2184))
+- Add 'Projects/' folder and the first example project ([#2412](https://github.com/open-mmlab/mmsegmentation/pull/2412))
 
 ## Installation
 
