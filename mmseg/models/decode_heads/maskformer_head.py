@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmengine.model import BaseModule
+
 try:
     from mmdet.models.dense_heads import MaskFormerHead as MMDET_MaskFormerHead
 except ModuleNotFoundError:
