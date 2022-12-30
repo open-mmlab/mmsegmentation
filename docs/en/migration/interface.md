@@ -146,9 +146,12 @@ Changes in **pipeline**
 - The original formatting transforms **`ToTensor`**、**`ImageToTensor`**、**`Collect`** are combined as [`PackSegInputs`](mmseg.datasets.transforms.PackSegInputs)
 - We don't recommend to do **`Normalize`** and **Pad** in the dataset pipeline. Please remove it from pipelines and set it in the `data_preprocessor` field.
 - The original **`Resize`** in MMSeg 1.x has been changed to **`RandomResize`** and the input arguments `img_scale` is renamed to `scale`, and the default value of `keep_ratio` is modified to False.
+- The original `test_pipeline` combines single-scale test and multi-scale test together, in MMSeg 1.x we separate it into `test_pipeline` and `tta_pipeline`.
 
 **Note:**
 We move some work of data transforms to the data preprocessor, like normalization, see [the documentation](package.md) for more details.
+
+train_pipeline
 
 <table class="docutils">
 <tr>
@@ -188,6 +191,65 @@ train_pipeline = [
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
     dict(type='PackSegInputs')
+]
+```
+
+</td>
+</tr>
+</table>
+
+test_pipeline
+
+<table class="docutils">
+<tr>
+<td>Original</td>
+<td>
+
+```python
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=(2560, 640),
+        # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
+        flip=False,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(type='Normalize', **img_norm_cfg),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img']),
+        ])
+]
+```
+
+</td>
+<tr>
+<td>New</td>
+<td>
+
+```python
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='Resize', scale=(2560, 640), keep_ratio=True),
+    dict(type='LoadAnnotations', reduce_zero_label=True),
+    dict(type='PackSegInputs')
+]
+img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
+tta_pipeline = [
+    dict(type='LoadImageFromFile', file_client_args=dict(backend='disk')),
+    dict(
+        type='TestTimeAug',
+        transforms=[
+            [
+                dict(type='Resize', scale_factor=r, keep_ratio=True)
+                for r in img_ratios
+            ],
+            [
+                dict(type='RandomFlip', prob=0., direction='horizontal'),
+                dict(type='RandomFlip', prob=1., direction='horizontal')
+            ], [dict(type='LoadAnnotations')], [dict(type='PackSegInputs')]
+        ])
 ]
 ```
 
