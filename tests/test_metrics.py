@@ -31,7 +31,7 @@ def get_confusion_matrix(pred_label, label, num_classes, ignore_index):
 def legacy_mean_iou(results, gt_seg_maps, num_classes, ignore_index):
     num_imgs = len(results)
     assert len(gt_seg_maps) == num_imgs
-    total_mat = np.zeros((num_classes, num_classes), dtype=np.float)
+    total_mat = np.zeros((num_classes, num_classes), dtype=np.float32)
     for i in range(num_imgs):
         mat = get_confusion_matrix(
             results[i], gt_seg_maps[i], num_classes, ignore_index=ignore_index)
@@ -48,7 +48,7 @@ def legacy_mean_iou(results, gt_seg_maps, num_classes, ignore_index):
 def legacy_mean_dice(results, gt_seg_maps, num_classes, ignore_index):
     num_imgs = len(results)
     assert len(gt_seg_maps) == num_imgs
-    total_mat = np.zeros((num_classes, num_classes), dtype=np.float)
+    total_mat = np.zeros((num_classes, num_classes), dtype=np.float32)
     for i in range(num_imgs):
         mat = get_confusion_matrix(
             results[i], gt_seg_maps[i], num_classes, ignore_index=ignore_index)
