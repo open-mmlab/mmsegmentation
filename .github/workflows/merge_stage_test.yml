@@ -118,11 +118,12 @@ jobs:
           coverage xml
           coverage report -m
       - name: Skip timm unittests and generate coverage report
+        if: ${{matrix.torch < 1.7.0}}
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-      # Only upload coverage report for python3.7 && pytorch1.8.1 without timm
+      # Only upload coverage report for python3.7 && pytorch1.8.1 with timm
       - name: Upload coverage to Codecov
         if: ${{matrix.torch == 1.8.1 && matrix.python-version == 3.7}}
         uses: codecov/codecov-action@v2
