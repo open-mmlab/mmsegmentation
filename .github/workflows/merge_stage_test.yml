@@ -82,7 +82,7 @@ jobs:
           - torch: 1.12.0
             torchvision: 0.13.0
           - torch: 1.13.0
-            torchvision:
+            torchvision: 0.14.0
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
