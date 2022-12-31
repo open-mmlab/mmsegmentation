@@ -58,7 +58,7 @@ jobs:
       - name: Install MMCV
         run: |
           pip install openmim
-          mim install 'mmcv<=2.0.0rc1'
+          mim install 'mmcv<2.0.0rc0'
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Install unittest dependencies
         run: |
