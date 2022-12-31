@@ -189,11 +189,11 @@ jobs:
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
       - name: Install system dependencies
         run: |
+          export LC_ALL=C.UTF-8
+          export LANG=C.UTF-8
           apt-get update && apt-get install -y libgl1-mesa-glx ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
           apt-get clean
           rm -rf /var/lib/apt/lists/*
-          export LC_ALL=C.UTF-8
-          export LANG=C.UTF-8
       - name: Install Pillow
         run: python -m pip install Pillow==6.2.2
         if: ${{matrix.torchvision < 0.5}}
