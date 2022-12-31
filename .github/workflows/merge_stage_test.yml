@@ -37,9 +37,6 @@ jobs:
         run: |
           pip install pip --upgrade
           pip install wheel
-      - name: Install Pillow
-        run: pip install Pillow==6.2.2
-        if: ${{matrix.torchvision == 0.4.2}}
       - name: Install PyTorch
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
@@ -111,21 +108,21 @@ jobs:
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
         # timm from v0.6.11 requires torch>=1.7
-        if: ${{matrix.torch >= 1.7.0}}
+        if: ${{matrix.torch >= '1.7.0'}}
         run: |
           pip install timm
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
       - name: Skip timm unittests and generate coverage report
-        if: ${{matrix.torch < 1.7.0}}
+        if: ${{matrix.torch < '1.7.0'}}
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
       # Only upload coverage report for python3.7 && pytorch1.8.1 with timm
       - name: Upload coverage to Codecov
-        if: ${{matrix.torch == 1.8.1 && matrix.python-version == 3.7}}
+        if: ${{matrix.torch == '1.8.1' && matrix.python-version == '3.7'}}
         uses: codecov/codecov-action@v2
         with:
           files: ./coverage.xml
@@ -160,7 +157,6 @@ jobs:
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
       - name: Install Python-dev
         run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
-        if: ${{matrix.python-version != 3.9}}
       - name: Install system dependencies
         run: |
           apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
@@ -204,7 +200,6 @@ jobs:
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
       - name: Install Python-dev
         run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
-        if: ${{matrix.python-version != 3.9}}
       - name: Install system dependencies
         run: |
           apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
