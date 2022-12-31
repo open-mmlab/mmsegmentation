@@ -164,10 +164,12 @@ jobs:
           fail_ci_if_error: false
 
   build_cuda102:
+    env:
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
     runs-on: ubuntu-18.04
     container:
       image: pytorch/pytorch:1.9.0-cuda10.2-cudnn7-devel
-
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
@@ -176,7 +178,6 @@ jobs:
           - torch: 1.9.0+cu102
             torch_version: torch1.9
             torchvision: 0.10.0+cu102
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -189,8 +190,6 @@ jobs:
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
       - name: Install system dependencies
         run: |
-          export LC_ALL=C.UTF-8
-          export LANG=C.UTF-8
           apt-get update && apt-get install -y libgl1-mesa-glx ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
           apt-get clean
           rm -rf /var/lib/apt/lists/*
