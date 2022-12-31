@@ -25,7 +25,7 @@
 
 ### Bug fix
 
-- Remove dependcy mmdet when do not use MaskFormerHead and MMDET_Mask2FormerHead ([#2448](https://github.com/open-mmlab/mmsegmentation/pull/2448))
+- Remove dependency mmdet when do not use MaskFormerHead and MMDET_Mask2FormerHead ([#2448](https://github.com/open-mmlab/mmsegmentation/pull/2448))
 
 ### Enhancement
 
