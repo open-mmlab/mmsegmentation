@@ -307,7 +307,7 @@ jobs:
       - name: Install MMCV
         run: |
           pip install -U openmim
-          mim isnall mmcv-full
+          mim install mmcv-full
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
