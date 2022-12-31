@@ -100,7 +100,7 @@ def test_metrics():
         'IoU']
     all_acc_l, acc_l, iou_l = legacy_mean_iou(results, label, num_classes,
                                               ignore_index)
-    assert all_acc == all_acc_l
+    assert np.allclose(all_acc, all_acc_l)
     assert np.allclose(acc, acc_l)
     assert np.allclose(iou, iou_l)
     # Test the correctness of the implementation of mDice calculation.
@@ -110,7 +110,7 @@ def test_metrics():
         'Dice']
     all_acc_l, acc_l, dice_l = legacy_mean_dice(results, label, num_classes,
                                                 ignore_index)
-    assert all_acc == all_acc_l
+    assert np.allclose(all_acc, all_acc_l)
     assert np.allclose(acc, acc_l)
     assert np.allclose(dice, dice_l)
     # Test the correctness of the implementation of mDice calculation.
@@ -120,7 +120,7 @@ def test_metrics():
         'Recall'], ret_metrics['Precision'], ret_metrics['Fscore']
     all_acc_l, recall_l, precision_l, fscore_l = legacy_mean_fscore(
         results, label, num_classes, ignore_index)
-    assert all_acc == all_acc_l
+    assert np.allclose(all_acc, all_acc_l)
     assert np.allclose(recall, recall_l)
     assert np.allclose(precision, precision_l)
     assert np.allclose(fscore, fscore_l)
@@ -135,7 +135,7 @@ def test_metrics():
         'aAcc'], ret_metrics['Acc'], ret_metrics['IoU'], ret_metrics[
             'Dice'], ret_metrics['Precision'], ret_metrics[
                 'Recall'], ret_metrics['Fscore']
-    assert all_acc == all_acc_l
+    assert np.allclose(all_acc, all_acc_l)
     assert np.allclose(acc, acc_l)
     assert np.allclose(iou, iou_l)
     assert np.allclose(dice, dice_l)
@@ -228,7 +228,7 @@ def test_mean_iou():
         'IoU']
     all_acc_l, acc_l, iou_l = legacy_mean_iou(results, label, num_classes,
                                               ignore_index)
-    assert all_acc == all_acc_l
+    assert np.allclose(all_acc, all_acc_l)
     assert np.allclose(acc, acc_l)
     assert np.allclose(iou, iou_l)
 
@@ -254,7 +254,7 @@ def test_mean_dice():
         'Dice']
     all_acc_l, acc_l, dice_l = legacy_mean_dice(results, label, num_classes,
                                                 ignore_index)
-    assert all_acc == all_acc_l
+    assert np.allclose(all_acc, all_acc_l)
     assert np.allclose(acc, acc_l)
     assert np.allclose(iou, dice_l)
 
@@ -280,7 +280,7 @@ def test_mean_fscore():
         'Recall'], ret_metrics['Precision'], ret_metrics['Fscore']
     all_acc_l, recall_l, precision_l, fscore_l = legacy_mean_fscore(
         results, label, num_classes, ignore_index)
-    assert all_acc == all_acc_l
+    assert np.allclose(all_acc, all_acc_l)
     assert np.allclose(recall, recall_l)
     assert np.allclose(precision, precision_l)
     assert np.allclose(fscore, fscore_l)
@@ -291,7 +291,7 @@ def test_mean_fscore():
         'Recall'], ret_metrics['Precision'], ret_metrics['Fscore']
     all_acc_l, recall_l, precision_l, fscore_l = legacy_mean_fscore(
         results, label, num_classes, ignore_index, beta=2)
-    assert all_acc == all_acc_l
+    assert np.allclose(all_acc, all_acc_l)
     assert np.allclose(recall, recall_l)
     assert np.allclose(precision, precision_l)
     assert np.allclose(fscore, fscore_l)
@@ -346,6 +346,6 @@ def test_filename_inputs():
             'Acc'], ret_metrics['IoU']
         all_acc_l, acc_l, iou_l = legacy_mean_iou(results, labels, num_classes,
                                                   ignore_index)
-        assert all_acc == all_acc_l
+        assert np.allclose(all_acc, all_acc_l)
         assert np.allclose(acc, acc_l)
         assert np.allclose(iou, iou_l)
