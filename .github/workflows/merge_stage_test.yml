@@ -108,14 +108,14 @@ jobs:
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
         # timm from v0.6.11 requires torch>=1.7
-        if: ${{matrix.torch >= '1.7.0'}}
+        if: ${{matrix.torch >= '1.7.0' || matrix.torch > '1.10.0'}}
         run: |
           pip install timm
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
       - name: Skip timm unittests and generate coverage report
-        if: ${{matrix.torch < '1.7.0'}}
+        if: ${{matrix.torch < '1.7.0' && matrix.torch < '1.10.0'}}
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
