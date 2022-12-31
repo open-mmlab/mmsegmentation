@@ -1,7 +1,7 @@
 name: merge_stage_test
 
 on:
-  pull_request:
+  push:
     paths-ignore:
       - 'README.md'
       - 'README_zh-CN.md'
