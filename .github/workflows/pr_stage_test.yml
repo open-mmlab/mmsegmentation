@@ -42,6 +42,7 @@ jobs:
         run: pip install torch==${{matrix.torch}}+cpu torchvision==${{matrix.torchvision}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install other dependencies
         run: |
+          pip install timm
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc3'
