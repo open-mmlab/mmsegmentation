@@ -23,9 +23,14 @@
 - Update some content of engine Chinese documentation ([#2341](https://github.com/open-mmlab/mmsegmentation/pull/2341))
 - Update TTA to migration documentation ([#2335](https://github.com/open-mmlab/mmsegmentation/pull/2335))
 
+### Bug fix
+
+- Remove dependcy mmdet when do not use MaskFormerHead and MMDET_Mask2FormerHead ([#2448](https://github.com/open-mmlab/mmsegmentation/pull/2448))
+
 ### Enhancement
 
-- Add torch1.13 checking in CI([2402](https://github.com/open-mmlab/mmsegmentation/pull/2402))
+- Add torch1.13 checking in CI ([#2402](https://github.com/open-mmlab/mmsegmentation/pull/2402))
+- Fix pytorch version for merge stage test  ([#2449](https://github.com/open-mmlab/mmsegmentation/pull/2449))
 
 ## v1.0.0rc2(6/12/2022)
 
