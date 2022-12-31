@@ -1,6 +1,6 @@
 # Changelog of v1.x
 
-## v1.0.0rc3(30/12/2022)
+## v1.0.0rc3(31/12/2022)
 
 ### Highlights
 
