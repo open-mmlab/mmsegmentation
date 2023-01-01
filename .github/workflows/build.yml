@@ -71,13 +71,13 @@ jobs:
           coverage xml
           coverage report -m
         # timm from v0.6.11 requires torch>=1.7
-        if: ${{matrix.torch >= '1.7.0'}}
+        if: ${{matrix.torch != '1.5.1' && matrix.torch != '1.6.0'}}
       - name: Skip timm unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-        if: ${{matrix.torch < '1.7.0'}}
+        if: ${{matrix.torch == '1.5.1' || matrix.torch == '1.6.0'}}
 
   build_cuda101:
     runs-on: ubuntu-18.04
@@ -123,15 +123,13 @@ jobs:
           apt-get update && apt-get install -y libgl1-mesa-glx ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 python${{matrix.python-version}}-dev
           apt-get clean
           rm -rf /var/lib/apt/lists/*
-      - name: Install Pillow
-        run: python -m pip install Pillow==6.2.2
-        if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
+          python -m pip install -U openmim
+          mim install mmcv-full
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -146,13 +144,13 @@ jobs:
           coverage xml
           coverage report -m
         # timm from v0.6.11 requires torch>=1.7
-        if: ${{matrix.torch >= '1.7.0'}}
+        if: ${{matrix.torch != '1.5.1+cu101' && matrix.torch != '1.6.0+cu101'}}
       - name: Skip timm unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-        if: ${{matrix.torch < '1.7.0'}}
+        if: ${{matrix.torch == '1.5.1+cu101' || matrix.torch == '1.6.0+cu101'}}
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.10
         with:
@@ -163,10 +161,12 @@ jobs:
           fail_ci_if_error: false
 
   build_cuda102:
+    env:
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
     runs-on: ubuntu-18.04
     container:
       image: pytorch/pytorch:1.9.0-cuda10.2-cudnn7-devel
-
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
@@ -175,7 +175,6 @@ jobs:
           - torch: 1.9.0+cu102
             torch_version: torch1.9
             torchvision: 0.10.0+cu102
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -191,15 +190,13 @@ jobs:
           apt-get update && apt-get install -y libgl1-mesa-glx ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
           apt-get clean
           rm -rf /var/lib/apt/lists/*
-      - name: Install Pillow
-        run: python -m pip install Pillow==6.2.2
-        if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
+          python -m pip install openmim
+          mim install mmcv-full
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -256,15 +253,13 @@ jobs:
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install system dependencies
         run: apt-get update && apt-get install -y ffmpeg libturbojpeg ninja-build
-      - name: Install Pillow
-        run: python -m pip install Pillow==6.2.2
-        if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu116/${{matrix.torch_version}}/index.html
+          python -m pip install openmim
+          mim install mmcv-full
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
@@ -301,14 +296,15 @@ jobs:
         run: pip install torch==1.8.2+${{ matrix.platform }} torchvision==0.9.2+${{ matrix.platform }} -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
       - name: Install MMCV
         run: |
-          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.8/index.html --only-binary mmcv-full
+          pip install -U openmim
+          mim install mmcv-full
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: pip install -e .
       - name: Run unittests
         run: |
-          python -m pip install 'timm<0.6.11'
+          python -m pip install timm
           coverage run --branch --source mmseg -m pytest tests/
       - name: Generate coverage report
         run: |
