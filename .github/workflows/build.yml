@@ -255,15 +255,13 @@ jobs:
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install system dependencies
         run: apt-get update && apt-get install -y ffmpeg libturbojpeg ninja-build
-      - name: Install Pillow
-        run: python -m pip install Pillow==6.2.2
-        if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu116/${{matrix.torch_version}}/index.html
+          python -m pip install openmim
+          mim install mmcv-full
           python -m pip install -r requirements.txt
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
