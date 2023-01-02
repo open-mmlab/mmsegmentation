@@ -889,6 +889,7 @@ def test_biomedical_gaussian_blur():
     assert original_img.min() <= results['img'].min()
 
 
+@TRANSFORMS.register_module()
 def test_BioMedicalRandomGamma():
 
     with pytest.raises(AssertionError):
