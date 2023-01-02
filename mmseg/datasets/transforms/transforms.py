@@ -1,15 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-<<<<<<< HEAD
-<<<<<<< HEAD
 import warnings
-from typing import Dict, Sequence, Tuple, Union
-=======
-from typing import Dict, Sequence, Tuple, Union, Optional
->>>>>>> 8e3c64e (add biomedical3dpad)
-=======
 from typing import Dict, Optional, Sequence, Tuple, Union
->>>>>>> 6c81eac (Add BioMedical3DPad)
 
 import cv2
 import mmcv
@@ -1323,7 +1315,6 @@ class ResizeShortestEdge(BaseTransform):
 
 
 @TRANSFORMS.register_module()
-<<<<<<< HEAD
 class BioMedical3DRandomCrop(BaseTransform):
     """Crop the input patch for medical image & segmentation mask.
 
@@ -1530,7 +1521,6 @@ class BioMedicalGaussianNoise(BaseTransform):
 
     Required Keys:
 
-<<<<<<< HEAD
     - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
             N is the number of modalities, and data type is float32.
 
@@ -1805,10 +1795,10 @@ class BioMedicalRandomGamma(BaseTransform):
             results['img'] = self._adjust_gamma(results['img'])
         else:
             pass
+        return results
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-
         repr_str += f'(prob={self.prob}, '
         repr_str += f'gamma_range={self.gamma_range},'
         repr_str += f'invert_image={self.invert_image},'
@@ -1934,7 +1924,7 @@ class BioMedical3DPad(BaseTransform):
         self._pad_seg(results)
 
         return results
-    
+
     def __repr__(self):
         repr_str = self.__class__.__name__
         repr_str += f'pad_shape={self.pad_shape}, '
