@@ -956,7 +956,7 @@ def test_BioMedicalRandomGamma():
 def test_BioMedical3DPad():
     # test assertion.
     with pytest.raises(AssertionError):
-        transform = dict(type='BioMedical3DPad')
+        transform = dict(type='BioMedical3DPad', pad_shape=None)
         TRANSFORMS.build(transform)
 
     with pytest.raises(AssertionError):
