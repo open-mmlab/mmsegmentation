@@ -19,6 +19,7 @@ from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
 from .transforms import (CLAHE, AdjustGamma, BioMedical3DRandomCrop,
+                         BioMedicalGaussianBlur, BioMedicalGaussianNoise,
                          GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
@@ -42,5 +43,6 @@ __all__ = [
     'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge'
+    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
+    'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur'
 ]
