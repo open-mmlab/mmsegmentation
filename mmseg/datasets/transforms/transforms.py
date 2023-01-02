@@ -1688,6 +1688,7 @@ class BioMedicalGaussianBlur(BaseTransform):
         return repr_str
 
 
+@TRANSFORMS.register_module()
 class BioMedicalRandomGamma(BaseTransform):
     """Using random gamma correction to process the biomedical image.
 
