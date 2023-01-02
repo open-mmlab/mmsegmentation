@@ -1822,7 +1822,7 @@ class BioMedical3DPad(BaseTransform):
     - pad_shape (Tuple[int, int, int]): The padded shape.
 
     Args:
-        pad_shape (Optional[Tuple[int, int, int]]): Fixed padding size.
+        pad_shape (Tuple[int, int, int], optional): Fixed padding size.
             Expected padding shape (Z, Y, X). Defaults: None.
         pad_val (float): Padding value for biomedical image.
             The padding mode is set to "constant". The value
