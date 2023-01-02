@@ -1704,10 +1704,10 @@ class BioMedicalRandomGamma(BaseTransform):
 
     Args:
         prob (float): The probability to perform this transform. Default: 0.5.
-        gamma_range (tuple[float]): Range of gamma values. Default: (0.5, 2).
-        invert_image (bool): whether to invert the image before applying gamma
+        gamma_range (Tuple[float]): Range of gamma values. Default: (0.5, 2).
+        invert_image (bool): Whether invert the image before applying gamma
             augmentation. Default: False.
-        per_channel (bool): whether to perform the transform each channel
+        per_channel (bool): Whether perform the transform each channel
             individually. Default: False
         retain_stats (bool): Gamma transformation will alter the mean and std
             of the data in the patch. If retain_stats=True, the data will be
@@ -1734,27 +1734,24 @@ class BioMedicalRandomGamma(BaseTransform):
 
     @cache_randomness
     def _do_gamma(self):
+        """Whether do adjust gamma for image."""
         return np.random.rand() < self.prob
 
-    def _adjust_gamma(self,
-                      img: np.array,
-                      gamma_range: float,
-                      invert_image: bool,
-                      per_channel: float,
-                      retain_stats: bool,
-                      epsilon=1e-7):
-        if invert_image:
+    def _adjust_gamma(self, img: np.array):
+        epsilon = 1e-7
+
+        if self.invert_image:
             img = -img
 
         def _do_adjust(img):
             if retain_stats_here:
                 img_mean = img.mean()
                 img_std = img.std()
-            if np.random.random() < 0.5 and gamma_range[0] < 1:
-                gamma = np.random.uniform(gamma_range[0], 1)
+            if np.random.random() < 0.5 and self.gamma_range[0] < 1:
+                gamma = np.random.uniform(self.gamma_range[0], 1)
             else:
                 gamma = np.random.uniform(
-                    max(gamma_range[0], 1), gamma_range[1])
+                    max(self.gamma_range[0], 1), self.gamma_range[1])
             img_min = img.min()
             img_range = img.max() - img_min  # range
             img = np.power(((img - img_min) / float(img_range + epsilon)),
@@ -1765,13 +1762,13 @@ class BioMedicalRandomGamma(BaseTransform):
                 img = img + img_mean
             return img
 
-        if not per_channel:
-            retain_stats_here = retain_stats
+        if not self.per_channel:
+            retain_stats_here = self.retain_stats
             img = _do_adjust(img)
         else:
             for c in range(img.shape[0]):
                 img[c] = _do_adjust(img[c])
-        if invert_image:
+        if self.invert_image:
             img = -img
         return img
 
@@ -1786,11 +1783,7 @@ class BioMedicalRandomGamma(BaseTransform):
         do_gamma = self._do_gamma()
 
         if do_gamma:
-            results['img'] = self._adjust_gamma(results['img'],
-                                                self.gamma_range,
-                                                self.invert_image,
-                                                self.per_channel,
-                                                self.retain_stats)
+            results['img'] = self._adjust_gamma(results['img'])
         else:
             pass
         return results
