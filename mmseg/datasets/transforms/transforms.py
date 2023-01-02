@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import warnings
-from typing import Dict, Optional, Sequence, Tuple, Union
+from typing import Dict, Sequence, Tuple, Union
 
 import cv2
 import mmcv
@@ -1818,7 +1818,7 @@ class BioMedical3DPad(BaseTransform):
     - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
         (Z, Y, X) by default.
 
-    Modified Keys:  
+    Modified Keys:
 
     - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
         N is the number of modalities.
