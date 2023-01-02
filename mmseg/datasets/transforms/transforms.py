@@ -1807,6 +1807,7 @@ class BioMedicalRandomGamma(BaseTransform):
         return repr_str
 
 
+@TRANSFORMS.register_module()
 class BioMedical3DPad(BaseTransform):
     """Pad the biomedical 3d image & biomedical 3d semantic segmentation maps.
 
