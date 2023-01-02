@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+# yapf: disable
 from .ade import ADE20KDataset
 from .basesegdataset import BaseSegDataset
 from .chase_db1 import ChaseDB1Dataset
@@ -17,7 +18,8 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
-from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
+from .transforms import (CLAHE, AdjustGamma, BioMedical3DRandomCrop,
+                         GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
@@ -26,15 +28,18 @@ from .transforms import (CLAHE, AdjustGamma, GenerateEdge, LoadAnnotations,
                          SegRescale)
 from .voc import PascalVOCDataset
 
+# yapf: enable
+
 __all__ = [
-    'BaseSegDataset', 'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
-    'PascalContextDataset', 'PascalContextDataset59', 'ChaseDB1Dataset',
-    'DRIVEDataset', 'HRFDataset', 'STAREDataset', 'DarkZurichDataset',
-    'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',
-    'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset',
-    'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
-    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
-    'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
+    'BaseSegDataset', 'BioMedical3DRandomCrop', 'CityscapesDataset',
+    'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
+    'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
+    'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
+    'COCOStuffDataset', 'LoveDADataset', 'MultiImageMixDataset',
+    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset', 'LoadAnnotations',
+    'RandomCrop', 'SegRescale', 'PhotoMetricDistortion', 'RandomRotate',
+    'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray', 'RandomCutOut',
+    'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge'
