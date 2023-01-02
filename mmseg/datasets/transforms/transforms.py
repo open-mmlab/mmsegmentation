@@ -1688,21 +1688,31 @@ class BioMedicalGaussianBlur(BaseTransform):
 
 
 class BioMedicalRandomGamma(BaseTransform):
-    """Using random gamma correction to process the biomedical image. Modified
-    from https://github.com/MIC-DKFZ/batchgenerators/blob/master/batchgenerator
-    s/transforms/color_transforms.py#L132 # noqa:E501 With licence:  Apache 2.0
+    """Using random gamma correction to process the biomedical image.
+
+    Modified from
+    https://github.com/MIC-DKFZ/batchgenerators/blob/master/batchgenerators/transforms/color_transforms.py#L132 # noqa:E501
+    With licence: Apache 2.0
+
     Required Keys:
 
-    - img
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
+        N is the number of modalities, and data type is float32.
+
     Modified Keys:
     - img
+
     Args:
         prob (float): The probability to perform this transform. Default: 0.5.
         gamma_range (tuple[float]): Range of gamma values. Default: (0.5, 2).
-        invert_image (bool): whether to invert the image before applying gamma augmentation. Default: False
-        per_channel (bool): whether to perform the transform each channel individually. Default: False
-        retain_stats (bool): Gamma transformation will alter the mean and std of the data in the patch. If retain_stats=True,
-            the data will be transformed to match the mean and standard deviation before gamma augmentation. Default: False.
+        invert_image (bool): whether to invert the image before applying gamma
+            augmentation. Default: False.
+        per_channel (bool): whether to perform the transform each channel
+            individually. Default: False
+        retain_stats (bool): Gamma transformation will alter the mean and std
+            of the data in the patch. If retain_stats=True, the data will be
+            transformed to match the mean and standard deviation before gamma
+            augmentation. Default: False.
     """
 
     def __init__(self,
@@ -1712,7 +1722,7 @@ class BioMedicalRandomGamma(BaseTransform):
                  per_channel: bool = False,
                  retain_stats: bool = False):
         assert 0 <= prob and prob <= 1
-        assert type(gamma_range) == tuple and len(gamma_range) == 2
+        assert isinstance(gamma_range, tuple) and len(gamma_range) == 2
         assert isinstance(invert_image, bool)
         assert isinstance(per_channel, bool)
         assert isinstance(retain_stats, bool)
@@ -1735,43 +1745,32 @@ class BioMedicalRandomGamma(BaseTransform):
                       epsilon=1e-7):
         if invert_image:
             img = -img
-        if not per_channel:
-            retain_stats_here = retain_stats
+
+        def _do_adjust(img):
             if retain_stats_here:
-                mn = img.mean()
-                sd = img.std()
+                img_mean = img.mean()
+                img_std = img.std()
             if np.random.random() < 0.5 and gamma_range[0] < 1:
                 gamma = np.random.uniform(gamma_range[0], 1)
             else:
                 gamma = np.random.uniform(
                     max(gamma_range[0], 1), gamma_range[1])
-            minm = img.min()
-            rnge = img.max() - minm  # range
-            img = np.power(
-                ((img - minm) / float(rnge + epsilon)), gamma) * rnge + minm
+            img_min = img.min()
+            img_range = img.max() - img_min  # range
+            img = np.power(((img - img_min) / float(img_range + epsilon)),
+                           gamma) * img_range + img_min
             if retain_stats_here:
                 img = img - img.mean()
-                img = img / (img.std() + 1e-8) * sd
-                img = img + mn
+                img = img / (img.std() + 1e-8) * img_std
+                img = img + img_mean
+            return img
+
+        if not per_channel:
+            retain_stats_here = retain_stats
+            img = _do_adjust(img)
         else:
             for c in range(img.shape[0]):
-                retain_stats_here = retain_stats
-                if retain_stats_here:
-                    mn = img[c].mean()
-                    sd = img[c].std()
-                if np.random.random() < 0.5 and gamma_range[0] < 1:
-                    gamma = np.random.uniform(gamma_range[0], 1)
-                else:
-                    gamma = np.random.uniform(
-                        max(gamma_range[0], 1), gamma_range[1])
-                minm = img[c].min()
-                rnge = img[c].max() - minm
-                img[c] = np.power(((img[c] - minm) / float(rnge + epsilon)),
-                                  gamma) * float(rnge + epsilon) + minm
-                if retain_stats_here:
-                    img[c] = img[c] - img[c].mean()
-                    img[c] = img[c] / (img[c].std() + 1e-8) * sd
-                    img[c] = img[c] + mn
+                img[c] = _do_adjust(img[c])
         if invert_image:
             img = -img
         return img
@@ -1780,6 +1779,7 @@ class BioMedicalRandomGamma(BaseTransform):
         """Call function to perform random gamma correction
         Args:
             results (dict): Result dict from loading pipeline.
+
         Returns:
             dict: Result dict with random gamma correction performed.
         """

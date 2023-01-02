@@ -781,7 +781,6 @@ def test_biomedical3d_random_crop():
     assert crop_results['gt_seg_map'].shape == (d - 20, h - 20, w - 20)
 
 
-<<<<<<< HEAD
 def test_biomedical_gaussian_noise():
     # test assertion for invalid prob
     with pytest.raises(AssertionError):
@@ -831,54 +830,10 @@ def test_biomedical_gaussian_blur():
     with pytest.raises(AssertionError):
         transform = dict(
             type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(15, 8, 9))
-=======
-def test_BioMedicalRandomGamma():
-    #  with pytest.raises(AssertionError):
-    #     transform = dict(type='RandomGamma', prob=1.2, gamma_range=(0, 1))
-    #     TRANSFORMS.build(transform)
-
-    with pytest.raises(AssertionError):
-        transform = dict(
-            type='BioMedicalRandomGamma', prob=-1, gamma_range=(0.7, 1.2))
         TRANSFORMS.build(transform)
 
     with pytest.raises(AssertionError):
         transform = dict(
-            type='BioMedicalRandomGamma', prob=1.2, gamma_range=(0.7, 1.2))
-        TRANSFORMS.build(transform)
-
-    with pytest.raises(AssertionError):
-        transform = dict(
-            type='BioMedicalRandomGamma', prob=1.0, gamma_range=(0.7))
-        TRANSFORMS.build(transform)
-
-    with pytest.raises(AssertionError):
-        transform = dict(
-            type='BioMedicalRandomGamma',
-            prob=1.0,
-            gamma_range=(0.7, 0.2, 0.3))
-        TRANSFORMS.build(transform)
-
-    with pytest.raises(AssertionError):
-        transform = dict(
-            type='BioMedicalRandomGamma',
-            prob=1.0,
-            gamma_range=(0.7, 2),
-            invert_image=1)
-        TRANSFORMS.build(transform)
-
-    with pytest.raises(AssertionError):
-        transform = dict(
-            type='BioMedicalRandomGamma',
-            prob=1.0,
-            gamma_range=(0.7, 2),
-            per_channel=1)
->>>>>>> 7e5ccdf ([Again] add BioMedicalRandomGamma)
-        TRANSFORMS.build(transform)
-
-    with pytest.raises(AssertionError):
-        transform = dict(
-<<<<<<< HEAD
             type='BioMedicalGaussianBlur', prob=1.0, sigma_range='0.16')
         TRANSFORMS.build(transform)
 
@@ -932,25 +887,3 @@ def test_BioMedicalRandomGamma():
     # the max value in the smoothed image should be less than the original one
     assert original_img.max() >= results['img'].max()
     assert original_img.min() <= results['img'].min()
-=======
-            type='BioMedicalRandomGamma',
-            prob=1.0,
-            gamma_range=(0.7, 2),
-            retain_stats=1)
-        TRANSFORMS.build(transform)
-
-    test_img = 'tests/data/biomedical.nii.gz'
-    results = dict(img_path=test_img)
-    transform = LoadBiomedicalImageFromFile()
-    results = transform(copy.deepcopy(results))
-    origin_img = results['img']
-    transform2 = dict(
-        type='BioMedicalRandomGamma',
-        prob=1.0,
-        gamma_range=(0.7, 2),
-    )
-    transform2 = TRANSFORMS.build(transform2)
-    results = transform2(results)
-    transformed_img = results['img']
-    assert origin_img.shape == transformed_img.shape
->>>>>>> 7e5ccdf ([Again] add BioMedicalRandomGamma)

@@ -21,13 +21,13 @@ from .stare import STAREDataset
 # yapf: disable
 from .transforms import (CLAHE, AdjustGamma, BioMedical3DRandomCrop,
                          BioMedicalGaussianBlur, BioMedicalGaussianNoise,
-                         GenerateEdge, LoadAnnotations,
+                         BioMedicalRandomGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
                          RandomCutOut, RandomMosaic, RandomRotate, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale, BioMedicalRandomGamma)
+                         SegRescale)
 from .voc import PascalVOCDataset
 
 # yapf: enable
