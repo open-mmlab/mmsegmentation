@@ -1510,6 +1510,7 @@ class BioMedical3DRandomCrop(BaseTransform):
         return self.__class__.__name__ + f'(crop_shape={self.crop_shape})'
 
 
+@TRANSFORMS.register_module()
 class BioMedicalGaussianNoise(BaseTransform):
     """Add random Gaussian noise to image.
 
