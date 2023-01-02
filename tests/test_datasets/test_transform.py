@@ -778,6 +778,8 @@ def test_biomedical3d_random_crop():
     assert crop_results['img'].shape[1:] == (d - 20, h - 20, w - 20)
     assert crop_results['img_shape'] == (d - 20, h - 20, w - 20)
     assert crop_results['gt_seg_map'].shape == (d - 20, h - 20, w - 20)
+
+
 def test_biomedical_gaussian_noise():
     # test assertion for invalid prob
     with pytest.raises(AssertionError):
