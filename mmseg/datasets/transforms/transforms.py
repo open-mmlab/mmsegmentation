@@ -1592,11 +1592,11 @@ class BioMedicalGaussianBlur(BaseTransform):
         prob (float): Probability to apply Gaussian blur
             for each sample. Default to 0.2.
         prob_per_channel  (float): Probability to apply Gaussian blur
-            for each channel (axis Z of the image). Default to 0.5.
+            for each channel (axis N of the image). Default to 0.5.
         different_sigma_per_channel (bool): whether to use different
-            sigma for each channel (axis Z of the image). Default to True.
+            sigma for each channel (axis N of the image). Default to True.
         different_sigma_per_axis (bool): whether to use different
-            sigma for axis X and Y of the image. Default to True.
+            sigma for axis Z, X and Y of the image. Default to True.
     """
 
     def __init__(self,
