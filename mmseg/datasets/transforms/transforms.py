@@ -1674,6 +1674,7 @@ class BioMedicalGaussianBlur(BaseTransform):
         """
         if np.random.rand() < self.prob:
             results['img'] = self._gaussian_blur(results['img'])
+        return results
 
     def __repr__(self):
         repr_str = self.__class__.__name__
