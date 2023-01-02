@@ -1817,23 +1817,30 @@ class BioMedical3DPad(BaseTransform):
     - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
         (Z, Y, X) by default.
 
+    Modified Keys:  
+
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
+
     Added Keys:
 
     - pad_shape (Tuple[int, int, int]): The padded shape.
 
     Args:
-        pad_shape (Tuple[int, int, int], optional): Fixed padding size.
-            Expected padding shape (Z, Y, X). Defaults: None.
+        pad_shape (Tuple[int, int, int]): Fixed padding size.
+            Expected padding shape (Z, Y, X).
         pad_val (float): Padding value for biomedical image.
             The padding mode is set to "constant". The value
             to be filled in padding area. Default: 0.
-        seg_pad_val (int|None): Padding value for biomedical 3d semantic
+        seg_pad_val (int): Padding value for biomedical 3d semantic
             segmentation maps. The padding mode is set to "constant".
             The value to be filled in padding area. Default: 0.
     """
 
     def __init__(self,
-                 pad_shape: Optional[Tuple[int, int, int]] = None,
+                 pad_shape: Tuple[int, int, int],
                  pad_val: float = 0.,
                  seg_pad_val: int = 0) -> None:
 
@@ -1880,21 +1887,19 @@ class BioMedical3DPad(BaseTransform):
             results['gt_seg_map'] = pad_gt_seg[1:]
 
     @staticmethod
-    def _to_pad(
-        img: np.ndarray,
-        pad_shape: Optional[Tuple[int, int, int]] = None,
-        pad_val: Union[int, float] = 0,
-    ) -> np.ndarray:
+    def _to_pad(img: np.ndarray,
+                pad_shape: Tuple[int, int, int],
+                pad_val: Union[int, float] = 0) -> np.ndarray:
         """Pad the given 3d image to a certain shape with specified padding
         value.
 
         Args:
             img (ndarray): Biomedical image with shape (N, Z, Y, X)
                 to be padded. N is the number of modalities.
-            shape (tuple[int,int,int]): Expected padding shape (Z, Y, X).
-                Default: None.
-            pad_val (float): Values to be filled in padding areas
+            pad_shape (Tuple[int,int,int]): Expected padding shape (Z, Y, X).
+            pad_val (float, int): Values to be filled in padding areas
                 and the padding_mode is set to 'constant'. Default: 0.
+
         Returns:
             ndarray: The padded image.
         """
