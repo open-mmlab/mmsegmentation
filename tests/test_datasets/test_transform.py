@@ -8,7 +8,8 @@ import pytest
 from PIL import Image
 
 from mmseg.datasets.transforms import *  # noqa
-from mmseg.datasets.transforms import PhotoMetricDistortion, RandomCrop
+from mmseg.datasets.transforms import (LoadBiomedicalImageFromFile,
+                                       PhotoMetricDistortion, RandomCrop)
 from mmseg.registry import TRANSFORMS
 from mmseg.utils import register_all_modules
 
@@ -886,3 +887,67 @@ def test_biomedical_gaussian_blur():
     # the max value in the smoothed image should be less than the original one
     assert original_img.max() >= results['img'].max()
     assert original_img.min() <= results['img'].min()
+
+
+def test_BioMedicalRandomGamma():
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=-1, gamma_range=(0.7, 1.2))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=1.2, gamma_range=(0.7, 1.2))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=1.0, gamma_range=(0.7))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 0.2, 0.3))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            invert_image=1)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            per_channel=1)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            retain_stats=1)
+        TRANSFORMS.build(transform)
+
+    test_img = 'tests/data/biomedical.nii.gz'
+    results = dict(img_path=test_img)
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    origin_img = results['img']
+    transform2 = dict(
+        type='BioMedicalRandomGamma',
+        prob=1.0,
+        gamma_range=(0.7, 2),
+    )
+    transform2 = TRANSFORMS.build(transform2)
+    results = transform2(results)
+    transformed_img = results['img']
+    assert origin_img.shape == transformed_img.shape
