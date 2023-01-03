@@ -7,9 +7,9 @@ from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule, build_norm_layer
 from torch import Tensor
 
 from mmseg.registry import MODELS
-from ..losses import accuracy
-from ..utils import resize
-from .aspp_head import ASPPHead, ASPPModule
+from mmseg.models.losses import accuracy
+from mmseg.models.utils import resize
+from mmseg.models.decode_heads.aspp_head import ASPPHead, ASPPModule
 
 
 class ProjectionHead(nn.Module):

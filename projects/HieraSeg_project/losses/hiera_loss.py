@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ..builder import LOSSES
+from mmseg.models.builder import LOSSES
 
 
 def prepare_targets(targets, upper_ids, lower_ids):
