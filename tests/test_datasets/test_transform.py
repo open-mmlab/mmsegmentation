@@ -963,34 +963,34 @@ def test_BioMedical3DPad():
         transform = dict(type='BioMedical3DPad', pad_shape=[256, 256])
         TRANSFORMS.build(transform)
 
-    data_info1 = dict(img=np.random.random((8, 216, 224, 224)))
+    data_info1 = dict(img=np.random.random((8, 6, 4, 4)))
 
-    transform = dict(type='BioMedical3DPad', pad_shape=(256, 256, 256))
+    transform = dict(type='BioMedical3DPad', pad_shape=(6, 6, 6))
     transform = TRANSFORMS.build(transform)
     results = transform(copy.deepcopy(data_info1))
-    assert results['img'].shape[1:] == (256, 256, 256)
-    assert results['pad_shape'] == (256, 256, 256)
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
 
-    transform = dict(type='BioMedical3DPad', pad_shape=(200, 256, 256))
+    transform = dict(type='BioMedical3DPad', pad_shape=(4, 6, 6))
     transform = TRANSFORMS.build(transform)
     results = transform(copy.deepcopy(data_info1))
-    assert results['img'].shape[1:] == (216, 256, 256)
-    assert results['pad_shape'] == (216, 256, 256)
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
 
     data_info2 = dict(
-        img=np.random.random((8, 216, 224, 224)),
-        gt_seg_map=np.random.randint(0, 2, (216, 224, 224)))
+        img=np.random.random((8, 6, 4, 4)),
+        gt_seg_map=np.random.randint(0, 2, (6, 4, 4)))
 
-    transform = dict(type='BioMedical3DPad', pad_shape=(256, 256, 256))
+    transform = dict(type='BioMedical3DPad', pad_shape=(6, 6, 6))
     transform = TRANSFORMS.build(transform)
     results = transform(copy.deepcopy(data_info2))
-    assert results['img'].shape[1:] == (256, 256, 256)
-    assert results['gt_seg_map'].shape[1:] == (256, 256, 256)
-    assert results['pad_shape'] == (256, 256, 256)
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
 
-    transform = dict(type='BioMedical3DPad', pad_shape=(200, 256, 256))
+    transform = dict(type='BioMedical3DPad', pad_shape=(4, 6, 6))
     transform = TRANSFORMS.build(transform)
     results = transform(copy.deepcopy(data_info2))
-    assert results['img'].shape[1:] == (216, 256, 256)
-    assert results['gt_seg_map'].shape[1:] == (216, 256, 256)
-    assert results['pad_shape'] == (216, 256, 256)
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
