@@ -8,7 +8,8 @@ import pytest
 from PIL import Image
 
 from mmseg.datasets.transforms import *  # noqa
-from mmseg.datasets.transforms import PhotoMetricDistortion, RandomCrop
+from mmseg.datasets.transforms import (LoadBiomedicalImageFromFile,
+                                       PhotoMetricDistortion, RandomCrop)
 from mmseg.registry import TRANSFORMS
 from mmseg.utils import register_all_modules
 
@@ -778,3 +779,218 @@ def test_biomedical3d_random_crop():
     assert crop_results['img'].shape[1:] == (d - 20, h - 20, w - 20)
     assert crop_results['img_shape'] == (d - 20, h - 20, w - 20)
     assert crop_results['gt_seg_map'].shape == (d - 20, h - 20, w - 20)
+
+
+def test_biomedical_gaussian_noise():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedicalGaussianNoise', prob=1.5)
+        TRANSFORMS.build(transform)
+
+    # test assertion for invalid std
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianNoise', prob=0.2, mean=0.5, std=-0.5)
+        TRANSFORMS.build(transform)
+
+    transform = dict(type='BioMedicalGaussianNoise', prob=1.0)
+    noise_module = TRANSFORMS.build(transform)
+    assert str(noise_module) == 'BioMedicalGaussianNoise'\
+                                '(prob=1.0, ' \
+                                'mean=0.0, ' \
+                                'std=0.1)'
+
+    transform = dict(type='BioMedicalGaussianNoise', prob=1.0)
+    noise_module = TRANSFORMS.build(transform)
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = noise_module(results)
+    assert original_img.shape == results['img'].shape
+
+
+def test_biomedical_gaussian_blur():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedicalGaussianBlur', prob=-1.5)
+        TRANSFORMS.build(transform)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=0.6)
+        smooth_module = TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(0.6))
+        smooth_module = TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(15, 8, 9))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range='0.16')
+        TRANSFORMS.build(transform)
+
+    transform = dict(
+        type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(0.7, 0.8))
+    smooth_module = TRANSFORMS.build(transform)
+    assert str(
+        smooth_module
+    ) == 'BioMedicalGaussianBlur(prob=1.0, ' \
+         'prob_per_channel=0.5, '\
+         'sigma_range=(0.7, 0.8), ' \
+         'different_sigma_per_channel=True, '\
+         'different_sigma_per_axis=True)'
+
+    transform = dict(type='BioMedicalGaussianBlur', prob=1.0)
+    smooth_module = TRANSFORMS.build(transform)
+    assert str(
+        smooth_module
+    ) == 'BioMedicalGaussianBlur(prob=1.0, ' \
+         'prob_per_channel=0.5, '\
+         'sigma_range=(0.5, 1.0), ' \
+         'different_sigma_per_channel=True, '\
+         'different_sigma_per_axis=True)'
+
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = smooth_module(results)
+    assert original_img.shape == results['img'].shape
+    # the max value in the smoothed image should be less than the original one
+    assert original_img.max() >= results['img'].max()
+    assert original_img.min() <= results['img'].min()
+
+    transform = dict(
+        type='BioMedicalGaussianBlur',
+        prob=1.0,
+        different_sigma_per_axis=False)
+    smooth_module = TRANSFORMS.build(transform)
+
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = smooth_module(results)
+    assert original_img.shape == results['img'].shape
+    # the max value in the smoothed image should be less than the original one
+    assert original_img.max() >= results['img'].max()
+    assert original_img.min() <= results['img'].min()
+
+
+def test_BioMedicalRandomGamma():
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=-1, gamma_range=(0.7, 1.2))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=1.2, gamma_range=(0.7, 1.2))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=1.0, gamma_range=(0.7))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 0.2, 0.3))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            invert_image=1)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            per_channel=1)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            retain_stats=1)
+        TRANSFORMS.build(transform)
+
+    test_img = 'tests/data/biomedical.nii.gz'
+    results = dict(img_path=test_img)
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    origin_img = results['img']
+    transform2 = dict(
+        type='BioMedicalRandomGamma',
+        prob=1.0,
+        gamma_range=(0.7, 2),
+    )
+    transform2 = TRANSFORMS.build(transform2)
+    results = transform2(results)
+    transformed_img = results['img']
+    assert origin_img.shape == transformed_img.shape
+
+
+def test_BioMedical3DPad():
+    # test assertion.
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DPad', pad_shape=None)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DPad', pad_shape=[256, 256])
+        TRANSFORMS.build(transform)
+
+    data_info1 = dict(img=np.random.random((8, 6, 4, 4)))
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(6, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info1))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(4, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info1))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    data_info2 = dict(
+        img=np.random.random((8, 6, 4, 4)),
+        gt_seg_map=np.random.randint(0, 2, (6, 4, 4)))
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(6, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info2))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(4, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info2))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)

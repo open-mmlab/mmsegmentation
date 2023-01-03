@@ -18,7 +18,10 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
-from .transforms import (CLAHE, AdjustGamma, BioMedical3DRandomCrop,
+# yapf: disable
+from .transforms import (CLAHE, AdjustGamma, BioMedical3DPad,
+                         BioMedical3DRandomCrop, BioMedicalGaussianBlur,
+                         BioMedicalGaussianNoise, BioMedicalRandomGamma,
                          GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
@@ -29,7 +32,6 @@ from .transforms import (CLAHE, AdjustGamma, BioMedical3DRandomCrop,
 from .voc import PascalVOCDataset
 
 # yapf: enable
-
 __all__ = [
     'BaseSegDataset', 'BioMedical3DRandomCrop', 'CityscapesDataset',
     'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
@@ -42,5 +44,7 @@ __all__ = [
     'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
-    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge'
+    'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
+    'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
+    'BioMedicalRandomGamma', 'BioMedical3DPad'
 ]
