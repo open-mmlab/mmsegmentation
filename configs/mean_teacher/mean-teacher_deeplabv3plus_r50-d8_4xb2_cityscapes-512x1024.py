@@ -39,19 +39,7 @@ deeplabv3plus = dict(
         align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
-    auxiliary_head=dict(
-        type='FCNHead',
-        in_channels=1024,
-        in_index=2,
-        channels=256,
-        num_convs=1,
-        concat_input=False,
-        dropout_ratio=0.1,
-        num_classes=19,
-        norm_cfg=norm_cfg,
-        align_corners=False,
-        loss_decode=dict(
-            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+    auxiliary_head=None,
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
@@ -63,11 +51,12 @@ model = dict(
         data_preprocessor=data_preprocessor),
     student=deeplabv3plus,
     teacher=deeplabv3plus,
-    semi_train_cfg=dict(freeze_teacher=True, sup_weight=1.0, unsup_weight=4.0),
+    semi_train_cfg=dict(
+        freeze_teacher=True, sup_weight=1.0, unsup_weight=100.0),
     semi_test_cfg=dict(predict_on='teacher'))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
+optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=1e-4)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 # learning policy
 param_scheduler = [
@@ -80,14 +69,14 @@ param_scheduler = [
         by_epoch=False)
 ]
 # training schedule for 80k
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=8000)
+train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=140, val_interval=10)
 val_cfg = dict(type='TeacherStudentValLoop')
 test_cfg = dict(type='TestLoop')
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
     param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=8000),
+    checkpoint=dict(type='CheckpointHook', by_epoch=True, interval=10),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
 
@@ -105,4 +94,4 @@ log_level = 'INFO'
 load_from = None
 resume = False
 
-custom_hooks = [dict(type='MeanTeacherHook')]
+custom_hooks = [dict(type='MeanTeacherHook', momentum=0.01)]
