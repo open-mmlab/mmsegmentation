@@ -60,7 +60,7 @@ class PascalContextDataset59(CustomDataset):
 
     In segmentation map annotation for PascalContext59, background is not
     included in 59 categories. ``reduce_zero_label`` is fixed to True.
-    The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed 
+    The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed
     to '.png'.
 
     Args:
