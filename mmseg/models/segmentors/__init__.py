@@ -3,7 +3,9 @@ from .base import BaseSegmentor
 from .cascade_encoder_decoder import CascadeEncoderDecoder
 from .encoder_decoder import EncoderDecoder
 from .mean_teacher import MeanTeacher
+from .seg_tta import SegTTAModel
 
 __all__ = [
-    'BaseSegmentor', 'EncoderDecoder', 'CascadeEncoderDecoder', 'MeanTeacher'
+    'BaseSegmentor', 'EncoderDecoder', 'CascadeEncoderDecoder', 'SegTTAModel',
+    'MeanTeacher'
 ]
