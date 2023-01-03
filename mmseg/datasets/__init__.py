@@ -19,9 +19,10 @@ from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
 # yapf: disable
-from .transforms import (CLAHE, AdjustGamma, BioMedical3DRandomCrop,
-                         BioMedicalGaussianBlur, BioMedicalGaussianNoise,
-                         BioMedicalRandomGamma, GenerateEdge, LoadAnnotations,
+from .transforms import (CLAHE, AdjustGamma, BioMedical3DPad,
+                         BioMedical3DRandomCrop, BioMedicalGaussianBlur,
+                         BioMedicalGaussianNoise, BioMedicalRandomGamma,
+                         GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
@@ -45,5 +46,5 @@ __all__ = [
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
     'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
-    'BioMedicalRandomGamma'
+    'BioMedicalRandomGamma', 'BioMedical3DPad'
 ]
