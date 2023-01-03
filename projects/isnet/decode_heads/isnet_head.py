@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-# import torch.nn.functional as F
 from typing import List
 
 import torch
@@ -154,7 +153,6 @@ class SemanticLevelContext(nn.Module):
                     continue
                 feats_iter_cls = feats_iter[mask]
                 preds_iter_cls = preds_iter[:, clsid][mask]
-                # weight = F.softmax(preds_iter_cls, dim=0)
                 weight = torch.softmax(preds_iter_cls, dim=0)
                 feats_iter_cls = feats_iter_cls * weight.unsqueeze(-1)
                 feats_iter_cls = feats_iter_cls.sum(0)
