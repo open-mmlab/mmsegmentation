@@ -3,6 +3,11 @@ _base_ = [
     '../_base_/datasets/cityscapes.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_80k.py'
 ]
+
+custom_imports = dict(imports=[
+    'projects.HieraSeg_project.losses',
+    'projects.HieraSeg_project.decode_head'])
+
 model = dict(
     # pretrained='https://assets-1257038460.cos.ap-beijing.\
     #     myqcloud.com/resnet101_v1d.pth',
