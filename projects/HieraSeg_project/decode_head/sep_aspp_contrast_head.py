@@ -7,6 +7,7 @@ from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule, build_norm_layer
 from torch import Tensor
 
 from mmseg.models.decode_heads.aspp_head import ASPPHead, ASPPModule
+from mmseg.models.decode_heads.sep_aspp_head import DepthwiseSeparableASPPModule
 from mmseg.models.losses import accuracy
 from mmseg.models.utils import resize
 from mmseg.registry import MODELS
@@ -27,26 +28,7 @@ class ProjectionHead(nn.Module):
 
     def forward(self, x):
         return torch.nn.functional.normalize(self.proj(x), p=2, dim=1)
-
-
-class DepthwiseSeparableASPPModule(ASPPModule):
-    """Atrous Spatial Pyramid Pooling (ASPP) Module with depthwise separable
-    conv."""
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        for i, dilation in enumerate(self.dilations):
-            if dilation > 1:
-                self[i] = DepthwiseSeparableConvModule(
-                    self.in_channels,
-                    self.channels,
-                    3,
-                    dilation=dilation,
-                    padding=dilation,
-                    norm_cfg=self.norm_cfg,
-                    act_cfg=self.act_cfg)
-
-
+        
 @MODELS.register_module()
 class DepthwiseSeparableASPPContrastHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
