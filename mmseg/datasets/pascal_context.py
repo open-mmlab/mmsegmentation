@@ -58,10 +58,10 @@ class PascalContextDataset(CustomDataset):
 class PascalContextDataset59(CustomDataset):
     """PascalContext dataset.
 
-    In segmentation map annotation for PascalContext, 0 stands for background,
-    which is included in 60 categories. ``reduce_zero_label`` is fixed to
-    False. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
-    fixed to '.png'.
+    In segmentation map annotation for PascalContext59, background is not
+    included in 59 categories. ``reduce_zero_label`` is fixed to True.
+    The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is fixed
+    to '.png'.
 
     Args:
         split (str): Split txt file for PascalContext.
