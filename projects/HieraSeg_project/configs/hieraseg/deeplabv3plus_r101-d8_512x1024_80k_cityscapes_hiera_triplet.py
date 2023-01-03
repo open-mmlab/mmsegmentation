@@ -6,7 +6,8 @@ _base_ = [
 
 custom_imports = dict(imports=[
     'projects.HieraSeg_project.decode_head.sep_aspp_contrast_head',
-    'projects.HieraSeg_project.losses.hiera_triplet_loss_cityscape'])
+    'projects.HieraSeg_project.losses.hiera_triplet_loss_cityscape'
+])
 
 model = dict(
     # pretrained='https://assets-1257038460.cos.ap-beijing.\
