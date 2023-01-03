@@ -53,10 +53,11 @@ jobs:
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
         run: |
-          coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+          pip install timm
+          coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-      # Upload coverage report for python3.7 && pytorch1.8.1 cpu without timm
+      # Upload coverage report for python3.7 && pytorch1.8.1 cpu with timm
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.14
         with:

@@ -66,9 +66,9 @@ class ExampleBackbone(nn.Module):
 @MODELS.register_module()
 class ExampleDecodeHead(BaseDecodeHead):
 
-    def __init__(self, num_classes=19, out_channels=None):
+    def __init__(self, num_classes=19, out_channels=None, **kwargs):
         super().__init__(
-            3, 3, num_classes=num_classes, out_channels=out_channels)
+            3, 3, num_classes=num_classes, out_channels=out_channels, **kwargs)
 
     def forward(self, inputs):
         return self.cls_seg(inputs[0])

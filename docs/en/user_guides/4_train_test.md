@@ -62,6 +62,7 @@ This tool accepts several optional arguments, including:
 - `--show-dir`: Directory where painted images will be saved. If specified, the visualized segmentation mask will be saved to the `work_dir/timestamp/show_dir`.
 - `--wait-time`: The interval of show (s), which takes effect when `--show` is activated. Default to 2.
 - `--cfg-options`:  If specified, the key-value pair in xxx=yyy format will be merged into the config file.
+- `--tta`: Test time augmentation option.
 
 **Testing on CPU**: The process of testing on the CPU is consistent with single GPU testing if a machine does not have GPU. If it has GPUs but not wanting to use them, we just need to disable GPUs before the training process.
 
