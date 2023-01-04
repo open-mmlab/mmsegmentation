@@ -16,7 +16,7 @@ This is an implementation of [ISNet](https://arxiv.org/pdf/2108.12382.pdf).
 - [MIM](https://github.com/open-mmlab/mim) v0.33 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc2 or higher
 
-All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `example_project/` root directory, run the following line to add the current directory to `PYTHONPATH`:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `isnet/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
