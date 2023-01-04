@@ -28,21 +28,22 @@ please put [`deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth`](h
 
 #### Multi-GPUs Test
 
-`bash tools/dist_test.sh [configs] [model weights] [number of gpu]`
+`bash tools/dist_test.sh [configs] [model weights] [number of gpu]  --tta `(--tta optional, multi-scale test, need mmengine >=0.4.0)
 
 #### For example
 
 ```shell
-bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py pretrained/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth 2
+bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py pretrained/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth 2 --tta
 ```
 
 #### Results
 
-|  Dataset   | Backbone  |   decode   | Crop Size | mIoU (single scale) |                                                                        config                                                                        |                                                                model pth                                                                |
-| :--------: | :-------: | :--------: | :-------: | :-----------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: |
-| Cityscapes | ResNet101 | DeeplabV3+ | 512x1024  |        81.61        | [config](https://github.com/AI-Tianlong/mmsegmentation/blob/AI-Tianlong/Support_HieraSeg/projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py) | [github](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) |
+|  Dataset   | Backbone  |   decode_head   | Crop Size | mIoU (single scale) | mIoU(multi-scale) | config | model pth |
+| :--------: | :-------: | :-------------: | :-------: | :-----------------: | :---------------: | :----: | :-------: |
+| Cityscapes | ResNet101 |    DeeplabV3+   | 512x1024  |        81.61        |82.71|[config](https://github.com/AI-Tianlong/mmsegmentation/blob/AI-Tianlong/Support_HieraSeg/projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py) | [github](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) |
 
-![image](https://user-images.githubusercontent.com/50650583/210395353-22bf5d67-6201-438b-9c15-7a011410098e.png)
+
+<img src="https://user-images.githubusercontent.com/50650583/210488953-e3e35ade-1132-47e1-9dfd-cf12b357ae80.png" width="50%"><img src="https://user-images.githubusercontent.com/50650583/210489746-e35ee229-3234-4292-a649-a8cd85f312ad.png" width="50%">
 
 ## Citation
 
