@@ -38,10 +38,9 @@ bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/deeplabv3plus
 
 #### Results
 
-|  Dataset   | Backbone  |   decode_head   | Crop Size | mIoU (single scale) | mIoU (multi-scale) | config | model pth |
-| :--------: | :-------: | :-------------: | :-------: | :-----------------: | :---------------: | :----: | :-------: |
-| Cityscapes | ResNet101 |    DeeplabV3+   | 512x1024  |        81.61        |82.71|[config](https://github.com/AI-Tianlong/mmsegmentation/blob/AI-Tianlong/Support_HieraSeg/projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py) | [github](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) |
-
+|  Dataset   | Backbone  | decode_head | Crop Size | mIoU (single scale) | mIoU (multi-scale) |                                                                                               config                                                                                                |                                                                model pth                                                                |
+| :--------: | :-------: | :---------: | :-------: | :-----------------: | :----------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: |
+| Cityscapes | ResNet101 | DeeplabV3+  | 512x1024  |        81.61        |       82.71        | [config](https://github.com/AI-Tianlong/mmsegmentation/blob/AI-Tianlong/Support_HieraSeg/projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py) | [github](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) |
 
 <img src="https://user-images.githubusercontent.com/50650583/210488953-e3e35ade-1132-47e1-9dfd-cf12b357ae80.png" width="50%"><img src="https://user-images.githubusercontent.com/50650583/210489746-e35ee229-3234-4292-a649-a8cd85f312ad.png" width="50%">
 
