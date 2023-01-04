@@ -29,6 +29,13 @@ def split_3d_image(img):
 
 
 def label_mapping(label):
+    """Label mapping from TransUNet paper setting. It only has 9 classes, which
+    are 'background', 'aorta', 'gallbladder', 'left_kidney', 'right_kidney',
+    'liver', 'pancreas', 'spleen', 'stomach', respectively. Other foreground
+    classes in original dataset are all set to background.
+
+    More details could be found here: https://arxiv.org/abs/2102.04306
+    """
     maped_label = np.zeros_like(label)
     maped_label[label == 8] = 1
     maped_label[label == 4] = 2
@@ -116,6 +123,8 @@ def main():
         label_3d = read_nii_file(
             osp.join(dataset_path, 'label', 'label' + idx + '.nii.gz'))
 
+        # It follows data preparation pipeline from here:
+        # https://github.com/Beckschen/TransUNet/tree/main/datasets
         img_3d = np.clip(img_3d, -125, 275)
         img_3d = (img_3d + 125) / 400
         img_3d *= 255

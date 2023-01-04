@@ -491,3 +491,6 @@ Then, use this command to convert synapse dataset.
 ```shell
 python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 ```
+
+Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image,
+which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).
