@@ -6,8 +6,9 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule, build_norm_layer
 from torch import Tensor
 
-from mmseg.models.decode_heads.aspp_head import ASPPHead, ASPPModule
-from mmseg.models.decode_heads.sep_aspp_head import DepthwiseSeparableASPPModule
+from mmseg.models.decode_heads.aspp_head import ASPPHead
+from mmseg.models.decode_heads.sep_aspp_head import \
+    DepthwiseSeparableASPPModule
 from mmseg.models.losses import accuracy
 from mmseg.models.utils import resize
 from mmseg.registry import MODELS
@@ -28,7 +29,8 @@ class ProjectionHead(nn.Module):
 
     def forward(self, x):
         return torch.nn.functional.normalize(self.proj(x), p=2, dim=1)
-        
+
+
 @MODELS.register_module()
 class DepthwiseSeparableASPPContrastHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
