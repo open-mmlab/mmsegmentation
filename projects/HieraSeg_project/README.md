@@ -40,7 +40,7 @@ bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/deeplabv3plus
 
 |  Dataset   | Backbone  |   decode   | Crop Size | mIoU (single scale) |                                                                        config                                                                        |                                                                model pth                                                                |
 | :--------: | :-------: | :--------: | :-------: | :-----------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: |
-| Cityscapes | ResNet101 | DeeplabV3+ | 512x1024  |        81.60        | [config](https://github.com/AI-Tianlong/HSSN_pytorch/blob/main/configs/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py) | [github](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) |
+| Cityscapes | ResNet101 | DeeplabV3+ | 512x1024  |        81.60        | [config](https://github.com/AI-Tianlong/mmsegmentation/blob/AI-Tianlong/Support_HieraSeg/projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py) | [github](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) |
 
 ![image](https://user-images.githubusercontent.com/50650583/210395353-22bf5d67-6201-438b-9c15-7a011410098e.png)
 
