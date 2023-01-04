@@ -38,7 +38,7 @@ bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/deeplabv3plus
 
 #### Results
 
-|  Dataset   | Backbone  |   decode_head   | Crop Size | mIoU (single scale) | mIoU(multi-scale) | config | model pth |
+|  Dataset   | Backbone  |   decode_head   | Crop Size | mIoU (single scale) | mIoU (multi-scale) | config | model pth |
 | :--------: | :-------: | :-------------: | :-------: | :-----------------: | :---------------: | :----: | :-------: |
 | Cityscapes | ResNet101 |    DeeplabV3+   | 512x1024  |        81.61        |82.71|[config](https://github.com/AI-Tianlong/mmsegmentation/blob/AI-Tianlong/Support_HieraSeg/projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py) | [github](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) |
 
