@@ -39,8 +39,9 @@ class MeanTeacher(SemiBaseSegmentor):
         losses.update(**unsup_loss)
 
         s_sup_pred = s_pred[:B]
-        sup_loss = self.loss_by_gt(s_sup_pred, data_samples_sup)
-        losses.update(**sup_loss)
+        sup_loss = self.student.decode_head.loss_by_feat(
+            s_sup_pred, data_samples_sup)
+        losses.update(sup_loss)
 
         return losses
 
