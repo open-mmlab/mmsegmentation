@@ -3,12 +3,10 @@ from typing import List
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule, build_norm_layer
+from mmcv.cnn import build_norm_layer
 from torch import Tensor
 
-from mmseg.models.decode_heads.aspp_head import ASPPHead
-from mmseg.models.decode_heads.sep_aspp_head import \
-    DepthwiseSeparableASPPModule
+from mmseg.models.decode_heads.sep_aspp_head import DepthwiseSeparableASPPHead
 from mmseg.models.losses import accuracy
 from mmseg.models.utils import resize
 from mmseg.registry import MODELS
@@ -32,53 +30,20 @@ class ProjectionHead(nn.Module):
 
 
 @MODELS.register_module()
-class DepthwiseSeparableASPPContrastHead(ASPPHead):
+class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
     Segmentation. This head is the implementation of `DeepLabV3+
 
     <https://arxiv.org/abs/1802.02611>`_.
     Args:
-        c1_in_channels (int): The input channels of c1 decoder. If is 0,
-            the no decoder will be used.
-        c1_channels (int): The intermediate channels of c1 decoder.
+        proj (str): The type of ProjectionHead, 'linear' or 'convmlp',
+            default 'convmlp'
     """
 
-    def __init__(self, c1_in_channels, c1_channels, **kwargs):
+    def __init__(self, proj='convmlp', **kwargs):
         super().__init__(**kwargs)
-        assert c1_in_channels >= 0
-        self.aspp_modules = DepthwiseSeparableASPPModule(
-            dilations=self.dilations,
-            in_channels=self.in_channels,
-            channels=self.channels,
-            conv_cfg=self.conv_cfg,
-            norm_cfg=self.norm_cfg,
-            act_cfg=self.act_cfg)
-        if c1_in_channels > 0:
-            self.c1_bottleneck = ConvModule(
-                c1_in_channels,
-                c1_channels,
-                1,
-                conv_cfg=self.conv_cfg,
-                norm_cfg=self.norm_cfg,
-                act_cfg=self.act_cfg)
-        else:
-            self.c1_bottleneck = None
-        self.sep_bottleneck = nn.Sequential(
-            DepthwiseSeparableConvModule(
-                self.channels + c1_channels,
-                self.channels,
-                3,
-                padding=1,
-                norm_cfg=self.norm_cfg,
-                act_cfg=self.act_cfg),
-            DepthwiseSeparableConvModule(
-                self.channels,
-                self.channels,
-                3,
-                padding=1,
-                norm_cfg=self.norm_cfg,
-                act_cfg=self.act_cfg))
-        self.proj_head = ProjectionHead(dim_in=2048, norm_cfg=self.norm_cfg)
+        self.proj_head = ProjectionHead(
+            dim_in=2048, norm_cfg=self.norm_cfg, proj=proj)
         self.register_buffer('step', torch.zeros(1))
 
     def forward(self, inputs):

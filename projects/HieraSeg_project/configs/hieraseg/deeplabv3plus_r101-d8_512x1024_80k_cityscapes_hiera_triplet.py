@@ -10,8 +10,6 @@ custom_imports = dict(imports=[
 ])
 
 model = dict(
-    # pretrained='https://assets-1257038460.cos.ap-beijing.\
-    #     myqcloud.com/resnet101_v1d.pth',
     pretrained=None,
     backbone=dict(depth=101),
     decode_head=dict(

@@ -3,7 +3,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from mmseg.models.builder import LOSSES
 
+
+@LOSSES.register_module()
 class TreeTripletLoss(nn.Module):
 
     def __init__(self, num_classes, hiera_map, hiera_index, ignore_index=255):
