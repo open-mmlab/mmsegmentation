@@ -419,14 +419,15 @@ The contents of  LIP datasets include:
 
 This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/)
 
-Please run the following command to prepare the dataset.
+To follow the data preparation setting of [TransUNet](https://arxiv.org/abs/2102.04306), which splits original training set (30 scans)
+into new training (18 scans) and validation set (12 scans). Please run the following command to prepare the dataset.
 
 ```shell
 unzip RawData.zip
 cd ./RawData/Training
 ```
 
-Then create train.txt and val.txt to split dataset.
+Then create `train.txt` and `val.txt` to split dataset.
 
 According to TransUnet, the following is the data set division.
 
