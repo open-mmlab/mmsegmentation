@@ -214,7 +214,7 @@ python tools/convert_datasets/hrf.py /path/to/healthy.zip /path/to/healthy_manua
 为了将 REFUGE 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
 
 ```shell
-python tools/convert_datasets/refuge.py --raw_data_root=.. --tmp_dir=.. 
+python tools/convert_datasets/refuge.py --raw_data_root=.. --tmp_dir=..
 ```
 
 这个脚本将自动生成正确的文件夹结构。

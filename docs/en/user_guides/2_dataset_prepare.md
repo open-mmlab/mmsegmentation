@@ -271,7 +271,7 @@ First, registrate in [REFUGE2020Challenge](https://refuge.grand-challenge.org)an
 To convert REFUGE dataset to MMSegmentation format, you should run the following command:
 
 ```shell
-python tools/convert_datasets/refuge.py --raw_data_root=.. --tmp_dir=.. 
+python tools/convert_datasets/refuge.py --raw_data_root=.. --tmp_dir=..
 ```
 
 The script will make directory structure automatically.

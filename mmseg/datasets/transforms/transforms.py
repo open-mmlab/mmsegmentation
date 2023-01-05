@@ -1,7 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
+import warnings
 from typing import Dict, Sequence, Tuple, Union
-from PIL import Image
+
 import cv2
 import mmcv
 import numpy as np
@@ -9,9 +10,7 @@ from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
 from numpy import random
-from torchvision import transforms
-import imgaug.augmenters as iaa
-import imgaug as ia
+from scipy.ndimage import gaussian_filter
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
@@ -83,212 +82,6 @@ class ResizeToMultiple(BaseTransform):
         repr_str += (f'(size_divisor={self.size_divisor}, '
                      f'interpolation={self.interpolation})')
         return repr_str
-
-
-@TRANSFORMS.register_module()
-class Rot90(BaseTransform):
-    """rotate img and gt with 90,180 or 270 degree.
-
-    Required Keys:
-
-    - img
-    - gt_seg_map
-
-    Modified Keys:
-    - img
-    - seg_fields
-
-    Args:
-        degree_range (tuple): degree range for rotate.
-        
-    """
-
-    def __init__(self, degree_range: tuple):
-        self.degree_range = degree_range
-        # self.interpolation = interpolation
-        self.rot90 = iaa.Rot90(degree_range)
-
-    def transform(self, results: dict) -> dict:
-        """rotate img and gt with 90,180 or 270 degree.
-        Args:
-            results (dict): Result dict from loading pipeline.
-
-        Returns:
-            dict: Rotated results.
-        """
-        # Align image to multiple of size divisor.
-        img = results['img']
-        
-        gt_segs = []
-        # Align segmentation map to multiple of size divisor.
-        for key in results.get('seg_fields', []):
-            gt_segs.append(results[key])
-        imgs = [img]+gt_segs
-        roted_imgs = self.rot90.augment_images(imgs)
-        results['img'] = roted_imgs[0].astype(np.float32)
-        for i,key in enumerate(results.get('seg_fields', [])):
-            results[key] = roted_imgs[i+1].astype(np.float32)
-
-        return results
-
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += (f'(degree_range={self.degree_range})')
-        return repr_str
-
-
-@TRANSFORMS.register_module()
-class RandomFliplr(BaseTransform):
-    """flip img and gt Horizontally.
-
-    Required Keys:
-
-    - img
-    - gt_seg_map
-
-    Modified Keys:
-    - img
-    - seg_fields
-
-    Args:
-        prob (float): probability for flip Horizontally.
-
-    """
-
-    def __init__(self, prob: float):
-        self.prob = prob
-        self.fliplr = iaa.Fliplr(prob)
-
-    def transform(self, results: dict) -> dict:
-        """flip img and gt Horizontally.
-        Args:
-            results (dict): Result dict from loading pipeline.
-
-        Returns:
-            dict: Flipped results.
-        """
-        img = results['img']
-
-        gt_segs = []
-
-        for key in results.get('seg_fields', []):
-            gt_segs.append(results[key])
-        imgs = [img] + gt_segs
-        flipped_imgs = self.fliplr.augment_images(imgs)
-        results['img'] = flipped_imgs[0].astype(np.float32)
-        for i, key in enumerate(results.get('seg_fields', [])):
-            results[key] = flipped_imgs[i + 1].astype(np.float32)
-
-        return results
-
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += (f'(prob={self.prob})')
-        return repr_str
-
-@TRANSFORMS.register_module()
-class RandomFlipud(BaseTransform):
-    """flip img and gt vertivally.
-
-    Required Keys:
-
-    - img
-    - gt_seg_map
-
-    Modified Keys:
-    - img
-    - seg_fields
-
-    Args:
-        prob (float): probability for flip vertivally.
-
-    """
-
-    def __init__(self, prob: float):
-        self.prob = prob
-        self.flipud = iaa.Flipud(prob)
-
-    def transform(self, results: dict) -> dict:
-        """flip img and gt Horizontally.
-        Args:
-            results (dict): Result dict from loading pipeline.
-
-        Returns:
-            dict: Flipped results.
-        """
-        img = results['img']
-
-        gt_segs = []
-
-        for key in results.get('seg_fields', []):
-            gt_segs.append(results[key])
-        imgs = [img] + gt_segs
-        flipped_imgs = self.flipud.augment_images(imgs)
-        results['img'] = flipped_imgs[0].astype(np.float32)
-        for i, key in enumerate(results.get('seg_fields', [])):
-            results[key] = flipped_imgs[i + 1].astype(np.float32)
-
-        return results
-
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += (f'(prob={self.prob})')
-        return repr_str
-
-
-@TRANSFORMS.register_module()
-class ColorJitter(BaseTransform):
-    """transform img's brightness,contrast,saturation and hue.
-
-    Required Keys:
-    - img
-
-    Modified Keys:
-    - img
-    Args:
-        brightness (float): brightness.
-        contrast (float): contrast.
-        saturation (float): saturation.
-        hue (float): hue.
-        
-    """
-
-    def __init__(self, brightness: float=None,contrast: float=None,saturation: float=None,hue: float=None):
-        self.brightness = brightness
-        self.contrast = contrast
-        self.saturation = saturation
-        self.hue = hue
-        color_params = ['brightness','contrast','saturation','hue']
-        self.color_params = {}
-        for param in color_params:
-            if eval(param) is not None:
-                self.color_params.update({param:eval(param)})
-        self.color_jitter = transforms.ColorJitter(**self.color_params)
-
-    def transform(self, results: dict) -> dict:
-        """transform img's brightness,contrast,saturation and hue .
-        Args:
-            results (dict): Result dict from loading pipeline.
-
-        Returns:
-            dict: transformed results.
-        """
-        
-        img = results['img']
-        img = Image.fromarray(np.uint8(img))
-        aug_img = self.color_jitter(img)
-        results['img'] = np.array(aug_img,dtype=np.float32)
-
-        return results
-
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += (f'(brightness={self.brightness},'
-                     f'contrast={self.contrast},'
-                     f'saturation={self.saturation},'
-                     f'hue={self.hue})')
-        return repr_str
-
 
 
 @TRANSFORMS.register_module()
@@ -1519,3 +1312,628 @@ class ResizeShortestEdge(BaseTransform):
     def transform(self, results: Dict) -> Dict:
         self.resize.scale = self._get_output_shape(results['img'], self.scale)
         return self.resize(results)
+
+
+@TRANSFORMS.register_module()
+class BioMedical3DRandomCrop(BaseTransform):
+    """Crop the input patch for medical image & segmentation mask.
+
+    Required Keys:
+
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
+        N is the number of modalities, and data type is float32.
+    - gt_seg_map (np.ndarray, optional): Biomedical semantic segmentation mask
+        with shape (Z, Y, X).
+
+    Modified Keys:
+
+        - img
+        - img_shape
+        - gt_seg_map (optional)
+
+    Args:
+        crop_shape (Union[int, Tuple[int, int, int]]):  Expected size after
+            cropping with the format of (z, y, x). If set to an integer,
+            then cropping width and height are equal to this integer.
+        keep_foreground (bool): If keep_foreground is True, it will sample a
+            voxel of foreground classes randomly, and will take it as the
+            center of the crop bounding-box. Default to True.
+    """
+
+    def __init__(self,
+                 crop_shape: Union[int, Tuple[int, int, int]],
+                 keep_foreground: bool = True):
+        super().__init__()
+        assert isinstance(crop_shape, int) or (
+            isinstance(crop_shape, tuple) and len(crop_shape) == 3
+        ), 'The expected crop_shape is an integer, or a tuple containing '
+        'three integers'
+
+        if isinstance(crop_shape, int):
+            crop_shape = (crop_shape, crop_shape, crop_shape)
+        assert crop_shape[0] > 0 and crop_shape[1] > 0 and crop_shape[2] > 0
+        self.crop_shape = crop_shape
+        self.keep_foreground = keep_foreground
+
+    def random_sample_location(self, seg_map: np.ndarray) -> dict:
+        """sample foreground voxel when keep_foreground is True.
+
+        Args:
+            seg_map (np.ndarray): gt seg map.
+
+        Returns:
+            dict: Coordinates of selected foreground voxel.
+        """
+        num_samples = 10000
+        # at least 1% of the class voxels need to be selected,
+        # otherwise it may be too sparse
+        min_percent_coverage = 0.01
+        class_locs = {}
+        foreground_classes = []
+        all_classes = np.unique(seg_map)
+        for c in all_classes:
+            if c == 0:
+                # to avoid the segmentation mask full of background 0
+                # and the class_locs is just void dictionary {} when it return
+                # there add a void list for background 0.
+                class_locs[c] = []
+            else:
+                all_locs = np.argwhere(seg_map == c)
+                target_num_samples = min(num_samples, len(all_locs))
+                target_num_samples = max(
+                    target_num_samples,
+                    int(np.ceil(len(all_locs) * min_percent_coverage)))
+
+                selected = all_locs[np.random.choice(
+                    len(all_locs), target_num_samples, replace=False)]
+                class_locs[c] = selected
+                foreground_classes.append(c)
+
+        selected_voxel = None
+        if len(foreground_classes) > 0:
+            selected_class = np.random.choice(foreground_classes)
+            voxels_of_that_class = class_locs[selected_class]
+            selected_voxel = voxels_of_that_class[np.random.choice(
+                len(voxels_of_that_class))]
+
+        return selected_voxel
+
+    def random_generate_crop_bbox(self, margin_z: int, margin_y: int,
+                                  margin_x: int) -> tuple:
+        """Randomly get a crop bounding box.
+
+        Args:
+            seg_map (np.ndarray): Ground truth segmentation map.
+
+        Returns:
+            tuple: Coordinates of the cropped image.
+        """
+        offset_z = np.random.randint(0, margin_z + 1)
+        offset_y = np.random.randint(0, margin_y + 1)
+        offset_x = np.random.randint(0, margin_x + 1)
+        crop_z1, crop_z2 = offset_z, offset_z + self.crop_shape[0]
+        crop_y1, crop_y2 = offset_y, offset_y + self.crop_shape[1]
+        crop_x1, crop_x2 = offset_x, offset_x + self.crop_shape[2]
+
+        return crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2
+
+    def generate_margin(self, results: dict) -> tuple:
+        """Generate margin of crop bounding-box.
+
+        If keep_foreground is True, it will sample a voxel of foreground
+        classes randomly, and will take it as the center of the bounding-box,
+        and return the margin between of the bounding-box and image.
+        If keep_foreground is False, it will return the difference from crop
+        shape and image shape.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            tuple: The margin for 3 dimensions of crop bounding-box and image.
+        """
+
+        seg_map = results['gt_seg_map']
+        if self.keep_foreground:
+            selected_voxel = self.random_sample_location(seg_map)
+            if selected_voxel is None:
+                # this only happens if some image does not contain
+                # foreground voxels at all
+                warnings.warn(f'case does not contain any foreground classes'
+                              f': {results["img_path"]}')
+                margin_z = max(seg_map.shape[0] - self.crop_shape[0], 0)
+                margin_y = max(seg_map.shape[1] - self.crop_shape[1], 0)
+                margin_x = max(seg_map.shape[2] - self.crop_shape[2], 0)
+            else:
+                margin_z = max(0, selected_voxel[0] - self.crop_shape[0] // 2)
+                margin_y = max(0, selected_voxel[1] - self.crop_shape[1] // 2)
+                margin_x = max(0, selected_voxel[2] - self.crop_shape[2] // 2)
+                margin_z = max(
+                    0, min(seg_map.shape[0] - self.crop_shape[0], margin_z))
+                margin_y = max(
+                    0, min(seg_map.shape[1] - self.crop_shape[1], margin_y))
+                margin_x = max(
+                    0, min(seg_map.shape[2] - self.crop_shape[2], margin_x))
+        else:
+            margin_z = max(seg_map.shape[0] - self.crop_shape[0], 0)
+            margin_y = max(seg_map.shape[1] - self.crop_shape[1], 0)
+            margin_x = max(seg_map.shape[2] - self.crop_shape[2], 0)
+
+        return margin_z, margin_y, margin_x
+
+    def crop(self, img: np.ndarray, crop_bbox: tuple) -> np.ndarray:
+        """Crop from ``img``
+
+        Args:
+            img (np.ndarray): Original input image.
+            crop_bbox (tuple): Coordinates of the cropped image.
+
+        Returns:
+            np.ndarray: The cropped image.
+        """
+        crop_z1, crop_z2, crop_y1, crop_y2, crop_x1, crop_x2 = crop_bbox
+        if len(img.shape) == 3:
+            # crop seg map
+            img = img[crop_z1:crop_z2, crop_y1:crop_y2, crop_x1:crop_x2]
+        else:
+            # crop image
+            assert len(img.shape) == 4
+            img = img[:, crop_z1:crop_z2, crop_y1:crop_y2, crop_x1:crop_x2]
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to randomly crop images, semantic segmentation
+        maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Randomly cropped results, 'img_shape' key in result dict is
+                updated according to crop size.
+        """
+        margin = self.generate_margin(results)
+        crop_bbox = self.random_generate_crop_bbox(*margin)
+
+        # crop the image
+        img = results['img']
+        results['img'] = self.crop(img, crop_bbox)
+        results['img_shape'] = results['img'].shape[1:]
+
+        # crop semantic seg
+        seg_map = results['gt_seg_map']
+        results['gt_seg_map'] = self.crop(seg_map, crop_bbox)
+
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__ + f'(crop_shape={self.crop_shape})'
+
+
+@TRANSFORMS.register_module()
+class BioMedicalGaussianNoise(BaseTransform):
+    """Add random Gaussian noise to image.
+
+    Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/7651ece69faf55263dd582a9f5cbd149ed9c3ad0/batchgenerators/transforms/noise_transforms.py#L53  # noqa:E501
+
+    Copyright (c) German Cancer Research Center (DKFZ)
+    Licensed under the Apache License, Version 2.0
+
+    Required Keys:
+
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
+            N is the number of modalities, and data type is float32.
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        prob (float): Probability to add Gaussian noise for
+            each sample. Default to 0.1.
+        mean (float): Mean or “centre” of the distribution. Default to 0.0.
+        std (float): Standard deviation of distribution. Default to 0.1.
+    """
+
+    def __init__(self,
+                 prob: float = 0.1,
+                 mean: float = 0.0,
+                 std: float = 0.1) -> None:
+        super().__init__()
+        assert 0.0 <= prob <= 1.0 and std >= 0.0
+        self.prob = prob
+        self.mean = mean
+        self.std = std
+
+    def transform(self, results: Dict) -> Dict:
+        """Call function to add random Gaussian noise to image.
+
+        Args:
+            results (dict): Result dict.
+
+        Returns:
+            dict: Result dict with random Gaussian noise.
+        """
+        if np.random.rand() < self.prob:
+            rand_std = np.random.uniform(0, self.std)
+            noise = np.random.normal(
+                self.mean, rand_std, size=results['img'].shape)
+            # noise is float64 array, convert to the results['img'].dtype
+            noise = noise.astype(results['img'].dtype)
+            results['img'] = results['img'] + noise
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
+        repr_str += f'mean={self.mean}, '
+        repr_str += f'std={self.std})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class BioMedicalGaussianBlur(BaseTransform):
+    """Add Gaussian blur with random sigma to image.
+
+    Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/7651ece69faf55263dd582a9f5cbd149ed9c3ad0/batchgenerators/transforms/noise_transforms.py#L81 # noqa:E501
+
+    Copyright (c) German Cancer Research Center (DKFZ)
+    Licensed under the Apache License, Version 2.0
+
+    Required Keys:
+
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
+            N is the number of modalities, and data type is float32.
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        sigma_range (Tuple[float, float]|float): range to randomly
+            select sigma value. Default to (0.5, 1.0).
+        prob (float): Probability to apply Gaussian blur
+            for each sample. Default to 0.2.
+        prob_per_channel  (float): Probability to apply Gaussian blur
+            for each channel (axis N of the image). Default to 0.5.
+        different_sigma_per_channel (bool): whether to use different
+            sigma for each channel (axis N of the image). Default to True.
+        different_sigma_per_axis (bool): whether to use different
+            sigma for axis Z, X and Y of the image. Default to True.
+    """
+
+    def __init__(self,
+                 sigma_range: Tuple[float, float] = (0.5, 1.0),
+                 prob: float = 0.2,
+                 prob_per_channel: float = 0.5,
+                 different_sigma_per_channel: bool = True,
+                 different_sigma_per_axis: bool = True) -> None:
+        super().__init__()
+        assert 0.0 <= prob <= 1.0
+        assert 0.0 <= prob_per_channel <= 1.0
+        assert isinstance(sigma_range, Sequence) and len(sigma_range) == 2
+        self.sigma_range = sigma_range
+        self.prob = prob
+        self.prob_per_channel = prob_per_channel
+        self.different_sigma_per_channel = different_sigma_per_channel
+        self.different_sigma_per_axis = different_sigma_per_axis
+
+    def _get_valid_sigma(self, value_range) -> Tuple[float, ...]:
+        """Ensure the `value_range` to be either a single value or a sequence
+        of two values. If the `value_range` is a sequence, generate a random
+        value with `[value_range[0], value_range[1]]` based on uniform
+        sampling.
+
+        Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/7651ece69faf55263dd582a9f5cbd149ed9c3ad0/batchgenerators/augmentations/utils.py#L625 # noqa:E501
+
+        Args:
+            value_range (tuple|list|float|int): the input value range
+        """
+        if (isinstance(value_range, (list, tuple))):
+            if (value_range[0] == value_range[1]):
+                value = value_range[0]
+            else:
+                orig_type = type(value_range[0])
+                value = np.random.uniform(value_range[0], value_range[1])
+                value = orig_type(value)
+        return value
+
+    def _gaussian_blur(self, data_sample: np.ndarray) -> np.ndarray:
+        """Random generate sigma and apply Gaussian Blur to the data
+        Args:
+            data_sample (np.ndarray): data sample with multiple modalities,
+                the data shape is (N, Z, Y, X)
+        """
+        sigma = None
+        for c in range(data_sample.shape[0]):
+            if np.random.rand() < self.prob_per_channel:
+                # if no `sigma` is generated, generate one
+                # if `self.different_sigma_per_channel` is True,
+                # re-generate random sigma for each channel
+                if (sigma is None or self.different_sigma_per_channel):
+                    if (not self.different_sigma_per_axis):
+                        sigma = self._get_valid_sigma(self.sigma_range)
+                    else:
+                        sigma = [
+                            self._get_valid_sigma(self.sigma_range)
+                            for _ in data_sample.shape[1:]
+                        ]
+                # apply gaussian filter with `sigma`
+                data_sample[c] = gaussian_filter(
+                    data_sample[c], sigma, order=0)
+        return data_sample
+
+    def transform(self, results: Dict) -> Dict:
+        """Call function to add random Gaussian blur to image.
+
+        Args:
+            results (dict): Result dict.
+
+        Returns:
+            dict: Result dict with random Gaussian noise.
+        """
+        if np.random.rand() < self.prob:
+            results['img'] = self._gaussian_blur(results['img'])
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
+        repr_str += f'prob_per_channel={self.prob_per_channel}, '
+        repr_str += f'sigma_range={self.sigma_range}, '
+        repr_str += 'different_sigma_per_channel='\
+                    f'{self.different_sigma_per_channel}, '
+        repr_str += 'different_sigma_per_axis='\
+                    f'{self.different_sigma_per_axis})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class BioMedicalRandomGamma(BaseTransform):
+    """Using random gamma correction to process the biomedical image.
+
+    Modified from
+    https://github.com/MIC-DKFZ/batchgenerators/blob/master/batchgenerators/transforms/color_transforms.py#L132 # noqa:E501
+    With licence: Apache 2.0
+
+    Required Keys:
+
+    - img (np.ndarray): Biomedical image with shape (N, Z, Y, X),
+        N is the number of modalities, and data type is float32.
+
+    Modified Keys:
+    - img
+
+    Args:
+        prob (float): The probability to perform this transform. Default: 0.5.
+        gamma_range (Tuple[float]): Range of gamma values. Default: (0.5, 2).
+        invert_image (bool): Whether invert the image before applying gamma
+            augmentation. Default: False.
+        per_channel (bool): Whether perform the transform each channel
+            individually. Default: False
+        retain_stats (bool): Gamma transformation will alter the mean and std
+            of the data in the patch. If retain_stats=True, the data will be
+            transformed to match the mean and standard deviation before gamma
+            augmentation. Default: False.
+    """
+
+    def __init__(self,
+                 prob: float = 0.5,
+                 gamma_range: Tuple[float] = (0.5, 2),
+                 invert_image: bool = False,
+                 per_channel: bool = False,
+                 retain_stats: bool = False):
+        assert 0 <= prob and prob <= 1
+        assert isinstance(gamma_range, tuple) and len(gamma_range) == 2
+        assert isinstance(invert_image, bool)
+        assert isinstance(per_channel, bool)
+        assert isinstance(retain_stats, bool)
+        self.prob = prob
+        self.gamma_range = gamma_range
+        self.invert_image = invert_image
+        self.per_channel = per_channel
+        self.retain_stats = retain_stats
+
+    @cache_randomness
+    def _do_gamma(self):
+        """Whether do adjust gamma for image."""
+        return np.random.rand() < self.prob
+
+    def _adjust_gamma(self, img: np.array):
+        """Gamma adjustment for image.
+
+        Args:
+            img (np.array): Input image before gamma adjust.
+
+        Returns:
+            np.arrays: Image after gamma adjust.
+        """
+
+        if self.invert_image:
+            img = -img
+
+        def _do_adjust(img):
+            if retain_stats_here:
+                img_mean = img.mean()
+                img_std = img.std()
+            if np.random.random() < 0.5 and self.gamma_range[0] < 1:
+                gamma = np.random.uniform(self.gamma_range[0], 1)
+            else:
+                gamma = np.random.uniform(
+                    max(self.gamma_range[0], 1), self.gamma_range[1])
+            img_min = img.min()
+            img_range = img.max() - img_min  # range
+            img = np.power(((img - img_min) / float(img_range + 1e-7)),
+                           gamma) * img_range + img_min
+            if retain_stats_here:
+                img = img - img.mean()
+                img = img / (img.std() + 1e-8) * img_std
+                img = img + img_mean
+            return img
+
+        if not self.per_channel:
+            retain_stats_here = self.retain_stats
+            img = _do_adjust(img)
+        else:
+            for c in range(img.shape[0]):
+                img[c] = _do_adjust(img[c])
+        if self.invert_image:
+            img = -img
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Call function to perform random gamma correction
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with random gamma correction performed.
+        """
+        do_gamma = self._do_gamma()
+
+        if do_gamma:
+            results['img'] = self._adjust_gamma(results['img'])
+        else:
+            pass
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, '
+        repr_str += f'gamma_range={self.gamma_range},'
+        repr_str += f'invert_image={self.invert_image},'
+        repr_str += f'per_channel={self.per_channel},'
+        repr_str += f'retain_stats={self.retain_stats}'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class BioMedical3DPad(BaseTransform):
+    """Pad the biomedical 3d image & biomedical 3d semantic segmentation maps.
+
+    Required Keys:
+
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
+
+    Modified Keys:
+
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
+
+    Added Keys:
+
+    - pad_shape (Tuple[int, int, int]): The padded shape.
+
+    Args:
+        pad_shape (Tuple[int, int, int]): Fixed padding size.
+            Expected padding shape (Z, Y, X).
+        pad_val (float): Padding value for biomedical image.
+            The padding mode is set to "constant". The value
+            to be filled in padding area. Default: 0.
+        seg_pad_val (int): Padding value for biomedical 3d semantic
+            segmentation maps. The padding mode is set to "constant".
+            The value to be filled in padding area. Default: 0.
+    """
+
+    def __init__(self,
+                 pad_shape: Tuple[int, int, int],
+                 pad_val: float = 0.,
+                 seg_pad_val: int = 0) -> None:
+
+        # check pad_shape
+        assert pad_shape is not None
+        if not isinstance(pad_shape, tuple):
+            assert len(pad_shape) == 3
+
+        self.pad_shape = pad_shape
+        self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
+
+    def _pad_img(self, results: dict) -> None:
+        """Pad images according to ``self.pad_shape``
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: The dict contains the padded image and shape
+                information.
+        """
+        padded_img = self._to_pad(
+            results['img'], pad_shape=self.pad_shape, pad_val=self.pad_val)
+
+        results['img'] = padded_img
+        results['pad_shape'] = padded_img.shape[1:]
+
+    def _pad_seg(self, results: dict) -> None:
+        """Pad semantic segmentation map according to ``self.pad_shape`` if
+        ``gt_seg_map`` is not None in results dict.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Update the padded gt seg map in dict.
+        """
+        if results.get('gt_seg_map', None) is not None:
+            pad_gt_seg = self._to_pad(
+                results['gt_seg_map'][None, ...],
+                pad_shape=results['pad_shape'],
+                pad_val=self.seg_pad_val)
+            results['gt_seg_map'] = pad_gt_seg[1:]
+
+    @staticmethod
+    def _to_pad(img: np.ndarray,
+                pad_shape: Tuple[int, int, int],
+                pad_val: Union[int, float] = 0) -> np.ndarray:
+        """Pad the given 3d image to a certain shape with specified padding
+        value.
+
+        Args:
+            img (ndarray): Biomedical image with shape (N, Z, Y, X)
+                to be padded. N is the number of modalities.
+            pad_shape (Tuple[int,int,int]): Expected padding shape (Z, Y, X).
+            pad_val (float, int): Values to be filled in padding areas
+                and the padding_mode is set to 'constant'. Default: 0.
+
+        Returns:
+            ndarray: The padded image.
+        """
+        # compute pad width
+        d = max(pad_shape[0] - img.shape[1], 0)
+        pad_d = (d // 2, d - d // 2)
+        h = max(pad_shape[1] - img.shape[2], 0)
+        pad_h = (h // 2, h - h // 2)
+        w = max(pad_shape[2] - img.shape[2], 0)
+        pad_w = (w // 2, w - w // 2)
+
+        pad_list = [(0, 0), pad_d, pad_h, pad_w]
+
+        img = np.pad(img, pad_list, mode='constant', constant_values=pad_val)
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Call function to pad images, semantic segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Updated result dict.
+        """
+        self._pad_img(results)
+        self._pad_seg(results)
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'pad_shape={self.pad_shape}, '
+        repr_str += f'pad_val={self.pad_val}), '
+        repr_str += f'seg_pad_val={self.seg_pad_val})'
+        return repr_str

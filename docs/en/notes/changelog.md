@@ -1,5 +1,37 @@
 # Changelog of v1.x
 
+## v1.0.0rc3(31/12/2022)
+
+### Highlights
+
+- Support test time augmentation ([#2184](https://github.com/open-mmlab/mmsegmentation/pull/2184))
+- Add 'Projects/' folder and the first example project ([#2412](https://github.com/open-mmlab/mmsegmentation/pull/2412))
+
+### Features
+
+- Add Biomedical 3D array random crop transform ([#2378](https://github.com/open-mmlab/mmsegmentation/pull/2378))
+
+### Documentation
+
+- Add Chinese version of config tutorial ([#2371](https://github.com/open-mmlab/mmsegmentation/pull/2371))
+- Add Chinese version of train & test tutorial  ([#2355](https://github.com/open-mmlab/mmsegmentation/pull/2355))
+- Add Chinese version of overview ([(#2397)](https://github.com/open-mmlab/mmsegmentation/pull/2397)))
+- Add Chinese version of get_started ([#2417](https://github.com/open-mmlab/mmsegmentation/pull/2417))
+- Add datasets in Chinese ([#2387](https://github.com/open-mmlab/mmsegmentation/pull/2387))
+- Add dataflow document ([#2403](https://github.com/open-mmlab/mmsegmentation/pull/2403))
+- Add pspnet model structure graph ([#2437](https://github.com/open-mmlab/mmsegmentation/pull/2437))
+- Update some content of engine Chinese documentation ([#2341](https://github.com/open-mmlab/mmsegmentation/pull/2341))
+- Update TTA to migration documentation ([#2335](https://github.com/open-mmlab/mmsegmentation/pull/2335))
+
+### Bug fix
+
+- Remove dependency mmdet when do not use MaskFormerHead and MMDET_Mask2FormerHead ([#2448](https://github.com/open-mmlab/mmsegmentation/pull/2448))
+
+### Enhancement
+
+- Add torch1.13 checking in CI ([#2402](https://github.com/open-mmlab/mmsegmentation/pull/2402))
+- Fix pytorch version for merge stage test  ([#2449](https://github.com/open-mmlab/mmsegmentation/pull/2449))
+
 ## v1.0.0rc2(6/12/2022)
 
 ### Highlights
