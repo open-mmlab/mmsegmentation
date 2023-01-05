@@ -86,6 +86,8 @@ def main():
     mkdir_or_exist(osp.join(save_path, 'ann_dir/train'))
     mkdir_or_exist(osp.join(save_path, 'ann_dir/val'))
 
+    # It follows data preparation pipeline from here:
+    # https://github.com/Beckschen/TransUNet/tree/main/datasets
     for i, idx in enumerate(train_id):
         img_3d = read_nii_file(
             osp.join(dataset_path, 'img', 'img' + idx + '.nii.gz'))
@@ -123,8 +125,6 @@ def main():
         label_3d = read_nii_file(
             osp.join(dataset_path, 'label', 'label' + idx + '.nii.gz'))
 
-        # It follows data preparation pipeline from here:
-        # https://github.com/Beckschen/TransUNet/tree/main/datasets
         img_3d = np.clip(img_3d, -125, 275)
         img_3d = (img_3d + 125) / 400
         img_3d *= 255
