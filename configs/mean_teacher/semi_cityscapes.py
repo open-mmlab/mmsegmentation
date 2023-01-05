@@ -71,9 +71,9 @@ unlabeled_dataset = dict(
     pipeline=unsup_pipeline)
 
 train_dataloader = dict(
-    batch_size=4,
+    batch_size=8,
     num_workers=1,
-    sampler=dict(type='MultiSourceSampler', batch_size=4, source_ratio=[1, 1]),
+    sampler=dict(type='MultiSourceSampler', batch_size=8, source_ratio=[1, 1]),
     dataset=dict(
         type='ConcatDataset', datasets=[labeled_dataset, unlabeled_dataset]))
 
