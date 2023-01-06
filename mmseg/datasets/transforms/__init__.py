@@ -8,9 +8,9 @@ from .transforms import (CLAHE, AdjustGamma, BioMedical3DPad,
                          BioMedical3DRandomCrop, BioMedicalGaussianBlur,
                          BioMedicalGaussianNoise, BioMedicalRandomGamma,
                          GenerateEdge, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
-                         ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale)
+                         RandomCutOut, RandomMosaic, RandomRotate,
+                         RandomRotFlip, Rerange, ResizeShortestEdge,
+                         ResizeToMultiple, RGB2Gray, SegRescale)
 
 # yapf: enable
 __all__ = [
@@ -20,5 +20,5 @@ __all__ = [
     'ResizeToMultiple', 'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'ResizeShortestEdge', 'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
-    'BioMedicalRandomGamma', 'BioMedical3DPad'
+    'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip'
 ]
