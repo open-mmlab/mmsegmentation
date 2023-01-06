@@ -265,6 +265,20 @@ def stare_palette():
     return [[120, 120, 120], [6, 230, 230]]
 
 
+def synapse_palette():
+    """Synapse palette for external use."""
+    return [[0, 0, 0], [0, 0, 255], [0, 255, 0], [255, 0, 0], [0, 255, 255],
+            [255, 0, 255], [255, 255, 0], [60, 255, 255], [240, 240, 240]]
+
+
+def synapse_classes():
+    """Synapse class names for external use."""
+    return [
+        'background', 'aorta', 'gallbladder', 'left_kidney', 'right_kidney',
+        'liver', 'pancreas', 'spleen', 'stomach'
+    ]
+
+
 def lip_classes():
     """LIP class names for external use."""
     return [
