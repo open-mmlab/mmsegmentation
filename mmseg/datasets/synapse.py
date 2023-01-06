@@ -7,8 +7,10 @@ from .basesegdataset import BaseSegDataset
 class SynapseDataset(BaseSegDataset):
     """Synapse dataset.
 
-    In segmentation map annotation for Synapse, 0 stands for background, which
-    is not include in 13 categories. The ``img_suffix`` is fixed to '.jpg' and
+    Before dataset preprocess of Synapse, there are total 13 categories of
+    foreground which does not include background. After preprocess, 8
+    foreground categories are kept while other 5 foreground categories are
+    handled as background. The ``img_suffix`` is fixed to '.jpg' and
     ``seg_map_suffix`` is fixed to '.png'.
     """
     METAINFO = dict(
