@@ -22,6 +22,11 @@ Scene parsing is challenging for unrestricted open vocabulary and diverse scenes
 <img src="https://user-images.githubusercontent.com/24582831/142902444-9f93b99e-9261-443b-a0a4-17e78eefb525.png" width="70%"/>
 </div>
 
+<div align=center >
+<img alt="PSPNet-R50-D8" src="https://user-images.githubusercontent.com/47882088/209554973-66804b14-de5a-4f83-b54e-26683a91818a.jpg"/>
+PSPNet-R50 D8 model structure
+</div>
+
 ## Citation
 
 ```bibtex
