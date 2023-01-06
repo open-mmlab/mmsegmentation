@@ -8,14 +8,14 @@ from .basesegdataset import BaseSegDataset
 class REFUGEDataset(BaseSegDataset):
     """REFUGE dataset.
 
-    In segmentation map annotation for REFUGE, 0 stands for background, which is not
-    included in 2 categories. ``reduce_zero_label`` is fixed to True. The
-    ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is fixed to
+    In segmentation map annotation for REFUGE, 0 stands for background, which
+    is not included in 2 categories. ``reduce_zero_label`` is fixed to True.
+    The ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is fixed to
     '.png'.
     """
     METAINFO = dict(
-        classes=(' Optic Cup','Optic Disc'),
-        palette=[[6, 230, 230],[56, 59, 120]])
+        classes=(' Optic Cup', 'Optic Disc'),
+        palette=[[6, 230, 230], [56, 59, 120]])
 
     def __init__(self, **kwargs) -> None:
         super().__init__(
@@ -24,4 +24,3 @@ class REFUGEDataset(BaseSegDataset):
             reduce_zero_label=True,
             **kwargs)
         assert self.file_client.exists(self.data_prefix['img_path'])
-
