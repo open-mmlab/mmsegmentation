@@ -862,6 +862,84 @@ class RandomCutOut(BaseTransform):
 
 
 @TRANSFORMS.register_module()
+class RandomRotFlip(BaseTransform):
+    """Rotate and flip the image & seg or just rotate the image & seg.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+
+    Args:
+        rotate_prob (float): The probability of rotate image.
+        flip_prob (float): The probability of rotate&flip image.
+        degree (float, tuple[float]): Range of degrees to select from. If
+            degree is a number instead of tuple like (min, max),
+            the range of degree will be (``-degree``, ``+degree``)
+    """
+
+    def __init__(self, rotate_prob=0.5, flip_prob=0.5, degree=(-20, 20)):
+        self.rotate_prob = rotate_prob
+        self.flip_prob = flip_prob
+        assert 0 <= rotate_prob <= 1 and 0 <= flip_prob <= 1
+        if isinstance(degree, (float, int)):
+            assert degree > 0, f'degree {degree} should be positive'
+            self.degree = (-degree, degree)
+        else:
+            self.degree = degree
+        assert len(self.degree) == 2, f'degree {self.degree} should be a ' \
+                                      f'tuple of (min, max)'
+
+    def random_rot_flip(self, results: dict) -> dict:
+        k = np.random.randint(0, 4)
+        results['img'] = np.rot90(results['img'], k)
+        for key in results.get('seg_fields', []):
+            results[key] = np.rot90(results[key], k)
+        axis = np.random.randint(0, 2)
+        results['img'] = np.flip(results['img'], axis=axis).copy()
+        for key in results.get('seg_fields', []):
+            results[key] = np.flip(results[key], axis=axis).copy()
+        return results
+
+    def random_rotate(self, results: dict) -> dict:
+        angle = np.random.uniform(min(*self.degree), max(*self.degree))
+        results['img'] = mmcv.imrotate(results['img'], angle=angle)
+        for key in results.get('seg_fields', []):
+            results[key] = mmcv.imrotate(results[key], angle=angle)
+        return results
+
+    def transform(self, results: dict) -> dict:
+        """Call function to rotate or rotate & flip image, semantic
+        segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Rotated or rotated & flipped results.
+        """
+        rotate_flag = 0
+        if random.random() < self.rotate_prob:
+            results = self.random_rotate(results)
+            rotate_flag = 1
+        if random.random() < self.flip_prob and rotate_flag == 0:
+            results = self.random_rot_flip(results)
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(rotate_prob={self.rotate_prob}, ' \
+                    f'flip_prob={self.flip_prob}, ' \
+                    f'degree={self.degree})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
 class RandomMosaic(BaseTransform):
     """Mosaic augmentation. Given 4 images, mosaic transform combines them into
     one output image. The output image is composed of the parts from each sub-
@@ -1804,4 +1882,136 @@ class BioMedicalRandomGamma(BaseTransform):
         repr_str += f'invert_image={self.invert_image},'
         repr_str += f'per_channel={self.per_channel},'
         repr_str += f'retain_stats={self.retain_stats}'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class BioMedical3DPad(BaseTransform):
+    """Pad the biomedical 3d image & biomedical 3d semantic segmentation maps.
+
+    Required Keys:
+
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
+
+    Modified Keys:
+
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
+
+    Added Keys:
+
+    - pad_shape (Tuple[int, int, int]): The padded shape.
+
+    Args:
+        pad_shape (Tuple[int, int, int]): Fixed padding size.
+            Expected padding shape (Z, Y, X).
+        pad_val (float): Padding value for biomedical image.
+            The padding mode is set to "constant". The value
+            to be filled in padding area. Default: 0.
+        seg_pad_val (int): Padding value for biomedical 3d semantic
+            segmentation maps. The padding mode is set to "constant".
+            The value to be filled in padding area. Default: 0.
+    """
+
+    def __init__(self,
+                 pad_shape: Tuple[int, int, int],
+                 pad_val: float = 0.,
+                 seg_pad_val: int = 0) -> None:
+
+        # check pad_shape
+        assert pad_shape is not None
+        if not isinstance(pad_shape, tuple):
+            assert len(pad_shape) == 3
+
+        self.pad_shape = pad_shape
+        self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
+
+    def _pad_img(self, results: dict) -> None:
+        """Pad images according to ``self.pad_shape``
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: The dict contains the padded image and shape
+                information.
+        """
+        padded_img = self._to_pad(
+            results['img'], pad_shape=self.pad_shape, pad_val=self.pad_val)
+
+        results['img'] = padded_img
+        results['pad_shape'] = padded_img.shape[1:]
+
+    def _pad_seg(self, results: dict) -> None:
+        """Pad semantic segmentation map according to ``self.pad_shape`` if
+        ``gt_seg_map`` is not None in results dict.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Update the padded gt seg map in dict.
+        """
+        if results.get('gt_seg_map', None) is not None:
+            pad_gt_seg = self._to_pad(
+                results['gt_seg_map'][None, ...],
+                pad_shape=results['pad_shape'],
+                pad_val=self.seg_pad_val)
+            results['gt_seg_map'] = pad_gt_seg[1:]
+
+    @staticmethod
+    def _to_pad(img: np.ndarray,
+                pad_shape: Tuple[int, int, int],
+                pad_val: Union[int, float] = 0) -> np.ndarray:
+        """Pad the given 3d image to a certain shape with specified padding
+        value.
+
+        Args:
+            img (ndarray): Biomedical image with shape (N, Z, Y, X)
+                to be padded. N is the number of modalities.
+            pad_shape (Tuple[int,int,int]): Expected padding shape (Z, Y, X).
+            pad_val (float, int): Values to be filled in padding areas
+                and the padding_mode is set to 'constant'. Default: 0.
+
+        Returns:
+            ndarray: The padded image.
+        """
+        # compute pad width
+        d = max(pad_shape[0] - img.shape[1], 0)
+        pad_d = (d // 2, d - d // 2)
+        h = max(pad_shape[1] - img.shape[2], 0)
+        pad_h = (h // 2, h - h // 2)
+        w = max(pad_shape[2] - img.shape[2], 0)
+        pad_w = (w // 2, w - w // 2)
+
+        pad_list = [(0, 0), pad_d, pad_h, pad_w]
+
+        img = np.pad(img, pad_list, mode='constant', constant_values=pad_val)
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Call function to pad images, semantic segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Updated result dict.
+        """
+        self._pad_img(results)
+        self._pad_seg(results)
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'pad_shape={self.pad_shape}, '
+        repr_str += f'pad_val={self.pad_val}), '
+        repr_str += f'seg_pad_val={self.seg_pad_val})'
         return repr_str

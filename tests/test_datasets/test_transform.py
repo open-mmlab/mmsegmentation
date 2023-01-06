@@ -184,6 +184,68 @@ def test_flip():
     assert np.equal(original_seg, results['gt_semantic_seg']).all()
 
 
+def test_random_rotate_flip():
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', flip_prob=1.5)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', rotate_prob=1.5)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', degree=[20, 20, 20])
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', degree=-20)
+        TRANSFORMS.build(transform)
+
+    transform = dict(
+        type='RandomRotFlip', flip_prob=1.0, rotate_prob=0, degree=20)
+    rot_flip_module = TRANSFORMS.build(transform)
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_synapse_dataset/img_dir/case0005_slice000.jpg'),
+        'color')
+    original_img = copy.deepcopy(img)
+    seg = np.array(
+        Image.open(
+            osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_synapse_dataset/ann_dir/case0005_slice000.png')
+        ))
+    original_seg = copy.deepcopy(seg)
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    result_flip = rot_flip_module(results)
+    assert original_img.shape == result_flip['img'].shape
+    assert original_seg.shape == result_flip['gt_semantic_seg'].shape
+
+    transform = dict(
+        type='RandomRotFlip', flip_prob=0, rotate_prob=1.0, degree=20)
+    rot_flip_module = TRANSFORMS.build(transform)
+
+    result_rotate = rot_flip_module(results)
+    assert original_img.shape == result_rotate['img'].shape
+    assert original_seg.shape == result_rotate['gt_semantic_seg'].shape
+
+    assert str(transform) == "{'type': 'RandomRotFlip'," \
+                             " 'flip_prob': 0," \
+                             " 'rotate_prob': 1.0," \
+                             " 'degree': 20}"
+
+
 def test_pad():
     # test assertion if both size_divisor and size is None
     with pytest.raises(AssertionError):
@@ -951,3 +1013,46 @@ def test_BioMedicalRandomGamma():
     results = transform2(results)
     transformed_img = results['img']
     assert origin_img.shape == transformed_img.shape
+
+
+def test_BioMedical3DPad():
+    # test assertion.
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DPad', pad_shape=None)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DPad', pad_shape=[256, 256])
+        TRANSFORMS.build(transform)
+
+    data_info1 = dict(img=np.random.random((8, 6, 4, 4)))
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(6, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info1))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(4, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info1))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    data_info2 = dict(
+        img=np.random.random((8, 6, 4, 4)),
+        gt_seg_map=np.random.randint(0, 2, (6, 4, 4)))
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(6, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info2))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(4, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info2))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)

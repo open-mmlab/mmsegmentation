@@ -9,7 +9,7 @@ import pytest
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
                             COCOStuffDataset, DecathlonDataset, ISPRSDataset,
                             LIPDataset, LoveDADataset, PascalVOCDataset,
-                            PotsdamDataset, iSAIDDataset)
+                            PotsdamDataset, SynapseDataset, iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
@@ -218,6 +218,19 @@ def test_vaihingen():
                 osp.dirname(__file__),
                 '../data/pseudo_vaihingen_dataset/ann_dir')))
     assert len(test_dataset) == 1
+
+
+def test_synapse():
+    test_dataset = SynapseDataset(
+        pipeline=[],
+        data_prefix=dict(
+            img_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_synapse_dataset/img_dir'),
+            seg_map_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_synapse_dataset/ann_dir')))
+    assert len(test_dataset) == 2
 
 
 def test_isaid():
