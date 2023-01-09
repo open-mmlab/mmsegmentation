@@ -77,8 +77,9 @@ The master branch works with **PyTorch 1.5+**.
 
 ### 💎 Stable version
 
-v0.29.2 was released on 01/09/2023:
+v0.30.0 was released on 01/09/2023:
 
+- Add 'Projects/' folder, and the first example project
 - Support Delving into High-Quality Synthetic Face Occlusion Segmentation Datasets
 
 Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
