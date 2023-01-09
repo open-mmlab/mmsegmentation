@@ -14,13 +14,13 @@ class REFUGEDataset(BaseSegDataset):
     '.png'.
     """
     METAINFO = dict(
-        classes=(' Optic Cup', 'Optic Disc'),
-        palette=[[6, 230, 230], [56, 59, 120]])
+        classes=('background', ' Optic Cup', 'Optic Disc'),
+        palette=[[120, 120, 120], [6, 230, 230], [56, 59, 120]])
 
     def __init__(self, **kwargs) -> None:
         super().__init__(
             img_suffix='.png',
             seg_map_suffix='.png',
-            reduce_zero_label=True,
+            reduce_zero_label=False,
             **kwargs)
         assert self.file_client.exists(self.data_prefix['img_path'])

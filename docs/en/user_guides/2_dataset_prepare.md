@@ -138,6 +138,15 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── REFUGE
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
 ```
 
 ### Cityscapes
@@ -260,18 +269,6 @@ To convert HRF dataset to MMSegmentation format, you should run the following co
 
 ```shell
 python tools/dataset_converters/hrf.py /path/to/healthy.zip /path/to/healthy_manualsegm.zip /path/to/glaucoma.zip /path/to/glaucoma_manualsegm.zip /path/to/diabetic_retinopathy.zip /path/to/diabetic_retinopathy_manualsegm.zip
-```
-
-The script will make directory structure automatically.
-
-### REFUGE
-
-First, registrate in [REFUGE2020Challenge](https://refuge.grand-challenge.org)and download data from [this link](https://refuge.grand-challenge.org/REFUGE2Download)
-
-To convert REFUGE dataset to MMSegmentation format, you should run the following command:
-
-```shell
-python tools/convert_datasets/refuge.py --raw_data_root=.. --tmp_dir=..
 ```
 
 The script will make directory structure automatically.
@@ -507,3 +504,31 @@ python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 
 Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image,
 which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).
+
+### REFUGE
+
+First, registrate in [REFUGE2020Challenge](https://refuge.grand-challenge.org)and download data from [this link](https://refuge.grand-challenge.org/REFUGE2Download)
+
+Then, unzip `REFUGE2.zip` and the contents of original datasets include:
+
+```none
+├── REFUGE2
+│   ├── REFUGE2
+│   │   ├── Annotation-Training400.zip
+│   │   ├── REFUGE-Test400.zip
+│   │   ├── REFUGE-Test-GT.zip
+│   │   ├── REFUGE-Training400.zip
+│   │   ├── REFUGE-Validation400.zip
+│   │   ├── REFUGE-Validation400-GT.zip
+│   ├── __MACOSX
+```
+
+To convert REFUGE dataset to MMSegmentation format, you should run the following command:
+
+```shell
+python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
+```
+
+The script will make directory structure automatically.
+
+In our default setting, it will generate 400 images for training, 400 images for validation and 400 images for testing.

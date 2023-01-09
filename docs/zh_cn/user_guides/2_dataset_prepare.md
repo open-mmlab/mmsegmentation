@@ -119,6 +119,15 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── REFUGE
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
 ```
 
 ### Cityscapes
@@ -202,19 +211,6 @@ python tools/convert_datasets/drive.py /path/to/training.zip /path/to/test.zip
 
 ```shell
 python tools/convert_datasets/hrf.py /path/to/healthy.zip /path/to/healthy_manualsegm.zip /path/to/glaucoma.zip /path/to/glaucoma_manualsegm.zip /path/to/diabetic_retinopathy.zip /path/to/diabetic_retinopathy_manualsegm.zip
-```
-
-这个脚本将自动生成正确的文件夹结构。
-
-### REFUGE
-
-首先，去[REFUGE2020挑战赛官网](https://refuge.grand-challenge.org)注册后到指定[链接](https://refuge.grand-challenge.org/REFUGE2Download)
-下载数据,
-数据包含2018年的训练集、验证集和测试集。
-为了将 REFUGE 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
-
-```shell
-python tools/convert_datasets/refuge.py --raw_data_root=.. --tmp_dir=..
 ```
 
 这个脚本将自动生成正确的文件夹结构。
@@ -330,3 +326,33 @@ python tools/convert_datasets/isaid.py /path/to/iSAID
 ```
 
 使用我们默认的配置 (`patch_width`=896, `patch_height`=896,　`overlap_area`=384)， 将生成 33978 张图片的训练集和 11644 张图片的验证集。
+
+### REFUGE
+
+首先，去[REFUGE2020挑战赛官网](https://refuge.grand-challenge.org)注册后到指定[链接](https://refuge.grand-challenge.org/REFUGE2Download)
+下载数据,
+数据包含2018年的训练集、验证集和测试集。
+
+随后解压 `REFUGE2.zip` 然后得到如下所示的原始数据目录.
+
+```none
+├── REFUGE2
+│   ├── REFUGE2
+│   │   ├── Annotation-Training400.zip
+│   │   ├── REFUGE-Test400.zip
+│   │   ├── REFUGE-Test-GT.zip
+│   │   ├── REFUGE-Training400.zip
+│   │   ├── REFUGE-Validation400.zip
+│   │   ├── REFUGE-Validation400-GT.zip
+│   ├── __MACOSX
+```
+
+为了将 REFUGE 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+
+```shell
+python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
+```
+
+这个脚本将自动生成正确的文件夹结构。
+
+使用我们默认的配置， 将生成 400 张图片的训练集， 400 张图片的验证集和 400 张图片的测试集.
