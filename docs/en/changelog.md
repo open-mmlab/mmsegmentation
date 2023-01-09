@@ -9,7 +9,7 @@
 **Bug Fixes**
 
 - Fix incorrect `test_cfg` setting in UNet base configs ([#2347](https://github.com/open-mmlab/mmsegmentation/pull/2347))
-- Fix KNet IterativeDecodeHead bug in master branch ([#2333](https://github.com/open-mmlab/mmsegmentation/pull/2333))
+- Fix KNet `IterativeDecodeHead` bug in master branch ([#2333](https://github.com/open-mmlab/mmsegmentation/pull/2333))
 - Fix deadlock issue related with MMSegWandbHook ([#2398](https://github.com/open-mmlab/mmsegmentation/pull/2398))
 
 **Enhancement**
