@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.models import BACKBONES
 from mmseg.models.backbones import ResNetV1c
 
