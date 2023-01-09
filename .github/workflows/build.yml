@@ -8,6 +8,7 @@ on:
       - 'docker/**'
       - 'tools/**'
       - '**.md'
+      - 'projects/**'
 
   pull_request:
     paths-ignore:
@@ -17,6 +18,7 @@ on:
       - 'tools/**'
       - 'docs/**'
       - '**.md'
+      - 'projects/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
