@@ -17,6 +17,7 @@ from .loveda import LoveDADataset
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
+from .refuge import REFUGEDataset
 from .stare import STAREDataset
 from .synapse import SynapseDataset
 # yapf: disable
@@ -48,5 +49,5 @@ __all__ = [
     'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
     'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
-    'SynapseDataset'
+    'SynapseDataset', 'REFUGEDataset'
 ]
