@@ -15,13 +15,13 @@
 **Enhancement**
 
 - Update CI and pre-commit checking ([#2309](https://github.com/open-mmlab/mmsegmentation/pull/2309),[#2331](https://github.com/open-mmlab/mmsegmentation/pull/2331))
-- Add 'Projects/' folder, and the first example project in 0.x ([#2457](https://github.com/open-mmlab/mmsegmentation/pull/2457))
-- Fix the deprecation of np.float and fix ci configuration ([#2451](https://github.com/open-mmlab/mmsegmentation/pull/2451))
+- Add `Projects/` folder, and the first example project in 0.x ([#2457](https://github.com/open-mmlab/mmsegmentation/pull/2457))
+- Fix the deprecation of `np.float` and CI configuration problems ([#2451](https://github.com/open-mmlab/mmsegmentation/pull/2451))
 
 **Documentation**
 
 - Add high quality synthetic face occlusion dataset link to readme ([#2453](https://github.com/open-mmlab/mmsegmentation/pull/2453))
-- Fix the docstring error in the class PascalContextDataset59 ([#2450](https://github.com/open-mmlab/mmsegmentation/pull/2450))
+- Fix the docstring error in the `PascalContextDataset59` class ([#2450](https://github.com/open-mmlab/mmsegmentation/pull/2450))
 
 **Contributors**
 
