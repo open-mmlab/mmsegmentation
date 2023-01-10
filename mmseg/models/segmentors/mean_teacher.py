@@ -55,10 +55,10 @@ class MeanTeacher(SemiBaseSegmentor):
     #     return self.teacher.predict(inputs, data_samples)
 
     def loss_by_pseudo(self, s_pred: Tensor, t_pred: Tensor) -> dict:
-        soft_s_pred = s_pred.softmax(dim=1)
-        soft_t_pred = t_pred.softmax(dim=1)
         unsup_weight = self.semi_train_cfg.get('unsup_weight', 1.)
-        losses = self.consistency_loss(soft_s_pred, soft_t_pred) * unsup_weight
+        losses = self.consistency_loss(
+            s_pred.softmax(dim=1),
+            t_pred.softmax(dim=1).detach()) * unsup_weight
         return dict(loss_consistency=losses)
 
     # def loss_by_pseudo(self, inputs: Tensor,data_samples:SampleList) -> dict:
