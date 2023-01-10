@@ -1296,7 +1296,7 @@ class GenerateEdge(BaseTransform):
                                            (self.edge_width, self.edge_width))
         edge = cv2.dilate(edge, kernel)
 
-        results['gt_edge'] = edge
+        results['gt_edge_map'] = edge
         results['edge_width'] = self.edge_width
 
         return results

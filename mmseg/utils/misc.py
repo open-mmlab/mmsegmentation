@@ -98,6 +98,11 @@ def stack_batch(inputs: List[torch.Tensor],
             del data_sample.gt_sem_seg.data
             data_sample.gt_sem_seg.data = F.pad(
                 gt_sem_seg, padding_size, value=seg_pad_val)
+            if 'gt_edge_map' in data_sample:
+                gt_edge_map = data_sample.gt_edge_map.data
+                del data_sample.gt_edge_map.data
+                data_sample.gt_edge_map.data = F.pad(
+                    gt_edge_map, padding_size, value=seg_pad_val)
             data_sample.set_metainfo({
                 'img_shape': tensor.shape[-2:],
                 'pad_shape': data_sample.gt_sem_seg.shape,
