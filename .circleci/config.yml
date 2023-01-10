@@ -114,12 +114,14 @@ jobs:
 workflows:
   unit_tests:
     jobs:
+      - lint
       - build_cpu:
           name: build_py3.8_pt1.9_cpu
           torch: 1.9.0
           torchvision: 0.10.0
           python: "3.8.0"
           requires:
+            - lint
       - hold:
           type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
           requires:
