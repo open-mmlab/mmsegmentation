@@ -314,9 +314,9 @@ class RandomCrop(BaseTransform):
         # crop semantic seg
         for key in results.get('seg_fields', []):
             results[key] = self.crop(results[key], crop_bbox)
-        img_shape = img.shape
+
         results['img'] = img
-        results['img_shape'] = img_shape
+        results['img_shape'] = img.shape[:2]
         return results
 
     def __repr__(self):
