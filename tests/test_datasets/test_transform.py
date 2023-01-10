@@ -321,7 +321,7 @@ def test_random_crop():
 
     results = pipeline(results)
     assert results['img'].shape[:2] == (h - 20, w - 20)
-    assert results['img_shape'][:2] == (h - 20, w - 20)
+    assert results['img_shape'] == (h - 20, w - 20)
     assert results['gt_semantic_seg'].shape[:2] == (h - 20, w - 20)
 
 
