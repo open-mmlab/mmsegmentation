@@ -1,3 +1,5 @@
+
+
 version: 2.1
 
 # the default pipeline parameters, which will be updated according to
@@ -188,50 +190,3 @@ workflows:
             branches:
               only:
                 - master
-
-
-
-workflows:
-  unit_tests:
-    jobs:
-      - lint
-      - build_cpu:
-          name: build_cpu_th1.6
-          torch: 1.6.0
-          torchvision: 0.7.0
-          requires:
-            - lint
-      - build_cpu:
-          name: build_cpu_th1.7
-          torch: 1.7.0
-          torchvision: 0.8.1
-          requires:
-            - lint
-      - build_cpu:
-          name: build_cpu_th1.8_py3.9
-          torch: 1.8.0
-          torchvision: 0.9.0
-          python: "3.9.0"
-          requires:
-            - lint
-      - build_cpu:
-          name: build_cpu_th1.9_py3.8
-          torch: 1.9.0
-          torchvision: 0.10.0
-          python: "3.8.0"
-          requires:
-            - lint
-      - build_cpu:
-          name: build_cpu_th1.9_py3.9
-          torch: 1.9.0
-          torchvision: 0.10.0
-          python: "3.9.0"
-          requires:
-            - lint
-      - build_cu101:
-          requires:
-            - build_cpu_th1.6
-            - build_cpu_th1.7
-            - build_cpu_th1.8_py3.9
-            - build_cpu_th1.9_py3.8
-            - build_cpu_th1.9_py3.9
