@@ -1245,7 +1245,7 @@ class GenerateEdge(BaseTransform):
         - gt_seg_map
 
     Added Keys:
-        - gt_edge (np.ndarray, uint8): The edge annotation generated from the
+        - gt_edge_map (np.ndarray, uint8): The edge annotation generated from the
             seg map by extracting border between different semantics.
 
     Args:
