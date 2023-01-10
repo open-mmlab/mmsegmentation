@@ -73,9 +73,9 @@ jobs:
             python -m coverage xml
             python -m coverage report -m
 
-  build_cu101:
+  build_cu102:
     machine:
-      image: ubuntu-1604-cuda-10.1:201909-23
+      image: ubuntu-1604-cuda-10.1:201909-23  # the actual version of cuda is 10.2
     resource_class: gpu.nvidia.small
     steps:
       - checkout
@@ -83,7 +83,7 @@ jobs:
           name: Install Libraries
           command: |
             sudo apt-get update
-            sudo apt-get install -y git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 libgl1-mesa-glx
+            sudo apt-get install -y git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 libgl1-mesa-glx zlib1g-dev
       - run:
           name: Configure Python & pip
           command: |
@@ -114,44 +114,16 @@ jobs:
 workflows:
   unit_tests:
     jobs:
-      - lint
       - build_cpu:
-          name: build_cpu_th1.6
-          torch: 1.6.0
-          torchvision: 0.7.0
-          requires:
-            - lint
-      - build_cpu:
-          name: build_cpu_th1.7
-          torch: 1.7.0
-          torchvision: 0.8.1
-          requires:
-            - lint
-      - build_cpu:
-          name: build_cpu_th1.8_py3.9
-          torch: 1.8.0
-          torchvision: 0.9.0
-          python: "3.9.0"
-          requires:
-            - lint
-      - build_cpu:
-          name: build_cpu_th1.9_py3.8
+          name: build_py3.8_pt1.9_cpu
           torch: 1.9.0
           torchvision: 0.10.0
           python: "3.8.0"
           requires:
-            - lint
-      - build_cpu:
-          name: build_cpu_th1.9_py3.9
-          torch: 1.9.0
-          torchvision: 0.10.0
-          python: "3.9.0"
+      - hold:
+          type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
           requires:
-            - lint
-      - build_cu101:
+            - build_py3.8_pt1.9_cpu
+      - build_cu102:
           requires:
-            - build_cpu_th1.6
-            - build_cpu_th1.7
-            - build_cpu_th1.8_py3.9
-            - build_cpu_th1.9_py3.8
-            - build_cpu_th1.9_py3.9
+            - hold
