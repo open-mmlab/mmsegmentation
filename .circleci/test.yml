@@ -186,3 +186,4 @@ workflows:
             branches:
               only:
                 - dev-1.x
+                - 1.x
