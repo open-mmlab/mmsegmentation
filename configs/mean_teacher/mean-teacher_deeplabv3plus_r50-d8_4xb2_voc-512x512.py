@@ -34,10 +34,9 @@ deeplabv3plus = dict(
         c1_in_channels=256,
         c1_channels=48,
         dropout_ratio=0.1,
-        num_classes=20,
+        num_classes=21,
         norm_cfg=norm_cfg,
         align_corners=False,
-        sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=10000),
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     auxiliary_head=None,
