@@ -74,16 +74,16 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ### 💎 稳定版本
 
-最新版本 v0.29.1 在 2022.11.03 发布：
+最新版本 v0.30.0 在 2023.01.11 发布：
 
-- 添加模型集成工具
-- 更新文档
+- 添加 projects 目录以及示例项目
+- 支持高质量合成人脸数据集
 
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/changelog.md)。
 
 ### 🌟 1.x 预览版本
 
-全新的 **MMSegmentation v1.0.0rc1** 版本已经在 2022.11.02 发布：
+全新的 **MMSegmentation v1.0.0rc3** 版本已经在 2022.12.31 发布：
 
 - 基于 [MMEngine](https://github.com/open-mmlab/mmengine) 统一了各组件接口。
 - 全面支持混合精度，训练测试速度更快。

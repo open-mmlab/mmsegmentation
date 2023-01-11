@@ -1,5 +1,34 @@
 ## Changelog
 
+### V0.30.0 (01/09/2023)
+
+**New Features**
+
+- Support Delving into High-Quality Synthetic Face Occlusion Segmentation Datasets ([#2194](https://github.com/open-mmlab/mmsegmentation/pull/2194))
+
+**Bug Fixes**
+
+- Fix incorrect `test_cfg` setting in UNet base configs ([#2347](https://github.com/open-mmlab/mmsegmentation/pull/2347))
+- Fix KNet `IterativeDecodeHead` bug in master branch ([#2333](https://github.com/open-mmlab/mmsegmentation/pull/2333))
+- Fix deadlock issue related with MMSegWandbHook ([#2398](https://github.com/open-mmlab/mmsegmentation/pull/2398))
+
+**Enhancement**
+
+- Update CI and pre-commit checking ([#2309](https://github.com/open-mmlab/mmsegmentation/pull/2309),[#2331](https://github.com/open-mmlab/mmsegmentation/pull/2331))
+- Add `Projects/` folder, and the first example project in 0.x ([#2457](https://github.com/open-mmlab/mmsegmentation/pull/2457))
+- Fix the deprecation of `np.float` and CI configuration problems ([#2451](https://github.com/open-mmlab/mmsegmentation/pull/2451))
+
+**Documentation**
+
+- Add high quality synthetic face occlusion dataset link to readme ([#2453](https://github.com/open-mmlab/mmsegmentation/pull/2453))
+- Fix the docstring error in the `PascalContextDataset59` class ([#2450](https://github.com/open-mmlab/mmsegmentation/pull/2450))
+
+**Contributors**
+
+- @smttsp made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2347
+- @MilkClouds made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2398
+- @Spritea made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2450
+
 ### V0.29.1 (11/3/2022)
 
 **New Features**
