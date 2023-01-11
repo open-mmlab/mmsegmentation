@@ -138,6 +138,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── synapse
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -323,7 +330,7 @@ For Potsdam dataset, please run the following command to download and re-organiz
 python tools/dataset_converters/potsdam.py /path/to/potsdam
 ```
 
-In our default setting, it will generate 3456 images for training and 2016 images for validation.
+In our default setting, it will generate 3,456 images for training and 2,016 images for validation.
 
 ### ISPRS Vaihingen
 
@@ -376,7 +383,7 @@ You may need to follow the following structure for dataset preparation after dow
 python tools/dataset_converters/isaid.py /path/to/iSAID
 ```
 
-In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33,978 images for training and 11,644 images for validation.
 
 ## LIP(Look Into Person) dataset
 
@@ -429,7 +436,7 @@ cd ./RawData/Training
 
 Then create `train.txt` and `val.txt` to split dataset.
 
-According to TransUnet, the following is the data set division.
+According to TransUNet, the following is the data set division.
 
 train.txt
 
@@ -492,6 +499,8 @@ Then, use this command to convert synapse dataset.
 ```shell
 python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 ```
+
+In our default setting, it will generate 2,211 2D images for training and 1,568 2D images for validation.
 
 Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image,
 which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).
