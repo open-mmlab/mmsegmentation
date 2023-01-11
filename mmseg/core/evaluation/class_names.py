@@ -126,6 +126,11 @@ def stare_classes():
     return ['background', 'vessel']
 
 
+def occludedface_classes():
+    """occludedface class names for external use."""
+    return ['background', 'face']
+
+
 def cityscapes_palette():
     """Cityscapes palette for external use."""
     return [[128, 64, 128], [244, 35, 232], [70, 70, 70], [102, 102, 156],
@@ -265,6 +270,11 @@ def stare_palette():
     return [[120, 120, 120], [6, 230, 230]]
 
 
+def occludedface_palette():
+    """occludedface palette for external use."""
+    return [[0, 0, 0], [128, 0, 0]]
+
+
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
@@ -278,7 +288,8 @@ dataset_aliases = {
         'coco_stuff164k'
     ],
     'isaid': ['isaid', 'iSAID'],
-    'stare': ['stare', 'STARE']
+    'stare': ['stare', 'STARE'],
+    'occludedface': ['occludedface']
 }
 
 
