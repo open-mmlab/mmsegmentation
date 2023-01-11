@@ -93,8 +93,9 @@ ImageType = Union[str, np.ndarray, Sequence[str], Sequence[np.ndarray]]
 def _preprare_data(imgs: ImageType, model: BaseSegmentor):
 
     cfg = model.cfg
-    if dict(type='LoadAnnotations') in cfg.test_pipeline:
-        cfg.test_pipeline.remove(dict(type='LoadAnnotations'))
+    for t in cfg.test_pipeline:
+        if t.get('type') == 'LoadAnnotations':
+            cfg.test_pipeline.remove(t)
 
     is_batch = True
     if not isinstance(imgs, (list, tuple)):
