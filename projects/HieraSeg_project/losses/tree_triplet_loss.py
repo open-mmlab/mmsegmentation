@@ -45,10 +45,6 @@ class TreeTripletLoss(nn.Module):
                 torch.sum(index_anchor), torch.sum(index_pos),
                 torch.sum(index_neg), max_triplet)
 
-            #             label_anchor = labels[index_anchor][:min_size]
-            #             label_pos = labels[index_pos][:min_size]
-            #             label_neg = labels[index_neg][:min_size]
-
             feats_anchor = feats[index_anchor][:min_size]
             feats_pos = feats[index_pos][:min_size]
             feats_neg = feats[index_neg][:min_size]
