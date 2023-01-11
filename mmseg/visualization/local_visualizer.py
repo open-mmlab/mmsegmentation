@@ -69,8 +69,9 @@ class SegLocalVisualizer(Visualizer):
         # it will override the default value.
         classes = self._init_classes(classes)
         palette = self._init_palette(palette)
-        assert len(classes) == len(
-            palette), 'The length of classes should be equal to palette'
+        if classes is not None and palette is not None:
+            assert len(classes) == len(
+                palette), 'The length of classes should be equal to palette'
         self.dataset_meta: dict = {classes: classes, palette: palette}
 
     def _init_classes(
