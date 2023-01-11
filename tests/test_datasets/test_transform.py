@@ -792,7 +792,7 @@ def test_generate_edge():
     results['img_shape'] = seg_map.shape
 
     results = transform(results)
-    assert np.all(results['gt_edge'] == np.array([
+    assert np.all(results['gt_edge_map'] == np.array([
         [0, 0, 0, 1, 0],
         [0, 0, 1, 1, 1],
         [0, 1, 1, 1, 0],
