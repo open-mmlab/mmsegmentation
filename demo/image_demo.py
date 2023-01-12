@@ -2,10 +2,9 @@
 from argparse import ArgumentParser
 
 from mmengine.model import revert_sync_batchnorm
+from mmengine.registry import init_default_scope
 
 from mmseg.apis import inference_model, init_model, show_result_pyplot
-
-# from mmengine.registry import init_default_scope
 
 
 def main():
@@ -24,6 +23,8 @@ def main():
     parser.add_argument(
         '--title', default='result', help='The image identifier.')
     args = parser.parse_args()
+
+    init_default_scope('mmseg')
 
     # build the model from a config file and a checkpoint file
     model = init_model(args.config, args.checkpoint, device=args.device)
