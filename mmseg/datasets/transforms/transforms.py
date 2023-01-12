@@ -314,9 +314,9 @@ class RandomCrop(BaseTransform):
         # crop semantic seg
         for key in results.get('seg_fields', []):
             results[key] = self.crop(results[key], crop_bbox)
-        img_shape = img.shape
+
         results['img'] = img
-        results['img_shape'] = img_shape
+        results['img_shape'] = img.shape[:2]
         return results
 
     def __repr__(self):
@@ -1245,7 +1245,7 @@ class GenerateEdge(BaseTransform):
         - gt_seg_map
 
     Added Keys:
-        - gt_edge (np.ndarray, uint8): The edge annotation generated from the
+        - gt_edge_map (np.ndarray, uint8): The edge annotation generated from the
             seg map by extracting border between different semantics.
 
     Args:
@@ -1296,7 +1296,7 @@ class GenerateEdge(BaseTransform):
                                            (self.edge_width, self.edge_width))
         edge = cv2.dilate(edge, kernel)
 
-        results['gt_edge'] = edge
+        results['gt_edge_map'] = edge
         results['edge_width'] = self.edge_width
 
         return results
