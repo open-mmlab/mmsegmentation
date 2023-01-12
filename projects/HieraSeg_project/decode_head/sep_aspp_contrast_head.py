@@ -13,10 +13,22 @@ from mmseg.registry import MODELS
 
 
 class ProjectionHead(nn.Module):
+    """ProjectionHead, project feature map to specific channels.
 
-    def __init__(self, dim_in, norm_cfg, proj_dim=256, proj='convmlp'):
+    Args:
+        dim_in (int): Input channels.
+        norm_cfg (dict): config of norm layer.
+        proj_dim (int): Output channels. Default: 256.
+        proj (str): Projection type, 'linear' or 'convmlp'. Default: 'convmlp'
+    """
+
+    def __init__(self,
+                 dim_in: int,
+                 norm_cfg: dict,
+                 proj_dim: int = 256,
+                 proj: str = 'convmlp'):
         super().__init__()
-
+        assert proj in ['convmlp', 'linear']
         if proj == 'linear':
             self.proj = nn.Conv2d(dim_in, proj_dim, kernel_size=1)
         elif proj == 'convmlp':
@@ -31,16 +43,19 @@ class ProjectionHead(nn.Module):
 
 @MODELS.register_module()
 class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
-    """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
-    Segmentation. This head is the implementation of `DeepLabV3+
+    """Deep Hierarchical Semantic Segmentation. This head is the implementation
+    of `<https://arxiv.org/abs/2203.14335>`_.
 
-    <https://arxiv.org/abs/1802.02611>`_.
+    Based on Encoder-Decoder with Atrous Separable Convolution for
+    Semantic Image Segmentation.
+    `DeepLabV3+ <https://arxiv.org/abs/1802.02611>`_.
+
     Args:
         proj (str): The type of ProjectionHead, 'linear' or 'convmlp',
             default 'convmlp'
     """
 
-    def __init__(self, proj='convmlp', **kwargs):
+    def __init__(self, proj: str = 'convmlp', **kwargs):
         super().__init__(**kwargs)
         self.proj_head = ProjectionHead(
             dim_in=2048, norm_cfg=self.norm_cfg, proj=proj)

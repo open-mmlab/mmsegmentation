@@ -22,27 +22,30 @@ This project implements `HieraSeg` inference in the `cityscapes` dataset
 
 preparing `cityscapes` dataset like this [structure](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#prepare-datasets)
 
-## Testing commands
+### Testing commands
 
-please put [`deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth`](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) to `mmsegmentation/pretrained`
+please put [`deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth`](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) to `mmsegmentation/checkpoints`
 
 #### Multi-GPUs Test
 
-`bash tools/dist_test.sh [configs] [model weights] [number of gpu]  --tta `(--tta optional, multi-scale test, need mmengine >=0.4.0)
+```bash
+# --tta optional, multi-scale test, need mmengine >=0.4.0
+bash tools/dist_test.sh [configs] [model weights] [number of gpu]  --tta
+```
 
-#### For example
+#### Example
 
 ```shell
-bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py pretrained/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth 2 --tta
+bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80l_cityscapes-512x1024.py checkpoints/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth 2 --tta
 ```
 
 ## Results
 
 ### Cityscapes
 
-|   Method   | Backbone | Crop Size | mIoU  | mIoU (ms+flip) |                                                                                               config                                                                                                |                                                                model pth                                                                |
-| :--------: | :------: | :-------: | :---: | :------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: |
-| DeeplabV3+ | R-101-D8 | 512x1024  | 81.61 |     82.71      | [config](https://github.com/AI-Tianlong/mmsegmentation/blob/AI-Tianlong/Support_HieraSeg/projects/HieraSeg_project/configs/hieraseg/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.py) | [github](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) |
+|   Method   | Backbone | Crop Size | mIoU  | mIoU (ms+flip) |                                                                                    config                                                                                     |                                                                             model                                                                             |
+| :--------: | :------: | :-------: | :---: | :------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| DeeplabV3+ | R-101-D8 | 512x1024  | 81.61 |     82.71      | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/HieraSeg_project/configs/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80l_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth) |
 
 <img src="https://user-images.githubusercontent.com/50650583/210488953-e3e35ade-1132-47e1-9dfd-cf12b357ae80.png" width="50%"><img src="https://user-images.githubusercontent.com/50650583/210489746-e35ee229-3234-4292-a649-a8cd85f312ad.png" width="50%">
 
@@ -61,15 +64,15 @@ This project is modified from [qhanghu/HSSN_pytorch](https://github.com/qhanghu/
 
 ## Checklist
 
-- [ ] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
+- [x] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
 
-  - [ ] Finish the code
+  - [x] Finish the code
 
-  - [ ] Basic docstrings & proper citation
+  - [x] Basic docstrings & proper citation
 
-  - [ ] Test-time correctness
+  - [x] Test-time correctness
 
-  - [ ] A full README
+  - [x] A full README
 
 - [ ] Milestone 2: Indicates a successful model implementation.
 
