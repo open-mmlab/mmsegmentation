@@ -145,6 +145,7 @@ def main():
     mkdir_or_exist(osp.join(out_dir, 'validation', 'v1.2', 'labels_mask'))
     mkdir_or_exist(osp.join(out_dir, 'training', 'v2.0', 'labels_mask'))
     mkdir_or_exist(osp.join(out_dir, 'validation', 'v2.0', 'labels_mask'))
+    print('Directories Have Made...')
 
     src_training_v1_2_list = glob.glob(
         os.path.join(dataset_path, 'training', 'v1.2', 'labels', '*.png'))
@@ -159,21 +160,21 @@ def main():
     src_list_v1_2 = [src_training_v1_2_list, src_validation_v1_2_list]
     src_list_v2_0 = [src_training_v2_0_list, src_validation_v2_0_list]
 
-    prog_bar = ProgressBar(len(src_list_v1_2))
+    prog_bar = ProgressBar(2 * len(src_training_v1_2_list))
     for data_file in src_list_v1_2:
         for _, src_path in enumerate(data_file):
             RGB2Mask(src_path, dataset_version='v1.2')
             prog_bar.update()
-    print('v1.2 RGB labels have converted to Mask!')
+    print('\nv1.2 RGB labels have converted to Mask!')
 
-    prog_bar = ProgressBar(len(src_list_v2_0))
+    prog_bar = ProgressBar(2 * len(src_training_v1_2_list))
     for data_file in src_list_v2_0:
         for _, src_path in enumerate(data_file):
             RGB2Mask(src_path, dataset_version='v2.0')
             prog_bar.update()
-    print('v2.0 RGB labels have converted to Mask!')
+    print('\nv2.0 RGB labels have converted to Mask!')
 
-    print('Have convert Mapillary RGB labels to Mask labels!')
+    print('\nHave convert Mapillary RGB labels to Mask labels!')
 
 
 if __name__ == '__main__':
