@@ -136,7 +136,7 @@ def main():
     dataset_path = args.dataset_path
 
     if args.out_dir is None:
-        out_dir = osp.join('data', 'mapillary')
+        out_dir = dataset_path
     else:
         out_dir = args.out_dir
 
