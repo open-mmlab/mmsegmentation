@@ -31,13 +31,10 @@ Example:
 
 ```python
 from mmseg.apis import init_model
-from mmseg.utils import register_all_modules
 
 config_path = 'configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py'
 checkpoint_path = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
-# register all modules in mmseg into the registries
-register_all_modules()
 
 # initialize model without checkpoint
 model = init_model(config_path)
@@ -76,14 +73,11 @@ Example:
 
 ```python
 from mmseg.apis import init_model, inference_model
-from mmseg.utils import register_all_modules
 
 config_path = 'configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py'
 checkpoint_path = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 img_path = 'demo/demo.png'
 
-# register all modules in mmseg into the registries
-register_all_modules()
 
 model = init_model(config_path, checkpoint_path)
 result = inference_model(model, img_path)
@@ -115,14 +109,11 @@ Example:
 
 ```python
 from mmseg.apis import init_model, inference_model, show_result_pyplot
-from mmseg.utils import register_all_modules
 
 config_path = 'configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py'
 checkpoint_path = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 img_path = 'demo/demo.png'
 
-# register all modules in mmseg into the registries
-register_all_modules()
 
 # build the model from a config file and a checkpoint file
 model = init_model(config_path, checkpoint_path, device='cuda:0')

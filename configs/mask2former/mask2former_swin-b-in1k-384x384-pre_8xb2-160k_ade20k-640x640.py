@@ -3,7 +3,6 @@ _base_ = [
 ]
 
 pretrained = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_base_patch4_window12_384_20220317-55b0104a.pth'  # noqa
-custom_imports = dict(imports='mmdet.models', allow_failed_imports=False)
 
 crop_size = (640, 640)
 data_preprocessor = dict(
