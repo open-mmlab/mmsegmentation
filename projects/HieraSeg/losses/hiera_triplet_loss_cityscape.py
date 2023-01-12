@@ -44,8 +44,18 @@ def losses_hiera(predictions,
                  targets_top,
                  num_classes,
                  indices_high,
-                 eps=1e-8,
-                 gamma=2):
+                 eps=1e-8):
+    """Implementation of hiera loss.
+
+    Args:
+        predictions (torch.Tensor): seg logits produced by decode head.
+        targets (torch.Tensor): The learning label of the prediction.
+        targets_top (torch.Tensor): The hierarchy ground truth of the learning
+            label.
+        num_classes (int): Number of categories.
+        indices_high (List[List[int]]): Hierarchy indices of each hierarchy.
+        eps (float):Term added to the Logarithm to improve numerical stability.
+    """
     b, _, h, w = predictions.shape
     predictions = torch.sigmoid(predictions.float())
     void_indices = (targets == 255)
@@ -98,6 +108,19 @@ def losses_hiera_focal(predictions,
                        indices_high,
                        eps=1e-8,
                        gamma=2):
+    """Implementation of hiera loss.
+
+    Args:
+        predictions (torch.Tensor): seg logits produced by decode head.
+        targets (torch.Tensor): The learning label of the prediction.
+        targets_top (torch.Tensor): The hierarchy ground truth of the learning
+            label.
+        num_classes (int): Number of categories.
+        indices_high (List[List[int]]): Hierarchy indices of each hierarchy.
+        eps (float):Term added to the Logarithm to improve numerical stability.
+            Defaults: 1e-8.
+        gamma (int): The exponent value. Defaults: 2.
+    """
     b, _, h, w = predictions.shape
     predictions = torch.sigmoid(predictions.float())
     void_indices = (targets == 255)
