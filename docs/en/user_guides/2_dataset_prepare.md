@@ -138,6 +138,13 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── synapse
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   ├── val
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   ├── val
 ```
 
 ### Cityscapes
@@ -323,7 +330,7 @@ For Potsdam dataset, please run the following command to download and re-organiz
 python tools/dataset_converters/potsdam.py /path/to/potsdam
 ```
 
-In our default setting, it will generate 3456 images for training and 2016 images for validation.
+In our default setting, it will generate 3,456 images for training and 2,016 images for validation.
 
 ### ISPRS Vaihingen
 
@@ -376,7 +383,7 @@ You may need to follow the following structure for dataset preparation after dow
 python tools/dataset_converters/isaid.py /path/to/iSAID
 ```
 
-In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33,978 images for training and 11,644 images for validation.
 
 ## LIP(Look Into Person) dataset
 
@@ -414,3 +421,86 @@ The contents of  LIP datasets include:
 │   │   │   ├── 100034_483681.png
 │   │   │   ├── ...
 ```
+
+## Synapse dataset
+
+This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/)
+
+To follow the data preparation setting of [TransUNet](https://arxiv.org/abs/2102.04306), which splits original training set (30 scans)
+into new training (18 scans) and validation set (12 scans). Please run the following command to prepare the dataset.
+
+```shell
+unzip RawData.zip
+cd ./RawData/Training
+```
+
+Then create `train.txt` and `val.txt` to split dataset.
+
+According to TransUNet, the following is the data set division.
+
+train.txt
+
+```none
+img0005.nii.gz
+img0006.nii.gz
+img0007.nii.gz
+img0009.nii.gz
+img0010.nii.gz
+img0021.nii.gz
+img0023.nii.gz
+img0024.nii.gz
+img0026.nii.gz
+img0027.nii.gz
+img0028.nii.gz
+img0030.nii.gz
+img0031.nii.gz
+img0033.nii.gz
+img0034.nii.gz
+img0037.nii.gz
+img0039.nii.gz
+img0040.nii.gz
+```
+
+val.txt
+
+```none
+img0008.nii.gz
+img0022.nii.gz
+img0038.nii.gz
+img0036.nii.gz
+img0032.nii.gz
+img0002.nii.gz
+img0029.nii.gz
+img0003.nii.gz
+img0001.nii.gz
+img0004.nii.gz
+img0025.nii.gz
+img0035.nii.gz
+```
+
+The contents of synapse datasets include:
+
+```none
+├── Training
+│   ├── img
+│   │   ├── img0001.nii.gz
+│   │   ├── img0002.nii.gz
+│   │   ├── ...
+│   ├── label
+│   │   ├── label0001.nii.gz
+│   │   ├── label0002.nii.gz
+│   │   ├── ...
+│   ├── train.txt
+│   ├── val.txt
+```
+
+Then, use this command to convert synapse dataset.
+
+```shell
+python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
+```
+
+In our default setting, it will generate 2,211 2D images for training and 1,568 2D images for validation.
+
+Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image,
+which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).

@@ -18,6 +18,7 @@ from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
 from .stare import STAREDataset
+from .synapse import SynapseDataset
 # yapf: disable
 from .transforms import (CLAHE, AdjustGamma, BioMedical3DPad,
                          BioMedical3DRandomCrop, BioMedicalGaussianBlur,
@@ -26,9 +27,9 @@ from .transforms import (CLAHE, AdjustGamma, BioMedical3DPad,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate, Rerange,
-                         ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale)
+                         RandomCutOut, RandomMosaic, RandomRotate,
+                         RandomRotFlip, Rerange, ResizeShortestEdge,
+                         ResizeToMultiple, RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
 
 # yapf: enable
@@ -46,5 +47,6 @@ __all__ = [
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
     'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
-    'BioMedicalRandomGamma', 'BioMedical3DPad'
+    'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
+    'SynapseDataset'
 ]

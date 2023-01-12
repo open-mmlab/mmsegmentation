@@ -314,9 +314,9 @@ class RandomCrop(BaseTransform):
         # crop semantic seg
         for key in results.get('seg_fields', []):
             results[key] = self.crop(results[key], crop_bbox)
-        img_shape = img.shape
+
         results['img'] = img
-        results['img_shape'] = img_shape
+        results['img_shape'] = img.shape[:2]
         return results
 
     def __repr__(self):
@@ -862,6 +862,84 @@ class RandomCutOut(BaseTransform):
 
 
 @TRANSFORMS.register_module()
+class RandomRotFlip(BaseTransform):
+    """Rotate and flip the image & seg or just rotate the image & seg.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+
+    Args:
+        rotate_prob (float): The probability of rotate image.
+        flip_prob (float): The probability of rotate&flip image.
+        degree (float, tuple[float]): Range of degrees to select from. If
+            degree is a number instead of tuple like (min, max),
+            the range of degree will be (``-degree``, ``+degree``)
+    """
+
+    def __init__(self, rotate_prob=0.5, flip_prob=0.5, degree=(-20, 20)):
+        self.rotate_prob = rotate_prob
+        self.flip_prob = flip_prob
+        assert 0 <= rotate_prob <= 1 and 0 <= flip_prob <= 1
+        if isinstance(degree, (float, int)):
+            assert degree > 0, f'degree {degree} should be positive'
+            self.degree = (-degree, degree)
+        else:
+            self.degree = degree
+        assert len(self.degree) == 2, f'degree {self.degree} should be a ' \
+                                      f'tuple of (min, max)'
+
+    def random_rot_flip(self, results: dict) -> dict:
+        k = np.random.randint(0, 4)
+        results['img'] = np.rot90(results['img'], k)
+        for key in results.get('seg_fields', []):
+            results[key] = np.rot90(results[key], k)
+        axis = np.random.randint(0, 2)
+        results['img'] = np.flip(results['img'], axis=axis).copy()
+        for key in results.get('seg_fields', []):
+            results[key] = np.flip(results[key], axis=axis).copy()
+        return results
+
+    def random_rotate(self, results: dict) -> dict:
+        angle = np.random.uniform(min(*self.degree), max(*self.degree))
+        results['img'] = mmcv.imrotate(results['img'], angle=angle)
+        for key in results.get('seg_fields', []):
+            results[key] = mmcv.imrotate(results[key], angle=angle)
+        return results
+
+    def transform(self, results: dict) -> dict:
+        """Call function to rotate or rotate & flip image, semantic
+        segmentation maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Rotated or rotated & flipped results.
+        """
+        rotate_flag = 0
+        if random.random() < self.rotate_prob:
+            results = self.random_rotate(results)
+            rotate_flag = 1
+        if random.random() < self.flip_prob and rotate_flag == 0:
+            results = self.random_rot_flip(results)
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(rotate_prob={self.rotate_prob}, ' \
+                    f'flip_prob={self.flip_prob}, ' \
+                    f'degree={self.degree})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
 class RandomMosaic(BaseTransform):
     """Mosaic augmentation. Given 4 images, mosaic transform combines them into
     one output image. The output image is composed of the parts from each sub-
@@ -1167,7 +1245,7 @@ class GenerateEdge(BaseTransform):
         - gt_seg_map
 
     Added Keys:
-        - gt_edge (np.ndarray, uint8): The edge annotation generated from the
+        - gt_edge_map (np.ndarray, uint8): The edge annotation generated from the
             seg map by extracting border between different semantics.
 
     Args:
@@ -1218,7 +1296,7 @@ class GenerateEdge(BaseTransform):
                                            (self.edge_width, self.edge_width))
         edge = cv2.dilate(edge, kernel)
 
-        results['gt_edge'] = edge
+        results['gt_edge_map'] = edge
         results['edge_width'] = self.edge_width
 
         return results

@@ -184,6 +184,68 @@ def test_flip():
     assert np.equal(original_seg, results['gt_semantic_seg']).all()
 
 
+def test_random_rotate_flip():
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', flip_prob=1.5)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', rotate_prob=1.5)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', degree=[20, 20, 20])
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', degree=-20)
+        TRANSFORMS.build(transform)
+
+    transform = dict(
+        type='RandomRotFlip', flip_prob=1.0, rotate_prob=0, degree=20)
+    rot_flip_module = TRANSFORMS.build(transform)
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_synapse_dataset/img_dir/case0005_slice000.jpg'),
+        'color')
+    original_img = copy.deepcopy(img)
+    seg = np.array(
+        Image.open(
+            osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_synapse_dataset/ann_dir/case0005_slice000.png')
+        ))
+    original_seg = copy.deepcopy(seg)
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    result_flip = rot_flip_module(results)
+    assert original_img.shape == result_flip['img'].shape
+    assert original_seg.shape == result_flip['gt_semantic_seg'].shape
+
+    transform = dict(
+        type='RandomRotFlip', flip_prob=0, rotate_prob=1.0, degree=20)
+    rot_flip_module = TRANSFORMS.build(transform)
+
+    result_rotate = rot_flip_module(results)
+    assert original_img.shape == result_rotate['img'].shape
+    assert original_seg.shape == result_rotate['gt_semantic_seg'].shape
+
+    assert str(transform) == "{'type': 'RandomRotFlip'," \
+                             " 'flip_prob': 0," \
+                             " 'rotate_prob': 1.0," \
+                             " 'degree': 20}"
+
+
 def test_pad():
     # test assertion if both size_divisor and size is None
     with pytest.raises(AssertionError):
@@ -259,7 +321,7 @@ def test_random_crop():
 
     results = pipeline(results)
     assert results['img'].shape[:2] == (h - 20, w - 20)
-    assert results['img_shape'][:2] == (h - 20, w - 20)
+    assert results['img_shape'] == (h - 20, w - 20)
     assert results['gt_semantic_seg'].shape[:2] == (h - 20, w - 20)
 
 
@@ -730,7 +792,7 @@ def test_generate_edge():
     results['img_shape'] = seg_map.shape
 
     results = transform(results)
-    assert np.all(results['gt_edge'] == np.array([
+    assert np.all(results['gt_edge_map'] == np.array([
         [0, 0, 0, 1, 0],
         [0, 0, 1, 1, 1],
         [0, 1, 1, 1, 0],
