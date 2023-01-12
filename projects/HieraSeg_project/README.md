@@ -24,7 +24,7 @@ preparing `cityscapes` dataset like this [structure](https://github.com/open-mml
 
 ### Testing commands
 
-please put [`deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth`](https://github.com/qhanghu/HSSN_pytorch/releases/download/1.0/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth) to `mmsegmentation/checkpoints`
+please put [`hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth`](https://download.openmmlab.com/mmsegmentation/v0.5/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth) to `mmsegmentation/checkpoints`
 
 #### Multi-GPUs Test
 
@@ -36,7 +36,7 @@ bash tools/dist_test.sh [configs] [model weights] [number of gpu]  --tta
 #### Example
 
 ```shell
-bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80l_cityscapes-512x1024.py checkpoints/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_hiera_triplet.pth 2 --tta
+bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80l_cityscapes-512x1024.py checkpoints/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth 2 --tta
 ```
 
 ## Results
