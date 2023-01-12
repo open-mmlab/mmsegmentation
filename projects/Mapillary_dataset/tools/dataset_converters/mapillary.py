@@ -6,6 +6,7 @@ import os.path as osp
 
 import mmcv
 import numpy as np
+import torch
 from mmengine.utils import ProgressBar, mkdir_or_exist
 
 
@@ -17,6 +18,37 @@ def parse_args():
     parser.add_argument('-o', '--out_dir', help='output path')
     args = parser.parse_args()
     return args
+
+
+def mapillary_colormap2label(COLORMAP: np.ndarray) -> list:
+    """Create a `list` shaped (256^3, 1), convert each color palette to a
+    number, which can use to find the correct label value.
+
+    For example labels 0--Bird--[165, 42, 42]
+    (165*256 + 42) * 256 + 42 = 10824234 (index)
+    colormap2label[10824234] = 0
+    In converting, if a RGB pixel value is [165, 42, 42],
+    through colormap2label[10824234]-->can quickly find
+    this labels value is 0.
+    Through matrix multiply to compute a img very quickly.
+
+    Args:
+        COLORMAP: (np.ndarray) Mapillary Vistas Dataset palette
+
+        return: (list) a list
+    """
+    colormap2label = torch.zeros(256**3, dtype=torch.long)
+    for i, colormap in enumerate(COLORMAP):
+        colormap2label[(colormap[0] * 256 + colormap[1]) * 256 +
+                       colormap[2]] = i
+    return colormap2label
+
+
+def mapillary_masklabel(RGB_label: np.ndarray, colormap2label: list) -> int:
+    colormap = RGB_label.astype('int32')
+    idx = (colormap[:, :, 0] * 256 + colormap[:, :, 1]) * 256 + colormap[:, :,
+                                                                         2]
+    return colormap2label[idx]
 
 
 def RGB2Mask(image_path: str, dataset_version: str) -> None:
@@ -33,8 +65,7 @@ def RGB2Mask(image_path: str, dataset_version: str) -> None:
         image_path: image absolute path (str)
         dataset_version: v1.2 or v2.0 to choose color_map (str).
     """
-    image = mmcv.imread(image_path)
-    h, w, c = image.shape
+    RGB_img = mmcv.imread(image_path)
 
     color_map_v1_2 = np.array([[165, 42, 42], [0, 192, 0], [196, 196, 196],
                                [190, 153, 153], [180, 165, 180],
@@ -118,17 +149,11 @@ def RGB2Mask(image_path: str, dataset_version: str) -> None:
     elif dataset_version == 'v2.0':
         color_map = color_map_v2_0
 
-    flatten_v = np.matmul(
-        image.reshape(-1, c),
-        np.array([2, 3, 4]).reshape(3, 1))
-    out = np.zeros_like(flatten_v)
-    for idx, class_color in enumerate(color_map):
-        value_idx = np.matmul(class_color, np.array([2, 3, 4]).reshape(3, 1))
-        out[flatten_v == value_idx] = idx
-    image = out.reshape(h, w)
-
+    colormap2label = mapillary_colormap2label(color_map)
+    masks_label = mapillary_masklabel(RGB_img, colormap2label).numpy()
     mmcv.imwrite(
-        image.astype(np.uint8), image_path.replace('labels', 'labels_mask'))
+        masks_label.astype(np.uint8),
+        image_path.replace('labels', 'labels_mask'))
 
 
 def main():
