@@ -56,9 +56,7 @@ def losses_hiera(predictions,
     targets_top = F.one_hot(targets_top, num_classes=7).permute(0, 3, 1, 2)
 
     MCMA = predictions[:, :num_classes, :, :]
-    MCMB = torch.zeros((b, 7, h, w),
-                       dtype=predictions.dtype,
-                       device=predictions.device)
+    MCMB = torch.zeros((b, 7, h, w)).to(predictions)
     for ii in range(7):
         MCMB[:, ii:ii + 1, :, :] = torch.max(
             torch.cat([
@@ -152,12 +150,15 @@ def losses_hiera_focal(predictions,
 
 @LOSSES.register_module()
 class HieraTripletLossCityscape(nn.Module):
+    """Modified from https://github.com/qhanghu/HSSN_pytorch/blob/main/mmseg/mo
+    dels/losses/hiera_triplet_loss_cityscape.py # noqa."""
 
     def __init__(self, num_classes, use_sigmoid=False, loss_weight=1.0):
         super().__init__()
         self.num_classes = num_classes
         self.loss_weight = loss_weight
-        self.treetripletloss = TreeTripletLoss(19, hiera_map, hiera_index)
+        self.treetripletloss = TreeTripletLoss(num_classes, hiera_map,
+                                               hiera_index)
         self.ce = CrossEntropyLoss()
 
     def forward(self,
