@@ -9,7 +9,7 @@ from mmseg.models.builder import LOSSES
 @LOSSES.register_module()
 class TreeTripletLoss(nn.Module):
     """TreeTripletLoss. Modified from https://github.com/qhanghu/HSSN_pytorch/b
-    lob/main/mmseg/models/losses/tree_triplet_loss.py # noqa.
+    lob/main/mmseg/models/losses/tree_triplet_loss.py.
 
     Args:
         num_classes (int): Number of categories.
@@ -20,8 +20,10 @@ class TreeTripletLoss(nn.Module):
 
     Examples:
         >>> num_classes = 19
-        >>> hiera_map = [0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 6, 6, 6, 6, 6, 6]
-        >>> hiera_index = [[0, 2], [2, 5], [5, 8], [8, 10], [10, 11], [11, 13], [13, 19]]
+        >>> hiera_map = [
+                0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 6, 6, 6, 6, 6, 6]
+        >>> hiera_index = [
+                0, 2], [2, 5], [5, 8], [8, 10], [10, 11], [11, 13], [13, 19]]
     """
 
     def __init__(self, num_classes, hiera_map, hiera_index, ignore_index=255):

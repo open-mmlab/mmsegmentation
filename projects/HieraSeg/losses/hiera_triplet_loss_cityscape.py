@@ -151,7 +151,7 @@ def losses_hiera_focal(predictions,
 @LOSSES.register_module()
 class HieraTripletLossCityscape(nn.Module):
     """Modified from https://github.com/qhanghu/HSSN_pytorch/blob/main/mmseg/mo
-    dels/losses/hiera_triplet_loss_cityscape.py # noqa."""
+    dels/losses/hiera_triplet_loss_cityscape.py."""
 
     def __init__(self, num_classes, use_sigmoid=False, loss_weight=1.0):
         super().__init__()
