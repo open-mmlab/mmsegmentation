@@ -602,8 +602,7 @@ OCCLUDER_DATASET.IMG_DIR "path/to/jw93/mmsegmentation/data_materials/DTD/images"
 
 ### ImageNetS
 
-The ImageNet-S dataset is for [Large-scale unsupervised semantic segmentation](https://arxiv.org/abs/2106.03149).
-In segmentation, we provide codes for semi-supervised training of large-scale semantic segmentation on the ImageNet-S dataset, with 50k high-quality semantic segmentation annotations.
+The ImageNet-S dataset is for [Large-scale unsupervised/semi-supervised semantic segmentation](https://arxiv.org/abs/2106.03149).
 
 The images and annotations are available on [ImageNet-S](https://github.com/LUSSeg/ImageNet-S#imagenet-s-dataset-preparation).
 

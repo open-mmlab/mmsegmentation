@@ -339,11 +339,9 @@ python tools/convert_datasets/isaid.py /path/to/iSAID
 
 ### ImageNetS
 
-ImageNet-S是用于[大规模无监督语义分割](https://arxiv.org/abs/2106.03149)任务的数据集。
+ImageNet-S是用于[大规模无监督/半监督语义分割](https://arxiv.org/abs/2106.03149)任务的数据集。
 
-利用五万张高质量的语义分割标注，我们提供了用于ImageNet-S数据集的半监督训练代码。
-
-ImageNet-S数据集可在[ImageNet-S](https://github.com/LUSSeg/ImageNet-S#imagenet-s-dataset-preparation)处获取。
+ImageNet-S数据集可在[ImageNet-S](https://github.com/LUSSeg/ImageNet-S#imagenet-s-dataset-preparation)获取。
 
 ```
 │   ├── ImageNetS
