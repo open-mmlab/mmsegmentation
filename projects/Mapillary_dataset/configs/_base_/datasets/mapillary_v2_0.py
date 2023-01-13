@@ -48,7 +48,8 @@ train_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         data_prefix=dict(
-            img_path='training/images', seg_map_path='training/v2.0/labels'),
+            img_path='training/images',
+            seg_map_path='training/v2.0/labels_mask'),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -60,7 +61,7 @@ val_dataloader = dict(
         data_root=data_root,
         data_prefix=dict(
             img_path='validation/images',
-            seg_map_path='validation/v2.0/labels'),
+            seg_map_path='validation/v2.0/labels_mask'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
