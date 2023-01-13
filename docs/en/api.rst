@@ -89,11 +89,6 @@ sampler
 .. automodule:: mmseg.structures.sampler
     :members:
 
-mmseg.testing
-----------------
-.. automodule:: mmseg.testing
-    :members:
-
 mmseg.visualization
 --------------------
 .. automodule:: mmseg.visualization
