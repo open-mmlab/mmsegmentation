@@ -66,6 +66,8 @@ def RGB2Mask(image_path: str, dataset_version: str) -> None:
         dataset_version: v1.2 or v2.0 to choose color_map (str).
     """
     RGB_img = mmcv.imread(image_path)
+    print('---------------------')
+    print(RGB_img.shape)
 
     color_map_v1_2 = np.array([[165, 42, 42], [0, 192, 0], [196, 196, 196],
                                [190, 153, 153], [180, 165, 180],
