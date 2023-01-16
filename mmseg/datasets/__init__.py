@@ -11,6 +11,8 @@ from .dataset_wrappers import (ConcatDataset, MultiImageMixDataset,
 from .drive import DRIVEDataset
 from .face import FaceOccludedDataset
 from .hrf import HRFDataset
+from .imagenets import (ImageNetSDataset, LoadImageNetSAnnotations,
+                        LoadImageNetSImageFromFile)
 from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
 from .loveda import LoveDADataset
@@ -27,5 +29,7 @@ __all__ = [
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
     'COCOStuffDataset', 'LoveDADataset', 'MultiImageMixDataset',
-    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset', 'FaceOccludedDataset'
+    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset', 'FaceOccludedDataset',
+    'ImageNetSDataset', 'LoadImageNetSAnnotations',
+    'LoadImageNetSImageFromFile'
 ]

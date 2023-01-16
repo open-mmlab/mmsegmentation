@@ -155,6 +155,25 @@ mmsegmentation
 │   │   │   ├── img
 │   │   │   ├── mask
 │   │   │   ├── split
+│   ├── ImageNetS
+│   │   ├── ImageNetS919
+│   │   │   ├── train-semi
+│   │   │   ├── train-semi-segmentation
+│   │   │   ├── validation
+│   │   │   ├── validation-segmentation
+│   │   │   ├── test
+│   │   ├── ImageNetS300
+│   │   │   ├── train-semi
+│   │   │   ├── train-semi-segmentation
+│   │   │   ├── validation
+│   │   │   ├── validation-segmentation
+│   │   │   ├── test
+│   │   ├── ImageNetS50
+│   │   │   ├── train-semi
+│   │   │   ├── train-semi-segmentation
+│   │   │   ├── validation
+│   │   │   ├── validation-segmentation
+│   │   │   ├── test
 ```
 
 ### Cityscapes
@@ -579,4 +598,32 @@ OCCLUDER_DATASET.IMG_DIR "path/to/jw93/mmsegmentation/data_materials/DTD/images"
 
 ```python
 
+```
+
+### ImageNetS
+
+The ImageNet-S dataset is for [Large-scale unsupervised/semi-supervised semantic segmentation](https://arxiv.org/abs/2106.03149).
+
+The images and annotations are available on [ImageNet-S](https://github.com/LUSSeg/ImageNet-S#imagenet-s-dataset-preparation).
+
+```
+│   ├── ImageNetS
+│   │   ├── ImageNetS919
+│   │   │   ├── train-semi
+│   │   │   ├── train-semi-segmentation
+│   │   │   ├── validation
+│   │   │   ├── validation-segmentation
+│   │   │   ├── test
+│   │   ├── ImageNetS300
+│   │   │   ├── train-semi
+│   │   │   ├── train-semi-segmentation
+│   │   │   ├── validation
+│   │   │   ├── validation-segmentation
+│   │   │   ├── test
+│   │   ├── ImageNetS50
+│   │   │   ├── train-semi
+│   │   │   ├── train-semi-segmentation
+│   │   │   ├── validation
+│   │   │   ├── validation-segmentation
+│   │   │   ├── test
 ```
