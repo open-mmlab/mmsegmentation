@@ -321,7 +321,7 @@ def test_random_crop():
 
     results = pipeline(results)
     assert results['img'].shape[:2] == (h - 20, w - 20)
-    assert results['img_shape'][:2] == (h - 20, w - 20)
+    assert results['img_shape'] == (h - 20, w - 20)
     assert results['gt_semantic_seg'].shape[:2] == (h - 20, w - 20)
 
 
@@ -792,7 +792,7 @@ def test_generate_edge():
     results['img_shape'] = seg_map.shape
 
     results = transform(results)
-    assert np.all(results['gt_edge'] == np.array([
+    assert np.all(results['gt_edge_map'] == np.array([
         [0, 0, 0, 1, 0],
         [0, 0, 1, 1, 1],
         [0, 1, 1, 1, 0],
