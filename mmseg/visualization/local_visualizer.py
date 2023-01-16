@@ -68,11 +68,11 @@ class SegLocalVisualizer(Visualizer):
         # it will override the default value.
         if dataset_name is None:
             dataset_name = 'cityscapes'
-        self.classes = classes if classes else get_classes(dataset_name)
-        self.palette = palette if palette else get_palette(dataset_name)
+        classes = classes if classes else get_classes(dataset_name)
+        palette = palette if palette else get_palette(dataset_name)
         assert len(classes) == len(
             palette), 'The length of classes should be equal to palette'
-        self.dataset_meta: dict = {classes: classes, palette: palette}
+        self.dataset_meta: dict = {'classes': classes, 'palette': palette}
 
     def _draw_sem_seg(self, image: np.ndarray, sem_seg: PixelData,
                       classes: Optional[Tuple[str]],
