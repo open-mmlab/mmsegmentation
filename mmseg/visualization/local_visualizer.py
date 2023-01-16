@@ -1,17 +1,15 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-import logging
+# Copyright (c) OpenMMLab. All rights reserved.g
 from typing import Dict, List, Optional, Tuple, Union
 
 import mmcv
 import numpy as np
 from mmengine.dist import master_only
-from mmengine.logging import print_log
 from mmengine.structures import PixelData
 from mmengine.visualization import Visualizer
 
 from mmseg.registry import VISUALIZERS
 from mmseg.structures import SegDataSample
-from mmseg.utils import dataset_aliases, get_classes, get_palette
+from mmseg.utils import get_classes, get_palette
 
 
 @VISUALIZERS.register_module()
@@ -60,6 +58,7 @@ class SegLocalVisualizer(Visualizer):
                  save_dir: Optional[str] = None,
                  palette: Optional[Union[str, List]] = None,
                  classes: Optional[Union[str, List]] = None,
+                 dataset_name: Optional[str] = None,
                  alpha: float = 0.8,
                  **kwargs):
         super().__init__(name, image, vis_backends, save_dir, **kwargs)
@@ -67,52 +66,13 @@ class SegLocalVisualizer(Visualizer):
         # Set default value. When calling
         # `SegLocalVisualizer().dataset_meta=xxx`,
         # it will override the default value.
-        classes = self._init_classes(classes)
-        palette = self._init_palette(palette)
-        if classes is not None and palette is not None:
-            assert len(classes) == len(
-                palette), 'The length of classes should be equal to palette'
+        if dataset_name is None:
+            dataset_name = 'cityscapes'
+        self.classes = classes if classes else get_classes(dataset_name)
+        self.palette = palette if palette else get_palette(dataset_name)
+        assert len(classes) == len(
+            palette), 'The length of classes should be equal to palette'
         self.dataset_meta: dict = {classes: classes, palette: palette}
-
-    def _init_classes(
-            self, classes: Optional[Union[str, List]]) -> Union[List, None]:
-        if classes is None:
-            classes = None
-        elif isinstance(classes, str):
-            try:
-                classes = get_classes(classes)
-            except ValueError:
-                print_log(
-                    f'Unrecognized dataset: {classes}, '
-                    f'expect classes in {dataset_aliases}',
-                    logger='current',
-                    level=logging.ERROR)
-                exit(-1)
-        elif isinstance(classes, List):
-            classes = classes
-        else:
-            raise TypeError(f'Unsupported classes type: {type(classes)}')
-        return classes
-
-    def _init_palette(
-            self, palette: Optional[Union[str, List]]) -> Union[List, None]:
-        if palette is None:
-            palette = None
-        elif isinstance(palette, str):
-            try:
-                palette = get_palette(palette)
-            except ValueError:
-                print_log(
-                    f'Unrecognized dataset: {palette}, '
-                    f'expect palette in {dataset_aliases}',
-                    logger='current',
-                    level=logging.ERROR)
-                exit(-1)
-        elif isinstance(palette, List):
-            palette = palette
-        else:
-            raise TypeError(f'Unsupported palette type: {type(palette)}')
-        return palette
 
     def _draw_sem_seg(self, image: np.ndarray, sem_seg: PixelData,
                       classes: Optional[Tuple[str]],
