@@ -46,25 +46,25 @@ preparing `Mapillary Vistas Dataset` dataset like this [structure](https://githu
   |   │   │   │   └── polygons
 ```
 
-### Training commands with `deeplabv3plus_r18-d8_4xb2-80k_mapillay-512x1024.py`
+### Training commands with `deeplabv3plus_r101-d8_4xb2-240k_mapillay-512x1024.py`
 
 ```bash
 #Dataset train commands
 #at `mmsegmentation` folder
-bash tools/dist_train.sh projects/Mapillary_dataset/configs/deeplabv3plus_r101-d8_4xb2-80k_mapillay-512x1024.py 4
+bash tools/dist_train.sh projects/Mapillary_dataset/configs/deeplabv3plus_r101-d8_4xb2-240k_mapillay-512x1024.py 4
 ```
 
 ## Checklist
 
-- [x] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
+- [ ] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
 
-  - [x] Finish the code
+  - [ ] Finish the code
 
-  - [x] Basic docstrings & proper citation
+  - [ ] Basic docstrings & proper citation
 
-  - [x] Test-time correctness
+  - [ ] Test-time correctness
 
-  - [x] A full README
+  - [ ] A full README
 
 - [ ] Milestone 2: Indicates a successful model implementation.
 
