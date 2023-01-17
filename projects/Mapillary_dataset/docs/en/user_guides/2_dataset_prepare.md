@@ -48,7 +48,7 @@ mmsegmentation
   unzip -d mapillary An-ZjB1Zm61yAZG0ozTymz8I8NqI4x0MrYrh26dq7kPgfu8vf9ImrdaOAVOFYbJ2pNAgUnVGBmbue9lTgdBOb5BbKXIpFs0fpYWqACbrQDChAA2fdX0zS9PcHu7fY8c-FOvyBVxPNYNFQuM.zip
   ```
 - After unzip, you will get Mapillary Vistas Dataset like this structure.
-  ```bash
+  ```none
   ├── data
   │   ├── mapillary
   │   │   ├── training
@@ -77,8 +77,9 @@ mmsegmentation
   ```bash
   # --nproc optional, default 1, whether use multi-progress
   # --version optional, 'v1.2', 'v2.0','all', default 'all', choose convert which version labels
-
-  python tools/dataset_converters/mapillary.py mmsegmentation/data/mapillary --nproc 8 --version all
+  # run this command at 'mmsegmentation/projects/Mapillary_dataset' folder
+  cd mmsegmentation/projects/Mapillary_dataset
+  python tools/dataset_converters/mapillary.py ../../data/mapillary --nproc 8 --version all
   ```
   After then, you will get this structure
   ```none

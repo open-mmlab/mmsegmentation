@@ -50,6 +50,7 @@ preparing `Mapillary Vistas Dataset` dataset like this [structure](https://githu
 
 ```bash
 #Dataset train commands
+#at `mmsegmentation` folder
 bash tools/dist_train.sh projects/Mapillary_dataset/configs/deeplabv3plus_r18-d8_4xb2-80k_mapillay-512x1024.py 4
 ```
 
