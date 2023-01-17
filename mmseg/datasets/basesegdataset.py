@@ -47,7 +47,7 @@ class BaseSegDataset(BaseDataset):
         data_root (str, optional): The root directory for ``data_prefix`` and
             ``ann_file``. Defaults to None.
         data_prefix (dict, optional): Prefix for training data. Defaults to
-            dict(img_path=None, seg_path=None).
+            dict(img_path=None, seg_map_path=None).
         img_suffix (str): Suffix of images. Default: '.jpg'
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'
         filter_cfg (dict, optional): Config for filter data. Defaults to None.
