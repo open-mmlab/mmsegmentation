@@ -6,7 +6,7 @@ The loaded data information has two categories: (1) meta information which is or
 the path of dataset images and labels.
 Next we would introduce some commonly used interfaces in MMSegmentation 1.x dataset class, methods of loading data information and modifying dataset classes in base dataset class, and relationship between dataset and the data transform pipeline.
 
-## Commonly Used Interfaces
+## Commonly Interfaces
 
 Take Cityscapes for example, if you want to run the example below, please download and [preprocess](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
 Cityscapes dataset in `data` directory first.
@@ -31,7 +31,7 @@ train_pipeline = [
 dataset = CityscapesDataset(data_root=data_root, data_prefix=data_prefix, test_mode=False, pipeline=train_pipeline)
 ```
 
-Check out the length of training set:
+Get the length of training set:
 
 ```python
 print(len(dataset))
@@ -39,8 +39,8 @@ print(len(dataset))
 2975
 ```
 
-Acquire data information, the type of data information is `dict`. It includes path of images in `'img_path'` field and path of segmentation labels in `'seg_map_path'` field,
-it also has `'label_map'` field and `'reduce_zero_label'` filed (their functions would be introduced in the next section) and `'seg_fields'` field for saving label which have been loaded, `'sample_idx'` field for index of current sample.
+Get data information: The type of data information is `dict` which includes path of images in `'img_path'` field and path of segmentation labels in `'seg_map_path'` field,
+and has `'label_map'` field and `'reduce_zero_label'` filed (their functions would be introduced in the next section) and `'seg_fields'` field for saving label which have been loaded, `'sample_idx'` field for index of current sample.
 
 ```python
 # Acquire data information of first sample in dataset
@@ -54,8 +54,7 @@ print(dataset.get_data_info(0))
  'sample_idx': 0}
 ```
 
-Acquire dataset meta information, the type of MMSegmentation meta information is also `dict`. It includes `'classes'` field for dataset classes and `'palette'` field for corresponding colors in visualization.
-It also has `'label_map'` field and `'reduce_zero_label'` filed.
+Get dataset meta information: the type of MMSegmentation meta information is also `dict`, which includes `'classes'` field for dataset classes and `'palette'` field for corresponding colors in visualization, and has `'label_map'` field and `'reduce_zero_label'` filed.
 
 ```python
 print(dataset.metainfo)
@@ -174,9 +173,9 @@ print(dataset[0])
 
 ## BaseSegDataset
 
-Because basic functions of every dataset class in MMSegmentation all include loading dataset information after [preprocessing](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2) and sending data into data transform pipeline,
-thus the common interface is refactored as [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) in MMSegmentation. It inherits
-[`BaseDataset` of MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md) and follows unified initialization process of OpenMMLab. It supports the highly effective interior storing format, some functions like
+Every dataset class in MMSegmentation needs to load dataset information after [preprocessing](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2) and send data into data transform pipeline,
+thus related common interfaces are unified in [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) of MMSegmentation.
+It inherits [`BaseDataset` of MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md) and follows unified initialization process of OpenMMLab. It supports the highly effective interior storing format, some functions like
 dataset concatenation and repeatedly sampling. In MMSegmentation `BaseSegDataset`, the **method of loading data information** (`load_data_list`) is redefined and adds new `get_label_map` method to **modify dataset classes information**.
 
 ### Loading Dataset Information
