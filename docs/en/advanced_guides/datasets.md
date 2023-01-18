@@ -6,10 +6,10 @@ The loaded data information has two categories: (1) meta information which is or
 the path of dataset images and labels.
 Next we would introduce some commonly used interfaces in MMSegmentation 1.x dataset class, methods of loading data information and modifying dataset classes in base dataset class, and relationship between dataset and the data transform pipeline.
 
-## Commonly Interfaces
+## Common Interfaces
 
-Take Cityscapes for example, if you want to run the example below, please download and [preprocess](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
-Cityscapes dataset in `data` directory first.
+Take Cityscapes as an example, if you want to run the example, please download and [preprocess](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
+Cityscapes dataset in `data` directory first, before running the demo code:
 
 Instantiate Cityscapes training dataset:
 
@@ -173,7 +173,7 @@ print(dataset[0])
 
 ## BaseSegDataset
 
-Every dataset class in MMSegmentation needs to load dataset information after [preprocessing](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2) and send data into data transform pipeline,
+Every dataset class in MMSegmentation needs to send data into data transform pipeline and load dataset information after [preprocessing](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2),
 thus related common interfaces are unified in [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) of MMSegmentation.
 It inherits [`BaseDataset` of MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md) and follows unified initialization process of OpenMMLab. It supports the highly effective interior storing format, some functions like
 dataset concatenation and repeatedly sampling. In MMSegmentation `BaseSegDataset`, the **method of loading data information** (`load_data_list`) is redefined and adds new `get_label_map` method to **modify dataset classes information**.
@@ -182,8 +182,9 @@ dataset concatenation and repeatedly sampling. In MMSegmentation `BaseSegDataset
 
 The loaded data information includes the path of images samples and annotations samples, the detailed implementation could be found in
 [`load_data_list`](https://github.com/open-mmlab/mmsegmentation/blob/163277bfe0fa8fefb63ee5137917fafada1b301c/mmseg/datasets/basesegdataset.py#L231) of `BaseSegDataset` in MMSegmentation.
-There are two main methods to acquire the path of images and labels, if the dataset directory structure organized as below,
-the [`load_data_list`](https://github.com/open-mmlab/mmsegmentation/blob/163277bfe0fa8fefb63ee5137917fafada1b301c/mmseg/datasets/basesegdataset.py#L231) would be parsed by path and suffix of data:
+There are two main methods to acquire the path of images and labels:
+
+1. If the dataset directory structure organized as below, the [`load_data_list`](https://github.com/open-mmlab/mmsegmentation/blob/163277bfe0fa8fefb63ee5137917fafada1b301c/mmseg/datasets/basesegdataset.py#L231) would be parsed by path and suffix of data:
 
 ```
 ├── data
@@ -235,8 +236,8 @@ ADE20KDataset(data_root = 'data/ade/ADEChallengeData2016',
     reduce_zero_label=True)
 ```
 
-If dataset annotation files available, data information would be loaded by annotation files of input dataset when instantiating dataset.
-Take PascalContext dataset instance for example, its input annotation file is:
+2. If dataset annotation files available, data information would be loaded by annotation files of input dataset when instantiating dataset.
+   Take PascalContext dataset instance for example, its input annotation file is:
 
 ```python
 2008_000008
@@ -344,8 +345,8 @@ for old_id, new_id in results['label_map'].items():
 ```
 
 - Modified by `reduce_zero_label`
-  In common case of ignoring label 0, subclass of `BaseSegDataset` can implement whether to ignore label 0 by passing `reduce_zero_label` (default to `False`) argument.
-  When `reduce_zero_label` is `True` (such as ADE20K dataset), label 0 in segmentation annotations would be set as 255 (MMSegmentation would ignore label 255 in calculating loss) and index of other labels would minus 1:
+  To ignore label 0 (such as ADE20K dataset), we can use `reduce_zero_label` (default to `False`) argument of BaseSegDataset and its subclasses.
+  When `reduce_zero_label` is `True`, label 0 in segmentation annotations would be set as 255 (models of MMSegmentation would ignore label 255 in calculating loss) and indices of other labels will minus 1:
 
 ```python
 gt_semantic_seg[gt_semantic_seg == 0] = 255
@@ -355,7 +356,7 @@ gt_semantic_seg[gt_semantic_seg == 254] = 255
 
 ## Dataset and Data Transform Pipeline
 
-Commonly used interface example shows that the data transform pipeline argument `pipeline` and return value of dataset `__getitem__` method are both defined in input argument.
+The example of the Common Interface section shows that the data transform pipeline argument `pipeline` and return value of dataset `__getitem__` method are both defined in input argument.
 If dataset input argument does not define pipeline, it is the same as return value of `get_data_info` method.
 
 ```python
