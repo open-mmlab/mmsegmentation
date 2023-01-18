@@ -173,7 +173,7 @@ print(dataset[0])
 
 ## BaseSegDataset
 
-Every dataset class in MMSegmentation needs to send data into data transform pipeline and load dataset information after [preprocessing](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2),
+Every dataset class in MMSegmentation needs to send data into data transform pipeline and implement [preprocessing](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md#the-initialization-process-of-the-basedataset) for data preparation,
 thus related common interfaces are unified in [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) of MMSegmentation.
 It inherits [`BaseDataset` of MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md) and follows unified initialization process of OpenMMLab. It supports the highly effective interior storing format, some functions like
 dataset concatenation and repeatedly sampling. In MMSegmentation `BaseSegDataset`, the **method of loading data information** (`load_data_list`) is redefined and adds new `get_label_map` method to **modify dataset classes information**.
