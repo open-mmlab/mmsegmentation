@@ -29,7 +29,7 @@
 [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 
-Documentation: https://mmsegmentation.readthedocs.io/en/1.x/
+Documentation: <https://mmsegmentation.readthedocs.io/en/1.x/>
 
 English | [简体中文](README_zh-CN.md)
 
@@ -62,11 +62,11 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc1 was released in 2/11/2022.
+v1.0.0rc3 was released in 31/12/2022.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Support PoolFormer ([#2191](https://github.com/open-mmlab/mmsegmentation/pull/2191))
-- Add Decathlon dataset ([#2227](https://github.com/open-mmlab/mmsegmentation/pull/2227))
+- Support test time augmentation ([#2184](https://github.com/open-mmlab/mmsegmentation/pull/2184))
+- Add 'Projects/' folder and the first example project ([#2412](https://github.com/open-mmlab/mmsegmentation/pull/2412))
 
 ## Installation
 
@@ -139,6 +139,8 @@ Supported methods:
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
+- [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
+- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 
 Supported datasets:
 

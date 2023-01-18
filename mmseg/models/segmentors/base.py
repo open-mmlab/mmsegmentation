@@ -124,11 +124,6 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
         """
         pass
 
-    @abstractmethod
-    def aug_test(self, batch_inputs, batch_img_metas):
-        """Placeholder for augmentation test."""
-        pass
-
     def postprocess_result(self,
                            seg_logits: Tensor,
                            data_samples: OptSampleList = None) -> list:
@@ -159,12 +154,25 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             if not only_prediction:
                 img_meta = data_samples[i].metainfo
                 # remove padding area
-                padding_left, padding_right, padding_top, padding_bottom = \
-                    img_meta.get('padding_size', [0]*4)
+                if 'img_padding_size' not in img_meta:
+                    padding_size = img_meta.get('padding_size', [0] * 4)
+                else:
+                    padding_size = img_meta['img_padding_size']
+                padding_left, padding_right, padding_top, padding_bottom =\
+                    padding_size
                 # i_seg_logits shape is 1, C, H, W after remove padding
                 i_seg_logits = seg_logits[i:i + 1, :,
                                           padding_top:H - padding_bottom,
                                           padding_left:W - padding_right]
+
+                flip = img_meta.get('flip', None)
+                if flip:
+                    flip_direction = img_meta.get('flip_direction', None)
+                    assert flip_direction in ['horizontal', 'vertical']
+                    if flip_direction == 'horizontal':
+                        i_seg_logits = i_seg_logits.flip(dims=(3, ))
+                    else:
+                        i_seg_logits = i_seg_logits.flip(dims=(2, ))
 
                 # resize as original shape
                 i_seg_logits = resize(

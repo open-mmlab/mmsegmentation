@@ -6,31 +6,33 @@ We list some common troubles faced by many users and their corresponding solutio
 
 The compatible MMSegmentation and MMCV versions are as below. Please install the correct version of MMCV to avoid installation issues.
 
-| MMSegmentation version |        MMCV version         | MMClassification version |
-| :--------------------: | :-------------------------: | :----------------------: |
-|        1.0.0rc1        |      mmcv >= 2.0.0rc1       |     mmcls>=1.0.0rc0      |
-|        1.0.0rc0        |      mmcv >= 2.0.0rc1       |     mmcls>=1.0.0rc0      |
-|         master         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
-|         0.24.1         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
-|         0.23.0         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
-|         0.22.0         | mmcv-full>=1.4.4, \<=1.6.0  | mmcls>=0.20.1, \<=1.0.0  |
-|         0.21.1         | mmcv-full>=1.4.4, \<=1.6.0  |       Not required       |
-|         0.20.2         | mmcv-full>=1.3.13, \<=1.6.0 |       Not required       |
-|         0.19.0         | mmcv-full>=1.3.13, \<1.3.17 |       Not required       |
-|         0.18.0         | mmcv-full>=1.3.13, \<1.3.17 |       Not required       |
-|         0.17.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
-|         0.16.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
-|         0.15.0         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
-|         0.14.1         | mmcv-full>=1.3.7, \<1.3.17  |       Not required       |
-|         0.14.0         |  mmcv-full>=1.3.1, \<1.3.2  |       Not required       |
-|         0.13.0         |  mmcv-full>=1.3.1, \<1.3.2  |       Not required       |
-|         0.12.0         |  mmcv-full>=1.1.4, \<1.3.2  |       Not required       |
-|         0.11.0         |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
-|         0.10.0         |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
-|         0.9.0          |  mmcv-full>=1.1.4, \<1.3.0  |       Not required       |
-|         0.8.0          |  mmcv-full>=1.1.4, \<1.2.0  |       Not required       |
-|         0.7.0          |  mmcv-full>=1.1.2, \<1.2.0  |       Not required       |
-|         0.6.0          |  mmcv-full>=1.1.2, \<1.2.0  |       Not required       |
+| MMSegmentation version |        MMCV version         | MMClassification (optional) version | MMDetection (optional) version |
+| :--------------------: | :-------------------------: | :---------------------------------: | :----------------------------: |
+|        1.0.0rc3        |      mmcv >= 2.0.0rc3       |           mmcls>=1.0.0rc0           |        mmdet>=3.0.0rc4         |
+|        1.0.0rc2        |      mmcv >= 2.0.0rc3       |           mmcls>=1.0.0rc0           |        mmdet>=3.0.0rc4         |
+|        1.0.0rc1        |      mmcv >= 2.0.0rc1       |           mmcls>=1.0.0rc0           |          Not required          |
+|        1.0.0rc0        |      mmcv >= 2.0.0rc1       |           mmcls>=1.0.0rc0           |          Not required          |
+|         master         | mmcv-full>=1.4.4, \<=1.6.0  |       mmcls>=0.20.1, \<=1.0.0       |          Not required          |
+|         0.24.1         | mmcv-full>=1.4.4, \<=1.6.0  |       mmcls>=0.20.1, \<=1.0.0       |          Not required          |
+|         0.23.0         | mmcv-full>=1.4.4, \<=1.6.0  |       mmcls>=0.20.1, \<=1.0.0       |          Not required          |
+|         0.22.0         | mmcv-full>=1.4.4, \<=1.6.0  |       mmcls>=0.20.1, \<=1.0.0       |          Not required          |
+|         0.21.1         | mmcv-full>=1.4.4, \<=1.6.0  |            Not required             |          Not required          |
+|         0.20.2         | mmcv-full>=1.3.13, \<=1.6.0 |            Not required             |          Not required          |
+|         0.19.0         | mmcv-full>=1.3.13, \<1.3.17 |            Not required             |          Not required          |
+|         0.18.0         | mmcv-full>=1.3.13, \<1.3.17 |            Not required             |          Not required          |
+|         0.17.0         | mmcv-full>=1.3.7, \<1.3.17  |            Not required             |          Not required          |
+|         0.16.0         | mmcv-full>=1.3.7, \<1.3.17  |            Not required             |          Not required          |
+|         0.15.0         | mmcv-full>=1.3.7, \<1.3.17  |            Not required             |          Not required          |
+|         0.14.1         | mmcv-full>=1.3.7, \<1.3.17  |            Not required             |          Not required          |
+|         0.14.0         |  mmcv-full>=1.3.1, \<1.3.2  |            Not required             |          Not required          |
+|         0.13.0         |  mmcv-full>=1.3.1, \<1.3.2  |            Not required             |          Not required          |
+|         0.12.0         |  mmcv-full>=1.1.4, \<1.3.2  |            Not required             |          Not required          |
+|         0.11.0         |  mmcv-full>=1.1.4, \<1.3.0  |            Not required             |          Not required          |
+|         0.10.0         |  mmcv-full>=1.1.4, \<1.3.0  |            Not required             |          Not required          |
+|         0.9.0          |  mmcv-full>=1.1.4, \<1.3.0  |            Not required             |          Not required          |
+|         0.8.0          |  mmcv-full>=1.1.4, \<1.2.0  |            Not required             |          Not required          |
+|         0.7.0          |  mmcv-full>=1.1.2, \<1.2.0  |            Not required             |          Not required          |
+|         0.6.0          |  mmcv-full>=1.1.2, \<1.2.0  |            Not required             |          Not required          |
 
 ## How to know the number of GPUs needed to train the model
 
