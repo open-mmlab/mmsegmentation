@@ -165,7 +165,7 @@ print(dataset[0])
 
 ## BaseSegDataset
 
-由于 MMSegmentation 中的所有数据集的基本功能均包括(1) 将数据送入数据集变换流水线中进行数据变换和 (2) [预处理](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html#id2) 中的数据集准备, 因此在 MMSegmentation 中将其中的共同接口抽象成 [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset)，它继承自 [MMEngine 的 `BaseDataset`](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md), 遵循 OpenMMLab 数据集初始化统一流程, 支持高效的内部数据存储格式, 支持数据集拼接、数据集重复采样等功能.
+由于 MMSegmentation 中的所有数据集的基本功能均包括(1) 将数据送入数据集变换流水线中进行数据变换和 (2) [预处理](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/advanced_tutorials/basedataset.md#%E6%95%B0%E6%8D%AE%E9%9B%86%E5%9F%BA%E7%B1%BB%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B) 中的数据集准备, 因此在 MMSegmentation 中将其中的共同接口抽象成 [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset)，它继承自 [MMEngine 的 `BaseDataset`](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md), 遵循 OpenMMLab 数据集初始化统一流程, 支持高效的内部数据存储格式, 支持数据集拼接、数据集重复采样等功能.
 在 MMSegmentation BaseSegDataset 中重新定义了**数据信息加载方法**（`load_data_list`）和并新增了 `get_label_map` 方法用来**修改数据集的类别信息**.
 
 ### 数据信息加载
