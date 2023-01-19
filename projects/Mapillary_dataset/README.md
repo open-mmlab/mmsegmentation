@@ -10,7 +10,7 @@ This project implements **`Mapillary Vistas Dataset`**
 
 ### Dataset preparing
 
-preparing `Mapillary Vistas Dataset` dataset like this [structure](https://github.com/open-mmlab/mmsegmentation/blob/a74270e6f9554e108000a641b4a6746316d34e55/projects/Mapillary_dataset/docs/en/user_guides/2_dataset_prepare.md)👈Dataset Preparing guide
+preparing `Mapillary Vistas Dataset` dataset like this [structure](https://github.com/open-mmlab/mmsegmentation/blob/a74270e6f9554e108000a641b4a6746316d34e55/projects/mapillary_dataset/docs/en/user_guides/2_dataset_prepare.md)👈Dataset Preparing guide
 
 ```none
   mmsegmentation
@@ -49,9 +49,9 @@ preparing `Mapillary Vistas Dataset` dataset like this [structure](https://githu
 ### Training commands with `deeplabv3plus_r101-d8_4xb2-240k_mapillay-512x1024.py`
 
 ```bash
-#Dataset train commands
-#at `mmsegmentation` folder
-bash tools/dist_train.sh projects/Mapillary_dataset/configs/deeplabv3plus_r101-d8_4xb2-240k_mapillay-512x1024.py 4
+# Dataset train commands
+# at `mmsegmentation` folder
+bash tools/dist_train.sh projects/mapillary_dataset/configs/deeplabv3plus_r101-d8_4xb2-240k_mapillay-512x1024.py 4
 ```
 
 ## Checklist
