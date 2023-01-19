@@ -196,7 +196,8 @@ class TestLoading(object):
         load_imgs = LoadImageFromFile()
         results = load_imgs(copy.deepcopy(results))
 
-        load_anns = LoadAnnotations(reduce_zero_label=True)  # reduce zero label
+        # reduce zero label
+        load_anns = LoadAnnotations(reduce_zero_label=True)
         results = load_anns(copy.deepcopy(results))
 
         gt_array = results['gt_semantic_seg']
