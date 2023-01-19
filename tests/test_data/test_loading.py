@@ -181,7 +181,10 @@ class TestLoading(object):
         results = dict(
             img_info=dict(filename=img_path),
             ann_info=dict(seg_map=gt_path),
-            # since reduce_zero_label is True, there are only 4 classes
+            # since reduce_zero_label is True, there are only 4 real classes.
+            # if the full set of classes is ["A", "B", "C", "D"], the
+            # following label map simulates the dataset option
+            # classes=["A", "C", "D"] which removes class "B".
             label_map={
                 0: 0,
                 1: -1,  # simulate removing class 1
