@@ -1,8 +1,8 @@
 _base_ = ['./_base_/datasets/mapillary_v1_2.py']  # v 1.2 labels
 # _base_ = ['./_base_/datasets/mapillary_v2_0.py']  # v2.0 labels
 custom_imports = dict(imports=[
-    'projects.Mapillary_dataset.mmseg.datasets.mapillary_v1_2',
-    'projects.Mapillary_dataset.mmseg.datasets.mapillary_v2_0',
+    'projects.mapillary_dataset.mmseg.datasets.mapillary_v1_2',
+    'projects.mapillary_dataset.mmseg.datasets.mapillary_v2_0',
 ])
 
 norm_cfg = dict(type='SyncBN', requires_grad=True)
