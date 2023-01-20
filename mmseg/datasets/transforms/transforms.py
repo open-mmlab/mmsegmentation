@@ -2019,12 +2019,14 @@ class BioMedical3DPad(BaseTransform):
 
 @TRANSFORMS.register_module()
 class BioMedical3DRandomFlip(BaseTransform):
-    """Flip biomedical 3D images and segmentations. Modified from
-    https://github.com/MIC-DKFZ/batchgenerators/blob/master/batchgenerators/tra
-    nsforms/spatial_transforms.py # noqa:E501 Copyright 2021 Division of
+    """Flip biomedical 3D images and segmentations.
+
+    Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/master/batchgenerators/transforms/spatial_transforms.py # noqa:E501
+
+    Copyright 2021 Division of
     Medical Image Computing, German Cancer Research Center (DKFZ) and Applied
-    Computer Vision Lab, Helmholtz Imaging Platform. Licensed under the
-    Apache-2.0 License.
+    Computer Vision Lab, Helmholtz Imaging Platform.
+    Licensed under the Apache-2.0 License.
 
     Required Keys:
 
