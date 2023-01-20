@@ -23,10 +23,7 @@ def f_score(precision, recall, beta=1):
     return score
 
 
-def intersect_and_union(pred_label,
-                        label,
-                        num_classes,
-                        ignore_index):
+def intersect_and_union(pred_label, label, num_classes, ignore_index):
     """Calculate intersection and Union.
 
     Args:
@@ -72,10 +69,7 @@ def intersect_and_union(pred_label,
     return area_intersect, area_union, area_pred_label, area_label
 
 
-def total_intersect_and_union(results,
-                              gt_seg_maps,
-                              num_classes,
-                              ignore_index):
+def total_intersect_and_union(results, gt_seg_maps, num_classes, ignore_index):
     """Calculate Total Intersection and Union.
 
     Args:
@@ -109,11 +103,7 @@ def total_intersect_and_union(results,
         total_area_label
 
 
-def mean_iou(results,
-             gt_seg_maps,
-             num_classes,
-             ignore_index,
-             nan_to_num=None):
+def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
     """Calculate Mean Intersection and Union (mIoU)
 
     Args:

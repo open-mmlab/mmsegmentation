@@ -297,11 +297,8 @@ class CustomDataset(Dataset):
         for pred, index in zip(preds, indices):
             seg_map = self.get_gt_seg_map_by_idx(index)
             pre_eval_results.append(
-                intersect_and_union(
-                    pred,
-                    seg_map,
-                    len(self.CLASSES),
-                    self.ignore_index))
+                intersect_and_union(pred, seg_map, len(self.CLASSES),
+                                    self.ignore_index))
 
         return pre_eval_results
 
@@ -412,12 +409,8 @@ class CustomDataset(Dataset):
             if gt_seg_maps is None:
                 gt_seg_maps = self.get_gt_seg_maps()
             num_classes = len(self.CLASSES)
-            ret_metrics = eval_metrics(
-                results,
-                gt_seg_maps,
-                num_classes,
-                self.ignore_index,
-                metric)
+            ret_metrics = eval_metrics(results, gt_seg_maps, num_classes,
+                                       self.ignore_index, metric)
         # test a list of pre_eval_results
         else:
             ret_metrics = pre_eval_to_metrics(results, metric)
