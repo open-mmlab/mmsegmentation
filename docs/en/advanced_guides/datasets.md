@@ -224,7 +224,6 @@ Below is the directory structure of ADE20K dataset:
 │   │   │   │   ├── ...
 ```
 
-When instantiating ADE20K dataset, the path and suffix of input images and annotations are:
 
 ```python
 from mmseg.datasets import ADE20KDataset
