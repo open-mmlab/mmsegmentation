@@ -44,6 +44,7 @@ Get data information: The type of data information is `dict` which includes seve
 -  `'seg_map_path'`: path of segmentation labels
 - `'seg_fields'`: saving label fields
 - `'sample_idx'`: the  index of the current sample
+
 There are also `'label_map'` and `'reduce_zero_label'` whose functions would be introduced in the next section.
 
 ```python
