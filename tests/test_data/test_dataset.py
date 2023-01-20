@@ -393,12 +393,12 @@ def test_custom_dataset_pre_eval():
     mmcv.imwrite(img, img_path)
     mmcv.imwrite(ann, ann_path)
 
-    class FiveClassDatasetWithZeroLabel(CustomDataset):
+    class FourClassDatasetWithZeroLabel(CustomDataset):
         CLASSES = ['A', 'B', 'C', 'D']  # 4 classes
         PALETTE = [(0, 0, 0)] * 4  # dummy palette
 
     # with img_dir, ann_dir, split
-    dataset = FiveClassDatasetWithZeroLabel(
+    dataset = FourClassDatasetWithZeroLabel(
         [],
         classes=['A', 'B', 'D'],  # original classes with class "C" removed
         reduce_zero_label=True,  # reduce zero label set to True
