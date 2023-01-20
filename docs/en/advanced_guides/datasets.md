@@ -4,7 +4,7 @@ Dataset classes in MMSegmentation have two functions: (1) load dataset informati
 and (2) send data into [dataset transform pipeline](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L141) to do [data augmentation](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/transforms.md).
 There are 2 kinds of data information: (1) meta information which is original dataset information such as categories (classes) of dataset and their corresponding palette information, (2) data information which includes
 the path of dataset images and labels.
-Next we would introduce some commonly used interfaces in MMSegmentation 1.x dataset class, methods of loading data information and modifying dataset classes in base dataset class, and relationship between dataset and the data transform pipeline.
+The tutorial includes some main interfaces in MMSegmentation 1.x dataset class: methods of loading data information and modifying dataset classes in base dataset class, and the relationship between dataset and the data transform pipeline.
 
 ## Common Interfaces
 
