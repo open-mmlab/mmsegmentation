@@ -39,8 +39,12 @@ print(len(dataset))
 2975
 ```
 
-Get data information: The type of data information is `dict` which includes path of images in `'img_path'` field and path of segmentation labels in `'seg_map_path'` field,
-and has `'label_map'` field and `'reduce_zero_label'` filed (their functions would be introduced in the next section) and `'seg_fields'` field for saving label which have been loaded, `'sample_idx'` field for index of current sample.
+Get data information: The type of data information is `dict` which includes several keys:
+-  `'img_path'`: path of images
+-  `'seg_map_path'`: path of segmentation labels
+- `'seg_fields'`: saving label fields
+- `'sample_idx'`: the  index of the current sample
+There are also `'label_map'` and `'reduce_zero_label'` whose functions would be introduced in the next section.
 
 ```python
 # Acquire data information of first sample in dataset
