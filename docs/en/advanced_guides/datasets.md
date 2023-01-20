@@ -279,7 +279,7 @@ class CityscapesDataset(BaseSegDataset):
 ```
 
 Here `'classes'` defines class names of Cityscapes dataset annotations, if users only concern some classes about vehicles and **ignore other classes**,
-the meta information of dataset could be modified by passing class variable in `metainfo` when instantiating Cityscapes dataset:
+the meta information of dataset could be modified by defined input argument `metainfo` when instantiating Cityscapes dataset:
 
 ```python
 from mmseg.datasets import CityscapesDataset
