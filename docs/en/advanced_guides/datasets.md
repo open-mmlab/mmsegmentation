@@ -189,6 +189,7 @@ The loaded data information includes the path of images samples and annotations 
 There are two main methods to acquire the path of images and labels:
 
 1. Load file paths according to the dirictory and suffix of input images and annotations
+
 If the dataset directory structure is organized as below, the [`load_data_list`](https://github.com/open-mmlab/mmsegmentation/blob/163277bfe0fa8fefb63ee5137917fafada1b301c/mmseg/datasets/basesegdataset.py#L231) can parse dataset directory Structure:
 
 ```
