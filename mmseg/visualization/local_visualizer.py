@@ -1,4 +1,4 @@
-# Copyright (c) OpenMMLab. All rights reserved.g
+# Copyright (c) OpenMMLab. All rights reserved.
 from typing import Dict, List, Optional, Tuple, Union
 
 import mmcv
