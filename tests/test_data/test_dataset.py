@@ -411,10 +411,10 @@ def test_custom_dataset_pre_eval():
 
     # there are three classes ("A", "B", "D") that the network predicts
     perfect_pred = np.zeros([10, 10], dtype=np.int64)
-    perfect_pred[2:4, 2:4] = 0  # 1 gets reduced to 0 that maps to 0
-    perfect_pred[2:4, 6:8] = 1  # 2 gets reduced to 1 that maps to 1
-    perfect_pred[6:8, 2:4] = 0  # 2 gets reduced to 1 that maps to -1, ignored
-    perfect_pred[6:8, 6:8] = 2  # 4 gets reduced to 3 that maps to 2
+    perfect_pred[2:4, 2:4] = 0  # 'A': 1 reduced to 0 that maps to 0
+    perfect_pred[2:4, 6:8] = 1  # 'B': 2 reduced to 1 that maps to 1
+    perfect_pred[6:8, 2:4] = 0  # 'C': 3 reduced to 2 that maps to -1, ignored
+    perfect_pred[6:8, 6:8] = 2  # 'D': 4 reduced to 3 that maps to 2
 
     results = dataset.pre_eval([perfect_pred], [0])
     from mmseg.core.evaluation.metrics import pre_eval_to_metrics
