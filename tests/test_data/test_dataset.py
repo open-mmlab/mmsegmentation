@@ -366,9 +366,8 @@ def test_custom_dataset():
 
 
 def test_custom_dataset_pre_eval():
-    """
-    Test pre-eval function of custom dataset with reduce zero label and removed
-    classes.
+    """Test pre-eval function of custom dataset with reduce zero label and
+    removed classes.
 
     The GT segmentation contain 4 classes: "A", "B", "C", "D", as well as
     a zero label. Therefore, the labels go from 0 to 4.
@@ -422,13 +421,11 @@ def test_custom_dataset_pre_eval():
     eval_results = pre_eval_to_metrics(results, ['mIoU', 'mDice', 'mFscore'])
 
     # the results should be perfect
-    assert (eval_results['IoU']       == 1.0).all()
-    assert (eval_results['aAcc']      == 1.0).all()
-    assert (eval_results['Acc']       == 1.0).all()
-    assert (eval_results['Dice']      == 1.0).all()
-    assert (eval_results['Fscore']    == 1.0).all()
-    assert (eval_results['Precision'] == 1.0).all()
-    assert (eval_results['Recall']    == 1.0).all()
+    for metric in 'IoU', 'aAcc', 'Acc', 'Dice', 'Fscore', 'Precision', \
+                  'Recall':
+        assert (eval_results[metric] == 1.0).all()
+
+    tmp_dir.cleanup()
 
 
 @pytest.mark.parametrize('separate_eval', [True, False])
