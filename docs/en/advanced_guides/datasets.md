@@ -262,6 +262,7 @@ PascalContextDataset(data_root='data/VOCdevkit/VOC2010/',
 ### Modification of Dataset Classes
 
 - Use `metainfo` input argument
+
 Meta information is defined as class variables, such as `METAINFO` variable of Cityscapes:
 
 ```python
