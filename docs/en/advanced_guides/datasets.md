@@ -105,8 +105,8 @@ print(dataset.metainfo)
  'reduce_zero_label': False}
 ```
 
-The return value of dataset `__getitem__` method is the output of data samples after data augmentation, whose type is also `dict`. It has two fields, `'inputs'` field has images which experiences data augmentation operations,
-whose type is torch.Tensor, `'data_samples'` field has [`Segdatasample`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/structures.md) which is new data structures in MMSegmentation 1.x,
+The return value of dataset `__getitem__` method is the output of data samples after data augmentation, whose type is also `dict`. It has two fields: `'inputs'` corresponding to images after data augmentation,
+and `'data_samples'` corresponding to `SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/structures.md) which is new data structures in MMSegmentation 1.x,
 where `gt_sem_seg` field has labels after data augmentation operations.
 
 ```python
