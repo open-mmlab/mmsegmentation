@@ -237,7 +237,7 @@ ADE20KDataset(data_root = 'data/ade/ADEChallengeData2016',
 ```
 
 2. If dataset annotation files available, data information would be loaded by annotation files of input dataset when instantiating dataset.
-   Take PascalContext dataset instance for example, its input annotation file is:
+Take PascalContext dataset instance as an example, its input annotation file is:
 
 ```python
 2008_000008
