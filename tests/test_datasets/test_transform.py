@@ -8,7 +8,8 @@ import pytest
 from PIL import Image
 
 from mmseg.datasets.transforms import *  # noqa
-from mmseg.datasets.transforms import (LoadBiomedicalImageFromFile,
+from mmseg.datasets.transforms import (LoadBiomedicalData,
+                                       LoadBiomedicalImageFromFile,
                                        PhotoMetricDistortion, RandomCrop)
 from mmseg.registry import TRANSFORMS
 from mmseg.utils import register_all_modules
@@ -1056,3 +1057,95 @@ def test_BioMedical3DPad():
     assert results['img'].shape[1:] == (6, 6, 6)
     assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
     assert results['pad_shape'] == (6, 6, 6)
+
+
+def test_biomedical_3d_flip():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DRandomFlip', prob=1.5, axes=(0, 1))
+        transform = TRANSFORMS.build(transform)
+
+    # test assertion for invalid direction
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DRandomFlip', prob=1, axes=(0, 1, 3))
+        transform = TRANSFORMS.build(transform)
+
+    # test flip axes are (0, 1, 2)
+    transform = dict(type='BioMedical3DRandomFlip', prob=1, axes=(0, 1, 2))
+    transform = TRANSFORMS.build(transform)
+
+    # test with random 3d data
+    results = dict()
+    results['img_path'] = 'Null'
+    results['img_shape'] = (1, 16, 16, 16)
+    results['img'] = np.random.randn(1, 16, 16, 16)
+    results['gt_seg_map'] = np.random.randint(0, 4, (16, 16, 16))
+
+    original_img = results['img'].copy()
+    original_seg = results['gt_seg_map'].copy()
+
+    # flip first time
+    results = transform(results)
+    with pytest.raises(AssertionError):
+        assert np.equal(original_img, results['img']).all()
+    with pytest.raises(AssertionError):
+        assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # flip second time
+    results = transform(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # test with actual data and flip axes are (0, 1)
+    # load biomedical 3d img and seg
+    data_prefix = osp.join(osp.dirname(__file__), '../data')
+    input_results = dict(img_path=osp.join(data_prefix, 'biomedical.npy'))
+    biomedical_loader = LoadBiomedicalData(with_seg=True)
+    data = biomedical_loader(copy.deepcopy(input_results))
+    results = data.copy()
+
+    original_img = data['img'].copy()
+    original_seg = data['gt_seg_map'].copy()
+
+    # test flip axes are (0, 1)
+    transform = dict(type='BioMedical3DRandomFlip', prob=1, axes=(0, 1))
+    transform = TRANSFORMS.build(transform)
+
+    # flip first time
+    results = transform(results)
+    with pytest.raises(AssertionError):
+        assert np.equal(original_img, results['img']).all()
+    with pytest.raises(AssertionError):
+        assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # flip second time
+    results = transform(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # test transform with flip axes = (1)
+    transform = dict(type='BioMedical3DRandomFlip', prob=1, axes=(1, ))
+    transform = TRANSFORMS.build(transform)
+    results = data.copy()
+    results = transform(results)
+    results = transform(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # test transform with swap_label_pairs
+    transform = dict(
+        type='BioMedical3DRandomFlip',
+        prob=1,
+        axes=(1, 2),
+        swap_label_pairs=[(0, 1)])
+    transform = TRANSFORMS.build(transform)
+    results = data.copy()
+    results = transform(results)
+
+    with pytest.raises(AssertionError):
+        assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # swap twice
+    results = transform(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
