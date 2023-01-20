@@ -6,7 +6,7 @@ There are 2 kinds of data information: (1) meta information which is original da
 the path of dataset images and labels.
 The tutorial includes some main interfaces in MMSegmentation 1.x dataset class: methods of loading data information and modifying dataset classes in base dataset class, and the relationship between dataset and the data transform pipeline.
 
-## Common Interfaces
+## Main Interfaces
 
 Take Cityscapes as an example, if you want to run the example, please download and [preprocess](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
 Cityscapes dataset in `data` directory first, before running the demo code:
