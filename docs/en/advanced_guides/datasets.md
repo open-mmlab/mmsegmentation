@@ -254,7 +254,7 @@ PascalContextDataset(data_root='data/VOCdevkit/VOC2010/',
 
 ### Modification of Dataset Classes
 
-- Modified by passing metainfo
+- Use `metainfo` input argument
   Subclass meta information of `BaseSegDataset` is defined as class variable when implementing dataset class, such as `METAINFO` variable of Cityscapes:
 
 ```python
