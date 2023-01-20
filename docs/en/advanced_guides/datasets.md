@@ -335,7 +335,7 @@ print(dataset.metainfo)
  'reduce_zero_label': False}
 ```
 
-It can be found that the class of dataset meta information is different from default setting of Cityscapes dataset. Moreover, `label_map` field is also defined, which is used for modifying label index of each pixel on segmentation mask.
+Meta information is different from default setting of Cityscapes dataset. Moreover, `label_map` field is also defined, which is used for modifying label index of each pixel on segmentation mask.
 The segmentation label would re-map class information by `label_map`, [here](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L151) is detailed implementation:
 
 ```python
