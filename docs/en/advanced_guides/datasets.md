@@ -242,6 +242,7 @@ ADE20KDataset(data_root = 'data/ade/ADEChallengeData2016',
 ```
 
 2. Load file paths from annotation file
+
 Dataset also can load an annotation file which includes the data sample paths of dataset. 
 Take PascalContext dataset instance as an example, its input annotation file is:
 
