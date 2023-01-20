@@ -301,14 +301,7 @@ class CustomDataset(Dataset):
                     pred,
                     seg_map,
                     len(self.CLASSES),
-                    self.ignore_index,
-                    # as the labels has been converted when dataset initialized
-                    # in `get_palette_for_custom_classes ` this `label_map`
-                    # should be `dict()`, see
-                    # https://github.com/open-mmlab/mmsegmentation/issues/1415
-                    # for more ditails
-                    label_map=dict(),
-                    reduce_zero_label=False))
+                    self.ignore_index))
 
         return pre_eval_results
 
@@ -424,9 +417,7 @@ class CustomDataset(Dataset):
                 gt_seg_maps,
                 num_classes,
                 self.ignore_index,
-                metric,
-                label_map=dict(),
-                reduce_zero_label=self.reduce_zero_label)
+                metric)
         # test a list of pre_eval_results
         else:
             ret_metrics = pre_eval_to_metrics(results, metric)
