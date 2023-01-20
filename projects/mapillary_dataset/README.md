@@ -56,15 +56,15 @@ bash tools/dist_train.sh projects/mapillary_dataset/configs/deeplabv3plus_r101-d
 
 ## Checklist
 
-- [ ] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
+- [x] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
 
-  - [ ] Finish the code
+  - [x] Finish the code
 
-  - [ ] Basic docstrings & proper citation
+  - [x] Basic docstrings & proper citation
 
   - [ ] Test-time correctness
 
-  - [ ] A full README
+  - [x] A full README
 
 - [ ] Milestone 2: Indicates a successful model implementation.
 
