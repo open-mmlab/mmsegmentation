@@ -2028,13 +2028,17 @@ class BioMedical3DRandomFlip(BaseTransform):
 
     Required Keys:
 
-    - img
-    - gt_seg_map (optional)
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
 
     Modified Keys:
 
-    - img
-    - gt_seg_map (optional)
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
 
     Added Keys:
 
