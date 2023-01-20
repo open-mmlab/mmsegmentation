@@ -66,8 +66,8 @@ class CustomDataset(Dataset):
             The palette of segmentation map. If None is given, and
             self.PALETTE is None, random palette will be generated.
             Default: None
-        gt_seg_map_loader_cfg (dict, optional): build LoadAnnotations to
-            load gt for evaluation, load from disk by default. Default: None.
+        gt_seg_map_loader_cfg (dict): build LoadAnnotations to load gt for
+            evaluation, load from disk by default. Default: empty.
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmcv.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
@@ -90,7 +90,7 @@ class CustomDataset(Dataset):
                  reduce_zero_label=False,
                  classes=None,
                  palette=None,
-                 gt_seg_map_loader_cfg=None,
+                 gt_seg_map_loader_cfg=dict(),
                  file_client_args=dict(backend='disk')):
         self.pipeline = Compose(pipeline)
         self.img_dir = img_dir
@@ -106,8 +106,7 @@ class CustomDataset(Dataset):
         self.CLASSES, self.PALETTE = self.get_classes_and_palette(
             classes, palette)
         self.gt_seg_map_loader = LoadAnnotations(
-        ) if gt_seg_map_loader_cfg is None else LoadAnnotations(
-            **gt_seg_map_loader_cfg)
+            reduce_zero_label=reduce_zero_label, **gt_seg_map_loader_cfg)
 
         self.file_client_args = file_client_args
         self.file_client = mmcv.FileClient.infer_client(self.file_client_args)
@@ -309,7 +308,7 @@ class CustomDataset(Dataset):
                     # https://github.com/open-mmlab/mmsegmentation/issues/1415
                     # for more ditails
                     label_map=dict(),
-                    reduce_zero_label=self.reduce_zero_label))
+                    reduce_zero_label=False))
 
         return pre_eval_results
 
