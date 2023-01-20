@@ -107,7 +107,7 @@ print(dataset.metainfo)
 
 The return value of dataset `__getitem__` method is the output of data samples after data augmentation, whose type is also `dict`. It has two fields: `'inputs'` corresponding to images after data augmentation,
 and `'data_samples'` corresponding to `SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/structures.md) which is new data structures in MMSegmentation 1.x,
-where `gt_sem_seg` field has labels after data augmentation operations.
+and `gt_sem_seg` of `SegDataSample` has labels after data augmentation operations.
 
 ```python
 print(dataset[0])
