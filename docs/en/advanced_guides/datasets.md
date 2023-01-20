@@ -9,7 +9,7 @@ The tutorial includes some main interfaces in MMSegmentation 1.x dataset class: 
 ## Main Interfaces
 
 Take Cityscapes as an example, if you want to run the example, please download and [preprocess](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
-Cityscapes dataset in `data` directory first, before running the demo code:
+Cityscapes dataset in `data` directory, before running the demo code:
 
 Instantiate Cityscapes training dataset:
 
