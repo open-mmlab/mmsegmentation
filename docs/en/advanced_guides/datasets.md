@@ -1,6 +1,6 @@
 # Dataset
 
-In MMSegmentation, all dataset classes have two functions: (1) load dataset information after [data preparation](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md)
+Dataset classes in MMSegmentation have two functions: (1) load dataset information after [data preparation](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md)
 and (2) send data into [dataset transform pipeline](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L141) to implement [data transform operations](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/transforms.md).
 The loaded data information has two categories: (1) meta information which is original dataset information such as categories (classes) of dataset and their corresponding palette information, (2) data information which includes
 the path of dataset images and labels.
