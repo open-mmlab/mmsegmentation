@@ -349,7 +349,7 @@ for old_id, new_id in results['label_map'].items():
 ```
 
 - Modified by `reduce_zero_label`
-  To ignore label 0 (such as ADE20K dataset), we can use `reduce_zero_label` (default to `False`) argument of BaseSegDataset and its subclasses.
+To ignore label 0 (such as ADE20K dataset), we can use `reduce_zero_label` (default to `False`) argument of BaseSegDataset and its subclasses.
   When `reduce_zero_label` is `True`, label 0 in segmentation annotations would be set as 255 (models of MMSegmentation would ignore label 255 in calculating loss) and indices of other labels will minus 1:
 
 ```python
