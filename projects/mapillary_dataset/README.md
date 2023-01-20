@@ -10,7 +10,7 @@ This project implements **`Mapillary Vistas Dataset`**
 
 ### Dataset preparing
 
-Preparing `Mapillary Vistas Dataset` dataset following [Mapillary Vistas Dataset Preparing Guide](https://github.com/open-mmlab/mmsegmentation/blob/63df18c6efe2cdfeb21ced3159490395fe62acf7/projects/mapillary_dataset/docs/en/user_guides/2_dataset_prepare.md)
+Preparing `Mapillary Vistas Dataset` dataset following [Mapillary Vistas Dataset Preparing Guide](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/mapillary_dataset/docs/en/user_guides/2_dataset_prepare.md)
 
 ```none
   mmsegmentation
