@@ -360,7 +360,7 @@ gt_semantic_seg[gt_semantic_seg == 254] = 255
 
 ## Dataset and Data Transform Pipeline
 
-The example of the Common Interface section shows that the data transform pipeline argument `pipeline` and return value of dataset `__getitem__` method are both defined in input argument.
+If the argument `pipeline` is defined, the return value of `__getitem__` method is after data argument.
 If dataset input argument does not define pipeline, it is the same as return value of `get_data_info` method.
 
 ```python
