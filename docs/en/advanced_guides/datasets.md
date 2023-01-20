@@ -203,7 +203,7 @@ There are two main methods to acquire the path of images and labels:
 │   │   │   │   ├── zzz{seg_map_suffix}
 ```
 
-Below is the directory structure of ADE20K dataset:
+Here is an example pf ADE20K, and below the directory structure of the dataset:
 
 ```
 ├── ade
