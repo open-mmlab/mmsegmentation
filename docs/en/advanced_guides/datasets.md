@@ -40,8 +40,9 @@ print(len(dataset))
 ```
 
 Get data information: The type of data information is `dict` which includes several keys:
--  `'img_path'`: path of images
--  `'seg_map_path'`: path of segmentation labels
+
+- `'img_path'`: path of images
+- `'seg_map_path'`: path of segmentation labels
 - `'seg_fields'`: saving label fields
 - `'sample_idx'`: the  index of the current sample
 
@@ -107,7 +108,7 @@ print(dataset.metainfo)
 ```
 
 The return value of dataset `__getitem__` method is the output of data samples after data augmentation, whose type is also `dict`. It has two fields: `'inputs'` corresponding to images after data augmentation,
-and `'data_samples'` corresponding to `SegDataSample`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/structures.md) which is new data structures in MMSegmentation 1.x,
+and `'data_samples'` corresponding to `SegDataSample`\](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/structures.md) which is new data structures in MMSegmentation 1.x,
 and `gt_sem_seg` of `SegDataSample` has labels after data augmentation operations.
 
 ```python
@@ -230,7 +231,6 @@ Here is an example pf ADE20K, and below the directory structure of the dataset:
 │   │   │   │   ├── ...
 ```
 
-
 ```python
 from mmseg.datasets import ADE20KDataset
 
@@ -243,7 +243,7 @@ ADE20KDataset(data_root = 'data/ade/ADEChallengeData2016',
 
 2. Load file paths from annotation file
 
-Dataset also can load an annotation file which includes the data sample paths of dataset. 
+Dataset also can load an annotation file which includes the data sample paths of dataset.
 Take PascalContext dataset instance as an example, its input annotation file is:
 
 ```python
@@ -355,7 +355,7 @@ for old_id, new_id in results['label_map'].items():
 - Using `reduce_zero_label` input argument
 
 To ignore label 0 (such as ADE20K dataset), we can use `reduce_zero_label` (default to `False`) argument of BaseSegDataset and its subclasses.
- When `reduce_zero_label` is `True`, label 0 in segmentation annotations would be set as 255 (models of MMSegmentation would ignore label 255 in calculating loss) and indices of other labels will minus 1:
+When `reduce_zero_label` is `True`, label 0 in segmentation annotations would be set as 255 (models of MMSegmentation would ignore label 255 in calculating loss) and indices of other labels will minus 1:
 
 ```python
 gt_semantic_seg[gt_semantic_seg == 0] = 255
