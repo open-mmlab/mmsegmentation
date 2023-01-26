@@ -1,7 +1,7 @@
-codecov
-flake8
-interrogate
+codecov==2.1.12
+flake8==3.7.9
+interrogate==1.5.0
 isort==4.3.21
-pytest
-xdoctest>=0.10.0
-yapf
+pytest==6.2.5
+xdoctest==1.1.0
+yapf==0.32.0
