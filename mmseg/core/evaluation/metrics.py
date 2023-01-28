@@ -23,7 +23,12 @@ def f_score(precision, recall, beta=1):
     return score
 
 
-def intersect_and_union(pred_label, label, num_classes, ignore_index):
+def intersect_and_union(pred_label,
+                        label,
+                        num_classes,
+                        ignore_index,
+                        label_map=dict(),
+                        reduce_zero_label=False):
     """Calculate intersection and Union.
 
     Args:
@@ -33,6 +38,10 @@ def intersect_and_union(pred_label, label, num_classes, ignore_index):
             or label filename.
         num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
+        label_map (dict): Mapping old labels to new labels. The parameter will
+            work only when label is str. Default: dict().
+        reduce_zero_label (bool): Whether ignore zero label. The parameter will
+            work only when label is str. Default: False.
 
      Returns:
          torch.Tensor: The intersection of prediction and ground truth
@@ -54,6 +63,15 @@ def intersect_and_union(pred_label, label, num_classes, ignore_index):
     else:
         label = torch.from_numpy(label)
 
+    if reduce_zero_label:
+        label[label == 0] = 255
+        label = label - 1
+        label[label == 254] = 255
+    if label_map is not None:
+        label_copy = label.clone()
+        for old_id, new_id in label_map.items():
+            label[label_copy == old_id] = new_id
+
     mask = (label != ignore_index)
     pred_label = pred_label[mask]
     label = label[mask]
@@ -69,7 +87,12 @@ def intersect_and_union(pred_label, label, num_classes, ignore_index):
     return area_intersect, area_union, area_pred_label, area_label
 
 
-def total_intersect_and_union(results, gt_seg_maps, num_classes, ignore_index):
+def total_intersect_and_union(results,
+                              gt_seg_maps,
+                              num_classes,
+                              ignore_index,
+                              label_map=dict(),
+                              reduce_zero_label=False):
     """Calculate Total Intersection and Union.
 
     Args:
@@ -79,6 +102,8 @@ def total_intersect_and_union(results, gt_seg_maps, num_classes, ignore_index):
             truth segmentation maps or list of label filenames.
         num_classes (int): Number of categories.
         ignore_index (int): Index that will be ignored in evaluation.
+        label_map (dict): Mapping old labels to new labels. Default: dict().
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
 
      Returns:
          ndarray: The intersection of prediction and ground truth histogram
@@ -94,7 +119,9 @@ def total_intersect_and_union(results, gt_seg_maps, num_classes, ignore_index):
     total_area_label = torch.zeros((num_classes, ), dtype=torch.float64)
     for result, gt_seg_map in zip(results, gt_seg_maps):
         area_intersect, area_union, area_pred_label, area_label = \
-            intersect_and_union(result, gt_seg_map, num_classes, ignore_index)
+            intersect_and_union(
+                result, gt_seg_map, num_classes, ignore_index,
+                label_map, reduce_zero_label)
         total_area_intersect += area_intersect
         total_area_union += area_union
         total_area_pred_label += area_pred_label
@@ -103,7 +130,13 @@ def total_intersect_and_union(results, gt_seg_maps, num_classes, ignore_index):
         total_area_label
 
 
-def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
+def mean_iou(results,
+             gt_seg_maps,
+             num_classes,
+             ignore_index,
+             nan_to_num=None,
+             label_map=dict(),
+             reduce_zero_label=False):
     """Calculate Mean Intersection and Union (mIoU)
 
     Args:
@@ -115,6 +148,8 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
         ignore_index (int): Index that will be ignored in evaluation.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
+        label_map (dict): Mapping old labels to new labels. Default: dict().
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
 
      Returns:
         dict[str, float | ndarray]:
@@ -128,7 +163,9 @@ def mean_iou(results, gt_seg_maps, num_classes, ignore_index, nan_to_num=None):
         num_classes=num_classes,
         ignore_index=ignore_index,
         metrics=['mIoU'],
-        nan_to_num=nan_to_num)
+        nan_to_num=nan_to_num,
+        label_map=label_map,
+        reduce_zero_label=reduce_zero_label)
     return iou_result
 
 
@@ -136,7 +173,9 @@ def mean_dice(results,
               gt_seg_maps,
               num_classes,
               ignore_index,
-              nan_to_num=None):
+              nan_to_num=None,
+              label_map=dict(),
+              reduce_zero_label=False):
     """Calculate Mean Dice (mDice)
 
     Args:
@@ -148,6 +187,8 @@ def mean_dice(results,
         ignore_index (int): Index that will be ignored in evaluation.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
+        label_map (dict): Mapping old labels to new labels. Default: dict().
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
 
      Returns:
         dict[str, float | ndarray]: Default metrics.
@@ -162,7 +203,9 @@ def mean_dice(results,
         num_classes=num_classes,
         ignore_index=ignore_index,
         metrics=['mDice'],
-        nan_to_num=nan_to_num)
+        nan_to_num=nan_to_num,
+        label_map=label_map,
+        reduce_zero_label=reduce_zero_label)
     return dice_result
 
 
@@ -171,6 +214,8 @@ def mean_fscore(results,
                 num_classes,
                 ignore_index,
                 nan_to_num=None,
+                label_map=dict(),
+                reduce_zero_label=False,
                 beta=1):
     """Calculate Mean F-Score (mFscore)
 
@@ -183,6 +228,8 @@ def mean_fscore(results,
         ignore_index (int): Index that will be ignored in evaluation.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
+        label_map (dict): Mapping old labels to new labels. Default: dict().
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
         beta (int): Determines the weight of recall in the combined score.
             Default: False.
 
@@ -201,6 +248,8 @@ def mean_fscore(results,
         ignore_index=ignore_index,
         metrics=['mFscore'],
         nan_to_num=nan_to_num,
+        label_map=label_map,
+        reduce_zero_label=reduce_zero_label,
         beta=beta)
     return fscore_result
 
@@ -211,6 +260,8 @@ def eval_metrics(results,
                  ignore_index,
                  metrics=['mIoU'],
                  nan_to_num=None,
+                 label_map=dict(),
+                 reduce_zero_label=False,
                  beta=1):
     """Calculate evaluation metrics
     Args:
@@ -223,6 +274,8 @@ def eval_metrics(results,
         metrics (list[str] | str): Metrics to be evaluated, 'mIoU' and 'mDice'.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
+        label_map (dict): Mapping old labels to new labels. Default: dict().
+        reduce_zero_label (bool): Whether ignore zero label. Default: False.
      Returns:
         float: Overall accuracy on all images.
         ndarray: Per category accuracy, shape (num_classes, ).
@@ -231,7 +284,8 @@ def eval_metrics(results,
 
     total_area_intersect, total_area_union, total_area_pred_label, \
         total_area_label = total_intersect_and_union(
-            results, gt_seg_maps, num_classes, ignore_index)
+            results, gt_seg_maps, num_classes, ignore_index, label_map,
+            reduce_zero_label)
     ret_metrics = total_area_to_metrics(total_area_intersect, total_area_union,
                                         total_area_pred_label,
                                         total_area_label, metrics, nan_to_num,
