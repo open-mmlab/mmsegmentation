@@ -187,7 +187,7 @@ class TestLoading(object):
             # classes=["A", "C", "D"] which removes class "B".
             label_map={
                 0: 0,
-                1: -1,  # simulate removing class 1
+                1: 255,  # simulate removing class 1
                 2: 1,
                 3: 2
             },
@@ -204,7 +204,7 @@ class TestLoading(object):
 
         true_mask = np.ones_like(gt_array) * 255  # all zeros get mapped to 255
         true_mask[2:4, 2:4] = 0  # 1s are reduced to class 0 mapped to class 0
-        true_mask[2:4, 6:8] = -1  # 2s are reduced to class 1 which is removed
+        true_mask[2:4, 6:8] = 255  # 2s are reduced to class 1 which is removed
         true_mask[6:8, 2:4] = 1  # 3s are reduced to class 2 mapped to class 1
         true_mask[6:8, 6:8] = 2  # 4s are reduced to class 3 mapped to class 2
 
