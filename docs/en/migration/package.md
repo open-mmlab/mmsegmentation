@@ -98,7 +98,7 @@ OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, an
 | :-------------------: | :------------------------------------------------------------------------------------------ |
 |   `mmseg.pipelines`   | Renamed to `mmseg.transforms`                                                               |
 |    `mmseg.sampler`    | Move in `mmengine.dataset.sampler`                                                          |
-|    `CustomDataset`    | Renamed to `BaseSegDataset` and inherited from `BaseDataset` in MMEngine                       |
+|    `CustomDataset`    | Renamed to `BaseSegDataset` and inherited from `BaseDataset` in MMEngine                    |
 | `DefaultFormatBundle` | Replaced with `PackSegInputs`                                                               |
 |  `LoadImageFromFile`  | Move in `mmcv.transforms.LoadImageFromFile`                                                 |
 |   `LoadAnnotations`   | Moved in `mmcv.transforms.LoadAnnotations`                                                  |
