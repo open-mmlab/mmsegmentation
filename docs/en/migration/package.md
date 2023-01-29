@@ -102,7 +102,7 @@ OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, an
 | `DefaultFormatBundle` | Replaced with `PackSegInputs`                                                               |
 |  `LoadImageFromFile`  | Move in `mmcv.transforms.LoadImageFromFile`                                                 |
 |   `LoadAnnotations`   | Moved in `mmcv.transforms.LoadAnnotations`                                                  |
-|       `Resize`        | Moved in `mmcv.transforms` and split into `Resize`, `RandomResize` and `RandomChoiseResize` |
+|       `Resize`        | Moved in `mmcv.transforms` and split into `Resize`, `RandomResize` and `RandomChoiceResize` |
 |     `RandomFlip`      | Moved in `mmcv.transforms.RandomFlip`                                                       |
 |         `Pad`         | Moved in `mmcv.transforms.Pad`                                                              |
 |      `Normalize`      | Moved in `mmcv.transforms.Normalize`                                                        |
