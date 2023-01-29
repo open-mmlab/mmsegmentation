@@ -63,16 +63,7 @@ class SegLocalVisualizer(Visualizer):
                  **kwargs):
         super().__init__(name, image, vis_backends, save_dir, **kwargs)
         self.alpha: float = alpha
-        # Set default value. When calling
-        # `SegLocalVisualizer().dataset_meta=xxx`,
-        # it will override the default value.
-        if dataset_name is None:
-            dataset_name = 'cityscapes'
-        classes = classes if classes else get_classes(dataset_name)
-        palette = palette if palette else get_palette(dataset_name)
-        assert len(classes) == len(
-            palette), 'The length of classes should be equal to palette'
-        self.dataset_meta: dict = {'classes': classes, 'palette': palette}
+        self.set_dataset_meta(palette, classes, dataset_name)
 
     def _draw_sem_seg(self, image: np.ndarray, sem_seg: PixelData,
                       classes: Optional[Tuple[str]],
@@ -108,6 +99,21 @@ class SegLocalVisualizer(Visualizer):
                 sem_seg == label, colors=[color], alphas=self.alpha)
 
         return self.get_image()
+
+    def set_dataset_meta(self,
+                         palette: Optional[Union[str, List]] = None,
+                         classes: Optional[Union[str, List]] = None,
+                         dataset_name: Optional[str] = None) -> None:
+        # Set default value. When calling
+        # `SegLocalVisualizer().dataset_meta=xxx`,
+        # it will override the default value.
+        if dataset_name is None:
+            dataset_name = 'cityscapes'
+        classes = classes if classes else get_classes(dataset_name)
+        palette = palette if palette else get_palette(dataset_name)
+        assert len(classes) == len(
+            palette), 'The length of classes should be equal to palette'
+        self.dataset_meta: dict = {'classes': classes, 'palette': palette}
 
     @master_only
     def add_datasample(
