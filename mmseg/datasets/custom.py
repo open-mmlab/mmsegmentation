@@ -67,7 +67,7 @@ class CustomDataset(Dataset):
             self.PALETTE is None, random palette will be generated.
             Default: None
         gt_seg_map_loader_cfg (dict): build LoadAnnotations to load gt for
-            evaluation, load from disk by default. Default: empty.
+            evaluation, load from disk by default. Default: ``dict()``.
         file_client_args (dict): Arguments to instantiate a FileClient.
             See :class:`mmcv.fileio.FileClient` for details.
             Defaults to ``dict(backend='disk')``.
