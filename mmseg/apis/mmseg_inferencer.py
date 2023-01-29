@@ -33,13 +33,13 @@ class MMSegInferencer(BaseInferencer):
     """
 
     preprocess_kwargs: set = set()
-    forward_kwargs: set = {'mode'}
+    forward_kwargs: set = {'mode', 'out_dir'}
     visualize_kwargs: set = {
         'return_vis', 'show', 'wait_time', 'draw_pred', 'img_out_dir',
         'opacity'
     }
     postprocess_kwargs: set = {
-        'print_result', 'pred_out_file', 'return_datasample', 'save_mask'
+        'print_result', 'pred_out_dir', 'return_datasample', 'save_mask'
     }
 
     def __init__(self,
@@ -69,9 +69,8 @@ class MMSegInferencer(BaseInferencer):
                  show: bool = False,
                  wait_time: int = 0,
                  draw_pred: bool = True,
-                 img_out_dir: str = '',
+                 out_dir: str = '',
                  print_result: bool = False,
-                 pred_out_file: str = '',
                  save_mask: bool = False,
                  **kwargs) -> dict:
         return super().__call__(
@@ -83,9 +82,9 @@ class MMSegInferencer(BaseInferencer):
             show=show,
             wait_time=wait_time,
             draw_pred=draw_pred,
-            img_out_dir=img_out_dir,
+            img_out_dir=out_dir,
             print_result=print_result,
-            pred_out_file=pred_out_file,
+            pred_out_dir=out_dir,
             save_mask=save_mask,
             **kwargs)
 
@@ -117,9 +116,6 @@ class MMSegInferencer(BaseInferencer):
             raise ValueError('Visualization needs the "visualizer" term'
                              'defined in the config, but got None')
 
-        self.visualizer.set_dataset_meta(
-            classes=self.model.dataset_meta.get('classes', None),
-            palette=self.model.dataset_meta.get('palette', None))
         self.visualizer.alpha = opacity
 
         results = []
@@ -162,7 +158,7 @@ class MMSegInferencer(BaseInferencer):
                     mask_dir: str = 'mask',
                     save_mask: bool = True,
                     print_result: bool = False,
-                    pred_out_file: str = '') -> dict:
+                    pred_out_dir: str = '') -> dict:
         """Process the predictions and visualization results from ``forward``
         and ``visualize``.
 
@@ -179,7 +175,7 @@ class MMSegInferencer(BaseInferencer):
                 Defaults to False.
             print_result (bool): Whether to print the inference result w/o
                 visualization to the console. Defaults to False.
-            pred_out_file: File to save the inference results w/o
+            pred_out_dir: File to save the inference results w/o
                 visualization. If left as empty, no file will be saved.
                 Defaults to ''.
 
@@ -200,18 +196,19 @@ class MMSegInferencer(BaseInferencer):
         results_dict['visualization'] = visualization
 
         if print_result:
-            print_result(results_dict)
-        if pred_out_file != '':
+            print(results_dict)
+        if pred_out_dir != '':
+            mmengine.mkdir_or_exist(pred_out_dir)
             if save_mask:
-                mmengine.mkdir_or_exist(pred_out_file)
                 preds = [preds] if isinstance(preds, SegDataSample) else preds
                 for pred in preds:
                     mmcv.imwrite(
                         pred.pred_sem_seg.numpy().data[0],
-                        osp.join(pred_out_file, mask_dir,
+                        osp.join(pred_out_dir, mask_dir,
                                  osp.basename(pred.metainfo['img_path'])))
             else:
-                mmengine.dump(results_dict, pred_out_file)
+                mmengine.dump(results_dict,
+                              osp.join(pred_out_dir, 'results.pkl'))
 
         if return_datasample:
             return preds

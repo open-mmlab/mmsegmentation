@@ -10,17 +10,20 @@ def main():
     parser.add_argument('model', help='Config file')
     parser.add_argument('--checkpoint', default=None, help='Checkpoint file')
     parser.add_argument(
-        '--out-file', default='', help='Path to save result file')
+        '--out-dir', default='', help='Path to save result file')
     parser.add_argument(
-        '--img-out-dir', default='', help='Path to save painted img')
+        '--show',
+        action='store_true',
+        default=False,
+        help='Whether to display the drawn image.')
     parser.add_argument(
         '--save-mask',
         action='store_true',
         default=False,
         help='Enable save the mask file')
     parser.add_argument(
-        '--palette',
-        default=None,
+        '--dataset-name',
+        default='cityscapes',
         help='Color palette used for segmentation map')
     parser.add_argument(
         '--device', default='cuda:0', help='Device used for inference')
@@ -33,15 +36,17 @@ def main():
 
     # build the model from a config file and a checkpoint file
     mmseg_inferencer = MMSegInferencer(
-        args.model, args.checkpoint, palette=args.palette, device='cuda:0')
+        args.model,
+        args.checkpoint,
+        dataset_name=args.dataset_name,
+        device=args.device)
 
     # test a single image
     mmseg_inferencer(
         args.img,
-        show=args.save_mask,
-        img_out_dir=args.img_out_dir,
+        show=args.show,
+        out_dir=args.out_dir,
         save_mask=args.save_mask,
-        pred_out_file=args.out_file,
         opacity=args.opacity)
 
 
