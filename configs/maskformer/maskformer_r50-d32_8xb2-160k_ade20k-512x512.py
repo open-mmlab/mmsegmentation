@@ -31,8 +31,7 @@ model = dict(
         init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50')),
     decode_head=dict(
         type='MaskFormerHead',
-        in_channels=[256, 512, 1024,
-                     2048],  # input channels of pixel_decoder modules
+        in_channels=[256, 512, 1024, 2048],  # input channels of pixel_decoder modules
         feat_channels=256,
         in_index=[0, 1, 2, 3],
         num_classes=150,
@@ -43,36 +42,34 @@ model = dict(
             norm_cfg=dict(type='GN', num_groups=32),
             act_cfg=dict(type='ReLU')),
         enforce_decoder_input_project=False,
-        positional_encoding=dict(
-            type='mmdet.SinePositionalEncoding', num_feats=128,
-            normalize=True),
-        transformer_decoder=dict(
-            type='mmdet.DetrTransformerDecoder',
+        positional_encoding=dict(  # SinePositionalEncoding
+            num_feats=128, normalize=True),
+        transformer_decoder=dict(  # DetrTransformerDecoder
             return_intermediate=True,
             num_layers=6,
-            transformerlayers=dict(
-                type='mmdet.DetrTransformerDecoderLayer',
-                attn_cfgs=dict(
-                    type='mmdet.MultiheadAttention',
+            layer_cfg=dict(  # DetrTransformerDecoderLayer
+                self_attn_cfg=dict(  # MultiheadAttention
                     embed_dims=256,
                     num_heads=8,
                     attn_drop=0.1,
                     proj_drop=0.1,
                     dropout_layer=None,
-                    batch_first=False),
-                ffn_cfgs=dict(
+                    batch_first=True),
+                cross_attn_cfg=dict(  # MultiheadAttention
+                    embed_dims=256,
+                    num_heads=8,
+                    attn_drop=0.1,
+                    proj_drop=0.1,
+                    dropout_layer=None,
+                    batch_first=True),
+                ffn_cfg=dict(
                     embed_dims=256,
                     feedforward_channels=2048,
                     num_fcs=2,
                     act_cfg=dict(type='ReLU', inplace=True),
                     ffn_drop=0.1,
                     dropout_layer=None,
-                    add_identity=True),
-                # the following parameter was not used,
-                # just make current api happy
-                feedforward_channels=2048,
-                operation_order=('self_attn', 'norm', 'cross_attn', 'norm',
-                                 'ffn', 'norm')),
+                    add_identity=True)),
             init_cfg=None),
         loss_cls=dict(
             type='mmdet.CrossEntropyLoss',
