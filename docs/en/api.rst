@@ -11,8 +11,13 @@ datasets
 .. automodule:: mmseg.datasets
     :members:
 
-transforms
+samplers
 ^^^^^^^^^^
+.. automodule:: mmseg.datasets.samplers
+    :members:
+
+transforms
+^^^^^^^^^^^^
 .. automodule:: mmseg.datasets.transforms
     :members:
 
@@ -25,12 +30,12 @@ hooks
     :members:
 
 optimizers
-^^^^^^^^^^
+^^^^^^^^^^^^^^^
 .. automodule:: mmseg.engine.optimizers
     :members:
 
 mmseg.evaluation
------------------
+--------------
 
 metrics
 ^^^^^^^^^^
@@ -40,9 +45,14 @@ metrics
 mmseg.models
 --------------
 
-models
-^^^^^^^^^^
-.. automodule:: mmseg.models
+backbones
+^^^^^^^^^^^^^^^^^^
+.. automodule:: mmseg.models.backbones
+    :members:
+
+decode_heads
+^^^^^^^^^^^^^^^
+.. automodule:: mmseg.models.decode_heads
     :members:
 
 segmentors
@@ -50,19 +60,14 @@ segmentors
 .. automodule:: mmseg.models.segmentors
     :members:
 
-backbones
-^^^^^^^^^^
-.. automodule:: mmseg.models.backbones
-    :members:
-
-decode_heads
-^^^^^^^^^^^^
-.. automodule:: mmseg.models.decode_heads
-    :members:
-
 losses
 ^^^^^^^^^^
 .. automodule:: mmseg.models.losses
+    :members:
+
+necks
+^^^^^^^^^^^^
+.. automodule:: mmseg.models.necks
     :members:
 
 utils
@@ -70,21 +75,12 @@ utils
 .. automodule:: mmseg.models.utils
     :members:
 
-necks
-^^^^^^^^^^
-.. automodule:: mmseg.models.necks
-    :members:
-
-mmseg.registry
---------------
-.. automodule:: mmseg.registry
-    :members:
 
 mmseg.structures
------------------
+--------------------
 
 structures
-^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 .. automodule:: mmseg.structures
     :members:
 
@@ -93,12 +89,12 @@ sampler
 .. automodule:: mmseg.structures.sampler
     :members:
 
+mmseg.visualization
+--------------------
+.. automodule:: mmseg.visualization
+    :members:
+
 mmseg.utils
 --------------
 .. automodule:: mmseg.utils
-    :members:
-
-mmseg.visualization
-----------------------
-.. automodule:: mmseg.visualization
     :members:

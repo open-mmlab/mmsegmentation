@@ -96,13 +96,13 @@ OpenMMLab 2.0 defines the `BaseDataset` to function and interface of dataset, an
 
 |   Packages/Modules    | Changes                                                                                     |
 | :-------------------: | :------------------------------------------------------------------------------------------ |
-|   `mmseg.pipelines`   | Renamed to `mmseg.transforms`                                                               |
-|    `mmseg.sampler`    | Move in `mmengine.dataset.sampler`                                                          |
-|    `CustomDataset`    | Renamed to `BaseDataset` and inherited from `BaseDataset` in MMEngine                       |
+|   `mmseg.pipelines`   | Moved in `mmcv.transforms`                                                                  |
+|    `mmseg.sampler`    | Moved in `mmengine.dataset.sampler`                                                         |
+|    `CustomDataset`    | Renamed to `BaseSegDataset` and inherited from `BaseDataset` in MMEngine                    |
 | `DefaultFormatBundle` | Replaced with `PackSegInputs`                                                               |
-|  `LoadImageFromFile`  | Move in `mmcv.transforms.LoadImageFromFile`                                                 |
+|  `LoadImageFromFile`  | Moved in `mmcv.transforms.LoadImageFromFile`                                                |
 |   `LoadAnnotations`   | Moved in `mmcv.transforms.LoadAnnotations`                                                  |
-|       `Resize`        | Moved in `mmcv.transforms` and split into `Resize`, `RandomResize` and `RandomChoiseResize` |
+|       `Resize`        | Moved in `mmcv.transforms` and split into `Resize`, `RandomResize` and `RandomChoiceResize` |
 |     `RandomFlip`      | Moved in `mmcv.transforms.RandomFlip`                                                       |
 |         `Pad`         | Moved in `mmcv.transforms.Pad`                                                              |
 |      `Normalize`      | Moved in `mmcv.transforms.Normalize`                                                        |
