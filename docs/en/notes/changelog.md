@@ -15,7 +15,7 @@
 - Add BioMedical3DRandomFlip ([#2404](https://github.com/open-mmlab/mmsegmentation/pull/2404))
 - Add `gt_edge_map` field to SegDataSample ([#2466](https://github.com/open-mmlab/mmsegmentation/pull/2466))
 - Support synapse dataset ([#2432](https://github.com/open-mmlab/mmsegmentation/pull/2432), [#2465](https://github.com/open-mmlab/mmsegmentation/pull/2465))
-- Support Mapillary Vistas Dataset ([#2484](https://github.com/open-mmlab/mmsegmentation/pull/2484))
+- Support Mapillary Vistas Dataset in projects ([#2484](https://github.com/open-mmlab/mmsegmentation/pull/2484))
 - Switch order of `reduce_zero_label` and applying `label_map` ([#2517](https://github.com/open-mmlab/mmsegmentation/pull/2517))
 
 ### Documentation
