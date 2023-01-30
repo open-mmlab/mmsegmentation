@@ -2,16 +2,19 @@
 
 ## v1.0.0rc4(01/30/2023)
 
+### Highlights
+
+- Support ISNet in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))
+- Support HSSN in projects ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
+
 ### Features
 
 - Add Gaussian Noise and Blur for biomedical data ([#2373](https://github.com/open-mmlab/mmsegmentation/pull/2373))
 - Add BioMedicalRandomGamma ([#2406](https://github.com/open-mmlab/mmsegmentation/pull/2406))
 - Add BioMedical3DPad ([#2383](https://github.com/open-mmlab/mmsegmentation/pull/2383))
 - Add BioMedical3DRandomFlip ([#2404](https://github.com/open-mmlab/mmsegmentation/pull/2404))
-- Add ISNet in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))
 - Add `gt_edge_map` field to SegDataSample ([#2466](https://github.com/open-mmlab/mmsegmentation/pull/2466))
 - Support synapse dataset ([#2432](https://github.com/open-mmlab/mmsegmentation/pull/2432), [#2465](https://github.com/open-mmlab/mmsegmentation/pull/2465))
-- Support HieraSeg on cityscapes ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
 - Support Mapillary Vistas Dataset ([#2484](https://github.com/open-mmlab/mmsegmentation/pull/2484))
 - Switch order of `reduce_zero_label` and applying `label_map` ([#2517](https://github.com/open-mmlab/mmsegmentation/pull/2517))
 
