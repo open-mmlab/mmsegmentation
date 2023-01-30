@@ -220,7 +220,7 @@ class BaseSegDataset(BaseDataset):
             # return subset of palette
             for old_id, new_id in sorted(
                     self.label_map.items(), key=lambda x: x[1]):
-                if new_id != -1:
+                if new_id != 255:
                     new_palette.append(palette[old_id])
             new_palette = type(palette)(new_palette)
         else:
