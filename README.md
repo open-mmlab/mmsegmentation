@@ -62,11 +62,17 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc3 was released in 31/12/2022.
+v1.0.0rc4 was released in 01/30/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Support test time augmentation ([#2184](https://github.com/open-mmlab/mmsegmentation/pull/2184))
-- Add 'Projects/' folder and the first example project ([#2412](https://github.com/open-mmlab/mmsegmentation/pull/2412))
+- Add nnUNet-style Gaussian Noise and Blur ([#2373](https://github.com/open-mmlab/mmsegmentation/pull/2373))
+- Add BioMedicalRandomGamma ([#2406](https://github.com/open-mmlab/mmsegmentation/pull/2406))
+- Add BioMedical3DPad ([#2383](https://github.com/open-mmlab/mmsegmentation/pull/2383))
+- Add ISNet in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))
+- Support synapse dataset ([#2432](https://github.com/open-mmlab/mmsegmentation/pull/2432), [#2465](https://github.com/open-mmlab/mmsegmentation/pull/2465))
+- Support HieraSeg on cityscapes ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
+- Support Mapillary Vistas Dataset ([#2484](https://github.com/open-mmlab/mmsegmentation/pull/2484))
+- Add BioMedical3DRandomFlip ([#2404](https://github.com/open-mmlab/mmsegmentation/pull/2404))
 
 ## Installation
 

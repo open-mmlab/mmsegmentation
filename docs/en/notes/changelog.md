@@ -1,5 +1,40 @@
 # Changelog of v1.x
 
+## v1.0.0rc4(01/30/2023)
+
+### Features
+
+- Add nnUNet-style Gaussian Noise and Blur ([#2373](https://github.com/open-mmlab/mmsegmentation/pull/2373))
+- Add BioMedicalRandomGamma ([#2406](https://github.com/open-mmlab/mmsegmentation/pull/2406))
+- Add BioMedical3DPad ([#2383](https://github.com/open-mmlab/mmsegmentation/pull/2383))
+- Add ISNet in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))
+- Support synapse dataset ([#2432](https://github.com/open-mmlab/mmsegmentation/pull/2432), [#2465](https://github.com/open-mmlab/mmsegmentation/pull/2465))
+- Add `gt_edge_map` field to SegDataSample ([#2466](https://github.com/open-mmlab/mmsegmentation/pull/2466))
+- Support HieraSeg on cityscapes ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
+- Support Mapillary Vistas Dataset ([#2484](https://github.com/open-mmlab/mmsegmentation/pull/2484))
+- Add BioMedical3DRandomFlip ([#2404](https://github.com/open-mmlab/mmsegmentation/pull/2404))
+
+### Documentation
+
+- Add ZN Customized_runtime Doc ([#2502](https://github.com/open-mmlab/mmsegmentation/pull/2502))
+- Add EN datasets.md ([#2464](https://github.com/open-mmlab/mmsegmentation/pull/2464))
+
+### Bug fix
+
+- Fix incorrect `img_shape` value assignment in RandomCrop ([#2469](https://github.com/open-mmlab/mmsegmentation/pull/2469))
+- Fix inference api and support setting palette to SegLocalVisualizer ([#2475](https://github.com/open-mmlab/mmsegmentation/pull/2475))
+
+### New Contributors
+
+- @blueyo0 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2373
+- @Fivethousand5k made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2406
+- @suyanzhou626 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2383
+- @unrealMJ made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2400
+- @Dominic23331 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2432
+- @AI-Tianlong made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2444
+- @morkovka1337 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2492
+- @Leeinsn made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2404
+
 ## v1.0.0rc3(31/12/2022)
 
 ### Highlights
