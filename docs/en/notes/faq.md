@@ -8,7 +8,7 @@ The compatible MMSegmentation and MMCV versions are as below. Please install the
 
 | MMSegmentation version |          MMCV version          | MMClassification (optional) version | MMDetection (optional) version |
 | :--------------------: | :----------------------------: | :---------------------------------: | :----------------------------: |
-|   1.x/dev-1.x branch   |        mmcv == 2.0.0rc3        |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4, \<=3.0.0rc5>  |
+|   1.x/dev-1.x branch   |        mmcv == 2.0.0rc3        |           mmcls>=1.0.0rc0           |         mmdet>3.0.0rc5         |
 |        1.0.0rc4        |        mmcv == 2.0.0rc3        |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4, \<=3.0.0rc5>  |
 |        1.0.0rc3        |        mmcv == 2.0.0rc3        |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4  \<=3.0.0rc5>  |
 |        1.0.0rc2        |        mmcv == 2.0.0rc3        |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4  \<=3.0.0rc5>  |
