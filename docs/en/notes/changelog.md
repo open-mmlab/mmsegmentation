@@ -13,19 +13,19 @@
 - Support synapse dataset ([#2432](https://github.com/open-mmlab/mmsegmentation/pull/2432), [#2465](https://github.com/open-mmlab/mmsegmentation/pull/2465))
 - Support HieraSeg on cityscapes ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
 - Support Mapillary Vistas Dataset ([#2484](https://github.com/open-mmlab/mmsegmentation/pull/2484))
+- Switch order of `reduce_zero_label` and applying `label_map` ([#2517](https://github.com/open-mmlab/mmsegmentation/pull/2517))
 
 ### Documentation
 
 - Add ZN Customized_runtime Doc ([#2502](https://github.com/open-mmlab/mmsegmentation/pull/2502))
 - Add EN datasets.md ([#2464](https://github.com/open-mmlab/mmsegmentation/pull/2464))
 - Fix minor typo in migration `package.md` ([#2518](https://github.com/open-mmlab/mmsegmentation/pull/2518))
-- Switch order of `reduce_zero_label` and applying `label_map` ([#2517](https://github.com/open-mmlab/mmsegmentation/pull/2517))
-- Unfinished label conversion from `-1` to `255` ([#2516](https://github.com/open-mmlab/mmsegmentation/pull/2516))
 
 ### Bug fix
 
 - Fix incorrect `img_shape` value assignment in RandomCrop ([#2469](https://github.com/open-mmlab/mmsegmentation/pull/2469))
 - Fix inference api and support setting palette to SegLocalVisualizer ([#2475](https://github.com/open-mmlab/mmsegmentation/pull/2475))
+- Unfinished label conversion from `-1` to `255` ([#2516](https://github.com/open-mmlab/mmsegmentation/pull/2516))
 
 ### New Contributors
 
