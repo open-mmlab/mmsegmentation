@@ -4,8 +4,8 @@
 
 ### Highlights
 
-- Support ISNet in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))
-- Support HSSN in projects ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
+- Support ISNet (ICCV'2021) in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))
+- Support HSSN (CVPR'2022) in projects ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
 
 ### Features
 
@@ -40,6 +40,7 @@
 - @AI-Tianlong made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2444
 - @morkovka1337 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2492
 - @Leeinsn made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2404
+- @siddancha made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2516
 
 ## v1.0.0rc3(31/12/2022)
 
