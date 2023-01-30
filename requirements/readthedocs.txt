@@ -1,5 +1,6 @@
-mmcv>=2.0.0rc0
-mmengine
+mmcv>=2.0.0rc1,<2.1.0
+mmengine>=0.1.0,<1.0.0
 prettytable
+scipy
 torch
 torchvision

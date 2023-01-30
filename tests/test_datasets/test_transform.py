@@ -8,7 +8,9 @@ import pytest
 from PIL import Image
 
 from mmseg.datasets.transforms import *  # noqa
-from mmseg.datasets.transforms import PhotoMetricDistortion, RandomCrop
+from mmseg.datasets.transforms import (LoadBiomedicalData,
+                                       LoadBiomedicalImageFromFile,
+                                       PhotoMetricDistortion, RandomCrop)
 from mmseg.registry import TRANSFORMS
 from mmseg.utils import register_all_modules
 
@@ -183,6 +185,68 @@ def test_flip():
     assert np.equal(original_seg, results['gt_semantic_seg']).all()
 
 
+def test_random_rotate_flip():
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', flip_prob=1.5)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', rotate_prob=1.5)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', degree=[20, 20, 20])
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='RandomRotFlip', degree=-20)
+        TRANSFORMS.build(transform)
+
+    transform = dict(
+        type='RandomRotFlip', flip_prob=1.0, rotate_prob=0, degree=20)
+    rot_flip_module = TRANSFORMS.build(transform)
+
+    results = dict()
+    img = mmcv.imread(
+        osp.join(
+            osp.dirname(__file__),
+            '../data/pseudo_synapse_dataset/img_dir/case0005_slice000.jpg'),
+        'color')
+    original_img = copy.deepcopy(img)
+    seg = np.array(
+        Image.open(
+            osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_synapse_dataset/ann_dir/case0005_slice000.png')
+        ))
+    original_seg = copy.deepcopy(seg)
+    results['img'] = img
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+    results['img_shape'] = img.shape
+    results['ori_shape'] = img.shape
+    # Set initial values for default meta_keys
+    results['pad_shape'] = img.shape
+    results['scale_factor'] = 1.0
+
+    result_flip = rot_flip_module(results)
+    assert original_img.shape == result_flip['img'].shape
+    assert original_seg.shape == result_flip['gt_semantic_seg'].shape
+
+    transform = dict(
+        type='RandomRotFlip', flip_prob=0, rotate_prob=1.0, degree=20)
+    rot_flip_module = TRANSFORMS.build(transform)
+
+    result_rotate = rot_flip_module(results)
+    assert original_img.shape == result_rotate['img'].shape
+    assert original_seg.shape == result_rotate['gt_semantic_seg'].shape
+
+    assert str(transform) == "{'type': 'RandomRotFlip'," \
+                             " 'flip_prob': 0," \
+                             " 'rotate_prob': 1.0," \
+                             " 'degree': 20}"
+
+
 def test_pad():
     # test assertion if both size_divisor and size is None
     with pytest.raises(AssertionError):
@@ -258,7 +322,7 @@ def test_random_crop():
 
     results = pipeline(results)
     assert results['img'].shape[:2] == (h - 20, w - 20)
-    assert results['img_shape'][:2] == (h - 20, w - 20)
+    assert results['img_shape'] == (h - 20, w - 20)
     assert results['gt_semantic_seg'].shape[:2] == (h - 20, w - 20)
 
 
@@ -729,7 +793,7 @@ def test_generate_edge():
     results['img_shape'] = seg_map.shape
 
     results = transform(results)
-    assert np.all(results['gt_edge'] == np.array([
+    assert np.all(results['gt_edge_map'] == np.array([
         [0, 0, 0, 1, 0],
         [0, 0, 1, 1, 1],
         [0, 1, 1, 1, 0],
@@ -778,3 +842,310 @@ def test_biomedical3d_random_crop():
     assert crop_results['img'].shape[1:] == (d - 20, h - 20, w - 20)
     assert crop_results['img_shape'] == (d - 20, h - 20, w - 20)
     assert crop_results['gt_seg_map'].shape == (d - 20, h - 20, w - 20)
+
+
+def test_biomedical_gaussian_noise():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedicalGaussianNoise', prob=1.5)
+        TRANSFORMS.build(transform)
+
+    # test assertion for invalid std
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianNoise', prob=0.2, mean=0.5, std=-0.5)
+        TRANSFORMS.build(transform)
+
+    transform = dict(type='BioMedicalGaussianNoise', prob=1.0)
+    noise_module = TRANSFORMS.build(transform)
+    assert str(noise_module) == 'BioMedicalGaussianNoise'\
+                                '(prob=1.0, ' \
+                                'mean=0.0, ' \
+                                'std=0.1)'
+
+    transform = dict(type='BioMedicalGaussianNoise', prob=1.0)
+    noise_module = TRANSFORMS.build(transform)
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = noise_module(results)
+    assert original_img.shape == results['img'].shape
+
+
+def test_biomedical_gaussian_blur():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedicalGaussianBlur', prob=-1.5)
+        TRANSFORMS.build(transform)
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=0.6)
+        smooth_module = TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(0.6))
+        smooth_module = TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(15, 8, 9))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalGaussianBlur', prob=1.0, sigma_range='0.16')
+        TRANSFORMS.build(transform)
+
+    transform = dict(
+        type='BioMedicalGaussianBlur', prob=1.0, sigma_range=(0.7, 0.8))
+    smooth_module = TRANSFORMS.build(transform)
+    assert str(
+        smooth_module
+    ) == 'BioMedicalGaussianBlur(prob=1.0, ' \
+         'prob_per_channel=0.5, '\
+         'sigma_range=(0.7, 0.8), ' \
+         'different_sigma_per_channel=True, '\
+         'different_sigma_per_axis=True)'
+
+    transform = dict(type='BioMedicalGaussianBlur', prob=1.0)
+    smooth_module = TRANSFORMS.build(transform)
+    assert str(
+        smooth_module
+    ) == 'BioMedicalGaussianBlur(prob=1.0, ' \
+         'prob_per_channel=0.5, '\
+         'sigma_range=(0.5, 1.0), ' \
+         'different_sigma_per_channel=True, '\
+         'different_sigma_per_axis=True)'
+
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = smooth_module(results)
+    assert original_img.shape == results['img'].shape
+    # the max value in the smoothed image should be less than the original one
+    assert original_img.max() >= results['img'].max()
+    assert original_img.min() <= results['img'].min()
+
+    transform = dict(
+        type='BioMedicalGaussianBlur',
+        prob=1.0,
+        different_sigma_per_axis=False)
+    smooth_module = TRANSFORMS.build(transform)
+
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/biomedical.nii.gz'))
+    from mmseg.datasets.transforms import LoadBiomedicalImageFromFile
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    original_img = copy.deepcopy(results['img'])
+    results = smooth_module(results)
+    assert original_img.shape == results['img'].shape
+    # the max value in the smoothed image should be less than the original one
+    assert original_img.max() >= results['img'].max()
+    assert original_img.min() <= results['img'].min()
+
+
+def test_BioMedicalRandomGamma():
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=-1, gamma_range=(0.7, 1.2))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=1.2, gamma_range=(0.7, 1.2))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma', prob=1.0, gamma_range=(0.7))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 0.2, 0.3))
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            invert_image=1)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            per_channel=1)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(
+            type='BioMedicalRandomGamma',
+            prob=1.0,
+            gamma_range=(0.7, 2),
+            retain_stats=1)
+        TRANSFORMS.build(transform)
+
+    test_img = 'tests/data/biomedical.nii.gz'
+    results = dict(img_path=test_img)
+    transform = LoadBiomedicalImageFromFile()
+    results = transform(copy.deepcopy(results))
+    origin_img = results['img']
+    transform2 = dict(
+        type='BioMedicalRandomGamma',
+        prob=1.0,
+        gamma_range=(0.7, 2),
+    )
+    transform2 = TRANSFORMS.build(transform2)
+    results = transform2(results)
+    transformed_img = results['img']
+    assert origin_img.shape == transformed_img.shape
+
+
+def test_BioMedical3DPad():
+    # test assertion.
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DPad', pad_shape=None)
+        TRANSFORMS.build(transform)
+
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DPad', pad_shape=[256, 256])
+        TRANSFORMS.build(transform)
+
+    data_info1 = dict(img=np.random.random((8, 6, 4, 4)))
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(6, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info1))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(4, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info1))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    data_info2 = dict(
+        img=np.random.random((8, 6, 4, 4)),
+        gt_seg_map=np.random.randint(0, 2, (6, 4, 4)))
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(6, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info2))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+    transform = dict(type='BioMedical3DPad', pad_shape=(4, 6, 6))
+    transform = TRANSFORMS.build(transform)
+    results = transform(copy.deepcopy(data_info2))
+    assert results['img'].shape[1:] == (6, 6, 6)
+    assert results['gt_seg_map'].shape[1:] == (6, 6, 6)
+    assert results['pad_shape'] == (6, 6, 6)
+
+
+def test_biomedical_3d_flip():
+    # test assertion for invalid prob
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DRandomFlip', prob=1.5, axes=(0, 1))
+        transform = TRANSFORMS.build(transform)
+
+    # test assertion for invalid direction
+    with pytest.raises(AssertionError):
+        transform = dict(type='BioMedical3DRandomFlip', prob=1, axes=(0, 1, 3))
+        transform = TRANSFORMS.build(transform)
+
+    # test flip axes are (0, 1, 2)
+    transform = dict(type='BioMedical3DRandomFlip', prob=1, axes=(0, 1, 2))
+    transform = TRANSFORMS.build(transform)
+
+    # test with random 3d data
+    results = dict()
+    results['img_path'] = 'Null'
+    results['img_shape'] = (1, 16, 16, 16)
+    results['img'] = np.random.randn(1, 16, 16, 16)
+    results['gt_seg_map'] = np.random.randint(0, 4, (16, 16, 16))
+
+    original_img = results['img'].copy()
+    original_seg = results['gt_seg_map'].copy()
+
+    # flip first time
+    results = transform(results)
+    with pytest.raises(AssertionError):
+        assert np.equal(original_img, results['img']).all()
+    with pytest.raises(AssertionError):
+        assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # flip second time
+    results = transform(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # test with actual data and flip axes are (0, 1)
+    # load biomedical 3d img and seg
+    data_prefix = osp.join(osp.dirname(__file__), '../data')
+    input_results = dict(img_path=osp.join(data_prefix, 'biomedical.npy'))
+    biomedical_loader = LoadBiomedicalData(with_seg=True)
+    data = biomedical_loader(copy.deepcopy(input_results))
+    results = data.copy()
+
+    original_img = data['img'].copy()
+    original_seg = data['gt_seg_map'].copy()
+
+    # test flip axes are (0, 1)
+    transform = dict(type='BioMedical3DRandomFlip', prob=1, axes=(0, 1))
+    transform = TRANSFORMS.build(transform)
+
+    # flip first time
+    results = transform(results)
+    with pytest.raises(AssertionError):
+        assert np.equal(original_img, results['img']).all()
+    with pytest.raises(AssertionError):
+        assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # flip second time
+    results = transform(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # test transform with flip axes = (1)
+    transform = dict(type='BioMedical3DRandomFlip', prob=1, axes=(1, ))
+    transform = TRANSFORMS.build(transform)
+    results = data.copy()
+    results = transform(results)
+    results = transform(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # test transform with swap_label_pairs
+    transform = dict(
+        type='BioMedical3DRandomFlip',
+        prob=1,
+        axes=(1, 2),
+        swap_label_pairs=[(0, 1)])
+    transform = TRANSFORMS.build(transform)
+    results = data.copy()
+    results = transform(results)
+
+    with pytest.raises(AssertionError):
+        assert np.equal(original_seg, results['gt_seg_map']).all()
+
+    # swap twice
+    results = transform(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_seg_map']).all()
