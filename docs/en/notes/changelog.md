@@ -4,20 +4,23 @@
 
 ### Features
 
-- Add nnUNet-style Gaussian Noise and Blur ([#2373](https://github.com/open-mmlab/mmsegmentation/pull/2373))
+- Add Gaussian Noise and Blur for biomedical data ([#2373](https://github.com/open-mmlab/mmsegmentation/pull/2373))
 - Add BioMedicalRandomGamma ([#2406](https://github.com/open-mmlab/mmsegmentation/pull/2406))
 - Add BioMedical3DPad ([#2383](https://github.com/open-mmlab/mmsegmentation/pull/2383))
+- Add BioMedical3DRandomFlip ([#2404](https://github.com/open-mmlab/mmsegmentation/pull/2404))
 - Add ISNet in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))
-- Support synapse dataset ([#2432](https://github.com/open-mmlab/mmsegmentation/pull/2432), [#2465](https://github.com/open-mmlab/mmsegmentation/pull/2465))
 - Add `gt_edge_map` field to SegDataSample ([#2466](https://github.com/open-mmlab/mmsegmentation/pull/2466))
+- Support synapse dataset ([#2432](https://github.com/open-mmlab/mmsegmentation/pull/2432), [#2465](https://github.com/open-mmlab/mmsegmentation/pull/2465))
 - Support HieraSeg on cityscapes ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
 - Support Mapillary Vistas Dataset ([#2484](https://github.com/open-mmlab/mmsegmentation/pull/2484))
-- Add BioMedical3DRandomFlip ([#2404](https://github.com/open-mmlab/mmsegmentation/pull/2404))
 
 ### Documentation
 
 - Add ZN Customized_runtime Doc ([#2502](https://github.com/open-mmlab/mmsegmentation/pull/2502))
 - Add EN datasets.md ([#2464](https://github.com/open-mmlab/mmsegmentation/pull/2464))
+- Fix minor typo in migration `package.md` ([#2518](https://github.com/open-mmlab/mmsegmentation/pull/2518))
+- Switch order of `reduce_zero_label` and applying `label_map` ([#2517](https://github.com/open-mmlab/mmsegmentation/pull/2517))
+- Unfinished label conversion from `-1` to `255` ([#2516](https://github.com/open-mmlab/mmsegmentation/pull/2516))
 
 ### Bug fix
 

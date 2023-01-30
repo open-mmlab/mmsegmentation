@@ -62,7 +62,7 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc4 was released in 01/30/2023.
+v1.0.0rc4 was released on 30/01/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
 - Add nnUNet-style Gaussian Noise and Blur ([#2373](https://github.com/open-mmlab/mmsegmentation/pull/2373))
