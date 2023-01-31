@@ -263,7 +263,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         return losses
 
     def predict(self, inputs: Tuple[Tensor], batch_img_metas: List[dict],
-                test_cfg: ConfigType) -> List[Tensor]:
+                test_cfg: ConfigType) -> Tensor:
         """Forward function for prediction.
 
         Args:
@@ -276,7 +276,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             test_cfg (dict): The testing config.
 
         Returns:
-            List[Tensor]: Outputs segmentation logits map.
+            Tensor: Outputs segmentation logits map.
         """
         seg_logits = self.forward(inputs)
 
