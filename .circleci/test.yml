@@ -110,7 +110,7 @@ jobs:
             docker exec mmseg pip install -U openmim
             docker exec mmseg mim install 'mmcv==2.0.0rc3'
             docker exec mmseg pip install -e /mmclassification
-            docker exec mmseg pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+            docker exec mmseg pip install -e /mmdetection
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
