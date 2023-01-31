@@ -40,7 +40,7 @@ for img in x_train:
     save_path = root_path + 'masks/train/' + basename
     lab_patch.save(save_path)
     cv_img = np.array(Image.open(save_path))
-    print(cv_img.shape)
+    # print(cv_img.shape)
 
 for img in x_test:
     basename = os.path.basename(img)
