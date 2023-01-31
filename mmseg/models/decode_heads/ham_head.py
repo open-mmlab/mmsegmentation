@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-# Originally from https://github.com/visual-attention-network/segnext
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -12,31 +11,22 @@ from .decode_head import BaseDecodeHead
 
 class _MatrixDecomposition2DBase(nn.Module):
 
-    def __init__(self,
-                 spatial=True,
-                 MD_S=1,
-                 MD_D=512,
-                 MD_R=64,
-                 train_steps=6,
-                 eval_steps=7,
-                 inv_t=100,
-                 eta=0.9,
-                 rand_init=True):
+    def __init__(self, args=dict()):
         super().__init__()
 
-        self.spatial = spatial
+        self.spatial = args.setdefault('SPATIAL', True)
 
-        self.S = MD_S
-        self.D = MD_D
-        self.R = MD_R
+        self.S = args.setdefault('MD_S', 1)
+        self.D = args.setdefault('MD_D', 512)
+        self.R = args.setdefault('MD_R', 64)
 
-        self.train_steps = train_steps
-        self.eval_steps = eval_steps
+        self.train_steps = args.setdefault('TRAIN_STEPS', 6)
+        self.eval_steps = args.setdefault('EVAL_STEPS', 7)
 
-        self.inv_t = inv_t
-        self.eta = eta
+        self.inv_t = args.setdefault('INV_T', 100)
+        self.eta = args.setdefault('ETA', 0.9)
 
-        self.rand_init = rand_init
+        self.rand_init = args.setdefault('RAND_INIT', True)
 
         print('spatial', self.spatial)
         print('S', self.S)
@@ -115,7 +105,7 @@ class _MatrixDecomposition2DBase(nn.Module):
 class NMF2D(_MatrixDecomposition2DBase):
 
     def __init__(self, args=dict()):
-        super().__init__(**args)
+        super().__init__(args)
 
         self.inv_t = 1
 
@@ -187,13 +177,21 @@ class Hamburger(nn.Module):
 
 @HEADS.register_module()
 class LightHamHead(BaseDecodeHead):
-    """Is Attention Better Than Matrix Decomposition? This head is the
-    implementation of `HamNet.
+    """SegNeXt decode head.
 
-    <https://arxiv.org/abs/2109.04553>`_.
+    This decode head is the implementation of `SegNeXt: Rethinking
+    Convolutional Attention Design for Semantic
+    Segmentation <https://arxiv.org/abs/2209.08575>`_.
+    Inspiration from https://github.com/visual-attention-network/segnext.
+
+    Specifically, LightHamHead is inspired by HamNet from
+    `Is Attention Better Than Matrix Decomposition?
+    <https://arxiv.org/abs/2109.04553>`.
+
     Args:
         ham_channels (int): input channels for Hamburger.
-        ham_kwargs (int): kwagrs for Ham.
+            Defaults: 512.
+        ham_kwargs (int): kwagrs for Ham. Defaults: dict().
 
     TODO:
         Add other MD models (Ham).

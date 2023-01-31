@@ -1,5 +1,4 @@
 # model settings
-norm_cfg = dict(type='SyncBN', requires_grad=True)
 ham_norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)
 model = dict(
     type='EncoderDecoder',
@@ -13,7 +12,7 @@ model = dict(
         depths=[3, 3, 5, 2],
         attention_kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
         attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
-        norm_cfg=dict(type='BN', requires_grad=True)),
+        norm_cfg=dict(type='SyncBN', requires_grad=True)),
     decode_head=dict(
         type='LightHamHead',
         in_channels=[64, 160, 256],
