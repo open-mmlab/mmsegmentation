@@ -256,6 +256,7 @@ class OverlapPatchEmbed(BaseModule):
                 - H (int): Height of x.
                 - W (int): Width of x.
         """
+
         x = self.proj(x)
         _, _, H, W = x.shape
         x = self.norm(x)

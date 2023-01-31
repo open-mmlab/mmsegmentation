@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+# Originally from https://github.com/visual-attention-network/segnext
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -11,22 +12,31 @@ from .decode_head import BaseDecodeHead
 
 class _MatrixDecomposition2DBase(nn.Module):
 
-    def __init__(self, args=dict()):
+    def __init__(self,
+                 spatial=True,
+                 MD_S=1,
+                 MD_D=512,
+                 MD_R=64,
+                 train_steps=6,
+                 eval_steps=7,
+                 inv_t=100,
+                 eta=0.9,
+                 rand_init=True):
         super().__init__()
 
-        self.spatial = args.setdefault('SPATIAL', True)
+        self.spatial = spatial
 
-        self.S = args.setdefault('MD_S', 1)
-        self.D = args.setdefault('MD_D', 512)
-        self.R = args.setdefault('MD_R', 64)
+        self.S = MD_S
+        self.D = MD_D
+        self.R = MD_R
 
-        self.train_steps = args.setdefault('TRAIN_STEPS', 6)
-        self.eval_steps = args.setdefault('EVAL_STEPS', 7)
+        self.train_steps = train_steps
+        self.eval_steps = eval_steps
 
-        self.inv_t = args.setdefault('INV_T', 100)
-        self.eta = args.setdefault('ETA', 0.9)
+        self.inv_t = inv_t
+        self.eta = eta
 
-        self.rand_init = args.setdefault('RAND_INIT', True)
+        self.rand_init = rand_init
 
         print('spatial', self.spatial)
         print('S', self.S)
@@ -71,14 +81,14 @@ class _MatrixDecomposition2DBase(nn.Module):
             D = H * W
             N = C // self.S
             x = x.view(B * self.S, N, D).transpose(1, 2)
-
+        cuda = x.device == torch.device('cuda')
         if not self.rand_init and not hasattr(self, 'bases'):
-            bases = self._build_bases(1, self.S, D, self.R, cuda=True)
+            bases = self._build_bases(1, self.S, D, self.R, cuda=cuda)
             self.register_buffer('bases', bases)
 
         # (S, D, R) -> (B * S, D, R)
         if self.rand_init:
-            bases = self._build_bases(B, self.S, D, self.R, cuda=True)
+            bases = self._build_bases(B, self.S, D, self.R, cuda=cuda)
         else:
             bases = self.bases.repeat(B, 1, 1)
 
@@ -105,7 +115,7 @@ class _MatrixDecomposition2DBase(nn.Module):
 class NMF2D(_MatrixDecomposition2DBase):
 
     def __init__(self, args=dict()):
-        super().__init__(args)
+        super().__init__(**args)
 
         self.inv_t = 1
 
