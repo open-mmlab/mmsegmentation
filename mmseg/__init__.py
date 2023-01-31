@@ -7,8 +7,8 @@ from packaging.version import parse
 
 from .version import __version__, version_info
 
-MMCV_MIN = '2.0.0rc3'
-MMCV_MAX = '2.0.0rc4'
+MMCV_MIN = '2.0.0rc4'
+MMCV_MAX = '2.0.0rc5'
 MMENGINE_MIN = '0.1.0'
 MMENGINE_MAX = '1.0.0'
 
@@ -58,17 +58,17 @@ mmcv_max_version = digit_version(MMCV_MAX)
 mmcv_version = digit_version(mmcv.__version__)
 
 
-assert (mmcv_min_version <= mmcv_version <= mmcv_max_version), \
+assert (mmcv_min_version <= mmcv_version < mmcv_max_version), \
     f'MMCV=={mmcv.__version__} is used but incompatible. ' \
-    f'Please install mmcv==2.0.0rc3.'
+    f'Please install mmcv>=2.0.0rc4.'
 
 mmengine_min_version = digit_version(MMENGINE_MIN)
 mmengine_max_version = digit_version(MMENGINE_MAX)
 mmengine_version = digit_version(mmengine.__version__)
 
-assert (mmengine_min_version <= mmengine_version < mmengine_max_version), \
+assert (mmengine_min_version <= mmengine_version <= mmengine_max_version), \
     f'MMEngine=={mmengine.__version__} is used but incompatible. ' \
     f'Please install mmengine>={mmengine_min_version}, '\
-    f'<{mmengine_max_version}.'
+    f'<={mmengine_max_version}.'
 
 __all__ = ['__version__', 'version_info', 'digit_version']
