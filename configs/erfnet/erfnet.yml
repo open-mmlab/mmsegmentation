@@ -31,7 +31,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 71.08
-      mIoU(ms+flip): 72.6
+      mIoU: 72.5
+      mIoU(ms+flip): 74.75
   Config: configs/erfnet/erfnet_fcn_4xb4-160k_cityscapes-512x1024.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20211126_082056-03d333ed.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145-dc90157a.pth
