@@ -168,6 +168,7 @@ Supported methods:
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
+- [x] [DEST (CVPRW'2022)](projects/dest)
 
 Supported datasets:
 
