@@ -536,6 +536,18 @@ To convert REFUGE dataset to MMSegmentation format, you should run the following
 python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
 ```
 
-The script will make directory structure automatically.
+The script will make directory structure below:
 
-In our default setting, it will generate 400 images for training, 400 images for validation and 400 images for testing.
+```none
+│   ├── REFUGE
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+```
+
+There is the dataset structure after running `tools/convert_datasets/refuge.py`, which includes 400 images for training, 400 images for validation and 400 images for testing.

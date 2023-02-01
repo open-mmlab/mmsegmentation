@@ -440,6 +440,18 @@ python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
 ```
 
-这个脚本将自动生成正确的文件夹结构。
+这个脚本将自动生成下面的文件夹结构：
+
+```none
+│   ├── REFUGE
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+```
 
 使用我们默认的配置， 将生成 400 张图片的训练集， 400 张图片的验证集和 400 张图片的测试集.
