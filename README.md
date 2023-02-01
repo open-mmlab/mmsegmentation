@@ -62,7 +62,7 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc4 was released on 30/01/2023.
+v1.0.0rc5 was released on 01/02/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
 - Support ISNet (ICCV'2021) in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))

@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import mmengine.fileio as fileio
+
 from mmseg.registry import DATASETS
 from .basesegdataset import BaseSegDataset
 
@@ -33,4 +35,5 @@ class iSAIDDataset(BaseSegDataset):
             seg_map_suffix=seg_map_suffix,
             ignore_index=ignore_index,
             **kwargs)
-        assert self.file_client.exists(self.data_prefix['img_path'])
+        assert fileio.exists(
+            self.data_prefix['img_path'], backend_args=self.backend_args)
