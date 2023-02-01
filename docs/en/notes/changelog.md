@@ -4,6 +4,7 @@
 
 ### Bug fix
 
+- Fix MaskFormer and Mask2Former when install mmdet from source ([#2532](https://github.com/open-mmlab/mmsegmentation/pull/2532))
 - Support new fileio interface in `MMCV>=2.0.0rc4` ([#2543](https://github.com/open-mmlab/mmsegmentation/pull/2543))
 
 ## v1.0.0rc4(01/30/2023)
