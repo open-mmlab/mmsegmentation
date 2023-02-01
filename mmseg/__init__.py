@@ -69,6 +69,6 @@ mmengine_version = digit_version(mmengine.__version__)
 assert (mmengine_min_version <= mmengine_version < mmengine_max_version), \
     f'MMEngine=={mmengine.__version__} is used but incompatible. ' \
     f'Please install mmengine>={mmengine_min_version}, '\
-    f'<={mmengine_max_version}.'
+    f'<{mmengine_max_version}.'
 
 __all__ = ['__version__', 'version_info', 'digit_version']
