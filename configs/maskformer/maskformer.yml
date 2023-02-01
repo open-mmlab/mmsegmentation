@@ -35,7 +35,7 @@ Models:
     Metrics:
       mIoU: 44.29
   Config: configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512/maskformer_r50-d32_8xb2-160k_ade20k-512x512_20221030_182724-cbd39cc1.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512/maskformer_r50-d32_8xb2-160k_ade20k-512x512_20221030_182724-3a9cfe45.pth
 - Name: maskformer_r101-d32_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Metadata:
@@ -56,7 +56,7 @@ Models:
     Metrics:
       mIoU: 45.11
   Config: configs/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512/maskformer_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053-c8e0931d.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512/maskformer_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053-84adbfcb.pth
 - Name: maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Metadata:
@@ -77,7 +77,7 @@ Models:
     Metrics:
       mIoU: 46.69
   Config: configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512_20221114_232813-03550716.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512_20221114_232813-f14e7ce0.pth
 - Name: maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Metadata:
@@ -98,4 +98,4 @@ Models:
     Metrics:
       mIoU: 49.36
   Config: configs/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512_20221115_114710-5ab67e58.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512_20221115_114710-723512c7.pth
