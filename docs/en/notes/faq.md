@@ -4,12 +4,12 @@ We list some common troubles faced by many users and their corresponding solutio
 
 ## Installation
 
-The compatible MMSegmentation, MMCV and MMEngine versions are as below. Please install the correct version of MMCV to avoid installation issues.
+The compatible MMSegmentation, MMCV and MMEngine versions are as below. Please install the correct versions of them to avoid installation issues.
 
 | MMSegmentation version |          MMCV version          | MMEngine version  | MMClassification (optional) version | MMDetection (optional) version |
 | :--------------------: | :----------------------------: | :---------------: | :---------------------------------: | :----------------------------: |
 |     dev-1.x branch     |        mmcv >= 2.0.0rc4        | MMEngine >= 0.2.0 |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4, \<=3.0.0rc5>  |
-|       1.x branch       |        mmcv >= 2.0.0rc4        | MMEngine >= 0.2.0 |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4, \<=3.0.0rc5>  |
+|       1.x branch       |        mmcv == 2.0.0rc3        | MMEngine >= 0.2.0 |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4, \<=3.0.0rc5>  |
 |        1.0.0rc4        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4, \<=3.0.0rc5>  |
 |        1.0.0rc3        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4  \<=3.0.0rc5>  |
 |        1.0.0rc2        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           | mmdet>=3.0.0rc4  \<=3.0.0rc5>  |
