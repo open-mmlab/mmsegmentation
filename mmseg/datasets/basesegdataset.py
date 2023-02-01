@@ -76,6 +76,7 @@ class BaseSegDataset(BaseDataset):
         backend_args (dict): Arguments to instantiate a file backend.
             See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
             for details. Defaults to ``dict(backend='local')``
+            Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
     METAINFO: dict = dict()
 
