@@ -1,5 +1,15 @@
 # Changelog of v1.x
 
+## v1.0.0rc5(02/01/2023)
+
+### Bug fix
+
+- Fix MaskFormer and Mask2Former when install mmdet from source ([#2532](https://github.com/open-mmlab/mmsegmentation/pull/2532))
+- Support new fileio interface in `MMCV>=2.0.0rc4` ([#2543](https://github.com/open-mmlab/mmsegmentation/pull/2543))
+- Fix ERFNet URL in dev-1.x branch ([#2537](https://github.com/open-mmlab/mmsegmentation/pull/2537))
+- Fix misleading `List[Tensor]` types ([#2546](https://github.com/open-mmlab/mmsegmentation/pull/2546))
+- Rename typing.py to typing_utils.py ([#2548](https://github.com/open-mmlab/mmsegmentation/pull/2548))
+
 ## v1.0.0rc4(01/30/2023)
 
 ### Highlights
