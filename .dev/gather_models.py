@@ -7,8 +7,10 @@ import os
 import os.path as osp
 import shutil
 
-import mmcv
 import torch
+from mmengine import Config
+from mmengine.fileio import dump
+from mmengine.utils import mkdir_or_exist, scandir
 
 # build schedule look-up table to automatically find the final model
 RESULTS_LUT = ['mIoU', 'mAcc', 'aAcc']
@@ -50,23 +52,25 @@ def get_final_iter(config):
 
 
 def get_final_results(log_json_path, iter_num):
-    result_dict = {}
+    result_dict = dict()
     last_iter = 0
-    with open(log_json_path, 'r') as f:
-        for line in f:
+    with open(log_json_path) as f:
+        for line in f.readlines():
             log_line = json.loads(line)
             if 'mode' not in log_line.keys():
                 continue
+
             # When evaluation, the 'iter' of new log json is the evaluation
             # steps on single gpu.
-            flag1 = 'aAcc' in log_line or log_line['mode'] == 'val'
-            flag2 = last_iter in [iter_num - 50, iter_num]
+            flag1 = ('aAcc' in log_line) or (log_line['mode'] == 'val')
+            flag2 = (last_iter == iter_num - 50) or (last_iter == iter_num)
             if flag1 and flag2:
                 result_dict.update({
                     key: log_line[key]
                     for key in RESULTS_LUT if key in log_line
                 })
                 return result_dict
+
             last_iter = log_line['iter']
 
 
@@ -98,10 +102,10 @@ def main():
     work_dir = args.work_dir
     collect_dir = args.collect_dir
     selected_config_name = args.config_name
-    mmcv.mkdir_or_exist(collect_dir)
+    mkdir_or_exist(collect_dir)
 
     # find all models in the root directory to be gathered
-    raw_configs = list(mmcv.scandir('./configs', '.py', recursive=True))
+    raw_configs = list(scandir('./configs', '.py', recursive=True))
 
     # filter configs that is not trained in the experiments dir
     used_configs = []
@@ -133,7 +137,7 @@ def main():
         log_json_paths = glob.glob(osp.join(exp_dir, '*.log.json'))
         log_json_path = log_json_paths[0]
         model_performance = None
-        for _log_json_path in log_json_paths:
+        for idx, _log_json_path in enumerate(log_json_paths):
             model_performance = get_final_results(_log_json_path, final_iter)
             if model_performance is not None:
                 log_json_path = _log_json_path
@@ -159,10 +163,9 @@ def main():
         model_publish_dir = osp.join(collect_dir, config_name)
 
         publish_model_path = osp.join(model_publish_dir,
-                                      f'{config_name}_' + model['model_time'])
-
+                                      config_name + '_' + model['model_time'])
         trained_model_path = osp.join(work_dir, config_name,
-                                      f'iter_{model["iters"]}.pth')
+                                      'iter_{}.pth'.format(model['iters']))
         if osp.exists(model_publish_dir):
             for file in os.listdir(model_publish_dir):
                 if file.endswith('.pth'):
@@ -174,7 +177,7 @@ def main():
                 print(f'dir {model_publish_dir} exists, no model found')
 
         else:
-            mmcv.mkdir_or_exist(model_publish_dir)
+            mkdir_or_exist(model_publish_dir)
 
             # convert model
             final_model_path = process_checkpoint(trained_model_path,
@@ -197,13 +200,13 @@ def main():
         if args.all:
             # copy config to guarantee reproducibility
             raw_config = osp.join('./configs', f'{config_name}.py')
-            mmcv.Config.fromfile(raw_config).dump(
+            Config.fromfile(raw_config).dump(
                 osp.join(model_publish_dir, osp.basename(raw_config)))
 
         publish_model_infos.append(model)
 
     models = dict(models=publish_model_infos)
-    mmcv.dump(models, osp.join(collect_dir, 'model_infos.json'), indent=4)
+    dump(models, osp.join(collect_dir, 'model_infos.json'), indent=4)
 
 
 if __name__ == '__main__':

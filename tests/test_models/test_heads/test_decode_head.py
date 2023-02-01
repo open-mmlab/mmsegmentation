@@ -3,8 +3,10 @@ from unittest.mock import patch
 
 import pytest
 import torch
+from mmengine.structures import PixelData
 
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
+from mmseg.structures import SegDataSample
 from .utils import to_cuda
 
 
@@ -93,7 +95,11 @@ def test_decode_head():
         BaseDecodeHead(3, 16, num_classes=19, loss_decode=['CrossEntropyLoss'])
 
     inputs = torch.randn(2, 19, 8, 8).float()
-    target = torch.ones(2, 1, 64, 64).long()
+    data_samples = [
+        SegDataSample(gt_sem_seg=PixelData(data=torch.ones(64, 64).long()))
+        for _ in range(2)
+    ]
+
     head = BaseDecodeHead(
         3,
         16,
@@ -102,13 +108,16 @@ def test_decode_head():
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
-        head, target = to_cuda(head, target)
-    loss = head.losses(seg_logit=inputs, seg_label=target)
+    loss = head.loss_by_feat(
+        seg_logits=inputs, batch_data_samples=data_samples)
     assert 'loss_ce' in loss
 
     # test multi-loss, loss_decode is list of dict
     inputs = torch.randn(2, 19, 8, 8).float()
-    target = torch.ones(2, 1, 64, 64).long()
+    data_samples = [
+        SegDataSample(gt_sem_seg=PixelData(data=torch.ones(64, 64).long()))
+        for _ in range(2)
+    ]
     head = BaseDecodeHead(
         3,
         16,
@@ -119,8 +128,9 @@ def test_decode_head():
         ])
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
-        head, target = to_cuda(head, target)
-    loss = head.losses(seg_logit=inputs, seg_label=target)
+
+    loss = head.loss_by_feat(
+        seg_logits=inputs, batch_data_samples=data_samples)
     assert 'loss_1' in loss
     assert 'loss_2' in loss
 
@@ -132,7 +142,10 @@ def test_decode_head():
 
     # test multi-loss, loss_decode is list of dict
     inputs = torch.randn(2, 19, 8, 8).float()
-    target = torch.ones(2, 1, 64, 64).long()
+    data_samples = [
+        SegDataSample(gt_sem_seg=PixelData(data=torch.ones(64, 64).long()))
+        for _ in range(2)
+    ]
     head = BaseDecodeHead(
         3,
         16,
@@ -142,15 +155,18 @@ def test_decode_head():
                      dict(type='CrossEntropyLoss', loss_name='loss_3')))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
-        head, target = to_cuda(head, target)
-    loss = head.losses(seg_logit=inputs, seg_label=target)
+    loss = head.loss_by_feat(
+        seg_logits=inputs, batch_data_samples=data_samples)
     assert 'loss_1' in loss
     assert 'loss_2' in loss
     assert 'loss_3' in loss
 
     # test multi-loss, loss_decode is list of dict, names of them are identical
     inputs = torch.randn(2, 19, 8, 8).float()
-    target = torch.ones(2, 1, 64, 64).long()
+    data_samples = [
+        SegDataSample(gt_sem_seg=PixelData(data=torch.ones(64, 64).long()))
+        for _ in range(2)
+    ]
     head = BaseDecodeHead(
         3,
         16,
@@ -160,8 +176,8 @@ def test_decode_head():
                      dict(type='CrossEntropyLoss', loss_name='loss_ce')))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
-        head, target = to_cuda(head, target)
-    loss_3 = head.losses(seg_logit=inputs, seg_label=target)
+    loss_3 = head.loss_by_feat(
+        seg_logits=inputs, batch_data_samples=data_samples)
 
     head = BaseDecodeHead(
         3,
@@ -170,8 +186,8 @@ def test_decode_head():
         loss_decode=(dict(type='CrossEntropyLoss', loss_name='loss_ce')))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
-        head, target = to_cuda(head, target)
-    loss = head.losses(seg_logit=inputs, seg_label=target)
+    loss = head.loss_by_feat(
+        seg_logits=inputs, batch_data_samples=data_samples)
     assert 'loss_ce' in loss
     assert 'loss_ce' in loss_3
     assert loss_3['loss_ce'] == 3 * loss['loss_ce']

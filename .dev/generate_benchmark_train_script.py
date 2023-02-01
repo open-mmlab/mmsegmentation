@@ -69,11 +69,14 @@ def main():
     port = args.port
     partition_name = 'PARTITION=$1'
 
-    commands = [partition_name, '\n', '\n']
+    commands = []
+    commands.append(partition_name)
+    commands.append('\n')
+    commands.append('\n')
 
-    with open(args.txt_path, 'r') as f:
+    with open(args.txt_path) as f:
         model_cfgs = f.readlines()
-        for cfg in model_cfgs:
+        for i, cfg in enumerate(model_cfgs):
             create_train_bash_info(commands, cfg, script_name, '$PARTITION',
                                    port)
             port += 1

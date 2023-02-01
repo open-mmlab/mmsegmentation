@@ -5,8 +5,8 @@ from typing import Sequence
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer, build_norm_layer
-from mmcv.runner.base_module import BaseModule
-from mmcv.utils import to_2tuple
+from mmengine.model import BaseModule
+from mmengine.utils import to_2tuple
 
 
 class AdaptivePadding(nn.Module):
@@ -42,7 +42,7 @@ class AdaptivePadding(nn.Module):
 
     def __init__(self, kernel_size=1, stride=1, dilation=1, padding='corner'):
 
-        super(AdaptivePadding, self).__init__()
+        super().__init__()
 
         assert padding in ('same', 'corner')
 
@@ -104,8 +104,8 @@ class PatchEmbed(BaseModule):
         input_size (int | tuple | None): The size of input, which will be
             used to calculate the out size. Only work when `dynamic_size`
             is False. Default: None.
-        init_cfg (`mmcv.ConfigDict`, optional): The Config for initialization.
-            Default: None.
+        init_cfg (`mmengine.ConfigDict`, optional): The Config for
+            initialization. Default: None.
     """
 
     def __init__(self,
@@ -120,7 +120,7 @@ class PatchEmbed(BaseModule):
                  norm_cfg=None,
                  input_size=None,
                  init_cfg=None):
-        super(PatchEmbed, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
 
         self.embed_dims = embed_dims
         if stride is None:

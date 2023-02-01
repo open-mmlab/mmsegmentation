@@ -2,13 +2,13 @@
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
-from mmcv.runner import BaseModule, auto_fp16
+from mmengine.model import BaseModule
 
-from mmseg.ops import resize
-from ..builder import NECKS
+from mmseg.registry import MODELS
+from ..utils import resize
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class FPN(BaseModule):
     """Feature Pyramid Network.
 
@@ -80,7 +80,7 @@ class FPN(BaseModule):
                  upsample_cfg=dict(mode='nearest'),
                  init_cfg=dict(
                      type='Xavier', layer='Conv2d', distribution='uniform')):
-        super(FPN, self).__init__(init_cfg)
+        super().__init__(init_cfg)
         assert isinstance(in_channels, list)
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -159,7 +159,6 @@ class FPN(BaseModule):
                     inplace=False)
                 self.fpn_convs.append(extra_fpn_conv)
 
-    @auto_fp16()
     def forward(self, inputs):
         assert len(inputs) == len(self.in_channels)
 

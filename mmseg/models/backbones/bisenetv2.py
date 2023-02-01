@@ -3,10 +3,10 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import (ConvModule, DepthwiseSeparableConvModule,
                       build_activation_layer, build_norm_layer)
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
 
-from mmseg.ops import resize
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
+from ..utils import resize
 
 
 class DetailBranch(BaseModule):
@@ -37,7 +37,7 @@ class DetailBranch(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(DetailBranch, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         detail_branch = []
         for i in range(len(detail_channels)):
             if i == 0:
@@ -126,7 +126,7 @@ class StemBlock(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(StemBlock, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
 
         self.conv_first = ConvModule(
             in_channels=in_channels,
@@ -207,7 +207,7 @@ class GELayer(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(GELayer, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         mid_channel = in_channels * exp_ratio
         self.conv1 = ConvModule(
             in_channels=in_channels,
@@ -326,7 +326,7 @@ class CEBlock(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(CEBlock, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.gap = nn.Sequential(
@@ -385,7 +385,7 @@ class SemanticBranch(BaseModule):
                  in_channels=3,
                  exp_ratio=6,
                  init_cfg=None):
-        super(SemanticBranch, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.in_channels = in_channels
         self.semantic_channels = semantic_channels
         self.semantic_stages = []
@@ -458,7 +458,7 @@ class BGALayer(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(BGALayer, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.out_channels = out_channels
         self.align_corners = align_corners
         self.detail_dwconv = nn.Sequential(
@@ -541,7 +541,7 @@ class BGALayer(BaseModule):
         return output
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class BiSeNetV2(BaseModule):
     """BiSeNetV2: Bilateral Network with Guided Aggregation for
     Real-time Semantic Segmentation.
@@ -594,7 +594,7 @@ class BiSeNetV2(BaseModule):
                 dict(
                     type='Constant', val=1, layer=['_BatchNorm', 'GroupNorm'])
             ]
-        super(BiSeNetV2, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.in_channels = in_channels
         self.out_indices = out_indices
         self.detail_channels = detail_channels

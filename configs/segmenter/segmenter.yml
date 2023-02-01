@@ -13,7 +13,7 @@ Collections:
   Converted From:
     Code: https://github.com/rstrudel/segmenter
 Models:
-- Name: segmenter_vit-t_mask_8x1_512x512_160k_ade20k
+- Name: segmenter_vit-t_mask_8xb1-160k_ade20k-512x512
   In Collection: Segmenter
   Metadata:
     backbone: ViT-T_16
@@ -33,9 +33,9 @@ Models:
     Metrics:
       mIoU: 39.99
       mIoU(ms+flip): 40.83
-  Config: configs/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k.py
+  Config: configs/segmenter/segmenter_vit-t_mask_8xb1-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k/segmenter_vit-t_mask_8x1_512x512_160k_ade20k_20220105_151706-ffcf7509.pth
-- Name: segmenter_vit-s_linear_8x1_512x512_160k_ade20k
+- Name: segmenter_vit-s_fcn_8xb1-160k_ade20k-512x512
   In Collection: Segmenter
   Metadata:
     backbone: ViT-S_16
@@ -55,9 +55,9 @@ Models:
     Metrics:
       mIoU: 45.75
       mIoU(ms+flip): 46.82
-  Config: configs/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k.py
+  Config: configs/segmenter/segmenter_vit-s_fcn_8xb1-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713-39658c46.pth
-- Name: segmenter_vit-s_mask_8x1_512x512_160k_ade20k
+- Name: segmenter_vit-s_mask_8xb1-160k_ade20k-512x512
   In Collection: Segmenter
   Metadata:
     backbone: ViT-S_16
@@ -77,9 +77,9 @@ Models:
     Metrics:
       mIoU: 46.19
       mIoU(ms+flip): 47.85
-  Config: configs/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k.py
+  Config: configs/segmenter/segmenter_vit-s_mask_8xb1-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k/segmenter_vit-s_mask_8x1_512x512_160k_ade20k_20220105_151706-511bb103.pth
-- Name: segmenter_vit-b_mask_8x1_512x512_160k_ade20k
+- Name: segmenter_vit-b_mask_8xb1-160k_ade20k-512x512
   In Collection: Segmenter
   Metadata:
     backbone: ViT-B_16
@@ -99,27 +99,27 @@ Models:
     Metrics:
       mIoU: 49.6
       mIoU(ms+flip): 51.07
-  Config: configs/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k.py
+  Config: configs/segmenter/segmenter_vit-b_mask_8xb1-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k/segmenter_vit-b_mask_8x1_512x512_160k_ade20k_20220105_151706-bc533b08.pth
-- Name: segmenter_vit-l_mask_8x1_640x640_160k_ade20k
+- Name: segmenter_vit-l_mask_8xb1-160k_ade20k-512x512
   In Collection: Segmenter
   Metadata:
     backbone: ViT-L_16
     crop size: (640,640)
     lr schd: 160000
     inference time (ms/im):
-    - value: 330.03
+    - value: 381.68
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (640,640)
-    Training Memory (GB): 16.99
+    Training Memory (GB): 16.56
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 51.65
-      mIoU(ms+flip): 53.58
-  Config: configs/segmenter/segmenter_vit-l_mask_8x1_640x640_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-l_mask_8x1_640x640_160k_ade20k/segmenter_vit-l_mask_8x1_640x640_160k_ade20k_20220614_024513-4783a347.pth
+      mIoU: 52.16
+      mIoU(ms+flip): 53.65
+  Config: configs/segmenter/segmenter_vit-l_mask_8xb1-160k_ade20k-512x512.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k/segmenter_vit-l_mask_8x1_512x512_160k_ade20k_20220105_162750-7ef345be.pth

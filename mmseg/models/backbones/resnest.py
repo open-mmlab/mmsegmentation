@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import torch.utils.checkpoint as cp
 from mmcv.cnn import build_conv_layer, build_norm_layer
 
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils import ResLayer
 from .resnet import Bottleneck as _Bottleneck
 from .resnet import ResNetV1d
@@ -69,7 +69,7 @@ class SplitAttentionConv2d(nn.Module):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN'),
                  dcn=None):
-        super(SplitAttentionConv2d, self).__init__()
+        super().__init__()
         inter_channels = max(in_channels * radix // reduction_factor, 32)
         self.radix = radix
         self.groups = groups
@@ -174,7 +174,7 @@ class Bottleneck(_Bottleneck):
                  avg_down_stride=True,
                  **kwargs):
         """Bottleneck block for ResNeSt."""
-        super(Bottleneck, self).__init__(inplanes, planes, **kwargs)
+        super().__init__(inplanes, planes, **kwargs)
 
         if groups == 1:
             width = self.planes
@@ -267,7 +267,7 @@ class Bottleneck(_Bottleneck):
         return out
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class ResNeSt(ResNetV1d):
     """ResNeSt backbone.
 
@@ -304,7 +304,7 @@ class ResNeSt(ResNetV1d):
         self.radix = radix
         self.reduction_factor = reduction_factor
         self.avg_down_stride = avg_down_stride
-        super(ResNeSt, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def make_res_layer(self, **kwargs):
         """Pack all blocks in a stage into a ``ResLayer``."""

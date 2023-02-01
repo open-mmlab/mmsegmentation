@@ -4,9 +4,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
+from ..utils import resize
 from .cascade_decode_head import BaseCascadeDecodeHead
 
 
@@ -18,7 +18,7 @@ class SpatialGatherModule(nn.Module):
     """
 
     def __init__(self, scale):
-        super(SpatialGatherModule, self).__init__()
+        super().__init__()
         self.scale = scale
 
     def forward(self, feats, probs):
@@ -46,7 +46,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
             query_downsample = nn.MaxPool2d(kernel_size=scale)
         else:
             query_downsample = None
-        super(ObjectAttentionBlock, self).__init__(
+        super().__init__(
             key_in_channels=in_channels,
             query_in_channels=in_channels,
             channels=channels,
@@ -73,8 +73,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
 
     def forward(self, query_feats, key_feats):
         """Forward function."""
-        context = super(ObjectAttentionBlock,
-                        self).forward(query_feats, key_feats)
+        context = super().forward(query_feats, key_feats)
         output = self.bottleneck(torch.cat([context, query_feats], dim=1))
         if self.query_downsample is not None:
             output = resize(query_feats)
@@ -82,7 +81,7 @@ class ObjectAttentionBlock(_SelfAttentionBlock):
         return output
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class OCRHead(BaseCascadeDecodeHead):
     """Object-Contextual Representations for Semantic Segmentation.
 
@@ -96,7 +95,7 @@ class OCRHead(BaseCascadeDecodeHead):
     """
 
     def __init__(self, ocr_channels, scale=1, **kwargs):
-        super(OCRHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.ocr_channels = ocr_channels
         self.scale = scale
         self.object_context_block = ObjectAttentionBlock(

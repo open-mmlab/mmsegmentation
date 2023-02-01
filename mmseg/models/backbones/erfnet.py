@@ -2,10 +2,10 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import build_activation_layer, build_conv_layer, build_norm_layer
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
 
-from mmseg.ops import resize
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
+from ..utils import resize
 
 
 class DownsamplerBlock(BaseModule):
@@ -35,7 +35,7 @@ class DownsamplerBlock(BaseModule):
                  norm_cfg=dict(type='BN', eps=1e-3),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(DownsamplerBlock, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
@@ -95,7 +95,7 @@ class NonBottleneck1d(BaseModule):
                  norm_cfg=dict(type='BN', eps=1e-3),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(NonBottleneck1d, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
 
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
@@ -168,7 +168,7 @@ class UpsamplerBlock(BaseModule):
                  norm_cfg=dict(type='BN', eps=1e-3),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(UpsamplerBlock, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
@@ -191,7 +191,7 @@ class UpsamplerBlock(BaseModule):
         return output
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class ERFNet(BaseModule):
     """ERFNet backbone.
 
@@ -242,7 +242,7 @@ class ERFNet(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
 
-        super(ERFNet, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert len(enc_downsample_channels) \
                == len(dec_upsample_channels)+1, 'Number of downsample\
                      block of encoder does not \

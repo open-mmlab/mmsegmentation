@@ -1,15 +1,15 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
-from mmcv import is_tuple_of
 from mmcv.cnn import ConvModule
+from mmengine.utils import is_tuple_of
 
-from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from ..utils import resize
 from .decode_head import BaseDecodeHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class LRASPPHead(BaseDecodeHead):
     """Lite R-ASPP (LRASPP) head is proposed in Searching for MobileNetV3.
 
@@ -22,7 +22,7 @@ class LRASPPHead(BaseDecodeHead):
     """
 
     def __init__(self, branch_channels=(32, 64), **kwargs):
-        super(LRASPPHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         if self.input_transform != 'multiple_select':
             raise ValueError('in Lite R-ASPP (LRASPP) head, input_transform '
                              f'must be \'multiple_select\'. But received '

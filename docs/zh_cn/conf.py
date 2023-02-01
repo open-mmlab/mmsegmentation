@@ -28,7 +28,7 @@ version_file = '../../mmseg/version.py'
 
 
 def get_version():
-    with open(version_file, 'r') as f:
+    with open(version_file) as f:
         exec(compile(f.read(), version_file, 'exec'))
     return locals()['__version__']
 
@@ -121,7 +121,6 @@ html_css_files = ['css/readthedocs.css']
 
 # Enable ::: for my_st
 myst_enable_extensions = ['colon_fence']
-myst_heading_anchors = 3
 
 language = 'zh-CN'
 

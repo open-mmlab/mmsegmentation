@@ -2,7 +2,7 @@
 import pytest
 import torch
 from mmcv.ops import DeformConv2dPack
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 from torch.nn.modules import AvgPool2d, GroupNorm
 
 from mmseg.models.backbones import ResNet, ResNetV1d
@@ -331,7 +331,7 @@ def test_resnet_backbone():
         for param in layer.parameters():
             assert param.requires_grad is False
     for i in range(1, frozen_stages + 1):
-        layer = getattr(model, 'layer{}'.format(i))
+        layer = getattr(model, f'layer{i}')
         for mod in layer.modules():
             if isinstance(mod, _BatchNorm):
                 assert mod.training is False
@@ -347,7 +347,7 @@ def test_resnet_backbone():
     for param in model.stem.parameters():
         assert param.requires_grad is False
     for i in range(1, frozen_stages + 1):
-        layer = getattr(model, 'layer{}'.format(i))
+        layer = getattr(model, f'layer{i}')
         for mod in layer.modules():
             if isinstance(mod, _BatchNorm):
                 assert mod.training is False

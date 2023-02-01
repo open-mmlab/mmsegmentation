@@ -1,12 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
 
-from mmcv.cnn import MODELS as MMCV_MODELS
-from mmcv.cnn.bricks.registry import ATTENTION as MMCV_ATTENTION
-from mmcv.utils import Registry
-
-MODELS = Registry('models', parent=MMCV_MODELS)
-ATTENTION = Registry('attention', parent=MMCV_ATTENTION)
+from mmseg.registry import MODELS
 
 BACKBONES = MODELS
 NECKS = MODELS
@@ -17,21 +12,29 @@ SEGMENTORS = MODELS
 
 def build_backbone(cfg):
     """Build backbone."""
+    warnings.warn('``build_backbone`` would be deprecated soon, please use '
+                  '``mmseg.registry.MODELS.build()`` ')
     return BACKBONES.build(cfg)
 
 
 def build_neck(cfg):
     """Build neck."""
+    warnings.warn('``build_neck`` would be deprecated soon, please use '
+                  '``mmseg.registry.MODELS.build()`` ')
     return NECKS.build(cfg)
 
 
 def build_head(cfg):
     """Build head."""
+    warnings.warn('``build_head`` would be deprecated soon, please use '
+                  '``mmseg.registry.MODELS.build()`` ')
     return HEADS.build(cfg)
 
 
 def build_loss(cfg):
     """Build loss."""
+    warnings.warn('``build_loss`` would be deprecated soon, please use '
+                  '``mmseg.registry.MODELS.build()`` ')
     return LOSSES.build(cfg)
 
 

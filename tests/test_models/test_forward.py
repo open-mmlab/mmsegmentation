@@ -8,43 +8,63 @@ import numpy as np
 import pytest
 import torch
 import torch.nn as nn
-from mmcv.cnn.utils import revert_sync_batchnorm
+from mmengine.model.utils import revert_sync_batchnorm
+from mmengine.structures import PixelData
+from mmengine.utils import is_list_of, is_tuple_of
+from torch import Tensor
+
+from mmseg.structures import SegDataSample
+from mmseg.utils import register_all_modules
+
+register_all_modules()
 
 
-def _demo_mm_inputs(input_shape=(2, 3, 8, 16), num_classes=10):
+def _demo_mm_inputs(batch_size=2, image_shapes=(3, 32, 32), num_classes=5):
     """Create a superset of inputs needed to run test or train batches.
 
     Args:
-        input_shape (tuple):
-            input batch dimensions
-
-        num_classes (int):
-            number of semantic classes
+        batch_size (int): batch size. Default to 2.
+        image_shapes (List[tuple], Optional): image shape.
+            Default to (3, 128, 128)
+        num_classes (int): number of different labels a
+            box might have. Default to 10.
     """
-    (N, C, H, W) = input_shape
+    if isinstance(image_shapes, list):
+        assert len(image_shapes) == batch_size
+    else:
+        image_shapes = [image_shapes] * batch_size
 
-    rng = np.random.RandomState(0)
+    inputs = []
+    data_samples = []
+    for idx in range(batch_size):
+        image_shape = image_shapes[idx]
+        c, h, w = image_shape
+        image = np.random.randint(0, 255, size=image_shape, dtype=np.uint8)
 
-    imgs = rng.rand(*input_shape)
-    segs = rng.randint(
-        low=0, high=num_classes - 1, size=(N, 1, H, W)).astype(np.uint8)
+        mm_input = torch.from_numpy(image)
 
-    img_metas = [{
-        'img_shape': (H, W, C),
-        'ori_shape': (H, W, C),
-        'pad_shape': (H, W, C),
-        'filename': '<demo>.png',
-        'scale_factor': 1.0,
-        'flip': False,
-        'flip_direction': 'horizontal'
-    } for _ in range(N)]
+        img_meta = {
+            'img_id': idx,
+            'img_shape': image_shape[1:],
+            'ori_shape': image_shape[1:],
+            'pad_shape': image_shape[1:],
+            'filename': '<demo>.png',
+            'scale_factor': 1.0,
+            'flip': False,
+            'flip_direction': None,
+        }
 
-    mm_inputs = {
-        'imgs': torch.FloatTensor(imgs),
-        'img_metas': img_metas,
-        'gt_semantic_seg': torch.LongTensor(segs)
-    }
-    return mm_inputs
+        data_sample = SegDataSample()
+        data_sample.set_metainfo(img_meta)
+
+        gt_semantic_seg = np.random.randint(
+            0, num_classes, (1, h, w), dtype=np.uint8)
+        gt_semantic_seg = torch.LongTensor(gt_semantic_seg)
+        gt_sem_seg_data = dict(data=gt_semantic_seg)
+        data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
+        inputs.append(mm_input)
+        data_samples.append(data_sample)
+    return dict(inputs=inputs, data_samples=data_samples)
 
 
 def _get_config_directory():
@@ -64,7 +84,7 @@ def _get_config_directory():
 
 def _get_config_module(fname):
     """Load a configuration as a python module."""
-    from mmcv import Config
+    from mmengine import Config
     config_dpath = _get_config_directory()
     config_fpath = join(config_dpath, fname)
     config_mod = Config.fromfile(config_fpath)
@@ -84,100 +104,94 @@ def _get_segmentor_cfg(fname):
 
 def test_pspnet_forward():
     _test_encoder_decoder_forward(
-        'pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py')
+        'pspnet/pspnet_r18-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_fcn_forward():
-    _test_encoder_decoder_forward('fcn/fcn_r50-d8_512x1024_40k_cityscapes.py')
+    _test_encoder_decoder_forward(
+        'fcn/fcn_r18-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_deeplabv3_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes.py')
+        'deeplabv3/deeplabv3_r18-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_deeplabv3plus_forward():
     _test_encoder_decoder_forward(
-        'deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py')
+        'deeplabv3plus/deeplabv3plus_r18-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_gcnet_forward():
     _test_encoder_decoder_forward(
-        'gcnet/gcnet_r50-d8_512x1024_40k_cityscapes.py')
+        'gcnet/gcnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_ann_forward():
-    _test_encoder_decoder_forward('ann/ann_r50-d8_512x1024_40k_cityscapes.py')
+    _test_encoder_decoder_forward(
+        'ann/ann_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_ccnet_forward():
     if not torch.cuda.is_available():
         pytest.skip('CCNet requires CUDA')
     _test_encoder_decoder_forward(
-        'ccnet/ccnet_r50-d8_512x1024_40k_cityscapes.py')
+        'ccnet/ccnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_danet_forward():
     _test_encoder_decoder_forward(
-        'danet/danet_r50-d8_512x1024_40k_cityscapes.py')
+        'danet/danet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_nonlocal_net_forward():
     _test_encoder_decoder_forward(
-        'nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes.py')
+        'nonlocal_net/nonlocal_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_upernet_forward():
     _test_encoder_decoder_forward(
-        'upernet/upernet_r50_512x1024_40k_cityscapes.py')
+        'upernet/upernet_r50_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_hrnet_forward():
-    _test_encoder_decoder_forward('hrnet/fcn_hr18s_512x1024_40k_cityscapes.py')
+    _test_encoder_decoder_forward(
+        'hrnet/fcn_hr18s_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_ocrnet_forward():
     _test_encoder_decoder_forward(
-        'ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes.py')
+        'ocrnet/ocrnet_hr18s_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_psanet_forward():
     _test_encoder_decoder_forward(
-        'psanet/psanet_r50-d8_512x1024_40k_cityscapes.py')
-
-
-def test_encnet_forward():
-    _test_encoder_decoder_forward(
-        'encnet/encnet_r50-d8_512x1024_40k_cityscapes.py')
+        'psanet/psanet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_sem_fpn_forward():
-    _test_encoder_decoder_forward('sem_fpn/fpn_r50_512x1024_80k_cityscapes.py')
-
-
-def test_point_rend_forward():
     _test_encoder_decoder_forward(
-        'point_rend/pointrend_r50_512x1024_80k_cityscapes.py')
+        'sem_fpn/fpn_r50_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_mobilenet_v2_forward():
     _test_encoder_decoder_forward(
-        'mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes.py')
+        'mobilenet_v2/mobilenet-v2-d8_pspnet_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_dnlnet_forward():
     _test_encoder_decoder_forward(
-        'dnlnet/dnl_r50-d8_512x1024_40k_cityscapes.py')
+        'dnlnet/dnl_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_emanet_forward():
     _test_encoder_decoder_forward(
-        'emanet/emanet_r50-d8_512x1024_80k_cityscapes.py')
+        'emanet/emanet_r50-d8_4xb2-80k_cityscapes-512x1024.py')
 
 
 def test_isanet_forward():
     _test_encoder_decoder_forward(
-        'isanet/isanet_r50-d8_512x1024_40k_cityscapes.py')
+        'isanet/isanet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def get_world_size(process_group):
@@ -206,30 +220,45 @@ def _test_encoder_decoder_forward(cfg_file):
     else:
         num_classes = segmentor.decode_head.num_classes
     # batch_size=2 for BatchNorm
-    input_shape = (2, 3, 32, 32)
-    mm_inputs = _demo_mm_inputs(input_shape, num_classes=num_classes)
-
-    imgs = mm_inputs.pop('imgs')
-    img_metas = mm_inputs.pop('img_metas')
-    gt_semantic_seg = mm_inputs['gt_semantic_seg']
-
+    packed_inputs = _demo_mm_inputs(
+        batch_size=2, image_shapes=(3, 32, 32), num_classes=num_classes)
     # convert to cuda Tensor if applicable
     if torch.cuda.is_available():
         segmentor = segmentor.cuda()
-        imgs = imgs.cuda()
-        gt_semantic_seg = gt_semantic_seg.cuda()
     else:
         segmentor = revert_sync_batchnorm(segmentor)
 
     # Test forward train
-    losses = segmentor.forward(
-        imgs, img_metas, gt_semantic_seg=gt_semantic_seg, return_loss=True)
+    data = segmentor.data_preprocessor(packed_inputs, True)
+    losses = segmentor.forward(**data, mode='loss')
     assert isinstance(losses, dict)
 
-    # Test forward test
+    packed_inputs = _demo_mm_inputs(
+        batch_size=1, image_shapes=(3, 32, 32), num_classes=num_classes)
+    data = segmentor.data_preprocessor(packed_inputs, False)
     with torch.no_grad():
         segmentor.eval()
-        # pack into lists
-        img_list = [img[None, :] for img in imgs]
-        img_meta_list = [[img_meta] for img_meta in img_metas]
-        segmentor.forward(img_list, img_meta_list, return_loss=False)
+        # Test forward predict
+        batch_results = segmentor.forward(**data, mode='predict')
+        assert len(batch_results) == 1
+        assert is_list_of(batch_results, SegDataSample)
+        assert batch_results[0].pred_sem_seg.shape == (32, 32)
+        assert batch_results[0].seg_logits.data.shape == (num_classes, 32, 32)
+        assert batch_results[0].gt_sem_seg.shape == (32, 32)
+
+        # Test forward tensor
+        batch_results = segmentor.forward(**data, mode='tensor')
+        assert isinstance(batch_results, Tensor) or is_tuple_of(
+            batch_results, Tensor)
+
+        # Test forward predict without ground truth
+        data.pop('data_samples')
+        batch_results = segmentor.forward(**data, mode='predict')
+        assert len(batch_results) == 1
+        assert is_list_of(batch_results, SegDataSample)
+        assert batch_results[0].pred_sem_seg.shape == (32, 32)
+
+        # Test forward tensor without ground truth
+        batch_results = segmentor.forward(**data, mode='tensor')
+        assert isinstance(batch_results, Tensor) or is_tuple_of(
+            batch_results, Tensor)

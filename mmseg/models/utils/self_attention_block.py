@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
-from mmcv.cnn import ConvModule, constant_init
+from mmcv.cnn import ConvModule
+from mmengine.model.weight_init import constant_init
 from torch import nn as nn
 from torch.nn import functional as F
 
@@ -35,7 +36,7 @@ class SelfAttentionBlock(nn.Module):
                  key_downsample, key_query_num_convs, value_out_num_convs,
                  key_query_norm, value_out_norm, matmul_norm, with_out,
                  conv_cfg, norm_cfg, act_cfg):
-        super(SelfAttentionBlock, self).__init__()
+        super().__init__()
         if share_key_query:
             assert key_in_channels == query_in_channels
         self.key_in_channels = key_in_channels

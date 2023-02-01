@@ -4,10 +4,10 @@ import math
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, Linear, build_activation_layer
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
 
-from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from ..utils import resize
 from .decode_head import BaseDecodeHead
 
 
@@ -30,7 +30,7 @@ class ReassembleBlocks(BaseModule):
                  readout_type='ignore',
                  patch_size=16,
                  init_cfg=None):
-        super(ReassembleBlocks, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         assert readout_type in ['ignore', 'add', 'project']
         self.readout_type = readout_type
@@ -116,7 +116,7 @@ class PreActResidualConvUnit(BaseModule):
                  stride=1,
                  dilation=1,
                  init_cfg=None):
-        super(PreActResidualConvUnit, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         self.conv1 = ConvModule(
             in_channels,
@@ -168,7 +168,7 @@ class FeatureFusionBlock(BaseModule):
                  expand=False,
                  align_corners=True,
                  init_cfg=None):
-        super(FeatureFusionBlock, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         self.in_channels = in_channels
         self.expand = expand
@@ -212,7 +212,7 @@ class FeatureFusionBlock(BaseModule):
         return x
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class DPTHead(BaseDecodeHead):
     """Vision Transformers for Dense Prediction.
 
@@ -242,7 +242,7 @@ class DPTHead(BaseDecodeHead):
                  act_cfg=dict(type='ReLU'),
                  norm_cfg=dict(type='BN'),
                  **kwargs):
-        super(DPTHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.in_channels = self.in_channels
         self.expand_channels = expand_channels

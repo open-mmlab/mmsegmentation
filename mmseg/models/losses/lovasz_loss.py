@@ -3,12 +3,12 @@
 ch/lovasz_losses.py Lovasz-Softmax and Jaccard hinge loss in PyTorch Maxim
 Berman 2018 ESAT-PSI KU Leuven (MIT License)"""
 
-import mmcv
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from mmengine.utils import is_list_of
 
-from ..builder import LOSSES
+from mmseg.registry import MODELS
 from .utils import get_class_weight, weight_reduce_loss
 
 
@@ -222,7 +222,7 @@ def lovasz_softmax(probs,
     return loss
 
 
-@LOSSES.register_module()
+@MODELS.register_module()
 class LovaszLoss(nn.Module):
     """LovaszLoss.
 
@@ -257,7 +257,7 @@ class LovaszLoss(nn.Module):
                  class_weight=None,
                  loss_weight=1.0,
                  loss_name='loss_lovasz'):
-        super(LovaszLoss, self).__init__()
+        super().__init__()
         assert loss_type in ('binary', 'multi_class'), "loss_type should be \
                                                     'binary' or 'multi_class'."
 
@@ -265,7 +265,7 @@ class LovaszLoss(nn.Module):
             self.cls_criterion = lovasz_hinge
         else:
             self.cls_criterion = lovasz_softmax
-        assert classes in ('all', 'present') or mmcv.is_list_of(classes, int)
+        assert classes in ('all', 'present') or is_list_of(classes, int)
         if not per_image:
             assert reduction == 'none', "reduction should be 'none' when \
                                                         per_image is False."

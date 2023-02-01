@@ -2,9 +2,9 @@ import argparse
 import glob
 import os.path as osp
 
-import mmcv
 from gather_models import get_final_results
-from mmcv import Config
+from mmengine import Config
+from mmengine.fileio import dump
 
 
 def parse_args():
@@ -50,7 +50,7 @@ if __name__ == '__main__':
                 continue
 
             # parse config
-            cfg = mmcv.Config.fromfile(config)
+            cfg = Config.fromfile(config)
             total_iters = cfg.runner.max_iters
             exp_metric = cfg.evaluation.metric
             if not isinstance(exp_metric, list):
@@ -72,9 +72,9 @@ if __name__ == '__main__':
                 print(f'log file error: {log_json_path}')
                 continue
 
-            differential_results = {}
-            old_results = {}
-            new_results = {}
+            differential_results = dict()
+            old_results = dict()
+            new_results = dict()
             for metric_key in model_performance:
                 if metric_key in ['mIoU']:
                     metric = round(model_performance[metric_key] * 100, 2)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     # 4 save or print results
     if metrics_out:
-        mmcv.dump(result_dict, metrics_out, indent=4)
+        dump(result_dict, metrics_out, indent=4)
     print('===================================')
     for config_name, metrics in result_dict.items():
         print(config_name, metrics)

@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from ..utils import resize
 from .decode_head import BaseDecodeHead
 
 
@@ -24,7 +24,7 @@ class PPM(nn.ModuleList):
 
     def __init__(self, pool_scales, in_channels, channels, conv_cfg, norm_cfg,
                  act_cfg, align_corners, **kwargs):
-        super(PPM, self).__init__()
+        super().__init__()
         self.pool_scales = pool_scales
         self.align_corners = align_corners
         self.in_channels = in_channels
@@ -59,7 +59,7 @@ class PPM(nn.ModuleList):
         return ppm_outs
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class PSPHead(BaseDecodeHead):
     """Pyramid Scene Parsing Network.
 
@@ -72,7 +72,7 @@ class PSPHead(BaseDecodeHead):
     """
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
-        super(PSPHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert isinstance(pool_scales, (list, tuple))
         self.pool_scales = pool_scales
         self.psp_modules = PPM(

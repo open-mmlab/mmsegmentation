@@ -1,5 +1,5 @@
 Models:
-- Name: fcn_s101-d8_512x1024_80k_cityscapes
+- Name: resnest_s101-d8_fcn_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Metadata:
     backbone: S-101-D8
@@ -19,9 +19,9 @@ Models:
     Metrics:
       mIoU: 77.56
       mIoU(ms+flip): 78.98
-  Config: configs/resnest/fcn_s101-d8_512x1024_80k_cityscapes.py
+  Config: configs/resnest/resnest_s101-d8_fcn_4xb2-80k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x1024_80k_cityscapes/fcn_s101-d8_512x1024_80k_cityscapes_20200807_140631-f8d155b3.pth
-- Name: pspnet_s101-d8_512x1024_80k_cityscapes
+- Name: resnest_s101-d8_pspnet_4xb2-80k_cityscapes512x1024
   In Collection: PSPNet
   Metadata:
     backbone: S-101-D8
@@ -41,9 +41,9 @@ Models:
     Metrics:
       mIoU: 78.57
       mIoU(ms+flip): 79.19
-  Config: configs/resnest/pspnet_s101-d8_512x1024_80k_cityscapes.py
+  Config: configs/resnest/resnest_s101-d8_pspnet_4xb2-80k_cityscapes512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x1024_80k_cityscapes/pspnet_s101-d8_512x1024_80k_cityscapes_20200807_140631-c75f3b99.pth
-- Name: deeplabv3_s101-d8_512x1024_80k_cityscapes
+- Name: resnest_s101-d8_deeplabv3_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3
   Metadata:
     backbone: S-101-D8
@@ -63,9 +63,9 @@ Models:
     Metrics:
       mIoU: 79.67
       mIoU(ms+flip): 80.51
-  Config: configs/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes.py
+  Config: configs/resnest/resnest_s101-d8_deeplabv3_4xb2-80k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes_20200807_144429-b73c4270.pth
-- Name: deeplabv3plus_s101-d8_512x1024_80k_cityscapes
+- Name: resnest_s101-d8_deeplabv3plus_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Metadata:
     backbone: S-101-D8
@@ -85,9 +85,9 @@ Models:
     Metrics:
       mIoU: 79.62
       mIoU(ms+flip): 80.27
-  Config: configs/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes.py
+  Config: configs/resnest/resnest_s101-d8_deeplabv3plus_4xb2-80k_cityscapes-512x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes_20200807_144429-1239eb43.pth
-- Name: fcn_s101-d8_512x512_160k_ade20k
+- Name: resnest_s101-d8_fcn_4xb4-160k_ade20k-512x512
   In Collection: FCN
   Metadata:
     backbone: S-101-D8
@@ -107,9 +107,9 @@ Models:
     Metrics:
       mIoU: 45.62
       mIoU(ms+flip): 46.16
-  Config: configs/resnest/fcn_s101-d8_512x512_160k_ade20k.py
+  Config: configs/resnest/resnest_s101-d8_fcn_4xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x512_160k_ade20k/fcn_s101-d8_512x512_160k_ade20k_20200807_145416-d3160329.pth
-- Name: pspnet_s101-d8_512x512_160k_ade20k
+- Name: resnest_s101-d8_pspnet_4xb4-160k_ade20k-512x512
   In Collection: PSPNet
   Metadata:
     backbone: S-101-D8
@@ -129,9 +129,9 @@ Models:
     Metrics:
       mIoU: 45.44
       mIoU(ms+flip): 46.28
-  Config: configs/resnest/pspnet_s101-d8_512x512_160k_ade20k.py
+  Config: configs/resnest/resnest_s101-d8_pspnet_4xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x512_160k_ade20k/pspnet_s101-d8_512x512_160k_ade20k_20200807_145416-a6daa92a.pth
-- Name: deeplabv3_s101-d8_512x512_160k_ade20k
+- Name: resnest_s101-d8_deeplabv3_4xb4-160k_ade20k-512x512
   In Collection: DeepLabV3
   Metadata:
     backbone: S-101-D8
@@ -151,9 +151,9 @@ Models:
     Metrics:
       mIoU: 45.71
       mIoU(ms+flip): 46.59
-  Config: configs/resnest/deeplabv3_s101-d8_512x512_160k_ade20k.py
+  Config: configs/resnest/resnest_s101-d8_deeplabv3_4xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x512_160k_ade20k/deeplabv3_s101-d8_512x512_160k_ade20k_20200807_144503-17ecabe5.pth
-- Name: deeplabv3plus_s101-d8_512x512_160k_ade20k
+- Name: resnest_s101-d8_deeplabv3plus_4xb4-160k_ade20k-512x512
   In Collection: DeepLabV3+
   Metadata:
     backbone: S-101-D8
@@ -173,5 +173,5 @@ Models:
     Metrics:
       mIoU: 46.47
       mIoU(ms+flip): 47.27
-  Config: configs/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k.py
+  Config: configs/resnest/resnest_s101-d8_deeplabv3plus_4xb4-160k_ade20k-512x512.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k_20200807_144503-27b26226.pth

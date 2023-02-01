@@ -7,21 +7,17 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.drop import build_dropout
-from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
+from mmengine.model import BaseModule, ModuleList
+from mmengine.model.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
-from mmcv.runner import BaseModule, ModuleList, _load_checkpoint
+from mmengine.runner.checkpoint import _load_checkpoint
+from scipy import interpolate
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.utils import _pair as to_2tuple
 
-from mmseg.utils import get_root_logger
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils import PatchEmbed
 from .vit import TransformerEncoderLayer as VisionTransformerEncoderLayer
-
-try:
-    from scipy import interpolate
-except ImportError:
-    interpolate = None
 
 
 class BEiTAttention(BaseModule):
@@ -194,7 +190,7 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
                  init_values=None):
         attn_cfg.update(dict(window_size=window_size, qk_scale=None))
 
-        super(BEiTTransformerEncoderLayer, self).__init__(
+        super().__init__(
             embed_dims=embed_dims,
             num_heads=num_heads,
             feedforward_channels=feedforward_channels,
@@ -214,9 +210,9 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
         self.drop_path = build_dropout(
             dropout_layer) if dropout_layer else nn.Identity()
         self.gamma_1 = nn.Parameter(
-            init_values * torch.ones((embed_dims)), requires_grad=True)
+            init_values * torch.ones(embed_dims), requires_grad=True)
         self.gamma_2 = nn.Parameter(
-            init_values * torch.ones((embed_dims)), requires_grad=True)
+            init_values * torch.ones(embed_dims), requires_grad=True)
 
     def build_attn(self, attn_cfg):
         self.attn = BEiTAttention(**attn_cfg)
@@ -227,7 +223,7 @@ class BEiTTransformerEncoderLayer(VisionTransformerEncoderLayer):
         return x
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class BEiT(BaseModule):
     """BERT Pre-Training of Image Transformers.
 
@@ -287,7 +283,7 @@ class BEiT(BaseModule):
                  pretrained=None,
                  init_values=0.1,
                  init_cfg=None):
-        super(BEiT, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         if isinstance(img_size, int):
             img_size = to_2tuple(img_size)
         elif isinstance(img_size, tuple):
@@ -500,13 +496,12 @@ class BEiT(BaseModule):
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg.get('type') == 'Pretrained'):
-            logger = get_root_logger()
             checkpoint = _load_checkpoint(
-                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
+                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
             state_dict = self.resize_rel_pos_embed(checkpoint)
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:
-            super(BEiT, self).init_weights()
+            super().init_weights()
         else:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501
@@ -552,7 +547,7 @@ class BEiT(BaseModule):
         return tuple(outs)
 
     def train(self, mode=True):
-        super(BEiT, self).train(mode)
+        super().train(mode)
         if mode and self.norm_eval:
             for m in self.modules():
                 if isinstance(m, nn.LayerNorm):

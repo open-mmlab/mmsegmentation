@@ -12,7 +12,7 @@ Collections:
     URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv2.py#L545
     Version: v0.18.0
 Models:
-- Name: bisenetv2_fcn_4x4_1024x1024_160k_cityscapes
+- Name: bisenetv2_fcn_4xb4-160k_cityscapes-1024x1024
   In Collection: BiSeNetV2
   Metadata:
     backbone: BiSeNetV2
@@ -32,9 +32,9 @@ Models:
     Metrics:
       mIoU: 73.21
       mIoU(ms+flip): 75.74
-  Config: configs/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes.py
+  Config: configs/bisenetv2/bisenetv2_fcn_4xb4-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes_20210902_015551-bcf10f09.pth
-- Name: bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes
+- Name: bisenetv2_fcn_4xb4-ohem-160k_cityscapes-1024x1024
   In Collection: BiSeNetV2
   Metadata:
     backbone: BiSeNetV2
@@ -45,11 +45,11 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 75.3
-      mIoU(ms+flip): 77.06
-  Config: configs/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20220808_172324-8bf0aaba.pth
-- Name: bisenetv2_fcn_4x8_1024x1024_160k_cityscapes
+      mIoU: 73.57
+      mIoU(ms+flip): 75.8
+  Config: configs/bisenetv2/bisenetv2_fcn_4xb4-ohem-160k_cityscapes-1024x1024.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947-5f8103b4.pth
+- Name: bisenetv2_fcn_4xb8-160k_cityscapes-1024x1024
   In Collection: BiSeNetV2
   Metadata:
     backbone: BiSeNetV2
@@ -62,9 +62,9 @@ Models:
     Metrics:
       mIoU: 75.76
       mIoU(ms+flip): 77.79
-  Config: configs/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes.py
+  Config: configs/bisenetv2/bisenetv2_fcn_4xb8-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes_20210903_000032-e1a2eed6.pth
-- Name: bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes
+- Name: bisenetv2_fcn_4xb4-amp-160k_cityscapes-1024x1024
   In Collection: BiSeNetV2
   Metadata:
     backbone: BiSeNetV2
@@ -75,7 +75,7 @@ Models:
       hardware: V100
       backend: PyTorch
       batch size: 1
-      mode: FP16
+      mode: AMP
       resolution: (1024,1024)
     Training Memory (GB): 5.77
   Results:
@@ -84,5 +84,5 @@ Models:
     Metrics:
       mIoU: 73.07
       mIoU(ms+flip): 75.13
-  Config: configs/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes.py
+  Config: configs/bisenetv2/bisenetv2_fcn_4xb4-amp-160k_cityscapes-1024x1024.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes_20210902_045942-b979777b.pth

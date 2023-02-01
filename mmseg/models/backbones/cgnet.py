@@ -5,10 +5,10 @@ import torch
 import torch.nn as nn
 import torch.utils.checkpoint as cp
 from mmcv.cnn import ConvModule, build_conv_layer, build_norm_layer
-from mmcv.runner import BaseModule
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmengine.model import BaseModule
+from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 
 
 class GlobalContextExtractor(nn.Module):
@@ -25,7 +25,7 @@ class GlobalContextExtractor(nn.Module):
     """
 
     def __init__(self, channel, reduction=16, with_cp=False):
-        super(GlobalContextExtractor, self).__init__()
+        super().__init__()
         self.channel = channel
         self.reduction = reduction
         assert reduction >= 1 and channel >= reduction
@@ -87,7 +87,7 @@ class ContextGuidedBlock(nn.Module):
                  norm_cfg=dict(type='BN', requires_grad=True),
                  act_cfg=dict(type='PReLU'),
                  with_cp=False):
-        super(ContextGuidedBlock, self).__init__()
+        super().__init__()
         self.with_cp = with_cp
         self.downsample = downsample
 
@@ -172,7 +172,7 @@ class InputInjection(nn.Module):
     """Downsampling module for CGNet."""
 
     def __init__(self, num_downsampling):
-        super(InputInjection, self).__init__()
+        super().__init__()
         self.pool = nn.ModuleList()
         for i in range(num_downsampling):
             self.pool.append(nn.AvgPool2d(3, stride=2, padding=1))
@@ -183,7 +183,7 @@ class InputInjection(nn.Module):
         return x
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class CGNet(BaseModule):
     """CGNet backbone.
 
@@ -230,7 +230,7 @@ class CGNet(BaseModule):
                  pretrained=None,
                  init_cfg=None):
 
-        super(CGNet, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         assert not (init_cfg and pretrained), \
             'init_cfg and pretrained cannot be setting at the same time'
@@ -364,7 +364,7 @@ class CGNet(BaseModule):
     def train(self, mode=True):
         """Convert the model into training mode will keeping the normalization
         layer freezed."""
-        super(CGNet, self).train(mode)
+        super().train(mode)
         if mode and self.norm_eval:
             for m in self.modules():
                 # trick: eval have effect on BatchNorm only

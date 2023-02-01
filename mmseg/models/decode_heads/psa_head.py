@@ -4,8 +4,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from ..utils import resize
 from .decode_head import BaseDecodeHead
 
 try:
@@ -14,7 +14,7 @@ except ModuleNotFoundError:
     PSAMask = None
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class PSAHead(BaseDecodeHead):
     """Point-wise Spatial Attention Network for Scene Parsing.
 
@@ -43,7 +43,7 @@ class PSAHead(BaseDecodeHead):
                  **kwargs):
         if PSAMask is None:
             raise RuntimeError('Please install mmcv-full for PSAMask ops')
-        super(PSAHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert psa_type in ['collect', 'distribute', 'bi-direction']
         self.psa_type = psa_type
         self.compact = compact

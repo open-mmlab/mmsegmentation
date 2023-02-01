@@ -5,10 +5,10 @@ import os
 import cv2
 import mmcv
 import torch
-from mmcv.cnn.utils.sync_bn import revert_sync_batchnorm
+from mmengine.model.utils import revert_sync_batchnorm
 from ts.torch_handler.base_handler import BaseHandler
 
-from mmseg.apis import inference_segmentor, init_segmentor
+from mmseg.apis import inference_model, init_model
 
 
 class MMsegHandler(BaseHandler):
@@ -26,7 +26,7 @@ class MMsegHandler(BaseHandler):
         checkpoint = os.path.join(model_dir, serialized_file)
         self.config_file = os.path.join(model_dir, 'config.py')
 
-        self.model = init_segmentor(self.config_file, checkpoint, self.device)
+        self.model = init_model(self.config_file, checkpoint, self.device)
         self.model = revert_sync_batchnorm(self.model)
         self.initialized = True
 
@@ -43,7 +43,7 @@ class MMsegHandler(BaseHandler):
         return images
 
     def inference(self, data, *args, **kwargs):
-        results = [inference_segmentor(self.model, img) for img in data]
+        results = [inference_model(self.model, img) for img in data]
         return results
 
     def postprocess(self, data):

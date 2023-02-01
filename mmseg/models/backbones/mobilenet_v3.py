@@ -1,17 +1,17 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
 
-import mmcv
 from mmcv.cnn import ConvModule
 from mmcv.cnn.bricks import Conv2dAdaptivePadding
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
+from mmengine.utils import is_tuple_of
 from torch.nn.modules.batchnorm import _BatchNorm
 
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils import InvertedResidualV3 as InvertedResidual
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class MobileNetV3(BaseModule):
     """MobileNetV3 backbone.
 
@@ -81,7 +81,7 @@ class MobileNetV3(BaseModule):
                  with_cp=False,
                  pretrained=None,
                  init_cfg=None):
-        super(MobileNetV3, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         self.pretrained = pretrained
         assert not (init_cfg and pretrained), \
@@ -104,7 +104,7 @@ class MobileNetV3(BaseModule):
 
         assert arch in self.arch_settings
         assert isinstance(reduction_factor, int) and reduction_factor > 0
-        assert mmcv.is_tuple_of(out_indices, int)
+        assert is_tuple_of(out_indices, int)
         for index in out_indices:
             if index not in range(0, len(self.arch_settings[arch]) + 2):
                 raise ValueError(
@@ -175,7 +175,7 @@ class MobileNetV3(BaseModule):
                 act_cfg=dict(type=act),
                 with_cp=self.with_cp)
             in_channels = out_channels
-            layer_name = 'layer{}'.format(i + 1)
+            layer_name = f'layer{i + 1}'
             self.add_module(layer_name, layer)
             layers.append(layer_name)
 
@@ -192,7 +192,7 @@ class MobileNetV3(BaseModule):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=dict(type='HSwish'))
-        layer_name = 'layer{}'.format(len(layer_setting) + 1)
+        layer_name = f'layer{len(layer_setting) + 1}'
         self.add_module(layer_name, layer)
         layers.append(layer_name)
 
@@ -259,7 +259,7 @@ class MobileNetV3(BaseModule):
                 param.requires_grad = False
 
     def train(self, mode=True):
-        super(MobileNetV3, self).train(mode)
+        super().train(mode)
         self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():

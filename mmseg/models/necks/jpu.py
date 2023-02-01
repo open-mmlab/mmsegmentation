@@ -2,13 +2,13 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
 
-from mmseg.ops import resize
-from ..builder import NECKS
+from mmseg.registry import MODELS
+from ..utils import resize
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class JPU(BaseModule):
     """FastFCN: Rethinking Dilated Convolution in the Backbone
     for Semantic Segmentation.
@@ -51,7 +51,7 @@ class JPU(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(JPU, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert isinstance(in_channels, tuple)
         assert isinstance(dilations, tuple)
         self.in_channels = in_channels

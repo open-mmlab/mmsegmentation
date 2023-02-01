@@ -2,7 +2,7 @@
 import argparse
 import os.path as osp
 
-from mmcv import Config
+from mmengine import Config
 
 
 def parse_args():
@@ -20,7 +20,8 @@ def parse_args():
         default='.dev/benchmark_evaluation.sh',
         help='path to save model benchmark script')
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    return args
 
 
 def process_model_info(model_info, work_dir):
@@ -29,9 +30,10 @@ def process_model_info(model_info, work_dir):
     job_name = fname
     checkpoint = model_info['checkpoint'].strip()
     work_dir = osp.join(work_dir, fname)
-    evals = model_info['eval'] if isinstance(model_info['eval'],
-                                             list) else [model_info['eval']]
-
+    if not isinstance(model_info['eval'], list):
+        evals = [model_info['eval']]
+    else:
+        evals = model_info['eval']
     eval = ' '.join(evals)
     return dict(
         config=config,

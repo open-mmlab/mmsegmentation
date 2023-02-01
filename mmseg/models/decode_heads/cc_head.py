@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .fcn_head import FCNHead
 
 try:
@@ -10,7 +10,7 @@ except ModuleNotFoundError:
     CrissCrossAttention = None
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class CCHead(FCNHead):
     """CCNet: Criss-Cross Attention for Semantic Segmentation.
 
@@ -26,7 +26,7 @@ class CCHead(FCNHead):
         if CrissCrossAttention is None:
             raise RuntimeError('Please install mmcv-full for '
                                'CrissCrossAttention ops')
-        super(CCHead, self).__init__(num_convs=2, **kwargs)
+        super().__init__(num_convs=2, **kwargs)
         self.recurrence = recurrence
         self.cca = CrissCrossAttention(self.channels)
 

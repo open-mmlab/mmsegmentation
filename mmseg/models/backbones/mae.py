@@ -3,13 +3,13 @@ import math
 
 import torch
 import torch.nn as nn
-from mmcv.cnn.utils.weight_init import (constant_init, kaiming_init,
+from mmengine.model import ModuleList
+from mmengine.model.weight_init import (constant_init, kaiming_init,
                                         trunc_normal_)
-from mmcv.runner import ModuleList, _load_checkpoint
+from mmengine.runner.checkpoint import _load_checkpoint
 from torch.nn.modules.batchnorm import _BatchNorm
 
-from mmseg.utils import get_root_logger
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from .beit import BEiT, BEiTAttention, BEiTTransformerEncoderLayer
 
 
@@ -42,7 +42,7 @@ class MAETransformerEncoderLayer(BEiTTransformerEncoderLayer):
         self.attn = MAEAttention(**attn_cfg)
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class MAE(BEiT):
     """VisionTransformer with support for patch.
 
@@ -100,7 +100,7 @@ class MAE(BEiT):
                  pretrained=None,
                  init_values=0.1,
                  init_cfg=None):
-        super(MAE, self).__init__(
+        super().__init__(
             img_size=img_size,
             patch_size=patch_size,
             in_channels=in_channels,
@@ -180,14 +180,13 @@ class MAE(BEiT):
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg.get('type') == 'Pretrained'):
-            logger = get_root_logger()
             checkpoint = _load_checkpoint(
-                self.init_cfg['checkpoint'], logger=logger, map_location='cpu')
+                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
             state_dict = self.resize_rel_pos_embed(checkpoint)
             state_dict = self.resize_abs_pos_embed(state_dict)
             self.load_state_dict(state_dict, False)
         elif self.init_cfg is not None:
-            super(MAE, self).init_weights()
+            super().init_weights()
         else:
             # We only implement the 'jax_impl' initialization implemented at
             # https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py#L353  # noqa: E501

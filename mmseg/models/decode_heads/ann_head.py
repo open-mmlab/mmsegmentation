@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import BaseDecodeHead
 
@@ -17,7 +17,7 @@ class PPMConcat(nn.ModuleList):
     """
 
     def __init__(self, pool_scales=(1, 3, 6, 8)):
-        super(PPMConcat, self).__init__(
+        super().__init__(
             [nn.AdaptiveAvgPool2d(pool_scale) for pool_scale in pool_scales])
 
     def forward(self, feats):
@@ -58,7 +58,7 @@ class SelfAttentionBlock(_SelfAttentionBlock):
             query_downsample = nn.MaxPool2d(kernel_size=query_scale)
         else:
             query_downsample = None
-        super(SelfAttentionBlock, self).__init__(
+        super().__init__(
             key_in_channels=low_in_channels,
             query_in_channels=high_in_channels,
             channels=channels,
@@ -100,7 +100,7 @@ class AFNB(nn.Module):
     def __init__(self, low_in_channels, high_in_channels, channels,
                  out_channels, query_scales, key_pool_scales, conv_cfg,
                  norm_cfg, act_cfg):
-        super(AFNB, self).__init__()
+        super().__init__()
         self.stages = nn.ModuleList()
         for query_scale in query_scales:
             self.stages.append(
@@ -150,7 +150,7 @@ class APNB(nn.Module):
 
     def __init__(self, in_channels, channels, out_channels, query_scales,
                  key_pool_scales, conv_cfg, norm_cfg, act_cfg):
-        super(APNB, self).__init__()
+        super().__init__()
         self.stages = nn.ModuleList()
         for query_scale in query_scales:
             self.stages.append(
@@ -181,7 +181,7 @@ class APNB(nn.Module):
         return output
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class ANNHead(BaseDecodeHead):
     """Asymmetric Non-local Neural Networks for Semantic Segmentation.
 
@@ -201,8 +201,7 @@ class ANNHead(BaseDecodeHead):
                  query_scales=(1, ),
                  key_pool_scales=(1, 3, 6, 8),
                  **kwargs):
-        super(ANNHead, self).__init__(
-            input_transform='multiple_select', **kwargs)
+        super().__init__(input_transform='multiple_select', **kwargs)
         assert len(self.in_channels) == 2
         low_in_channels, high_in_channels = self.in_channels
         self.project_channels = project_channels

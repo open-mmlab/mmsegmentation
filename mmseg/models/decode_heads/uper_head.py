@@ -3,13 +3,13 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from ..utils import resize
 from .decode_head import BaseDecodeHead
 from .psp_head import PPM
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class UPerHead(BaseDecodeHead):
     """Unified Perceptual Parsing for Scene Understanding.
 
@@ -22,8 +22,7 @@ class UPerHead(BaseDecodeHead):
     """
 
     def __init__(self, pool_scales=(1, 2, 3, 6), **kwargs):
-        super(UPerHead, self).__init__(
-            input_transform='multiple_select', **kwargs)
+        super().__init__(input_transform='multiple_select', **kwargs)
         # PSP Module
         self.psp_modules = PPM(
             pool_scales,

@@ -4,10 +4,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
-from mmcv.runner.base_module import BaseModule, ModuleList, Sequential
+from mmengine.model import BaseModule, ModuleList, Sequential
 
-from mmseg.ops import resize
-from ..builder import BACKBONES, build_backbone
+from mmseg.registry import MODELS
+from ..utils import resize
 from .bisenetv1 import AttentionRefinementModule
 
 
@@ -35,7 +35,7 @@ class STDCModule(BaseModule):
                  num_convs=4,
                  fusion_type='add',
                  init_cfg=None):
-        super(STDCModule, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert num_convs > 1
         assert fusion_type in ['add', 'cat']
         self.stride = stride
@@ -155,7 +155,7 @@ class FeatureFusionModule(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(FeatureFusionModule, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         channels = out_channels // scale_factor
         self.conv0 = ConvModule(
             in_channels, out_channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
@@ -184,7 +184,7 @@ class FeatureFusionModule(BaseModule):
         return x_attn + x
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class STDCNet(BaseModule):
     """This backbone is the implementation of `Rethinking BiSeNet For Real-time
     Semantic Segmentation <https://arxiv.org/abs/2104.13188>`_.
@@ -240,7 +240,7 @@ class STDCNet(BaseModule):
                  with_final_conv=False,
                  pretrained=None,
                  init_cfg=None):
-        super(STDCNet, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert stdc_type in self.arch_settings, \
             f'invalid structure {stdc_type} for STDCNet.'
         assert bottleneck_type in ['add', 'cat'],\
@@ -325,7 +325,7 @@ class STDCNet(BaseModule):
         return tuple(outs)
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class STDCContextPathNet(BaseModule):
     """STDCNet with Context Path. The `outs` below is a list of three feature
     maps from deep to shallow, whose height and width is from small to big,
@@ -370,8 +370,8 @@ class STDCContextPathNet(BaseModule):
                  align_corners=None,
                  norm_cfg=dict(type='BN'),
                  init_cfg=None):
-        super(STDCContextPathNet, self).__init__(init_cfg=init_cfg)
-        self.backbone = build_backbone(backbone_cfg)
+        super().__init__(init_cfg=init_cfg)
+        self.backbone = MODELS.build(backbone_cfg)
         self.arms = ModuleList()
         self.convs = ModuleList()
         for channels in last_in_channels:

@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.ops import sigmoid_focal_loss as _sigmoid_focal_loss
 
-from ..builder import LOSSES
+from mmseg.registry import MODELS
 from .utils import weight_reduce_loss
 
 
@@ -133,7 +133,7 @@ def sigmoid_focal_loss(pred,
     return loss
 
 
-@LOSSES.register_module()
+@MODELS.register_module()
 class FocalLoss(nn.Module):
 
     def __init__(self,
@@ -172,7 +172,7 @@ class FocalLoss(nn.Module):
                 loss item to be included into the backward graph, `loss_` must
                 be the prefix of the name. Defaults to 'loss_focal'.
         """
-        super(FocalLoss, self).__init__()
+        super().__init__()
         assert use_sigmoid is True, \
             'AssertionError: Only sigmoid focal loss supported now.'
         assert reduction in ('none', 'mean', 'sum'), \

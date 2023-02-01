@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from mmcv import ConfigDict
+from mmengine import ConfigDict
 
 from mmseg.models import build_segmentor
 from .utils import _segmentor_forward_train_test

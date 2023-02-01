@@ -1,11 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from typing import List, Tuple
+
 import torch
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule, Scale
-from torch import nn
+from torch import Tensor, nn
 
-from mmseg.core import add_prefix
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from mmseg.utils import SampleList, add_prefix
 from ..utils import SelfAttentionBlock as _SelfAttentionBlock
 from .decode_head import BaseDecodeHead
 
@@ -19,7 +21,7 @@ class PAM(_SelfAttentionBlock):
     """
 
     def __init__(self, in_channels, channels):
-        super(PAM, self).__init__(
+        super().__init__(
             key_in_channels=in_channels,
             query_in_channels=in_channels,
             channels=channels,
@@ -41,7 +43,7 @@ class PAM(_SelfAttentionBlock):
 
     def forward(self, x):
         """Forward function."""
-        out = super(PAM, self).forward(x, x)
+        out = super().forward(x, x)
 
         out = self.gamma(out) + x
         return out
@@ -51,7 +53,7 @@ class CAM(nn.Module):
     """Channel Attention Module (CAM)"""
 
     def __init__(self):
-        super(CAM, self).__init__()
+        super().__init__()
         self.gamma = Scale(0)
 
     def forward(self, x):
@@ -72,7 +74,7 @@ class CAM(nn.Module):
         return out
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class DAHead(BaseDecodeHead):
     """Dual Attention Network for Scene Segmentation.
 
@@ -84,7 +86,7 @@ class DAHead(BaseDecodeHead):
     """
 
     def __init__(self, pam_channels, **kwargs):
-        super(DAHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.pam_channels = pam_channels
         self.pam_in_conv = ConvModule(
             self.in_channels,
@@ -158,22 +160,25 @@ class DAHead(BaseDecodeHead):
 
         return pam_cam_out, pam_out, cam_out
 
-    def forward_test(self, inputs, img_metas, test_cfg):
+    def predict(self, inputs, batch_img_metas: List[dict], test_cfg,
+                **kwargs) -> List[Tensor]:
         """Forward function for testing, only ``pam_cam`` is used."""
-        return self.forward(inputs)[0]
+        seg_logits = self.forward(inputs)[0]
+        return self.predict_by_feat(seg_logits, batch_img_metas, **kwargs)
 
-    def losses(self, seg_logit, seg_label):
+    def loss_by_feat(self, seg_logit: Tuple[Tensor],
+                     batch_data_samples: SampleList, **kwargs) -> dict:
         """Compute ``pam_cam``, ``pam``, ``cam`` loss."""
         pam_cam_seg_logit, pam_seg_logit, cam_seg_logit = seg_logit
         loss = dict()
         loss.update(
             add_prefix(
-                super(DAHead, self).losses(pam_cam_seg_logit, seg_label),
+                super().loss_by_feat(pam_cam_seg_logit, batch_data_samples),
                 'pam_cam'))
         loss.update(
-            add_prefix(
-                super(DAHead, self).losses(pam_seg_logit, seg_label), 'pam'))
+            add_prefix(super().loss_by_feat(pam_seg_logit, batch_data_samples),
+                       'pam'))
         loss.update(
-            add_prefix(
-                super(DAHead, self).losses(cam_seg_logit, seg_label), 'cam'))
+            add_prefix(super().loss_by_feat(cam_seg_logit, batch_data_samples),
+                       'cam'))
         return loss

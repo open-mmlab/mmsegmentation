@@ -19,7 +19,8 @@ def parse_args():
         type=str,
         default='mmsegmentation/v0.5',
         help='destination folder')
-    return parser.parse_args()
+    args = parser.parse_args()
+    return args
 
 
 def main():

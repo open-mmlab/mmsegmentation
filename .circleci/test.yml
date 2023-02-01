@@ -1,0 +1,190 @@
+version: 2.1
+
+# the default pipeline parameters, which will be updated according to
+# the results of the path-filtering orb
+parameters:
+  lint_only:
+    type: boolean
+    default: true
+
+jobs:
+  lint:
+    docker:
+      - image: cimg/python:3.7.4
+    steps:
+      - checkout
+      - run:
+          name: Install pre-commit hook
+          command: |
+            pip install pre-commit
+            pre-commit install
+      - run:
+          name: Linting
+          command: pre-commit run --all-files
+      - run:
+          name: Check docstring coverage
+          command: |
+            pip install interrogate
+            interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --ignore-magic --ignore-regex "__repr__" --fail-under 75 mmseg
+  build_cpu:
+    parameters:
+      # The python version must match available image tags in
+      # https://circleci.com/developer/images/image/cimg/python
+      python:
+        type: string
+      torch:
+        type: string
+      torchvision:
+        type: string
+    docker:
+      - image: cimg/python:<< parameters.python >>
+    resource_class: large
+    steps:
+      - checkout
+      - run:
+          name: Install Libraries
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 libgl1-mesa-glx libjpeg-dev zlib1g-dev libtinfo-dev libncurses5
+      - run:
+          name: Configure Python & pip
+          command: |
+            pip install --upgrade pip
+            pip install wheel
+      - run:
+          name: Install PyTorch
+          command: |
+            python -V
+            pip install torch==<< parameters.torch >>+cpu torchvision==<< parameters.torchvision >>+cpu -f https://download.pytorch.org/whl/torch_stable.html
+      - run:
+          name: Install mmseg dependencies
+          command: |
+            pip install git+https://github.com/open-mmlab/mmengine.git@main
+            pip install -U openmim
+            mim install 'mmcv>=2.0.0rc4'
+            pip install git+https://github.com/open-mmlab/mmclassification@dev-1.x
+            pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+            pip install -r requirements/tests.txt -r requirements/optional.txt
+      - run:
+          name: Build and install
+          command: |
+            pip install -e .
+      - run:
+          name: Skip timm unittests and generate coverage report
+          command: |
+            python -m coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+            python -m coverage xml
+            python -m coverage report -m
+  build_cuda:
+    parameters:
+      torch:
+        type: string
+      cuda:
+        type: enum
+        enum: ["10.1", "10.2", "11.1"]
+      cudnn:
+        type: integer
+        default: 7
+    machine:
+      image: ubuntu-2004-cuda-11.4:202110-01
+      # docker_layer_caching: true
+    resource_class: gpu.nvidia.small
+    steps:
+      - checkout
+      - run:
+          # Cloning repos in VM since Docker doesn't have access to the private key
+          name: Clone Repos
+          command: |
+            git clone -b main --depth 1 https://github.com/open-mmlab/mmengine.git /home/circleci/mmengine
+            git clone -b dev-1.x --depth 1 https://github.com/open-mmlab/mmclassification.git /home/circleci/mmclassification
+            git clone -b dev-3.x --depth 1 https://github.com/open-mmlab/mmdetection.git /home/circleci/mmdetection
+      - run:
+          name: Build Docker image
+          command: |
+            docker build .circleci/docker -t mmseg:gpu --build-arg PYTORCH=<< parameters.torch >> --build-arg CUDA=<< parameters.cuda >> --build-arg CUDNN=<< parameters.cudnn >>
+            docker run --gpus all -t -d -v /home/circleci/project:/mmseg -v /home/circleci/mmengine:/mmengine -v /home/circleci/mmclassification:/mmclassification -v /home/circleci/mmdetection:/mmdetection -w /mmseg --name mmseg mmseg:gpu
+      - run:
+          name: Install mmseg dependencies
+          command: |
+            docker exec mmseg pip install -e /mmengine
+            docker exec mmseg pip install -U openmim
+            docker exec mmseg mim install 'mmcv>=2.0.0rc4'
+            docker exec mmseg pip install -e /mmclassification
+            docker exec mmseg pip install -e /mmdetection
+            docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
+      - run:
+          name: Build and install
+          command: |
+            docker exec mmseg pip install -e .
+      - run:
+          name: Run unittests but skip timm unittests
+          command: |
+            docker exec mmseg pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+workflows:
+  pr_stage_lint:
+    when: << pipeline.parameters.lint_only >>
+    jobs:
+      - lint:
+          name: lint
+          filters:
+            branches:
+              ignore:
+                - dev-1.x
+                - 1.x
+                - master
+  pr_stage_test:
+    when:
+      not:
+        << pipeline.parameters.lint_only >>
+    jobs:
+      - lint:
+          name: lint
+          filters:
+            branches:
+              ignore:
+                - dev-1.x
+                - 1.x
+                - master
+      - build_cpu:
+          name: minimum_version_cpu
+          torch: 1.6.0
+          torchvision: 0.7.0
+          python: "3.7"
+          requires:
+            - lint
+      - build_cpu:
+          name: maximum_version_cpu
+          # TODO: Fix torch 1.13 forward crush
+          torch: 1.12.0
+          torchvision: 0.13.0
+          python: 3.9.0
+          requires:
+            - minimum_version_cpu
+      - hold:
+          type: approval
+          requires:
+            - maximum_version_cpu
+      - build_cuda:
+          name: mainstream_version_gpu
+          torch: 1.8.1
+          # Use double quotation mark to explicitly specify its type
+          # as string instead of number
+          cuda: "10.2"
+          requires:
+            - hold
+  merge_stage_test:
+    when:
+      not:
+        << pipeline.parameters.lint_only >>
+    jobs:
+      - build_cuda:
+          name: minimum_version_gpu
+          torch: 1.6.0
+          # Use double quotation mark to explicitly specify its type
+          # as string instead of number
+          cuda: "10.1"
+          filters:
+            branches:
+              only:
+                - dev-1.x
+                - 1.x

@@ -3,12 +3,12 @@ import numpy as np
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
-from mmseg.ops import Upsample, resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from ..utils import Upsample, resize
 from .decode_head import BaseDecodeHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class FPNHead(BaseDecodeHead):
     """Panoptic Feature Pyramid Networks.
 
@@ -22,8 +22,7 @@ class FPNHead(BaseDecodeHead):
     """
 
     def __init__(self, feature_strides, **kwargs):
-        super(FPNHead, self).__init__(
-            input_transform='multiple_select', **kwargs)
+        super().__init__(input_transform='multiple_select', **kwargs)
         assert len(feature_strides) == len(self.in_channels)
         assert min(feature_strides) == feature_strides[0]
         self.feature_strides = feature_strides

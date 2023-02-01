@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.cnn import ConvModule
-from mmcv.utils.parrots_wrapper import SyncBatchNorm
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
 
 
 def _conv_has_norm(module, sync_bn):

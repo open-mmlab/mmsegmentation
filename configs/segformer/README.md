@@ -35,9 +35,9 @@ We present SegFormer, a simple, efficient yet powerful semantic segmentation fra
 
 ## Usage
 
-We have provided pretrained models converted from [SegFormer](https://github.com/NVlabs/SegFormer).
+To use other repositories' pre-trained models, it is necessary to convert keys.
 
-If you want to convert keys on your own, we also provide a script [`mit2mmseg.py`](../../tools/model_converters/mit2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/NVlabs/SegFormer) to MMSegmentation style.
+We provide a script [`mit2mmseg.py`](../../tools/model_converters/mit2mmseg.py) in the tools directory to convert the key of models from [the official repo](https://github.com/NVlabs/SegFormer) to MMSegmentation style.
 
 ```shell
 python tools/model_converters/mit2mmseg.py ${PRETRAIN_PATH} ${STORE_PATH}
@@ -49,79 +49,53 @@ This script convert model from `PRETRAIN_PATH` and store the converted model in 
 
 ### ADE20K
 
-| Method    | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                       | download                                                                                                                                                                                                                                                                                                                                               |
-| --------- | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Segformer | MIT-B0   | 512x512   |  160000 |      2.1 | 38.17          | 37.85 | 38.97         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b0_512x512_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20220617_162207-c00b9603.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20220617_162207.log.json) |
-| Segformer | MIT-B1   | 512x512   |  160000 |      2.6 | 37.80          | 42.13 | 43.74         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b1_512x512_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20220620_112037-c3f39e00.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20220620_112037.log.json) |
-| Segformer | MIT-B2   | 512x512   |  160000 |      3.6 | 26.80          | 46.80 | 48.12         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b2_512x512_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20220620_114047-64e4feca.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20220620_114047.log.json) |
-| Segformer | MIT-B3   | 512x512   |  160000 |      4.8 | 19.19          | 48.25 | 49.58         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b3_512x512_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20220617_162254-3a4b7363.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20220617_162254.log.json) |
-| Segformer | MIT-B4   | 512x512   |  160000 |      6.1 | 14.54          | 49.09 | 50.72         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b4_512x512_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20220620_112216-4fa4f58f.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20220620_112216.log.json) |
-| Segformer | MIT-B5   | 512x512   |  160000 |      7.2 | 11.89          | 49.13 | 50.22         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b5_512x512_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235-94cedf59.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235.log.json) |
-| Segformer | MIT-B5   | 640x640   |  160000 |     11.5 | 10.60          | 50.19 | 51.41         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b5_640x640_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20220617_203542-940a6bd8.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20220617_203542.log.json) |
+| Method    | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                             | download                                                                                                                                                                                                                                                                                                                                               |
+| --------- | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Segformer | MIT-B0   | 512x512   |  160000 |      2.1 | 51.32          | 37.41 | 38.34         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b0_8xb2-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530-8ffa8fda.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530.log.json) |
+| Segformer | MIT-B1   | 512x512   |  160000 |      2.6 | 47.66          | 40.97 | 42.54         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b1_8xb2-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20210726_112106-d70e859d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20210726_112106.log.json) |
+| Segformer | MIT-B2   | 512x512   |  160000 |      3.6 | 30.88          | 45.58 | 47.03         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b2_8xb2-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20210726_112103-cbd414ac.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20210726_112103.log.json) |
+| Segformer | MIT-B3   | 512x512   |  160000 |      4.8 | 22.11          | 47.82 | 48.81         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b3_8xb2-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20210726_081410-962b98d2.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20210726_081410.log.json) |
+| Segformer | MIT-B4   | 512x512   |  160000 |      6.1 | 15.45          | 48.46 | 49.76         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b4_8xb2-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20210728_183055-7f509d7d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20210728_183055.log.json) |
+| Segformer | MIT-B5   | 512x512   |  160000 |      7.2 | 11.89          | 49.13 | 50.22         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b5_8xb2-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235-94cedf59.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235.log.json) |
+| Segformer | MIT-B5   | 640x640   |  160000 |     11.5 | 11.30          | 49.62 | 50.36         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b5_8xb2-160k_ade20k-640x640.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20210801_121243-41d2845b.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20210801_121243.log.json) |
 
-Evaluation with `AlignedResize`:
+Evaluation with AlignedResize:
 
 | Method    | Backbone | Crop Size | Lr schd |  mIoU | mIoU(ms+flip) |
 | --------- | -------- | --------- | ------: | ----: | ------------- |
-| Segformer | MIT-B0   | 512x512   |  160000 | 38.55 | 39.03         |
-| Segformer | MIT-B1   | 512x512   |  160000 | 43.26 | 44.11         |
-| Segformer | MIT-B2   | 512x512   |  160000 | 47.46 | 48.16         |
-| Segformer | MIT-B3   | 512x512   |  160000 | 49.27 | 49.94         |
-| Segformer | MIT-B4   | 512x512   |  160000 | 50.23 | 51.10         |
+| Segformer | MIT-B0   | 512x512   |  160000 |  38.1 | 38.57         |
+| Segformer | MIT-B1   | 512x512   |  160000 | 41.64 | 42.76         |
+| Segformer | MIT-B2   | 512x512   |  160000 | 46.53 | 47.49         |
+| Segformer | MIT-B3   | 512x512   |  160000 | 48.46 | 49.14         |
+| Segformer | MIT-B4   | 512x512   |  160000 | 49.34 | 50.29         |
 | Segformer | MIT-B5   | 512x512   |  160000 | 50.08 | 50.72         |
-| Segformer | MIT-B5   | 640x640   |  160000 | 51.13 | 51.66         |
+| Segformer | MIT-B5   | 640x640   |  160000 | 50.58 | 50.8          |
+
+We replace `AlignedResize` in original implementatiuon to `Resize + ResizeToMultiple`. If you want to test by
+using `AlignedResize`, you can change the dataset pipeline like this:
+
+```python
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='Resize', scale=(2048, 512), keep_ratio=True),
+    # resize image to multiple of 32, improve SegFormer by 0.5-1.0 mIoU.
+    dict(type='ResizeToMultiple', size_divisor=32),
+    # add loading annotation after ``Resize`` because ground truth
+    # does not need to do resize data transform
+    dict(type='LoadAnnotations', reduce_zero_label=True),
+    dict(type='PackSegInputs')
+]
+```
 
 ### Cityscapes
 
 The lower fps result is caused by the sliding window inference scheme (window size:1024x1024).
 
-| Method    | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                 | download                                                                                                                                                                                                                                                                                                                                                                                       |
-| --------- | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Segformer | MIT-B0   | 1024x1024 |  160000 |     3.64 | 4.74           | 76.54 | 78.22         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes/segformer_mit-b0_8x1_1024x1024_160k_cityscapes_20211208_101857-e7f88502.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes/segformer_mit-b0_8x1_1024x1024_160k_cityscapes_20211208_101857.log.json) |
-| Segformer | MIT-B1   | 1024x1024 |  160000 |     4.49 | 4.3            | 78.56 | 79.73         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes/segformer_mit-b1_8x1_1024x1024_160k_cityscapes_20211208_064213-655c7b3f.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes/segformer_mit-b1_8x1_1024x1024_160k_cityscapes_20211208_064213.log.json) |
-| Segformer | MIT-B2   | 1024x1024 |  160000 |     7.42 | 3.36           | 81.08 | 82.18         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes/segformer_mit-b2_8x1_1024x1024_160k_cityscapes_20211207_134205-6096669a.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes/segformer_mit-b2_8x1_1024x1024_160k_cityscapes_20211207_134205.log.json) |
-| Segformer | MIT-B3   | 1024x1024 |  160000 |    10.86 | 2.53           | 81.94 | 83.14         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes/segformer_mit-b3_8x1_1024x1024_160k_cityscapes_20211206_224823-a8f8a177.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes/segformer_mit-b3_8x1_1024x1024_160k_cityscapes_20211206_224823.log.json) |
-| Segformer | MIT-B4   | 1024x1024 |  160000 |    15.07 | 1.88           | 81.89 | 83.38         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes/segformer_mit-b4_8x1_1024x1024_160k_cityscapes_20211207_080709-07f6c333.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes/segformer_mit-b4_8x1_1024x1024_160k_cityscapes_20211207_080709.log.json) |
-| Segformer | MIT-B5   | 1024x1024 |  160000 |    18.00 | 1.39           | 82.25 | 83.48         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes/segformer_mit-b5_8x1_1024x1024_160k_cityscapes_20211206_072934-87a052ec.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes/segformer_mit-b5_8x1_1024x1024_160k_cityscapes_20211206_072934.log.json) |
-
-Note:
-
-Original SegFormer paper uses different `test_pipeline` and image ratios in `ms+flip`. If you want to cite SegFormer original results as benchmark you may modify settings as below:
-
-- We replace `AlignedResize` in original implementation to `Resize + ResizeToMultiple`. If you want to test by
-  using `AlignedResize`, you can change the dataset pipeline like this:
-
-```python
-test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(
-        type='MultiScaleFlipAug',
-        img_scale=(2048, 512),
-        # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
-        flip=False,
-        transforms=[
-            dict(type='Resize', keep_ratio=True),
-            # resize image to multiple of 32, improve SegFormer by 0.5-1.0 mIoU.
-            dict(type='ResizeToMultiple', size_divisor=32),
-            dict(type='RandomFlip'),
-            dict(type='Normalize', **img_norm_cfg),
-            dict(type='ImageToTensor', keys=['img']),
-            dict(type='Collect', keys=['img']),
-        ])
-]
-```
-
-- Different from default setting of `ms+flip`, SegFormer original repo adopts [different image ratios](https://github.com/NVlabs/SegFormer/blob/master/tools/test.py#L97-L101) for ADE20K dataset. To re-implement numerical results of `ms+flip`, you can change image ratios in `tools/test.py` like this:
-
-```python
-if args.aug_test:
-    if cfg.data.test.type == 'ADE20KDataset':
-        # hard code index
-        cfg.data.test.pipeline[1].img_ratios = [
-            0.75, 0.875, 1.0, 1.125, 1.25
-        ]
-```
-
-- Training of SegFormer is not very stable, which is sensitive to random seeds.
-
-- We use default training setting in MMSegmentation rather than `RepeatDataset` adopted in SegFormer official repo to accelerate [training](https://github.com/NVlabs/SegFormer/blob/master/local_configs/_base_/datasets/ade20k_repeat.py#L38-L39), here is its related [issue](https://github.com/NVlabs/SegFormer/issues/25).
+| Method    | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                   | download                                                                                                                                                                                                                                                                                                                                                                                       |
+| --------- | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Segformer | MIT-B0   | 1024x1024 |  160000 |     3.64 | 4.74           | 76.54 | 78.22         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b0_8xb1-160k_cityscapes-1024x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes/segformer_mit-b0_8x1_1024x1024_160k_cityscapes_20211208_101857-e7f88502.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes/segformer_mit-b0_8x1_1024x1024_160k_cityscapes_20211208_101857.log.json) |
+| Segformer | MIT-B1   | 1024x1024 |  160000 |     4.49 | 4.3            | 78.56 | 79.73         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b1_8xb1-160k_cityscapes-1024x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes/segformer_mit-b1_8x1_1024x1024_160k_cityscapes_20211208_064213-655c7b3f.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes/segformer_mit-b1_8x1_1024x1024_160k_cityscapes_20211208_064213.log.json) |
+| Segformer | MIT-B2   | 1024x1024 |  160000 |     7.42 | 3.36           | 81.08 | 82.18         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b2_8xb1-160k_cityscapes-1024x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes/segformer_mit-b2_8x1_1024x1024_160k_cityscapes_20211207_134205-6096669a.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes/segformer_mit-b2_8x1_1024x1024_160k_cityscapes_20211207_134205.log.json) |
+| Segformer | MIT-B3   | 1024x1024 |  160000 |    10.86 | 2.53           | 81.94 | 83.14         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b3_8xb1-160k_cityscapes-1024x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes/segformer_mit-b3_8x1_1024x1024_160k_cityscapes_20211206_224823-a8f8a177.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes/segformer_mit-b3_8x1_1024x1024_160k_cityscapes_20211206_224823.log.json) |
+| Segformer | MIT-B4   | 1024x1024 |  160000 |    15.07 | 1.88           | 81.89 | 83.38         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b4_8xb1-160k_cityscapes-1024x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes/segformer_mit-b4_8x1_1024x1024_160k_cityscapes_20211207_080709-07f6c333.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes/segformer_mit-b4_8x1_1024x1024_160k_cityscapes_20211207_080709.log.json) |
+| Segformer | MIT-B5   | 1024x1024 |  160000 |    18.00 | 1.39           | 82.25 | 83.48         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/segformer/segformer_mit-b5_8xb1-160k_cityscapes-1024x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes/segformer_mit-b5_8x1_1024x1024_160k_cityscapes_20211206_072934-87a052ec.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes/segformer_mit-b5_8x1_1024x1024_160k_cityscapes_20211206_072934.log.json) |

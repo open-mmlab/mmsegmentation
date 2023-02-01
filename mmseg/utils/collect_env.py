@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from mmcv.utils import collect_env as collect_base_env
-from mmcv.utils import get_git_hash
+from mmengine.utils import get_git_hash
+from mmengine.utils.dl_utils import collect_env as collect_base_env
 
 import mmseg
 
@@ -15,4 +15,4 @@ def collect_env():
 
 if __name__ == '__main__':
     for name, val in collect_env().items():
-        print('{}: {}'.format(name, val))
+        print(f'{name}: {val}')

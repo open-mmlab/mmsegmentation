@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
 
-from mmseg.ops import resize
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from ..utils import resize
 from .aspp_head import ASPPHead, ASPPModule
 
 
@@ -13,7 +13,7 @@ class DepthwiseSeparableASPPModule(ASPPModule):
     conv."""
 
     def __init__(self, **kwargs):
-        super(DepthwiseSeparableASPPModule, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         for i, dilation in enumerate(self.dilations):
             if dilation > 1:
                 self[i] = DepthwiseSeparableConvModule(
@@ -26,7 +26,7 @@ class DepthwiseSeparableASPPModule(ASPPModule):
                     act_cfg=self.act_cfg)
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class DepthwiseSeparableASPPHead(ASPPHead):
     """Encoder-Decoder with Atrous Separable Convolution for Semantic Image
     Segmentation.
@@ -41,7 +41,7 @@ class DepthwiseSeparableASPPHead(ASPPHead):
     """
 
     def __init__(self, c1_in_channels, c1_channels, **kwargs):
-        super(DepthwiseSeparableASPPHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert c1_in_channels >= 0
         self.aspp_modules = DepthwiseSeparableASPPModule(
             dilations=self.dilations,

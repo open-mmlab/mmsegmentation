@@ -2,8 +2,16 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 checkpoint_file = 'https://download.openmmlab.com/mmclassification/v0/poolformer/poolformer-s12_3rdparty_32xb128_in1k_20220414-f8d83051.pth'  # noqa
 custom_imports = dict(imports='mmcls.models', allow_failed_imports=False)
+data_preprocessor = dict(
+    type='SegDataPreProcessor',
+    mean=[123.675, 116.28, 103.53],
+    std=[58.395, 57.12, 57.375],
+    bgr_to_rgb=True,
+    pad_val=0,
+    seg_pad_val=255)
 model = dict(
     type='EncoderDecoder',
+    data_preprocessor=data_preprocessor,
     backbone=dict(
         type='mmcls.PoolFormer',
         arch='s12',

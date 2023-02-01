@@ -1,8 +1,16 @@
 # model settings
 backbone_norm_cfg = dict(type='LN', eps=1e-6, requires_grad=True)
 norm_cfg = dict(type='SyncBN', requires_grad=True)
+data_preprocessor = dict(
+    type='SegDataPreProcessor',
+    mean=[123.675, 116.28, 103.53],
+    std=[58.395, 57.12, 57.375],
+    bgr_to_rgb=True,
+    pad_val=0,
+    seg_pad_val=255)
 model = dict(
     type='EncoderDecoder',
+    data_preprocessor=data_preprocessor,
     pretrained='pretrain/jx_vit_large_p16_384-b3be5167.pth',
     backbone=dict(
         type='VisionTransformer',

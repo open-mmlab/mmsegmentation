@@ -3,14 +3,14 @@ import warnings
 
 import torch.nn as nn
 from mmcv.cnn import ConvModule
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
 from torch.nn.modules.batchnorm import _BatchNorm
 
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
 from ..utils import InvertedResidual, make_divisible
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class MobileNetV2(BaseModule):
     """MobileNetV2 backbone.
 
@@ -63,7 +63,7 @@ class MobileNetV2(BaseModule):
                  with_cp=False,
                  pretrained=None,
                  init_cfg=None):
-        super(MobileNetV2, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         self.pretrained = pretrained
         assert not (init_cfg and pretrained), \
@@ -189,7 +189,7 @@ class MobileNetV2(BaseModule):
                 param.requires_grad = False
 
     def train(self, mode=True):
-        super(MobileNetV2, self).train(mode)
+        super().train(mode)
         self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():

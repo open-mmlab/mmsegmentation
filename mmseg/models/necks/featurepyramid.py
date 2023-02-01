@@ -2,10 +2,10 @@
 import torch.nn as nn
 from mmcv.cnn import build_norm_layer
 
-from ..builder import NECKS
+from mmseg.registry import MODELS
 
 
-@NECKS.register_module()
+@MODELS.register_module()
 class Feature2Pyramid(nn.Module):
     """Feature2Pyramid.
 
@@ -23,7 +23,7 @@ class Feature2Pyramid(nn.Module):
                  embed_dim,
                  rescales=[4, 2, 1, 0.5],
                  norm_cfg=dict(type='SyncBN', requires_grad=True)):
-        super(Feature2Pyramid, self).__init__()
+        super().__init__()
         self.rescales = rescales
         self.upsample_4x = None
         for k in self.rescales:

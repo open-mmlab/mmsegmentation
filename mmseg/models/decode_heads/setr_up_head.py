@@ -2,12 +2,12 @@
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 
-from mmseg.ops import Upsample
-from ..builder import HEADS
+from mmseg.registry import MODELS
+from ..utils import Upsample
 from .decode_head import BaseDecodeHead
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class SETRUPHead(BaseDecodeHead):
     """Naive upsampling head and Progressive upsampling head of SETR.
 
@@ -41,7 +41,7 @@ class SETRUPHead(BaseDecodeHead):
 
         assert kernel_size in [1, 3], 'kernel_size must be 1 or 3.'
 
-        super(SETRUPHead, self).__init__(init_cfg=init_cfg, **kwargs)
+        super().__init__(init_cfg=init_cfg, **kwargs)
 
         assert isinstance(self.in_channels, int)
 

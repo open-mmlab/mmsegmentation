@@ -3,11 +3,11 @@ import warnings
 
 import torch.nn as nn
 from mmcv.cnn import build_conv_layer, build_norm_layer
-from mmcv.runner import BaseModule, ModuleList, Sequential
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmengine.model import BaseModule, ModuleList, Sequential
+from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
-from mmseg.ops import Upsample, resize
-from ..builder import BACKBONES
+from mmseg.registry import MODELS
+from ..utils import Upsample, resize
 from .resnet import BasicBlock, Bottleneck
 
 
@@ -30,7 +30,7 @@ class HRModule(BaseModule):
                  norm_cfg=dict(type='BN', requires_grad=True),
                  block_init_cfg=None,
                  init_cfg=None):
-        super(HRModule, self).__init__(init_cfg)
+        super().__init__(init_cfg)
         self.block_init_cfg = block_init_cfg
         self._check_branches(num_branches, num_blocks, in_channels,
                              num_channels)
@@ -214,7 +214,7 @@ class HRModule(BaseModule):
         return x_fuse
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class HRNet(BaseModule):
     """HRNet backbone.
 
@@ -308,7 +308,7 @@ class HRNet(BaseModule):
                  multiscale_output=True,
                  pretrained=None,
                  init_cfg=None):
-        super(HRNet, self).__init__(init_cfg)
+        super().__init__(init_cfg)
 
         self.pretrained = pretrained
         self.zero_init_residual = zero_init_residual
@@ -633,7 +633,7 @@ class HRNet(BaseModule):
     def train(self, mode=True):
         """Convert the model into training mode will keeping the normalization
         layer freezed."""
-        super(HRNet, self).train(mode)
+        super().train(mode)
         self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():

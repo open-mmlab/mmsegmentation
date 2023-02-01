@@ -2,9 +2,9 @@
 import argparse
 import os.path as osp
 
-import mmcv
+import mmengine
 import torch
-from mmcv.runner import CheckpointLoader
+from mmengine.runner import CheckpointLoader
 
 
 def convert_stdc(ckpt, stdc_type):
@@ -63,7 +63,7 @@ def main():
     assert args.type in ['STDC1',
                          'STDC2'], 'STD type should be STDC1 or STDC2!'
     weight = convert_stdc(state_dict, args.type)
-    mmcv.mkdir_or_exist(osp.dirname(args.dst))
+    mmengine.mkdir_or_exist(osp.dirname(args.dst))
     torch.save(weight, args.dst)
 
 

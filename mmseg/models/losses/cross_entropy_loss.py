@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ..builder import LOSSES
+from mmseg.registry import MODELS
 from .utils import get_class_weight, weight_reduce_loss
 
 
@@ -124,7 +124,7 @@ def binary_cross_entropy(pred,
         assert label[label != ignore_index].max() <= 1, \
             'For pred with shape [N, 1, H, W], its label must have at ' \
             'most 2 classes'
-        pred = pred.squeeze(1)
+        pred = pred.squeeze()
     if pred.dim() != label.dim():
         assert (pred.dim() == 2 and label.dim() == 1) or (
                 pred.dim() == 4 and label.dim() == 3), \
@@ -193,7 +193,7 @@ def mask_cross_entropy(pred,
         pred_slice, target, weight=class_weight, reduction='mean')[None]
 
 
-@LOSSES.register_module()
+@MODELS.register_module()
 class CrossEntropyLoss(nn.Module):
     """CrossEntropyLoss.
 
@@ -223,7 +223,7 @@ class CrossEntropyLoss(nn.Module):
                  loss_weight=1.0,
                  loss_name='loss_ce',
                  avg_non_ignore=False):
-        super(CrossEntropyLoss, self).__init__()
+        super().__init__()
         assert (use_sigmoid is False) or (use_mask is False)
         self.use_sigmoid = use_sigmoid
         self.use_mask = use_mask

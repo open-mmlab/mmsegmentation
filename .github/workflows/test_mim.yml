@@ -1,3 +1,4 @@
+
 name: test-mim
 
 on:
@@ -41,4 +42,4 @@ jobs:
       - name: Build and install
         run: rm -rf .eggs && mim install -e .
       - name: test commands of mim
-        run: mim search mmsegmentation
+        run: mim search mmsegmentation>=1.0.0rc0

@@ -3,14 +3,10 @@ ARG CUDA="11.3"
 ARG CUDNN="8"
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
-ARG MMCV="1.5.0"
-ARG MMSEG="0.29.1"
+ARG MMCV="2.0.0rc4"
+ARG MMSEG="1.0.0rc5"
 
 ENV PYTHONUNBUFFERED TRUE
-
-# NVIDIA APT KEYS
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
@@ -25,12 +21,14 @@ ENV PATH="/opt/conda/bin:$PATH"
 RUN export FORCE_CUDA=1
 
 # TORCHSEVER
-RUN pip install torchserve torch-model-archiver nvgpu
+RUN pip install torchserve torch-model-archiver
 
 # MMLAB
 ARG PYTORCH
 ARG CUDA
-RUN ["/bin/bash", "-c", "pip install mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html"]
+RUN ["/bin/bash", "-c", "pip install openmim"]
+RUN ["/bin/bash", "-c", "mim install mmengine"]
+RUN ["/bin/bash", "-c", "mim install mmcv==${MMCV}"]
 RUN pip install mmsegmentation==${MMSEG}
 
 RUN useradd -m model-server \

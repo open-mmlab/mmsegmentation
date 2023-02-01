@@ -2,10 +2,10 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
-from mmcv.runner import BaseModule
+from mmengine.model import BaseModule
 
-from mmseg.ops import resize
-from ..builder import BACKBONES, build_backbone
+from mmseg.registry import MODELS
+from ..utils import resize
 
 
 class SpatialPath(BaseModule):
@@ -29,7 +29,7 @@ class SpatialPath(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(SpatialPath, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert len(num_channels) == 4, 'Length of input channels \
                                         of Spatial Path must be 4!'
 
@@ -98,7 +98,7 @@ class AttentionRefinementModule(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(AttentionRefinementModule, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.conv_layer = ConvModule(
             in_channels=in_channels,
             out_channels=out_channel,
@@ -152,11 +152,11 @@ class ContextPath(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(ContextPath, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert len(context_channels) == 3, 'Length of input channels \
                                            of Context Path must be 3!'
 
-        self.backbone = build_backbone(backbone_cfg)
+        self.backbone = MODELS.build(backbone_cfg)
 
         self.align_corners = align_corners
         self.arm16 = AttentionRefinementModule(context_channels[1],
@@ -228,7 +228,7 @@ class FeatureFusionModule(BaseModule):
                  norm_cfg=dict(type='BN'),
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
-        super(FeatureFusionModule, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         self.conv1 = ConvModule(
             in_channels=in_channels,
             out_channels=out_channels,
@@ -262,7 +262,7 @@ class FeatureFusionModule(BaseModule):
         return x_out
 
 
-@BACKBONES.register_module()
+@MODELS.register_module()
 class BiSeNetV1(BaseModule):
     """BiSeNetV1 backbone.
 
@@ -304,7 +304,7 @@ class BiSeNetV1(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  init_cfg=None):
 
-        super(BiSeNetV1, self).__init__(init_cfg=init_cfg)
+        super().__init__(init_cfg=init_cfg)
         assert len(spatial_channels) == 4, 'Length of input channels \
                                            of Spatial Path must be 4!'
 

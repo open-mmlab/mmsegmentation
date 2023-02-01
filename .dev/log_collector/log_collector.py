@@ -27,11 +27,15 @@ from utils import load_config
 def parse_args():
     parser = argparse.ArgumentParser(description='extract info from log.json')
     parser.add_argument('config_dir')
-    return parser.parse_args()
+    args = parser.parse_args()
+    return args
 
 
 def has_keyword(name: str, keywords: list):
-    return any(a_keyword in name for a_keyword in keywords)
+    for a_keyword in keywords:
+        if a_keyword in name:
+            return True
+    return False
 
 
 def main():
@@ -82,7 +86,7 @@ def main():
         val_list = []
         last_iter = 0
         for log_name in log_list:
-            with open(os.path.join(preceding_path, log_name), 'r') as f:
+            with open(os.path.join(preceding_path, log_name)) as f:
                 # ignore the info line
                 f.readline()
                 all_lines = f.readlines()

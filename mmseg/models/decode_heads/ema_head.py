@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 
-from ..builder import HEADS
+from mmseg.registry import MODELS
 from .decode_head import BaseDecodeHead
 
 
@@ -30,7 +30,7 @@ class EMAModule(nn.Module):
     """
 
     def __init__(self, channels, num_bases, num_stages, momentum):
-        super(EMAModule, self).__init__()
+        super().__init__()
         assert num_stages >= 1, 'num_stages must be at least 1!'
         self.num_bases = num_bases
         self.num_stages = num_stages
@@ -76,7 +76,7 @@ class EMAModule(nn.Module):
         return feats_recon
 
 
-@HEADS.register_module()
+@MODELS.register_module()
 class EMAHead(BaseDecodeHead):
     """Expectation Maximization Attention Networks for Semantic Segmentation.
 
@@ -99,7 +99,7 @@ class EMAHead(BaseDecodeHead):
                  concat_input=True,
                  momentum=0.1,
                  **kwargs):
-        super(EMAHead, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.ema_channels = ema_channels
         self.num_bases = num_bases
         self.num_stages = num_stages
