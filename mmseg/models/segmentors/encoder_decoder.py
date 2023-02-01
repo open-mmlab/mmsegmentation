@@ -120,7 +120,7 @@ class EncoderDecoder(BaseSegmentor):
         return x
 
     def encode_decode(self, inputs: Tensor,
-                      batch_img_metas: List[dict]) -> List[Tensor]:
+                      batch_img_metas: List[dict]) -> Tensor:
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
         x = self.extract_feat(inputs)
