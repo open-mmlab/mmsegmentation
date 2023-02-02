@@ -33,6 +33,8 @@ vis_backends=[dict(type='LocalVisBackend'),
 wget https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png --output-document aachen_000000_000019_leftImg8bit.png
 wget https://user-images.githubusercontent.com/24582831/189833143-15f60f8a-4d1e-4cbb-a6e7-5e2233869fac.png --output-document aachen_000000_000019_gtFine_labelTrainIds.png
 
+wget https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth
+
 ```
 
 ```python
@@ -148,9 +150,9 @@ def main():
     #     print(name)
 
     source = [
-        'decode_head.psp_modules.3.1.activate',
-        'decode_head.lateral_convs.2.activat',
-        'decode_head.fpn_bottleneck.activate'
+        'decode_head.fusion.stages.0.query_project.activate',
+        'decode_head.context.stages.0.key_project.activate',
+        'decode_head.context.bottleneck.activate'
     ]
     source = dict.fromkeys(source)
 
@@ -179,7 +181,11 @@ if __name__ == '__main__':
 将上述代码保存为visualization_feature_map.py，执行如下代码
 
 ```shell
-python visualization_feature_map.py
+python feature_map_visual.py aachen_000000_000019_leftImg8bit.png configs/ann/ann_r50-d8_4xb2-40k_cityscapes-512x1024.py ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth --gt_mask aachen_000000_000019_gtFine_labelTrainIds.png --device cpu
 ```
 
 可视化后的图像结果和它的对应的 feature map图像会出现在wandb账户中。
+
+<div align=center>
+<img src="../../../demo/wandb_vis_feature_map.png">
+</div>
