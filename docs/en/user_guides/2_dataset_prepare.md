@@ -530,8 +530,7 @@ Then, unzip `REFUGE2.zip` and the contents of original datasets include:
 │   ├── __MACOSX
 ```
 
-To convert REFUGE dataset to MMSegmentation format, you should run the following command:
-
+Please run the following command to convert REFUGE dataset:
 ```shell
 python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
 ```
