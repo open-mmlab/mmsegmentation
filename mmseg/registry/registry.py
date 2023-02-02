@@ -10,6 +10,7 @@ from mmengine.registry import DATA_SAMPLERS as MMENGINE_DATA_SAMPLERS
 from mmengine.registry import DATASETS as MMENGINE_DATASETS
 from mmengine.registry import EVALUATOR as MMENGINE_EVALUATOR
 from mmengine.registry import HOOKS as MMENGINE_HOOKS
+from mmengine.registry import INFERENCERS as MMENGINE_INFERENCERS
 from mmengine.registry import LOG_PROCESSORS as MMENGINE_LOG_PROCESSORS
 from mmengine.registry import LOOPS as MMENGINE_LOOPS
 from mmengine.registry import METRICS as MMENGINE_METRICS
@@ -116,3 +117,6 @@ RUNNER_CONSTRUCTORS = Registry(
     'runner constructor', parent=MMENGINE_RUNNER_CONSTRUCTORS)
 # manage all kinds of loops like `EpochBasedTrainLoop`
 LOOPS = Registry('loop', parent=MMENGINE_LOOPS)
+
+# manage inferencer
+INFERENCERS = Registry('inferencer', parent=MMENGINE_INFERENCERS)
