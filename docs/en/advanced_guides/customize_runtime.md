@@ -2,11 +2,11 @@
 
 ## Customize hooks
 
-### Step 1: Create a new hook
+### Step 1: Implement a new hook
 
 MMEngine has implemented commonly used [hooks](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md) for training and test,
 When users have requirements for customization, they can follow examples below.
-For example, if they want to modify the value of hyperparameter `model.hyper_paramete`, aiming at making it change with training iteration number:
+For example, if some hyper-parameter of the model needs to be changed when model training, we can implement a new hook for it:
 
 ```python
 # Copyright (c) OpenMMLab. All rights reserved.
@@ -40,8 +40,8 @@ class NewHook(Hook):
 
 ### Step 2: Import a new hook
 
-The module which is defined above needs to be imported into main namespace first to ensure being detected by program.
-Assume NewHook is in `mmseg/engine/hooks/new_hook.py`, there are two ways to implement it:
+The module which is defined above needs to be imported into main namespace first to ensure being registered.
+We assume `NewHook` is implemented in `mmseg/engine/hooks/new_hook.py`, there are two ways to import it:
 
 - Import it by modifying `mmseg/engine/hooks/__init__.py`.
   Modules should be imported in `mmseg/engine/hooks/__init__.py` thus these new modules can be found and added by registry.
@@ -61,7 +61,7 @@ custom_imports = dict(imports=['mmseg.engine.hooks.new_hook'], allow_failed_impo
 ### Step 3: Modify config file
 
 Users can set and use customized hooks in training and test followed methods below.
-The priorities of different hooks which are located in the same place can be referred [here](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md#built-in-hooks),
+The execution priority of hooks at the same place of `Runner` can be referred [here](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md#built-in-hooks),
 Default priority of customized hook is `NORMAL`.
 
 ```python
@@ -72,9 +72,9 @@ custom_hooks = [
 
 ## Customize optimizer
 
-### Step 1: Create a new optimizer
+### Step 1: Implement a new optimizer
 
-If users want to add a new optimizer `MyOptimizer` which has parameters `a`, `b` and `c`. We recommend implementing it in `mmseg/engine/optimizers/my_optimizer.py`:
+We recommend the customized optimizer implemented in `mmseg/engine/optimizers/my_optimizer.py`. Here is an example of a new optimizer `MyOptimizer` which has parameters `a`, `b` and `c`:
 
 ```python
 from mmseg.registry import OPTIMIZERS
@@ -89,8 +89,8 @@ class MyOptimizer(Optimizer):
 
 ### Step 2: Import a new optimizer
 
-The module which is defined above needs to be imported into main namespace first to ensure being detected by program.
-Assume `MyOptimizer` is in `mmseg/engine/optimizers/my_optimizer.py`, there are two ways to implement it:
+The module which is defined above needs to be imported into main namespace first to ensure being registered.
+We assume `MyOptimizer` is implemented in `mmseg/engine/optimizers/my_optimizer.py`, there are two ways to import it:
 
 - Import it by modifying `mmseg/engine/optimizers/__init__.py`.
   Modules should be imported in `mmseg/engine/optimizers/__init__.py` thus these new modules can be found and added by registry.
@@ -118,10 +118,10 @@ optim_wrapper = dict(type='OptimWrapper',
 
 ## Customize optimizer constructor
 
-### Step 1: Create a new optimizer constructor
+### Step 1: Implement a new optimizer constructor
 
-Constructor can be used to create optimizer, optimizer wrapper and customized hyperparameters of different layers in model network. The optimizer of some models would adjust with specified parameters such as weight decay of BatchNorm layer.
-Users can set different optimization policy on different parameters of model by customized optimizer constructor.
+Optimizer constructor is used to create optimizer and optimizer wrapper for model training, which has powerful functions like specifying learning rate and weight decay for different model layers.
+Here is an example for a customized optimizer constructor.
 
 ```python
 from mmengine.optim import DefaultOptimWrapperConstructor
@@ -137,12 +137,12 @@ class LearningRateDecayOptimizerConstructor(DefaultOptimWrapperConstructor):
 ```
 
 Default optimizer constructor is implemented [here](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19).
-It can also be used as template of new optimizer constructor.
+It can also be used as base class of new optimizer constructor.
 
 ### Step 2: Import a new optimizer constructor
 
-The module which is defined above needs to be imported into main namespace first to ensure being detected by program.
-Assume `MyOptimizerConstructor` is in `mmseg/engine/optimizers/my_optimizer_constructor.py`, there are two ways to implement it:
+The module which is defined above needs to be imported into main namespace first to ensure being registered.
+We assume `MyOptimizerConstructor` is implemented in `mmseg/engine/optimizers/my_optimizer_constructor.py`, there are two ways to import it:
 
 - Import it by modifying `mmseg/engine/optimizers/__init__.py`.
   Modules should be imported in `mmseg/engine/optimizers/__init__.py` thus these new modules can be found and added by registry.
