@@ -30,11 +30,13 @@ Returns:
 Example:
 
 ```python
+from mmengine.registry import init_default_scope
 from mmseg.apis import init_model
+
+init_default_scope('mmseg')
 
 config_path = 'configs/pspnet/pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py'
 checkpoint_path = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
-
 
 # initialize model without checkpoint
 model = init_model(config_path)
