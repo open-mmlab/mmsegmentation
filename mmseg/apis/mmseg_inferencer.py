@@ -43,8 +43,7 @@ class MMSegInferencer(BaseInferencer):
         'show', 'wait_time', 'draw_pred', 'img_out_dir', 'opacity'
     }
     postprocess_kwargs: set = {
-        'print_result', 'pred_out_dir', 'return_datasample', 'save_mask',
-        'mask_dir'
+        'pred_out_dir', 'return_datasample', 'save_mask', 'mask_dir'
     }
 
     def __init__(self,
@@ -73,7 +72,6 @@ class MMSegInferencer(BaseInferencer):
                  wait_time: int = 0,
                  draw_pred: bool = True,
                  out_dir: str = '',
-                 print_result: bool = False,
                  save_mask: bool = False,
                  mask_dir: str = 'mask',
                  **kwargs) -> dict:
@@ -89,9 +87,7 @@ class MMSegInferencer(BaseInferencer):
             wait_time (float): The interval of show (s). Defaults to 0.
             draw_pred (bool): Whether to draw Prediction SegDataSample.
                 Defaults to True.
-            out_dir (str): Output directory of inference results. Defaults: ''
-            print_result (bool): Whether to print the inference result w/o
-                visualization to the console. Defaults to False.
+            out_dir (str): Output directory of inference results. Defaults: ''.
             save_mask (bool): Whether save pred mask as a file.
             mask_dir (str): Sub directory of `pred_out_dir`, used to save pred
                 mask file.
@@ -107,7 +103,6 @@ class MMSegInferencer(BaseInferencer):
             wait_time=wait_time,
             draw_pred=draw_pred,
             img_out_dir=out_dir,
-            print_result=print_result,
             pred_out_dir=out_dir,
             save_mask=save_mask,
             mask_dir=mask_dir,
@@ -186,7 +181,6 @@ class MMSegInferencer(BaseInferencer):
                     return_datasample: bool = False,
                     mask_dir: str = 'mask',
                     save_mask: bool = True,
-                    print_result: bool = False,
                     pred_out_dir: str = '') -> dict:
         """Process the predictions and visualization results from ``forward``
         and ``visualize``.
@@ -202,8 +196,6 @@ class MMSegInferencer(BaseInferencer):
             visualization (np.ndarray): Visualized predictions.
             return_datasample (bool): Whether to return results as datasamples.
                 Defaults to False.
-            print_result (bool): Whether to print the inference result w/o
-                visualization to the console. Defaults to False.
             pred_out_dir: File to save the inference results w/o
                 visualization. If left as empty, no file will be saved.
                 Defaults to ''.
@@ -227,8 +219,6 @@ class MMSegInferencer(BaseInferencer):
         results_dict['predictions'] = preds
         results_dict['visualization'] = visualization
 
-        if print_result:
-            print(results_dict)
         if pred_out_dir != '':
             mmengine.mkdir_or_exist(pred_out_dir)
             if save_mask:
