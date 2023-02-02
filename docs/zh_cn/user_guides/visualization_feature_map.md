@@ -23,6 +23,18 @@ vis_backends=[dict(type='LocalVisBackend'),
 
 `SegLocalVisualizer`是继承自 MMEngine 中`Visualizer` 类的子类，适用于 MMSegmentation 可视化，有关`Visualizer`的详细信息请参考在 MMEngine 中的[可视化教程](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/visualization.html) 。
 
+以下是一个关于 `SegLocalVisualizer` 的示例，首先你可以使用下面的命令下载这个案例中的数据：
+
+<div align=center>
+<img src="https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png" width="70%"/>
+</div>
+
+```shell
+wget https://user-images.githubusercontent.com/24582831/189833109-eddad58f-f777-4fc0-b98a-6bd429143b06.png --output-document aachen_000000_000019_leftImg8bit.png
+wget https://user-images.githubusercontent.com/24582831/189833143-15f60f8a-4d1e-4cbb-a6e7-5e2233869fac.png --output-document aachen_000000_000019_gtFine_labelTrainIds.png
+
+```
+
 ```python
 # Copyright (c) OpenMMLab. All rights reserved.
 from argparse import ArgumentParser
@@ -162,6 +174,12 @@ def main():
 if __name__ == '__main__':
     main()
 
+```
+
+将上述代码保存为visualization_feature_map.py，执行如下代码
+
+```shell
+python visualization_feature_map.py
 ```
 
 可视化后的图像结果和它的对应的 feature map图像会出现在wandb账户中。
