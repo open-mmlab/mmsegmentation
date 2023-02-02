@@ -1,5 +1,57 @@
 # Changelog of v1.x
 
+## v1.0.0rc5(02/01/2023)
+
+### Bug fix
+
+- Fix MaskFormer and Mask2Former when install mmdet from source ([#2532](https://github.com/open-mmlab/mmsegmentation/pull/2532))
+- Support new fileio interface in `MMCV>=2.0.0rc4` ([#2543](https://github.com/open-mmlab/mmsegmentation/pull/2543))
+- Fix ERFNet URL in dev-1.x branch ([#2537](https://github.com/open-mmlab/mmsegmentation/pull/2537))
+- Fix misleading `List[Tensor]` types ([#2546](https://github.com/open-mmlab/mmsegmentation/pull/2546))
+- Rename typing.py to typing_utils.py ([#2548](https://github.com/open-mmlab/mmsegmentation/pull/2548))
+
+## v1.0.0rc4(01/30/2023)
+
+### Highlights
+
+- Support ISNet (ICCV'2021) in projects ([#2400](https://github.com/open-mmlab/mmsegmentation/pull/2400))
+- Support HSSN (CVPR'2022) in projects ([#2444](https://github.com/open-mmlab/mmsegmentation/pull/2444))
+
+### Features
+
+- Add Gaussian Noise and Blur for biomedical data ([#2373](https://github.com/open-mmlab/mmsegmentation/pull/2373))
+- Add BioMedicalRandomGamma ([#2406](https://github.com/open-mmlab/mmsegmentation/pull/2406))
+- Add BioMedical3DPad ([#2383](https://github.com/open-mmlab/mmsegmentation/pull/2383))
+- Add BioMedical3DRandomFlip ([#2404](https://github.com/open-mmlab/mmsegmentation/pull/2404))
+- Add `gt_edge_map` field to SegDataSample ([#2466](https://github.com/open-mmlab/mmsegmentation/pull/2466))
+- Support synapse dataset ([#2432](https://github.com/open-mmlab/mmsegmentation/pull/2432), [#2465](https://github.com/open-mmlab/mmsegmentation/pull/2465))
+- Support Mapillary Vistas Dataset in projects ([#2484](https://github.com/open-mmlab/mmsegmentation/pull/2484))
+- Switch order of `reduce_zero_label` and applying `label_map` ([#2517](https://github.com/open-mmlab/mmsegmentation/pull/2517))
+
+### Documentation
+
+- Add ZN Customized_runtime Doc ([#2502](https://github.com/open-mmlab/mmsegmentation/pull/2502))
+- Add EN datasets.md ([#2464](https://github.com/open-mmlab/mmsegmentation/pull/2464))
+- Fix minor typo in migration `package.md` ([#2518](https://github.com/open-mmlab/mmsegmentation/pull/2518))
+
+### Bug fix
+
+- Fix incorrect `img_shape` value assignment in RandomCrop ([#2469](https://github.com/open-mmlab/mmsegmentation/pull/2469))
+- Fix inference api and support setting palette to SegLocalVisualizer ([#2475](https://github.com/open-mmlab/mmsegmentation/pull/2475))
+- Unfinished label conversion from `-1` to `255` ([#2516](https://github.com/open-mmlab/mmsegmentation/pull/2516))
+
+### New Contributors
+
+- @blueyo0 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2373
+- @Fivethousand5k made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2406
+- @suyanzhou626 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2383
+- @unrealMJ made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2400
+- @Dominic23331 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2432
+- @AI-Tianlong made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2444
+- @morkovka1337 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2492
+- @Leeinsn made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2404
+- @siddancha made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2516
+
 ## v1.0.0rc3(31/12/2022)
 
 ### Highlights

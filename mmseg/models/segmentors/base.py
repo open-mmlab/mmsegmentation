@@ -126,7 +126,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
 
     def postprocess_result(self,
                            seg_logits: Tensor,
-                           data_samples: OptSampleList = None) -> list:
+                           data_samples: OptSampleList = None) -> SampleList:
         """ Convert results list to `SegDataSample`.
         Args:
             seg_logits (Tensor): The segmentation results, seg_logits from
