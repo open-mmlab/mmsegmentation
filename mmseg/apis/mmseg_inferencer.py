@@ -28,18 +28,23 @@ class MMSegInferencer(BaseInferencer):
         weights (str, optional): Path to the checkpoint. If it is not specified
             and model is a model name of metafile, the weights will be loaded
             from metafile. Defaults to None.
+        palette (List[List[int]], optional): The palette of
+                segmentation map.
+        classes (Tuple[str], optional): Category information.
+        dataset_name (str, optional): Name of the datasets supported in mmseg.
         device (str, optional): Device to run inference. If None, the available
             device will be automatically used. Defaults to None.
+        scope (str, optional): The scope of the model. Defaults to None.
     """
 
     preprocess_kwargs: set = set()
     forward_kwargs: set = {'mode', 'out_dir'}
     visualize_kwargs: set = {
-        'return_vis', 'show', 'wait_time', 'draw_pred', 'img_out_dir',
-        'opacity'
+        'show', 'wait_time', 'draw_pred', 'img_out_dir', 'opacity'
     }
     postprocess_kwargs: set = {
-        'print_result', 'pred_out_dir', 'return_datasample', 'save_mask'
+        'print_result', 'pred_out_dir', 'return_datasample', 'save_mask',
+        'mask_dir'
     }
 
     def __init__(self,
@@ -62,23 +67,42 @@ class MMSegInferencer(BaseInferencer):
 
     def __call__(self,
                  inputs: InputsType,
-                 mode: str = 'predict',
                  return_datasamples: bool = False,
                  batch_size: int = 1,
-                 return_vis: bool = False,
                  show: bool = False,
                  wait_time: int = 0,
                  draw_pred: bool = True,
                  out_dir: str = '',
                  print_result: bool = False,
                  save_mask: bool = False,
+                 mask_dir: str = 'mask',
                  **kwargs) -> dict:
+        """Call the inferencer.
+
+        Args:
+            inputs (Union[str, np.ndarray]): Inputs for the inferencer.
+            return_datasamples (bool): Whether to return results as
+                :obj:`SegDataSample`. Defaults to False.
+            batch_size (int): Batch size. Defaults to 1.
+            show (bool): Whether to display the image in a popup window.
+                Defaults to False.
+            wait_time (float): The interval of show (s). Defaults to 0.
+            draw_pred (bool): Whether to draw Prediction SegDataSample.
+                Defaults to True.
+            out_dir (str): Output directory of inference results. Defaults: ''
+            print_result (bool): Whether to print the inference result w/o
+                visualization to the console. Defaults to False.
+            save_mask (bool): Whether save pred mask as a file.
+            mask_dir (str): Sub directory of `pred_out_dir`, used to save pred
+                mask file.
+
+        Returns:
+            dict: Inference and visualization results.
+        """
         return super().__call__(
             inputs=inputs,
             return_datasamples=return_datasamples,
             batch_size=batch_size,
-            mode=mode,
-            return_vis=return_vis,
             show=show,
             wait_time=wait_time,
             draw_pred=draw_pred,
@@ -86,12 +110,12 @@ class MMSegInferencer(BaseInferencer):
             print_result=print_result,
             pred_out_dir=out_dir,
             save_mask=save_mask,
+            mask_dir=mask_dir,
             **kwargs)
 
     def visualize(self,
                   inputs: list,
                   preds: List[dict],
-                  return_vis: bool = False,
                   show: bool = False,
                   wait_time: int = 0,
                   draw_pred: bool = True,
@@ -104,12 +128,17 @@ class MMSegInferencer(BaseInferencer):
             preds (Any): Predictions of the model.
             show (bool): Whether to display the image in a popup window.
                 Defaults to False.
+            wait_time (float): The interval of show (s). Defaults to 0.
+            draw_pred (bool): Whether to draw Prediction SegDataSample.
+                Defaults to True.
+            img_out_dir (str): Output directory of drawn images. Defaults: ''
+            opacity (int, float): The transparency of segmentation mask.
+                Defaults to 0.8.
 
         Returns:
             List[np.ndarray]: Visualization results.
         """
-        if self.visualizer is None or (not show and img_out_dir == ''
-                                       and not return_vis):
+        if self.visualizer is None or (not show and img_out_dir == ''):
             return None
 
         if getattr(self, 'visualizer') is None:
@@ -146,7 +175,7 @@ class MMSegInferencer(BaseInferencer):
                 draw_gt=False,
                 draw_pred=draw_pred,
                 out_file=out_file)
-            results.append(img)
+            results.append(self.visualizer.get_image())
             self.num_visualized_imgs += 1
 
         return results
@@ -178,6 +207,9 @@ class MMSegInferencer(BaseInferencer):
             pred_out_dir: File to save the inference results w/o
                 visualization. If left as empty, no file will be saved.
                 Defaults to ''.
+            mask_dir (str): Sub directory of `pred_out_dir`, used to save pred
+                mask file.
+            save_mask (bool): Whether save pred mask as a file.
 
         Returns:
             dict: Inference and visualization results with key ``predictions``
