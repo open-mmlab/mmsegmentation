@@ -32,6 +32,13 @@ from mmengine.registry import \
     WEIGHT_INITIALIZERS as MMENGINE_WEIGHT_INITIALIZERS
 from mmengine.registry import Registry
 
+# manage all kinds of runners like `EpochBasedRunner` and `IterBasedRunner`
+RUNNERS = Registry('runner', parent=MMENGINE_RUNNERS)
+# manage runner constructors that define how to initialize runners
+RUNNER_CONSTRUCTORS = Registry(
+    'runner constructor', parent=MMENGINE_RUNNER_CONSTRUCTORS)
+# manage all kinds of loops like `EpochBasedTrainLoop`
+LOOPS = Registry('loop', parent=MMENGINE_LOOPS)
 # manage all kinds of hooks like `CheckpointHook`
 HOOKS = Registry(
     'hook', parent=MMENGINE_HOOKS, locations=['mmseg.engine.hooks'])
@@ -109,14 +116,6 @@ LOG_PROCESSORS = Registry(
     'log_processor',
     parent=MMENGINE_LOG_PROCESSORS,
     locations=['mmseg.visualization'])
-
-# manage all kinds of runners like `EpochBasedRunner` and `IterBasedRunner`
-RUNNERS = Registry('runner', parent=MMENGINE_RUNNERS)
-# manage runner constructors that define how to initialize runners
-RUNNER_CONSTRUCTORS = Registry(
-    'runner constructor', parent=MMENGINE_RUNNER_CONSTRUCTORS)
-# manage all kinds of loops like `EpochBasedTrainLoop`
-LOOPS = Registry('loop', parent=MMENGINE_LOOPS)
 
 # manage inferencer
 INFERENCERS = Registry('inferencer', parent=MMENGINE_INFERENCERS)
