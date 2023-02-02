@@ -11,6 +11,7 @@ from mmengine.registry import DATASETS as MMENGINE_DATASETS
 from mmengine.registry import EVALUATOR as MMENGINE_EVALUATOR
 from mmengine.registry import HOOKS as MMENGINE_HOOKS
 from mmengine.registry import LOG_PROCESSORS as MMENGINE_LOG_PROCESSORS
+from mmengine.registry import LOOPS as MMENGINE_LOOPS
 from mmengine.registry import METRICS as MMENGINE_METRICS
 from mmengine.registry import MODEL_WRAPPERS as MMENGINE_MODEL_WRAPPERS
 from mmengine.registry import MODELS as MMENGINE_MODELS
@@ -19,6 +20,9 @@ from mmengine.registry import \
 from mmengine.registry import OPTIM_WRAPPERS as MMENGINE_OPTIM_WRAPPERS
 from mmengine.registry import OPTIMIZERS as MMENGINE_OPTIMIZERS
 from mmengine.registry import PARAM_SCHEDULERS as MMENGINE_PARAM_SCHEDULERS
+from mmengine.registry import \
+    RUNNER_CONSTRUCTORS as MMENGINE_RUNNER_CONSTRUCTORS
+from mmengine.registry import RUNNERS as MMENGINE_RUNNERS
 from mmengine.registry import TASK_UTILS as MMENGINE_TASK_UTILS
 from mmengine.registry import TRANSFORMS as MMENGINE_TRANSFORMS
 from mmengine.registry import VISBACKENDS as MMENGINE_VISBACKENDS
@@ -104,3 +108,11 @@ LOG_PROCESSORS = Registry(
     'log_processor',
     parent=MMENGINE_LOG_PROCESSORS,
     locations=['mmseg.visualization'])
+
+# manage all kinds of runners like `EpochBasedRunner` and `IterBasedRunner`
+RUNNERS = Registry('runner', parent=MMENGINE_RUNNERS)
+# manage runner constructors that define how to initialize runners
+RUNNER_CONSTRUCTORS = Registry(
+    'runner constructor', parent=MMENGINE_RUNNER_CONSTRUCTORS)
+# manage all kinds of loops like `EpochBasedTrainLoop`
+LOOPS = Registry('loop', parent=MMENGINE_LOOPS)
