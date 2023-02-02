@@ -105,7 +105,7 @@ def visualize(args, model, recorder, result):
         gt_mask = PixelData(**gt_mask)
         data_sample = SegDataSample()
         data_sample.gt_sem_seg = gt_mask
-        # fuse the model output datasample result and original img
+
         seg_visualizer.add_datasample(
             name='gt_mask',
             image=image,
@@ -146,8 +146,8 @@ def main():
         model = revert_sync_batchnorm(model)
 
     # show all named module in the model and use it in source list below
-    # for name, module in model.named_modules():
-    #     print(name)
+    for name, module in model.named_modules():
+        print(name)
 
     source = [
         'decode_head.fusion.stages.0.query_project.activate',
@@ -178,13 +178,23 @@ if __name__ == '__main__':
 
 ```
 
-将上述代码保存为visualization_feature_map.py，执行如下代码
+将上述代码保存为visualization_feature_map.py，在终端执行如下代码
 
 ```shell
-python feature_map_visual.py aachen_000000_000019_leftImg8bit.png configs/ann/ann_r50-d8_4xb2-40k_cityscapes-512x1024.py ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth --gt_mask aachen_000000_000019_gtFine_labelTrainIds.png --device cpu
+python feature_map_visual.py ${图像} ${配置文件} ${检查点文件} [可选参数]
 ```
 
-可视化后的图像结果和它的对应的 feature map图像会出现在wandb账户中。
+样例
+
+```shell
+python feature_map_visual.py \
+aachen_000000_000019_leftImg8bit.png \
+configs/ann/ann_r50-d8_4xb2-40k_cityscapes-512x1024.py \
+ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth \
+--gt_mask aachen_000000_000019_gtFine_labelTrainIds.png
+```
+
+可视化后的图像结果和它的对应的 feature map图像会出现在wandb账户中
 
 <div align=center>
 <img src="../../../demo/wandb_vis_feature_map.png">
