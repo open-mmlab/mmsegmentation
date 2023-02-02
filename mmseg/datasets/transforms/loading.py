@@ -3,7 +3,7 @@ import warnings
 from typing import Dict
 
 import mmcv
-import mmengine
+import mmengine.fileio as fileio
 import numpy as np
 from mmcv.transforms import BaseTransform
 from mmcv.transforms import LoadAnnotations as MMCV_LoadAnnotations
@@ -54,15 +54,16 @@ class LoadAnnotations(MMCV_LoadAnnotations):
             argument for :func:``mmcv.imfrombytes``.
             See :fun:``mmcv.imfrombytes`` for details.
             Defaults to 'pillow'.
-        file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:``mmcv.fileio.FileClient`` for details.
-            Defaults to ``dict(backend='disk')``.
+        backend_args (dict): Arguments to instantiate a file backend.
+            See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
+            for details. Defaults to ``dict(backend='local')``
+            Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
     def __init__(
         self,
         reduce_zero_label=None,
-        file_client_args=dict(backend='disk'),
+        backend_args=dict(backend='local'),
         imdecode_backend='pillow',
     ) -> None:
         super().__init__(
@@ -71,14 +72,13 @@ class LoadAnnotations(MMCV_LoadAnnotations):
             with_seg=True,
             with_keypoints=False,
             imdecode_backend=imdecode_backend,
-            file_client_args=file_client_args)
+            backend_args=backend_args)
         self.reduce_zero_label = reduce_zero_label
         if self.reduce_zero_label is not None:
             warnings.warn('`reduce_zero_label` will be deprecated, '
                           'if you would like to ignore the zero label, please '
                           'set `reduce_zero_label=True` when dataset '
                           'initialized')
-        self.file_client_args = file_client_args.copy()
         self.imdecode_backend = imdecode_backend
 
     def _load_seg_map(self, results: dict) -> None:
@@ -91,19 +91,12 @@ class LoadAnnotations(MMCV_LoadAnnotations):
             dict: The dict contains loaded semantic segmentation annotations.
         """
 
-        img_bytes = self.file_client.get(results['seg_map_path'])
+        img_bytes = fileio.get(
+            results['seg_map_path'], backend_args=self.backend_args)
         gt_semantic_seg = mmcv.imfrombytes(
             img_bytes, flag='unchanged',
             backend=self.imdecode_backend).squeeze().astype(np.uint8)
 
-        # modify if custom classes
-        if results.get('label_map', None) is not None:
-            # Add deep copy to solve bug of repeatedly
-            # replace `gt_semantic_seg`, which is reported in
-            # https://github.com/open-mmlab/mmsegmentation/pull/1445/
-            gt_semantic_seg_copy = gt_semantic_seg.copy()
-            for old_id, new_id in results['label_map'].items():
-                gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
         # reduce zero_label
         if self.reduce_zero_label is None:
             self.reduce_zero_label = results['reduce_zero_label']
@@ -116,14 +109,22 @@ class LoadAnnotations(MMCV_LoadAnnotations):
             gt_semantic_seg[gt_semantic_seg == 0] = 255
             gt_semantic_seg = gt_semantic_seg - 1
             gt_semantic_seg[gt_semantic_seg == 254] = 255
+        # modify if custom classes
+        if results.get('label_map', None) is not None:
+            # Add deep copy to solve bug of repeatedly
+            # replace `gt_semantic_seg`, which is reported in
+            # https://github.com/open-mmlab/mmsegmentation/pull/1445/
+            gt_semantic_seg_copy = gt_semantic_seg.copy()
+            for old_id, new_id in results['label_map'].items():
+                gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
         results['gt_seg_map'] = gt_semantic_seg
         results['seg_fields'].append('gt_seg_map')
 
     def __repr__(self) -> str:
         repr_str = self.__class__.__name__
-        repr_str += f'(reduce_zero_label={self.reduce_zero_label},'
-        repr_str += f"imdecode_backend='{self.imdecode_backend}')"
-        repr_str += f'file_client_args={self.file_client_args})'
+        repr_str += f'(reduce_zero_label={self.reduce_zero_label}, '
+        repr_str += f"imdecode_backend='{self.imdecode_backend}', "
+        repr_str += f'backend_args={self.backend_args})'
         return repr_str
 
 
@@ -202,9 +203,10 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         to_float32 (bool): Whether to convert the loaded image to a float32
             numpy array. If set to False, the loaded image is an float64 array.
             Defaults to True.
-        file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:`mmengine.fileio.FileClient` for details.
-            Defaults to ``dict(backend='disk')``.
+        backend_args (dict): Arguments to instantiate a file backend.
+            See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
+            for details. Defaults to ``dict(backend='local')``
+            Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
     def __init__(
@@ -212,13 +214,12 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         decode_backend: str = 'nifti',
         to_xyz: bool = False,
         to_float32: bool = True,
-        file_client_args: dict = dict(backend='disk')
+        backend_args: dict = dict(backend='local')
     ) -> None:
         self.decode_backend = decode_backend
         self.to_xyz = to_xyz
         self.to_float32 = to_float32
-        self.file_client_args = file_client_args.copy()
-        self.file_client = mmengine.FileClient(**self.file_client_args)
+        self.backend_args = backend_args.copy()
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
@@ -232,7 +233,7 @@ class LoadBiomedicalImageFromFile(BaseTransform):
 
         filename = results['img_path']
 
-        data_bytes = self.file_client.get(filename)
+        data_bytes = fileio.get(filename, self.backend_args)
         img = datafrombytes(data_bytes, backend=self.decode_backend)
 
         if self.to_float32:
@@ -257,7 +258,7 @@ class LoadBiomedicalImageFromFile(BaseTransform):
                     f"decode_backend='{self.decode_backend}', "
                     f'to_xyz={self.to_xyz}, '
                     f'to_float32={self.to_float32}, '
-                    f'file_client_args={self.file_client_args})')
+                    f'backend_args={self.backend_args})')
         return repr_str
 
 
@@ -294,9 +295,10 @@ class LoadBiomedicalAnnotation(BaseTransform):
         to_float32 (bool): Whether to convert the loaded seg map to a float32
             numpy array. If set to False, the loaded image is an float64 array.
             Defaults to True.
-        file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:`mmengine.fileio.FileClient` for details.
-            Defaults to ``dict(backend='disk')``.
+        backend_args (dict): Arguments to instantiate a file backend.
+            See :class:`mmengine.fileio` for details.
+            Defaults to ``dict(backend='local')``.
+            Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
     def __init__(
@@ -304,14 +306,13 @@ class LoadBiomedicalAnnotation(BaseTransform):
         decode_backend: str = 'nifti',
         to_xyz: bool = False,
         to_float32: bool = True,
-        file_client_args: dict = dict(backend='disk')
+        backend_args: dict = dict(backend='local')
     ) -> None:
         super().__init__()
         self.decode_backend = decode_backend
         self.to_xyz = to_xyz
         self.to_float32 = to_float32
-        self.file_client_args = file_client_args.copy()
-        self.file_client = mmengine.FileClient(**self.file_client_args)
+        self.backend_args = backend_args.copy()
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
@@ -322,7 +323,7 @@ class LoadBiomedicalAnnotation(BaseTransform):
         Returns:
             dict: The dict contains loaded image and meta information.
         """
-        data_bytes = self.file_client.get(results['seg_map_path'])
+        data_bytes = fileio.get(results['seg_map_path'], self.backend_args)
         gt_seg_map = datafrombytes(data_bytes, backend=self.decode_backend)
 
         if self.to_float32:
@@ -342,7 +343,7 @@ class LoadBiomedicalAnnotation(BaseTransform):
                     f"decode_backend='{self.decode_backend}', "
                     f'to_xyz={self.to_xyz}, '
                     f'to_float32={self.to_float32}, '
-                    f'file_client_args={self.file_client_args})')
+                    f'backend_args={self.backend_args})')
         return repr_str
 
 
@@ -383,9 +384,10 @@ class LoadBiomedicalData(BaseTransform):
             backend is 'nifti'. Defaults to 'nifti'.
         to_xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
             Defaults to False.
-        file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:`mmengine.fileio.FileClient` for details.
-            Defaults to ``dict(backend='disk')``.
+        backend_args (dict): Arguments to instantiate a file backend.
+            See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
+            for details. Defaults to ``dict(backend='local')``
+            Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
     def __init__(
@@ -393,13 +395,12 @@ class LoadBiomedicalData(BaseTransform):
         with_seg=False,
         decode_backend: str = 'numpy',
         to_xyz: bool = False,
-        file_client_args: dict = dict(backend='disk')
-    ) -> None:
+        backend_args: dict = dict(backend='local')
+    ) -> None:  # noqa
         self.with_seg = with_seg
         self.decode_backend = decode_backend
         self.to_xyz = to_xyz
-        self.file_client_args = file_client_args.copy()
-        self.file_client = mmengine.FileClient(**self.file_client_args)
+        self.backend_args = backend_args.copy()
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
@@ -410,7 +411,7 @@ class LoadBiomedicalData(BaseTransform):
         Returns:
             dict: The dict contains loaded image and meta information.
         """
-        data_bytes = self.file_client.get(results['img_path'])
+        data_bytes = fileio.get(results['img_path'], self.backend_args)
         data = datafrombytes(data_bytes, backend=self.decode_backend)
         # img is 4D data (N, X, Y, Z), N is the number of protocol
         img = data[:-1, :]
@@ -440,5 +441,5 @@ class LoadBiomedicalData(BaseTransform):
                     f'with_seg={self.with_seg}, '
                     f"decode_backend='{self.decode_backend}', "
                     f'to_xyz={self.to_xyz}, '
-                    f'file_client_args={self.file_client_args})')
+                    f'backend_args={self.backend_args})')
         return repr_str
