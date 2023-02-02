@@ -1,4 +1,4 @@
 mmcls>=1.0.0rc0
-mmcv>=2.0.0rc3,<2.1.0
-mmdet>=3.0.0rc4
-mmengine>=0.1.0,<1.0.0
+mmcv>=2.0.0rc4
+-e git+https://github.com/open-mmlab/mmdetection.git@dev-3.x#egg=mmdet
+mmengine>=0.2.0,<1.0.0
