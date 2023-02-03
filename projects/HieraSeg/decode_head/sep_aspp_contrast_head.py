@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from typing import List
+from typing import List, Tuple
 
 import torch
 import torch.nn as nn
@@ -9,7 +9,7 @@ from torch import Tensor
 from mmseg.models.decode_heads.sep_aspp_head import DepthwiseSeparableASPPHead
 from mmseg.models.losses import accuracy
 from mmseg.models.utils import resize
-from mmseg.utils import SampleList
+from mmseg.utils import ConfigType, SampleList
 from mmseg.registry import MODELS
 
 
@@ -62,7 +62,7 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             dim_in=2048, norm_cfg=self.norm_cfg, proj=proj)
         self.register_buffer('step', torch.zeros(1))
 
-    def forward(self, inputs):
+    def forward(self, inputs) -> Tuple[Tensor]:
         """Forward function."""
         self.step += 1
         embedding = self.proj_head(inputs[-1])
@@ -89,7 +89,7 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
         output = self.cls_seg(output)
         return output, embedding
 
-    def predict_by_feat(self, seg_logits: Tensor,
+    def predict_by_feat(self, seg_logits: Tuple[Tensor],
                         batch_img_metas: List[dict]) -> Tensor:
         """Transform a batch of output seg_logits to the input shape.
 
@@ -154,14 +154,33 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
 
         return seg_logit
 
+    def loss(self, inputs: Tuple[Tensor], batch_data_samples: SampleList,
+             train_cfg: ConfigType) -> dict:
+        """Forward function for training.
+
+        Args:
+            inputs (Tuple[Tensor]): List of multi-level img features.
+            batch_data_samples (list[:obj:`SegDataSample`]): The seg
+                data samples. It usually includes information such
+                as `img_metas` or `gt_semantic_seg`.
+            train_cfg (dict): The training config.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components
+        """
+        seg_logits = self.forward(inputs)
+        losses = self.loss_by_feat(seg_logits, batch_data_samples)
+        return losses
+
     def loss_by_feat(
             self,
-            seg_logits: tuple,  # (out, embedding)
+            seg_logits: Tuple[Tensor],  # (out, embedding)
             batch_data_samples: SampleList) -> dict:
         """Compute segmentation loss.
 
         Args:
-            seg_logits (tuple): The output from decode head forward function.
+            seg_logits (Tuple[Tensor]): The output from decode head 
+                forward function.
                 For this decode_head output are (out, embedding): tuple
             batch_data_samples (List[:obj:`SegDataSample`]): The seg
                 data samples. It usually includes information such
@@ -181,7 +200,7 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             mode='bilinear',
             align_corners=self.align_corners)
         if self.sampler is not None:
-            seg_weight = self.sampler.sample(seg_logits, seg_label)
+            seg_weight = self.sampler.sample(seg_logit, seg_label)
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
@@ -191,24 +210,6 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             mode='bilinear',
             align_corners=self.align_corners)
 
-        if not isinstance(self.loss_decode, nn.ModuleList):
-            losses_decode = [self.loss_decode]
-        else:
-            losses_decode = self.loss_decode
-        for loss_decode in losses_decode:
-            if loss_decode.loss_name not in loss:
-                loss[loss_decode.loss_name] = loss_decode(
-                    seg_logits,
-                    seg_label,
-                    weight=seg_weight,
-                    ignore_index=self.ignore_index)
-            else:
-                loss[loss_decode.loss_name] += loss_decode(
-                    seg_logits,
-                    seg_label,
-                    weight=seg_weight,
-                    ignore_index=self.ignore_index)
-
         loss['loss_seg'] = self.loss_decode(
             self.step,
             embedding,
@@ -217,6 +218,5 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             seg_label,
             weight=seg_weight,
             ignore_index=self.ignore_index)
-        loss['acc_seg'] = accuracy(
-            seg_logits, seg_label, ignore_index=self.ignore_index)
+        loss['acc_seg'] = accuracy(seg_logit, seg_label)
         return loss
