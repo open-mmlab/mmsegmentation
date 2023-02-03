@@ -514,7 +514,7 @@ which is not comparable to results of 3D scan in some paper such as [TransUNet](
 
 ### REFUGE
 
-First, registrate in [REFUGE2020Challenge](https://refuge.grand-challenge.org)and download data from [this link](https://refuge.grand-challenge.org/REFUGE2Download)
+First, register in [REFUGE Challenge](https://refuge.grand-challenge.org) and download REFUGE dataset from [this link](https://refuge.grand-challenge.org/REFUGE2Download).
 
 Then, unzip `REFUGE2.zip` and the contents of original datasets include:
 
@@ -550,4 +550,4 @@ The script will make directory structure below:
 │   │   │   ├── test
 ```
 
-There is the dataset structure after running `tools/convert_datasets/refuge.py`, which includes 400 images for training, 400 images for validation and 400 images for testing.
+Finally, it includes 400 images for training, 400 images for validation and 400 images for testing which is the same as REFUGE 2018 dataset.
