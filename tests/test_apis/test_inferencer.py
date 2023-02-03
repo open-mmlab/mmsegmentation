@@ -14,7 +14,7 @@ from mmseg.registry import MODELS
 from mmseg.utils import register_all_modules
 
 
-@MODELS.register_module()
+@MODELS.register_module(name='InferExampleHead')
 class ExampleDecodeHead(BaseDecodeHead):
 
     def __init__(self, num_classes=19, out_channels=None):
@@ -25,7 +25,7 @@ class ExampleDecodeHead(BaseDecodeHead):
         return self.cls_seg(inputs[0])
 
 
-@MODELS.register_module()
+@MODELS.register_module(name='InferExampleBackbone')
 class ExampleBackbone(nn.Module):
 
     def __init__(self):
@@ -39,7 +39,7 @@ class ExampleBackbone(nn.Module):
         return [self.conv(x)]
 
 
-@MODELS.register_module()
+@MODELS.register_module(name='InferExampleModel')
 class ExampleModel(EncoderDecoder):
 
     def __init__(self, **kwargs):
@@ -81,10 +81,10 @@ def test_inferencer():
 
     cfg_dict = dict(
         model=dict(
-            type='ExampleModel',
+            type='InferExampleModel',
             data_preprocessor=dict(type='SegDataPreProcessor'),
-            backbone=dict(type='ExampleBackbone'),
-            decode_head=dict(type='ExampleDecodeHead'),
+            backbone=dict(type='InferExampleBackbone'),
+            decode_head=dict(type='InferExampleHead'),
             test_cfg=dict(mode='whole')),
         visualizer=visualizer,
         test_dataloader=data_loader)
