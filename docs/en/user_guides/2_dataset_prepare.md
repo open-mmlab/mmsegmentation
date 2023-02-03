@@ -514,7 +514,7 @@ which is not comparable to results of 3D scan in some paper such as [TransUNet](
 
 ### REFUGE
 
-First, register in [REFUGE Challenge](https://refuge.grand-challenge.org) and download REFUGE dataset from [this link](https://refuge.grand-challenge.org/REFUGE2Download).
+Register in [REFUGE Challenge](https://refuge.grand-challenge.org) and download [REFUGE dataset](https://refuge.grand-challenge.org/REFUGE2Download).
 
 Then, unzip `REFUGE2.zip` and the contents of original datasets include:
 
