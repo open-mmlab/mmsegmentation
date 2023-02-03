@@ -32,7 +32,7 @@ class NewHook(Hook):
                           batch_idx: int,
                           data_batch: Optional[Sequence[dict]] = None) -> None:
         cur_iter = runner.iter
-        # 当模型被包在 wrapper 里时获取这个模型
+        # acquire this model when it is in a wrapper
         if is_model_wrapper(runner.model):
           model = runner.model.module
         model.hyper_parameter = self.a * cur_iter + self.b
