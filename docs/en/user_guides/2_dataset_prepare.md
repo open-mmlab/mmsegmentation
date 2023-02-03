@@ -145,6 +145,15 @@ mmsegmentation
 │   │   ├── ann_dir
 │   │   │   ├── train
 │   │   │   ├── val
+│   ├── REFUGE
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
 ```
 
 ### Cityscapes
@@ -330,7 +339,7 @@ For Potsdam dataset, please run the following command to download and re-organiz
 python tools/dataset_converters/potsdam.py /path/to/potsdam
 ```
 
-In our default setting, it will generate 3,456 images for training and 2,016 images for validation.
+In our default setting, it will generate 3456 images for training and 2016 images for validation.
 
 ### ISPRS Vaihingen
 
@@ -383,7 +392,7 @@ You may need to follow the following structure for dataset preparation after dow
 python tools/dataset_converters/isaid.py /path/to/iSAID
 ```
 
-In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33,978 images for training and 11,644 images for validation.
+In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
 
 ## LIP(Look Into Person) dataset
 
@@ -436,7 +445,7 @@ cd ./RawData/Training
 
 Then create `train.txt` and `val.txt` to split dataset.
 
-According to TransUNet, the following is the data set division.
+According to TransUnet, the following is the data set division.
 
 train.txt
 
@@ -500,7 +509,45 @@ Then, use this command to convert synapse dataset.
 python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 ```
 
-In our default setting, it will generate 2,211 2D images for training and 1,568 2D images for validation.
-
 Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image,
 which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).
+
+### REFUGE
+
+Register in [REFUGE Challenge](https://refuge.grand-challenge.org) and download [REFUGE dataset](https://refuge.grand-challenge.org/REFUGE2Download).
+
+Then, unzip `REFUGE2.zip` and the contents of original datasets include:
+
+```none
+├── REFUGE2
+│   ├── REFUGE2
+│   │   ├── Annotation-Training400.zip
+│   │   ├── REFUGE-Test400.zip
+│   │   ├── REFUGE-Test-GT.zip
+│   │   ├── REFUGE-Training400.zip
+│   │   ├── REFUGE-Validation400.zip
+│   │   ├── REFUGE-Validation400-GT.zip
+│   ├── __MACOSX
+```
+
+Please run the following command to convert REFUGE dataset:
+
+```shell
+python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
+```
+
+The script will make directory structure below:
+
+```none
+│   ├── REFUGE
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+```
+
+It includes 400 images for training, 400 images for validation and 400 images for testing which is the same as REFUGE 2018 dataset.
