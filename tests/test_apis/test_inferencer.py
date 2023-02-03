@@ -104,8 +104,7 @@ def test_inferencer():
 
     imgs = [img, img]
     infer(imgs)
-    results = infer(
-        imgs, print_result=True, out_dir=tempfile.gettempdir(), draw_pred=True)
+    results = infer(imgs, out_dir=tempfile.gettempdir(), draw_pred=True)
 
     # test results
     assert 'predictions' in results
