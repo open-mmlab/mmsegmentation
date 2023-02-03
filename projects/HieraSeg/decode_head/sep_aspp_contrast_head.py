@@ -9,8 +9,8 @@ from torch import Tensor
 from mmseg.models.decode_heads.sep_aspp_head import DepthwiseSeparableASPPHead
 from mmseg.models.losses import accuracy
 from mmseg.models.utils import resize
-from mmseg.utils import ConfigType, SampleList
 from mmseg.registry import MODELS
+from mmseg.utils import ConfigType, SampleList
 
 
 class ProjectionHead(nn.Module):
@@ -179,7 +179,7 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
         """Compute segmentation loss.
 
         Args:
-            seg_logits (Tuple[Tensor]): The output from decode head 
+            seg_logits (Tuple[Tensor]): The output from decode head
                 forward function.
                 For this decode_head output are (out, embedding): tuple
             batch_data_samples (List[:obj:`SegDataSample`]): The seg
