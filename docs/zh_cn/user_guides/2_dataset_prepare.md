@@ -416,11 +416,7 @@ python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 
 ### REFUGE
 
-首先，去[REFUGE2020挑战赛官网](https://refuge.grand-challenge.org)注册后到指定[链接](https://refuge.grand-challenge.org/REFUGE2Download)
-下载数据,
-数据包含2018年的训练集、验证集和测试集。
-
-随后解压 `REFUGE2.zip` 然后得到如下所示的原始数据目录.
+在[官网](https://refuge.grand-challenge.org)注册后, 下载 [REFUGE 数据集](https://refuge.grand-challenge.org/REFUGE2Download)  `REFUGE2.zip` , 解压后的内容如下:
 
 ```none
 ├── REFUGE2
@@ -434,8 +430,7 @@ python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 │   ├── __MACOSX
 ```
 
-为了将 REFUGE 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
-
+运行如下命令，就可以按照 REFUGE2018 挑战赛划分数据集的标准将数据集切分成训练集、验证集、测试集:
 ```shell
 python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
 ```
@@ -454,4 +449,4 @@ python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/
 │   │   │   ├── test
 ```
 
-使用我们默认的配置， 将生成 400 张图片的训练集， 400 张图片的验证集和 400 张图片的测试集.
+其中包括 400 张图片的训练集, 400 张图片的验证集和 400 张图片的测试集.

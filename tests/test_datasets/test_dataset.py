@@ -2,7 +2,6 @@
 import os
 import os.path as osp
 import tempfile
-from unittest.mock import MagicMock
 
 import pytest
 
