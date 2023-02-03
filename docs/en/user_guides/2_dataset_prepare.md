@@ -550,4 +550,4 @@ The script will make directory structure below:
 │   │   │   ├── test
 ```
 
-Finally, it includes 400 images for training, 400 images for validation and 400 images for testing which is the same as REFUGE 2018 dataset.
+It includes 400 images for training, 400 images for validation and 400 images for testing which is the same as REFUGE 2018 dataset.
