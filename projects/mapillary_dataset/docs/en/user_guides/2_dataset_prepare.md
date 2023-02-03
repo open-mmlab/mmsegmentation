@@ -78,8 +78,8 @@ mmsegmentation
   # --nproc optional, default 1, whether use multi-progress
   # --version optional, 'v1.2', 'v2.0','all', default 'all', choose convert which version labels
   # run this command at 'mmsegmentation/projects/Mapillary_dataset' folder
-  cd mmsegmentation/projects/mapillary_dataset
-  python tools/dataset_converters/mapillary.py ../../data/mapillary --nproc 8 --version all
+  cd projects/mapillary_dataset
+  python tools/dataset_converters/mapillary_rgb2mask_fast.py ../../data/mapillary --nproc 8 --version all
   ```
   After then, you will get this structure
   ```none

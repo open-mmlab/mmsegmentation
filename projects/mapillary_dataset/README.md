@@ -54,6 +54,13 @@ Preparing `Mapillary Vistas Dataset` dataset following [Mapillary Vistas Dataset
 bash tools/dist_train.sh projects/mapillary_dataset/configs/deeplabv3plus_r101-d8_4xb2-240k_mapillay-512x1024.py 4
 ```
 
+### View datasets img index and palette
+
+```bash
+cd projects/mapillary_dataset/tools/dataset_converters
+python mapillary_show_lables_index_and_palette.py
+```
+
 ## Checklist
 
 - [x] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
