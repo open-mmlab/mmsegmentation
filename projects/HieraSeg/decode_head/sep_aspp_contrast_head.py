@@ -9,6 +9,7 @@ from torch import Tensor
 from mmseg.models.decode_heads.sep_aspp_head import DepthwiseSeparableASPPHead
 from mmseg.models.losses import accuracy
 from mmseg.models.utils import resize
+from mmseg.utils import SampleList
 from mmseg.registry import MODELS
 
 
@@ -100,12 +101,13 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
         Returns:
             Tensor: Outputs segmentation logits map.
         """
-        # HieraSeg decode_head output is: (out, embedding) :tuple,
+        # HieraSeg decode_head output is: (out, embedding): tuple
         # only need 'out' here.
         if isinstance(seg_logits, tuple):
             seg_logit = seg_logits[0]
 
-        if seg_logit.size(1) == 26:
+        if seg_logit.size(1) == 26:  # For cityscapes dataset，19 + 7
+            hiera_num_classes = 7
             seg_logit[:, 0:2] += seg_logit[:, -7]
             seg_logit[:, 2:5] += seg_logit[:, -6]
             seg_logit[:, 5:8] += seg_logit[:, -5]
@@ -113,14 +115,18 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             seg_logit[:, 10:11] += seg_logit[:, -3]
             seg_logit[:, 11:13] += seg_logit[:, -2]
             seg_logit[:, 13:19] += seg_logit[:, -1]
-        elif seg_logit.size(1) == 12:
+
+        elif seg_logit.size(1) == 12:  # For Pascal_person dataset, 7 + 5
+            hiera_num_classes = 5
             seg_logit[:, 0:1] = seg_logit[:, 0:1] + \
                 seg_logit[:, 7] + seg_logit[:, 10]
             seg_logit[:, 1:5] = seg_logit[:, 1:5] + \
                 seg_logit[:, 8] + seg_logit[:, 11]
             seg_logit[:, 5:7] = seg_logit[:, 5:7] + \
                 seg_logit[:, 9] + seg_logit[:, 11]
-        elif seg_logit.size(1) == 25:
+
+        elif seg_logit.size(1) == 25:  # For Pascal_person dataset, 7 + 5
+            hiera_num_classes = 5
             seg_logit[:, 0:1] = seg_logit[:, 0:1] + \
                 seg_logit[:, 20] + seg_logit[:, 23]
             seg_logit[:, 1:8] = seg_logit[:, 1:8] + \
@@ -136,8 +142,10 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             seg_logit[:, 16:20] = seg_logit[:, 16:20] + \
                 seg_logit[:, 22] + seg_logit[:, 24]
 
-        # seg_logit = seg_logit[:,:-self.test_cfg['hiera_num_classes']]
-        seg_logit = seg_logit[:, :-7]
+        # elif seg_logit.size(1) == 144 # For Mapillary dataset, 124+16+4
+        # unofficial repository not release mapillary until 2023/2/2
+
+        seg_logit = seg_logit[:, :-hiera_num_classes]
         seg_logit = resize(
             input=seg_logit,
             size=batch_img_metas[0]['img_shape'],
@@ -146,10 +154,26 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
 
         return seg_logit
 
-    def losses(self, results, seg_label):
-        """Compute segmentation loss."""
-        seg_logit_before = results[0]
-        embedding = results[1]
+    def loss_by_feat(
+            self,
+            seg_logits: tuple,  # (out, embedding)
+            batch_data_samples: SampleList) -> dict:
+        """Compute segmentation loss.
+
+        Args:
+            seg_logits (tuple): The output from decode head forward function.
+                For this decode_head output are (out, embedding): tuple
+            batch_data_samples (List[:obj:`SegDataSample`]): The seg
+                data samples. It usually includes information such
+                as `metainfo` and `gt_sem_seg`.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components
+        """
+        seg_logit_before = seg_logits[0]
+        embedding = seg_logits[1]
+        seg_label = self._stack_batch_gt(batch_data_samples)
+
         loss = dict()
         seg_logit = resize(
             input=seg_logit_before,
@@ -157,7 +181,7 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             mode='bilinear',
             align_corners=self.align_corners)
         if self.sampler is not None:
-            seg_weight = self.sampler.sample(seg_logit, seg_label)
+            seg_weight = self.sampler.sample(seg_logits, seg_label)
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
@@ -166,6 +190,25 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             scale_factor=0.5,
             mode='bilinear',
             align_corners=self.align_corners)
+
+        if not isinstance(self.loss_decode, nn.ModuleList):
+            losses_decode = [self.loss_decode]
+        else:
+            losses_decode = self.loss_decode
+        for loss_decode in losses_decode:
+            if loss_decode.loss_name not in loss:
+                loss[loss_decode.loss_name] = loss_decode(
+                    seg_logits,
+                    seg_label,
+                    weight=seg_weight,
+                    ignore_index=self.ignore_index)
+            else:
+                loss[loss_decode.loss_name] += loss_decode(
+                    seg_logits,
+                    seg_label,
+                    weight=seg_weight,
+                    ignore_index=self.ignore_index)
+
         loss['loss_seg'] = self.loss_decode(
             self.step,
             embedding,
@@ -174,5 +217,6 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             seg_label,
             weight=seg_weight,
             ignore_index=self.ignore_index)
-        loss['acc_seg'] = accuracy(seg_logit, seg_label)
+        loss['acc_seg'] = accuracy(
+            seg_logits, seg_label, ignore_index=self.ignore_index)
         return loss

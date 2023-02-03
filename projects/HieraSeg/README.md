@@ -6,7 +6,7 @@ Support `Deep Hierarchical Semantic Segmentation` interface on `cityscapes`
 
 Author: AI-Tianlong
 
-This project implements `HieraSeg` inference in the `cityscapes` dataset
+This project implements `HieraSeg` inference on `cityscapes` dataset
 
 ## Usage
 
@@ -14,17 +14,17 @@ This project implements `HieraSeg` inference in the `cityscapes` dataset
 
 - Python 3.8
 - PyTorch 1.6 or higher
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc3
+- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 - mmcv v2.0.0rc3
-- mmengine
+- mmengine >=0.4.0
 
 ### Dataset preparing
 
-preparing `cityscapes` dataset like this [structure](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#prepare-datasets)
+Preparing `cityscapes` dataset following this [Dataset Preparing Guide](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#prepare-datasets)
 
 ### Testing commands
 
-please put [`hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth`](https://download.openmmlab.com/mmsegmentation/v0.5/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth) to `mmsegmentation/checkpoints`
+Please put [`hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth`](https://download.openmmlab.com/mmsegmentation/v0.5/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth) to `mmsegmentation/checkpoints`
 
 #### Multi-GPUs Test
 
@@ -36,7 +36,7 @@ bash tools/dist_test.sh [configs] [model weights] [number of gpu]  --tta
 #### Example
 
 ```shell
-bash tools/dist_test.sh projects/HieraSeg_project/configs/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80l_cityscapes-512x1024.py checkpoints/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth 2 --tta
+bash tools/dist_test.sh projects/HieraSeg/configs/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80l_cityscapes-512x1024.py checkpoints/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth 2 --tta
 ```
 
 ## Results
