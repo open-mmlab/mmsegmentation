@@ -50,6 +50,13 @@ class DepthwiseSeparableASPPHead(ASPPHead):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
+        self.bottleneck = DepthwiseSeparableConvModule(
+            (len(self.dilations) + 1) * self.channels,
+            self.channels,
+            3,
+            padding=1,
+            norm_cfg=self.norm_cfg,
+            act_cfg=self.act_cfg)
         if c1_in_channels > 0:
             self.c1_bottleneck = ConvModule(
                 c1_in_channels,
