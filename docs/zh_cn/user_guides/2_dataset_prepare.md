@@ -431,6 +431,7 @@ python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 ```
 
 运行如下命令，就可以按照 REFUGE2018 挑战赛划分数据集的标准将数据集切分成训练集、验证集、测试集:
+
 ```shell
 python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
 ```
