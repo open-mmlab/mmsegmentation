@@ -170,7 +170,7 @@ def main():
     RGB_labels_v2_0_path = []
     print('Scanning labels path....')
     for label_path in scandir(dataset_path, suffix='.png', recursive=True):
-        if 'labels' in label_path:
+        if 'labels' in label_path and 'labels_mask' not in label_path:
             rgb_label_path = osp.join(dataset_path, label_path)
             RGB_labels_path.append(rgb_label_path)
             if 'v1.2' in label_path:
