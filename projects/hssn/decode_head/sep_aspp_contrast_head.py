@@ -10,7 +10,7 @@ from mmseg.models.decode_heads.sep_aspp_head import DepthwiseSeparableASPPHead
 from mmseg.models.losses import accuracy
 from mmseg.models.utils import resize
 from mmseg.registry import MODELS
-from mmseg.utils import ConfigType, SampleList
+from mmseg.utils import SampleList
 
 
 class ProjectionHead(nn.Module):
@@ -64,29 +64,11 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
 
     def forward(self, inputs) -> Tuple[Tensor]:
         """Forward function."""
+        output = super().forward(inputs)
+
         self.step += 1
         embedding = self.proj_head(inputs[-1])
-        x = self._transform_inputs(inputs)
-        aspp_outs = [
-            resize(
-                self.image_pool(x),
-                size=x.size()[2:],
-                mode='bilinear',
-                align_corners=self.align_corners)
-        ]
-        aspp_outs.extend(self.aspp_modules(x))
-        aspp_outs = torch.cat(aspp_outs, dim=1)
-        output = self.bottleneck(aspp_outs)
-        if self.c1_bottleneck is not None:
-            c1_output = self.c1_bottleneck(inputs[0])
-            output = resize(
-                input=output,
-                size=c1_output.shape[2:],
-                mode='bilinear',
-                align_corners=self.align_corners)
-            output = torch.cat([output, c1_output], dim=1)
-        output = self.sep_bottleneck(output)
-        output = self.cls_seg(output)
+
         return output, embedding
 
     def predict_by_feat(self, seg_logits: Tuple[Tensor],
@@ -125,7 +107,7 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
             seg_logit[:, 5:7] = seg_logit[:, 5:7] + \
                 seg_logit[:, 9] + seg_logit[:, 11]
 
-        elif seg_logit.size(1) == 25:  # For Pascal_person dataset, 7 + 5
+        elif seg_logit.size(1) == 25:  # For LIP dataset, 20 + 5
             hiera_num_classes = 5
             seg_logit[:, 0:1] = seg_logit[:, 0:1] + \
                 seg_logit[:, 20] + seg_logit[:, 23]
@@ -143,7 +125,7 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
                 seg_logit[:, 22] + seg_logit[:, 24]
 
         # elif seg_logit.size(1) == 144 # For Mapillary dataset, 124+16+4
-        # unofficial repository not release mapillary until 2023/2/2
+        # unofficial repository not release mapillary until 2023/2/6
 
         seg_logit = seg_logit[:, :-hiera_num_classes]
         seg_logit = resize(
@@ -154,29 +136,11 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
 
         return seg_logit
 
-    def loss(self, inputs: Tuple[Tensor], batch_data_samples: SampleList,
-             train_cfg: ConfigType) -> dict:
-        """Forward function for training.
-
-        Args:
-            inputs (Tuple[Tensor]): List of multi-level img features.
-            batch_data_samples (list[:obj:`SegDataSample`]): The seg
-                data samples. It usually includes information such
-                as `img_metas` or `gt_semantic_seg`.
-            train_cfg (dict): The training config.
-
-        Returns:
-            dict[str, Tensor]: a dictionary of loss components
-        """
-        seg_logits = self.forward(inputs)
-        losses = self.loss_by_feat(seg_logits, batch_data_samples)
-        return losses
-
     def loss_by_feat(
             self,
             seg_logits: Tuple[Tensor],  # (out, embedding)
             batch_data_samples: SampleList) -> dict:
-        """Compute segmentation loss.
+        """Compute segmentation loss. Will fix in future.
 
         Args:
             seg_logits (Tuple[Tensor]): The output from decode head

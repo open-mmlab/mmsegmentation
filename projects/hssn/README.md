@@ -1,12 +1,10 @@
-# HieraSeg
-
-Support `Deep Hierarchical Semantic Segmentation` interface on `cityscapes`
+# HSSN
 
 ## Description
 
 Author: AI-Tianlong
 
-This project implements `HieraSeg` inference on `cityscapes` dataset
+This project implements `Deep Hierarchical Semantic Segmentation`  inference on `cityscapes` dataset
 
 ## Usage
 
@@ -15,7 +13,7 @@ This project implements `HieraSeg` inference on `cityscapes` dataset
 - Python 3.8
 - PyTorch 1.6 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
-- mmcv v2.0.0rc3
+- mmcv v2.0.0rc4
 - mmengine >=0.4.0
 
 ### Dataset preparing
@@ -36,7 +34,7 @@ bash tools/dist_test.sh [configs] [model weights] [number of gpu]  --tta
 #### Example
 
 ```shell
-bash tools/dist_test.sh projects/HieraSeg/configs/hieraseg/hieraseg_deeplabv3plus_r101-d8_4xb2-80l_cityscapes-512x1024.py checkpoints/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth 2 --tta
+bash tools/dist_test.sh projects/hssn/configs/hssn/hieraseg_deeplabv3plus_r101-d8_4xb2-80l_cityscapes-512x1024.py checkpoints/hieraseg_deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024_20230112_125023-bc59a3d1.pth 2 --tta
 ```
 
 ## Results
