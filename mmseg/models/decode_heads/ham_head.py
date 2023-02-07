@@ -10,43 +10,46 @@ from ..builder import HEADS
 from .decode_head import BaseDecodeHead
 
 
-class _MatrixDecomposition2DBase(nn.Module):
+class Matrix_Decomposition_2D_Base(nn.Module):
+    """Base class of 2D Matrix Decomposition.
+
+    Args:
+        MD_S (int): The number of spatial coefficient in
+            Matrix Decomposition, it may be used for calculation
+            of the number of latent dimension D in Matrix
+            Decomposition. Defaults: 1.
+        MD_R (int): The number of latent dimension R in
+            Matrix Decomposition. Defaults: 64.
+        train_steps (int): The number of iteration steps in
+            Multiplicative Update (MU) rule to solve Non-negative
+            Matrix Factorization (NMF) in training. Defaults: 6.
+        eval_steps (int): The number of iteration steps in
+            Multiplicative Update (MU) rule to solve Non-negative
+            Matrix Factorization (NMF) in evaluation. Defaults: 7.
+        inv_t (int): Inverted multiple number to make coefficient
+            smaller in softmax. Defaults: 100.
+        rand_init (bool): Whether to initialize randomly.
+            Defaults: True.
+    """
 
     def __init__(self,
-                 spatial=True,
                  MD_S=1,
-                 MD_D=512,
                  MD_R=64,
                  train_steps=6,
                  eval_steps=7,
                  inv_t=100,
-                 eta=0.9,
                  rand_init=True):
         super().__init__()
 
-        self.spatial = spatial
-
         self.S = MD_S
-        self.D = MD_D
         self.R = MD_R
 
         self.train_steps = train_steps
         self.eval_steps = eval_steps
 
         self.inv_t = inv_t
-        self.eta = eta
 
         self.rand_init = rand_init
-
-        print('spatial', self.spatial)
-        print('S', self.S)
-        print('D', self.D)
-        print('R', self.R)
-        print('train_steps', self.train_steps)
-        print('eval_steps', self.eval_steps)
-        print('inv_t', self.inv_t)
-        print('eta', self.eta)
-        print('rand_init', self.rand_init)
 
     def _build_bases(self, B, S, D, R, cuda=False):
         raise NotImplementedError
@@ -54,7 +57,6 @@ class _MatrixDecomposition2DBase(nn.Module):
     def local_step(self, x, bases, coef):
         raise NotImplementedError
 
-    # @torch.no_grad()
     def local_inference(self, x, bases):
         # (B * S, D, N)^T @ (B * S, D, R) -> (B * S, N, R)
         coef = torch.bmm(x.transpose(1, 2), bases)
@@ -70,18 +72,14 @@ class _MatrixDecomposition2DBase(nn.Module):
         raise NotImplementedError
 
     def forward(self, x, return_bases=False):
+        """Forward Function."""
         B, C, H, W = x.shape
 
         # (B, C, H, W) -> (B * S, D, N)
-        if self.spatial:
-            D = C // self.S
-            N = H * W
-            x = x.view(B * self.S, D, N)
-        else:
-            D = H * W
-            N = C // self.S
-            x = x.view(B * self.S, N, D).transpose(1, 2)
-        cuda = x.device == torch.device('cuda')
+        D = C // self.S
+        N = H * W
+        x = x.view(B * self.S, D, N)
+        cuda = 'cuda' in str(x.device)
         if not self.rand_init and not hasattr(self, 'bases'):
             bases = self._build_bases(1, self.S, D, self.R, cuda=cuda)
             self.register_buffer('bases', bases)
@@ -101,18 +99,16 @@ class _MatrixDecomposition2DBase(nn.Module):
         x = torch.bmm(bases, coef.transpose(1, 2))
 
         # (B * S, D, N) -> (B, C, H, W)
-        if self.spatial:
-            x = x.view(B, C, H, W)
-        else:
-            x = x.transpose(1, 2).view(B, C, H, W)
-
-        # (B * H, D, R) -> (B, H, N, D)
-        bases = bases.view(B, self.S, D, self.R)
+        x = x.view(B, C, H, W)
 
         return x
 
 
-class NMF2D(_MatrixDecomposition2DBase):
+class NMF2D(Matrix_Decomposition_2D_Base):
+    """Non-negative Matrix Factorization (NMF) module.
+
+    It is inherited from ``Matrix_Decomposition_2D_Base`` module.
+    """
 
     def __init__(self, args=dict()):
         super().__init__(**args)
@@ -120,6 +116,7 @@ class NMF2D(_MatrixDecomposition2DBase):
         self.inv_t = 1
 
     def _build_bases(self, B, S, D, R, cuda=False):
+        """Build bases in initialization."""
         if cuda:
             bases = torch.rand((B * S, D, R)).cuda()
         else:
@@ -129,8 +126,8 @@ class NMF2D(_MatrixDecomposition2DBase):
 
         return bases
 
-    # @torch.no_grad()
     def local_step(self, x, bases, coef):
+        """Local step in iteration to renew bases and coefficient."""
         # (B * S, D, N)^T @ (B * S, D, R) -> (B * S, N, R)
         numerator = torch.bmm(x.transpose(1, 2), bases)
         # (B * S, N, R) @ [(B * S, D, R)^T @ (B * S, D, R)] -> (B * S, N, R)
@@ -148,6 +145,7 @@ class NMF2D(_MatrixDecomposition2DBase):
         return bases, coef
 
     def compute_coef(self, x, bases, coef):
+        """Compute coefficient."""
         # (B * S, D, N)^T @ (B * S, D, R) -> (B * S, N, R)
         numerator = torch.bmm(x.transpose(1, 2), bases)
         # (B * S, N, R) @ (B * S, D, R)^T @ (B * S, D, R) -> (B * S, N, R)
@@ -159,6 +157,14 @@ class NMF2D(_MatrixDecomposition2DBase):
 
 
 class Hamburger(nn.Module):
+    """Hamburger Module. It consists of one slice of "ham" (matrix
+    decomposition) and two slices of "bread" (linear transformation).
+
+    Args:
+        ham_channels (int): Input and output channels of feature.
+        ham_kwargs (dict): Config of matrix decomposition module.
+        norm_cfg (dict | None): Config of norm layers.
+    """
 
     def __init__(self,
                  ham_channels=512,
@@ -202,9 +208,6 @@ class LightHamHead(BaseDecodeHead):
         ham_channels (int): input channels for Hamburger.
             Defaults: 512.
         ham_kwargs (int): kwagrs for Ham. Defaults: dict().
-
-    TODO:
-        Add other MD models (Ham).
     """
 
     def __init__(self, ham_channels=512, ham_kwargs=dict(), **kwargs):
@@ -243,10 +246,12 @@ class LightHamHead(BaseDecodeHead):
         ]
 
         inputs = torch.cat(inputs, dim=1)
+        # apply a conv block to squeeze feature map
         x = self.squeeze(inputs)
-
+        # apply hamburger module
         x = self.hamburger(x)
 
+        # apply a conv block to align feature map
         output = self.align(x)
         output = self.cls_seg(output)
         return output

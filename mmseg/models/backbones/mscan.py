@@ -5,7 +5,7 @@ import warnings
 
 import torch
 import torch.nn as nn
-from mmcv.cnn import build_norm_layer
+from mmcv.cnn import build_activation_layer, build_norm_layer
 from mmcv.cnn.bricks import DropPath
 from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
                                         trunc_normal_init)
@@ -15,23 +15,50 @@ from mmseg.models.builder import BACKBONES
 
 
 class Mlp(BaseModule):
+    """Multi Layer Perceptron (MLP) Module.
+
+    Args:
+    in_features (int): The dimension of input features.
+    hidden_features (int): The dimension of hidden features.
+        Defaults: None.
+    out_features (int): The dimension of output features.
+        Defaults: None.
+    act_cfg (dict | None): Config dict for activation layer in block.
+        Default: dict(type='GELU').
+    drop (float): The number of dropout rate in MLP block.
+        Defaults: 0.0.
+    """
 
     def __init__(self,
                  in_features,
                  hidden_features=None,
                  out_features=None,
-                 act_layer=nn.GELU,
+                 act_cfg=dict(type='GELU'),
                  drop=0.):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = nn.Conv2d(in_features, hidden_features, 1)
-        self.dwconv = DWConv(hidden_features)
-        self.act = act_layer()
+        self.dwconv = nn.Conv2d(
+            hidden_features,
+            hidden_features,
+            3,
+            1,
+            1,
+            bias=True,
+            groups=hidden_features)
+        self.act = build_activation_layer(act_cfg)
         self.fc2 = nn.Conv2d(hidden_features, out_features, 1)
         self.drop = nn.Dropout(drop)
 
     def forward(self, x):
+        """
+        Args:
+            x (Tensor): Has shape (B, C, H, W).
+
+        Returns:
+            x (Tensor): Has shape (B, C, H, W).
+        """
         x = self.fc1(x)
 
         x = self.dwconv(x)
@@ -44,10 +71,21 @@ class Mlp(BaseModule):
 
 
 class StemConv(BaseModule):
+    """Stem Block at the beginning of Semantic Branch.
+
+    Args:
+    in_channels (int): The dimension of input channels.
+    out_channels (int): The dimension of output channels.
+    act_cfg (dict | None): Config dict for activation layer in block.
+        Default: dict(type='GELU').
+    norm_cfg (dict, optional): Config dict for normalization layer.
+        Defaults: dict(type='SyncBN', requires_grad=True).
+    """
 
     def __init__(self,
                  in_channels,
                  out_channels,
+                 act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super(StemConv, self).__init__()
 
@@ -59,7 +97,7 @@ class StemConv(BaseModule):
                 stride=(2, 2),
                 padding=(1, 1)),
             build_norm_layer(norm_cfg, out_channels // 2)[1],
-            nn.GELU(),
+            build_activation_layer(act_cfg),
             nn.Conv2d(
                 out_channels // 2,
                 out_channels,
@@ -70,6 +108,17 @@ class StemConv(BaseModule):
         )
 
     def forward(self, x):
+        """
+        Args:
+            x (Tensor): Has shape (B, C, H, W).
+                In most case, C is `in_channels`.
+
+        Returns:
+            tuple: Contains merged results and its spatial shape.
+                - x (Tensor): Has shape (B, out_h * out_w, embed_dims)
+                - H (int): Height of x.
+                - W (int): Width of x.
+        """
         x = self.proj(x)
         _, _, H, W = x.size()
         x = x.flatten(2).transpose(1, 2)
@@ -77,55 +126,62 @@ class StemConv(BaseModule):
 
 
 class AttentionModule(BaseModule):
+    """Attention Module.
+
+    Args:
+        channels (int): The dimension of channels.
+        kernel_sizes (List[int | Tuple]): The size of attention
+            kernel. Defaults: [5, (1, 7), (1, 11), (1, 21)].
+        kernel_paddings (List[int | Tuple]): The number of
+            corresponding padding value in attention module.
+            Defaults: [2, (0, 3), (0, 5), (0, 10)].
+    """
 
     def __init__(self,
-                 dim,
+                 channels,
                  kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
                  kernel_paddings=[2, (0, 3), (0, 5), (0, 10)]):
         super().__init__()
-        self.conv0 = nn.Conv2d(
-            dim,
-            dim,
-            kernel_sizes[0][0],
-            padding=kernel_paddings[0],
-            groups=dim)
-
-        self.conv0_1 = nn.Conv2d(
-            dim,
-            dim, (kernel_sizes[1][0], kernel_sizes[1][1]),
-            padding=kernel_paddings[1],
-            groups=dim)
-        self.conv0_2 = nn.Conv2d(
-            dim,
-            dim, (kernel_sizes[1][1], kernel_sizes[1][0]),
-            padding=kernel_paddings[1][::-1],
-            groups=dim)
-
-        self.conv1_1 = nn.Conv2d(
-            dim,
-            dim, (kernel_sizes[2][0], kernel_sizes[2][1]),
-            padding=kernel_paddings[2],
-            groups=dim)
-        self.conv1_2 = nn.Conv2d(
-            dim,
-            dim, (kernel_sizes[2][1], kernel_sizes[2][0]),
-            padding=kernel_paddings[2][::-1],
-            groups=dim)
-
-        self.conv2_1 = nn.Conv2d(
-            dim,
-            dim, (kernel_sizes[3][0], kernel_sizes[3][1]),
-            padding=kernel_paddings[3],
-            groups=dim)
-        self.conv2_2 = nn.Conv2d(
-            dim,
-            dim, (kernel_sizes[3][1], kernel_sizes[3][0]),
-            padding=kernel_paddings[3][::-1],
-            groups=dim)
-
-        self.conv3 = nn.Conv2d(dim, dim, 1)
+        for index_a, kernel_size in enumerate(kernel_sizes):
+            if index_a == 0:
+                conv_name = f'conv{index_a}'
+                self.add_module(
+                    conv_name,
+                    nn.Conv2d(
+                        channels,
+                        channels,
+                        kernel_sizes[index_a][index_a],
+                        padding=kernel_paddings[index_a],
+                        groups=channels))
+            else:
+                for index_b, k in enumerate(kernel_size):
+                    conv_name = f'conv{index_a-1}_{index_b+1}'
+                    if index_b == 0:
+                        kernel_size = (kernel_sizes[index_a][0],
+                                       kernel_sizes[index_a][1])
+                        padding = kernel_paddings[index_a]
+                    else:
+                        kernel_size = (kernel_sizes[index_a][1],
+                                       kernel_sizes[index_a][0])
+                        padding = kernel_paddings[index_a][::-1]
+                    self.add_module(
+                        conv_name,
+                        nn.Conv2d(
+                            channels,
+                            channels,
+                            kernel_size,
+                            padding=padding,
+                            groups=channels))
+        self.conv3 = nn.Conv2d(channels, channels, 1)
 
     def forward(self, x):
+        """
+        Args:
+            x (Tensor): Has shape (B, C, H, W).
+
+        Returns:
+            x (Tensor): Has shape (B, C, H, W).
+        """
         u = x.clone()
 
         attn = self.conv0(x)
@@ -143,24 +199,46 @@ class AttentionModule(BaseModule):
 
         attn = self.conv3(attn)
 
-        return attn * u
+        x = attn * u
+
+        return x
 
 
 class SpatialAttention(BaseModule):
+    """Spatial Attention Module.
+
+    Args:
+        in_channels (int): The dimension of channels.
+        attention_kernel_sizes (List[int | Tuple]): The size of attention
+            kernel. Defaults: [5, (1, 7), (1, 11), (1, 21)].
+        attention_kernel_paddings (List[int | Tuple]): The number of
+            corresponding padding value in attention module.
+            Defaults: [2, (0, 3), (0, 5), (0, 10)].
+        act_cfg (dict | None): Config dict for activation layer in block.
+            Default: dict(type='GELU').
+    """
 
     def __init__(self,
-                 d_model,
+                 in_channels,
                  attention_kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
-                 attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)]):
+                 attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
+                 act_cfg=dict(type='GELU')):
         super().__init__()
-        self.proj_1 = nn.Conv2d(d_model, d_model, 1)
-        self.activation = nn.GELU()
-        self.spatial_gating_unit = AttentionModule(d_model,
+        self.proj_1 = nn.Conv2d(in_channels, in_channels, 1)
+        self.activation = build_activation_layer(act_cfg)
+        self.spatial_gating_unit = AttentionModule(in_channels,
                                                    attention_kernel_sizes,
                                                    attention_kernel_paddings)
-        self.proj_2 = nn.Conv2d(d_model, d_model, 1)
+        self.proj_2 = nn.Conv2d(in_channels, in_channels, 1)
 
     def forward(self, x):
+        """
+        Args:
+            x (Tensor): Has shape (B, C, H, W).
+
+        Returns:
+            x (Tensor): Has shape (B, C, H, W).
+        """
         shorcut = x.clone()
         x = self.proj_1(x)
         x = self.activation(x)
@@ -171,36 +249,74 @@ class SpatialAttention(BaseModule):
 
 
 class Block(BaseModule):
+    """Basic Multi-Scale Convolutional Attention Block. It leverage the large-
+    kernel attention (LKA) mechanism to build both channel and spatial
+    attention. In each branch, it uses two depth-wise strip convolutions to
+    approximate standard depth-wise convolutions with large kernels. The kernel
+    size for each branch is set to 7, 11, and 21, respectively.
+
+    Args:
+        channels (int): The dimension of channels.
+        attention_kernel_sizes (List[int | Tuple]): The size of attention
+            kernel. Defaults: [5, (1, 7), (1, 11), (1, 21)].
+        attention_kernel_paddings (List[int | Tuple]): The number of
+            corresponding padding value in attention module.
+            Defaults: [2, (0, 3), (0, 5), (0, 10)].
+        mlp_ratio (float): The ratio of multiple input dimension to
+            calculate hidden feature in MLP layer. Defaults: 4.0.
+        drop (float): The number of dropout rate in MLP block.
+            Defaults: 0.0.
+        drop_path (float): The ratio of drop paths.
+            Defaults: 0.0.
+        act_cfg (dict | None): Config dict for activation layer in block.
+            Default: dict(type='GELU').
+        norm_cfg (dict, optional): Config dict for normalization layer.
+            Defaults: dict(type='SyncBN', requires_grad=True).
+    """
 
     def __init__(self,
-                 dim,
+                 channels,
                  attention_kernel_sizes=[5, (1, 7), (1, 11), (1, 21)],
                  attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
                  mlp_ratio=4.,
                  drop=0.,
                  drop_path=0.,
-                 act_layer=nn.GELU,
+                 act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super().__init__()
-        self.norm1 = build_norm_layer(norm_cfg, dim)[1]
-        self.attn = SpatialAttention(dim, attention_kernel_sizes,
-                                     attention_kernel_paddings)
+        self.norm1 = build_norm_layer(norm_cfg, channels)[1]
+        self.attn = SpatialAttention(channels, attention_kernel_sizes,
+                                     attention_kernel_paddings, act_cfg)
         self.drop_path = DropPath(
             drop_path) if drop_path > 0. else nn.Identity()
-        self.norm2 = build_norm_layer(norm_cfg, dim)[1]
-        mlp_hidden_dim = int(dim * mlp_ratio)
+        self.norm2 = build_norm_layer(norm_cfg, channels)[1]
+        mlp_hidden_channels = int(channels * mlp_ratio)
         self.mlp = Mlp(
-            in_features=dim,
-            hidden_features=mlp_hidden_dim,
-            act_layer=act_layer,
+            in_features=channels,
+            hidden_features=mlp_hidden_channels,
+            act_cfg=act_cfg,
             drop=drop)
         layer_scale_init_value = 1e-2
         self.layer_scale_1 = nn.Parameter(
-            layer_scale_init_value * torch.ones((dim)), requires_grad=True)
+            layer_scale_init_value * torch.ones((channels)),
+            requires_grad=True)
         self.layer_scale_2 = nn.Parameter(
-            layer_scale_init_value * torch.ones((dim)), requires_grad=True)
+            layer_scale_init_value * torch.ones((channels)),
+            requires_grad=True)
 
     def forward(self, x, H, W):
+        """
+        Args:
+            x (Tensor): Has shape (B, H * W, C).
+            H (int): Height of x.
+            W (int): Width of x.
+
+        Returns:
+            tuple: Contains merged results and its spatial shape.
+                - x (Tensor): Has shape (B, out_h * out_w, embed_dims)
+                - H (int): Height of x.
+                - W (int): Width of x.
+        """
         B, N, C = x.shape
         x = x.permute(0, 2, 1).view(B, C, H, W)
         x = x + self.drop_path(
@@ -221,7 +337,7 @@ class OverlapPatchEmbed(BaseModule):
             Defaults: 7.
         stride (int): Stride of the convolutional layer.
             Default: 4.
-        in_chans (int): The number of input channels.
+        in_channels (int): The number of input channels.
             Defaults: 3.
         embed_dims (int): The dimensions of embedding.
             Defaults: 768.
@@ -232,13 +348,13 @@ class OverlapPatchEmbed(BaseModule):
     def __init__(self,
                  patch_size=7,
                  stride=4,
-                 in_chans=3,
+                 in_channels=3,
                  embed_dim=768,
                  norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super().__init__()
 
         self.proj = nn.Conv2d(
-            in_chans,
+            in_channels,
             embed_dim,
             kernel_size=patch_size,
             stride=stride,
@@ -248,7 +364,7 @@ class OverlapPatchEmbed(BaseModule):
     def forward(self, x):
         """
         Args:
-            x (Tensor): Has shape (B, C, H, W). In most case, C is `in_chans`.
+            x (Tensor): Has shape (B, C, H, W).
 
         Returns:
             tuple: Contains merged results and its spatial shape.
@@ -268,7 +384,7 @@ class OverlapPatchEmbed(BaseModule):
 
 @BACKBONES.register_module()
 class MSCAN(BaseModule):
-    """SegNeXt Multi-Scale Convolutional Attention Network(MCSAN) backbone.
+    """SegNeXt Multi-Scale Convolutional Attention Network (MCSAN) backbone.
 
     This backbone is the implementation of `SegNeXt: Rethinking
     Convolutional Attention Design for Semantic
@@ -276,7 +392,7 @@ class MSCAN(BaseModule):
     Inspiration from https://github.com/visual-attention-network/segnext.
 
     Args:
-        in_chans (int): The number of input channels. Defaults: 3.
+        in_channels (int): The number of input channels. Defaults: 3.
         embed_dims (List[int]): Embedding dimension.
             Defaults: [64, 128, 256, 512].
         mlp_ratios (list[int]): Ratio of mlp hidden dim to embedding dim.
@@ -301,7 +417,7 @@ class MSCAN(BaseModule):
     """
 
     def __init__(self,
-                 in_chans=3,
+                 in_channels=3,
                  embed_dims=[64, 128, 256, 512],
                  mlp_ratios=[4, 4, 4, 4],
                  drop_rate=0.,
@@ -310,6 +426,7 @@ class MSCAN(BaseModule):
                  num_stages=4,
                  attention_kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
                  attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
+                 act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='SyncBN', requires_grad=True),
                  pretrained=None,
                  init_cfg=None):
@@ -339,18 +456,19 @@ class MSCAN(BaseModule):
                 patch_embed = OverlapPatchEmbed(
                     patch_size=7 if i == 0 else 3,
                     stride=4 if i == 0 else 2,
-                    in_chans=in_chans if i == 0 else embed_dims[i - 1],
+                    in_channels=in_channels if i == 0 else embed_dims[i - 1],
                     embed_dim=embed_dims[i],
                     norm_cfg=norm_cfg)
 
             block = nn.ModuleList([
                 Block(
+                    channels=embed_dims[i],
                     attention_kernel_sizes=attention_kernel_sizes,
                     attention_kernel_paddings=attention_kernel_paddings,
-                    dim=embed_dims[i],
                     mlp_ratio=mlp_ratios[i],
                     drop=drop_rate,
                     drop_path=dpr[cur + j],
+                    act_cfg=act_cfg,
                     norm_cfg=norm_cfg) for j in range(depths[i])
             ])
             norm = nn.LayerNorm(embed_dims[i])
@@ -375,7 +493,6 @@ class MSCAN(BaseModule):
                     normal_init(
                         m, mean=0, std=math.sqrt(2.0 / fan_out), bias=0)
         else:
-
             super(MSCAN, self).init_weights()
 
     def forward(self, x):
@@ -394,14 +511,3 @@ class MSCAN(BaseModule):
             outs.append(x)
 
         return outs
-
-
-class DWConv(nn.Module):
-
-    def __init__(self, dim=768):
-        super(DWConv, self).__init__()
-        self.dwconv = nn.Conv2d(dim, dim, 3, 1, 1, bias=True, groups=dim)
-
-    def forward(self, x):
-        x = self.dwconv(x)
-        return x
