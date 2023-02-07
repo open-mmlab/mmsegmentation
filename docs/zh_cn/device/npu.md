@@ -31,6 +31,6 @@ python tools/train.py configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-512
 
 **注意:**
 
-- 如果没有特别标记，NPU 上的使用混合精度训练的结果与使用 FP32 的 GPU 上的结果结果相同。
+- 如果没有特别标记，NPU 上的使用混合精度训练的结果与使用 FP32 的 GPU 上的结果相同。
 
 **以上模型结果由华为昇腾团队提供**
