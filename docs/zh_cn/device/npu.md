@@ -4,7 +4,7 @@
 
 请参考 [MMCV 的安装文档](https://mmcv.readthedocs.io/en/latest/get_started/build.html#build-mmcv-full-on-ascend-npu-machine) 来安装 NPU 版本的 MMCV。
 
-以下展示单机八卡场景的运行指令:
+以下展示单机四卡场景的运行指令:
 
 ```shell
 bash tools/dist_train.sh configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-512x1024.py 4
