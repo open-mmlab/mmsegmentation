@@ -8,10 +8,14 @@ This project support **`Bactteria detection with darkfield microscopy Dataset`**
 
 ### Prerequisites
 
-- Python 3.7
-- PyTorch 1.6 or higher
-- [MIM](https://github.com/open-mmlab/mim) v0.33 or higher
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc2 or higher
+- Python 3.8
+- PyTorch 1.10.0
+- [MIM](https://github.com/open-mmlab/mim) v0.3.4
+- [MMcv](https://github.com/open-mmlab/mmcv) v2.0.0rc3
+- [MMEngine](https://github.com/open-mmlab/mmengine) v0.1.0 or higher
+- [MMClassification](https://github.com/open-mmlab/mmclassification) v1.0.0rc4
+- [MMDetection](https://github.com/open-mmlab/mmdetection) v3.0.0rc5
+- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc3
 
 ### Dataset preparing
 
