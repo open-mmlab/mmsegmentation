@@ -1,0 +1,67 @@
+Collections:
+- Name: SERE
+  Metadata:
+    Training Data:
+    - ImageNet-S
+  Paper:
+    URL: https://arxiv.org/abs/2106.03149
+    Title: Large-scale Unsupervised Semantic Segmentation
+  README: configs/imagenets/README.md
+  Code:
+    URL: blob/main/mmseg/datasets/imagenets.py#L92
+    Version: main
+  Converted From:
+    Code: https://github.com/LUSSeg/ImageNetSegModel
+Models:
+- Name: ''
+  In Collection: MAE
+  Metadata:
+    backbone: ViT-B/16
+    crop size: (256,256)
+    lr schd: 3600
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S
+    Metrics:
+      mIoU: 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: MAE
+  Metadata:
+    backbone: ViT-B/16
+    crop size: (256,256)
+    lr schd: 3600
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S
+    Metrics:
+      mIoU: 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: SERE
+  Metadata:
+    backbone: ViT-S/16
+    crop size: (256,256)
+    lr schd: 3600
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S
+    Metrics:
+      mIoU: 0.0
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: SERE
+  Metadata:
+    backbone: ViT-S/16
+    crop size: (256,256)
+    lr schd: 3600
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S
+    Metrics:
+      mIoU: 0.0
+  Config: ''
+  Weights: ''
