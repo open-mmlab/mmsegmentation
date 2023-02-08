@@ -1,10 +1,10 @@
 # wandb记录特征图可视化
 
-MMSegmentation 1.x 提供了Weights & Biases的后端支持，方便对项目代码结果的可视化和管理。
+MMSegmentation 1.x 提供了 Weights & Biases 的后端支持，方便对项目代码结果的可视化和管理。
 
 ## Wandb的配置
 
-安装 Weights & Biases 的过程可以按照 [官方安装指南](https://docs.wandb.ai/quickstart)，具体的步骤如下:
+安装 Weights & Biases 的过程可以参考 [官方安装指南](https://docs.wandb.ai/quickstart)，具体的步骤如下:
 
 ```shell
 pip install wandb
@@ -21,7 +21,7 @@ vis_backends=[dict(type='LocalVisBackend'),
 
 ## 测试数据和结果及特征图的可视化
 
-`SegLocalVisualizer`是继承自 MMEngine 中`Visualizer` 类的子类，适用于 MMSegmentation 可视化，有关`Visualizer`的详细信息请参考在 MMEngine 中的[可视化教程](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/visualization.html) 。
+`SegLocalVisualizer` 是继承自 MMEngine 中 `Visualizer` 类的子类，适用于 MMSegmentation 可视化，有关 `Visualizer` 的详细信息请参考在 MMEngine 中的[可视化教程](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/visualization.html) 。
 
 以下是一个关于 `SegLocalVisualizer` 的示例，首先你可以使用下面的命令下载这个案例中的数据：
 
@@ -178,7 +178,7 @@ if __name__ == '__main__':
 
 ```
 
-将上述代码保存为visualization_feature_map.py，在终端执行如下代码
+将上述代码保存为 feature_map_visual.py，在终端执行如下代码
 
 ```shell
 python feature_map_visual.py ${图像} ${配置文件} ${检查点文件} [可选参数]
@@ -197,5 +197,5 @@ ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth \
 可视化后的图像结果和它的对应的 feature map图像会出现在wandb账户中
 
 <div align=center>
-<img src="../../../demo/wandb_vis_feature_map.png">
+<img src="https://user-images.githubusercontent.com/24582831/217420243-854a2e2e-0f2d-446f-a11c-61ac18198974.png">
 </div>
