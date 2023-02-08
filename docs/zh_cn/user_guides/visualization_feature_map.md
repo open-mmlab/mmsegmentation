@@ -197,5 +197,5 @@ ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth \
 可视化后的图像结果和它的对应的 feature map图像会出现在wandb账户中
 
 <div align=center>
-<img src="https://user-images.githubusercontent.com/24582831/217420243-854a2e2e-0f2d-446f-a11c-61ac18198974.png">
+<img src="https://user-images.githubusercontent.com/76149310/217520321-647f5bf9-eef2-446d-a9e8-5ca7b621d500.png">
 </div>
