@@ -18,3 +18,4 @@
    visualization.md
    useful_tools.md
    deployment.md
+   visualization_feature_map.md
