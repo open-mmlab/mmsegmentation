@@ -1,6 +1,7 @@
 _base_ = [
     '../../../configs/_base_/models/pspnet_r50-d8.py',
-    './_base_/datasets/mapillary_v1_2.py', '../../../_base_/default_runtime.py'
+    './_base_/datasets/mapillary_v1_2.py',
+    '../../../configs/_base_/default_runtime.py'
 ]
 custom_imports = dict(
     imports=['projects.mapillary_dataset.mmseg.datasets.mapillary'])

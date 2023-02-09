@@ -1,6 +1,7 @@
 _base_ = [
     '../../../configs/_base_/models/deeplabv3plus_r50-d8.py',
-    './_base_/datasets/mapillary_v2_0.py', '../../../_base_/default_runtime.py'
+    './_base_/datasets/mapillary_v2_0.py',
+    '../../../configs/_base_/default_runtime.py'
 ]
 custom_imports = dict(
     imports=['projects.mapillary_dataset.mmseg.datasets.mapillary'])

@@ -1,6 +1,6 @@
 _base_ = [
     './_base_/datasets/mapillary_v1_2.py',
-    '../../../_base_/default_runtime.py',
+    '../../../configs/_base_/default_runtime.py',
 ]
 custom_imports = dict(
     imports=['projects.mapillary_dataset.mmseg.datasets.mapillary'])
