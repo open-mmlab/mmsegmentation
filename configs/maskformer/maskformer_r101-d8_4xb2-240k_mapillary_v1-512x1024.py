@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/datasets/mapillary_v1_2.py', 
+    '../_base_/datasets/mapillary_v1_2.py',
     '../_base_/default_runtime.py',
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -28,7 +28,8 @@ model = dict(
         norm_eval=True,
         style='pytorch',
         contract_dilation=True,
-        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet101')),
+        init_cfg=dict(type='Pretrained',
+                      checkpoint='torchvision://resnet101')),
     decode_head=dict(
         type='MaskFormerHead',
         in_channels=[256, 512, 1024,
@@ -118,10 +119,7 @@ model = dict(
 optimizer = dict(
     type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.0001)
 # optimizer
-optim_wrapper = dict(
-    type='OptimWrapper',
-    optimizer=optimizer,
-    clip_grad=None)
+optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 param_scheduler = [
     dict(
         type='PolyLR',

@@ -14,6 +14,7 @@ from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
 from .lip import LIPDataset
 from .loveda import LoveDADataset
+from .mapillary import MapillaryDataset_v1_2, MapillaryDataset_v2_0
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
@@ -31,7 +32,6 @@ from .transforms import (CLAHE, AdjustGamma, BioMedical3DPad,
                          RandomRotFlip, Rerange, ResizeShortestEdge,
                          ResizeToMultiple, RGB2Gray, SegRescale)
 from .voc import PascalVOCDataset
-from .mapillary import MapillaryDataset_v1_2, MapillaryDataset_v2_0
 
 # yapf: enable
 __all__ = [
@@ -49,5 +49,5 @@ __all__ = [
     'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
     'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
-    'SynapseDataset','MapillaryDataset_v1_2', 'MapillaryDataset_v2_0'
+    'SynapseDataset', 'MapillaryDataset_v1_2', 'MapillaryDataset_v2_0'
 ]
