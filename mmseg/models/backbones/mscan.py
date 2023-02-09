@@ -14,6 +14,26 @@ from mmcv.runner import BaseModule
 from mmseg.models.builder import BACKBONES
 
 
+class DWConv(BaseModule):
+    """Depthwise Convolution Module.
+
+    This module is not removed because original pretrained models are used for
+    training, which has pretrained weights of related parameters.
+
+    Args:
+    channels (int): The dimension of features. Defaults: 768.
+    """
+
+    def __init__(self, channels=768):
+        super(DWConv, self).__init__()
+        self.dwconv = nn.Conv2d(
+            channels, channels, 3, 1, 1, bias=True, groups=channels)
+
+    def forward(self, x):
+        x = self.dwconv(x)
+        return x
+
+
 class Mlp(BaseModule):
     """Multi Layer Perceptron (MLP) Module.
 
@@ -39,14 +59,7 @@ class Mlp(BaseModule):
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = nn.Conv2d(in_features, hidden_features, 1)
-        self.dwconv = nn.Conv2d(
-            hidden_features,
-            hidden_features,
-            3,
-            1,
-            1,
-            bias=True,
-            groups=hidden_features)
+        self.dwconv = DWConv(hidden_features)
         self.act = build_activation_layer(act_cfg)
         self.fc2 = nn.Conv2d(hidden_features, out_features, 1)
         self.drop = nn.Dropout(drop)
