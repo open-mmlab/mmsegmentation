@@ -18,6 +18,7 @@ from .mapillary import MapillaryDataset_v1_2, MapillaryDataset_v2_0
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
+from .refuge import REFUGEDataset
 from .stare import STAREDataset
 from .synapse import SynapseDataset
 # yapf: disable
@@ -49,5 +50,6 @@ __all__ = [
     'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
     'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
-    'SynapseDataset', 'MapillaryDataset_v1_2', 'MapillaryDataset_v2_0'
+    'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1_2',
+    'MapillaryDataset_v2_0'
 ]
