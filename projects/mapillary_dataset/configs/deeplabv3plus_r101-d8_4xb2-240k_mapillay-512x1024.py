@@ -1,8 +1,7 @@
 _base_ = ['./_base_/datasets/mapillary_v1_2.py']  # v 1.2 labels
 # _base_ = ['./_base_/datasets/mapillary_v2_0.py']  # v2.0 labels
 custom_imports = dict(imports=[
-    'projects.mapillary_dataset.mmseg.datasets.mapillary_v1_2',
-    'projects.mapillary_dataset.mmseg.datasets.mapillary_v2_0',
+    'projects.mapillary_dataset.mmseg.datasets.mapillary',
 ])
 
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -18,9 +17,9 @@ data_preprocessor = dict(
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
-    pretrained=None,
+    pretrained='open-mmlab://resnet101_v1c',
     backbone=dict(
-        type='ResNet',
+        type='ResNetV1c',
         depth=101,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
