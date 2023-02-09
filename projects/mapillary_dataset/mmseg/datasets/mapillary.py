@@ -1,9 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.datasets.basesegdataset import BaseSegDataset
-from mmseg.registry import DATASETS
+
+# from mmseg.registry import DATASETS
 
 
-@DATASETS.register_module()
+# @DATASETS.register_module()
+# # have register_module in mmseg
 class MapillaryDataset_v1_2(BaseSegDataset):
     """Mapillary Vistas Dataset.
 
@@ -65,7 +67,8 @@ class MapillaryDataset_v1_2(BaseSegDataset):
             img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, **kwargs)
 
 
-@DATASETS.register_module()
+# @DATASETS.register_module()
+# # have register_module in mmseg
 class MapillaryDataset_v2_0(BaseSegDataset):
     """Mapillary Vistas Dataset.
 
