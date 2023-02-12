@@ -103,6 +103,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [MAE (CVPR'2022)](configs/mae)
 - [x] [PoolFormer (CVPR'2022)](configs/poolformer)
+
 </details>
 
 <details open>
@@ -144,6 +145,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
 - [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
+
 </details>
 
 <details open>
@@ -165,6 +167,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 - [x] [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam)
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isaid)
+
 </details>
 
 Please refer to [FAQ](docs/en/notes/faq.md) for frequently asked questions.

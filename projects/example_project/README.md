@@ -1,17 +1,14 @@
 # Dummy ResNet Wrapper
 
 > A README.md template for releasing a project
-> All the fields in this README are **mandatory** for others to understand what you have achieved in this implementation. 
+> All the fields in this README are **mandatory** for others to understand what you have achieved in this implementation.
 > Please read our [Projects FAQ](../faq.md) if you still feel unclear about the requirements, or raise an [issue](https://github.com/open-mmlab/mmsegmentation/issues) to us!
 
-
 ## Description
-
 
 > Share any information you would like others to know. For example:
 > Author: @xxx.
 > This is an implementation of \[XXX\].
-
 
 Author： @xxx.
 
@@ -19,7 +16,7 @@ This project implements a dummy ResNet wrapper, which literally does nothing new
 
 ## Usage
 
-> For a typical model, this section should contain the commands for training and testing. 
+> For a typical model, this section should contain the commands for training and testing.
 > You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`.
 
 ### Prerequisites
@@ -53,9 +50,8 @@ mim train mmsegmentation configs/fcn_dummy-r50-d8_4xb2-40k_cityscapes-512x1024.p
 mim test mmsegmentation configs/fcn_dummy-r50-d8_4xb2-40k_cityscapes-512x1024.py --work-dir work_dirs/dummy_resnet --checkpoint ${CHECKPOINT_PATH}
 ```
 
-> List the results as usually done in other model's README. [Example](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models
+> List the results as usually done in other model's README. \[Example\](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models
 > You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project
-
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                             | download                                                                                                                                                                                                                                                                                                                           |
 | ------ | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -63,7 +59,7 @@ mim test mmsegmentation configs/fcn_dummy-r50-d8_4xb2-40k_cityscapes-512x1024.py
 
 ## Citation
 
-> You may remove this section if not applicable. 
+> You may remove this section if not applicable.
 
 ```bibtex
 @misc{mmseg2020,
@@ -78,7 +74,6 @@ mim test mmsegmentation configs/fcn_dummy-r50-d8_4xb2-40k_cityscapes-512x1024.py
 
 Here is a checklist illustrating a usual development workflow of a successful project, and also serves as an overview of this project's progress.
 
-
 > The PIC (person in charge) or contributors of this project should check all the items that they believe have been finished, which will further be verified by codebase maintainers via a PR.
 
 > OpenMMLab's maintainer will review the code to ensure the project's quality. Reaching the first milestone means that this project suffices the minimum requirement of being merged into 'projects/'. But this project is only eligible to become a part of the core package upon attaining the last milestone.
@@ -91,18 +86,17 @@ Here is a checklist illustrating a usual development workflow of a successful pr
 
   - [ ] Finish the code
 
-> The code's design shall follow existing interfaces and convention. For example, each model component should be registered into `mmseg.registry.MODELS` and configurable via a config file. 
+> The code's design shall follow existing interfaces and convention. For example, each model component should be registered into `mmseg.registry.MODELS` and configurable via a config file.
 
-  - [ ] Basic docstrings & proper citation
+- [ ] Basic docstrings & proper citation
 
-> Each major object should contain a docstring, describing its functionality and arguments. If you have adapted the code from other open-source projects, don't forget to cite the source project in docstring and make sure your behavior is not against its license. Typically, we do not accept any code snippet under GPL license. [A Short Guide to Open Source Licenses](https://medium.com/nationwide-technology/a-short-guide-to-open-source-licenses-cf5b1c329edd) 
+> Each major object should contain a docstring, describing its functionality and arguments. If you have adapted the code from other open-source projects, don't forget to cite the source project in docstring and make sure your behavior is not against its license. Typically, we do not accept any code snippet under GPL license. [A Short Guide to Open Source Licenses](https://medium.com/nationwide-technology/a-short-guide-to-open-source-licenses-cf5b1c329edd)
 
-
-  - [ ] Test-time correctness
+- [ ] Test-time correctness
 
 > If you are reproducing the result from a paper, make sure your model's inference-time performance matches that in the original paper. The weights usually could be obtained by simply renaming the keys in the official pre-trained weights. This test could be skipped though, if you are able to prove the training-time correctness and check the second milestone.
 
-  - [ ] A full README
+- [ ] A full README
 
 > As this template does.
 
@@ -118,16 +112,15 @@ Here is a checklist illustrating a usual development workflow of a successful pr
 
 > Ideally *all* the methods should have [type hints](https://www.pythontutorial.net/python-basics/python-type-hints/) and [docstrings](https://google.github.io/styleguide/pyguide.html#381-docstrings). [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/io.py#L9)
 
-
-  - [ ] Unit tests
+- [ ] Unit tests
 
 > Unit tests for each module are required. [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/tests/test_utils/test_io.py#L14)
 
-  - [ ] Code polishing
+- [ ] Code polishing
 
 > Refactor your code according to reviewer's comment.
 
-  - [ ] Metafile.yml
+- [ ] Metafile.yml
 
 > It will be parsed by MIM and Inferencer. [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/fcn/fcn.yml)
 
