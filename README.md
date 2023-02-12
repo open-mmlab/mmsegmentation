@@ -87,7 +87,8 @@ To migrate from MMSegmentation 1.x, please refer to [migration](docs/en/migratio
 
 Results and models are available in the [model zoo](docs/en/model_zoo.md).
 
-Supported backbones:
+<details open>
+<summary>Supported backbones:</summary>
 
 - [x] ResNet (CVPR'2016)
 - [x] ResNeXt (CVPR'2017)
@@ -102,8 +103,10 @@ Supported backbones:
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [MAE (CVPR'2022)](configs/mae)
 - [x] [PoolFormer (CVPR'2022)](configs/poolformer)
+</details>
 
-Supported methods:
+<details open>
+<summary>Supported methods:</summary>
 
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
 - [x] [ERFNet (T-ITS'2017)](configs/erfnet)
@@ -141,8 +144,10 @@ Supported methods:
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
 - [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
+</details>
 
-Supported datasets:
+<details open>
+<summary>Supported datasets:</summary>
 
 - [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
 - [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#pascal-voc)
@@ -160,8 +165,13 @@ Supported datasets:
 - [x] [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam)
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isaid)
+</details>
 
 Please refer to [FAQ](docs/en/notes/faq.md) for frequently asked questions.
+
+## Projects
+
+[Here](projects/README.md) are some implementations of SOTA models and solutions built on MMSegmentation, which are supported and maintained by community users. These projects demonstrate the best practices based on MMSegmentation for research and product development. We welcome and appreciate all the contributions to OpenMMLab ecosystem.
 
 ## Contributing
 
