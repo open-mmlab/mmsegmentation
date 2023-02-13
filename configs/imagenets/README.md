@@ -1,10 +1,10 @@
-# ImageNet-S Dataset for Large-scale Semantic Segmentation
+# ImageNet-S
 
-Large-scale Unsupervised Semantic Segmentation (TPAMI 2022) （<a href="https://lusseg.github.io/">Project page</a> | <a href="https://arxiv.org/abs/2106.03149">Paper link</a> | <a href="https://github.com/LUSSeg/ImageNet-S">Dataset Download</a> )
+> [Large-scale Unsupervised Semantic Segmentation](https://arxiv.org/abs/2106.03149)
 
-![image](https://user-images.githubusercontent.com/20515144/149651945-94501ffc-78c0-41be-a1d9-b3bfb3253370.png)
+<!-- [DATASET] -->
 
-## About ImageNet-S
+## Abstract
 
 <!-- [ABSTRACT] -->
 
@@ -18,20 +18,11 @@ The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 te
 | ImageNet-S300 | 300      | 384862  | 3000       | 4097  | 9088  |
 | ImageNet-S    | 919      | 1183322 | 9190       | 12419 | 27423 |
 
-<!-- [ALGORITHM] -->
+<!-- [IMAGE] -->
 
-<a href="blob/main/mmseg/datasets/imagenets.py#L92">Code Snippet</a>
+![image](https://user-images.githubusercontent.com/20515144/149651945-94501ffc-78c0-41be-a1d9-b3bfb3253370.png)
 
-## Semi-supervised Semantic Segmentation Results
-
-<a href="https://paperswithcode.com/dataset/imagenet-s">**PaperWithCode Leaderboard**</a>
-
-| Method | Backbone | Pre-training epochs | Pre-training mode | Crop Size | Lr schd (Epoch) | mIoU | mIoU (test) | Pre-trained                                                                                                         | Config                                                                                                                                                 | Download                 |
-| ------ | -------- | ------------------- | ----------------- | --------- | --------------: | ---: | ----------: | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
-| MAE    | ViT-B/16 | 1600                | SSL               | 224x224   |             100 | 40.0 |        40.3 | [pre-trained](https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth)                                | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_pretrained_fp16_8x32_224x224_100ep_imagenets919.py)   | [model](<>) \| [log](<>) |
-| MAE    | ViT-B/16 | 1600                | SSL+Sup           | 224x224   |             100 | 61.6 |        61.2 | [pre-trained](https://dl.fbaipublicfiles.com/mae/finetune/mae_finetuned_vit_base.pth)                               | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)    | [model](<>) \| [log](<>) |
-| SERE   | ViT-S/16 | 100                 | SSL               | 224x224   |             100 | 41.0 |        40.5 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_pretrained_vit_small_ep100.pth) | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_pretrained_fp16_8x32_224x224_100ep_imagenets919.py) | [model](<>) \| [log](<>) |
-| SERE   | ViT-S/16 | 100                 | SSL+Sup           | 224x224   |             100 | 59.4 |        59.0 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_finetuned_vit_small_ep100.pth)  | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_100ep_imagenets919.py)  | [model](<>) \| [log](<>) |
+## Introduction
 
 ### Training
 
@@ -91,6 +82,17 @@ are the description of your method and are set as none by default.
 
 - Unsupervised semantic segmentation: [PASS](https://github.com/LUSSeg/PASS)
 - Semi-supervised semantic segmentation: [ImageNetSegModel](https://github.com/LUSSeg/ImageNetSegModel)
+
+## Results and Models
+
+<a href="https://paperswithcode.com/dataset/imagenet-s">**PaperWithCode Leaderboard**</a>
+
+| Method | Backbone | Pre-training epochs | Pre-training mode | Crop Size | Lr schd | mIoU | mIoU (test) | Pre-trained                                                                                                         | Config                                                                                                                                               | Download                 |
+| ------ | -------- | ------------------- | ----------------- | --------- | ------: | ---: | ----------: | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| MAE    | ViT-B/16 | 20000               | SSL               | 224x224   |     100 | 40.4 |        40.1 | [pre-trained](https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth)                                | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_pretrained_fp16_8x32_224x224_20k_imagenets919.py)   | [model](<>) \| [log](<>) |
+| MAE    | ViT-B/16 | 20000               | SSL+Sup           | 224x224   |     100 | 61.7 |        61.4 | [pre-trained](https://dl.fbaipublicfiles.com/mae/finetune/mae_finetuned_vit_base.pth)                               | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_mae-base_finetuned_fp16_8x32_224x224_20k_imagenets919.py)    | [model](<>) \| [log](<>) |
+| SERE   | ViT-S/16 | 20000               | SSL               | 224x224   |     100 | 40.9 |        40.7 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_pretrained_vit_small_ep100.pth) | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_pretrained_fp16_8x32_224x224_20k_imagenets919.py) | [model](<>) \| [log](<>) |
+| SERE   | ViT-S/16 | 20000               | SSL+Sup           | 224x224   |     100 | 59.4 |        58.9 | [pre-trained](https://github.com/LUSSeg/ImageNetSegModel/releases/download/vit/sere_finetuned_vit_small_ep100.pth)  | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_20k_imagenets919.py)  | [model](<>) \| [log](<>) |
 
 ## Citation
 
