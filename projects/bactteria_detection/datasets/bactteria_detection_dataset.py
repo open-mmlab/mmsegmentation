@@ -10,9 +10,12 @@ class BactteriaDetectionDataset(BaseSegDataset):
     0 stands for background, which is included in 3 categories.
     ``reduce_zero_label`` is fixed to False. The ``img_suffix``
     is fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
+
     Args:
         img_suffix (str): Suffix of images. Default: '.png'
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'
+        reduce_zero_label (bool): Whether to mark label zero as ignored.
+            Default to False.
     """
     METAINFO = dict(classes=('background', 'erythrocytes', 'spirochaete'))
 

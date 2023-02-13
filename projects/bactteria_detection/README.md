@@ -1,6 +1,6 @@
-# Bactteria detection with darkfield microscopy Dataset
+# Bactteria detection with darkfield microscopy
 
-This project support **`Bactteria detection with darkfield microscopy Dataset`**, and the dataset can be download from [here](https://tianchi.aliyun.com/dataset/94411).
+This project support **`Bactteria detection with darkfield microscopy `**, and the dataset used in this project can be downloaded from [here](https://tianchi.aliyun.com/dataset/94411).
 
 ## Usage
 
@@ -10,10 +10,12 @@ This project support **`Bactteria detection with darkfield microscopy Dataset`**
 
 - Python 3.8
 - PyTorch 1.10.0
+- pillow(PIL)
+- scikit-learn(sklearn)
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
-- [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc3
-- [MMEngine](https://github.com/open-mmlab/mmengine) v0.1.0 or higher
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc3
+- [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
+- [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
+- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
 ### Dataset preparing
 
@@ -71,13 +73,13 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ## Results
 
-### Bactteria detection with darkfield microscopy Dataset
+### Bactteria detection with darkfield microscopy
 
-|     Method      | Backbone | Crop Size |   lr   | mIoU | mDice |                                                                                    config                                                                                     |
-| :-------------: | :------: | :-------: | :----: | :--: | :---: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  |  -   |   -   |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/bactteria_detection/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_bactteria-detection-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  |  -   |   -   | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/bactteria_detection/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_bactteria-detection-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 |  -   |   -   | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/bactteria_detection/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_bactteria-detection-512x512.py) |
+|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                    config                                                                                     |
+| :-------------: | :------: | :-------: | :----: | :---: | :---: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/bactteria_detection/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_bactteria-detection-512x512.py)  |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/bactteria_detection/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_bactteria-detection-512x512.py)  |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/bactteria_detection/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_bactteria-detection-512x512.py) |
 
 ## Checklist
 
@@ -87,13 +89,13 @@ You should claim whether this is based on the pre-trained weights, which are con
 
   - [x] Basic docstrings & proper citation
 
-  - [x] Test-time correctness
+  - [ ] Test-time correctness
 
   - [x] A full README
 
-- [ ] Milestone 2: Indicates a successful model implementation.
+- [x] Milestone 2: Indicates a successful model implementation.
 
-  - [ ] Training-time correctness
+  - [x] Training-time correctness
 
 - [ ] Milestone 3: Good to be a part of our core package!
 
