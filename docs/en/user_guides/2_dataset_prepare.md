@@ -600,7 +600,9 @@ It includes 400 images for training, 400 images for validation and 400 images fo
   # python tools/dataset_converters/mapillary.py [datasets path] [--nproc 8] [--version all]
   python tools/dataset_converters/mapillary.py data/mapillary --nproc 8 --version all
   ```
-  After then, you will get this structure, mask labels saved in `labels_mask`.
+  After then, you will get this structure, mask labels saved in `labels_mask`.  
+* You could set Datasets version with `MapillaryDataset_v1_2` and `MapillaryDataset_v2_0` in your configs.  
+  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1_2.py) and  [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2_0.py)
   ```none
   mmsegmentation
   ├── mmseg
