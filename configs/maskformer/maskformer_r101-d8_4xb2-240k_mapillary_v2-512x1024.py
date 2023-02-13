@@ -1,6 +1,6 @@
 _base_ = [
-    '../_base_/datasets/mapillary_v2_0.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_240k.py'
+    '../_base_/datasets/mapillary_v2_0.py', 
+    '../_base_/default_runtime.py',
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 crop_size = (512, 1024)
@@ -28,8 +28,7 @@ model = dict(
         norm_eval=True,
         style='pytorch',
         contract_dilation=True,
-        init_cfg=dict(type='Pretrained',
-                      checkpoint='torchvision://resnet101')),
+        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet101')),
     decode_head=dict(
         type='MaskFormerHead',
         in_channels=[256, 512, 1024,
@@ -118,3 +117,31 @@ model = dict(
 # optimizer
 optimizer = dict(
     type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.0001)
+# optimizer
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=optimizer,
+    clip_grad=None)
+param_scheduler = [
+    dict(
+        type='PolyLR',
+        eta_min=0,
+        power=0.9,
+        begin=0,
+        end=240000,
+        by_epoch=False)
+]
+
+# training schedule for 240k
+train_cfg = dict(
+    type='IterBasedTrainLoop', max_iters=240000, val_interval=24000)
+val_cfg = dict(type='ValLoop')
+test_cfg = dict(type='TestLoop')
+
+default_hooks = dict(
+    timer=dict(type='IterTimerHook'),
+    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=24000),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    visualization=dict(type='SegVisualizationHook'))

@@ -1,7 +1,7 @@
 _base_ = [
     '../../../configs/_base_/models/deeplabv3plus_r50-d8.py',
     './_base_/datasets/mapillary_v1_2.py',
-    '../../../configs/_base_/default_runtime.py'
+    '../../../configs/_base_/default_runtime.py',
     '../../../configs/_base_/schedules/schedule_240k.py'
 ]
 custom_imports = dict(
