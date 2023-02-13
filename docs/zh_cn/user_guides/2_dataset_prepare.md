@@ -501,46 +501,48 @@ python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/
   python tools/dataset_converters/mapillary.py data/mapillary --nproc 8 --version all
   ```
   运行结束后, 您将得到以下结构的数据集,转换后的单通道标签将保存到`labels_mask`文件夹下.
+
 * 在数据集配置文件中可通过设置`dataset_type = 'MapillaryDataset_v1_2'`和`dataset_type = 'MapillaryDataset_v2_0'`选择数据集标签版本。
-*  查看mapillary数据集配置文件→ [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1_2.py) 和  [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2_0.py)
-  ```none
-  mmsegmentation
-  ├── mmseg
-  ├── tools
-  ├── configs
-  ├── data
-  │   ├── mapillary
-  │   │   ├── training
-  │   │   │   ├── images
-  │   │   │   ├── v1.2
-  |   │   │   │   ├── instances
-  |   │   │   │   ├── labels
-  |   │   │   │   ├── labels_mask
-  |   │   │   │   └── panoptic
-  │   │   │   ├── v2.0
-  |   │   │   │   ├── instances
-  |   │   │   │   ├── labels
-  |   │   │   │   ├── labels_mask
-  |   │   │   │   ├── panoptic
-  |   │   │   │   └── polygons
-  │   │   ├── validation
-  │   │   │   ├── images
-  |   │   │   ├── v1.2
-  |   │   │   │   ├── instances
-  |   │   │   │   ├── labels
-  |   │   │   │   ├── labels_mask
-  |   │   │   │   └── panoptic
-  │   │   │   ├── v2.0
-  |   │   │   │   ├── instances
-  |   │   │   │   ├── labels
-  |   │   │   │   ├── labels_mask
-  |   │   │   │   ├── panoptic
-  |   │   │   │   └── polygons
-  ```
+* 查看mapillary数据集配置文件→ [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1_2.py) 和  [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2_0.py)
 
-* **Mapillary Vistas Datasets标签索引及调色板信息**
+```none
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
+│   ├── mapillary
+│   │   ├── training
+│   │   │   ├── images
+│   │   │   ├── v1.2
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   ├── labels_mask
+|   │   │   │   └── panoptic
+│   │   │   ├── v2.0
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   ├── labels_mask
+|   │   │   │   ├── panoptic
+|   │   │   │   └── polygons
+│   │   ├── validation
+│   │   │   ├── images
+|   │   │   ├── v1.2
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   ├── labels_mask
+|   │   │   │   └── panoptic
+│   │   │   ├── v2.0
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   ├── labels_mask
+|   │   │   │   ├── panoptic
+|   │   │   │   └── polygons
+```
 
-* **v1.2 标签信息**
+- **Mapillary Vistas Datasets标签索引及调色板信息**
+
+- **v1.2 标签信息**
 
   ```none
   There are 66 labels classes in v1.2

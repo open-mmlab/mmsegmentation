@@ -1,6 +1,7 @@
 _base_ = [
     './_base_/datasets/mapillary_v1_2.py',
     '../../../configs/_base_/default_runtime.py',
+    '../../../configs/_base_/schedules/schedule_240k.py'
 ]
 custom_imports = dict(
     imports=['projects.mapillary_dataset.mmseg.datasets.mapillary'])
@@ -120,28 +121,3 @@ model = dict(
 # optimizer
 optimizer = dict(
     type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.0001)
-# optimizer
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
-param_scheduler = [
-    dict(
-        type='PolyLR',
-        eta_min=0,
-        power=0.9,
-        begin=0,
-        end=240000,
-        by_epoch=False)
-]
-
-# training schedule for 240k
-train_cfg = dict(
-    type='IterBasedTrainLoop', max_iters=240000, val_interval=24000)
-val_cfg = dict(type='ValLoop')
-test_cfg = dict(type='TestLoop')
-
-default_hooks = dict(
-    timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
-    param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=24000),
-    sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegVisualizationHook'))
