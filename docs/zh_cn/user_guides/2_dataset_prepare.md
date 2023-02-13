@@ -454,7 +454,7 @@ python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/
 
 ## Mapillary Vistas Datasets
 
-- Mapillary Vistas Datasets 可以在[此处](https://www.mapillary.com/dataset/vistas)注册后下载.
+- Mapillary Vistas 数据集需要在[官方](https://www.mapillary.com/dataset/vistas)注册后下载.
 - 假设您将下载的数据集zip文件放在了该目录下 `mmsegmentation/data/mapillary`
 - 运行以下命令对数据集进行解压.
   ```bash
