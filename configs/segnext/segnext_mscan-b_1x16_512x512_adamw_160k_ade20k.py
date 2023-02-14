@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/mscan.py', '../_base_/default_runtime.py',
+    '../_base_/models/segnext_mscan-t.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_160k.py'
 ]
 # model settings
