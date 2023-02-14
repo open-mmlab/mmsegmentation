@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
 import warnings
-from typing import Sequence
+from typing import Optional, Sequence
 
 import mmcv
 import mmengine.fileio as fileio
@@ -30,9 +30,9 @@ class SegVisualizationHook(Hook):
         interval (int): The interval of visualization. Defaults to 50.
         show (bool): Whether to display the drawn image. Default to False.
         wait_time (float): The interval of show (s). Defaults to 0.
-        backend_args (dict): Arguments to instantiate a file backend.
+        backend_args (dict, Optional): Arguments to instantiate a file backend.
             See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
-            for details. Defaults to ``dict(backend='local')``
+            for details. Defaults to None.
             Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
@@ -41,7 +41,7 @@ class SegVisualizationHook(Hook):
                  interval: int = 50,
                  show: bool = False,
                  wait_time: float = 0.,
-                 backend_args: dict = dict(backend='local')):
+                 backend_args: Optional[dict] = None):
         self._visualizer: SegLocalVisualizer = \
             SegLocalVisualizer.get_current_instance()
         self.interval = interval
@@ -55,7 +55,7 @@ class SegVisualizationHook(Hook):
                           'needs to be excluded.')
 
         self.wait_time = wait_time
-        self.backend_args = backend_args.copy()
+        self.backend_args = backend_args.copy() if backend_args else None
         self.draw = draw
         if not self.draw:
             warnings.warn('The draw is False, it means that the '
