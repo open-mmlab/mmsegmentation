@@ -42,16 +42,16 @@ repos:
     hooks:
       - id: docformatter
         args: ["--in-place", "--wrap-descriptions", "79"]
-  - repo: local
-    hooks:
-      - id: update-model-index
-        name: update-model-index
-        description: Collect model information and update model-index.yml
-        entry: .dev/md2yml.py
-        additional_dependencies: [mmcv, lxml, opencv-python]
-        language: python
-        files: ^configs/.*\.md$
-        require_serial: true
+  # - repo: local
+  #   hooks:
+  #     - id: update-model-index
+  #       name: update-model-index
+  #       description: Collect model information and update model-index.yml
+  #       entry: .dev/md2yml.py
+  #       additional_dependencies: [mmcv, lxml, opencv-python]
+  #       language: python
+  #       files: ^configs/.*\.md$
+  #       require_serial: true
   - repo: https://github.com/open-mmlab/pre-commit-hooks
     rev: v0.2.0  # Use the rev to fix revision
     hooks:
