@@ -1,22 +1,23 @@
 _base_ = [
-    '../_base_/models/segnext.py',
-    '../_base_/default_runtime.py',
+    '../_base_/models/mscan.py', '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_160k.py'
 ]
-find_unused_parameters = True
 # model settings
-norm_cfg = dict(type='BN', requires_grad=True)
 ham_norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
-        init_cfg=dict(type='Pretrained', checkpoint='/notebooks/mscan_t.pth')),
+        embed_dims=[64, 128, 320, 512],
+        depths=[3, 5, 27, 3],
+        init_cfg=dict(type='Pretrained', checkpoint='pretrain/mscan_l.pth'),
+        drop_path_rate=0.3,
+        norm_cfg=dict(type='BN', requires_grad=True)),
     decode_head=dict(
         type='LightHamHead',
-        in_channels=[64, 160, 256],
+        in_channels=[128, 320, 512],
         in_index=[1, 2, 3],
-        channels=256,
-        ham_channels=256,
-        ham_kwargs=dict(MD_R=16),
+        channels=1024,
+        ham_channels=1024,
         dropout_ratio=0.1,
         num_classes=150,
         norm_cfg=ham_norm_cfg,
@@ -27,33 +28,9 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 
-evaluation = dict(interval=8000, metric='mIoU')
-checkpoint_config = dict(by_epoch=False, interval=8000)
-# optimizer
-# 0.00006 is the lr for bs 16, should use 0.00006/8 as lr (need to test)
-optimizer = dict(
-    type='AdamW',
-    lr=0.00006,
-    betas=(0.9, 0.999),
-    weight_decay=0.01,
-    paramwise_cfg=dict(
-        custom_keys={
-            'pos_block': dict(decay_mult=0.),
-            'norm': dict(decay_mult=0.),
-            'head': dict(lr_mult=10.)
-        }))
-
-lr_config = dict(
-    policy='poly',
-    warmup='linear',
-    warmup_iters=1500,
-    warmup_ratio=1e-6,
-    power=1.0,
-    min_lr=0.0,
-    by_epoch=False)
-
+# dataset settings
 dataset_type = 'ADE20KDataset'
-data_root = '/notebooks/ADEChallengeData2016'
+data_root = 'data/ade/ADEChallengeData2016'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 crop_size = (512, 512)
@@ -87,7 +64,7 @@ test_pipeline = [
 ]
 data = dict(
     samples_per_gpu=16,
-    workers_per_gpu=4,
+    workers_per_gpu=16,
     train=dict(
         type='RepeatDataset',
         times=50,
@@ -110,8 +87,26 @@ data = dict(
         ann_dir='annotations/validation',
         pipeline=test_pipeline))
 
-optimizer_config = dict()
-# runtime settings
-runner = dict(type='IterBasedRunner', max_iters=160000)
-checkpoint_config = dict(by_epoch=False, interval=4000)
-evaluation = dict(interval=4000, metric='mIoU')
+# optimizer
+optimizer = dict(
+    _delete_=True,
+    type='AdamW',
+    lr=0.00006,
+    betas=(0.9, 0.999),
+    weight_decay=0.01,
+    paramwise_cfg=dict(
+        custom_keys={
+            'pos_block': dict(decay_mult=0.),
+            'norm': dict(decay_mult=0.),
+            'head': dict(lr_mult=10.)
+        }))
+
+lr_config = dict(
+    _delete_=True,
+    policy='poly',
+    warmup='linear',
+    warmup_iters=1500,
+    warmup_ratio=1e-6,
+    power=1.0,
+    min_lr=0.0,
+    by_epoch=False)

@@ -20,21 +20,21 @@ Models:
     crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
-    - value: 1.0
+    - value: 19.09
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    Training Memory (GB): 999.0
+    Training Memory (GB): 17.88
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 45.0
-      mIoU(ms+flip): 45.0
+      mIoU: 41.5
+      mIoU(ms+flip): 42.59
   Config: configs/segnext/segnext_mscan-t_1x16_512x512_adamw_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k/segmenter_vit-t_mask_8x1_512x512_160k_ade20k_20220105_151706-ffcf7509.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-t_1x16_512x512_adamw_160k_ade20k/segnext_mscan-t_1x16_512x512_adamw_160k_ade20k_20230210_140244-05bd8466.pth
 - Name: segnext_mscan-s_1x16_512x512_adamw_160k_ade20k
   In Collection: SegNeXt
   Metadata:
@@ -56,7 +56,7 @@ Models:
       mIoU: 45.0
       mIoU(ms+flip): 45.0
   Config: configs/segnext/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713-39658c46.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713-39658c46.pth
 - Name: segnext_mscan-b_1x16_512x512_adamw_160k_ade20k
   In Collection: SegNeXt
   Metadata:
@@ -64,18 +64,40 @@ Models:
     crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
-    - value: 1.0
+    - value: 28.45
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    Training Memory (GB): 999.0
+    Training Memory (GB): 31.03
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 45.0
-      mIoU(ms+flip): 45.0
+      mIoU: 48.03
+      mIoU(ms+flip): 49.68
   Config: configs/segnext/segnext_mscan-b_1x16_512x512_adamw_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k/segmenter_vit-s_mask_8x1_512x512_160k_ade20k_20220105_151706-511bb103.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-b_1x16_512x512_adamw_160k_ade20k/segnext_mscan-b_1x16_512x512_adamw_160k_ade20k_20230209_172053-b6f6c70c.pth
+- Name: segnext_mscan-l_1x16_512x512_adamw_160k_ade20k
+  In Collection: SegNeXt
+  Metadata:
+    backbone: MSCAN-L
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 43.65
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 43.32
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 50.99
+      mIoU(ms+flip): 52.1
+  Config: configs/segnext/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k_20230209_172055-19b14b63.pth
