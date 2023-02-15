@@ -182,6 +182,7 @@ Supported methods:
 - [x] [Segmenter (ICCV'2021)](configs/segmenter)
 - [x] [SegFormer (NeurIPS'2021)](configs/segformer)
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
+- [x] [RF-Next (TPAMI'2022)](configs/rfnext)
 
 Supported datasets:
 

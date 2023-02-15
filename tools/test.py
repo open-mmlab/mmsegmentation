@@ -17,7 +17,8 @@ from mmseg import digit_version
 from mmseg.apis import multi_gpu_test, single_gpu_test
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
-from mmseg.utils import build_ddp, build_dp, get_device, setup_multi_processes
+from mmseg.utils import (build_ddp, build_dp, get_device, rfnext_init_model,
+                         setup_multi_processes)
 
 
 def parse_args():
@@ -216,6 +217,8 @@ def main():
     # build the model and load checkpoint
     cfg.model.train_cfg = None
     model = build_segmentor(cfg.model, test_cfg=cfg.get('test_cfg'))
+    # init rfnext if 'RFSearchHook' is defined in cfg
+    rfnext_init_model(model, cfg=cfg)
     fp16_cfg = cfg.get('fp16', None)
     if fp16_cfg is not None:
         wrap_fp16_model(model)
