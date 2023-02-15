@@ -20,7 +20,7 @@ The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 te
 
 <!-- [IMAGE] -->
 
-![image](https://user-images.githubusercontent.com/20515144/149651945-94501ffc-78c0-41be-a1d9-b3bfb3253370.png)
+![image](https://user-images.githubusercontent.com/76149310/219024498-68ce5abb-e0f2-42a0-be56-5921be188fc3.jpg)
 
 ## Introduction
 
