@@ -6,13 +6,13 @@ Models:
     crop size: (224,224)
     lr schd: 3600
     inference time (ms/im):
-    - value:
+    - value: 17.18
       hardware: A100
       backend: PyTorch
       batch size: 32
       mode: FP16
       resolution: (224,224)
-    Training Memory (GB):
+    Training Memory (GB): 6.8
   Results:
   - Task: Semantic Segmentation
     Dataset: ImageNet-S validation
@@ -39,6 +39,14 @@ Models:
     backbone: ViT-S/16
     crop size: (224,224)
     lr schd: 3600
+    inference time (ms/im):
+    - value: 16.96
+      hardware: A100
+      backend: PyTorch
+      batch size: 32
+      mode: FP16
+      resolution: (224,224)
+    Training Memory (GB): 3.1
   Results:
   - Task: Semantic Segmentation
     Dataset: ImageNet-S
