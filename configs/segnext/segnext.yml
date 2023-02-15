@@ -42,21 +42,21 @@ Models:
     crop size: (512,512)
     lr schd: 160000
     inference time (ms/im):
-    - value: 1.0
+    - value: 23.66
       hardware: V100
       backend: PyTorch
       batch size: 1
       mode: FP32
       resolution: (512,512)
-    Training Memory (GB): 999.0
+    Training Memory (GB): 21.47
   Results:
   - Task: Semantic Segmentation
     Dataset: ADE20K
     Metrics:
-      mIoU: 45.0
-      mIoU(ms+flip): 45.0
+      mIoU: 44.16
+      mIoU(ms+flip): 45.81
   Config: configs/segnext/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713-39658c46.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k_20230214_113014-43013668.pth
 - Name: segnext_mscan-b_1x16_512x512_adamw_160k_ade20k
   In Collection: SegNeXt
   Metadata:
