@@ -63,8 +63,12 @@ class PackSegInputs(BaseTransform):
             img = results['img']
             if len(img.shape) < 3:
                 img = np.expand_dims(img, -1)
-            img = np.ascontiguousarray(img.transpose(2, 0, 1))
-            packed_results['inputs'] = to_tensor(img)
+            if not img.flags.c_contiguous:
+                img = to_tensor(np.ascontiguousarray(img.transpose(2, 0, 1)))
+            else:
+                img = img.transpose(2, 0, 1)
+                img = to_tensor(img).contiguous()
+            packed_results['inputs'] = img
 
         data_sample = SegDataSample()
         if 'gt_seg_map' in results:
