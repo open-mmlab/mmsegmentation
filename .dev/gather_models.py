@@ -45,8 +45,10 @@ def process_checkpoint(in_file, out_file):
 
 def get_final_iter(config):
     iter_num = config.split('_')[-2]
-    assert iter_num.endswith('k')
-    return int(iter_num[:-1]) * 1000
+    if iter_num.endswith('k'):
+        return int(iter_num[:-1]) * 1000
+    else:
+        return int(iter_num)
 
 
 def get_final_results(log_json_path, iter_num):
