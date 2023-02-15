@@ -55,6 +55,7 @@ Welcome to MMSegmentation's documentation!
 
    switch_language.md
 
+
 Indices and tables
 ==================
 
