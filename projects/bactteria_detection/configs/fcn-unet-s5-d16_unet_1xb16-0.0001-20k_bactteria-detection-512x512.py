@@ -4,16 +4,14 @@ _base_ = [
     'mmseg::_base_/schedules/schedule_20k.py'
 ]
 custom_imports = dict(
-    imports='projects.bactteria_detection.datasets.bactteria_detection_dataset'
+    imports='projects.bactteria_detection.datasets.bactteria-detection_dataset'
 )
 img_scale = (512, 512)
 data_preprocessor = dict(size=img_scale)
 optimizer = dict(lr=0.0001)
 optim_wrapper = dict(optimizer=optimizer)
 model = dict(
-    type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
-    pretrained=None,
     decode_head=dict(num_classes=3),
     auxiliary_head=None,
     test_cfg=dict(mode='whole', _delete_=True))
