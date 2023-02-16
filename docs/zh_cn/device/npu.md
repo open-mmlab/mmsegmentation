@@ -31,7 +31,8 @@ python tools/train.py configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-512
 |    [apcnet](<>)     | 78.02 | [config](https://github.com/open-mmlab/mmsegmentation/tree/1.x/configs/apcnet/apcnet_r50-d8_4xb2-40k_cityscapes-512x1024.py)               | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/apcnet_r50-d8_4xb2-40k_cityscapes-512x1024_20230209_212545.json)        |
 |   [bisenetv1](<>)   | 76.04 | [config](https://github.com/open-mmlab/mmsegmentation/tree/1.x/configs/bisenetv1/bisenetv1_r50-d32_4xb4-160k_cityscapes-1024x1024.py)      | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/bisenetv1_r50-d32_4xb4-160k_cityscapes-1024x1024_20230201_023946.json)  |
 |   [bisenetv2](<>)   | 72.44 | [config](https://github.com/open-mmlab/mmsegmentation/tree/1.x/configs/bisenetv2/bisenetv2_fcn_4xb4-amp-160k_cityscapes-1024x1024.py)      | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/bisenetv2_fcn_4xb4-amp-160k_cityscapes-1024x1024_20230205_215606.json)  |
-|      **注意:**      |       |                                                                                                                                            |                                                                                                                                             |
+
+**注意:**
 
 - 如果没有特别标记，NPU 上的使用混合精度训练的结果与使用 FP32 的 GPU 上的结果相同。
 
