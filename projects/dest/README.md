@@ -10,11 +10,12 @@ Transformer and its variants have shown state-of-the-art results in many vision 
 
 ### Prerequisites
 
-- Python 3.7
-- PyTorch 1.6 or higher
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc2 or higher
-- mmcv v2.0.0rc4
-- MIM v0.33 or higher
+- Python 3.8.12
+- PyTorch 1.11
+- mmcv v1.7.0
+- Install [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) from source
+
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the mmsegmentaions directory so that Python can locate the configuration files in mmsegmentation.
 
 ### Dataset preparing
 
@@ -44,12 +45,12 @@ mim test mmsegmentation projects/dest/configs/dest_simpatt-b0_1024x1024_160k_cit
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                       | download |
 | ------ | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------- |
-| DEST   | SMIT-B0  | 1024x1024 |  160000 |        - | -              | 64.34 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b0_1024x1024_160k_cityscapes.py) | -        |
-| DEST   | SMIT-B1  | 1024x1024 |  160000 |        - | -              | 68.21 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b1_1024x1024_160k_cityscapes.py) | -        |
-| DEST   | SMIT-B2  | 1024x1024 |  160000 |        - | -              | 71.89 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b2_1024x1024_160k_cityscapes.py) | -        |
-| DEST   | SMIT-B3  | 1024x1024 |  160000 |        - | -              | 73.51 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b3_1024x1024_160k_cityscapes.py) | -        |
-| DEST   | SMIT-B4  | 1024x1024 |  160000 |        - | -              | 73.99 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b4_1024x1024_160k_cityscapes.py) | -        |
-| DEST   | SMIT-B5  | 1024x1024 |  160000 |        - | -              | 75.28 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b5_1024x1024_160k_cityscapes.py) | -        |
+| DEST   | SMIT-B0  | 1024x1024 |  160000 |        - | -              | 64.34 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b0_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b0_1024x1024_160k_cityscapes_20230105_232025-11f73f34.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b0_1024x1024_160k_cityscapes_20230105_232025.log)      |
+| DEST   | SMIT-B1  | 1024x1024 |  160000 |        - | -              | 68.21 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b1_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b1_1024x1024_160k_cityscapes_20230105_232358-0dd4e86e.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b1_1024x1024_160k_cityscapes_20230105_232358.logmmsegmentation/v0.5/dest/dest_simpatt-b1_1024x1024_160k_cityscapes_20230105_232358.log)        |
+| DEST   | SMIT-B2  | 1024x1024 |  160000 |        - | -              | 71.89 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b2_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b2_1024x1024_160k_cityscapes_20230105_231943-b06319ae.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b2_1024x1024_160k_cityscapes_20230105_231943.log)        |
+| DEST   | SMIT-B3  | 1024x1024 |  160000 |        - | -              | 73.51 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b3_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b3_1024x1024_160k_cityscapes_20230105_231800-ee4cec5c.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b3_1024x1024_160k_cityscapes_20230105_231800.log)       |
+| DEST   | SMIT-B4  | 1024x1024 |  160000 |        - | -              | 73.99 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b4_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b4_1024x1024_160k_cityscapes_20230105_232155-3ca9f4fc.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b4_1024x1024_160k_cityscapes_20230105_232155.log)        |
+| DEST   | SMIT-B5  | 1024x1024 |  160000 |        - | -              | 75.28 | -             | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dest/dest_simpatt-b5_1024x1024_160k_cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b5_1024x1024_160k_cityscapes_20230105_231411-e83819b5.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/dest/dest_simpatt-b5_1024x1024_160k_cityscapes_20230105_231411.log)        |
 
 Note:
 
