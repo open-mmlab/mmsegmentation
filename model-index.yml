@@ -46,3 +46,4 @@ Import:
 - configs/unet/unet.yml
 - configs/upernet/upernet.yml
 - configs/vit/vit.yml
+- configs/pidnet/pidnet.yml

@@ -1,0 +1,54 @@
+Collections:
+- Name: PIDNet
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    URL: https://arxiv.org/pdf/2206.02066.pdf
+    Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
+  README: configs/pidnet/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/backbones/pidnet.py
+    Version: dev-3.x
+  Converted From:
+    Code: https://github.com/XuJiacong/PIDNet
+Models:
+- Name: pidnet-s_2xb6-120k_1024x1024-cityscapes
+  In Collection: PIDNet
+  Metadata:
+    backbone: PIDNet-S
+    crop size: (1024,1024)
+    lr schd: 120000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.44
+  Config: configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes/pidnet-s_2xb6-120k_1024x1024-cityscapes_20221030_182724-3a9cfe45.pth
+- Name: pidnet-m_2xb6-120k_1024x1024-cityscapes
+  In Collection: PIDNet
+  Metadata:
+    backbone: PIDNet-M
+    crop size: (1024,1024)
+    lr schd: 120000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.75
+  Config: configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes/pidnet_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053-84adbfcb.pth
+- Name: pidnet-l_2xb6-120k_1024x1024-cityscapes
+  In Collection: PIDNet
+  Metadata:
+    backbone: PIDNet-L
+    crop size: (1024,1024)
+    lr schd: 120000
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.46
+  Config: configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes/pidnet-l_2xb6-120k_1024x1024-cityscapes_20221114_232813-f14e7ce0.pth
