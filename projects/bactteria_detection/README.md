@@ -1,10 +1,8 @@
 # Bactteria detection with darkfield microscopy
 
+## Description
+
 This project support **`Bactteria detection with darkfield microscopy `**, and the dataset used in this project can be downloaded from [here](https://tianchi.aliyun.com/dataset/94411).
-
-## Usage
-
-<!-- For a typical model, this section should contain the commands for training and testing. You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`. -->
 
 ### Prerequisites
 
@@ -47,6 +45,12 @@ This project support **`Bactteria detection with darkfield microscopy `**, and t
   |   │   │   │   ├── yyy.png
   |   │   │   │   ├── ...
   |   │   │   │   └── yyy.png
+```
+
+All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In bactteria_detection/ root directory, run the following line to add the current directory to PYTHONPATH:
+
+```shell
+export PYTHONPATH=`pwd`:$PYTHONPATH
 ```
 
 ### Training commands
