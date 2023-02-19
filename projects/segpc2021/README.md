@@ -47,6 +47,12 @@ This project support **`Segpc2021 with darkfield microscopy Dataset`**, and the 
   |   │   │   │   └── yyy.png
 ```
 
+All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In bactteria_detection/ root directory, run the following line to add the current directory to PYTHONPATH:
+
+```shell
+export PYTHONPATH=`pwd`:$PYTHONPATH
+```
+
 ### Training commands
 
 ```shell
