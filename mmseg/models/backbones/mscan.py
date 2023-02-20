@@ -15,26 +15,6 @@ from mmcv.runner import BaseModule
 from mmseg.models.builder import BACKBONES
 
 
-class DWConv(BaseModule):
-    """Depthwise Convolution Module.
-
-    This module is not removed because original pretrained models are used for
-    training, which has pretrained weights of related parameters.
-
-    Args:
-    channels (int): The dimension of features. Defaults: 768.
-    """
-
-    def __init__(self, channels=768):
-        super(DWConv, self).__init__()
-        self.dwconv = nn.Conv2d(
-            channels, channels, 3, 1, 1, bias=True, groups=channels)
-
-    def forward(self, x):
-        x = self.dwconv(x)
-        return x
-
-
 class Mlp(BaseModule):
     """Multi Layer Perceptron (MLP) Module.
 
@@ -60,7 +40,14 @@ class Mlp(BaseModule):
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = nn.Conv2d(in_features, hidden_features, 1)
-        self.dwconv = DWConv(hidden_features)
+        self.dwconv = nn.Conv2d(
+            hidden_features,
+            hidden_features,
+            3,
+            1,
+            1,
+            bias=True,
+            groups=hidden_features)
         self.act = build_activation_layer(act_cfg)
         self.fc2 = nn.Conv2d(hidden_features, out_features, 1)
         self.drop = nn.Dropout(drop)
@@ -139,8 +126,8 @@ class StemConv(BaseModule):
         return x, H, W
 
 
-class AttentionModule(BaseModule):
-    """Attention Module.
+class MSCAAttention(BaseModule):
+    """Attention Module in Multi-Scale Convolutional Attention Module (MSCA).
 
     Args:
         channels (int): The dimension of channels.
@@ -240,9 +227,9 @@ class SpatialAttention(BaseModule):
         super().__init__()
         self.proj_1 = nn.Conv2d(in_channels, in_channels, 1)
         self.activation = build_activation_layer(act_cfg)
-        self.spatial_gating_unit = AttentionModule(in_channels,
-                                                   attention_kernel_sizes,
-                                                   attention_kernel_paddings)
+        self.spatial_gating_unit = MSCAAttention(in_channels,
+                                                 attention_kernel_sizes,
+                                                 attention_kernel_paddings)
         self.proj_2 = nn.Conv2d(in_channels, in_channels, 1)
 
     def forward(self, x):
@@ -262,7 +249,7 @@ class SpatialAttention(BaseModule):
         return x
 
 
-class Block(BaseModule):
+class MSCABlock(BaseModule):
     """Basic Multi-Scale Convolutional Attention Block. It leverage the large-
     kernel attention (LKA) mechanism to build both channel and spatial
     attention. In each branch, it uses two depth-wise strip convolutions to
@@ -475,7 +462,7 @@ class MSCAN(BaseModule):
                     norm_cfg=norm_cfg)
 
             block = nn.ModuleList([
-                Block(
+                MSCABlock(
                     channels=embed_dims[i],
                     attention_kernel_sizes=attention_kernel_sizes,
                     attention_kernel_paddings=attention_kernel_paddings,
