@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # Originally from https://github.com/visual-attention-network/segnext
+# Licensed under the Apache License, Version 2.0 (the "License")
 import math
 import warnings
 
@@ -38,15 +39,15 @@ class Mlp(BaseModule):
     """Multi Layer Perceptron (MLP) Module.
 
     Args:
-    in_features (int): The dimension of input features.
-    hidden_features (int): The dimension of hidden features.
-        Defaults: None.
-    out_features (int): The dimension of output features.
-        Defaults: None.
-    act_cfg (dict | None): Config dict for activation layer in block.
-        Default: dict(type='GELU').
-    drop (float): The number of dropout rate in MLP block.
-        Defaults: 0.0.
+        in_features (int): The dimension of input features.
+        hidden_features (int): The dimension of hidden features.
+            Defaults: None.
+        out_features (int): The dimension of output features.
+            Defaults: None.
+        act_cfg (dict | None): Config dict for activation layer in block.
+            Default: dict(type='GELU').
+        drop (float): The number of dropout rate in MLP block.
+            Defaults: 0.0.
     """
 
     def __init__(self,
@@ -87,12 +88,12 @@ class StemConv(BaseModule):
     """Stem Block at the beginning of Semantic Branch.
 
     Args:
-    in_channels (int): The dimension of input channels.
-    out_channels (int): The dimension of output channels.
-    act_cfg (dict | None): Config dict for activation layer in block.
-        Default: dict(type='GELU').
-    norm_cfg (dict, optional): Config dict for normalization layer.
-        Defaults: dict(type='SyncBN', requires_grad=True).
+        in_channels (int): The dimension of input channels.
+        out_channels (int): The dimension of output channels.
+        act_cfg (dict | None): Config dict for activation layer in block.
+            Default: dict(type='GELU').
+        norm_cfg (dict, optional): Config dict for normalization layer.
+            Defaults: dict(type='SyncBN', requires_grad=True).
     """
 
     def __init__(self,
@@ -143,17 +144,17 @@ class AttentionModule(BaseModule):
 
     Args:
         channels (int): The dimension of channels.
-        kernel_sizes (List[int | Tuple]): The size of attention
-            kernel. Defaults: [5, (1, 7), (1, 11), (1, 21)].
-        kernel_paddings (List[int | Tuple]): The number of
+        kernel_sizes (List[int | List[int]]): The size of attention
+            kernel. Defaults: [5, [1, 7], [1, 11], [1, 21]].
+        kernel_paddings (List[int | List[int]]): The number of
             corresponding padding value in attention module.
-            Defaults: [2, (0, 3), (0, 5), (0, 10)].
+            Defaults: [2, [0, 3], [0, 5], [0, 10]].
     """
 
     def __init__(self,
                  channels,
-                 kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
-                 kernel_paddings=[2, (0, 3), (0, 5), (0, 10)]):
+                 kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
+                 kernel_paddings=[2, [0, 3], [0, 5], [0, 10]]):
         super().__init__()
         for index_a, kernel_size in enumerate(kernel_sizes):
             if index_a == 0:
@@ -163,11 +164,11 @@ class AttentionModule(BaseModule):
                     nn.Conv2d(
                         channels,
                         channels,
-                        kernel_sizes[index_a][index_a],
+                        kernel_sizes[index_a],
                         padding=kernel_paddings[index_a],
                         groups=channels))
             else:
-                for index_b, k in enumerate(kernel_size):
+                for index_b, _ in enumerate(kernel_size):
                     conv_name = f'conv{index_a-1}_{index_b+1}'
                     if index_b == 0:
                         kernel_size = (kernel_sizes[index_a][0],
@@ -222,19 +223,19 @@ class SpatialAttention(BaseModule):
 
     Args:
         in_channels (int): The dimension of channels.
-        attention_kernel_sizes (List[int | Tuple]): The size of attention
-            kernel. Defaults: [5, (1, 7), (1, 11), (1, 21)].
-        attention_kernel_paddings (List[int | Tuple]): The number of
+        attention_kernel_sizes (List[int | List[int]]): The size of attention
+            kernel. Defaults: [5, [1, 7], [1, 11], [1, 21]].
+        attention_kernel_paddings (List[int | List[int]]): The number of
             corresponding padding value in attention module.
-            Defaults: [2, (0, 3), (0, 5), (0, 10)].
+            Defaults: [2, [0, 3], [0, 5], [0, 10]].
         act_cfg (dict | None): Config dict for activation layer in block.
             Default: dict(type='GELU').
     """
 
     def __init__(self,
                  in_channels,
-                 attention_kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
-                 attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
+                 attention_kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
+                 attention_kernel_paddings=[2, [0, 3], [0, 5], [0, 10]],
                  act_cfg=dict(type='GELU')):
         super().__init__()
         self.proj_1 = nn.Conv2d(in_channels, in_channels, 1)
@@ -270,11 +271,11 @@ class Block(BaseModule):
 
     Args:
         channels (int): The dimension of channels.
-        attention_kernel_sizes (List[int | Tuple]): The size of attention
-            kernel. Defaults: [5, (1, 7), (1, 11), (1, 21)].
-        attention_kernel_paddings (List[int | Tuple]): The number of
+        attention_kernel_sizes (List[int | List[int]]): The size of attention
+            kernel. Defaults: [5, [1, 7], [1, 11], [1, 21]].
+        attention_kernel_paddings (List[int | List[int]]): The number of
             corresponding padding value in attention module.
-            Defaults: [2, (0, 3), (0, 5), (0, 10)].
+            Defaults: [2, [0, 3], [0, 5], [0, 10]].
         mlp_ratio (float): The ratio of multiple input dimension to
             calculate hidden feature in MLP layer. Defaults: 4.0.
         drop (float): The number of dropout rate in MLP block.
@@ -289,8 +290,8 @@ class Block(BaseModule):
 
     def __init__(self,
                  channels,
-                 attention_kernel_sizes=[5, (1, 7), (1, 11), (1, 21)],
-                 attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
+                 attention_kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
+                 attention_kernel_paddings=[2, [0, 3], [0, 5], [0, 10]],
                  mlp_ratio=4.,
                  drop=0.,
                  drop_path=0.,
@@ -417,10 +418,10 @@ class MSCAN(BaseModule):
         num_stages (int): MSCAN stages. Default: 4.
         attention_kernel_sizes (list): Size of attention kernel in
             Attention Module (Figure 2(b) of original paper).
-            Defaults: [[5], [1, 7], [1, 11], [1, 21]].
+            Defaults: [5, [1, 7], [1, 11], [1, 21]].
         attention_kernel_paddings (list): Size of attention paddings
             in Attention Module (Figure 2(b) of original paper).
-            Defaults: [2, (0, 3), (0, 5), (0, 10)].
+            Defaults: [2, [0, 3], [0, 5], [0, 10]].
         norm_cfg (dict | None): Config of norm layers.
             Defaults: dict(type='SyncBN', requires_grad=True).
         pretrained (str, optional): model pretrained path.
@@ -437,8 +438,8 @@ class MSCAN(BaseModule):
                  drop_path_rate=0.,
                  depths=[3, 4, 6, 3],
                  num_stages=4,
-                 attention_kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
-                 attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
+                 attention_kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
+                 attention_kernel_paddings=[2, [0, 3], [0, 5], [0, 10]],
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='SyncBN', requires_grad=True),
                  pretrained=None,

@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # Originally from https://github.com/visual-attention-network/segnext
+# Licensed under the Apache License, Version 2.0 (the "License")
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

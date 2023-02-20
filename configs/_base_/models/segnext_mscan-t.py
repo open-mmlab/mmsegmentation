@@ -10,8 +10,8 @@ model = dict(
         drop_rate=0.0,
         drop_path_rate=0.1,
         depths=[3, 3, 5, 2],
-        attention_kernel_sizes=[[5], [1, 7], [1, 11], [1, 21]],
-        attention_kernel_paddings=[2, (0, 3), (0, 5), (0, 10)],
+        attention_kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
+        attention_kernel_paddings=[2, [0, 3], [0, 5], [0, 10]],
         act_cfg=dict(type='GELU'),
         norm_cfg=dict(type='SyncBN', requires_grad=True)),
     decode_head=dict(

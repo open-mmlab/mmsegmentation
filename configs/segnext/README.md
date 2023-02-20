@@ -48,10 +48,18 @@ The pretrained model could be found [here](https://cloud.tsinghua.edu.cn/d/c15b2
 
 Note:
 
-- The total batch sizes are 16. We only adopt single GPU training for SegNeXt because SyncBN (mainly in `OverlapPatchEmbed` modules of `MSCAN`) of certain PyTorch version (such as PyTorch 1.9) would result in bad performance.
+- The total batch size is 16. We trained for SegNeXt with a single GPU  as the performance degrades significantly when using`SyncBN` (mainly in `OverlapPatchEmbed` modules of `MSCAN`) of PyTorch 1.9.
 
 - `Inf time (fps)` is collected from A100.
 
-- To re-implement the same results in training logs with our provided ckpts, the random seeds must be set identically because Non-negative Matrix Factorization (NMF) in `LightHamHead` would generate initialization values by random seed.
+- There will be subtle differences when model testing as Non-negative Matrix Factorization (NMF) in `LightHamHead` will be initialized randomly. To control this randomness, please set the random seed when model testing. You can modify [`./tools/test.py`](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/test.py) like:
+
+```python
+def main():
+    from mmseg.apis import set_random_seed
+    random_seed = xxx # set random seed recorded in training log
+    set_random_seed(random_seed, deterministic=False)
+    ...
+```
 
 - This model performance is sensitive to the seed values used, please refer to the log file for the specific settings of the seed. If you choose a different seed, the results might differ from the table results. Take SegNeXt Large for example, its results range from 49.60 to 51.0.
