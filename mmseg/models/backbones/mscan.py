@@ -205,8 +205,9 @@ class MSCAAttention(BaseModule):
         return x
 
 
-class SpatialAttention(BaseModule):
-    """Spatial Attention Module.
+class MSCASpatialAttention(BaseModule):
+    """Spatial Attention Module in Multi-Scale Convolutional Attention Module
+    (MSCA).
 
     Args:
         in_channels (int): The dimension of channels.
@@ -286,8 +287,8 @@ class MSCABlock(BaseModule):
                  norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super().__init__()
         self.norm1 = build_norm_layer(norm_cfg, channels)[1]
-        self.attn = SpatialAttention(channels, attention_kernel_sizes,
-                                     attention_kernel_paddings, act_cfg)
+        self.attn = MSCASpatialAttention(channels, attention_kernel_sizes,
+                                         attention_kernel_paddings, act_cfg)
         self.drop_path = DropPath(
             drop_path) if drop_path > 0. else nn.Identity()
         self.norm2 = build_norm_layer(norm_cfg, channels)[1]

@@ -2,8 +2,8 @@
 import torch
 
 from mmseg.models.backbones import MSCAN
-from mmseg.models.backbones.mscan import (AttentionModule, OverlapPatchEmbed,
-                                          SpatialAttention, StemConv)
+from mmseg.models.backbones.mscan import (MSCAAttention, MSCASpatialAttention,
+                                          OverlapPatchEmbed, StemConv)
 
 
 def test_mscan_backbone():
@@ -42,7 +42,7 @@ def test_mscan_overlap_patch_embed_module():
 
 
 def test_mscan_spatial_attention_module():
-    x_spatial_attention = SpatialAttention(8)
+    x_spatial_attention = MSCASpatialAttention(8)
     assert x_spatial_attention.proj_1.kernel_size == (1, 1)
     assert x_spatial_attention.proj_2.stride == (1, 1)
     x = torch.randn(2, 8, 16, 32)
@@ -51,7 +51,7 @@ def test_mscan_spatial_attention_module():
 
 
 def test_mscan_attention_module():
-    x_attention = AttentionModule(8)
+    x_attention = MSCAAttention(8)
     assert x_attention.conv0.weight.shape[0] == 8
     assert x_attention.conv3.kernel_size == (1, 1)
     x = torch.randn(2, 8, 16, 32)
