@@ -57,9 +57,9 @@ class TestLoading:
         results = transform(copy.deepcopy(results))
         assert results['gt_seg_map'].shape == (288, 512)
         assert results['gt_seg_map'].dtype == np.uint8
-        # assert repr(transform) == transform.__class__.__name__ + \
-        #     "(reduce_zero_label=True, imdecode_backend='pillow', " + \
-        #     "backend_args={'backend': 'local'})"
+        assert repr(transform) == transform.__class__.__name__ + \
+            "(reduce_zero_label=True, imdecode_backend='pillow', " + \
+            'backend_args=None)'
 
         # reduce_zero_label
         transform = LoadAnnotations(reduce_zero_label=True)
@@ -241,7 +241,7 @@ class TestLoading:
                                    "decode_backend='nifti', "
                                    'to_xyz=False, '
                                    'to_float32=True, '
-                                   "backend_args={'backend': 'local'})")
+                                   'backend_args=None)')
 
     def test_load_biomedical_annotation(self):
         results = dict(
@@ -265,7 +265,7 @@ class TestLoading:
                                    'with_seg=True, '
                                    "decode_backend='numpy', "
                                    'to_xyz=False, '
-                                   "backend_args={'backend': 'local'})")
+                                   'backend_args=None)')
 
         transform = LoadBiomedicalData(with_seg=False)
         results = transform(copy.deepcopy(input_results))
@@ -275,4 +275,4 @@ class TestLoading:
                                    'with_seg=False, '
                                    "decode_backend='numpy', "
                                    'to_xyz=False, '
-                                   "backend_args={'backend': 'local'})")
+                                   'backend_args=None)')
