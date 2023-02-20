@@ -61,9 +61,9 @@ jobs:
           command: |
             pip install git+https://github.com/open-mmlab/mmengine.git@main
             pip install -U openmim
-            mim install 'mmcv==2.0.0rc3'
+            mim install 'mmcv>=2.0.0rc4'
             pip install git+https://github.com/open-mmlab/mmclassification@dev-1.x
-            mim install 'mmdet==3.0.0rc5'
+            pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
             pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
@@ -97,6 +97,7 @@ jobs:
           command: |
             git clone -b main --depth 1 https://github.com/open-mmlab/mmengine.git /home/circleci/mmengine
             git clone -b dev-1.x --depth 1 https://github.com/open-mmlab/mmclassification.git /home/circleci/mmclassification
+            git clone -b dev-3.x --depth 1 https://github.com/open-mmlab/mmdetection.git /home/circleci/mmdetection
       - run:
           name: Build Docker image
           command: |
@@ -107,9 +108,9 @@ jobs:
           command: |
             docker exec mmseg pip install -e /mmengine
             docker exec mmseg pip install -U openmim
-            docker exec mmseg mim install 'mmcv==2.0.0rc3'
+            docker exec mmseg mim install 'mmcv>=2.0.0rc4'
             docker exec mmseg pip install -e /mmclassification
-            docker exec mmseg mim install 'mmdet==3.0.0rc5'
+            docker exec mmseg pip install -e /mmdetection
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install

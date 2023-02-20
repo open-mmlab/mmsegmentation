@@ -2,14 +2,14 @@
 import os
 import os.path as osp
 import tempfile
-from unittest.mock import MagicMock
 
 import pytest
 
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
                             COCOStuffDataset, DecathlonDataset, ISPRSDataset,
                             LIPDataset, LoveDADataset, PascalVOCDataset,
-                            PotsdamDataset, SynapseDataset, iSAIDDataset)
+                            PotsdamDataset, REFUGEDataset, SynapseDataset,
+                            iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
@@ -233,6 +233,19 @@ def test_synapse():
     assert len(test_dataset) == 2
 
 
+def test_refuge():
+    test_dataset = REFUGEDataset(
+        pipeline=[],
+        data_prefix=dict(
+            img_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_refuge_dataset/img_dir'),
+            seg_map_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_refuge_dataset/ann_dir')))
+    assert len(test_dataset) == 1
+
+
 def test_isaid():
     test_dataset = iSAIDDataset(
         pipeline=[],
@@ -300,17 +313,15 @@ def test_lip():
 def test_custom_classes_override_default(dataset, classes):
 
     dataset_class = DATASETS.get(dataset)
-    if isinstance(dataset_class, PascalVOCDataset):
-        tmp_file = tempfile.NamedTemporaryFile()
-        ann_file = f'{tmp_file.name}.txt'
-    else:
-        ann_file = MagicMock()
-
     original_classes = dataset_class.METAINFO.get('classes', None)
+
+    tmp_file = tempfile.NamedTemporaryFile()
+    ann_file = tmp_file.name
+    img_path = tempfile.mkdtemp()
 
     # Test setting classes as a tuple
     custom_dataset = dataset_class(
-        data_prefix=dict(img_path=MagicMock()),
+        data_prefix=dict(img_path=img_path),
         ann_file=ann_file,
         metainfo=dict(classes=classes),
         test_mode=True,
@@ -323,7 +334,7 @@ def test_custom_classes_override_default(dataset, classes):
 
     # Test setting classes as a list
     custom_dataset = dataset_class(
-        data_prefix=dict(img_path=MagicMock()),
+        data_prefix=dict(img_path=img_path),
         ann_file=ann_file,
         metainfo=dict(classes=list(classes)),
         test_mode=True,
@@ -337,7 +348,7 @@ def test_custom_classes_override_default(dataset, classes):
     # Test overriding not a subset
     custom_dataset = dataset_class(
         ann_file=ann_file,
-        data_prefix=dict(img_path=MagicMock()),
+        data_prefix=dict(img_path=img_path),
         metainfo=dict(classes=[classes[0]]),
         test_mode=True,
         lazy_init=True)
@@ -352,13 +363,13 @@ def test_custom_classes_override_default(dataset, classes):
         with pytest.raises(AssertionError):
             custom_dataset = dataset_class(
                 ann_file=ann_file,
-                data_prefix=dict(img_path=MagicMock()),
+                data_prefix=dict(img_path=img_path),
                 metainfo=None,
                 test_mode=True,
                 lazy_init=True)
     else:
         custom_dataset = dataset_class(
-            data_prefix=dict(img_path=MagicMock()),
+            data_prefix=dict(img_path=img_path),
             ann_file=ann_file,
             metainfo=None,
             test_mode=True,
@@ -371,8 +382,8 @@ def test_custom_classes_override_default(dataset, classes):
 def test_custom_dataset_random_palette_is_generated():
     dataset = BaseSegDataset(
         pipeline=[],
-        data_prefix=dict(img_path=MagicMock()),
-        ann_file=MagicMock(),
+        data_prefix=dict(img_path=tempfile.mkdtemp()),
+        ann_file=tempfile.mkdtemp(),
         metainfo=dict(classes=('bus', 'car')),
         lazy_init=True,
         test_mode=True)
@@ -384,8 +395,8 @@ def test_custom_dataset_random_palette_is_generated():
 
 def test_custom_dataset_custom_palette():
     dataset = BaseSegDataset(
-        data_prefix=dict(img_path=MagicMock()),
-        ann_file=MagicMock(),
+        data_prefix=dict(img_path=tempfile.mkdtemp()),
+        ann_file=tempfile.mkdtemp(),
         metainfo=dict(
             classes=('bus', 'car'), palette=[[100, 100, 100], [200, 200,
                                                                200]]),
@@ -396,7 +407,7 @@ def test_custom_dataset_custom_palette():
     # test custom class and palette don't match
     with pytest.raises(ValueError):
         dataset = BaseSegDataset(
-            data_prefix=dict(img_path=MagicMock()),
-            ann_file=MagicMock(),
+            data_prefix=dict(img_path=tempfile.mkdtemp()),
+            ann_file=tempfile.mkdtemp(),
             metainfo=dict(classes=('bus', 'car'), palette=[[200, 200, 200]]),
             lazy_init=True)
