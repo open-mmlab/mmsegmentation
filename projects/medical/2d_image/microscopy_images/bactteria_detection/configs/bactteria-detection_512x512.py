@@ -1,5 +1,5 @@
 dataset_type = 'BactteriaDetectionDataset'
-data_root = 'data/bactteria_detection'
+data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),

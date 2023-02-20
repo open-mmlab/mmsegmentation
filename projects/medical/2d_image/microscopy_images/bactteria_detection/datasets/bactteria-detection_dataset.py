@@ -7,7 +7,6 @@ class BactteriaDetectionDataset(BaseSegDataset):
     """BactteriaDetectionDataset dataset.
 
     In segmentation map annotation for BactteriaDetectionDataset,
-    0 stands for background, which is included in 3 categories.
     ``reduce_zero_label`` is fixed to False. The ``img_suffix``
     is fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
 

@@ -15,4 +15,3 @@ model = dict(
     test_cfg=dict(mode='whole', _delete_=True))
 vis_backends = None
 visualizer = dict(vis_backends=vis_backends)
-work_dir = 'projects/bactteria_detection/work_dirs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_bactteria-detection-512x512/'  # noqa
