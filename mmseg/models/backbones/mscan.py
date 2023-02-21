@@ -143,36 +143,30 @@ class MSCAAttention(BaseModule):
                  kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
                  kernel_paddings=[2, [0, 3], [0, 5], [0, 10]]):
         super().__init__()
-        for index_a, kernel_size in enumerate(kernel_sizes):
-            if index_a == 0:
-                conv_name = f'conv{index_a}'
+        self.conv0 = nn.Conv2d(
+            channels,
+            channels,
+            kernel_size=kernel_sizes[0],
+            padding=kernel_paddings[0],
+            groups=channels)
+        for index_a, kernel_size in enumerate(kernel_sizes[1::]):
+            for index_b, _ in enumerate(kernel_size):
+                conv_name = f'conv{index_a}_{index_b+1}'
+                kernel_size = tuple(kernel_sizes[1::][index_a])
+                padding = kernel_paddings[1::][index_a]
+                if index_b != 0:
+                    # reverse kernel size and padding
+                    # See Fig.2 (b) of original paper.
+                    kernel_size = reversed(kernel_size)
+                    padding = padding[::-1]
                 self.add_module(
                     conv_name,
                     nn.Conv2d(
                         channels,
                         channels,
-                        kernel_sizes[index_a],
-                        padding=kernel_paddings[index_a],
+                        kernel_size,
+                        padding=padding,
                         groups=channels))
-            else:
-                for index_b, _ in enumerate(kernel_size):
-                    conv_name = f'conv{index_a-1}_{index_b+1}'
-                    if index_b == 0:
-                        kernel_size = (kernel_sizes[index_a][0],
-                                       kernel_sizes[index_a][1])
-                        padding = kernel_paddings[index_a]
-                    else:
-                        kernel_size = (kernel_sizes[index_a][1],
-                                       kernel_sizes[index_a][0])
-                        padding = kernel_paddings[index_a][::-1]
-                    self.add_module(
-                        conv_name,
-                        nn.Conv2d(
-                            channels,
-                            channels,
-                            kernel_size,
-                            padding=padding,
-                            groups=channels))
         self.conv3 = nn.Conv2d(channels, channels, 1)
 
     def forward(self, x):
@@ -187,6 +181,7 @@ class MSCAAttention(BaseModule):
 
         attn = self.conv0(x)
 
+        # Multi-Scale Feature extraction
         attn_0 = self.conv0_1(attn)
         attn_0 = self.conv0_2(attn_0)
 
@@ -197,9 +192,10 @@ class MSCAAttention(BaseModule):
         attn_2 = self.conv2_2(attn_2)
 
         attn = attn + attn_0 + attn_1 + attn_2
-
+        # Channel Mixing
         attn = self.conv3(attn)
 
+        # Convolutional Attention
         x = attn * u
 
         return x
