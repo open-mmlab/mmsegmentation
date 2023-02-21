@@ -152,19 +152,19 @@ class MSCAAttention(BaseModule):
         for index_a, kernel_size in enumerate(kernel_sizes[1::]):
             for index_b, _ in enumerate(kernel_size):
                 conv_name = f'conv{index_a}_{index_b+1}'
-                kernel_size = tuple(kernel_sizes[1::][index_a])
+                kernel_size = kernel_sizes[1::][index_a]
                 padding = kernel_paddings[1::][index_a]
                 if index_b != 0:
                     # reverse kernel size and padding
                     # See Fig.2 (b) of original paper.
-                    kernel_size = reversed(kernel_size)
+                    kernel_size = kernel_size[::-1]
                     padding = padding[::-1]
                 self.add_module(
                     conv_name,
                     nn.Conv2d(
                         channels,
                         channels,
-                        kernel_size,
+                        tuple(kernel_size),
                         padding=padding,
                         groups=channels))
         self.conv3 = nn.Conv2d(channels, channels, 1)
