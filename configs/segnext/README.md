@@ -48,7 +48,7 @@ The pretrained model could be found [here](https://cloud.tsinghua.edu.cn/d/c15b2
 
 Note:
 
-- The total batch size is 16. We trained for SegNeXt with a single GPU  as the performance degrades significantly when using`SyncBN` (mainly in `OverlapPatchEmbed` modules of `MSCAN`) of PyTorch 1.9.
+- The total batch size is 16. We trained for SegNeXt with a single GPU as the performance degrades significantly when using`SyncBN` (mainly in `OverlapPatchEmbed` modules of `MSCAN`) of PyTorch 1.9.
 
 - `Inf time (fps)` is collected from A100.
 
