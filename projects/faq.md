@@ -12,7 +12,7 @@ Reaching the first milestone means that this project suffices the minimum requir
 
 Q4: Compared to other models in the core packages, why do the model implementations in projects have different training/testing commands?
 
-Projects are organized independently from the core package, and therefore their modules cannot be directly imported by train.py and test.py. Each model implementation in projects should either use `mim` to for training/testing as suggested in the example project, or provide a custom train.py/test.py.
+Projects are organized independently from the core package, and therefore their modules cannot be directly imported by train.py and test.py. Each model implementation in projects should either use `mim` for training/testing as suggested in the example project or provide a custom train.py/test.py.
 
 Q5: How to debug a project with a debugger?
 
