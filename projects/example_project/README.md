@@ -1,13 +1,16 @@
 # Dummy ResNet Wrapper
 
 > A README.md template for releasing a project
+>
 > All the fields in this README are **mandatory** for others to understand what you have achieved in this implementation.
 > Please read our [Projects FAQ](../faq.md) if you still feel unclear about the requirements, or raise an [issue](https://github.com/open-mmlab/mmsegmentation/issues) to us!
 
 ## Description
 
 > Share any information you would like others to know. For example:
+>
 > Author: @xxx.
+>
 > This is an implementation of \[XXX\].
 
 Author： @xxx.
