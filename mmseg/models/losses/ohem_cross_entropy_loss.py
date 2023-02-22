@@ -48,12 +48,12 @@ class OhemCrossEntropy(nn.Module):
 
     def forward(self, score: Tensor, target: Tensor) -> Tensor:
         pred = F.softmax(score, dim=1)
-        if self.loss_weight is not None:
-            class_weight = score.new_tensor(self.class_weight)
+        # if self.class_weight is not None:
+        #     class_weight = score.new_tensor(self.class_weight)
         pixel_losses = F.cross_entropy(
             score,
             target,
-            weight=class_weight,
+            weight=self.class_weight,
             ignore_index=self.ignore_label,
             reduction='none').contiguous().view(-1)
         mask = target.contiguous().view(-1) != self.ignore_label
