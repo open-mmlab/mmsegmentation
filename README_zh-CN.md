@@ -82,7 +82,8 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 测试结果和模型可以在[模型库](docs/zh_cn/model_zoo.md)中找到。
 
-已支持的骨干网络：
+<details open>
+<summary>已支持的骨干网络：</summary>
 
 - [x] ResNet (CVPR'2016)
 - [x] ResNeXt (CVPR'2017)
@@ -98,7 +99,10 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [MAE (CVPR'2022)](configs/mae)
 - [x] [PoolFormer (CVPR'2022)](configs/poolformer)
 
-已支持的算法：
+</details>
+
+<details open>
+<summary>已支持的算法：</summary>
 
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
 - [x] [ERFNet (T-ITS'2017)](configs/erfnet)
@@ -137,7 +141,10 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 
-已支持的数据集：
+</details>
+
+<details open>
+<summary>已支持的数据集：</summary>
 
 - [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/zh_cn/dataset_prepare.md#cityscapes)
 - [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/zh_cn/dataset_prepare.md#pascal-voc)
@@ -156,7 +163,14 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/zh_cn/dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/zh_cn/dataset_prepare.md#isaid)
 
+</details>
+
 如果遇到问题，请参考 [常见问题解答](docs/zh_cn/notes/faq.md)。
+
+## 社区项目
+
+[这里](projects/README.md)有一些由社区用户支持和维护的基于 MMSegmentation 的 SOTA 模型和解决方案的实现。这些项目展示了基于 MMSegmentation 的研究和产品开发的最佳实践。
+我们欢迎并感谢对 OpenMMLab 生态系统的所有贡献。
 
 ## 贡献指南
 
@@ -164,7 +178,7 @@ MMSegmentation 是一个基于 PyTorch 的语义分割开源工具箱。它是 O
 
 ## 致谢
 
-MMSegmentation 是一个由来自不同高校和企业的研发人员共同参与贡献的开源项目。我们感谢所有为项目提供算法复现和新功能支持的贡献者，以及提供宝贵反馈的用户。 我们希望这个工具箱和基准测试可以为社区提供灵活的代码工具，供用户复现已有算法并开发自己的新模型，从而不断为开源社区提供贡献。
+MMSegmentation 是一个由来自不同高校和企业的研发人员共同参与贡献的开源项目。我们感谢所有为项目提供算法复现和新功能支持的贡献者，以及提供宝贵反馈的用户。我们希望这个工具箱和基准测试可以为社区提供灵活的代码工具，供用户复现已有算法并开发自己的新模型，从而不断为开源社区提供贡献。
 
 ## 引用
 
