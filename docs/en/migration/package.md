@@ -82,7 +82,7 @@ Here is the changes of `mmseg.apis`:
 |       Function        | Changes                                         |
 | :-------------------: | :---------------------------------------------- |
 |   `init_segmentor`    | Renamed to `init_model`                         |
-| `inference_segmentor` | Rename to `inference_segmentor`                 |
+| `inference_segmentor` | Rename to `inference_model`                     |
 | `show_result_pyplot`  | Implemented based on `SegLocalVisualizer`       |
 |     `train_model`     | Removed, use `runner.train` to train.           |
 |   `multi_gpu_test`    | Removed, use `runner.test` to test.             |

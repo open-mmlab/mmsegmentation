@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
-from typing import Dict, Union
+from typing import Dict, Optional, Union
 
 import mmcv
 import mmengine.fileio as fileio
@@ -56,14 +56,14 @@ class LoadAnnotations(MMCV_LoadAnnotations):
             Defaults to 'pillow'.
         backend_args (dict): Arguments to instantiate a file backend.
             See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
-            for details. Defaults to ``dict(backend='local')``
+            for details. Defaults to None.
             Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
     def __init__(
         self,
         reduce_zero_label=None,
-        backend_args=dict(backend='local'),
+        backend_args=None,
         imdecode_backend='pillow',
     ) -> None:
         super().__init__(
@@ -203,23 +203,21 @@ class LoadBiomedicalImageFromFile(BaseTransform):
         to_float32 (bool): Whether to convert the loaded image to a float32
             numpy array. If set to False, the loaded image is an float64 array.
             Defaults to True.
-        backend_args (dict): Arguments to instantiate a file backend.
+        backend_args (dict, Optional): Arguments to instantiate a file backend.
             See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
-            for details. Defaults to ``dict(backend='local')``
+            for details. Defaults to None.
             Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
-    def __init__(
-        self,
-        decode_backend: str = 'nifti',
-        to_xyz: bool = False,
-        to_float32: bool = True,
-        backend_args: dict = dict(backend='local')
-    ) -> None:
+    def __init__(self,
+                 decode_backend: str = 'nifti',
+                 to_xyz: bool = False,
+                 to_float32: bool = True,
+                 backend_args: Optional[dict] = None) -> None:
         self.decode_backend = decode_backend
         self.to_xyz = to_xyz
         self.to_float32 = to_float32
-        self.backend_args = backend_args.copy()
+        self.backend_args = backend_args.copy() if backend_args else None
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
@@ -295,24 +293,22 @@ class LoadBiomedicalAnnotation(BaseTransform):
         to_float32 (bool): Whether to convert the loaded seg map to a float32
             numpy array. If set to False, the loaded image is an float64 array.
             Defaults to True.
-        backend_args (dict): Arguments to instantiate a file backend.
+        backend_args (dict, Optional): Arguments to instantiate a file backend.
             See :class:`mmengine.fileio` for details.
-            Defaults to ``dict(backend='local')``.
+            Defaults to None.
             Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
-    def __init__(
-        self,
-        decode_backend: str = 'nifti',
-        to_xyz: bool = False,
-        to_float32: bool = True,
-        backend_args: dict = dict(backend='local')
-    ) -> None:
+    def __init__(self,
+                 decode_backend: str = 'nifti',
+                 to_xyz: bool = False,
+                 to_float32: bool = True,
+                 backend_args: Optional[dict] = None) -> None:
         super().__init__()
         self.decode_backend = decode_backend
         self.to_xyz = to_xyz
         self.to_float32 = to_float32
-        self.backend_args = backend_args.copy()
+        self.backend_args = backend_args.copy() if backend_args else None
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
@@ -384,23 +380,21 @@ class LoadBiomedicalData(BaseTransform):
             backend is 'nifti'. Defaults to 'nifti'.
         to_xyz (bool): Whether transpose data from Z, Y, X to X, Y, Z.
             Defaults to False.
-        backend_args (dict): Arguments to instantiate a file backend.
+        backend_args (dict, Optional): Arguments to instantiate a file backend.
             See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
-            for details. Defaults to ``dict(backend='local')``
+            for details. Defaults to None.
             Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
 
-    def __init__(
-        self,
-        with_seg=False,
-        decode_backend: str = 'numpy',
-        to_xyz: bool = False,
-        backend_args: dict = dict(backend='local')
-    ) -> None:  # noqa
+    def __init__(self,
+                 with_seg=False,
+                 decode_backend: str = 'numpy',
+                 to_xyz: bool = False,
+                 backend_args: Optional[dict] = None) -> None:  # noqa
         self.with_seg = with_seg
         self.decode_backend = decode_backend
         self.to_xyz = to_xyz
-        self.backend_args = backend_args.copy()
+        self.backend_args = backend_args.copy() if backend_args else None
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
