@@ -24,7 +24,7 @@ class Mlp(BaseModule):
             Defaults: None.
         out_features (int): The dimension of output features.
             Defaults: None.
-        act_cfg (dict | None): Config dict for activation layer in block.
+        act_cfg (dict): Config dict for activation layer in block.
             Default: dict(type='GELU').
         drop (float): The number of dropout rate in MLP block.
             Defaults: 0.0.
@@ -53,13 +53,6 @@ class Mlp(BaseModule):
         self.drop = nn.Dropout(drop)
 
     def forward(self, x):
-        """
-        Args:
-            x (Tensor): Has shape (B, C, H, W).
-
-        Returns:
-            x (Tensor): Has shape (B, C, H, W).
-        """
         x = self.fc1(x)
 
         x = self.dwconv(x)
@@ -77,9 +70,9 @@ class StemConv(BaseModule):
     Args:
         in_channels (int): The dimension of input channels.
         out_channels (int): The dimension of output channels.
-        act_cfg (dict | None): Config dict for activation layer in block.
+        act_cfg (dict): Config dict for activation layer in block.
             Default: dict(type='GELU').
-        norm_cfg (dict, optional): Config dict for normalization layer.
+        norm_cfg (dict): Config dict for normalization layer.
             Defaults: dict(type='SyncBN', requires_grad=True).
     """
 
@@ -109,17 +102,6 @@ class StemConv(BaseModule):
         )
 
     def forward(self, x):
-        """
-        Args:
-            x (Tensor): Has shape (B, C, H, W).
-                In most case, C is `in_channels`.
-
-        Returns:
-            tuple: Contains merged results and its spatial shape.
-                - x (Tensor): Has shape (B, out_h * out_w, embed_dims)
-                - H (int): Height of x.
-                - W (int): Width of x.
-        """
         x = self.proj(x)
         _, _, H, W = x.size()
         x = x.flatten(2).transpose(1, 2)
@@ -131,9 +113,9 @@ class MSCAAttention(BaseModule):
 
     Args:
         channels (int): The dimension of channels.
-        kernel_sizes (List[int | List[int]]): The size of attention
+        kernel_sizes (list): The size of attention
             kernel. Defaults: [5, [1, 7], [1, 11], [1, 21]].
-        kernel_paddings (List[int | List[int]]): The number of
+        paddings (list): The number of
             corresponding padding value in attention module.
             Defaults: [2, [0, 3], [0, 5], [0, 10]].
     """
@@ -141,42 +123,31 @@ class MSCAAttention(BaseModule):
     def __init__(self,
                  channels,
                  kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
-                 kernel_paddings=[2, [0, 3], [0, 5], [0, 10]]):
+                 paddings=[2, [0, 3], [0, 5], [0, 10]]):
         super().__init__()
         self.conv0 = nn.Conv2d(
             channels,
             channels,
             kernel_size=kernel_sizes[0],
-            padding=kernel_paddings[0],
+            padding=paddings[0],
             groups=channels)
-        for index_a, kernel_size in enumerate(kernel_sizes[1::]):
-            for index_b, _ in enumerate(kernel_size):
-                conv_name = f'conv{index_a}_{index_b+1}'
-                kernel_size = kernel_sizes[1::][index_a]
-                padding = kernel_paddings[1::][index_a]
-                if index_b != 0:
-                    # reverse kernel size and padding
-                    # See Fig.2 (b) of original paper.
-                    kernel_size = kernel_size[::-1]
-                    padding = padding[::-1]
+        for i, kernel_size in enumerate(kernel_sizes[1:]):
+            kernel_size = [kernel_sizes[i + 1], kernel_sizes[i + 1][::-1]]
+            padding = [paddings[i + 1], paddings[i + 1][::-1]]
+            conv_name = [f'conv{i}_1', f'conv{i}_2']
+            for i_kernel, i_pad, i_conv in zip(kernel_size, padding,
+                                               conv_name):
                 self.add_module(
-                    conv_name,
+                    i_conv,
                     nn.Conv2d(
                         channels,
                         channels,
-                        tuple(kernel_size),
-                        padding=padding,
+                        tuple(i_kernel),
+                        padding=i_pad,
                         groups=channels))
         self.conv3 = nn.Conv2d(channels, channels, 1)
 
     def forward(self, x):
-        """
-        Args:
-            x (Tensor): Has shape (B, C, H, W).
-
-        Returns:
-            x (Tensor): Has shape (B, C, H, W).
-        """
         u = x.clone()
 
         attn = self.conv0(x)
@@ -207,12 +178,12 @@ class MSCASpatialAttention(BaseModule):
 
     Args:
         in_channels (int): The dimension of channels.
-        attention_kernel_sizes (List[int | List[int]]): The size of attention
+        attention_kernel_sizes (list): The size of attention
             kernel. Defaults: [5, [1, 7], [1, 11], [1, 21]].
-        attention_kernel_paddings (List[int | List[int]]): The number of
+        attention_kernel_paddings (list): The number of
             corresponding padding value in attention module.
             Defaults: [2, [0, 3], [0, 5], [0, 10]].
-        act_cfg (dict | None): Config dict for activation layer in block.
+        act_cfg (dict): Config dict for activation layer in block.
             Default: dict(type='GELU').
     """
 
@@ -230,13 +201,6 @@ class MSCASpatialAttention(BaseModule):
         self.proj_2 = nn.Conv2d(in_channels, in_channels, 1)
 
     def forward(self, x):
-        """
-        Args:
-            x (Tensor): Has shape (B, C, H, W).
-
-        Returns:
-            x (Tensor): Has shape (B, C, H, W).
-        """
         shorcut = x.clone()
         x = self.proj_1(x)
         x = self.activation(x)
@@ -255,9 +219,9 @@ class MSCABlock(BaseModule):
 
     Args:
         channels (int): The dimension of channels.
-        attention_kernel_sizes (List[int | List[int]]): The size of attention
+        attention_kernel_sizes (list): The size of attention
             kernel. Defaults: [5, [1, 7], [1, 11], [1, 21]].
-        attention_kernel_paddings (List[int | List[int]]): The number of
+        attention_kernel_paddings (list): The number of
             corresponding padding value in attention module.
             Defaults: [2, [0, 3], [0, 5], [0, 10]].
         mlp_ratio (float): The ratio of multiple input dimension to
@@ -266,9 +230,9 @@ class MSCABlock(BaseModule):
             Defaults: 0.0.
         drop_path (float): The ratio of drop paths.
             Defaults: 0.0.
-        act_cfg (dict | None): Config dict for activation layer in block.
+        act_cfg (dict): Config dict for activation layer in block.
             Default: dict(type='GELU').
-        norm_cfg (dict, optional): Config dict for normalization layer.
+        norm_cfg (dict): Config dict for normalization layer.
             Defaults: dict(type='SyncBN', requires_grad=True).
     """
 
@@ -303,18 +267,6 @@ class MSCABlock(BaseModule):
             requires_grad=True)
 
     def forward(self, x, H, W):
-        """
-        Args:
-            x (Tensor): Has shape (B, H * W, C).
-            H (int): Height of x.
-            W (int): Width of x.
-
-        Returns:
-            tuple: Contains merged results and its spatial shape.
-                - x (Tensor): Has shape (B, out_h * out_w, embed_dims)
-                - H (int): Height of x.
-                - W (int): Width of x.
-        """
         B, N, C = x.shape
         x = x.permute(0, 2, 1).view(B, C, H, W)
         x = x + self.drop_path(
@@ -339,7 +291,7 @@ class OverlapPatchEmbed(BaseModule):
             Defaults: 3.
         embed_dims (int): The dimensions of embedding.
             Defaults: 768.
-        norm_cfg (dict, optional): Config dict for normalization layer.
+        norm_cfg (dict): Config dict for normalization layer.
             Defaults: dict(type='SyncBN', requires_grad=True).
     """
 
@@ -360,17 +312,6 @@ class OverlapPatchEmbed(BaseModule):
         self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
 
     def forward(self, x):
-        """
-        Args:
-            x (Tensor): Has shape (B, C, H, W).
-
-        Returns:
-            tuple: Contains merged results and its spatial shape.
-                - x (Tensor): Has shape (B, out_h * out_w, embed_dims)
-                - H (int): Height of x.
-                - W (int): Width of x.
-        """
-
         x = self.proj(x)
         _, _, H, W = x.shape
         x = self.norm(x)
@@ -391,7 +332,7 @@ class MSCAN(BaseModule):
 
     Args:
         in_channels (int): The number of input channels. Defaults: 3.
-        embed_dims (List[int]): Embedding dimension.
+        embed_dims (list[int]): Embedding dimension.
             Defaults: [64, 128, 256, 512].
         mlp_ratios (list[int]): Ratio of mlp hidden dim to embedding dim.
             Defaults: [4, 4, 4, 4].
@@ -406,7 +347,7 @@ class MSCAN(BaseModule):
         attention_kernel_paddings (list): Size of attention paddings
             in Attention Module (Figure 2(b) of original paper).
             Defaults: [2, [0, 3], [0, 5], [0, 10]].
-        norm_cfg (dict | None): Config of norm layers.
+        norm_cfg (dict): Config of norm layers.
             Defaults: dict(type='SyncBN', requires_grad=True).
         pretrained (str, optional): model pretrained path.
             Default: None.

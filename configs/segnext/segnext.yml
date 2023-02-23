@@ -21,7 +21,7 @@ Models:
     lr schd: 160000
     inference time (ms/im):
     - value: 19.09
-      hardware: V100
+      hardware: A100
       backend: PyTorch
       batch size: 1
       mode: FP32
@@ -43,7 +43,7 @@ Models:
     lr schd: 160000
     inference time (ms/im):
     - value: 23.66
-      hardware: V100
+      hardware: A100
       backend: PyTorch
       batch size: 1
       mode: FP32
@@ -65,7 +65,7 @@ Models:
     lr schd: 160000
     inference time (ms/im):
     - value: 28.45
-      hardware: V100
+      hardware: A100
       backend: PyTorch
       batch size: 1
       mode: FP32
@@ -87,7 +87,7 @@ Models:
     lr schd: 160000
     inference time (ms/im):
     - value: 43.65
-      hardware: V100
+      hardware: A100
       backend: PyTorch
       batch size: 1
       mode: FP32
