@@ -3,7 +3,6 @@ from argparse import ArgumentParser
 
 import cv2
 from mmengine.model.utils import revert_sync_batchnorm
-from mmengine.registry import init_default_scope
 
 from mmseg.apis import inference_model, init_model
 from mmseg.apis.inference import show_result_pyplot
@@ -49,8 +48,6 @@ def main():
         default=0.5,
         help='Opacity of painted segmentation map. In (0, 1] range.')
     args = parser.parse_args()
-
-    init_default_scope('mmseg')
 
     assert args.show or args.output_file, \
         'At least one output should be enabled.'
