@@ -5,12 +5,12 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 from mmengine.optim.optimizer import build_optim_wrapper
+from mmengine.registry import init_default_scope
 
 from mmseg.engine.optimizers.layer_decay_optimizer_constructor import \
     LearningRateDecayOptimizerConstructor
-from mmseg.utils import register_all_modules
 
-register_all_modules()
+init_default_scope('mmseg')
 
 base_lr = 1
 decay_rate = 2

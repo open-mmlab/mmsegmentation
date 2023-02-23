@@ -15,8 +15,8 @@ Instantiate Cityscapes training dataset:
 
 ```python
 from mmseg.datasets import CityscapesDataset
-from mmseg.utils import register_all_modules
-register_all_modules()
+from mmengine.registry import init_default_scope
+init_default_scope('mmseg')
 
 data_root = 'data/cityscapes/'
 data_prefix=dict(img_path='leftImg8bit/train', seg_map_path='gtFine/train')
