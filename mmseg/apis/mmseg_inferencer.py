@@ -18,7 +18,8 @@ PredType = Union[SegDataSample, SampleList]
 
 
 class MMSegInferencer(BaseInferencer):
-    """MMSegInferencer.
+    """Semantic segmentation inferencer, provides inference and visualization
+    interfaces. Note: MMEngine >= 0.5.0 is required.
 
     Args:
         model (str, optional): Path to the config file or the model name
