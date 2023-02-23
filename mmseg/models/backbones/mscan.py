@@ -53,6 +53,8 @@ class Mlp(BaseModule):
         self.drop = nn.Dropout(drop)
 
     def forward(self, x):
+        """Forward function."""
+
         x = self.fc1(x)
 
         x = self.dwconv(x)
@@ -102,6 +104,8 @@ class StemConv(BaseModule):
         )
 
     def forward(self, x):
+        """Forward function."""
+
         x = self.proj(x)
         _, _, H, W = x.size()
         x = x.flatten(2).transpose(1, 2)
@@ -148,6 +152,8 @@ class MSCAAttention(BaseModule):
         self.conv3 = nn.Conv2d(channels, channels, 1)
 
     def forward(self, x):
+        """Forward function."""
+
         u = x.clone()
 
         attn = self.conv0(x)
@@ -201,6 +207,8 @@ class MSCASpatialAttention(BaseModule):
         self.proj_2 = nn.Conv2d(in_channels, in_channels, 1)
 
     def forward(self, x):
+        """Forward function."""
+
         shorcut = x.clone()
         x = self.proj_1(x)
         x = self.activation(x)
@@ -267,6 +275,8 @@ class MSCABlock(BaseModule):
             requires_grad=True)
 
     def forward(self, x, H, W):
+        """Forward function."""
+
         B, N, C = x.shape
         x = x.permute(0, 2, 1).view(B, C, H, W)
         x = x + self.drop_path(
@@ -312,6 +322,8 @@ class OverlapPatchEmbed(BaseModule):
         self.norm = build_norm_layer(norm_cfg, embed_dim)[1]
 
     def forward(self, x):
+        """Forward function."""
+
         x = self.proj(x)
         _, _, H, W = x.shape
         x = self.norm(x)
@@ -418,6 +430,8 @@ class MSCAN(BaseModule):
             setattr(self, f'norm{i + 1}', norm)
 
     def init_weights(self):
+        """Initialize modules of MSCAN."""
+
         print('init cfg', self.init_cfg)
         if self.init_cfg is None:
             for m in self.modules():
@@ -435,6 +449,8 @@ class MSCAN(BaseModule):
             super(MSCAN, self).init_weights()
 
     def forward(self, x):
+        """Forward function."""
+
         B = x.shape[0]
         outs = []
 
