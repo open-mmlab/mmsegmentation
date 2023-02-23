@@ -17,7 +17,11 @@ The compatible MMSegmentation, MMCV and MMEngine versions are as below. Please i
 |        1.0.0rc1        | mmcv >= 2.0.0rc1, \<=2.0.0rc3> | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |          Not required          |
 |        1.0.0rc0        | mmcv >= 2.0.0rc1, \<=2.0.0rc3> | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |          Not required          |
 
-Notes: To install MMSegmentation 0.x and master branch, please refer to [the faq 0.x document](https://mmsegmentation.readthedocs.io/en/latest/faq.html#installation) to check compatible versions of MMCV.
+Notes: 
+
+- MMClassification and MMDetatction are optional for MMSegmentation. If you didn't install them, `ConvNeXt` (required MMClassification) and MaskFormer, Mask2Former (required MMDetection) cannot be used. Please refer to [MMClasssication](https://github.com/open-mmlab/mmclassification) and [MMDetection](https://github.com/open-mmlab/mmdetection) for more details about their installation
+
+- To install MMSegmentation 0.x and master branch, please refer to [the faq 0.x document](https://mmsegmentation.readthedocs.io/en/latest/faq.html#installation) to check compatible versions of MMCV.
 
 ## How to know the number of GPUs needed to train the model
 
