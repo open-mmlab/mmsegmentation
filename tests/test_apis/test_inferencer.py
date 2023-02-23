@@ -99,7 +99,7 @@ def test_inferencer():
     infer = MMSegInferencer(cfg, ckpt_filename)
 
     # test forward
-    img = np.random.randint(0, 256, (4, 4, 3)).astype(np.float32)
+    img = np.random.randint(0, 256, (4, 4, 3))
     infer(img)
 
     imgs = [img, img]
