@@ -1,0 +1,69 @@
+Models:
+- Name: fcn_mae-base_pretrained_fp16_8x32_224x224_3600_imagenets919
+  In Collection: FCN
+  Metadata:
+    backbone: ViT-B/16
+    crop size: (224,224)
+    lr schd: 3600
+    inference time (ms/im):
+    - value: 17.18
+      hardware: A100
+      backend: PyTorch
+      batch size: 32
+      mode: FP16
+      resolution: (224,224)
+    Training Memory (GB): 6.8
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S validation
+    Metrics:
+      mIoU: 40.4
+  Config: configs/imagenets/fcn_mae-base_pretrained_fp16_8x32_224x224_3600_imagenets919.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/imagenets/fcn_mae-base_pretrained_fp16_8x32_224x224_3600_imagenets919/fcn_mae-base_pretrained_fp16_8x32_224x224_3600_imagenets919_20230208_130849-b837aa90.pth
+- Name: fcn_mae-base_finetuned_fp16_8x32_224x224_3600_imagenets919
+  In Collection: FCN
+  Metadata:
+    backbone: ViT-B/16
+    crop size: (224,224)
+    lr schd: 3600
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S validation
+    Metrics:
+      mIoU: 61.7
+  Config: configs/imagenets/fcn_mae-base_finetuned_fp16_8x32_224x224_3600_imagenets919.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/imagenets/fcn_mae-base_finetuned_fp16_8x32_224x224_3600_imagenets919/fcn_mae-base_finetuned_fp16_8x32_224x224_3600_imagenets919_20230208_134621-16194326.pth
+- Name: fcn_sere-small_pretrained_fp16_8x32_224x224_3600_imagenets919
+  In Collection: FCN
+  Metadata:
+    backbone: ViT-S/16
+    crop size: (224,224)
+    lr schd: 3600
+    inference time (ms/im):
+    - value: 16.96
+      hardware: A100
+      backend: PyTorch
+      batch size: 32
+      mode: FP16
+      resolution: (224,224)
+    Training Memory (GB): 3.1
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S
+    Metrics:
+      mIoU: 40.9
+  Config: configs/imagenets/fcn_sere-small_pretrained_fp16_8x32_224x224_3600_imagenets919.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_3600_imagenets919/fcn_sere-small_finetuned_fp16_8x32_224x224_3600_imagenets919_20230208_151834-ee33230c.pth
+- Name: fcn_sere-small_finetuned_fp16_8x32_224x224_3600_imagenets919
+  In Collection: FCN
+  Metadata:
+    backbone: ViT-S/16
+    crop size: (224,224)
+    lr schd: 3600
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ImageNet-S
+    Metrics:
+      mIoU: 59.4
+  Config: configs/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_3600_imagenets919.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/imagenets/fcn_sere-small_finetuned_fp16_8x32_224x224_3600_imagenets919/fcn_sere-small_finetuned_fp16_8x32_224x224_3600_imagenets919_20230208_151834-ee33230c.pth
