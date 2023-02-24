@@ -1,11 +1,9 @@
 _base_ = [
-    '../_base_/datasets/mapillary_v2_0.py',
+    '../_base_/datasets/mapillary_v1_2_65.py',
     '../_base_/default_runtime.py',
 ]
-crop_size = (512, 1024)
-backbone_norm_cfg = dict(type='LN', requires_grad=True)
-depths = [2, 2, 18, 2]
-checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_small_patch4_window7_224_20220317-7ba6d6dd.pth'  # noqa
+norm_cfg = dict(type='SyncBN', requires_grad=True)
+crop_size = (1280, 1280)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
     size=crop_size,
@@ -13,37 +11,30 @@ data_preprocessor = dict(
     std=[58.395, 57.12, 57.375],
     bgr_to_rgb=True,
     pad_val=0,
-    seg_pad_val=255)
+    seg_pad_val=255,
+    #test_cfg=dict(size_divisor=1280)
+)
 # model_cfg
-num_classes = 124
+num_classes = 65
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
     backbone=dict(
-        type='SwinTransformer',
-        pretrain_img_size=224,
-        embed_dims=96,
-        patch_size=4,
-        window_size=7,
-        mlp_ratio=4,
-        depths=depths,
-        num_heads=[3, 6, 12, 24],
-        strides=(4, 2, 2, 2),
+        type='ResNet',
+        depth=50,
+        num_stages=4,
         out_indices=(0, 1, 2, 3),
-        qkv_bias=True,
-        qk_scale=None,
-        patch_norm=True,
-        drop_rate=0.,
-        attn_drop_rate=0.,
-        drop_path_rate=0.3,
-        use_abs_pos_embed=False,
-        act_cfg=dict(type='GELU'),
-        norm_cfg=backbone_norm_cfg,
-        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file)),
+        dilations=(1, 1, 1, 1),
+        strides=(1, 2, 2, 2),
+        norm_cfg=norm_cfg,
+        norm_eval=True,
+        style='pytorch',
+        contract_dilation=True,
+        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50')),
     decode_head=dict(
         type='MaskFormerHead',
-        in_channels=[96, 192, 384,
-                     768],  # input channels of pixel_decoder modules
+        in_channels=[256, 512, 1024,
+                     2048],  # input channels of pixel_decoder modules
         feat_channels=256,
         in_index=[0, 1, 2, 3],
         num_classes=num_classes,
@@ -124,29 +115,46 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'),
 )
+
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', max_index=64),
+    dict(
+        type='RandomChoiceResize',
+        scales=[int(2048 * x * 0.1) for x in range(5, 21)],
+        resize_type='ResizeShortestEdge',
+        max_size=8192),
+    dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
+    dict(type='RandomFlip', prob=0.5),
+    dict(type='PhotoMetricDistortion'),
+    dict(type='PackSegInputs')
+]
+train_dataloader = dict(dataset=dict(pipeline=train_pipeline))
+
+iters = 300000
 # optimizer
-optimizer = dict(type='AdamW', lr=6e-5, betas=(0.9, 0.999), weight_decay=0.01)
+optimizer = dict(
+    type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.0001)
+# optimizer
 optim_wrapper = dict(
     type='OptimWrapper',
     optimizer=optimizer,
     clip_grad=dict(max_norm=0.01, norm_type=2),
-    paramwise_cfg=dict(custom_keys={
-        'backbone': dict(lr_mult=0.1),
-    }))
-# learning policy
+    paramwise_cfg=dict(
+        custom_keys={'backbone': dict(lr_mult=0.1, decay_mult=1.0)}))
 param_scheduler = [
     dict(
         type='PolyLR',
         eta_min=0,
         power=0.9,
         begin=0,
-        end=240000,
+        end=iters,
         by_epoch=False)
 ]
 
-# training schedule for 240k
+# training schedule for 300k
 train_cfg = dict(
-    type='IterBasedTrainLoop', max_iters=240000, val_interval=24000)
+    type='IterBasedTrainLoop', max_iters=iters, val_interval=iters // 10)
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 
@@ -154,6 +162,13 @@ default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
     param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=24000),
+    checkpoint=dict(
+        type='CheckpointHook', by_epoch=False, interval=iters // 10),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
+
+# Default setting for scaling LR automatically
+#   - `enable` means enable scaling LR automatically
+#       or not by default.
+#   - `base_batch_size` = (8 GPUs) x (2 samples per GPU).
+auto_scale_lr = dict(enable=False, base_batch_size=16)
