@@ -135,11 +135,12 @@ class MSCAAttention(BaseModule):
             kernel_size=kernel_sizes[0],
             padding=paddings[0],
             groups=channels)
-        for i, kernel_size in enumerate(kernel_sizes[1:]):
-            kernel_size = [kernel_sizes[i + 1], kernel_sizes[i + 1][::-1]]
-            padding = [paddings[i + 1], paddings[i + 1][::-1]]
+        for i, kernel_size, padding in enumerate(
+                zip(kernel_sizes[1:], paddings[1:])):
+            kernel_size_ = [kernel_size, kernel_size[::-1]]
+            padding_ = [padding, padding[::-1]]
             conv_name = [f'conv{i}_1', f'conv{i}_2']
-            for i_kernel, i_pad, i_conv in zip(kernel_size, padding,
+            for i_kernel, i_pad, i_conv in zip(kernel_size_, padding_,
                                                conv_name):
                 self.add_module(
                     i_conv,
