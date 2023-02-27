@@ -1,0 +1,103 @@
+Collections:
+- Name: SegNeXt
+  Metadata:
+    Training Data:
+    - ADE20K
+  Paper:
+    URL: https://arxiv.org/abs/2209.08575
+    Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
+  README: configs/segnext/README.md
+  Code:
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.31.0/mmseg/models/backbones/mscan.py#L328
+    Version: v0.31.0
+  Converted From:
+    Code: https://github.com/visual-attention-network/segnext
+Models:
+- Name: ''
+  In Collection: SegNeXt
+  Metadata:
+    backbone: MSCAN-T
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 19.09
+      hardware: A100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 17.88
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.5
+      mIoU(ms+flip): 42.59
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: SegNeXt
+  Metadata:
+    backbone: MSCAN-S
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 23.66
+      hardware: A100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 21.47
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.16
+      mIoU(ms+flip): 45.81
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: SegNeXt
+  Metadata:
+    backbone: MSCAN-B
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 28.45
+      hardware: A100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 31.03
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.03
+      mIoU(ms+flip): 49.68
+  Config: ''
+  Weights: ''
+- Name: ''
+  In Collection: SegNeXt
+  Metadata:
+    backbone: MSCAN-L
+    crop size: (512,512)
+    lr schd: 160000
+    inference time (ms/im):
+    - value: 43.65
+      hardware: A100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,512)
+    Training Memory (GB): 43.32
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 50.99
+      mIoU(ms+flip): 52.1
+  Config: ''
+  Weights: ''
