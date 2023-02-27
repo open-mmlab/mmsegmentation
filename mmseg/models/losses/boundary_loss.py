@@ -11,7 +11,8 @@ from mmseg.registry import MODELS
 class BoundaryLoss(nn.Module):
     """Boundary loss.
 
-    This func is modified from `PIDNet <https://github.com/XuJiacong/PIDNet/blob/f0ac91cdea7bf0cb2077b65e960c5b98b9173b0f/utils/criterion.py#L122>`_.  # noqa
+    This function is modified from
+    `PIDNet <https://github.com/XuJiacong/PIDNet/blob/main/utils/criterion.py#L122>`_.  # noqa
 
 
     Args:
@@ -29,6 +30,14 @@ class BoundaryLoss(nn.Module):
         self.loss_name_ = loss_name
 
     def forward(self, bd_pre: Tensor, bd_gt: Tensor) -> Tensor:
+        """Forward function.
+            Args:
+                bd_pre (Tensor): Predictions of the boundary head.
+                bd_gt (Tensor): Ground truth of the boundary.
+
+            Returns:
+                Tensor: Loss tensor.
+        """
         log_p = bd_pre.permute(0, 2, 3, 1).contiguous().view(1, -1)
         target_t = bd_gt.view(1, -1).float()
 

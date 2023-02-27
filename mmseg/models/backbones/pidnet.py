@@ -15,7 +15,22 @@ from ..utils import DAPPM, PAPPM, BasicBlock, Bottleneck
 
 
 class PagFM(BaseModule):
-    """Pixel-attention-guided fusion module."""
+    """Pixel-attention-guided fusion module.
+
+    Args:
+         in_channels (int): The number of input channels.
+         channels (int): The number of channels.
+         after_relu (bool): Whether to use ReLU before attention.
+             Default: False.
+         with_channel (bool): Whether to use channel attention.
+             Default: False.
+         upsample_mode (str): The mode of upsample. Default: 'bilinear'.
+         norm_cfg (dict): Config dict for normalization layer.
+             Default: dict(type='BN').
+         act_cfg (dict): Config dict for activation layer.
+             Default: dict(typ='ReLU', inplace=True).
+         init_cfg (dict): Config dict for initialization. Default: None.
+    """
 
     def __init__(self,
                  in_channels: int,
@@ -70,7 +85,21 @@ class PagFM(BaseModule):
 
 
 class Bag(BaseModule):
-    """Boundary-attention-guided fusion module."""
+    """Boundary-attention-guided fusion module.
+
+    Args:
+         in_channels (int): The number of input channels.
+         out_channels (int): The number of output channels.
+         kernel_size (int): The kernel size of the convolution. Default: 3.
+         padding (int): The padding of the convolution. Default: 1.
+         norm_cfg (dict): Config dict for normalization layer.
+             Default: dict(type='BN').
+         act_cfg (dict): Config dict for activation layer.
+             Default: dict(type='ReLU', inplace=True).
+         conv_cfg (dict): Config dict for convolution layer.
+             Default: dict(order=('norm', 'act', 'conv')).
+         init_cfg (dict): Config dict for initialization. Default: None.
+    """
 
     def __init__(self,
                  in_channels: int,
@@ -98,7 +127,16 @@ class Bag(BaseModule):
 
 
 class LightBag(BaseModule):
-    """Light Boundary-attention-guided fusion module."""
+    """Light Boundary-attention-guided fusion module.
+
+    Args:
+         in_channels (int): The number of input channels.
+         out_channels (int): The number of output channels.
+         norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN').
+         act_cfg (dict): Config dict for activation layer. Default: None.
+         init_cfg (dict): Config dict for initialization. Default: None.
+    """
 
     def __init__(self,
                  in_channels: int,
@@ -131,6 +169,30 @@ class LightBag(BaseModule):
 
 @MODELS.register_module()
 class PIDNet(BaseModule):
+    """PIDNet backbone.
+
+    This backbone is the implementation of `PIDNet: A Real-time Semantic
+    Segmentation Network Inspired from PID Controller
+    <https://arxiv.org/abs/2206.02066>`_.
+    Inspiration from https://github.com/XuJiacong/PIDNet.
+
+    Args:
+        in_channels (int): The number of input channels. Default: 3.
+        channels (int): The number of channels in the stem layer. Default: 64.
+        ppm_channels (int): The number of channels in the PPM layer.
+            Default: 96.
+        num_stem_blocks (int): The number of blocks in the stem layer.
+            Default: 2.
+        num_branch_blocks (int): The number of blocks in the branch layer.
+            Default: 3.
+        align_corners (bool): The align_corners argument of F.interpolate.
+            Default: False.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN').
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='ReLU', inplace=True).
+        init_cfg (dict): Config dict for initialization. Default: None.
+    """
 
     def __init__(self,
                  in_channels: int = 3,
@@ -244,6 +306,16 @@ class PIDNet(BaseModule):
 
     def _make_stem_layer(self, in_channels: int, channels: int,
                          num_blocks: int) -> nn.Sequential:
+        """Make stem layer.
+            Args:
+                in_channels (int): Number of input channels.
+                channels (int): Number of output channels.
+                num_blocks (int): Number of blocks.
+
+            Returns:
+                Stem layer (nn.Sequential)
+        """
+
         layers = [
             ConvModule(
                 in_channels,
@@ -281,6 +353,17 @@ class PIDNet(BaseModule):
                     channels: int,
                     num_blocks: int,
                     stride: int = 1) -> nn.Sequential:
+        """Make layer for PIDNet backbone.
+            Args:
+                block (BasicBlock): Basic block.
+                in_channels (int): Number of input channels.
+                channels (int): Number of output channels.
+                num_blocks (int): Number of blocks.
+                stride (int): Stride of the first block. Default: 1.
+
+            Returns:
+                Layer (nn.Sequential).
+        """
         downsample = None
         if stride != 1 or in_channels != channels * block.expansion:
             downsample = ConvModule(
@@ -303,10 +386,21 @@ class PIDNet(BaseModule):
         return nn.Sequential(*layers)
 
     def _make_single_layer(self,
-                           block: BasicBlock,
+                           block: Union[BasicBlock, Bottleneck],
                            in_channels: int,
                            channels: int,
                            stride: int = 1) -> nn.Module:
+        """Make single layer for PIDNet backbone.
+            Args:
+                block (BasicBlock or Bottleneck): Basic block or Bottleneck.
+                in_channels (int): Number of input channels.
+                channels (int): Number of output channels.
+                stride (int): Stride of the first block. Default: 1.
+
+            Returns:
+                Layer (nn.Module).
+        """
+
         downsample = None
         if stride != 1 or in_channels != channels * block.expansion:
             downsample = ConvModule(
@@ -320,6 +414,11 @@ class PIDNet(BaseModule):
             in_channels, channels, stride, downsample, act_cfg_out=None)
 
     def init_weights(self):
+        """Initialize the weights in backbone.
+
+        Since the D branch is not initialized by the pre-trained model, we
+        initialize it with the same method as the ResNet.
+        """
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(

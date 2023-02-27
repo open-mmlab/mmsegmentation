@@ -12,7 +12,8 @@ from mmseg.registry import MODELS
 class OhemCrossEntropy(nn.Module):
     """OhemCrossEntropy loss.
 
-    This func is modified from `PIDNet <https://github.com/XuJiacong/PIDNet/blob/f0ac91cdea7bf0cb2077b65e960c5b98b9173b0f/utils/criterion.py#L43>`_.  # noqa
+    This func is modified from
+    `PIDNet <https://github.com/XuJiacong/PIDNet/blob/main/utils/criterion.py#L43>`_.  # noqa
 
     Args:
         ignore_label (int): Labels to ignore when computing the loss.
@@ -47,6 +48,15 @@ class OhemCrossEntropy(nn.Module):
         self.loss_name_ = loss_name
 
     def forward(self, score: Tensor, target: Tensor) -> Tensor:
+        """Forward function.
+            Args:
+                score (Tensor): Predictions of the segmentation head.
+                target (Tensor): Ground truth of the image.
+
+            Returns:
+                Tensor: Loss tensor.
+        """
+        # score: (N, C, H, W)
         pred = F.softmax(score, dim=1)
         if self.loss_weight is not None:
             class_weight = score.new_tensor(self.class_weight)
@@ -55,12 +65,14 @@ class OhemCrossEntropy(nn.Module):
             target,
             weight=class_weight,
             ignore_index=self.ignore_label,
-            reduction='none').contiguous().view(-1)
-        mask = target.contiguous().view(-1) != self.ignore_label
+            reduction='none').contiguous().view(-1)  # (N*H*W)
+        mask = target.contiguous().view(-1) != self.ignore_label  # (N*H*W)
 
-        tmp_target = target.clone()
+        tmp_target = target.clone()  # (N, H, W)
         tmp_target[tmp_target == self.ignore_label] = 0
+        # pred: (N, C, H, W) -> (N*H*W, C)
         pred = pred.gather(1, tmp_target.unsqueeze(1))
+        # pred: (N*H*W, C) -> (N*H*W), ind: (N*H*W)
         pred, ind = pred.contiguous().view(-1, )[mask].contiguous().sort()
         if pred.numel() > 0:
             min_value = pred[min(self.min_kept, pred.numel() - 1)]
