@@ -31,10 +31,6 @@ We present SegNeXt, a simple convolutional network architecture for semantic seg
 }
 ```
 
-## Pretrained model
-
-The pretrained model could be found [here](https://cloud.tsinghua.edu.cn/d/c15b25a6745946618462/) from [original repo](https://github.com/Visual-Attention-Network/SegNeXt). You can download and put them in `./pretrain` folder.
-
 ## Results and models
 
 ### ADE20K
@@ -47,6 +43,8 @@ The pretrained model could be found [here](https://cloud.tsinghua.edu.cn/d/c15b2
 | SegNeXt | MSCAN-L  | 512x512   | 160000  | 43.32    | 22.91          | 50.99 | 52.10         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/segnext/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k_20230209_172055-19b14b63.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k_20230209_172055.log.json) |
 
 Note:
+
+- The keys of our provided pretrained models are different from [original weights](https://cloud.tsinghua.edu.cn/d/c15b25a6745946618462/) released in [original repo](https://github.com/Visual-Attention-Network/SegNeXt), please use them correctly.
 
 - The total batch size is 16. We trained for SegNeXt with a single GPU as the performance degrades significantly when using`SyncBN` (mainly in `OverlapPatchEmbed` modules of `MSCAN`) of PyTorch 1.9.
 
