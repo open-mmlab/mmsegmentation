@@ -2,14 +2,14 @@
 import torch
 from mmengine import ConfigDict
 from mmengine.model import BaseTTAModel
+from mmengine.registry import init_default_scope
 from mmengine.structures import PixelData
 
 from mmseg.registry import MODELS
 from mmseg.structures import SegDataSample
-from mmseg.utils import register_all_modules
 from .utils import *  # noqa: F401,F403
 
-register_all_modules()
+init_default_scope('mmseg')
 
 
 def test_encoder_decoder_tta():
