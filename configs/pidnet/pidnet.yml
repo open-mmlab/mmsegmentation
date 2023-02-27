@@ -19,11 +19,20 @@ Models:
     backbone: PIDNet-S
     crop size: (1024,1024)
     lr schd: 120000
+    inference time (ms/im):
+    - value: 12.37
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 3466.0
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 78.44
+      mIoU(ms+flip): 80.82
   Config: configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes/pidnet-s_2xb6-120k_1024x1024-cityscapes_20221030_182724-3a9cfe45.pth
 - Name: pidnet-m_2xb6-120k_1024x1024-cityscapes
@@ -32,11 +41,20 @@ Models:
     backbone: PIDNet-M
     crop size: (1024,1024)
     lr schd: 120000
+    inference time (ms/im):
+    - value: 13.89
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 5260.0
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 79.75
+      mIoU(ms+flip): 81.85
   Config: configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes/pidnet_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053-84adbfcb.pth
 - Name: pidnet-l_2xb6-120k_1024x1024-cityscapes
@@ -45,10 +63,19 @@ Models:
     backbone: PIDNet-L
     crop size: (1024,1024)
     lr schd: 120000
+    inference time (ms/im):
+    - value: 16.65
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1024,1024)
+    Training Memory (GB): 5970.0
   Results:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
       mIoU: 80.46
+      mIoU(ms+flip): 82.58
   Config: configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes/pidnet-l_2xb6-120k_1024x1024-cityscapes_20221114_232813-f14e7ce0.pth
